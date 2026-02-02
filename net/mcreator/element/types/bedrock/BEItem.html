@@ -119,8 +119,20 @@ implements <a href="../interfaces/IItem.html" title="interface in net.mcreator.e
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>double</code></div>
-<div class="col-second even-row-color"><code><a href="#damageVsEntity" class="member-name-link">damageVsEntity</a></code></div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#allowOffHand" class="member-name-link">allowOffHand</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#animation" class="member-name-link">animation</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#creativeTab" class="member-name-link">creativeTab</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#damageVsEntity" class="member-name-link">damageVsEntity</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#enableCreativeTab" class="member-name-link">enableCreativeTab</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#enableMeleeDamage" class="member-name-link">enableMeleeDamage</a></code></div>
@@ -134,17 +146,35 @@ implements <a href="../interfaces/IItem.html" title="interface in net.mcreator.e
 <div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#foodSaturation" class="member-name-link">foodSaturation</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#fuelDuration" class="member-name-link">fuelDuration</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#handEquipped" class="member-name-link">handEquipped</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
 <div class="col-second odd-row-color"><code><a href="#hasGlint" class="member-name-link">hasGlint</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#isFood" class="member-name-link">isFood</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#maxDurability" class="member-name-link">maxDurability</a></code></div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isHiddenInCommands" class="member-name-link">isHiddenInCommands</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#maxDurability" class="member-name-link">maxDurability</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#movementModifier" class="member-name-link">movementModifier</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#rarity" class="member-name-link">rarity</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#shouldDespawn" class="member-name-link">shouldDespawn</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>int</code></div>
 <div class="col-second odd-row-color"><code><a href="#stackSize" class="member-name-link">stackSize</a></code></div>
@@ -155,6 +185,9 @@ implements <a href="../interfaces/IItem.html" title="interface in net.mcreator.e
 <div class="col-first odd-row-color"><code>double</code></div>
 <div class="col-second odd-row-color"><code><a href="#useDuration" class="member-name-link">useDuration</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
+<div class="col-second even-row-color"><code><a href="#usingConvertsTo" class="member-name-link">usingConvertsTo</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.element.GeneratableElement">Fields inherited from class&nbsp;net.mcreator.element.<a href="../../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></h3>
@@ -169,8 +202,10 @@ implements <a href="../interfaces/IItem.html" title="interface in net.mcreator.e
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.elements.ModElement)" class="member-name-link">BEItem</a><wbr>(<a href="../../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;element)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">BEItem</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.elements.ModElement)" class="member-name-link">BEItem</a><wbr>(<a href="../../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;element)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -271,6 +306,60 @@ implements <a href="../interfaces/IItem.html" title="interface in net.mcreator.e
 </section>
 </li>
 <li>
+<section class="detail" id="handEquipped">
+<h3>handEquipped</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">handEquipped</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="rarity">
+<h3>rarity</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">rarity</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="enableCreativeTab">
+<h3>enableCreativeTab</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">enableCreativeTab</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="creativeTab">
+<h3>creativeTab</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">creativeTab</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="isHiddenInCommands">
+<h3>isHiddenInCommands</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isHiddenInCommands</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="movementModifier">
+<h3>movementModifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">movementModifier</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="allowOffHand">
+<h3>allowOffHand</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">allowOffHand</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="fuelDuration">
+<h3>fuelDuration</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">fuelDuration</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="shouldDespawn">
+<h3>shouldDespawn</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">shouldDespawn</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="isFood">
 <h3>isFood</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isFood</span></div>
@@ -294,6 +383,18 @@ implements <a href="../interfaces/IItem.html" title="interface in net.mcreator.e
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">foodCanAlwaysEat</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="usingConvertsTo">
+<h3>usingConvertsTo</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></span>&nbsp;<span class="element-name">usingConvertsTo</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="animation">
+<h3>animation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">animation</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -302,6 +403,12 @@ implements <a href="../interfaces/IItem.html" title="interface in net.mcreator.e
 <section class="constructor-details" id="constructor-detail">
 <h2>Constructor Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="&lt;init&gt;()">
+<h3>BEItem</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BEItem</span>()</div>
+</section>
+</li>
 <li>
 <section class="detail" id="&lt;init&gt;(net.mcreator.workspace.elements.ModElement)">
 <h3>BEItem</h3>

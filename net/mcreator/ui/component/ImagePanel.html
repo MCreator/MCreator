@@ -155,7 +155,7 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.awt.Image)" class="member-name-link">ImagePanel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;img)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.awt.Image)" class="member-name-link">ImagePanel</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;originalImage)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -174,23 +174,17 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fitToImage()" class="member-name-link">fitToImage</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#paintComponent(java.awt.Graphics)" class="member-name-link">paintComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFitToWidth(boolean)" class="member-name-link">setFitToWidth</a><wbr>(boolean&nbsp;fitToWidth)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setImage(java.awt.Image)" class="member-name-link">setImage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;img)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKeepRatio(boolean)" class="member-name-link">setKeepRatio</a><wbr>(boolean&nbsp;flag)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKeepRatio(boolean)" class="member-name-link">setKeepRatio</a><wbr>(boolean&nbsp;flag)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOffsetY(int)" class="member-name-link">setOffsetY</a><wbr>(int&nbsp;offsetY)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRenderOriginal(boolean)" class="member-name-link">setRenderOriginal</a><wbr>(boolean&nbsp;flag)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOffsetY(int)" class="member-name-link">setOffsetY</a><wbr>(int&nbsp;offsetY)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -224,7 +218,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="&lt;init&gt;(java.awt.Image)">
 <h3>ImagePanel</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ImagePanel</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;img)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ImagePanel</span><wbr><span class="parameters">(@Nonnull
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;originalImage)</span></div>
 </section>
 </li>
 </ul>
@@ -242,24 +237,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="fitToImage()">
-<h3>fitToImage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">fitToImage</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setImage(java.awt.Image)">
-<h3>setImage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setImage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a>&nbsp;img)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="setRenderOriginal(boolean)">
-<h3>setRenderOriginal</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRenderOriginal</span><wbr><span class="parameters">(boolean&nbsp;flag)</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="setKeepRatio(boolean)">
 <h3>setKeepRatio</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setKeepRatio</span><wbr><span class="parameters">(boolean&nbsp;flag)</span></div>
@@ -274,11 +251,17 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="paintComponent(java.awt.Graphics)">
 <h3>paintComponent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">paintComponent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">paintComponent</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</span></div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html#paintComponent(java.awt.Graphics)" title="class or interface in javax.swing" class="external-link">paintComponent</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a></code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="fitToImage()">
+<h3>fitToImage</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">fitToImage</span>()</div>
 </section>
 </li>
 </ul>
