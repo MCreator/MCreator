@@ -9,8 +9,8 @@
       }
     },
     "components": {
-      <#if data.hasCustomModel() && data.getModelIdentifier()?has_content>
-      "minecraft:geometry": "${data.getModelIdentifier()}",
+      <#if data.hasCustomModel() && data.getModel().getReadableName()?has_content>
+      "minecraft:geometry": "geometry.${data.getModel().getReadableName()}",
       "minecraft:material_instances": {
           "*": {
               "texture": "${modid}_${registryname}"

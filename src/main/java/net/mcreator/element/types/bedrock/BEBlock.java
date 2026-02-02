@@ -114,18 +114,6 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
-	public String getModelIdentifier() {
-		try {
-			JsonObject obj = new Gson().fromJson(FileIO.readFileToString(getModel().getFile()), JsonObject.class);
-			return obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsJsonObject()
-					.get("identifier").getAsString();
-		} catch (JsonParseException e) {
-			System.out.println("Bedrock model: " + getModel().getReadableName() + "'s identifier could not be parsed." + e);
-		}
-
-		return "";
-	}
-
 	public boolean hasCustomModel() {
 		return renderType == 2;
 	}

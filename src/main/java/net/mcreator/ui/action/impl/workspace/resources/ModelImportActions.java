@@ -27,6 +27,9 @@
 
 package net.mcreator.ui.action.impl.workspace.resources;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import de.javagl.obj.Mtl;
 import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
@@ -259,9 +262,12 @@ public class ModelImportActions {
 				MCreator mcreator = actionRegistry.getMCreator();
 				File json = FileDialogs.getOpenDialog(mcreator, new String[] { ".json" });
 				if (json != null) {
-					if (json.getName().endsWith(".geo.json")) {
-						importBedrockModel(mcreator, json);
-					} else {
+					boolean isValid = false;
+
+					if (json.getName().endsWith(".geo.json"))
+						isValid = importBedrockModel(mcreator, json);
+
+					if (!isValid) {
 						JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
 								L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);
 					}
@@ -275,13 +281,27 @@ public class ModelImportActions {
 		}
 	}
 
-	public static void importBedrockModel(MCreator mcreator, File file) {
-		FileIO.copyFile(file, new File(mcreator.getFolderManager().getModelsDir(),
-				RegistryNameFixer.fix(file.getName())));
+	public static boolean importBedrockModel(MCreator mcreator, File file) {
+		String identifier;
+		try {
+			JsonObject obj = new Gson().fromJson(FileIO.readFileToString(file), JsonObject.class);
+			identifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsJsonObject()
+					.get("identifier").getAsString();
+		} catch (JsonParseException e) {
+			LOG.error("Bedrock model {}'s identifier could not be parsed.", file.getName(), e);
+			return false;
+		}
+
+		if (identifier == null)
+			return false;
+
+		FileIO.copyFile(file, new File(mcreator.getFolderManager().getModelsDir(), identifier.replace("geometry.", "") + ".geo.json"));
 
 		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
 			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
+
+		return true;
 	}
 
 	public static class OBJ extends BasicAction {
