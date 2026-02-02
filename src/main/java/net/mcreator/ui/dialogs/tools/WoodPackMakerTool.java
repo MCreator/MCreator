@@ -264,6 +264,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		logBlock.textureFront = new TextureHolder(workspace, woodTextureName);
 		logBlock.textureLeft = new TextureHolder(workspace, woodTextureName);
 		logBlock.textureRight = new TextureHolder(workspace, woodTextureName);
+		logBlock.particleTexture = new TextureHolder(workspace, woodTextureName);
 		logBlock.renderType = 10; // normal
 		logBlock.customModelName = "Normal";
 		logBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -305,6 +306,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		strippedLogBlock.textureFront = new TextureHolder(workspace, strippedLogSideTextureName);
 		strippedLogBlock.textureLeft = new TextureHolder(workspace, strippedLogSideTextureName);
 		strippedLogBlock.textureRight = new TextureHolder(workspace, strippedLogSideTextureName);
+		strippedLogBlock.particleTexture = new TextureHolder(workspace, strippedLogSideTextureName);
 		strippedLogBlock.renderType = 10; // normal
 		strippedLogBlock.customModelName = "Normal";
 		strippedLogBlock.soundOnStep = new StepSound(workspace, "WOOD");
