@@ -33,7 +33,6 @@ import com.google.gson.JsonParseException;
 import de.javagl.obj.Mtl;
 import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -268,8 +267,10 @@ public class ModelImportActions {
 						isValid = importBedrockModel(mcreator, json);
 
 					if (!isValid) {
-						JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
-								L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(mcreator,
+								L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
+								L10N.t("dialog.workspace.resources.import_bedrock_model.title"),
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
@@ -285,8 +286,8 @@ public class ModelImportActions {
 		String identifier;
 		try {
 			JsonObject obj = new Gson().fromJson(FileIO.readFileToString(file), JsonObject.class);
-			identifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description").getAsJsonObject()
-					.get("identifier").getAsString();
+			identifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description")
+					.getAsJsonObject().get("identifier").getAsString();
 		} catch (JsonParseException e) {
 			LOG.error("Bedrock model {}'s identifier could not be parsed.", file.getName(), e);
 			return false;
@@ -295,7 +296,8 @@ public class ModelImportActions {
 		if (identifier == null)
 			return false;
 
-		FileIO.copyFile(file, new File(mcreator.getFolderManager().getModelsDir(), identifier.replace("geometry.", "") + ".geo.json"));
+		FileIO.copyFile(file, new File(mcreator.getFolderManager().getModelsDir(),
+				identifier.replace("geometry.", "") + ".geo.json"));
 
 		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)

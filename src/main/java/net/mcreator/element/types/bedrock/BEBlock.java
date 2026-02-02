@@ -19,13 +19,11 @@
 
 package net.mcreator.element.types.bedrock;
 
-import com.google.gson.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
