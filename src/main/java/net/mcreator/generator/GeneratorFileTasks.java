@@ -146,9 +146,9 @@ public class GeneratorFileTasks {
 							}
 						}
 						break;
-					case "JSON", "BEDROCK":
+					case "JSON":
 						for (Model model : modelList) {
-							if (model.getType() == Model.Type.JSON || model.getType() == Model.Type.BEDROCK) {
+							if (model.getType() == Model.Type.JSON) {
 								TrackingFileIO.copyFile(generator, model.getFile(),
 										new File(to, model.getFile().getName()));
 							}
@@ -160,6 +160,14 @@ public class GeneratorFileTasks {
 								String jsonorig = FileIO.readFileToString(model.getFile());
 								String notextures = ModelUtils.removeInlineTexturesSectionFromJSONModel(jsonorig);
 								TrackingFileIO.writeFile(generator, notextures,
+										new File(to, model.getFile().getName()));
+							}
+						}
+						break;
+					case "BEDROCK":
+						for (Model model : modelList) {
+							if (model.getType() == Model.Type.BEDROCK) {
+								TrackingFileIO.copyFile(generator, model.getFile(),
 										new File(to, model.getFile().getName()));
 							}
 						}

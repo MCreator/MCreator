@@ -64,7 +64,7 @@ class ModMakerMenuBar extends MainMenuBar {
 		resources.add(mcreator.getActionRegistry().importJavaModel);
 		resources.add(mcreator.getActionRegistry().importJSONModel);
 		resources.add(mcreator.getActionRegistry().importOBJModel);
-		resources.add(mcreator.getActionRegistry().importBedrockModel);
+		resources.add(hideableMenu(mcreator.getActionRegistry().importBedrockModel));
 		resources.addSeparator();
 		resources.add(mcreator.getActionRegistry().importJavaModelAnimation);
 		add(resources);
