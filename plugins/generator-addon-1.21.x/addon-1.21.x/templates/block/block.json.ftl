@@ -9,7 +9,7 @@
       }
     },
     "components": {
-      <#if data.hasCustomModel() && data.getModel().getReadableName()?has_content>
+      <#if data.hasCustomModel()>
       "minecraft:geometry": "geometry.${data.getModel().getReadableName()}",
       "minecraft:material_instances": {
           "*": {

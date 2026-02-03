@@ -7,15 +7,15 @@
 		<#list w.getElementsOfType("beblock") as mod>
 			<#assign ge = mod.getGeneratableElement()>
 			<#if ge.hasCustomModel()>
-			"${modid}_${mod.getRegistryName()}": { "textures": [ "textures/blocks/${ge.texture}" ] }<#if mod?has_next>,</#if>
+			"${modid}_${mod.getRegistryName()}": { "textures": [ "textures/blocks/${ge.texture}" ] }
 			<#else>
     		"${modid}_${mod.getRegistryName()}_up": { "textures": [ "textures/blocks/${ge.textureTop()}" ] },
     		"${modid}_${mod.getRegistryName()}_down": { "textures": [ "textures/blocks/${ge.texture}" ] },
     		"${modid}_${mod.getRegistryName()}_south": { "textures": [ "textures/blocks/${ge.textureFront()}" ] },
     		"${modid}_${mod.getRegistryName()}_north": { "textures": [ "textures/blocks/${ge.textureBack()}" ] },
     		"${modid}_${mod.getRegistryName()}_west": { "textures": [ "textures/blocks/${ge.textureLeft()}" ] },
-    		"${modid}_${mod.getRegistryName()}_east": { "textures": [ "textures/blocks/${ge.textureRight()}" ] }<#if mod?has_next>,</#if>
-    		</#if>
+    		"${modid}_${mod.getRegistryName()}_east": { "textures": [ "textures/blocks/${ge.textureRight()}" ] }
+    		</#if><#sep>,
 		</#list>
     }
 }

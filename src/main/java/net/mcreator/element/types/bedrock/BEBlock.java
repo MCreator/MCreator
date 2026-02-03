@@ -76,6 +76,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public BEBlock(ModElement element) {
 		super(element);
 		customModelName = "Normal";
+		renderType = 10;
 	}
 
 	public boolean hasCustomDrop() {

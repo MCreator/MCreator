@@ -260,18 +260,13 @@ public class ModelImportActions {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_bedrock_model"), actionEvent -> {
 				MCreator mcreator = actionRegistry.getMCreator();
 				File json = FileDialogs.getOpenDialog(mcreator, new String[] { ".json" });
-				if (json != null) {
-					boolean isValid = false;
-
-					if (json.getName().endsWith(".geo.json"))
-						isValid = importBedrockModel(mcreator, json);
-
-					if (!isValid) {
-						JOptionPane.showMessageDialog(mcreator,
-								L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
-								L10N.t("dialog.workspace.resources.import_bedrock_model.title"),
-								JOptionPane.ERROR_MESSAGE);
-					}
+				if (json != null && json.getName().endsWith(".geo.json")) {
+					importBedrockModel(mcreator, json);
+				} else {
+					JOptionPane.showMessageDialog(mcreator,
+							L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
+							L10N.t("dialog.workspace.resources.import_bedrock_model.title"),
+							JOptionPane.ERROR_MESSAGE);
 				}
 			});
 			setIcon(UIRES.get("16px.importbedrockmodel"));
@@ -282,19 +277,21 @@ public class ModelImportActions {
 		}
 	}
 
-	public static boolean importBedrockModel(MCreator mcreator, File file) {
+	public static void importBedrockModel(MCreator mcreator, File file) {
 		String identifier;
 		try {
 			JsonObject obj = new Gson().fromJson(FileIO.readFileToString(file), JsonObject.class);
 			identifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description")
 					.getAsJsonObject().get("identifier").getAsString();
-		} catch (JsonParseException e) {
+		} catch (JsonParseException | NullPointerException e) {
 			LOG.error("Bedrock model {}'s identifier could not be parsed.", file.getName(), e);
-			return false;
-		}
 
-		if (identifier == null)
-			return false;
+			JOptionPane.showMessageDialog(mcreator,
+					L10N.t("dialog.workspace.resources.import_bedrock_model.missing_identifier"),
+					L10N.t("dialog.workspace.resources.import_bedrock_model.title"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
 		FileIO.copyFile(file, new File(mcreator.getFolderManager().getModelsDir(),
 				identifier.replace("geometry.", "") + ".geo.json"));
@@ -302,8 +299,6 @@ public class ModelImportActions {
 		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
 			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
-
-		return true;
 	}
 
 	public static class OBJ extends BasicAction {

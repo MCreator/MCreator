@@ -1,8 +1,9 @@
 {
   "format_version": "1.16.100"
-  <#list w.getElementsOfType("beblock")?filter(e-> !e.getGeneratableElement().hasCustomModel()) as mod>
+  <#list w.getElementsOfType("beblock") as mod>
     <#assign ge = mod.getGeneratableElement()>
     ,"${modid}:${mod.getRegistryName()}": {
+    	<#if !ge.hasCustomModel()>
         "textures": {
           "up": "${modid}_${mod.getRegistryName()}_up",
           "down": "${modid}_${mod.getRegistryName()}_down",
@@ -11,6 +12,7 @@
           "west": "${modid}_${mod.getRegistryName()}_west",
           "east": "${modid}_${mod.getRegistryName()}_east"
         },
+        </#if>
       "sound": "${ge.soundOnStep}"
     }
   </#list>
