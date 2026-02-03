@@ -110,7 +110,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		ComponentUtils.deriveFont(renderType, 16);
 		renderType.addActionListener(event -> updateTextureOptions());
-		renderType.setPreferredSize(new Dimension(300, 42));
+		renderType.setPreferredSize(new Dimension(260, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
 		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 2, 2));
@@ -164,9 +164,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.common.fire_spread_speed")));
 		basicProperties.add(flammableDestroyChance);
 
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2,
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
 				PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(textures), modelSettings),
-				PanelUtils.totalCenterInPanel(basicProperties))));
+				PanelUtils.totalCenterInPanel(basicProperties), 45, 45)));
 
 		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
 		genPanel.setOpaque(false);
