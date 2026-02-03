@@ -64,11 +64,7 @@ public class Model {
 		} else if (file.getName().endsWith(".geo.json")) {
 			this.file = new File[1];
 			this.file[0] = file;
-			if (file.getName().endsWith(".geo.json")) {
-				this.type = Type.BEDROCK;
-			} else {
-				throw new ModelException("Unsupported model type");
-			}
+			this.type = Type.BEDROCK;
 		} else if (file.getName().endsWith(".json")) {
 			File textures = new File(file.getAbsolutePath() + ".textures");
 			if (textures.isFile()) {
