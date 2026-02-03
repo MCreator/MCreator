@@ -49,6 +49,7 @@ import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
 import net.mcreator.ui.minecraft.states.block.JBlockStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -244,10 +245,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
 	private JBlockStatePropertiesList statePropertiesList;
-	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
-			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
-			Collections.emptyMap());
+	private final Map<String, List<String>> blockBaseProperties = BlockStatePropertyUtils.getBlockBaseProperties(
+			modElement.getGeneratorConfiguration());
 
 	private JBlockStatesList blockStatesList;
 
@@ -634,8 +633,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/leaves_particle_type"),
 						L10N.label("elementgui.block.leaves_particle_type")), leavesParticleType,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/leaves_particle_chance"),
-						L10N.label("elementgui.block.leaves_particle_chance")), leavesParticleChance),
-				"leaves");
+						L10N.label("elementgui.block.leaves_particle_chance")), leavesParticleChance), "leaves");
 
 		// Card for flower pots
 		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,

@@ -49,7 +49,6 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.AbstractSourceTree;
-import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.java.JavaCompletionProvider;
 import org.fife.rsta.ac.java.JavaLanguageSupport;
 import org.fife.rsta.ac.java.JavaParser;
@@ -87,6 +86,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	public final ReplaceBar rep;
 
 	private final JSplitPane spne = new JSplitPane();
+	private final JPanel cp = new JPanel(new BorderLayout());
 
 	private final JScrollPane treeSP = new JScrollPane();
 	private AbstractSourceTree tree;
@@ -153,8 +153,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			}
 		});
 
-		LanguageSupportFactory.get().register(te);
-
 		sed = new SearchBar(te);
 		rep = new ReplaceBar(te);
 		te.setText(code);
@@ -218,7 +216,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 		spne.setRightComponent(new JPanel());
 
-		JPanel cp = new JPanel(new BorderLayout());
 		cp.setBackground(Theme.current().getBackgroundColor());
 		cp.add(sp);
 
@@ -540,7 +537,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			spne.setRightComponent(treeSP);
 			spne.setDividerLocation(0.8);
 		} else {
-			spne.setRightComponent(new JPanel());
+			remove(spne);
+			add("Center", cp);
 		}
 	}
 
