@@ -54,9 +54,6 @@ import org.fife.rsta.ac.java.JavaCompletionProvider;
 import org.fife.rsta.ac.java.JavaLanguageSupport;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.tree.JavaOutlineTree;
-import org.fife.rsta.ac.js.JavaScriptCompletionProvider;
-import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
-import org.fife.rsta.ac.js.tree.JavaScriptOutlineTree;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.*;
@@ -503,58 +500,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
 		} else if (fileName.endsWith(".js")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
-
-			JavaScriptLanguageSupport jls = new JavaScriptLanguageSupport();
-
-			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
-			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
-			jls.setParameterAssistanceEnabled(true);
-			jls.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
-
-			jls.install(te);
-
-			if (ac != null)
-				AutocompleteStyle.installStyle(ac, te);
-
-			try {
-				Field field = jls.getClass().getDeclaredField("provider");
-				field.setAccessible(true);
-				JavaScriptCompletionProvider jscp = (JavaScriptCompletionProvider) field.get(jls);
-				te.addKeyListener(new KeyAdapter() {
-
-					private volatile boolean completionInAction = false;
-
-					@Override public void keyPressed(KeyEvent keyEvent) {
-						super.keyPressed(keyEvent);
-						if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-								&& !completionInAction && jls.isAutoActivationEnabled() &&
-								// only smart autocomplete if the char we typed is a letter or digit
-								Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
-								// only smart autocomplete if we have at least one char already written
-								!jscp.getAlreadyEnteredText(te).isBlank()
-								// only smart autocomplete if we have more than one completion to choose from
-								// (so it is not applied automatically when we don't want to)
-								&& jscp.getCompletions(te).size() > 1) {
-							if (!completionInAction) {
-								new Thread(() -> {
-									if (ac != null) {
-										completionInAction = true;
-										ThreadUtil.runOnSwingThreadAndWait(() -> {
-											try {
-												ac.doCompletion();
-											} catch (Throwable ignored) {
-											}
-										});
-										completionInAction = false;
-									}
-								}, "AutoComplete").start();
-							}
-						}
-					}
-				});
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
-			}
 		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
 		}
@@ -583,8 +528,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			tree = new JavaOutlineTree();
 		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
 			tree = new JsonTree();
-		} else if (SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT.equals(language)) {
-			tree = new JavaScriptOutlineTree();
 		}
 
 		if (tree != null) {
