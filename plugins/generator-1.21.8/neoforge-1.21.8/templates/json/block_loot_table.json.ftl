@@ -65,7 +65,7 @@
             }
           ]
           </#if>
-          <#if data.dropAmount != 1 || isSlab>,
+          <#if data.dropAmount != 1 || isSlab>, <#-- Handle cases where block can drop more than one item -->
           "functions": [
             <#if data.dropAmount != 1>
             {

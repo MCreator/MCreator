@@ -49,12 +49,12 @@
             }
           ]
           </#if>
-          <#if data.dropAmount != 1 || isSlab>,
+          <#if data.dropAmount != 1 || isSlab>, <#-- Handle cases where block can drop more than one item -->
           "functions": [
             <#if data.dropAmount != 1>
             {
-              "count": ${data.dropAmount},
-              "function": "minecraft:set_count"
+              "function": "minecraft:set_count",
+              "count": ${data.dropAmount}
             },
             </#if>
             <#if isSlab> <#-- Drop twice the amount if it's a double slab -->
