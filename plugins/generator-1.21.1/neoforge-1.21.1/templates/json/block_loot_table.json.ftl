@@ -5,10 +5,10 @@
 {
   "type": "minecraft:block",
   "random_sequence": "${modid}:blocks/${registryname}"
-  <#if data.hasDefaultDropPool() || isFlowerPot>,
+  <#if data.hasDefaultDropPool() || isFlowerPot || isLeaves>,
   "pools": [
     <#-- First, handle "hardcoded" drops (flower pot for potted plants, sticks for leaves...) -->
-    <#if isFlowerPot>
+    <#if isFlowerPot> <#-- Handle flower pot drop -->
     {
       "rolls": 1.0,
       "conditions": [
@@ -20,6 +20,42 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:flower_pot"
+        }
+      ]
+    }<#if data.hasDefaultDropPool()>,</#if>
+    <#elseif isLeaves> <#-- Handle sticks drops -->
+    {
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": <@silkTouchOrShearsCondition/>
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "conditions": [
+            {
+              "condition": "minecraft:table_bonus",
+              "enchantment": "minecraft:fortune",
+              "chances": [ 0.02, 0.022222223, 0.025, 0.033333335, 0.1 ]
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ]
         }
       ]
     }<#if data.hasDefaultDropPool()>,</#if>
@@ -95,3 +131,32 @@
   ]
   </#if>
 }
+
+<#macro silkTouchOrShearsCondition>
+{
+  "condition": "minecraft:any_of",
+  "terms": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "items": "minecraft:shears"
+      }
+    },
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "predicates": {
+          "minecraft:enchantments": [
+            {
+              "enchantments": "minecraft:silk_touch",
+              "levels": {
+                "min": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+</#macro>
