@@ -32,4 +32,22 @@ import net.mcreator.element.parts.MItemBlock;
 	default boolean hasDefaultDrop() {
 		return !getDefaultDrop().isAir() && !getDefaultDrop().isEmpty();
 	}
+
+	default boolean hasDefaultDropPool() {
+		return dropsWithSilkTouch() || dropsWithShears() || hasDefaultDrop();
+	}
+
+	/**
+	 * @return true if the block drops itself when harvested with silk touch.
+	 */
+	default boolean dropsWithSilkTouch() {
+		return false;
+	}
+
+	/**
+	 * @return true if the block drops itself when harvested with shears.
+	 */
+	default boolean dropsWithShears() {
+		return false;
+	}
 }

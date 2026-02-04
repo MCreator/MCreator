@@ -354,6 +354,14 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	@Override public boolean dropsWithSilkTouch() {
+		return hasBlockItem && "Leaves".equals(blockBase);
+	}
+
+	@Override public boolean dropsWithShears() {
+		return hasBlockItem && "Leaves".equals(blockBase);
+	}
+
 	public boolean supportsBlockStates() {
 		if (getItemModel().getType() == Model.Type.JAVA)
 			return false;
