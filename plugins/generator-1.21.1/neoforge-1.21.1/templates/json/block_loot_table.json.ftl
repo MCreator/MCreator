@@ -34,11 +34,10 @@
       ],
       </#if>
       "entries": [
+        <#if data.hasDefaultDrop()> <#-- Entry for the default block drop -->
         {
           "type": "minecraft:item",
-          "name": <#if data.customDrop?? && !data.customDrop.isEmpty()>"${mappedMCItemToRegistryName(data.customDrop)}"
-            <#elseif isFlowerPot>"${mappedMCItemToRegistryName(data.pottedPlant)}"
-            <#else>"${modid}:${registryname}"</#if>
+          "name": "${mappedMCItemToRegistryName(data.getDefaultDrop())}"
           <#if data.isDoubleBlock()>,
           "conditions": [
             {
@@ -87,6 +86,7 @@
           ]
           </#if>
         }
+        </#if>
       ]
     }
     </#if>
