@@ -5,8 +5,9 @@
 {
   "type": "minecraft:block",
   "random_sequence": "${modid}:blocks/${registryname}"
-  <#if data.hasDrops() || isFlowerPot>,
+  <#if data.hasDefaultDropPool() || isFlowerPot>,
   "pools": [
+    <#-- First, handle "hardcoded" drops (flower pot for potted plants, sticks for leaves...) -->
     <#if isFlowerPot>
     {
       "rolls": 1.0,
@@ -21,9 +22,10 @@
           "name": "minecraft:flower_pot"
         }
       ]
-    }<#if data.hasDrops()>,</#if>
+    }<#if data.hasDefaultDropPool()>,</#if>
     </#if>
-    <#if data.hasDrops()>
+    <#-- Then, handle the "default" drop -->
+    <#if data.hasDefaultDropPool()>
     {
       "rolls": 1.0,
       <#if data.dropAmount == 1 && !isSlab>
