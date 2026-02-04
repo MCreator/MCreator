@@ -28,6 +28,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -60,7 +61,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IBlockWithBoundingBox,
-		IMultipleNames {
+		IMultipleNames, IBlockWithLootTable {
 
 	private static final Logger LOG = LogManager.getLogger(Block.class);
 
@@ -338,8 +339,19 @@ import java.util.stream.Collectors;
 		return disableOffset || offsetType.equals("NONE");
 	}
 
-	public boolean hasDrops() {
-		return dropAmount > 0 && (hasBlockItem || hasCustomDrop() || "FlowerPot".equals(blockBase));
+	@Override public MItemBlock getDefaultDrop() {
+		if (dropAmount == 0) {
+			return new MItemBlock(getModElement().getWorkspace(), "Blocks.AIR");
+		} else if (hasCustomDrop()) {
+			return customDrop;
+		} else if ("FlowerPot".equals(blockBase)) {
+			return pottedPlant;
+		} else if (hasBlockItem) {
+			return new MItemBlock(getModElement().getWorkspace(),
+					NameMapper.MCREATOR_PREFIX + this.getModElement().getName());
+		} else {
+			return new MItemBlock(getModElement().getWorkspace(), "Blocks.AIR");
+		}
 	}
 
 	public boolean supportsBlockStates() {
