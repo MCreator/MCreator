@@ -2,6 +2,7 @@
 <#assign isFlowerPot = data.getModElement().getTypeString() == "block" && data.blockBase! == "FlowerPot">
 <#assign isSlab = data.getModElement().getTypeString() == "block" && data.blockBase! == "Slab">
 <#assign isLeaves = data.getModElement().getTypeString() == "block" && data.blockBase! == "Leaves">
+<#assign hasAlternatives = isLeaves && data.hasBlockItem && data.hasDefaultDrop()> <#-- True if silk touch or shears change the loot -->
 {
   "type": "minecraft:block",
   "random_sequence": "${modid}:blocks/${registryname}"
@@ -72,6 +73,19 @@
       ],
       </#if>
       "entries": [
+        <#if hasAlternatives> <#-- Open the "alternatives" entry -->
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+        </#if>
+        <#if isLeaves && data.hasBlockItem> <#-- Entry for leaves drop with silk touch or shears -->
+          {
+            "type": "minecraft:item",
+            "name": "${modid}:${registryname}",
+            "conditions": [ <@silkTouchOrShearsCondition/> ]
+          }
+          <#if data.hasDefaultDrop()>,</#if>
+        </#if>
         <#if data.hasDefaultDrop()> <#-- Entry for the default block drop -->
         {
           "type": "minecraft:item",
@@ -124,6 +138,9 @@
           ]
           </#if>
         }
+        </#if>
+        <#if hasAlternatives> <#-- Close the "alternatives" entry -->
+        ]}
         </#if>
       ]
     }
