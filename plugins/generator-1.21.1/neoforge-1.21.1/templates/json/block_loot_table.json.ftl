@@ -1,6 +1,7 @@
 <#include "../mcitems.ftl">
 <#assign isFlowerPot = data.getModElement().getTypeString() == "block" && data.blockBase! == "FlowerPot">
 <#assign isSlab = data.getModElement().getTypeString() == "block" && data.blockBase! == "Slab">
+<#assign isLeaves = data.getModElement().getTypeString() == "block" && data.blockBase! == "Leaves">
 {
   "type": "minecraft:block",
   "random_sequence": "${modid}:blocks/${registryname}"
@@ -46,6 +47,14 @@
               "properties": {
                 "half": "lower"
               }
+            }
+          ]
+          <#elseif isLeaves>, <#-- Use vanilla leaves dropping logic -->
+          "conditions": [
+            {
+              "condition": "minecraft:table_bonus",
+              "enchantment": "minecraft:fortune",
+              "chances": [ 0.05, 0.0625, 0.083333336, 0.1 ]
             }
           ]
           </#if>
