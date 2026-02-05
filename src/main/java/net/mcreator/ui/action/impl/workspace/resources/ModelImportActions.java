@@ -265,8 +265,7 @@ public class ModelImportActions {
 				} else {
 					JOptionPane.showMessageDialog(mcreator,
 							L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
-							L10N.t("dialog.workspace.resources.import_bedrock_model.title"),
-							JOptionPane.ERROR_MESSAGE);
+							L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);
 				}
 			});
 			setIcon(UIRES.get("16px.importbedrockmodel"));
@@ -284,12 +283,11 @@ public class ModelImportActions {
 			identifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description")
 					.getAsJsonObject().get("identifier").getAsString();
 		} catch (JsonParseException | NullPointerException e) {
-			LOG.error("Bedrock model {}'s identifier could not be parsed.", file.getName(), e);
+			LOG.error("Bedrock model {} identifier could not be parsed", file.getName(), e);
 
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_bedrock_model.missing_identifier"),
-					L10N.t("dialog.workspace.resources.import_bedrock_model.title"),
-					JOptionPane.ERROR_MESSAGE);
+					L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
