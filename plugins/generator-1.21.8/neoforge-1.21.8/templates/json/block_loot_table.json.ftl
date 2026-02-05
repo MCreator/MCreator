@@ -2,7 +2,7 @@
 <#assign isFlowerPot = data.getModElement().getTypeString() == "block" && data.blockBase! == "FlowerPot">
 <#assign isSlab = data.getModElement().getTypeString() == "block" && data.blockBase! == "Slab">
 <#assign isLeaves = data.getModElement().getTypeString() == "block" && data.blockBase! == "Leaves">
-<#assign hasAlternatives = isLeaves && data.hasBlockItem && data.hasDefaultDrop()> <#-- True if silk touch or shears change the loot -->
+<#assign hasAlternatives = data.hasDefaultDrop() && (data.dropsWithSilkTouch() || data.dropsWithShears())> <#-- True if silk touch or shears change the loot -->
 {
   "type": "minecraft:block",
   "random_sequence": "${modid}:blocks/${registryname}"
