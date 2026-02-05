@@ -9,7 +9,7 @@
       }
     },
     "components": {
-      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"<#if>,
+      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"</#if>,
       "minecraft:material_instances": {
         <#if data.hasCustomModel()>
         "*": {

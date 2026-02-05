@@ -4,7 +4,7 @@
   "padding": 8,
   "num_mip_levels": 0,
   "texture_data": {
-    <#list w.getElementsOfType("beblock") as mod>
+  <#list w.getElementsOfType("beblock") as mod>
   	<#assign ge = mod.getGeneratableElement()>
   	<#if ge.hasCustomModel()>
   	"${modid}_${mod.getRegistryName()}": { "textures": [ "textures/blocks/${ge.texture}" ] }
