@@ -30,7 +30,7 @@
       "conditions": [
         {
           "condition": "minecraft:inverted",
-          "term": <@silkTouchOrShearsCondition/>
+          "term": <@silkTouchOrShearsCondition data.dropsWithSilkTouch() data.dropsWithShears()/>
         }
       ],
       "entries": [
@@ -82,7 +82,7 @@
           {
             "type": "minecraft:item",
             "name": "${modid}:${registryname}",
-            "conditions": [ <@silkTouchOrShearsCondition/> ]
+            "conditions": [ <@silkTouchOrShearsCondition data.dropsWithSilkTouch() data.dropsWithShears()/> ]
           }
           <#if data.hasDefaultDrop()>,</#if>
         </#if>
@@ -149,16 +149,21 @@
   </#if>
 }
 
-<#macro silkTouchOrShearsCondition>
+<#macro silkTouchOrShearsCondition silkTouch shears>
+<#if silkTouch && shears> <#-- Open the "Any of" predicate if both options are selected -->
 {
   "condition": "minecraft:any_of",
   "terms": [
+</#if>
+    <#if shears>
     {
       "condition": "minecraft:match_tool",
       "predicate": {
         "items": "minecraft:shears"
       }
-    },
+    }<#if silkTouch>,</#if>
+    </#if>
+    <#if silkTouch>
     {
       "condition": "minecraft:match_tool",
       "predicate": {
@@ -174,6 +179,9 @@
         }
       }
     }
+    </#if>
+<#if silkTouch && shears>
   ]
 }
+</#if>
 </#macro>
