@@ -35,7 +35,6 @@ public class SoundImportAction extends BasicAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("sounds");
 	}
 }

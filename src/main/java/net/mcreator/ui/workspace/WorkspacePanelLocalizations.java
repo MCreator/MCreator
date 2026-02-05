@@ -396,8 +396,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	}
 
 	@Override public boolean isSupportedInWorkspace() {
-		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("i18n")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("i18n");
 	}
 
 	@Override public void refilterElements() {

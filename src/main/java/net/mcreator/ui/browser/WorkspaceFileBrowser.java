@@ -20,7 +20,6 @@ package net.mcreator.ui.browser;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
@@ -208,24 +207,19 @@ public class WorkspaceFileBrowser extends JPanel {
 		JFileTree.addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 		node.add(currRes);
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds") != GeneratorStats.CoverageStatus.NONE) {
+		if (mcreator.getGeneratorStats().hasBaseCoverage("sounds")) {
 			FilterTreeNode sounds = new FilterTreeNode("Sounds");
 			JFileTree.addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 			node.add(sounds);
 		}
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (mcreator.getGeneratorStats().hasBaseCoverage("structures")) {
 			FilterTreeNode structures = new FilterTreeNode("Structures");
 			JFileTree.addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 			node.add(structures);
 		}
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_json") != GeneratorStats.CoverageStatus.NONE
-				|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
-				!= GeneratorStats.CoverageStatus.NONE
-				|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (mcreator.getGeneratorStats().hasBaseCoverageAny("model_json", "model_java", "model_obj")) {
 			FilterTreeNode models = new FilterTreeNode("Models");
 			JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 			node.add(models);

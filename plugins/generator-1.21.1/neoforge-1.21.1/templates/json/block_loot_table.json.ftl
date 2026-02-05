@@ -1,6 +1,6 @@
 <#include "../mcitems.ftl">
-<#assign defaultSlabDrops = data.getModElement().getTypeString() == "block" && data.blockBase?has_content && data.blockBase == "Slab" && !(data.customDrop?? && !data.customDrop.isEmpty())/>
 <#assign isFlowerPot = data.getModElement().getTypeString() == "block" && data.blockBase! == "FlowerPot">
+<#assign isSlab = data.getModElement().getTypeString() == "block" && data.blockBase! == "Slab">
 {
   "type": "minecraft:block",
   "random_sequence": "${modid}:blocks/${registryname}"
@@ -25,7 +25,7 @@
     <#if data.hasDrops()>
     {
       "rolls": 1.0,
-      <#if data.dropAmount == 1 && !defaultSlabDrops>
+      <#if data.dropAmount == 1 && !isSlab>
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
@@ -49,19 +49,18 @@
             }
           ]
           </#if>
-          <#if data.dropAmount != 1>,
+          <#if data.dropAmount != 1 || isSlab>,
           "functions": [
+            <#if data.dropAmount != 1>
             {
               "count": ${data.dropAmount},
               "function": "minecraft:set_count"
             },
+            </#if>
+            <#if isSlab> <#-- Drop twice the amount if it's a double slab -->
             {
-              "function": "minecraft:explosion_decay"
-            }
-          ]
-          <#elseif defaultSlabDrops>,
-          "functions": [
-            {
+              "function": "minecraft:set_count",
+              "count": ${data.dropAmount * 2},
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -70,10 +69,9 @@
                     "type": "double"
                   }
                 }
-              ],
-              "count": 2.0,
-              "function": "minecraft:set_count"
+              ]
             },
+            </#if>
             {
               "function": "minecraft:explosion_decay"
             }
