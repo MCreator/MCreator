@@ -260,12 +260,13 @@ public class ModelImportActions {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_bedrock_model"), actionEvent -> {
 				MCreator mcreator = actionRegistry.getMCreator();
 				File json = FileDialogs.getOpenDialog(mcreator, new String[] { ".json" });
-				if (json != null && json.getName().endsWith(".geo.json")) {
+				if (json != null) {
+					if ( json.getName().endsWith(".geo.json")) {
 					importBedrockModel(mcreator, json);
 				} else {
 					JOptionPane.showMessageDialog(mcreator,
 							L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
-							L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);
+							L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);}
 				}
 			});
 			setIcon(UIRES.get("16px.importbedrockmodel"));
