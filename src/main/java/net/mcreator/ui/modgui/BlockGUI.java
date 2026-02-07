@@ -216,12 +216,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onReceivedVibration;
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(
-			new String[] { "<html>No rotation<br><small>Fixed block orientation",
-					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from player side",
-					"<html>D/U/N/S/W/E rotation<br><small>Rotation from player side",
-					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from block face",
-					"<html>D/U/N/S/W/E rotation<br><small>Rotation from block face",
-					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
+			new String[] { L10N.t("elementgui.block.rotation_mode.none"),
+					L10N.t("elementgui.block.rotation_mode.player_y_axis"),
+					L10N.t("elementgui.block.rotation_mode.player_all_axis"),
+					L10N.t("elementgui.block.rotation_mode.block_y_axis"),
+					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
+					L10N.t("elementgui.block.rotation_mode.log") });
 	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(

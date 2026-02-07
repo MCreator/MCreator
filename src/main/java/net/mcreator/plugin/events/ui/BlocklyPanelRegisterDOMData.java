@@ -21,28 +21,39 @@ package net.mcreator.plugin.events.ui;
 
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.ui.blockly.BlocklyPanel;
-
-import java.util.Map;
+import net.mcreator.ui.chromium.WebView;
 
 /**
- * Event called when Blockly panel is ready to register JS objects.
- * <p>
- * Additional objects can be added by calling {@link #getDOMWindow()} and adding them to the map.
- * MCreator handles threading as objects need to be added on the JavaFX thread, so it is safe to put
- * elements to the DOMWindow from any thread when using this event.
+ * Event called when the Blockly panel is ready to register additional DOM data.
  */
-public class BlocklyPanelRegisterJSObjects extends MCREvent {
+public class BlocklyPanelRegisterDOMData extends MCREvent {
 
-	private final Map<String, Object> domWindowMembers;
 	private final BlocklyPanel blocklyPanel;
+	private final WebView webView;
 
-	public BlocklyPanelRegisterJSObjects(BlocklyPanel blocklyPanel, Map<String, Object> domWindowMembers) {
+	public BlocklyPanelRegisterDOMData(BlocklyPanel blocklyPanel, WebView webView) {
 		this.blocklyPanel = blocklyPanel;
-		this.domWindowMembers = domWindowMembers;
+		this.webView = webView;
 	}
 
-	public Map<String, Object> getDOMWindow() {
-		return domWindowMembers;
+	public void addJavaScriptBridge(String name, Object bridge) {
+		webView.addJavaScriptBridge(name, bridge);
+	}
+
+	public void addCSSToDOM(String css) {
+		webView.addCSSToDOM(css);
+	}
+
+	public void addStringConstantToDOM(String name, String value) {
+		webView.addStringConstantToDOM(name, value);
+	}
+
+	public synchronized void executeScript(String javaScript) {
+		webView.executeScript(javaScript, WebView.JSExecutionType.LOCAL_SAFE);
+	}
+
+	public synchronized String executeScriptGetReturnValue(String javaScript) {
+		return webView.executeScript(javaScript, WebView.JSExecutionType.RETURN_VALUE);
 	}
 
 	public BlocklyPanel getBlocklyPanel() {
