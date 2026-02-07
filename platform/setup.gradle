@@ -1,9 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jdk21_win_64 = 'https://api.adoptium.net/v3/binary/version/jdk-21.0.8+9/windows/x64/jdk/hotspot/normal/eclipse?project=jdk'
-def jdk21_linux_64 = 'https://api.adoptium.net/v3/binary/version/jdk-21.0.8+9/linux/x64/jdk/hotspot/normal/eclipse?project=jdk'
-def jdk21_mac_x64 = 'https://api.adoptium.net/v3/binary/version/jdk-21.0.8+9/mac/x64/jdk/hotspot/normal/eclipse?project=jdk'
-def jdk21_mac_aarch64 = 'https://api.adoptium.net/v3/binary/version/jdk-21.0.8+9/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
+def jbr21_win_64 = 'jbrsdk_jcef-21.0.10-windows-x64-b1163.105'
+def jbr21_linux_64 = 'jbrsdk_jcef-21.0.10-linux-x64-b1163.105'
+def jbr21_mac_x64 = 'jbrsdk_jcef-21.0.10-osx-x64-b1163.105'
+def jbr21_mac_aarch64 = 'jbrsdk_jcef-21.0.10-osx-aarch64-b1163.105'
 
 // Binaries needed on Windows for export (install them using Gradle since Windows does not have a package manager)
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.09/nsis-3.09.zip'
@@ -13,19 +13,22 @@ def mkisofs_url = 'https://master.dl.sourceforge.net/project/mkisofs-md5/mkisofs
 tasks.register('downloadJDKWin64') {
     group = 'setup'
     doLast {
-        if (!file('jdk/jdk21_win_64/bin/java.exe').exists()) {
-            mkdir 'jdk/jdk21_win_64'
+        if (!file('jdk/jbr21_win_64/bin/java.exe').exists()) {
+            mkdir 'jdk/jbr21_win_64'
 
             download.run {
-                src jdk21_win_64
-                dest 'build/tmp/jdk21_win_64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr21_win_64}.zip"
+                dest 'build/tmp/jbr21_win_64'
                 overwrite true
             }
-            copy { from zipTree('build/tmp/jdk21_win_64') into file('jdk/jdk21_win_64/') }
-            delete 'build/tmp/jdk21_win_64'
+            copy { from zipTree('build/tmp/jbr21_win_64') into file('jdk/jbr21_win_64/') }
+            delete 'build/tmp/jbr21_win_64'
 
-            copy { from file('jdk/jdk21_win_64/jdk-21.0.8+9') into file('jdk/jdk21_win_64/') }
-            delete 'jdk/jdk21_win_64/jdk-21.0.8+9'
+            copy { from file("jdk/jbr21_win_64/${jbr21_win_64}") into file('jdk/jbr21_win_64/') }
+            delete "jdk/jbr21_win_64/${jbr21_win_64}"
+
+            // Space saving
+            delete fileTree('jdk/jbr21_win_64/jmods') { exclude 'java.base.jmod' }
         }
     }
 }
@@ -33,19 +36,22 @@ tasks.register('downloadJDKWin64') {
 tasks.register('downloadJDKLinux64') {
     group = 'setup'
     doLast {
-        if (!file('jdk/jdk21_linux_64/bin/java').exists()) {
-            mkdir 'jdk/jdk21_linux_64'
+        if (!file('jdk/jbr21_linux_64/bin/java').exists()) {
+            mkdir 'jdk/jbr21_linux_64'
 
             download.run {
-                src jdk21_linux_64
-                dest 'build/tmp/jdk21_linux_64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr21_linux_64}.tar.gz"
+                dest 'build/tmp/jbr21_linux_64'
                 overwrite true
             }
-            copy { from tarTree(resources.gzip('build/tmp/jdk21_linux_64')) into file('jdk/jdk21_linux_64/') }
-            delete 'build/tmp/jdk21_linux_64'
+            copy { from tarTree(resources.gzip('build/tmp/jbr21_linux_64')) into file('jdk/jbr21_linux_64/') }
+            delete 'build/tmp/jbr21_linux_64'
 
-            copy { from file('jdk/jdk21_linux_64/jdk-21.0.8+9') into file('jdk/jdk21_linux_64/') }
-            delete 'jdk/jdk21_linux_64/jdk-21.0.8+9'
+            copy { from file("jdk/jbr21_linux_64/${jbr21_linux_64}") into file('jdk/jbr21_linux_64/') }
+            delete "jdk/jbr21_linux_64/${jbr21_linux_64}"
+
+            // Space saving
+            delete fileTree('jdk/jbr21_linux_64/jmods') { exclude 'java.base.jmod' }
         }
     }
 }
@@ -53,19 +59,22 @@ tasks.register('downloadJDKLinux64') {
 tasks.register('downloadJDKMacX64') {
     group = 'setup'
     doLast {
-        if (!file('jdk/jdk21_mac_x64/').exists()) {
-            mkdir 'jdk/jdk21_mac_x64'
+        if (!file('jdk/jbr21_mac_x64/').exists()) {
+            mkdir 'jdk/jbr21_mac_x64'
 
             download.run {
-                src jdk21_mac_x64
-                dest 'build/tmp/jdk21_mac_x64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr21_mac_x64}.tar.gz"
+                dest 'build/tmp/jbr21_mac_x64'
                 overwrite true
             }
-            copy { from tarTree(resources.gzip('build/tmp/jdk21_mac_x64')) into file('jdk/jdk21_mac_x64/') }
-            delete 'build/tmp/jdk21_mac_x64'
+            copy { from tarTree(resources.gzip('build/tmp/jbr21_mac_x64')) into file('jdk/jbr21_mac_x64/') }
+            delete 'build/tmp/jbr21_mac_x64'
 
-            copy { from file('jdk/jdk21_mac_x64/jdk-21.0.8+9') into file('jdk/jdk21_mac_x64/') }
-            delete 'jdk/jdk21_mac_x64/jdk-21.0.8+9/'
+            copy { from file("jdk/jbr21_mac_x64/${jbr21_mac_x64}") into file('jdk/jbr21_mac_x64/') }
+            delete "jdk/jbr21_mac_x64/${jbr21_mac_x64}/"
+
+            // Space saving
+            delete fileTree('jdk/jbr21_mac_x64/Contents/Home/jmods') { exclude 'java.base.jmod' }
         }
     }
 }
@@ -73,19 +82,22 @@ tasks.register('downloadJDKMacX64') {
 tasks.register('downloadJDKMacAarch64') {
     group = 'setup'
     doLast {
-        if (!file('jdk/jdk21_mac_aarch64/').exists()) {
-            mkdir 'jdk/jdk21_mac_aarch64'
+        if (!file('jdk/jbr21_mac_aarch64/').exists()) {
+            mkdir 'jdk/jbr21_mac_aarch64'
 
             download.run {
-                src jdk21_mac_aarch64
-                dest 'build/tmp/jdk21_mac_aarch64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr21_mac_aarch64}.tar.gz"
+                dest 'build/tmp/jbr21_mac_aarch64'
                 overwrite true
             }
-            copy { from tarTree(resources.gzip('build/tmp/jdk21_mac_aarch64/')) into file('jdk/jdk21_mac_aarch64/') }
-            delete 'build/tmp/jdk21_mac_aarch64'
+            copy { from tarTree(resources.gzip('build/tmp/jbr21_mac_aarch64/')) into file('jdk/jbr21_mac_aarch64/') }
+            delete 'build/tmp/jbr21_mac_aarch64'
 
-            copy { from file('jdk/jdk21_mac_aarch64/jdk-21.0.8+9') into file('jdk/jdk21_mac_aarch64/') }
-            delete 'jdk/jdk21_mac_aarch64/jdk-21.0.8+9/'
+            copy { from file("jdk/jbr21_mac_aarch64/${jbr21_mac_aarch64}") into file('jdk/jbr21_mac_aarch64/') }
+            delete "jdk/jbr21_mac_aarch64/${jbr21_mac_aarch64}/"
+
+            // Space saving
+            delete fileTree('jdk/jbr21_mac_aarch64/Contents/Home/jmods') { exclude 'java.base.jmod' }
         }
     }
 }

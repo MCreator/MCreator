@@ -22,7 +22,7 @@ package net.mcreator.generator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.TrackingFileIO;
-import net.mcreator.io.writer.ClassWriter;
+import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
@@ -184,7 +184,7 @@ public class GeneratorFileTasks {
 								javaFiles.put(new File(to, model.getReadableName() + ".java"), modelCode);
 							}
 						}
-						ClassWriter.batchWriteClassToFile(generator.getWorkspace(), javaFiles, true, null);
+						JavaWriter.batchWriteJavaToFile(generator.getWorkspace(), javaFiles, true, null);
 						break;
 					}
 				}
@@ -220,7 +220,7 @@ public class GeneratorFileTasks {
 							}
 							javaFiles.put(new File(to, animation.getName() + ".java"), animationCode);
 						}
-						ClassWriter.batchWriteClassToFile(generator.getWorkspace(), javaFiles, true, null);
+						JavaWriter.batchWriteJavaToFile(generator.getWorkspace(), javaFiles, true, null);
 					}
 				}
 			}
