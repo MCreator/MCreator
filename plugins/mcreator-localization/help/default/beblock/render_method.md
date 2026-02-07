@@ -3,6 +3,11 @@ They affect transparency, visibility from behind, and how blocks behave at long 
 
 ---
 
+* Transparency = fully invisible pixels (cutouts).
+* Translucency = semi-transparent pixels.
+* Backface culling = faces are invisible when viewed from behind.
+* Distant culling = faces disappear after half render distance.
+
 **alpha_test**  
 Transparency: yes  
 Translucency: no  
@@ -38,14 +43,12 @@ Backface culling: yes
 Distant culling: no  
 Examples: Dirt, Stone, Concrete
 
-Transparency = fully invisible pixels (cutouts).  
-Translucency = semi-transparent pixels.  
-Backface culling = faces are invisible when viewed from behind.  
-Distant culling = faces disappear after half render distance.
-
 ---
 
 **Distance-based render methods**
+
+* Near = used before reaching half the render distance
+* Far = used after reaching half the render distance
 
 **alpha_test_to_opaque**  
 Near: alpha_test  
@@ -59,8 +62,4 @@ Examples: Kelp, Sugar Cane
 
 **blend_to_opaque**  
 Near: blend  
-Far: opaque  
-Examples: N/A
-
-Near = used when close to the block.  
-Far = used when far away for performance.
+Far: opaque
