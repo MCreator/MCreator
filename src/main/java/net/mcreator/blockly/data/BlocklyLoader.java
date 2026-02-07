@@ -71,6 +71,7 @@ public class BlocklyLoader {
 		addBlockLoader(BlocklyEditorType.JSON_TRIGGER);
 		addBlockLoader(BlocklyEditorType.COMMAND_ARG);
 		addBlockLoader(BlocklyEditorType.FEATURE);
+		addBlockLoader(BlocklyEditorType.SCRIPT);
 	}
 
 	/**
