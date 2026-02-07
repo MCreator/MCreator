@@ -136,6 +136,7 @@ import java.util.stream.Collectors;
 	public double knockbackResistance;
 	public Sound equipSound;
 	@ModElementReference public List<MItemBlock> repairItems;
+	public String rarity;
 
 	private Armor() {
 		this(null);
@@ -144,6 +145,7 @@ import java.util.stream.Collectors;
 	public Armor(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
 
