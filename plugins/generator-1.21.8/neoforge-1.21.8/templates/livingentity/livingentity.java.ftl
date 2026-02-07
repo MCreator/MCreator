@@ -719,7 +719,19 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		}
     </#if>
 
-	<#if data.breedable>
+	<#if ["Pig", "Villager", "Wolf", "Cow", "Chicken", "Ocelot", "Squid", "Horse"]?seq_contains(extendsClass)>
+		@Override public ${extendsClass} getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld, EntitySpawnReason.BREEDING);
+			<#if data.aiBase == "Wolf">
+			if (this.isTame()) {
+				retval.setOwnerReference(this.getOwnerReference());
+				retval.setTame(true, true);
+			}
+			</#if>
+			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
+			return retval;
+		}
+	<#elseif data.breedable>
         @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
 			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld, EntitySpawnReason.BREEDING);
 			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
@@ -727,7 +739,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
+			<#if data.breedTriggerItems?has_content>
 			return ${mappedMCItemsToIngredient(data.breedTriggerItems)}.test(stack);
+			<#else>
+			return false;
+			</#if>
 		}
     </#if>
 
@@ -807,7 +823,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
-    <#if data.ridable && (data.canControlForward || data.canControlStrafe)>
+    <#if data.ridable && (data.canControlForward || data.canControlStrafe) || data.flyingMob>
         @Override public void travel(Vec3 dir) {
         	<#if data.canControlForward || data.canControlStrafe>
 			Entity entity = this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
@@ -834,7 +850,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 						float strafe = 0;
 					</#if>
 
+					<#if data.flyingMob>
+					this.travelFlying(new Vec3(strafe, 0, forward), (float) this.getAttributeValue(Attributes.FLYING_SPEED));
+					<#else>
 					super.travel(new Vec3(strafe, 0, forward));
+					</#if>
 				}
 
 				double d1 = this.getX() - this.xo;
@@ -848,7 +868,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			}
 			</#if>
 
+			<#if data.flyingMob>
+			this.travelFlying(dir, (float) this.getAttributeValue(Attributes.FLYING_SPEED));
+			<#else>
 			super.travel(dir);
+			</#if>
 		}
     </#if>
 

@@ -67,6 +67,11 @@ public class ${JavaModName}Entities {
 					of(${entity.getModElement().getName()}EntityProjectile::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
 						.setUpdateInterval(1).sized(0.5f, 0.5f));
 			</#if>
+		<#elseif entity.getModElement().getTypeString() == "specialentity">
+			public static final DeferredHolder<EntityType<?>, EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
+				register("${entity.getModElement().getRegistryName()}",
+				EntityType.Builder.<${entity.getModElement().getName()}Entity>of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC)
+					.noLootTable().sized(1.375F, 0.5625F).eyeHeight(0.5625F).clientTrackingRange(10));
 		</#if>
 	</#list>
 

@@ -65,8 +65,8 @@ package ${package}.client.particle;
 
 		this.setSize(${data.width}f, ${data.height}f);
 
-		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
-		this.quadSize *= ${data.scale.getFixedValue()}f;
+		<#if (data.scale.getFixedValue() != 1 || data.fixedScale)  && !hasProcedure(data.scale)>
+		this.quadSize <#if data.fixedScale>= 0.15f *<#else>*=</#if> ${data.scale.getFixedValue()}f;
 		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
@@ -107,7 +107,29 @@ package ${package}.client.particle;
 	<#if hasProcedure(data.scale)>
 	@Override public float getQuadSize(float scale) {
 		Level world = this.level;
-		return super.getQuadSize(scale) * (float) <@procedureOBJToConditionCode data.scale/>;
+		return <#if data.fixedScale>0.15f<#else>super.getQuadSize(scale)</#if> * (float) <@procedureOBJToConditionCode data.scale/>;
+	}
+	</#if>
+
+	<#if hasProcedure(data.rotationProvider)>
+	@Override public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
+		Vec3 vec = <@procedureCode data.rotationProvider, {
+			"world": "this.level",
+			"x": "this.x",
+			"y": "this.y",
+			"z": "this.z",
+			"speedX": "this.xd",
+			"speedY": "this.yd",
+			"speedZ": "this.zd",
+			"angularVelocity": "this.angularVelocity",
+			"angularAcceleration": "this.angularAcceleration",
+			"age": "this.age + partialTicks"
+		}/>;
+		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
+		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
+		Quaternionf flippedTilt = new Quaternionf(tilt).mul(new Quaternionf().rotateY((float) Math.PI));
+		<#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->
+		this.renderRotatedQuad(buffer, camera, flippedTilt, partialTicks);
 	}
 	</#if>
 

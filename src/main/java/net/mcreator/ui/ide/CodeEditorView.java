@@ -48,13 +48,10 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.AbstractSourceTree;
-import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.ac.java.JavaCompletionProvider;
 import org.fife.rsta.ac.java.JavaLanguageSupport;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.tree.JavaOutlineTree;
-import org.fife.rsta.ac.js.JavaScriptLanguageSupport;
-import org.fife.rsta.ac.js.tree.JavaScriptOutlineTree;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.*;
@@ -88,10 +85,11 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	public final ReplaceBar rep;
 
 	private final JSplitPane spne = new JSplitPane();
+	private final JPanel cp = new JPanel(new BorderLayout());
 
 	private final JScrollPane treeSP = new JScrollPane();
 	private AbstractSourceTree tree;
-	public ChangeListener cl;
+	public ChangeListener changeListener;
 
 	private final RTextScrollPane sp;
 
@@ -154,8 +152,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			}
 		});
 
-		LanguageSupportFactory.get().register(te);
-
 		sed = new SearchBar(te);
 		rep = new ReplaceBar(te);
 		te.setText(code);
@@ -197,16 +193,16 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			@Override public void insertUpdate(DocumentEvent documentEvent) {
 				if (!changed && !readOnly) {
 					changed = true;
-					if (cl != null)
-						cl.stateChanged(new ChangeEvent(this));
+					if (changeListener != null)
+						changeListener.stateChanged(new ChangeEvent(this));
 				}
 			}
 
 			@Override public void removeUpdate(DocumentEvent documentEvent) {
 				if (!changed && !readOnly) {
 					changed = true;
-					if (cl != null)
-						cl.stateChanged(new ChangeEvent(this));
+					if (changeListener != null)
+						changeListener.stateChanged(new ChangeEvent(this));
 				}
 
 			}
@@ -219,7 +215,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 		spne.setRightComponent(new JPanel());
 
-		JPanel cp = new JPanel(new BorderLayout());
 		cp.setBackground(Theme.current().getBackgroundColor());
 		cp.add(sp);
 
@@ -501,19 +496,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
 		} else if (fileName.endsWith(".js")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
-
-			JavaScriptLanguageSupport javaScriptLanguageSupport = new JavaScriptLanguageSupport();
-
-			javaScriptLanguageSupport.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
-			javaScriptLanguageSupport.setAutoActivationEnabled(
-					!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
-			javaScriptLanguageSupport.setParameterAssistanceEnabled(true);
-			javaScriptLanguageSupport.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
-
-			javaScriptLanguageSupport.install(te);
-
-			if (ac != null)
-				AutocompleteStyle.installStyle(ac, te);
 		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
 		}
@@ -542,8 +524,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			tree = new JavaOutlineTree();
 		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
 			tree = new JsonTree();
-		} else if (SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT.equals(language)) {
-			tree = new JavaScriptOutlineTree();
 		}
 
 		if (tree != null) {
@@ -556,12 +536,13 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			spne.setRightComponent(treeSP);
 			spne.setDividerLocation(0.8);
 		} else {
-			spne.setRightComponent(new JPanel());
+			remove(spne);
+			add("Center", cp);
 		}
 	}
 
 	public void setChangeListener(ChangeListener changeListener) {
-		this.cl = changeListener;
+		this.changeListener = changeListener;
 	}
 
 	public void reformatTheCodeOnly() {
@@ -601,8 +582,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		savingMCreatorModElementWarning();
 		TrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
 		changed = false;
-		if (cl != null)
-			cl.stateChanged(new ChangeEvent(this));
+		if (changeListener != null)
+			changeListener.stateChanged(new ChangeEvent(this));
 	}
 
 	public void centerLineInScrollPane() {
@@ -656,7 +637,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	@Override public ViewBase showView() {
-		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn, false);
+		MCreatorTabs.Tab fileTab = new MCreatorTabs.Tab(this, fileWorkingOn);
 		fileTab.setTabClosingListener(tab -> {
 			if (((CodeEditorView) tab.getContent()).changed) {
 				Object[] options = { L10N.t("ide.action.close_and_save"), L10N.t("common.close"),
@@ -671,20 +652,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					return res == 1;
 			}
 			return true;
-		});
-		if (readOnly)
-			fileTab.setActiveColor(Theme.current().getAltForegroundColor());
-
-		setChangeListener(changeEvent -> {
-			if (!readOnly) {
-				if (changed) {
-					fileTab.setActiveColor(Theme.current().getForegroundColor());
-					fileTab.setInactiveColor(Theme.current().getAltForegroundColor());
-				} else {
-					fileTab.setActiveColor(Theme.current().getInterfaceAccentColor());
-					fileTab.setInactiveColor(Theme.current().getAltBackgroundColor());
-				}
-			}
 		});
 
 		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(fileWorkingOn);

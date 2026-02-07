@@ -113,7 +113,7 @@ public class ActionRegistry {
 	public final BasicAction reloadCode;
 
 	// Resource actions
-	public final BasicAction createMCItemTexture;
+	public final BasicAction createTexture;
 	public final BasicAction createArmorTexture;
 	public final BasicAction createAnimatedTexture;
 	public final BasicAction importBlockTexture;
@@ -133,8 +133,6 @@ public class ActionRegistry {
 	public final BasicAction importJavaModelAnimation;
 
 	// Window actions
-	public final BasicAction showWorkspaceBrowser;
-	public final BasicAction hideWorkspaceBrowser;
 	public final BasicAction showConsoleTab;
 	public final BasicAction showWorkspaceTab;
 	public final BasicAction closeAllTabs;
@@ -234,7 +232,7 @@ public class ActionRegistry {
 		this.reloadGradleProject = new ReloadGradleProjectAction(this);
 		this.clearAllGradleCaches = new ClearAllGradleCachesAction(this);
 		this.cancelGradleTaskAction = new CancelGradleTaskAction(this);
-		this.createMCItemTexture = new TextureAction(this, L10N.t("action.create_texture"), actionEvent -> {
+		this.createTexture = new TextureAction(this, L10N.t("action.create_texture"), actionEvent -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
 		}).setIcon(UIRES.get("16px.newtexture"));
@@ -275,17 +273,13 @@ public class ActionRegistry {
 		this.exportWorkspaceToZIP = new ExportWorkspaceToZIPAction(this);
 		this.exportWorkspaceToZIPWithRunDir = new ExportWorkspaceToZIPAction.WithRunDir(this);
 		this.showConsoleTab = new BasicAction(this, L10N.t("action.show_console"),
-				e -> mcreator.getTabs().showTab(mcreator.consoleTab));
+				e -> mcreator.showConsole());
 		this.showWorkspaceTab = new BasicAction(this, L10N.t("action.show_workspace"),
 				e -> mcreator.getTabs().showTab(mcreator.workspaceTab));
 		this.closeAllTabs = new BasicAction(this, L10N.t("action.close_all_tabs"),
 				e -> mcreator.getTabs().closeAllTabs());
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
 				e -> mcreator.getTabs().closeTab(mcreator.getTabs().getCurrentTab()));
-		this.showWorkspaceBrowser = new BasicAction(this, L10N.t("action.show_workspace_browser"),
-				e -> mcreator.showProjectBrowser(true));
-		this.hideWorkspaceBrowser = new BasicAction(this, L10N.t("action.hide_workspace_browser"),
-				e -> mcreator.showProjectBrowser(false));
 		this.openWorkspace = new OpenWorkspaceAction(this);
 		this.newWorkspace = new NewWorkspaceAction(this);
 		this.importWorkspace = new ImportWorkspaceAction(this);

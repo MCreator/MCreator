@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -38,6 +39,7 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
@@ -87,14 +89,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
 		addProperty.addActionListener(e -> {
 			String name = VOptionPane.showInputDialog(mcreator, L10N.t("elementgui.item.custom_properties.add.message"),
-					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidator() {
-						@Override public ValidationResult validate(JComponent component) {
+					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidator.Cached() {
+						@Override public Validator createValidator(JComponent component) {
 							return new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
 									((VTextField) component)::getText,
 									() -> propertiesList.stream().map(JItemPropertiesListEntry::getPropertyName),
 									builtinPropertyNames, new RegistryNameValidator((VTextField) component,
-									L10N.t("elementgui.item.custom_properties.add.input"))).setIsPresentOnList(false)
-									.validate();
+									L10N.t("elementgui.item.custom_properties.add.input"))).setIsPresentOnList(false);
 						}
 					});
 			if (name != null)
@@ -116,10 +117,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollProperties.getVerticalScrollBar().setUnitIncrement(15);
 		scrollProperties.setOpaque(false);
 		scrollProperties.getViewport().setOpaque(false);
-		scrollProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.custom_properties.title"), 0, 0, scrollProperties.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(scrollProperties, L10N.t("elementgui.item.custom_properties.title"));
 		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
 		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
@@ -140,10 +138,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollStates.getVerticalScrollBar().setUnitIncrement(15);
 		scrollStates.setOpaque(false);
 		scrollStates.getViewport().setOpaque(false);
-		scrollStates.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.item.custom_states.title"), 0, 0, scrollStates.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(scrollStates, L10N.t("elementgui.item.custom_states.title"));
 		JPanel right = new JPanel(new BorderLayout());
 		right.setOpaque(false);
 		right.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addState, new JEmptyBox(5, 5),
@@ -222,7 +217,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			JItemStatesListEntry s = iterator.next();
 			StateMap stateMap = s.getStateLabel().getStateMap();
 			stateMap.remove(data);
-			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if state map is empty or duplicate is found
+			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if the state map is empty or a duplicate is found
 				iterator.remove(); // remove the JItemStatesListEntry
 				stateEntries.remove(s);
 			} else {

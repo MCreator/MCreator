@@ -32,10 +32,10 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.DefaultFeaturesListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -373,10 +373,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
 		JPanel sbbp3 = new JPanel(new GridLayout(1, 2, 0, 0));
-		sbbp3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.biome.vanilla_features"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(sbbp3, L10N.t("elementgui.biome.vanilla_features"));
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
 				L10N.label("elementgui.biome.default_features")));
@@ -387,10 +384,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane3.setOpaque(false);
 
 		JPanel sbbp5 = new JPanel(new GridLayout(8, 2, 0, 2));
-		sbbp5.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.biome.custom_tree_properties"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(sbbp5, L10N.t("elementgui.biome.custom_tree_properties"));
 		sbbp5.setOpaque(false);
 
 		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/trees_per_chunk"),
@@ -513,10 +507,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.mood_sound_delay")));
 		sounds.add(moodSoundDelay);
 
-		sounds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.biome.sounds"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(sounds, L10N.t("elementgui.biome.sounds"));
 
 		sounds.setOpaque(false);
 
@@ -536,10 +527,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		particles.setOpaque(false);
 
-		particles.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.biome.particles"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(particles, L10N.t("elementgui.biome.particles"));
 
 		spawnParticle.setOpaque(false);
 		spawnParticle.addActionListener(event -> updateParticleParameters());

@@ -24,6 +24,7 @@ import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -129,7 +130,12 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setStateMap(StateMap stateMap) {
-		this.stateMap = stateMap;
+		// Make sure state label holds copy of the original stateMap so changes here
+		// don't apply directly to the original element (e.g., entry in GE cache)
+		StateMap safeCopy = new StateMap();
+		safeCopy.putAll(stateMap);
+
+		this.stateMap = safeCopy;
 		refreshState();
 	}
 
@@ -145,7 +151,7 @@ public class JStateLabel extends JPanel {
 		if (property.getClass() == PropertyData.IntegerType.class
 				|| property.getClass() == PropertyData.NumberType.class)
 			matchSymbol = numberMatchType.getSymbol();
-		return property.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + property.toString(value);
+		return BlockStatePropertyUtils.propertyRegistryName(property) + " " + matchSymbol + " " + property.toString(value);
 	}
 
 	public enum NumberMatchType {

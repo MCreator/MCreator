@@ -43,7 +43,8 @@ public class BlocklyAggregatedValidationResult extends AggregatedValidationResul
 	}
 
 	@Override public List<ValidationResult> getGroupedValidationResults() {
-		return compileNotes.stream().map(note -> new ValidationResult(note.getValidationResultType(),
+		return compileNotes.stream().filter(note -> note.type() == BlocklyCompileNote.Type.ERROR)
+				.map(note -> new ValidationResult(note.getValidationResultType(),
 						messageFormatter != null ? messageFormatter.apply(note.message()) : note.message(), true))
 				.collect(Collectors.toList());
 	}

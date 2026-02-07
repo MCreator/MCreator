@@ -80,7 +80,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				for (Dependency dependency : dependencies) {
 					if (!dependenciesProvided.contains(dependency)) {
 						missingDependencies = true;
-						missingdeps.append(" ").append(dependency.getName());
+						missingdeps.append(" ").append(dependency.name());
 					}
 				}
 				if (missingDependencies) {
@@ -128,7 +128,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			List<String> skippedDepsNames) throws TemplateGeneratorException {
 		// The procedure dependencies, in a flattened {"name": "type"} map
 		Map<String, String> flattenedDeps = dependencies.stream()
-				.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
+				.collect(Collectors.toMap(Dependency::name, Dependency::getRawType));
 		List<DependencyInput> depInputs = new ArrayList<>();
 
 		List<String> processedDepsNames = new ArrayList<>();
@@ -168,7 +168,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 		}
 
 		// Add all the dependencies that weren't processed to master
-		dependencies.stream().filter(e -> !processedDepsNames.contains(e.getName())).forEach(master::addDependency);
+		dependencies.stream().filter(e -> !processedDepsNames.contains(e.name())).forEach(master::addDependency);
 
 		return depInputs;
 	}

@@ -1,0 +1,1 @@
+This texture appears while editing the text of a hanging sign. The texture should be 16x16.

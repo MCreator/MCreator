@@ -39,12 +39,14 @@
 
 package ${package}.init;
 
+<#assign itemextensions = w.getGElementsOfType("itemextension")?filter(e -> e.hasDispenseBehavior)>
+<#assign specialentities = w.getGElementsOfType("specialentity")>
 <@javacompress>
 @EventBusSubscriber public class ${JavaModName}DispenseBehaviors {
 
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
-			<#list itemextensions?filter(e -> e.hasDispenseBehavior) as extension>
+			<#list itemextensions as extension>
 			DispenserBlock.registerBehavior(${mappedMCItemToItem(extension.item)},
 			<#if hasProcedure(extension.dispenseSuccessCondition)>
 			new OptionalDispenseItemBehavior() {
@@ -112,6 +114,11 @@ package ${package}.init;
 			}
 			</#if>
 			);
+			</#list>
+			<#list specialentities as entity>
+			DispenserBlock.registerBehavior(${JavaModName}Items.${entity.getModElement().getRegistryNameUpper()}.get(),
+					new BoatDispenseItemBehavior(${JavaModName}BoatTypes.${entity.getModElement().getRegistryNameUpper()}_TYPE.getValue()
+					<#if entity.entityType == "ChestBoat">, true</#if>));
 			</#list>
 		});
 	}

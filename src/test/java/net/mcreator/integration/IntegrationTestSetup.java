@@ -19,7 +19,6 @@
 
 package net.mcreator.integration;
 
-import javafx.embed.swing.JFXPanel;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
@@ -33,9 +32,8 @@ import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.data.GradleSection;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.WebConsoleListener;
+import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.ConsolePane;
-import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.themes.ThemeManager;
@@ -47,24 +45,44 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import javax.annotation.Nonnull;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
-public class IntegrationTestSetup implements BeforeAllCallback {
+public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallback {
 
-	private static final String STORE_KEY = IntegrationTestSetup.class.getName();
+	private static final String SETUP_DONE_FLAG_KEY = IntegrationTestSetup.class.getName();
 
 	@Override public synchronized void beforeAll(ExtensionContext context) throws Exception {
-		Object value = context.getRoot().getStore(GLOBAL).get(STORE_KEY);
+		Object value = context.getRoot().getStore(GLOBAL).get(SETUP_DONE_FLAG_KEY);
 		if (value == null) {
-			context.getRoot().getStore(GLOBAL).put(STORE_KEY, this);
+			context.getRoot().getStore(GLOBAL).put(SETUP_DONE_FLAG_KEY, this);
 			setup();
+		}
+	}
+
+	private static Thread junitThread = null;
+	private static boolean failedInOtherThread = false;
+
+	@Override public void afterEach(@Nonnull ExtensionContext context) {
+		if (failedInOtherThread) {
+			Assertions.fail("Tests failed in another thread, see logs for details");
+			failedInOtherThread = false; // clear flag if we intend to fail more
+		}
+	}
+
+	private static void failTests() {
+		if (junitThread != Thread.currentThread()) {
+			failedInOtherThread = true;
+		} else {
+			Assertions.fail();
 		}
 	}
 
@@ -74,7 +92,8 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		 * ******************************/
 		LoggingSystem.init();
 
-		TestUtil.enterTestingMode(Assertions::fail);
+		junitThread = Thread.currentThread();
+		TestUtil.enterTestingMode(IntegrationTestSetup::failTests);
 
 		TerribleModuleHacks.openAllFor(ClassLoader.getSystemClassLoader().getUnnamedModule());
 		TerribleModuleHacks.openMCreatorRequirements();
@@ -95,9 +114,6 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		// load preferences
 		PreferencesManager.init();
 
-		// Init JFX Toolkit
-		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
-		WebConsoleListener.registerLogger(LOG);
 		/* ****************************
 		 * END: Launcher.java emulation
 		 * ****************************/
@@ -132,6 +148,9 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		UIRES.preloadImages();
 
 		ThemeManager.applySelectedTheme();
+
+		// preload CEF into RAM so it loads faster when needed
+		WebView.preload();
 
 		// preload help entries cache
 		HelpLoader.preloadCache();

@@ -36,7 +36,6 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
@@ -160,18 +159,24 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			header.setBackground(Theme.current().getInterfaceAccentColor());
 			header.setForeground(Theme.current().getBackgroundColor());
 
-			// save values on table edit, do it in another thread
-			// we add the listener after the values are inserted
-			elements.getModel().addTableModelListener(e -> new Thread(() -> {
-				if (e.getType() == TableModelEvent.UPDATE) {
-					LinkedHashMap<String, String> keyValueMap = new LinkedHashMap<>();
-					for (int i = 0; i < elements.getModel().getRowCount(); i++) {
-						keyValueMap.put((String) elements.getModel().getValueAt(i, 0),
-								(String) elements.getModel().getValueAt(i, 1));
-					}
-					workspacePanel.getMCreator().getWorkspace().updateLanguage(entry.getKey(), keyValueMap);
+			elements.getModel().addTableModelListener(e -> {
+				if (e.getType() != TableModelEvent.UPDATE)
+					return;
+
+				int firstRow = e.getFirstRow();
+				int lastRow = e.getLastRow();
+
+				LinkedHashMap<String, String> languageData = workspacePanel.getMCreator().getWorkspace()
+						.getLanguageMap().get(entry.getKey());
+
+				for (int i = firstRow; i <= lastRow; i++) {
+					String key = (String) elements.getModel().getValueAt(i, 0);
+					String value = (String) elements.getModel().getValueAt(i, 1);
+					languageData.put(key, value);
 				}
-			}, "WorkspaceLocalizationsReload").start());
+
+				workspacePanel.getMCreator().getWorkspace().updateLanguage(entry.getKey(), languageData);
+			});
 
 			JScrollPane sp = new JScrollPane(elements);
 			sp.setBorder(BorderFactory.createEmptyBorder());
@@ -391,14 +396,16 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	}
 
 	@Override public boolean isSupportedInWorkspace() {
-		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("i18n")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("i18n");
 	}
 
 	@Override public void refilterElements() {
-		var filter = RowFilter.regexFilter(workspacePanel.getSearchTerm());
+		var filter = RowFilter.regexFilter("(?i)" + workspacePanel.getSearchTerm());
 		for (TableRowSorter<TableModel> sorter : sorters) {
-			sorter.setRowFilter(filter);
+			try {
+				sorter.setRowFilter(filter);
+			} catch (Exception ignored) {
+			}
 		}
 	}
 

@@ -56,7 +56,10 @@ public class YamlMerge {
 			String yamlString = FileIO.readResourceToString(resource);
 
 			if (!yamlString.isEmpty()) {
-				loadedMaps.add((Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(yamlString));
+				Object yamlObject = new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(yamlString);
+				if (yamlObject instanceof Map<?, ?> yamlMap) {
+					loadedMaps.add(yamlMap);
+				}
 			}
 		});
 

@@ -302,8 +302,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	}
 
 	@Override public boolean isSupportedInWorkspace() {
-		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("tags")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("tags");
 	}
 
 	private void deleteCurrentlySelected() {
@@ -360,7 +359,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + workspacePanel.getSearchTerm()));
 		} catch (Exception ignored) {
 		}
 	}
