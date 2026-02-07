@@ -36,7 +36,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
 import net.mcreator.io.TrackingFileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.io.writer.ClassWriter;
+import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
@@ -610,7 +610,7 @@ public class Generator implements IGenerator, Closeable {
 
 		// After we have list of Java files, and they are created, we can format and organise imports in them
 		if (!javaFiles.isEmpty())
-			ClassWriter.batchWriteClassToFile(workspace, javaFiles, formatAndOrganiseImports, null);
+			JavaWriter.batchWriteJavaToFile(workspace, javaFiles, formatAndOrganiseImports, null);
 	}
 
 	public void runResourceSetupTasks() {
