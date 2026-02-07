@@ -311,3 +311,43 @@ Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
             }
         }
     });
+
+Blockly.Extensions.registerMixin('disable_duplicate_input_type',
+    {
+        onchange: function (e) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (e.type !== Blockly.Events.BLOCK_CHANGE &&
+                e.type !== Blockly.Events.BLOCK_MOVE &&
+                e.type !== Blockly.Events.BLOCK_DELETE &&
+                e.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+
+            let isValid = true;
+            const parent = this.getParent();
+            if (parent) {
+                const parentsChildren = parent.getChildren(true); // We get all children of the block we want to check ordered to keep the first one valid
+                const seenTypes = new Set();
+
+                for (const block of parentsChildren) {
+                    const realType = block.type.split("_")[2]; // We use this format: item_predicate_{typewithoutunderscores}_{optional_extra_data}
+                    if (!realType) continue;
+                    if (block === this) {
+                        if (seenTypes.has(realType))
+                            isValid = false;
+                        break;
+                    }
+                    seenTypes.add(realType);
+                }
+            }
+
+            if (!this.isInFlyout) {
+                this.setWarningText(!isValid ? javabridge.t("blockly.extension.disable_duplicate_input_type") : null);
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(isValid);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
