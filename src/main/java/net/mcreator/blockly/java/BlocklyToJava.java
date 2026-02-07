@@ -44,7 +44,6 @@ import java.util.List;
 public class BlocklyToJava extends BlocklyToCode {
 
 	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
-	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
 
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
@@ -57,7 +56,7 @@ public class BlocklyToJava extends BlocklyToCode {
 			throws TemplateGeneratorException {
 		super(workspace, parent, blocklyEditorType, templateGenerator, externalGenerators);
 
-		preInitialization();
+		beforeGenerate();
 
 		if (sourceXML != null && !sourceXML.isBlank()) {
 			try {
@@ -116,9 +115,9 @@ public class BlocklyToJava extends BlocklyToCode {
 	protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {}
 
 	/**
-	 * <p>This method is executed after the constructor is called, before the code is executed.</p>
+	 * <p>This method is executed after the constructor is called, before the code is generated</p>
 	 */
-	protected void preInitialization() {
+	protected void beforeGenerate() {
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
 		blockGenerators.add(new IfBlock());

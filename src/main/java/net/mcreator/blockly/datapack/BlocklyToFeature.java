@@ -38,7 +38,6 @@ import org.w3c.dom.Element;
 import java.util.List;
 
 public class BlocklyToFeature extends BlocklyToJava {
-	protected final Logger LOG = LogManager.getLogger("Blockly2Feature");
 
 	private StringBuilder featureConfigurationCode;
 	private String featureType;
@@ -50,7 +49,7 @@ public class BlocklyToFeature extends BlocklyToJava {
 		super(workspace, parent, BlocklyEditorType.FEATURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
-	@Override protected void preInitialization() {
+	@Override protected void beforeGenerate() {
 		blockGenerators.add(new MCItemBlock());
 
 		featureConfigurationCode = new StringBuilder();
