@@ -585,7 +585,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			int pos = te.getCaretPosition();
 			String ncode = JSWriter.formatJS(te.getText());
 			te.setText(ncode);
-			te.setCaretPosition(pos);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		}
 	}
 
