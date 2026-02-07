@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -66,25 +65,26 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			}
 		});
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_java"))
 			addToolBarButton("action.workspace.resources.import_java_model", UIRES.get("16px.importjavamodel"),
 					e -> workspacePanel.getMCreator().getActionRegistry().importJavaModel.doAction());
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_json"))
 			addToolBarButton("action.workspace.resources.import_json_model", UIRES.get("16px.importjsonmodel"),
 					e -> workspacePanel.getMCreator().getActionRegistry().importJSONModel.doAction());
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_obj"))
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),
 					e -> workspacePanel.getMCreator().getActionRegistry().importOBJModel.doAction());
 
-		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit"),
-				e -> editSelectedModelTextureMappings());
-		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit"),
-				e -> editSelectedModelAnimations());
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverageAny("model_json", "model_obj"))
+			addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit"),
+					e -> editSelectedModelTextureMappings());
+
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_java"))
+			addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit"),
+					e -> editSelectedModelAnimations());
+
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

@@ -40,6 +40,7 @@ package ${package}.init;
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 <#assign hasSigns = false>
+<#assign hasHangingSigns = false>
 <#assign hasItemsWithCustomProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
 <#assign hasItemsWithLeftHandedProperty = w.getGElementsOfType("item")?filter(e -> e.states
 	?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
@@ -128,6 +129,11 @@ public class ${JavaModName}Items {
 						${item.getModElement().getRegistryNameUpper()} =
 							signBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()}
 							<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+					<#elseif (item.getModElement().getTypeString() == "block") && (item.blockBase! == "HangingSign")>
+						<#assign hasHangingSigns = true>
+						${item.getModElement().getRegistryNameUpper()} =
+							hangingSignBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()}
+							<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 					<#else>
 						<#assign hasBlocks = true>
 						${item.getModElement().getRegistryNameUpper()} =
@@ -183,6 +189,16 @@ public class ${JavaModName}Items {
 
 	private static DeferredItem<Item> signBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock, Item.Properties properties) {
 		return REGISTRY.registerItem(block.getId().getPath(), prop -> new SignItem(block.get(), wallBlock.get(), prop), properties);
+	}
+	</#if>
+
+	<#if hasHangingSigns>
+	private static DeferredItem<Item> hangingSignBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock) {
+		return hangingSignBlock(block, wallBlock, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> hangingSignBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock, Item.Properties properties) {
+		return REGISTRY.registerItem(block.getId().getPath(), prop -> new HangingSignItem(block.get(), wallBlock.get(), prop), properties);
 	}
 	</#if>
 
