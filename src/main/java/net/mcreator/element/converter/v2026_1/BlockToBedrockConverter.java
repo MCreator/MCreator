@@ -20,6 +20,7 @@
 package net.mcreator.element.converter.v2026_1;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
@@ -37,6 +38,8 @@ public class BlockToBedrockConverter implements IConverter {
 		Block block = (Block) input;
 
 		if (workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
+			JsonObject blockJSON = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+
 			BEBlock beblock = new BEBlock(new ModElement(workspace, block.getModElement().getName(), ModElementType.BEBLOCK));
 			beblock.name = block.name;
 			beblock.texture = block.texture;
@@ -58,7 +61,16 @@ public class BlockToBedrockConverter implements IConverter {
 			beblock.friction = block.slipperiness;
 			if (beblock.friction > 0.9)
 					beblock.friction = 0.9; // Current Bedrock limit
-			beblock.lightEmission = block.luminance;
+			if (blockJSON.has("luminance")) {
+				JsonElement luminance = blockJSON.get("luminance");
+				if (luminance.isJsonPrimitive()) {
+					beblock.lightEmission = luminance.getAsInt();
+				} else if (luminance.isJsonObject() && blockJSON.get("luminance").getAsJsonObject().has("fixedValue")) {
+					beblock.lightEmission = blockJSON.get("luminance").getAsJsonObject().get("fixedValue").getAsInt();
+				}
+			} else {
+				beblock.lightEmission = 0;
+			}
 			beblock.generateFeature = block.generateFeature;
 			beblock.frequencyPerChunks = block.frequencyPerChunks;
 			beblock.oreCount = block.frequencyOnChunk;

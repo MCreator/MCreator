@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.workspace.resources;
 
+import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
@@ -56,6 +58,13 @@ public enum TextureType {
 		return workspace.getGeneratorStats().getTextureCoverageInfo().containsKey(this)
 				&& workspace.getGeneratorStats().getTextureCoverageInfo().get(this)
 				== GeneratorStats.CoverageStatus.FULL;
+	}
+
+	public static TextureType[] getValuesForGenerator(GeneratorConfiguration generatorConfiguration) {
+		if (generatorConfiguration.getGeneratorFlavor().getGamePlatform() == GeneratorFlavor.GamePlatform.BEDROCKEDITION) {
+			return new TextureType[] { BLOCK, ITEM, ENTITY, OTHER };
+		}
+		return values();
 	}
 
 	@Override public String toString() {
