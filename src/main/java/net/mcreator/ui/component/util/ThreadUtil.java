@@ -18,20 +18,10 @@
 
 package net.mcreator.ui.component.util;
 
-import javafx.application.Platform;
-
 import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 
 public class ThreadUtil {
-
-	public static void runOnFxThread(Runnable runnable) {
-		if (Platform.isFxApplicationThread()) {
-			runnable.run();
-		} else {
-			Platform.runLater(runnable);
-		}
-	}
 
 	public static void runOnSwingThread(Runnable runnable) {
 		if (SwingUtilities.isEventDispatchThread()) {
