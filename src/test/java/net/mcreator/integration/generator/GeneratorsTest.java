@@ -30,7 +30,7 @@ import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.writer.ClassWriter;
+import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
@@ -160,7 +160,7 @@ import static org.junit.jupiter.api.Assertions.*;
 										"Material", "Dust based", Color.red, 1.234);
 							if (WoodPackMakerTool.isSupported(generatorConfiguration))
 								WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator.get(), workspace.get(), "Wood",
-										Color.green, 0.123);
+										Color.green, Color.red, 0.123);
 						}));
 					}
 
@@ -212,7 +212,7 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> {
 									try (Stream<Path> entries = Files.walk(
 											workspace.get().getGenerator().getSourceRoot().toPath())) {
-										ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
+										JavaWriter.formatAndOrganiseImportsForFiles(workspace.get(),
 												entries.filter(Files::isRegularFile).map(Path::toFile)
 														.collect(Collectors.toList()), null);
 									}
