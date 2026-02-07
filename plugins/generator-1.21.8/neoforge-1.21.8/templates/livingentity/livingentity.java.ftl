@@ -739,7 +739,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
+			<#if data.breedTriggerItems?has_content>
 			return ${mappedMCItemsToIngredient(data.breedTriggerItems)}.test(stack);
+			<#else>
+			return false;
+			</#if>
 		}
     </#if>
 
@@ -819,7 +823,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
-    <#if data.ridable && (data.canControlForward || data.canControlStrafe)>
+    <#if data.ridable && (data.canControlForward || data.canControlStrafe) || data.flyingMob>
         @Override public void travel(Vec3 dir) {
         	<#if data.canControlForward || data.canControlStrafe>
 			Entity entity = this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
@@ -846,7 +850,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 						float strafe = 0;
 					</#if>
 
+					<#if data.flyingMob>
+					this.travelFlying(new Vec3(strafe, 0, forward), (float) this.getAttributeValue(Attributes.FLYING_SPEED));
+					<#else>
 					super.travel(new Vec3(strafe, 0, forward));
+					</#if>
 				}
 
 				double d1 = this.getX() - this.xo;
@@ -860,7 +868,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			}
 			</#if>
 
+			<#if data.flyingMob>
+			this.travelFlying(dir, (float) this.getAttributeValue(Attributes.FLYING_SPEED));
+			<#else>
 			super.travel(dir);
+			</#if>
 		}
     </#if>
 

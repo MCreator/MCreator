@@ -125,10 +125,4 @@ public class SplashScreen extends JWindow {
 		return new BaseMultiResolutionImage(splash1x, splash2x);
 	}
 
-	@Override public void paint(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		super.paint(g2d);
-	}
-
 }

@@ -24,7 +24,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
-import net.mcreator.blockly.feature.BlocklyToFeature;
+import net.mcreator.blockly.datapack.BlocklyToFeature;
 import net.mcreator.element.types.Feature;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -131,13 +131,12 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"FeatureRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Feature.XML_BASE);
-			}
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "FeatureRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(Feature.XML_BASE);
+		}
 
 		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
 		blocklyAndToolbarPanel.setOpaque(false);
@@ -230,8 +229,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
 		refreshPlacementSettings(false);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(feature.featurexml));
+		blocklyPanel.setInitialXML(feature.featurexml);
 	}
 
 	@Override public Feature getElementFromGUI() {

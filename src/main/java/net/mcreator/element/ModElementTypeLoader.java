@@ -47,7 +47,7 @@ public class ModElementTypeLoader {
 		ModElementType.ARMOR = register(new ModElementType<>("armor", 'a', ArmorGUI::new, Armor.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.ATTRIBUTE = register(new ModElementType<>("attribute", null, AttributeGUI::new, Attribute.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.BANNERPATTERN = register(new ModElementType<>("bannerpattern", null, BannerPatternGUI::new, BannerPattern.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
-		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BiomeGUI::new, Biome.class));
+		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BiomeGUI::new, Biome.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.BLOCK = register(new ModElementType<>("block", 'b', BlockGUI::new, Block.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.COMMAND = register(new ModElementType<>("command", 'c', CommandGUI::new, Command.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.DAMAGETYPE = register(new ModElementType<>("damagetype", null, DamageTypeGUI::new, DamageType.class)).coveredOn(GeneratorFlavor.gamePlatform(JAVAEDITION));

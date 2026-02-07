@@ -22,6 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -86,7 +87,10 @@ import java.util.stream.Collectors;
 	public String blockBase;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
+	public Particle leavesParticleType;
+	public double leavesParticleChance;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
+	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -124,6 +128,7 @@ import java.util.stream.Collectors;
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
+	public boolean hasCustomOpacity;
 	public int lightOpacity;
 
 	public int tickRate;
@@ -160,7 +165,7 @@ import java.util.stream.Collectors;
 	public Sound placeSound;
 	public Sound stepSound;
 
-	public int luminance;
+	public NumberProcedure luminance;
 	public boolean unbreakable;
 	public String vanillaToolTier;
 	public Procedure additionalHarvestCondition;
@@ -240,6 +245,7 @@ import java.util.stream.Collectors;
 		this.customProperties = new ArrayList<>();
 
 		this.blockSetType = "OAK";
+		this.leavesParticleChance = 0;
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -247,6 +253,7 @@ import java.util.stream.Collectors;
 		this.slipperiness = 0.6;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
+		this.hasCustomOpacity = true;
 		this.colorOnMap = "DEFAULT";
 		this.noteBlockInstrument = "harp";
 		this.aiPathNodeType = "DEFAULT";
@@ -274,10 +281,21 @@ import java.util.stream.Collectors;
 			try {
 				File entityTextureLocation = new File(
 						getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-						"entity/signs/" + getModElement().getRegistryName() + ".png");
+						("Sign".equals(blockBase) ? "entity/signs/" : "entity/signs/hanging/")
+								+ getModElement().getRegistryName() + ".png");
 				FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 			} catch (Exception e) {
-				LOG.error("Failed to copy sign texture", e);
+				LOG.error("Failed to copy sign entity texture", e);
+			}
+			if ("HangingSign".equals(blockBase)) {
+				try {
+					File GUITextureLocation = new File(
+							getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+							"gui/hanging_signs/" + getModElement().getRegistryName() + ".png");
+					FileIO.copyFile(signGUITexture.toFile(TextureType.SCREEN), GUITextureLocation);
+				} catch (Exception e) {
+					LOG.error("Failed to copy sign GUI texture", e);
+				}
 			}
 		}
 	}
@@ -305,7 +323,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean isSign() {
-		return "Sign".equals(blockBase);
+		return "Sign".equals(blockBase) || "HangingSign".equals(blockBase);
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
@@ -335,7 +353,7 @@ import java.util.stream.Collectors;
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
 				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
-				|| "FlowerPot".equals(blockBase) || "Sign".equals(blockBase))
+				|| "FlowerPot".equals(blockBase) || "Sign".equals(blockBase) || "HangingSign".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
@@ -396,8 +414,6 @@ import java.util.stream.Collectors;
 			return (BufferedImage) MinecraftImageGenerator.Preview.generatePressurePlateIcon(getMainTexture());
 		} else if ("Button".equals(blockBase)) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
-		} else if (blockBase != null && blockBase.equals("Sign")) {
-			return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
@@ -419,8 +435,14 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
-		if (isSign() && "wall".equals(suffix)) {
-			return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(getMainTexture()));
+		if ("wall".equals(suffix)) {
+			if ("Sign".equals(blockBase)) {
+				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(
+						signEntityTexture.getImage(TextureType.ENTITY)));
+			} else if ("HangingSign".equals(blockBase)) {
+				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallHangingSignIcon(
+						signEntityTexture.getImage(TextureType.ENTITY)));
+			}
 		}
 		return null;
 	}
@@ -477,6 +499,11 @@ import java.util.stream.Collectors;
 
 	public Set<String> getVibrationalEvents() {
 		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
+	}
+
+	public int getLeavesParticleColor() {
+		return ImageUtils.getAverageColor(ImageUtils.toBufferedImage(texture.getImage(TextureType.BLOCK))).brighter()
+				.brighter().getRGB();
 	}
 
 	public TextureHolder textureTop() {
@@ -572,16 +599,19 @@ import java.util.stream.Collectors;
 
 	public String getWallName() {
 		String elementName = this.getModElement().getName();
-		if (elementName.endsWith("Sign"))
+		if (elementName.endsWith("HangingSign"))
+			return elementName.substring(0, elementName.length() - 11) + "WallHangingSign";
+		else if (elementName.endsWith("Sign"))
 			return elementName.substring(0, elementName.length() - 4) + "WallSign";
 		else
 			return "Wall" + elementName;
-
 	}
 
 	public String getWallRegistryName() {
 		String registryName = this.getModElement().getRegistryName();
-		if (registryName.endsWith("sign"))
+		if (registryName.endsWith("hanging_sign"))
+			return registryName.substring(0, registryName.length() - 12) + "wall_hanging_sign";
+		else if (registryName.endsWith("sign"))
 			return registryName.substring(0, registryName.length() - 4) + "wall_sign";
 		else
 			return "wall_" + registryName;

@@ -1,0 +1,1 @@
+Cette texture apparaît lors de la modification du texte d'un panneau suspendu. La texture doit mesurer 16x16.
