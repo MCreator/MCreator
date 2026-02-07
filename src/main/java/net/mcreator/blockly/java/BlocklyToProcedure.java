@@ -39,6 +39,8 @@ import java.util.List;
 
 public class BlocklyToProcedure extends BlocklyToJava {
 
+	protected BlocklyVariables variableGenerator;
+
 	private String externalTrigger;
 	private List<VariableElement> variables;
 	private VariableType returnType;
@@ -47,6 +49,12 @@ public class BlocklyToProcedure extends BlocklyToJava {
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, parent, BlocklyEditorType.PROCEDURE, sourceXML, templateGenerator, externalGenerators);
+	}
+
+	@Override protected void beforeGenerate() {
+		super.beforeGenerate();
+
+		variableGenerator = new BlocklyVariables(this);
 	}
 
 	@Override protected void preBlocksPlacement(Document doc, Element startBlock) {

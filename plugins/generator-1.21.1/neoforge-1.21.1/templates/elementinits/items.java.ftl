@@ -40,6 +40,7 @@ package ${package}.init;
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 <#assign hasSigns = false>
+<#assign hasHangingSigns = false>
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
@@ -120,6 +121,11 @@ public class ${JavaModName}Items {
 					${item.getModElement().getRegistryNameUpper()} =
 					signBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()}
 					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
+				<#elseif (item.getModElement().getTypeString() == "block") && (item.blockBase! == "HangingSign")>
+					<#assign hasHangingSigns = true>
+					${item.getModElement().getRegistryNameUpper()} =
+					hangingSignBlock(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()}, ${JavaModName}Blocks.${item.getWallRegistryNameUpper()}
+					<#if item.hasCustomItemProperties()>, <@blockItemProperties item/></#if>);
 				<#else>
 					<#assign hasBlocks = true>
 					${item.getModElement().getRegistryNameUpper()} =
@@ -191,6 +197,16 @@ public class ${JavaModName}Items {
 
 	private static DeferredItem<Item> signBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock, Item.Properties properties) {
 		return REGISTRY.register(block.getId().getPath(), () -> new SignItem(properties, block.get(), wallBlock.get()));
+	}
+	</#if>
+
+	<#if hasHangingSigns>
+	private static DeferredItem<Item> hangingSignBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock) {
+		return hangingSignBlock(block, wallBlock, new Item.Properties());
+	}
+
+	private static DeferredItem<Item> hangingSignBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock, Item.Properties properties) {
+		return REGISTRY.register(block.getId().getPath(), () -> new HangingSignItem(block.get(), wallBlock.get(), properties));
 	}
 	</#if>
 

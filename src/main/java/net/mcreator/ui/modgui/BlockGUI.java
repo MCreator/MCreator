@@ -34,6 +34,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
+import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -48,6 +49,7 @@ import net.mcreator.ui.minecraft.blockentityanimations.JBlockEntityAnimationList
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
 import net.mcreator.ui.minecraft.states.block.JBlockStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -214,12 +216,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onReceivedVibration;
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(
-			new String[] { "<html>No rotation<br><small>Fixed block orientation",
-					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from player side",
-					"<html>D/U/N/S/W/E rotation<br><small>Rotation from player side",
-					"<html>Y axis rotation (S/W/N/E)<br><small>Rotation from block face",
-					"<html>D/U/N/S/W/E rotation<br><small>Rotation from block face",
-					"<html>Log rotation (X/Y/Z)<br><small>Imitates vanilla log rotation" });
+			new String[] { L10N.t("elementgui.block.rotation_mode.none"),
+					L10N.t("elementgui.block.rotation_mode.player_y_axis"),
+					L10N.t("elementgui.block.rotation_mode.player_all_axis"),
+					L10N.t("elementgui.block.rotation_mode.block_y_axis"),
+					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
+					L10N.t("elementgui.block.rotation_mode.log") });
 	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
 	private final JComboBox<String> destroyTool = new JComboBox<>(
@@ -243,10 +245,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
 	private JBlockStatePropertiesList statePropertiesList;
-	private final Map<?, ?> blockBaseProperties = Objects.requireNonNullElse(
-			(Map<?, ?>) mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-					.getModElementDefinition(modElement.getType()).get("block_base_properties"),
-			Collections.emptyMap());
+	private final Map<String, List<String>> blockBaseProperties = BlockStatePropertyUtils.getBlockBaseProperties(
+			modElement.getGeneratorConfiguration());
 
 	private JBlockStatesList blockStatesList;
 
@@ -272,7 +272,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign");
+			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final CardLayout blockBaseCardLayout = new CardLayout();
@@ -288,6 +288,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
 	private final JSpinner leavesParticleChance = new JSpinner(new SpinnerNumberModel(0.01, 0, 1, 0.001));
 	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
+	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN);
+	private JComponent signGUITexturePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
@@ -305,6 +307,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	@Override protected void initGUI() {
 		signEntityTexture.setAddPNGExtension(false);
+		signGUITexture.setAddPNGExtension(false);
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -544,8 +547,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 					}
 				}
-				case "Sign" -> {
+				case "Sign", "HangingSign" -> {
 					showBlockBaseCard("sign");
+					// Only show GUI texture selector for hanging signs
+					signGUITexturePanel.setVisible("HangingSign".equals(selectedBlockBase));
 					hasInventory.setEnabled(false);
 					hasInventory.setSelected(false);
 					if (!isEditingMode()) {
@@ -606,6 +611,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		itemTexture.setOpaque(false);
 		particleTexture.setOpaque(false);
 		signEntityTexture.setOpaque(false);
+		signGUITexture.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		canProvidePower.setOpaque(false);
@@ -627,8 +633,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/leaves_particle_type"),
 						L10N.label("elementgui.block.leaves_particle_type")), leavesParticleType,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/leaves_particle_chance"),
-						L10N.label("elementgui.block.leaves_particle_chance")), leavesParticleChance),
-				"leaves");
+						L10N.label("elementgui.block.leaves_particle_chance")), leavesParticleChance), "leaves");
 
 		// Card for flower pots
 		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
@@ -637,9 +642,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"flowerPot");
 
 		// Card for signs
-		blockBasePropertiesPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+		JPanel signTextures = new JPanel(new AdaptiveGridLayout(-1, 1, 2, 2));
+		signTextures.setOpaque(false);
+		signTextures.add(PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/sign_entity_texture"),
-						L10N.label("elementgui.block.sign_entity_texture")), signEntityTexture), "sign");
+						L10N.label("elementgui.block.sign_entity_texture")), signEntityTexture));
+		signTextures.add(signGUITexturePanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("block/sign_gui_texture"),
+						L10N.label("elementgui.block.sign_gui_texture")), signGUITexture));
+		blockBasePropertiesPanel.add(signTextures, "sign");
 
 		JComponent blockBasePanel = PanelUtils.northAndCenterElement(PanelUtils.gridElements(1, 2, 2, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
@@ -1412,15 +1423,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(pottedPlant);
 		page1group.addValidationElement(signEntityTexture);
+		page1group.addValidationElement(signGUITexture);
 
 		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
-			String selectedBlockBase = blockBase.getSelectedItem();
 			Model model = renderType.getSelectedItem();
-			return (model != null && model.getType() == Model.Type.JAVA) || ("Sign".equals(selectedBlockBase));
+			return (model != null && model.getType() == Model.Type.JAVA) || isAnySign();
 		}));
 
-		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture",
-				() -> "Sign".equals(blockBase.getSelectedItem()));
+		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture", this::isAnySign);
+		signGUITexture.requireValue("elementgui.block.error_sign_needs_gui_texture",
+				() -> "HangingSign".equals(blockBase.getSelectedItem()));
 
 		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
 			@Override public ValidationResult validate() {
@@ -1574,7 +1586,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasInventory.setSelected(true);
 			hasInventory.setEnabled(false);
 			refreshFieldsTileEntity();
-		} else if (!"Sign".equals(blockBase.getSelectedItem())) {
+		} else if (!isAnySign()) {
 			hasInventory.setEnabled(true);
 		}
 
@@ -1589,6 +1601,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 			hasTransparency.setSelected(false);
 			hasTransparency.setEnabled(true);
 		}
+	}
+
+	private boolean isAnySign() {
+		return "Sign".equals(blockBase.getSelectedItem()) || "HangingSign".equals(blockBase.getSelectedItem());
 	}
 
 	private void updateSoundType() {
@@ -1666,6 +1682,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		super.reloadDataLists();
 
 		signEntityTexture.reload();
+		signGUITexture.reload();
 
 		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
 				mcreator.getWorkspace());
@@ -1806,6 +1823,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (block.blockBase == null) {
 			blockBase.setSelectedIndex(0);
 		} else {
+			signGUITexturePanel.setVisible("HangingSign".equals(block.blockBase));
 			blockBase.setSelectedItem(block.blockBase);
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
@@ -1813,6 +1831,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		leavesParticleType.setEntry(block.leavesParticleType);
 		leavesParticleChance.setValue(block.leavesParticleChance);
 		signEntityTexture.setTexture(block.signEntityTexture);
+		signGUITexture.setTexture(block.signGUITexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -2041,6 +2060,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.leavesParticleType = leavesParticleType.getEntry();
 		block.leavesParticleChance = (double) leavesParticleChance.getValue();
 		block.signEntityTexture = signEntityTexture.getTextureHolder();
+		block.signGUITexture = signGUITexture.getTextureHolder();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

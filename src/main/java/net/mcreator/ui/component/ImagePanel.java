@@ -45,10 +45,8 @@ public class ImagePanel extends JPanel {
 	}
 
 	public void setOffsetY(int offsetY) {
-		if (this.offsetY != offsetY) {
-			this.offsetY = offsetY;
-			repaint();
-		}
+		this.offsetY = offsetY;
+		invalidateCache();
 	}
 
 	public void setKeepRatio(boolean flag) {
@@ -91,10 +89,14 @@ public class ImagePanel extends JPanel {
 		if (size.width <= 0 || size.height <= 0)
 			return null;
 
+		GraphicsConfiguration gc = getGraphicsConfiguration();
+		if (gc == null)
+			return null; // GraphicsConfiguration is not ready yet
+
 		int w = size.width;
 		int h = size.height;
 
-		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
 		Graphics2D g2 = bi.createGraphics();
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
@@ -103,10 +105,6 @@ public class ImagePanel extends JPanel {
 		if (fitToWidth) {
 			int iw = originalImage.getWidth(this);
 			int ih = originalImage.getHeight(this);
-			if (iw <= 0 || ih <= 0) {
-				g2.dispose();
-				return bi;
-			}
 
 			int scaledH = (int) ((float) w * ((float) ih / iw));
 

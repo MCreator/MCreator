@@ -44,8 +44,7 @@ public class TextureAction extends BasicAction {
 		if (textureType != null && !textureType.isSupported(actionRegistry.getMCreator().getWorkspace()))
 			return false;
 
-		return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("textures");
 	}
 
 }
