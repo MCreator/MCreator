@@ -24,7 +24,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.blockly.java.ProcedureTemplateIO;
+import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -174,7 +174,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			if (exp != null) {
 				new Thread(() -> {
 					try {
-						ProcedureTemplateIO.exportBlocklySetup(blocklyPanel.getXML(), exp, blocklyEditorType);
+						BlocklyTemplateIO.exportBlocklySetup(blocklyPanel.getXML(), exp, blocklyEditorType);
 					} catch (Exception e) {
 						LOG.error(e.getMessage(), e);
 						JOptionPane.showMessageDialog(mcreator,
@@ -198,7 +198,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				// Run import in a separate thread to avoid blocking the UI and to avoid deadlocks on macOS
 				new Thread(() -> {
 					try {
-						String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
+						String procedureXml = BlocklyTemplateIO.importBlocklyXML(imp);
 						if (procedureGUI != null) {
 							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
 							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();

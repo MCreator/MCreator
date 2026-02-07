@@ -45,7 +45,7 @@ package ${package}.block;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
-public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block extends ${getBlockClass(data.blockBase)}
+public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#assign interfaces = []>
 	<#if data.isWaterloggable>
@@ -140,8 +140,8 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 		<#else>
 			.strength(${data.hardness}f, ${data.resistance}f)
 		</#if>
-		<#if data.luminance != 0>
-			.lightLevel(s -> ${data.luminance})
+		<#if hasProcedure(data.luminance) || data.luminance.getFixedValue() != 0>
+			.lightLevel(s -> <#if hasProcedure(data.luminance)>(int) <@procedureOBJToNumberCode data.luminance/><#else>${data.luminance.getFixedValue()}</#if>)
 		</#if>
 		<#if data.requiresCorrectTool>
 			.requiresCorrectToolForDrops()
@@ -168,7 +168,8 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			.pushReaction(PushReaction.${data.reactionToPushing})
 		</#if>
 		<#if data.emissiveRendering>
-			.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)
+			.hasPostProcess((bs, br, bp) -> true)
+			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
 		<#if data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
@@ -193,21 +194,23 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 				data.blockBase == "PressurePlate" ||
 				data.blockBase == "Fence" ||
 				data.blockBase == "Wall" ||
-				data.blockBase == "Sign")>
+				data.blockBase == "Sign" ||
+				data.blockBase == "HangingSign")>
 			.forceSolidOn()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "EndRod">
 			.forceSolidOff()
 		</#if>
 		<#if data.blockBase?has_content && data.blockBase == "Leaves">
-			.isSuffocating((bs, br, bp) -> false).isViewBlocking((bs, br, bp) -> false)
+			.isSuffocating((bs, br, bp) -> false)
+			.isViewBlocking((bs, br, bp) -> false)
 		</#if>
-		<#if var_extends_class! == "WallSignBlock">
+		<#if var_extends_class! == "WallSignBlock" || var_extends_class! == "WallHangingSignBlock">
 			.dropsLike(${JavaModName}Blocks.${REGISTRYNAME}.get())
 		</#if>
 	</#macro>
 
-	public <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#else>${name}</#if>Block() {
+	public ${getClassName()}Block() {
 		<#if data.blockBase?has_content>
 			<#if data.blockBase == "Stairs">
 				super(Blocks.AIR.defaultBlockState(), <@blockProperties/>);
@@ -220,7 +223,7 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
 				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
-			<#elseif data.blockBase == "Sign">
+			<#elseif data.isSign()>
 				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>
 				super(<@blockProperties/>);
@@ -315,16 +318,22 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 	}
 	</#if>
 
-	<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity == 0>
-	@Override public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-		return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
-	}
-	</#if>
+	<#if data.hasCustomOpacity>
+		<#if (!data.blockBase?has_content || data.blockBase == "Leaves") && data.lightOpacity == 0>
+		@Override public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+			return <#if data.isWaterloggable>state.getFluidState().isEmpty()<#else>true</#if>;
+		}
+		</#if>
 
-	<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
-	@Override public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
-		return ${data.lightOpacity};
-	}
+		<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
+		@Override public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos) {
+			<#if data.isWaterloggable && data.lightOpacity == 0> <#-- Prevent fully transparent blocks from overriding water opacity -->
+				return propagatesSkylightDown(state, worldIn, pos) ? 0 : 1;
+			<#else>
+				return ${data.lightOpacity};
+			</#if>
+		}
+		</#if>
 	</#if>
 
 	<#if data.hasTransparency && !data.blockBase?has_content>
@@ -798,12 +807,19 @@ public class <#if var_extends_class! == "WallSignBlock">${data.getWallName()}<#e
 </@javacompress>
 <#-- @formatter:on -->
 
+<#function getClassName>
+	<#if var_extends_class! == "WallSignBlock" || var_extends_class! == "WallHangingSignBlock"><#return data.getWallName()>
+	<#else><#return name>
+	</#if>
+</#function>
+
 <#function getBlockClass blockBase="">
 	<#if var_extends_class??><#return var_extends_class>
 	<#elseif data.hasGravity><#return "FallingBlock">
 	<#elseif blockBase == "Stairs"><#return "StairBlock">
 	<#elseif blockBase == "Pane"><#return "IronBarsBlock">
 	<#elseif blockBase == "Sign"><#return "StandingSignBlock">
+	<#elseif blockBase == "HangingSign"><#return "CeilingHangingSignBlock">
 	<#else><#return blockBase + "Block">
 	</#if>
 </#function>

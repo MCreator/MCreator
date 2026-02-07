@@ -739,7 +739,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
+			<#if data.breedTriggerItems?has_content>
 			return ${mappedMCItemsToIngredient(data.breedTriggerItems)}.test(stack);
+			<#else>
+			return false;
+			</#if>
 		}
     </#if>
 

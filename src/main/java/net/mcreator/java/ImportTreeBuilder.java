@@ -130,7 +130,7 @@ public class ImportTreeBuilder {
 		for (File file : files != null ? files : new File[0]) {
 			if (file.isDirectory()) {
 				reloadClassesFromModImpl(file, root, store);
-			} else {
+			} else if (file.getName().endsWith(".java")) {
 				String className = FilenameUtilsPatched.removeExtension(file.getName());
 				addClassToTree(packageName, className, store);
 			}

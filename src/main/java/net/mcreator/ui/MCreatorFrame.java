@@ -33,6 +33,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.variants.modmaker.ModMaker;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.IWorkspaceProvider;
@@ -90,7 +91,7 @@ public abstract class MCreatorFrame extends JFrame
 
 		this.statusBar = new StatusBar(this);
 
-		Image bgimage = getBackgroundImage();
+		Image bgimage = BackgroundLoader.getBackgroundImage();
 		if (bgimage != null) {
 			mainContent = new ImagePanel(bgimage);
 			((ImagePanel) mainContent).setKeepRatio(true);
@@ -159,38 +160,6 @@ public abstract class MCreatorFrame extends JFrame
 
 	public boolean hasBackgroundImage() {
 		return mainContent instanceof ImagePanel;
-	}
-
-	private Image getBackgroundImage() {
-		UserFolderManager.getFileFromUserFolder("backgrounds").mkdirs();
-
-		// Load backgrounds depending on the background source
-		List<Image> bgimages = new ArrayList<>();
-		switch (PreferencesManager.PREFERENCES.ui.backgroundSource.get()) {
-		case "All":
-			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
-			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
-			break;
-		case "Current theme":
-			bgimages = BackgroundLoader.loadThemeBackgrounds();
-			break;
-		case "Custom":
-			bgimages = BackgroundLoader.loadUserBackgrounds();
-			break;
-		}
-
-		Image bgimage = null;
-		if (!bgimages.isEmpty()) {
-			bgimage = ListUtils.getRandomItem(bgimages);
-			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
-			if (avg > 0.15) {
-				avg = (float) Math.min(avg * 1.7, 0.85);
-				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(
-						ImageUtils.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
-								new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
-			}
-		}
-		return bgimage;
 	}
 
 }

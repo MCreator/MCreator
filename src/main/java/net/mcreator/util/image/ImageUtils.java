@@ -430,16 +430,53 @@ public class ImageUtils {
 	}
 
 	private static BufferedImage resizeImageWithAA(BufferedImage originalImage, int w, int h) {
-		// Optimization to not resize images that are already the correct size
-		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
-			return originalImage;
+		int srcW = originalImage.getWidth();
+		int srcH = originalImage.getHeight();
 
-		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(originalImage, 0, 0, w, h, null);
-		g.dispose();
-		return resizedImage;
+		if (srcW == w && srcH == h) { // No resize needed
+			return originalImage;
+		}
+
+		if (w > srcW || h > srcH) { // Upscaling -> bicubic
+			BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = resized.createGraphics();
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			g.drawImage(originalImage, 0, 0, w, h, null);
+			g.dispose();
+			return resized;
+		}
+
+		if (w < srcW / 2 || h < srcH / 2) { // Progressive bilinear for heavy reduction (more than 50%)
+			return downscaleInSteps(originalImage, w, h);
+		} else { // Light downscale -> single-step bilinear
+			BufferedImage resized = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = resized.createGraphics();
+			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g.drawImage(originalImage, 0, 0, w, h, null);
+			g.dispose();
+			return resized;
+		}
+	}
+
+	private static BufferedImage downscaleInSteps(BufferedImage src, int targetW, int targetH) {
+		BufferedImage img = src;
+		int w = src.getWidth();
+		int h = src.getHeight();
+
+		while (w != targetW || h != targetH) {
+			if (w > targetW)
+				w = Math.max(targetW, w / 2);
+			if (h > targetH)
+				h = Math.max(targetH, h / 2);
+			BufferedImage tmp = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = tmp.createGraphics();
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2.drawImage(img, 0, 0, w, h, null);
+			g2.dispose();
+			img = tmp;
+		}
+
+		return img;
 	}
 
 	private static Color[][] bufferedImageToColorArray(BufferedImage buf) {
