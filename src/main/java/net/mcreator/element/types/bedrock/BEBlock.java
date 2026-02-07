@@ -63,12 +63,19 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public int maxGenerateHeight;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 
+	public int rotationMode;
+	public String renderMethod;
+	public String tintMethod;
+
 	private BEBlock() {
 		this(null);
 	}
 
 	public BEBlock(ModElement element) {
 		super(element);
+
+		this.renderMethod = "opaque";
+		this.tintMethod = "(none)";
 	}
 
 	public boolean hasCustomDrop() {
