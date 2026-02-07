@@ -37,15 +37,13 @@
 
 package net.mcreator.io.writer;
 
+import io.beautifier.javascript.JavaScriptBeautifier;
+import io.beautifier.javascript.JavaScriptOptions;
 import net.mcreator.io.TrackingFileIO;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.javascript.CompilerEnvirons;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.Parser;
-import org.mozilla.javascript.ast.AstRoot;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -59,24 +57,17 @@ public class JSWriter {
 	}
 
 	public static String formatJS(String srcjs) {
-		String jsout;
 		try {
-			CompilerEnvirons env = new CompilerEnvirons();
-			env.setRecoverFromErrors(true);
-			env.setRecordingComments(true);
-			env.setRecordingLocalJsDocComments(true);
-			env.setLanguageVersion(Context.VERSION_ES6);
-
-			Parser parser = new Parser(env, env.getErrorReporter());
-			AstRoot astRoot = parser.parse(srcjs, null, 1);
-
-			return astRoot.toSource(0);
+			JavaScriptOptions options = JavaScriptOptions.builder().build();
+			options.indent_char = "\t";
+			options.indent_size = 1;
+			JavaScriptBeautifier beautifier = new JavaScriptBeautifier(srcjs, options);
+			return beautifier.beautify();
 		} catch (Exception e) {
 			LOG.error("JS Prettify failed, error: {}", e.getMessage(), e);
 			TestUtil.failIfTestingEnvironment();
-			jsout = srcjs;
 		}
-		return jsout;
+		return srcjs;
 	}
 
 }

@@ -132,6 +132,7 @@ dependencies {
     implementation("com.fifesoft:languagesupport:3.4.1") {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino-all'
     }
+    implementation 'io.beautifier:js-beautify:1.15.4.1'
     implementation "net.java.dev.jna:jna:5.18.1" // needed by discord-rpc.jar
 
     implementation "com.github.weisj:jsvg:2.0.0"
