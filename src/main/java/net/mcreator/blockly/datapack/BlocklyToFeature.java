@@ -20,9 +20,9 @@
 package net.mcreator.blockly.datapack;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.datapack.blocks.MCItemBlock;
-import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
 
 import java.util.List;
 
-public class BlocklyToFeature extends BlocklyToJava {
+public class BlocklyToFeature extends BlocklyToCode {
 
 	private StringBuilder featureConfigurationCode;
 	private String featureType;
