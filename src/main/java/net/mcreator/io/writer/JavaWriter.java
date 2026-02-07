@@ -34,11 +34,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
 
-public class ClassWriter {
+public class JavaWriter {
 
 	private static final CodeCleanup codeCleanup = new CodeCleanup();
 
-	public static void writeClassToFile(@Nullable Workspace workspace, String code, File file,
+	public static void writeJavaToFile(@Nullable Workspace workspace, String code, File file,
 			boolean formatAndOrganiseImports) {
 		if (formatAndOrganiseImports) {
 			TrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
@@ -47,7 +47,7 @@ public class ClassWriter {
 		}
 	}
 
-	public static void batchWriteClassToFile(@Nullable Workspace workspace, @Nonnull Map<File, String> codes,
+	public static void batchWriteJavaToFile(@Nullable Workspace workspace, @Nonnull Map<File, String> codes,
 			boolean formatAndOrganiseImports, @Nullable IntConsumer intConsumer) {
 		if (formatAndOrganiseImports) {
 			// reload mod classes by "dummy" formatting the first element
@@ -72,7 +72,7 @@ public class ClassWriter {
 		Map<File, String> codes = files.parallelStream()
 				.filter(file -> FilenameUtils.isExtension(file.getName().toLowerCase(Locale.ENGLISH), "java"))
 				.collect(Collectors.toMap(file -> file, FileIO::readFileToString));
-		batchWriteClassToFile(workspace, codes, true, intConsumer);
+		batchWriteJavaToFile(workspace, codes, true, intConsumer);
 	}
 
 }

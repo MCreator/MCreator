@@ -21,7 +21,7 @@ package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.blockly.java.ProcedureTemplateIO;
+import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -60,9 +60,9 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 				String procedureXml;
 
 				if (template.identifier instanceof String)
-					procedureXml = ProcedureTemplateIO.importBlocklyXML("/" + template.identifier);
+					procedureXml = BlocklyTemplateIO.importBlocklyXML("/" + template.identifier);
 				else
-					procedureXml = ProcedureTemplateIO.importBlocklyXML((File) template.identifier);
+					procedureXml = BlocklyTemplateIO.importBlocklyXML((File) template.identifier);
 
 				modTypeButton.addActionListener(actionEvent -> {
 					new Thread(() -> {

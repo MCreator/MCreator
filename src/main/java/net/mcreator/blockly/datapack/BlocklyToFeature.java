@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2022, Pylo, opensource contributors
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.feature;
+package net.mcreator.blockly.datapack;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.datapack.blocks.MCItemBlock;
-import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -37,8 +37,7 @@ import org.w3c.dom.Element;
 
 import java.util.List;
 
-public class BlocklyToFeature extends BlocklyToJava {
-	protected final Logger LOG = LogManager.getLogger("Blockly2Feature");
+public class BlocklyToFeature extends BlocklyToCode {
 
 	private StringBuilder featureConfigurationCode;
 	private String featureType;
@@ -50,7 +49,7 @@ public class BlocklyToFeature extends BlocklyToJava {
 		super(workspace, parent, BlocklyEditorType.FEATURE, sourceXML, templateGenerator, externalGenerators);
 	}
 
-	@Override protected void preInitialization() {
+	@Override protected void beforeGenerate() {
 		blockGenerators.add(new MCItemBlock());
 
 		featureConfigurationCode = new StringBuilder();

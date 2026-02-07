@@ -18,7 +18,7 @@
       <#if data.rarity != "common">"minecraft:rarity": "${data.rarity}",</#if>
       <#if data.fuelDuration gt 0.05>
       "minecraft:fuel": {
-          "duration": ${data.fuelDuration}
+        "duration": ${data.fuelDuration}
       },
       </#if>
       <#if data.maxDurability gt 0>
@@ -44,7 +44,7 @@
       "minecraft:use_animation": "${data.animation}",
       "minecraft:tags": {
       	"tags": [
-      		"minecraft:is_food"
+      	  "minecraft:is_food"
       	]
       },
       </#if>

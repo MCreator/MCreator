@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,9 +17,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.java;
+package net.mcreator.blockly;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.io.BinaryStringIO;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.util.XMLUtil;
@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
 
-public class ProcedureTemplateIO {
+public class BlocklyTemplateIO {
 
 	public static void exportBlocklySetup(String blocklyXML, File file, BlocklyEditorType blocklyEditorType)
 			throws ParseException, ParserConfigurationException, IOException, SAXException {
