@@ -31,14 +31,13 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
-	 * @param blocklyEditorType <p>Blockly editor type</p>
 	 * @param sourceXML         <p>The XML code used by Blockly</p>
 	 * @param templateGenerator <p>The folder location in each {@link net.mcreator.generator.Generator} containing the code template files<p>
 	 */
-	public BlocklyToJavaScript(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType,
-			String sourceXML, TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
+	public BlocklyToJavaScript(Workspace workspace, ModElement parent, String sourceXML,
+			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
-		super(workspace, parent, blocklyEditorType, sourceXML, templateGenerator, externalGenerators);
+		super(workspace, parent, BlocklyEditorType.SCRIPT, sourceXML, templateGenerator, externalGenerators);
 	}
 
 }
