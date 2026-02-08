@@ -19,19 +19,19 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
+import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -67,15 +67,22 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox enableCreativeTab = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,
 			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(1.6, 0, 128000, 0.1));
 	private final JSpinner movementModifier = new JSpinner(new SpinnerNumberModel(0.35, 0, 1, 0.05));
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
+
+	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox allowOffHand = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fuelDuration = new JSpinner(new SpinnerNumberModel(0, 0, 107374180, 0.05));
 	private final JCheckBox shouldDespawn = L10N.checkbox("elementgui.common.enable");
+	private final MCItemHolder blockToPlace = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+	private final MCItemListField blockPlaceableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+	private final JCheckBox enableEntityPlacer = L10N.checkbox("elementgui.common.enable");
+	private final DataListComboBox entityToPlace = new DataListComboBox(mcreator);
+	private final MCItemListField entityDispensableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+	private final MCItemListField entityPlaceableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner foodNutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
@@ -229,7 +236,47 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		shouldDespawn.setOpaque(false);
 		advancedProperties.add(shouldDespawn);
 
-		advancedPanel.add("Center", PanelUtils.totalCenterInPanel(advancedProperties));
+		JPanel blockPlacerProps = new JPanel(new GridLayout(2, 2, 65, 2));
+		blockPlacerProps.setOpaque(false);
+
+		blockPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/block_to_place"),
+				L10N.label("elementgui.beitem.block_to_place")));
+		blockToPlace.setOpaque(false);
+		blockPlacerProps.add(blockToPlace);
+		blockToPlace.addBlockSelectedListener(e -> updateBlockUsableOnList());
+
+		blockPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/block_placeable_on"),
+				L10N.label("elementgui.beitem.placeable_on")));
+		blockPlaceableOn.setOpaque(false);
+		blockPlacerProps.add(blockPlaceableOn);
+
+		ComponentUtils.makeSection(blockPlacerProps, L10N.t("elementgui.beitem.block_placer_properties"));
+
+		JPanel entityPlacerProps = new JPanel(new GridLayout(3, 2, 65, 2));
+		entityPlacerProps.setOpaque(false);
+
+		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_to_place"),
+				L10N.label("elementgui.beitem.entity_to_place")));
+		entityToPlace.setOpaque(false);
+		entityPlacerProps.add(PanelUtils.westAndCenterElement(enableEntityPlacer, entityToPlace));
+		enableEntityPlacer.addActionListener(e -> updateEntityPlacerPanel());
+
+		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_dispensable_on"),
+				L10N.label("elementgui.beitem.entity_dispensable_on")));
+		entityDispensableOn.setOpaque(false);
+		entityPlacerProps.add(entityDispensableOn);
+
+		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_placeable_on"),
+				L10N.label("elementgui.beitem.placeable_on")));
+		entityPlaceableOn.setOpaque(false);
+		entityPlacerProps.add(entityPlaceableOn);
+
+		ComponentUtils.makeSection(entityPlacerProps, L10N.t("elementgui.beitem.entity_placer_properties"));
+
+		advancedPanel.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(advancedProperties), PanelUtils.pullElementUp(
+						PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(blockPlacerProps),
+								PanelUtils.totalCenterInPanel(entityPlacerProps))))));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(texture);
@@ -250,6 +297,14 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		updateCreativeTab();
 		updateMeleeDamage();
 		updateFoodPanel();
+		updateBlockUsableOnList();
+		updateEntityPlacerPanel();
+	}
+
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+
+		ComboBoxUtil.updateComboBoxContents(entityToPlace, ElementUtil.loadAllSpawnableEntities(mcreator.getWorkspace()));
 	}
 
 	private void updateFoodPanel() {
@@ -280,6 +335,16 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		creativeTab.setEnabled(enableCreativeTab.isSelected());
 	}
 
+	private void updateBlockUsableOnList() {
+		blockPlaceableOn.setEnabled(blockToPlace.containsItem());
+	}
+
+	private void updateEntityPlacerPanel() {
+		entityToPlace.setEnabled(enableEntityPlacer.isSelected());
+		entityDispensableOn.setEnabled(enableEntityPlacer.isSelected());
+		entityPlaceableOn.setEnabled(enableEntityPlacer.isSelected());
+	}
+
 	@Override protected void openInEditingMode(BEItem item) {
 		texture.setTexture(item.texture);
 		name.setText(item.name);
@@ -304,9 +369,17 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		shouldDespawn.setSelected(item.shouldDespawn);
 		usingConvertsTo.setBlock(item.usingConvertsTo);
 		animation.setSelectedItem(item.animation);
+		blockToPlace.setBlock(item.blockToPlace);
+		blockPlaceableOn.setListElements(item.blockPlaceableOn);
+		enableEntityPlacer.setSelected(item.enableEntityPlacer);
+		entityToPlace.setSelectedItem(item.entityToPlace);
+		entityDispensableOn.setListElements(item.entityDispensableOn);
+		entityPlaceableOn.setListElements(item.entityPlaceableOn);
 		updateFoodPanel();
 		updateMeleeDamage();
 		updateCreativeTab();
+		updateBlockUsableOnList();
+		updateEntityPlacerPanel();
 	}
 
 	@Override public BEItem getElementFromGUI() {
@@ -334,6 +407,12 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.shouldDespawn = shouldDespawn.isSelected();
 		item.usingConvertsTo = usingConvertsTo.getBlock();
 		item.animation = animation.getSelectedItem();
+		item.blockToPlace = blockToPlace.getBlock();
+		item.blockPlaceableOn = blockPlaceableOn.getListElements();
+		item.enableEntityPlacer = enableEntityPlacer.isSelected();
+		item.entityToPlace = new EntityEntry(mcreator.getWorkspace(), entityToPlace.getSelectedItem());
+		item.entityDispensableOn = entityDispensableOn.getListElements();
+		item.entityPlaceableOn = entityPlaceableOn.getListElements();
 
 		return item;
 	}
