@@ -73,6 +73,21 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JSpinner oreCount = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private final MCItemListField blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 
+	private final JComboBox<String> rotationMode = new JComboBox<>(
+			new String[] { L10N.t("elementgui.block.rotation_mode.none"),
+					L10N.t("elementgui.block.rotation_mode.player_y_axis"),
+					L10N.t("elementgui.block.rotation_mode.player_all_axis"),
+					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
+					L10N.t("elementgui.block.rotation_mode.log") });
+
+	private final JComboBox<String> renderMethod = new JComboBox<>(
+			new String[] { "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
+					"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" });
+
+	private final JComboBox<String> tintMethod = new JComboBox<>(
+			new String[] { "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+					"water" });
+
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public BEBlockGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
@@ -90,7 +105,20 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		textures = new BlockTexturesSelector(mcreator);
 		page1group.addValidationElement(textures);
 
-		JPanel basicProperties = new JPanel(new GridLayout(11, 2, 2, 2));
+		JPanel renderSettings = new JPanel(new GridLayout(2, 2, 0, 2));
+		renderSettings.setOpaque(false);
+
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/render_method"),
+				L10N.label("elementgui.beblock.render_method")));
+		renderSettings.add(renderMethod);
+
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/tint_method"),
+				L10N.label("elementgui.beblock.tint_method")));
+		renderSettings.add(tintMethod);
+
+		renderMethod.setPreferredSize(new Dimension(260, 42));
+
+		JPanel basicProperties = new JPanel(new GridLayout(12, 2, 2, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -98,6 +126,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(name);
 		ComponentUtils.deriveFont(name, 16);
 		page1group.addValidationElement(name);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/rotation_mode"),
+				L10N.label("elementgui.block.rotation_mode")));
+		basicProperties.add(rotationMode);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
@@ -141,9 +173,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.common.fire_spread_speed")));
 		basicProperties.add(flammableDestroyChance);
 
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.gridElements(1, 2, PanelUtils.totalCenterInPanel(textures),
-						PanelUtils.totalCenterInPanel(basicProperties))));
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
+				PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(textures), renderSettings),
+				PanelUtils.totalCenterInPanel(basicProperties), 45, 45)));
 
 		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
 		genPanel.setOpaque(false);
@@ -216,6 +248,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
 		oreCount.setValue(block.oreCount);
 
+		rotationMode.setSelectedIndex(block.rotationMode);
+		renderMethod.setSelectedItem(block.renderMethod);
+		tintMethod.setSelectedItem(block.tintMethod);
+
 		refreshSpawnProperties();
 	}
 
@@ -248,10 +284,15 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.maxGenerateHeight = generateHeight.getIntMaxValue();
 		block.blocksToReplace = blocksToReplace.getListElements();
 
+		block.rotationMode = rotationMode.getSelectedIndex();
+		block.renderMethod = (String) renderMethod.getSelectedItem();
+		block.tintMethod = (String) tintMethod.getSelectedItem();
+
 		return block;
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-bedrock-block");
 	}
+
 }
