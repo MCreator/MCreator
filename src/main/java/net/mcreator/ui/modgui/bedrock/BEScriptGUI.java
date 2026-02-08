@@ -33,7 +33,6 @@ import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -83,13 +82,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	private ExternalTrigger trigger = null;
 
 	private final JPanel triggerDepsPan = new JPanel(new BorderLayout());
-	private final JPanel returnType = new JPanel(new BorderLayout());
-	private final JLabel returnTypeLabel = new JLabel();
-
-	private final JPanel triggerInfoPanel = new JPanel(new BorderLayout(2, 2));
-	private final JLabel cancelableTriggerLabel = new JLabel();
-	private final JLabel hasResultTriggerLabel = new JLabel();
-	private final JLabel sideTriggerLabel = new JLabel();
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
@@ -108,7 +100,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.SCRIPT));
-		BlocklyToProcedure blocklyToJava;
+		BlocklyToProcedure blocklyToJava; // TODO: correct type
 
 		try {
 			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), this.modElement, blocklyPanel.getXML(),
@@ -182,24 +174,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 			dependenciesExtTrigger.clear();
 			depsWarningLabel.setText("");
 
-			cancelableTriggerLabel.setText("");
-			hasResultTriggerLabel.setText("");
-			sideTriggerLabel.setText("");
-
-			cancelableTriggerLabel.setIcon(null);
-			hasResultTriggerLabel.setIcon(null);
-			sideTriggerLabel.setIcon(null);
-
 			if (finalHasNewDependenciesAdded) {
 				depsWarningLabel.setText(L10N.t("elementgui.procedure.dependencies_added"));
-			}
-
-			if (blocklyToJava.getReturnType() != null) {
-				returnType.setVisible(true);
-				returnTypeLabel.setText(blocklyToJava.getReturnType().getName().toUpperCase());
-				returnTypeLabel.setForeground(blocklyToJava.getReturnType().getBlocklyColor().brighter());
-			} else {
-				returnType.setVisible(false);
 			}
 
 			hasDependencyErrors = false;
@@ -227,22 +203,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 					if (tdeps != null) {
 						Collections.sort(tdeps);
 						tdeps.forEach(dependenciesExtTrigger::addElement);
-					}
-
-					if (trigger.cancelable) {
-						cancelableTriggerLabel.setText(L10N.t("elementgui.procedure.cancelable_trigger"));
-						cancelableTriggerLabel.setIcon(UIRES.get("info"));
-					}
-					if (trigger.has_result) {
-						hasResultTriggerLabel.setText(L10N.t("elementgui.procedure.can_specify_result_trigger"));
-						hasResultTriggerLabel.setIcon(UIRES.get("info"));
-					}
-					if ("client".equals(trigger.side)) {
-						sideTriggerLabel.setText(L10N.t("elementgui.procedure.client_side_trigger"));
-						sideTriggerLabel.setIcon(UIRES.get("16px.client"));
-					} else if ("server".equals(trigger.side)) {
-						sideTriggerLabel.setText(L10N.t("elementgui.procedure.server_side_trigger"));
-						sideTriggerLabel.setIcon(UIRES.get("16px.server"));
 					}
 				} else {
 					triggerDepsPan.setVisible(false);
@@ -277,22 +237,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		}
 	}
 
-	static class LocalVariableListRenderer extends JLabel implements ListCellRenderer<VariableElement> {
-		@Override
-		public Component getListCellRendererComponent(JList<? extends VariableElement> list, VariableElement value,
-				int index, boolean isSelected, boolean cellHasFocus) {
-			setOpaque(isSelected);
-			setBorder(null);
-			Color col = value.getType().getBlocklyColor();
-			setBackground(isSelected ? col : Theme.current().getBackgroundColor());
-			setForeground(isSelected ? Theme.current().getForegroundColor() : col.brighter());
-			ComponentUtils.deriveFont(this, 14);
-			setText(value.getName());
-			setToolTipText(value.getTooltipText());
-			return this;
-		}
-	}
-
 	@Override protected void initGUI() {
 		pane5.setOpaque(false);
 
@@ -308,37 +252,11 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		dependenciesExtTrigList.setBorder(BorderFactory.createEmptyBorder());
 		dependenciesExtTrigList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		returnType.setVisible(false);
-		returnType.setOpaque(false);
-
-		returnType.add("Center", returnTypeLabel);
-
-		returnTypeLabel.setOpaque(true);
-		returnTypeLabel.setBackground(Theme.current().getBackgroundColor());
-		returnTypeLabel.setBorder(BorderFactory.createEmptyBorder(0, 7, 9, 0));
-		ComponentUtils.deriveFont(returnType, 13);
-
 		JToolBar bar4 = new JToolBar();
 		bar4.setBorder(BorderFactory.createEmptyBorder(2, 2, 5, 0));
 		bar4.setFloatable(false);
 		bar4.setOpaque(false);
 		bar4.add(ComponentUtils.deriveFont(L10N.label("elementgui.procedure.return_type"), 13));
-
-		JPanel rettypeHeader = new JPanel(new GridLayout());
-		rettypeHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		rettypeHeader.setBackground(Theme.current().getBackgroundColor());
-		rettypeHeader.add(bar4);
-		returnType.add("North", rettypeHeader);
-		returnType.setOpaque(false);
-		returnType.setPreferredSize(new Dimension(150, 46));
-
-		returnType.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
-
-		triggerInfoPanel.setOpaque(false);
-		triggerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
-		triggerInfoPanel.add("North", cancelableTriggerLabel);
-		triggerInfoPanel.add("Center", hasResultTriggerLabel);
-		triggerInfoPanel.add("South", sideTriggerLabel);
 
 		JToolBar bar = new JToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(2, 0, 5, 0));
@@ -421,10 +339,9 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		scrollPaneExtDeps.getHorizontalScrollBar().setUnitIncrement(11);
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
-		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel,
-				PanelUtils.northAndCenterElement(
-						ComponentUtils.deriveFont(L10N.label("elementgui.procedure.provided_dependencies"), 13),
-						scrollPaneExtDeps, 0, 1), 0, 4));
+		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(
+				ComponentUtils.deriveFont(L10N.label("elementgui.procedure.provided_dependencies"), 13),
+				scrollPaneExtDeps, 0, 1));
 		triggerDepsPan.setPreferredSize(new Dimension(150, 0));
 		triggerDepsPan.setVisible(false);
 
@@ -436,7 +353,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		eastPan.add(depsPan);
 		eastPan.add(triggerDepsPan);
 
-		pane5.add("East", PanelUtils.centerAndSouthElement(eastPan, returnType));
+		pane5.add("East", eastPan);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.SCRIPT).getDefinedBlocks();
 
