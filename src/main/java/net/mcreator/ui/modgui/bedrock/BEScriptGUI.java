@@ -30,11 +30,8 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
-import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.NewVariableDialog;
-import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -42,16 +39,9 @@ import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.ValidationResult;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableType;
-import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.references.ReferencesFinder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,9 +65,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	private BlocklyEditorToolbar blocklyEditorToolbar;
 
 	private BlocklyPanel blocklyPanel;
-
-	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
-	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasDependencyErrors = false;
 
@@ -105,8 +92,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	private final JLabel sideTriggerLabel = new JLabel();
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
-
-	private final JCheckBox skipDependencyNullCheck = L10N.checkbox("elementgui.common.enable");
 
 	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
@@ -136,18 +121,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		// Check that no local variable has the same name as one of the dependencies
-		dependenciesArrayList = blocklyToJava.getDependencies();
-		for (var dependency : dependenciesArrayList) {
-			for (int i = 0; i < localVars.getSize(); i++) {
-				if (dependency.name().equals(localVars.get(i).getName())) {
-					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.name())));
-					break; // We found a match, there's no need to check the other variables
-				}
-			}
-		}
-
 		// Check if new dependencies were added
 		boolean hasNewDependenciesAdded = false;
 		if (isEditingMode() && dependenciesBeforeEdit == null) {
@@ -160,12 +133,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 					break;
 				}
 			}
-		}
-
-		// Warn user if dependency null check skip is disabled
-		if (skipDependencyNullCheck.isSelected()) {
-			compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					L10N.t("elementgui.procedure.null_dependency_crash_warning")));
 		}
 
 		// Handle compile notes related to external trigger if present
@@ -327,23 +294,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	}
 
 	@Override protected void initGUI() {
-		skipDependencyNullCheck.setOpaque(false);
-
-		JPanel skipDependencyWrapper = new JPanel(new GridLayout(1, 2, 0, 2));
-		skipDependencyWrapper.setOpaque(false);
-		skipDependencyWrapper.add(HelpUtils.wrapWithHelpButton(this.withEntry("procedure/skip_dependency_null_check"),
-				L10N.label("elementgui.procedure.skip_dependency_null_check")));
-		skipDependencyWrapper.add(skipDependencyNullCheck);
-
-		CollapsiblePanel procedureSettings = new CollapsiblePanel(L10N.t("elementgui.procedure.additional_settings"),
-				PanelUtils.join(FlowLayout.LEFT, 1, 1, skipDependencyWrapper));
-
 		pane5.setOpaque(false);
-
-		localVarsList.setOpaque(false);
-		localVarsList.setCellRenderer(new LocalVariableListRenderer());
-		localVarsList.setBorder(BorderFactory.createEmptyBorder());
-		localVarsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 		JList<Dependency> dependenciesList = new JList<>(dependencies);
 		dependenciesList.setOpaque(false);
@@ -389,94 +340,10 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		triggerInfoPanel.add("Center", hasResultTriggerLabel);
 		triggerInfoPanel.add("South", sideTriggerLabel);
 
-		JPanel localVarsPan = new JPanel(new BorderLayout());
-		localVarsPan.setOpaque(false);
-
-		JScrollPane scrollPane = new JScrollPane(localVarsList);
-		scrollPane.setBackground(Theme.current().getBackgroundColor());
-		scrollPane.getViewport().setOpaque(false);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPane.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		localVarsPan.add("Center", scrollPane);
-
 		JToolBar bar = new JToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(2, 0, 5, 0));
 		bar.setFloatable(false);
 		bar.setOpaque(false);
-
-		JLabel lab = L10N.label("elementgui.procedure.local_variables");
-		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
-
-		JButton addvar = new JButton(UIRES.get("16px.add"));
-		addvar.setContentAreaFilled(false);
-		addvar.setOpaque(false);
-		ComponentUtils.deriveFont(addvar, 11);
-		addvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 2));
-		bar.add(addvar);
-
-		JButton remvar = new JButton(UIRES.get("16px.delete"));
-		remvar.setContentAreaFilled(false);
-		remvar.setOpaque(false);
-		ComponentUtils.deriveFont(remvar, 11);
-		remvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 1));
-		bar.add(remvar);
-
-		addvar.addActionListener(e -> {
-			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
-					new OptionPaneValidator() {
-						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
-							String variableName = ((VTextField) component).getText();
-							for (int i = 0; i < localVars.getSize(); i++) {
-								String nameinrow = localVars.get(i).getName();
-								if (variableName.equals(nameinrow))
-									return new ValidationResult(ValidationResult.Type.ERROR,
-											L10N.t("common.name_already_exists"));
-							}
-							for (Dependency dependency : dependenciesArrayList) {
-								String nameinrow = dependency.name();
-								if (variableName.equals(nameinrow))
-									return new ValidationResult(ValidationResult.Type.ERROR,
-											L10N.t("elementgui.procedure.name_already_exists_dep"));
-							}
-							return validator.validate();
-						}
-					}, VariableTypeLoader.INSTANCE.getLocalVariableTypes(mcreator.getGeneratorConfiguration()));
-			if (element != null) {
-				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
-				localVars.addElement(element);
-			}
-		});
-
-		remvar.addActionListener(e -> {
-			List<VariableElement> elements = localVarsList.getSelectedValuesList();
-			if (!elements.isEmpty()) {
-				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
-						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (n == JOptionPane.YES_OPTION) {
-					for (var element : elements) {
-						blocklyPanel.removeLocalVariable(element.getName());
-						localVars.removeElement(element);
-					}
-				}
-			}
-		});
-
-		localVarsList.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (localVars.getSize() > 0 && e.getClickCount() == 2) {
-					VariableElement selectedVar = localVarsList.getSelectedValue();
-					if (selectedVar != null) {
-						VariableType type = selectedVar.getType();
-						String blockXml = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"variables_"
-								+ (e.isAltDown() ? "set_" : "get_") + type.getName() + "\"><field name=\"VAR\">local:"
-								+ selectedVar.getName() + "</field></block></xml>";
-						blocklyPanel.addBlocksFromXML(blockXml);
-					}
-				}
-			}
-		});
 
 		dependenciesList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -503,16 +370,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 				}
 			}
 		});
-
-		lab.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
-
-		JPanel varHeader = new JPanel(new GridLayout());
-		varHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		varHeader.setBackground(Theme.current().getBackgroundColor());
-		varHeader.add(PanelUtils.northAndCenterElement(ComponentUtils.deriveFont(lab, 13), bar));
-		localVarsPan.add("North", varHeader);
-		localVarsPan.setOpaque(false);
-		localVarsPan.setPreferredSize(new Dimension(150, 0));
 
 		JPanel depsPan = new JPanel(new BorderLayout());
 		depsPan.setOpaque(false);
@@ -576,7 +433,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		eastPan.setBackground(Theme.current().getBackgroundColor());
 		eastPan.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getBackgroundColor()));
 
-		eastPan.add(localVarsPan);
 		eastPan.add(depsPan);
 		eastPan.add(triggerDepsPan);
 
@@ -602,8 +458,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 			blocklyPanel.setInitialXML(BEScript.XML_BASE);
 		}
 
-		skipDependencyNullCheck.addActionListener(e -> regenerateBlockAssemblies(false));
-
 		pane5.add("Center", blocklyPanel);
 
 		pane5.add("South", compileNotesPanel);
@@ -614,8 +468,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
-		addPage(PanelUtils.gridElements(1, 1, PanelUtils.centerAndSouthElement(pane5, procedureSettings)),
-				false).lazyValidate(() -> {
+		addPage(pane5, false).lazyValidate(() -> {
 			if (hasDependencyErrors)
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
@@ -663,18 +516,14 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		recursionLock.pop(); // remove the element after checking all referencing procedures
 	}
 
-	@Override public void openInEditingMode(BEScript procedure) {
-		blocklyPanel.setInitialXML(procedure.scriptxml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			localVars.removeAllElements();
-			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-		});
+	@Override public void openInEditingMode(BEScript script) {
+		blocklyPanel.setInitialXML(script.scriptxml);
 	}
 
 	@Override public BEScript getElementFromGUI() {
-		BEScript procedure = new BEScript(modElement);
-		procedure.scriptxml = blocklyPanel.getXML();
-		return procedure;
+		BEScript script = new BEScript(modElement);
+		script.scriptxml = blocklyPanel.getXML();
+		return script;
 	}
 
 	@Override public Set<BlocklyPanel> getBlocklyPanels() {
