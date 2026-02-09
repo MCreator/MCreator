@@ -70,7 +70,7 @@ import net.minecraft.server.TickTask;
 	<#-- Wait procedure block support below -->
 	private static final PriorityQueue<TickTask> workQueue = new PriorityQueue<>();
 
-	public static void queueServerWork(int tick, Runnable action) {
+	public synchronized static void queueServerWork(int tick, Runnable action) {
 		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
 			workQueue.add(new TickTask(tick, action));
 	}
@@ -85,3 +85,4 @@ import net.minecraft.server.TickTask;
 }
 
 <#-- @formatter:on -->
+
