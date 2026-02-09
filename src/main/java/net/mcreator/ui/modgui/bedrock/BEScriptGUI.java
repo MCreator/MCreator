@@ -20,8 +20,7 @@ package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
-import net.mcreator.blockly.java.BlocklyToProcedure;
-import net.mcreator.element.ModElementType;
+import net.mcreator.blockly.javascript.BlocklyToJavaScript;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -41,7 +40,6 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.references.ReferencesFinder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,8 +55,6 @@ import java.util.List;
 
 public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPanelHolder, ISearchable {
 
-	private static final Logger LOG = LogManager.getLogger(BEScriptGUI.class);
-
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
 	private BlocklyEditorToolbar blocklyEditorToolbar;
@@ -68,7 +64,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	private boolean hasDependencyErrors = false;
 
 	private List<Dependency> dependenciesArrayList = new ArrayList<>();
-	private List<Dependency> dependenciesBeforeEdit = null;
 
 	private final JLabel depsWarningLabel = new JLabel();
 
@@ -100,40 +95,28 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	@Override public synchronized List<BlocklyCompileNote> regenerateBlockAssemblies(boolean jsEventTriggeredChange) {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.SCRIPT));
-		BlocklyToProcedure blocklyToJava; // TODO: correct type
+		BlocklyToJavaScript blocklyToJavaScript;
 
 		try {
-			blocklyToJava = new BlocklyToProcedure(mcreator.getWorkspace(), this.modElement, blocklyPanel.getXML(),
-					null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+			blocklyToJavaScript = new BlocklyToJavaScript(mcreator.getWorkspace(), this.modElement,
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			TestUtil.failIfTestingEnvironment();
 			return List.of(); // should not be possible to happen here
 		}
 
-		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
+		dependenciesArrayList = blocklyToJavaScript.getDependencies();
 
-		// Check if new dependencies were added
-		boolean hasNewDependenciesAdded = false;
-		if (isEditingMode() && dependenciesBeforeEdit == null) {
-			dependenciesBeforeEdit = new ArrayList<>(dependenciesArrayList);
-		} else if (dependenciesBeforeEdit != null) {
-			// we go through new dependency list and check if old one contains all of them
-			for (Dependency dependency : dependenciesArrayList) {
-				if (!dependenciesBeforeEdit.contains(dependency)) {
-					hasNewDependenciesAdded = true;
-					break;
-				}
-			}
-		}
+		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJavaScript.getCompileNotes();
 
 		// Handle compile notes related to external trigger if present
-		if (blocklyToJava.getExternalTrigger() != null) {
+		if (blocklyToJavaScript.getExternalTrigger() != null) {
 			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
 					.getExternalTriggers();
 
 			for (ExternalTrigger externalTrigger : externalTriggers) {
-				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
+				if (externalTrigger.getID().equals(blocklyToJavaScript.getExternalTrigger())) {
 					trigger = externalTrigger;
 					break;
 				}
@@ -168,18 +151,13 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		}
 
 		// Handle UI-related stuff below, do not modify compileNotesArrayList here!
-		boolean finalHasNewDependenciesAdded = hasNewDependenciesAdded;
 		SwingUtilities.invokeLater(() -> {
 			dependencies.clear();
 			dependenciesExtTrigger.clear();
 			depsWarningLabel.setText("");
 
-			if (finalHasNewDependenciesAdded) {
-				depsWarningLabel.setText(L10N.t("elementgui.procedure.dependencies_added"));
-			}
-
 			hasDependencyErrors = false;
-			if (blocklyToJava.getExternalTrigger() != null) {
+			if (blocklyToJavaScript.getExternalTrigger() != null) {
 				if (trigger != null) {
 					triggerDepsPan.setVisible(true);
 
@@ -392,45 +370,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 			else
 				return new AggregatedValidationResult.PASS();
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
-	}
-
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
-
-		// check if dependency list has changed
-		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
-				new HashSet<>(dependenciesArrayList));
-
-		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && dependenciesChanged)
-			regenerateProcedureCallers(modElement, new Stack<>());
-
-		dependenciesBeforeEdit = dependenciesArrayList;
-	}
-
-	private void regenerateProcedureCallers(ModElement procedure, Stack<ModElement> recursionLock) {
-		// if there are at least two more procedures referencing each other, with one of them and the current one
-		// calling each other as well, regenerating current procedure would result into circular regeneration
-		// of the other two procedures because neither of them triggered the action
-		// we avoid that by stacking all the elements checked before so that current procedure doesn't regenerate twice
-		if (recursionLock.contains(procedure))
-			return; // skip the procedure if it was handled earlier
-		recursionLock.push(procedure); // otherwise, add it to the list of checked elements
-		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), procedure)) {
-			// if this mod element is not locked and has procedures, we try to update dependencies
-			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
-			if (!element.isCodeLocked() && element.getGeneratableElement() != null) {
-				LOG.info("Regenerating {} ({}) because it triggers procedure {}", element.getName(), element.getType(),
-						procedure.getName());
-				mcreator.getGenerator().generateElement(element.getGeneratableElement());
-
-				// Procedure may call other procedures that also need updating
-				if (element.getType() == ModElementType.PROCEDURE) {
-					regenerateProcedureCallers(element, recursionLock);
-				}
-			}
-		}
-		recursionLock.pop(); // remove the element after checking all referencing procedures
 	}
 
 	@Override public void openInEditingMode(BEScript script) {

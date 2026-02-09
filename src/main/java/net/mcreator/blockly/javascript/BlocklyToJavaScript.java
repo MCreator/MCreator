@@ -19,15 +19,21 @@
 
 package net.mcreator.blockly.javascript;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class BlocklyToJavaScript extends BlocklyToCode {
+
+	private String externalTrigger;
 
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
@@ -38,6 +44,23 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, parent, BlocklyEditorType.SCRIPT, sourceXML, templateGenerator, externalGenerators);
+	}
+
+	@Override protected void preBlocksPlacement(Document doc, Element startBlock) {
+		if (doc != null) {
+			// first we load data from startblock
+			Element trigger = XMLUtil.getFirstChildrenWithName(
+					BlocklyBlockUtil.getStartBlock(doc, getEditorType().startBlockName()), "field");
+			if (trigger != null && !trigger.getTextContent().equals("no_ext_trigger")) {
+				externalTrigger = trigger.getTextContent();
+			} else {
+				// TODO: error, Scripts need a trigger
+			}
+		}
+	}
+
+	public String getExternalTrigger() {
+		return externalTrigger;
 	}
 
 }
