@@ -3,7 +3,6 @@ net.mcreator.blockly
 net.mcreator.blockly.data
 net.mcreator.blockly.datapack
 net.mcreator.blockly.datapack.blocks
-net.mcreator.blockly.feature
 net.mcreator.blockly.java
 net.mcreator.blockly.java.blocks
 net.mcreator.element
@@ -77,6 +76,8 @@ net.mcreator.ui.action.impl.workspace.resources
 net.mcreator.ui.blockly
 net.mcreator.ui.browser
 net.mcreator.ui.browser.action
+net.mcreator.ui.chromium
+net.mcreator.ui.chromium.osr
 net.mcreator.ui.component
 net.mcreator.ui.component.entries
 net.mcreator.ui.component.tree

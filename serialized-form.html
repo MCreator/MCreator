@@ -726,7 +726,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.blockly.BlocklyPanel">
 <h3>Class&nbsp;<a href="net/mcreator/ui/blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">net.mcreator.ui.blockly.BlocklyPanel</a></h3>
-<div class="type-signature">class BlocklyPanel extends javafx.embed.swing.JFXPanel implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class BlocklyPanel extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -753,10 +753,6 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> lastValidXML</pre>
 </li>
 <li class="block-list">
-<h5>listener</h5>
-<pre>javafx.beans.value.ChangeListener&lt;? super javafx.concurrent.Worker.State&gt; listener</pre>
-</li>
-<li class="block-list">
 <h5>loaded</h5>
 <pre>boolean loaded</pre>
 </li>
@@ -773,8 +769,8 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a> type</pre>
 </li>
 <li class="block-list">
-<h5>webEngine</h5>
-<pre>javafx.scene.web.WebEngine webEngine</pre>
+<h5>webView</h5>
+<pre><a href="net/mcreator/ui/chromium/WebView.html" title="class in net.mcreator.ui.chromium">WebView</a> webView</pre>
 </li>
 </ul>
 </section>
@@ -900,6 +896,122 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="net.mcreator.ui.browser.action.NewPackageAction">
 <h3>Class&nbsp;<a href="net/mcreator/ui/browser/action/NewPackageAction.html" title="class in net.mcreator.ui.browser.action">net.mcreator.ui.browser.action.NewPackageAction</a></h3>
 <div class="type-signature">class NewPackageAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="net/mcreator/ui/chromium/package-summary.html">net.mcreator.ui.chromium</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.chromium.WebView">
+<h3>Class&nbsp;<a href="net/mcreator/ui/chromium/WebView.html" title="class in net.mcreator.ui.chromium">net.mcreator.ui.chromium.WebView</a></h3>
+<div class="type-signature">class WebView extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>browser</h5>
+<pre>org.cef.browser.CefBrowser browser</pre>
+</li>
+<li class="block-list">
+<h5>callbackExecutor</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html" title="class or interface in java.util.concurrent" class="external-link">ExecutorService</a> callbackExecutor</pre>
+</li>
+<li class="block-list">
+<h5>cefComponent</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Component.html" title="class or interface in java.awt" class="external-link">Component</a> cefComponent</pre>
+</li>
+<li class="block-list">
+<h5>client</h5>
+<pre>org.cef.CefClient client</pre>
+</li>
+<li class="block-list">
+<h5>edtJSWaitThread</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/ExecutorService.html" title="class or interface in java.util.concurrent" class="external-link">ExecutorService</a> edtJSWaitThread</pre>
+</li>
+<li class="block-list">
+<h5>executeScriptLatch</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/CountDownLatch.html" title="class or interface in java.util.concurrent" class="external-link">CountDownLatch</a> executeScriptLatch</pre>
+</li>
+<li class="block-list">
+<h5>executeScriptResult</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; executeScriptResult</pre>
+</li>
+<li class="block-list">
+<h5>isClosing</h5>
+<pre>boolean isClosing</pre>
+</li>
+<li class="block-list">
+<h5>jsDialogListeners</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/chromium/WebView.JSDialogListener.html" title="interface in net.mcreator.ui.chromium">WebView.JSDialogListener</a>&gt; jsDialogListeners</pre>
+</li>
+<li class="block-list">
+<h5>pageLoadListeners</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/chromium/WebView.PageLoadListener.html" title="interface in net.mcreator.ui.chromium">WebView.PageLoadListener</a>&gt; pageLoadListeners</pre>
+</li>
+<li class="block-list">
+<h5>router</h5>
+<pre>org.cef.browser.CefMessageRouter router</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="net/mcreator/ui/chromium/osr/package-summary.html">net.mcreator.ui.chromium.osr</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.chromium.osr.JBCefOsrComponent">
+<h3>Class&nbsp;<a href="net/mcreator/ui/chromium/osr/JBCefOsrComponent.html" title="class in net.mcreator.ui.chromium.osr">net.mcreator.ui.chromium.osr.JBCefOsrComponent</a></h3>
+<div class="type-signature">class JBCefOsrComponent extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>myBrowser</h5>
+<pre>org.cef.browser.CefBrowser myBrowser</pre>
+</li>
+<li class="block-list">
+<h5>myGraphicsConfigurationTimedTaskQueue</h5>
+<pre><a href="net/mcreator/ui/chromium/osr/TimedTaskQueue.html" title="class in net.mcreator.ui.chromium.osr">TimedTaskQueue</a> myGraphicsConfigurationTimedTaskQueue</pre>
+</li>
+<li class="block-list">
+<h5>myInputMethodAdapter</h5>
+<pre>net.mcreator.ui.chromium.osr.JBCefInputMethodAdapter myInputMethodAdapter</pre>
+</li>
+<li class="block-list">
+<h5>myRenderHandler</h5>
+<pre><a href="net/mcreator/ui/chromium/osr/JBCefOsrHandler.html" title="class in net.mcreator.ui.chromium.osr">JBCefOsrHandler</a> myRenderHandler</pre>
+</li>
+<li class="block-list">
+<h5>myResizeTimedTaskQueue</h5>
+<pre><a href="net/mcreator/ui/chromium/osr/TimedTaskQueue.html" title="class in net.mcreator.ui.chromium.osr">TimedTaskQueue</a> myResizeTimedTaskQueue</pre>
+</li>
+<li class="block-list">
+<h5>myScaleInitialized</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/atomic/AtomicBoolean.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicBoolean</a> myScaleInitialized</pre>
+</li>
+<li class="block-list">
+<h5>myScheduleResizeMs</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/concurrent/atomic/AtomicLong.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicLong</a> myScheduleResizeMs</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
 </section>
 </li>
 </ul>
@@ -3075,6 +3187,10 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
+<h5>barkColor</h5>
+<pre><a href="net/mcreator/ui/component/JColor.html" title="class in net.mcreator.ui.component">JColor</a> barkColor</pre>
+</li>
+<li class="block-list">
 <h5>color</h5>
 <pre><a href="net/mcreator/ui/component/JColor.html" title="class in net.mcreator.ui.component">JColor</a> color</pre>
 </li>
@@ -3456,6 +3572,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>codeCleanup</h5>
 <pre><a href="net/mcreator/java/CodeCleanup.html" title="class in net.mcreator.java">CodeCleanup</a> codeCleanup</pre>
+</li>
+<li class="block-list">
+<h5>cp</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> cp</pre>
 </li>
 <li class="block-list">
 <h5>fileBreadCrumb</h5>
@@ -6641,7 +6761,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>blockBaseProperties</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt; blockBaseProperties</pre>
+<pre><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt; blockBaseProperties</pre>
 </li>
 <li class="block-list">
 <h5>blockBasePropertiesPanel</h5>

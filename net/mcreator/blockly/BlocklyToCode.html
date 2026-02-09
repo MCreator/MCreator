@@ -94,7 +94,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="java/BlocklyToJava.html" title="class in net.mcreator.blockly.java">BlocklyToJava</a></code>, <code><a href="datapack/BlocklyToJSONTrigger.html" title="class in net.mcreator.blockly.datapack">BlocklyToJSONTrigger</a></code></dd>
+<dd><code><a href="datapack/BlocklyToFeature.html" title="class in net.mcreator.blockly.datapack">BlocklyToFeature</a></code>, <code><a href="java/BlocklyToJava.html" title="class in net.mcreator.blockly.java">BlocklyToJava</a></code>, <code><a href="datapack/BlocklyToJSONTrigger.html" title="class in net.mcreator.blockly.datapack">BlocklyToJSONTrigger</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">BlocklyToCode</span>
@@ -132,12 +132,19 @@ implements <a href="../generator/IGeneratorProvider.html" title="interface in ne
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement,net.mcreator.ui.blockly.BlocklyEditorType,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" class="member-name-link">BlocklyToCode</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement,net.mcreator.ui.blockly.BlocklyEditorType,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" class="member-name-link">BlocklyToCode</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;parent,
+ <a href="../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceXML,
+ <a href="../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a>&nbsp;templateGenerator,
+ <a href="IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement,net.mcreator.ui.blockly.BlocklyEditorType,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" class="member-name-link">BlocklyToCode</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;parent,
  <a href="../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;editorType,
  <a href="../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a>&nbsp;templateGenerator,
  <a href="IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -164,105 +171,123 @@ implements <a href="../generator/IGeneratorProvider.html" title="interface in ne
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#append(java.lang.Object)" class="member-name-link">append</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;data)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkIfDepProviderInputsProvide(net.mcreator.blockly.data.Dependency)" class="member-name-link">checkIfDepProviderInputsProvide</a><wbr>(<a href="data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>&nbsp;dependency)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearCodeGeneratorBuffer()" class="member-name-link">clearCodeGeneratorBuffer</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearSections()" class="member-name-link">clearSections</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#directProcessOutputBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">directProcessOutputBlock</a><wbr>(<a href="BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a>&nbsp;master,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#directProcessOutputBlockWithoutParentheses(org.w3c.dom.Element)" class="member-name-link">directProcessOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#beforeGenerate()" class="member-name-link">beforeGenerate</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Helper method to get the code of an output block and remove surrounding parentheses if possible</div>
+<div class="block">This method is executed after the constructor is called, before the code is generated</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#directProcessStatementBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">directProcessStatementBlock</a><wbr>(<a href="BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a>&nbsp;master,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlockCount()" class="member-name-link">getBlockCount</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the count of blocks currently processed from the block arrangement.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="BlocklyCompileNote.html" title="class in net.mcreator.blockly">BlocklyCompileNote</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompileNotes()" class="member-name-link">getCompileNotes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDependencies()" class="member-name-link">getDependencies</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEditorType()" class="member-name-link">getEditorType</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtraTemplatesCode()" class="member-name-link">getExtraTemplatesCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGeneratedCode()" class="member-name-link">getGeneratedCode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHeadSection()" class="member-name-link">getHeadSection</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParent()" class="member-name-link">getParent</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="data/StatementInput.html" title="class in net.mcreator.blockly.data">StatementInput</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatementInputsMatching(java.util.function.Predicate)" class="member-name-link">getStatementInputsMatching</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="data/StatementInput.html" title="class in net.mcreator.blockly.data">StatementInput</a>&gt;&nbsp;predicate)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTailSection()" class="member-name-link">getTailSection</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateGenerator()" class="member-name-link">getTemplateGenerator</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsedBlocks()" class="member-name-link">getUsedBlocks</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">This method returns collection of machine names of all blocks that are present in the provided Blockly arrangement</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspace()" class="member-name-link">getWorkspace</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#popDepProviderInputStack()" class="member-name-link">popDepProviderInputStack</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkIfDepProviderInputsProvide(net.mcreator.blockly.data.Dependency)" class="member-name-link">checkIfDepProviderInputsProvide</a><wbr>(<a href="data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>&nbsp;dependency)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processBlockProcedure(java.util.List)" class="member-name-link">processBlockProcedure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&gt;&nbsp;blocks)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlock(org.w3c.dom.Element)" class="member-name-link">processOutputBlock</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;condition)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockToInt(org.w3c.dom.Element)" class="member-name-link">processOutputBlockToInt</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Helper method to process an output block and cast to int when needed</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Helper method to process an output block and remove surrounding parentheses if possible</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element,java.lang.String)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element,
- <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;blacklist)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Helper method to process an output block and remove surrounding parentheses if possible</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pushDepProviderInputStack(net.mcreator.blockly.data.DependencyProviderInput)" class="member-name-link">pushDepProviderInputStack</a><wbr>(<a href="data/DependencyProviderInput.html" title="class in net.mcreator.blockly.data">DependencyProviderInput</a>&nbsp;statementInput)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHeadSection(java.lang.String)" class="member-name-link">setHeadSection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;headSection)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearCodeGeneratorBuffer()" class="member-name-link">clearCodeGeneratorBuffer</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTailSection(java.lang.String)" class="member-name-link">setTailSection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tailSection)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearSections()" class="member-name-link">clearSections</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#directProcessOutputBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">directProcessOutputBlock</a><wbr>(<a href="BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a>&nbsp;master,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#directProcessOutputBlockWithoutParentheses(org.w3c.dom.Element)" class="member-name-link">directProcessOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Helper method to get the code of an output block and remove surrounding parentheses if possible</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#directProcessStatementBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">directProcessStatementBlock</a><wbr>(<a href="BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a>&nbsp;master,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlockCount()" class="member-name-link">getBlockCount</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the count of blocks currently processed from the block arrangement.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="BlocklyCompileNote.html" title="class in net.mcreator.blockly">BlocklyCompileNote</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompileNotes()" class="member-name-link">getCompileNotes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="data/Dependency.html" title="class in net.mcreator.blockly.data">Dependency</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDependencies()" class="member-name-link">getDependencies</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEditorType()" class="member-name-link">getEditorType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtraTemplatesCode()" class="member-name-link">getExtraTemplatesCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGeneratedCode()" class="member-name-link">getGeneratedCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHeadSection()" class="member-name-link">getHeadSection</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParent()" class="member-name-link">getParent</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="data/StatementInput.html" title="class in net.mcreator.blockly.data">StatementInput</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatementInputsMatching(java.util.function.Predicate)" class="member-name-link">getStatementInputsMatching</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="data/StatementInput.html" title="class in net.mcreator.blockly.data">StatementInput</a>&gt;&nbsp;predicate)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTailSection()" class="member-name-link">getTailSection</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTemplateGenerator()" class="member-name-link">getTemplateGenerator</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUsedBlocks()" class="member-name-link">getUsedBlocks</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method returns collection of machine names of all blocks that are present in the provided Blockly arrangement</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspace()" class="member-name-link">getWorkspace</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#popDepProviderInputStack()" class="member-name-link">popDepProviderInputStack</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#postBlocksPlacement(org.w3c.dom.Document,org.w3c.dom.Element,java.util.List)" class="member-name-link">postBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;startBlock,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&gt;&nbsp;baseBlocks)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method contains the code needing to be executed after blocks are placed.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preBlocksPlacement(org.w3c.dom.Document,org.w3c.dom.Element)" class="member-name-link">preBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;startBlock)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method contains the code needing to be executed before blocks are placed.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processBlockProcedure(java.util.List)" class="member-name-link">processBlockProcedure</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&gt;&nbsp;blocks)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlock(org.w3c.dom.Element)" class="member-name-link">processOutputBlock</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;condition)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockToInt(org.w3c.dom.Element)" class="member-name-link">processOutputBlockToInt</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Helper method to process an output block and cast to int when needed</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Helper method to process an output block and remove surrounding parentheses if possible</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element,java.lang.String)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;blacklist)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Helper method to process an output block and remove surrounding parentheses if possible</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pushDepProviderInputStack(net.mcreator.blockly.data.DependencyProviderInput)" class="member-name-link">pushDepProviderInputStack</a><wbr>(<a href="data/DependencyProviderInput.html" title="class in net.mcreator.blockly.data">DependencyProviderInput</a>&nbsp;statementInput)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHeadSection(java.lang.String)" class="member-name-link">setHeadSection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;headSection)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTailSection(java.lang.String)" class="member-name-link">setTailSection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tailSection)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -330,6 +355,27 @@ implements <a href="../generator/IGeneratorProvider.html" title="interface in ne
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement,net.mcreator.ui.blockly.BlocklyEditorType,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)">
+<h3>BlocklyToCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">BlocklyToCode</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;parent,
+ <a href="../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceXML,
+ <a href="../generator/template/TemplateGenerator.html" title="class in net.mcreator.generator.template">TemplateGenerator</a>&nbsp;templateGenerator,
+ <a href="IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>...&nbsp;externalGenerators)</span>
+              throws <span class="exceptions"><a href="../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>workspace</code> - <p>The <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace"><code>Workspace</code></a> executing the code</p></dd>
+<dd><code>blocklyEditorType</code> - <p>Blockly editor type</p></dd>
+<dd><code>sourceXML</code> - <p>The XML code used by Blockly</p></dd>
+<dd><code>templateGenerator</code> - <p>The folder location in each <a href="../generator/Generator.html" title="class in net.mcreator.generator"><code>Generator</code></a> containing the code template files<p></dd>
+<dt>Throws:</dt>
+<dd><code><a href="../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code></dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -338,6 +384,44 @@ implements <a href="../generator/IGeneratorProvider.html" title="interface in ne
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="preBlocksPlacement(org.w3c.dom.Document,org.w3c.dom.Element)">
+<h3>preBlocksPlacement</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">preBlocksPlacement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;startBlock)</span>
+                           throws <span class="exceptions"><a href="../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></span></div>
+<div class="block"><p>This method contains the code needing to be executed before blocks are placed.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>doc</code> - Blockly XML document</dd>
+<dd><code>startBlock</code> - The basic block of the editor used to get other blocks.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="postBlocksPlacement(org.w3c.dom.Document,org.w3c.dom.Element,java.util.List)">
+<h3>postBlocksPlacement</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">postBlocksPlacement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;startBlock,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&gt;&nbsp;baseBlocks)</span></div>
+<div class="block"><p>This method contains the code needing to be executed after blocks are placed.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>doc</code> - Blockly XML document</dd>
+<dd><code>startBlock</code> - The basic block of the editor used to get other blocks.</dd>
+<dd><code>baseBlocks</code> - A list of all blocks placed under start block.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="beforeGenerate()">
+<h3>beforeGenerate</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">beforeGenerate</span>()</div>
+<div class="block"><p>This method is executed after the constructor is called, before the code is generated</p></div>
+</section>
+</li>
 <li>
 <section class="detail" id="getGeneratedCode()">
 <h3>getGeneratedCode</h3>
