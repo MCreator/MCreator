@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.PriorityQueue;
 import net.minecraft.server.TickTask;
+import it.unimi.dsi.fastutil.ints.IntObjectPair;
 
 @Mod("${modid}") public class ${JavaModName} {
 
@@ -68,15 +69,20 @@ import net.minecraft.server.TickTask;
 	}
 
 	<#-- Wait procedure block support below -->
-	private static final PriorityQueue<TickTask> workQueue = new PriorityQueue<>();
+	private static final Queue<IntObjectPair<Runnable>> workToBeScheduled = new ConcurrentLinkedQueue<>();
+	private static final PriorityQueue<TickTask> workQueue = new PriorityQueue<>(Comparator.comparingInt(TickTask::getTick));
 
-	public synchronized static void queueServerWork(int tick, Runnable action) {
+	public static void queueServerWork(int tick, Runnable action) {
 		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
-			workQueue.add(new TickTask(tick, action));
+			workToBeScheduled.add(new IntObjectPair<>(tick, action));
 	}
 
 	@SubscribeEvent public void tick(ServerTickEvent.Post event) {
 		final int currentTick = event.getServer().getTickCount();
+        IntObjectPair<Runnable> current;
+        while ((current = workToBeScheduled.poll) != null) {
+			workQueue.add(new TickTask(current.leftInt() + currentTick, current.right()));
+		}
 		while (!workQueue.isEmpty() && currentTick >= workQueue.peek().getTick()) {
 			workQueue.poll().run();
 		}
@@ -85,4 +91,5 @@ import net.minecraft.server.TickTask;
 }
 
 <#-- @formatter:on -->
+
 
