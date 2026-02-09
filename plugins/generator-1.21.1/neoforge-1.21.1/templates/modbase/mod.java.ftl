@@ -3,6 +3,8 @@ package ${package};
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.PriorityQueue;
+import net.minecraft.server.TickTask;
 
 @Mod("${modid}") public class ${JavaModName} {
 
@@ -66,23 +68,20 @@ import org.apache.logging.log4j.Logger;
 	}
 
 	<#-- Wait procedure block support below -->
-	private static final Collection<Tuple<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
+	private static final PriorityQueue<TickTask> workQueue = new PriorityQueue<>();
 
 	public static void queueServerWork(int tick, Runnable action) {
 		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
-			workQueue.add(new Tuple<>(action, tick));
+			workQueue.add(new TickTask(tick, action));
 	}
 
 	@SubscribeEvent public void tick(ServerTickEvent.Post event) {
-		List<Tuple<Runnable, Integer>> actions = new ArrayList<>();
-		workQueue.forEach(work -> {
-			work.setB(work.getB() - 1);
-			if (work.getB() == 0)
-				actions.add(work);
-		});
-		actions.forEach(e -> e.getA().run());
-		workQueue.removeAll(actions);
+		final int currentTick = event.getServer().getTickCount();
+		while (!workQueue.isEmpty() && currentTick >= workQueue.peek().getTick()) {
+			workQueue.poll().run();
+		}
 	}
 
 }
+
 <#-- @formatter:on -->
