@@ -80,7 +80,7 @@ import it.unimi.dsi.fastutil.ints.IntObjectPair;
 	@SubscribeEvent public void tick(ServerTickEvent.Post event) {
 		final int currentTick = event.getServer().getTickCount();
         IntObjectPair<Runnable> current;
-        while ((current = workToBeScheduled.poll) != null) {
+        while ((current = workToBeScheduled.poll()) != null) {
 			workQueue.add(new TickTask(current.leftInt() + currentTick, current.right()));
 		}
 		while (!workQueue.isEmpty() && currentTick >= workQueue.peek().getTick()) {
@@ -91,5 +91,6 @@ import it.unimi.dsi.fastutil.ints.IntObjectPair;
 }
 
 <#-- @formatter:on -->
+
 
 
