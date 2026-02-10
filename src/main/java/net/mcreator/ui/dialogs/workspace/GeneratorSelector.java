@@ -19,6 +19,8 @@
 package net.mcreator.ui.dialogs.workspace;
 
 import net.mcreator.Launcher;
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalTriggerLoader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -163,12 +165,18 @@ public class GeneratorSelector {
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 
 			stats.getGeneratorBlocklyBlocks().forEach((key, value) -> {
-				String name = L10N.t(covpfx + key);
+				String name = L10N.t(covpfx + key.registryName());
 				if (name != null)
-					addStatsBar(name, key, supportedProcedures, stats);
+					addStatsBar(name, key.registryName(), supportedProcedures, stats);
 			});
 
-			addStatsBar(L10N.t(covpfx + "triggers"), "triggers", supportedProcedures, stats);
+			stats.getGeneratorBlocklyTriggers().forEach((key, value) -> {
+				ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
+
+				String name = L10N.t(covpfx + loader.getResourceFolder());
+				if (name != null)
+					addStatsBar(name, loader.getResourceFolder(), supportedProcedures, stats);
+			});
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),
 					supportedProcedures, 10, 10));
@@ -176,7 +184,7 @@ public class GeneratorSelector {
 			JPanel genStatsW = new JPanel();
 			genStatsW.setBorder(BorderFactory.createTitledBorder(L10N.t("dialog.generator_selector.generator_info")));
 			genStatsW.add(ComponentUtils.applyPadding(genStats, 5, true, true, true, false));
-			statsPan.add(genStatsW, generatorConfiguration.getGeneratorName());
+			statsPan.add(PanelUtils.centerInPanel(genStatsW), generatorConfiguration.getGeneratorName());
 		}
 
 		JScrollPane pane = new JScrollPane(statsPan);
