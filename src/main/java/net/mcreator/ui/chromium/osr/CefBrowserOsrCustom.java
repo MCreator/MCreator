@@ -70,9 +70,9 @@ public class CefBrowserOsrCustom extends CefBrowserOsrWithHandler {
 	}
 
 	public static long getNativeWindowHandle(Component component) {
-		if (TestUtil.isRunningInGitHubActions()) {
+		if (TestUtil.isTestingEnvironment()) {
 			// A hack to silence "Default dialog implementation requires a parent window handle; canceling the JS dialog" errors
-			// logged in GitHub Actions due to lack of a display
+			// logged in the testing environment due to lack of a display
 			return 1;
 		}
 
