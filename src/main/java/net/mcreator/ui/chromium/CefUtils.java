@@ -22,6 +22,7 @@ package net.mcreator.ui.chromium;
 import com.jetbrains.cef.JCefAppConfig;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -180,11 +181,17 @@ public class CefUtils {
 			settings.background_color = settings.new ColorType(0, 0, 0, 0);
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
+			settings.locale = L10N.getLocale().stripExtensions().toLanguageTag();
+			settings.log_file = null;
 
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
 				@Override public void onContextInitialized() {
 					cefApp.registerSchemeHandlerFactory("classloader", "", CefClassLoaderSchemeHandler::new);
+				}
+
+				@Override public boolean onBeforeTerminate() {
+					return true; // Do not let JCEF terminate itself
 				}
 			});
 
@@ -193,7 +200,11 @@ public class CefUtils {
 			cefApp = CefApp.getInstance(settings);
 
 			CountDownLatch latch = new CountDownLatch(1);
-			cefApp.onInitialization(s -> latch.countDown());
+			cefApp.onInitialization(s -> {
+				LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})", cefApp.getVersion().getJcefVersion(),
+						cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
+				latch.countDown();
+			});
 
 			try {
 				latch.await();
