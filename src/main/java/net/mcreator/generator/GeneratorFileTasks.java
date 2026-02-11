@@ -164,6 +164,14 @@ public class GeneratorFileTasks {
 							}
 						}
 						break;
+					case "BEDROCK":
+						for (Model model : modelList) {
+							if (model.getType() == Model.Type.BEDROCK) {
+								TrackingFileIO.copyFile(generator, model.getFile(),
+										new File(to, model.getFile().getName()));
+							}
+						}
+						break;
 					case "JAVA_viatemplate":
 						String template = GeneratorTokens.replaceTokens(generator.getWorkspace(),
 								(String) ((Map<?, ?>) task).get("template"));
