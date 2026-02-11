@@ -49,6 +49,7 @@ import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.SingleAppHandler;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.MissingGeneratorFeaturesException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
@@ -86,7 +87,29 @@ public final class MCreatorApplication {
 	private DiscordClient discordClient;
 	private TaskbarIntegration taskbarIntegration;
 
+	private final SingleAppHandler singleAppHandler;
+
 	private MCreatorApplication(List<String> launchArguments) {
+		singleAppHandler = new SingleAppHandler(relaunchArgs ->
+				// Logic that runs if the user started another MCreator and we, as the first instance, handle it instead
+				SwingUtilities.invokeLater(() -> {
+					// First try to open new MCreator frame based on relaunchArgs
+					if (!openMCreatorFromArgs(relaunchArgs)) {
+						// If we fail or relaunchArgs are empty, we either open the workspace selector
+						// or bring the existing MCreator to the front
+						if (openMCreators.isEmpty()) {
+							SingleAppHandler.bringToFront(workspaceSelector);
+						} else {
+							SingleAppHandler.bringToFront(openMCreators.getFirst());
+						}
+					}
+				}));
+
+		// Check if we are the first instance and if not, send args to the first instance and close ourselves
+		if (!singleAppHandler.tryAcquireLock(launchArguments)) {
+			System.exit(0);
+		}
+
 		final SplashScreen splashScreen = new SplashScreen();
 
 		new Thread(() -> {
@@ -217,26 +240,29 @@ public final class MCreatorApplication {
 			});
 
 			SwingUtilities.invokeLater(() -> {
-				boolean directLaunch = false;
-				if (!launchArguments.isEmpty()) {
-					String lastArg = launchArguments.getLast();
-					if (lastArg.length() >= 2 && lastArg.charAt(0) == '"'
-							&& lastArg.charAt(lastArg.length() - 1) == '"')
-						lastArg = lastArg.substring(1, lastArg.length() - 1);
-					File passedFile = new File(lastArg);
-					if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
-						MCreator mcreator = openWorkspaceInMCreator(passedFile);
-						StartupNotifications.handleStartupNotifications(mcreator);
-						directLaunch = true;
-					}
-				}
-
-				if (!directLaunch)
+				if (!openMCreatorFromArgs(launchArguments)) {
 					showWorkspaceSelector();
+				}
 			});
 
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
+	}
+
+	private boolean openMCreatorFromArgs(List<String> launchArguments) {
+		if (launchArguments.isEmpty())
+			return false;
+
+		String lastArg = launchArguments.getLast();
+		if (lastArg.length() >= 2 && lastArg.charAt(0) == '"' && lastArg.charAt(lastArg.length() - 1) == '"')
+			lastArg = lastArg.substring(1, lastArg.length() - 1);
+		File passedFile = new File(lastArg);
+		if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
+			MCreator mcreator = openWorkspaceInMCreator(passedFile);
+			StartupNotifications.handleStartupNotifications(mcreator);
+			return true;
+		}
+		return false;
 	}
 
 	public GoogleAnalytics getAnalytics() {
@@ -296,7 +322,7 @@ public final class MCreatorApplication {
 						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
 						openResult.set(mcreator);
 					} else { // already open, just focus it
-						LOG.warn("Trying to open already open workspace, bringing it to the front.");
+						LOG.info("Trying to open already open workspace, bringing it to the front.");
 						for (MCreator openmcreator : openMCreators) {
 							if (openmcreator.equals(mcreator)) {
 								openmcreator.requestFocusInWindow();
@@ -396,6 +422,8 @@ public final class MCreatorApplication {
 		} catch (IOException e) {
 			LOG.warn("Failed to close plugin loader", e);
 		}
+
+		singleAppHandler.close();
 
 		try {
 			Thread.sleep(1000); // additional sleep for more robustness
