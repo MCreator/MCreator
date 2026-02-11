@@ -71,7 +71,7 @@ import org.apache.logging.log4j.Logger;
 
 	public static void queueServerWork(int delay, Runnable action) {
 		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
-			workToBeScheduled.add(new IntObjectPair<>(delay, action));
+			workToBeScheduled.add(new IntObjectImmutablePair<>(delay, action));
 	}
 
 	@SubscribeEvent public void tick(ServerTickEvent.Post event) {
