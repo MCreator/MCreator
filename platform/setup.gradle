@@ -1,5 +1,7 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+// Can not update to 21.0.10 due to https://youtrack.jetbrains.com/projects/JBR/issues/JBR-8397, https://youtrack.jetbrains.com/projects/JBR/issues/JBR-8855
+// Tests fail on Windows occasionally due to this bug
 def jbr21_win_64 = 'jbrsdk_jcef-21.0.9-windows-x64-b1163.94'
 def jbr21_linux_64 = 'jbrsdk_jcef-21.0.9-linux-x64-b1163.94'
 def jbr21_mac_x64 = 'jbrsdk_jcef-21.0.9-osx-x64-b1163.94'
