@@ -20,6 +20,7 @@
 package net.mcreator.ui.chromium;
 
 import com.jetbrains.cef.JCefAppConfig;
+import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
@@ -38,11 +39,17 @@ import org.cef.handler.CefDisplayHandlerAdapter;
 import org.cef.handler.CefRequestHandlerAdapter;
 import org.cef.network.CefRequest;
 
+import javax.annotation.Nullable;
 import java.awt.*;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Stream;
 
 public class CefUtils {
 
@@ -177,12 +184,14 @@ public class CefUtils {
 			List<String> appArgs = config.getAppArgsAsList();
 			CefSettings settings = config.getCefSettings();
 			settings.no_sandbox = true;
-			settings.cache_path = UserFolderManager.getFileFromUserFolder("/cef/").toString();
 			settings.background_color = settings.new ColorType(0, 0, 0, 0);
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
 			settings.locale = L10N.getLocale().stripExtensions().toLanguageTag();
 			settings.log_file = null;
+
+			settings.cache_path = Objects.requireNonNullElseGet(getTmpCacheFolder(),
+					() -> UserFolderManager.getFileFromUserFolder("/cef/")).toString();
 
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
@@ -293,6 +302,34 @@ public class CefUtils {
 		});
 
 		return cefClient;
+	}
+
+	private static final String CEF_CACHE_PREFIX = "mcreator-cef-cache-";
+
+	@Nullable private static File getTmpCacheFolder() {
+		try {
+			Path cacheDir = Files.createTempDirectory(CEF_CACHE_PREFIX);
+			File cacheDirFile = cacheDir.toFile();
+
+			// Clean up old orphaned folders in the same parent directory
+			Path parentDir = cacheDir.getParent();
+			try (Stream<Path> paths = Files.list(parentDir)) {
+				paths.filter(
+						p -> Files.isDirectory(p) && p.getFileName().toString().startsWith(CEF_CACHE_PREFIX) && !p.equals(
+								cacheDir)).forEach(p -> {
+					File lock = p.resolve("lockfile").toFile();
+					if (!lock.exists()) {
+						LOG.debug("Deleting orphaned CEF cache folder {}", p);
+						FileIO.deleteDir(p.toFile());
+					}
+				});
+			}
+
+			return cacheDirFile;
+		} catch (Exception e) {
+			LOG.error("Failed to create temporary cache folder, persistent storage will be used", e);
+			return null;
+		}
 	}
 
 }
