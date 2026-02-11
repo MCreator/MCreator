@@ -77,8 +77,8 @@ import org.apache.logging.log4j.Logger;
 	@SubscribeEvent public void tick(ServerTickEvent.Post event) {
 		int currentTick = event.getServer().getTickCount();
 
-        IntObjectPair<Runnable> work;
-        while ((work = workToBeScheduled.poll()) != null) {
+		IntObjectPair<Runnable> work;
+		while ((work = workToBeScheduled.poll()) != null) {
 			workQueue.add(new TickTask(currentTick + work.leftInt(), work.right()));
 		}
 
