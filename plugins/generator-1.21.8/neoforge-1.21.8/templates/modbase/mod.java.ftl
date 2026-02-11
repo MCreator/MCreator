@@ -69,22 +69,25 @@ import org.apache.logging.log4j.Logger;
 	}
 
 	<#-- Wait procedure block support below -->
-	private static final Collection<Tuple<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
+	private static final Queue<IntObjectPair<Runnable>> workToBeScheduled = new ConcurrentLinkedQueue<>();
+	private static final PriorityQueue<TickTask> workQueue = new PriorityQueue<>(Comparator.comparingInt(TickTask::getTick));
 
-	public static void queueServerWork(int tick, Runnable action) {
+	public static void queueServerWork(int delay, Runnable action) {
 		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
-			workQueue.add(new Tuple<>(action, tick));
+			workToBeScheduled.add(new IntObjectImmutablePair<>(delay, action));
 	}
 
 	@SubscribeEvent public void tick(ServerTickEvent.Post event) {
-		List<Tuple<Runnable, Integer>> actions = new ArrayList<>();
-		workQueue.forEach(work -> {
-			work.setB(work.getB() - 1);
-			if (work.getB() == 0)
-				actions.add(work);
-		});
-		actions.forEach(e -> e.getA().run());
-		workQueue.removeAll(actions);
+		int currentTick = event.getServer().getTickCount();
+
+		IntObjectPair<Runnable> work;
+		while ((work = workToBeScheduled.poll()) != null) {
+			workQueue.add(new TickTask(currentTick + work.leftInt(), work.right()));
+		}
+
+		while (!workQueue.isEmpty() && currentTick >= workQueue.peek().getTick()) {
+			workQueue.poll().run();
+		}
 	}
 
 	<#-- Client side player query support below, we use method handles for this -->
