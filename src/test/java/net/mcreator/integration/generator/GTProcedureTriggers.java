@@ -25,6 +25,7 @@ import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -37,10 +38,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureTriggers {
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
-		Set<String> generatorTriggers = workspace.getGeneratorStats().getProcedureTriggers();
+		Set<String> generatorTriggers = workspace.getGeneratorStats().getBlocklyTriggers(BlocklyEditorType.PROCEDURE);
 
-		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-				.getExternalTriggers()) {
+		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+				BlocklyEditorType.PROCEDURE).getExternalTriggers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {
 				continue;
 			}

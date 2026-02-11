@@ -20,6 +20,7 @@ package net.mcreator.generator;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalTriggerLoader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.minecraft.DataListEntry;
@@ -46,17 +47,17 @@ public class GeneratorStats {
 
 	private final Status status;
 
-	private final Map<String, Set<String>> generatorBlocklyBlocks;
+	private final Map<BlocklyEditorType, Set<String>> generatorBlocklyBlocks;
+
+	private final Map<BlocklyEditorType, Set<String>> generatorBlocklyTriggers;
 
 	private final Map<TextureType, CoverageStatus> textureCoverageInfo = new HashMap<>();
-
-	private final Set<String> procedureTriggers;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
 		this.status = Status.valueOf(
 				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 		this.generatorBlocklyBlocks = new LinkedHashMap<>();
-		this.procedureTriggers = new HashSet<>();
+		this.generatorBlocklyTriggers = new HashMap<>();
 
 		// determine supported mod element types
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
@@ -89,18 +90,18 @@ public class GeneratorStats {
 		}
 
 		// load dummy values
-		coverageInfo.put("procedures", 100d);
-		coverageInfo.put("triggers", 100d);
-		coverageInfo.put("jsontriggers", 100d);
-		coverageInfo.put("aitasks", 100d);
-		coverageInfo.put("cmdargs", 100d);
-		coverageInfo.put("features", 100d);
+		BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> coverageInfo.put(name.registryName(), 0d));
+		BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders().forEach((key, value) -> {
+			ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
+			coverageInfo.put(loader.getResourceFolder(), 0d);
+		});
 
 		// lazy load actual values
 		new Thread(() -> {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders()
 					.forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
-			addGlobalTriggerFolder(generatorConfiguration);
+			BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders()
+					.forEach((key, value) -> addBlocklyTriggerFolder(generatorConfiguration, key));
 		}, "GeneratorStats-Loader").start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
@@ -121,6 +122,8 @@ public class GeneratorStats {
 				resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_bedrock",
+				resourceTasksJSON.contains("\"type\":\"BEDROCK") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
 		String sourceTasksJSON = new Gson().toJson(generatorConfiguration.getSourceSetupTasks());
 		baseCoverageInfo.put("model_animations_java",
@@ -163,7 +166,7 @@ public class GeneratorStats {
 
 	/**
 	 * Load all Blockly files of a {@link Generator} inside the provided folder.
-	 * Global triggers are loaded with their own method using {@link #addGlobalTriggerFolder(GeneratorConfiguration)}.
+	 * Global triggers are loaded with their own method using {@link #addBlocklyTriggerFolder(GeneratorConfiguration, BlocklyEditorType)}.
 	 *
 	 * @param genConfig The current generator's config to use
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
@@ -180,31 +183,38 @@ public class GeneratorStats {
 				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
 						* 100, 100));
 
-		generatorBlocklyBlocks.put(type.registryName(), blocks);
+		generatorBlocklyBlocks.put(type, blocks);
 	}
 
-	public void addGlobalTriggerFolder(GeneratorConfiguration genConfig) {
-		for (String path : genConfig.getGeneratorPaths("triggers")) {
-			procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
+	public void addBlocklyTriggerFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
+		ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(type);
+
+		Set<String> triggers = generatorBlocklyTriggers.computeIfAbsent(type, k -> new HashSet<>());
+
+		for (String path : genConfig.getGeneratorPaths(loader.getResourceFolder())) {
+			triggers.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
 					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 					.collect(Collectors.toSet()));
 		}
 
-		coverageInfo.put("triggers", Math.min(
-				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTriggers().size()) * 100, 100));
+		coverageInfo.put(loader.getResourceFolder(),
+				Math.min((((double) triggers.size()) / loader.getExternalTriggers().size()) * 100, 100));
 	}
 
-	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
+	public Map<BlocklyEditorType, Set<String>> getGeneratorBlocklyBlocks() {
 		return generatorBlocklyBlocks;
 	}
 
 	public Set<String> getBlocklyBlocks(BlocklyEditorType type) {
-		return generatorBlocklyBlocks.get(type.registryName());
+		return generatorBlocklyBlocks.get(type);
 	}
 
-	public Set<String> getProcedureTriggers() {
-		return procedureTriggers;
+	public Map<BlocklyEditorType, Set<String>> getGeneratorBlocklyTriggers() {
+		return generatorBlocklyTriggers;
+	}
+
+	public Set<String> getBlocklyTriggers(BlocklyEditorType type) {
+		return generatorBlocklyTriggers.get(type);
 	}
 
 	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {

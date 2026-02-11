@@ -26,14 +26,18 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"</#if>,
       "minecraft:material_instances": {
-        "up": <@material_face "up" />,
-        "down": <@material_face "down" />,
-        "north": <@material_face "north" />,
-        "south": <@material_face "south" />,
-        "east": <@material_face "east" />,
-        "west": <@material_face "west" />
+        <#if data.hasCustomModel()>
+		"*": <@material_face/>,
+		<#else>
+        "up": <@material_face "up"/>,
+        "down": <@material_face "down"/>,
+        "north": <@material_face "north"/>,
+        "south": <@material_face "south"/>,
+        "east": <@material_face "east"/>,
+        "west": <@material_face "west"/>
+		</#if>
       },
       <#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
       "minecraft:map_color": "${generator.map(data.colorOnMap, "mapcolors")}",

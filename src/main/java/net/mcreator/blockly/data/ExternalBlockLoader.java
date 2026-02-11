@@ -51,7 +51,11 @@ public class ExternalBlockLoader {
 	private final String blocksJSONString;
 	private final Map<String, List<Tuple<ToolboxBlock, String>>> toolbox = new HashMap<>();
 
+	private final String resourceFolder;
+
 	ExternalBlockLoader(String resourceFolder) {
+		this.resourceFolder = resourceFolder;
+
 		LOG.debug("Loading blocks for {}", resourceFolder);
 
 		List<ToolboxCategory> toolboxCategories = new ArrayList<>();
@@ -241,6 +245,10 @@ public class ExternalBlockLoader {
 		}
 
 		pane.executeLocalScript("workspace.updateToolbox('" + toolbox_xml.replace("\n", "").replace("\r", "") + "')");
+	}
+
+	public String getResourceFolder() {
+		return resourceFolder;
 	}
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {
