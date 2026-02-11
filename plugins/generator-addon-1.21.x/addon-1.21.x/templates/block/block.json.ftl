@@ -9,8 +9,13 @@
       }
     },
     "components": {
-      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"</#if>,
       "minecraft:material_instances": {
+        <#if data.hasCustomModel()>
+        "*": {
+          "texture": "${modid}_${registryname}"
+        }
+        <#else>
         "up": {
           "texture": "${modid}_${registryname}_up"
         },
@@ -29,6 +34,7 @@
         "west": {
           "texture": "${modid}_${registryname}_west"
         }
+        </#if>
       },
       <#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
       "minecraft:map_color": "${generator.map(data.colorOnMap, "mapcolors")}",

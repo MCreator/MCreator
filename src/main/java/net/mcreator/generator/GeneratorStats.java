@@ -122,6 +122,8 @@ public class GeneratorStats {
 				resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_bedrock",
+				resourceTasksJSON.contains("\"type\":\"BEDROCK") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
 		String sourceTasksJSON = new Gson().toJson(generatorConfiguration.getSourceSetupTasks());
 		baseCoverageInfo.put("model_animations_java",

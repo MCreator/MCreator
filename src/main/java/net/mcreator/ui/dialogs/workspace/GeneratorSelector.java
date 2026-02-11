@@ -116,6 +116,11 @@ public class GeneratorSelector {
 				addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
 						baseCoverageInfo);
 
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.BEDROCKEDITION)
+				addStatusLabel(L10N.t(covpfx + "bedrock_models"), stats.getBaseCoverageInfo().get("model_bedrock"),
+						baseCoverageInfo);
+
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE
 					|| generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)
 				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
