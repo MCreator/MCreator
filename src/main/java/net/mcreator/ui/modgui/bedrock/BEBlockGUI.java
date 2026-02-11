@@ -119,7 +119,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		ComponentUtils.deriveFont(renderType, 16);
 		renderType.addActionListener(event -> updateTextureOptions());
-		renderType.setPreferredSize(new Dimension(260, 42));
+		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
 		JPanel renderSettings = new JPanel(new GridLayout(3, 2, 0, 2));

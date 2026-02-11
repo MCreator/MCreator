@@ -29,7 +29,7 @@
       "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"</#if>,
       "minecraft:material_instances": {
         <#if data.hasCustomModel()>
-		"*": <@material_face/>,
+		"*": <@material_face/>
 		<#else>
         "up": <@material_face "up"/>,
         "down": <@material_face "down"/>,
