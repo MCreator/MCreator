@@ -46,12 +46,15 @@ public class SingleAppHandler implements Closeable {
 
 	private final Unique4jLock lock;
 
-	private List<String> currentArgs = List.of();
+	private final List<String> currentArgs;
 
 	/**
+	 * @param args                        Command line args of this instance
 	 * @param secondaryAppLaunchedHandler Called in the first instance when a secondary instance sends its args
 	 */
-	public SingleAppHandler(Consumer<List<String>> secondaryAppLaunchedHandler) {
+	public SingleAppHandler(List<String> args, Consumer<List<String>> secondaryAppLaunchedHandler) {
+		this.currentArgs = args;
+
 		IpcFactory ipcFactory;
 		if (isUnixSocketSupported())
 			ipcFactory = new UnixSocketChannelIpcFactory();
@@ -66,8 +69,8 @@ public class SingleAppHandler implements Closeable {
 					try (InputStream is = firstInstanceClient.getInputStream();
 							ObjectInputStream ois = new ObjectInputStream(is)) {
 						Object obj = ois.readObject();
-						if (obj instanceof String[] args) {
-							secondaryAppLaunchedHandler.accept(Arrays.asList(args));
+						if (obj instanceof String[] secondaryArgs) {
+							secondaryAppLaunchedHandler.accept(Arrays.asList(secondaryArgs));
 						}
 					} catch (IOException | ClassNotFoundException e) {
 						LOG.warn("Failed to read args from secondary instance", e);
@@ -90,11 +93,9 @@ public class SingleAppHandler implements Closeable {
 	 * Tries to acquire the single-instance lock. If another instance is running,
 	 * sends args to the first instance.
 	 *
-	 * @param args Command line args
 	 * @return true if this is the first instance (or if locking completely fails), false if another instance is already running
 	 */
-	public boolean tryAcquireLock(List<String> args) {
-		this.currentArgs = args;
+	public boolean tryAcquireLock() {
 		try {
 			return lock.tryLock();
 		} catch (IOException e) {
@@ -123,10 +124,7 @@ public class SingleAppHandler implements Closeable {
 		} catch (UnsupportedOperationException | IOException e) {
 			return false;
 		} finally {
-			try {
-				Files.deleteIfExists(tmpSocket);
-			} catch (IOException ignored) {
-			}
+			tmpSocket.toFile().delete();
 		}
 	}
 

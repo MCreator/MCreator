@@ -90,7 +90,7 @@ public final class MCreatorApplication {
 	private final SingleAppHandler singleAppHandler;
 
 	private MCreatorApplication(List<String> launchArguments) {
-		singleAppHandler = new SingleAppHandler(relaunchArgs ->
+		singleAppHandler = new SingleAppHandler(launchArguments, relaunchArgs ->
 				// Logic that runs if the user started another MCreator and we, as the first instance, handle it instead
 				SwingUtilities.invokeLater(() -> {
 					// First try to open new MCreator frame based on relaunchArgs
@@ -106,7 +106,8 @@ public final class MCreatorApplication {
 				}));
 
 		// Check if we are the first instance and if not, send args to the first instance and close ourselves
-		if (!singleAppHandler.tryAcquireLock(launchArguments)) {
+		if (!singleAppHandler.tryAcquireLock()) {
+			LOG.warn("Another instance of MCreator is already running. Reusing it with args: {}", launchArguments);
 			System.exit(0);
 		}
 
