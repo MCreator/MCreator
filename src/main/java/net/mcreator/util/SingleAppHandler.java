@@ -21,6 +21,7 @@ package net.mcreator.util;
 
 import in.pratanumandal.unique4j.*;
 import in.pratanumandal.unique4j.unixsocketchannel.UnixSocketChannelIpcFactory;
+import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -112,6 +113,9 @@ public class SingleAppHandler implements Closeable {
 	}
 
 	private static boolean isUnixSocketSupported() {
+		if (OS.getOS() == OS.MAC || OS.getOS() == OS.LINUX)
+			return true;
+
 		Path tmpSocket = Path.of(System.getProperty("java.io.tmpdir"), "test.sock");
 		try (ServerSocketChannel server = ServerSocketChannel.open(StandardProtocolFamily.UNIX)) {
 			server.bind(UnixDomainSocketAddress.of(tmpSocket));
