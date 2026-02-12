@@ -20,10 +20,7 @@ package net.mcreator.blockly.data;
 
 import net.mcreator.ui.blockly.BlocklyEditorType;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BlocklyLoader {
 
@@ -59,18 +56,18 @@ public class BlocklyLoader {
 		add("blocks");
 		add("components");
 	}};
-	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders;
-	private final ExternalTriggerLoader externalTriggerLoader;
+
+	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders = new HashMap<>();
+	private final Map<BlocklyEditorType, ExternalTriggerLoader> externalTriggerLoaders = new HashMap<>();
 
 	private BlocklyLoader() {
-		blockLoaders = new LinkedHashMap<>();
-		externalTriggerLoader = new ExternalTriggerLoader("triggers");
+		registerExternalTriggerLoader(BlocklyEditorType.PROCEDURE, "triggers");
 
-		addBlockLoader(BlocklyEditorType.PROCEDURE);
-		addBlockLoader(BlocklyEditorType.AI_TASK);
-		addBlockLoader(BlocklyEditorType.JSON_TRIGGER);
-		addBlockLoader(BlocklyEditorType.COMMAND_ARG);
-		addBlockLoader(BlocklyEditorType.FEATURE);
+		registerBlockLoader(BlocklyEditorType.PROCEDURE);
+		registerBlockLoader(BlocklyEditorType.AI_TASK);
+		registerBlockLoader(BlocklyEditorType.JSON_TRIGGER);
+		registerBlockLoader(BlocklyEditorType.COMMAND_ARG);
+		registerBlockLoader(BlocklyEditorType.FEATURE);
 	}
 
 	/**
@@ -78,8 +75,12 @@ public class BlocklyLoader {
 	 *
 	 * @param type The type of Blockly editor to register
 	 */
-	public void addBlockLoader(BlocklyEditorType type) {
+	public void registerBlockLoader(BlocklyEditorType type) {
 		blockLoaders.put(type, new ExternalBlockLoader(type.registryName()));
+	}
+
+	public void registerExternalTriggerLoader(BlocklyEditorType type, String resourceFolder) {
+		externalTriggerLoaders.put(type, new ExternalTriggerLoader(resourceFolder));
 	}
 
 	/**
@@ -104,7 +105,12 @@ public class BlocklyLoader {
 		return blockLoaders.get(type);
 	}
 
-	public ExternalTriggerLoader getExternalTriggerLoader() {
-		return externalTriggerLoader;
+	public ExternalTriggerLoader getExternalTriggerLoader(BlocklyEditorType type) {
+		return externalTriggerLoaders.get(type);
 	}
+
+	public Map<BlocklyEditorType, ExternalTriggerLoader> getAllExternalTriggerLoaders() {
+		return externalTriggerLoaders;
+	}
+
 }

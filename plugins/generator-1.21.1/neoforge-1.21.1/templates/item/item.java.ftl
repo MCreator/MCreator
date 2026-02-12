@@ -216,7 +216,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 			}, false/>)
 			</#if>
 			if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
-				ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+				ar = InteractionResultHolder.consume(entity.getItemInHand(hand));
 				entity.startUsingItem(hand);
 			}
 		<#elseif shouldExplicitlyCallStartUsing>
