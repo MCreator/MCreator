@@ -1682,7 +1682,6 @@ public class TestWorkspaceDataProvider {
 			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocks)).getName());
 			beitem.blockPlaceableOn = new ArrayList<>();
-			beitem.enableEntityPlacer = _true;
 			beitem.entityToPlace = new EntityEntry(modElement.getWorkspace(), getRandomItem(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 			beitem.entityDispensableOn = new ArrayList<>();
 			beitem.entityPlaceableOn = new ArrayList<>();
