@@ -58,7 +58,6 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean shouldDespawn;
 	@ModElementReference public MItemBlock blockToPlace;
 	@ModElementReference public List<MItemBlock> blockPlaceableOn;
-	public boolean enableEntityPlacer;
 	@ModElementReference public EntityEntry entityToPlace;
 	@ModElementReference public List<MItemBlock> entityPlaceableOn;
 	@ModElementReference public List<MItemBlock> entityDispensableOn;

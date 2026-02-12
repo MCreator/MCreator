@@ -19,13 +19,11 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
-import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
@@ -79,8 +77,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox shouldDespawn = L10N.checkbox("elementgui.common.enable");
 	private final MCItemHolder blockToPlace = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final MCItemListField blockPlaceableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-	private final JCheckBox enableEntityPlacer = L10N.checkbox("elementgui.common.enable");
-	private final DataListComboBox entityToPlace = new DataListComboBox(mcreator);
+	private final SingleSpawnableEntitySelector entityToPlace = new SingleSpawnableEntitySelector(mcreator);
 	private final MCItemListField entityDispensableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 	private final MCItemListField entityPlaceableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
@@ -242,7 +239,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		blockPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/block_to_place"),
 				L10N.label("elementgui.beitem.block_to_place")));
 		blockToPlace.setOpaque(false);
-		blockPlacerProps.add(blockToPlace);
+		blockPlacerProps.add(PanelUtils.centerInPanel(blockToPlace));
 		blockToPlace.addBlockSelectedListener(e -> updateBlockUsableOnList());
 
 		blockPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/block_placeable_on"),
@@ -258,8 +255,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_to_place"),
 				L10N.label("elementgui.beitem.entity_to_place")));
 		entityToPlace.setOpaque(false);
-		entityPlacerProps.add(PanelUtils.westAndCenterElement(enableEntityPlacer, entityToPlace));
-		enableEntityPlacer.addActionListener(e -> updateEntityPlacerPanel());
+		entityPlacerProps.add(entityToPlace);
 
 		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_dispensable_on"),
 				L10N.label("elementgui.beitem.entity_dispensable_on")));
@@ -274,9 +270,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		ComponentUtils.makeSection(entityPlacerProps, L10N.t("elementgui.beitem.entity_placer_properties"));
 
 		advancedPanel.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(advancedProperties), PanelUtils.pullElementUp(
-						PanelUtils.northAndCenterElement(PanelUtils.totalCenterInPanel(blockPlacerProps),
-								PanelUtils.totalCenterInPanel(entityPlacerProps))))));
+				PanelUtils.column(advancedProperties, blockPlacerProps, entityPlacerProps)));
 
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(texture);
@@ -298,13 +292,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		updateMeleeDamage();
 		updateFoodPanel();
 		updateBlockUsableOnList();
-		updateEntityPlacerPanel();
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-
-		ComboBoxUtil.updateComboBoxContents(entityToPlace, ElementUtil.loadAllSpawnableEntities(mcreator.getWorkspace()));
 	}
 
 	private void updateFoodPanel() {
@@ -339,12 +330,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		blockPlaceableOn.setEnabled(blockToPlace.containsItem());
 	}
 
-	private void updateEntityPlacerPanel() {
-		entityToPlace.setEnabled(enableEntityPlacer.isSelected());
-		entityDispensableOn.setEnabled(enableEntityPlacer.isSelected());
-		entityPlaceableOn.setEnabled(enableEntityPlacer.isSelected());
-	}
-
 	@Override protected void openInEditingMode(BEItem item) {
 		texture.setTexture(item.texture);
 		name.setText(item.name);
@@ -371,15 +356,13 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		animation.setSelectedItem(item.animation);
 		blockToPlace.setBlock(item.blockToPlace);
 		blockPlaceableOn.setListElements(item.blockPlaceableOn);
-		enableEntityPlacer.setSelected(item.enableEntityPlacer);
-		entityToPlace.setSelectedItem(item.entityToPlace);
+		entityToPlace.setEntry(item.entityToPlace);
 		entityDispensableOn.setListElements(item.entityDispensableOn);
 		entityPlaceableOn.setListElements(item.entityPlaceableOn);
 		updateFoodPanel();
 		updateMeleeDamage();
 		updateCreativeTab();
 		updateBlockUsableOnList();
-		updateEntityPlacerPanel();
 	}
 
 	@Override public BEItem getElementFromGUI() {
@@ -409,8 +392,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.animation = animation.getSelectedItem();
 		item.blockToPlace = blockToPlace.getBlock();
 		item.blockPlaceableOn = blockPlaceableOn.getListElements();
-		item.enableEntityPlacer = enableEntityPlacer.isSelected();
-		item.entityToPlace = new EntityEntry(mcreator.getWorkspace(), entityToPlace.getSelectedItem());
+		item.entityToPlace = entityToPlace.getEntry();
 		item.entityDispensableOn = entityDispensableOn.getListElements();
 		item.entityPlaceableOn = entityPlaceableOn.getListElements();
 
