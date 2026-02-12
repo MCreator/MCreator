@@ -30,10 +30,7 @@ import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.StandardProtocolFamily;
-import java.net.UnixDomainSocketAddress;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.channels.SocketChannel;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -117,15 +114,14 @@ public class SingleAppHandler implements Closeable {
 		if (OS.getOS() == OS.MAC || OS.getOS() == OS.LINUX)
 			return true;
 
-		Path tmpSocket = Path.of(System.getProperty("java.io.tmpdir"), "test.sock");
-		try (ServerSocketChannel server = ServerSocketChannel.open(StandardProtocolFamily.UNIX)) {
-			server.bind(UnixDomainSocketAddress.of(tmpSocket));
-			return true;
-		} catch (UnsupportedOperationException | IOException e) {
+		try {
+			SocketChannel.open(StandardProtocolFamily.UNIX).close();
+		} catch (UnsupportedOperationException e) {
 			return false;
-		} finally {
-			tmpSocket.toFile().delete();
+		} catch (IOException ignored) {
 		}
+
+		return true;
 	}
 
 	public static void bringToFront(JFrame frame) {
