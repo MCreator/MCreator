@@ -7,7 +7,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
-public class ArmorTrim extends GeneratableElement {
+@SuppressWarnings("unused") public class ArmorTrim extends GeneratableElement {
 
 	public String name;
 	@ModElementReference
@@ -17,6 +17,10 @@ public class ArmorTrim extends GeneratableElement {
 			files = {"%s_layer_1", "%s_layer_2"}
 	)
 	public String armorTextureFile;
+
+	private ArmorTrim() {
+		this(null);
+	}
 
 	public ArmorTrim(ModElement element) {
 		super(element);
