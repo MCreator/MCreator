@@ -62,13 +62,14 @@ public class BlocklyLoader {
 
 	private BlocklyLoader() {
 		registerExternalTriggerLoader(BlocklyEditorType.PROCEDURE, "triggers");
+		registerExternalTriggerLoader(BlocklyEditorType.SCRIPT, "jstriggers");
 
 		registerBlockLoader(BlocklyEditorType.PROCEDURE);
 		registerBlockLoader(BlocklyEditorType.AI_TASK);
 		registerBlockLoader(BlocklyEditorType.JSON_TRIGGER);
 		registerBlockLoader(BlocklyEditorType.COMMAND_ARG);
 		registerBlockLoader(BlocklyEditorType.FEATURE);
-		addBlockLoader(BlocklyEditorType.SCRIPT);
+		registerBlockLoader(BlocklyEditorType.SCRIPT);
 	}
 
 	/**

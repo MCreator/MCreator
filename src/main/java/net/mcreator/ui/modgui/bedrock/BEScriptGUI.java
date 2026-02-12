@@ -40,8 +40,6 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -112,8 +110,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 
 		// Handle compile notes related to external trigger if present
 		if (blocklyToJavaScript.getExternalTrigger() != null) {
-			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-					.getExternalTriggers();
+			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+					BlocklyEditorType.SCRIPT).getExternalTriggers();
 
 			for (ExternalTrigger externalTrigger : externalTriggers) {
 				if (externalTrigger.getID().equals(blocklyToJavaScript.getExternalTrigger())) {
@@ -123,7 +121,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 			}
 
 			if (trigger != null) {
-				if (!mcreator.getGeneratorStats().getProcedureTriggers().contains(trigger.getID())) {
+				if (!mcreator.getGeneratorStats().getBlocklyTriggers(BlocklyEditorType.SCRIPT)
+						.contains(trigger.getID())) {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("elementgui.procedure.global_trigger_unsupported")));
 				}
@@ -230,17 +229,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		dependenciesExtTrigList.setBorder(BorderFactory.createEmptyBorder());
 		dependenciesExtTrigList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		JToolBar bar4 = new JToolBar();
-		bar4.setBorder(BorderFactory.createEmptyBorder(2, 2, 5, 0));
-		bar4.setFloatable(false);
-		bar4.setOpaque(false);
-		bar4.add(ComponentUtils.deriveFont(L10N.label("elementgui.procedure.return_type"), 13));
-
-		JToolBar bar = new JToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(2, 0, 5, 0));
-		bar.setFloatable(false);
-		bar.setOpaque(false);
-
 		dependenciesList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
@@ -340,9 +328,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.SCRIPT)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.SCRIPT);
 
-			// TODO: how do we handle triggers for this
-			//BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTriggers()
-			//		.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
+			BlocklyLoader.INSTANCE.getExternalTriggerLoader(BlocklyEditorType.SCRIPT).getExternalTriggers()
+					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
