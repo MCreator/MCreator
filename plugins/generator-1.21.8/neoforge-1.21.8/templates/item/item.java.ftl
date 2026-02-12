@@ -200,7 +200,7 @@ public class ${name}Item extends Item {
 			}, false/>)
 			</#if>
 			if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
-				ar = InteractionResult.SUCCESS;
+				ar = InteractionResult.CONSUME;
 				entity.startUsingItem(hand);
 			}
 		<#elseif shouldExplicitlyCallStartUsing>
