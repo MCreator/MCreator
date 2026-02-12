@@ -91,7 +91,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/trim_name"), L10N.label("elementgui.armortrim.name", new Object[0])));
 		mainPanel.add(name);
 		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/smithing_template"), L10N.label("elementgui.armortrim.smithing_template", new Object[0])));
-		mainPanel.add(item);
+		mainPanel.add(PanelUtils.join(FlowLayout.LEFT, item));
 		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/armor_layer_texture"), L10N.label("elementgui.armortrim.layer_texture", new Object[0])));
 		mainPanel.add(this.armorTextureFile);
 
