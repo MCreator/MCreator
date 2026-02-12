@@ -50,21 +50,16 @@ import java.net.URISyntaxException;
 
 public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final VTextField name;
-	private final MCItemHolder item;
-	private final TextureComboBox armorTextureFile;
-	private final JLabel clo1;
-	private final JLabel clo2;
+	private final VTextField name = new VTextField(17);
+	private final MCItemHolder item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems);
+	private final TextureComboBox armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).requireValue("elementgui.armortrim.armortrim_needs_texture");
+	private final JLabel clo1 = new JLabel();
+	private final JLabel clo2 = new JLabel();
+
+	private static final int ARMOR_TEXTURE_SIZE_FACTOR = 5;
 
 	public ArmorTrimGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
-		name = new VTextField(17);
-		item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems);
-		armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).requireValue(
-				"elementgui.armortrim.armortrim_needs_texture");
-		armorTextureFile.setAddPNGExtension(false);
-		clo1 = new JLabel();
-		clo2 = new JLabel();
 		initGUI();
 		super.finalizeGUI();
 	}
@@ -75,10 +70,11 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 2));
 		mainPanel.setOpaque(false);
 
+		armorTextureFile.setAddPNGExtension(false);
 		armorTextureFile.getComboBox().addActionListener(e -> updateArmorTexturePreview());
 		page1group.addValidationElement(armorTextureFile);
-		clo1.setPreferredSize(new Dimension(320, 160));
-		clo2.setPreferredSize(new Dimension(320, 160));
+		clo1.setPreferredSize(new Dimension(64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
+		clo2.setPreferredSize(new Dimension(64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
 
 		JPanel clop = new JPanel();
 		clop.add(clo1);
@@ -120,23 +116,22 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 	}
 
 	private void updateArmorTexturePreview() {
-		if (armorTextureFile.getComboBox().getSelectedItem() == null) {
+		String textureName = armorTextureFile.getTextureName();
+		File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(textureName);
+		if (!textureName.isBlank() && armorTextures[0].isFile() && armorTextures[1].isFile()) {
+			ImageIcon bg1 = new ImageIcon(
+					ImageUtils.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(),
+							64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
+			ImageIcon bg2 = new ImageIcon(
+					ImageUtils.resize(new ImageIcon(armorTextures[1].getAbsolutePath()).getImage(),
+							64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
+			ImageIcon front1 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1());
+			ImageIcon front2 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2());
+			clo1.setIcon(ImageUtils.drawOver(bg1, front1));
+			clo2.setIcon(ImageUtils.drawOver(bg2, front2));
+		} else {
 			clo1.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1()));
 			clo2.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2()));
-		}
-		else {
-			File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(
-					Objects.requireNonNull(armorTextureFile.getComboBox().getSelectedItem()).getTextureName());
-			if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
-				ImageIcon bg1 = new ImageIcon(
-						ImageUtils.resize((new ImageIcon(armorTextures[0].getAbsolutePath())).getImage(), 320, 160));
-				ImageIcon bg2 = new ImageIcon(
-						ImageUtils.resize((new ImageIcon(armorTextures[1].getAbsolutePath())).getImage(), 320, 160));
-				ImageIcon front1 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1());
-				ImageIcon front2 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2());
-				clo1.setIcon(ImageUtils.drawOver(bg1, front1));
-				clo2.setIcon(ImageUtils.drawOver(bg2, front2));
-			}
 		}
 	}
 
