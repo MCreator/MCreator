@@ -1,0 +1,16 @@
+templates:
+  - template: armortrim/trim_pattern.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/trim_pattern/@registryname.json"
+  - template: armortrim/smithing_recipe.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/recipe/@registryname_trim_smithing_template_smithing_trim.json"
+
+global_templates:
+  - template: armortrim/trims_atlas.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/assets/minecraft/atlases/armor_trims.json"
+
+localizationkeys:
+  - key: trim_pattern.@modid.@registryname
+    mapto: name

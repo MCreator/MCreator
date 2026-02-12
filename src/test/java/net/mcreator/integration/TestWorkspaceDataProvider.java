@@ -1007,6 +1007,12 @@ public class TestWorkspaceDataProvider {
 				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			}
 			return armor;
+		} else if (ModElementType.ARMORTRIM.equals(modElement.getType())) {
+			ArmorTrim armortrim = new ArmorTrim(modElement);
+			armortrim.name = modElement.getName();
+			armortrim.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+			armortrim.armorTextureFile = "armor_texture";
+			return armortrim;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
