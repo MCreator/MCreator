@@ -257,15 +257,15 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		entityToPlace.setOpaque(false);
 		entityPlacerProps.add(entityToPlace);
 
+		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_placeable_on"),
+				L10N.label("elementgui.beitem.entity_placeable_on")));
+		entityPlaceableOn.setOpaque(false);
+		entityPlacerProps.add(entityPlaceableOn);
+
 		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_dispensable_on"),
 				L10N.label("elementgui.beitem.entity_dispensable_on")));
 		entityDispensableOn.setOpaque(false);
 		entityPlacerProps.add(entityDispensableOn);
-
-		entityPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/entity_placeable_on"),
-				L10N.label("elementgui.beitem.placeable_on")));
-		entityPlaceableOn.setOpaque(false);
-		entityPlacerProps.add(entityPlaceableOn);
 
 		ComponentUtils.makeSection(entityPlacerProps, L10N.t("elementgui.beitem.entity_placer_properties"));
 
