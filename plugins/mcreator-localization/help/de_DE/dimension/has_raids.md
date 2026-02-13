@@ -1,0 +1,1 @@
+Wenn diese Option aktiviert ist, können Spieler Überfälle innerhalb dieser Dimension auslösen.
