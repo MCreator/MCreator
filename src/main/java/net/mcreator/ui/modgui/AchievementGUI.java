@@ -39,6 +39,7 @@ import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -74,7 +75,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private MCItemHolder achievementIcon;
 
-	private final JComboBox<String> achievementType = new JComboBox<>(new String[] { "task", "goal", "challenge" });
+	private final TranslatedComboBox achievementType = new TranslatedComboBox(
+			Map.entry("task", "elementgui.advancement.achievement_type.task"),
+			Map.entry("goal", "elementgui.advancement.achievement_type.goal"),
+			Map.entry("challenge", "elementgui.advancement.achievement_type.challenge"));
 
 	private TextureComboBox background;
 
@@ -287,7 +291,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.achievementName = achievementName.getText();
 		achievement.achievementDescription = achievementDescription.getText();
 		achievement.achievementIcon = achievementIcon.getBlock();
-		achievement.achievementType = (String) achievementType.getSelectedItem();
+		achievement.achievementType = achievementType.getSelectedItem();
 		achievement.parent = new AchievementEntry(mcreator.getWorkspace(), parentAchievement.getSelectedItem());
 		achievement.showPopup = showPopup.isSelected();
 		achievement.disableDisplay = disableDisplay.isSelected();
