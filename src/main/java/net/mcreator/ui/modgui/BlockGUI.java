@@ -135,9 +135,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isBonemealable = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-					"Sky", "Fog", "Water fog" });
+	private final TranslatedComboBox tintType = new TranslatedComboBox(
+			Map.entry("No tint", "elementgui.block.tint_type.no_tint"),
+			Map.entry("Grass", "elementgui.block.tint_type.grass"),
+			Map.entry("Foliage", "elementgui.block.tint_type.foliage"),
+			Map.entry("Birch foliage", "elementgui.block.tint_type.birch_foliage"),
+			Map.entry("Spruce foliage", "elementgui.block.tint_type.spruce_foliage"),
+			Map.entry("Default foliage", "elementgui.block.tint_type.default_foliage"),
+			Map.entry("Water", "elementgui.block.tint_type.water"), Map.entry("Sky", "elementgui.block.tint_type.sky"),
+			Map.entry("Fog", "elementgui.block.tint_type.fog"),
+			Map.entry("Water fog", "elementgui.block.tint_type.water_fog"));
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -186,8 +193,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> reactionToPushing = new JComboBox<>(
-			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
+	private final TranslatedComboBox reactionToPushing = new TranslatedComboBox(
+			Map.entry("NORMAL", "elementgui.block.reaction_to_push.normal"),
+			Map.entry("DESTROY", "elementgui.block.reaction_to_push.destroy"),
+			Map.entry("BLOCK", "elementgui.block.reaction_to_push.block"),
+			Map.entry("PUSH_ONLY", "elementgui.block.reaction_to_push.push_only"),
+			Map.entry("IGNORE", "elementgui.block.reaction_to_push.ignore"));
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
@@ -224,11 +235,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 					L10N.t("elementgui.block.rotation_mode.log") });
 	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> destroyTool = new JComboBox<>(
-			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
+	private final TranslatedComboBox destroyTool = new TranslatedComboBox(
+			Map.entry("Not specified", "elementgui.block.destroy_tool.not_specified"),
+			Map.entry("pickaxe", "elementgui.block.destroy_tool.pickaxe"),
+			Map.entry("axe", "elementgui.block.destroy_tool.axe"),
+			Map.entry("shovel", "elementgui.block.destroy_tool.shovel"),
+			Map.entry("hoe", "elementgui.block.destroy_tool.hoe"));
 
-	private final JComboBox<String> vanillaToolTier = new JComboBox<>(
-			new String[] { "NONE", "STONE", "IRON", "DIAMOND" });
+	private final TranslatedComboBox vanillaToolTier = new TranslatedComboBox(
+			Map.entry("NONE", "elementgui.block.vanilla_tool_tier.none"),
+			Map.entry("STONE", "elementgui.block.vanilla_tool_tier.stone"),
+			Map.entry("IRON", "elementgui.block.vanilla_tool_tier.iron"),
+			Map.entry("DIAMOND", "elementgui.block.vanilla_tool_tier.diamond"));
 
 	private ProcedureSelector additionalHarvestCondition;
 
