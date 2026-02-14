@@ -1,0 +1,1 @@
+Pokud je tento parametr zaškrtnut nebo má podmínku která vrací pravdu, pak tento předmět otevře vázané GUI po pravém kliknutí.

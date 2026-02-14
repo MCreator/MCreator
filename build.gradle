@@ -5,10 +5,9 @@ import java.text.SimpleDateFormat
 plugins {
     id "java"
     id "idea"
-    id "de.undercouch.download" version "5.6.0"
+    id "de.undercouch.download" version "5.7.0"
     id 'edu.sc.seis.launch4j' version '4.0.0'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4'
-    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 repositories {
@@ -28,7 +27,11 @@ javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 idea {
     module {
@@ -64,15 +67,15 @@ configurations {
     linux64
 
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        runtimeOnly.extendsFrom win64
+        implementation.extendsFrom win64
     } else if (Os.isFamily(Os.FAMILY_MAC)) {
         if (System.getProperty("os.arch").contains("aarch64")) {
-            runtimeOnly.extendsFrom macAarch64
+            implementation.extendsFrom macAarch64
         } else {
-            runtimeOnly.extendsFrom macX64
+            implementation.extendsFrom macX64
         }
     } else if (Os.isFamily(Os.FAMILY_UNIX)) {
-        runtimeOnly.extendsFrom linux64
+        implementation.extendsFrom linux64
     }
 }
 
@@ -132,6 +135,9 @@ dependencies {
     implementation("com.fifesoft:languagesupport:3.4.1") {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino-all'
     }
+    implementation 'io.beautifier:js-beautify:1.15.4.1'
+    implementation 'io.github.furrrlo:unique4j:2.1.0'
+    implementation 'io.github.furrrlo:unique4j-unix-socket-channel:2.1.0'
     implementation "net.java.dev.jna:jna:5.18.1" // needed by discord-rpc.jar
 
     implementation "com.github.weisj:jsvg:2.0.0"
@@ -148,13 +154,6 @@ dependencies {
     testImplementation platform("org.junit:junit-bom:6.0.2")
     testImplementation "org.junit.jupiter:junit-jupiter"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
-}
-
-javafx {
-    version = '21.0.8' // 21.0.9 crashes sometimes when adding to clipboard (e.g. Ctrl+C)
-    modules = ['javafx.web', 'javafx.swing']
-    configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64']
-    // we provide natives during deployment or with SDK
 }
 
 test {

@@ -58,11 +58,11 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 		search = new JTextField(34) {
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				if (getText().isEmpty()) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					g.setFont(g.getFont().deriveFont(11f));
-					g.setColor(new Color(120, 120, 120));
+					g.setColor(Theme.current().getAltForegroundColor());
 					g.drawString(getSearchPlaceholderText(), 8, 19);
 				}
 			}

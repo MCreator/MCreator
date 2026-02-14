@@ -5,10 +5,37 @@
     "description": {
       "identifier": "${modid}:${registryname}",
       "menu_category": {
-          "category": "construction"
+        "category": "construction"
       }
     },
     "components": {
+      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"</#if>,
+      "minecraft:material_instances": {
+        <#if data.hasCustomModel()>
+        "*": {
+          "texture": "${modid}_${registryname}"
+        }
+        <#else>
+        "up": {
+          "texture": "${modid}_${registryname}_up"
+        },
+        "down": {
+          "texture": "${modid}_${registryname}_down"
+        },
+        "north": {
+          "texture": "${modid}_${registryname}_north"
+        },
+        "south": {
+          "texture": "${modid}_${registryname}_south"
+        },
+        "east": {
+          "texture": "${modid}_${registryname}_east"
+        },
+        "west": {
+          "texture": "${modid}_${registryname}_west"
+        }
+        </#if>
+      },
       <#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
       "minecraft:map_color": "${generator.map(data.colorOnMap, "mapcolors")}",
       </#if>
@@ -17,10 +44,10 @@
       </#if>
       "minecraft:light_emission": ${data.lightEmission},
       "minecraft:destructible_by_mining": {
-          "seconds_to_destroy": ${data.hardness}
+        "seconds_to_destroy": ${data.hardness}
       },
       "minecraft:destructible_by_explosion": {
-          "explosion_resistance": ${data.resistance}
+        "explosion_resistance": ${data.resistance}
       },
       "minecraft:friction": ${data.friction},
       "minecraft:flammable": {
