@@ -1930,7 +1930,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.connectedSides = connectedSides.isSelected();
 		block.displayFluidOverlay = displayFluidOverlay.isSelected();
 		block.transparencyType = (String) transparencyType.getSelectedItem();
-		block.tintType = (String) tintType.getSelectedItem();
+		block.tintType = tintType.getSelectedItem();
 		block.isItemTinted = isItemTinted.isSelected();
 		block.guiBoundTo = guiBoundTo.getEntry();
 		block.rotationMode = rotationMode.getSelectedIndex();
@@ -1948,7 +1948,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.rarity = rarity.getSelectedItem();
 		block.immuneToFire = immuneToFire.isSelected();
 		block.creativeTabs = creativeTabs.getListElements();
-		block.destroyTool = (String) Objects.requireNonNull(destroyTool.getSelectedItem());
+		block.destroyTool = Objects.requireNonNull(destroyTool.getSelectedItem());
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
@@ -1980,7 +1980,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.stepSound = stepSound.getSound();
 		block.luminance = luminance.getSelectedProcedure();
 		block.unbreakable = unbreakable.isSelected();
-		block.vanillaToolTier = (String) vanillaToolTier.getSelectedItem();
+		block.vanillaToolTier = vanillaToolTier.getSelectedItem();
 		block.specialInformation = specialInformation.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.additionalHarvestCondition = additionalHarvestCondition.getSelectedProcedure();
@@ -2056,7 +2056,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 
 		block.isLadder = isLadder.isSelected();
-		block.reactionToPushing = (String) reactionToPushing.getSelectedItem();
+		block.reactionToPushing = reactionToPushing.getSelectedItem();
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
