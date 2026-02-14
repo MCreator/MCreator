@@ -1,0 +1,1 @@
+Tento parametr určuje jak rychlý jak dlouho potrvá cooldown předmětu je při útočení na entity.
