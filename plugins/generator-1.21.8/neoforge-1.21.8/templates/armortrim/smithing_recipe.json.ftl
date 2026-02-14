@@ -1,13 +1,8 @@
 <#include "../mcitems_json.ftl">
 {
   "type": "minecraft:smithing_trim",
-  "addition": {
-    "tag": "minecraft:trim_materials"
-  },
-  "base": {
-    "tag": "minecraft:trimmable_armor"
-  },
-  "template": {
-    "item": "${mappedMCItemToRegistryName(data.item, true)}"
-  }
+  "addition": "#minecraft:trim_materials",
+  "base": "#minecraft:trimmable_armor",
+  "pattern": "${modid}:${registryname}",
+  "template": "${mappedMCItemToRegistryName(data.item, true)}"
 }
