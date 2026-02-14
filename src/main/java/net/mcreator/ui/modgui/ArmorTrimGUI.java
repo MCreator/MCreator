@@ -37,20 +37,21 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.*;
-
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
+
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final VTextField name = new VTextField(17);
 	private final MCItemHolder item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems);
-	private final TextureComboBox armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).requireValue("elementgui.armortrim.armortrim_needs_texture");
+	private final TextureComboBox armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR,
+			true).requireValue("elementgui.armortrim.armortrim_needs_texture");
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
 
@@ -82,12 +83,17 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		JPanel merger = new JPanel(new BorderLayout(35, 35));
 		merger.setOpaque(false);
 
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/trim_name"), L10N.label("elementgui.armortrim.name")));
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/trim_name"),
+				L10N.label("elementgui.armortrim.name")));
 		mainPanel.add(name);
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/smithing_template"), L10N.label("elementgui.armortrim.smithing_template")));
-		mainPanel.add(PanelUtils.join(FlowLayout.LEFT, item));
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/armor_layer_texture"), L10N.label("elementgui.armortrim.layer_texture")));
-		mainPanel.add(this.armorTextureFile);
+
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/smithing_template"),
+				L10N.label("elementgui.armortrim.smithing_template")));
+		mainPanel.add(PanelUtils.centerInPanel(item));
+
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/armor_layer_texture"),
+				L10N.label("elementgui.armortrim.layer_texture")));
+		mainPanel.add(armorTextureFile);
 
 		item.setValidator(new MCItemHolderValidator(item));
 		page1group.addValidationElement(item);
@@ -144,7 +150,8 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		ArmorTrim trim = new ArmorTrim(modElement);
 		trim.name = name.getText();
 		trim.item = item.getBlock();
-		trim.armorTextureFile = Objects.requireNonNull(armorTextureFile.getComboBox().getSelectedItem()).getTextureName();
+		trim.armorTextureFile = Objects.requireNonNull(armorTextureFile.getComboBox().getSelectedItem())
+				.getTextureName();
 		return trim;
 	}
 
