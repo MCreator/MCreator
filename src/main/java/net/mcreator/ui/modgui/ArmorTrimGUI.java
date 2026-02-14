@@ -81,11 +81,11 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		JPanel merger = new JPanel(new BorderLayout(35, 35));
 		merger.setOpaque(false);
 
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/trim_name"), L10N.label("elementgui.armortrim.name", new Object[0])));
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/trim_name"), L10N.label("elementgui.armortrim.name")));
 		mainPanel.add(name);
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/smithing_template"), L10N.label("elementgui.armortrim.smithing_template", new Object[0])));
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/smithing_template"), L10N.label("elementgui.armortrim.smithing_template")));
 		mainPanel.add(PanelUtils.join(FlowLayout.LEFT, item));
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/armor_layer_texture"), L10N.label("elementgui.armortrim.layer_texture", new Object[0])));
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/armor_layer_texture"), L10N.label("elementgui.armortrim.layer_texture")));
 		mainPanel.add(this.armorTextureFile);
 
 		item.setValidator(new MCItemHolderValidator(item));
@@ -93,7 +93,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		page1group.addValidationElement(armorTextureFile);
 
 		name.enableRealtimeValidation();
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.armortrim.needs_layer_texture", new Object[0])));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.armortrim.needs_layer_texture")));
 		page1group.addValidationElement(name);
 
 		if (!this.isEditingMode()) {
