@@ -64,7 +64,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		super.finalizeGUI();
 	}
 
-	protected void initGUI() {
+	@Override protected void initGUI() {
 		JPanel pane1 = new JPanel(new BorderLayout());
 		pane1.setOpaque(false);
 		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 2));
@@ -110,7 +110,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		addPage(pane1).validate(page1group);
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		armorTextureFile.reload();
 	}
@@ -135,7 +135,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		}
 	}
 
-	protected void afterGeneratableElementStored() {
+	@Override protected void afterGeneratableElementStored() {
 		boolean newPath =  ModuleDescriptor.Version.parse(getModElement().getGeneratorConfiguration().getGeneratorMinecraftVersion())
 				.compareTo(ModuleDescriptor.Version.parse("1.21.2")) >= 0;
 		FileIO.copyFile(new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
@@ -150,14 +150,14 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 								: "textures/trims/models/armor/" + modElement.getRegistryName() + "_leggings.png"));
 	}
 
-	public void openInEditingMode(ArmorTrim trim) {
+	@Override public void openInEditingMode(ArmorTrim trim) {
 		name.setText(trim.name);
 		item.setBlock(trim.item);
 		armorTextureFile.setTextureFromTextureName(trim.armorTextureFile);
 		updateArmorTexturePreview();
 	}
 
-	public ArmorTrim getElementFromGUI() {
+	@Override public ArmorTrim getElementFromGUI() {
 		ArmorTrim trim = new ArmorTrim(modElement);
 		trim.name = name.getText();
 		trim.item = item.getBlock();
