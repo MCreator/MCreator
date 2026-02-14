@@ -4,7 +4,7 @@ templates:
     name: "@MODDATAROOT/trim_pattern/@registryname.json"
   - template: armortrim/smithing_recipe.json.ftl
     writer: json
-    name: "@MODDATAROOT/recipe/@registryname_trim_smithing_template_smithing_trim.json"
+    name: "@MODDATAROOT/recipe/@registryname_armor_trim_smithing_template_smithing_trim.json"
 
 global_templates:
   - template: armortrim/trims_atlas.json.ftl
