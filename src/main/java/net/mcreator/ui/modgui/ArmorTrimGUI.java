@@ -20,11 +20,10 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.ArmorTrim;
-import net.mcreator.generator.GeneratorUtils;
-import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -38,7 +37,6 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.lang.module.ModuleDescriptor;
 import java.util.*;
 
 import javax.annotation.Nullable;
@@ -64,7 +62,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		super.finalizeGUI();
 	}
 
-	protected void initGUI() {
+	@Override protected void initGUI() {
 		JPanel pane1 = new JPanel(new BorderLayout());
 		pane1.setOpaque(false);
 		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 2));
@@ -84,11 +82,11 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		JPanel merger = new JPanel(new BorderLayout(35, 35));
 		merger.setOpaque(false);
 
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/trim_name"), L10N.label("elementgui.armortrim.name", new Object[0])));
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/trim_name"), L10N.label("elementgui.armortrim.name")));
 		mainPanel.add(name);
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/smithing_template"), L10N.label("elementgui.armortrim.smithing_template", new Object[0])));
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/smithing_template"), L10N.label("elementgui.armortrim.smithing_template")));
 		mainPanel.add(PanelUtils.join(FlowLayout.LEFT, item));
-		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/armor_layer_texture"), L10N.label("elementgui.armortrim.layer_texture", new Object[0])));
+		mainPanel.add(HelpUtils.wrapWithHelpButton(withEntry("armortrim/armor_layer_texture"), L10N.label("elementgui.armortrim.layer_texture")));
 		mainPanel.add(this.armorTextureFile);
 
 		item.setValidator(new MCItemHolderValidator(item));
@@ -96,7 +94,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		page1group.addValidationElement(armorTextureFile);
 
 		name.enableRealtimeValidation();
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.armortrim.needs_layer_texture", new Object[0])));
+		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.armortrim.needs_layer_texture")));
 		page1group.addValidationElement(name);
 
 		if (!this.isEditingMode()) {
@@ -110,7 +108,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		addPage(pane1).validate(page1group);
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		armorTextureFile.reload();
 	}
@@ -135,29 +133,14 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		}
 	}
 
-	protected void afterGeneratableElementStored() {
-		boolean newPath =  ModuleDescriptor.Version.parse(getModElement().getGeneratorConfiguration().getGeneratorMinecraftVersion())
-				.compareTo(ModuleDescriptor.Version.parse("1.21.2")) >= 0;
-		FileIO.copyFile(new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						"textures/models/armor/" + Objects.requireNonNull(armorTextureFile.getComboBox().getSelectedItem()).getTextureName() + "_layer_1.png"),
-				new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						newPath ? "textures/trims/entity/humanoid/" + modElement.getRegistryName() + ".png"
-								: "textures/trims/models/armor/" + modElement.getRegistryName() + ".png"));
-		FileIO.copyFile(new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						"textures/models/armor/" + Objects.requireNonNull(armorTextureFile.getComboBox().getSelectedItem()).getTextureName() + "_layer_2.png"),
-				new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						newPath ? "textures/trims/entity/humanoid_leggings/" + modElement.getRegistryName() + ".png"
-								: "textures/trims/models/armor/" + modElement.getRegistryName() + "_leggings.png"));
-	}
-
-	public void openInEditingMode(ArmorTrim trim) {
+	@Override public void openInEditingMode(ArmorTrim trim) {
 		name.setText(trim.name);
 		item.setBlock(trim.item);
 		armorTextureFile.setTextureFromTextureName(trim.armorTextureFile);
 		updateArmorTexturePreview();
 	}
 
-	public ArmorTrim getElementFromGUI() {
+	@Override public ArmorTrim getElementFromGUI() {
 		ArmorTrim trim = new ArmorTrim(modElement);
 		trim.name = name.getText();
 		trim.item = item.getBlock();
@@ -166,7 +149,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 	}
 
 	@Override @Nullable public URI contextURL() throws URISyntaxException {
-		return null;
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-armor-trim");
 	}
 
 }

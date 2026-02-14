@@ -3,10 +3,10 @@
     {
       "type": "paletted_permutations",
       "textures": [
-		<#list armortrims as trim>
-		  "${modid}:trims/models/armor/${trim.getModElement().getRegistryName()}",
-		  "${modid}:trims/models/armor/${trim.getModElement().getRegistryName()}_leggings"<#sep>,
-		</#list>
+        <#list armortrims as trim>
+          "${modid}:trims/models/armor/${trim.getModElement().getRegistryName()}",
+          "${modid}:trims/models/armor/${trim.getModElement().getRegistryName()}_leggings"<#sep>,
+        </#list>
       ],
       "palette_key": "trims/color_palettes/trim_palette",
       "permutations": {

@@ -1,8 +1,8 @@
 <#include "../mcitems_json.ftl">
 {
-  "asset_id": "${modid}:${data.getModElement().getRegistryName()}",
+  "asset_id": "${modid}:${registryname}",
   "description": {
-    "translate": "trim_pattern.${modid}.${data.getModElement().getRegistryName()}"
+    "translate": "trim_pattern.${modid}.${registryname}"
   },
   "template_item": "${mappedMCItemToRegistryName(data.item, true)}"
 }
