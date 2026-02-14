@@ -28,6 +28,31 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
+      <#if !data.blockToPlace.isEmpty()>
+      "minecraft:block_placer": {
+          "block": "${mappedMCItemToRegistryNameNoTags(data.blockToPlace)}",
+          "use_on": [
+            <#list data.blockPlaceableOn as block>
+            "${mappedMCItemToRegistryNameNoTags(block)}"<#sep>,
+            </#list>
+          ]
+      },
+      </#if>
+      <#if !data.entityToPlace.isEmpty()>
+      "minecraft:entity_placer": {
+        "entity": "${generator.map(data.entityToPlace.getUnmappedValue(), "entities")}",
+        "dispense_on": [
+            <#list data.entityDispensableOn as block>
+            "${mappedMCItemToRegistryNameNoTags(block)}"<#sep>,
+            </#list>
+        ],
+        "use_on": [
+            <#list data.entityPlaceableOn as block>
+            "${mappedMCItemToRegistryNameNoTags(block)}"<#sep>,
+            </#list>
+        ]
+      },
+      </#if>
       <#if data.isFood>
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration},
