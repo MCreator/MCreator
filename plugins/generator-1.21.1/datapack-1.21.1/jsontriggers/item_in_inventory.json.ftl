@@ -3,7 +3,7 @@
   "conditions": {
     "items": [
       {
-        "items": ${input$item},
+        ${input$item},
         "count": {
           "min": ${input$amount_l},
           "max": ${input$amount_h}
