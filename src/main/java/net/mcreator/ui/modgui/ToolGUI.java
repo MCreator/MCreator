@@ -26,6 +26,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -58,6 +59,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -79,6 +81,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private final VTextField name = new VTextField(26).requireValue("elementgui.tool.needs_a_name")
 			.enableRealtimeValidation();
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
 			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
@@ -105,6 +115,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private ProcedureSelector onItemInInventoryTick;
 	private ProcedureSelector onItemInUseTick;
 	private ProcedureSelector onEntitySwing;
+	private ProcedureSelector onDroppedByPlayer;
+	private ProcedureSelector onItemEntityDestroyed;
 
 	private MCItemListField blocksAffected;
 
@@ -153,6 +165,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
+				L10N.t("elementgui.item.event_on_dropped"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
+				L10N.t("elementgui.item.on_item_entity_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
@@ -225,6 +243,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		itemProperties.add(name);
 
 		ComponentUtils.deriveFont(name, 16);
+
+		itemProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		itemProperties.add(rarity);
 
 		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
@@ -304,7 +326,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
 		events.add(onCrafted);
@@ -313,6 +335,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.add(onItemInInventoryTick);
 		events.add(onItemInUseTick);
 		events.add(onEntitySwing);
+		events.add(onDroppedByPlayer);
+		events.add(onItemEntityDestroyed);
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
@@ -382,6 +406,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick.refreshListKeepSelected(context);
 		onItemInUseTick.refreshListKeepSelected(context);
 		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
 		glowCondition.refreshListKeepSelected(context);
 		specialInformation.refreshListKeepSelected(context);
 
@@ -399,6 +425,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	@Override public void openInEditingMode(Tool tool) {
 		creativeTabs.setListElements(tool.creativeTabs);
 		name.setText(tool.name);
+		rarity.setSelectedItem(tool.rarity);
 		texture.setTexture(tool.texture);
 		guiTexture.setTexture(tool.guiTexture);
 		toolType.setSelectedItem(tool.toolType);
@@ -417,6 +444,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick.setSelectedProcedure(tool.onItemInInventoryTick);
 		onItemInUseTick.setSelectedProcedure(tool.onItemInUseTick);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
+		onDroppedByPlayer.setSelectedProcedure(tool.onDroppedByPlayer);
+		onItemEntityDestroyed.setSelectedProcedure(tool.onItemEntityDestroyed);
 		glowCondition.setSelectedProcedure(tool.glowCondition);
 		specialInformation.setSelectedProcedure(tool.specialInformation);
 		repairItems.setListElements(tool.repairItems);
@@ -441,6 +470,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	@Override public Tool getElementFromGUI() {
 		Tool tool = new Tool(modElement);
 		tool.name = name.getText();
+		tool.rarity = rarity.getSelectedItem();
 		tool.creativeTabs = creativeTabs.getListElements();
 		tool.toolType = (String) Objects.requireNonNull(toolType.getSelectedItem());
 		tool.blockDropsTier = (String) blockDropsTier.getSelectedItem();
@@ -459,6 +489,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
 		tool.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
+		tool.onDroppedByPlayer = onDroppedByPlayer.getSelectedProcedure();
+		tool.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();
 		tool.glowCondition = glowCondition.getSelectedProcedure();
 		tool.specialInformation = specialInformation.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();

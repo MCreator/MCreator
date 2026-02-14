@@ -110,6 +110,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
 				</#if>
+				<#if data.rarity != "COMMON">
+				.rarity(Rarity.${data.rarity})
+				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
@@ -203,6 +206,9 @@ public class ${name}Item extends Item {
 			<#else>
 			.stacksTo(1)
 			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
+			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
@@ -246,6 +252,9 @@ public class ${name}Item extends FishingRodItem {
 			.durability(${data.usageCount})
 			<#else>
 			.stacksTo(1)
+			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
@@ -330,6 +339,10 @@ public class ${name}Item extends FishingRodItem {
 	<@onEntitySwing data.onEntitySwing/>
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
+
+	<@onDroppedByPlayer data.onDroppedByPlayer/>
+
+	<@onItemEntityDestroyed data.onItemEntityDestroyed/>
 
 	<@hasGlow data.glowCondition/>
 
