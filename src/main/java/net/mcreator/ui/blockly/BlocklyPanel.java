@@ -283,9 +283,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 				.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r");
 	}
 
-	public void addExternalTriggerForProcedureEditor(ExternalTrigger external_trigger) {
-		if (type != BlocklyEditorType.PROCEDURE)
-			throw new RuntimeException("This method can only be called from procedure editor");
+	public void addExternalTrigger(ExternalTrigger external_trigger) {
 		bridge.addExternalTrigger(external_trigger);
 	}
 

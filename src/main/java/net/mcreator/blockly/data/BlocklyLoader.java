@@ -76,7 +76,7 @@ public class BlocklyLoader {
 	 * @param type The type of Blockly editor to register
 	 */
 	public void registerBlockLoader(BlocklyEditorType type) {
-		blockLoaders.put(type, new ExternalBlockLoader(type.registryName()));
+		blockLoaders.put(type, new ExternalBlockLoader(type));
 	}
 
 	public void registerExternalTriggerLoader(BlocklyEditorType type, String resourceFolder) {
