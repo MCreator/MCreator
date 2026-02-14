@@ -4,7 +4,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
@@ -34,19 +33,16 @@ import java.lang.module.ModuleDescriptor;
 			boolean newPath = ModuleDescriptor.Version.parse(
 							getModElement().getGeneratorConfiguration().getGeneratorMinecraftVersion())
 					.compareTo(ModuleDescriptor.Version.parse("1.21.2")) >= 0;
-			Workspace workspace = getModElement().getWorkspace();
 			File armorDirectory = getModElement().getFolderManager().getTexturesFolder(TextureType.ARMOR);
 			File texturesDirectory = getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER);
-			FileIO.copyFile(
-					new File(armorDirectory,armorTextureFile + "_layer_1.png"),
-					new File(texturesDirectory, newPath
-					? "trims/entity/humanoid/" + getModElement().getRegistryName() + ".png"
-					: "trims/models/armor/" + getModElement().getRegistryName() + ".png"));
-			FileIO.copyFile(
-					new File(armorDirectory,armorTextureFile + "_layer_2.png"),
-					new File(texturesDirectory, newPath
-					? "trims/entity/humanoid_leggings/" + getModElement().getRegistryName() + ".png"
-					: "trims/models/armor/" + getModElement().getRegistryName() + "_leggings.png"));
+			FileIO.copyFile(new File(armorDirectory, armorTextureFile + "_layer_1.png"), new File(texturesDirectory,
+					newPath ?
+							"trims/entity/humanoid/" + getModElement().getRegistryName() + ".png" :
+							"trims/models/armor/" + getModElement().getRegistryName() + ".png"));
+			FileIO.copyFile(new File(armorDirectory, armorTextureFile + "_layer_2.png"), new File(texturesDirectory,
+					newPath ?
+							"trims/entity/humanoid_leggings/" + getModElement().getRegistryName() + ".png" :
+							"trims/models/armor/" + getModElement().getRegistryName() + "_leggings.png"));
 		} catch (Exception e) {
 			LOG.error("Failed to copy armor trim textures", e);
 		}
