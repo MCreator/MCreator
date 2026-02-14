@@ -156,12 +156,15 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
 	private final TranslatedComboBox vanillaTreeType = new TranslatedComboBox(
+			//@formatter:off
 			Map.entry("Default", "elementgui.biome.vanilla_tree_type.default"),
 			Map.entry("Big trees", "elementgui.biome.vanilla_tree_type.big_trees"),
 			Map.entry("Birch trees", "elementgui.biome.vanilla_tree_type.birch_trees"),
 			Map.entry("Savanna trees", "elementgui.biome.vanilla_tree_type.savanna_trees"),
 			Map.entry("Mega pine trees", "elementgui.biome.vanilla_tree_type.mega_pine_trees"),
-			Map.entry("Mega spruce trees", "elementgui.biome.vanilla_tree_type.mega_spruce_trees"));
+			Map.entry("Mega spruce trees", "elementgui.biome.vanilla_tree_type.mega_spruce_trees")
+			//@formatter:on
+	);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
