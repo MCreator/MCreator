@@ -20,11 +20,17 @@
 package net.mcreator.blockly.javascript;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.java.blocks.BooleanBlock;
+import net.mcreator.blockly.java.blocks.IfBlock;
+import net.mcreator.blockly.java.blocks.LogicNegateBlock;
+import net.mcreator.blockly.java.blocks.TextBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -48,19 +54,33 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 
 	@Override protected void preBlocksPlacement(Document doc, Element startBlock) {
 		if (doc != null) {
-			// first we load data from startblock
+			// first we load data from the start block
 			Element trigger = XMLUtil.getFirstChildrenWithName(
 					BlocklyBlockUtil.getStartBlock(doc, getEditorType().startBlockName()), "field");
 			if (trigger != null && !trigger.getTextContent().equals("no_ext_trigger")) {
 				externalTrigger = trigger.getTextContent();
 			} else {
-				// TODO: error, Scripts need a trigger
+				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.scripts.missing_trigger")));
 			}
 		}
 	}
 
 	public String getExternalTrigger() {
 		return externalTrigger;
+	}
+
+	/**
+	 * <p>This method is executed after the constructor is called, before the code is generated</p>
+	 */
+	@Override protected void beforeGenerate() {
+		// add standard procedural blocks
+		blockGenerators.add(new IfBlock()); // reuse from Java generator
+
+		// add standard output blocks
+		blockGenerators.add(new TextBlock()); // reuse from Java generator
+		blockGenerators.add(new BooleanBlock()); // reuse from Java generator
+		blockGenerators.add(new LogicNegateBlock()); // reuse from Java generator
 	}
 
 }

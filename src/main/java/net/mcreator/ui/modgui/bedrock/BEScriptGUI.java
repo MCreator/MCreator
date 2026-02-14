@@ -126,21 +126,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("elementgui.procedure.global_trigger_unsupported")));
 				}
-
-				if (trigger.required_apis != null) {
-					for (String required_api : trigger.required_apis) {
-						if (!mcreator.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
-							compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-									L10N.t("elementgui.procedure.global_trigger_not_activated", required_api)));
-						}
-					}
-				}
-
-				// Check if trigger is tick based
-				if (trigger.getID().endsWith("_ticks")) {
-					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
-							L10N.t("elementgui.procedure.global_trigger_tick_based", trigger.getName())));
-				}
 			} else {
 				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("elementgui.procedure.global_trigger_does_not_exist")));
@@ -156,36 +141,29 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 			depsWarningLabel.setText("");
 
 			hasDependencyErrors = false;
-			if (blocklyToJavaScript.getExternalTrigger() != null) {
-				if (trigger != null) {
-					triggerDepsPan.setVisible(true);
 
-					// if we find a trigger, we go through list of procedure dependencies and
-					// make sure that all of them are contained in trigger's dependency list
-					StringBuilder missingdeps = new StringBuilder();
-					boolean warn = false;
-					for (Dependency dependency : dependenciesArrayList) {
-						if (trigger.dependencies_provided == null || !trigger.dependencies_provided.contains(
-								dependency)) {
-							warn = true;
-							missingdeps.append(" ").append(dependency.name());
-						}
-					}
-					if (warn) {
-						depsWarningLabel.setText(L10N.t("elementgui.procedure.dependencies_not_provided", missingdeps));
-						hasDependencyErrors = true;
-					}
-					extDepsLab.setText("<html><font style='font-size: 10px;'>" + trigger.getName());
-					List<Dependency> tdeps = trigger.dependencies_provided;
-					if (tdeps != null) {
-						Collections.sort(tdeps);
-						tdeps.forEach(dependenciesExtTrigger::addElement);
-					}
-				} else {
-					triggerDepsPan.setVisible(false);
+			List<Dependency> dependenciesProvided = Optional.ofNullable(trigger).map(t -> t.dependencies_provided)
+					.orElse(new ArrayList<>());
+
+			StringBuilder missingdeps = new StringBuilder();
+			boolean warn = false;
+			for (Dependency dependency : dependenciesArrayList) {
+				if (!dependenciesProvided.contains(dependency)) {
+					warn = true;
+					missingdeps.append(" ").append(dependency.name());
 				}
+			}
+			if (warn) {
+				depsWarningLabel.setText(L10N.t("elementgui.procedure.dependencies_not_provided", missingdeps));
+				hasDependencyErrors = true;
+			}
+
+			Collections.sort(dependenciesProvided);
+			dependenciesProvided.forEach(dependenciesExtTrigger::addElement);
+			if (trigger != null) {
+				extDepsLab.setText("<html><font style='font-size: 10px;'>" + trigger.getName());
 			} else {
-				triggerDepsPan.setVisible(false);
+				extDepsLab.setText("");
 			}
 
 			dependenciesArrayList.forEach(dependencies::addElement);
@@ -309,7 +287,6 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 				ComponentUtils.deriveFont(L10N.label("elementgui.procedure.provided_dependencies"), 13),
 				scrollPaneExtDeps, 0, 1));
 		triggerDepsPan.setPreferredSize(new Dimension(150, 0));
-		triggerDepsPan.setVisible(false);
 
 		JPanel eastPan = new JPanel();
 		eastPan.setLayout(new BoxLayout(eastPan, BoxLayout.PAGE_AXIS));
@@ -329,7 +306,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.SCRIPT);
 
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader(BlocklyEditorType.SCRIPT).getExternalTriggers()
-					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
+					.forEach(blocklyPanel::addExternalTrigger);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
@@ -346,7 +323,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.SCRIPT, blocklyPanel);
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.SCRIPT, blocklyPanel, false);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
