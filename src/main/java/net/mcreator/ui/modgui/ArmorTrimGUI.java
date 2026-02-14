@@ -148,7 +148,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 	}
 
 	@Override @Nullable public URI contextURL() throws URISyntaxException {
-		return null;
+		return new URI("https://minecraft.wiki/w/Armor_trim_definition");
 	}
 
 }
