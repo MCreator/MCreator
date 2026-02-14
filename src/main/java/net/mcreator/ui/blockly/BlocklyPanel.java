@@ -95,33 +95,36 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 			MCREvent.event(new BlocklyPanelRegisterDOMData(this, webView));
 
+			StringBuilder blocklyJS = new StringBuilder();
+
 			// @formatter:off
-			webView.executeScript("const MCR_BLOCKLY_PREF = { "
-					+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments.get() + ","
-					+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
-					+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
-					+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan.get() + ","
-					+ "'maxTrashContents' : " + PreferencesManager.PREFERENCES.blockly.maxTrashContents.get() + ","
-					+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
-					+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0 + ","
-					+ "'startScale' : " + PreferencesManager.PREFERENCES.blockly.startScale.get() / 100.0 + ","
-					+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
-					+ "'saturation' :" + PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0 + ","
-					+ "'value' :" + PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0
-					+ " };", WebView.JSExecutionType.GLOBAL_UNSAFE);
+			blocklyJS.append("const MCR_BLOCKLY_PREF = {")
+					.append("'comments': ").append(PreferencesManager.PREFERENCES.blockly.enableComments.get()).append(",")
+					.append("'renderer': '").append(PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH)).append("',")
+					.append("'collapse': ").append(PreferencesManager.PREFERENCES.blockly.enableCollapse.get()).append(",")
+					.append("'trashcan': ").append(PreferencesManager.PREFERENCES.blockly.enableTrashcan.get()).append(",")
+					.append("'maxTrashContents': ").append(PreferencesManager.PREFERENCES.blockly.maxTrashContents.get()).append(",")
+					.append("'maxScale': ").append(PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0).append(",")
+					.append("'minScale': ").append(PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0).append(",")
+					.append("'startScale': ").append(PreferencesManager.PREFERENCES.blockly.startScale.get() / 100.0).append(",")
+					.append("'scaleSpeed': ").append(PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0).append(",")
+					.append("'saturation':").append(PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0).append(",")
+					.append("'value':").append(PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0)
+					.append("};");
 			// @formatter:on
 
 			// Blockly MCreator definitions
-			webView.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"),
-					WebView.JSExecutionType.GLOBAL_UNSAFE);
+			blocklyJS.append(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
 
 			// Load JavaScript files from plugins
 			for (String script : BlocklyJavaScriptsLoader.INSTANCE.getScripts())
-				webView.executeScript(script, WebView.JSExecutionType.GLOBAL_UNSAFE);
+				blocklyJS.append(script);
 
 			//JS code generation for custom variables
-			webView.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS(),
-					WebView.JSExecutionType.GLOBAL_UNSAFE);
+			blocklyJS.append(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
+
+			// Execute bundled JavaScript scripts
+			webView.executeScript(blocklyJS.toString(), WebView.JSExecutionType.GLOBAL_UNSAFE);
 
 			loaded = true;
 			runAfterLoaded.forEach(Runnable::run);
