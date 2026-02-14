@@ -23,6 +23,7 @@ import net.mcreator.element.types.ArmorTrim;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -148,7 +149,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 	}
 
 	@Override @Nullable public URI contextURL() throws URISyntaxException {
-		return new URI("https://minecraft.wiki/w/Armor_trim_definition");
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-armor-trim");
 	}
 
 }
