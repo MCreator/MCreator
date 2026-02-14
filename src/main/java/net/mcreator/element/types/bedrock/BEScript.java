@@ -21,12 +21,14 @@ package net.mcreator.element.types.bedrock;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
+import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.javascript.BlocklyToJavaScript;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -59,9 +61,26 @@ public class BEScript extends GeneratableElement {
 		return additionalData -> {
 			BlocklyToJavaScript blocklyToJavaScript = getBlocklyToJavaScript(additionalData);
 
+			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+					BlocklyEditorType.SCRIPT).getExternalTriggers();
+			ExternalTrigger trigger = null;
+			for (ExternalTrigger externalTrigger : externalTriggers) {
+				if (externalTrigger.getID().equals(blocklyToJavaScript.getExternalTrigger()))
+					trigger = externalTrigger;
+			}
+
 			additionalData.put("scriptcode", blocklyToJavaScript.getGeneratedCode());
 			additionalData.put("scriptblocks", blocklyToJavaScript.getUsedBlocks());
 			additionalData.put("extra_templates_code", blocklyToJavaScript.getExtraTemplatesCode());
+			additionalData.put("dependencies", blocklyToJavaScript.getDependencies());
+
+			String triggerCode = "";
+			if (trigger != null) {
+				TemplateGenerator templateGenerator = getModElement().getGenerator()
+						.getTemplateGeneratorFromName("jstriggers");
+				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".js.ftl", additionalData);
+			}
+			additionalData.put("trigger_code", triggerCode);
 		};
 	}
 
@@ -71,7 +90,7 @@ public class BEScript extends GeneratableElement {
 				BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.SCRIPT).getDefinedBlocks(),
 				getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.SCRIPT),
 				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.SCRIPT.registryName()),
-				additionalData);
+				additionalData).setTemplateExtension("js");
 
 		// load BlocklyToJavaScript with custom generators loaded
 		return new BlocklyToJavaScript(this.getModElement().getWorkspace(), this.getModElement(), this.scriptxml,

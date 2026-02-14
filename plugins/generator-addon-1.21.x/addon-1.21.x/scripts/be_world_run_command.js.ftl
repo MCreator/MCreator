@@ -1,0 +1,1 @@
+world.getDimension("${field$dimension}").runCommandAsync(${input$command});

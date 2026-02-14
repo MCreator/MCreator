@@ -1,3 +1,4 @@
 templates:
   - template: script.js.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/procedures/@NAMEProcedure.java" # TODO
+    name: "@SRCROOT/scripts/@registryname.js"
+    writer: js
