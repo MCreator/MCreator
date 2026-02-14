@@ -20,8 +20,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.ArmorTrim;
-import net.mcreator.generator.GeneratorUtils;
-import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
@@ -38,7 +36,6 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.lang.module.ModuleDescriptor;
 import java.util.*;
 
 import javax.annotation.Nullable;
@@ -133,21 +130,6 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 			clo1.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1()));
 			clo2.setIcon(new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2()));
 		}
-	}
-
-	@Override protected void afterGeneratableElementStored() {
-		boolean newPath =  ModuleDescriptor.Version.parse(getModElement().getGeneratorConfiguration().getGeneratorMinecraftVersion())
-				.compareTo(ModuleDescriptor.Version.parse("1.21.2")) >= 0;
-		FileIO.copyFile(new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						"textures/models/armor/" + Objects.requireNonNull(armorTextureFile.getComboBox().getSelectedItem()).getTextureName() + "_layer_1.png"),
-				new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						newPath ? "textures/trims/entity/humanoid/" + modElement.getRegistryName() + ".png"
-								: "textures/trims/models/armor/" + modElement.getRegistryName() + ".png"));
-		FileIO.copyFile(new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						"textures/models/armor/" + Objects.requireNonNull(armorTextureFile.getComboBox().getSelectedItem()).getTextureName() + "_layer_2.png"),
-				new File(GeneratorUtils.getSpecificRoot(mcreator.getWorkspace(), mcreator.getWorkspace().getGeneratorConfiguration(), "mod_assets_root"),
-						newPath ? "textures/trims/entity/humanoid_leggings/" + modElement.getRegistryName() + ".png"
-								: "textures/trims/models/armor/" + modElement.getRegistryName() + "_leggings.png"));
 	}
 
 	@Override public void openInEditingMode(ArmorTrim trim) {
