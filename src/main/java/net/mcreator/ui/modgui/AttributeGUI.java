@@ -50,9 +50,12 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
 	private final TranslatedComboBox sentiment = new TranslatedComboBox(
+			//@formatter:off
 			Map.entry("POSITIVE", "elementgui.attribute.sentiment.positive"),
 			Map.entry("NEUTRAL", "elementgui.attribute.sentiment.neutral"),
-			Map.entry("NEGATIVE", "elementgui.attribute.sentiment.negative"));
+			Map.entry("NEGATIVE", "elementgui.attribute.sentiment.negative")
+			//@formatter:on
+	);
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
 	private final JCheckBox addToAllEntities = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox addToPlayers = L10N.checkbox("elementgui.common.enable");

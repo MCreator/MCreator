@@ -98,25 +98,34 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnBastionRemnant = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnEndCity = L10N.checkbox("elementgui.common.enable");
 	private final TranslatedComboBox spawnRuinedPortal = new TranslatedComboBox(
+			//@formatter:off
 			Map.entry("NONE", "elementgui.biome.spawn_ruined_portal.none"),
 			Map.entry("STANDARD", "elementgui.biome.spawn_ruined_portal.standard"),
 			Map.entry("DESERT", "elementgui.biome.spawn_ruined_portal.desert"),
 			Map.entry("JUNGLE", "elementgui.biome.spawn_ruined_portal.jungle"),
-			Map.entry("SWAMP", "elementgui.biome.spawn_ruined_portal.swap"),
+			Map.entry("SWAMP", "elementgui.biome.spawn_ruined_portal.swamp"),
 			Map.entry("MOUNTAIN", "elementgui.biome.spawn_ruined_portal.mountain"),
 			Map.entry("OCEAN", "elementgui.biome.spawn_ruined_portal.ocean"),
-			Map.entry("NETHER", "elementgui.biome.spawn_ruined_portal.nether"));
+			Map.entry("NETHER", "elementgui.biome.spawn_ruined_portal.nether")
+			//@formatter:on
+	);
 	private final TranslatedComboBox villageType = new TranslatedComboBox(
+			//@formatter:off
 			Map.entry("none", "elementgui.biome.village_type.none"),
 			Map.entry("desert", "elementgui.biome.village_type.desert"),
 			Map.entry("plains", "elementgui.biome.village_type.plains"),
 			Map.entry("savanna", "elementgui.biome.village_type.savanna"),
 			Map.entry("snowy", "elementgui.biome.village_type.snowy"),
-			Map.entry("taiga", "elementgui.biome.village_type.taiga"));
+			Map.entry("taiga", "elementgui.biome.village_type.taiga")
+			//@formatter:on
+	);
 	private final TranslatedComboBox oceanRuinType = new TranslatedComboBox(
+			//@formatter:off
 			Map.entry("NONE", "elementgui.biome.ocean_ruin_type.none"),
 			Map.entry("COLD", "elementgui.biome.ocean_ruin_type.cold"),
-			Map.entry("WARM", "elementgui.biome.ocean_ruin_type.warm"));
+			Map.entry("WARM", "elementgui.biome.ocean_ruin_type.warm")
+			//@formatter:on
+	);
 
 	private JSpawnEntriesList spawnEntries;
 
