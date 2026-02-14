@@ -146,8 +146,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
-	//new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
-	//					"Mega spruce trees" }
 	private final TranslatedComboBox vanillaTreeType = new TranslatedComboBox(
 			Map.entry("Default", "elementgui.biome.vanilla_tree_type.default"),
 			Map.entry("Big trees", "elementgui.biome.vanilla_tree_type.big_trees"),
