@@ -22,6 +22,12 @@
         "uuid": "${w.getUUID("resourcepack")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]
       }
+      <#if types["bescripts"]??>,
+      {
+        "module_name": "@minecraft/server",
+        "version": "2.3.0"
+      }
+      </#if>
     ],
     "metadata": {
         "authors": [ "${settings.getAuthor()!""}" ],
