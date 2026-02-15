@@ -33,12 +33,22 @@ public class ExternalTrigger {
 
 	@Nullable public List<Dependency> dependencies_provided;
 
+	// Used mostly by Java Edition triggers
 	public boolean cancelable;
 	public boolean has_result;
 	public String side = "both";
 
+	// Used mostly by Bedrock Edition triggers
+	@Nullable public String type;
+
 	public String getID() {
 		return id;
+	}
+
+	public String getType() {
+		if (type == null)
+			return "global";
+		return type;
 	}
 
 	public String getGroupEstimate() {

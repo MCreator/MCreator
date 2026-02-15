@@ -1,1 +1,1 @@
-dimension.runCommandAsync(${input$command});
+dimension.runCommand(${input$command});

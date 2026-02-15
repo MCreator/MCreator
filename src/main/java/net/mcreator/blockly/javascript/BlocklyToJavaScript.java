@@ -23,10 +23,8 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.java.blocks.BooleanBlock;
-import net.mcreator.blockly.java.blocks.IfBlock;
-import net.mcreator.blockly.java.blocks.LogicNegateBlock;
-import net.mcreator.blockly.java.blocks.TextBlock;
+import net.mcreator.blockly.java.blocks.*;
+import net.mcreator.blockly.javascript.blocks.NumberBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -81,6 +79,7 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 		blockGenerators.add(new TextBlock()); // reuse from Java generator
 		blockGenerators.add(new BooleanBlock()); // reuse from Java generator
 		blockGenerators.add(new LogicNegateBlock()); // reuse from Java generator
+		blockGenerators.add(new NumberBlock()); // reuse from Java generator
 	}
 
 }

@@ -1,5 +1,6 @@
 <#-- @formatter:off -->
 <#assign v = settings.get3DigitVersion()>
+<#assign globalScripts = w.getElementsOfType('bescript')?filter(e -> e.getMetadata('type')?? && e.getMetadata('type') == "global")>
 {
     "format_version": 2,
     "header": {
@@ -15,7 +16,16 @@
         "type": "data",
         "uuid": "${w.getUUID("module_data")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]
-      }
+      }<#if globalScripts?has_content>,</#if>
+      <#list globalScripts as script>
+      {
+        "uuid": "${w.getUUID("scripts/" + script.getRegistryName() + ".js")}",
+        "version": [${v[0]}, ${v[1]}, ${v[2]}],
+        "type": "script",
+        "language": "javascript",
+        "entry": "scripts/${script.getRegistryName()}.js"
+      }<#sep>,
+      </#list>
     ],
     "dependencies": [
       {
@@ -25,7 +35,7 @@
       <#if types["bescripts"]??>,
       {
         "module_name": "@minecraft/server",
-        "version": "2.3.0"
+        "version": "2.2.0"
       }
       </#if>
     ],

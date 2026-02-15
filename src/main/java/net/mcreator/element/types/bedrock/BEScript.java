@@ -65,8 +65,10 @@ public class BEScript extends GeneratableElement {
 					BlocklyEditorType.SCRIPT).getExternalTriggers();
 			ExternalTrigger trigger = null;
 			for (ExternalTrigger externalTrigger : externalTriggers) {
-				if (externalTrigger.getID().equals(blocklyToJavaScript.getExternalTrigger()))
+				if (externalTrigger.getID().equals(blocklyToJavaScript.getExternalTrigger())) {
 					trigger = externalTrigger;
+					break;
+				}
 			}
 
 			additionalData.put("scriptcode", blocklyToJavaScript.getGeneratedCode());
@@ -81,6 +83,9 @@ public class BEScript extends GeneratableElement {
 				triggerCode = templateGenerator.generateFromTemplate(trigger.getID() + ".js.ftl", additionalData);
 			}
 			additionalData.put("trigger_code", triggerCode);
+
+			if (trigger != null)
+				this.getModElement().putMetadata("type", trigger.getType());
 		};
 	}
 

@@ -134,6 +134,16 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 			trigger = null;
 		}
 
+		if (trigger != null) {
+			if (trigger.getType().equals("block")) {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+							L10N.t("elementgui.bescript.global_trigger_block_warning")));
+			} else if (trigger.getType().equals("item")) {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("elementgui.bescript.global_trigger_block_item")));
+			}
+		}
+
 		// Handle UI-related stuff below, do not modify compileNotesArrayList here!
 		SwingUtilities.invokeLater(() -> {
 			dependencies.clear();
