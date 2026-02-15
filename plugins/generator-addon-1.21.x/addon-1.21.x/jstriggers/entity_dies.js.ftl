@@ -1,4 +1,4 @@
-import { world, system } from "@minecraft/server";
+<#include "scripts.java.ftl">
 
 world.afterEvents.entityDie.subscribe((event) => {
     <@optionalDependencies dependencies, {

@@ -23,6 +23,8 @@
     </category>
     <category name="${t:blockly.category.text}" colour="%{BKY_TEXTS_HUE}">
         <block type="text"/>
+        <block type="text_join"/>
+        <block type="text_print"/>
         <custom-text/>
     </category>
 </xml>

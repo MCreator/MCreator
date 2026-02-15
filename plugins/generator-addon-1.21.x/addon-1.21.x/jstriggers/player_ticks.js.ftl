@@ -1,7 +1,5 @@
 <#include "scripts.java.ftl">
 
-import { world, system } from "@minecraft/server";
-
 system.runInterval(() => {
     for (const entity of world.getPlayers()) {
         <@optionalDependencies dependencies, {
@@ -13,5 +11,3 @@ system.runInterval(() => {
 		${scriptcode}
     }
 }, 1);
-
-${extra_templates_code}
