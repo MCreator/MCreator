@@ -45,6 +45,7 @@ public class ModElementTypeLoader {
 		//@formatter:off
 		ModElementType.ADVANCEMENT = register(new ModElementType<>("achievement", 'h', AchievementGUI::new, Achievement.class)).coveredOn(GeneratorFlavor.gamePlatform(JAVAEDITION));
 		ModElementType.ARMOR = register(new ModElementType<>("armor", 'a', ArmorGUI::new, Armor.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
+		ModElementType.ARMORTRIM = register(new ModElementType<>("armortrim", null, ArmorTrimGUI::new, ArmorTrim.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.ATTRIBUTE = register(new ModElementType<>("attribute", null, AttributeGUI::new, Attribute.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.BANNERPATTERN = register(new ModElementType<>("bannerpattern", null, BannerPatternGUI::new, BannerPattern.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BiomeGUI::new, Biome.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
