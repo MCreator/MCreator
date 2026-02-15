@@ -56,6 +56,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
 
 	public String name;
+	public String rarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public double efficiency;
@@ -83,6 +84,8 @@ import java.util.stream.Collectors;
 	public Procedure onItemInUseTick;
 	public Procedure onBlockDestroyedWithTool;
 	public Procedure onEntitySwing;
+	public Procedure onDroppedByPlayer;
+	public Procedure onItemEntityDestroyed;
 
 	private Tool() {
 		this(null);
@@ -91,6 +94,7 @@ import java.util.stream.Collectors;
 	public Tool(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
 
