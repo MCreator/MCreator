@@ -9,9 +9,18 @@
       "type": "field_dropdown",
       "name": "dimension",
       "options": [
-        ["Overworld", "overworld"],
-        ["Nether", "nether"],
-        ["The End", "the_end"]
+        [
+          "Overworld",
+          "overworld"
+        ],
+        [
+          "Nether",
+          "nether"
+        ],
+        [
+          "The End",
+          "the_end"
+        ]
       ]
     }
   ],
@@ -29,12 +38,6 @@
     ],
     "fields": [
       "dimension"
-    ],
-    "dependencies": [
-      {
-        "name": "world",
-        "type": "world"
-      }
     ]
   }
 }

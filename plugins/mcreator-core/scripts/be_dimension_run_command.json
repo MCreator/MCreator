@@ -2,7 +2,7 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "text",
+      "name": "command",
       "check": "String"
     }
   ],
@@ -13,10 +13,16 @@
   "mcreator": {
     "toolbox_id": "be_world",
     "toolbox_init": [
-      "<value name=\"text\"><block type=\"text\"><field name=\"TEXT\">Message</field></block></value>"
+      "<value name=\"command\"><block type=\"text\"><field name=\"TEXT\">time set day</field></block></value>"
     ],
     "inputs": [
-      "text"
+      "command"
+    ],
+    "dependencies": [
+      {
+        "name": "dimension",
+        "type": "world"
+      }
     ]
   }
 }
