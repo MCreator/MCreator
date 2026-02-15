@@ -1,12 +1,14 @@
 import { world, system } from "@minecraft/server";
 
 world.afterEvents.entityDie.subscribe((event) => {
-    const damagesource = event.damageSource;
-    const sourceentity = event.damageSource.damagingEntity;
-    const entity = event.deadEntity;
-    const dimension = entity.dimension;
-    const x = entity.location.x;
-    const y = entity.location.y;
-    const z = entity.location.z;
+    <@optionalDependencies dependencies, {
+        "damagesource": "event.damageSource",
+        "sourceentity": "event.damageSource.damagingEntity",
+        "entity": "event.deadEntity",
+        "dimension": "event.deadEntity.dimension",
+        "x": "event.deadEntity.location.x",
+        "y": "event.deadEntity.location.y",
+        "z": "event.deadEntity.location.z"
+    }/>
 	${scriptcode}
 });

@@ -1,11 +1,15 @@
+<#include "scripts.java.ftl">
+
 import { world, system } from "@minecraft/server";
 
 system.runInterval(() => {
     for (const entity of world.getPlayers()) {
-        const dimension = entity.dimension;
-        const x = entity.location.x;
-        const y = entity.location.y;
-        const z = entity.location.z;
+        <@optionalDependencies dependencies, {
+            "x": "entity.location.x",
+            "y": "entity.location.y",
+            "z": "entity.location.z",
+            "dimension": "entity.dimension"
+        }/>
 		${scriptcode}
     }
 }, 1);
