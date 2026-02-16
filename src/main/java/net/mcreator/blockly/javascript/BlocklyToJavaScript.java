@@ -23,10 +23,7 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.java.blocks.*;
-import net.mcreator.blockly.javascript.blocks.MCItemBlock;
-import net.mcreator.blockly.javascript.blocks.NumberBlock;
-import net.mcreator.blockly.javascript.blocks.PrintTextBlock;
+import net.mcreator.blockly.javascript.blocks.*;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -76,19 +73,25 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 	@Override protected void beforeGenerate() {
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
-		blockGenerators.add(new IfBlock()); // reuse from Java generator
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.IfBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeProceduralBlock());
 
 		// add standard output blocks
-		blockGenerators.add(new TextBlock()); // reuse from Java generator
-		blockGenerators.add(new BooleanBlock()); // reuse from Java generator
-		blockGenerators.add(new LogicNegateBlock()); // reuse from Java generator
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.BooleanBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.LogicNegateBlock());
 		blockGenerators.add(new NumberBlock());
-		blockGenerators.add(new TextJoinBlock()); // reuse from Java generator
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextJoinBlock());
+		blockGenerators.add(new NumberConstantsBlock());
+		blockGenerators.add(new NumberBinaryOperationsBlock());
+		blockGenerators.add(new SingularMathOperationsBlock());
+		blockGenerators.add(new LogicBinaryOperationsBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeOutputBlock());
 
 		// add Minecraft-related blocks
-		blockGenerators.add(new CoordinateBlock()); // reuse from Java generator
-		blockGenerators.add(new EventOrTargetEntityDependencyBlock()); // reuse from Java generator
-		blockGenerators.add(new SourceEntityDependencyBlock()); // reuse from Java generator
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.CoordinateBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.EventOrTargetEntityDependencyBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.SourceEntityDependencyBlock());
 		blockGenerators.add(new MCItemBlock());
 	}
 

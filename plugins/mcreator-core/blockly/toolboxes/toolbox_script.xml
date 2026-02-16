@@ -25,10 +25,15 @@
     <category name="${t:blockly.category.logic}" colour="%{BKY_LOGIC_HUE}">
         <block type="logic_negate"/>
         <block type="logic_boolean"/>
+        <block type="logic_binary_ops"/>
+        <block type="math_binary_ops"/>
         <custom-logicoperations/>
     </category>
     <category name="${t:blockly.category.math}" colour="%{BKY_MATH_HUE}">
         <block type="math_number"/>
+        <block type="math_java_constants"/>
+        <block type="math_dual_ops"/>
+        <block type="math_singular_ops"/>
         <custom-math/>
     </category>
     <category name="${t:blockly.category.text}" colour="%{BKY_TEXTS_HUE}">
@@ -36,5 +41,11 @@
         <block type="text_join"/>
         <block type="text_print"/>
         <custom-text/>
+    </category>
+    <sep/>
+    <category name="${t:blockly.category.advanced}" colour="250">
+        <block type="java_code"/>
+        <block type="java_code_get"/>
+        <custom-advanced/>
     </category>
 </xml>
