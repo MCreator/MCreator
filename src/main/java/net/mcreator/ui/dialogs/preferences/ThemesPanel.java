@@ -57,11 +57,20 @@ public class ThemesPanel {
 				ThemeManager.getThemes().stream().map(Theme::getID).toArray(String[]::new));
 		themeIDs.setPreferredSize(new Dimension(250, 0));
 		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
-		themeIDs.addActionListener(e -> dialog.markChanged());
 
 		themeIDs.addActionListener(e -> {
 			if (themeIDs.getSelectedItem() != null)
 				PreferencesManager.PREFERENCES.hidden.uiTheme.set((String) themeIDs.getSelectedItem());
+		});
+
+		themes.addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				Theme selectedTheme = themes.getSelectedValue();
+				if (selectedTheme != null) {
+					themeIDs.setSelectedItem(selectedTheme.getID());
+					themeIDs.actionPerformed(null);
+				}
+			}
 		});
 
 		top.add("East", themeIDs);
@@ -121,6 +130,18 @@ public class ThemesPanel {
 			description.setText(String.join(", ", descriptors));
 
 			icon.setIcon(value.getIcon());
+
+			if (isSelected) {
+				setBackground(list.getSelectionBackground());
+				name.setForeground(list.getSelectionForeground());
+				description.setForeground(list.getSelectionForeground());
+				setOpaque(true);
+			} else {
+				setBackground(list.getBackground());
+				name.setForeground(list.getForeground());
+				description.setForeground(list.getForeground());
+				setOpaque(false);
+			}
 
 			return this;
 		}
