@@ -116,7 +116,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 			Map.entry("plains", "elementgui.common.plains"),
 			Map.entry("savanna", "elementgui.common.savanna"),
 			Map.entry("snowy", "elementgui.biome.village_type.snowy"),
-			Map.entry("taiga", "elementgui.biome.village_type.taiga")
+			Map.entry("taiga", "elementgui.common.taiga")
 			//@formatter:on
 	);
 	private final TranslatedComboBox oceanRuinType = new TranslatedComboBox(
