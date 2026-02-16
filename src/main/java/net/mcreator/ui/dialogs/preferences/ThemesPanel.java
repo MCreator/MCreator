@@ -53,27 +53,14 @@ public class ThemesPanel {
 		String themeDescription = L10N.t("preferences.themes.select_theme.description");
 		top.add("West", L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
 
-		JComboBox<String> themeIDs = new JComboBox<>(
-				ThemeManager.getThemes().stream().map(Theme::getID).toArray(String[]::new));
-		themeIDs.setPreferredSize(new Dimension(250, 0));
-		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
-
-		themeIDs.addActionListener(e -> {
-			if (themeIDs.getSelectedItem() != null)
-				PreferencesManager.PREFERENCES.hidden.uiTheme.set((String) themeIDs.getSelectedItem());
-		});
-
 		themes.addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				Theme selectedTheme = themes.getSelectedValue();
 				if (selectedTheme != null) {
-					themeIDs.setSelectedItem(selectedTheme.getID());
-					themeIDs.actionPerformed(null);
+					PreferencesManager.PREFERENCES.hidden.uiTheme.set(selectedTheme.getID());
 				}
 			}
 		});
-
-		top.add("East", themeIDs);
 
 		reloadThemesList();
 
@@ -110,7 +97,7 @@ public class ThemesPanel {
 			ComponentUtils.deriveFont(name, 14);
 			ComponentUtils.deriveFont(description, 11);
 
-			setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 0));
 			setOpaque(false);
 		}
 
