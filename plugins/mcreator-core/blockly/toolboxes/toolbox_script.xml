@@ -1,6 +1,15 @@
 <xml id="toolbox">
     <custom-other/>
     <sep/>
+    <category name="${t:blockly.category.minecraft_components}" colour="360">
+        <block type="coord_x"/>
+        <block type="coord_y"/>
+        <block type="coord_z"/>
+        <block type="entity_from_deps"/>
+        <block type="source_entity_from_deps"/>
+        <custom-mcelements/>
+    </category>
+    <sep/>
     <category name="${t:blockly.category.logic_and_loops}" colour="120">
         <block type="controls_if"/>
         <block type="controls_if">
@@ -11,7 +20,6 @@
         </block>
         <custom-logicloops/>
     </category>
-    <sep/>
     <category name="${t:blockly.category.logic}" colour="%{BKY_LOGIC_HUE}">
         <block type="logic_negate"/>
         <block type="logic_boolean"/>

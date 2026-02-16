@@ -81,8 +81,13 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 		blockGenerators.add(new TextBlock()); // reuse from Java generator
 		blockGenerators.add(new BooleanBlock()); // reuse from Java generator
 		blockGenerators.add(new LogicNegateBlock()); // reuse from Java generator
-		blockGenerators.add(new NumberBlock()); // reuse from Java generator
-		blockGenerators.add(new TextJoinBlock());
+		blockGenerators.add(new NumberBlock());
+		blockGenerators.add(new TextJoinBlock()); // reuse from Java generator
+
+		// add Minecraft-related blocks
+		blockGenerators.add(new CoordinateBlock()); // reuse from Java generator
+		blockGenerators.add(new EventOrTargetEntityDependencyBlock()); // reuse from Java generator
+		blockGenerators.add(new SourceEntityDependencyBlock()); // reuse from Java generator
 	}
 
 }
