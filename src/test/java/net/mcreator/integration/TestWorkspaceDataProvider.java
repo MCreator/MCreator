@@ -38,6 +38,7 @@ import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
+import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -173,7 +174,8 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
-				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
+				|| type == ModElementType.PROCEDURE || type == ModElementType.BESCRIPT || type == ModElementType.FEATURE
+				|| type == ModElementType.CODE) {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
@@ -1613,7 +1615,11 @@ public class TestWorkspaceDataProvider {
 			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
 			procedure.skipDependencyNullCheck = _true;
 			return procedure;
-		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
+		}  else if (ModElementType.BESCRIPT.equals(modElement.getType())) {
+			BEScript bescript = new BEScript(modElement);
+			bescript.scriptxml = BEScript.XML_BASE.replace("no_ext_trigger", "world_loaded");
+			return bescript;
+		}  else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
 			damageType.exhaustion = 0.37;
 			damageType.scaling = getRandomString(random,
@@ -1720,6 +1726,11 @@ public class TestWorkspaceDataProvider {
 			block.oreCount = 2;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
+			block.localScripts = new ArrayList<>();
+			if (!emptyLists) {
+				block.localScripts.add("Examplebescript1");
+				block.localScripts.add("Examplebescript3");
+			}
 			return block;
 		}
 		return null;

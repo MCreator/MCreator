@@ -36,6 +36,7 @@ import net.mcreator.workspace.resources.Model;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BEBlock extends GeneratableElement implements IBlock {
@@ -69,14 +70,19 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public int maxGenerateHeight;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 
+	@ModElementReference public List<String> localScripts;
+
 	private BEBlock() {
 		this(null);
 	}
 
 	public BEBlock(ModElement element) {
 		super(element);
+
 		customModelName = "Normal";
 		renderType = 10;
+
+		localScripts = new ArrayList<>();
 	}
 
 	public boolean hasCustomDrop() {
