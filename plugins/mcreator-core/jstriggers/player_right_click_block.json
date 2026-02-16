@@ -1,12 +1,8 @@
 {
   "dependencies_provided": [
     {
-      "name": "entity",
-      "type": "entity"
-    },
-    {
-      "name": "sourceentity",
-      "type": "entity"
+      "name": "block",
+      "type": "blockstate"
     },
     {
       "name": "dimension",
@@ -25,8 +21,8 @@
       "type": "number"
     },
     {
-      "name": "damagesource",
-      "type": "damagesource"
+      "name": "entity",
+      "type": "entity"
     }
   ]
 }
