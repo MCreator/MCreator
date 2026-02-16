@@ -157,7 +157,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final TranslatedComboBox vanillaTreeType = new TranslatedComboBox(
 			//@formatter:off
-			Map.entry("Default", "elementgui.biome.vanilla_tree_type.default"),
+			Map.entry("Default", "elementgui.common.default"),
 			Map.entry("Big trees", "elementgui.biome.vanilla_tree_type.big_trees"),
 			Map.entry("Birch trees", "elementgui.biome.vanilla_tree_type.birch_trees"),
 			Map.entry("Savanna trees", "elementgui.biome.vanilla_tree_type.savanna_trees"),
