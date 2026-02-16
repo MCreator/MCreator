@@ -18,8 +18,8 @@
       }
     ],
     "metadata": {
-        "authors": [ "${settings.getAuthor()!""}" ],
-        "url": "${settings.getWebsiteURL()}"
+      "authors": [ "${settings.getAuthor()!""}" ],
+      "url": "${settings.getWebsiteURL()}"
     }
 }
 <#-- @formatter:on -->

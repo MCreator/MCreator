@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 <#assign v = settings.get3DigitVersion()>
-<#assign globalScripts = w.getElementsOfType('bescript')?filter(e -> e.getMetadata('type')?? && e.getMetadata('type') == "global")>
+<#assign scripts = w.getElementsOfType('bescript')>
 {
     "format_version": 2,
     "header": {
@@ -16,8 +16,8 @@
         "type": "data",
         "uuid": "${w.getUUID("module_data")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]
-      }<#if globalScripts?has_content>,</#if>
-      <#list globalScripts as script>
+      }<#if scripts?has_content>,</#if>
+      <#list scripts as script>
       {
         "uuid": "${w.getUUID("scripts/" + script.getRegistryName() + ".js")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}],
@@ -40,8 +40,8 @@
       </#if>
     ],
     "metadata": {
-        "authors": [ "${settings.getAuthor()!""}" ],
-        "url": "${settings.getWebsiteURL()}"
+      "authors": [ "${settings.getAuthor()!""}" ],
+      "url": "${settings.getWebsiteURL()}"
     }
 }
 <#-- @formatter:on -->
