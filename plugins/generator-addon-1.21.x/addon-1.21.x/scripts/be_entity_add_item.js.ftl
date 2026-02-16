@@ -1,0 +1,1 @@
+${input$entity}.getComponent("minecraft:inventory")?.container?.addItem(new ItemStack(${input$item}, ${input$amount}));

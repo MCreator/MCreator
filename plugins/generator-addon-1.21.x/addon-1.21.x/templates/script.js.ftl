@@ -1,4 +1,4 @@
-import { world, system, BlockPermutation } from "@minecraft/server";
+import { world, system, BlockPermutation, ItemStack } from "@minecraft/server";
 
 ${trigger_code}
 
