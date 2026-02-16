@@ -20,6 +20,9 @@
         <block type="controls_if">
             <mutation elseif="1"/>
         </block>
+        <block type="controls_repeat_ext"/>
+        <block type="controls_while"/>
+        <block type="controls_flow_statements"/>
         <custom-logicloops/>
     </category>
     <category name="${t:blockly.category.logic}" colour="%{BKY_LOGIC_HUE}">
