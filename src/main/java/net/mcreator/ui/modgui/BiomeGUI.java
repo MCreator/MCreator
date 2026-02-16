@@ -99,29 +99,29 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnEndCity = L10N.checkbox("elementgui.common.enable");
 	private final TranslatedComboBox spawnRuinedPortal = new TranslatedComboBox(
 			//@formatter:off
-			Map.entry("NONE", "elementgui.common.none"),
-			Map.entry("STANDARD", "elementgui.common.standard"),
-			Map.entry("DESERT", "elementgui.common.desert"),
-			Map.entry("JUNGLE", "elementgui.common.jungle"),
-			Map.entry("SWAMP", "elementgui.common.swamp"),
-			Map.entry("MOUNTAIN", "elementgui.common.mountain"),
-			Map.entry("OCEAN", "elementgui.common.ocean"),
+			Map.entry("NONE", "elementgui.biome.spawn_ruined_portal.none"),
+			Map.entry("STANDARD", "elementgui.biome.spawn_ruined_portal.standard"),
+			Map.entry("DESERT", "elementgui.biome.spawn_ruined_portal.desert"),
+			Map.entry("JUNGLE", "elementgui.biome.spawn_ruined_portal.jungle"),
+			Map.entry("SWAMP", "elementgui.biome.spawn_ruined_portal.swamp"),
+			Map.entry("MOUNTAIN", "elementgui.biome.spawn_ruined_portal.mountain"),
+			Map.entry("OCEAN", "elementgui.biome.spawn_ruined_portal.ocean"),
 			Map.entry("NETHER", "elementgui.biome.spawn_ruined_portal.nether")
 			//@formatter:on
 	);
 	private final TranslatedComboBox villageType = new TranslatedComboBox(
 			//@formatter:off
-			Map.entry("none", "elementgui.common.none"),
-			Map.entry("desert", "elementgui.common.desert"),
-			Map.entry("plains", "elementgui.common.plains"),
-			Map.entry("savanna", "elementgui.common.savanna"),
+			Map.entry("none", "elementgui.biome.village_type.none"),
+			Map.entry("desert", "elementgui.biome.village_type.desert"),
+			Map.entry("plains", "elementgui.biome.village_type.plains"),
+			Map.entry("savanna", "elementgui.biome.village_type.savanna"),
 			Map.entry("snowy", "elementgui.biome.village_type.snowy"),
-			Map.entry("taiga", "elementgui.common.taiga")
+			Map.entry("taiga", "elementgui.biome.village_type.taiga")
 			//@formatter:on
 	);
 	private final TranslatedComboBox oceanRuinType = new TranslatedComboBox(
 			//@formatter:off
-			Map.entry("NONE", "elementgui.common.none"),
+			Map.entry("NONE", "elementgui.biome.ocean_ruin_type.none"),
 			Map.entry("COLD", "elementgui.biome.ocean_ruin_type.cold"),
 			Map.entry("WARM", "elementgui.biome.ocean_ruin_type.warm")
 			//@formatter:on
@@ -157,7 +157,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final TranslatedComboBox vanillaTreeType = new TranslatedComboBox(
 			//@formatter:off
-			Map.entry("Default", "elementgui.common.default"),
+			Map.entry("Default", "elementgui.biome.vanilla_tree_type.default"),
 			Map.entry("Big trees", "elementgui.biome.vanilla_tree_type.big_trees"),
 			Map.entry("Birch trees", "elementgui.biome.vanilla_tree_type.birch_trees"),
 			Map.entry("Savanna trees", "elementgui.biome.vanilla_tree_type.savanna_trees"),

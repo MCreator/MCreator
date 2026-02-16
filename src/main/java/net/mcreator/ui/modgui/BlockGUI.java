@@ -244,16 +244,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final TranslatedComboBox destroyTool = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("Not specified", "elementgui.block.destroy_tool.not_specified"),
-			Map.entry("pickaxe", "elementgui.common.pickaxe"),
-			Map.entry("axe", "elementgui.common.axe"),
-			Map.entry("shovel", "elementgui.common.shovel"),
-			Map.entry("hoe", "elementgui.common.hoe")
+			Map.entry("pickaxe", "elementgui.block.destroy_tool.pickaxe"),
+			Map.entry("axe", "elementgui.block.destroy_tool.axe"),
+			Map.entry("shovel", "elementgui.block.destroy_tool.shovel"),
+			Map.entry("hoe", "elementgui.block.destroy_tool.hoe")
 			//@formatter:on
 	);
 
 	private final TranslatedComboBox vanillaToolTier = new TranslatedComboBox(
 			//@formatter:off
-			Map.entry("NONE", "elementgui.common.none"),
+			Map.entry("NONE", "elementgui.block.vanilla_tool_tier.none"),
 			Map.entry("STONE", "elementgui.block.vanilla_tool_tier.stone"),
 			Map.entry("IRON", "elementgui.block.vanilla_tool_tier.iron"),
 			Map.entry("DIAMOND", "elementgui.block.vanilla_tool_tier.diamond")
