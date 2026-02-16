@@ -24,6 +24,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.*;
+import net.mcreator.blockly.javascript.blocks.MCItemBlock;
 import net.mcreator.blockly.javascript.blocks.NumberBlock;
 import net.mcreator.blockly.javascript.blocks.PrintTextBlock;
 import net.mcreator.generator.template.TemplateGenerator;
@@ -88,6 +89,7 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 		blockGenerators.add(new CoordinateBlock()); // reuse from Java generator
 		blockGenerators.add(new EventOrTargetEntityDependencyBlock()); // reuse from Java generator
 		blockGenerators.add(new SourceEntityDependencyBlock()); // reuse from Java generator
+		blockGenerators.add(new MCItemBlock());
 	}
 
 }

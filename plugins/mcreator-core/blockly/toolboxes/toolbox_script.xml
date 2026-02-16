@@ -5,6 +5,8 @@
         <block type="coord_x"/>
         <block type="coord_y"/>
         <block type="coord_z"/>
+        <block type="mcitem_allblocks"/>
+        <block type="mcitem_all"/>
         <block type="entity_from_deps"/>
         <block type="source_entity_from_deps"/>
         <custom-mcelements/>

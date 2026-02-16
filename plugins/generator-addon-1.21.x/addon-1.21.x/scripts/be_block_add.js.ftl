@@ -1,0 +1,1 @@
+dimension.getBlock({ ${input$x}, ${input$y}, ${input$z} })?.setPermutation(BlockPermutation.resolve(${input$block}));
