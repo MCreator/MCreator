@@ -19,7 +19,9 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.bedrock.BEItem;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -31,6 +33,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.ModElementListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -46,6 +49,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BEItemGUI extends ModElementGUI<BEItem> {
 
@@ -99,6 +103,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
+	private final ModElementListField localScripts = new ModElementListField(mcreator, ModElementType.BESCRIPT,
+			me -> "item".equals(me.getMetadata("type")));
+
 	public BEItemGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -112,6 +119,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodPanel.setOpaque(false);
 		JPanel advancedPanel = new JPanel(new BorderLayout(10, 10));
 		advancedPanel.setOpaque(false);
+		JPanel scriptsPanel = new JPanel(new BorderLayout(10, 10));
+		scriptsPanel.setOpaque(false);
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.item.error_item_needs_texture");
@@ -234,9 +243,16 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		page1group.addValidationElement(name);
 		page1group.addValidationElement(texture);
 
+		scriptsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("beitem/scripts"),
+						L10N.label("elementgui.beitem.scripts")), localScripts)));
+
+		localScripts.setPreferredSize(new Dimension(640, 34));
+
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.item.food_properties"), foodPanel);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedPanel);
+		addPage(L10N.t("elementgui.common.page_scripts"), scriptsPanel);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -304,6 +320,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		shouldDespawn.setSelected(item.shouldDespawn);
 		usingConvertsTo.setBlock(item.usingConvertsTo);
 		animation.setSelectedItem(item.animation);
+
+		localScripts.setListElements(item.localScripts.stream().map(NonMappableElement::new).toList());
+
 		updateFoodPanel();
 		updateMeleeDamage();
 		updateCreativeTab();
@@ -334,6 +353,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.shouldDespawn = shouldDespawn.isSelected();
 		item.usingConvertsTo = usingConvertsTo.getBlock();
 		item.animation = animation.getSelectedItem();
+
+		item.localScripts = localScripts.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
 
 		return item;
 	}

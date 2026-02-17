@@ -88,7 +88,7 @@ public class TestWorkspaceDataProvider {
 			GeneratorConfiguration generatorConfiguration) {
 		Set<ModElementType<?>> retval = new LinkedHashSet<>();
 
-		// We try to provide order so MET that depend on less of other MEs are first
+		// We try to provide order so METs that depend on less of other MEs are first
 		// So later MEs can reference them, improving test coverage
 		retval.add(ModElementType.FUNCTION);
 		retval.add(ModElementType.DAMAGETYPE);
@@ -101,6 +101,7 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.ATTRIBUTE);
 		retval.add(ModElementType.POTIONEFFECT);
 		retval.add(ModElementType.BANNERPATTERN);
+		retval.add(ModElementType.BESCRIPT);
 
 		Collection<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats()
 				.getSupportedModElementTypes();
@@ -174,14 +175,13 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
-				|| type == ModElementType.PROCEDURE || type == ModElementType.BESCRIPT || type == ModElementType.FEATURE
-				|| type == ModElementType.CODE) {
+				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
-				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM
-				|| type == ModElementType.BEBLOCK) {
+				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM || type == ModElementType.BEBLOCK
+				|| type == ModElementType.BESCRIPT) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -1621,11 +1621,11 @@ public class TestWorkspaceDataProvider {
 			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
 			procedure.skipDependencyNullCheck = _true;
 			return procedure;
-		}  else if (ModElementType.BESCRIPT.equals(modElement.getType())) {
+		} else if (ModElementType.BESCRIPT.equals(modElement.getType())) {
 			BEScript bescript = new BEScript(modElement);
 			bescript.scriptxml = BEScript.XML_BASE.replace("no_ext_trigger", "world_loaded");
 			return bescript;
-		}  else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
+		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
 			damageType.exhaustion = 0.37;
 			damageType.scaling = getRandomString(random,
@@ -1698,46 +1698,51 @@ public class TestWorkspaceDataProvider {
 			beitem.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush",
 							"spyglass" });
+			beitem.localScripts = new ArrayList<>();
+			if (!emptyLists) {
+				beitem.localScripts.add("Examplebescript1");
+				beitem.localScripts.add("Examplebescript3");
+			}
 			return beitem;
 		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
-			BEBlock block = new BEBlock(modElement);
-			block.name = modElement.getName();
-			block.texture = new TextureHolder(modElement.getWorkspace(), "test");
-			block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
-			block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
-			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
-			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
-			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
-			block.renderType = 10;
-			block.customModelName = "Normal";
-			block.hardness = 2.3;
-			block.resistance = 3.1;
-			block.customDrop = new MItemBlock(modElement.getWorkspace(),
+			BEBlock beblock = new BEBlock(modElement);
+			beblock.name = modElement.getName();
+			beblock.texture = new TextureHolder(modElement.getWorkspace(), "test");
+			beblock.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
+			beblock.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
+			beblock.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
+			beblock.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
+			beblock.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
+			beblock.renderType = 10;
+			beblock.customModelName = "Normal";
+			beblock.hardness = 2.3;
+			beblock.resistance = 3.1;
+			beblock.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			block.dropAmount = 3;
-			block.flammability = 5;
-			block.flammableDestroyChance = 12;
-			block.friction = 0.5;
-			block.soundOnStep = new StepSound(modElement.getWorkspace(),
+			beblock.dropAmount = 3;
+			beblock.flammability = 5;
+			beblock.flammableDestroyChance = 12;
+			beblock.friction = 0.5;
+			beblock.soundOnStep = new StepSound(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
-			block.lightEmission = 3;
-			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-			block.generateFeature = _true;
-			block.blocksToReplace = new ArrayList<>();
+			beblock.lightEmission = 3;
+			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			beblock.generateFeature = _true;
+			beblock.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
-				block.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
+				beblock.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			}
-			block.frequencyPerChunks = 3;
-			block.oreCount = 2;
-			block.minGenerateHeight = 21;
-			block.maxGenerateHeight = 92;
-			block.localScripts = new ArrayList<>();
+			beblock.frequencyPerChunks = 3;
+			beblock.oreCount = 2;
+			beblock.minGenerateHeight = 21;
+			beblock.maxGenerateHeight = 92;
+			beblock.localScripts = new ArrayList<>();
 			if (!emptyLists) {
-				block.localScripts.add("Examplebescript1");
-				block.localScripts.add("Examplebescript3");
+				beblock.localScripts.add("Examplebescript1");
+				beblock.localScripts.add("Examplebescript3");
 			}
-			return block;
+			return beblock;
 		}
 		return null;
 	}

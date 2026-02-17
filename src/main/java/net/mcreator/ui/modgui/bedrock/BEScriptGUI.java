@@ -346,6 +346,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
+	// TODO: when trigger type is changed, references need to be updated
+
 	@Override public void openInEditingMode(BEScript script) {
 		blocklyPanel.setInitialXML(script.scriptxml);
 	}

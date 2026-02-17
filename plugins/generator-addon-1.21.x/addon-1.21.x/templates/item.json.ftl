@@ -1,7 +1,8 @@
 <#-- @formatter:off -->
+<#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 <#include "mcitems.ftl">
 {
-  "format_version": "1.21.50",
+  "format_version": "1.21.90",
   "minecraft:item": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -48,7 +49,10 @@
       	]
       },
       </#if>
-      "minecraft:icon": "${registryname}"
+      "minecraft:icon": "${registryname}"<#if localScripts?has_content>,</#if>
+      <#list localScripts as script>
+      "${script}": {}<#sep>,
+      </#list>
     }
   }
 }
