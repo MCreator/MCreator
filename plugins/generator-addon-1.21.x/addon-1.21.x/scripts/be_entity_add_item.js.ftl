@@ -1,1 +1,4 @@
-${input$entity}.getComponent("minecraft:inventory")?.container?.addItem(new ItemStack(${input$item}, ${input$amount}));
+<#include "mcitems.ftl">
+let _stack${cbi} = ${mappedMCItemToItemStackCode(input$item, 1)};
+_stack${cbi}.amount = ${input$amount};
+${input$entity}.getComponent("minecraft:inventory")?.container?.addItem(_stack${cbi});

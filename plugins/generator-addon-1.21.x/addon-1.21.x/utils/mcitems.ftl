@@ -1,3 +1,39 @@
+<#function mappedBlockToBlockPermutation mappedBlock>
+    <#if mappedBlock?starts_with("/*@BlockState*/")>
+        <#return mappedBlock?replace("/*@BlockState*/","")>
+    <#elseif mappedBlock?contains("/*@?*/")>
+        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlock(outputs?keep_before("/*@:*/"))
+        + ":" + mappedBlockToBlock(outputs?keep_after("/*@:*/")) + ")">
+    <#elseif mappedBlock?starts_with("CUSTOM:")>
+        <#return "BlockPermutation.resolve(\"" + modid + ":" + generator.getRegistryNameFromFullName(mappedBlock) + "\")">
+    <#else>
+        <#return "BlockPermutation.resolve(\"" + mappedBlock + "\")">
+    </#if>
+</#function>
+
+<#function mappedMCItemToItemStackCode mappedBlock amount=1>
+    <#if mappedBlock?starts_with("/*@ItemStack*/")>
+        <#return mappedBlock?replace("/*@ItemStack*/", "")>
+    <#elseif mappedBlock?contains("/*@?*/")>
+        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItemStackCode(outputs?keep_before("/*@:*/"), amount)
+        + ":" + mappedMCItemToItemStackCode(outputs?keep_after("/*@:*/"), amount) + ")">
+    <#elseif mappedBlock?starts_with("CUSTOM:")>
+        <#return toItemStack(modid + ":" + generator.getRegistryNameFromFullName(mappedBlock), amount)>
+    <#else>
+        <#return toItemStack(mappedBlock, amount)>
+    </#if>
+</#function>
+
+<#function toItemStack item amount>
+    <#if amount == 1>
+        <#return "new ItemStack(\"" + item + "\")">
+    <#else>
+        <#return "new ItemStack(\"" + item + "\", " + amount + ")">
+    </#if>
+</#function>
+
 <#function hasMetadata mappedBlock>
     <#return mappedBlock.toString().contains("#")>
 </#function>

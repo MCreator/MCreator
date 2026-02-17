@@ -39,8 +39,7 @@ public class MCItemBlock implements IBlockGenerator {
 						L10N.t("blockly.errors.mcitem_broken_reference",
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
-			master.append("\"").append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent))
-					.append("\"");
+			master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));
