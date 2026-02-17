@@ -17,12 +17,6 @@
                   "max": ${data.dropAmount}
                 }
               }
-              <#if hasMetadata(data.customDrop)>
-              ,{
-                "function": "set_data",
-                "data": ${getMappedMCItemMetadata(data.customDrop)}
-              }
-              </#if>
             ]
           }
         ]
