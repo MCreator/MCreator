@@ -14,6 +14,6 @@ const ${name} = {
     }
 };
 
-system.beforeEvents.startup.subscribe(({blockComponentRegistry}) => {
+system.beforeEvents.startup.subscribe(({ blockComponentRegistry }) => {
     blockComponentRegistry.registerCustomComponent("${modid}:${registryname}", ${name});
 });
