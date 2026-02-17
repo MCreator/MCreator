@@ -207,7 +207,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("beblock/scripts"),
 						L10N.label("elementgui.beblock.scripts")), localScripts)));
 
-		localScripts.setPreferredSize(new Dimension(640, 32));
+		localScripts.setPreferredSize(new Dimension(640, 34));
 
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_generation"), generationPanel);
