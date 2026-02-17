@@ -3,8 +3,8 @@
         <#return mappedBlock?replace("/*@BlockState*/","")>
     <#elseif mappedBlock?contains("/*@?*/")>
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
-        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlock(outputs?keep_before("/*@:*/"))
-        + ":" + mappedBlockToBlock(outputs?keep_after("/*@:*/")) + ")">
+        <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlockPermutation(outputs?keep_before("/*@:*/"))
+        + ":" + mappedBlockToBlockPermutation(outputs?keep_after("/*@:*/")) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return "BlockPermutation.resolve(\"" + modid + ":" + generator.getRegistryNameFromFullName(mappedBlock) + "\")">
     <#else>

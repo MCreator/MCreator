@@ -77,6 +77,7 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeProceduralBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.FlowControlBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.LoopBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.TernaryOperatorBlock());
 
 		// add standard output blocks
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextBlock());
