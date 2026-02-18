@@ -19,4 +19,5 @@ field_inclusions: [mainFillerBlock, fluidBlock, biomesInDimension, biomesInDimen
                    generateAquifers, horizontalNoiseSize, verticalNoiseSize, imitateOverworldBehaviour, canRespawnHere,
                    defaultEffects, ambientLight, doesWaterVaporize, bedWorks, hasSkyLight, hasFixedTime, fixedTimeValue,
                    coordinateScale, infiniburnTag, worldGenType, piglinSafe, hasRaids, monsterSpawnLightLimit,
-                   monsterSpawnBlockLightLimit]
+                   monsterSpawnBlockLightLimit, enableSkybox, skyboxTextureSky, skyboxTextureGround, skyboxTextureFront,
+                   skyboxTextureBack, skyboxTextureLeft, skyboxTextureRight, enableSunMoon, sunTexture, moonTexture]
