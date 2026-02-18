@@ -21,6 +21,9 @@ package net.mcreator.ui.modgui.bedrock;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.javascript.BlocklyToJavaScript;
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.bedrock.BEBlock;
+import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -40,6 +43,9 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.references.ReferencesFinder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -52,6 +58,8 @@ import java.util.*;
 import java.util.List;
 
 public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPanelHolder, ISearchable {
+
+	private static final Logger LOG = LogManager.getLogger(BEScriptGUI.class);
 
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
@@ -79,6 +87,9 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
 	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
+
+	private String triggerTypeBeforeEdit = null;
+	private String triggerType = null;
 
 	public BEScriptGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -135,9 +146,14 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		}
 
 		if (trigger != null) {
+			triggerType = trigger.getType();
+			if (isEditingMode() && triggerTypeBeforeEdit == null) {
+				triggerTypeBeforeEdit = trigger.getType();
+			}
+
 			if (trigger.getType().equals("block")) {
 				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
-							L10N.t("elementgui.bescript.global_trigger_block_warning")));
+						L10N.t("elementgui.bescript.global_trigger_block_warning")));
 			} else if (trigger.getType().equals("item")) {
 				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
 						L10N.t("elementgui.bescript.global_trigger_block_item")));
@@ -346,7 +362,39 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	// TODO: when trigger type is changed, references need to be updated
+	@Override protected void afterGeneratableElementGenerated() {
+		super.afterGeneratableElementGenerated();
+
+		boolean triggerTypeChanged = triggerTypeBeforeEdit != null && !triggerTypeBeforeEdit.equals(triggerType);
+
+		// this procedure could be in use and new dependencies were added
+		if (isEditingMode() && triggerTypeChanged)
+			fixScriptReferences(modElement, triggerTypeBeforeEdit);
+
+		triggerTypeBeforeEdit = triggerType;
+	}
+
+	private void fixScriptReferences(ModElement beScript, String triggerTypeBeforeEdit) {
+		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), beScript)) {
+			if (triggerTypeBeforeEdit.equals("block") && element.getType() == ModElementType.BEBLOCK) {
+				if (element.getGeneratableElement() instanceof BEBlock beBlock) {
+					beBlock.localScripts.remove(beScript.getName());
+					LOG.info("Regenerating BEBlock {} because it referenced script {}", element.getName(),
+							beScript.getName());
+					mcreator.getGenerator().generateElement(element.getGeneratableElement());
+					mcreator.getWorkspace().getModElementManager().storeModElement(beBlock);
+				}
+			} else if (triggerTypeBeforeEdit.equals("item") && element.getType() == ModElementType.BEITEM) {
+				if (element.getGeneratableElement() instanceof BEItem beItem) {
+					beItem.localScripts.remove(beScript.getName());
+					LOG.info("Regenerating BEItem {} because it referenced script {}", element.getName(),
+							beScript.getName());
+					mcreator.getGenerator().generateElement(element.getGeneratableElement());
+					mcreator.getWorkspace().getModElementManager().storeModElement(beItem);
+				}
+			}
+		}
+	}
 
 	@Override public void openInEditingMode(BEScript script) {
 		blocklyPanel.setInitialXML(script.scriptxml);
