@@ -23,6 +23,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.BlocklyToolboxesLoader;
 import net.mcreator.ui.init.L10N;
@@ -51,7 +52,11 @@ public class ExternalBlockLoader {
 	private final String blocksJSONString;
 	private final Map<String, List<Tuple<ToolboxBlock, String>>> toolbox = new HashMap<>();
 
-	ExternalBlockLoader(String resourceFolder) {
+	private final String resourceFolder;
+
+	ExternalBlockLoader(BlocklyEditorType blocklyEditorType) {
+		this.resourceFolder = blocklyEditorType.registryName();
+
 		LOG.debug("Loading blocks for {}", resourceFolder);
 
 		List<ToolboxCategory> toolboxCategories = new ArrayList<>();
@@ -138,8 +143,11 @@ public class ExternalBlockLoader {
 			blocksJSON.add(toolboxBlock.blocklyJSON);
 		this.blocksJSONString = blocksJSON.toString();
 
-		// after cache is made, we can load dynamic blocks
-		toolboxBlocksList.addAll(DynamicBlockLoader.getDynamicBlocks());
+		// after cache is made, we can load dynamic blocks if supported
+		if (blocklyEditorType == BlocklyEditorType.PROCEDURE) {
+			// At this time, only procedures use dynamic blocks
+			toolboxBlocksList.addAll(DynamicBlockLoader.getDynamicBlocks());
+		}
 
 		// and then sort them for toolbox display
 		if (PreferencesManager.PREFERENCES.blockly.useSmartSort.get()) {
@@ -241,6 +249,10 @@ public class ExternalBlockLoader {
 		}
 
 		pane.executeLocalScript("workspace.updateToolbox('" + toolbox_xml.replace("\n", "").replace("\r", "") + "')");
+	}
+
+	public String getResourceFolder() {
+		return resourceFolder;
 	}
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {

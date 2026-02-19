@@ -27,10 +27,13 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Model;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -43,6 +46,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureFront;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureRight;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
+
+	public int renderType;
+	@Nonnull public String customModelName;
 
 	public String name;
 	public boolean enableCreativeTab;
@@ -72,6 +78,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public BEBlock(ModElement element) {
 		super(element);
+		customModelName = "Normal";
+		renderType = 10;
 		this.enableCreativeTab = true;
 		this.creativeTab = "BUILDING_BLOCKS";
 	}
@@ -81,8 +89,12 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
-				getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+		if (renderType == 10) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
+					getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+		} else {
+			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
+		}
 	}
 
 	private Image getTextureWithFallback(TextureHolder texture) {
@@ -97,6 +109,17 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
+	}
+
+	public Model getModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (renderType == 2)
+			modelType = Model.Type.BEDROCK;
+		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
+	}
+
+	public boolean hasCustomModel() {
+		return renderType == 2;
 	}
 
 	private Image getMainTexture() {

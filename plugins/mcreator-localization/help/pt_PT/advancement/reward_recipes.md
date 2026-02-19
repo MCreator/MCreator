@@ -1,0 +1,1 @@
+Receitas para desbloquear quando o jogador completar o avanço.

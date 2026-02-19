@@ -152,13 +152,15 @@ public abstract class MCreator extends MCreatorFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override public void windowOpened(WindowEvent e) {
 				super.windowOpened(e);
+
+				// Apply dock state after the window is shown
+				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().leftDockState, leftDockRegion);
+				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().bottomDockState, bottomDockRegion);
+
 				// Finalize MCreator initialization when the window is fully opened
 				initializeMCreator();
 			}
 		});
-
-		CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().leftDockState, leftDockRegion);
-		CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().bottomDockState, bottomDockRegion);
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}

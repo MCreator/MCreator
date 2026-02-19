@@ -116,12 +116,14 @@ import java.util.Map;
 		return additionalData -> {
 			BlocklyToProcedure blocklyToJava = getBlocklyToProcedure(additionalData);
 
-			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-					.getExternalTriggers();
+			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+					BlocklyEditorType.PROCEDURE).getExternalTriggers();
 			ExternalTrigger trigger = null;
 			for (ExternalTrigger externalTrigger : externalTriggers) {
-				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger()))
+				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
 					trigger = externalTrigger;
+					break;
+				}
 			}
 
 			if (!this.skipDependencyRegeneration) {

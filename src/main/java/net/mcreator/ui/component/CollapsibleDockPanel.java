@@ -258,7 +258,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 
 			collapsibleDockPanel.idToLastSize.putAll(state.dockSizes);
 			if (state.expandedDock != null) {
-				collapsibleDockPanel.setDockVisibility(state.expandedDock, true);
+				SwingUtilities.invokeLater(() -> collapsibleDockPanel.setDockVisibility(state.expandedDock, true));
 			}
 		}
 

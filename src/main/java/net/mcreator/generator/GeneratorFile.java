@@ -29,7 +29,7 @@ public record GeneratorFile(GeneratorTemplate source, @Nonnull Writer writer, St
 	}
 
 	public String getUsercodeComment() {
-		if (writer == Writer.JAVA)
+		if (writer == Writer.JAVA || writer == Writer.JS)
 			return "//";
 		return source.getUsercodeComment();
 	}
@@ -46,13 +46,13 @@ public record GeneratorFile(GeneratorTemplate source, @Nonnull Writer writer, St
 		return source.hashCode();
 	}
 
-	@Override public String toString() {
+	@Nonnull @Override public String toString() {
 		return source.getFile().toString();
 	}
 
 	public enum Writer {
 
-		JAVA, JSON, FILE;
+		JAVA, JSON, FILE, JS;
 
 		public static Writer fromString(@Nullable String string) {
 			// Default to JAVA if nothing is specified (null) - for backwards compatibility
@@ -63,6 +63,7 @@ public record GeneratorFile(GeneratorTemplate source, @Nonnull Writer writer, St
 				case "java" -> JAVA;
 				case "json" -> JSON;
 				case "file" -> FILE;
+				case "js" -> JS;
 				default -> throw new IllegalStateException("Unexpected value: " + string);
 			};
 		}

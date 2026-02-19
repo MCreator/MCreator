@@ -386,7 +386,10 @@ public class WebView extends JPanel implements Closeable {
 
 			edtJSWaitThread.execute(() -> {
 				try {
-					executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS);
+					if (!executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS)) {
+						LOG.warn("JS execution on EDT secondary loop timed out after {} seconds",
+								MAX_JS_EXECUTION_TIME);
+					}
 				} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 				} finally {
 					secondaryLoopExited.set(true);
@@ -403,8 +406,10 @@ public class WebView extends JPanel implements Closeable {
 			browser.executeJavaScript(script, "[WebView injected]", 0);
 
 			try {
-				// Timeout at 60 seconds as JS is blocking and nothing should take that long
-				executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS);
+				// Timeout at MAX_JS_EXECUTION_TIME seconds as JS is blocking and nothing should take that long
+				if (!executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS)) {
+					LOG.warn("JS execution timed out after {} seconds", MAX_JS_EXECUTION_TIME);
+				}
 			} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 			}
 		}
