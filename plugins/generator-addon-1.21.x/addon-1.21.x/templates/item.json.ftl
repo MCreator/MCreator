@@ -29,11 +29,13 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
-      <#if data.isFood>
+      <#if data.useDuration gt 0 || data.isFood>
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration},
       	"movement_modifier": ${data.movementModifier}
       },
+      </#if>
+      <#if data.isFood>
       "minecraft:food": {
         "nutrition": ${data.foodNutritionalValue},
         "saturation_modifier": ${data.foodSaturation},
