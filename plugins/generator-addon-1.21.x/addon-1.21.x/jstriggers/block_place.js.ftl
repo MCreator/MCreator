@@ -2,7 +2,7 @@
 
 world.afterEvents.playerPlaceBlock.subscribe((event) => {
     <@optionalDependencies dependencies, {
-        "block": "event.block",
+        "block": "event.block.permutation",
         "dimension": "event.dimension",
         "x": "event.block.location.x",
         "y": "event.block.location.y",

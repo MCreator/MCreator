@@ -1,9 +1,9 @@
 <#include "scripts.java.ftl">
 
 const ${name} = {
-    beforeOnPlayerPlace(event) {
+    onPlayerBreak(event) {
     	<@optionalDependencies dependencies, {
-			"block": "event.block.permutation",
+			"block": "event.brokenBlockPermutation",
 			"dimension": "event.dimension",
 			"x": "event.block.location.x",
 			"y": "event.block.location.y",

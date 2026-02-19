@@ -1,14 +1,15 @@
 <#include "scripts.java.ftl">
 
 const ${name} = {
-    beforeOnPlayerPlace(event) {
+    onPlayerInteract(event) {
     	<@optionalDependencies dependencies, {
 			"block": "event.block.permutation",
 			"dimension": "event.dimension",
 			"x": "event.block.location.x",
 			"y": "event.block.location.y",
 			"z": "event.block.location.z",
-			"entity": "event.player"
+			"entity": "event.player",
+			"direction": "event.face"
 		}/>
 		${scriptcode}
     }

@@ -1,14 +1,13 @@
 <#include "scripts.java.ftl">
 
 const ${name} = {
-    beforeOnPlayerPlace(event) {
+    onRandomTick(event) {
     	<@optionalDependencies dependencies, {
 			"block": "event.block.permutation",
 			"dimension": "event.dimension",
 			"x": "event.block.location.x",
 			"y": "event.block.location.y",
-			"z": "event.block.location.z",
-			"entity": "event.player"
+			"z": "event.block.location.z"
 		}/>
 		${scriptcode}
     }

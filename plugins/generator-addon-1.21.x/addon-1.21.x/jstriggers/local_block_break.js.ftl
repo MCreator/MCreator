@@ -1,14 +1,14 @@
 <#include "scripts.java.ftl">
 
 const ${name} = {
-    beforeOnPlayerPlace(event) {
+    onBreak(event) {
     	<@optionalDependencies dependencies, {
-			"block": "event.block.permutation",
+			"block": "event.brokenBlockPermutation",
 			"dimension": "event.dimension",
 			"x": "event.block.location.x",
 			"y": "event.block.location.y",
 			"z": "event.block.location.z",
-			"entity": "event.player"
+			"entity": "event.entitySource"
 		}/>
 		${scriptcode}
     }
