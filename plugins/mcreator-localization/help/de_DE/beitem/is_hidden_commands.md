@@ -1,0 +1,1 @@
+Wenn der Parameter ausgewählt ist, erscheint der Gegenstand nicht in Befehlen wie `/give`

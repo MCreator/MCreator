@@ -1,25 +1,17 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 {
-    "pools": [
-      {
-        "rolls": 1,
-        "entries": [
-          {
-            "type": "item",
-            "name": "${mappedMCItemToRegistryNameNoTags(data.mobDrop)}",
-            "weight": 1,
-            "functions": [
-              <#if hasMetadata(data.mobDrop)>
-              {
-                "function": "set_data",
-                "data": ${getMappedMCItemMetadata(data.mobDrop)}
-              }
-              </#if>
-            ]
-          }
-        ]
-      }
-    ]
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "${mappedMCItemToRegistryNameNoTags(data.mobDrop)}",
+          "weight": 1
+        }
+      ]
+    }
+  ]
 }
 <#-- @formatter:on -->

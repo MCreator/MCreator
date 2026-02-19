@@ -1,0 +1,1 @@
+Dieser Attributmodifikator wird nur angewendet, wenn der Gegenstand in diesem Slot ausgerüstet ist.
