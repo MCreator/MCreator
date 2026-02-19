@@ -27,7 +27,6 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.lang3.StringUtils;
@@ -85,6 +84,10 @@ public class GTScriptBlocks {
 
 			String testXML = scriptBlock.getToolboxTestXML();
 
+			// add additional xml to the block definition
+			testXML = testXML.replace("<block type=\"" + scriptBlock.getMachineName() + "\">",
+					"<block type=\"" + scriptBlock.getMachineName() + "\">" + additionalXML);
+
 			prepareTestCase(workspace, generatorName, scriptBlock.getMachineName(), testXML, scriptBlock.getType(),
 					scriptBlock.getOutputType());
 		}
@@ -92,7 +95,7 @@ public class GTScriptBlocks {
 
 	private static void prepareTestCase(Workspace workspace, String generatorName, String testCaseName, String testXML,
 			IBlockGenerator.BlockType blockType, @Nullable String rettype) {
-		ModElement modElement = new ModElement(workspace, "TestProcedureBlock" + testCaseName, ModElementType.BESCRIPT);
+		ModElement modElement = new ModElement(workspace, "TestScriptBlock" + testCaseName, ModElementType.BESCRIPT);
 
 		BEScript beScript = new BEScript(modElement);
 
@@ -102,14 +105,14 @@ public class GTScriptBlocks {
 			beScript.scriptxml = wrapWithBaseTestXML(doubledXML);
 		} else {
 			beScript.scriptxml = wrapWithBaseTestXML("""
-						<block type="text_print"><value name="TEXT">
-							<block type="text_join">
-								<mutation items="2"></mutation>
-								<value name="ADD0">%s</value>
-								<value name="ADD1">%s</value>
-							</block>
-						</value></block>
-						""".formatted(testXML, testXML));
+					<block type="text_print"><value name="TEXT">
+						<block type="text_join">
+							<mutation items="2"></mutation>
+							<value name="ADD0">%s</value>
+							<value name="ADD1">%s</value>
+						</block>
+					</value></block>
+					""".formatted(testXML, testXML));
 		}
 
 		try {
@@ -117,19 +120,21 @@ public class GTScriptBlocks {
 			workspace.getGenerator().generateElement(beScript, true);
 			workspace.getModElementManager().storeModElement(beScript);
 		} catch (Throwable t) {
-			fail("[" + generatorName + "] Failed generating procedure block: " + testCaseName, t);
+			fail("[" + generatorName + "] Failed generating script block: " + testCaseName, t);
 		}
 	}
 
 	public static String wrapWithBaseTestXML(String customXML) {
 		return """
 				<xml xmlns="https://developers.google.com/blockly/xml">
-				  <block type="event_trigger" deletable="false" x="59" y="38">
+				  <block type="script_trigger" deletable="false" x="59" y="38">
 				    <field name="trigger">player_ticks</field>
-				""" + customXML + """
+				    <next>
+					%s
+				  	</next>
 				  </block>
 				</xml>
-				""";
+				""".formatted(customXML);
 	}
 
 }
