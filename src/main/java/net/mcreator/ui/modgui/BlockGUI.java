@@ -1947,7 +1947,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.rarity = rarity.getSelectedItem();
 		block.immuneToFire = immuneToFire.isSelected();
 		block.creativeTabs = creativeTabs.getListElements();
-		block.destroyTool = Objects.requireNonNull(destroyTool.getSelectedItem());
+		block.destroyTool = Objects.requireNonNull((String) destroyTool.getSelectedItem());
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
@@ -1979,7 +1979,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.stepSound = stepSound.getSound();
 		block.luminance = luminance.getSelectedProcedure();
 		block.unbreakable = unbreakable.isSelected();
-		block.vanillaToolTier = vanillaToolTier.getSelectedItem();
+		block.vanillaToolTier = (String) vanillaToolTier.getSelectedItem();
 		block.specialInformation = specialInformation.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.additionalHarvestCondition = additionalHarvestCondition.getSelectedProcedure();
