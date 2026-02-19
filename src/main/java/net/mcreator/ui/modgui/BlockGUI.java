@@ -241,24 +241,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 					L10N.t("elementgui.block.rotation_mode.log") });
 	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox destroyTool = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("Not specified", "elementgui.block.destroy_tool.not_specified"),
-			Map.entry("pickaxe", "elementgui.block.destroy_tool.pickaxe"),
-			Map.entry("axe", "elementgui.block.destroy_tool.axe"),
-			Map.entry("shovel", "elementgui.block.destroy_tool.shovel"),
-			Map.entry("hoe", "elementgui.block.destroy_tool.hoe")
-			//@formatter:on
-	);
+	private final JComboBox<String> destroyTool = new JComboBox<>(
+			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 
-	private final TranslatedComboBox vanillaToolTier = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("NONE", "elementgui.block.vanilla_tool_tier.none"),
-			Map.entry("STONE", "elementgui.block.vanilla_tool_tier.stone"),
-			Map.entry("IRON", "elementgui.block.vanilla_tool_tier.iron"),
-			Map.entry("DIAMOND", "elementgui.block.vanilla_tool_tier.diamond")
-			//@formatter:on
-	);
+	private final JComboBox<String> vanillaToolTier = new JComboBox<>(
+			new String[] { "NONE", "STONE", "IRON", "DIAMOND" });
 
 	private ProcedureSelector additionalHarvestCondition;
 
@@ -338,6 +325,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override protected void initGUI() {
 		signEntityTexture.setAddPNGExtension(false);
 		signGUITexture.setAddPNGExtension(false);
+		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
@@ -966,6 +954,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		selp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vanilla_tool_tier"),
 				L10N.label("elementgui.block.vanilla_tool_tier")));
 		selp3.add(vanillaToolTier);
+		vanillaToolTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(defaultSoundType);
