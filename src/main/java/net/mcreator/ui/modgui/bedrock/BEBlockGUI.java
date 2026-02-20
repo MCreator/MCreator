@@ -106,6 +106,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 					"water" });
 
 	private final ValidationGroup page1group = new ValidationGroup();
+	private final ValidationGroup page2group = new ValidationGroup();
 
 	public BEBlockGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -114,6 +115,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	}
 
 	@Override protected void initGUI() {
+		JPanel visualPanel = new JPanel(new BorderLayout(10, 10));
+		visualPanel.setOpaque(false);
 		JPanel propertiesPanel = new JPanel(new BorderLayout(10, 10));
 		propertiesPanel.setOpaque(false);
 		JPanel generationPanel = new JPanel(new BorderLayout(10, 10));
@@ -151,7 +154,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.common.name_in_gui")));
 		basicProperties.add(name);
 		ComponentUtils.deriveFont(name, 16);
-		page1group.addValidationElement(name);
+		page2group.addValidationElement(name);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
@@ -210,9 +213,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.common.fire_spread_speed")));
 		basicProperties.add(flammableDestroyChance);
 
-		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
-				PanelUtils.centerAndSouthElement(PanelUtils.totalCenterInPanel(textures), renderSettings),
-				PanelUtils.totalCenterInPanel(basicProperties), 45, 45)));
+		visualPanel.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndCenterElement(textures, PanelUtils.totalCenterInPanel(renderSettings), 55, 55)));
+
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
 
 		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
 		genPanel.setOpaque(false);
@@ -245,7 +249,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				PanelUtils.totalCenterInPanel(genPanel), 25, 0);
 		generationPanel.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
-		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
+		addPage(L10N.t("elementgui.common.page_visual"), visualPanel).validate(page1group);
+		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page2group);
 		addPage(L10N.t("elementgui.common.page_generation"), generationPanel);
 
 		if (!isEditingMode()) {
