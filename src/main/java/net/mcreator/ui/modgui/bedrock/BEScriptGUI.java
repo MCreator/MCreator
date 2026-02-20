@@ -349,7 +349,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.SCRIPT, blocklyPanel, false);
+		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.SCRIPT, blocklyPanel);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 

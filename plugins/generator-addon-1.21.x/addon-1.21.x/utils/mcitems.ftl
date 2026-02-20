@@ -8,7 +8,7 @@
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return "BlockPermutation.resolve(\"" + modid + ":" + generator.getRegistryNameFromFullName(mappedBlock) + "\")">
     <#else>
-        <#return "BlockPermutation.resolve(\"" + mappedBlock + "\")">
+        <#return "BlockPermutation.resolve(\"minecraft:" + mappedBlock + "\")">
     </#if>
 </#function>
 
@@ -22,7 +22,7 @@
     <#elseif mappedBlock?starts_with("CUSTOM:")>
         <#return toItemStack(modid + ":" + generator.getRegistryNameFromFullName(mappedBlock), amount)>
     <#else>
-        <#return toItemStack(mappedBlock, amount)>
+        <#return toItemStack("minecraft:" + mappedBlock, amount)>
     </#if>
 </#function>
 
