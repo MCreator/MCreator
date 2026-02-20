@@ -1729,6 +1729,13 @@ public class TestWorkspaceDataProvider {
 			block.oreCount = 2;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
+			block.rotationMode = random.nextInt(0, 5);
+			block.renderMethod = getRandomItem(random,
+					List.of("opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
+							"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque"));
+			block.tintMethod = getRandomItem(random,
+					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+							"water"));
 			return block;
 		}
 		return null;
