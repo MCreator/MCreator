@@ -73,6 +73,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public int maxGenerateHeight;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 
+	public int rotationMode;
+	public String renderMethod;
+	public String tintMethod;
+
 	@ModElementReference public List<String> localScripts;
 
 	private BEBlock() {
@@ -87,6 +91,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		enableCreativeTab = true;
 		creativeTab = "BUILDING_BLOCKS";
+
+		renderMethod = "opaque";
+		tintMethod = "(none)";
 
 		localScripts = new ArrayList<>();
 	}
