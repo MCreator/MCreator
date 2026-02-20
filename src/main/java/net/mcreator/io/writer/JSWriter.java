@@ -19,6 +19,7 @@
 
 package net.mcreator.io.writer;
 
+import io.beautifier.core.Options;
 import io.beautifier.javascript.JavaScriptBeautifier;
 import io.beautifier.javascript.JavaScriptOptions;
 import net.mcreator.io.TrackingFileIO;
@@ -29,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.EnumSet;
 
 public class JSWriter {
 
@@ -40,9 +42,14 @@ public class JSWriter {
 
 	public static String formatJS(String srcjs) {
 		try {
-			JavaScriptOptions options = JavaScriptOptions.builder().build();
+			JavaScriptOptions options = JavaScriptOptions.builder()
+					.brace_style(JavaScriptOptions.BraceStyle.none)
+					.brace_preserve_inline(true)
+					.build();
 			options.indent_char = "\t";
 			options.indent_size = 1;
+			options.wrap_line_length = 150;
+			options.templating = EnumSet.of(Options.TemplateLanguage.none);
 			JavaScriptBeautifier beautifier = new JavaScriptBeautifier(srcjs, options);
 			return beautifier.beautify();
 		} catch (Exception e) {
