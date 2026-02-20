@@ -37,6 +37,9 @@ import java.util.Locale;
 
 class EditTemplatesPanel {
 
+	private final CardLayout cardLayout = new CardLayout();
+	private final JPanel panel = new JPanel(cardLayout);
+
 	EditTemplatesPanel(PreferencesDialog preferencesDialog, String name, String templatesFolder, String templateExt) {
 		preferencesDialog.model.addElement(name);
 
@@ -87,6 +90,7 @@ class EditTemplatesPanel {
 					FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder(templatesFolder), f.getName()));
 					tmodel.addElement(f.getName());
 				});
+				updateVisibility(tmodel);
 			}
 		});
 
@@ -98,9 +102,14 @@ class EditTemplatesPanel {
 			});
 		}
 
-		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, new JScrollPane(templates), 5, 5));
+		panel.add(PanelUtils.totalCenterInPanel(L10N.label("dialog.preferences.no_templates")), "EMPTY");
+		panel.add(new JScrollPane(templates), "LIST");
+
+		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, panel, 5, 5));
 
 		preferencesDialog.preferences.add(sectionPanel, name);
+
+		updateVisibility(tmodel);
 	}
 
 	private void deleteCurrentlySelected(String templatesFolder, DefaultListModel<String> tmodel,
@@ -109,6 +118,15 @@ class EditTemplatesPanel {
 			new File(UserFolderManager.getFileFromUserFolder(templatesFolder), el).delete();
 			tmodel.removeElement(el);
 		});
+		updateVisibility(tmodel);
+	}
+
+	public void updateVisibility(DefaultListModel<String> tmodel) {
+		if (tmodel.isEmpty()) {
+			cardLayout.show(panel, "EMPTY");
+		} else {
+			cardLayout.show(panel, "LIST");
+		}
 	}
 
 }
