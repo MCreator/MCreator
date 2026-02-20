@@ -1715,6 +1715,9 @@ public class TestWorkspaceDataProvider {
 			beblock.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 			beblock.renderType = 10;
 			beblock.customModelName = "Normal";
+			beblock.enableCreativeTab = !_true;
+			beblock.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beblock.isHiddenInCommands = _true;
 			beblock.hardness = 2.3;
 			beblock.resistance = 3.1;
 			beblock.customDrop = new MItemBlock(modElement.getWorkspace(),

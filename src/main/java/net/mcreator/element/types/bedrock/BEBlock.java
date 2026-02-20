@@ -52,6 +52,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@Nonnull public String customModelName;
 
 	public String name;
+	public boolean enableCreativeTab;
+	public String creativeTab;
+	public boolean isHiddenInCommands;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public double friction;
@@ -81,6 +84,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		customModelName = "Normal";
 		renderType = 10;
+
+		enableCreativeTab = true;
+		creativeTab = "BUILDING_BLOCKS";
 
 		localScripts = new ArrayList<>();
 	}
