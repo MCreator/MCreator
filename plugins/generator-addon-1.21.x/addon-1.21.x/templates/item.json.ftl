@@ -1,7 +1,8 @@
 <#-- @formatter:off -->
+<#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 <#include "mcitems.ftl">
 {
-  "format_version": "1.21.50",
+  "format_version": "1.21.90",
   "minecraft:item": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -28,11 +29,13 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
-      <#if data.isFood>
+      <#if data.useDuration gt 0 || data.isFood>
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration},
       	"movement_modifier": ${data.movementModifier}
       },
+      </#if>
+      <#if data.isFood>
       "minecraft:food": {
         "nutrition": ${data.foodNutritionalValue},
         "saturation_modifier": ${data.foodSaturation},
@@ -48,7 +51,10 @@
       	]
       },
       </#if>
-      "minecraft:icon": "${registryname}"
+      "minecraft:icon": "${registryname}"<#if localScripts?has_content>,</#if>
+      <#list localScripts as script>
+      "${script}": {}<#sep>,
+      </#list>
     }
   }
 }

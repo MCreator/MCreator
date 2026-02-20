@@ -32,6 +32,7 @@ import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BEItem extends GeneratableElement implements IItem, IItemWithTexture {
@@ -63,18 +64,23 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@ModElementReference public MItemBlock usingConvertsTo;
 	public String animation;
 
+	@ModElementReference public List<String> localScripts;
+
 	public BEItem() {
 		this(null);
 	}
 
 	public BEItem(ModElement element) {
 		super(element);
+
 		this.rarity = "COMMON";
 		this.movementModifier = 1.0;
 		this.shouldDespawn = true;
 		this.animation = "eat";
 		this.enableCreativeTab = true;
 		this.creativeTab = "MATERIALS";
+
+		localScripts = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

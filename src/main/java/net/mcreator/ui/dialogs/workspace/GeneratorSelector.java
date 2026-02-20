@@ -27,6 +27,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -178,9 +179,12 @@ public class GeneratorSelector {
 			stats.getGeneratorBlocklyTriggers().forEach((key, value) -> {
 				ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
 
-				String name = L10N.t(covpfx + loader.getResourceFolder());
-				if (name != null)
-					addStatsBar(name, loader.getResourceFolder(), supportedProcedures, stats);
+				if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() != GeneratorFlavor.BaseLanguage.JAVA
+						|| key != BlocklyEditorType.SCRIPT) {
+					String name = L10N.t(covpfx + loader.getResourceFolder());
+					if (name != null)
+						addStatsBar(name, loader.getResourceFolder(), supportedProcedures, stats);
+				}
 			});
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),

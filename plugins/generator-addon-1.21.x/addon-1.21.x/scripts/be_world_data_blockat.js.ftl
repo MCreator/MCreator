@@ -1,0 +1,1 @@
+/*@BlockState*/((dimension.getBlock({ x: ${input$x}, y: ${input$y}, z: ${input$z} })?.permutation) ?? BlockPermutation.resolve("minecraft:air"))

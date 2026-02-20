@@ -1,0 +1,40 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "MCItem"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/bi.png",
+      "width": 8,
+      "height": 36
+    },
+    {
+      "type": "field_image",
+      "src": "./res/bi.png",
+      "width": 8,
+      "height": 36
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "logicoperations",
+    "toolbox_init": [
+      "~<value name=\"a\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "~<value name=\"b\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}

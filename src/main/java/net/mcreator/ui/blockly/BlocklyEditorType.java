@@ -36,6 +36,7 @@ public record BlocklyEditorType(String registryName, String extension, String st
 	public static final BlocklyEditorType FEATURE = new BlocklyEditorType("features", "ftpl", "feature_container");
 	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", null,
 			"advancement_trigger");
+	public static final BlocklyEditorType SCRIPT = new BlocklyEditorType("scripts", "stpl", "script_trigger");
 
 	public BlocklyEditorType {
 		if (TYPES.containsKey(registryName))
