@@ -172,6 +172,9 @@ public class GeneratorStats {
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
 	 */
 	public void addBlocklyFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
+		if (BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().isEmpty())
+			return;
+
 		Set<String> blocks = new HashSet<>();
 		for (String path : genConfig.getGeneratorPaths(type.registryName())) {
 			blocks.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
@@ -188,6 +191,9 @@ public class GeneratorStats {
 
 	public void addBlocklyTriggerFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
 		ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(type);
+
+		if (loader.getExternalTriggers().isEmpty())
+			return;
 
 		Set<String> triggers = generatorBlocklyTriggers.computeIfAbsent(type, k -> new HashSet<>());
 

@@ -1,0 +1,1 @@
+O jogador receberá alguns itens da tabela de loot selecionada definida neste campo quando o avanço for concluído.

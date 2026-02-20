@@ -21,8 +21,10 @@ package net.mcreator.ui.dialogs.file;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.JBRHacks;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.WorkspaceFolderManager;
+import org.cef.OS;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -85,6 +87,15 @@ class JavaFileDialogs {
 
 				return fileSystemView.getSystemIcon(f);
 			}
+
+			@Override public Boolean isTraversable(File f) {
+				// Workaround for https://youtrack.jetbrains.com/projects/JBR/issues/JBR-8855/
+				// IoOverNio causes crashes with JFileChooser on certain Windows systems
+				if (OS.isWindows()) {
+					JBRHacks.permanentlyDisableIoOverNioInThisThread();
+				}
+				return super.isTraversable(f);
+			}
 		});
 
 		if (filters != null) {
@@ -132,6 +143,17 @@ class JavaFileDialogs {
 			}
 		};
 
+		fc.setFileView(new FileView() {
+			@Override public Boolean isTraversable(File f) {
+				// Workaround for https://youtrack.jetbrains.com/projects/JBR/issues/JBR-8855/
+				// IoOverNio causes crashes with JFileChooser on certain Windows systems
+				if (OS.isWindows()) {
+					JBRHacks.permanentlyDisableIoOverNioInThisThread();
+				}
+				return super.isTraversable(f);
+			}
+		});
+
 		fc.setPreferredSize(FILEDIALOG_SIZE);
 
 		if (file == null) {
@@ -176,8 +198,8 @@ class JavaFileDialogs {
 			}
 
 			@Override public String getDescription() {
-				return extensionFilter.description() + " " + extensionFilter.extensions().toString()
-						.replace('[', '(').replace(']', ')');
+				return extensionFilter.description() + " " + extensionFilter.extensions().toString().replace('[', '(')
+						.replace(']', ')');
 			}
 		};
 	}

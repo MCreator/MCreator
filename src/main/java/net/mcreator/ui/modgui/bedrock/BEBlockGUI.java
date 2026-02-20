@@ -67,6 +67,11 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
+	private final JCheckBox enableCreativeTab = new JCheckBox();
+	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,
+			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
+
+	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
 	private final JSpinner lightEmission = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
@@ -122,6 +127,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
+		JPanel basicProperties = new JPanel(new GridLayout(13, 2, 2, 2));
 		JPanel renderSettings = new JPanel(new GridLayout(3, 2, 0, 2));
 		renderSettings.setOpaque(false);
 
@@ -147,6 +153,17 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(name);
 		ComponentUtils.deriveFont(name, 16);
 		page1group.addValidationElement(name);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
+				L10N.label("elementgui.beitem.creative_tab")));
+		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
+		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.setOpaque(false);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
+				L10N.label("elementgui.beitem.is_hidden_commands")));
+		isHiddenInCommands.setOpaque(false);
+		basicProperties.add(isHiddenInCommands);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/rotation_mode"),
 				L10N.label("elementgui.block.rotation_mode")));
@@ -236,6 +253,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			name.setText(StringUtils.machineToReadableName(modElement.getName()));
 		}
 		updateTextureOptions();
+		updateCreativeTab();
 		refreshSpawnProperties();
 	}
 
@@ -245,6 +263,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		} else {
 			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.SINGLE_TEXTURE);
 		}
+	}
+
+	private void updateCreativeTab() {
+		creativeTab.setEnabled(enableCreativeTab.isSelected());
 	}
 
 	private void refreshSpawnProperties() {
@@ -272,6 +294,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		if (model != null)
 			renderType.setSelectedItem(model);
 		name.setText(block.name);
+		enableCreativeTab.setSelected(block.enableCreativeTab);
+		creativeTab.setSelectedItem(block.creativeTab);
+		isHiddenInCommands.setSelected(block.isHiddenInCommands);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
 		soundOnStep.setSelectedItem(block.soundOnStep);
@@ -295,6 +320,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		tintMethod.setSelectedItem(block.tintMethod);
 
 		updateTextureOptions();
+		updateCreativeTab();
 		refreshSpawnProperties();
 	}
 
@@ -315,6 +341,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.customModelName = model.getReadableName();
 
 		block.name = name.getText();
+		block.enableCreativeTab = enableCreativeTab.isSelected();
+		block.creativeTab = creativeTab.getSelectedItem().toString();
+		block.isHiddenInCommands = isHiddenInCommands.isSelected();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
 		block.customDrop = customDrop.getBlock();
