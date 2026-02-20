@@ -20,6 +20,7 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItem;
@@ -32,6 +33,7 @@ import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BEItem extends GeneratableElement implements IItem, IItemWithTexture {
@@ -54,6 +56,11 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean allowOffHand;
 	public double fuelDuration;
 	public boolean shouldDespawn;
+	public MItemBlock blockToPlace;
+	@ModElementReference public List<MItemBlock> blockPlaceableOn;
+	public EntityEntry entityToPlace;
+	@ModElementReference public List<MItemBlock> entityPlaceableOn;
+	@ModElementReference public List<MItemBlock> entityDispensableOn;
 
 	// Food
 	public boolean isFood;
@@ -75,6 +82,9 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		this.animation = "eat";
 		this.enableCreativeTab = true;
 		this.creativeTab = "MATERIALS";
+		this.blockPlaceableOn = new ArrayList<>();
+		this.entityDispensableOn = new ArrayList<>();
+		this.entityPlaceableOn = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
