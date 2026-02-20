@@ -1736,22 +1736,15 @@ public class TestWorkspaceDataProvider {
 				beblock.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			}
-			block.frequencyPerChunks = 3;
-			block.oreCount = 2;
-			block.minGenerateHeight = 21;
-			block.maxGenerateHeight = 92;
-			block.rotationMode = random.nextInt(0, 5);
-			block.renderMethod = getRandomItem(random,
+
+			beblock.rotationMode = random.nextInt(0, 5);
+			beblock.renderMethod = getRandomItem(random,
 					List.of("opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
 							"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque"));
-			block.tintMethod = getRandomItem(random,
+			beblock.tintMethod = getRandomItem(random,
 					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
 							"water"));
-			return block;
-			beblock.frequencyPerChunks = 3;
-			beblock.oreCount = 2;
-			beblock.minGenerateHeight = 21;
-			beblock.maxGenerateHeight = 92;
+
 			beblock.localScripts = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.localScripts.add("Examplebescript1");
