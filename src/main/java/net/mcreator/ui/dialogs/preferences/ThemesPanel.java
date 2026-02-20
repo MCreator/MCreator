@@ -64,7 +64,9 @@ public class ThemesPanel {
 
 		reloadThemesList();
 
-		themes.setSelectedValue(Theme.current(), true);
+		themes.setSelectedValue(ThemeManager.getThemes().stream()
+				.filter(t -> t.getID().equals(PreferencesManager.PREFERENCES.hidden.uiTheme.get())).findFirst()
+				.orElseThrow(), true);
 
 		JComponent main = PanelUtils.northAndCenterElement(top,
 				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.themes.list"), new JScrollPane(themes)),
