@@ -92,10 +92,8 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "textures"), stats.getBaseCoverageInfo().get("textures"), baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "sounds"), stats.getBaseCoverageInfo().get("sounds"), baseCoverageInfo);
 
-			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
-					== GeneratorFlavor.GamePlatform.JAVAEDITION)
-				addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
-						baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
+					baseCoverageInfo);
 
 			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
 
