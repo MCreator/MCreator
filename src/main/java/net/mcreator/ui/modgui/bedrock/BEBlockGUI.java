@@ -127,7 +127,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		JPanel basicProperties = new JPanel(new GridLayout(13, 2, 2, 2));
 		JPanel renderSettings = new JPanel(new GridLayout(3, 2, 0, 2));
 		renderSettings.setOpaque(false);
 
@@ -145,7 +144,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		renderMethod.setPreferredSize(new Dimension(260, 42));
 
-		JPanel basicProperties = new JPanel(new GridLayout(12, 2, 2, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(14, 2, 2, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
