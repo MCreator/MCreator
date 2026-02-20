@@ -1,7 +1,7 @@
 {
 <#list sounds as sound>
-"${sound.getName()}": {
-  "category": "${sound.getCategory()}",
+"${modid}:${sound.getName()}": {
+  "category": "${sound.getCategory()?replace("master", "neutral")?replace("master", "neutral")?replace("voice", "ui")?replace("ambient", "weather")}",
   <#if sound.getSubtitle()?has_content>"subtitle": "subtitles.${sound.getName()}",</#if>
   "sounds": [
     <#list sound.getFiles() as file>
