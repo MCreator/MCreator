@@ -30,7 +30,7 @@
       "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#elseif data.renderType() == 3>"minecraft:geometry.cross"<#else>"minecraft:geometry.full_block"</#if>,
       "minecraft:material_instances": {
         <#if data.hasOneTexture()>
-		"*": <@material_face/>
+		"*": <@material_face "" data.renderType()==3 data.renderType()==3/>
 		<#else>
         "up": <@material_face "up"/>,
         "down": <@material_face "down"/>,
@@ -142,11 +142,13 @@
   </#if>
 </#function>
 
-<#macro material_face suffix="">
+<#macro material_face suffix="" disableAmbientOcclusion=false disableFaceDimming=false>
 {
   "texture": "${modid}_${registryname}<#if suffix?has_content>_${suffix}</#if>"
   <#if data.renderMethod != "opaque">,"render_method": "${data.renderMethod}"</#if>
   <#if data.tintMethod != "(none)">,"tint_method": "${data.tintMethod}"</#if>
+  <#if disableAmbientOcclusion>, "ambient_occlusion": false</#if>
+  <#if disableFaceDimming>,"face_dimming": false</#if>
 }
 </#macro>
 

@@ -105,6 +105,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		if (renderType == 10) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
 					getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+		} else if (renderType == 4) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getMainTexture(), getMainTexture(), getMainTexture());
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
