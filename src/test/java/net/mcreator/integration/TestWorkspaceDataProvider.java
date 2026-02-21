@@ -843,7 +843,7 @@ public class TestWorkspaceDataProvider {
 			dimension.skyboxTextureNorth = new TextureHolder(modElement.getWorkspace(), "test5");
 			dimension.skyboxTextureSouth = new TextureHolder(modElement.getWorkspace(), "test6");
 			dimension.skyboxTextureWest = new TextureHolder(modElement.getWorkspace(), "test7");
-			dimension.skyboxTextureDown = new TextureHolder(modElement.getWorkspace(), "test8");
+			dimension.skyboxTextureEast = new TextureHolder(modElement.getWorkspace(), "test8");
 			dimension.enableSunMoon = _true;
 			dimension.sunTexture = new TextureHolder(modElement.getWorkspace(), "test9");
 			dimension.moonTexture = new TextureHolder(modElement.getWorkspace(), "test10");
