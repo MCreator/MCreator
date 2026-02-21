@@ -63,8 +63,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private BlockTexturesSelector textures;
 
 	public static final Model normal = new Model.BuiltInModel("Normal");
-	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
 	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
 	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
