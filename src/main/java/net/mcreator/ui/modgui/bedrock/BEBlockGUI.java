@@ -52,6 +52,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -62,7 +63,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private BlockTexturesSelector textures;
 
 	public static final Model normal = new Model.BuiltInModel("Normal");
-	public static final Model[] builtinitemmodels = new Model[] { normal };
+	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
+	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
@@ -285,7 +288,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, cross, singleTexture),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 	}
@@ -342,6 +345,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.renderType = 10;
 		if (model.getType() == Model.Type.BEDROCK)
 			block.renderType = 2;
+		else if (model.equals(cross))
+			block.renderType = 3;
+		else if (model.equals(singleTexture))
+			block.renderType = 4;
 		block.customModelName = model.getReadableName();
 
 		block.name = name.getText();

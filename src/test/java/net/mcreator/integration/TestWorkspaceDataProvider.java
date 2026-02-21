@@ -183,7 +183,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
-			generatableElements.add(getExampleFor(me(workspace, type, "4"), uiTest, random, false, false, 3));
+			generatableElements.add(getExampleFor(me(workspace, type, "4"), uiTest, random, false, false, 0));
 		} else {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
@@ -1702,7 +1702,7 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
 			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
 			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
-			block.renderType = 10;
+			block.renderType = new int[] {10, 3, 4}[valueIndex];
 			block.customModelName = "Normal";
 			block.enableCreativeTab = !_true;
 			block.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();

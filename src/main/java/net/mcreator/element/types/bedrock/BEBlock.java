@@ -93,6 +93,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		tintMethod = "(none)";
 	}
 
+	public int renderType() {
+		return renderType;
+	}
+
 	public boolean hasCustomDrop() {
 		return !customDrop.isEmpty();
 	}
@@ -129,6 +133,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public boolean hasCustomModel() {
 		return renderType == 2;
+	}
+
+	public boolean hasOneTexture() {
+		return hasCustomModel() || renderType == 3 || renderType == 4;
 	}
 
 	private Image getMainTexture() {

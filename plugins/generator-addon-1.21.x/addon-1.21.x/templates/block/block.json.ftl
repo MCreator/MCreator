@@ -27,9 +27,9 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"</#if>,
+      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#elseif data.renderType() == 3>"minecraft:geometry.cross"<#else>"minecraft:geometry.full_block"</#if>,
       "minecraft:material_instances": {
-        <#if data.hasCustomModel()>
+        <#if data.hasOneTexture()>
 		"*": <@material_face/>
 		<#else>
         "up": <@material_face "up"/>,
