@@ -2,6 +2,9 @@
   "mutator": "any_item_mutator",
   "output": "MCItem",
   "colour": "350",
+  "extensions": [
+    "empty_any_item_in_validation"
+  ],
   "mcreator": {
     "toolbox_id": "aiadvanced",
     "toolbox_init": [

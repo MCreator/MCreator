@@ -311,3 +311,29 @@ Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
             }
         }
     });
+
+// Helper function for extensions that validate if Any item in block has at least one item field argument
+Blockly.Extensions.register('empty_any_item_in_validation',
+    function () {
+    	this.setOnChange(function (changeEvent) {
+        	// Trigger the change only if a block is changed, moved, deleted or created
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+            	changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+            	changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+            	changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+            		return;
+            }
+
+            const isValid = this.getField("item0") != null;
+
+            if (!this.isInFlyout) {
+            	// Add a warning for the first non-valid input
+                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.empty_any_item_in'));
+                const group = Blockly.Events.getGroup();
+                // Makes it so the block change and the disable event get undone together.
+                Blockly.Events.setGroup(changeEvent.group);
+                this.setEnabled(isValid);
+                 Blockly.Events.setGroup(group);
+            }
+        });
+    });
