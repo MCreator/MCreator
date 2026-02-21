@@ -140,12 +140,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private ProcedureSelector onPlayerLeavesDimension;
 
 	private final JCheckBox enableSkybox = L10N.checkbox("elementgui.common.enable");
-	private TextureSelectionButton skyboxTextureSky;
-	private TextureSelectionButton skyboxTextureGround;
-	private TextureSelectionButton skyboxTextureFront;
-	private TextureSelectionButton skyboxTextureBack;
-	private TextureSelectionButton skyboxTextureLeft;
-	private TextureSelectionButton skyboxTextureRight;
+	private TextureSelectionButton skyboxTextureUp;
+	private TextureSelectionButton skyboxTextureDown;
+	private TextureSelectionButton skyboxTextureNorth;
+	private TextureSelectionButton skyboxTextureSouth;
+	private TextureSelectionButton skyboxTextureWest;
+	private TextureSelectionButton skyboxTextureEast;
 
 	private final JCheckBox enableSunMoon = L10N.checkbox("elementgui.common.enable");
 	private TextureSelectionButton sunTexture;
@@ -355,22 +355,22 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 						PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(dimensionEffects, mobSettings)))));
 		propertiesPage.setOpaque(false);
 
-		skyboxTextureSky = new TextureSelectionButton(
+		skyboxTextureUp = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_sky_up_needs_texture");
-		skyboxTextureGround = new TextureSelectionButton(
+		skyboxTextureDown = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_sky_down_needs_texture");
-		skyboxTextureFront = new TextureSelectionButton(
+		skyboxTextureNorth = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_sky_north_needs_texture");
-		skyboxTextureBack = new TextureSelectionButton(
+		skyboxTextureSouth = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_sky_south_needs_texture");
-		skyboxTextureRight = new TextureSelectionButton(
+		skyboxTextureEast = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_sky_east_needs_texture");
-		skyboxTextureLeft = new TextureSelectionButton(
+		skyboxTextureWest = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_sky_west_needs_texture");
 		sunTexture = new TextureSelectionButton(
@@ -379,13 +379,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		moonTexture = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_moon_needs_texture");
-		
-		skyboxTextureSky.setOpaque(false);
-		skyboxTextureGround.setOpaque(false);
-		skyboxTextureFront.setOpaque(false);
-		skyboxTextureBack.setOpaque(false);
-		skyboxTextureRight.setOpaque(false);
-		skyboxTextureLeft.setOpaque(false);
+
+		skyboxTextureUp.setOpaque(false);
+		skyboxTextureDown.setOpaque(false);
+		skyboxTextureNorth.setOpaque(false);
+		skyboxTextureSouth.setOpaque(false);
+		skyboxTextureEast.setOpaque(false);
+		skyboxTextureWest.setOpaque(false);
 		sunTexture.setOpaque(false);
 		moonTexture.setOpaque(false);
 
@@ -393,14 +393,14 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel skyboxGrid = new JPanel(new GridLayout(3, 4, 2, 2));
 		skyboxGrid.setOpaque(false);
 		skyboxGrid.add(new JEmptyBox());
-		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureSky, L10N.t("elementgui.dimension.sky_up")));
+		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureUp, L10N.t("elementgui.dimension.sky_up")));
 		skyboxGrid.add(new JEmptyBox()); skyboxGrid.add(new JEmptyBox());
-		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureLeft, L10N.t("elementgui.dimension.sky_west")));
-		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureFront, L10N.t("elementgui.dimension.sky_north")));
-		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureRight, L10N.t("elementgui.dimension.sky_east")));
-		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureBack, L10N.t("elementgui.dimension.sky_south")));
+		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureWest, L10N.t("elementgui.dimension.sky_west")));
+		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureNorth, L10N.t("elementgui.dimension.sky_north")));
+		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureEast, L10N.t("elementgui.dimension.sky_east")));
+		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureSouth, L10N.t("elementgui.dimension.sky_south")));
 		skyboxGrid.add(new JEmptyBox());
-		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureGround, L10N.t("elementgui.dimension.sky_down")));
+		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureDown, L10N.t("elementgui.dimension.sky_down")));
 		skyboxGrid.add(new JEmptyBox()); skyboxGrid.add(new JEmptyBox());
 
 		JPanel skyboxPanel = new JPanel(new BorderLayout(0, 10));
@@ -632,12 +632,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		generationPageGroup.addValidationElement(mainFillerBlock);
 		generationPageGroup.addValidationElement(fluidBlock);
 
-		skyboxPageGroup.addValidationElement(skyboxTextureSky);
-		skyboxPageGroup.addValidationElement(skyboxTextureGround);
-		skyboxPageGroup.addValidationElement(skyboxTextureFront);
-		skyboxPageGroup.addValidationElement(skyboxTextureBack);
-		skyboxPageGroup.addValidationElement(skyboxTextureLeft);
-		skyboxPageGroup.addValidationElement(skyboxTextureRight);
+		skyboxPageGroup.addValidationElement(skyboxTextureUp);
+		skyboxPageGroup.addValidationElement(skyboxTextureDown);
+		skyboxPageGroup.addValidationElement(skyboxTextureNorth);
+		skyboxPageGroup.addValidationElement(skyboxTextureSouth);
+		skyboxPageGroup.addValidationElement(skyboxTextureWest);
+		skyboxPageGroup.addValidationElement(skyboxTextureEast);
 		skyboxPageGroup.addValidationElement(sunTexture);
 		skyboxPageGroup.addValidationElement(moonTexture);
 
@@ -716,12 +716,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private void updateSkyboxElements() {
 		boolean skyboxEnabled = enableSkybox.isSelected();
-		skyboxTextureSky.setEnabled(skyboxEnabled);
-		skyboxTextureGround.setEnabled(skyboxEnabled);
-		skyboxTextureFront.setEnabled(skyboxEnabled);
-		skyboxTextureBack.setEnabled(skyboxEnabled);
-		skyboxTextureLeft.setEnabled(skyboxEnabled);
-		skyboxTextureRight.setEnabled(skyboxEnabled);
+		skyboxTextureUp.setEnabled(skyboxEnabled);
+		skyboxTextureDown.setEnabled(skyboxEnabled);
+		skyboxTextureNorth.setEnabled(skyboxEnabled);
+		skyboxTextureSouth.setEnabled(skyboxEnabled);
+		skyboxTextureWest.setEnabled(skyboxEnabled);
+		skyboxTextureEast.setEnabled(skyboxEnabled);
 		boolean sunMoonEnabled = enableSunMoon.isSelected();
 		sunTexture.setEnabled(sunMoonEnabled);
 		moonTexture.setEnabled(sunMoonEnabled);
@@ -799,12 +799,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalMakeCondition.setSelectedProcedure(dimension.portalMakeCondition);
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 		enableSkybox.setSelected(dimension.enableSkybox);
-		skyboxTextureSky.setTexture(dimension.skyboxTextureSky);
-		skyboxTextureGround.setTexture(dimension.skyboxTextureGround);
-		skyboxTextureFront.setTexture(dimension.skyboxTextureFront);
-		skyboxTextureBack.setTexture(dimension.skyboxTextureBack);
-		skyboxTextureLeft.setTexture(dimension.skyboxTextureLeft);
-		skyboxTextureRight.setTexture(dimension.skyboxTextureRight);
+		skyboxTextureUp.setTexture(dimension.skyboxTextureUp);
+		skyboxTextureDown.setTexture(dimension.skyboxTextureDown);
+		skyboxTextureNorth.setTexture(dimension.skyboxTextureNorth);
+		skyboxTextureSouth.setTexture(dimension.skyboxTextureSouth);
+		skyboxTextureWest.setTexture(dimension.skyboxTextureWest);
+		skyboxTextureEast.setTexture(dimension.skyboxTextureEast);
 		enableSunMoon.setSelected(dimension.enableSunMoon);
 		sunTexture.setTexture(dimension.sunTexture);
 		moonTexture.setTexture(dimension.moonTexture);
@@ -870,12 +870,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalMakeCondition = portalMakeCondition.getSelectedProcedure();
 		dimension.portalUseCondition = portalUseCondition.getSelectedProcedure();
 		dimension.enableSkybox = enableSkybox.isSelected();
-		dimension.skyboxTextureSky = skyboxTextureSky.getTextureHolder();
-		dimension.skyboxTextureGround = skyboxTextureGround.getTextureHolder();
-		dimension.skyboxTextureFront = skyboxTextureFront.getTextureHolder();
-		dimension.skyboxTextureBack = skyboxTextureBack.getTextureHolder();
-		dimension.skyboxTextureLeft = skyboxTextureLeft.getTextureHolder();
-		dimension.skyboxTextureRight = skyboxTextureRight.getTextureHolder();
+		dimension.skyboxTextureUp = skyboxTextureUp.getTextureHolder();
+		dimension.skyboxTextureDown = skyboxTextureDown.getTextureHolder();
+		dimension.skyboxTextureNorth = skyboxTextureNorth.getTextureHolder();
+		dimension.skyboxTextureSouth = skyboxTextureSouth.getTextureHolder();
+		dimension.skyboxTextureWest = skyboxTextureWest.getTextureHolder();
+		dimension.skyboxTextureEast = skyboxTextureEast.getTextureHolder();
 		dimension.enableSunMoon = enableSunMoon.isSelected();
 		dimension.sunTexture = sunTexture.getTextureHolder();
 		dimension.moonTexture = moonTexture.getTextureHolder();

@@ -81,12 +81,12 @@ import java.util.List;
 	public String infiniburnTag;
 
 	public boolean enableSkybox;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureSky;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureGround;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureFront;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureBack;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureLeft;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureRight;
+	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureUp;
+	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureDown;
+	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureNorth;
+	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureSouth;
+	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureWest;
+	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureEast;
 
 	public boolean enableSunMoon;
 	@TextureReference(TextureType.OTHER) public TextureHolder sunTexture;
@@ -196,12 +196,12 @@ import java.util.List;
 			};
 
 			Image[] images = {
-					this.skyboxTextureSky.getImage(TextureType.OTHER),
-					this.skyboxTextureLeft.getImage(TextureType.OTHER),
-					this.skyboxTextureFront.getImage(TextureType.OTHER),
-					this.skyboxTextureRight.getImage(TextureType.OTHER),
-					this.skyboxTextureBack.getImage(TextureType.OTHER),
-					this.skyboxTextureGround.getImage(TextureType.OTHER)
+					this.skyboxTextureUp.getImage(TextureType.OTHER),
+					this.skyboxTextureWest.getImage(TextureType.OTHER),
+					this.skyboxTextureNorth.getImage(TextureType.OTHER),
+					this.skyboxTextureEast.getImage(TextureType.OTHER),
+					this.skyboxTextureSouth.getImage(TextureType.OTHER),
+					this.skyboxTextureDown.getImage(TextureType.OTHER)
 			};
 			int maxSize = 0;
 
