@@ -843,6 +843,16 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
+			dimension.enableSkybox = _true;
+			dimension.skyboxTextureUp = new TextureHolder(modElement.getWorkspace(), "test3");
+			dimension.skyboxTextureDown = new TextureHolder(modElement.getWorkspace(), "test4");
+			dimension.skyboxTextureNorth = new TextureHolder(modElement.getWorkspace(), "test5");
+			dimension.skyboxTextureSouth = new TextureHolder(modElement.getWorkspace(), "test6");
+			dimension.skyboxTextureWest = new TextureHolder(modElement.getWorkspace(), "test7");
+			dimension.skyboxTextureEast = new TextureHolder(modElement.getWorkspace(), "test8");
+			dimension.enableSunMoon = _true;
+			dimension.sunTexture = new TextureHolder(modElement.getWorkspace(), "test9");
+			dimension.moonTexture = new TextureHolder(modElement.getWorkspace(), "test10");
 			return dimension;
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
