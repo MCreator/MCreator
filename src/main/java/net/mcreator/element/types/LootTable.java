@@ -41,6 +41,7 @@ import java.util.List;
 
 	public LootTable(ModElement element) {
 		super(element);
+		this.lootModifier = "";
 	}
 
 	public static class Pool {
