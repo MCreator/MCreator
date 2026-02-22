@@ -2,3 +2,5 @@ templates:
   - template: loottable.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/loot_table/@[getName()].json"
+
+field_exclusions: [lootModifier]

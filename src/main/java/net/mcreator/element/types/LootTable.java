@@ -33,6 +33,8 @@ import java.util.List;
 
 	@ModElementReference public List<Pool> pools;
 
+	public String lootModifier;
+
 	private LootTable() {
 		this(null);
 	}
@@ -72,6 +74,10 @@ import java.util.List;
 
 		}
 
+	}
+
+	public boolean hasLootModifier() {
+		return !lootModifier.isEmpty();
 	}
 
 }

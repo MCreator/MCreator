@@ -1408,6 +1408,7 @@ public class TestWorkspaceDataProvider {
 			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
 			lootTable.type = getRandomItem(random,
 					new String[] { "Generic", "Entity", "Block", "Chest", "Fishing", "Empty", "Advancement reward" });
+			lootTable.lootModifier = _true ? "minecraft:chests/spawn_bonus_chest" : "";
 
 			lootTable.pools = new ArrayList<>();
 			if (!emptyLists) {

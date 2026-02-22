@@ -29,8 +29,11 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
 import net.mcreator.ui.minecraft.loottable.LootTablePreview;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -44,12 +47,16 @@ import java.util.Objects;
 
 public class LootTableGUI extends ModElementGUI<LootTable> {
 
+	private final ValidationGroup page1group = new ValidationGroup();
+
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 	private final VComboBox<String> name = new VComboBox<>();
 
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
 					"Barter", "Archaeology" });
+
+	private final VTextField lootModifier = new VTextField();
 
 	private JLootTablePoolsList lootTablePools;
 
@@ -78,6 +85,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		name.enableRealtimeValidation();
 		name.setPreferredSize(new Dimension(350, 0));
 		name.setEditable(true);
+		page1group.addValidationElement(name);
 
 		if (isEditingMode()) {
 			name.setEnabled(false);
@@ -118,8 +126,14 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				}
 			});
 		}
+		
+		lootModifier.setValidator(new ResourceLocationValidator(L10N.t("modelement.loottable"),
+				lootModifier, true).setAllowEmpty(true));
+		lootModifier.enableRealtimeValidation();
+		lootModifier.setPreferredSize(new Dimension(350, 0));
+		page1group.addValidationElement(lootModifier);
 
-		JPanel northPanel = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel northPanel = new JPanel(new GridLayout(4, 2, 0, 2));
 		northPanel.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/registry_name"),
@@ -134,6 +148,10 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				L10N.label("elementgui.loot_table.type")));
 		northPanel.add(type);
 
+		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/loot_modifier"),
+				L10N.label("elementgui.loot_table.loot_modifier")));
+		northPanel.add(lootModifier);
+
 		LootTablePreview preview = new LootTablePreview(mcreator);
 		lootTablePools = new JLootTablePoolsList(mcreator, this, preview);
 
@@ -144,7 +162,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(northPanel),
 						PanelUtils.totalCenterInPanel(preview)), lootTablePools));
 
-		addPage(pane3, false).validate(name);
+		addPage(pane3, false).validate(page1group);
 
 		// add first pool
 		if (!isEditingMode())
@@ -161,6 +179,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		namespace.setSelectedItem(loottable.namespace);
 		name.getEditor().setItem(loottable.name);
+		lootModifier.setText(loottable.lootModifier);
 
 		lootTablePools.setEntries(loottable.pools);
 	}
@@ -172,6 +191,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		loottable.namespace = (String) namespace.getSelectedItem();
 		loottable.name = name.getEditor().getItem().toString();
+		loottable.lootModifier = lootModifier.getText();
 
 		loottable.pools = lootTablePools.getEntries();
 
