@@ -77,7 +77,7 @@ import java.util.List;
 
 	}
 
-	public boolean haslootTableToModify() {
+	public boolean hasLootModifier() {
 		return !lootTableToModify.isEmpty();
 	}
 
