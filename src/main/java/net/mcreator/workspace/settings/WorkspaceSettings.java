@@ -218,7 +218,7 @@ import java.util.stream.Stream;
 
 	public String getCleanVersion() {
 		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
-		if (!cleanVersion.isEmpty() || !cleanVersion.matches(".*\\d.*"))
+		if (!cleanVersion.isEmpty() && cleanVersion.matches(".*\\d.*"))
 			return cleanVersion;
 		return "0.0.0.0";
 	}
