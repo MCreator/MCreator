@@ -56,7 +56,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
 					"Barter", "Archaeology" });
 
-	private final VTextField lootModifier = new VTextField();
+	private final VTextField lootTableToModify = new VTextField();
 
 	private JLootTablePoolsList lootTablePools;
 
@@ -126,12 +126,12 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				}
 			});
 		}
-		
-		lootModifier.setValidator(new ResourceLocationValidator(L10N.t("modelement.loottable"),
-				lootModifier, true).setAllowEmpty(true));
-		lootModifier.enableRealtimeValidation();
-		lootModifier.setPreferredSize(new Dimension(350, 0));
-		page1group.addValidationElement(lootModifier);
+
+		lootTableToModify.setValidator(new ResourceLocationValidator(L10N.t("modelement.loottable"),
+				lootTableToModify, true).setAllowEmpty(true));
+		lootTableToModify.enableRealtimeValidation();
+		lootTableToModify.setPreferredSize(new Dimension(350, 0));
+		page1group.addValidationElement(lootTableToModify);
 
 		JPanel northPanel = new JPanel(new GridLayout(4, 2, 0, 2));
 		northPanel.setOpaque(false);
@@ -150,7 +150,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("loottable/loot_modifier"),
 				L10N.label("elementgui.loot_table.loot_modifier")));
-		northPanel.add(lootModifier);
+		northPanel.add(lootTableToModify);
 
 		LootTablePreview preview = new LootTablePreview(mcreator);
 		lootTablePools = new JLootTablePoolsList(mcreator, this, preview);
@@ -179,7 +179,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		namespace.setSelectedItem(loottable.namespace);
 		name.getEditor().setItem(loottable.name);
-		lootModifier.setText(loottable.lootModifier);
+		lootTableToModify.setText(loottable.lootTableToModify);
 
 		lootTablePools.setEntries(loottable.pools);
 	}
@@ -191,7 +191,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		loottable.namespace = (String) namespace.getSelectedItem();
 		loottable.name = name.getEditor().getItem().toString();
-		loottable.lootModifier = lootModifier.getText();
+		loottable.lootTableToModify = lootTableToModify.getText();
 
 		loottable.pools = lootTablePools.getEntries();
 

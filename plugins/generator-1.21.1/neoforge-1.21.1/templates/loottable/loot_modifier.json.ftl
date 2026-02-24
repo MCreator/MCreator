@@ -3,7 +3,7 @@
   "conditions": [
     {
       "condition": "neoforge:loot_table_id",
-      "loot_table_id": "${data.lootModifier}"
+      "loot_table_id": "${data.lootTableToModify}"
     }
   ],
   "table": "${data.getResourceLocation()}"

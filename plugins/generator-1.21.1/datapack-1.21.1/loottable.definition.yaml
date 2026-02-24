@@ -3,4 +3,4 @@ templates:
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/loot_table/@[getName()].json"
 
-field_exclusions: [lootModifier]
+field_exclusions: [lootTableToModify]
