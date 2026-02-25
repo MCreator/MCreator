@@ -239,7 +239,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesList.getSelectedValue();
 					if (selectedDep != null) {
-						String blockXml = selectedDep.getDependencyBlockXml();
+						String blockXml = selectedDep.getDependencyBlockXml(BlocklyEditorType.SCRIPT);
 						if (blockXml != null)
 							blocklyPanel.addBlocksFromXML(blockXml);
 					}
@@ -252,7 +252,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
 					if (selectedDep != null) {
-						String blockXml = selectedDep.getDependencyBlockXml();
+						String blockXml = selectedDep.getDependencyBlockXml(BlocklyEditorType.SCRIPT);
 						if (blockXml != null)
 							blocklyPanel.addBlocksFromXML(blockXml);
 					}
