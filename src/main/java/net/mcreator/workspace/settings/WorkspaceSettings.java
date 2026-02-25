@@ -64,7 +64,7 @@ import java.util.stream.Stream;
 
 	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
 	private static final Pattern versionSuffixPattern = Pattern.compile(
-			"([-.]?(?i:(?:alpha|beta|snapshot|pre|[a-z])[0-9]*)(?:[-+](?:(?i:mc)[0-9.]+|[0-9.]+))?)$");
+			"([-.]?(?i:(?:alpha|beta|snapshot|pre|rc|[a-z])[0-9]*)(?:[-+][0-9.]*|[-+](?i:mc)[0-9.]+)?)$");
 
 	public WorkspaceSettings(WorkspaceSettings other) {
 		this.modid = other.modid;
