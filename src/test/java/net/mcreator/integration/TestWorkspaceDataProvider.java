@@ -1623,7 +1623,7 @@ public class TestWorkspaceDataProvider {
 			return procedure;
 		} else if (ModElementType.BESCRIPT.equals(modElement.getType())) {
 			BEScript bescript = new BEScript(modElement);
-			bescript.scriptxml = BEScript.XML_BASE.replace("no_ext_trigger", "world_loaded");
+			bescript.scriptxml = BEScript.XML_BASE.replace("no_ext_trigger", "be_global_world_loaded");
 			return bescript;
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
