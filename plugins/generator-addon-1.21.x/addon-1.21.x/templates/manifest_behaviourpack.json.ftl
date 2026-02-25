@@ -1,6 +1,5 @@
 <#-- @formatter:off -->
 <#assign v = settings.get3DigitVersion()>
-<#assign scripts = w.getElementsOfType('bescript')>
 {
     "format_version": 2,
     "header": {
@@ -16,16 +15,16 @@
         "type": "data",
         "uuid": "${w.getUUID("module_data")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]
-      }<#if scripts?has_content>,</#if>
-      <#list scripts as script>
+      }
+      <#if types["bescripts"]??>,
       {
-        "uuid": "${w.getUUID("scripts/" + script.getRegistryName() + ".js")}",
+        "uuid": "${w.getUUID("scripts")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}],
         "type": "script",
         "language": "javascript",
-        "entry": "scripts/${script.getRegistryName()}.js"
-      }<#sep>,
-      </#list>
+        "entry": "scripts/${modid}_scripts.js"
+      }
+      </#if>
     ],
     "dependencies": [
       {
