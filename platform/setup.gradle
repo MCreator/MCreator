@@ -8,7 +8,7 @@ def jbr21_mac_x64 = 'jbrsdk_jcef-21.0.10-osx-x64-b1163.105'
 def jbr21_mac_aarch64 = 'jbrsdk_jcef-21.0.10-osx-aarch64-b1163.105'
 
 // Binaries needed on Windows for export (install them using Gradle since Windows does not have a package manager)
-def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.09/nsis-3.09.zip'
+def nsis_url = 'https://altushost-swe.dl.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
 def mkisofs_url = 'https://master.dl.sourceforge.net/project/mkisofs-md5/mkisofs-md5-v2.01/mkisofs-md5-2.01-Binary.zip'
 
@@ -116,7 +116,7 @@ tasks.register('downloadNSIS') {
                     overwrite true
                 }
                 copy { from zipTree(file('build/tmp/nsis')) into file('build/tools/') }
-                file('build/tools/nsis-3.09').renameTo(file('build/tools/nsis'))
+                file('build/tools/nsis-3.11').renameTo(file('build/tools/nsis'))
                 delete 'build/tmp/nsis'
 
                 download.run {
