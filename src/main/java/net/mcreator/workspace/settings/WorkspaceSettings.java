@@ -223,12 +223,7 @@ import java.util.stream.Stream;
 		Matcher complaintVersionMatcher = semVerPattern.matcher(version);
 		if (complaintVersionMatcher.find())
 			complaintVersion = complaintVersionMatcher.group();
-
-		if (!complaintVersion.isEmpty()) {
-			return complaintVersion;
-		} else {
-			return "";
-		}
+		return complaintVersion; // might be empty
 	}
 
 	public String getCleanVersion() {
