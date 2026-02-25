@@ -28,7 +28,7 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
-      <#if !data.blockToPlace.isEmpty()>
+      <#if data.blockToPlace?? && !data.blockToPlace.isEmpty()>
       "minecraft:block_placer": {
           "block": "${mappedMCItemToRegistryNameNoTags(data.blockToPlace)}",
           "use_on": [
@@ -38,7 +38,7 @@
           ]
       },
       </#if>
-      <#if !data.entityToPlace.isEmpty()>
+      <#if data.entityToPlace?? && !data.entityToPlace.isEmpty()>
       "minecraft:entity_placer": {
         "entity": "${generator.map(data.entityToPlace.getUnmappedValue(), "entities")}",
         "dispense_on": [
@@ -62,7 +62,7 @@
         "nutrition": ${data.foodNutritionalValue},
         "saturation_modifier": ${data.foodSaturation},
         "can_always_eat": ${data.foodCanAlwaysEat}
-        <#if !data.usingConvertsTo.isEmpty()>,
+        <#if data.usingConvertsTo?? && !data.usingConvertsTo.isEmpty()>,
         "using_converts_to": "${mappedMCItemToRegistryNameNoTags(data.usingConvertsTo)}"
         </#if>
       },
