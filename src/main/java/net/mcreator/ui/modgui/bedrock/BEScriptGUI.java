@@ -157,7 +157,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 						L10N.t("elementgui.bescript.global_trigger_block_warning")));
 			} else if (trigger.getType().equals("item")) {
 				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.INFO,
-						L10N.t("elementgui.bescript.global_trigger_block_item")));
+						L10N.t("elementgui.bescript.global_trigger_item_warning")));
 			}
 		}
 
