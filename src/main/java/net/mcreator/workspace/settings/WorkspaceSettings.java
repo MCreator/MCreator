@@ -63,8 +63,7 @@ import java.util.stream.Stream;
 	private transient Workspace workspace; // we should never serialize this!!
 
 	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
-	private static final Pattern versionSuffixPattern = Pattern.compile(
-			"([-.]?(?i:(?:alpha|beta|snapshot|pre|rc|[a-z])[0-9]*)(?:[-+][0-9.]*|[-+](?i:mc)[0-9.]+)?)$");
+	private static final Pattern semVerPattern = Pattern.compile("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$");
 
 	public WorkspaceSettings(WorkspaceSettings other) {
 		this.modid = other.modid;
@@ -219,24 +218,28 @@ import java.util.stream.Stream;
 		return version;
 	}
 
+	private String getSemVerCompliantVersion() {
+		String complaintVersion = "";
+		Matcher complaintVersionMatcher = semVerPattern.matcher(version);
+		if (complaintVersionMatcher.find())
+			complaintVersion = complaintVersionMatcher.group();
+
+		if (!complaintVersion.isEmpty()) {
+			return complaintVersion;
+		} else {
+			return "";
+		}
+	}
+
 	public String getCleanVersion() {
 		try {
-			if (version == null)
-				return "0.0.0";
+			String semVerCompliantVersion = getSemVerCompliantVersion();
+			if(!semVerCompliantVersion.isEmpty())
+				return semVerCompliantVersion;
 
-			String versionSuffix = "";
-			Matcher versionSuffixMatcher = versionSuffixPattern.matcher(version);
-			if (versionSuffixMatcher.find())
-				versionSuffix = versionSuffixMatcher.group();
-
-			String cleanVersion = versionSuffixMatcher.replaceAll("");
-			cleanVersion = cleanVersionPattern.matcher(cleanVersion).replaceAll("");
-
-			if (!cleanVersion.isEmpty()) {
-				if (!versionSuffix.isEmpty())
-					cleanVersion = cleanVersion + versionSuffix;
+			String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
+			if (!cleanVersion.isEmpty())
 				return cleanVersion;
-			}
 		} catch (Exception e) { // if something fails catastrophically, just return 0.0.0
 			return "0.0.0";
 		}
