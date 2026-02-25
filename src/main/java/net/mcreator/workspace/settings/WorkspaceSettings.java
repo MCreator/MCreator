@@ -227,17 +227,14 @@ import java.util.stream.Stream;
 	}
 
 	public String getCleanVersion() {
-		try {
-			String semVerCompliantVersion = getSemVerCompliantVersion();
-			if(!semVerCompliantVersion.isEmpty())
-				return semVerCompliantVersion;
+		String semVerCompliantVersion = getSemVerCompliantVersion();
+		if(!semVerCompliantVersion.isEmpty())
+			return semVerCompliantVersion;
 
-			String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
-			if (!cleanVersion.isEmpty())
-				return cleanVersion;
-		} catch (Exception e) { // if something fails catastrophically, just return 0.0.0
-			return "0.0.0";
-		}
+		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
+		if (!cleanVersion.isEmpty())
+			return cleanVersion;
+
 		return "0.0.0";
 	}
 
