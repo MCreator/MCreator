@@ -20,6 +20,7 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItem;
@@ -55,6 +56,11 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean allowOffHand;
 	public double fuelDuration;
 	public boolean shouldDespawn;
+	public MItemBlock blockToPlace;
+	@ModElementReference public List<MItemBlock> blockPlaceableOn;
+	public EntityEntry entityToPlace;
+	@ModElementReference public List<MItemBlock> entityPlaceableOn;
+	@ModElementReference public List<MItemBlock> entityDispensableOn;
 
 	// Food
 	public boolean isFood;
@@ -73,12 +79,16 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public BEItem(ModElement element) {
 		super(element);
 
-		this.rarity = "COMMON";
-		this.movementModifier = 1.0;
-		this.shouldDespawn = true;
-		this.animation = "eat";
-		this.enableCreativeTab = true;
-		this.creativeTab = "MATERIALS";
+		rarity = "COMMON";
+		movementModifier = 1.0;
+		shouldDespawn = true;
+		animation = "eat";
+		enableCreativeTab = true;
+		creativeTab = "MATERIALS";
+
+		blockPlaceableOn = new ArrayList<>();
+		entityDispensableOn = new ArrayList<>();
+		entityPlaceableOn = new ArrayList<>();
 
 		localScripts = new ArrayList<>();
 	}
