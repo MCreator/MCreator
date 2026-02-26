@@ -255,6 +255,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		if (!isEditingMode()) {
 			name.setText(StringUtils.machineToReadableName(modElement.getName()));
+			enableCreativeTab.setSelected(true);
 		}
 		updateTextureOptions();
 		updateCreativeTab();
