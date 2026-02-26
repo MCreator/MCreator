@@ -105,7 +105,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		if (renderType == 10) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
 					getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
-		} else if (renderType == 4) {
+		} else if (renderType == 12) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getMainTexture(), getMainTexture(), getMainTexture());
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
@@ -138,7 +138,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	}
 
 	public boolean hasOneTexture() {
-		return hasCustomModel() || renderType == 3 || renderType == 4;
+		return hasCustomModel() || renderType == 11 || renderType == 12;
 	}
 
 	private Image getMainTexture() {

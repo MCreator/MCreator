@@ -346,9 +346,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		if (model.getType() == Model.Type.BEDROCK)
 			block.renderType = 2;
 		else if (model.equals(cross))
-			block.renderType = 3;
+			block.renderType = 11;
 		else if (model.equals(singleTexture))
-			block.renderType = 4;
+			block.renderType = 12;
 		block.customModelName = model.getReadableName();
 
 		block.name = name.getText();

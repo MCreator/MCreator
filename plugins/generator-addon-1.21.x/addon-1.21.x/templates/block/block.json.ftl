@@ -27,10 +27,10 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#elseif data.renderType() == 3>"minecraft:geometry.cross"<#else>"minecraft:geometry.full_block"</#if>,
+      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#elseif data.renderType() == 11>"minecraft:geometry.cross"<#else>"minecraft:geometry.full_block"</#if>,
       "minecraft:material_instances": {
         <#if data.hasOneTexture()>
-		"*": <@material_face "" data.renderType()==3 data.renderType()==3/>
+		"*": <@material_face "" data.renderType() == 11 data.renderType() == 11/>
 		<#else>
         "up": <@material_face "up"/>,
         "down": <@material_face "down"/>,

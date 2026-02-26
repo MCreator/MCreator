@@ -1702,7 +1702,7 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
 			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
 			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
-			block.renderType = new int[] {10, 3, 4, 10}[valueIndex];
+			block.renderType = new int[] {10, 11, 12, 10}[valueIndex];
 			block.customModelName = new String[] {"Normal", "Cross model", "Single texture", "Normal"}[valueIndex];
 			block.enableCreativeTab = !_true;
 			block.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
