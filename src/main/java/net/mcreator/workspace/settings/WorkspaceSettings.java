@@ -219,11 +219,11 @@ import java.util.stream.Stream;
 	}
 
 	private String getSemVerCompliantVersion() {
-		String complaintVersion = "";
-		Matcher complaintVersionMatcher = semVerPattern.matcher(version);
-		if (complaintVersionMatcher.find())
-			complaintVersion = complaintVersionMatcher.group();
-		return complaintVersion; // might be empty
+		String compliantVersion = "";
+		Matcher compliantVersionMatcher = semVerPattern.matcher(version);
+		if (compliantVersionMatcher.find())
+			compliantVersion = compliantVersionMatcher.group();
+		return compliantVersion; // might be empty
 	}
 
 	public String getCleanVersion() {
