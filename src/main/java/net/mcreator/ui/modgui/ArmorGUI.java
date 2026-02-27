@@ -205,7 +205,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private MCItemListField repairItems;
 
-	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this,
+			JAttributeModifierList.EntryType.ARMOR);
 
 	public ArmorGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);

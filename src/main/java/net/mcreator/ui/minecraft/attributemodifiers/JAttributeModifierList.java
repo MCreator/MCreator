@@ -36,11 +36,11 @@ import java.util.Set;
 public class JAttributeModifierList
 		extends JSimpleEntriesList<JAttributeModifierEntry, AttributeModifierEntry> {
 
-	private final boolean isPotionEffectList;
+	private final EntryType entryType;
 
-	public JAttributeModifierList(MCreator mcreator, IHelpContext gui, boolean isPotionEffectList) {
+	public JAttributeModifierList(MCreator mcreator, IHelpContext gui, EntryType entryType) {
 		super(mcreator, gui);
-		this.isPotionEffectList = isPotionEffectList;
+		this.entryType = entryType;
 
 		add.setText(L10N.t("elementgui.common.attribute_modifier.add_modifier_entry"));
 
@@ -50,12 +50,12 @@ public class JAttributeModifierList
 	@Override
 	protected JAttributeModifierEntry newEntry(JPanel parent, List<JAttributeModifierEntry> entryList,
 			boolean userAction) {
-		return new JAttributeModifierEntry(mcreator, gui, parent, entryList, isPotionEffectList);
+		return new JAttributeModifierEntry(mcreator, gui, parent, entryList, entryType);
 	}
 
 	public AggregatedValidationResult getValidationResult() {
 		// Prevent duplicate attribute types only for potion effects
-		if (isPotionEffectList) {
+		if (entryType == EntryType.POTION) {
 			Set<AttributeEntry> usedAttributes = new HashSet<>();
 			for (var entry : entryList) {
 				if (usedAttributes.contains(entry.getEntry().attribute)) {
@@ -66,6 +66,12 @@ public class JAttributeModifierList
 			}
 		}
 		return new AggregatedValidationResult.PASS();
+	}
+
+	public enum EntryType {
+		POTION,
+		ITEM,
+		ARMOR
 	}
 
 }

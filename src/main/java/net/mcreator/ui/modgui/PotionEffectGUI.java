@@ -66,7 +66,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private final JAttributeModifierList modifierList = new JAttributeModifierList(mcreator, this, true);
+	private final JAttributeModifierList modifierList = new JAttributeModifierList(mcreator, this,
+			JAttributeModifierList.EntryType.POTION);
 
 	private ProcedureSelector onStarted;
 	private ProcedureSelector onActiveTick;

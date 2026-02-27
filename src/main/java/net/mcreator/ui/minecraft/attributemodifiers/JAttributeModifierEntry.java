@@ -45,7 +45,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JAttributeModifierEntry> entryList, boolean isPotionEffectEntry) {
+			List<JAttributeModifierEntry> entryList, JAttributeModifierList.EntryType entryType) {
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
 
@@ -55,7 +55,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
 		attribute.setRenderer(new JComboBox<>().getRenderer());
 
-		if (!isPotionEffectEntry) {
+		if (entryType != JAttributeModifierList.EntryType.POTION) {
 			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/equipment_slot"),
 					L10N.label("elementgui.common.attribute_modifier.equipment_slot")));
 			line.add(equipmentSlot);
@@ -65,7 +65,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 				L10N.label("elementgui.common.attribute_modifier.attribute")));
 		line.add(attribute);
 
-		if (isPotionEffectEntry) {
+		if (entryType == JAttributeModifierList.EntryType.POTION) {
 			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount_per_level"),
 					L10N.label("elementgui.common.attribute_modifier.amount_per_level")));
 		} else {
