@@ -37,6 +37,7 @@ package ${package}.item;
 
 import java.util.Map;
 
+<@javacompress>
 public abstract class ${name}Item extends Item {
 
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
@@ -137,6 +138,7 @@ public abstract class ${name}Item extends Item {
 	</#if>
 
 }
+</@javacompress>
 <#-- @formatter:on -->
 
 <#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>
