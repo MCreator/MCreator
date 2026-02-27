@@ -24,4 +24,5 @@ public class AttributeModifierEntry {
 	public AttributeEntry attribute;
 	public double amount;
 	public String operation;
+	public boolean[] armorPieces = new boolean[4];
 }

@@ -70,7 +70,7 @@ public abstract class ${name}Item extends Item {
 
 		public Helmet(Item.Properties properties) {
 			super(properties<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.HELMET)
-					<@itemAttributeModifiers data.attributeModifiers "helmet" "EquipmentSlotGroup.HEAD" data.damageValueHelmet/>);
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[0]) "helmet" "EquipmentSlotGroup.HEAD" data.damageValueHelmet/>);
 		}
 
 		<@addSpecialInformation data.helmetSpecialInformation, "item." + modid + "." + registryname + "_helmet"/>
@@ -88,7 +88,7 @@ public abstract class ${name}Item extends Item {
 
 		public Chestplate(Item.Properties properties) {
 			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE)
-					<@itemAttributeModifiers data.attributeModifiers "chestplate" "EquipmentSlotGroup.CHEST" data.damageValueBody/>);
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[1]) "chestplate" "EquipmentSlotGroup.CHEST" data.damageValueBody/>);
 		}
 
 		<@addSpecialInformation data.bodySpecialInformation, "item." + modid + "." + registryname + "_chestplate"/>
@@ -106,7 +106,7 @@ public abstract class ${name}Item extends Item {
 
 		public Leggings(Item.Properties properties) {
 			super(properties<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.LEGGINGS)
-					<@itemAttributeModifiers data.attributeModifiers "leggings" "EquipmentSlotGroup.LEGS" data.damageValueLeggings/>);
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[2]) "leggings" "EquipmentSlotGroup.LEGS" data.damageValueLeggings/>);
 		}
 
 		<@addSpecialInformation data.leggingsSpecialInformation, "item." + modid + "." + registryname + "_leggings"/>
@@ -124,7 +124,7 @@ public abstract class ${name}Item extends Item {
 
 		public Boots(Item.Properties properties) {
 			super(properties<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.BOOTS)
-					<@itemAttributeModifiers data.attributeModifiers "boots" "EquipmentSlotGroup.FEET" data.damageValueBoots/>);
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[3]) "boots" "EquipmentSlotGroup.FEET" data.damageValueBoots/>);
 		}
 
 		<@addSpecialInformation data.bootsSpecialInformation, "item." + modid + "." + registryname + "_boots"/>
@@ -142,7 +142,7 @@ public abstract class ${name}Item extends Item {
 <#-- @formatter:on -->
 
 <#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>
-<#if modifiers?has_content>
+<#if modifiers?size != 0>
 .attributes(
 	ItemAttributeModifiers.builder()
 	<#-- First add the default armor attributes -->

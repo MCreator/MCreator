@@ -32,6 +32,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierEntry> {
@@ -43,6 +44,12 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.001));
 	private final JComboBox<String> operation = new JComboBox<>(
 			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+	private final JCheckBox[] armorPieces = new JCheckBox[]{
+		L10N.checkbox("elementgui.common.attribute_modifier.helmet"),
+		L10N.checkbox("elementgui.common.attribute_modifier.chestplate"),
+		L10N.checkbox("elementgui.common.attribute_modifier.leggings"),
+		L10N.checkbox("elementgui.common.attribute_modifier.boots")
+	};
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JAttributeModifierEntry> entryList, JAttributeModifierList.EntryType entryType) {
@@ -78,6 +85,20 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 				L10N.label("elementgui.common.attribute_modifier.operation")));
 		line.add(operation);
 
+		if (entryType == JAttributeModifierList.EntryType.ARMOR) {
+			JPanel armorLine = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			armorLine.setOpaque(false);
+
+			armorLine.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/armor_pieces"),
+					L10N.label("elementgui.common.attribute_modifier.apply_to")));
+			for (var armorPiece : armorPieces) {
+				armorLine.add(armorPiece);
+				armorPiece.setSelected(true);
+			}
+
+			add(armorLine);
+		}
+
 	}
 
 	@Override public void reloadDataLists() {
@@ -90,6 +111,9 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		attribute.setEnabled(enabled);
 		amount.setEnabled(enabled);
 		operation.setEnabled(enabled);
+		for (var armorPiece : armorPieces) {
+			armorPiece.setEnabled(enabled);
+		}
 	}
 
 	@Override public AttributeModifierEntry getEntry() {
@@ -98,6 +122,9 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();
+		for (int i = 0; i < 4; i++) {
+			entry.armorPieces[i] = armorPieces[i].isSelected();
+		}
 		return entry;
 	}
 
@@ -106,6 +133,9 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		attribute.setSelectedItem(e.attribute);
 		amount.setValue(e.amount);
 		operation.setSelectedItem(e.operation);
+		for (int i = 0; i < 4; i++) {
+			armorPieces[i].setSelected(e.armorPieces[i]);
+		}
 	}
 
 }
