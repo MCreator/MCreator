@@ -1,0 +1,15 @@
+templates:
+  - template: biome/biome.json.ftl
+    writer: json
+    name: "@SRCROOT/biomes/@registryname.json"
+  - template: biome/biome_client.json.ftl
+    writer: json
+    name: "@RESROOT/biomes/@registryname.json"
+  - template: biome/biome_fog.json.ftl
+    writer: json
+    name: "@RESROOT/fogs/@registryname.json"
+    condition: hasFog()
+
+localizationkeys:
+  - key: biome.@modid:@registryname.name
+    mapto: name
