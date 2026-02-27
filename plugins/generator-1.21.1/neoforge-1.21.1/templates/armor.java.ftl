@@ -237,7 +237,8 @@ import net.minecraft.client.model.Model;
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(${data.maxDamage}))<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(${data.maxDamage}))<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers "helmet" "EquipmentSlotGroup.HEAD" data.damageValueHelmet/>);
 		}
 
 		<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
@@ -262,7 +263,8 @@ import net.minecraft.client.model.Model;
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers "chestplate" "EquipmentSlotGroup.CHEST" data.damageValueBody/>);
 		}
 
 		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
@@ -287,7 +289,8 @@ import net.minecraft.client.model.Model;
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(${data.maxDamage}))<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(${data.maxDamage}))<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers "leggings" "EquipmentSlotGroup.LEGS" data.damageValueLeggings/>);
 		}
 
 		<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
@@ -312,7 +315,8 @@ import net.minecraft.client.model.Model;
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(${data.maxDamage}))<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(${data.maxDamage}))<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers "boots" "EquipmentSlotGroup.FEET" data.damageValueBoots/>);
 		}
 
 		<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
@@ -336,3 +340,21 @@ import net.minecraft.client.model.Model;
 }
 </@javacompress>
 <#-- @formatter:on -->
+
+<#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>
+<#if modifiers?has_content>
+.attributes(
+	ItemAttributeModifiers.builder()
+	<#-- First add the default armor attributes -->
+	.add(Attributes.ARMOR, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.${armorPart}"), ${defense}, AttributeModifier.Operation.ADD_VALUE), ${defaultEquipSlot})
+	<#if data.toughness != 0>.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.${armorPart}"), ${data.toughness}, AttributeModifier.Operation.ADD_VALUE), ${defaultEquipSlot})</#if>
+	<#if data.knockbackResistance != 0>.add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.${armorPart}"), ${data.knockbackResistance}, AttributeModifier.Operation.ADD_VALUE), ${defaultEquipSlot})</#if>
+	<#-- Then add the custom modifiers -->
+	<#list modifiers as modifier>
+	.add(${modifier.attribute}, new AttributeModifier(
+			ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}.${armorPart}"),
+			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+	</#list>.build()
+)
+</#if>
+</#macro>
