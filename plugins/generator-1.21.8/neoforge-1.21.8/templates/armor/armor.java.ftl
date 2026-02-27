@@ -153,7 +153,8 @@ public abstract class ${name}Item extends Item {
 	<#list modifiers as modifier>
 	.add(${modifier.attribute}, new AttributeModifier(
 			ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}.${armorPart}"),
-			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}),
+			<#if modifier.equipmentSlot == "default">${defaultEquipSlot}<#else>${generator.map(modifier.equipmentSlot, "equipmentslots")}</#if>)
 	</#list>.build()
 )
 </#if>

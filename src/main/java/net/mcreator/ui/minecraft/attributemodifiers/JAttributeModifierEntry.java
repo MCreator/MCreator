@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.parts.AttributeModifierEntry;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -29,6 +30,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -56,7 +58,8 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
 
-		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
+		equipmentSlot = new DataListComboBox(mcreator,
+				ListUtils.merge(List.of(new DataListEntry.Dummy("default")), ElementUtil.loadAllEquipmentSlots()));
 		equipmentSlot.setRenderer(new JComboBox<>().getRenderer());
 
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
@@ -102,7 +105,8 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	}
 
 	@Override public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots());
+		ComboBoxUtil.updateComboBoxContents(equipmentSlot,
+				ListUtils.merge(List.of(new DataListEntry.Dummy("default")), ElementUtil.loadAllEquipmentSlots()));
 		ComboBoxUtil.updateComboBoxContents(attribute, ElementUtil.loadAllAttributes(workspace));
 	}
 
