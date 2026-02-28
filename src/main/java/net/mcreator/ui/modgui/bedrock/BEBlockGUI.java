@@ -19,9 +19,11 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.types.bedrock.BEBlock;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -34,10 +36,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.minecraft.BlockTexturesSelector;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -108,6 +107,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
 
+	private final ModElementListField localScripts = new ModElementListField(mcreator, ModElementType.BESCRIPT,
+			me -> "block".equals(me.getMetadata("type")));
+
 	public BEBlockGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -121,6 +123,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		propertiesPanel.setOpaque(false);
 		JPanel generationPanel = new JPanel(new BorderLayout(10, 10));
 		generationPanel.setOpaque(false);
+		JPanel scriptsPanel = new JPanel(new BorderLayout(10, 10));
+		scriptsPanel.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
 		page1group.addValidationElement(textures);
@@ -249,9 +253,16 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				PanelUtils.totalCenterInPanel(genPanel), 25, 0);
 		generationPanel.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
+		scriptsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("beblock/scripts"),
+						L10N.label("elementgui.beblock.scripts")), localScripts)));
+
+		localScripts.setPreferredSize(new Dimension(640, 34));
+
 		addPage(L10N.t("elementgui.common.page_visual"), visualPanel).validate(page1group);
-		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page2group);
+		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_generation"), generationPanel);
+		addPage(L10N.t("elementgui.common.page_scripts"), scriptsPanel);
 
 		if (!isEditingMode()) {
 			name.setText(StringUtils.machineToReadableName(modElement.getName()));
@@ -324,6 +335,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		renderMethod.setSelectedItem(block.renderMethod);
 		tintMethod.setSelectedItem(block.tintMethod);
 
+		localScripts.setListElements(block.localScripts.stream().map(NonMappableElement::new).toList());
+
 		updateTextureOptions();
 		updateCreativeTab();
 		refreshSpawnProperties();
@@ -370,6 +383,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.renderMethod = (String) renderMethod.getSelectedItem();
 		block.tintMethod = (String) tintMethod.getSelectedItem();
+
+		block.localScripts = localScripts.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
 
 		return block;
 	}
