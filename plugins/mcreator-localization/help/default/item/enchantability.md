@@ -1,6 +1,8 @@
 How common rare enchantments can be enchanted on this item/tool. 
 The higher the enchantability, the better enchantments you will get when enchanting the item/tool.
 
+For the Bedrock Edition, due to a bug, the current formula is the following one: `value = value % 256`.
+
 Vanilla values:
 
 * Wooden tools: 15
