@@ -236,7 +236,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/stacked_by_data"),
 				L10N.label("elementgui.beitem.stacked_by_data")));
-		shouldDespawn.setOpaque(false);
+		stackedByData.setOpaque(false);
 		advancedProperties.add(stackedByData);
 
 		JPanel blockPlacerProps = new JPanel(new GridLayout(2, 2, 65, 2));
