@@ -27,7 +27,14 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#elseif data.renderType() == 11>"minecraft:geometry.cross"<#else>"minecraft:geometry.full_block"</#if>,
+      "minecraft:geometry":
+        <#if data.hasCustomModel()>
+          "geometry.${data.getModel().getReadableName()}",
+        <#elseif data.renderType() == 11>
+          "minecraft:geometry.cross"
+        <#else>
+          "minecraft:geometry.full_block"
+        </#if>,
       "minecraft:material_instances": {
         <#if data.hasOneTexture()>
 		"*": <@material_face "" data.renderType() == 11 data.renderType() == 11/>
@@ -147,7 +154,7 @@
   "texture": "${modid}_${registryname}<#if suffix?has_content>_${suffix}</#if>"
   <#if data.renderMethod != "opaque">,"render_method": "${data.renderMethod}"</#if>
   <#if data.tintMethod != "(none)">,"tint_method": "${data.tintMethod}"</#if>
-  <#if disableAmbientOcclusion>, "ambient_occlusion": false</#if>
+  <#if disableAmbientOcclusion>,"ambient_occlusion": false</#if>
   <#if disableFaceDimming>,"face_dimming": false</#if>
 }
 </#macro>
