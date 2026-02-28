@@ -179,6 +179,14 @@ import static org.junit.jupiter.api.Assertions.*;
 					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.BESCRIPT) != GeneratorStats.CoverageStatus.NONE) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing script triggers",
+								() -> GTScriptTriggers.runTest(LOG, generator, workspace.get())));
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing script blocks",
+								() -> GTScriptBlocks.runTest(LOG, generator, random, workspace.get())));
+					}
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.ADVANCEMENT) != GeneratorStats.CoverageStatus.NONE)
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing JSON trigger blocks",
 								() -> GTJSONTriggersBlocks.runTest(LOG, generator, random, workspace.get())));

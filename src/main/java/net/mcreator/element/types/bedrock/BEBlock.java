@@ -36,6 +36,7 @@ import net.mcreator.workspace.resources.Model;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BEBlock extends GeneratableElement implements IBlock {
@@ -76,6 +77,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String renderMethod;
 	public String tintMethod;
 
+	@ModElementReference public List<String> localScripts;
+
 	private BEBlock() {
 		this(null);
 	}
@@ -91,6 +94,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";
+
+		localScripts = new ArrayList<>();
 	}
 
 	public boolean hasCustomDrop() {

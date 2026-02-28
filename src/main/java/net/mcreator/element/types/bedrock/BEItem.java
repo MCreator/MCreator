@@ -70,21 +70,27 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@ModElementReference public MItemBlock usingConvertsTo;
 	public String animation;
 
+	@ModElementReference public List<String> localScripts;
+
 	public BEItem() {
 		this(null);
 	}
 
 	public BEItem(ModElement element) {
 		super(element);
-		this.rarity = "COMMON";
-		this.movementModifier = 1.0;
-		this.shouldDespawn = true;
-		this.animation = "eat";
-		this.enableCreativeTab = true;
-		this.creativeTab = "MATERIALS";
-		this.blockPlaceableOn = new ArrayList<>();
-		this.entityDispensableOn = new ArrayList<>();
-		this.entityPlaceableOn = new ArrayList<>();
+
+		rarity = "COMMON";
+		movementModifier = 1.0;
+		shouldDespawn = true;
+		animation = "eat";
+		enableCreativeTab = true;
+		creativeTab = "MATERIALS";
+
+		blockPlaceableOn = new ArrayList<>();
+		entityDispensableOn = new ArrayList<>();
+		entityPlaceableOn = new ArrayList<>();
+
+		localScripts = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
