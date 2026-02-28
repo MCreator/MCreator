@@ -30,6 +30,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.bedrock.digger.JDiggerList;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -68,7 +69,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(1.6, 0, 128000, 0.1));
 	private final JSpinner movementModifier = new JSpinner(new SpinnerNumberModel(0.35, 0, 1, 0.05));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
+	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 255, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
@@ -101,6 +102,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			//@formatter:on
 	);
 
+	private final DataListComboBox enchantmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllBEEnchantableSlots());
+	private final JSpinner enchantmentValue = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
+	private final JCheckBox diggerUseEfficiency = L10N.checkbox("elementgui.common.enable");
+	private final JDiggerList diggerEntries = new JDiggerList(mcreator, this);
+
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public BEItemGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
@@ -116,6 +122,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodPanel.setOpaque(false);
 		JPanel advancedPanel = new JPanel(new BorderLayout(10, 10));
 		advancedPanel.setOpaque(false);
+		JPanel toolPanel = new JPanel(new BorderLayout(10, 10));
+		toolPanel.setOpaque(false);
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.item.error_item_needs_texture");
@@ -167,6 +175,9 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				PanelUtils.totalCenterInPanel(
 						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))), basicProperties,
 				35, 35)));
+
+		page1group.addValidationElement(name);
+		page1group.addValidationElement(texture);
 
 		JPanel foodProperties = new JPanel(new GridLayout(8, 2, 65, 2));
 		foodProperties.setOpaque(false);
@@ -272,12 +283,31 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		advancedPanel.add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.column(advancedProperties, blockPlacerProps, entityPlacerProps)));
 
-		page1group.addValidationElement(name);
-		page1group.addValidationElement(texture);
+		JPanel toolProperties = new JPanel(new GridLayout(3, 2, 65, 2));
+		toolProperties.setOpaque(false);
+
+		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/enchantment_slot"),
+				L10N.label("elementgui.beitem.enchantment_slot")));
+		enchantmentSlot.setOpaque(false);
+		toolProperties.add(enchantmentSlot);
+
+		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
+				L10N.label("elementgui.common.enchantability")));
+		enchantmentValue.setOpaque(false);
+		toolProperties.add(enchantmentValue);
+
+		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/tool_use_efficiency"),
+				L10N.label("elementgui.beitem.tool_use_efficiency")));
+		diggerUseEfficiency.setOpaque(false);
+		toolProperties.add(diggerUseEfficiency);
+
+		toolPanel.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.northAndCenterElement(toolProperties, diggerEntries)));
 
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.item.food_properties"), foodPanel);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedPanel);
+		addPage(L10N.t("elementgui.beitem.page_tool_properties"), toolPanel);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -286,6 +316,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			animation.setSelectedItem("eat");
 			enableCreativeTab.setSelected(true);
 			creativeTab.setSelectedItem("MATERIALS");
+			enchantmentSlot.setSelectedItem("none");
 		}
 
 		updateCreativeTab();
@@ -359,6 +390,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		entityToPlace.setEntry(item.entityToPlace);
 		entityDispensableOn.setListElements(item.entityDispensableOn);
 		entityPlaceableOn.setListElements(item.entityPlaceableOn);
+		enchantmentSlot.setSelectedItem(item.enchantmentSlot);
+		enchantmentValue.setValue(item.enchantmentValue);
+		diggerUseEfficiency.setSelected(item.diggerUseEfficiency);
+		diggerEntries.setEntries(item.diggerEntries);
 		updateFoodPanel();
 		updateMeleeDamage();
 		updateCreativeTab();
@@ -395,6 +430,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.entityToPlace = entityToPlace.getEntry();
 		item.entityDispensableOn = entityDispensableOn.getListElements();
 		item.entityPlaceableOn = entityPlaceableOn.getListElements();
+		item.enchantmentSlot = enchantmentSlot.getSelectedItem().toString();
+		item.enchantmentValue = (int) enchantmentValue.getValue();
+		item.diggerUseEfficiency = diggerUseEfficiency.isSelected();
+		item.diggerEntries = diggerEntries.getEntries();
 
 		return item;
 	}

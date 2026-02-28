@@ -421,6 +421,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("equipmentslots");
 	}
 
+	public static List<DataListEntry> loadAllBEEnchantableSlots() {
+		return DataListLoader.loadDataList("be_enchantableslots");
+	}
+
 	public static String[] getDataListAsStringArray(String dataList) {
 		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}

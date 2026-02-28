@@ -1,0 +1,21 @@
+_default: none
+none: none
+all: all
+armor_feet: armor_feet
+armor_torso: armor_torso
+armor_head: armor_head
+armor_legs: armor_legs
+axe: axe
+bow: bow
+cosmetic_head: cosmetic_head
+crossbow: crossbow
+elytra: elytra
+fishing_rod: fishing_rod
+flintsteel: flintsteel
+how: how
+# melee_spear: melee_spear
+pickaxe: pickaxe
+shears: shears
+shield: shield
+shovel: shovel
+sword: sword
