@@ -71,7 +71,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public String animation;
 
 	// Tool
-	public int damage;
+	public boolean isEnchantable;
 	public String enchantmentSlot;
 	public int enchantmentValue;
 	public boolean diggerUseEfficiency;
@@ -92,7 +92,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		this.blockPlaceableOn = new ArrayList<>();
 		this.entityDispensableOn = new ArrayList<>();
 		this.entityPlaceableOn = new ArrayList<>();
-		this.enchantmentSlot = "none";
+		this.enchantmentSlot = "all";
 		this.diggerEntries = new ArrayList<>();
 	}
 

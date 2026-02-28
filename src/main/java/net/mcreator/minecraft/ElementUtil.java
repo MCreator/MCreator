@@ -418,11 +418,11 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEquipmentSlots() {
-		return DataListLoader.loadDataList("equipmentslots");
+		return DataListLoader.loadDataList("equipmentslots").stream().filter(typeMatches("java", "both")).toList();
 	}
 
-	public static List<DataListEntry> loadAllBEEnchantableSlots() {
-		return DataListLoader.loadDataList("be_enchantableslots");
+	public static List<DataListEntry> loadAllBEEquipmentSlots() {
+		return DataListLoader.loadDataList("equipmentslots").stream().filter(typeMatches("bedrock", "both")).toList();
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {

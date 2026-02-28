@@ -102,7 +102,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			//@formatter:on
 	);
 
-	private final DataListComboBox enchantmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllBEEnchantableSlots());
+	private final JCheckBox isEnchantable = new JCheckBox();
+	private final DataListComboBox enchantmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllBEEquipmentSlots());
 	private final JSpinner enchantmentValue = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
 	private final JCheckBox diggerUseEfficiency = L10N.checkbox("elementgui.common.enable");
 	private final JDiggerList diggerEntries = new JDiggerList(mcreator, this);
@@ -289,7 +290,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/enchantment_slot"),
 				L10N.label("elementgui.beitem.enchantment_slot")));
 		enchantmentSlot.setOpaque(false);
-		toolProperties.add(enchantmentSlot);
+		toolProperties.add(PanelUtils.westAndCenterElement(isEnchantable, enchantmentSlot));
 
 		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
 				L10N.label("elementgui.common.enchantability")));
@@ -323,6 +324,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		updateMeleeDamage();
 		updateFoodPanel();
 		updateBlockUsableOnList();
+		updateEnchantableParams();
 	}
 
 	@Override public void reloadDataLists() {
@@ -361,6 +363,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		blockPlaceableOn.setEnabled(blockToPlace.containsItem());
 	}
 
+	private void updateEnchantableParams() {
+		enchantmentSlot.setEnabled(isEnchantable.isSelected());
+		enchantmentValue.setEnabled(isEnchantable.isSelected());
+	}
+
 	@Override protected void openInEditingMode(BEItem item) {
 		texture.setTexture(item.texture);
 		name.setText(item.name);
@@ -390,6 +397,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		entityToPlace.setEntry(item.entityToPlace);
 		entityDispensableOn.setListElements(item.entityDispensableOn);
 		entityPlaceableOn.setListElements(item.entityPlaceableOn);
+		isEnchantable.setSelected(item.isEnchantable);
 		enchantmentSlot.setSelectedItem(item.enchantmentSlot);
 		enchantmentValue.setValue(item.enchantmentValue);
 		diggerUseEfficiency.setSelected(item.diggerUseEfficiency);
@@ -398,6 +406,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		updateMeleeDamage();
 		updateCreativeTab();
 		updateBlockUsableOnList();
+		updateEnchantableParams();
 	}
 
 	@Override public BEItem getElementFromGUI() {
@@ -430,6 +439,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.entityToPlace = entityToPlace.getEntry();
 		item.entityDispensableOn = entityDispensableOn.getListElements();
 		item.entityPlaceableOn = entityPlaceableOn.getListElements();
+		item.isEnchantable = isEnchantable.isSelected();
 		item.enchantmentSlot = enchantmentSlot.getSelectedItem().toString();
 		item.enchantmentValue = (int) enchantmentValue.getValue();
 		item.diggerUseEfficiency = diggerUseEfficiency.isSelected();

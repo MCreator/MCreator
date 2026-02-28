@@ -1,13 +1,6 @@
 <#-- @formatter:off -->
 <#assign itemDamageValues = []>
 
-<#list w.getElementsOfType("beitem") as mod>
-  <#assign ge = mod.getGeneratableElement()>
-  <#if ge.enableMeleeDamage>
-    <#assign itemDamageValues += [ ["${modid}:${mod.getRegistryName()}", ge.damageVsEntity] ]>
-  </#if>
-</#list>
-
 <#list w.getElementsOfType("tool") as mod>
   <#assign ge = mod.getGeneratableElement()>
   <#assign itemDamageValues += [ ["${modid}:${mod.getRegistryName()}", ge.damageVsEntity] ]>

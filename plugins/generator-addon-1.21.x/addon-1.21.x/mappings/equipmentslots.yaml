@@ -1,10 +1,9 @@
-_default: none
-none: none
-all: all
-armor_feet: armor_feet
-armor_torso: armor_torso
-armor_head: armor_head
-armor_legs: armor_legs
+_default: any
+any: all
+feet: armor_feet
+chest: armor_torso
+head: armor_head
+legs: armor_legs
 axe: axe
 bow: bow
 cosmetic_head: cosmetic_head
@@ -13,7 +12,6 @@ elytra: elytra
 fishing_rod: fishing_rod
 flintsteel: flintsteel
 how: how
-# melee_spear: melee_spear
 pickaxe: pickaxe
 shears: shears
 shield: shield
