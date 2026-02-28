@@ -162,7 +162,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.item.number_of_uses")));
-		maxDurability.addChangeListener(e -> updateStackedByData());
 		basicProperties.add(maxDurability);
 
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
@@ -293,11 +292,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			animation.setSelectedItem("eat");
 			enableCreativeTab.setSelected(true);
 			creativeTab.setSelectedItem("MATERIALS");
+			maxDurability.addChangeListener(e -> stackedByData.setSelected(((int) maxDurability.getValue()) > 0));
 		}
 
 		updateCreativeTab();
 		updateMeleeDamage();
-		updateStackedByData();
 		updateFoodPanel();
 		updateBlockUsableOnList();
 	}
@@ -336,10 +335,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	private void updateBlockUsableOnList() {
 		blockPlaceableOn.setEnabled(blockToPlace.containsItem());
-	}
-
-	private void updateStackedByData() {
-		stackedByData.setSelected(((int) maxDurability.getValue()) > 0);
 	}
 
 	@Override protected void openInEditingMode(BEItem item) {
