@@ -68,7 +68,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(1.6, 0, 128000, 0.1));
 	private final JSpinner movementModifier = new JSpinner(new SpinnerNumberModel(0.35, 0, 1, 0.05));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
+	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
