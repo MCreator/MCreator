@@ -63,7 +63,6 @@ import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
 import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
 import net.mcreator.element.converter.v2026_1.BedrockBiomeRemover;
-import net.mcreator.element.converter.v2026_2.ToolToBedrockConverter;
 import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.*;
@@ -225,8 +224,7 @@ public class ConverterRegistry {
 			new ItemHasGlowConverter(),
 			new ToolHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter(),
-			new EnchantabilityConverter(),
-			new ToolToBedrockConverter()
+			new EnchantabilityConverter()
 		));
 		put(ModElementType.ENCHANTMENT, List.of(
 			new EnchantmentDefinitionConverter()
@@ -256,7 +254,6 @@ public class ConverterRegistry {
 		add(ModElementType.ITEM); // -> BEITEM
 		add(ModElementType.BIOME); // -> Currently bedrock no longer supports custom biomes
 		add(ModElementType.BLOCK); // -> BEBLOCK
-		add(ModElementType.TOOL); // -> BEITEM
 	}};
 
 	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {

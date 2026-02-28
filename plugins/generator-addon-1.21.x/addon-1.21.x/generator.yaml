@@ -36,6 +36,9 @@ base_templates:
   - template: resourcepack/terrain_texture.json.ftl
     writer: json
     name: "@RESROOT/textures/terrain_texture.json"
+  - template: player.json.ftl
+    writer: json
+    name: "@SRCROOT/entities/player.json"
 
 language_file:
   format: keyvalue
