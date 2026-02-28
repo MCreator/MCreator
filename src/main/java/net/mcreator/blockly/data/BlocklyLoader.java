@@ -68,6 +68,7 @@ public class BlocklyLoader {
 		registerBlockLoader(BlocklyEditorType.JSON_TRIGGER);
 		registerBlockLoader(BlocklyEditorType.COMMAND_ARG);
 		registerBlockLoader(BlocklyEditorType.FEATURE);
+		registerBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS);
 	}
 
 	/**
