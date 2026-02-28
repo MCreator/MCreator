@@ -227,10 +227,14 @@ import java.util.Objects;
 	String getGroupEstimate() {
 		if (this.group != null)
 			return this.group;
-		int a = StringUtils.ordinalIndexOf(this.machine_name, "_", 2);
+
+		// Try to remove commonly used namespaces for better estimation
+		String machineNameNoNamespace = this.machine_name.replace("be_", "");
+
+		int a = StringUtils.ordinalIndexOf(machineNameNoNamespace, "_", 2);
 		if (a > 0)
-			return this.machine_name.substring(0, a);
-		return this.machine_name.split("_")[0];
+			return machineNameNoNamespace.substring(0, a);
+		return machineNameNoNamespace.split("_")[0];
 	}
 
 	@Override public boolean equals(Object o) {
