@@ -56,3 +56,6 @@ resources_setup_tasks:
     height: 128
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@SRCROOT/pack_icon.png"
+  - task: copy_models
+    type: BEDROCK
+    to: "@MODASSETSROOT/models/blocks"

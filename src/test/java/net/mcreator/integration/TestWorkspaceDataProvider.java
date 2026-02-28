@@ -301,8 +301,14 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getGeneratorStats().hasBaseCoverage("model_java")) {
 			try {
-				ModelImportActions.importJavaModel(null, workspace,
-						IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
+				if (workspace.getGenerator().getGeneratorConfiguration().getCompatibleJavaModelKeys()
+						.contains("mojmap-1.17.x"))
+					ModelImportActions.importJavaModel(null, workspace,
+							IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
+				else
+					ModelImportActions.importJavaModel(null, workspace, IOUtils.resourceToString(
+							"/entitymodel-mojmap-" + workspace.getGenerator().getGeneratorConfiguration()
+									.getCompatibleJavaModelKeys().getFirst() + ".java", StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
@@ -990,6 +996,7 @@ public class TestWorkspaceDataProvider {
 			armor.bodyName = modElement.getName() + " appendix2";
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
+			armor.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armor_texture";
 			armor.maxDamage = 12;
@@ -1174,6 +1181,12 @@ public class TestWorkspaceDataProvider {
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
+			item.repairItems = new ArrayList<>();
+			if (!emptyLists) {
+				item.repairItems = subset(random, blocksAndItemsAndTags.size() / 8, blocksAndItemsAndTags,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+				item.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
+			}
 			item.immuneToFire = _true;
 			item.isPiglinCurrency = _true;
 			item.glowCondition = new LogicProcedure(emptyLists ? "condition3" : null, _true);
@@ -1680,6 +1693,20 @@ public class TestWorkspaceDataProvider {
 			beitem.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush",
 							"spyglass" });
+			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, filterAir(blocks)).getName());
+			beitem.blockPlaceableOn = new ArrayList<>();
+			beitem.entityToPlace = new EntityEntry(modElement.getWorkspace(), getRandomItem(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+			beitem.entityDispensableOn = new ArrayList<>();
+			beitem.entityPlaceableOn = new ArrayList<>();
+			if (!emptyLists) {
+				beitem.blockPlaceableOn = subset(random, blocks.size() / 8, blocks,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+				beitem.entityDispensableOn = subset(random, blocks.size() / 8, blocks,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+				beitem.entityPlaceableOn = subset(random, blocks.size() / 8, blocks,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+			}
 			return beitem;
 		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
 			BEBlock block = new BEBlock(modElement);
@@ -1690,6 +1717,11 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
 			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
 			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
+			block.renderType = 10;
+			block.customModelName = "Normal";
+			block.enableCreativeTab = !_true;
+			block.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			block.isHiddenInCommands = _true;
 			block.hardness = 2.3;
 			block.resistance = 3.1;
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
@@ -1712,6 +1744,13 @@ public class TestWorkspaceDataProvider {
 			block.oreCount = 2;
 			block.minGenerateHeight = 21;
 			block.maxGenerateHeight = 92;
+			block.rotationMode = random.nextInt(0, 5);
+			block.renderMethod = getRandomItem(random,
+					List.of("opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
+							"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque"));
+			block.tintMethod = getRandomItem(random,
+					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+							"water"));
 			return block;
 		}
 		return null;
@@ -2274,6 +2313,7 @@ public class TestWorkspaceDataProvider {
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
+		tool.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
@@ -2304,11 +2344,21 @@ public class TestWorkspaceDataProvider {
 		tool.repairItems = new ArrayList<>();
 		if (!emptyLists) {
 			List<MCItem> blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
-			tool.repairItems.addAll(
-					blocksAndItemsAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
-							.toList());
+			tool.repairItems = subset(random, blocksAndItemsAndTags.size() / 8, blocksAndItemsAndTags,
+					e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:dirt"));
+		}
+		tool.attributeModifiers = new ArrayList<>();
+		if (!emptyLists) {
+			for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
+				AttributeModifierEntry entry = new AttributeModifierEntry();
+				entry.equipmentSlot = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
+				entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
+				entry.amount = random.nextDouble(-5, 5);
+				entry.operation = getRandomItem(random,
+						new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+				tool.attributeModifiers.add(entry);
+			}
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
@@ -2318,6 +2368,8 @@ public class TestWorkspaceDataProvider {
 		tool.onItemInInventoryTick = new Procedure("procedure6");
 		tool.onItemInUseTick = new Procedure("procedure7");
 		tool.onEntitySwing = new Procedure("procedure11");
+		tool.onDroppedByPlayer = new Procedure("procedure8");
+		tool.onItemEntityDestroyed = new Procedure("procedure9");
 		tool.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		tool.guiTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 		tool.renderType = 0;

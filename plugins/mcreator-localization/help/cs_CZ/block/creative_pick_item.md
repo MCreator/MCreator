@@ -1,0 +1,1 @@
+Toto určuje, jaký předmět bude vybrán, když „vyberete” (kliknete prostředním tlačítkem na myši) na blok. Pokud to necháte prázdné, bude vybrán samotný blok.

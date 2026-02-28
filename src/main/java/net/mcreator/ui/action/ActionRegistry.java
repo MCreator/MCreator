@@ -130,6 +130,7 @@ public class ActionRegistry {
 	public final BasicAction importJavaModel;
 	public final BasicAction importJSONModel;
 	public final BasicAction importOBJModel;
+	public final BasicAction importBedrockModel;
 	public final BasicAction importJavaModelAnimation;
 
 	// Window actions
@@ -265,6 +266,7 @@ public class ActionRegistry {
 		this.importStructureFromMinecraft = new StructureImportActions.ImportStructureFromMinecraft(this);
 		this.importJavaModel = new ModelImportActions.JAVA(this);
 		this.importJSONModel = new ModelImportActions.JSON(this);
+		this.importBedrockModel = new ModelImportActions.BEDROCK(this);
 		this.importOBJModel = new ModelImportActions.OBJ(this);
 		this.importJavaModelAnimation = new AnimationImportActions.JAVA(this);
 		this.closeWorkspace = new BasicAction(this, L10N.t("action.workspace.close"),

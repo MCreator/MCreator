@@ -134,8 +134,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		// Check that no local variable has the same name as one of the dependencies
 		dependenciesArrayList = blocklyToJava.getDependencies();
+
+		// Check that no local variable has the same name as one of the dependencies
 		for (var dependency : dependenciesArrayList) {
 			for (int i = 0; i < localVars.getSize(); i++) {
 				if (dependency.name().equals(localVars.get(i).getName())) {
@@ -168,8 +169,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		// Handle compile notes related to external trigger if present
 		if (blocklyToJava.getExternalTrigger() != null) {
-			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-					.getExternalTriggers();
+			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+					BlocklyEditorType.PROCEDURE).getExternalTriggers();
 
 			for (ExternalTrigger externalTrigger : externalTriggers) {
 				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
@@ -179,7 +180,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 
 			if (trigger != null) {
-				if (!mcreator.getGeneratorStats().getProcedureTriggers().contains(trigger.getID())) {
+				if (!mcreator.getGeneratorStats().getBlocklyTriggers(BlocklyEditorType.PROCEDURE)
+						.contains(trigger.getID())) {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("elementgui.procedure.global_trigger_unsupported")));
 				}
@@ -587,8 +589,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
-			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTriggers()
-					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
+			BlocklyLoader.INSTANCE.getExternalTriggerLoader(BlocklyEditorType.PROCEDURE).getExternalTriggers()
+					.forEach(blocklyPanel::addExternalTrigger);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}

@@ -23,6 +23,7 @@ import net.mcreator.element.types.Attribute;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -39,6 +40,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 public class AttributeGUI extends ModElementGUI<Attribute> {
 
@@ -47,7 +49,13 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	private final JSpinner defaultValue = new JSpinner(
 			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
 	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
-	private final JComboBox<String> sentiment = new JComboBox<>(new String[] { "POSITIVE", "NEUTRAL", "NEGATIVE" });
+	private final TranslatedComboBox sentiment = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("POSITIVE", "elementgui.attribute.sentiment.positive"),
+			Map.entry("NEUTRAL", "elementgui.attribute.sentiment.neutral"),
+			Map.entry("NEGATIVE", "elementgui.attribute.sentiment.negative")
+			//@formatter:on
+	);
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
 	private final JCheckBox addToAllEntities = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox addToPlayers = L10N.checkbox("elementgui.common.enable");
@@ -142,7 +150,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		attribute.defaultValue = (Double) defaultValue.getValue();
 		attribute.minValue = minMaxValue.getMinValue();
 		attribute.maxValue = minMaxValue.getMaxValue();
-		attribute.sentiment = (String) sentiment.getSelectedItem();
+		attribute.sentiment = sentiment.getSelectedItem();
 		attribute.addToAllEntities = addToAllEntities.isSelected();
 		attribute.addToPlayers = addToPlayers.isSelected();
 		attribute.entities = entities.getListElements();

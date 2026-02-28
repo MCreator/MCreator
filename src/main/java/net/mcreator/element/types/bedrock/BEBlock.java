@@ -27,10 +27,13 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
+import net.mcreator.workspace.resources.Model;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -44,7 +47,13 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureRight;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 
+	public int renderType;
+	@Nonnull public String customModelName;
+
 	public String name;
+	public boolean enableCreativeTab;
+	public String creativeTab;
+	public boolean isHiddenInCommands;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public double friction;
@@ -63,12 +72,25 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public int maxGenerateHeight;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 
+	public int rotationMode;
+	public String renderMethod;
+	public String tintMethod;
+
 	private BEBlock() {
 		this(null);
 	}
 
 	public BEBlock(ModElement element) {
 		super(element);
+
+		customModelName = "Normal";
+		renderType = 10;
+
+		enableCreativeTab = true;
+		creativeTab = "BUILDING_BLOCKS";
+
+		renderMethod = "opaque";
+		tintMethod = "(none)";
 	}
 
 	public boolean hasCustomDrop() {
@@ -76,8 +98,12 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
-				getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+		if (renderType == 10) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
+					getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+		} else {
+			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
+		}
 	}
 
 	private Image getTextureWithFallback(TextureHolder texture) {
@@ -92,6 +118,17 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "block"));
+	}
+
+	public Model getModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (renderType == 2)
+			modelType = Model.Type.BEDROCK;
+		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
+	}
+
+	public boolean hasCustomModel() {
+		return renderType == 2;
 	}
 
 	private Image getMainTexture() {

@@ -80,7 +80,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 
 	public PlacementHelperDialog(BlocklyPanel blocklyPanel, MCreator mcreator) {
 		super(blocklyPanel, mcreator, L10N.t("dialog.tools.placement_helper.title"),
-				L10N.t("dialog.tools.placement_helper.confirm"), 1100, 360);
+				L10N.t("dialog.tools.placement_helper.confirm"));
 		blockSurvivalCondition = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		requiredBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 		requiredBlocks.setPreferredSize(new Dimension(250, -1));
@@ -97,7 +97,8 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		rarityFrequencySettings.add(L10N.label("dialog.tools.placement_helper.frequency_on_chunk"));
 		rarityFrequencySettings.add(frequencyOnChunk);
 
-		ComponentUtils.makeSection(rarityFrequencySettings, L10N.t("dialog.tools.placement_helper.rarity_and_frequency"));
+		ComponentUtils.makeSection(rarityFrequencySettings,
+				L10N.t("dialog.tools.placement_helper.rarity_and_frequency"));
 
 		// Height settings
 		JPanel heightPlacementSettings = new JPanel(new GridLayout(1, 2, 4, 2));
@@ -158,6 +159,9 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		this.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.northAndCenterElement(rarityFrequencySettings, PanelUtils.pullElementUp(heightSettings)),
 				PanelUtils.pullElementUp(conditionsPanel))));
+
+		this.pack();
+		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}
 

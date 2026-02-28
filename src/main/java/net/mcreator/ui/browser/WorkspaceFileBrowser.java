@@ -219,7 +219,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			node.add(structures);
 		}
 
-		if (mcreator.getGeneratorStats().hasBaseCoverageAny("model_json", "model_java", "model_obj")) {
+		if (mcreator.getGeneratorStats().hasBaseCoverageAny("model_json", "model_java", "model_obj", "model_bedrock")) {
 			FilterTreeNode models = new FilterTreeNode("Models");
 			JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 			node.add(models);

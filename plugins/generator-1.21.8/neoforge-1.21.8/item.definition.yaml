@@ -90,6 +90,8 @@ tags:
     condition: isMusicDisc
   - tag: ITEMS:minecraft:piglin_loved
     condition: isPiglinCurrency
+  - tag: ITEMS:@modid:@registryname_repair_items
+    entryprovider: getRepairItemsAsStringList()
 
 localizationkeys:
   - key: item.@modid.@registryname

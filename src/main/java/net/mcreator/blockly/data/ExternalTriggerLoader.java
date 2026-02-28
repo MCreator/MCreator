@@ -33,9 +33,12 @@ import java.util.regex.Pattern;
 
 public class ExternalTriggerLoader {
 
+	private final String resourceFolder;
+
 	private final List<ExternalTrigger> externalTriggers;
 
 	ExternalTriggerLoader(String resourceFolder) {
+		this.resourceFolder = resourceFolder;
 		this.externalTriggers = new ArrayList<>();
 
 		final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
@@ -50,6 +53,10 @@ public class ExternalTriggerLoader {
 
 		externalTriggers.sort(
 				Comparator.comparing(ExternalTrigger::getGroupEstimate).thenComparing(ExternalTrigger::getName));
+	}
+
+	public String getResourceFolder() {
+		return resourceFolder;
 	}
 
 	public List<ExternalTrigger> getExternalTriggers() {

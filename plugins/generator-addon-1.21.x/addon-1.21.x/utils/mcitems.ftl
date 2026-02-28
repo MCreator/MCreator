@@ -1,15 +1,3 @@
-<#function hasMetadata mappedBlock>
-    <#return mappedBlock.toString().contains("#")>
-</#function>
-
-<#function getMappedMCItemMetadata mappedBlock>
-    <#if !mappedBlock.toString().contains("#")>
-        <#return "-1">
-    <#else>
-        <#return mappedBlock.toString().split("#")[1]>
-    </#if>
-</#function>
-
 <#function transformExtension mappedBlock>
     <#assign extension = mappedBlock?keep_after_last(".")>
     <#return (extension?has_content)?then("_" + extension, "")>
@@ -19,9 +7,7 @@
     <#if mappedBlock.toString().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
-            <#return "\"item\": \"" + "${modid}:" + customelement
-            + transformExtension(mappedBlock.getUnmappedValue())
-            + "\"">
+            <#return "\"item\": \"" + "${modid}:" + customelement + transformExtension(mappedBlock.getUnmappedValue()) + "\"">
         <#else>
             <#return "\"item\": \"minecraft:air\"">
         </#if>
@@ -29,12 +15,10 @@
         <#return "\"item\": \"minecraft:air\"">
     <#else>
         <#assign mapped = mappedBlock.toString()>
-        <#if mapped.toString().contains("#")>
-            <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\", \"data\": " + mapped.toString().split("#")[1]>
-        <#elseif mapped.contains(":")>
+        <#if mapped.contains(":")>
             <#return "\"item\": \"" + mapped + "\"">
         <#else>
-            <#return "\"item\": \"minecraft:" + mapped.toString().split("#")[0] + "\"">
+            <#return "\"item\": \"minecraft:" + mapped + "\"">
         </#if>
     </#if>
 </#function>
@@ -56,7 +40,7 @@
         <#elseif mapped.contains(":")>
             <#return mapped>
         <#else>
-            <#return "minecraft:" + mapped.toString().split("#")[0]>
+            <#return "minecraft:" + mapped>
         </#if>
     </#if>
 </#function>
