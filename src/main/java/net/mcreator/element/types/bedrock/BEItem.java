@@ -83,7 +83,6 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		this.animation = "eat";
 		this.enableCreativeTab = true;
 		this.creativeTab = "MATERIALS";
-		this.stackedByData = true;
 		this.blockPlaceableOn = new ArrayList<>();
 		this.entityDispensableOn = new ArrayList<>();
 		this.entityPlaceableOn = new ArrayList<>();
