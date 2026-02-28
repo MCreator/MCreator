@@ -21,6 +21,7 @@ package net.mcreator.blockly.data;
 
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -29,47 +30,61 @@ import java.util.List;
 
 public class DynamicBlockLoader {
 
-	public static List<ToolboxBlock> getDynamicBlocks() {
+	public static List<ToolboxBlock> getDynamicBlocks(BlocklyEditorType type) {
 		List<ToolboxBlock> list = new ArrayList<>();
-		for (VariableType varType : VariableTypeLoader.INSTANCE.getAllVariableTypes()) {
-			ToolboxBlock getBlock = new DynamicToolboxBlock() {
-				@Override public boolean shouldLoad(GeneratorConfiguration configuration) {
-					return varType.canBeLocal(configuration) || varType.canBeGlobal(configuration);
-				}
-			};
-			getBlock.machine_name = "variables_get_" + varType.getName();
-			getBlock.toolbox_id = "customvariables";
-			getBlock.type = IBlockGenerator.BlockType.OUTPUT;
-			list.add(getBlock);
 
-			ToolboxBlock setBlock = new DynamicToolboxBlock() {
-				@Override public boolean shouldLoad(GeneratorConfiguration configuration) {
-					return varType.canBeLocal(configuration) || varType.canBeGlobal(configuration);
-				}
-			};
-			setBlock.machine_name = "variables_set_" + varType.getName();
-			setBlock.toolbox_id = "customvariables";
-			setBlock.type = IBlockGenerator.BlockType.PROCEDURAL;
-			list.add(setBlock);
+		if (type == BlocklyEditorType.PROCEDURE) {
+			for (VariableType varType : VariableTypeLoader.INSTANCE.getAllVariableTypes()) {
+				ToolboxBlock getBlock = new DynamicToolboxBlock() {
+					@Override public boolean shouldLoad(GeneratorConfiguration configuration) {
+						return varType.canBeLocal(configuration) || varType.canBeGlobal(configuration);
+					}
+				};
+				getBlock.machine_name = "variables_get_" + varType.getName();
+				getBlock.toolbox_id = "customvariables";
+				getBlock.type = IBlockGenerator.BlockType.OUTPUT;
+				list.add(getBlock);
 
-			ToolboxBlock customDependencyBlock = new DynamicToolboxBlock();
-			customDependencyBlock.machine_name = "custom_dependency_" + varType.getName();
-			customDependencyBlock.toolbox_id = "advanced";
-			customDependencyBlock.type = IBlockGenerator.BlockType.OUTPUT;
-			list.add(customDependencyBlock);
+				ToolboxBlock setBlock = new DynamicToolboxBlock() {
+					@Override public boolean shouldLoad(GeneratorConfiguration configuration) {
+						return varType.canBeLocal(configuration) || varType.canBeGlobal(configuration);
+					}
+				};
+				setBlock.machine_name = "variables_set_" + varType.getName();
+				setBlock.toolbox_id = "customvariables";
+				setBlock.type = IBlockGenerator.BlockType.PROCEDURAL;
+				list.add(setBlock);
 
-			ToolboxBlock procedureRetvalBlock = new DynamicToolboxBlock();
-			procedureRetvalBlock.machine_name = "procedure_retval_" + varType.getName();
-			procedureRetvalBlock.toolbox_id = "advanced";
-			procedureRetvalBlock.type = IBlockGenerator.BlockType.OUTPUT;
-			list.add(procedureRetvalBlock);
+				ToolboxBlock customDependencyBlock = new DynamicToolboxBlock();
+				customDependencyBlock.machine_name = "custom_dependency_" + varType.getName();
+				customDependencyBlock.toolbox_id = "advanced";
+				customDependencyBlock.type = IBlockGenerator.BlockType.OUTPUT;
+				list.add(customDependencyBlock);
 
-			ToolboxBlock returnBlock = new DynamicToolboxBlock();
-			returnBlock.machine_name = "return_" + varType.getName();
-			returnBlock.toolbox_id = "logicloops";
-			returnBlock.type = IBlockGenerator.BlockType.PROCEDURAL;
-			list.add(returnBlock);
+				ToolboxBlock procedureRetvalBlock = new DynamicToolboxBlock();
+				procedureRetvalBlock.machine_name = "procedure_retval_" + varType.getName();
+				procedureRetvalBlock.toolbox_id = "advanced";
+				procedureRetvalBlock.type = IBlockGenerator.BlockType.OUTPUT;
+				list.add(procedureRetvalBlock);
+
+				ToolboxBlock returnBlock = new DynamicToolboxBlock();
+				returnBlock.machine_name = "return_" + varType.getName();
+				returnBlock.toolbox_id = "logicloops";
+				returnBlock.type = IBlockGenerator.BlockType.PROCEDURAL;
+				list.add(returnBlock);
+			}
+		} else if (type == BlocklyEditorType.SCRIPT) {
+			for (VariableType varType : List.of(VariableTypeLoader.BuiltInTypes.LOGIC,
+					VariableTypeLoader.BuiltInTypes.NUMBER, VariableTypeLoader.BuiltInTypes.STRING,
+					VariableTypeLoader.BuiltInTypes.ITEMSTACK, VariableTypeLoader.BuiltInTypes.BLOCKSTATE)) {
+				ToolboxBlock customDependencyBlock = new DynamicToolboxBlock();
+				customDependencyBlock.machine_name = "custom_dependency_" + varType.getName();
+				customDependencyBlock.toolbox_id = "advanced";
+				customDependencyBlock.type = IBlockGenerator.BlockType.OUTPUT;
+				list.add(customDependencyBlock);
+			}
 		}
+
 		return list;
 	}
 

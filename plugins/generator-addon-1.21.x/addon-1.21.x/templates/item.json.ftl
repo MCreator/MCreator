@@ -1,7 +1,8 @@
 <#-- @formatter:off -->
+<#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 <#include "mcitems.ftl">
 {
-  "format_version": "1.21.50",
+  "format_version": "1.21.90",
   "minecraft:item": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -28,16 +29,43 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
-      <#if data.isFood>
+      <#if data.blockToPlace?? && !data.blockToPlace.isEmpty()>
+      "minecraft:block_placer": {
+          "block": "${mappedMCItemToRegistryNameNoTags(data.blockToPlace)}",
+          "use_on": [
+            <#list data.blockPlaceableOn as block>
+            "${mappedMCItemToRegistryNameNoTags(block)}"<#sep>,
+            </#list>
+          ]
+      },
+      </#if>
+      <#if data.entityToPlace?? && !data.entityToPlace.isEmpty()>
+      "minecraft:entity_placer": {
+        "entity": "${generator.map(data.entityToPlace.getUnmappedValue(), "entities")}",
+        "dispense_on": [
+            <#list data.entityDispensableOn as block>
+            "${mappedMCItemToRegistryNameNoTags(block)}"<#sep>,
+            </#list>
+        ],
+        "use_on": [
+            <#list data.entityPlaceableOn as block>
+            "${mappedMCItemToRegistryNameNoTags(block)}"<#sep>,
+            </#list>
+        ]
+      },
+      </#if>
+      <#if data.useDuration gt 0 || data.isFood>
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration},
       	"movement_modifier": ${data.movementModifier}
       },
+      </#if>
+      <#if data.isFood>
       "minecraft:food": {
         "nutrition": ${data.foodNutritionalValue},
         "saturation_modifier": ${data.foodSaturation},
         "can_always_eat": ${data.foodCanAlwaysEat}
-        <#if !data.usingConvertsTo.isEmpty()>,
+        <#if data.usingConvertsTo?? && !data.usingConvertsTo.isEmpty()>,
         "using_converts_to": "${mappedMCItemToRegistryNameNoTags(data.usingConvertsTo)}"
         </#if>
       },
@@ -48,7 +76,10 @@
       	]
       },
       </#if>
-      "minecraft:icon": "${registryname}"
+      "minecraft:icon": "${registryname}"<#if localScripts?has_content>,</#if>
+      <#list localScripts as script>
+      "${script}": {}<#sep>,
+      </#list>
     }
   }
 }
