@@ -15,6 +15,7 @@
       <#if data.allowOffHand>"minecraft:allow_off_hand": true,</#if>
       <#if data.handEquipped>"minecraft:hand_equipped": true,</#if>
       <#if !data.shouldDespawn>"minecraft:should_despawn": false,</#if>
+      <#if data.stackedByData>"minecraft:stacked_by_data": true,</#if>
       <#if data.rarity != "common">"minecraft:rarity": "${data.rarity}",</#if>
       <#if data.fuelDuration gt 0.05>
       "minecraft:fuel": {

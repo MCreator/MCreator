@@ -1687,6 +1687,7 @@ public class TestWorkspaceDataProvider {
 			beitem.allowOffHand = _true;
 			beitem.fuelDuration = _true ? 0 : 10;
 			beitem.shouldDespawn = _true;
+			beitem.stackedByData = _true;
 			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 			beitem.animation = getRandomItem(random,

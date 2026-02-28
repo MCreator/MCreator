@@ -75,6 +75,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox allowOffHand = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fuelDuration = new JSpinner(new SpinnerNumberModel(0, 0, 107374180, 0.05));
 	private final JCheckBox shouldDespawn = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox stackedByData = L10N.checkbox("elementgui.common.enable");
 	private final MCItemHolder blockToPlace = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final MCItemListField blockPlaceableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 	private final SingleSpawnableEntitySelector entityToPlace = new SingleSpawnableEntitySelector(mcreator);
@@ -211,7 +212,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		foodPanel.add("Center", PanelUtils.totalCenterInPanel(foodProperties));
 
-		JPanel advancedProperties = new JPanel(new GridLayout(4, 2, 65, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(5, 2, 65, 2));
 		advancedProperties.setOpaque(false);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
@@ -232,6 +233,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.beitem.should_despawn")));
 		shouldDespawn.setOpaque(false);
 		advancedProperties.add(shouldDespawn);
+
+		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/stacked_by_data"),
+				L10N.label("elementgui.beitem.stacked_by_data")));
+		shouldDespawn.setOpaque(false);
+		advancedProperties.add(stackedByData);
 
 		JPanel blockPlacerProps = new JPanel(new GridLayout(2, 2, 65, 2));
 		blockPlacerProps.setOpaque(false);
@@ -283,6 +289,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 			shouldDespawn.setSelected(true);
+			stackedByData.setSelected(true);
 			animation.setSelectedItem("eat");
 			enableCreativeTab.setSelected(true);
 			creativeTab.setSelectedItem("MATERIALS");
@@ -352,6 +359,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		allowOffHand.setSelected(item.allowOffHand);
 		fuelDuration.setValue(item.fuelDuration);
 		shouldDespawn.setSelected(item.shouldDespawn);
+		stackedByData.setSelected(item.stackedByData);
 		usingConvertsTo.setBlock(item.usingConvertsTo);
 		animation.setSelectedItem(item.animation);
 		blockToPlace.setBlock(item.blockToPlace);
@@ -388,6 +396,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.allowOffHand = allowOffHand.isSelected();
 		item.fuelDuration = (double) fuelDuration.getValue();
 		item.shouldDespawn = shouldDespawn.isSelected();
+		item.stackedByData = stackedByData.isSelected();
 		item.usingConvertsTo = usingConvertsTo.getBlock();
 		item.animation = animation.getSelectedItem();
 		item.blockToPlace = blockToPlace.getBlock();

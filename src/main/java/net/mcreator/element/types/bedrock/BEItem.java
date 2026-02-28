@@ -56,6 +56,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean allowOffHand;
 	public double fuelDuration;
 	public boolean shouldDespawn;
+	public boolean stackedByData;
 	public MItemBlock blockToPlace;
 	@ModElementReference public List<MItemBlock> blockPlaceableOn;
 	public EntityEntry entityToPlace;
@@ -82,6 +83,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		this.animation = "eat";
 		this.enableCreativeTab = true;
 		this.creativeTab = "MATERIALS";
+		this.stackedByData = true;
 		this.blockPlaceableOn = new ArrayList<>();
 		this.entityDispensableOn = new ArrayList<>();
 		this.entityPlaceableOn = new ArrayList<>();
