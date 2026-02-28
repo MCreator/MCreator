@@ -1673,7 +1673,7 @@ public class TestWorkspaceDataProvider {
 			beitem.useDuration = 8;
 			beitem.maxDurability = 4;
 			beitem.enableMeleeDamage = !_true;
-			beitem.damageVsEntity = 6.53;
+			beitem.damageVsEntity = 6;
 			beitem.isFood = emptyLists;
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;

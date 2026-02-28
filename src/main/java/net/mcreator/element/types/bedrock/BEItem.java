@@ -45,7 +45,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public double useDuration;
 	public int maxDurability;
 	public boolean enableMeleeDamage;
-	public double damageVsEntity;
+	public int damageVsEntity;
 	public boolean hasGlint;
 	public boolean handEquipped;
 	public String rarity;
