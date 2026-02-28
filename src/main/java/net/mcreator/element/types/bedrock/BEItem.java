@@ -77,23 +77,29 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean diggerUseEfficiency;
 	public List<DiggerEntry> diggerEntries;
 
+	@ModElementReference public List<String> localScripts;
+
 	public BEItem() {
 		this(null);
 	}
 
 	public BEItem(ModElement element) {
 		super(element);
+
 		this.rarity = "COMMON";
 		this.movementModifier = 1.0;
 		this.shouldDespawn = true;
 		this.animation = "eat";
 		this.enableCreativeTab = true;
 		this.creativeTab = "MATERIALS";
+		this.enchantmentSlot = "any";
+
 		this.blockPlaceableOn = new ArrayList<>();
 		this.entityDispensableOn = new ArrayList<>();
 		this.entityPlaceableOn = new ArrayList<>();
-		this.enchantmentSlot = "any";
 		this.diggerEntries = new ArrayList<>();
+
+		localScripts = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
