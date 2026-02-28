@@ -290,6 +290,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/enchantment_slot"),
 				L10N.label("elementgui.beitem.enchantment_slot")));
 		enchantmentSlot.setOpaque(false);
+		isEnchantable.addActionListener(e -> updateEnchantableParams());
 		toolProperties.add(PanelUtils.westAndCenterElement(isEnchantable, enchantmentSlot));
 
 		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
