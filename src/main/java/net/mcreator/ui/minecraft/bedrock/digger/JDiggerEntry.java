@@ -60,11 +60,7 @@ public class JDiggerEntry extends JSimpleListEntry<BEItem.DiggerEntry> {
 	}
 
 	@Override public BEItem.DiggerEntry getEntry() {
-		BEItem.DiggerEntry entry = new BEItem.DiggerEntry();
-		entry.block = block.getBlock();
-		entry.speed = (int) speed.getValue();
-
-		return entry;
+		return new BEItem.DiggerEntry(block.getBlock(), (Integer) speed.getValue());
 	}
 
 	@Override public void setEntry(BEItem.DiggerEntry entry) {

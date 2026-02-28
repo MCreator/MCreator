@@ -92,7 +92,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		this.blockPlaceableOn = new ArrayList<>();
 		this.entityDispensableOn = new ArrayList<>();
 		this.entityPlaceableOn = new ArrayList<>();
-		this.enchantmentSlot = "all";
+		this.enchantmentSlot = "any";
 		this.diggerEntries = new ArrayList<>();
 	}
 
@@ -111,6 +111,11 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public static class DiggerEntry {
 		@ModElementReference public MItemBlock block;
 		public int speed;
+
+		public DiggerEntry(MItemBlock block, int speed) {
+			this.block = block;
+			this.speed = speed;
+		}
 	}
 
 }

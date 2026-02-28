@@ -1,4 +1,4 @@
-_default: any
+_default: all
 any: all
 feet: armor_feet
 chest: armor_torso
