@@ -30,6 +30,12 @@ base_templates:
   - template: resourcepack/sound_definitions.json.ftl
     writer: json
     name: "@RESROOT/sounds/sound_definitions.json"
+  - template: resourcepack/music_definitions.json.ftl
+    writer: json
+    name: "@RESROOT/sounds/music_definitions.json"
+  - template: resourcepack/sounds.json.ftl
+    writer: json
+    name: "@RESROOT/sounds.json"
   - template: resourcepack/blocks.json.ftl
     writer: json
     name: "@RESROOT/blocks.json"

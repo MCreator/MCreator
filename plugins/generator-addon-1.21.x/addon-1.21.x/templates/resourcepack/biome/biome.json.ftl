@@ -42,10 +42,7 @@
             "loop": "${data.ambientSound}"
           </#if>
           <#if additionsSound><#if ambientSound>,</#if>
-            "addition": {
-              "asset": "${data.additionsSound}",
-              "chance": 0.5
-            }
+            "addition": "${data.additionsSound}"
           </#if>
           <#if moodSound><#if ambientSound || additionsSound>,</#if>
             "mood": "${data.moodSound}"
