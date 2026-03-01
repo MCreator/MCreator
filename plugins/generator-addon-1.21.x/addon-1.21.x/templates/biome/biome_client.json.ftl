@@ -23,6 +23,35 @@
           "fog_identifier": "${modid}:${registryname}_fog"
         }
       </#if>
+      <#if data.spawnParticles>,
+        "minecraft:precipitation": {
+          "${data.particleToSpawn}": ${data.particleDensity}
+        }
+      </#if>
+      <#if data.music?has_content && data.music.getMappedValue()?has_content>,
+        "minecraft:biome_music": {
+          "music_definition": "${data.music}"
+        }
+      </#if>
+      <#assign ambientSound = data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
+      <#assign additionsSound = data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
+      <#assign moodSound = data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
+      <#if ambientSound || additionsSound || moodSound>,
+        "minecraft:ambient_sounds": {
+          <#if ambientSound>
+            "loop": "${data.ambientSound}"
+          </#if>
+          <#if additionsSound><#if ambientSound>,</#if>
+            "addition": {
+              "asset": "${data.additionsSound}",
+              "chance": 0.5
+            }
+          </#if>
+          <#if moodSound><#if ambientSound || additionsSound>,</#if>
+            "mood": "${data.moodSound}"
+          </#if>
+        }
+      </#if>
     }
   }
 }

@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -32,14 +31,11 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.BeBiomeTagsListField;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.logging.log4j.core.config.plugins.validation.validators.NotBlankValidator;
-import org.apache.logging.log4j.core.config.plugins.validation.validators.RequiredValidator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,8 +57,11 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
     private final JSpinner downfall = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
 	private final JSpinner replacementAmount = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
 	private final JSpinner replacementNoiseFrequencyScale = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 100, 0.1));
+	private final JSpinner particleDensity = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 10.0, 0.1));
 
 	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125);
+
+	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 
 	private final JColor airColor = new JColor(mcreator, true, false);
 	private final JColor fogColor = new JColor(mcreator, true, false);
@@ -73,9 +72,15 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
     private final JComboBox<String> noiseType = new JComboBox<>(new String[]{"default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean", "taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp"});
 	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
+	private final JComboBox<String> particleToSpawn = new JComboBox<>(new String[]{"ash", "blue_spores", "red_spores", "white_ash"});
 
 	private final BeBiomeTagsListField biomeTags = new BeBiomeTagsListField(mcreator);
 	private final BiomeListField biomeReplacements = new BiomeListField(mcreator, false);
+
+	private final SoundSelector ambientSound = new SoundSelector(mcreator);
+	private final SoundSelector moodSound = new SoundSelector(mcreator);
+	private final SoundSelector additionsSound = new SoundSelector(mcreator);
+	private final SoundSelector music = new SoundSelector(mcreator);
 
     private final ValidationGroup page2group = new ValidationGroup();
 
@@ -186,6 +191,56 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.bebiome.replacement_noise_freq_scale")));
 		materialsPanel.add(replacementNoiseFrequencyScale);
 
+		JPanel effectsPane = new JPanel(new BorderLayout());
+
+		JPanel sounds = new JPanel(new GridLayout(4, 2, 0, 2));
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/music"), L10N.label("elementgui.biome.music")));
+		sounds.add(music);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ambient_sound"),
+				L10N.label("elementgui.biome.ambient_sound")));
+		sounds.add(ambientSound);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/additions_sound"),
+				L10N.label("elementgui.biome.additions_sound")));
+		sounds.add(additionsSound);
+
+		sounds.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/mood_sound"),
+				L10N.label("elementgui.biome.mood_sound")));
+		sounds.add(moodSound);
+
+		ComponentUtils.makeSection(sounds, L10N.t("elementgui.biome.sounds"));
+
+		sounds.setOpaque(false);
+
+		JPanel particles = new JPanel(new GridLayout(3, 2, 0, 2));
+
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/spawn_particle"),
+				L10N.label("elementgui.biome.enable_particles")));
+		particles.add(spawnParticles);
+
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/particle_type"),
+				L10N.label("elementgui.biome.particle_type")));
+		particles.add(particleToSpawn);
+		particleToSpawn.setPreferredSize(new Dimension(100, 40));
+
+		particles.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/particle_density"),
+				L10N.label("elementgui.bebiome.particle_density")));
+		particles.add(particleDensity);
+		particleDensity.setPreferredSize(new Dimension(100, 40));
+
+		particles.setOpaque(false);
+
+		ComponentUtils.makeSection(particles, L10N.t("elementgui.biome.particles"));
+
+		spawnParticles.setOpaque(false);
+		spawnParticles.addActionListener(event -> updateParticleParameters());
+
+		effectsPane.setOpaque(false);
+		effectsPane.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
+
 		biomeReplacements.setValidator(new ItemListFieldValidator(biomeReplacements,
 				L10N.t("elementgui.bebiome.error_must_have_replacement")));
 
@@ -196,7 +251,18 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
         addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
         addPage(L10N.t("elementgui.biome.biome_generation"), PanelUtils.totalCenterInPanel(materialsPanel)).validate(page2group);
+		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
     }
+
+	private void updateParticleParameters() {
+		if (spawnParticles.isSelected()) {
+			particleToSpawn.setEnabled(true);
+			particleDensity.setEnabled(true);
+		} else {
+			particleToSpawn.setEnabled(false);
+			particleDensity.setEnabled(false);
+		}
+	}
 
     @Override protected void openInEditingMode(BEBiome biome) {
         topMaterial.setBlock(biome.topMaterial);
@@ -219,12 +285,23 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         seaFloorDepth.setValue(biome.seaFloorDepth);
 		replacementAmount.setValue(biome.replacementAmount);
 		replacementNoiseFrequencyScale.setValue(biome.replacementNoiseFrequencyScale);
+		particleDensity.setValue(biome.particleDensity);
+
+		spawnParticles.setSelected(biome.spawnParticles);
 
         noiseType.setSelectedItem(biome.noiseType);
 		villageType.setSelectedItem(biome.villageType);
+		particleToSpawn.setSelectedItem(biome.particleToSpawn);
 
 		biomeTags.setListElements(biome.biomeTags);
 		biomeReplacements.setListElements(biome.biomeReplacements);
+
+		ambientSound.setSound(biome.ambientSound);
+		additionsSound.setSound(biome.additionsSound);
+		music.setSound(biome.music);
+		moodSound.setSound(biome.moodSound);
+
+		updateParticleParameters();
     }
 
     @Override public BEBiome getElementFromGUI() {
@@ -250,12 +327,21 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         biome.seaFloorDepth = (int) seaFloorDepth.getValue();
 		biome.replacementAmount = (double) replacementAmount.getValue();
 		biome.replacementNoiseFrequencyScale = (double) replacementNoiseFrequencyScale.getValue();
+		biome.particleDensity = (double) particleDensity.getValue();
 
-        biome.noiseType = (String) noiseType.getSelectedItem();
+        biome.spawnParticles = spawnParticles.isSelected();
+
+		biome.noiseType = (String) noiseType.getSelectedItem();
 		biome.villageType = (String) villageType.getSelectedItem();
+		biome.particleToSpawn = (String) particleToSpawn.getSelectedItem();
 
 		biome.biomeTags = biomeTags.getListElements();
 		biome.biomeReplacements = biomeReplacements.getListElements();
+
+		biome.ambientSound = ambientSound.getSound();
+		biome.additionsSound = additionsSound.getSound();
+		biome.music = music.getSound();
+		biome.moodSound = moodSound.getSound();
 
         return biome;
     }

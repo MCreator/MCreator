@@ -21,6 +21,7 @@ package net.mcreator.element.types.bedrock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Sound;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -38,6 +39,8 @@ import java.awt.image.BufferedImage;
 	public MItemBlock seaFloorMaterial;
 	public MItemBlock seaMaterial;
 
+	public boolean spawnParticles;
+
 	public int seaFloorDepth;
 
 	public Color airColor;
@@ -53,12 +56,19 @@ import java.awt.image.BufferedImage;
 	public double maxSnow;
 	public double replacementAmount;
 	public double replacementNoiseFrequencyScale;
+	public double particleDensity;
 
 	public String noiseType;
 	public String villageType;
+	public String particleToSpawn;
 
 	public List<String> biomeTags;
 	@ModElementReference public List<BiomeEntry> biomeReplacements;
+
+	public Sound ambientSound;
+	public Sound additionsSound;
+	public Sound music;
+	public Sound moodSound;
 
 	private BEBiome() {
 		this(null);
