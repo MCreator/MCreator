@@ -59,6 +59,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
     private final JSpinner seaFloorDepth = new JSpinner(new SpinnerNumberModel(7, 0, 256, 1));
     private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 2.0, 0.1));
     private final JSpinner downfall = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
+	private final JSpinner replacementAmount = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
+	private final JSpinner replacementNoiseFrequencyScale = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 100, 0.1));
 
 	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125);
 
@@ -133,7 +135,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		propertiesPanel.add(waterFogColor);
 
-        JPanel materialsPanel = new JPanel(new GridLayout(10, 2, 25, 2));
+        JPanel materialsPanel = new JPanel(new GridLayout(12, 2, 25, 2));
         materialsPanel.setOpaque(false);
 
         materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/ground_block"),
@@ -176,6 +178,14 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.bebiome.biome_replacements")));
 		materialsPanel.add(biomeReplacements);
 
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/biome_replacement_amount"),
+				L10N.label("elementgui.bebiome.replacement_amount")));
+		materialsPanel.add(replacementAmount);
+
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/biome_replacement_freq_scale"),
+				L10N.label("elementgui.bebiome.replacement_noise_freq_scale")));
+		materialsPanel.add(replacementNoiseFrequencyScale);
+
 		biomeReplacements.setValidator(new ItemListFieldValidator(biomeReplacements,
 				L10N.t("elementgui.bebiome.error_must_have_replacement")));
 
@@ -207,6 +217,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		snowAccumulation.setMinValue(biome.minSnow);
 		snowAccumulation.setMaxValue(biome.maxSnow);
         seaFloorDepth.setValue(biome.seaFloorDepth);
+		replacementAmount.setValue(biome.replacementAmount);
+		replacementNoiseFrequencyScale.setValue(biome.replacementNoiseFrequencyScale);
 
         noiseType.setSelectedItem(biome.noiseType);
 		villageType.setSelectedItem(biome.villageType);
@@ -236,6 +248,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		biome.minSnow = snowAccumulation.getMinValue();
 		biome.maxSnow = snowAccumulation.getMaxValue();
         biome.seaFloorDepth = (int) seaFloorDepth.getValue();
+		biome.replacementAmount = (double) replacementAmount.getValue();
+		biome.replacementNoiseFrequencyScale = (double) replacementNoiseFrequencyScale.getValue();
 
         biome.noiseType = (String) noiseType.getSelectedItem();
 		biome.villageType = (String) villageType.getSelectedItem();

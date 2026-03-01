@@ -51,6 +51,8 @@ import java.awt.image.BufferedImage;
 	public double downfall;
 	public double minSnow;
 	public double maxSnow;
+	public double replacementAmount;
+	public double replacementNoiseFrequencyScale;
 
 	public String noiseType;
 	public String villageType;
