@@ -28,7 +28,7 @@
         "noise_type": "${data.noiseType}"
       },
       "minecraft:village_type": {
-        "type": "default"
+        "type": "${data.villageType}"
       },
       "minecraft:surface_builder": {
         "builder": {

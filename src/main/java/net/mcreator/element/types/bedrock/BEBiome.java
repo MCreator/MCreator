@@ -48,8 +48,8 @@ import java.awt.image.BufferedImage;
 	public double temperature;
 	public double downfall;
 
-	public boolean generateFeature;
 	public String noiseType;
+	public String villageType;
 
 	private BEBiome() {
 		this(null);

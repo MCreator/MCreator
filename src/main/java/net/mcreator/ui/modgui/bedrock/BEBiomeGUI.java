@@ -54,7 +54,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private MCItemHolder seaMaterial;
 
     private final JSpinner seaFloorDepth = new JSpinner(new SpinnerNumberModel(7, 0, 256, 1));
-    private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -2.0, 2.0, 0.1));
+    private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, 0, 2.0, 0.1));
     private final JSpinner downfall = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
 
 	private final JColor airColor = new JColor(mcreator, true, false);
@@ -65,6 +65,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JColor waterFogColor = new JColor(mcreator, true, false);
 
     private final JComboBox<String> noiseType = new JComboBox<>(new String[]{"stone_beach", "deep_ocean", "default", "default_mutated", "lowlands", "river", "ocean", "taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp"});
+	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
 
     private final ValidationGroup page1group = new ValidationGroup();
     private final ValidationGroup page2group = new ValidationGroup();
@@ -124,7 +125,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		propertiesPanel.add(waterFogColor);
 
-        JPanel materialsPanel = new JPanel(new GridLayout(7, 2, 25, 2));
+        JPanel materialsPanel = new JPanel(new GridLayout(8, 2, 25, 2));
         materialsPanel.setOpaque(false);
 
         materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
@@ -151,8 +152,13 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.bebiome.ocean_floor_depth")));
         materialsPanel.add(seaFloorDepth);
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/noise_type"), new JLabel("Terrain Noise Type"))); // Bedrock specific
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/noise_type"),
+				L10N.label("elementgui.bebiome.terrain_noise_type"))); // Bedrock specific
         materialsPanel.add(noiseType);
+
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village_type"),
+				L10N.label("elementgui.bebiome.village_type"))); // Bedrock specific
+		materialsPanel.add(villageType);
 
         page1group.addValidationElement(name);
         page2group.addValidationElement(topMaterial);
@@ -186,6 +192,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         seaFloorDepth.setValue(biome.seaFloorDepth);
 
         noiseType.setSelectedItem(biome.noiseType);
+		villageType.setSelectedItem(biome.villageType);
     }
 
     @Override public BEBiome getElementFromGUI() {
@@ -210,6 +217,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         biome.seaFloorDepth = (int) seaFloorDepth.getValue();
 
         biome.noiseType = (String) noiseType.getSelectedItem();
+		biome.villageType = (String) villageType.getSelectedItem();
 
         return biome;
     }
