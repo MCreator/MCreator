@@ -30,12 +30,16 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.BeBiomeTagsListField;
+import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.logging.log4j.core.config.plugins.validation.validators.NotBlankValidator;
+import org.apache.logging.log4j.core.config.plugins.validation.validators.RequiredValidator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -69,6 +73,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
 
 	private final BeBiomeTagsListField biomeTags = new BeBiomeTagsListField(mcreator);
+	private final BiomeListField biomeReplacements = new BiomeListField(mcreator, false);
 
     private final ValidationGroup page2group = new ValidationGroup();
 
@@ -101,11 +106,11 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         propertiesPanel.add(temperature);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/snow_accumulation"),
-				L10N.label("elementgui.biome.snow_accumulation")));
+				L10N.label("elementgui.bebiome.snow_accumulation")));
 		propertiesPanel.add(snowAccumulation);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
-				L10N.label("elementgui.bebiome.air_color")));
+				L10N.label("elementgui.biome.air_color")));
 		propertiesPanel.add(airColor);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/fog_color"),
@@ -128,7 +133,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		propertiesPanel.add(waterFogColor);
 
-        JPanel materialsPanel = new JPanel(new GridLayout(9, 2, 25, 2));
+        JPanel materialsPanel = new JPanel(new GridLayout(10, 2, 25, 2));
         materialsPanel.setOpaque(false);
 
         materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/ground_block"),
@@ -167,9 +172,17 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.bebiome.biome_tags")));
 		materialsPanel.add(biomeTags);
 
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/biome_replacements"),
+				L10N.label("elementgui.bebiome.biome_replacements")));
+		materialsPanel.add(biomeReplacements);
+
+		biomeReplacements.setValidator(new ItemListFieldValidator(biomeReplacements,
+				L10N.t("elementgui.bebiome.error_must_have_replacement")));
+
         page2group.addValidationElement(topMaterial);
         page2group.addValidationElement(midMaterial);
 		page2group.addValidationElement(foundationMaterial);
+		page2group.addValidationElement(biomeReplacements);
 
         addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
         addPage(L10N.t("elementgui.biome.biome_generation"), PanelUtils.totalCenterInPanel(materialsPanel)).validate(page2group);
@@ -199,6 +212,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		villageType.setSelectedItem(biome.villageType);
 
 		biomeTags.setListElements(biome.biomeTags);
+		biomeReplacements.setListElements(biome.biomeReplacements);
     }
 
     @Override public BEBiome getElementFromGUI() {
@@ -227,6 +241,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		biome.villageType = (String) villageType.getSelectedItem();
 
 		biome.biomeTags = biomeTags.getListElements();
+		biome.biomeReplacements = biomeReplacements.getListElements();
 
         return biome;
     }

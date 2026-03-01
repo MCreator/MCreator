@@ -7,18 +7,22 @@
       "identifier": "${modid}:${registryname}"
     },
     "components": {
-      "minecraft:replace_biomes": {
-        "replacements": [
-          {
-            "dimension": "minecraft:overworld",
-            "targets": [
-              "minecraft:forest"
-            ],
-            "amount": 0.65,
-            "noise_frequency_scale": 0.4
-          }
-        ]
-      },
+      <#if data.biomeReplacements?? && data.biomeReplacements?has_content>
+        "minecraft:replace_biomes": {
+          "replacements": [
+            {
+              "dimension": "minecraft:overworld",
+              "targets": [
+                <#list w.filterBrokenReferences(data.biomeReplacements) as biome>
+                  "${generator.map(biome, "bebiomes")?replace("CUSTOM:", "")}"<#sep>,
+                </#list>
+              ],
+              "amount": 0.65,
+              "noise_frequency_scale": 0.4
+            }
+          ]
+        },
+      </#if>
       "minecraft:climate": {
         "downfall": ${data.downfall},
         "snow_accumulation": [ ${data.minSnow}, ${data.maxSnow} ],

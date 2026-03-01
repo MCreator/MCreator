@@ -19,9 +19,11 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import java.util.List;
 
@@ -54,6 +56,7 @@ import java.awt.image.BufferedImage;
 	public String villageType;
 
 	public List<String> biomeTags;
+	@ModElementReference public List<BiomeEntry> biomeReplacements;
 
 	private BEBiome() {
 		this(null);
