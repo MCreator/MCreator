@@ -49,6 +49,8 @@ import java.awt.image.BufferedImage;
 
 	public double temperature;
 	public double downfall;
+	public double minSnow;
+	public double maxSnow;
 
 	public String noiseType;
 	public String villageType;

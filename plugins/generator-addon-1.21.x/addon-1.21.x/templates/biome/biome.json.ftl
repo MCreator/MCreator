@@ -21,7 +21,7 @@
       },
       "minecraft:climate": {
         "downfall": ${data.downfall},
-        "snow_accumulation": [ 0.0, 0.0 ],
+        "snow_accumulation": [ ${data.minSnow}, ${data.maxSnow} ],
         "temperature": ${data.temperature}
       },
       "minecraft:overworld_height": {

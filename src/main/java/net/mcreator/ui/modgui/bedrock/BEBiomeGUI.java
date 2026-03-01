@@ -24,6 +24,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -55,8 +56,10 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private MCItemHolder seaMaterial;
 
     private final JSpinner seaFloorDepth = new JSpinner(new SpinnerNumberModel(7, 0, 256, 1));
-    private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, 0, 2.0, 0.1));
+    private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 2.0, 0.1));
     private final JSpinner downfall = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
+
+	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125);
 
 	private final JColor airColor = new JColor(mcreator, true, false);
 	private final JColor fogColor = new JColor(mcreator, true, false);
@@ -65,7 +68,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JColor waterColor = new JColor(mcreator, true, false);
 	private final JColor waterFogColor = new JColor(mcreator, true, false);
 
-    private final JComboBox<String> noiseType = new JComboBox<>(new String[]{"stone_beach", "deep_ocean", "default", "default_mutated", "lowlands", "river", "ocean", "taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp"});
+    private final JComboBox<String> noiseType = new JComboBox<>(new String[]{"default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean", "taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp"});
 	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
 
 	private final BeBiomeTagsListField biomeTags = new BeBiomeTagsListField(mcreator);
@@ -89,7 +92,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		seaMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
 
-        JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
+        JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 2, 2));
         propertiesPanel.setOpaque(false);
 
         propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"),
@@ -103,6 +106,10 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/temperature"),
 				L10N.label("elementgui.biome.temperature")));
         propertiesPanel.add(temperature);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/snow_accumulation"),
+				L10N.label("elementgui.biome.snow_accumulation")));
+		propertiesPanel.add(snowAccumulation);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
 				L10N.label("elementgui.biome.air_color")));
@@ -196,6 +203,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
         temperature.setValue(biome.temperature);
         downfall.setValue(biome.downfall);
+		snowAccumulation.setMinValue(biome.minSnow);
+		snowAccumulation.setMaxValue(biome.maxSnow);
         seaFloorDepth.setValue(biome.seaFloorDepth);
 
         noiseType.setSelectedItem(biome.noiseType);
@@ -223,6 +232,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
         biome.temperature = (double) temperature.getValue();
         biome.downfall = (double) downfall.getValue();
+		biome.minSnow = snowAccumulation.getMinValue();
+		biome.maxSnow = snowAccumulation.getMaxValue();
         biome.seaFloorDepth = (int) seaFloorDepth.getValue();
 
         biome.noiseType = (String) noiseType.getSelectedItem();
