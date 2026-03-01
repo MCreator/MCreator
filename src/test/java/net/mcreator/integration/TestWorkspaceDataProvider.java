@@ -36,6 +36,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
+import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
@@ -179,7 +180,7 @@ public class TestWorkspaceDataProvider {
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
 				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM
-				|| type == ModElementType.BEBLOCK) {
+				|| type == ModElementType.BEBLOCK || type == ModElementType.BEBIOME) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -1737,6 +1738,49 @@ public class TestWorkspaceDataProvider {
 					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
 							"water"));
 			return block;
+		} else if (ModElementType.BEBIOME.equals(modElement.getType())) {
+			BEBiome biome = new BEBiome(modElement);
+			biome.downfall = 0.72;
+			biome.temperature = 0.45;
+			biome.maxSnow = 0.250;
+			biome.minSnow = 0;
+			biome.airColor = Color.red;
+			if (!emptyLists) {
+				biome.fogColor = Color.yellow;
+				biome.grassColor = Color.green;
+				biome.foliageColor = Color.magenta;
+				biome.waterColor = Color.blue;
+				biome.waterFogColor = Color.cyan;
+			}
+			biome.topMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			biome.midMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			biome.foundationMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			biome.seaFloorMaterial = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
+			biome.seaMaterial = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
+			biome.seaFloorDepth = 4;
+			biome.noiseType = "default";
+			biome.villageType = "default";
+			biome.biomeTags = _true ? List.of() : List.of("animal", "cold", "beach", "overworld_generation");
+			biome.biomeReplacements = subset(random, 5, biomes,
+					e -> new BiomeEntry(modElement.getWorkspace(), e.getName()));
+			biome.replacementAmount = 0.6;
+			biome.replacementNoiseFrequencyScale = 0.4;
+			biome.ambientSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			biome.moodSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			biome.additionsSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			biome.music = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			biome.spawnParticles = _true;
+			biome.particleToSpawn = "blue_spores";
+			biome.particleDensity = 2;
 		}
 		return null;
 	}
