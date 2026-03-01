@@ -56,6 +56,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean allowOffHand;
 	public double fuelDuration;
 	public boolean shouldDespawn;
+	public boolean stackedByData;
 	public MItemBlock blockToPlace;
 	@ModElementReference public List<MItemBlock> blockPlaceableOn;
 	public EntityEntry entityToPlace;
