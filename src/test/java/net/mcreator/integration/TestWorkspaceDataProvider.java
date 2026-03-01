@@ -1761,55 +1761,55 @@ public class TestWorkspaceDataProvider {
 			beblock.tintMethod = getRandomItem(random,
 					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
 							"water"));
-      beblock.localScripts = new ArrayList<>();
+			beblock.localScripts = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.localScripts.add("Examplebescript1");
 				beblock.localScripts.add("Examplebescript3");
 			}
 			return beblock;
 		} else if (ModElementType.BEBIOME.equals(modElement.getType())) {
-			BEBiome biome = new BEBiome(modElement);
-			biome.downfall = 0.72;
-			biome.temperature = 0.45;
-			biome.maxSnow = 0.250;
-			biome.minSnow = 0;
-			biome.airColor = Color.red;
+			BEBiome bebiome = new BEBiome(modElement);
+			bebiome.downfall = 0.72;
+			bebiome.temperature = 0.45;
+			bebiome.maxSnow = 0.250;
+			bebiome.minSnow = 0;
+			bebiome.airColor = Color.red;
 			if (!emptyLists) {
-				biome.fogColor = Color.yellow;
-				biome.grassColor = Color.green;
-				biome.foliageColor = Color.magenta;
-				biome.waterColor = Color.blue;
-				biome.waterFogColor = Color.cyan;
+				bebiome.fogColor = Color.yellow;
+				bebiome.grassColor = Color.green;
+				bebiome.foliageColor = Color.magenta;
+				bebiome.waterColor = Color.blue;
+				bebiome.waterFogColor = Color.cyan;
 			}
-			biome.topMaterial = new MItemBlock(modElement.getWorkspace(),
+			bebiome.topMaterial = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, worldgenBlocks).getName());
-			biome.midMaterial = new MItemBlock(modElement.getWorkspace(),
+			bebiome.midMaterial = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, worldgenBlocks).getName());
-			biome.foundationMaterial = new MItemBlock(modElement.getWorkspace(),
+			bebiome.foundationMaterial = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, worldgenBlocks).getName());
-			biome.seaFloorMaterial = new MItemBlock(modElement.getWorkspace(),
+			bebiome.seaFloorMaterial = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
-			biome.seaMaterial = new MItemBlock(modElement.getWorkspace(),
+			bebiome.seaMaterial = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
-			biome.seaFloorDepth = 4;
-			biome.noiseType = "default";
-			biome.villageType = "default";
-			biome.biomeTags = _true ? List.of() : List.of("animal", "cold", "beach", "overworld_generation");
-			biome.biomeReplacements = subset(random, 5, biomes,
+			bebiome.seaFloorDepth = 4;
+			bebiome.noiseType = "default";
+			bebiome.villageType = "default";
+			bebiome.biomeTags = _true ? List.of() : List.of("animal", "cold", "beach", "overworld_generation");
+			bebiome.biomeReplacements = subset(random, 5, biomes,
 					e -> new BiomeEntry(modElement.getWorkspace(), e.getName()));
-			biome.replacementAmount = 0.6;
-			biome.replacementNoiseFrequencyScale = 0.4;
-			biome.ambientSound = new Sound(modElement.getWorkspace(),
+			bebiome.replacementAmount = 0.6;
+			bebiome.replacementNoiseFrequencyScale = 0.4;
+			bebiome.ambientSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			biome.moodSound = new Sound(modElement.getWorkspace(),
+			bebiome.moodSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			biome.additionsSound = new Sound(modElement.getWorkspace(),
+			bebiome.additionsSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			biome.music = new Sound(modElement.getWorkspace(),
+			bebiome.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			biome.spawnParticles = _true;
-			biome.particleToSpawn = "blue_spores";
-			biome.particleDensity = 2;
+			bebiome.spawnParticles = _true;
+			bebiome.particleToSpawn = "blue_spores";
+			bebiome.particleDensity = 2;
 		}
 		return null;
 	}
