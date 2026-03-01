@@ -134,19 +134,19 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.bebiome.ground_block")));
         materialsPanel.add(PanelUtils.join(topMaterial));
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/underground_block"),
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/middle_block"),
 				L10N.label("elementgui.bebiome.middle_block")));
         materialsPanel.add(PanelUtils.join(midMaterial));
 
-		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/foundation_material"),
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/underground_block"),
 				L10N.label("elementgui.bebiome.underground_block")));
 		materialsPanel.add(PanelUtils.join(foundationMaterial));
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/sea_floor_material"),
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/underwater_block"),
 				L10N.label("elementgui.bebiome.underwater_block")));
         materialsPanel.add(PanelUtils.join(seaFloorMaterial));
 
-		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/sea_material"),
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/ocean_block"),
 				L10N.label("elementgui.bebiome.ocean_block")));
 		materialsPanel.add(PanelUtils.join(seaMaterial));
 
