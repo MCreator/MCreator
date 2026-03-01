@@ -29,6 +29,7 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
+      <#if data.enableMeleeDamage>"minecraft:damage": ${[data.damageVsEntity, 255]?min},</#if>
       <#if data.blockToPlace?? && !data.blockToPlace.isEmpty()>
       "minecraft:block_placer": {
           "block": "${mappedMCItemToRegistryNameNoTags(data.blockToPlace)}",

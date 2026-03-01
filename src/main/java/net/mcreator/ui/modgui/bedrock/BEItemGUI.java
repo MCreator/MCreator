@@ -71,7 +71,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JSpinner movementModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.05));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
+	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
@@ -393,7 +393,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.useDuration = (double) useDuration.getValue();
 		item.maxDurability = (int) maxDurability.getValue();
 		item.hasGlint = hasGlint.isSelected();
-		item.damageVsEntity = (double) damageVsEntity.getValue();
+		item.damageVsEntity = (int) damageVsEntity.getValue();
 		item.enableMeleeDamage = enableMeleeDamage.isSelected();
 		item.isFood = isFood.isSelected();
 		item.foodNutritionalValue = (int) foodNutritionalValue.getValue();
