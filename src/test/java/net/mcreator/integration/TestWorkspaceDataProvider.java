@@ -39,6 +39,7 @@ import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
+import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -88,7 +89,7 @@ public class TestWorkspaceDataProvider {
 			GeneratorConfiguration generatorConfiguration) {
 		Set<ModElementType<?>> retval = new LinkedHashSet<>();
 
-		// We try to provide order so MET that depend on less of other MEs are first
+		// We try to provide order so METs that depend on less of other MEs are first
 		// So later MEs can reference them, improving test coverage
 		retval.add(ModElementType.FUNCTION);
 		retval.add(ModElementType.DAMAGETYPE);
@@ -101,6 +102,7 @@ public class TestWorkspaceDataProvider {
 		retval.add(ModElementType.ATTRIBUTE);
 		retval.add(ModElementType.POTIONEFFECT);
 		retval.add(ModElementType.BANNERPATTERN);
+		retval.add(ModElementType.BESCRIPT);
 
 		Collection<ModElementType<?>> supportedMETs = generatorConfiguration.getGeneratorStats()
 				.getSupportedModElementTypes();
@@ -179,8 +181,8 @@ public class TestWorkspaceDataProvider {
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
-				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM
-				|| type == ModElementType.BEBLOCK || type == ModElementType.BEBIOME) {
+				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM || type == ModElementType.BEBLOCK
+				|| type == ModElementType.BESCRIPT || type == ModElementType.BEBIOME) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -290,14 +292,14 @@ public class TestWorkspaceDataProvider {
 				throw new RuntimeException(e);
 			}
 
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test." + workspace.getGeneratorConfiguration().getStructureExtension()));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test1." + workspace.getGeneratorConfiguration().getStructureExtension()));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test2." + workspace.getGeneratorConfiguration().getStructureExtension()));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test3." + workspace.getGeneratorConfiguration().getStructureExtension()));
 		}
 
 		if (workspace.getGeneratorStats().hasBaseCoverage("model_java")) {
@@ -1620,6 +1622,10 @@ public class TestWorkspaceDataProvider {
 			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
 			procedure.skipDependencyNullCheck = _true;
 			return procedure;
+		} else if (ModElementType.BESCRIPT.equals(modElement.getType())) {
+			BEScript bescript = new BEScript(modElement);
+			bescript.scriptxml = BEScript.XML_BASE.replace("no_ext_trigger", "be_global_world_loaded");
+			return bescript;
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
 			damageType.exhaustion = 0.37;
@@ -1674,7 +1680,7 @@ public class TestWorkspaceDataProvider {
 			beitem.useDuration = 8;
 			beitem.maxDurability = 4;
 			beitem.enableMeleeDamage = !_true;
-			beitem.damageVsEntity = 6.53;
+			beitem.damageVsEntity = 6;
 			beitem.isFood = emptyLists;
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
@@ -1688,56 +1694,79 @@ public class TestWorkspaceDataProvider {
 			beitem.allowOffHand = _true;
 			beitem.fuelDuration = _true ? 0 : 10;
 			beitem.shouldDespawn = _true;
+			beitem.stackedByData = _true;
 			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 			beitem.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush",
 							"spyglass" });
-			return beitem;
-		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
-			BEBlock block = new BEBlock(modElement);
-			block.name = modElement.getName();
-			block.texture = new TextureHolder(modElement.getWorkspace(), "test");
-			block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
-			block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
-			block.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
-			block.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
-			block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
-			block.renderType = 10;
-			block.customModelName = "Normal";
-			block.enableCreativeTab = !_true;
-			block.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
-			block.isHiddenInCommands = _true;
-			block.hardness = 2.3;
-			block.resistance = 3.1;
-			block.customDrop = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			block.dropAmount = 3;
-			block.flammability = 5;
-			block.flammableDestroyChance = 12;
-			block.friction = 0.5;
-			block.soundOnStep = new StepSound(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
-			block.lightEmission = 3;
-			block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-			block.generateFeature = _true;
-			block.blocksToReplace = new ArrayList<>();
+			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, filterAir(blocks)).getName());
+			beitem.blockPlaceableOn = new ArrayList<>();
+			beitem.entityToPlace = new EntityEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+			beitem.entityDispensableOn = new ArrayList<>();
+			beitem.entityPlaceableOn = new ArrayList<>();
 			if (!emptyLists) {
-				block.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
+				beitem.blockPlaceableOn = subset(random, blocks.size() / 8, blocks,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+				beitem.entityDispensableOn = subset(random, blocks.size() / 8, blocks,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+				beitem.entityPlaceableOn = subset(random, blocks.size() / 8, blocks,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			}
-			block.frequencyPerChunks = 3;
-			block.oreCount = 2;
-			block.minGenerateHeight = 21;
-			block.maxGenerateHeight = 92;
-			block.rotationMode = random.nextInt(0, 5);
-			block.renderMethod = getRandomItem(random,
+			beitem.localScripts = new ArrayList<>();
+			if (!emptyLists) {
+				beitem.localScripts.add("Examplebescript1");
+				beitem.localScripts.add("Examplebescript3");
+			}
+			return beitem;
+		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
+			BEBlock beblock = new BEBlock(modElement);
+			beblock.name = modElement.getName();
+			beblock.texture = new TextureHolder(modElement.getWorkspace(), "test");
+			beblock.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
+			beblock.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");
+			beblock.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
+			beblock.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
+			beblock.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
+			beblock.renderType = 10;
+			beblock.customModelName = "Normal";
+			beblock.enableCreativeTab = !_true;
+			beblock.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beblock.isHiddenInCommands = _true;
+			beblock.hardness = 2.3;
+			beblock.resistance = 3.1;
+			beblock.customDrop = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItems).getName());
+			beblock.dropAmount = 3;
+			beblock.flammability = 5;
+			beblock.flammableDestroyChance = 12;
+			beblock.friction = 0.5;
+			beblock.soundOnStep = new StepSound(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+			beblock.lightEmission = 3;
+			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			beblock.generateFeature = _true;
+			beblock.blocksToReplace = new ArrayList<>();
+			if (!emptyLists) {
+				beblock.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+			}
+
+			beblock.rotationMode = random.nextInt(0, 5);
+			beblock.renderMethod = getRandomItem(random,
 					List.of("opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
 							"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque"));
-			block.tintMethod = getRandomItem(random,
+			beblock.tintMethod = getRandomItem(random,
 					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
 							"water"));
-			return block;
+      beblock.localScripts = new ArrayList<>();
+			if (!emptyLists) {
+				beblock.localScripts.add("Examplebescript1");
+				beblock.localScripts.add("Examplebescript3");
+			}
+			return beblock;
 		} else if (ModElementType.BEBIOME.equals(modElement.getType())) {
 			BEBiome biome = new BEBiome(modElement);
 			biome.downfall = 0.72;

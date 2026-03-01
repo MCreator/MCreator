@@ -23,11 +23,13 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEBiome;
+import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.modgui.*;
 import net.mcreator.ui.modgui.bedrock.BEBlockGUI;
 import net.mcreator.ui.modgui.bedrock.BEItemGUI;
 import net.mcreator.ui.modgui.bedrock.BEBiomeGUI;
+import net.mcreator.ui.modgui.bedrock.BEScriptGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -86,6 +88,7 @@ public class ModElementTypeLoader {
 		ModElementType.BEITEM = register(new ModElementType<>("beitem", "item", 'i', BEItemGUI::new, BEItem.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 		ModElementType.BEBLOCK = register(new ModElementType<>("beblock", "block", 'b', BEBlockGUI::new, BEBlock.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 		ModElementType.BEBIOME = register(new ModElementType<>("bebiome", "biome", 'o', BEBiomeGUI::new, BEBiome.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
+		ModElementType.BESCRIPT = register(new ModElementType<>("bescript", "procedure", 's', BEScriptGUI::new, BEScript.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 
 		// Unregistered type used to mask legacy removed mod element types
 		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, (mc, me, e) -> null, GeneratableElement.Unknown.class);

@@ -185,6 +185,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> BEITEM;
 	public static ModElementType<?> BEBLOCK;
 	public static ModElementType<?> BEBIOME;
+	public static ModElementType<?> BESCRIPT;
 
 	public static ModElementType<?> UNKNOWN;
 

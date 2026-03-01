@@ -33,19 +33,32 @@ public class ExternalTrigger {
 
 	@Nullable public List<Dependency> dependencies_provided;
 
+	// Used mostly by Java Edition triggers
 	public boolean cancelable;
 	public boolean has_result;
 	public String side = "both";
+
+	// Used mostly by Bedrock Edition triggers
+	@Nullable public String type;
 
 	public String getID() {
 		return id;
 	}
 
+	public String getType() {
+		if (type == null)
+			return "global";
+		return type;
+	}
+
 	public String getGroupEstimate() {
-		int a = StringUtils.ordinalIndexOf(this.id, "_", 2);
+		// Try to remove commonly used namespaces for better estimation
+		String idNoNamespace = this.id.replace("be_", "" );
+
+		int a = StringUtils.ordinalIndexOf(idNoNamespace, "_", 2);
 		if (a > 0)
-			return this.id.substring(0, a);
-		return this.id.split("_")[0];
+			return idNoNamespace.substring(0, a);
+		return idNoNamespace.split("_" )[0];
 	}
 
 	public String getName() {
