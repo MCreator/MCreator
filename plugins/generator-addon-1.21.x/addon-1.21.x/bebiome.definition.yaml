@@ -9,7 +9,3 @@ templates:
     writer: json
     name: "@RESROOT/fogs/@registryname.json"
     condition: hasFog()
-
-localizationkeys:
-  - key: biome.@modid:@registryname.name
-    mapto: name

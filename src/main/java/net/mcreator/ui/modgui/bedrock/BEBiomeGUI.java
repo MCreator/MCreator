@@ -46,9 +46,6 @@ import java.net.URISyntaxException;
 
 public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
-    private final VTextField name = new VTextField(20).requireValue("elementgui.biome.needs_name")
-            .enableRealtimeValidation();
-
     private MCItemHolder topMaterial;
     private MCItemHolder midMaterial;
 	private MCItemHolder foundationMaterial;
@@ -73,7 +70,6 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
 	private final BeBiomeTagsListField biomeTags = new BeBiomeTagsListField(mcreator);
 
-    private final ValidationGroup page1group = new ValidationGroup();
     private final ValidationGroup page2group = new ValidationGroup();
 
     public BEBiomeGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
@@ -92,12 +88,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		seaMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
 
-        JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 2, 2));
+        JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
         propertiesPanel.setOpaque(false);
-
-        propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/name"),
-				L10N.label("elementgui.biome.name")));
-        propertiesPanel.add(name);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/raining_possibility"),
 				L10N.label("elementgui.biome.raining_possibility")));
@@ -107,12 +99,12 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.biome.temperature")));
         propertiesPanel.add(temperature);
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/snow_accumulation"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/snow_accumulation"),
 				L10N.label("elementgui.biome.snow_accumulation")));
 		propertiesPanel.add(snowAccumulation);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/air_color"),
-				L10N.label("elementgui.biome.air_color")));
+				L10N.label("elementgui.bebiome.air_color")));
 		propertiesPanel.add(airColor);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/fog_color"),
@@ -138,56 +130,50 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         JPanel materialsPanel = new JPanel(new GridLayout(9, 2, 25, 2));
         materialsPanel.setOpaque(false);
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/ground_block"),
 				L10N.label("elementgui.bebiome.ground_block")));
         materialsPanel.add(PanelUtils.join(topMaterial));
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/underground_block"),
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/underground_block"),
 				L10N.label("elementgui.bebiome.middle_block")));
         materialsPanel.add(PanelUtils.join(midMaterial));
 
-		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/foundation_material"),
-				L10N.label("elementgui.bebiome.underground_block"))); // Bedrock specific
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/foundation_material"),
+				L10N.label("elementgui.bebiome.underground_block")));
 		materialsPanel.add(PanelUtils.join(foundationMaterial));
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/sea_floor_material"),
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/sea_floor_material"),
 				L10N.label("elementgui.bebiome.underwater_block")));
         materialsPanel.add(PanelUtils.join(seaFloorMaterial));
 
-		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/sea_material"),
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/sea_material"),
 				L10N.label("elementgui.bebiome.ocean_block")));
 		materialsPanel.add(PanelUtils.join(seaMaterial));
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/sea_floor_depth"),
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/sea_floor_depth"),
 				L10N.label("elementgui.bebiome.ocean_floor_depth")));
         materialsPanel.add(seaFloorDepth);
 
-        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/noise_type"),
-				L10N.label("elementgui.bebiome.terrain_noise_type"))); // Bedrock specific
+        materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/noise_type"),
+				L10N.label("elementgui.bebiome.terrain_noise_type")));
         materialsPanel.add(noiseType);
 
-		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/village_type"),
-				L10N.label("elementgui.bebiome.village_type"))); // Bedrock specific
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/village_type"),
+				L10N.label("elementgui.bebiome.village_type")));
 		materialsPanel.add(villageType);
 
-		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/biome_tags"),
-				L10N.label("elementgui.bebiome.biome_tags"))); // Bedrock specific
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/biome_tags"),
+				L10N.label("elementgui.bebiome.biome_tags")));
 		materialsPanel.add(biomeTags);
 
-        page1group.addValidationElement(name);
         page2group.addValidationElement(topMaterial);
         page2group.addValidationElement(midMaterial);
 
-        addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel)).validate(page1group);
+        addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
         addPage(L10N.t("elementgui.biome.biome_generation"), PanelUtils.totalCenterInPanel(materialsPanel)).validate(page2group);
-
-        if (!isEditingMode()) {
-            name.setText(StringUtils.machineToReadableName(modElement.getName()));
-        }
     }
 
     @Override protected void openInEditingMode(BEBiome biome) {
-        name.setText(biome.name);
         topMaterial.setBlock(biome.topMaterial);
         midMaterial.setBlock(biome.midMaterial);
 		foundationMaterial.setBlock(biome.foundationMaterial);
@@ -215,7 +201,6 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
     @Override public BEBiome getElementFromGUI() {
         BEBiome biome = new BEBiome(modElement);
-        biome.name = name.getText();
 
         biome.topMaterial = topMaterial.getBlock();
         biome.midMaterial = midMaterial.getBlock();

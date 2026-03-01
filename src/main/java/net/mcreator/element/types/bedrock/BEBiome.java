@@ -30,8 +30,6 @@ import java.awt.image.BufferedImage;
 
 @SuppressWarnings("unused") public class BEBiome extends GeneratableElement {
 
-	public String name;
-
 	public MItemBlock topMaterial;
 	public MItemBlock midMaterial;
 	public MItemBlock foundationMaterial;
