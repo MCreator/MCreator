@@ -23,6 +23,8 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.util.List;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -50,6 +52,8 @@ import java.awt.image.BufferedImage;
 
 	public String noiseType;
 	public String villageType;
+
+	public List<String> biomeTags;
 
 	private BEBiome() {
 		this(null);

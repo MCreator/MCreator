@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.BeBiomeTagsListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -66,6 +67,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
     private final JComboBox<String> noiseType = new JComboBox<>(new String[]{"stone_beach", "deep_ocean", "default", "default_mutated", "lowlands", "river", "ocean", "taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp"});
 	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
+
+	private final BeBiomeTagsListField biomeTags = new BeBiomeTagsListField(mcreator);
 
     private final ValidationGroup page1group = new ValidationGroup();
     private final ValidationGroup page2group = new ValidationGroup();
@@ -125,7 +128,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		propertiesPanel.add(waterFogColor);
 
-        JPanel materialsPanel = new JPanel(new GridLayout(8, 2, 25, 2));
+        JPanel materialsPanel = new JPanel(new GridLayout(9, 2, 25, 2));
         materialsPanel.setOpaque(false);
 
         materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
@@ -160,6 +163,10 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.bebiome.village_type"))); // Bedrock specific
 		materialsPanel.add(villageType);
 
+		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/biome_tags"),
+				L10N.label("elementgui.bebiome.biome_tags"))); // Bedrock specific
+		materialsPanel.add(biomeTags);
+
         page1group.addValidationElement(name);
         page2group.addValidationElement(topMaterial);
         page2group.addValidationElement(midMaterial);
@@ -193,6 +200,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
         noiseType.setSelectedItem(biome.noiseType);
 		villageType.setSelectedItem(biome.villageType);
+
+		biomeTags.setListElements(biome.biomeTags);
     }
 
     @Override public BEBiome getElementFromGUI() {
@@ -218,6 +227,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
         biome.noiseType = (String) noiseType.getSelectedItem();
 		biome.villageType = (String) villageType.getSelectedItem();
+
+		biome.biomeTags = biomeTags.getListElements();
 
         return biome;
     }

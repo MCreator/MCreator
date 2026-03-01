@@ -40,6 +40,16 @@
           "sea_material": "${mappedMCItemToRegistryNameNoTags(data.getOceanBlock())}",
           "sea_floor_depth": ${data.seaFloorDepth}
         }
+      },
+      "minecraft:tags": {
+        "tags": [
+          "${modid}:${registryname}"
+          <#if data.biomeTags?? && data.biomeTags?has_content>,
+            <#list data.biomeTags as tag>
+              "${tag}"<#sep>,
+            </#list>
+          </#if>
+        ]
       }
     }
   }
