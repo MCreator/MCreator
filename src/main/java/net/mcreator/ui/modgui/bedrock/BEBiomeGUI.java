@@ -82,8 +82,9 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		topMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
 				"elementgui.biome.error_biome_needs_ground_block");
 		midMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
+				"elementgui.biome.error_bebiome_needs_middle_block");
+		foundationMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks).requireValue(
 				"elementgui.biome.error_biome_needs_underground_block");
-		foundationMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		seaFloorMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		seaMaterial = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
@@ -168,6 +169,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
         page2group.addValidationElement(topMaterial);
         page2group.addValidationElement(midMaterial);
+		page2group.addValidationElement(foundationMaterial);
 
         addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
         addPage(L10N.t("elementgui.biome.biome_generation"), PanelUtils.totalCenterInPanel(materialsPanel)).validate(page2group);
