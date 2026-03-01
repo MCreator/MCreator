@@ -78,13 +78,6 @@ import java.awt.image.BufferedImage;
 		super(element);
 	}
 
-	public MItemBlock getUndergroundBlock() {
-		if (foundationMaterial == null || foundationMaterial.isEmpty())
-			return midMaterial;
-
-		return foundationMaterial;
-	}
-
 	public MItemBlock getUnderwaterBlock() {
 		if (seaFloorMaterial == null || seaFloorMaterial.isEmpty())
 			return midMaterial;

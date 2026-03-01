@@ -37,7 +37,7 @@
           "type": "minecraft:overworld",
           "top_material": "${mappedMCItemToRegistryNameNoTags(data.topMaterial)}",
           "mid_material": "${mappedMCItemToRegistryNameNoTags(data.midMaterial)}",
-          "foundation_material": "${mappedMCItemToRegistryNameNoTags(data.getUndergroundBlock())}",
+          "foundation_material": "${mappedMCItemToRegistryNameNoTags(data.foundationMaterial)}",
           "sea_floor_material": "${mappedMCItemToRegistryNameNoTags(data.getUnderwaterBlock())}",
           "sea_material": "${mappedMCItemToRegistryNameNoTags(data.getOceanBlock())}",
           "sea_floor_depth": ${data.seaFloorDepth}
