@@ -1,0 +1,92 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "x",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "z",
+      "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "rotation",
+      "options": [
+        [
+          "NONE",
+          "0_degrees"
+        ],
+        [
+          "CLOCKWISE_90",
+          "90_degrees"
+        ],
+        [
+          "CLOCKWISE_180",
+          "180_degrees"
+        ],
+        [
+          "COUNTERCLOCKWISE_90",
+          "270_degrees"
+        ]
+      ]
+    },
+    {
+      "type": "field_dropdown",
+      "name": "mirror",
+      "options": [
+        [
+          "NONE",
+          "none"
+        ],
+        [
+          "FRONT_BACK",
+          "x"
+        ],
+        [
+          "LEFT_RIGHT",
+          "z"
+        ]
+      ]
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "structure",
+      "datalist": "structure"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "be_world",
+    "toolbox_init": [
+      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
+      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
+    ],
+    "fields": [
+      "structure",
+      "rotation",
+      "mirror"
+    ],
+    "inputs": [
+      "x",
+      "y",
+      "z"
+    ],
+    "dependencies": [
+      {
+        "name": "dimension",
+        "type": "world"
+      }
+    ]
+  }
+}

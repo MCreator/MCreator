@@ -19,6 +19,7 @@ other_textures_dir: "@MODASSETSROOT/textures"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
+structures_dir: "@MODDATAROOT/structures/@modid"
 
 base_templates:
   - template: manifest_behaviourpack.json.ftl
@@ -36,9 +37,6 @@ base_templates:
   - template: resourcepack/terrain_texture.json.ftl
     writer: json
     name: "@RESROOT/textures/terrain_texture.json"
-  - template: player.json.ftl
-    writer: json
-    name: "@SRCROOT/entities/player.json"
 
 language_file:
   format: keyvalue

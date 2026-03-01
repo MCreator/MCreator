@@ -1,7 +1,8 @@
 <#-- @formatter:off -->
+<#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 <#include "mcitems.ftl">
 {
-  "format_version": "1.21.50",
+  "format_version": "1.21.90",
   "minecraft:item": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -15,6 +16,7 @@
       <#if data.allowOffHand>"minecraft:allow_off_hand": true,</#if>
       <#if data.handEquipped>"minecraft:hand_equipped": true,</#if>
       <#if !data.shouldDespawn>"minecraft:should_despawn": false,</#if>
+      <#if data.stackedByData>"minecraft:stacked_by_data": true,</#if>
       <#if data.rarity != "common">"minecraft:rarity": "${data.rarity}",</#if>
       <#if data.fuelDuration gt 0.05>
       "minecraft:fuel": {
@@ -28,6 +30,7 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
+      <#if data.enableMeleeDamage>"minecraft:damage": ${[data.damageVsEntity, 255]?min},</#if>
       <#if data.blockToPlace?? && !data.blockToPlace.isEmpty()>
       "minecraft:block_placer": {
           "block": "${mappedMCItemToRegistryNameNoTags(data.blockToPlace)}",
@@ -53,11 +56,13 @@
         ]
       },
       </#if>
-      <#if data.isFood>
+      <#if data.useDuration gt 0 || data.isFood>
       "minecraft:use_modifiers": {
       	"use_duration": ${data.useDuration},
       	"movement_modifier": ${data.movementModifier}
       },
+      </#if>
+      <#if data.isFood>
       "minecraft:food": {
         "nutrition": ${data.foodNutritionalValue},
         "saturation_modifier": ${data.foodSaturation},
@@ -73,7 +78,10 @@
       	]
       },
       </#if>
-      "minecraft:icon": "${registryname}"
+      "minecraft:icon": "${registryname}"<#if localScripts?has_content>,</#if>
+      <#list localScripts as script>
+      "${script}": {}<#sep>,
+      </#list>
     }
   }
 }

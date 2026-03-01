@@ -1,4 +1,5 @@
 <#-- @formatter:off -->
+<#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 {
   "format_version": "1.21.40",
   "minecraft:block": {
@@ -57,7 +58,10 @@
       "minecraft:flammable": {
         "catch_chance_modifier": ${data.flammability},
         "destroy_chance_modifier": ${data.flammableDestroyChance}
-      }
+      }<#if localScripts?has_content>,</#if>
+      <#list localScripts as script>
+      "${script}": {}<#sep>,
+      </#list>
     }
     <#if data.rotationMode != 0>,
     "permutations": [

@@ -1,0 +1,9 @@
+templates:
+  - template: script.js.ftl
+    name: "@SRCROOT/scripts/@registryname.js"
+    writer: js
+
+global_templates:
+  - template: scripts_base.js.ftl
+    name: "@SRCROOT/scripts/@modid_scripts.js"
+    writer: js
