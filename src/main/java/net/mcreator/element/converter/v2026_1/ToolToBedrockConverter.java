@@ -49,6 +49,7 @@ public class ToolToBedrockConverter implements IConverter{
 			beitem.enableCreativeTab = true;
 			beitem.creativeTab = "TOOLS";
 			beitem.handEquipped = true;
+			beitem.stackedByData = true;
 
 			if (itemDefinition.has("glowCondition")) {
 				JsonObject itemGlowCondition = itemDefinition.getAsJsonObject("glowCondition");
