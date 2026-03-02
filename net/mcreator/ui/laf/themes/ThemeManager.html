@@ -139,12 +139,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">This method loads all <a href="Theme.html" title="class in net.mcreator.ui.laf.themes"><code>Theme</code></a>s and sets the current theme to the one selected by the user.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedHashSet.html" title="class or interface in java.util" class="external-link">LinkedHashSet</a><wbr>&lt;<a href="Theme.html" title="class in net.mcreator.ui.laf.themes">Theme</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getThemes()" class="member-name-link">getThemes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadThemes()" class="member-name-link">loadThemes</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Theme.html" title="class in net.mcreator.ui.laf.themes">Theme</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getTheme(java.lang.String)" class="member-name-link">getTheme</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">This method checks in all loaded themes to get the theme matching the ID.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedHashSet.html" title="class or interface in java.util" class="external-link">LinkedHashSet</a><wbr>&lt;<a href="Theme.html" title="class in net.mcreator.ui.laf.themes">Theme</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getThemes()" class="member-name-link">getThemes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadThemes()" class="member-name-link">loadThemes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">This method loads the <a href="Theme.html" title="class in net.mcreator.ui.laf.themes"><code>Theme</code></a> of all plugins loaded into the current <a href="../../../plugin/PluginLoader.html" title="class in net.mcreator.plugin"><code>PluginLoader</code></a> instance.</div>
 </div>
 </div>
@@ -210,6 +215,19 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getThemes()">
 <h3>getThemes</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/LinkedHashSet.html" title="class or interface in java.util" class="external-link">LinkedHashSet</a>&lt;<a href="Theme.html" title="class in net.mcreator.ui.laf.themes">Theme</a>&gt;</span>&nbsp;<span class="element-name">getThemes</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getTheme(java.lang.String)">
+<h3>getTheme</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="Theme.html" title="class in net.mcreator.ui.laf.themes">Theme</a></span>&nbsp;<span class="element-name">getTheme</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;id)</span></div>
+<div class="block"><p>This method checks in all loaded themes to get the theme matching the ID.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>id</code> - The theme's id we want to get</dd>
+<dt>Returns:</dt>
+<dd>Returns the <a href="Theme.html" title="class in net.mcreator.ui.laf.themes"><code>Theme</code></a>, if found in the cache, otherwise null</dd>
+</dl>
 </section>
 </li>
 </ul>

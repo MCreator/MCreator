@@ -5,6 +5,8 @@ net.mcreator.blockly.datapack
 net.mcreator.blockly.datapack.blocks
 net.mcreator.blockly.java
 net.mcreator.blockly.java.blocks
+net.mcreator.blockly.javascript
+net.mcreator.blockly.javascript.blocks
 net.mcreator.element
 net.mcreator.element.converter
 net.mcreator.element.converter.v2019_5
