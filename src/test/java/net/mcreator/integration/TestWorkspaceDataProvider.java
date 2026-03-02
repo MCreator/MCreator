@@ -1793,7 +1793,6 @@ public class TestWorkspaceDataProvider {
 					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
 			bebiome.seaFloorDepth = 4;
 			bebiome.noiseType = "default";
-			bebiome.villageType = "default";
 			bebiome.biomeTags = _true ? List.of() : List.of("animal", "cold", "beach", "overworld_generation");
 			bebiome.biomeReplacements = subset(random, 5, biomes,
 					e -> new BiomeEntry(modElement.getWorkspace(), e.getName()));

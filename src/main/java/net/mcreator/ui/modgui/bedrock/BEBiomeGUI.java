@@ -71,7 +71,6 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JColor waterFogColor = new JColor(mcreator, true, false);
 
     private final JComboBox<String> noiseType = new JComboBox<>(new String[]{"default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean", "taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp"});
-	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
 	private final JComboBox<String> particleToSpawn = new JComboBox<>(new String[]{"ash", "blue_spores", "red_spores", "white_ash"});
 
 	private final BeBiomeTagsListField biomeTags = new BeBiomeTagsListField(mcreator, false);
@@ -140,7 +139,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		propertiesPanel.add(waterFogColor);
 
-        JPanel materialsPanel = new JPanel(new GridLayout(12, 2, 25, 2));
+        JPanel materialsPanel = new JPanel(new GridLayout(11, 2, 25, 2));
         materialsPanel.setOpaque(false);
 
         materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/ground_block"),
@@ -170,10 +169,6 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/noise_type"),
 				L10N.label("elementgui.bebiome.terrain_noise_type")));
         materialsPanel.add(noiseType);
-
-		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/village_type"),
-				L10N.label("elementgui.bebiome.village_type")));
-		materialsPanel.add(villageType);
 
 		materialsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("bebiome/biome_tags"),
 				L10N.label("elementgui.bebiome.biome_tags")));
@@ -290,7 +285,6 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		spawnParticles.setSelected(biome.spawnParticles);
 
         noiseType.setSelectedItem(biome.noiseType);
-		villageType.setSelectedItem(biome.villageType);
 		particleToSpawn.setSelectedItem(biome.particleToSpawn);
 
 		biomeTags.setListElements(biome.biomeTags);
@@ -332,7 +326,6 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
         biome.spawnParticles = spawnParticles.isSelected();
 
 		biome.noiseType = (String) noiseType.getSelectedItem();
-		biome.villageType = (String) villageType.getSelectedItem();
 		biome.particleToSpawn = (String) particleToSpawn.getSelectedItem();
 
 		biome.biomeTags = biomeTags.getListElements();

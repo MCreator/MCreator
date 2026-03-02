@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 {
-  "format_version": "1.26.0",
+  "format_version": "1.21.110",
   "minecraft:biome": {
     "description": {
       "identifier": "${modid}:${registryname}"
@@ -28,9 +28,6 @@
       },
       "minecraft:overworld_height": {
         "noise_type": "${data.noiseType}"
-      },
-      "minecraft:village_type": {
-        "type": "${data.villageType}"
       },
       "minecraft:surface_builder": {
         "builder": {

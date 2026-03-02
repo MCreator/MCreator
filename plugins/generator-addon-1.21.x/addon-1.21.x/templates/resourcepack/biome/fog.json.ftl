@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 {
-  "format_version": "1.26.0",
+  "format_version": "1.21.110",
   "minecraft:fog_settings": {
     "description": {
       "identifier": "${modid}:${registryname}_fog"

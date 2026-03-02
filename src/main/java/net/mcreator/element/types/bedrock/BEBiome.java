@@ -59,7 +59,6 @@ import java.awt.image.BufferedImage;
 	public double particleDensity;
 
 	public String noiseType;
-	public String villageType;
 	public String particleToSpawn;
 
 	public List<String> biomeTags;
