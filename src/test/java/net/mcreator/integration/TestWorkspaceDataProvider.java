@@ -1747,6 +1747,7 @@ public class TestWorkspaceDataProvider {
 			beblock.lightEmission = 3;
 			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			beblock.generateFeature = _true;
+			beblock.generationShape = getRandomString(random, List.of("uniform", "triangle"));
 			beblock.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,

@@ -67,6 +67,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String colorOnMap;
 
 	public boolean generateFeature;
+	public String generationShape;
 	public int frequencyPerChunks;
 	public int oreCount;
 	public int minGenerateHeight;
@@ -94,6 +95,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";
+
+		generationShape = "uniform";
 
 		localScripts = new ArrayList<>();
 	}
