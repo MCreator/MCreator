@@ -88,8 +88,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 	private final TranslatedComboBox generationShape = new TranslatedComboBox(
 			//@formatter:off
-			Map.entry("uniform", "Uniform"),
-			Map.entry("triangle", "Triangle")
+			Map.entry("uniform", "elementgui.block.generation_shape.uniform"),
+			Map.entry("triangle", "elementgui.block.generation_shape.triangle")
 			//@formatter:on
 	);
 	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
