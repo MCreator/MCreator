@@ -13,7 +13,7 @@
             "dimension": "minecraft:overworld",
             "targets": [
               <#list w.filterBrokenReferences(data.biomeReplacements) as biome>
-                "${generator.map(biome, "bebiomes")?replace("CUSTOM:", "")}"<#sep>,
+                "${generator.map(biome, "be_biomes")?replace("CUSTOM:", "")}"<#sep>,
               </#list>
             ],
             "amount": ${data.replacementAmount},

@@ -216,7 +216,7 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
 		List<DataListEntry> biomes = getCustomElementsOfType(workspace, ModElementType.BIOME);
 		boolean bedrockBiome = workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON;
-		biomes.addAll(DataListLoader.loadDataList(bedrockBiome ? "bebiomes" : "biomes"));
+		biomes.addAll(DataListLoader.loadDataList(bedrockBiome ? "be_biomes" : "biomes"));
 		biomes.sort(DataListEntry.getComparator(workspace, biomes));
 		return biomes;
 	}
