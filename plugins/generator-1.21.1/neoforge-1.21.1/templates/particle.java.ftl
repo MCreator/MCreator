@@ -54,7 +54,7 @@ package ${package}.client.particle;
 
 	private final SpriteSet spriteSet;
 
-	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+	<#if data.hasAngularVelocityOrAcceleration()>
 	private float angularVelocity;
 	private float angularAcceleration;
 	</#if>
@@ -82,7 +82,7 @@ package ${package}.client.particle;
 		this.yd = vy * ${data.speedFactor};
 		this.zd = vz * ${data.speedFactor};
 
-		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+		<#if data.hasAngularVelocityOrAcceleration()>
 		this.angularVelocity = ${data.angularVelocity}f;
 		this.angularAcceleration = ${data.angularAcceleration}f;
 		</#if>
