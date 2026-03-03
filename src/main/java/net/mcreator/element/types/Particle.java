@@ -129,9 +129,9 @@ import java.io.IOException;
 	}
 
 	public boolean hasAngularVelocityOrAcceleration() {
-		return angularVelocity != 0 || angularAcceleration != 0 || rotationProvider.getDependencies(
-						this.getModElement().getWorkspace()).stream().map(Dependency::name)
-				.anyMatch(name -> "angularVelocity".equals(name) || "angularAcceleration".equals(name));
+		return angularVelocity != 0 || angularAcceleration != 0 || (rotationProvider != null
+				&& rotationProvider.getDependencies(this.getModElement().getWorkspace()).stream().map(Dependency::name)
+				.anyMatch(name -> "angularVelocity".equals(name) || "angularAcceleration".equals(name)));
 	}
 
 }
