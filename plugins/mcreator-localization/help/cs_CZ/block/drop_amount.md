@@ -1,0 +1,1 @@
+Tento parametr kontroluje, kolik bloků nebo předmětů z bloku vypadne při zničení.
