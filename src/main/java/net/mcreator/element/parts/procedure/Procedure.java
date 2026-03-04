@@ -21,6 +21,7 @@ package net.mcreator.element.parts.procedure;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -59,6 +60,7 @@ import java.util.List;
 			}
 		} else {
 			LOG.warn("Procedure {} not found while trying to extract dependencies!", name);
+			TestUtil.failIfTestingEnvironment();
 		}
 
 		this.exists = false;
