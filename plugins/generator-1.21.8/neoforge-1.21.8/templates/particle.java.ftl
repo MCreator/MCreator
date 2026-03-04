@@ -124,7 +124,7 @@ public class ${name}Particle extends TextureSheetParticle {
 			"angularVelocity": "this.angularVelocity",
 			"angularAcceleration": "this.angularAcceleration",
 			"age": "this.age + partialTicks"
-		}/>;
+		}/>
 		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
 		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
 		<#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->
