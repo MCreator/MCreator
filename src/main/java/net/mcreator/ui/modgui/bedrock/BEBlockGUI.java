@@ -29,6 +29,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -51,8 +52,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -61,7 +64,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private BlockTexturesSelector textures;
 
 	public static final Model normal = new Model.BuiltInModel("Normal");
-	public static final Model[] builtinitemmodels = new Model[] { normal };
+	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
+	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
@@ -84,6 +89,12 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JSpinner flammableDestroyChance = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
+	private final TranslatedComboBox generationShape = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("uniform", "elementgui.block.generation_shape.uniform"),
+			Map.entry("triangle", "elementgui.block.generation_shape.triangle")
+			//@formatter:on
+	);
 	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
 	private final JSpinner oreCount = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
@@ -222,12 +233,16 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
 
-		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
+		JPanel genPanel = new JPanel(new GridLayout(6, 2, 65, 2));
 		genPanel.setOpaque(false);
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
 				L10N.label("elementgui.block.generate_feature")));
 		genPanel.add(generateFeature);
+
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/generation_shape"),
+				L10N.label("elementgui.block.generation_shape")));
+		genPanel.add(generationShape);
 
 		generateFeature.addActionListener(e -> refreshSpawnProperties());
 		refreshSpawnProperties();
@@ -297,7 +312,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, cross, singleTexture),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 	}
@@ -325,6 +340,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		flammableDestroyChance.setValue(block.flammableDestroyChance);
 
 		generateFeature.setSelected(block.generateFeature);
+		generationShape.setSelectedItem(block.generationShape);
 		blocksToReplace.setListElements(block.blocksToReplace);
 		generateHeight.setMinValue(block.minGenerateHeight);
 		generateHeight.setMaxValue(block.maxGenerateHeight);
@@ -356,6 +372,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.renderType = 10;
 		if (model.getType() == Model.Type.BEDROCK)
 			block.renderType = 2;
+		else if (model.equals(cross))
+			block.renderType = 11;
+		else if (model.equals(singleTexture))
+			block.renderType = 12;
 		block.customModelName = model.getReadableName();
 
 		block.name = name.getText();
@@ -374,6 +394,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.friction = (double) friction.getValue();
 
 		block.generateFeature = generateFeature.isSelected();
+		block.generationShape = generationShape.getSelectedItem();
 		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
 		block.oreCount = (int) oreCount.getValue();
 		block.minGenerateHeight = generateHeight.getIntMinValue();

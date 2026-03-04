@@ -1730,8 +1730,8 @@ public class TestWorkspaceDataProvider {
 			beblock.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
 			beblock.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
 			beblock.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
-			beblock.renderType = 10;
-			beblock.customModelName = "Normal";
+			beblock.renderType = new int[] {10, 11, 12, 10}[valueIndex];
+			beblock.customModelName = new String[] {"Normal", "Cross model", "Single texture", "Normal"}[valueIndex];
 			beblock.enableCreativeTab = !_true;
 			beblock.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
 			beblock.isHiddenInCommands = _true;
@@ -1748,6 +1748,7 @@ public class TestWorkspaceDataProvider {
 			beblock.lightEmission = 3;
 			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			beblock.generateFeature = _true;
+			beblock.generationShape = getRandomString(random, List.of("uniform", "triangle"));
 			beblock.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,

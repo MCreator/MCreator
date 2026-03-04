@@ -324,10 +324,13 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				L10N.t("itemlistfield.addexternal.title"), null, new OptionPaneValidator() {
 					@Override public ValidationResult validate(JComponent component) {
 						String text = ((VTextField) component).getText();
-						if (!text.contains(":") || text.startsWith("minecraft:") || text.startsWith("mod:")
-								|| text.startsWith(mcreator.getWorkspaceSettings().getModID() + ":")) {
+						if (!text.contains(":") || text.startsWith("minecraft:")) {
 							return new ValidationResult(ValidationResult.Type.ERROR,
 									L10N.t("itemlistfield.addexternal.entry.error"));
+						} else if (text.startsWith("mod:") || text.startsWith(
+								mcreator.getWorkspaceSettings().getModID() + ":")) {
+							return new ValidationResult(ValidationResult.Type.WARNING,
+									L10N.t("itemlistfield.addexternal.entry.warning"));
 						}
 						return new ResourceLocationValidator<>(L10N.t("itemlistfield.addexternal.entry"),
 								(VTextField) component, true).validate();
