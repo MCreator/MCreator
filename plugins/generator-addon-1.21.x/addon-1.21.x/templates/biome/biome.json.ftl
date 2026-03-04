@@ -45,7 +45,7 @@
           "${modid}:${registryname}"
           <#if data.biomeTags?? && data.biomeTags?has_content>,
             <#list data.biomeTags as tag>
-              "${tag}"<#sep>,
+              "${generator.map(tag, "be_biometags")}"<#sep>,
             </#list>
           </#if>
         ]

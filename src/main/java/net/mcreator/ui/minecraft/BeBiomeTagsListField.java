@@ -47,7 +47,7 @@ public class BeBiomeTagsListField  extends JItemListField<String> {
 				.filter(me -> me.getType() == ModElementType.BEBIOME)
 				.map(me -> mcreator.getWorkspace().getWorkspaceSettings().getModID() + ":" + me.getRegistryName())
 				.collect(Collectors.toList()) : new ArrayList<>();
-		biomeTags.addAll(Arrays.stream(ElementUtil.getDataListAsStringArray("bebiometags")).toList());
+		biomeTags.addAll(Arrays.stream(ElementUtil.getDataListAsStringArray("be_biometags")).toList());
 		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
 				w -> biomeTags.toArray(new String[0]),
 				L10N.t("dialog.list_field.bebiome_tags_list_title"),
