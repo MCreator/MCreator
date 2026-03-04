@@ -1,0 +1,1 @@
+Pokud zaškrtnete tento parametr, blok bude schopen vysílat ruditové signály.

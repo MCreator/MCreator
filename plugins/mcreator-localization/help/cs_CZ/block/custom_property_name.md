@@ -1,0 +1,1 @@
+Tento parametr určuje jméno této vlastní vlastnosti bloku.
