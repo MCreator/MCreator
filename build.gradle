@@ -130,7 +130,7 @@ dependencies {
     implementation "com.atlassian.commonmark:commonmark:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:0.17.0"
-    implementation "com.fifesoft:rsyntaxtextarea:3.6.1"
+    implementation "com.fifesoft:rsyntaxtextarea:3.6.2"
     implementation "com.fifesoft:autocomplete:3.3.3"
     implementation("com.fifesoft:languagesupport:3.4.1") {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino-all'

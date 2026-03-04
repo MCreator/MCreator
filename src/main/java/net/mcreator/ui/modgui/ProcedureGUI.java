@@ -483,7 +483,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesList.getSelectedValue();
 					if (selectedDep != null) {
-						String blockXml = selectedDep.getDependencyBlockXml();
+						String blockXml = selectedDep.getDependencyBlockXml(BlocklyEditorType.PROCEDURE);
 						if (blockXml != null)
 							blocklyPanel.addBlocksFromXML(blockXml);
 					}
@@ -496,7 +496,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
 					if (selectedDep != null) {
-						String blockXml = selectedDep.getDependencyBlockXml();
+						String blockXml = selectedDep.getDependencyBlockXml(BlocklyEditorType.PROCEDURE);
 						if (blockXml != null)
 							blocklyPanel.addBlocksFromXML(blockXml);
 					}
