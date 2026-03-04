@@ -78,6 +78,9 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				L10N.t("elementgui.item_extension.fuel_success_condition"), ProcedureSelector.Side.BOTH, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("itemstack:itemstack")).makeInline();
 
+		fuelPower.setEnabled(false);
+		fuelSuccessCondition.setEnabled(false);
+
 		JComponent fuelTopPanel = PanelUtils.gridElements(2, 2, 0, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/enable_fuel"),
 						L10N.label("elementgui.item_extension.enable_fuel")), enableFuel,
@@ -105,6 +108,9 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean")).setDefaultName(
 						L10N.t("elementgui.item_extension.dispense_result_itemstack.default")).makeInline()
 				.makeReturnValueOptional();
+
+		dispenseSuccessCondition.setEnabled(false);
+		dispenseResultItemstack.setEnabled(false);
 
 		JComponent canDispense = PanelUtils.gridElements(1, 2, 0, 0,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/has_dispense_behavior"),
