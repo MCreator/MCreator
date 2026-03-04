@@ -100,7 +100,7 @@ public class GeneratorSelector {
 		));
 		put(GeneratorFlavor.ADDON, List.of(
 			"be_biomes",
-			"bebiometags",
+			"be_biometags",
 			"blocksitems",
 			"entities",
 			"mapcolors",
