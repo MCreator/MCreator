@@ -38,6 +38,7 @@ import java.util.List;
 public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierEntry> {
 
 	private final Workspace workspace;
+	private final JAttributeModifierList.EntryType entryType;
 
 	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
@@ -55,6 +56,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 			List<JAttributeModifierEntry> entryList, JAttributeModifierList.EntryType entryType) {
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
+		this.entryType = entryType;
 
 		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(true));
 		equipmentSlot.setRenderer(new JComboBox<>().getRenderer());
@@ -118,23 +120,34 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	@Override public AttributeModifierEntry getEntry() {
 		AttributeModifierEntry entry = new AttributeModifierEntry();
-		entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();
-		for (int i = 0; i < 4; i++) {
-			entry.armorPieces[i] = armorPieces[i].isSelected();
+		// Do not store unused values for potion entry types
+		if (entryType != JAttributeModifierList.EntryType.POTION) {
+			entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
+			if (entryType == JAttributeModifierList.EntryType.ARMOR) {
+				entry.armorPieces = new boolean[4];
+				for (int i = 0; i < 4; i++) {
+					entry.armorPieces[i] = armorPieces[i].isSelected();
+				}
+			}
 		}
 		return entry;
 	}
 
 	@Override public void setEntry(AttributeModifierEntry e) {
-		equipmentSlot.setSelectedItem(e.equipmentSlot);
 		attribute.setSelectedItem(e.attribute);
 		amount.setValue(e.amount);
 		operation.setSelectedItem(e.operation);
-		for (int i = 0; i < 4; i++) {
-			armorPieces[i].setSelected(e.armorPieces[i]);
+		// Do not load unused values for potion entry types
+		if (entryType != JAttributeModifierList.EntryType.POTION) {
+			equipmentSlot.setSelectedItem(e.equipmentSlot);
+			if (entryType == JAttributeModifierList.EntryType.ARMOR) {
+				for (int i = 0; i < 4; i++) {
+					armorPieces[i].setSelected(e.armorPieces[i]);
+				}
+			}
 		}
 	}
 

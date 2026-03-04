@@ -1022,6 +1022,7 @@ public class TestWorkspaceDataProvider {
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
 							new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+					entry.armorPieces = new boolean[4];
 					for (int i = 0; i < 3; i++) {
 						entry.armorPieces[i] = random.nextBoolean();
 					}
