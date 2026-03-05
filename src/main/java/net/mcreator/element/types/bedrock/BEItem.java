@@ -45,7 +45,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public double useDuration;
 	public int maxDurability;
 	public boolean enableMeleeDamage;
-	public double damageVsEntity;
+	public int damageVsEntity;
 	public boolean hasGlint;
 	public boolean handEquipped;
 	public String rarity;
@@ -56,6 +56,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean allowOffHand;
 	public double fuelDuration;
 	public boolean shouldDespawn;
+	public boolean stackedByData;
 	public MItemBlock blockToPlace;
 	@ModElementReference public List<MItemBlock> blockPlaceableOn;
 	public EntityEntry entityToPlace;

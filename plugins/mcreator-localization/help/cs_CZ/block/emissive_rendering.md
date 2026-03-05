@@ -1,0 +1,1 @@
+Zaškrtněte tuto vlastnost, pokud chcete, aby blok měl svíticí efekt (podobně, jako magma blok).

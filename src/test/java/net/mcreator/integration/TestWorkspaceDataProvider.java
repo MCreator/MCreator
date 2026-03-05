@@ -291,14 +291,14 @@ public class TestWorkspaceDataProvider {
 				throw new RuntimeException(e);
 			}
 
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
-			FileIO.writeBytesToFile(emptyNbtStructure,
-					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test." + workspace.getGeneratorConfiguration().getStructureExtension()));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test1." + workspace.getGeneratorConfiguration().getStructureExtension()));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test2." + workspace.getGeneratorConfiguration().getStructureExtension()));
+			FileIO.writeBytesToFile(emptyNbtStructure, new File(workspace.getFolderManager().getStructuresDir(),
+					"test3." + workspace.getGeneratorConfiguration().getStructureExtension()));
 		}
 
 		if (workspace.getGeneratorStats().hasBaseCoverage("model_java")) {
@@ -1679,7 +1679,7 @@ public class TestWorkspaceDataProvider {
 			beitem.useDuration = 8;
 			beitem.maxDurability = 4;
 			beitem.enableMeleeDamage = !_true;
-			beitem.damageVsEntity = 6.53;
+			beitem.damageVsEntity = 6;
 			beitem.isFood = emptyLists;
 			beitem.foodNutritionalValue = 5;
 			beitem.foodSaturation = 0.82;
@@ -1693,6 +1693,7 @@ public class TestWorkspaceDataProvider {
 			beitem.allowOffHand = _true;
 			beitem.fuelDuration = _true ? 0 : 10;
 			beitem.shouldDespawn = _true;
+			beitem.stackedByData = _true;
 			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 			beitem.animation = getRandomItem(random,
@@ -1706,7 +1707,8 @@ public class TestWorkspaceDataProvider {
 			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocks)).getName());
 			beitem.blockPlaceableOn = new ArrayList<>();
-			beitem.entityToPlace = new EntityEntry(modElement.getWorkspace(), getRandomItem(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
+			beitem.entityToPlace = new EntityEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace())));
 			beitem.entityDispensableOn = new ArrayList<>();
 			beitem.entityPlaceableOn = new ArrayList<>();
 			if (!emptyLists) {
@@ -1736,8 +1738,8 @@ public class TestWorkspaceDataProvider {
 			beblock.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
 			beblock.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
 			beblock.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
-			beblock.renderType = 10;
-			beblock.customModelName = "Normal";
+			beblock.renderType = new int[] {10, 11, 12, 10}[valueIndex];
+			beblock.customModelName = new String[] {"Normal", "Cross model", "Single texture", "Normal"}[valueIndex];
 			beblock.enableCreativeTab = !_true;
 			beblock.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
 			beblock.isHiddenInCommands = _true;
@@ -1754,6 +1756,7 @@ public class TestWorkspaceDataProvider {
 			beblock.lightEmission = 3;
 			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			beblock.generateFeature = _true;
+			beblock.generationShape = getRandomString(random, List.of("uniform", "triangle"));
 			beblock.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
