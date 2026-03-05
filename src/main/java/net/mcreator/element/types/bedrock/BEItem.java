@@ -87,18 +87,18 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public BEItem(ModElement element) {
 		super(element);
 
-		this.rarity = "COMMON";
-		this.movementModifier = 1.0;
-		this.shouldDespawn = true;
-		this.animation = "eat";
-		this.enableCreativeTab = true;
-		this.creativeTab = "MATERIALS";
-		this.enchantmentSlot = "any";
+		rarity = "COMMON";
+		movementModifier = 1.0;
+		shouldDespawn = true;
+		animation = "eat";
+		enableCreativeTab = true;
+		creativeTab = "MATERIALS";
+		enchantmentSlot = "any";
 
-		this.blockPlaceableOn = new ArrayList<>();
-		this.entityDispensableOn = new ArrayList<>();
-		this.entityPlaceableOn = new ArrayList<>();
-		this.diggerEntries = new ArrayList<>();
+		blockPlaceableOn = new ArrayList<>();
+		entityDispensableOn = new ArrayList<>();
+		entityPlaceableOn = new ArrayList<>();
+		diggerEntries = new ArrayList<>();
 
 		localScripts = new ArrayList<>();
 	}
