@@ -30,7 +30,7 @@
       <#if data.stackSize lt 64>
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
-      <#if data.enableMeleeDamage>"minecraft:damage": ${data.damageVsEntity},</#if>
+      <#if data.enableMeleeDamage>"minecraft:damage": ${[data.damageVsEntity, 255]?min},</#if>
       <#if data.isEnchantable>
       "minecraft:enchantable": {
         "slot": "${generator.map(data.enchantmentSlot, "equipmentslots")}",
