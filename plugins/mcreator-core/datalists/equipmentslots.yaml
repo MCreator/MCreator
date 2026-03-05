@@ -1,48 +1,11 @@
-- any:
-  type: both
-- mainhand:
-  type: java
-- offhand:
-  type: java
-- hand:
-  type: java
-- feet:
-  type: both
-- legs:
-  type: both
-- chest:
-  type: both
-- head:
-  type: both
-- armor:
-  type: java
-- body:
-  type: java
-- saddle:
-  type: java
-- axe:
-  type: bedrock
-- bow:
-  type: bedrock
-- cosmetic_head:
-  type: bedrock
-- crossbow:
-  type: bedrock
-- elytra:
-  type: bedrock
-- fishing_rod:
-  type: bedrock
-- flintsteel:
-  type: bedrock
-- how:
-  type: bedrock
-- pickaxe:
-  type: bedrock
-- shears:
-  type: bedrock
-- shield:
-  type: bedrock
-- shovel:
-  type: bedrock
-- sword:
-  type: bedrock
+- any
+- mainhand
+- offhand
+- hand
+- feet
+- legs
+- chest
+- head
+- armor
+- body
+- saddle

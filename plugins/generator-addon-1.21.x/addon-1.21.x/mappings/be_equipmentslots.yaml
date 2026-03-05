@@ -1,9 +1,9 @@
 _default: all
 any: all
-feet: armor_feet
-chest: armor_torso
-head: armor_head
-legs: armor_legs
+armor_head: armor_head
+armor_torso: armor_torso
+armor_legs: armor_legs
+armor_feet: armor_feet
 axe: axe
 bow: bow
 cosmetic_head: cosmetic_head
