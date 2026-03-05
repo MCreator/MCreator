@@ -1,5 +1,5 @@
 _default: all
-any: all
+all: all
 armor_head: armor_head
 armor_torso: armor_torso
 armor_legs: armor_legs

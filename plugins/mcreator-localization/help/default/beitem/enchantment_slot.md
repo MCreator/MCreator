@@ -1,3 +1,3 @@
 This determines which enchantments this item can receive.
 
-Keep `none` to have the regular item behavior.
+For example, selecting `Armor Torso` would allow the item to receive the `Thorns` enchantment.
