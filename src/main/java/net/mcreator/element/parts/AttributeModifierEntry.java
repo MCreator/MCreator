@@ -20,8 +20,9 @@
 package net.mcreator.element.parts;
 
 public class AttributeModifierEntry {
-	public String equipmentSlot = "any";
+	public String equipmentSlot;
 	public AttributeEntry attribute;
 	public double amount;
 	public String operation;
+	public boolean[] armorPieces;
 }

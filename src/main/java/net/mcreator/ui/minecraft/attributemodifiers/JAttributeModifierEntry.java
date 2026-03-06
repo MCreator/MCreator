@@ -32,30 +32,39 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierEntry> {
 
 	private final Workspace workspace;
+	private final JAttributeModifierList.EntryType entryType;
 
 	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
 	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.001));
 	private final JComboBox<String> operation = new JComboBox<>(
 			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+	private final JCheckBox[] armorPieces = new JCheckBox[]{
+		L10N.checkbox("elementgui.common.attribute_modifier.helmet"),
+		L10N.checkbox("elementgui.common.attribute_modifier.chestplate"),
+		L10N.checkbox("elementgui.common.attribute_modifier.leggings"),
+		L10N.checkbox("elementgui.common.attribute_modifier.boots")
+	};
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JAttributeModifierEntry> entryList, boolean isPotionEffectEntry) {
+			List<JAttributeModifierEntry> entryList, JAttributeModifierList.EntryType entryType) {
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
+		this.entryType = entryType;
 
-		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
+		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(true));
 		equipmentSlot.setRenderer(new JComboBox<>().getRenderer());
 
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
 		attribute.setRenderer(new JComboBox<>().getRenderer());
 
-		if (!isPotionEffectEntry) {
+		if (entryType != JAttributeModifierList.EntryType.POTION) {
 			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/equipment_slot"),
 					L10N.label("elementgui.common.attribute_modifier.equipment_slot")));
 			line.add(equipmentSlot);
@@ -65,7 +74,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 				L10N.label("elementgui.common.attribute_modifier.attribute")));
 		line.add(attribute);
 
-		if (isPotionEffectEntry) {
+		if (entryType == JAttributeModifierList.EntryType.POTION) {
 			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount_per_level"),
 					L10N.label("elementgui.common.attribute_modifier.amount_per_level")));
 		} else {
@@ -78,10 +87,24 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 				L10N.label("elementgui.common.attribute_modifier.operation")));
 		line.add(operation);
 
+		if (entryType == JAttributeModifierList.EntryType.ARMOR) {
+			JPanel armorLine = new JPanel(new FlowLayout(FlowLayout.LEFT));
+			armorLine.setOpaque(false);
+
+			armorLine.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/armor_pieces"),
+					L10N.label("elementgui.common.attribute_modifier.apply_to")));
+			for (var armorPiece : armorPieces) {
+				armorLine.add(armorPiece);
+				armorPiece.setSelected(true);
+			}
+
+			add(armorLine);
+		}
+
 	}
 
 	@Override public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots());
+		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots(true));
 		ComboBoxUtil.updateComboBoxContents(attribute, ElementUtil.loadAllAttributes(workspace));
 	}
 
@@ -90,22 +113,42 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		attribute.setEnabled(enabled);
 		amount.setEnabled(enabled);
 		operation.setEnabled(enabled);
+		for (var armorPiece : armorPieces) {
+			armorPiece.setEnabled(enabled);
+		}
 	}
 
 	@Override public AttributeModifierEntry getEntry() {
 		AttributeModifierEntry entry = new AttributeModifierEntry();
-		entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();
+		// Do not store unused values for potion entry types
+		if (entryType != JAttributeModifierList.EntryType.POTION) {
+			entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
+			if (entryType == JAttributeModifierList.EntryType.ARMOR) {
+				entry.armorPieces = new boolean[4];
+				for (int i = 0; i < 4; i++) {
+					entry.armorPieces[i] = armorPieces[i].isSelected();
+				}
+			}
+		}
 		return entry;
 	}
 
 	@Override public void setEntry(AttributeModifierEntry e) {
-		equipmentSlot.setSelectedItem(e.equipmentSlot);
 		attribute.setSelectedItem(e.attribute);
 		amount.setValue(e.amount);
 		operation.setSelectedItem(e.operation);
+		// Do not load unused values for potion entry types
+		if (entryType != JAttributeModifierList.EntryType.POTION) {
+			equipmentSlot.setSelectedItem(e.equipmentSlot);
+			if (entryType == JAttributeModifierList.EntryType.ARMOR) {
+				for (int i = 0; i < 4; i++) {
+					armorPieces[i].setSelected(e.armorPieces[i]);
+				}
+			}
+		}
 	}
 
 }
