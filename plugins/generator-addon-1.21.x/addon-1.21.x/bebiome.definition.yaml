@@ -9,3 +9,8 @@ templates:
     writer: json
     name: "@RESROOT/fogs/@registryname.json"
     condition: hasFog()
+
+global_templates:
+  - template: resourcepack/sounds.json.ftl
+    writer: json
+    name: "@RESROOT/sounds.json"
