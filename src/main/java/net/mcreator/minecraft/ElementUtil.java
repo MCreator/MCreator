@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.workspace.Workspace;
@@ -214,7 +215,8 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
 		List<DataListEntry> biomes = getCustomElementsOfType(workspace, ModElementType.BIOME);
-		biomes.addAll(DataListLoader.loadDataList("biomes"));
+		boolean bedrockBiome = workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON;
+		biomes.addAll(DataListLoader.loadDataList(bedrockBiome ? "be_biomes" : "biomes"));
 		biomes.sort(DataListEntry.getComparator(workspace, biomes));
 		return biomes;
 	}
