@@ -24,6 +24,8 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.workspace.Workspace;
@@ -417,10 +419,12 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("gameevents");
 	}
 
-	public static List<DataListEntry> loadAllEquipmentSlots() {
-		return DataListLoader.loadDataList("equipmentslots");
+	public static List<DataListEntry> loadAllEquipmentSlots(@Nonnull Workspace workspace) {
+		if (workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON)
+			return DataListLoader.loadDataList("be_equipmentslots");
+		else
+			return DataListLoader.loadDataList("equipmentslots");
 	}
-
 	public static String[] getDataListAsStringArray(String dataList) {
 		return DataListLoader.loadDataList(dataList).stream().map(DataListEntry::getName).toArray(String[]::new);
 	}
