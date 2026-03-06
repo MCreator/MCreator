@@ -5,10 +5,20 @@
       <#if sound.getSubtitle()?has_content>"subtitle": "subtitles.${sound.getName()}",</#if>
         "sounds": [
           <#list sound.getFiles() as file>
+          <#if sound.isInline()>
+          "sounds/${file}"
+          <#else>
             {
-              "name": "sounds/${file}",
-              "volume": 1
-            }<#sep>,
+              "name": "sounds/${file}"
+              <#if sound.getCategory() == "record" || sound.getCategory() == "music">,
+              "stream": true</#if>
+              <#if sound.getVolume() != 1>,
+              "volume": ${sound.getVolume()}</#if>
+              <#if sound.getPitch() != 1>,
+              "pitch": ${sound.getPitch()}</#if>
+              <#if sound.getWeight() != 1>,
+              "weight": ${sound.getWeight()}</#if>
+            }</#if><#sep>,
           </#list>
         ]
     }<#sep>,

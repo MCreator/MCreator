@@ -7,10 +7,8 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.SoundElement;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +24,15 @@ public class JSoundsEntriesList extends JSimpleEntriesList<JSoundListEntry, Soun
 
 	@Override protected JSoundListEntry newEntry(JPanel parent, List<JSoundListEntry> entryList, boolean userAction) {
 		return new JSoundListEntry(mcreator, parent, entryList);
+	}
+
+	public boolean areFilesValid() {
+		for (JSoundListEntry entry : entryList) {
+			if (entry.getFileListField().isEmpty())
+				return false;
+		}
+
+		return true;
 	}
 
 	public List<SingleFileField> getFiles() {

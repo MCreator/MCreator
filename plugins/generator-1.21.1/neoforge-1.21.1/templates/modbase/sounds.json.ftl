@@ -8,8 +8,9 @@
     "${modid}:${file}"
     <#else>
     {
-      "name": "${modid}:${file}",
-      "stream": <#if sound.getCategory() == "record" || sound.getCategory() == "music">true<#else>false</#if>
+      "name": "${modid}:${file}"
+      <#if sound.getCategory() == "record" || sound.getCategory() == "music">,
+      "stream": true</#if>
       <#if sound.getVolume() != 1>,
       "volume": ${sound.getVolume()}</#if>
       <#if sound.getPitch() != 1>,
