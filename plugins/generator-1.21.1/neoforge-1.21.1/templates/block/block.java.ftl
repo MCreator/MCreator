@@ -158,7 +158,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		<#if data.jumpFactor != 1.0>
 			.jumpFactor(${data.jumpFactor}f)
 		</#if>
-		<#if data.hasTransparency || (data.blockBase?has_content && data.blockBase == "Leaves")>
+		<#if (data.hasTransparency || data.blockBase! == "Leaves") && !data.isNotColidable> <#-- No collision implies no occlusion -->
 			.noOcclusion()
 		</#if>
 		<#if data.tickRandomly>

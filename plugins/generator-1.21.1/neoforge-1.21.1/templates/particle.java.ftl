@@ -124,7 +124,7 @@ package ${package}.client.particle;
 			"angularVelocity": "this.angularVelocity",
 			"angularAcceleration": "this.angularAcceleration",
 			"age": "this.age + partialTicks"
-		}/>;
+		}/>
 		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
 		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
 		Quaternionf flippedTilt = new Quaternionf(tilt).mul(new Quaternionf().rotateY((float) Math.PI));
