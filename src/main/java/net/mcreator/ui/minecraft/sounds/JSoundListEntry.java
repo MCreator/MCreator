@@ -40,7 +40,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	private final JSpinner volume = new JSpinner(new SpinnerNumberModel(1.0, 0.1, 128000.0, 0.1));
 	private final JSpinner pitch = new JSpinner(new SpinnerNumberModel(1.0, 0.1, 128000.0, 0.1));
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(1, 1, 128000, 1));
-	private final JCheckBox preload = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox preload = L10N.checkbox("dialog.sounds.preload");
 	private final JSpinner attenuationDistance = new JSpinner(new SpinnerNumberModel(16, 1, 128000, 1));
 	private final SingleFileField fileListField;
 
@@ -49,6 +49,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 
 		this.mcreator = mcreator;
 		this.fileListField = new SingleFileField(mcreator);
+		preload.setOpaque(false);
 
 		line.add(L10N.label("dialog.sounds.file"));
 		line.add(fileListField);
@@ -65,7 +66,6 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		line.add(L10N.label("dialog.sounds.weight"));
 		line.add(weight);
 
-		line.add(L10N.label("dialog.sounds.preload"));
 		line.add(preload);
 
 		line.add(L10N.label("dialog.sounds.attenuation_distance"));

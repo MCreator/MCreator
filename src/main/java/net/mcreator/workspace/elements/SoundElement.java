@@ -158,8 +158,8 @@ public class SoundElement implements IElement {
 		}
 
 		public boolean isInline() {
-			return volume == 1 && pitch == 1 && preload && attenuationDistance == 16 && weight == 1 && category.equals(
-					"neutral");
+			return volume == 1 && pitch == 1 && preload && attenuationDistance == 16 && weight == 1 && !category.equals(
+					"record") && !category.equals("music");
 		}
 
 		@Override public String toString() {
