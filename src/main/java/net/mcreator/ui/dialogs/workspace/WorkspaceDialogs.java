@@ -32,6 +32,8 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -60,10 +62,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.*;
@@ -421,7 +420,8 @@ public class WorkspaceDialogs {
 					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
-			descriptionSettings.add(L10N.label("dialog.workspace_settings.version"));
+			descriptionSettings.add(PanelUtils.gridElements(1, 2, 0, 0,
+					HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/mod_version"), L10N.label("dialog.workspace_settings.version"))));
 			descriptionSettings.add(version);
 			descriptionSettings.add(L10N.label("dialog.workspace_settings.description"));
 			descriptionSettings.add(description);
