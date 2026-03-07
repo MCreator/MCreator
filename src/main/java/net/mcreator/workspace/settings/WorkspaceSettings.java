@@ -63,7 +63,7 @@ import java.util.stream.Stream;
 	private transient Workspace workspace; // we should never serialize this!!
 
 	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
-	private static final Pattern semVerPattern = Pattern.compile("^(0|[1-9]\\d*)(?:\\.(0|[1-9]\\d*|\\d*[A-Za-z-][0-9A-Za-z-]*))*(?:\\+([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$");
+	private static final Pattern semVerPattern = Pattern.compile("^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
 	public WorkspaceSettings(WorkspaceSettings other) {
 		this.modid = other.modid;
