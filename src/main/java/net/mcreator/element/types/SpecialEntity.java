@@ -23,6 +23,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -52,10 +53,14 @@ import java.util.List;
 
 	public String entityType;
 	public String name;
+	public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@TextureReference(TextureType.ENTITY) public TextureHolder entityTexture;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+
+	public Procedure onTickUpdate;
+	public Procedure onPlayerCollidesWith;
 
 	private SpecialEntity() {
 		this(null);
@@ -63,13 +68,15 @@ import java.util.List;
 
 	public SpecialEntity(ModElement element) {
 		super(element);
+
+		this.rarity = "COMMON";
 	}
 
 	@Override public void finalizeModElementGeneration() {
 		try {
 			File entityTextureLocation = new File(
 					getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-					"entity/" + ("Boat".equals(entityType) ? "boat/" : "chest_boat/")
+					"entity/" + (isBoatChestVariant() ? "chest_boat/" : "boat/")
 							+ getModElement().getRegistryName() + ".png");
 			FileIO.copyFile(entityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 		} catch (Exception e) {
@@ -109,5 +116,13 @@ import java.util.List;
 
 	@Override public List<MCItem> getCreativeTabItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
+	}
+
+	public boolean isBoatChestVariant() {
+		return "ChestBoat".equals(entityType) || "ChestRaft".equals(entityType);
+	}
+
+	public boolean isAnyRaft() {
+		return "Raft".equals(entityType) || "ChestRaft".equals(entityType);
 	}
 }

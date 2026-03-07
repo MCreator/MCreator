@@ -19,13 +19,13 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.SpecialEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
@@ -33,6 +33,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -53,7 +55,9 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	private final JComboBox<String> entityType = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("Boat", "elementgui.special_entity.entity_type.boat"),
-			Map.entry("ChestBoat", "elementgui.special_entity.entity_type.chest_boat")
+			Map.entry("ChestBoat", "elementgui.special_entity.entity_type.chest_boat"),
+			Map.entry("Raft", "elementgui.special_entity.entity_type.raft"),
+			Map.entry("ChestRaft", "elementgui.special_entity.entity_type.chest_raft")
 			//@formatter:on
 	);
 	private final VTextField name = new VTextField(28).requireValue("elementgui.common.error_entity_needs_name")
@@ -65,7 +69,18 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32).requireValue(
 			"elementgui.special_entity.error_entity_needs_item_texture");
 
+	private final TranslatedComboBox rarity = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("COMMON", "elementgui.common.rarity_common"),
+			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
+			Map.entry("RARE", "elementgui.common.rarity_rare"),
+			Map.entry("EPIC", "elementgui.common.rarity_epic")
+			//@formatter:on
+	);
 	private final TabListField creativeTabs = new TabListField(mcreator);
+
+	private ProcedureSelector onTickUpdate;
+	private ProcedureSelector onPlayerCollidesWith;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -79,7 +94,14 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		entityTexture.setAddPNGExtension(false);
 		itemTexture.setOpaque(false);
 
-		JPanel properties = new JPanel(new GridLayout(5, 2, 5, 2));
+		onTickUpdate = new ProcedureSelector(this.withEntry("entity/on_tick_update"), mcreator,
+				L10N.t("elementgui.living_entity.event_mob_tick_update"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		onPlayerCollidesWith = new ProcedureSelector(this.withEntry("entity/when_player_collides"), mcreator,
+				L10N.t("elementgui.living_entity.event_player_collides_with"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
+
+		JPanel properties = new JPanel(new GridLayout(6, 2, 5, 2));
 		properties.setOpaque(false);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("special_entity/entity_type"),
@@ -98,6 +120,10 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 				L10N.label("elementgui.special_entity.item_texture")));
 		properties.add(PanelUtils.centerInPanel(itemTexture));
 
+		properties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		properties.add(rarity);
+
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
 		properties.add(creativeTabs);
@@ -108,22 +134,46 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(name);
 
-		addPage(PanelUtils.totalCenterInPanel(properties)).validate(page1group);
+		JPanel procedureTriggers = new JPanel(new GridLayout(1, 2, 5, 5));
+		procedureTriggers.setOpaque(false);
+		procedureTriggers.add(onTickUpdate);
+		procedureTriggers.add(onPlayerCollidesWith);
+
+		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(properties)).validate(
+				page1group);
+		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(procedureTriggers));
 
 		if (!isEditingMode()) {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
 
 			String readableName = StringUtils.machineToReadableName(modElement.getName());
-			name.setText(readableName.endsWith("Chest Boat") ?
-					readableName.substring(0, readableName.length() - 10) + "Boat with Chest" : readableName);
-			if (readableName.endsWith("Chest Boat"))
+			if (readableName.endsWith("Chest Boat")) {
+				name.setText(readableName.substring(0, readableName.length() - 10) + "Boat with Chest");
+			} else if (readableName.endsWith("Chest Raft")) {
+				name.setText(readableName.substring(0, readableName.length() - 10) + "Raft with Chest");
+			} else {
+				name.setText(readableName);
+			}
+			// Automatically set the "correct" entity type in some cases
+			if (readableName.endsWith("Chest Boat")) {
 				entityType.setSelectedItem("ChestBoat");
+			} else if (readableName.endsWith("Chest Raft")) {
+				entityType.setSelectedItem("ChestRaft");
+			} else if (readableName.endsWith("Raft")) {
+				entityType.setSelectedItem("Raft");
+			}
 		}
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		entityTexture.reload();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onTickUpdate.refreshListKeepSelected(context);
+		onPlayerCollidesWith.refreshListKeepSelected(context);
 	}
 
 	@Override protected void openInEditingMode(SpecialEntity entity) {
@@ -131,7 +181,10 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		name.setText(entity.name);
 		entityTexture.setTextureFromTextureName(entity.entityTexture.getRawTextureName());
 		itemTexture.setTexture(entity.itemTexture);
+		rarity.setSelectedItem(entity.rarity);
 		creativeTabs.setListElements(entity.creativeTabs);
+		onTickUpdate.setSelectedProcedure(entity.onTickUpdate);
+		onPlayerCollidesWith.setSelectedProcedure(entity.onPlayerCollidesWith);
 	}
 
 	@Override public SpecialEntity getElementFromGUI() {
@@ -140,7 +193,10 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 		entity.name = name.getText();
 		entity.entityTexture = new TextureHolder(mcreator.getWorkspace(), entityTexture.getTextureName());
 		entity.itemTexture = itemTexture.getTextureHolder();
+		entity.rarity = rarity.getSelectedItem();
 		entity.creativeTabs = creativeTabs.getListElements();
+		entity.onTickUpdate = onTickUpdate.getSelectedProcedure();
+		entity.onPlayerCollidesWith = onPlayerCollidesWith.getSelectedProcedure();
 		return entity;
 	}
 
