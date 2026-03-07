@@ -420,8 +420,7 @@ public class WorkspaceDialogs {
 					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
-			descriptionSettings.add(PanelUtils.gridElements(1, 2, 0, 0,
-					HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/mod_version"), L10N.label("dialog.workspace_settings.version"))));
+			descriptionSettings.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/mod_version"), L10N.label("dialog.workspace_settings.version")));
 			descriptionSettings.add(version);
 			descriptionSettings.add(L10N.label("dialog.workspace_settings.description"));
 			descriptionSettings.add(description);
