@@ -75,14 +75,14 @@ package ${package}.client.renderer.block;
 			BlockState state = blockEntity.getBlockState();
 			<#if data.rotationMode != 5>
 			Direction facing = state.getValue(${name}Block.FACING);
-            switch (facing) {
+			switch (facing) {
 				case NORTH -> {}
 				case EAST -> poseStack.mulPose(Axis.YP.rotationDegrees(90));
 				case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(-90));
 				case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(180));
-            	<#if data.rotationMode == 2 || data.rotationMode == 4>
-            		case UP -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
-            		case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(-90));
+				<#if data.rotationMode == 2 || data.rotationMode == 4>
+					case UP -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+					case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(-90));
 				</#if>
 			}
 			<#if data.enablePitch>
@@ -95,7 +95,7 @@ package ${package}.client.renderer.block;
 			}
 			</#if>
 			<#else>
-            switch (state.getValue(${name}Block.AXIS)) {
+			switch (state.getValue(${name}Block.AXIS)) {
 				case X -> poseStack.mulPose(Axis.ZN.rotationDegrees(90));
 				case Y -> {}
 				case Z -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
