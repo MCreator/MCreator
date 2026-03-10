@@ -54,7 +54,7 @@ package ${package}.world.features.treedecorators;
 
     @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "TreeDecorator.Context")
         .replace("this.probability", "0.2F")
-        .replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(randomsource.nextInt(3))).setValue(CocoaBlock.FACING,direction)", "oriented(" + mappedBlockToBlockStateCode(data.treeFruits) + ", direction1)")
+        .replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,randomsource.nextInt(3)).setValue(CocoaBlock.FACING,direction)", "oriented(" + mappedBlockToBlockStateCode(data.treeFruits) + ", direction1)")
         .replace("p_226028_", "context")}
 
     @SuppressWarnings("deprecation") private static BlockState oriented(BlockState blockstate, Direction direction) {
