@@ -1700,7 +1700,7 @@ public class TestWorkspaceDataProvider {
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush",
 							"spyglass" });
 			beitem.isEnchantable = _true;
-			beitem.enchantmentSlot = getRandomItem(random, ElementUtil.loadAllBEEquipmentSlots()).toString();
+			beitem.enchantmentSlot = getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())).toString();
 			beitem.enchantmentValue = 10;
 			beitem.diggerUseEfficiency = _true;
 			beitem.diggerEntries = new ArrayList<>();
