@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SoundElement implements IElement {
+	private static final Biome.ClimatePoint DefaultBEAttenuationDistance = new Biome.ClimatePoint(0, 0);
 
 	private final String name;
 	private List<Sound> files;
@@ -38,7 +39,7 @@ public class SoundElement implements IElement {
 	private Biome.ClimatePoint beAttenuationDistance;
 
 	public SoundElement(String name, List<Sound> files, @Nullable String subtitle) {
-		this(name, null, null, files, subtitle);
+		this(name, "neutral", DefaultBEAttenuationDistance, files, subtitle);
 	}
 
 	public SoundElement(String name, String beCategory, Biome.ClimatePoint beAttenuationDistance, List<Sound> files,
@@ -231,17 +232,28 @@ public class SoundElement implements IElement {
 			}
 
 			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(),
-					getObjectName(jsonObject, "category"), getObjectName(jsonObject, "minAtDist") == null ?
-					null :
-					new Biome.ClimatePoint(Float.parseFloat(getObjectName(jsonObject, "minAtDist")),
-							Float.parseFloat(getObjectName(jsonObject, "minAtDist"))), files,
+					getObjectName(jsonObject, "beCategory", "neutral"),
+					jsonObject.getAsJsonObject("beAttenuationDistance") == null ?
+							DefaultBEAttenuationDistance :
+							new Biome.ClimatePoint(
+									getFloatValue(jsonObject.getAsJsonObject("beAttenuationDistance"), "min"),
+
+									getFloatValue(jsonObject.getAsJsonObject("beAttenuationDistance"), "max")), files,
 					getObjectName(jsonObject, "subtitle"));
 		}
 
-		@Nullable public String getObjectName(JsonObject jsonObject, String name) {
+		private Float getFloatValue(JsonObject jsonObject, String name) {
+			return jsonObject.getAsJsonPrimitive(name) != null ? jsonObject.getAsJsonPrimitive(name).getAsFloat() : 0;
+		}
+
+		private String getObjectName(JsonObject jsonObject, String name) {
+			return getObjectName(jsonObject, name, null);
+		}
+
+		private String getObjectName(JsonObject jsonObject, String name, String defaultValue) {
 			return jsonObject.getAsJsonPrimitive(name) != null ?
 					jsonObject.getAsJsonPrimitive(name).getAsString() :
-					null;
+					defaultValue;
 		}
 	}
 
