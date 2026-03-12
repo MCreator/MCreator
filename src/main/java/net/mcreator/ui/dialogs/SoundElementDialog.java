@@ -25,6 +25,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -105,14 +106,22 @@ public class SoundElementDialog {
 								L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
 						return element;
 					} else {
-						soundsEntries.getEntries().forEach(sound -> sound.setName(
-								FilenameUtilsPatched.removeExtension(RegistryNameFixer.fix(sound.getName()))));
+						List<SoundElement.Sound> sounds = soundsEntries.getEntries();
+						List<SingleFileField> entriesFiles = soundsEntries.getFiles();
 
-						soundsEntries.getFiles().forEach(field -> {
+						for (int i = 0; i < entriesFiles.size(); i++) {
+							SingleFileField field = entriesFiles.get(i);
+
+							if (!field.isEnabled())
+								continue;
+
 							File file = field.getEntry();
 							FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(),
 									RegistryNameFixer.fix(file.getName())));
-						});
+
+							sounds.get(i).setName(FilenameUtilsPatched.removeExtension(
+									RegistryNameFixer.fix(sounds.get(i).getName())));
+						}
 
 						String registryname = RegistryNameFixer.fix(soundName.getText());
 
@@ -120,11 +129,11 @@ public class SoundElementDialog {
 
 						if (element != null) {
 							element.setSubtitle(subtitle.getText());
-							element.setFiles(soundsEntries.getEntries());
+							element.setFiles(sounds);
 							return element;
 						}
 
-						return new SoundElement(registryname, soundsEntries.getEntries(), subtitle.getText());
+						return new SoundElement(registryname, sounds, subtitle.getText());
 					}
 				}
 			} else {
@@ -200,14 +209,22 @@ public class SoundElementDialog {
 								L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
 						return element;
 					} else {
-						soundsEntries.getEntries().forEach(sound -> sound.setName(
-								FilenameUtilsPatched.removeExtension(RegistryNameFixer.fix(sound.getName()))));
+						List<SoundElement.Sound> sounds = soundsEntries.getEntries();
+						List<SingleFileField> entriesFiles = soundsEntries.getFiles();
 
-						soundsEntries.getFiles().forEach(field -> {
+						for (int i = 0; i < entriesFiles.size(); i++) {
+							SingleFileField field = entriesFiles.get(i);
+
+							if (!field.isEnabled())
+								continue;
+
 							File file = field.getEntry();
 							FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(),
 									RegistryNameFixer.fix(file.getName())));
-						});
+
+							sounds.get(i).setName(FilenameUtilsPatched.removeExtension(
+									RegistryNameFixer.fix(sounds.get(i).getName())));
+						}
 
 						String registryname = RegistryNameFixer.fix(soundName.getText());
 
@@ -218,13 +235,13 @@ public class SoundElementDialog {
 							element.setBEAttenuationDistance(
 									new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()));
 							element.setSubtitle(subtitle.getText());
-							element.setFiles(soundsEntries.getEntries());
+							element.setFiles(sounds);
 							return element;
 						}
 
 						return new SoundElement(registryname, (String) soundCategory.getSelectedItem(),
 								new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()),
-								soundsEntries.getEntries(), subtitle.getText());
+								sounds, subtitle.getText());
 					}
 				}
 			} else {
