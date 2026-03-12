@@ -115,7 +115,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		entry.setCategory((String) soundCategory.getSelectedItem());
 		entry.setVolume((double) volume.getValue());
 		entry.setPitch((double) pitch.getValue());
-		entry.setWeight((int) attenuationDistance.getValue());
+		entry.setWeight((int) weight.getValue());
 		if (!isForBedrock) {
 			entry.setPreload(preload.isSelected());
 			entry.setAttenuationDistance((int) attenuationDistance.getValue());
@@ -132,7 +132,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		soundCategory.setSelectedItem(e.getCategory());
 		volume.setValue((double) e.getVolume());
 		pitch.setValue((double) e.getPitch());
-		weight.setValue(e.getAttenuationDistance());
+		weight.setValue(e.getWeight());
 		if (!isForBedrock) {
 			preload.setSelected(e.isPreload());
 			attenuationDistance.setValue(e.getAttenuationDistance());
