@@ -47,8 +47,8 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	private final JSpinner attenuationDistance = new JSpinner(new SpinnerNumberModel(16, 1, 128000, 1));
 	private final SingleFileField fileListField;
 
-	private final JCheckBox is3D = L10N.checkbox("dialog.sounds.preload");
-	private final JCheckBox interruptible = L10N.checkbox("dialog.sounds.preload");
+	private final JCheckBox is3D = L10N.checkbox("dialog.sounds.is3D");
+	private final JCheckBox interruptible = L10N.checkbox("dialog.sounds.interruptible");
 
 	public JSoundListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JSoundListEntry> entryList,
 			boolean isForBedrock) {
