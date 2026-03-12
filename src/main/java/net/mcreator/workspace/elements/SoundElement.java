@@ -20,6 +20,7 @@ package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import net.mcreator.element.types.Biome;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
@@ -30,15 +31,23 @@ import java.util.Locale;
 public class SoundElement implements IElement {
 
 	private final String name;
-
 	private List<Sound> files;
-
 	@Nullable private String subtitle;
 
+	private String beCategory;
+	private Biome.ClimatePoint beAttenuationDistance;
+
 	public SoundElement(String name, List<Sound> files, @Nullable String subtitle) {
+		this(name, null, null, files, subtitle);
+	}
+
+	public SoundElement(String name, String beCategory, Biome.ClimatePoint beAttenuationDistance, List<Sound> files,
+			@Nullable String subtitle) {
 		this.name = name;
 		this.files = files;
 		this.subtitle = subtitle;
+		this.beCategory = beCategory;
+		this.beAttenuationDistance = beAttenuationDistance;
 	}
 
 	@Override public String toString() {
@@ -77,6 +86,22 @@ public class SoundElement implements IElement {
 		this.subtitle = subtitle;
 	}
 
+	public String getBECategory() {
+		return beCategory;
+	}
+
+	public void setBECategory(String beCategory) {
+		this.beCategory = beCategory;
+	}
+
+	public Biome.ClimatePoint getBEAttenuationDistance() {
+		return beAttenuationDistance;
+	}
+
+	public void setBEAttenuationDistance(Biome.ClimatePoint beAttenuationDistance) {
+		this.beAttenuationDistance = beAttenuationDistance;
+	}
+
 	public static class Sound {
 		private String name;
 		private String category;
@@ -86,12 +111,15 @@ public class SoundElement implements IElement {
 		private boolean preload;
 		private int attenuationDistance;
 
+		private boolean beIs3D;
+		private boolean beInterruptible;
+
 		public Sound(String name) {
-			this(name, 1f, 1f, 1, false, 16, "neutral");
+			this(name, 1f, 1f, 1, false, 16, "neutral", true, true);
 		}
 
 		public Sound(String name, float volume, float pitch, int weight, boolean preload, int attenuationDistance,
-				String category) {
+				String category, boolean beIs3D, boolean beInterruptible) {
 			this.name = name;
 			this.volume = volume;
 			this.pitch = pitch;
@@ -99,6 +127,12 @@ public class SoundElement implements IElement {
 			this.preload = preload;
 			this.attenuationDistance = attenuationDistance;
 			this.category = category;
+			this.beIs3D = beIs3D;
+			this.beInterruptible = beInterruptible;
+		}
+
+		public Sound(String name, float volume, float pitch, int weight, String category) {
+			this(name, volume, pitch, weight, false, 16, category, true, true);
 		}
 
 		public String getName() {
@@ -157,9 +191,25 @@ public class SoundElement implements IElement {
 			this.preload = preload;
 		}
 
+		public boolean isBEIs3D() {
+			return beIs3D;
+		}
+
+		public void setBEIs3D(boolean beIs3D) {
+			this.beIs3D = beIs3D;
+		}
+
+		public boolean isBEInterruptible() {
+			return beInterruptible;
+		}
+
+		public void setBEInterruptible(boolean beInterruptible) {
+			this.beInterruptible = beInterruptible;
+		}
+
 		public boolean isInline() {
-			return volume == 1 && pitch == 1 && preload && attenuationDistance == 16 && weight == 1 && !category.equals(
-					"record") && !category.equals("music");
+			return volume == 1 && pitch == 1 && !preload && attenuationDistance == 16 && weight == 1
+					&& !category.equals("record") && !category.equals("music") && beIs3D && beInterruptible;
 		}
 
 		@Override public String toString() {
@@ -180,10 +230,18 @@ public class SoundElement implements IElement {
 				files = new ArrayList<>();
 			}
 
-			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(), files,
-					jsonObject.getAsJsonPrimitive("subtitle") != null ?
-							jsonObject.getAsJsonPrimitive("subtitle").getAsString() :
-							null);
+			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(),
+					getObjectName(jsonObject, "category"), getObjectName(jsonObject, "minAtDist") == null ?
+					null :
+					new Biome.ClimatePoint(Float.parseFloat(getObjectName(jsonObject, "minAtDist")),
+							Float.parseFloat(getObjectName(jsonObject, "minAtDist"))), files,
+					getObjectName(jsonObject, "subtitle"));
+		}
+
+		@Nullable public String getObjectName(JsonObject jsonObject, String name) {
+			return jsonObject.getAsJsonPrimitive(name) != null ?
+					jsonObject.getAsJsonPrimitive(name).getAsString() :
+					null;
 		}
 	}
 

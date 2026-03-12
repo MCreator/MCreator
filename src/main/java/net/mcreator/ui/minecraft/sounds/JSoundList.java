@@ -4,6 +4,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.SoundElement;
 
@@ -12,9 +13,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JSoundsEntriesList extends JSimpleEntriesList<JSoundListEntry, SoundElement.Sound> {
-	public JSoundsEntriesList(MCreator mcreator) {
-		super(mcreator, null);
+public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement.Sound> {
+	private final boolean isForBedrock;
+
+	public JSoundList(MCreator mcreator, IHelpContext gui, boolean isForBedrock) {
+		super(mcreator, gui);
+
+		this.isForBedrock = isForBedrock;
 
 		add.setText(L10N.t("dialog.sounds.add_entry"));
 
@@ -22,8 +27,12 @@ public class JSoundsEntriesList extends JSimpleEntriesList<JSoundListEntry, Soun
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.2)));
 	}
 
+	public JSoundList(MCreator mcreator, IHelpContext gui) {
+		this(mcreator, gui, false);
+	}
+
 	@Override protected JSoundListEntry newEntry(JPanel parent, List<JSoundListEntry> entryList, boolean userAction) {
-		return new JSoundListEntry(mcreator, parent, entryList);
+		return new JSoundListEntry(mcreator, gui, parent, entryList, isForBedrock);
 	}
 
 	public boolean areFilesValid() {

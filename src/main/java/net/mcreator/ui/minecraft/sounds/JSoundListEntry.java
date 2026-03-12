@@ -22,18 +22,21 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.SoundElement;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 
 	private final MCreator mcreator;
+	private final boolean isForBedrock;
 
 	private final JComboBox<String> soundCategory = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("soundcategories"));
@@ -44,10 +47,15 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	private final JSpinner attenuationDistance = new JSpinner(new SpinnerNumberModel(16, 1, 128000, 1));
 	private final SingleFileField fileListField;
 
-	public JSoundListEntry(MCreator mcreator, JPanel parent, List<JSoundListEntry> entryList) {
+	private final JCheckBox is3D = L10N.checkbox("dialog.sounds.preload");
+	private final JCheckBox interruptible = L10N.checkbox("dialog.sounds.preload");
+
+	public JSoundListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JSoundListEntry> entryList,
+			boolean isForBedrock) {
 		super(parent, entryList);
 
 		this.mcreator = mcreator;
+		this.isForBedrock = isForBedrock;
 		this.fileListField = new SingleFileField(mcreator);
 		preload.setOpaque(false);
 
@@ -66,10 +74,25 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		line.add(L10N.label("dialog.sounds.weight"));
 		line.add(weight);
 
-		line.add(preload);
+		if (!isForBedrock) {
+			line.add(preload);
 
-		line.add(L10N.label("dialog.sounds.attenuation_distance"));
-		line.add(attenuationDistance);
+			line.add(L10N.label("dialog.sounds.attenuation_distance"));
+			line.add(attenuationDistance);
+		} else {
+			line.add(is3D);
+			line.add(interruptible);
+			is3D.setSelected(true);
+			interruptible.setSelected(true);
+		}
+	}
+
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+
+		ComboBoxUtil.updateComboBoxContents(soundCategory,
+				Arrays.stream(ElementUtil.getDataListAsStringArray("soundcategories")).collect(Collectors.toList()),
+				"neutral");
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
@@ -78,8 +101,13 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		volume.setEnabled(enabled);
 		pitch.setEnabled(enabled);
 		weight.setEnabled(enabled);
-		preload.setEnabled(enabled);
-		attenuationDistance.setEnabled(enabled);
+		if (!isForBedrock) {
+			preload.setEnabled(enabled);
+			attenuationDistance.setEnabled(enabled);
+		} else {
+			is3D.setEnabled(enabled);
+			interruptible.setEnabled(enabled);
+		}
 	}
 
 	@Override public SoundElement.Sound getEntry() {
@@ -88,8 +116,13 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		entry.setVolume((double) volume.getValue());
 		entry.setPitch((double) pitch.getValue());
 		entry.setWeight((int) attenuationDistance.getValue());
-		entry.setPreload(preload.isSelected());
-		entry.setAttenuationDistance((int) attenuationDistance.getValue());
+		if (!isForBedrock) {
+			entry.setPreload(preload.isSelected());
+			entry.setAttenuationDistance((int) attenuationDistance.getValue());
+		} else {
+			entry.setBEIs3D(is3D.isSelected());
+			entry.setBEInterruptible(interruptible.isSelected());
+		}
 		return entry;
 	}
 
@@ -100,8 +133,13 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		volume.setValue((double) e.getVolume());
 		pitch.setValue((double) e.getPitch());
 		weight.setValue(e.getAttenuationDistance());
-		preload.setSelected(e.isPreload());
-		attenuationDistance.setValue(e.getAttenuationDistance());
+		if (!isForBedrock) {
+			preload.setSelected(e.isPreload());
+			attenuationDistance.setValue(e.getAttenuationDistance());
+		} else {
+			is3D.setSelected(e.isBEIs3D());
+			interruptible.setSelected(e.isBEInterruptible());
+		}
 	}
 
 	public SingleFileField getFileListField() {
