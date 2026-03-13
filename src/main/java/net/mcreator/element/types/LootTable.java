@@ -33,12 +33,15 @@ import java.util.List;
 
 	@ModElementReference public List<Pool> pools;
 
+	public String lootTableToModify;
+
 	private LootTable() {
 		this(null);
 	}
 
 	public LootTable(ModElement element) {
 		super(element);
+		this.lootTableToModify = "";
 	}
 
 	public static class Pool {
@@ -72,6 +75,10 @@ import java.util.List;
 
 		}
 
+	}
+
+	public boolean hasLootModifier() {
+		return !lootTableToModify.isEmpty();
 	}
 
 }
