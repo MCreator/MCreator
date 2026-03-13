@@ -45,7 +45,6 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
@@ -100,11 +99,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
-	private final SoundSelector breakSound = new SoundSelector(mcreator);
-	private final SoundSelector stepSound = new SoundSelector(mcreator);
-	private final SoundSelector placeSound = new SoundSelector(mcreator);
-	private final SoundSelector hitSound = new SoundSelector(mcreator);
-	private final SoundSelector fallSound = new SoundSelector(mcreator);
+	private final SoundSelector breakSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_break_sound");
+	private final SoundSelector stepSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_step_sound");
+	private final SoundSelector placeSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_place_sound");
+	private final SoundSelector hitSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_hit_sound");
+	private final SoundSelector fallSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_fall_sound");
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
@@ -786,18 +790,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane4.setOpaque(false);
 
 		page3group.addValidationElement(name);
-
-		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-
 		page3group.addValidationElement(breakSound.getVTextField());
 		page3group.addValidationElement(stepSound.getVTextField());
 		page3group.addValidationElement(placeSound.getVTextField());
