@@ -1842,13 +1842,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 		} else {
 			signGUITexturePanel.setVisible("HangingSign".equals(block.blockBase));
 			blockBase.setSelectedItem(block.blockBase);
+			switch (block.blockBase) {
+			case "Leaves" -> {
+				leavesParticleType.setEntry(block.leavesParticleType);
+				leavesParticleChance.setValue(block.leavesParticleChance);
+			}
+			case "FlowerPot" -> pottedPlant.setBlock(block.pottedPlant);
+			case "Sign" -> signEntityTexture.setTexture(block.signEntityTexture);
+			case "HangingSign" -> {
+				signEntityTexture.setTexture(block.signEntityTexture);
+				signGUITexture.setTexture(block.signGUITexture);
+			}
+			}
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
-		pottedPlant.setBlock(block.pottedPlant);
-		leavesParticleType.setEntry(block.leavesParticleType);
-		leavesParticleChance.setValue(block.leavesParticleChance);
-		signEntityTexture.setTexture(block.signEntityTexture);
-		signGUITexture.setTexture(block.signGUITexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -2073,11 +2080,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
-		block.pottedPlant = pottedPlant.getBlock();
-		block.leavesParticleType = leavesParticleType.getEntry();
-		block.leavesParticleChance = (double) leavesParticleChance.getValue();
-		block.signEntityTexture = signEntityTexture.getTextureHolder();
-		block.signGUITexture = signGUITexture.getTextureHolder();
+		switch (Objects.requireNonNull(blockBase.getSelectedItem())) {
+			case "Leaves" -> {
+				block.leavesParticleType = leavesParticleType.getEntry();
+				block.leavesParticleChance = (double) leavesParticleChance.getValue();
+			}
+			case "FlowerPot" -> block.pottedPlant = pottedPlant.getBlock();
+			case "Sign" -> block.signEntityTexture = signEntityTexture.getTextureHolder();
+			case "HangingSign" -> {
+				block.signEntityTexture = signEntityTexture.getTextureHolder();
+				block.signGUITexture = signGUITexture.getTextureHolder();
+			}
+		}
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

@@ -61,7 +61,7 @@ package ${package}.init;
 	<@javacompress>
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
-            public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
+			public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL;
 		<#else>
 			public static <#if !has_chunks>final</#if> DeferredBlock<Block> ${block.getModElement().getRegistryNameUpper()};
 			<#if (block.getModElement().getTypeString() == "block") && block.isSign()>
@@ -75,7 +75,7 @@ package ${package}.init;
 	<#if has_chunks>public static void register${sub_blocks?index}()<#else>static</#if> {
 		<#list sub_blocks as block>
 			<#if block.getModElement().getTypeString() == "dimension">
-        	    ${block.getModElement().getRegistryNameUpper()}_PORTAL =
+				${block.getModElement().getRegistryNameUpper()}_PORTAL =
 					register("${block.getModElement().getRegistryName()}_portal", ${block.getModElement().getName()}PortalBlock::new);
 			<#else>
 				${block.getModElement().getRegistryNameUpper()} =

@@ -973,7 +973,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		itemTexture.setTexture(plant.itemTexture);
 		particleTexture.setTexture(plant.particleTexture);
 		texture.setTexture(plant.texture);
-		textureBottom.setTexture(plant.textureBottom);
 		name.setText(plant.name);
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
@@ -1017,7 +1016,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityFallsOn.setSelectedProcedure(plant.onEntityFallsOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
 		specialInformation.setSelectedProcedure(plant.specialInformation);
-		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		generateFeature.setSelected(plant.generateFeature);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
 		canBePlacedOn.setListElements(plant.canBePlacedOn);
@@ -1054,14 +1052,22 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
 		generationType.setSelectedItem(plant.generationType);
 
-		suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
-		suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
-
-		secondaryTreeChance.setValue(plant.secondaryTreeChance);
-		for (int i = 0; i < 2; i++) {
-			trees[i].setEntry(plant.trees[i]);
-			flowerTrees[i].setEntry(plant.flowerTrees[i]);
-			megaTrees[i].setEntry(plant.megaTrees[i]);
+		// Plant type specific fields
+		switch (plant.plantType) {
+			case "normal" -> {
+				suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
+				suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
+			}
+			case "double" -> textureBottom.setTexture(plant.textureBottom);
+			case "growapable" -> growapableMaxHeight.setValue(plant.growapableMaxHeight);
+			case "sapling" -> {
+				secondaryTreeChance.setValue(plant.secondaryTreeChance);
+				for (int i = 0; i < 2; i++) {
+					trees[i].setEntry(plant.trees[i]);
+					flowerTrees[i].setEntry(plant.flowerTrees[i]);
+					megaTrees[i].setEntry(plant.megaTrees[i]);
+				}
+			}
 		}
 
 		tintType.setSelectedItem(plant.tintType);
@@ -1084,22 +1090,31 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.name = name.getText();
 		plant.creativeTabs = creativeTabs.getListElements();
 		plant.texture = texture.getTextureHolder();
-		plant.textureBottom = textureBottom.getTextureHolder();
 		plant.itemTexture = itemTexture.getTextureHolder();
 		plant.particleTexture = particleTexture.getTextureHolder();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
 		plant.plantType = (String) plantType.getSelectedItem();
-		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
-		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
-		plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
-		plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
-		plant.secondaryTreeChance = (double) secondaryTreeChance.getValue();
-		for (int i = 0; i < 2; i++) {
-			plant.trees[i] = trees[i].getEntry();
-			plant.flowerTrees[i] = flowerTrees[i].getEntry();
-			plant.megaTrees[i] = megaTrees[i].getEntry();
+
+		// Plant type specific fields
+		switch (Objects.requireNonNull((String) plantType.getSelectedItem())) {
+			case "normal" -> {
+				plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
+				plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
+			}
+			case "double" -> plant.textureBottom = textureBottom.getTextureHolder();
+			case "growapable" -> plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
+			case "sapling" -> {
+				plant.secondaryTreeChance = (double) secondaryTreeChance.getValue();
+				for (int i = 0; i < 2; i++) {
+					plant.trees[i] = trees[i].getEntry();
+					plant.flowerTrees[i] = flowerTrees[i].getEntry();
+					plant.megaTrees[i] = megaTrees[i].getEntry();
+				}
+			}
 		}
+
+		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (int) luminance.getValue();
