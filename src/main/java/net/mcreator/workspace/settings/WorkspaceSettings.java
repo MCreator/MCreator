@@ -62,7 +62,8 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
-	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern clearVersionPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern versionValidationPattern = Pattern.compile("^[0-9]+(?:\\.[0-9]+)*$");
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
@@ -232,9 +233,10 @@ import java.util.stream.Stream;
 		if (!semVerCompliantVersion.isEmpty())
 			return semVerCompliantVersion;
 
-		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
-		if (!cleanVersion.isEmpty())
-			return cleanVersion;
+		String clearVersion = clearVersionPattern.matcher(version).replaceAll("");
+		Matcher versionMatcher = versionValidationPattern.matcher(clearVersion);
+		if (versionMatcher.matches())
+			return versionMatcher.group();
 
 		return "0.0.0";
 	}
