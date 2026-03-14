@@ -102,9 +102,9 @@ public class BackgroundLoader {
 			if (avg > 0.1) {
 				avg = (float) Math.min(avg * 2, 0.85);
 				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(
-								ImageUtils.emptyImageWithSize(bgimage.getWidth(null), bgimage.getHeight(null),
-										ColorUtils.applyAlpha(Theme.current().getSecondAltBackgroundColor(), Math.round(avg * 255)))))
-						.getImage();
+						ImageUtils.emptyImageWithSize(bgimage.getWidth(null), bgimage.getHeight(null),
+								ColorUtils.applyAlpha(Theme.current().getSecondAltBackgroundColor(),
+										Math.round(avg * 255))))).getImage();
 			}
 		}
 

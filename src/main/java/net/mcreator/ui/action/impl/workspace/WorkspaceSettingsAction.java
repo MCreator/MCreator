@@ -20,7 +20,6 @@ package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.Launcher;
 import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleUtils;

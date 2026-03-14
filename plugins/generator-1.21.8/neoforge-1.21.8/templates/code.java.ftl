@@ -63,7 +63,7 @@ public class ${name} {
 
 	}
 
-    @EventBusSubscriber
+	@EventBusSubscriber
 	private static class ${name}ForgeBusEvents {
 
 		@SubscribeEvent

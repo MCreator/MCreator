@@ -21,7 +21,6 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;

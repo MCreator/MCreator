@@ -314,9 +314,8 @@ public class CefUtils {
 			// Clean up old orphaned folders in the same parent directory
 			Path parentDir = cacheDir.getParent();
 			try (Stream<Path> paths = Files.list(parentDir)) {
-				paths.filter(
-						p -> Files.isDirectory(p) && p.getFileName().toString().startsWith(CEF_CACHE_PREFIX) && !p.equals(
-								cacheDir)).forEach(p -> {
+				paths.filter(p -> Files.isDirectory(p) && p.getFileName().toString().startsWith(CEF_CACHE_PREFIX)
+						&& !p.equals(cacheDir)).forEach(p -> {
 					File lock = p.resolve("lockfile").toFile();
 					if (!lock.exists()) {
 						LOG.debug("Deleting orphaned CEF cache folder {}", p);

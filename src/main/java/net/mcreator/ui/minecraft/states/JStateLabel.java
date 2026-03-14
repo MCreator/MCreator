@@ -151,7 +151,8 @@ public class JStateLabel extends JPanel {
 		if (property.getClass() == PropertyData.IntegerType.class
 				|| property.getClass() == PropertyData.NumberType.class)
 			matchSymbol = numberMatchType.getSymbol();
-		return BlockStatePropertyUtils.propertyRegistryName(property) + " " + matchSymbol + " " + property.toString(value);
+		return BlockStatePropertyUtils.propertyRegistryName(property) + " " + matchSymbol + " " + property.toString(
+				value);
 	}
 
 	public enum NumberMatchType {

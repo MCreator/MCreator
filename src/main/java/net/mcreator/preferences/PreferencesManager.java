@@ -193,7 +193,7 @@ public class PreferencesManager {
 	 * <p>For Java plugins: See {@link PreferencesSection#addEntry(PreferencesEntry)} and {@link PreferencesSection#addPluginEntry(String, PreferencesEntry)} to add custom entries.</p>
 	 *
 	 * @param identifier A unique {@link String} acting like a mod's id for this system.
-	 * @param entry The {@link PreferencesEntry} added via a {@link PreferencesSection}
+	 * @param entry      The {@link PreferencesEntry} added via a {@link PreferencesSection}
 	 */
 	static <T, S extends PreferencesEntry<T>> void register(String identifier, S entry) {
 		if (PREFERENCES_REGISTRY.containsKey(identifier)) {
