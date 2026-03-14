@@ -221,11 +221,10 @@ import java.util.stream.Stream;
 	}
 
 	private String getSemVerCompliantVersion() {
-		String compliantVersion = "";
 		Matcher compliantVersionMatcher = semVerPattern.matcher(version);
 		if (compliantVersionMatcher.matches())
-			compliantVersion = compliantVersionMatcher.group();
-		return compliantVersion; // might be empty
+			return compliantVersionMatcher.group();
+		return "";
 	}
 
 	public String getCleanVersion() {
