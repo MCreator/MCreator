@@ -222,7 +222,7 @@ import java.util.stream.Stream;
 	private String getSemVerCompliantVersion() {
 		String compliantVersion = "";
 		Matcher compliantVersionMatcher = semVerPattern.matcher(version);
-		if (compliantVersionMatcher.find())
+		if (compliantVersionMatcher.matches())
 			compliantVersion = compliantVersionMatcher.group();
 		return compliantVersion; // might be empty
 	}
