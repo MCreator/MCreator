@@ -61,7 +61,8 @@ public enum TextureType {
 	}
 
 	public static TextureType[] getValuesForGenerator(GeneratorConfiguration generatorConfiguration) {
-		if (generatorConfiguration.getGeneratorFlavor().getGamePlatform() == GeneratorFlavor.GamePlatform.BEDROCKEDITION) {
+		if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+				== GeneratorFlavor.GamePlatform.BEDROCKEDITION) {
 			return new TextureType[] { BLOCK, ITEM, ENTITY, OTHER };
 		}
 		return values();

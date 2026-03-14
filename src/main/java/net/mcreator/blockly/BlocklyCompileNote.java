@@ -39,9 +39,8 @@ public record BlocklyCompileNote(Type type, String message) implements Comparabl
 	}
 
 	public enum Type {
-		INFO(0, ValidationResult.Type.PASSED),
-		WARNING(1, ValidationResult.Type.WARNING),
-		ERROR(2, ValidationResult.Type.ERROR);
+		INFO(0, ValidationResult.Type.PASSED), WARNING(1, ValidationResult.Type.WARNING), ERROR(2,
+				ValidationResult.Type.ERROR);
 
 		private final int priority;
 		private final ValidationResult.Type validationResultType;

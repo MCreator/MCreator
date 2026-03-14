@@ -32,8 +32,7 @@ public class ValidationGroup {
 	}
 
 	public final boolean validateIsErrorFree() {
-		return getGroupedValidationResults().stream()
-				.noneMatch(e -> e.type() == ValidationResult.Type.ERROR);
+		return getGroupedValidationResults().stream().noneMatch(e -> e.type() == ValidationResult.Type.ERROR);
 	}
 
 	public final List<String> getValidationProblemMessages() {

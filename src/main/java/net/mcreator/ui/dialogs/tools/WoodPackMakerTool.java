@@ -131,7 +131,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 		// first we generate wood texture
 		ImageIcon wood = ImageUtils.colorize(
-				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), barkColor, true);
+				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), barkColor,
+				true);
 		String woodTextureName = registryName + "_log";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
 				mcreator.getFolderManager().getTextureFile(woodTextureName, TextureType.BLOCK));
