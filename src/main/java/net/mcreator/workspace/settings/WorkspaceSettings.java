@@ -63,7 +63,8 @@ import java.util.stream.Stream;
 	private transient Workspace workspace; // we should never serialize this!!
 
 	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
-	private static final Pattern cleanDotsPattern = Pattern.compile("(?:\\.[.]+)+");
+	private static final Pattern cleanMiddleDotsPattern = Pattern.compile("(?:\\.[.]+)+");
+	private static final Pattern cleanLeadingTrailingDotsPattern = Pattern.compile("(\\.$)|(^\\.)");
 
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
@@ -228,13 +229,18 @@ import java.util.stream.Stream;
 		return "";
 	}
 
+	private String getCleanMmpVersion() {
+		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
+		cleanVersion = cleanMiddleDotsPattern.matcher(cleanVersion).replaceAll(".");
+		return cleanLeadingTrailingDotsPattern.matcher(cleanVersion).replaceAll("");
+	}
+
 	public String getCleanVersion() {
 		String semVerCompliantVersion = getSemVerCompliantVersion();
 		if (!semVerCompliantVersion.isEmpty())
 			return semVerCompliantVersion;
 
-		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
-		cleanVersion = cleanDotsPattern.matcher(cleanVersion).replaceAll(".");
+		String cleanVersion = getCleanMmpVersion();
 		if (!cleanVersion.isEmpty())
 			return cleanVersion;
 
