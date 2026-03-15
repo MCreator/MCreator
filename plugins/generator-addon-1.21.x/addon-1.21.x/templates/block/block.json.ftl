@@ -30,7 +30,7 @@
     "components": {
       "minecraft:geometry":
         <#if data.hasCustomModel()>
-          "geometry.${data.getModel().getReadableName()}",
+          "geometry.${data.getModel().getReadableName()}"
         <#elseif data.renderType() == 11>
           "minecraft:geometry.cross"
         <#else>
