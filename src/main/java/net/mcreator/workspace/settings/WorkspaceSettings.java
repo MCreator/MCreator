@@ -62,9 +62,12 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
-	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanExcessCharactersPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
+	private static final Pattern cleanLeadingTrailingDotsPattern = Pattern.compile("(\\.$)|(^\\.)");
+
 	private static final Pattern semVerPattern = Pattern.compile(
-			"^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$");
+			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
 	public WorkspaceSettings(WorkspaceSettings other) {
 		this.modid = other.modid;
@@ -220,11 +223,16 @@ import java.util.stream.Stream;
 	}
 
 	private String getSemVerCompliantVersion() {
-		String compliantVersion = "";
 		Matcher compliantVersionMatcher = semVerPattern.matcher(version);
-		if (compliantVersionMatcher.find())
-			compliantVersion = compliantVersionMatcher.group();
-		return compliantVersion; // might be empty
+		if (compliantVersionMatcher.matches())
+			return compliantVersionMatcher.group();
+		return "";
+	}
+
+	private String getCleanMmpVersion() {
+		String cleanVersion = cleanExcessCharactersPattern.matcher(version).replaceAll("");
+		cleanVersion = cleanMultiDotsPattern.matcher(cleanVersion).replaceAll(".");
+		return cleanLeadingTrailingDotsPattern.matcher(cleanVersion).replaceAll("");
 	}
 
 	public String getCleanVersion() {
@@ -232,7 +240,7 @@ import java.util.stream.Stream;
 		if (!semVerCompliantVersion.isEmpty())
 			return semVerCompliantVersion;
 
-		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
+		String cleanVersion = getCleanMmpVersion();
 		if (!cleanVersion.isEmpty())
 			return cleanVersion;
 
