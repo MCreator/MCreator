@@ -132,7 +132,8 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	}
 
 	private boolean isTransparent() {
-		return mcreator.hasBackgroundImage() && CefUtils.useOSR();
+		return mcreator.hasBackgroundImage() && CefUtils.useOSR()
+				&& PreferencesManager.PREFERENCES.blockly.translucentBackground.get();
 	}
 
 	public void addTaskToRunAfterLoaded(Runnable runnable) {
