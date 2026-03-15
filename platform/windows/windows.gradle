@@ -6,7 +6,7 @@ launch4j {
     dontWrapJar = false
     copyConfigurable = []
     classpath = ["./lib/*"]
-    jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED"]
+    jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED", "--enable-native-access=ALL-UNNAMED,jcef"]
     libraryDir = "null"
     stayAlive = true
 
