@@ -204,7 +204,7 @@ public class TestWorkspaceDataProvider {
 	private static void fillWorkspaceWithResourcesAndData(Workspace workspace) {
 		if (workspace.getGeneratorStats().hasBaseCoverage("sounds")) {
 			for (int i = 1; i <= 3; i++) {
-				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
+				SoundElement sound = new SoundElement("test" + i, List.of(new SoundElement.Sound("test" + i)), null);
 				workspace.addSoundElement(sound);
 			}
 		}
