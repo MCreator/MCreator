@@ -206,10 +206,10 @@ public class CefUtils {
 
 			CefApp.startup(args);
 
-			cefApp = CefApp.getInstance(settings);
+			cefApp = CefApp.getInstance(args, settings, null);
 
 			CountDownLatch latch = new CountDownLatch(1);
-			cefApp.onInitialization(s -> {
+			cefApp.onInitialization(_ -> {
 				LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})", cefApp.getVersion().getJcefVersion(),
 						cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
 				latch.countDown();
