@@ -26,6 +26,7 @@ import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -418,7 +419,14 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEquipmentSlots() {
-		return DataListLoader.loadDataList("equipmentslots");
+		return loadAllEquipmentSlots(false);
+	}
+
+	public static List<DataListEntry> loadAllEquipmentSlots(boolean addDefault) {
+		return addDefault ?
+				ListUtils.merge(List.of(new DataListEntry.Dummy("default")),
+						DataListLoader.loadDataList("equipmentslots")) :
+				DataListLoader.loadDataList("equipmentslots");
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {

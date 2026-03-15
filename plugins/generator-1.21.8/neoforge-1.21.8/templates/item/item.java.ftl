@@ -103,7 +103,8 @@ public class ${name}Item extends Item {
 					<#list data.attributeModifiers as modifier>
 					.add(${modifier.attribute}, new AttributeModifier(
 							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
-							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}),
+							<#if modifier.equipmentSlot == "default">EquipmentSlotGroup.MAINHAND<#else>${generator.map(modifier.equipmentSlot, "equipmentslots")}</#if>)
 					</#list>
 					.build())
 				</#if>

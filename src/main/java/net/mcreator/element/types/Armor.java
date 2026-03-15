@@ -19,10 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -138,6 +135,8 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public String rarity;
 
+	@ModElementReference public List<AttributeModifierEntry> attributeModifiers;
+
 	private Armor() {
 		this(null);
 	}
@@ -148,6 +147,7 @@ import java.util.stream.Collectors;
 		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
+		this.attributeModifiers = new ArrayList<>();
 
 		this.helmetModelName = "Default";
 		this.bodyModelName = "Default";
