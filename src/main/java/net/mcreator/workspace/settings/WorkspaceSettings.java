@@ -62,8 +62,8 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
-	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
-	private static final Pattern cleanMiddleDotsPattern = Pattern.compile("(?:\\.[.]+)+");
+	private static final Pattern cleanExcessCharactersPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
 	private static final Pattern cleanLeadingTrailingDotsPattern = Pattern.compile("(\\.$)|(^\\.)");
 
 	private static final Pattern semVerPattern = Pattern.compile(
@@ -230,8 +230,8 @@ import java.util.stream.Stream;
 	}
 
 	private String getCleanMmpVersion() {
-		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
-		cleanVersion = cleanMiddleDotsPattern.matcher(cleanVersion).replaceAll(".");
+		String cleanVersion = cleanExcessCharactersPattern.matcher(version).replaceAll("");
+		cleanVersion = cleanMultiDotsPattern.matcher(cleanVersion).replaceAll(".");
 		return cleanLeadingTrailingDotsPattern.matcher(cleanVersion).replaceAll("");
 	}
 
