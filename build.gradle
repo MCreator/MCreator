@@ -188,6 +188,8 @@ javadoc {
     classpath = configurations.runtimeClasspath
 
     options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('tag', 'apiNote:a:API note:')
+    options.addStringOption('tag', 'implNote:a:Implementation note:')
 }
 
 tasks.register('runMCreator', JavaExec.class) {
