@@ -83,7 +83,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
-	private final JSpinner friction = new JSpinner(new SpinnerNumberModel(0.6, 0, 0.9, 0.01));
+	private final JSpinner friction = new JSpinner(new SpinnerNumberModel(0.4, 0, 0.9, 0.01));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner flammableDestroyChance = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
@@ -216,7 +216,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(colorOnMap);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/slipperiness"),
-				L10N.label("elementgui.block.slipperiness")));
+				L10N.label("elementgui.beblock.friction")));
 		basicProperties.add(friction);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
