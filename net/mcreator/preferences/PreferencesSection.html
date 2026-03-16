@@ -229,11 +229,11 @@ S extends <a href="PreferencesEntry.html" title="class in net.mcreator.preferenc
 
  	public final BooleanEntry myEntry = new BooleanEntry("displayMCreator", true);
 
-	public MyPlugin(Plugin plugin) {
+ 	public MyPlugin(Plugin plugin) {
  		addListener(ApplicationLoadedEvent.class, event -&gt; {
  			PreferencesManager.PREFERENCES.ui.addJavaEntry("myIdentifier", myEntry);
- 		});
- 	}
+        });
+    }
 
  }
  </code></pre></p></div>
