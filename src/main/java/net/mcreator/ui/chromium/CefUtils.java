@@ -24,6 +24,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -184,7 +185,14 @@ public class CefUtils {
 			List<String> appArgs = config.getAppArgsAsList();
 			CefSettings settings = config.getCefSettings();
 			settings.no_sandbox = true;
-			settings.background_color = settings.new ColorType(0, 0, 0, 0);
+			if (useOSR()) {
+				// On OSR, use transparency
+				settings.background_color = settings.new ColorType(0, 0, 0, 0);
+			} else {
+				settings.background_color = settings.new ColorType(255, Theme.current().getBackgroundColor().getRed(),
+						Theme.current().getBackgroundColor().getGreen(),
+						Theme.current().getBackgroundColor().getBlue());
+			}
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
 			settings.locale = L10N.getLocale().stripExtensions().toLanguageTag();
