@@ -66,6 +66,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	private final JCheckBox skipPlacement = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector generateCondition;
+	private ProcedureSelector placeProcedure;
 	private BiomeListField restrictionBiomes;
 	private final JComboBox<String> generationStep = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("generationsteps"));
@@ -89,6 +90,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 	@Override protected void initGUI() {
 		generateCondition = new ProcedureSelector(this.withEntry("feature/generation_condition"), mcreator,
 				L10N.t("elementgui.feature.additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
+				L10N.t("condition.common.no_additional")).makeInline();
+
+		placeProcedure = new ProcedureSelector(this.withEntry("feature/generation_condition"), mcreator,
+				L10N.t("elementgui.feature.additional_generation_condition"),
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
@@ -121,10 +127,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		skipPlacement.addActionListener(e -> refreshPlacementSettings(true));
 		refreshPlacementSettings(false);
 
-		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
-				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
+		JComponent propertiesAndProcedures = PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(properties,
+						PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2),
+				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), placeProcedure), 0, 2);
 
-		propertiesAndCondition.setOpaque(false);
+		propertiesAndProcedures.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.FEATURE);
@@ -158,7 +165,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		featureProcedure.setPreferredSize(new Dimension(0, 460));
 
-		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesAndCondition),
+		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesAndProcedures),
 				featureProcedure));
 
 		page1.setOpaque(false);
@@ -214,6 +221,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				mcreator.getWorkspace());
 
 		generateCondition.refreshListKeepSelected(context);
+		placeProcedure.refreshListKeepSelected(context);
 	}
 
 	private void refreshPlacementSettings(boolean updateCompileNotes) {
@@ -228,6 +236,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		generationStep.setSelectedItem(feature.generationStep);
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
+		placeProcedure.setSelectedProcedure(feature.placeProcedure);
 		refreshPlacementSettings(false);
 		blocklyPanel.setInitialXML(feature.featurexml);
 	}
@@ -238,6 +247,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		feature.generationStep = (String) generationStep.getSelectedItem();
 		feature.restrictionBiomes = restrictionBiomes.getListElements();
 		feature.generateCondition = generateCondition.getSelectedProcedure();
+		feature.placeProcedure = placeProcedure.getSelectedProcedure();
 
 		feature.featurexml = blocklyPanel.getXML();
 

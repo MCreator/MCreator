@@ -49,6 +49,7 @@ import java.util.List;
 	public String generationStep;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
+	public Procedure placeProcedure;
 	@BlocklyXML("features") public String featurexml;
 
 	private transient Boolean hasConfiguredFeature = null;
@@ -107,7 +108,7 @@ import java.util.List;
 	}
 
 	public boolean hasGenerationConditions() {
-		return generateCondition != null && hasConfiguredFeature();
+		return (generateCondition != null && hasConfiguredFeature()) || placeProcedure != null;
 	}
 
 	public boolean hasPlacedFeature() {
