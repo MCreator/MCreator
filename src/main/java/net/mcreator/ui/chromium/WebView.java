@@ -68,6 +68,7 @@ public class WebView extends JPanel implements Closeable {
 	private final Component cefComponent;
 
 	// Helper for page load listeners
+	private volatile boolean hasLoaded = false;
 	private final List<PageLoadListener> pageLoadListeners = new ArrayList<>();
 
 	// Helper for JS dialog handlers
@@ -226,6 +227,7 @@ public class WebView extends JPanel implements Closeable {
 
 		this.client.addLoadHandler(new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
+				hasLoaded = true;
 				callbackExecutor.execute(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
 			}
 		});
@@ -445,7 +447,11 @@ public class WebView extends JPanel implements Closeable {
 	}
 
 	public void addLoadListener(PageLoadListener listener) {
-		pageLoadListeners.add(listener);
+		if (hasLoaded) {
+			listener.pageLoaded(); // invoke immediately if the page is already loaded
+		} else {
+			pageLoadListeners.add(listener);
+		}
 	}
 
 	@Override public void close() {
