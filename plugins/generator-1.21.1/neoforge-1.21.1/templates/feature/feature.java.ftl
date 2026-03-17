@@ -43,12 +43,17 @@ public class ${name}Feature extends ${generator.map(featuretype, "features")} {
 	}
 
 	public boolean place(FeaturePlaceContext<${configuration}> context) {
-		<#if hasProcedure(data.generateCondition)>
+		<#if hasProcedure(data.generateCondition) || hasProcedure(data.placeProcedure)>
 		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		WorldGenLevel world = context.level();
 		int x = context.origin().getX();
 		int y = context.origin().getY();
 		int z = context.origin().getZ();
+		</#if>
+		<#if hasProcedure(data.placeProcedure)>
+		<@procedureOBJToCode data.placeProcedure/>
+		</#if>
+		<#if hasProcedure(data.generateCondition)>
 		if (!<@procedureOBJToConditionCode data.generateCondition/>)
 			return false;
 		</#if>
