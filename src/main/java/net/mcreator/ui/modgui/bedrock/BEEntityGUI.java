@@ -109,10 +109,10 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final JColor spawnEggDotColor = new JColor(mcreator, false, false).withColorTextColumns(5);
 
 	private final JCheckBox generateEntity = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> entitySpawningType = new JComboBox<>(
+	private final JComboBox<String> populationControl = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
-	private final JSpinner spawningWeight = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxSpinner entityHeird = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
+	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
+	private final JMinMaxSpinner entityHerd = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
@@ -277,15 +277,15 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		spawningProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_type"),
 				L10N.label("elementgui.living_entity.spawn_type")));
-		spawningProps.add(entitySpawningType);
+		spawningProps.add(populationControl);
 
 		spawningProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
 				L10N.label("elementgui.living_entity.spawn_group_size")));
-		spawningProps.add(entityHeird);
+		spawningProps.add(entityHerd);
 
 		spawningProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_weight"),
 				L10N.label("elementgui.living_entity.spawn_weight")));
-		spawningProps.add(spawningWeight);
+		spawningProps.add(spawningProbability);
 
 		spawningPanel.add("Center", PanelUtils.totalCenterInPanel(spawningProps));
 
@@ -346,9 +346,9 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private void refreshSpawnProperties() {
 		boolean canSpawn = generateEntity.isSelected();
 
-		entityHeird.setEnabled(canSpawn);
-		entitySpawningType.setEnabled(canSpawn);
-		spawningWeight.setEnabled(canSpawn);
+		entityHerd.setEnabled(canSpawn);
+		populationControl.setEnabled(canSpawn);
+		spawningProbability.setEnabled(canSpawn);
 	}
 
 	private void refreshEggProperties() {
@@ -387,10 +387,10 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		isImmuneToFallDamage.setSelected(entity.isImmuneToFallDamage);
 		isPushable.setSelected(entity.isPushable);
 		isPushableByPiston.setSelected(entity.isPushableByPiston);
-		entitySpawningType.setSelectedItem(entity.populationControl);
-		spawningWeight.setValue(entity.spawningProbability);
-		entityHeird.setMinValue(entity.minHerdSize);
-		entityHeird.setMaxValue(entity.maxHerdSize);
+		populationControl.setSelectedItem(entity.populationControl);
+		spawningProbability.setValue(entity.spawningProbability);
+		entityHerd.setMinValue(entity.minHerdSize);
+		entityHerd.setMaxValue(entity.maxHerdSize);
 		hasSpawnEgg.setSelected(entity.hasSpawnEgg);
 		spawnEggBaseColor.setColor(entity.spawnEggBaseColor);
 		spawnEggDotColor.setColor(entity.spawnEggDotColor);
@@ -423,10 +423,10 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		entity.isImmuneToFallDamage = isImmuneToFallDamage.isSelected();
 		entity.isPushable = isPushable.isSelected();
 		entity.isPushableByPiston = isPushableByPiston.isSelected();
-		entity.populationControl = (String) entitySpawningType.getSelectedItem();
-		entity.spawningProbability = (int) spawningWeight.getValue();
-		entity.minHerdSize = entityHeird.getIntMinValue();
-		entity.maxHerdSize = entityHeird.getIntMaxValue();
+		entity.populationControl = (String) populationControl.getSelectedItem();
+		entity.spawningProbability = (int) spawningProbability.getValue();
+		entity.minHerdSize = entityHerd.getIntMinValue();
+		entity.maxHerdSize = entityHerd.getIntMaxValue();
 		entity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		entity.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		entity.spawnEggDotColor = spawnEggDotColor.getColor();
