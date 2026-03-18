@@ -25,6 +25,7 @@ import net.mcreator.element.types.Biome;
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -231,8 +232,29 @@ public class SoundElement implements IElement {
 				files = new ArrayList<>();
 			}
 
-			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(),
-					getObjectName(jsonObject, "beCategory", "neutral"),
+			// MCreator 2026.2 converter
+			String category;
+			if (jsonObject.has("category") && jsonObject.get("category").getAsString() instanceof String str) {
+				List<String> oldFiles;
+				if (jsonObject.get("file") != null) {
+					oldFiles = Collections.singletonList(jsonObject.get("file").getAsString());
+				} else {
+					try {
+						oldFiles = context.deserialize(jsonObject.get("files").getAsJsonArray(),
+								new TypeToken<List<String>>() {}.getType());
+					} catch (Exception e) {
+						oldFiles = new ArrayList<>();
+					}
+				}
+				List<Sound> finalFiles = files;
+				oldFiles.forEach(oldFile -> finalFiles.add(new Sound(oldFile)));
+				files.forEach(file -> file.setCategory(str));
+				category = getObjectName(jsonObject, "category", "neutral");
+			} else {
+				category = getObjectName(jsonObject, "beCategory", "neutral");
+			}
+
+			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(), category,
 					jsonObject.getAsJsonObject("beAttenuationDistance") == null ?
 							DefaultBEAttenuationDistance :
 							new Biome.ClimatePoint(

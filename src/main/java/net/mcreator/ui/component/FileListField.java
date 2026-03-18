@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-// Not used
+// Unused
 public class FileListField extends JItemListField<File> {
 
 	public FileListField(MCreator window) {
