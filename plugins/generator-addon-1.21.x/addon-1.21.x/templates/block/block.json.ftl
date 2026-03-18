@@ -30,7 +30,7 @@
     "components": {
       "minecraft:geometry":
         <#if data.hasCustomModel()>
-          "geometry.${data.getModel().getReadableName()}",
+          "geometry.${data.getModel().getReadableName()}"
         <#elseif data.renderType() == 11>
           "minecraft:geometry.cross"
         <#else>
@@ -61,7 +61,9 @@
       "minecraft:destructible_by_explosion": {
         "explosion_resistance": ${data.resistance}
       },
+      <#if data.friction != 0.4>
       "minecraft:friction": ${data.friction},
+      </#if>
       "minecraft:flammable": {
         "catch_chance_modifier": ${data.flammability},
         "destroy_chance_modifier": ${data.flammableDestroyChance}

@@ -155,7 +155,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 				// Apply dock state after the window is shown
 				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().leftDockState, leftDockRegion);
-				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().bottomDockState, bottomDockRegion);
+				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().bottomDockState,
+						bottomDockRegion);
 
 				// Finalize MCreator initialization when the window is fully opened
 				initializeMCreator();

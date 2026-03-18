@@ -344,8 +344,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private void importWorkspaceFromZip(File file) {
 		File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
 		if (workspaceDir != null) {
-			ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
-					this);
+			ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
 			if (workspaceFile != null)
 				workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
 		}

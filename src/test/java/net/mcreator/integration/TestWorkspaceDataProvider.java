@@ -1023,28 +1023,38 @@ public class TestWorkspaceDataProvider {
 			plant.plantType = List.of("normal", "growapable", "double", "sapling").get(valueIndex);
 			plant.creativeTabs = emptyLists ? List.of() : tabs;
 			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
-			plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
 			plant.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 			plant.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
 			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes"));
-			plant.suspiciousStewEffect = getRandomString(random,
-					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-							.toList());
-			plant.suspiciousStewDuration = 24;
-			plant.growapableMaxHeight = 5;
-			plant.secondaryTreeChance = 0.23;
-			for (int i = 0; i < 2; i++) {
-				plant.trees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
-				if (_true) {
-					plant.flowerTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
+
+			// Set some plant type properties
+			switch (plant.plantType) {
+			case "normal" -> {
+				plant.suspiciousStewEffect = getRandomString(random,
+						ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+								.toList());
+				plant.suspiciousStewDuration = 24;
+			}
+			case "double" -> plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
+			case "growapable" -> plant.growapableMaxHeight = 5;
+			case "sapling" -> {
+				plant.secondaryTreeChance = 0.23;
+				for (int i = 0; i < 2; i++) {
+					plant.trees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
-				}
-				if (!emptyLists) {
-					plant.megaTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
-							getRandomItem(random, ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+					if (_true) {
+						plant.flowerTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(),
+								getRandomItem(random,
+										ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+					}
+					if (!emptyLists) {
+						plant.megaTrees[i] = new ConfiguredFeatureEntry(modElement.getWorkspace(), getRandomItem(random,
+								ElementUtil.loadAllConfiguredFeatures(modElement.getWorkspace())));
+					}
 				}
 			}
+			}
+
 			plant.customBoundingBox = !_true;
 			plant.disableOffset = !_true;
 			plant.boundingBoxes = new ArrayList<>();
@@ -1730,8 +1740,8 @@ public class TestWorkspaceDataProvider {
 			beblock.textureFront = new TextureHolder(modElement.getWorkspace(), "test4");
 			beblock.textureRight = new TextureHolder(modElement.getWorkspace(), "test5");
 			beblock.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
-			beblock.renderType = new int[] {10, 11, 12, 10}[valueIndex];
-			beblock.customModelName = new String[] {"Normal", "Cross model", "Single texture", "Normal"}[valueIndex];
+			beblock.renderType = new int[] { 10, 11, 12, 10 }[valueIndex];
+			beblock.customModelName = new String[] { "Normal", "Cross model", "Single texture", "Normal" }[valueIndex];
 			beblock.enableCreativeTab = !_true;
 			beblock.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
 			beblock.isHiddenInCommands = _true;
@@ -2154,14 +2164,7 @@ public class TestWorkspaceDataProvider {
 		block.speedFactor = 34.632;
 		block.jumpFactor = 17.732;
 		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-		block.leavesParticleType = emptyLists ?
-				null :
-				new Particle(modElement.getWorkspace(),
-						getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-		block.leavesParticleChance = 0.265;
 		block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
-		block.pottedPlant = new MItemBlock(modElement.getWorkspace(),
-				getRandomMCItem(random, blocksWithItemForm).getName());
 		block.tickRate = _true ? 0 : 24;
 		block.isCustomSoundType = !_true;
 		block.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -2279,8 +2282,26 @@ public class TestWorkspaceDataProvider {
 		}
 		block.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 		block.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test7");
-		block.signEntityTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "entity_texture_0");
-		block.signGUITexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "picture1");
+
+		// Set some block base properties
+		if ("Leaves".equals(blockBase)) {
+			block.leavesParticleType = emptyLists ?
+					null :
+					new Particle(modElement.getWorkspace(),
+							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
+			block.leavesParticleChance = 0.265;
+		} else if ("FlowerPot".equals(blockBase)) {
+			block.pottedPlant = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksWithItemForm).getName());
+		} else if ("Sign".equals(blockBase)) {
+			block.signEntityTexture = new TextureHolder(modElement.getWorkspace(),
+					emptyLists ? "" : "entity_texture_0");
+		} else if ("HangingSign".equals(blockBase)) {
+			block.signEntityTexture = new TextureHolder(modElement.getWorkspace(),
+					emptyLists ? "" : "entity_texture_0");
+			block.signGUITexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "picture1");
+		}
+
 		block.texture = new TextureHolder(modElement.getWorkspace(), "test");
 		block.textureTop = new TextureHolder(modElement.getWorkspace(), "test2");
 		block.textureLeft = new TextureHolder(modElement.getWorkspace(), "test3");

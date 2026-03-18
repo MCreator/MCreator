@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.action.impl.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.dialogs.SoundElementDialog;
