@@ -112,9 +112,6 @@ public class SoundElementDialog {
 						for (int i = 0; i < entriesFiles.size(); i++) {
 							SingleFileField field = entriesFiles.get(i);
 
-							System.out.println(field.getEntry().getName());
-							System.out.println(field.isEnabled());
-
 							if (!field.isEnabled())
 								continue;
 
