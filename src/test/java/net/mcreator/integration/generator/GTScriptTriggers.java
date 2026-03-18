@@ -36,8 +36,8 @@ public class GTScriptTriggers {
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
 		Set<String> generatorTriggers = workspace.getGeneratorStats().getBlocklyTriggers(BlocklyEditorType.SCRIPT);
 
-		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader(
-				BlocklyEditorType.SCRIPT).getExternalTriggers()) {
+		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader(BlocklyEditorType.SCRIPT)
+				.getExternalTriggers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {
 				continue;
 			}

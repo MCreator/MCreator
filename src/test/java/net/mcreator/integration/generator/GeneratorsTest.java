@@ -120,10 +120,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						mcreator.get().getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 							if (taskResult == GradleResultCode.STATUS_OK) {
 								workspace.get().getGenerator().reloadGradleCaches();
+								latch.countDown();
 							} else {
+								latch.countDown();
 								fail("Gradle MDK setup failed!");
 							}
-							latch.countDown();
 						});
 						latch.await();
 

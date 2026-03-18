@@ -45,7 +45,6 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
@@ -100,11 +99,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
-	private final SoundSelector breakSound = new SoundSelector(mcreator);
-	private final SoundSelector stepSound = new SoundSelector(mcreator);
-	private final SoundSelector placeSound = new SoundSelector(mcreator);
-	private final SoundSelector hitSound = new SoundSelector(mcreator);
-	private final SoundSelector fallSound = new SoundSelector(mcreator);
+	private final SoundSelector breakSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_break_sound");
+	private final SoundSelector stepSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_step_sound");
+	private final SoundSelector placeSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_place_sound");
+	private final SoundSelector hitSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_hit_sound");
+	private final SoundSelector fallSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_fall_sound");
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
@@ -685,8 +689,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.can_be_placed_on")));
 		advancedProperties.add(canBePlacedOn);
 
-		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
-				placingCondition, 2, 2);
+		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 2, 2);
 		ComponentUtils.makeSection(plocb, L10N.t("elementgui.plant.properties_advanced_plant"));
 		plocb.setOpaque(false);
 
@@ -786,18 +789,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane4.setOpaque(false);
 
 		page3group.addValidationElement(name);
-
-		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-
 		page3group.addValidationElement(breakSound.getVTextField());
 		page3group.addValidationElement(stepSound.getVTextField());
 		page3group.addValidationElement(placeSound.getVTextField());
@@ -973,7 +964,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		itemTexture.setTexture(plant.itemTexture);
 		particleTexture.setTexture(plant.particleTexture);
 		texture.setTexture(plant.texture);
-		textureBottom.setTexture(plant.textureBottom);
 		name.setText(plant.name);
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
@@ -1017,7 +1007,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityFallsOn.setSelectedProcedure(plant.onEntityFallsOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
 		specialInformation.setSelectedProcedure(plant.specialInformation);
-		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		generateFeature.setSelected(plant.generateFeature);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
 		canBePlacedOn.setListElements(plant.canBePlacedOn);
@@ -1054,14 +1043,22 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
 		generationType.setSelectedItem(plant.generationType);
 
-		suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
-		suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
-
-		secondaryTreeChance.setValue(plant.secondaryTreeChance);
-		for (int i = 0; i < 2; i++) {
-			trees[i].setEntry(plant.trees[i]);
-			flowerTrees[i].setEntry(plant.flowerTrees[i]);
-			megaTrees[i].setEntry(plant.megaTrees[i]);
+		// Plant type specific fields
+		switch (plant.plantType) {
+		case "normal" -> {
+			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
+			suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
+		}
+		case "double" -> textureBottom.setTexture(plant.textureBottom);
+		case "growapable" -> growapableMaxHeight.setValue(plant.growapableMaxHeight);
+		case "sapling" -> {
+			secondaryTreeChance.setValue(plant.secondaryTreeChance);
+			for (int i = 0; i < 2; i++) {
+				trees[i].setEntry(plant.trees[i]);
+				flowerTrees[i].setEntry(plant.flowerTrees[i]);
+				megaTrees[i].setEntry(plant.megaTrees[i]);
+			}
+		}
 		}
 
 		tintType.setSelectedItem(plant.tintType);
@@ -1084,22 +1081,31 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.name = name.getText();
 		plant.creativeTabs = creativeTabs.getListElements();
 		plant.texture = texture.getTextureHolder();
-		plant.textureBottom = textureBottom.getTextureHolder();
 		plant.itemTexture = itemTexture.getTextureHolder();
 		plant.particleTexture = particleTexture.getTextureHolder();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
 		plant.plantType = (String) plantType.getSelectedItem();
-		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
-		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
-		plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
-		plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
-		plant.secondaryTreeChance = (double) secondaryTreeChance.getValue();
-		for (int i = 0; i < 2; i++) {
-			plant.trees[i] = trees[i].getEntry();
-			plant.flowerTrees[i] = flowerTrees[i].getEntry();
-			plant.megaTrees[i] = megaTrees[i].getEntry();
+
+		// Plant type specific fields
+		switch (Objects.requireNonNull((String) plantType.getSelectedItem())) {
+		case "normal" -> {
+			plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
+			plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
 		}
+		case "double" -> plant.textureBottom = textureBottom.getTextureHolder();
+		case "growapable" -> plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
+		case "sapling" -> {
+			plant.secondaryTreeChance = (double) secondaryTreeChance.getValue();
+			for (int i = 0; i < 2; i++) {
+				plant.trees[i] = trees[i].getEntry();
+				plant.flowerTrees[i] = flowerTrees[i].getEntry();
+				plant.megaTrees[i] = megaTrees[i].getEntry();
+			}
+		}
+		}
+
+		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (int) luminance.getValue();

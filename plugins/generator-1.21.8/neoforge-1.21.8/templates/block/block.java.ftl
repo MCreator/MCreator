@@ -111,7 +111,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		return CODEC;
 	}
 
-    @Override public int getDustColor(BlockState blockstate, BlockGetter world, BlockPos pos) {
+	@Override public int getDustColor(BlockState blockstate, BlockGetter world, BlockPos pos) {
 		return blockstate.getMapColor(world, pos).col;
 	}
 	</#if>
@@ -239,23 +239,23 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			super(<@blockProperties/>);
 		</#if>
 
-	    <#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
-	    this.registerDefaultState(this.stateDefinition.any()
-	    	<#if data.rotationMode == 1 || data.rotationMode == 3>
-	    	.setValue(FACING, Direction.NORTH)
-	    	    <#if data.enablePitch>
-	    	    .setValue(FACE, AttachFace.WALL)
-	    	    </#if>
-	    	<#elseif data.rotationMode == 2 || data.rotationMode == 4>
-	    	.setValue(FACING, Direction.NORTH)
-	    	<#elseif data.rotationMode == 5>
-	    	.setValue(AXIS, Direction.Axis.Y)
-	    	</#if>
+		<#if data.rotationMode != 0 || data.isWaterloggable || filteredCustomProperties?has_content>
+		this.registerDefaultState(this.stateDefinition.any()
+			<#if data.rotationMode == 1 || data.rotationMode == 3>
+			.setValue(FACING, Direction.NORTH)
+				<#if data.enablePitch>
+				.setValue(FACE, AttachFace.WALL)
+				</#if>
+			<#elseif data.rotationMode == 2 || data.rotationMode == 4>
+			.setValue(FACING, Direction.NORTH)
+			<#elseif data.rotationMode == 5>
+			.setValue(AXIS, Direction.Axis.Y)
+			</#if>
 			<@initCustomBlockStateProperties />
-	    	<#if data.isWaterloggable>
-	    	.setValue(WATERLOGGED, false)
-	    	</#if>
-	    );
+			<#if data.isWaterloggable>
+			.setValue(WATERLOGGED, false)
+			</#if>
+		);
 		</#if>
 	}
 
@@ -265,7 +265,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			return this.getShapeForEachState(state -> {
 				<#list statesWithCustomShape as state>
 					<#if !state?is_first>else </#if>if (
-    				<#list state.stateMap.keySet() as property>
+					<#list state.stateMap.keySet() as property>
 						<#assign value = state.stateMap.get(property)>
 						<#if property.getClass().getSimpleName().equals("StringType")>
 							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
@@ -302,15 +302,15 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 	<#if data.renderType() == 4>
-    @Override protected RenderShape getRenderShape(BlockState state) {
+	@Override protected RenderShape getRenderShape(BlockState state) {
 		return RenderShape.INVISIBLE;
 	}
 	</#if>
 
 	<#if data.blockBase?has_content && data.blockBase == "Stairs">
-   	@Override public float getExplosionResistance() {
+	@Override public float getExplosionResistance() {
 		return ${data.resistance}f;
-   	}
+	}
 	</#if>
 
 	<#if data.displayFluidOverlay>
@@ -384,9 +384,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		<#if data.rotationMode != 3>
 		return super.getStateForPlacement(context)
 			<#if data.rotationMode == 1>
-			    <#if data.enablePitch>
-			    .setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
-			    </#if>
+				<#if data.enablePitch>
+				.setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
+				</#if>
 			.setValue(FACING, context.getHorizontalDirection().getOpposite())
 			<#elseif data.rotationMode == 2>
 			.setValue(FACING, context.getNearestLookingDirection().getOpposite())
@@ -395,33 +395,33 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			<#elseif data.rotationMode == 5>
 			.setValue(AXIS, context.getClickedFace().getAxis())
 			</#if>
-	    	<@initCustomBlockStateProperties />
+			<@initCustomBlockStateProperties />
 			<#if data.isWaterloggable>
 			.setValue(WATERLOGGED, flag)
 			</#if>;
 		<#elseif data.rotationMode == 3>
-	    if (context.getClickedFace().getAxis() == Direction.Axis.Y)
-	        return super.getStateForPlacement(context)
-	    		<#if data.enablePitch>
-	    		    .setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
-	    		    .setValue(FACING, context.getHorizontalDirection())
-	    		<#else>
-	    		    .setValue(FACING, Direction.NORTH)
-	    		</#if>
-	    		<@initCustomBlockStateProperties />
-	    		<#if data.isWaterloggable>
-	    		.setValue(WATERLOGGED, flag)
-	    		</#if>;
+		if (context.getClickedFace().getAxis() == Direction.Axis.Y)
+			return super.getStateForPlacement(context)
+				<#if data.enablePitch>
+					.setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+					.setValue(FACING, context.getHorizontalDirection())
+				<#else>
+					.setValue(FACING, Direction.NORTH)
+				</#if>
+				<@initCustomBlockStateProperties />
+				<#if data.isWaterloggable>
+				.setValue(WATERLOGGED, flag)
+				</#if>;
 
-	    return super.getStateForPlacement(context)
-	    	<#if data.enablePitch>
-	    	    .setValue(FACE, AttachFace.WALL)
-	    	</#if>
-	    	.setValue(FACING, context.getClickedFace())
-	    	<@initCustomBlockStateProperties />
-	    	<#if data.isWaterloggable>
-	    	.setValue(WATERLOGGED, flag)
-	    	</#if>;
+		return super.getStateForPlacement(context)
+			<#if data.enablePitch>
+				.setValue(FACE, AttachFace.WALL)
+			</#if>
+			.setValue(FACING, context.getClickedFace())
+			<@initCustomBlockStateProperties />
+			<#if data.isWaterloggable>
+			.setValue(WATERLOGGED, flag)
+			</#if>;
 		</#if>
 	}
 	</#if>
@@ -482,13 +482,13 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#if data.isWaterloggable>
 	@Override public FluidState getFluidState(BlockState state) {
-	    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 	</#if>
 
 	<#if data.isWaterloggable || hasProcedure(data.placingCondition)>
 	@Override public BlockState updateShape(BlockState state, LevelReader world, ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
-	    <#if data.isWaterloggable>
+		<#if data.isWaterloggable>
 		if (state.getValue(WATERLOGGED)) {
 			scheduledTickAccess.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
@@ -687,35 +687,35 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		}
 
 		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		    return new ${name}BlockEntity(pos, state);
+			return new ${name}BlockEntity(pos, state);
 		}
 
-	    @Override
+		@Override
 		public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
 			super.triggerEvent(state, world, pos, eventID, eventParam);
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			return blockEntity != null && blockEntity.triggerEvent(eventID, eventParam);
 		}
 
-	    <#if data.inventoryDropWhenDestroyed>
+		<#if data.inventoryDropWhenDestroyed>
 		@Override protected void affectNeighborsAfterRemoval(BlockState blockstate, ServerLevel world, BlockPos blockpos, boolean flag) {
 			Containers.updateNeighboursAfterDestroy(blockstate, world, blockpos);
 		}
-	    </#if>
+		</#if>
 
-	    <#if data.inventoryComparatorPower>
-	    @Override public boolean hasAnalogOutputSignal(BlockState state) {
+		<#if data.inventoryComparatorPower>
+		@Override public boolean hasAnalogOutputSignal(BlockState state) {
 			return true;
 		}
 
-	    @Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
+		@Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
 			BlockEntity tileentity = world.getBlockEntity(pos);
 			if (tileentity instanceof ${name}BlockEntity be)
 				return AbstractContainerMenu.getRedstoneSignalFromContainer(be);
 			else
 				return 0;
 		}
-	    </#if>
+		</#if>
 	</#if>
 
 	<#if data.sensitiveToVibration && data.hasInventory>

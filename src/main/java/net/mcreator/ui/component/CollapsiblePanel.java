@@ -44,8 +44,7 @@ public class CollapsiblePanel extends JPanel {
 
 		setBorder(border = BorderFactory.createTitledBorder(
 				BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()), title,
-				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null,
-				Theme.current().getAltForegroundColor()));
+				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null, Theme.current().getAltForegroundColor()));
 
 		setTitle(text);
 		updateBorderTitle();

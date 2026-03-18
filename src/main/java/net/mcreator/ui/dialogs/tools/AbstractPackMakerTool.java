@@ -20,7 +20,6 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -92,14 +91,15 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		return true;
 	}
 
-	protected static void addGeneratableElementToWorkspace(@Nullable AbstractPackMakerTool packMakerTool, Workspace workspace, FolderElement folder,
-			GeneratableElement generatableElement) {
+	protected static void addGeneratableElementToWorkspace(@Nullable AbstractPackMakerTool packMakerTool,
+			Workspace workspace, FolderElement folder, GeneratableElement generatableElement) {
 		if (!workspace.containsModElement(generatableElement.getModElement().getName())) {
 			generatableElement.getModElement().setParentFolder(folder);
 			workspace.getModElementManager().storeModElementPicture(generatableElement);
 			workspace.getWorkspace().addModElement(generatableElement.getModElement());
 			if (packMakerTool != null) {
-				packMakerTool.toGenerate.add(generatableElement); // if inside AbstractPackMakerTool, we can queue generation
+				packMakerTool.toGenerate.add(
+						generatableElement); // if inside AbstractPackMakerTool, we can queue generation
 			} else {
 				workspace.getGenerator().generateElement(generatableElement);
 			}

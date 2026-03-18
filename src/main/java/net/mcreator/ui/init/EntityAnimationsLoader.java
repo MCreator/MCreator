@@ -22,9 +22,9 @@ package net.mcreator.ui.init;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.gradle.internal.FileUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -52,7 +52,8 @@ public class EntityAnimationsLoader {
 		for (String file : fileNames) {
 			String[] animationCodes = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
 					String[].class);
-			entityAnimations.put(FileUtils.removeExtension(file.replace("templates/animations/", "")), animationCodes);
+			entityAnimations.put(FilenameUtils.removeExtension(file.replace("templates/animations/", "")),
+					animationCodes);
 		}
 	}
 
