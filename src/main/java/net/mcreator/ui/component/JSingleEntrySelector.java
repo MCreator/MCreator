@@ -21,7 +21,6 @@ package net.mcreator.ui.component;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
@@ -119,6 +118,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	}
 
 	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
 		readableText.setEnabled(enabled);
 		edit.setEnabled(enabled);
 		remove.setEnabled(enabled);
@@ -131,12 +131,14 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	public void updateReadableText() {
 		boolean isSupported = true;
 		readableText.setIcon(null);
-		if (currentEntry == null) {
+		switch (currentEntry) {
+		case null -> {
 			readableText.setText(defaultText);
 			readableText.setForeground(Theme.current().getAltForegroundColor());
 			readableText.setToolTipText(readableText.getText());
 			return;
-		} else if (currentEntry instanceof MappableElement mappableElement) {
+		}
+		case MappableElement mappableElement -> {
 			Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
 			if (dataListEntryOpt.isPresent()) {
 				DataListEntry dataListEntry = dataListEntryOpt.get();
@@ -160,14 +162,15 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 				else if (unmappedValue.startsWith("#"))
 					readableText.setIcon(IconUtils.resize(MCItem.TAG_ICON, 18));
 			}
-		} else if (currentEntry instanceof File file) {
-			readableText.setText(FilenameUtilsPatched.removeExtension(file.getName()));
-		} else {
+		}
+		case File file -> readableText.setText(FilenameUtilsPatched.removeExtension(file.getName()));
+		default -> {
 			readableText.setText(StringUtils.machineToReadableName(currentEntry.toString().replace("CUSTOM:", "")));
 
 			if (currentEntry.toString().contains("CUSTOM:"))
 				readableText.setIcon(IconUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()), 18));
+		}
 		}
 		readableText.setForeground(Theme.current().getForegroundColor());
 		readableText.setToolTipText(

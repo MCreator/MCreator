@@ -48,40 +48,40 @@ import java.util.Objects;
 public class SoundElementDialog {
 
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
+		boolean isJava = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+				.getGamePlatform() == GeneratorFlavor.GamePlatform.JAVAEDITION;
+
+		JPanel ui = new JPanel(new GridLayout(isJava ? 2 : 4, 2, 10, 2));
 		VTextField soundName = new VTextField(26);
 		soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
 		soundName.enableRealtimeValidation();
 
+		ui.add(L10N.label("dialog.sounds.registry_name"));
+		ui.add(soundName);
+
 		JTextField subtitle = new JTextField();
 
-		if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform()
-				== GeneratorFlavor.GamePlatform.JAVAEDITION) {
-			JPanel ui = new JPanel(new GridLayout(2, 2, 10, 2));
+		JSoundList soundsEntries = new JSoundList(mcreator, IHelpContext.NONE, !isJava);
 
-			ui.add(L10N.label("dialog.sounds.registry_name"));
-			ui.add(soundName);
+		JComponent component = PanelUtils.northAndCenterElement(L10N.label("dialog.sounds.declarations"),
+				soundsEntries);
 
+		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		JPanel pane1 = new JPanel(new BorderLayout());
+		pane1.setOpaque(false);
+		pane1.add(component, BorderLayout.CENTER);
+
+		if (element == null && files != null) {
+			List<SoundElement.Sound> sounds = new ArrayList<>();
+			Arrays.stream(files).filter(Objects::nonNull).filter(e -> e.getName().endsWith(".ogg")).toList()
+					.forEach(file -> sounds.add(new SoundElement.Sound(file.getName())));
+			soundsEntries.setEntries(sounds);
+		}
+
+		if (isJava) {
 			ui.add(L10N.label("dialog.sounds.subtitle"));
 			ui.add(subtitle);
-
-			JPanel pane1 = new JPanel(new BorderLayout());
-
-			JSoundList soundsEntries = new JSoundList(mcreator, IHelpContext.NONE);
-
-			JComponent component = PanelUtils.northAndCenterElement(L10N.label("dialog.sounds.declarations"),
-					soundsEntries);
-
-			component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-			pane1.add(component, BorderLayout.CENTER);
-			pane1.setOpaque(false);
-
-			if (element == null && files != null) {
-				List<SoundElement.Sound> sounds = new ArrayList<>();
-				Arrays.stream(files).filter(Objects::nonNull).filter(e -> e.getName().endsWith(".ogg")).toList()
-						.forEach(file -> sounds.add(new SoundElement.Sound(file.getName())));
-				soundsEntries.setEntries(sounds);
-			}
 
 			if (element != null) {
 				soundName.setText(element.getName());
@@ -112,6 +112,9 @@ public class SoundElementDialog {
 						for (int i = 0; i < entriesFiles.size(); i++) {
 							SingleFileField field = entriesFiles.get(i);
 
+							System.out.println(field.getEntry().getName());
+							System.out.println(field.isEnabled());
+
 							if (!field.isEnabled())
 								continue;
 
@@ -140,15 +143,10 @@ public class SoundElementDialog {
 				return element;
 			}
 		} else {
-			JPanel ui = new JPanel(new GridLayout(4, 2, 10, 2));
-
 			JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
 			JMinMaxSpinner jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
 			soundCategory.addActionListener(
 					e -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
-
-			ui.add(L10N.label("dialog.sounds.registry_name"));
-			ui.add(soundName);
 
 			ui.add(L10N.label("dialog.sounds.category"));
 			ui.add(soundCategory);
@@ -158,25 +156,6 @@ public class SoundElementDialog {
 
 			ui.add(L10N.label("dialog.sounds.subtitle"));
 			ui.add(subtitle);
-
-			JPanel pane1 = new JPanel(new BorderLayout());
-
-			JSoundList soundsEntries = new JSoundList(mcreator, IHelpContext.NONE, true);
-
-			JComponent component = PanelUtils.northAndCenterElement(L10N.label("dialog.sounds.declarations"),
-					soundsEntries);
-
-			component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-			pane1.add(component, BorderLayout.CENTER);
-			pane1.setOpaque(false);
-
-			if (element == null && files != null) {
-				List<SoundElement.Sound> sounds = new ArrayList<>();
-				Arrays.stream(files).filter(Objects::nonNull).filter(e -> e.getName().endsWith(".ogg")).toList()
-						.forEach(file -> sounds.add(new SoundElement.Sound(file.getName())));
-				soundsEntries.setEntries(sounds);
-			}
 
 			if (element != null) {
 				soundName.setText(element.getName());
