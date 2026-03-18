@@ -12,9 +12,9 @@
       <#if file.getCategory() == "record" || file.getCategory() == "music">,
       "stream": true</#if>
       <#if file.getVolume() != 1>,
-      "volume": ${file.getVolume()}</#if>
+      "volume": ${file.getVolume()?string("0.##")}</#if>
       <#if file.getPitch() != 1>,
-      "pitch": ${file.getPitch()}</#if>
+      "pitch": ${file.getPitch()?string("0.##")}</#if>
       <#if file.getWeight() != 1>,
       "weight": ${file.getWeight()}</#if>
       <#if file.getAttenuationDistance() != 16>,
