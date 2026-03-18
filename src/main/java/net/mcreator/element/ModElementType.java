@@ -182,6 +182,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> VILLAGERTRADE;
 
 	// Bedrock-specific METs
+	public static ModElementType<?> BEENTITY;
 	public static ModElementType<?> BEITEM;
 	public static ModElementType<?> BEBLOCK;
 	public static ModElementType<?> BESCRIPT;
