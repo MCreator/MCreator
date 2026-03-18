@@ -48,15 +48,15 @@ import java.util.Objects;
 public class SoundElementDialog {
 
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
+		VTextField soundName = new VTextField(26);
+		soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
+		soundName.enableRealtimeValidation();
+
+		JTextField subtitle = new JTextField();
+
 		if (mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform()
 				== GeneratorFlavor.GamePlatform.JAVAEDITION) {
 			JPanel ui = new JPanel(new GridLayout(2, 2, 10, 2));
-
-			VTextField soundName = new VTextField(26);
-			soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
-			soundName.enableRealtimeValidation();
-
-			JTextField subtitle = new JTextField();
 
 			ui.add(L10N.label("dialog.sounds.registry_name"));
 			ui.add(soundName);
@@ -142,15 +142,10 @@ public class SoundElementDialog {
 		} else {
 			JPanel ui = new JPanel(new GridLayout(4, 2, 10, 2));
 
-			VTextField soundName = new VTextField(20);
 			JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
 			JMinMaxSpinner jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
-			soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
-			soundName.enableRealtimeValidation();
 			soundCategory.addActionListener(
 					e -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
-
-			JTextField subtitle = new JTextField();
 
 			ui.add(L10N.label("dialog.sounds.registry_name"));
 			ui.add(soundName);
