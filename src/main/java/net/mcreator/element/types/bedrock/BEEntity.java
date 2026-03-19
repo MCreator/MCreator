@@ -55,7 +55,7 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public double collisionBoxWidth;
 	public double collisionBoxHeight;
 
-	public List<String> typeFamily;
+	public String entityBehaviourType;
 	public boolean isSummonable;
 	public int xpAmountOnDeath;
 	public MItemBlock entityDrop;
@@ -87,7 +87,6 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 
 	public BEEntity(ModElement element) {
 		super(element);
-		typeFamily = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -113,10 +112,6 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 
 	public boolean hasDrop() {
 		return !entityDrop.isEmpty();
-	}
-
-	public boolean hasType(String type) {
-		return typeFamily.contains(type);
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

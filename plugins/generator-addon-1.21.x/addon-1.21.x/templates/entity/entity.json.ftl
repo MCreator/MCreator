@@ -16,7 +16,7 @@
       "minecraft:nameable": {
       },
       "minecraft:type_family": {
-        "family": [ "${modid}:${registryname}", "${registryname}"<#if data.typeFamily?? && data.typeFamily?has_content>, <#list data.typeFamily as type>"${type}"<#sep>,</#list></#if> ]
+        "family": [ "${modid}:${registryname}", "${registryname}", "mob" <#if data.entityBehaviourType == "Mob">, "monster"</#if> ]
       },
       <#if (data.xpAmountOnDeath > 0)>
       "minecraft:experience_reward": {
@@ -34,7 +34,7 @@
         "suffocateTime": 0
       },
       </#if>
-      <#if data.hasType("mob")>
+      <#if data.mobBehaviourType == "Mob">
       "minecraft:burns_in_daylight": {
       },
       </#if>

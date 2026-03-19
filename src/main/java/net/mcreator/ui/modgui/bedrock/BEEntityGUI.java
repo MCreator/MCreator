@@ -43,7 +43,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureComboBox;
-import net.mcreator.ui.minecraft.TypeFamilyListField;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
@@ -86,7 +85,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final JSpinner collisionBoxWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
 	private final JSpinner collisionBoxHeight = new JSpinner(new SpinnerNumberModel(1.9, 0, 1024, 0.1));
 
-	private final TypeFamilyListField typeFamily = new TypeFamilyListField(mcreator);
+	private final JComboBox<String> entityBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
 	private final JCheckBox isSummonable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox waterEntity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canFly = L10N.checkbox("elementgui.common.enable");
@@ -164,9 +163,9 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		JPanel behaviourProps = new JPanel(new GridLayout(15, 2, 30, 2));
 		behaviourProps.setOpaque(false);
 
-		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/type_family"),
-				L10N.label("elementgui.beentity.type_family")));
-		behaviourProps.add(typeFamily);
+		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour_type"),
+				L10N.label("elementgui.living_entity.behaviour_type")));
+		behaviourProps.add(entityBehaviourType);
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/is_summonable"),
 				L10N.label("elementgui.beentity.is_summonable")));
@@ -229,7 +228,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		hasSpawnEgg.addActionListener(e -> refreshEggProperties());
 
 		behaviourPanel.add("Center", PanelUtils.totalCenterInPanel(behaviourProps));
-		
+
 		JPanel aiTasks = new JPanel(new BorderLayout(0, 2));
 		aiTasks.setOpaque(false);
 
@@ -287,7 +286,8 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		spawningPanel.add("Center", PanelUtils.totalCenterInPanel(spawningProps));
 
-		addPage(L10N.t("elementgui.living_entity.page_visual"), visualPanel).validate(modelTexture).validate(entityName);
+		addPage(L10N.t("elementgui.living_entity.page_visual"), visualPanel).validate(modelTexture)
+				.validate(entityName);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), behaviourPanel);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), aiPanel).lazyValidate(
 				BlocklyAggregatedValidationResult.blocklyValidator(this,
@@ -372,7 +372,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		modelTexture.setTextureFromTextureName(entity.modelTexture);
 		collisionBoxHeight.setValue(entity.collisionBoxHeight);
 		collisionBoxWidth.setValue(entity.collisionBoxWidth);
-		typeFamily.setListElements(entity.typeFamily);
+		entityBehaviourType.setSelectedItem(entity.entityBehaviourType);
 		isSummonable.setSelected(entity.isSummonable);
 		xpAmountOnDeath.setValue(entity.xpAmountOnDeath);
 		entityDrop.setBlock(entity.entityDrop);
@@ -411,7 +411,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		entity.modelTexture = modelTexture.getTextureName();
 		entity.collisionBoxHeight = (double) collisionBoxHeight.getValue();
 		entity.collisionBoxWidth = (double) collisionBoxWidth.getValue();
-		entity.typeFamily = typeFamily.getListElements();
+		entity.entityBehaviourType = (String) entityBehaviourType.getSelectedItem();
 		entity.isSummonable = isSummonable.isSelected();
 		entity.xpAmountOnDeath = (int) xpAmountOnDeath.getValue();
 		entity.entityDrop = entityDrop.getBlock();
