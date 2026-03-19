@@ -84,7 +84,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final SearchableComboBox<Model> entityModel = new SearchableComboBox<>(builtinmobmodels);
 	private TextureComboBox modelTexture;
 	private final JSpinner collisionBoxWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
-	private final JSpinner collisionBoxHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
+	private final JSpinner collisionBoxHeight = new JSpinner(new SpinnerNumberModel(1.9, 0, 1024, 0.1));
 
 	private final TypeFamilyListField typeFamily = new TypeFamilyListField(mcreator);
 	private final JCheckBox isSummonable = L10N.checkbox("elementgui.common.enable");
@@ -94,7 +94,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 	private final JSpinner attackDamage = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
 	private final JSpinner speedValue = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
-	private final JSpinner healthValue = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
+	private final JSpinner healthValue = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
 	private final JSpinner followRangeValue = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
 	private final JSpinner xpAmountOnDeath = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
 	private MCItemHolder entityDrop;
@@ -118,8 +118,6 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
 	private final List<IBlocklyPanelHolder.BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
-
-	private boolean editorReady = false;
 
 	public BEEntityGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -193,7 +191,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/drop"),
 				L10N.label("elementgui.beentity.entity_drop")));
-		behaviourProps.add(entityDrop);
+		behaviourProps.add(PanelUtils.totalCenterInPanel(entityDrop));
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"),
 				L10N.label("elementgui.beentity.speed_value")));
@@ -299,9 +297,11 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			entityName.setText(readableNameFromModElement);
+			isSummonable.setSelected(true);
+			isPushable.setSelected(true);
+			isPushableByPiston.setSelected(true);
+			hasSpawnEgg.setSelected(true);
 		}
-
-		editorReady = true;
 
 		refreshEggProperties();
 		refreshSpawnProperties();

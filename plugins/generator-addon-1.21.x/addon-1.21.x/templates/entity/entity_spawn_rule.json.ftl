@@ -23,7 +23,7 @@
         "minecraft:biome_filter": {
           "test": "has_biome_tag", "operator": "==", "value": "monster"
         },
-        <#elseif data.mobSpawningType == "waterCreature">
+        <#elseif data.populationControl == "waterCreature">
         "minecraft:spawns_on_surface": {},
         "minecraft:spawns_underwater": {},
         "minecraft:biome_filter": {
