@@ -24,7 +24,6 @@ import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
@@ -35,7 +34,6 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.modgui.bedrock.BEEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -54,8 +52,8 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public String entityName;
 	public String modelName;
 	public String modelTexture;
-	public int collisionBoxWidth;
-	public int collisionBoxHeight;
+	public double collisionBoxWidth;
+	public double collisionBoxHeight;
 
 	public List<String> typeFamily;
 	public boolean isSummonable;
@@ -63,14 +61,15 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public MItemBlock entityDrop;
 	public int healthValue;
 	public int attackDamage;
-	public float speedValue;
+	public double speedValue;
 	public boolean canFly;
-	public float flyingSpeedValue;
+	public double flyingSpeedValue;
 	public int followRangeValue;
 	public boolean isImmuneToFire;
 	public boolean isPushable;
 	public boolean isPushableByPiston;
 
+	public boolean generateEntity;
 	public String populationControl;
 	public int spawningProbability;
 	public int minHerdSize;
@@ -114,6 +113,10 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 
 	public boolean hasDrop() {
 		return !entityDrop.isEmpty();
+	}
+
+	public boolean hasType(String type) {
+		return typeFamily.contains(type);
 	}
 
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {

@@ -4,8 +4,8 @@
   "minecraft:entity": {
     "description": {
       "identifier": "${modid}:${registryname}",
-      "is_spawnable": ${data.spawnThisMob},
-      "is_summonable": ${data.hasSpawnEgg},
+      "is_spawnable": ${data.hasSpawnEgg},
+      "is_summonable": ${data.isSummonable},
       "is_experimental": false
     },
     "component_groups": {
@@ -16,11 +16,11 @@
       "minecraft:nameable": {
       },
       "minecraft:type_family": {
-        "family": [ "${modid}:${registryname}", "${registryname}", "mob" <#if data.mobBehaviourType == "Mob">, "monster"</#if> ]
+        "family": [ "${modid}:${registryname}", "${registryname}"<#if data.typeFamily?? && data.typeFamily?has_content>, <#list data.typeFamily as type>"${type}"<#sep>,</#list></#if> ]
       },
-      <#if (data.xpAmount > 0)>
+      <#if (data.xpAmountOnDeath > 0)>
       "minecraft:experience_reward": {
-        "on_death": "query.last_hit_by_player ? ${data.xpAmount} : 0"
+        "on_death": "query.last_hit_by_player ? ${data.xpAmountOnDeath} : 0"
       },
        </#if>
       <#if data.hasDrop()>
@@ -28,36 +28,36 @@
         "table": "loot_tables/entities/${modid}_${registryname}.json"
       },
       </#if>
-      <#if !data.waterMob && !data.immuneToDrowning>
+      <#if !data.waterEntity && !data.isImmuneToDrowning>
       "minecraft:breathable": {
         "totalSupply": 15,
         "suffocateTime": 0
       },
       </#if>
-      <#if data.mobBehaviourType == "Mob">
+      <#if data.hasType("mob")>
       "minecraft:burns_in_daylight": {
       },
       </#if>
       "minecraft:collision_box": {
-        "width": ${data.modelWidth},
-        "height": ${data.modelHeight}
+        "width": ${data.collisionBoxWidth},
+        "height": ${data.collisionBoxHeight}
       },
       "minecraft:health": {
-        "value": ${data.health},
-        "max": ${data.health}
+        "value": ${data.healthValue},
+        "max": ${data.healthValue}
       },
       "minecraft:attack": {
-        "damage": ${data.attackStrength}
+        "damage": ${data.attackDamage}
       },
       "minecraft:movement": {
-        "value": ${data.movementSpeed}
+        "value": ${data.speedValue}
       },
-      <#if !data.waterMob>
+      <#if !data.waterEntity>
       "minecraft:navigation.walk": {
         "can_path_over_water": true
       },
       </#if>
-      <#if data.immuneToFallDamage>
+      <#if data.isImmuneToFallDamage>
       "minecraft:damage_sensor": {
         "triggers": {
           "cause": "fall",
@@ -65,11 +65,11 @@
         }
       },
       </#if>
-      <#if data.flyingMob>
+      <#if data.canFly>
       "minecraft:can_fly": {
       },
       "minecraft:flying_speed": {
-        "value": ${data.movementSpeed}
+        "value": ${data.flyingSpeedValue}
       },
       <#else>
       "minecraft:jump.static": {
@@ -77,7 +77,7 @@
       "minecraft:physics": {
       },
       </#if>
-      <#if !data.immuneToFire>
+      <#if !data.isImmuneToFire>
       "minecraft:hurt_on_condition": {
         "damage_conditions": [
           {
@@ -95,15 +95,15 @@
       <#else>
       "minecraft:fire_immune": true,
       </#if>
-      <#if !data.disableCollisions>
+      <#if data.isPushable || data.isPushableByPiston>
       "minecraft:pushable": {
-        "is_pushable": true,
-        "is_pushable_by_piston": true
+        "is_pushable": ${data.isPushable},
+        "is_pushable_by_piston": ${data.isPushableByPiston}
       },
       </#if>
       ${aicode}
       "minecraft:follow_range": {
-        "value": ${data.trackingRange}
+        "value": ${data.followRangeValue}
       }
     },
     "events": {

@@ -4,11 +4,11 @@
   "minecraft:spawn_rules": {
     "description": {
       "identifier": "${modid}:${registryname}",
-      "population_control": "<#if data.mobSpawningType == "monster">monster<#else>animal</#if>"
+      "population_control": "<#if data.populationControl == "monster">monster<#else>animal</#if>"
     },
     "conditions": [
       {
-        <#if data.mobSpawningType == "monster">
+        <#if data.populationControl == "monster">
         "minecraft:spawns_on_surface": {},
         "minecraft:spawns_underground": {},
         "minecraft:brightness_filter": {
@@ -48,8 +48,8 @@
           "default": ${data.spawningProbability}
         },
         "minecraft:herd": {
-          "min_size": ${data.minNumberOfMobsPerGroup},
-          "max_size": ${data.maxNumberOfMobsPerGroup}
+          "min_size": ${data.minHerdSize},
+          "max_size": ${data.maxHerdSize}
         }
       }
     ]

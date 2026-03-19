@@ -163,7 +163,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		visualPanel.add("Center", PanelUtils.totalCenterInPanel(visualProps));
 
-		JPanel behaviourProps = new JPanel(new GridLayout(14, 2, 30, 2));
+		JPanel behaviourProps = new JPanel(new GridLayout(15, 2, 30, 2));
 		behaviourProps.setOpaque(false);
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/type_family"),
@@ -379,6 +379,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		healthValue.setValue(entity.healthValue);
 		attackDamage.setValue(entity.attackDamage);
 		speedValue.setValue(entity.speedValue);
+		waterEntity.setSelected(entity.waterEntity);
 		canFly.setSelected(entity.canFly);
 		flyingSpeedValue.setValue(entity.flyingSpeedValue);
 		followRangeValue.setValue(entity.followRangeValue);
@@ -387,6 +388,8 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		isImmuneToFallDamage.setSelected(entity.isImmuneToFallDamage);
 		isPushable.setSelected(entity.isPushable);
 		isPushableByPiston.setSelected(entity.isPushableByPiston);
+
+		generateEntity.setSelected(entity.generateEntity);
 		populationControl.setSelectedItem(entity.populationControl);
 		spawningProbability.setValue(entity.spawningProbability);
 		entityHerd.setMinValue(entity.minHerdSize);
@@ -403,26 +406,28 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 	@Override public BEEntity getElementFromGUI() {
 		BEEntity entity = new BEEntity(this.modElement);
-		entity.entityName = entityName.getName();
-		entity.modelName = entityModel.getName();
+		entity.entityName = entityName.getText();
+		entity.modelName = Objects.requireNonNull(entityModel.getSelectedItem()).toString();
 		entity.modelTexture = modelTexture.getTextureName();
-		entity.collisionBoxHeight = (int) collisionBoxHeight.getValue();
-		entity.collisionBoxWidth = (int) collisionBoxWidth.getValue();
+		entity.collisionBoxHeight = (double) collisionBoxHeight.getValue();
+		entity.collisionBoxWidth = (double) collisionBoxWidth.getValue();
 		entity.typeFamily = typeFamily.getListElements();
 		entity.isSummonable = isSummonable.isSelected();
 		entity.xpAmountOnDeath = (int) xpAmountOnDeath.getValue();
 		entity.entityDrop = entityDrop.getBlock();
 		entity.healthValue = (int) healthValue.getValue();
 		entity.attackDamage = (int) attackDamage.getValue();
-		entity.speedValue = (int) speedValue.getValue();
+		entity.speedValue = (double) speedValue.getValue();
+		entity.waterEntity = waterEntity.isSelected();
 		entity.canFly = canFly.isSelected();
-		entity.flyingSpeedValue = (int) flyingSpeedValue.getValue();
+		entity.flyingSpeedValue = (double) flyingSpeedValue.getValue();
 		entity.followRangeValue = (int) followRangeValue.getValue();
 		entity.isImmuneToDrowning = isImmuneToDrowning.isSelected();
 		entity.isImmuneToFire = isImmuneToFire.isSelected();
 		entity.isImmuneToFallDamage = isImmuneToFallDamage.isSelected();
 		entity.isPushable = isPushable.isSelected();
 		entity.isPushableByPiston = isPushableByPiston.isSelected();
+		entity.generateEntity = generateEntity.isSelected();
 		entity.populationControl = (String) populationControl.getSelectedItem();
 		entity.spawningProbability = (int) spawningProbability.getValue();
 		entity.minHerdSize = entityHerd.getIntMinValue();
