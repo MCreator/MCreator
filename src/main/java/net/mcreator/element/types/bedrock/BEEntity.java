@@ -55,7 +55,6 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public double collisionBoxWidth;
 	public double collisionBoxHeight;
 
-	public String entityBehaviourType;
 	public boolean isSummonable;
 	public int xpAmountOnDeath;
 	public MItemBlock entityDrop;
@@ -81,6 +80,7 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 
 	@BlocklyXML("aitasks") public String aixml;
 
+	public String entityBehaviourType;
 	public boolean waterEntity;
 	public boolean isImmuneToDrowning;
 	public boolean isImmuneToFallDamage;

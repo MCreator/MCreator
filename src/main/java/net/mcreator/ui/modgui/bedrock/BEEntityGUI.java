@@ -368,7 +368,11 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 	@Override protected void openInEditingMode(BEEntity entity) {
 		entityName.setText(entity.entityName);
-		entityModel.setSelectedItem(entity.modelName);
+
+		Model model = entity.getEntityModel();
+		if (model != null)
+			entityModel.setSelectedItem(model);
+
 		modelTexture.setTextureFromTextureName(entity.modelTexture);
 		collisionBoxHeight.setValue(entity.collisionBoxHeight);
 		collisionBoxWidth.setValue(entity.collisionBoxWidth);
