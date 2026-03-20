@@ -130,8 +130,6 @@ class NativeFileDialogs {
 	}
 
 	private static File addExtensionIfNeeded(File file, SystemFileChooser fileChooser) {
-		// getFileFilter does not work, so this only works for one extension
-		// see https://github.com/JFormDesigner/FlatLaf/issues/1065
 		SystemFileChooser.FileFilter filter = fileChooser.getFileFilter();
 		if (filter instanceof SystemFileChooser.FileNameExtensionFilter extensionFilter) {
 			String extension = FilenameUtils.getExtension(file.getName()).toLowerCase(Locale.ENGLISH);

@@ -100,15 +100,7 @@ public class JBCefOsrHandler implements CefRenderHandler {
 		SwingUtilities.invokeLater(() -> {
 			if (!browser.getUIComponent().isShowing())
 				return;
-			Component component = browser.getUIComponent();
-			JRootPane root = SwingUtilities.getRootPane(component);
-			RepaintManager rm = RepaintManager.currentManager(root);
-			Rectangle dirtySrc = new Rectangle(0, 0, component.getWidth(), component.getHeight());
-			Rectangle dirtyDst = SwingUtilities.convertRectangle(component, dirtySrc, root);
-			int dx = 1;
-			// NOTE: should mark area outside browser (otherwise the background component won't be repainted)
-			rm.addDirtyRegion(root, dirtyDst.x - dx, dirtyDst.y - dx, dirtyDst.width + dx * 2,
-					dirtyDst.height + dx * 2);
+			browser.getUIComponent().repaint();
 		});
 	}
 
