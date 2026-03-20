@@ -25,11 +25,11 @@
 - flintsteel:
   readable_name: "Flint and steel"
 - g_armor:
-  readable_name: "All armors"
+  readable_name: "Group armor"
 - g_digging:
-  readable_name: "All digging tools"
+  readable_name: "Group digging tool"
 - g_tool:
-  readable_name: "All tools"
+  readable_name: "Group tool"
 - hoe:
   readable_name: "Hoe"
 - melee_spear:
