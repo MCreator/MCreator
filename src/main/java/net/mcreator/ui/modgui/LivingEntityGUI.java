@@ -457,7 +457,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour"),
 				L10N.label("elementgui.living_entity.behaviour")));
-		subpane1.add(mobBehaviourType);
+		subpane1.add(
+				
+		);
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
