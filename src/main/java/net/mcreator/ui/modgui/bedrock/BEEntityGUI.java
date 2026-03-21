@@ -311,10 +311,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(entityModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
-				Model.getModels(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
-						.collect(Collectors.toList())));
+		ComboBoxUtil.updateComboBoxContents(entityModel, Arrays.asList(builtinmobmodels));
 	}
 
 	@Override public void addBlocklyChangedListener(IBlocklyPanelHolder.BlocklyChangedListener listener) {
