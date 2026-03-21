@@ -204,19 +204,19 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 				L10N.label("elementgui.beentity.attack_damage")));
 		behaviourProps.add(attackDamage);
 
-		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/pushable_behavior"),
+		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/pushable_behavior"),
 				L10N.label("elementgui.beentity.pushable_behavior")));
 		behaviourProps.add(PanelUtils.join(FlowLayout.LEFT, isPushable, new JEmptyBox(2, 2), isPushableByPiston));
 
-		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/is_immune_to_fire"),
+		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/is_immune_to_fire"),
 				L10N.label("elementgui.beentity.is_immune_to_fire")));
 		behaviourProps.add(isImmuneToFire);
 
-		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/is_immune_to_fall_damage"),
+		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/is_immune_to_fall_damage"),
 				L10N.label("elementgui.beentity.is_immune_to_fall_damage")));
 		behaviourProps.add(isImmuneToFallDamage);
 
-		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/is_immune_to_drowning"),
+		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/is_immune_to_drowning"),
 				L10N.label("elementgui.beentity.is_immune_to_drowning")));
 		behaviourProps.add(isImmuneToDrowning);
 
