@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class CefUtils {
@@ -110,7 +111,7 @@ public class CefUtils {
 		return settings;
 	}
 
-	private static CefApp getCefApp() {
+	private synchronized static CefApp getCefApp() {
 		if (cefApp == null) {
 			LOG.info("Initializing JCEF in {} mode",
 					useOSR() ? "OSR (" + getCefBrowserSettings().windowless_frame_rate + " FPS)" : "WR");
@@ -201,6 +202,8 @@ public class CefUtils {
 			settings.cache_path = Objects.requireNonNullElseGet(getTmpCacheFolder(),
 					() -> UserFolderManager.getFileFromUserFolder("/cef/")).toString();
 
+			CountDownLatch latch = new CountDownLatch(1);
+
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
 				@Override public void onContextInitialized() {
@@ -210,21 +213,23 @@ public class CefUtils {
 				@Override public boolean onBeforeTerminate() {
 					return true; // Do not let JCEF terminate itself
 				}
+
+				@Override public void stateHasChanged(CefApp.CefAppState state) {
+					if (state == CefApp.CefAppState.INITIALIZED) {
+						LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})", cefApp.getVersion().getJcefVersion(),
+								cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
+						latch.countDown();
+					}
+				}
 			});
 
 			CefApp.startup(args);
-
-			cefApp = CefApp.getInstance(args, settings, null);
-
-			CountDownLatch latch = new CountDownLatch(1);
-			cefApp.onInitialization(_ -> {
-				LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})", cefApp.getVersion().getJcefVersion(),
-						cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
-				latch.countDown();
-			});
+			cefApp = CefApp.getInstance(settings);
 
 			try {
-				latch.await();
+				if (!latch.await(10, TimeUnit.SECONDS)) {
+					LOG.error("Failed to initialize JCEF in time. Things may not work properly.");
+				}
 			} catch (InterruptedException ignored) {
 			}
 		}
