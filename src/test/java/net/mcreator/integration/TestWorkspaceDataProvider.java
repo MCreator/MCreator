@@ -37,6 +37,7 @@ import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.bedrock.BEBlock;
+import net.mcreator.element.types.bedrock.BEEntity;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
@@ -181,7 +182,7 @@ public class TestWorkspaceDataProvider {
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
 				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM || type == ModElementType.BEBLOCK
-				|| type == ModElementType.BESCRIPT) {
+				|| type == ModElementType.BESCRIPT || type == ModElementType.BEENTITY) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -1778,6 +1779,39 @@ public class TestWorkspaceDataProvider {
 				beblock.localScripts.add("Examplebescript3");
 			}
 			return beblock;
+		} else if (ModElementType.BEENTITY.equals(modElement.getType())) {
+			BEEntity beentity = new BEEntity(modElement);
+			beentity.entityName = modElement.getName();
+			beentity.modelName = getRandomString(random, List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider", "Villager"));
+			beentity.modelTexture = "entity_texture_1.png";
+			beentity.collisionBoxHeight = 0.3;
+			beentity.collisionBoxWidth = 1.2;
+			beentity.isSummonable = _true;
+			beentity.xpAmountOnDeath = 2;
+			beentity.entityDrop = new MItemBlock(modElement.getWorkspace(), getRandomItem(random, blocksAndItems).getName());
+			beentity.healthValue = 20;
+			beentity.attackDamage = 2;
+			beentity.speedValue = 3.2;
+			beentity.canFly = _true;
+			beentity.flyingSpeedValue = 2.3;
+			beentity.followRangeValue = 20;
+			beentity.isImmuneToFire = _true;
+			beentity.isPushable = _true;
+			beentity.isPushableByPiston = _true;
+			beentity.generateEntity = !_true;
+			beentity.populationControl = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+			beentity.spawningProbability = 21;
+			beentity.maxHerdSize = 10;
+			beentity.minHerdSize = 1;
+			beentity.hasSpawnEgg = !_true;
+			beentity.spawnEggBaseColor = new Color(10, 20, 34);
+			beentity.spawnEggDotColor = new Color(182, 172, 122);
+			beentity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+			beentity.entityBehaviourType = getRandomString(random, List.of("Mob", "Creature"));
+			beentity.waterEntity = _true;
+			beentity.isImmuneToDrowning = _true;
+			beentity.isImmuneToFallDamage = _true;
+			return beentity;
 		}
 		return null;
 	}
