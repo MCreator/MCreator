@@ -100,6 +100,7 @@ import java.util.stream.Collectors;
 		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
+		this.blocksAffected = new ArrayList<>();
 		this.attributeModifiers = new ArrayList<>();
 
 		this.attackSpeed = 2.8;
