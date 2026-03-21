@@ -47,7 +47,6 @@ import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
@@ -61,7 +60,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPanelHolder {
 
@@ -273,7 +271,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		generateEntity.addActionListener(e -> refreshSpawnProperties());
 
 		spawningProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_type"),
-				L10N.label("elementgui.living_entity.spawn_type")));
+				L10N.label("elementgui.beentity.spawn_type")));
 		spawningProps.add(populationControl);
 
 		spawningProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
