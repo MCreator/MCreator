@@ -163,8 +163,8 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		JPanel behaviourProps = new JPanel(new GridLayout(15, 2, 30, 2));
 		behaviourProps.setOpaque(false);
 
-		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour_type"),
-				L10N.label("elementgui.living_entity.behaviour_type")));
+		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour"),
+				L10N.label("elementgui.living_entity.behaviour")));
 		behaviourProps.add(entityBehaviourType);
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/is_summonable"),

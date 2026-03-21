@@ -34,7 +34,7 @@
         "suffocateTime": 0
       },
       </#if>
-      <#if data.mobBehaviourType == "Mob">
+      <#if data.entityBehaviourType == "Mob">
       "minecraft:burns_in_daylight": {
       },
       </#if>

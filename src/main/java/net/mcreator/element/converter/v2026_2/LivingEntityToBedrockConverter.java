@@ -53,7 +53,7 @@ public class LivingEntityToBedrockConverter implements IConverter {
 			beentity.speedValue = entity.movementSpeed;
 			beentity.canFly = entity.flyingMob;
 			beentity.flyingSpeedValue = entity.movementSpeed;
-			beentity.followRangeValue = entity.followRange;
+			beentity.followRangeValue = entity.trackingRange;
 			beentity.isImmuneToFire = entity.immuneToFire;
 			beentity.isPushable = !entity.disableCollisions;
 			beentity.isPushableByPiston = !entity.disableCollisions;
