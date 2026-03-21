@@ -1,0 +1,2 @@
+This is the amount of damage the entity will make when hurting another entity. Typical values are from 3 (e.g. Zombie) to 7-21 (Iron Golem).
+Using a negative value will heal the attacked entity instead of hurting it.

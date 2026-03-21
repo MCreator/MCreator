@@ -89,7 +89,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final JCheckBox canFly = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flyingSpeedValue = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
 
-	private final JSpinner attackDamage = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
+	private final JSpinner attackDamage = new JSpinner(new SpinnerNumberModel(3, -10000, 10000, 1));
 	private final JSpinner speedValue = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
 	private final JSpinner healthValue = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
 	private final JSpinner followRangeValue = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
@@ -198,7 +198,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 				L10N.label("elementgui.beentity.follow_range_value")));
 		behaviourProps.add(followRangeValue);
 
-		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/attack_strength"),
+		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/attack_damage"),
 				L10N.label("elementgui.beentity.attack_damage")));
 		behaviourProps.add(attackDamage);
 
