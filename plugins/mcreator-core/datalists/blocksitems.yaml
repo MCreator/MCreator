@@ -853,106 +853,6 @@
   type: block
   texture: OXIDIZED_COPPER
 
-- Blocks.CUT_COPPER:
-  readable_name: "Cut Copper"
-  type: block
-  texture: CUT_COPPER
-
-- Blocks.OXIDIZED_CHISELED_COPPER:
-  readable_name: "Oxidized Chiseled Copper"
-  type: block
-  texture: OXIDIZED_CHISELED_COPPER
-
-- Blocks.WEATHERED_CHISELED_COPPER:
-  readable_name: "Weathered Chiseled Copper"
-  type: block
-  texture: WEATHERED_CHISELED_COPPER
-
-- Blocks.EXPOSED_CHISELED_COPPER:
-  readable_name: "Exposed Chiseled Copper"
-  type: block
-  texture: EXPOSED_CHISELED_COPPER
-
-- Blocks.CHISELED_COPPER:
-  readable_name: "Chiseled Copper"
-  type: block
-  texture: CHISELED_COPPER
-
-- Blocks.WAXED_OXIDIZED_CHISELED_COPPER:
-  readable_name: "Waxed Oxidized Chiseled Copper"
-  type: block
-  texture: WAXED_OXIDIZED_CHISELED_COPPER
-
-- Blocks.WAXED_WEATHERED_CHISELED_COPPER:
-  readable_name: "Waxed Weathered Chiseled Copper"
-  type: block
-  texture: WAXED_WEATHERED_CHISELED_COPPER
-
-- Blocks.WAXED_EXPOSED_CHISELED_COPPER:
-  readable_name: "Waxed Exposed Chiseled Copper"
-  type: block
-  texture: WAXED_EXPOSED_CHISELED_COPPER
-
-- Blocks.WAXED_CHISELED_COPPER:
-  readable_name: "Waxed Chiseled Copper"
-  type: block
-  texture: WAXED_CHISELED_COPPER
-
-- Blocks.EXPOSED_CUT_COPPER:
-  readable_name: "Exposed Cut Copper"
-  type: block
-  texture: EXPOSED_CUT_COPPER
-
-- Blocks.WEATHERED_CUT_COPPER:
-  readable_name: "Weathered Cut Copper"
-  type: block
-  texture: WEATHERED_CUT_COPPER
-
-- Blocks.OXIDIZED_CUT_COPPER:
-  readable_name: "Oxidized Cut Copper"
-  type: block
-  texture: OXIDIZED_CUT_COPPER
-
-- Blocks.CUT_COPPER_STAIRS:
-  readable_name: "Cut Copper Stairs"
-  type: block
-  texture: CUT_COPPER_STAIRS
-
-- Blocks.EXPOSED_CUT_COPPER_STAIRS:
-  readable_name: "Exposed Cut Copper Stairs"
-  type: block
-  texture: EXPOSED_CUT_COPPER_STAIRS
-
-- Blocks.WEATHERED_CUT_COPPER_STAIRS:
-  readable_name: "Weathered Cut Copper Stairs"
-  type: block
-  texture: WEATHERED_CUT_COPPER_STAIRS
-
-- Blocks.OXIDIZED_CUT_COPPER_STAIRS:
-  readable_name: "Oxidized Cut Copper Stairs"
-  type: block
-  texture: OXIDIZED_CUT_COPPER_STAIRS
-
-- Blocks.CUT_COPPER_SLAB:
-  readable_name: "Cut Copper Slab"
-  type: block
-  texture: CUT_COPPER_SLAB
-
-- Blocks.EXPOSED_CUT_COPPER_SLAB:
-  readable_name: "Exposed Cut Copper Slab"
-  type: block
-  texture: EXPOSED_CUT_COPPER_SLAB
-
-- Blocks.WEATHERED_CUT_COPPER_SLAB:
-  readable_name: "Weathered Cut Copper Slab"
-  type: block
-  texture: WEATHERED_CUT_COPPER_SLAB
-
-- Blocks.OXIDIZED_CUT_COPPER_SLAB:
-  readable_name: "Oxidized Cut Copper Slab"
-  type: block
-  texture: OXIDIZED_CUT_COPPER_SLAB
-
 - Blocks.WAXED_COPPER_BLOCK:
   readable_name: "Waxed Copper Block"
   type: block
@@ -972,6 +872,26 @@
   readable_name: "Waxed Oxidized Copper"
   type: block
   texture: WAXED_OXIDIZED_COPPER
+
+- Blocks.CUT_COPPER:
+  readable_name: "Cut Copper"
+  type: block
+  texture: CUT_COPPER
+
+- Blocks.EXPOSED_CUT_COPPER:
+  readable_name: "Exposed Cut Copper"
+  type: block
+  texture: EXPOSED_CUT_COPPER
+
+- Blocks.WEATHERED_CUT_COPPER:
+  readable_name: "Weathered Cut Copper"
+  type: block
+  texture: WEATHERED_CUT_COPPER
+
+- Blocks.OXIDIZED_CUT_COPPER:
+  readable_name: "Oxidized Cut Copper"
+  type: block
+  texture: OXIDIZED_CUT_COPPER
 
 - Blocks.WAXED_CUT_COPPER:
   readable_name: "Waxed Cut Copper"
@@ -993,6 +913,66 @@
   type: block
   texture: WAXED_OXIDIZED_CUT_COPPER
 
+- Blocks.CHISELED_COPPER:
+  readable_name: "Chiseled Copper"
+  type: block
+  texture: CHISELED_COPPER
+
+- Blocks.EXPOSED_CHISELED_COPPER:
+  readable_name: "Exposed Chiseled Copper"
+  type: block
+  texture: EXPOSED_CHISELED_COPPER
+
+- Blocks.WEATHERED_CHISELED_COPPER:
+  readable_name: "Weathered Chiseled Copper"
+  type: block
+  texture: WEATHERED_CHISELED_COPPER
+
+- Blocks.OXIDIZED_CHISELED_COPPER:
+  readable_name: "Oxidized Chiseled Copper"
+  type: block
+  texture: OXIDIZED_CHISELED_COPPER
+
+- Blocks.WAXED_CHISELED_COPPER:
+  readable_name: "Waxed Chiseled Copper"
+  type: block
+  texture: WAXED_CHISELED_COPPER
+
+- Blocks.WAXED_EXPOSED_CHISELED_COPPER:
+  readable_name: "Waxed Exposed Chiseled Copper"
+  type: block
+  texture: WAXED_EXPOSED_CHISELED_COPPER
+
+- Blocks.WAXED_WEATHERED_CHISELED_COPPER:
+  readable_name: "Waxed Weathered Chiseled Copper"
+  type: block
+  texture: WAXED_WEATHERED_CHISELED_COPPER
+
+- Blocks.WAXED_OXIDIZED_CHISELED_COPPER:
+  readable_name: "Waxed Oxidized Chiseled Copper"
+  type: block
+  texture: WAXED_OXIDIZED_CHISELED_COPPER
+
+- Blocks.CUT_COPPER_STAIRS:
+  readable_name: "Cut Copper Stairs"
+  type: block
+  texture: CUT_COPPER_STAIRS
+
+- Blocks.EXPOSED_CUT_COPPER_STAIRS:
+  readable_name: "Exposed Cut Copper Stairs"
+  type: block
+  texture: EXPOSED_CUT_COPPER_STAIRS
+
+- Blocks.WEATHERED_CUT_COPPER_STAIRS:
+  readable_name: "Weathered Cut Copper Stairs"
+  type: block
+  texture: WEATHERED_CUT_COPPER_STAIRS
+
+- Blocks.OXIDIZED_CUT_COPPER_STAIRS:
+  readable_name: "Oxidized Cut Copper Stairs"
+  type: block
+  texture: OXIDIZED_CUT_COPPER_STAIRS
+
 - Blocks.WAXED_CUT_COPPER_STAIRS:
   readable_name: "Waxed Cut Copper Stairs"
   type: block
@@ -1012,6 +992,26 @@
   readable_name: "Waxed Oxidized Cut Copper Stairs"
   type: block
   texture: WAXED_OXIDIZED_CUT_COPPER_STAIRS
+
+- Blocks.CUT_COPPER_SLAB:
+  readable_name: "Cut Copper Slab"
+  type: block
+  texture: CUT_COPPER_SLAB
+
+- Blocks.EXPOSED_CUT_COPPER_SLAB:
+  readable_name: "Exposed Cut Copper Slab"
+  type: block
+  texture: EXPOSED_CUT_COPPER_SLAB
+
+- Blocks.WEATHERED_CUT_COPPER_SLAB:
+  readable_name: "Weathered Cut Copper Slab"
+  type: block
+  texture: WEATHERED_CUT_COPPER_SLAB
+
+- Blocks.OXIDIZED_CUT_COPPER_SLAB:
+  readable_name: "Oxidized Cut Copper Slab"
+  type: block
+  texture: OXIDIZED_CUT_COPPER_SLAB
 
 - Blocks.WAXED_CUT_COPPER_SLAB:
   readable_name: "Waxed Cut Copper Slab"
@@ -2574,15 +2574,15 @@
   type: block
   texture: EXPOSED_COPPER_DOOR
 
-- Blocks.OXIDIZED_COPPER_DOOR:
-  readable_name: "Oxidized Copper Door"
-  type: block
-  texture: OXIDIZED_COPPER_DOOR
-
 - Blocks.WEATHERED_COPPER_DOOR:
   readable_name: "Weathered Copper Door"
   type: block
   texture: WEATHERED_COPPER_DOOR
+
+- Blocks.OXIDIZED_COPPER_DOOR:
+  readable_name: "Oxidized Copper Door"
+  type: block
+  texture: OXIDIZED_COPPER_DOOR
 
 - Blocks.WAXED_COPPER_DOOR:
   readable_name: "Waxed Copper Door"
@@ -2594,15 +2594,15 @@
   type: block
   texture: WAXED_EXPOSED_COPPER_DOOR
 
-- Blocks.WAXED_OXIDIZED_COPPER_DOOR:
-  readable_name: "Waxed Oxidized Copper Door"
-  type: block
-  texture: WAXED_OXIDIZED_COPPER_DOOR
-
 - Blocks.WAXED_WEATHERED_COPPER_DOOR:
   readable_name: "Waxed Weathered Copper Door"
   type: block
   texture: WAXED_WEATHERED_COPPER_DOOR
+
+- Blocks.WAXED_OXIDIZED_COPPER_DOOR:
+  readable_name: "Waxed Oxidized Copper Door"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_DOOR
 
 - Blocks.TRAPDOOR:
   readable_name: "Oak Trapdoor"
@@ -2679,15 +2679,15 @@
   type: block
   texture: EXPOSED_COPPER_TRAPDOOR
 
-- Blocks.OXIDIZED_COPPER_TRAPDOOR:
-  readable_name: "Oxidized Copper Trapdoor"
-  type: block
-  texture: OXIDIZED_COPPER_TRAPDOOR
-
 - Blocks.WEATHERED_COPPER_TRAPDOOR:
   readable_name: "Weathered Copper Trapdoor"
   type: block
   texture: WEATHERED_COPPER_TRAPDOOR
+
+- Blocks.OXIDIZED_COPPER_TRAPDOOR:
+  readable_name: "Oxidized Copper Trapdoor"
+  type: block
+  texture: OXIDIZED_COPPER_TRAPDOOR
 
 - Blocks.WAXED_COPPER_TRAPDOOR:
   readable_name: "Waxed Copper Trapdoor"
@@ -2699,15 +2699,15 @@
   type: block
   texture: WAXED_EXPOSED_COPPER_TRAPDOOR
 
-- Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR:
-  readable_name: "Waxed Oxidized Copper Trapdoor"
-  type: block
-  texture: WAXED_OXIDIZED_COPPER_TRAPDOOR
-
 - Blocks.WAXED_WEATHERED_COPPER_TRAPDOOR:
   readable_name: "Waxed Weathered Copper Trapdoor"
   type: block
   texture: WAXED_WEATHERED_COPPER_TRAPDOOR
+
+- Blocks.WAXED_OXIDIZED_COPPER_TRAPDOOR:
+  readable_name: "Waxed Oxidized Copper Trapdoor"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_TRAPDOOR
 
 - Blocks.COPPER_GRATE:
   readable_name: "Copper Grate"
