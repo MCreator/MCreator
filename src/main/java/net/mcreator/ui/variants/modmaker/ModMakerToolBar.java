@@ -49,6 +49,7 @@ class ModMakerToolBar extends MainToolBar {
 		hideableButton(add(mcreator.getActionRegistry().importJavaModelAnimation));
 		hideableButton(add(mcreator.getActionRegistry().importJSONModel));
 		hideableButton(add(mcreator.getActionRegistry().importOBJModel));
+		hideableButton(add(mcreator.getActionRegistry().importBedrockModel));
 
 		addSeparator(new Dimension(10, 4));
 		hideableButton(add(mcreator.getActionRegistry().setCreativeTabItemOrder));

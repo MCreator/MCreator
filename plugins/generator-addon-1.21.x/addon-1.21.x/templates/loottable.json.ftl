@@ -76,12 +76,6 @@
                         "max": ${entry.maxCount}
                       }
                     }
-                    <#if hasMetadata(entry.item)>
-                    ,{
-                      "function": "set_data",
-                      "data": ${getMappedMCItemMetadata(entry.item)}
-                    }
-                    </#if>
                     <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
                     ,{
                       "function": "enchant_with_levels",

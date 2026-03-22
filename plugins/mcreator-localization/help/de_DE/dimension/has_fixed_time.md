@@ -1,0 +1,1 @@
+Wenn diese Einstellung aktiviert ist, wird die Zeit innerhalb dieser Dimension auf den angegebenen Wert eingefroren.

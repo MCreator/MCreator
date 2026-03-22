@@ -37,7 +37,8 @@ public class Label extends GUIComponent {
 
 	public Procedure displayCondition;
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow, Procedure displayCondition) {
+	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow,
+			Procedure displayCondition) {
 		super(x, y);
 		this.text = text;
 		this.color = color;
@@ -46,8 +47,8 @@ public class Label extends GUIComponent {
 		this.name = name;
 	}
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow, Procedure displayCondition,
-			AnchorPoint anchorPoint) {
+	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow,
+			Procedure displayCondition, AnchorPoint anchorPoint) {
 		this(name, x, y, text, color, hasShadow, displayCondition);
 		this.anchorPoint = anchorPoint;
 	}

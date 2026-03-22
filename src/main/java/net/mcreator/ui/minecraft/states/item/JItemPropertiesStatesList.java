@@ -217,7 +217,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			JItemStatesListEntry s = iterator.next();
 			StateMap stateMap = s.getStateLabel().getStateMap();
 			stateMap.remove(data);
-			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if the state map is empty or a duplicate is found
+			if (stateMap.isEmpty() || !duplicateFilter.add(
+					stateMap)) { // if the state map is empty or a duplicate is found
 				iterator.remove(); // remove the JItemStatesListEntry
 				stateEntries.remove(s);
 			} else {

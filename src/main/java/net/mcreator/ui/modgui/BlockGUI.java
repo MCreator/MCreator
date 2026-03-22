@@ -59,7 +59,10 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.*;
+import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -135,9 +138,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isBonemealable = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-					"Sky", "Fog", "Water fog" });
+	private final TranslatedComboBox tintType = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("No tint", "elementgui.block.tint_type.no_tint"),
+			Map.entry("Grass", "elementgui.block.tint_type.grass"),
+			Map.entry("Foliage", "elementgui.block.tint_type.foliage"),
+			Map.entry("Birch foliage", "elementgui.block.tint_type.birch_foliage"),
+			Map.entry("Spruce foliage", "elementgui.block.tint_type.spruce_foliage"),
+			Map.entry("Default foliage", "elementgui.block.tint_type.default_foliage"),
+			Map.entry("Water", "elementgui.block.tint_type.water"),
+			Map.entry("Sky", "elementgui.block.tint_type.sky"),
+			Map.entry("Fog", "elementgui.block.tint_type.fog"),
+			Map.entry("Water fog", "elementgui.block.tint_type.water_fog")
+			//@formatter:on
+	);
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -158,11 +172,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
-	private final SoundSelector breakSound = new SoundSelector(mcreator);
-	private final SoundSelector fallSound = new SoundSelector(mcreator);
-	private final SoundSelector hitSound = new SoundSelector(mcreator);
-	private final SoundSelector placeSound = new SoundSelector(mcreator);
-	private final SoundSelector stepSound = new SoundSelector(mcreator);
+	private final SoundSelector breakSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_break_sound");
+	private final SoundSelector fallSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_fall_sound");
+	private final SoundSelector hitSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_hit_sound");
+	private final SoundSelector placeSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_place_sound");
+	private final SoundSelector stepSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_step_sound");
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
@@ -186,8 +205,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> reactionToPushing = new JComboBox<>(
-			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
+	private final TranslatedComboBox reactionToPushing = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("NORMAL", "elementgui.block.reaction_to_push.normal"),
+			Map.entry("DESTROY", "elementgui.block.reaction_to_push.destroy"),
+			Map.entry("BLOCK", "elementgui.block.reaction_to_push.block"),
+			Map.entry("PUSH_ONLY", "elementgui.block.reaction_to_push.push_only"),
+			Map.entry("IGNORE", "elementgui.block.reaction_to_push.ignore"));
+			//@formatter:on
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
@@ -1443,18 +1468,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
 
 		page3group.addValidationElement(name);
-
-		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-
 		page3group.addValidationElement(breakSound.getVTextField());
 		page3group.addValidationElement(fallSound.getVTextField());
 		page3group.addValidationElement(hitSound.getVTextField());
@@ -1825,13 +1838,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 		} else {
 			signGUITexturePanel.setVisible("HangingSign".equals(block.blockBase));
 			blockBase.setSelectedItem(block.blockBase);
+			switch (block.blockBase) {
+			case "Leaves" -> {
+				leavesParticleType.setEntry(block.leavesParticleType);
+				leavesParticleChance.setValue(block.leavesParticleChance);
+			}
+			case "FlowerPot" -> pottedPlant.setBlock(block.pottedPlant);
+			case "Sign" -> signEntityTexture.setTexture(block.signEntityTexture);
+			case "HangingSign" -> {
+				signEntityTexture.setTexture(block.signEntityTexture);
+				signGUITexture.setTexture(block.signGUITexture);
+			}
+			}
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
-		pottedPlant.setBlock(block.pottedPlant);
-		leavesParticleType.setEntry(block.leavesParticleType);
-		leavesParticleChance.setValue(block.leavesParticleChance);
-		signEntityTexture.setTexture(block.signEntityTexture);
-		signGUITexture.setTexture(block.signGUITexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -1912,7 +1932,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.connectedSides = connectedSides.isSelected();
 		block.displayFluidOverlay = displayFluidOverlay.isSelected();
 		block.transparencyType = (String) transparencyType.getSelectedItem();
-		block.tintType = (String) tintType.getSelectedItem();
+		block.tintType = tintType.getSelectedItem();
 		block.isItemTinted = isItemTinted.isSelected();
 		block.guiBoundTo = guiBoundTo.getEntry();
 		block.rotationMode = rotationMode.getSelectedIndex();
@@ -1930,7 +1950,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.rarity = rarity.getSelectedItem();
 		block.immuneToFire = immuneToFire.isSelected();
 		block.creativeTabs = creativeTabs.getListElements();
-		block.destroyTool = (String) Objects.requireNonNull(destroyTool.getSelectedItem());
+		block.destroyTool = Objects.requireNonNull((String) destroyTool.getSelectedItem());
 		block.requiresCorrectTool = requiresCorrectTool.isSelected();
 		block.customDrop = customDrop.getBlock();
 		block.dropAmount = (int) dropAmount.getValue();
@@ -2038,7 +2058,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 
 		block.isLadder = isLadder.isSelected();
-		block.reactionToPushing = (String) reactionToPushing.getSelectedItem();
+		block.reactionToPushing = reactionToPushing.getSelectedItem();
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
@@ -2056,11 +2076,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
-		block.pottedPlant = pottedPlant.getBlock();
-		block.leavesParticleType = leavesParticleType.getEntry();
-		block.leavesParticleChance = (double) leavesParticleChance.getValue();
-		block.signEntityTexture = signEntityTexture.getTextureHolder();
-		block.signGUITexture = signGUITexture.getTextureHolder();
+		switch (Objects.requireNonNull(blockBase.getSelectedItem())) {
+		case "Leaves" -> {
+			block.leavesParticleType = leavesParticleType.getEntry();
+			block.leavesParticleChance = (double) leavesParticleChance.getValue();
+		}
+		case "FlowerPot" -> block.pottedPlant = pottedPlant.getBlock();
+		case "Sign" -> block.signEntityTexture = signEntityTexture.getTextureHolder();
+		case "HangingSign" -> {
+			block.signEntityTexture = signEntityTexture.getTextureHolder();
+			block.signGUITexture = signGUITexture.getTextureHolder();
+		}
+		}
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

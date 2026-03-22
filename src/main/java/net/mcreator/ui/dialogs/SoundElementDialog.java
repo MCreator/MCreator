@@ -45,7 +45,7 @@ public class SoundElementDialog {
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
 		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 2));
 
-		VTextField soundName = new VTextField(20);
+		VTextField soundName = new VTextField(26);
 
 		soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
 		soundName.enableRealtimeValidation();

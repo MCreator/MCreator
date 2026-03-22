@@ -68,6 +68,7 @@ public class WebView extends JPanel implements Closeable {
 	private final Component cefComponent;
 
 	// Helper for page load listeners
+	private volatile boolean hasLoaded = false;
 	private final List<PageLoadListener> pageLoadListeners = new ArrayList<>();
 
 	// Helper for JS dialog handlers
@@ -226,6 +227,7 @@ public class WebView extends JPanel implements Closeable {
 
 		this.client.addLoadHandler(new CefLoadHandlerAdapter() {
 			@Override public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
+				hasLoaded = true;
 				callbackExecutor.execute(() -> pageLoadListeners.forEach(PageLoadListener::pageLoaded));
 			}
 		});
@@ -386,7 +388,10 @@ public class WebView extends JPanel implements Closeable {
 
 			edtJSWaitThread.execute(() -> {
 				try {
-					executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS);
+					if (!executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS)) {
+						LOG.warn("JS execution on EDT secondary loop timed out after {} seconds",
+								MAX_JS_EXECUTION_TIME);
+					}
 				} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 				} finally {
 					secondaryLoopExited.set(true);
@@ -403,8 +408,10 @@ public class WebView extends JPanel implements Closeable {
 			browser.executeJavaScript(script, "[WebView injected]", 0);
 
 			try {
-				// Timeout at 60 seconds as JS is blocking and nothing should take that long
-				executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS);
+				// Timeout at MAX_JS_EXECUTION_TIME seconds as JS is blocking and nothing should take that long
+				if (!executeScriptLatch.await(MAX_JS_EXECUTION_TIME, TimeUnit.SECONDS)) {
+					LOG.warn("JS execution timed out after {} seconds", MAX_JS_EXECUTION_TIME);
+				}
 			} catch (InterruptedException ignored) { // called if thread we wait on exits, just ignore this
 			}
 		}
@@ -440,7 +447,11 @@ public class WebView extends JPanel implements Closeable {
 	}
 
 	public void addLoadListener(PageLoadListener listener) {
-		pageLoadListeners.add(listener);
+		if (hasLoaded) {
+			listener.pageLoaded(); // invoke immediately if the page is already loaded
+		} else {
+			pageLoadListeners.add(listener);
+		}
 	}
 
 	@Override public void close() {

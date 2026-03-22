@@ -1,0 +1,1 @@
+Blöcke, die diesem Tag hinzugefügt werden, brennen in dieser Dimension für immer (ähnlich wie Netherrack).

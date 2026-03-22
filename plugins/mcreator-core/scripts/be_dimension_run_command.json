@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "command",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 35,
+  "mcreator": {
+    "toolbox_id": "be_world",
+    "toolbox_init": [
+      "<value name=\"command\"><block type=\"text\"><field name=\"TEXT\">time set day</field></block></value>"
+    ],
+    "inputs": [
+      "command"
+    ],
+    "dependencies": [
+      {
+        "name": "dimension",
+        "type": "world"
+      }
+    ]
+  }
+}

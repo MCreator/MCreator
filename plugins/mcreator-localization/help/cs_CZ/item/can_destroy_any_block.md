@@ -1,0 +1,1 @@
+Zaškrtněte tento parametr, pokud chcete, aby předmět zničil jakýkoliv blok, včetně podloží.

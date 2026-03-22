@@ -27,7 +27,6 @@
 
 package net.mcreator.ui.action.impl.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;

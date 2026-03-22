@@ -19,6 +19,7 @@
 package net.mcreator.io.net;
 
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -67,21 +68,17 @@ public class WebIO {
 		if (url == null)
 			return defaultIcon;
 
-		if (!MCreatorApplication.isInternet || url.equals("err"))
+		if (!MCreatorApplication.isInternet)
 			return defaultIcon;
 
-		Image colorImage = null;
 		try {
-			Image original = new ImageIcon(ImageIO.read(new URI(url).toURL())).getImage();
+			ImageIcon original = new ImageIcon(ImageIO.read(new URI(url).toURL()));
 			if (noStretch)
-				colorImage = ImageUtils.cover(original, new Dimension(x, y));
+				return new ImageIcon(ImageUtils.cover(original.getImage(), new Dimension(x, y)));
 			else
-				colorImage = ImageUtils.resize(original, x, y);
+				return IconUtils.resize(original, x, y);
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
-		}
-		if (colorImage != null) {
-			return new ImageIcon(colorImage);
+			LOG.error("Failed to get icon from URl: {}", url, e);
 		}
 
 		return defaultIcon;
