@@ -78,6 +78,7 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.FlowControlBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.LoopBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.TernaryOperatorBlock());
+		blockGenerators.add(new SetVariableBlock());
 
 		// add standard output blocks
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextBlock());
@@ -91,6 +92,7 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 		blockGenerators.add(new LogicBinaryOperationsBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeOutputBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.CustomDependencyBlock());
+		blockGenerators.add(new GetVariableBlock());
 
 		// add Minecraft-related blocks
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.CoordinateBlock());

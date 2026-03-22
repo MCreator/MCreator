@@ -185,6 +185,12 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTScriptTriggers.runTest(LOG, generator, workspace.get())));
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing script blocks",
 								() -> GTScriptBlocks.runTest(LOG, generator, random, workspace.get())));
+
+						// If we support variables and scripts, also test this combination
+						if (generatorConfiguration.getGeneratorStats().hasBaseCoverage("variables")) {
+							tests.add(DynamicTest.dynamicTest(generator + " - Testing variables",
+									() -> GTBEVariables.runTest(LOG, generator, random, workspace.get())));
+						}
 					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
