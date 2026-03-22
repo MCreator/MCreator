@@ -23,7 +23,7 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
-import net.mcreator.blockly.java.BlocklyToProcedure;
+import net.mcreator.blockly.javascript.BlocklyToJavaScript;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -64,14 +64,14 @@ public class GetVariableBlock implements IBlockGenerator {
 							L10N.t("blockly.errors.variables.invalid_var", L10N.t("blockly.block.get_var"),
 									L10N.t("blockly.errors.remove_block"))));
 					return;
-				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
-						&& !((BlocklyToProcedure) master).getLocalVariables().stream().map(VariableElement::toString)
+				} else if (master instanceof BlocklyToJavaScript && scope.equals("local")
+						&& !((BlocklyToJavaScript) master).getLocalVariables().stream().map(VariableElement::toString)
 						.toList().contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.variables.invalid_local_var", L10N.t("blockly.block.get_var"),
 									L10N.t("blockly.errors.remove_block"))));
 					return;
-				} else if (scope.equals("local") && !(master instanceof BlocklyToProcedure)) {
+				} else if (scope.equals("local") && !(master instanceof BlocklyToJavaScript)) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.warnings.variables.local_scope_unsupported")));
 					return;
