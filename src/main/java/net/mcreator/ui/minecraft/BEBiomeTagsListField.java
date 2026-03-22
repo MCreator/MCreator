@@ -31,25 +31,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BeBiomeTagsListField  extends JItemListField<String> {
+public class BEBiomeTagsListField extends JItemListField<String> {
 
 	private final boolean includeAddonTags;
 
-	public BeBiomeTagsListField(MCreator mcreator, boolean includeAddonTags) {
+	public BEBiomeTagsListField(MCreator mcreator, boolean includeAddonTags) {
 		super(mcreator);
 		this.includeAddonTags = includeAddonTags;
 	}
 
 	@Override protected List<String> getElementsToAdd() {
 		List<String> biomeTags = includeAddonTags ?
-				mcreator.getWorkspace().getModElements()
-				.stream()
-				.filter(me -> me.getType() == ModElementType.BEBIOME)
-				.map(me -> mcreator.getWorkspace().getWorkspaceSettings().getModID() + ":" + me.getRegistryName())
-				.collect(Collectors.toList()) : new ArrayList<>();
+				mcreator.getWorkspace().getModElements().stream().filter(me -> me.getType() == ModElementType.BEBIOME)
+						.map(me -> mcreator.getWorkspace().getWorkspaceSettings().getModID() + ":"
+								+ me.getRegistryName()).collect(Collectors.toList()) :
+				new ArrayList<>();
 		biomeTags.addAll(Arrays.stream(ElementUtil.getDataListAsStringArray("be_biometags")).toList());
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
-				w -> biomeTags.toArray(new String[0]),
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> biomeTags.toArray(new String[0]),
 				L10N.t("dialog.list_field.bebiome_tags_list_title"),
 				L10N.t("dialog.list_field.bebiome_tags_list_message"));
 	}

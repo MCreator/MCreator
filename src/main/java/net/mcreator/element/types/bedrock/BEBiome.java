@@ -26,10 +26,9 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
-import java.util.List;
-
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 @SuppressWarnings("unused") public class BEBiome extends GeneratableElement {
 
