@@ -64,7 +64,7 @@ import java.util.*;
 import java.util.List;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure>
-		implements IBlocklyPanelHolder, ISearchable {
+		implements IBlocklyPanelHolder, ISearchable, IBlocklyPanelHolder.IBlocklyPanelVariablesHolder {
 
 	private static final Logger LOG = LogManager.getLogger(ProcedureGUI.class);
 
@@ -74,7 +74,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private BlocklyPanel blocklyPanel;
 
-	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
+	private final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasDependencyErrors = false;
@@ -691,6 +691,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		if (searchTerm != null)
 			blocklyEditorToolbar.getSearchField().setText(searchTerm);
+	}
+
+	@Override public DefaultListModel<VariableElement> getLocalVariablesListModel() {
+		return localVars;
 	}
 
 }

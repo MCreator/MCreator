@@ -1,6 +1,8 @@
 <#include "scripts.java.ftl">
 
 world.afterEvents.playerInteractWithBlock.subscribe((event) => {
+    <#list localvariables as var><@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/></#list>
+
     <@optionalDependencies dependencies, {
         "block": "event.block.permutation",
         "dimension": "event.dimension",
