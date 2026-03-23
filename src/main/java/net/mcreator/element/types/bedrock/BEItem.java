@@ -76,7 +76,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public String enchantmentSlot;
 	public int enchantmentValue;
 	public boolean diggerUseEfficiency;
-	public List<DiggerEntry> diggerEntries;
+	@ModElementReference public List<DiggerEntry> diggerEntries;
 
 	@ModElementReference public List<String> localScripts;
 
