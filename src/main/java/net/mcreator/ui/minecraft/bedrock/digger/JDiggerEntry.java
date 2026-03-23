@@ -27,6 +27,8 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,6 +50,7 @@ public class JDiggerEntry extends JSimpleListEntry<BEItem.DiggerEntry> {
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("beitem/digger_block"),
 				L10N.label("elementgui.beitem.digger_block")));
 		line.add(block);
+		block.setValidator(new MCItemHolderValidator(block).considerAirAsEmpty());
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("beitem/digger_speed"),
 				L10N.label("elementgui.beitem.digger_speed")));
@@ -66,5 +69,9 @@ public class JDiggerEntry extends JSimpleListEntry<BEItem.DiggerEntry> {
 	@Override public void setEntry(BEItem.DiggerEntry entry) {
 		block.setBlock(entry.block);
 		speed.setValue(entry.speed);
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult(block);
 	}
 }

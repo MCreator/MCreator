@@ -336,7 +336,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.item.food_properties"), foodPanel);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedPanel);
-		addPage(L10N.t("elementgui.beitem.page_tool_properties"), toolPanel);
+		addPage(L10N.t("elementgui.beitem.page_tool_properties"), toolPanel).lazyValidate(diggerEntries::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_scripts"), scriptsPanel);
 
 		if (!isEditingMode()) {

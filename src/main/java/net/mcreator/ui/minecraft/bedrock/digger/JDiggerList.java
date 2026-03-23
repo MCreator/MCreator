@@ -25,6 +25,7 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -43,5 +44,11 @@ public class JDiggerList extends JSimpleEntriesList<JDiggerEntry, BEItem.DiggerE
 	@Nullable @Override
 	protected JDiggerEntry newEntry(JPanel parent, List<JDiggerEntry> entryList, boolean userAction) {
 		return new JDiggerEntry(mcreator, gui, parent, entryList);
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		AggregatedValidationResult validationResult = new AggregatedValidationResult();
+		entryList.forEach(e -> validationResult.addValidationGroup(e.getValidationResult()));
+		return validationResult;
 	}
 }
