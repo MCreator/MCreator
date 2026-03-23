@@ -3737,6 +3737,9 @@ Items.WOODEN_AXE:
 Items.WOODEN_HOE:
   - Items.WOODEN_HOE
   - "wooden_hoe"
+Items.WOODEN_SPEAR:
+  - Items.WOODEN_SPEAR
+  - "wooden_spear"
 Items.STONE_SWORD:
   - Items.STONE_SWORD
   - "stone_sword"
@@ -3752,6 +3755,9 @@ Items.STONE_AXE:
 Items.STONE_HOE:
   - Items.STONE_HOE
   - "stone_hoe"
+Items.STONE_SPEAR:
+  - Items.STONE_SPEAR
+  - "stone_spear"
 Items.COPPER_SWORD:
   - Items.COPPER_SWORD
   - "copper_sword"
@@ -3767,6 +3773,9 @@ Items.COPPER_AXE:
 Items.COPPER_HOE:
   - Items.COPPER_HOE
   - "copper_hoe"
+Items.COPPER_SPEAR:
+  - Items.COPPER_SPEAR
+  - "copper_spear"
 Items.IRON_SWORD:
   - Items.IRON_SWORD
   - "iron_sword"
@@ -3782,6 +3791,9 @@ Items.IRON_AXE:
 Items.IRON_HOE:
   - Items.IRON_HOE
   - "iron_hoe"
+Items.IRON_SPEAR:
+  - Items.IRON_SPEAR
+  - "iron_spear"
 Items.FLINT_AND_STEEL:
   - Items.FLINT_AND_STEEL
   - "flint_and_steel"
@@ -3803,6 +3815,9 @@ Items.GOLDEN_AXE:
 Items.GOLDEN_HOE:
   - Items.GOLDEN_HOE
   - "golden_hoe"
+Items.GOLDEN_SPEAR:
+  - Items.GOLDEN_SPEAR
+  - "golden_spear"
 Items.DIAMOND_SWORD:
   - Items.DIAMOND_SWORD
   - "diamond_sword"
@@ -3818,6 +3833,9 @@ Items.DIAMOND_AXE:
 Items.DIAMOND_HOE:
   - Items.DIAMOND_HOE
   - "diamond_hoe"
+Items.DIAMOND_SPEAR:
+  - Items.DIAMOND_SPEAR
+  - "diamond_spear"
 Items.LEATHER_HELMET:
   - Items.LEATHER_HELMET
   - "leather_helmet"
@@ -3905,6 +3923,24 @@ Items.GOLDEN_HORSE_ARMOR:
 Items.DIAMOND_HORSE_ARMOR:
   - Items.DIAMOND_HORSE_ARMOR
   - "diamond_horse_armor"
+Items.NETHERITE_HORSE_ARMOR:
+  - Items.NETHERITE_HORSE_ARMOR
+  - "netherite_horse_armor"
+Items.COPPER_NAUTILUS_ARMOR:
+  - Items.COPPER_NAUTILUS_ARMOR
+  - "copper_nautilus_armor"
+Items.IRON_NAUTILUS_ARMOR:
+  - Items.IRON_NAUTILUS_ARMOR
+  - "iron_nautilus_armor"
+Items.GOLDEN_NAUTILUS_ARMOR:
+  - Items.GOLDEN_NAUTILUS_ARMOR
+  - "golden_nautilus_armor"
+Items.DIAMOND_NAUTILUS_ARMOR:
+  - Items.DIAMOND_NAUTILUS_ARMOR
+  - "diamond_nautilus_armor"
+Items.NETHERITE_NAUTILUS_ARMOR:
+  - Items.NETHERITE_NAUTILUS_ARMOR
+  - "netherite_nautilus_armor"
 Items.ARMOR_STAND:
   - Items.ARMOR_STAND
   - "armor_stand"
@@ -4913,6 +4949,9 @@ Items.NETHERITE_AXE:
 Items.NETHERITE_HOE:
   - Items.NETHERITE_HOE
   - "netherite_hoe"
+Items.NETHERITE_SPEAR:
+  - Items.NETHERITE_SPEAR
+  - "netherite_spear"
 Items.NETHERITE_HELMET:
   - Items.NETHERITE_HELMET
   - "netherite_helmet"
@@ -5246,3 +5285,15 @@ Items.BREEZE_ROD:
 Items.CREAKING_SPAWN_EGG:
   - Items.CREAKING_SPAWN_EGG
   - "creaking_spawn_egg"
+Items.NAUTILUS_SPAWN_EGG:
+  - Items.NAUTILUS_SPAWN_EGG
+  - "nautilus_spawn_egg"
+Items.ZOMBIE_NAUTILUS_SPAWN_EGG:
+  - Items.ZOMBIE_NAUTILUS_SPAWN_EGG
+  - "zombie_nautilus_spawn_egg"
+Items.CAMEL_HUSK_SPAWN_EGG:
+  - Items.CAMEL_HUSK_SPAWN_EGG
+  - "camel_husk_spawn_egg"
+Items.PARCHED_SPAWN_EGG:
+  - Items.PARCHED_SPAWN_EGG
+  - "parched_spawn_egg"
