@@ -2634,8 +2634,8 @@ Blocks.SOUL_WALL_TORCH:
   - Blocks.SOUL_WALL_TORCH
   - "soul_wall_torch"
 Blocks.CHAIN:
-  - Blocks.CHAIN
-  - "chain"
+  - Blocks.IRON_CHAIN
+  - "iron_chain"
 Blocks.SOUL_LANTERN:
   - Blocks.SOUL_LANTERN
   - "soul_lantern"
