@@ -43,7 +43,7 @@
         "destroy_speeds": [
           <#list data.diggerEntries as entry>
             {
-              "block": ${mappedMCItemToRegistryNameWithTags(entry.block)},
+              "block": ${mappedMCItemToRegistryNameOrTag(entry.block)},
               "speed": ${entry.speed}
             }<#sep>,
           </#list>

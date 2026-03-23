@@ -93,7 +93,7 @@
     </#if>
 </#function>
 
-<#function mappedMCItemToRegistryNameWithTags mappedBlock>
+<#function mappedMCItemToRegistryNameOrTag mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
