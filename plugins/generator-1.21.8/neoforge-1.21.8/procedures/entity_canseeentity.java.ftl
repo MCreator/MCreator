@@ -1,0 +1,1 @@
+(${input$seenBy} instanceof LivingEntity _livEnt ? _livEnt.hasLineOfSight(${input$entity}) : false)
