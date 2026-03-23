@@ -1798,7 +1798,7 @@ public class TestWorkspaceDataProvider {
 			beentity.isImmuneToFire = _true;
 			beentity.isPushable = _true;
 			beentity.isPushableByPiston = _true;
-			beentity.generateEntity = !_true;
+			beentity.spawnNaturally = !_true;
 			beentity.populationControl = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
 			beentity.spawningProbability = 21;
 			beentity.maxHerdSize = 10;

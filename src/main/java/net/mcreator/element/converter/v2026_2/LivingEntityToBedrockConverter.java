@@ -57,7 +57,7 @@ public class LivingEntityToBedrockConverter implements IConverter {
 			beentity.isImmuneToFire = entity.immuneToFire;
 			beentity.isPushable = !entity.disableCollisions;
 			beentity.isPushableByPiston = !entity.disableCollisions;
-			beentity.generateEntity = entity.spawnThisMob;
+			beentity.spawnNaturally = entity.spawnThisMob;
 			beentity.populationControl = entity.mobSpawningType;
 			beentity.spawningProbability = entity.spawningProbability;
 			beentity.minHerdSize = entity.minNumberOfMobsPerGroup;

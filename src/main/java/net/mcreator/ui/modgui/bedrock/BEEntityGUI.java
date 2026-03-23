@@ -105,7 +105,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final JColor spawnEggBaseColor = new JColor(mcreator, false, false).withColorTextColumns(5);
 	private final JColor spawnEggDotColor = new JColor(mcreator, false, false).withColorTextColumns(5);
 
-	private final JCheckBox generateEntity = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox spawnNaturally = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> populationControl = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
@@ -267,8 +267,8 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		spawningProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/enable_spawning"),
 				L10N.label("elementgui.living_entity.enable_mob_spawning")));
-		spawningProps.add(generateEntity);
-		generateEntity.addActionListener(e -> refreshSpawnProperties());
+		spawningProps.add(spawnNaturally);
+		spawnNaturally.addActionListener(e -> refreshSpawnProperties());
 
 		spawningProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_type"),
 				L10N.label("elementgui.beentity.spawn_type")));
@@ -339,7 +339,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	}
 
 	private void refreshSpawnProperties() {
-		boolean canSpawn = generateEntity.isSelected();
+		boolean canSpawn = spawnNaturally.isSelected();
 
 		entityHerd.setEnabled(canSpawn);
 		populationControl.setEnabled(canSpawn);
@@ -388,7 +388,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		isPushable.setSelected(entity.isPushable);
 		isPushableByPiston.setSelected(entity.isPushableByPiston);
 
-		generateEntity.setSelected(entity.generateEntity);
+		spawnNaturally.setSelected(entity.spawnNaturally);
 		populationControl.setSelectedItem(entity.populationControl);
 		spawningProbability.setValue(entity.spawningProbability);
 		entityHerd.setMinValue(entity.minHerdSize);
@@ -426,7 +426,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		entity.isImmuneToFallDamage = isImmuneToFallDamage.isSelected();
 		entity.isPushable = isPushable.isSelected();
 		entity.isPushableByPiston = isPushableByPiston.isSelected();
-		entity.generateEntity = generateEntity.isSelected();
+		entity.spawnNaturally = spawnNaturally.isSelected();
 		entity.populationControl = (String) populationControl.getSelectedItem();
 		entity.spawningProbability = (int) spawningProbability.getValue();
 		entity.minHerdSize = entityHerd.getIntMinValue();

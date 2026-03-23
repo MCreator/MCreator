@@ -4,7 +4,7 @@ templates:
     name: "@SRCROOT/entities/@registryname.json"
   - template: entity/entity_spawn_rule.json.ftl
     writer: json
-    condition: generateEntity
+    condition: spawnNaturally
     name: "@SRCROOT/spawn_rules/@registryname.json"
   - template: entity/entity_custom_loot.json.ftl
     writer: json

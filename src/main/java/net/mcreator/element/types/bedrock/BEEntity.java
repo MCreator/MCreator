@@ -68,7 +68,7 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public boolean isPushable;
 	public boolean isPushableByPiston;
 
-	public boolean generateEntity;
+	public boolean spawnNaturally;
 	public String populationControl;
 	public int spawningProbability;
 	public int minHerdSize;
