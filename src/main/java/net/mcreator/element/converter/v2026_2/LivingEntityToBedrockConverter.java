@@ -29,7 +29,7 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class LivingEntityToBedrockConverter implements IConverter {
 
@@ -39,7 +39,8 @@ public class LivingEntityToBedrockConverter implements IConverter {
 		LivingEntity entity = (LivingEntity) input;
 
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
-			BEEntity beentity = new BEEntity(new ModElement(workspace, entity.getModElement().getName(), ModElementType.BEENTITY));
+			BEEntity beentity = new BEEntity(
+					new ModElement(workspace, entity.getModElement().getName(), ModElementType.BEENTITY));
 			beentity.entityName = entity.mobName;
 			beentity.modelName = convertModelName(entity.mobModelName);
 			beentity.modelTexture = entity.mobModelTexture;
@@ -82,8 +83,7 @@ public class LivingEntityToBedrockConverter implements IConverter {
 
 	private String convertModelName(String old) {
 		String name = old;
-		String[] unsupported = new String[] {"Cod", "Ocelot", "Piglin", "Salmon", "Witch"};
-		if (Arrays.asList(unsupported).contains(name)) {
+		if (List.of("Cod", "Ocelot", "Piglin", "Salmon", "Witch").contains(name)) {
 			name = "Biped";
 		}
 		return name;

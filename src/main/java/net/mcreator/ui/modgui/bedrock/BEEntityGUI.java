@@ -153,8 +153,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		visualProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.beentity.collision_box")));
-		visualProps.add(
-				PanelUtils.join(FlowLayout.LEFT, 0, 0, collisionBoxWidth, new JEmptyBox(2, 2), collisionBoxHeight));
+		visualProps.add(PanelUtils.gridElements(1, 2, collisionBoxWidth, collisionBoxHeight));
 
 		visualPanel.add("Center", PanelUtils.totalCenterInPanel(visualProps));
 
@@ -175,7 +174,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/flying_entity"),
 				L10N.label("elementgui.beentity.flying_properties")));
-		behaviourProps.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, canFly, new JEmptyBox(2, 2), flyingSpeedValue));
+		behaviourProps.add(PanelUtils.westAndCenterElement(canFly, flyingSpeedValue));
 		canFly.addActionListener(e -> refreshFlyProperties());
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"),
