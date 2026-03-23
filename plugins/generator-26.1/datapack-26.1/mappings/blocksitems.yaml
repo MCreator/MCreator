@@ -508,9 +508,51 @@ Blocks.BOOKSHELF:
 Blocks.CHISELED_BOOKSHELF:
   - Blocks.CHISELED_BOOKSHELF
   - "chiseled_bookshelf"
+Blocks.OAK_SHELF:
+  - Blocks.OAK_SHELF
+  - "oak_shelf"
+Blocks.SPRUCE_SHELF:
+  - Blocks.SPRUCE_SHELF
+  - "spruce_shelf"
+Blocks.BIRCH_SHELF:
+  - Blocks.BIRCH_SHELF
+  - "birch_shelf"
+Blocks.JUNGLE_SHELF:
+  - Blocks.JUNGLE_SHELF
+  - "jungle_shelf"
+Blocks.ACACIA_SHELF:
+  - Blocks.ACACIA_SHELF
+  - "acacia_shelf"
+Blocks.DARK_OAK_SHELF:
+  - Blocks.DARK_OAK_SHELF
+  - "dark_oak_shelf"
+Blocks.PALE_OAK_SHELF:
+  - Blocks.PALE_OAK_SHELF
+  - "pale_oak_shelf"
+Blocks.CRIMSON_SHELF:
+  - Blocks.CRIMSON_SHELF
+  - "crimson_shelf"
+Blocks.WARPED_SHELF:
+  - Blocks.WARPED_SHELF
+  - "warped_shelf"
+Blocks.MANGROVE_SHELF:
+  - Blocks.MANGROVE_SHELF
+  - "mangrove_shelf"
+Blocks.CHERRY_SHELF:
+  - Blocks.CHERRY_SHELF
+  - "cherry_shelf"
+Blocks.BAMBOO_SHELF:
+  - Blocks.BAMBOO_SHELF
+  - "bamboo_shelf"
 Blocks.TORCH:
   - Blocks.TORCH
   - "torch"
+Blocks.COPPER_TORCH:
+  - Blocks.COPPER_TORCH
+  - "copper_torch"
+Blocks.COPPER_WALL_TORCH:
+  - Blocks.COPPER_WALL_TORCH
+  - "copper_wall_torch"
 Blocks.FIRE:
   - Blocks.FIRE
   - "fire"
@@ -583,6 +625,30 @@ Blocks.CHEST:
 Blocks.TRAPPED_CHEST:
   - Blocks.TRAPPED_CHEST
   - "trapped_chest"
+Blocks.COPPER_CHEST:
+  - Blocks.COPPER_CHEST
+  - "copper_chest"
+Blocks.EXPOSED_COPPER_CHEST:
+  - Blocks.EXPOSED_COPPER_CHEST
+  - "exposed_copper_chest"
+Blocks.WEATHERED_COPPER_CHEST:
+  - Blocks.WEATHERED_COPPER_CHEST
+  - "weathered_copper_chest"
+Blocks.OXIDIZED_COPPER_CHEST:
+  - Blocks.OXIDIZED_COPPER_CHEST
+  - "oxidized_copper_chest"
+Blocks.WAXED_COPPER_CHEST:
+  - Blocks.WAXED_COPPER_CHEST
+  - "waxed_copper_chest"
+Blocks.WAXED_EXPOSED_COPPER_CHEST:
+  - Blocks.WAXED_EXPOSED_COPPER_CHEST
+  - "waxed_exposed_copper_chest"
+Blocks.WAXED_WEATHERED_COPPER_CHEST:
+  - Blocks.WAXED_WEATHERED_COPPER_CHEST
+  - "waxed_weathered_copper_chest"
+Blocks.WAXED_OXIDIZED_COPPER_CHEST:
+  - Blocks.WAXED_OXIDIZED_COPPER_CHEST
+  - "waxed_oxidized_copper_chest"
 Blocks.ENDER_CHEST:
   - Blocks.ENDER_CHEST
   - "ender_chest"
@@ -919,6 +985,54 @@ Blocks.STONEBRICK#3:
 Blocks.IRON_BARS:
   - Blocks.IRON_BARS
   - "iron_bars"
+Blocks.COPPER_BARS:
+  - Blocks.COPPER_BARS.unaffected()
+  - "copper_bars"
+Blocks.EXPOSED_COPPER_BARS:
+  - Blocks.COPPER_BARS.exposed()
+  - "exposed_copper_bars"
+Blocks.WEATHERED_COPPER_BARS:
+  - Blocks.COPPER_BARS.weathered()
+  - "weathered_copper_bars"
+Blocks.OXIDIZED_COPPER_BARS:
+  - Blocks.COPPER_BARS.oxidized()
+  - "oxidized_copper_bars"
+Blocks.WAXED_COPPER_BARS:
+  - Blocks.COPPER_BARS.waxed()
+  - "waxed_copper_bars"
+Blocks.WAXED_EXPOSED_COPPER_BARS:
+  - Blocks.COPPER_BARS.waxedExposed()
+  - "waxed_exposed_copper_bars"
+Blocks.WAXED_WEATHERED_COPPER_BARS:
+  - Blocks.COPPER_BARS.waxedWeathered()
+  - "waxed_weathered_copper_bars"
+Blocks.WAXED_OXIDIZED_COPPER_BARS:
+  - Blocks.COPPER_BARS.waxedOxidized()
+  - "waxed_oxidized_copper_bars"
+Blocks.COPPER_GOLEM_STATUE:
+  - Blocks.COPPER_GOLEM_STATUE
+  - "copper_golem_statue"
+Blocks.EXPOSED_COPPER_GOLEM_STATUE:
+  - Blocks.EXPOSED_COPPER_GOLEM_STATUE
+  - "exposed_copper_golem_statue"
+Blocks.WEATHERED_COPPER_GOLEM_STATUE:
+  - Blocks.WEATHERED_COPPER_GOLEM_STATUE
+  - "weathered_copper_golem_statue"
+Blocks.OXIDIZED_COPPER_GOLEM_STATUE:
+  - Blocks.OXIDIZED_COPPER_GOLEM_STATUE
+  - "oxidized_copper_golem_statue"
+Blocks.WAXED_COPPER_GOLEM_STATUE:
+  - Blocks.WAXED_COPPER_GOLEM_STATUE
+  - "waxed_copper_golem_statue"
+Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE:
+  - Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE
+  - "waxed_exposed_copper_golem_statue"
+Blocks.WAXED_WEATHERED_COPPER_GOLEM_STATUE:
+  - Blocks.WAXED_WEATHERED_COPPER_GOLEM_STATUE
+  - "waxed_weathered_copper_golem_statue"
+Blocks.WAXED_OXIDIZED_COPPER_GOLEM_STATUE:
+  - Blocks.WAXED_OXIDIZED_COPPER_GOLEM_STATUE
+  - "waxed_oxidized_copper_golem_statue"
 Blocks.MELON_BLOCK:
   - Blocks.MELON
   - "melon"
@@ -2579,6 +2693,30 @@ Blocks.BELL:
 Blocks.LANTERN:
   - Blocks.LANTERN
   - "lantern"
+Blocks.COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.unaffected()
+  - "copper_lantern"
+Blocks.EXPOSED_COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.exposed()
+  - "exposed_copper_lantern"
+Blocks.WEATHERED_COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.weathered()
+  - "weathered_copper_lantern"
+Blocks.OXIDIZED_COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.oxidized()
+  - "oxidized_copper_lantern"
+Blocks.WAXED_COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.waxed()
+  - "waxed_copper_lantern"
+Blocks.WAXED_EXPOSED_COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.waxedExposed()
+  - "waxed_exposed_copper_lantern"
+Blocks.WAXED_WEATHERED_COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.waxedWeathered()
+  - "waxed_weathered_copper_lantern"
+Blocks.WAXED_OXIDIZED_COPPER_LANTERN:
+  - Blocks.COPPER_LANTERN.waxedOxidized()
+  - "waxed_oxidized_copper_lantern"
 Blocks.CAMPFIRE:
   - Blocks.CAMPFIRE
   - "campfire"
@@ -2636,6 +2774,30 @@ Blocks.SOUL_WALL_TORCH:
 Blocks.CHAIN:
   - Blocks.IRON_CHAIN
   - "iron_chain"
+Blocks.COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.unaffected()
+  - "copper_chain"
+Blocks.EXPOSED_COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.exposed()
+  - "exposed_copper_chain"
+Blocks.WEATHERED_COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.weathered()
+  - "weathered_copper_chain"
+Blocks.OXIDIZED_COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.oxidized()
+  - "oxidized_copper_chain"
+Blocks.WAXED_COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.waxed()
+  - "waxed_copper_chain"
+Blocks.WAXED_EXPOSED_COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.waxedExposed()
+  - "waxed_exposed_copper_chain"
+Blocks.WAXED_WEATHERED_COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.waxedWeathered()
+  - "waxed_weathered_copper_chain"
+Blocks.WAXED_OXIDIZED_COPPER_CHAIN:
+  - Blocks.COPPER_CHAIN.waxedOxidized()
+  - "waxed_oxidized_copper_chain"
 Blocks.SOUL_LANTERN:
   - Blocks.SOUL_LANTERN
   - "soul_lantern"
@@ -3179,6 +3341,27 @@ Blocks.WAXED_CUT_COPPER_SLAB:
 Blocks.LIGHTNING_ROD:
   - Blocks.LIGHTNING_ROD
   - "lightning_rod"
+Blocks.EXPOSED_LIGHTNING_ROD:
+  - Blocks.EXPOSED_LIGHTNING_ROD
+  - "exposed_lightning_rod"
+Blocks.WEATHERED_LIGHTNING_ROD:
+  - Blocks.WEATHERED_LIGHTNING_ROD
+  - "weathered_lightning_rod"
+Blocks.OXIDIZED_LIGHTNING_ROD:
+  - Blocks.OXIDIZED_LIGHTNING_ROD
+  - "oxidized_lightning_rod"
+Blocks.WAXED_LIGHTNING_ROD:
+  - Blocks.WAXED_LIGHTNING_ROD
+  - "waxed_lightning_rod"
+Blocks.WAXED_EXPOSED_LIGHTNING_ROD:
+  - Blocks.WAXED_EXPOSED_LIGHTNING_ROD
+  - "waxed_exposed_lightning_rod"
+Blocks.WAXED_WEATHERED_LIGHTNING_ROD:
+  - Blocks.WAXED_WEATHERED_LIGHTNING_ROD
+  - "waxed_weathered_lightning_rod"
+Blocks.WAXED_OXIDIZED_LIGHTNING_ROD:
+  - Blocks.WAXED_OXIDIZED_LIGHTNING_ROD
+  - "waxed_oxidized_lightning_rod"
 Blocks.POINTED_DRIPSTONE:
   - Blocks.POINTED_DRIPSTONE
   - "pointed_dripstone"
@@ -3482,6 +3665,9 @@ Items.QUARTZ:
 Items.COPPER_INGOT:
   - Items.COPPER_INGOT
   - "copper_ingot"
+Items.COPPER_NUGGET:
+  - Items.COPPER_NUGGET
+  - "copper_nugget"
 Items.NETHER_STAR:
   - Items.NETHER_STAR
   - "nether_star"
@@ -3566,6 +3752,21 @@ Items.STONE_AXE:
 Items.STONE_HOE:
   - Items.STONE_HOE
   - "stone_hoe"
+Items.COPPER_SWORD:
+  - Items.COPPER_SWORD
+  - "copper_sword"
+Items.COPPER_SHOVEL:
+  - Items.COPPER_SHOVEL
+  - "copper_shovel"
+Items.COPPER_PICKAXE:
+  - Items.COPPER_PICKAXE
+  - "copper_pickaxe"
+Items.COPPER_AXE:
+  - Items.COPPER_AXE
+  - "copper_axe"
+Items.COPPER_HOE:
+  - Items.COPPER_HOE
+  - "copper_hoe"
 Items.IRON_SWORD:
   - Items.IRON_SWORD
   - "iron_sword"
@@ -3629,6 +3830,18 @@ Items.LEATHER_LEGGINGS:
 Items.LEATHER_BOOTS:
   - Items.LEATHER_BOOTS
   - "leather_boots"
+Items.COPPER_HELMET:
+  - Items.COPPER_HELMET
+  - "copper_helmet"
+Items.COPPER_CHESTPLATE:
+  - Items.COPPER_CHESTPLATE
+  - "copper_chestplate"
+Items.COPPER_LEGGINGS:
+  - Items.COPPER_LEGGINGS
+  - "copper_leggings"
+Items.COPPER_BOOTS:
+  - Items.COPPER_BOOTS
+  - "copper_boots"
 Items.CHAINMAIL_HELMET:
   - Items.CHAINMAIL_HELMET
   - "chainmail_helmet"
@@ -3680,6 +3893,9 @@ Items.DIAMOND_BOOTS:
 Items.ELYTRA:
   - Items.ELYTRA
   - "elytra"
+Items.COPPER_HORSE_ARMOR:
+  - Items.COPPER_HORSE_ARMOR
+  - "copper_horse_armor"
 Items.IRON_HORSE_ARMOR:
   - Items.IRON_HORSE_ARMOR
   - "iron_horse_armor"
@@ -4850,6 +5066,9 @@ Items.GOAT_HORN:
 Items.ECHO_SHARD:
   - Items.ECHO_SHARD
   - "echo_shard"
+Items.COPPER_GOLEM_SPAWN_EGG:
+  - Items.COPPER_GOLEM_SPAWN_EGG
+  - "copper_golem_spawn_egg"
 Items.IRON_GOLEM_SPAWN_EGG:
   - Items.IRON_GOLEM_SPAWN_EGG
   - "iron_golem_spawn_egg"
