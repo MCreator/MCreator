@@ -107,7 +107,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	);
 
 	private final JCheckBox isEnchantable = new JCheckBox();
-	private final DataListComboBox enchantmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
+	private final DataListComboBox enchantmentSlot = new DataListComboBox(mcreator,
+			ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
 	private final JSpinner enchantmentValue = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
 	private final JCheckBox diggerUseEfficiency = L10N.checkbox("elementgui.common.enable");
 	private final JDiggerList diggerEntries = new JDiggerList(mcreator, this);
@@ -324,7 +325,13 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		diggerUseEfficiency.setOpaque(false);
 		toolProperties.add(diggerUseEfficiency);
 
-		toolPanel.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, toolProperties), diggerEntries));
+		JComponent diggerEntriesList = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("beitem/digger_entries"),
+						L10N.label("elementgui.beitem.digger_entries")), diggerEntries);
+		diggerEntriesList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		toolPanel.add("Center",
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, toolProperties), diggerEntriesList));
 
 		scriptsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("beitem/scripts"), L10N.label("elementgui.beitem.scripts")),
@@ -335,7 +342,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.item.food_properties"), foodPanel);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedPanel);
-		addPage(L10N.t("elementgui.beitem.page_tool_properties"), toolPanel).lazyValidate(diggerEntries::getValidationResult);
+		addPage(L10N.t("elementgui.beitem.page_tool_properties"), toolPanel).lazyValidate(
+				diggerEntries::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_scripts"), scriptsPanel);
 
 		if (!isEditingMode()) {
