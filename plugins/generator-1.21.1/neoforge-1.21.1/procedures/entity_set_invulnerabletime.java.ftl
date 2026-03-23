@@ -1,0 +1,1 @@
+${input$entity}.invulnerableTime = (int)${input$invulnerableTime};
