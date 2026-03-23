@@ -6490,6 +6490,11 @@
   type: item
   texture: WOODEN_HOE
 
+- Items.WOODEN_SPEAR:
+  readable_name: "Wooden Spear"
+  type: item
+  texture: WOODEN_SPEAR
+
 - Items.STONE_SWORD:
   readable_name: "Stone Sword"
   type: item
@@ -6514,6 +6519,11 @@
   readable_name: "Stone Hoe"
   type: item
   texture: STONE_HOE
+
+- Items.STONE_SPEAR:
+  readable_name: "Stone Spear"
+  type: item
+  texture: STONE_SPEAR
 
 - Items.COPPER_SWORD:
   readable_name: "Copper Sword"
@@ -6540,6 +6550,11 @@
   type: item
   texture: COPPER_HOE
 
+- Items.COPPER_SPEAR:
+  readable_name: "Copper Spear"
+  type: item
+  texture: COPPER_SPEAR
+
 - Items.IRON_SWORD:
   readable_name: "Iron Sword"
   type: item
@@ -6564,6 +6579,11 @@
   readable_name: "Iron Hoe"
   type: item
   texture: IRON_HOE
+
+- Items.IRON_SPEAR:
+  readable_name: "Iron Spear"
+  type: item
+  texture: IRON_SPEAR
 
 - Items.FLINT_AND_STEEL:
   readable_name: "Flint and Steel"
@@ -6600,6 +6620,11 @@
   type: item
   texture: GOLDEN_HOE
 
+- Items.GOLDEN_SPEAR:
+  readable_name: "Golden Spear"
+  type: item
+  texture: GOLDEN_SPEAR
+
 - Items.DIAMOND_SWORD:
   readable_name: "Diamond Sword"
   type: item
@@ -6625,6 +6650,11 @@
   type: item
   texture: DIAMOND_HOE
 
+- Items.DIAMOND_SPEAR:
+  readable_name: "Diamond Spear"
+  type: item
+  texture: DIAMOND_SPEAR
+
 - Items.NETHERITE_SWORD:
   readable_name: "Netherite Sword"
   type: item
@@ -6649,6 +6679,11 @@
   readable_name: "Netherite Hoe"
   type: item
   texture: NETHERITE_HOE
+
+- Items.NETHERITE_SPEAR:
+  readable_name: "Netherite Spear"
+  type: item
+  texture: NETHERITE_SPEAR
 
 - Items.TRIDENT:
   readable_name: "Trident"
@@ -6834,6 +6869,36 @@
   readable_name: "Diamond Horse Armor"
   type: item
   texture: DIAMOND_HORSE_ARMOR
+
+- Items.NETHERITE_HORSE_ARMOR:
+  readable_name: "Netherite Horse Armor"
+  type: item
+  texture: NETHERITE_HORSE_ARMOR
+
+- Items.COPPER_NAUTILUS_ARMOR:
+  readable_name: "Copper Nautilus Armor"
+  type: item
+  texture: COPPER_NAUTILUS_ARMOR
+
+- Items.IRON_NAUTILUS_ARMOR:
+  readable_name: "Iron Nautilus Armor"
+  type: item
+  texture: IRON_NAUTILUS_ARMOR
+
+- Items.GOLDEN_NAUTILUS_ARMOR:
+  readable_name: "Golden Nautilus Armor"
+  type: item
+  texture: GOLDEN_NAUTILUS_ARMOR
+
+- Items.DIAMOND_NAUTILUS_ARMOR:
+  readable_name: "Diamond Nautilus Armor"
+  type: item
+  texture: DIAMOND_NAUTILUS_ARMOR
+
+- Items.NETHERITE_NAUTILUS_ARMOR:
+  readable_name: "Netherite Nautilus Armor"
+  type: item
+  texture: NETHERITE_NAUTILUS_ARMOR
 
 - Items.WOLF_ARMOR:
   readable_name: "Wolf Armor"
@@ -8402,6 +8467,26 @@
   readable_name: "Copper Golem Spawn Egg"
   type: item
   texture: COPPER_GOLEM_SPAWN_EGG
+
+- Items.NAUTILUS_SPAWN_EGG:
+  readable_name: "Nautilus Spawn Egg"
+  type: item
+  texture: NAUTILUS_SPAWN_EGG
+
+- Items.ZOMBIE_NAUTILUS_SPAWN_EGG:
+  readable_name: "Zombie Nautilus Spawn Egg"
+  type: item
+  texture: ZOMBIE_NAUTILUS_SPAWN_EGG
+
+- Items.CAMEL_HUSK_SPAWN_EGG:
+  readable_name: "Camel Husk Spawn Egg"
+  type: item
+  texture: CAMEL_HUSK_SPAWN_EGG
+
+- Items.PARCHED_SPAWN_EGG:
+  readable_name: "Parched Spawn Egg"
+  type: item
+  texture: PARCHED_SPAWN_EGG
 
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
