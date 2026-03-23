@@ -1772,6 +1772,11 @@
   type: block
   texture: YELLOW_FLOWER
 
+- Blocks.GOLDEN_DANDELION:
+  readable_name: "Golden Dandelion"
+  type: block
+  texture: GOLDEN_DANDELION
+
 - Blocks.RED_FLOWER#0:
   readable_name: "Poppy"
   type: block
@@ -4201,6 +4206,11 @@
   readable_name: "Potted Dandelion"
   type: block_without_item
   texture: POTTED_DANDELION
+
+- Blocks.POTTED_GOLDEN_DANDELION:
+  readable_name: "Potted Golden Dandelion"
+  type: block_without_item
+  texture: POTTED_GOLDEN_DANDELION
 
 - Blocks.POTTED_POPPY:
   readable_name: "Potted Poppy"
