@@ -85,9 +85,9 @@ public class ModElementTypeLoader {
 		ModElementType.VILLAGERTRADE = register(new ModElementType<>("villagertrade", null, VillagerTradeGUI::new, VillagerTrade.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 
 		// Bedrock-specific METs
+		ModElementType.BEBLOCK = register(new ModElementType<>("beblock", "block", 'b', BEBlockGUI::new, BEBlock.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 		ModElementType.BEENTITY = register(new ModElementType<>("beentity", "livingentity", 'e', BEEntityGUI::new, BEEntity.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 		ModElementType.BEITEM = register(new ModElementType<>("beitem", "item", 'i', BEItemGUI::new, BEItem.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
-		ModElementType.BEBLOCK = register(new ModElementType<>("beblock", "block", 'b', BEBlockGUI::new, BEBlock.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 		ModElementType.BESCRIPT = register(new ModElementType<>("bescript", "procedure", 's', BEScriptGUI::new, BEScript.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 
 		// Unregistered type used to mask legacy removed mod element types
