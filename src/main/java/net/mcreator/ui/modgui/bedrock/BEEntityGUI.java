@@ -174,7 +174,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/flying_entity"),
 				L10N.label("elementgui.beentity.flying_properties")));
-		behaviourProps.add(PanelUtils.westAndCenterElement(canFly, flyingSpeedValue));
+		behaviourProps.add(PanelUtils.westAndCenterElement(canFly, flyingSpeedValue, 2, 2));
 		canFly.addActionListener(e -> refreshFlyProperties());
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/health"),
