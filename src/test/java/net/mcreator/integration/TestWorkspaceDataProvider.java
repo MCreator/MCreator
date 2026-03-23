@@ -1730,7 +1730,7 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				for (MItemBlock entry : subset(random, blocksAndTags.size() / 8, blocksAndTags,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()))) {
-					beitem.diggerEntries.add(new BEItem.DiggerEntry(entry, 5));
+					beitem.diggerEntries.add(new BEItem.DiggerEntry(entry, random.nextInt(1, Integer.MAX_VALUE)));
 				}
 			}
 			beitem.localScripts = new ArrayList<>();
