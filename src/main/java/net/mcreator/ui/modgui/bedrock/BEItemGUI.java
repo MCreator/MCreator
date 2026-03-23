@@ -324,8 +324,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		diggerUseEfficiency.setOpaque(false);
 		toolProperties.add(diggerUseEfficiency);
 
-		toolPanel.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(toolProperties, diggerEntries)));
+		toolPanel.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, toolProperties), diggerEntries));
 
 		scriptsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("beitem/scripts"), L10N.label("elementgui.beitem.scripts")),
