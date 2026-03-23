@@ -412,6 +412,9 @@ Blocks.PISTON_EXTENSION:
 Blocks.YELLOW_FLOWER:
   - Blocks.DANDELION
   - "dandelion"
+Blocks.GOLDEN_DANDELION:
+  - Blocks.GOLDEN_DANDELION
+  - "golden_dandelion"
 Blocks.RED_FLOWER:
   - Blocks.POPPY
   - "#minecraft:small_flowers"
@@ -2173,6 +2176,9 @@ Blocks.POTTED_FERN:
 Blocks.POTTED_DANDELION:
   - Blocks.POTTED_DANDELION
   - "potted_dandelion"
+Blocks.POTTED_GOLDEN_DANDELION:
+  - Blocks.POTTED_GOLDEN_DANDELION
+  - "potted_golden_dandelion"
 Blocks.POTTED_POPPY:
   - Blocks.POTTED_POPPY
   - "potted_poppy"
