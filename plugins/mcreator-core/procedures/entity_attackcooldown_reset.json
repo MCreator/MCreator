@@ -6,6 +6,7 @@
       "check": "Entity"
     }
   ],
+  "inputsInline": true,
   "previousStatement": null,
   "nextStatement": null,
   "colour": 175,
