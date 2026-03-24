@@ -22,9 +22,6 @@ CRIT:
 DAMAGE_INDICATOR:
   - ParticleTypes.DAMAGE_INDICATOR
   - "damage_indicator"
-DRAGON_BREATH:
-  - ParticleTypes.DRAGON_BREATH # This no longer uses the SimpleParticleType class. It uses ParticleType<PowerParticleOption>
-  - "dragon_breath"
 DRIP_LAVA:
   - ParticleTypes.DRIPPING_LAVA
   - "dripping_lava"
@@ -40,9 +37,6 @@ DRIP_WATER:
 WATER_DROP:
   - ParticleTypes.FALLING_WATER
   - "falling_water"
-SPELL:
-  - ParticleTypes.EFFECT # This no longer uses the SimpleParticleType class. It uses ParticleType<SpellParticleOption>
-  - "effect"
 ELDER_GUARDIAN:
   - ParticleTypes.ELDER_GUARDIAN
   - "elder_guardian"
@@ -106,9 +100,6 @@ SOUL_FIRE_FLAME:
 SOUL:
   - ParticleTypes.SOUL
   - "soul"
-FLASH:
-  - ParticleTypes.FLASH # This no longer uses the SimpleParticleType class. It uses ParticleType<ColorParticleOption>
-  - "flash"
 VILLAGER_HAPPY:
   - ParticleTypes.HAPPY_VILLAGER
   - "happy_villager"
@@ -118,9 +109,6 @@ COMPOSTER:
 HEART:
   - ParticleTypes.HEART
   - "heart"
-SPELL_INSTANT:
-  - ParticleTypes.INSTANT_EFFECT # This no longer uses the SimpleParticleType class. It uses ParticleType<SpellParticleOption>
-  - "instant_effect"
 PAUSE_MOB_GROWTH:
   - ParticleTypes.PAUSE_MOB_GROWTH
   - "pause_mob_growth"
@@ -313,3 +301,17 @@ TRIAL_OMEN:
 FIREFLY:
   - ParticleTypes.FIREFLY
   - "firefly"
+
+# Unsupported by Mojang
+DRAGON_BREATH:
+  - ParticleTypes.CRIT
+  - "crit"
+FLASH:
+  - ParticleTypes.CRIT
+  - "crit"
+SPELL_INSTANT:
+  - ParticleTypes.CRIT
+  - "crit"
+SPELL:
+  - ParticleTypes.CRIT
+  - "crit"
