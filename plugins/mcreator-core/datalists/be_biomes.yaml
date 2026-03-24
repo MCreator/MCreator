@@ -124,6 +124,8 @@
   readable_name: "Mushroom Field Shore"
 - ocean:
   readable_name: "Ocean"
+- pale_garden:
+  readable_name: "Pale Garden"
 - plains:
   readable_name: "Plains"
 - redwood_taiga_hills_mutated:
