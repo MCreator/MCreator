@@ -1,0 +1,1 @@
+(${input$vector1}.dot(${input$vector2}))
