@@ -1,1 +1,1 @@
-(${input$entity}.invulnerableTime)
+/*@int*/(${input$entity}.invulnerableTime)
