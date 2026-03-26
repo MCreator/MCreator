@@ -46,12 +46,12 @@ jobs:
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           sudo unzip LockedList.zip -d /usr/share/nsis/
-      - uses: google-github-actions/auth@a6e2e39c0a0331da29f7fd2c2a20a427e8d3ad1f
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093
         name: Authenticate to Google Cloud
         with:
           workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ secrets.GC_PROJECT_ID }}
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db
         name: Set up Google Cloud SDK
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
