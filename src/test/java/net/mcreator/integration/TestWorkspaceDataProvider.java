@@ -1661,7 +1661,7 @@ public class TestWorkspaceDataProvider {
 				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#minecraft:test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
-			feature.placeProcedure = new Procedure("procedure2");
+			feature.placeProcedure = null;//new Procedure("procedure2");
 			feature.featurexml = Feature.XML_BASE;
 			feature.skipPlacement = !_true;
 			return feature;
