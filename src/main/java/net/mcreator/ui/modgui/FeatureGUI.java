@@ -93,8 +93,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		placeProcedure = new ProcedureSelector(this.withEntry("feature/generation_condition"), mcreator,
-				L10N.t("elementgui.feature.additional_generation_condition"),
+		placeProcedure = new ProcedureSelector(this.withEntry("feature/place_procedure"), mcreator,
+				L10N.t("elementgui.feature.additional_place_procedure"),
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
