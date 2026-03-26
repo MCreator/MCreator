@@ -94,7 +94,7 @@ import org.apache.logging.log4j.Logger;
 	private static Object minecraft;
 	private static MethodHandle playerHandle;
 	@Nullable public static Player clientPlayer() {
-		if (FMLEnvironment.dist.isClient()) {
+		if (FMLEnvironment.getDist().isClient()) {
 			try {
 				<#-- Lazy initialize and cache the Minecraft instance and player handle -->
 				if (minecraft == null || playerHandle == null) {
