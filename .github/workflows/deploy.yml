@@ -51,8 +51,6 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ secrets.GC_PROJECT_ID }}
-          service_account: ${{ secrets.GC_SERVICE_ACCOUNT }}
-          token_format: 'access_token'
       - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db
         name: Set up Google Cloud SDK
       - name: Build and Export Release Using Gradle
