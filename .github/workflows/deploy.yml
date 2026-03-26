@@ -51,10 +51,40 @@ jobs:
         with:
           workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ secrets.GC_PROJECT_ID }}
-          token_format: 'access_token'
-          access_token_scopes: 'https://www.googleapis.com/auth/cloud-platform'
       - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db
         name: Set up Google Cloud SDK
+      - name: Safe Token & Scope Debugger
+        run: |
+          echo "Fetching token silently..."
+          TOKEN=$(gcloud auth print-access-token)
+          
+          if [ -z "$TOKEN" ]; then
+            echo "❌ No token found!"
+            exit 1
+          fi
+          echo "✅ Token captured (Length: ${#TOKEN} chars)"
+          
+          echo "--- Token Metadata ---"
+          HTTP_STATUS=$(curl -s -w "%{http_code}" -o token_info.json "https://oauth2.googleapis.com/tokeninfo?access_token=$TOKEN")
+          
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "❌ Token Info API rejected the token (Status: $HTTP_STATUS)"
+            cat token_info.json
+          else
+            echo "✅ Token valid. Safe metadata:"
+            jq '{scope: .scope, expires_in: .expires_in, email: .email, principal: .sub}' token_info.json
+          fi
+          
+          echo "--- KMS API Dry Run ---"
+          KMS_STATUS=$(curl -s -w "%{http_code}" -o kms_response.json -H "Authorization: Bearer $TOKEN" "https://cloudkms.googleapis.com/v1/projects/${{ secrets.GC_PROJECT_ID }}/locations")
+          
+          echo "KMS API HTTP Status: $KMS_STATUS"
+          if [ "$KMS_STATUS" == "401" ] || [ "$KMS_STATUS" == "403" ]; then
+            echo "❌ KMS API rejected the token!"
+            cat kms_response.json
+          else
+            echo "✅ KMS API accepted the token!"
+          fi
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         env:
