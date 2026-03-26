@@ -1,0 +1,27 @@
+templates:
+  - template: specialentity/specialentity.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/entity/@NAMEEntity.java"
+  - template: json/special_entity_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/model_item.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/items/@registryname.json"
+
+# Dispense behaviors are controlled by generator.yaml
+
+tags:
+  - tag: ENTITIES:minecraft:boat
+    condition: "entityType %= Boat"
+  - tag: ENTITIES:c:boats
+    condition: "entityType %= ChestBoat"
+  - tag: ITEMS:minecraft:boats
+    condition: "entityType %= Boat"
+  - tag: ITEMS:minecraft:chest_boats
+    condition: "entityType %= ChestBoat"
+
+localizationkeys:
+  - key: entity.@modid.@registryname
+    mapto: name
+  - key: item.@modid.@registryname
+    mapto: name

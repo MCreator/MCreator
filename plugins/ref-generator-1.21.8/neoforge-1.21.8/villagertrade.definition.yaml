@@ -1,0 +1,4 @@
+global_templates:
+  - template: elementinits/villagertrades.java.ftl
+    writer: java
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTrades.java"
