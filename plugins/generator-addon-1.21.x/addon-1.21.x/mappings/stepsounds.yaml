@@ -26,6 +26,7 @@ CHISELED_BOOKSHELF: chiseled_bookshelf
 COBWEB: web
 COPPER: copper
 COPPER_BULB: copper_bulb
+#COPPER_GOLEM_STATUE: COPPER_GOLEM_STATUE
 COPPER_GRATE: copper_grate
 CORAL: coral
 CREAKING_HEART: creaking_heart
@@ -94,6 +95,7 @@ SCULK_CATALYST: sculk_catalyst
 SCULK_SENSOR: sculk_sensor
 SCULK_SHRIEKER: sculk_shrieker
 SCULK_VEIN: sculk_vein
+#SHELF: SHELF
 SHROOMLIGHT: shroomlight
 SLIME: slime
 SMALL_AMETHYST_BUD: small_amethyst_bud
