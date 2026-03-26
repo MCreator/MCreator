@@ -1,0 +1,1 @@
+(${input$vector1}.distanceTo(${input$vector2}))

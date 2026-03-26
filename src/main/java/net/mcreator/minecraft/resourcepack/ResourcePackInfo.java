@@ -121,7 +121,6 @@ public class ResourcePackInfo {
 							return libraryFile;
 						}
 					}
-					LOG.warn("Failed to find vanilla resources jar for pattern: {}", vanillaResourcesJar);
 				}
 				return null;
 			});
