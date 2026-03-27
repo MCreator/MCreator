@@ -1772,6 +1772,11 @@
   type: block
   texture: YELLOW_FLOWER
 
+- Blocks.GOLDEN_DANDELION:
+  readable_name: "Golden Dandelion"
+  type: block
+  texture: GOLDEN_DANDELION
+
 - Blocks.RED_FLOWER#0:
   readable_name: "Poppy"
   type: block
@@ -1968,6 +1973,66 @@
   type: block
   texture: CHISELED_BOOKSHELF
 
+- Blocks.OAK_SHELF:
+  readable_name: "Oak Shelf"
+  type: block
+  texture: OAK_SHELF
+
+- Blocks.SPRUCE_SHELF:
+  readable_name: "Spruce Shelf"
+  type: block
+  texture: SPRUCE_SHELF
+
+- Blocks.BIRCH_SHELF:
+  readable_name: "Birch Shelf"
+  type: block
+  texture: BIRCH_SHELF
+
+- Blocks.JUNGLE_SHELF:
+  readable_name: "Jungle Shelf"
+  type: block
+  texture: JUNGLE_SHELF
+
+- Blocks.ACACIA_SHELF:
+  readable_name: "Acacia Shelf"
+  type: block
+  texture: ACACIA_SHELF
+
+- Blocks.DARK_OAK_SHELF:
+  readable_name: "Dark Oak Shelf"
+  type: block
+  texture: DARK_OAK_SHELF
+
+- Blocks.PALE_OAK_SHELF:
+  readable_name: "Pale Oak Shelf"
+  type: block
+  texture: PALE_OAK_SHELF
+
+- Blocks.CRIMSON_SHELF:
+  readable_name: "Crimson Shelf"
+  type: block
+  texture: CRIMSON_SHELF
+
+- Blocks.WARPED_SHELF:
+  readable_name: "Warped Shelf"
+  type: block
+  texture: WARPED_SHELF
+
+- Blocks.MANGROVE_SHELF:
+  readable_name: "Mangrove Shelf"
+  type: block
+  texture: MANGROVE_SHELF
+
+- Blocks.CHERRY_SHELF:
+  readable_name: "Cherry Shelf"
+  type: block
+  texture: CHERRY_SHELF
+
+- Blocks.BAMBOO_SHELF:
+  readable_name: "Bamboo Shelf"
+  type: block
+  texture: BAMBOO_SHELF
+
 - Blocks.TORCH:
   readable_name: "Torch"
   type: block_without_item
@@ -1977,6 +2042,16 @@
   readable_name: "Wall Torch"
   type: block_without_item
   texture: TORCH
+
+- Blocks.COPPER_TORCH:
+  readable_name: "Copper Torch"
+  type: block
+  texture: COPPER_TORCH
+
+- Blocks.COPPER_WALL_TORCH:
+  readable_name: "Copper Wall Torch"
+  type: block_without_item
+  texture: COPPER_TORCH
 
 - Blocks.SOUL_TORCH:
   readable_name: "Soul Torch"
@@ -2003,15 +2078,95 @@
   type: block
   texture: LANTERN
 
+- Blocks.COPPER_LANTERN:
+  readable_name: "Copper Lantern"
+  type: block
+  texture: COPPER_LANTERN
+
+- Blocks.EXPOSED_COPPER_LANTERN:
+  readable_name: "Exposed Copper Lantern"
+  type: block
+  texture: EXPOSED_COPPER_LANTERN
+
+- Blocks.WEATHERED_COPPER_LANTERN:
+  readable_name: "Weathered Copper Lantern"
+  type: block
+  texture: WEATHERED_COPPER_LANTERN
+
+- Blocks.OXIDIZED_COPPER_LANTERN:
+  readable_name: "Oxidized Copper Lantern"
+  type: block
+  texture: OXIDIZED_COPPER_LANTERN
+
+- Blocks.WAXED_COPPER_LANTERN:
+  readable_name: "Waxed Copper Lantern"
+  type: block
+  texture: WAXED_COPPER_LANTERN
+
+- Blocks.WAXED_EXPOSED_COPPER_LANTERN:
+  readable_name: "Waxed Exposed Copper Lantern"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_LANTERN
+
+- Blocks.WAXED_WEATHERED_COPPER_LANTERN:
+  readable_name: "Waxed Weathered Copper Lantern"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_LANTERN
+
+- Blocks.WAXED_OXIDIZED_COPPER_LANTERN:
+  readable_name: "Waxed Oxidized Copper Lantern"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_LANTERN
+
 - Blocks.SOUL_LANTERN:
   readable_name: "Soul Lantern"
   type: block
   texture: SOUL_LANTERN
 
 - Blocks.CHAIN:
-  readable_name: "Chain"
+  readable_name: "Iron Chain"
   type: block
   texture: CHAIN
+
+- Blocks.COPPER_CHAIN:
+  readable_name: "Copper Chain"
+  type: block
+  texture: COPPER_CHAIN
+
+- Blocks.EXPOSED_COPPER_CHAIN:
+  readable_name: "Exposed Copper Chain"
+  type: block
+  texture: EXPOSED_COPPER_CHAIN
+
+- Blocks.WEATHERED_COPPER_CHAIN:
+  readable_name: "Weathered Copper Chain"
+  type: block
+  texture: WEATHERED_COPPER_CHAIN
+
+- Blocks.OXIDIZED_COPPER_CHAIN:
+  readable_name: "Oxidized Copper Chain"
+  type: block
+  texture: OXIDIZED_COPPER_CHAIN
+
+- Blocks.WAXED_COPPER_CHAIN:
+  readable_name: "Waxed Copper Chain"
+  type: block
+  texture: WAXED_COPPER_CHAIN
+
+- Blocks.WAXED_EXPOSED_COPPER_CHAIN:
+  readable_name: "Waxed Exposed Copper Chain"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_CHAIN
+
+- Blocks.WAXED_WEATHERED_COPPER_CHAIN:
+  readable_name: "Waxed Weathered Copper Chain"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_CHAIN
+
+- Blocks.WAXED_OXIDIZED_COPPER_CHAIN:
+  readable_name: "Waxed Oxidized Copper Chain"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_CHAIN
 
 - Blocks.CAMPFIRE:
   readable_name: "Campfire"
@@ -2233,6 +2388,46 @@
   readable_name: "Trapped Chest"
   type: block
   texture: TRAPPED_CHEST
+
+- Blocks.COPPER_CHEST:
+  readable_name: "Copper Chest"
+  type: block
+  texture: COPPER_CHEST
+
+- Blocks.EXPOSED_COPPER_CHEST:
+  readable_name: "Exposed Copper Chest"
+  type: block
+  texture: EXPOSED_COPPER_CHEST
+
+- Blocks.WEATHERED_COPPER_CHEST:
+  readable_name: "Weathered Copper Chest"
+  type: block
+  texture: WEATHERED_COPPER_CHEST
+
+- Blocks.OXIDIZED_COPPER_CHEST:
+  readable_name: "Oxidized Copper Chest"
+  type: block
+  texture: OXIDIZED_COPPER_CHEST
+
+- Blocks.WAXED_COPPER_CHEST:
+  readable_name: "Waxed Copper Chest"
+  type: block
+  texture: WAXED_COPPER_CHEST
+
+- Blocks.WAXED_EXPOSED_COPPER_CHEST:
+  readable_name: "Waxed Exposed Copper Chest"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_CHEST
+
+- Blocks.WAXED_WEATHERED_COPPER_CHEST:
+  readable_name: "Waxed Weathered Copper Chest"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_CHEST
+
+- Blocks.WAXED_OXIDIZED_COPPER_CHEST:
+  readable_name: "Waxed Oxidized Copper Chest"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_CHEST
 
 - Blocks.ENDER_CHEST:
   readable_name: "Ender Chest"
@@ -3031,6 +3226,55 @@
   other:
     poi: true
 
+- Blocks.EXPOSED_LIGHTNING_ROD:
+  readable_name: "Exposed Lightning Rod"
+  type: block
+  texture: EXPOSED_LIGHTNING_ROD
+  other:
+    poi: true
+
+- Blocks.WEATHERED_LIGHTNING_ROD:
+  readable_name: "Weathered Lightning Rod"
+  type: block
+  texture: WEATHERED_LIGHTNING_ROD
+  other:
+    poi: true
+
+- Blocks.OXIDIZED_LIGHTNING_ROD:
+  readable_name: "Oxidized Lightning Rod"
+  type: block
+  texture: OXIDIZED_LIGHTNING_ROD
+  other:
+    poi: true
+
+- Blocks.WAXED_LIGHTNING_ROD:
+  readable_name: "Waxed Lightning Rod"
+  type: block
+  texture: WAXED_LIGHTNING_ROD
+  other:
+    poi: true
+
+- Blocks.WAXED_EXPOSED_LIGHTNING_ROD:
+  readable_name: "Waxed Exposed Lightning Rod"
+  type: block
+  texture: WAXED_EXPOSED_LIGHTNING_ROD
+  other:
+    poi: true
+
+- Blocks.WAXED_WEATHERED_LIGHTNING_ROD:
+  readable_name: "Waxed Weathered Lightning Rod"
+  type: block
+  texture: WAXED_WEATHERED_LIGHTNING_ROD
+  other:
+    poi: true
+
+- Blocks.WAXED_OXIDIZED_LIGHTNING_ROD:
+  readable_name: "Waxed Oxidized Lightning Rod"
+  type: block
+  texture: WAXED_OXIDIZED_LIGHTNING_ROD
+  other:
+    poi: true
+
 - Blocks.SCULK_SENSOR:
   readable_name: "Sculk Sensor"
   type: block
@@ -3401,6 +3645,86 @@
   readable_name: "Iron Bars"
   type: block
   texture: IRON_BARS
+
+- Blocks.COPPER_BARS:
+  readable_name: "Copper Bars"
+  type: block
+  texture: COPPER_BARS
+
+- Blocks.EXPOSED_COPPER_BARS:
+  readable_name: "Exposed Copper Bars"
+  type: block
+  texture: EXPOSED_COPPER_BARS
+
+- Blocks.WEATHERED_COPPER_BARS:
+  readable_name: "Weathered Copper Bars"
+  type: block
+  texture: WEATHERED_COPPER_BARS
+
+- Blocks.OXIDIZED_COPPER_BARS:
+  readable_name: "Oxidized Copper Bars"
+  type: block
+  texture: OXIDIZED_COPPER_BARS
+
+- Blocks.WAXED_COPPER_BARS:
+  readable_name: "Waxed Copper Bars"
+  type: block
+  texture: WAXED_COPPER_BARS
+
+- Blocks.WAXED_EXPOSED_COPPER_BARS:
+  readable_name: "Waxed Exposed Copper Bars"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_BARS
+
+- Blocks.WAXED_WEATHERED_COPPER_BARS:
+  readable_name: "Waxed Weathered Copper Bars"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_BARS
+
+- Blocks.WAXED_OXIDIZED_COPPER_BARS:
+  readable_name: "Waxed Oxidized Copper Bars"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_BARS
+
+- Blocks.COPPER_GOLEM_STATUE:
+  readable_name: "Copper Golem Statue"
+  type: block
+  texture: COPPER_GOLEM_STATUE
+
+- Blocks.EXPOSED_COPPER_GOLEM_STATUE:
+  readable_name: "Exposed Copper Golem Statue"
+  type: block
+  texture: EXPOSED_COPPER_GOLEM_STATUE
+
+- Blocks.WEATHERED_COPPER_GOLEM_STATUE:
+  readable_name: "Weathered Copper Golem Statue"
+  type: block
+  texture: WEATHERED_COPPER_GOLEM_STATUE
+
+- Blocks.OXIDIZED_COPPER_GOLEM_STATUE:
+  readable_name: "Oxidized Copper Golem Statue"
+  type: block
+  texture: OXIDIZED_COPPER_GOLEM_STATUE
+
+- Blocks.WAXED_COPPER_GOLEM_STATUE:
+  readable_name: "Waxed Copper Golem Statue"
+  type: block
+  texture: WAXED_COPPER_GOLEM_STATUE
+
+- Blocks.WAXED_EXPOSED_COPPER_GOLEM_STATUE:
+  readable_name: "Waxed Exposed Copper Golem Statue"
+  type: block
+  texture: WAXED_EXPOSED_COPPER_GOLEM_STATUE
+
+- Blocks.WAXED_WEATHERED_COPPER_GOLEM_STATUE:
+  readable_name: "Waxed Weathered Copper Golem Statue"
+  type: block
+  texture: WAXED_WEATHERED_COPPER_GOLEM_STATUE
+
+- Blocks.WAXED_OXIDIZED_COPPER_GOLEM_STATUE:
+  readable_name: "Waxed Oxidized Copper Golem Statue"
+  type: block
+  texture: WAXED_OXIDIZED_COPPER_GOLEM_STATUE
 
 - Blocks.MELON_BLOCK:
   readable_name: "Melon Block"
@@ -3882,6 +4206,11 @@
   readable_name: "Potted Dandelion"
   type: block_without_item
   texture: POTTED_DANDELION
+
+- Blocks.POTTED_GOLDEN_DANDELION:
+  readable_name: "Potted Golden Dandelion"
+  type: block_without_item
+  texture: POTTED_GOLDEN_DANDELION
 
 - Blocks.POTTED_POPPY:
   readable_name: "Potted Poppy"
@@ -5801,6 +6130,11 @@
   type: item
   texture: COPPER_INGOT
 
+- Items.COPPER_NUGGET:
+  readable_name: "Copper Nugget"
+  type: item
+  texture: COPPER_NUGGET
+
 - Items.REDSTONE:
   readable_name: "Redstone"
   type: item
@@ -6166,6 +6500,11 @@
   type: item
   texture: WOODEN_HOE
 
+- Items.WOODEN_SPEAR:
+  readable_name: "Wooden Spear"
+  type: item
+  texture: WOODEN_SPEAR
+
 - Items.STONE_SWORD:
   readable_name: "Stone Sword"
   type: item
@@ -6191,6 +6530,41 @@
   type: item
   texture: STONE_HOE
 
+- Items.STONE_SPEAR:
+  readable_name: "Stone Spear"
+  type: item
+  texture: STONE_SPEAR
+
+- Items.COPPER_SWORD:
+  readable_name: "Copper Sword"
+  type: item
+  texture: COPPER_SWORD
+
+- Items.COPPER_SHOVEL:
+  readable_name: "Copper Shovel"
+  type: item
+  texture: COPPER_SHOVEL
+
+- Items.COPPER_PICKAXE:
+  readable_name: "Copper Pickaxe"
+  type: item
+  texture: COPPER_PICKAXE
+
+- Items.COPPER_AXE:
+  readable_name: "Copper Axe"
+  type: item
+  texture: COPPER_AXE
+
+- Items.COPPER_HOE:
+  readable_name: "Copper Hoe"
+  type: item
+  texture: COPPER_HOE
+
+- Items.COPPER_SPEAR:
+  readable_name: "Copper Spear"
+  type: item
+  texture: COPPER_SPEAR
+
 - Items.IRON_SWORD:
   readable_name: "Iron Sword"
   type: item
@@ -6215,6 +6589,11 @@
   readable_name: "Iron Hoe"
   type: item
   texture: IRON_HOE
+
+- Items.IRON_SPEAR:
+  readable_name: "Iron Spear"
+  type: item
+  texture: IRON_SPEAR
 
 - Items.FLINT_AND_STEEL:
   readable_name: "Flint and Steel"
@@ -6251,6 +6630,11 @@
   type: item
   texture: GOLDEN_HOE
 
+- Items.GOLDEN_SPEAR:
+  readable_name: "Golden Spear"
+  type: item
+  texture: GOLDEN_SPEAR
+
 - Items.DIAMOND_SWORD:
   readable_name: "Diamond Sword"
   type: item
@@ -6276,6 +6660,11 @@
   type: item
   texture: DIAMOND_HOE
 
+- Items.DIAMOND_SPEAR:
+  readable_name: "Diamond Spear"
+  type: item
+  texture: DIAMOND_SPEAR
+
 - Items.NETHERITE_SWORD:
   readable_name: "Netherite Sword"
   type: item
@@ -6300,6 +6689,11 @@
   readable_name: "Netherite Hoe"
   type: item
   texture: NETHERITE_HOE
+
+- Items.NETHERITE_SPEAR:
+  readable_name: "Netherite Spear"
+  type: item
+  texture: NETHERITE_SPEAR
 
 - Items.TRIDENT:
   readable_name: "Trident"
@@ -6330,6 +6724,26 @@
   readable_name: "Leather Boots"
   type: item
   texture: LEATHER_BOOTS
+
+- Items.COPPER_HELMET:
+  readable_name: "Copper Helmet"
+  type: item
+  texture: COPPER_HELMET
+
+- Items.COPPER_CHESTPLATE:
+  readable_name: "Copper Chestplate"
+  type: item
+  texture: COPPER_CHESTPLATE
+
+- Items.COPPER_LEGGINGS:
+  readable_name: "Copper Leggings"
+  type: item
+  texture: COPPER_LEGGINGS
+
+- Items.COPPER_BOOTS:
+  readable_name: "Copper Boots"
+  type: item
+  texture: COPPER_BOOTS
 
 - Items.CHAINMAIL_HELMET:
   readable_name: "Chainmail Helmet"
@@ -6446,6 +6860,11 @@
   type: item
   texture: LEATHER_HORSE_ARMOR
 
+- Items.COPPER_HORSE_ARMOR:
+  readable_name: "Copper Horse Armor"
+  type: item
+  texture: COPPER_HORSE_ARMOR
+
 - Items.IRON_HORSE_ARMOR:
   readable_name: "Iron Horse Armor"
   type: item
@@ -6460,6 +6879,36 @@
   readable_name: "Diamond Horse Armor"
   type: item
   texture: DIAMOND_HORSE_ARMOR
+
+- Items.NETHERITE_HORSE_ARMOR:
+  readable_name: "Netherite Horse Armor"
+  type: item
+  texture: NETHERITE_HORSE_ARMOR
+
+- Items.COPPER_NAUTILUS_ARMOR:
+  readable_name: "Copper Nautilus Armor"
+  type: item
+  texture: COPPER_NAUTILUS_ARMOR
+
+- Items.IRON_NAUTILUS_ARMOR:
+  readable_name: "Iron Nautilus Armor"
+  type: item
+  texture: IRON_NAUTILUS_ARMOR
+
+- Items.GOLDEN_NAUTILUS_ARMOR:
+  readable_name: "Golden Nautilus Armor"
+  type: item
+  texture: GOLDEN_NAUTILUS_ARMOR
+
+- Items.DIAMOND_NAUTILUS_ARMOR:
+  readable_name: "Diamond Nautilus Armor"
+  type: item
+  texture: DIAMOND_NAUTILUS_ARMOR
+
+- Items.NETHERITE_NAUTILUS_ARMOR:
+  readable_name: "Netherite Nautilus Armor"
+  type: item
+  texture: NETHERITE_NAUTILUS_ARMOR
 
 - Items.WOLF_ARMOR:
   readable_name: "Wolf Armor"
@@ -8023,6 +8472,31 @@
   readable_name: "Creaking Spawn Egg"
   type: item
   texture: CREAKING_SPAWN_EGG
+
+- Items.COPPER_GOLEM_SPAWN_EGG:
+  readable_name: "Copper Golem Spawn Egg"
+  type: item
+  texture: COPPER_GOLEM_SPAWN_EGG
+
+- Items.NAUTILUS_SPAWN_EGG:
+  readable_name: "Nautilus Spawn Egg"
+  type: item
+  texture: NAUTILUS_SPAWN_EGG
+
+- Items.ZOMBIE_NAUTILUS_SPAWN_EGG:
+  readable_name: "Zombie Nautilus Spawn Egg"
+  type: item
+  texture: ZOMBIE_NAUTILUS_SPAWN_EGG
+
+- Items.CAMEL_HUSK_SPAWN_EGG:
+  readable_name: "Camel Husk Spawn Egg"
+  type: item
+  texture: CAMEL_HUSK_SPAWN_EGG
+
+- Items.PARCHED_SPAWN_EGG:
+  readable_name: "Parched Spawn Egg"
+  type: item
+  texture: PARCHED_SPAWN_EGG
 
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
