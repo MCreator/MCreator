@@ -102,7 +102,7 @@ jobs:
           files: build/export/*
           request_rate: 4
       - name: Upload Binaries and Tag Release
-        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.MCR_VERSION }}
@@ -190,7 +190,7 @@ jobs:
             echo "EOF"
           } >> $GITHUB_OUTPUT
       - name: Upload Binaries and Tag Release
-        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ needs.export1.outputs.mcr_version }}
