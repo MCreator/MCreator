@@ -4,7 +4,7 @@ Unicode true
 !addplugindir "${NSIS_DIR}\Plugins\x86-unicode"
 !addincludedir "${NSIS_DIR}\Include"
 
-SetCompressor "lzma2" ; to improve installer open performance and its size
+SetCompressor "bzip2" ; to improve installer open performance and its size
 
 !include "MUI2.nsh"
 
