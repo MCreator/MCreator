@@ -7,7 +7,7 @@
       "name": "${settings.getModName()}",
       "uuid": "${w.getUUID("resourcepack")}",
       "version": [${v[0]}, ${v[1]}, ${v[2]}],
-      "min_engine_version": [1, 21, 90]
+      "min_engine_version": [26, 10, 0]
     },
     "modules": [
       {
