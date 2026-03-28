@@ -51,6 +51,9 @@ jobs:
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           sudo unzip LockedList.zip -d /usr/share/nsis/
+      - name: Run Gradle build environment preparation tasks
+        # download JDKs before authentication, so we don't time out
+        run: gradle downloadJDKWin64 downloadJDKLinux64
       - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093
         name: Authenticate to Google Cloud
         with:
@@ -68,7 +71,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          xvfb-run -a gradle generateExportReport exportWindows exportLinux
+          gradle generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
@@ -78,7 +81,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          xvfb-run -a gradle generateExportReport exportWindows exportLinux -Psnapshot=true
+          gradle generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |
