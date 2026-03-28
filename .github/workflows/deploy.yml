@@ -24,6 +24,7 @@ jobs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
       build_date: ${{ steps.determineExportVersion.outputs.build_date }}
+      vt_analysis_export1: ${{ steps.vt_scan.outputs.analysis }}
     steps:
       - uses: actions/checkout@v6
       - name: Verify Repository
@@ -90,6 +91,13 @@ jobs:
           echo "mcr_version=$MCR_VERSION" >> $GITHUB_OUTPUT
           echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
           echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
+      - name: VirusTotal Scan
+        id: vt_scan
+        uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: build/export/*
+          request_rate: 4
       - name: Upload Binaries and Tag Release
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
         with:
@@ -99,7 +107,7 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
-          body: >
+          body: |
             ### **Download: https://mcreator.net/download**
             
             ### Changelog: https://mcreator.net/changelog
@@ -160,6 +168,24 @@ jobs:
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
         run: gradle generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
+      - name: VirusTotal Scan
+        id: vt_scan
+        uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: build/export/*
+          request_rate: 4
+      - name: Format All VirusTotal Results
+        id: vt_format
+        run: |
+          {
+            echo "vt_markdown<<EOF"
+            echo "### VirusTotal Scans"
+            echo "${{ needs.export1.outputs.vt_analysis_export1 }},${{ steps.vt_scan.outputs.analysis }}" | tr ',' '\n' | while IFS='=' read -r file url; do
+              [ -n "$file" ] && echo "- [$(basename "$file")]($url)"
+            done
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
       - name: Upload Binaries and Tag Release
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
         with:
@@ -169,10 +195,12 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
-          body: >
+          body: |
             ### **Download: https://mcreator.net/download**
             
             ### Changelog: https://mcreator.net/changelog
+            
+            ${{ steps.vt_format.outputs.vt_markdown }}
             
             <!--[[
             {
