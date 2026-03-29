@@ -143,26 +143,32 @@ public class JBCefOsrHandler implements CefRenderHandler {
 				return;
 			Component component = browser.getUIComponent();
 			JRootPane root = SwingUtilities.getRootPane(component);
-			if (root == null)
-				return;
 			RepaintManager rm = RepaintManager.currentManager(root);
-			int dx = 4; // we mark area outside browser (otherwise the background component won't be repainted)
+			int extraOffset = 4;
 
-			if (popup) {
-				Rectangle dirtySrc = new Rectangle(myPopupBounds.x, myPopupBounds.y, myPopupBounds.width,
-						myPopupBounds.height);
-				Rectangle dirtyDst = SwingUtilities.convertRectangle(component, dirtySrc, root);
-				rm.addDirtyRegion(root, dirtyDst.x - dx, dirtyDst.y - dx, dirtyDst.width + dx * 2,
-						dirtyDst.height + dx * 2);
-			} else {
-				double scale = getPixelDensity();
-				// Iterate over the SAFE array we cloned
-				for (Rectangle rect : safeRects) {
-					Rectangle dirtySrc = toLogicalRectangle(rect, scale);
+			if (myComponent.isOpaque()) {
+				if (popup) {
+					Rectangle dirtySrc = new Rectangle(myPopupBounds.x, myPopupBounds.y, myPopupBounds.width,
+							myPopupBounds.height);
 					Rectangle dirtyDst = SwingUtilities.convertRectangle(component, dirtySrc, root);
-					rm.addDirtyRegion(root, dirtyDst.x - dx, dirtyDst.y - dx, dirtyDst.width + dx * 2,
-							dirtyDst.height + dx * 2);
+					rm.addDirtyRegion(root, dirtyDst.x - extraOffset, dirtyDst.y - extraOffset,
+							dirtyDst.width + extraOffset * 2, dirtyDst.height + extraOffset * 2);
+				} else {
+					double scale = getPixelDensity();
+					// Iterate over the SAFE array we cloned
+					for (Rectangle rect : safeRects) {
+						Rectangle dirtySrc = toLogicalRectangle(rect, scale);
+						Rectangle dirtyDst = SwingUtilities.convertRectangle(component, dirtySrc, root);
+						rm.addDirtyRegion(root, dirtyDst.x - extraOffset, dirtyDst.y - extraOffset,
+								dirtyDst.width + extraOffset * 2, dirtyDst.height + extraOffset * 2);
+					}
 				}
+			} else {
+				// If we are transparent, we need to repaint whole region so background is also updated
+				Rectangle dirtySrc = new Rectangle(0, 0, component.getWidth(), component.getHeight());
+				Rectangle dirtyDst = SwingUtilities.convertRectangle(component, dirtySrc, root);
+				rm.addDirtyRegion(root, dirtyDst.x - extraOffset, dirtyDst.y - extraOffset,
+						dirtyDst.width + extraOffset * 2, dirtyDst.height + extraOffset * 2);
 			}
 		});
 	}
