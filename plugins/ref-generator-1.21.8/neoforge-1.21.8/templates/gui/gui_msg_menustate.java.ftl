@@ -35,7 +35,7 @@ package ${package}.network;
 
 @EventBusSubscriber public record MenuStateUpdateMessage(int elementType, String name, Object elementState) implements CustomPacketPayload {
 
-	public static final Type<MenuStateUpdateMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "menustate_update"));
+	public static final Type<MenuStateUpdateMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "menustate_update"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, MenuStateUpdateMessage> STREAM_CODEC = StreamCodec.of(MenuStateUpdateMessage::write, MenuStateUpdateMessage::read);
 

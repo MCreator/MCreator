@@ -38,22 +38,22 @@ package ${package}.client.fluid;
 
 	@SubscribeEvent public static void registerFluidTypeExtensions(RegisterClientExtensionsEvent event) {
 		event.registerFluidType(new IClientFluidTypeExtensions() {
-			private static final ResourceLocation STILL_TEXTURE = ResourceLocation.parse("${data.textureStill.format("%s:block/%s")}");
-			private static final ResourceLocation FLOWING_TEXTURE = ResourceLocation.parse("${data.textureFlowing.format("%s:block/%s")}");
+			private static final Identifier STILL_TEXTURE = Identifier.parse("${data.textureStill.format("%s:block/%s")}");
+			private static final Identifier FLOWING_TEXTURE = Identifier.parse("${data.textureFlowing.format("%s:block/%s")}");
 			<#if data.textureRenderOverlay?has_content>
-			private static final ResourceLocation RENDER_OVERLAY_TEXTURE = ResourceLocation.parse("${data.textureRenderOverlay.format("%s:textures/%s")}.png");
+			private static final Identifier RENDER_OVERLAY_TEXTURE = Identifier.parse("${data.textureRenderOverlay.format("%s:textures/%s")}.png");
 			</#if>
 
-				@Override public ResourceLocation getStillTexture() {
+				@Override public Identifier getStillTexture() {
 					return STILL_TEXTURE;
 				}
 
-				@Override public ResourceLocation getFlowingTexture() {
+				@Override public Identifier getFlowingTexture() {
 					return FLOWING_TEXTURE;
 				}
 
 				<#if data.textureRenderOverlay?has_content>
-				@Override public ResourceLocation getRenderOverlayTexture(Minecraft minecraft) {
+				@Override public Identifier getRenderOverlayTexture(Minecraft minecraft) {
 					return RENDER_OVERLAY_TEXTURE;
 				}
 				</#if>

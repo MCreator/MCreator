@@ -69,15 +69,15 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	</#list>
 
 	<#if data.renderBgLayer>
-	private static final ResourceLocation BACKGROUND = ResourceLocation.parse("${modid}:textures/screens/${registryname}.png");
+	private static final Identifier BACKGROUND = Identifier.parse("${modid}:textures/screens/${registryname}.png");
 	</#if>
 
 	<#list data.getComponentsOfType("Image") as component>
-	private static final ResourceLocation IMAGE_${component?index} = ResourceLocation.parse("${modid}:textures/screens/${component.image}");
+	private static final Identifier IMAGE_${component?index} = Identifier.parse("${modid}:textures/screens/${component.image}");
 	</#list>
 
 	<#list data.getComponentsOfType("Sprite") as component>
-	private static final ResourceLocation SPRITE_${component?index} = ResourceLocation.parse("${modid}:textures/screens/${component.sprite}");
+	private static final Identifier SPRITE_${component?index} = Identifier.parse("${modid}:textures/screens/${component.sprite}");
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
@@ -300,9 +300,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 				<#if component.hoveredImage?has_content>
-				new WidgetSprites(ResourceLocation.parse("${modid}:textures/screens/${component.image}"), ResourceLocation.parse("${modid}:textures/screens/${component.hoveredImage}")),
+				new WidgetSprites(Identifier.parse("${modid}:textures/screens/${component.image}"), Identifier.parse("${modid}:textures/screens/${component.hoveredImage}")),
 				<#else>
-				new WidgetSprites(ResourceLocation.parse("${modid}:textures/screens/${component.image}"), ResourceLocation.parse("${modid}:textures/screens/${component.image}")),
+				new WidgetSprites(Identifier.parse("${modid}:textures/screens/${component.image}"), Identifier.parse("${modid}:textures/screens/${component.image}")),
 				</#if>
 				<@buttonOnClick component/>
 			) {

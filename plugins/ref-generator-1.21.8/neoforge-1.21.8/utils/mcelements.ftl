@@ -1,8 +1,8 @@
-<#function toResourceLocation string>
+<#function toIdentifier string>
     <#if string?matches('"[^+]*"')>
-        <#return "ResourceLocation.parse(" + string?lower_case + ")">
+        <#return "Identifier.parse(" + string?lower_case + ")">
     <#else>
-        <#return "ResourceLocation.parse((" + string + ").toLowerCase(java.util.Locale.ENGLISH))">
+        <#return "Identifier.parse((" + string + ").toLowerCase(java.util.Locale.ENGLISH))">
     </#if>
 </#function>
 

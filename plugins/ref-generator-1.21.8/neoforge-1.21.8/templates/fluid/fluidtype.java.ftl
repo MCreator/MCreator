@@ -58,7 +58,7 @@ public class ${name}FluidType extends FluidType {
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 			.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
 			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
-			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.emptySound}")))
+			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.emptySound}")))
 			<#else>
 			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 			</#if>

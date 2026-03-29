@@ -1,1 +1,1 @@
-.then(Commands.argument("${field$name}", ResourceLocationArgument.id()).suggests(${generator.map(field$suggestion, "suggestionproviders")})${statement$args})
+.then(Commands.argument("${field$name}", IdentifierArgument.id()).suggests(${generator.map(field$suggestion, "suggestionproviders")})${statement$args})

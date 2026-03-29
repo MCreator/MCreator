@@ -138,7 +138,7 @@ package ${package}.client.renderer.item;
 	}
 
 	@SubscribeEvent public static void registerItemModelTypes(RegisterItemModelsEvent event) {
-		event.register(ResourceLocation.parse("${modid}:legacy_overrides"), LegacyOverrideSelectItemModel.Unbaked.MAP_CODEC);
+		event.register(Identifier.parse("${modid}:legacy_overrides"), LegacyOverrideSelectItemModel.Unbaked.MAP_CODEC);
 	}
 
 }

@@ -42,11 +42,11 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 	public ${name}MobEffect() {
 		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()}<#if data.hasCustomParticle()>, mobEffectInstance -> ${data.particle}</#if>);
 		<#if data.onAddedSound?has_content && data.onAddedSound.getMappedValue()?has_content>
-		this.withSoundOnAdded(BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.onAddedSound}")));
+		this.withSoundOnAdded(BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.onAddedSound}")));
 		</#if>
 		<#list data.modifiers as modifier>
 		this.addAttributeModifier(${modifier.attribute},
-				ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "effect.${registryname}_${modifier?index}"),
+				Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "effect.${registryname}_${modifier?index}"),
 				${modifier.amount}, AttributeModifier.Operation.${modifier.operation});
 		</#list>
 	}

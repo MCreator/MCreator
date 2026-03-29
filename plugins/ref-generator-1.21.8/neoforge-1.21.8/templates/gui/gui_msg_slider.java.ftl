@@ -35,7 +35,7 @@ package ${package}.network;
 
 @EventBusSubscriber public record ${name}SliderMessage(int sliderID, int x, int y, int z, double value) implements CustomPacketPayload {
 
-	public static final Type<${name}SliderMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_sliders"));
+	public static final Type<${name}SliderMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_sliders"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}SliderMessage> STREAM_CODEC = StreamCodec.of(
 			(RegistryFriendlyByteBuf buffer, ${name}SliderMessage message) -> {

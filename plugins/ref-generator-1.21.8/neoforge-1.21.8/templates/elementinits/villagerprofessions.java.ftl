@@ -49,7 +49,7 @@ package ${package}.init;
 			registerProfession(
 				"${villagerprofession.getModElement().getRegistryName()}",
 				() -> ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${villagerprofession.actionSound}"))
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${villagerprofession.actionSound}"))
 			);
 	</#list>
 
@@ -75,7 +75,7 @@ package ${package}.init;
 				}
 
 				PoiType poiType = new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
-				registerHelper.register(ResourceLocation.fromNamespaceAndPath("${modid}", name), poiType);
+				registerHelper.register(Identifier.fromNamespaceAndPath("${modid}", name), poiType);
 				entry.getValue().poiType = BuiltInRegistries.POINT_OF_INTEREST_TYPE.wrapAsHolder(poiType);
 			}
 		});

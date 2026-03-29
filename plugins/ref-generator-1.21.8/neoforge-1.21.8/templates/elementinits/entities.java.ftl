@@ -80,7 +80,7 @@ public class ${JavaModName}Entities {
 
 	private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(
-				ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, registryname))
+				ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, registryname))
 		));
 	}
 

@@ -81,11 +81,11 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new DeferredSoundType(1.0f, 1.0f,
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.breakSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.stepSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.placeSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.hitSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.fallSound}"))
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.breakSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.stepSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.placeSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.hitSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.fallSound}"))
 			))
 		<#elseif data.soundOnStep != "STONE">
 			.sound(SoundType.${data.soundOnStep})
@@ -354,7 +354,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 
 	<#if data.plantType == "sapling">
 	private static ResourceKey<ConfiguredFeature<?, ?>> getFeatureKey(String feature) {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocation.parse(feature));
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.parse(feature));
 	}
 	</#if>
 
@@ -427,9 +427,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	<#if (blockList?size > 1) && condition>(</#if>
 	<#list blockList as canBePlacedOn>
 	<#if canBePlacedOn.getUnmappedValue().startsWith("TAG:")>
-	groundState.is(BlockTags.create(ResourceLocation.parse("${canBePlacedOn.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}")))
+	groundState.is(BlockTags.create(Identifier.parse("${canBePlacedOn.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}")))
 	<#elseif canBePlacedOn.getMappedValue(1).startsWith("#")>
-	groundState.is(BlockTags.create(ResourceLocation.parse("${canBePlacedOn.getMappedValue(1)?remove_beginning("#")}")))
+	groundState.is(BlockTags.create(Identifier.parse("${canBePlacedOn.getMappedValue(1)?remove_beginning("#")}")))
 	<#else>
 	groundState.is(${mappedBlockToBlock(canBePlacedOn)})
 	</#if><#sep>||

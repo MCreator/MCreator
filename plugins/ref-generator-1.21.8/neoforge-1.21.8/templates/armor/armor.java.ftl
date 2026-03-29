@@ -50,14 +50,14 @@ public abstract class ${name}Item extends Item {
 		),
 		${data.enchantability},
 		<#if data.equipSound?has_content && data.equipSound.getUnmappedValue()?has_content>
-		DeferredHolder.create(Registries.SOUND_EVENT, ResourceLocation.parse("${data.equipSound}")),
+		DeferredHolder.create(Registries.SOUND_EVENT, Identifier.parse("${data.equipSound}")),
 		<#else>
 		BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.EMPTY),
 		</#if>
 		${data.toughness}f,
 		${data.knockbackResistance}f,
-		TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")), <#-- data.repairItems are put into a tag -->
-		ResourceKey.create(EquipmentAssets.ROOT_ID, ResourceLocation.parse("${modid}:${registryname}")) <#-- data.armorTextureFile - just dummy, we override this in client extensions -->
+		TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")), <#-- data.repairItems are put into a tag -->
+		ResourceKey.create(EquipmentAssets.ROOT_ID, Identifier.parse("${modid}:${registryname}")) <#-- data.armorTextureFile - just dummy, we override this in client extensions -->
 	);
 
 	private ${name}Item(Item.Properties properties) {

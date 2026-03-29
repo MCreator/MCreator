@@ -1,2 +1,2 @@
 <#include "mcelements.ftl">
-BuiltInRegistries.BLOCK.getValue(${toResourceLocation(input$registryname)})
+BuiltInRegistries.BLOCK.getValue(${toIdentifier(input$registryname)})

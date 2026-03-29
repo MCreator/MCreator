@@ -35,7 +35,7 @@ package ${package}.network;
 
 @EventBusSubscriber public record ${name}ButtonMessage(int buttonID, int x, int y, int z) implements CustomPacketPayload {
 
-	public static final Type<${name}ButtonMessage> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_buttons"));
+	public static final Type<${name}ButtonMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_buttons"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}ButtonMessage> STREAM_CODEC = StreamCodec.of(
 			(RegistryFriendlyByteBuf buffer, ${name}ButtonMessage message) -> {

@@ -2,7 +2,7 @@
 <#-- @formatter:off -->
 if (!world.isClientSide() && world.getServer() != null) {
 	BlockPos _bpLootTblWorld = ${toBlockPos(input$x, input$y, input$z)};
-	for (ItemStack itemstackiterator : world.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, ${toResourceLocation(input$location)}))
+	for (ItemStack itemstackiterator : world.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, ${toIdentifier(input$location)}))
 			.getRandomItems(new LootParams.Builder((ServerLevel) world)
 					.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(_bpLootTblWorld))
 					.withParameter(LootContextParams.BLOCK_STATE, world.getBlockState(_bpLootTblWorld))

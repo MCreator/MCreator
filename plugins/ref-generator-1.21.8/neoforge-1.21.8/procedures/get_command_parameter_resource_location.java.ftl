@@ -1,1 +1,1 @@
-((ResourceLocationArgument.getId(arguments, "${field$param}")).toString())
+((IdentifierArgument.getId(arguments, "${field$param}")).toString())

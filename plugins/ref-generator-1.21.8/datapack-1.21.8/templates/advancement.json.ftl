@@ -38,13 +38,13 @@
         "experience": ${data.rewardXP}
 
         <#if data.rewardFunction?has_content>,
-        "function": "${generator.getResourceLocationForModElement(data.rewardFunction)}"
+        "function": "${generator.getIdentifierForModElement(data.rewardFunction)}"
         </#if>
 
         <#if data.rewardLoot?has_content>,
         "loot": [
             <#list data.rewardLoot as value>
-                "${generator.getResourceLocationForModElement(value)}"<#sep>,
+                "${generator.getIdentifierForModElement(value)}"<#sep>,
             </#list>
         ]
         </#if>
@@ -52,7 +52,7 @@
         <#if data.rewardRecipes?has_content>,
         "recipes": [
             <#list data.rewardRecipes as value>
-                "${generator.getResourceLocationForModElement(value)}"<#sep>,
+                "${generator.getIdentifierForModElement(value)}"<#sep>,
             </#list>
         ]
         </#if>

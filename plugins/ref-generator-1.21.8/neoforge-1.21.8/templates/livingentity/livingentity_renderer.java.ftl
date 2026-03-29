@@ -121,7 +121,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		 and IRenderStateExtension#setRenderData with custom ContextKey-->
 	private ${name}Entity entity = null;
 
-	private final ResourceLocation entityTexture = ResourceLocation.parse("${modid}:textures/entities/${data.mobModelTexture}");
+	private final Identifier entityTexture = Identifier.parse("${modid}:textures/entities/${data.mobModelTexture}");
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
 		super(context, new <#if data.animations?has_content>AnimatedModel<#else>${model}</#if>(${rootPart}), ${data.modelShadowSize}f);
@@ -135,7 +135,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 		<#list data.modelLayers as layer>
 		this.addLayer(new RenderLayer<>(this) {
-			final ResourceLocation LAYER_TEXTURE = ResourceLocation.parse("${modid}:textures/entities/${layer.texture}");
+			final Identifier LAYER_TEXTURE = Identifier.parse("${modid}:textures/entities/${layer.texture}");
 
 			<@javacompress>
 			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, ${renderState} state, float headYaw, float headPitch) {
@@ -184,7 +184,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 	}
 
-	@Override public ResourceLocation getTextureLocation(${renderState} state) {
+	@Override public Identifier getTextureLocation(${renderState} state) {
 		return entityTexture;
 	}
 

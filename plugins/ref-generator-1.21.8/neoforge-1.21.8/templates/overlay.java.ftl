@@ -35,15 +35,15 @@ package ${package}.client.screens;
 
 @EventBusSubscriber(Dist.CLIENT) public class ${name}Overlay {
 	<#if data.baseTexture?has_content>
-		private static final ResourceLocation BACKGROUND = ResourceLocation.parse("${modid}:textures/screens/${data.baseTexture}");
+		private static final Identifier BACKGROUND = Identifier.parse("${modid}:textures/screens/${data.baseTexture}");
 	</#if>
 
 	<#list data.getComponentsOfType("Image") as component>
-		private static final ResourceLocation IMAGE_${component?index} = ResourceLocation.parse("${modid}:textures/screens/${component.image}");
+		private static final Identifier IMAGE_${component?index} = Identifier.parse("${modid}:textures/screens/${component.image}");
 	</#list>
 
 	<#list data.getComponentsOfType("Sprite") as component>
-		private static final ResourceLocation SPRITE_${component?index} = ResourceLocation.parse("${modid}:textures/screens/${component.sprite}");
+		private static final Identifier SPRITE_${component?index} = Identifier.parse("${modid}:textures/screens/${component.sprite}");
 	</#list>
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})

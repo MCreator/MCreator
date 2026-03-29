@@ -43,9 +43,9 @@ import net.minecraft.client.model.Model;
 		<#if data.enableHelmet>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.helmetModelTexture}");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/entities/${data.helmetModelTexture}");
 			<#else>
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
 			</#if>
 
 			<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
@@ -77,7 +77,7 @@ import net.minecraft.client.model.Model;
 			}
 			</#if>
 
-			@Override public ResourceLocation getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, ResourceLocation original) {
+			@Override public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier original) {
 				return armorTexture;
 			}
 		}, ${JavaModName}Items.${REGISTRYNAME}_HELMET.get());
@@ -86,9 +86,9 @@ import net.minecraft.client.model.Model;
 		<#if data.enableBody>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.bodyModelTexture}");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/entities/${data.bodyModelTexture}");
 			<#else>
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
 			</#if>
 
 			<#if data.bodyModelName != "Default" && data.getBodyModel()??>
@@ -120,7 +120,7 @@ import net.minecraft.client.model.Model;
 			}
 			</#if>
 
-			@Override public ResourceLocation getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, ResourceLocation original) {
+			@Override public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier original) {
 				return armorTexture;
 			}
 		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());
@@ -129,9 +129,9 @@ import net.minecraft.client.model.Model;
 		<#if data.enableLeggings>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.leggingsModelTexture}");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/entities/${data.leggingsModelTexture}");
 			<#else>
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png");
 			</#if>
 
 			<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
@@ -163,7 +163,7 @@ import net.minecraft.client.model.Model;
 			}
 			</#if>
 
-			@Override public ResourceLocation getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, ResourceLocation original) {
+			@Override public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier original) {
 				return armorTexture;
 			}
 		}, ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get());
@@ -172,9 +172,9 @@ import net.minecraft.client.model.Model;
 		<#if data.enableBoots>
 		event.registerItem(new IClientItemExtensions() {
 			<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/entities/${data.bootsModelTexture}");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/entities/${data.bootsModelTexture}");
 			<#else>
-			private final ResourceLocation armorTexture = ResourceLocation.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
+			private final Identifier armorTexture = Identifier.parse("${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png");
 			</#if>
 
 			<#if data.bootsModelName != "Default" && data.getBootsModel()??>
@@ -206,7 +206,7 @@ import net.minecraft.client.model.Model;
 			}
 			</#if>
 
-			@Override public ResourceLocation getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, ResourceLocation original) {
+			@Override public Identifier getArmorTexture(ItemStack stack, EquipmentClientInfo.LayerType type, EquipmentClientInfo.Layer layer, Identifier original) {
 				return armorTexture;
 			}
 		}, ${JavaModName}Items.${REGISTRYNAME}_BOOTS.get());

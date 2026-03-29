@@ -36,13 +36,13 @@ package ${package}.client.renderer.block;
 @EventBusSubscriber(Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity> {
 
 	private final CustomHierarchicalModel model;
-	private final ResourceLocation texture;
+	private final Identifier texture;
 
 	private final LivingEntityRenderState renderState;
 
 	${name}Renderer(BlockEntityRendererProvider.Context context) {
 		this.model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
-		this.texture = ResourceLocation.parse("${data.texture.format("%s:textures/block/%s")}.png");
+		this.texture = Identifier.parse("${data.texture.format("%s:textures/block/%s")}.png");
 		this.renderState = new LivingEntityRenderState();
 	}
 

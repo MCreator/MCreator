@@ -42,7 +42,7 @@ package ${package}.item;
 public class ${name}Item extends Item {
 
 	<#if data.hasBannerPatterns()>
-	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
+	public static final TagKey<BannerPattern> PROVIDED_PATTERNS = TagKey.create(Registries.BANNER_PATTERN, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "pattern_item/${registryname}"));
 	</#if>
 
 	public ${name}Item(Item.Properties properties) {
@@ -55,7 +55,7 @@ public class ${name}Item extends Item {
 				<#elseif data.damageCount != 0>
 				.durability(${data.damageCount})
 					<#if data.repairItems?has_content>
-					.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+					.repairable(TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")))
 					</#if>
 				<#elseif data.stackSize != 64>
 				.stacksTo(${data.stackSize})
@@ -102,13 +102,13 @@ public class ${name}Item extends Item {
 					</#if>
 					<#list data.attributeModifiers as modifier>
 					.add(${modifier.attribute}, new AttributeModifier(
-							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+							Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
 							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
 					</#list>
 					.build())
 				</#if>
 				<#if data.isMusicDisc>
-				.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}")))
+				.jukeboxPlayable(ResourceKey.create(Registries.JUKEBOX_SONG, Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}")))
 				</#if>
 				<#if data.enchantability != 0>
 				.enchantable(${data.enchantability})
@@ -400,7 +400,7 @@ public class ${name}Item extends Item {
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, <#if data.rangedItemChargesPower>pullingPower * </#if>3.15f, 1.0F);
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
-				BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("entity.arrow.shoot")), SoundSource.PLAYERS,
+				BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("entity.arrow.shoot")), SoundSource.PLAYERS,
 				1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 

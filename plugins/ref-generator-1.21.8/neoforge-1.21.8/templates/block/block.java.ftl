@@ -123,11 +123,11 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new DeferredSoundType(1.0f, 1.0f,
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.breakSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.stepSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.placeSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.hitSound}")),
-				() -> BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.fallSound}"))
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.breakSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.stepSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.placeSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.hitSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.fallSound}"))
 			))
 		<#elseif data.soundOnStep != "STONE">
 			.sound(SoundType.${data.soundOnStep})
@@ -229,7 +229,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 				super(WoodType.OAK, <@blockProperties/>);
 			<#elseif data.blockBase == "FlowerPot">
 				super(() -> (FlowerPotBlock) Blocks.FLOWER_POT, () -> ${mappedBlockToBlock(data.pottedPlant)}, <@blockProperties/>);
-				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ResourceLocation.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
+				((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(Identifier.parse("${mappedMCItemToRegistryName(data.pottedPlant)}"), () -> this);
 			<#elseif data.isSign()>
 				super(${JavaModName}WoodTypes.${REGISTRYNAME}_WOOD_TYPE, <@blockProperties/>);
 			<#else>

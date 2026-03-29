@@ -232,7 +232,7 @@ public class ${JavaModName}Items {
 			<#list items as item>
 				<#if item.getModElement().getTypeString() == "item">
 					<#list item.customProperties.entrySet() as property>
-					event.register(ResourceLocation.parse("${modid}:${item.getModElement().getRegistryName()}/${property.getKey()}"),
+					event.register(Identifier.parse("${modid}:${item.getModElement().getRegistryName()}/${property.getKey()}"),
 						${item.getModElement().getName()}Item.${StringUtils.snakeToCamel(property.getKey())}Property.MAP_CODEC);
 					</#list>
 				</#if>
@@ -243,7 +243,7 @@ public class ${JavaModName}Items {
 
 		<#if hasItemsWithLeftHandedProperty>
 		@SubscribeEvent public static void registerItemModelProperties(RegisterConditionalItemModelPropertyEvent event) {
-			event.register(ResourceLocation.parse("${modid}:lefthanded"), LegacyLeftHandedProperty.MAP_CODEC);
+			event.register(Identifier.parse("${modid}:lefthanded"), LegacyLeftHandedProperty.MAP_CODEC);
 		}
 
 		public record LegacyLeftHandedProperty() implements ConditionalItemModelProperty {

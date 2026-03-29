@@ -33,8 +33,10 @@ package ${package}.client.model;
 
 ${model
     ?replace("private final ModelPart", "public final ModelPart")
-    ?replace("new ResourceLocation\\(\"(.*?)\", \"(.*?)\"\\)", "ResourceLocation.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
-    ?replace("ResourceLocation.fromNamespaceAndPath\\(\"(.*?)\", \"(.*?)\"\\)", "ResourceLocation.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
+    ?replace("new Identifier\\(\"(.*?)\", \"(.*?)\"\\)", "Identifier.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
+    ?replace("Identifier.fromNamespaceAndPath\\(\"(.*?)\", \"(.*?)\"\\)", "Identifier.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
+    ?replace("new ResourceLocation\\(\"(.*?)\", \"(.*?)\"\\)", "Identifier.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
+    ?replace("ResourceLocation.fromNamespaceAndPath\\(\"(.*?)\", \"(.*?)\"\\)", "Identifier.fromNamespaceAndPath(\"" + modid + "\", \"" + modelregistryname + "\")", "r")
     ?replace("float\\s+red,\\s+float\\s+green,\\s+float\\s+blue,\\s+float\\s+alpha", "int rgb", "r")
     ?replace("red,\\s+green,\\s+blue,\\s+alpha", "rgb", "r")
     ?replace("void setupAnim(Entity ", "void setupAnim(T ")

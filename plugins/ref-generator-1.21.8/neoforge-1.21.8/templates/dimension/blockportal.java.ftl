@@ -60,7 +60,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 					.replace("PortalShape", name+"PortalShape")}
 
 	@Override @Nullable ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getPortalDestination", "ServerLevel", "Entity", "BlockPos")
-					 .replace("Level.NETHER", "ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(\"${modid}:${registryname}\"))")}
+					 .replace("Level.NETHER", "ResourceKey.create(Registries.DIMENSION, Identifier.parse(\"${modid}:${registryname}\"))")}
 
 	@Nullable ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getExitPortal", "ServerLevel", "Entity", "BlockPos", "BlockPos", "boolean", "WorldBorder")
 					.replace("p_350564_.getPortalForcer()", "getTeleporter(p_350564_)")}
@@ -116,7 +116,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		<#if data.portalSound.toString()?has_content>
 		if (random.nextInt(110) == 0)
 			world.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-					BuiltInRegistries.SOUND_EVENT.getValue(ResourceLocation.parse("${data.portalSound}")), SoundSource.BLOCKS, 0.5f,
+					BuiltInRegistries.SOUND_EVENT.getValue(Identifier.parse("${data.portalSound}")), SoundSource.BLOCKS, 0.5f,
 					random.nextFloat() * 0.4f + 0.8f, false);
 		</#if>
 	}
