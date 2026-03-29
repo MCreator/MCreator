@@ -86,6 +86,15 @@ public class StructureImportActions {
 										structure.getName()), structure));
 							}
 						}
+						// support >26.1
+						generated = new File(save, "/generated/").listFiles();
+						for (File generatedsect : generated != null ? generated : new File[0]) {
+							structures = new File(generatedsect, "/structure/").listFiles();
+							for (File structure : structures != null ? structures : new File[0]) {
+								mcstucts.add(new Structure(save.getName() + ": " + FilenameUtilsPatched.removeExtension(
+										structure.getName()), structure));
+							}
+						}
 					}
 				}
 				Structure[] mcsturcturesarray = mcstucts.toArray(new Structure[0]);
