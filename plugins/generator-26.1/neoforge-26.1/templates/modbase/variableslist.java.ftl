@@ -111,14 +111,14 @@ import ${package}.${JavaModName};
 	<#if w.hasVariablesOfScope("GLOBAL_WORLD") || w.hasVariablesOfScope("GLOBAL_MAP")>
 	public static class WorldVariables extends SavedData {
 
-		public static final SavedDataType<WorldVariables> TYPE = new SavedDataType<>("${modid}_worldvars", ctx -> new WorldVariables(),
-			ctx -> CompoundTag.CODEC.xmap(
+		public static final SavedDataType<WorldVariables> TYPE = new SavedDataType<>(Identifier.parse("${modid}:worldvars"), level -> new WorldVariables(),
+				level -> CompoundTag.CODEC.xmap(
 				tag -> {
 					WorldVariables instance = new WorldVariables();
-					instance.read(tag, ctx.levelOrThrow().registryAccess());
+					instance.read(tag, level.registryAccess());
 					return instance;
 				},
-				instance -> instance.save(new CompoundTag(), ctx.levelOrThrow().registryAccess())
+				instance -> instance.save(new CompoundTag(), level.registryAccess())
 			)
 		);
 
@@ -166,14 +166,14 @@ import ${package}.${JavaModName};
 
 	public static class MapVariables extends SavedData {
 
-		public static final SavedDataType<MapVariables> TYPE = new SavedDataType<>("${modid}_mapvars", ctx -> new MapVariables(),
-			ctx -> CompoundTag.CODEC.xmap(
+		public static final SavedDataType<MapVariables> TYPE = new SavedDataType<>(Identifier.parse("${modid}:mapvars"), level -> new MapVariables(),
+				level -> CompoundTag.CODEC.xmap(
 				tag -> {
 					MapVariables instance = new MapVariables();
-					instance.read(tag, ctx.levelOrThrow().registryAccess());
+					instance.read(tag, level.registryAccess());
 					return instance;
 				},
-				instance -> instance.save(new CompoundTag(), ctx.levelOrThrow().registryAccess())
+				instance -> instance.save(new CompoundTag(), level.registryAccess())
 			)
 		);
 
