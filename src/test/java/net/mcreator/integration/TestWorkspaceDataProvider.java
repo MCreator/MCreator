@@ -2140,6 +2140,7 @@ public class TestWorkspaceDataProvider {
 		block.luminance = new NumberProcedure(emptyLists ? null : "number3", 3);
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
+		block.forceRedstoneConductor = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
