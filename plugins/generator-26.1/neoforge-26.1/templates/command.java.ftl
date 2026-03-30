@@ -60,8 +60,23 @@ public class ${name}Command {
 
 <#macro commandRegistrationCode>
 	event.getDispatcher().register(Commands.literal("${data.commandName}")
-		<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
+		<#if data.permissionLevel != "No requirement">.requires(Commands.hasPermission(Commands.${permissionLevelNumberToEnum(data.permissionLevel)}))</#if>
 		${argscode}
 	);
 </#macro>
+
+<#function permissionLevelNumberToEnum level>
+	<#if level == "0">
+		<#return "LEVEL_ALL">
+	<#elseif level == "1">
+		<#return "LEVEL_MODERATORS">
+	<#elseif level == "2">
+		<#return "LEVEL_GAMEMASTERS">
+	<#elseif level == "3">
+		<#return "LEVEL_ADMINS">
+	<#elseif level == "4">
+		<#return "LEVEL_OWNERS">
+	</#if>
+</#function>
+
 <#-- @formatter:on -->
