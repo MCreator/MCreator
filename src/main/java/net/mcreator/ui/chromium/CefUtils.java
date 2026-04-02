@@ -231,7 +231,7 @@ public class CefUtils {
 			cefApp = CefApp.getInstance(settings);
 
 			try {
-				if (!latch.await(10, TimeUnit.SECONDS)) {
+				if (!latch.await(5, TimeUnit.SECONDS)) {
 					LOG.error("Failed to initialize JCEF in time. Things may not work properly.");
 				}
 			} catch (InterruptedException ignored) {
