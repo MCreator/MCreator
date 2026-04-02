@@ -14,3 +14,9 @@ feature_simple_block:
   - SimpleBlockFeature
   - SimpleBlockConfiguration
   - "minecraft:simple_block"
+
+# Custom NBT-based feature, not present in vanilla
+feature_custom_structure:
+  - StructureFeature
+  - StructureFeatureConfiguration
+  - "@modid:structure_feature"
