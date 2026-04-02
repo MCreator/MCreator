@@ -1,1 +1,0 @@
-Wartość, o jaką zmodyfikować atrybut.

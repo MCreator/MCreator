@@ -67,7 +67,6 @@ import java.util.Map;
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 				if (jarManager != null) {
 					SourceLocation sourceLocation = jarManager.getSourceLocForClass(key);
-					// we always expect ZIP-formatted file for source here, so we can use ZipIO
 					String code = ZipIO.readCodeInZip(new File(sourceLocation.getLocationAsString()),
 							key.replace(".", "/") + ".java");
 					if (code == null)

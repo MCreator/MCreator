@@ -105,7 +105,6 @@ public class ClassFinder {
 			String classfqdn) {
 		if (sourceLocation != null) {
 			if (sourceLocation instanceof ZipSourceLocation) {
-				// since we check for ZipSourceLocation, we can always use ZipIO directly
 				try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
 					String entryName = classfqdn.replaceAll("\\.", "/");
 					entryName = entryName + ".java";

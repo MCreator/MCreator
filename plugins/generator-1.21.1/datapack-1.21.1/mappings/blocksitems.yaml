@@ -1687,9 +1687,6 @@ Blocks.STRIPPED_MANGROVE_WOOD:
 Blocks.STRIPPED_CHERRY_WOOD:
   - Blocks.STRIPPED_CHERRY_WOOD
   - "stripped_cherry_wood"
-Blocks.BED:
-  - Blocks.WHITE_BED
-  - "white_bed"
 Blocks.ORANGE_BED:
   - Blocks.ORANGE_BED
   - "orange_bed"
@@ -3872,6 +3869,9 @@ Items.SUGAR:
 Items.CAKE:
   - Items.CAKE
   - "cake"
+Items.BED:
+  - Items.WHITE_BED
+  - "white_bed"
 Items.COOKIE:
   - Items.COOKIE
   - "cookie"

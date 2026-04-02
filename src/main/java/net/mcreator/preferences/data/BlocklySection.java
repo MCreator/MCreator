@@ -47,7 +47,7 @@ public class BlocklySection extends PreferencesSection {
 		super(preferencesIdentifier);
 
 		useGPUAcceleration = addEntry(new BooleanEntry("useGPUAcceleration", true));
-		translucentBackground = addEntry(new BooleanEntry("translucentBackground", false));
+		translucentBackground = addEntry(new BooleanEntry("translucentBackground", true));
 		blockRenderer = addEntry(new StringEntry("blockRenderer", "Thrasos", "Thrasos", "Geras", "Zelos"));
 		colorSaturation = addEntry(new IntegerEntry("colorSaturation", 45, 30, 100));
 		colorValue = addEntry(new IntegerEntry("colorValue", 65, 30, 100));

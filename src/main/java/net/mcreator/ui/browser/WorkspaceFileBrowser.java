@@ -25,8 +25,6 @@ import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.java.JavaReleaseInfo;
-import net.mcreator.java.LibraryInfoIterator;
-import net.mcreator.java.ModulesFileLibraryInfo;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.FileOpener;
@@ -43,8 +41,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.swing.*;
@@ -58,7 +54,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -67,8 +62,6 @@ import java.util.List;
  * the workspace and also observe source code of external libraries used by that project.
  */
 public class WorkspaceFileBrowser extends JPanel {
-
-	private static final Logger LOG = LogManager.getLogger(WorkspaceFileBrowser.class);
 
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
@@ -405,11 +398,10 @@ public class WorkspaceFileBrowser extends JPanel {
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
 			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
-				try {
-					File libraryFile = new File(libraryInfo.getLocationAsString());
-
+				File libraryFile = new File(libraryInfo.getLocationAsString());
+				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-					if (libName.equals("rt") || libName.equals("java.base") || libraryInfo instanceof ModulesFileLibraryInfo) {
+					if (libName.equals("rt") || libName.equals("java.base")) {
 						libName = "<" + JavaReleaseInfo.DEFAULT + ">";
 						ProjectJarManager projectJarManager = mcreator.getGenerator().getProjectJarManager();
 						if (projectJarManager != null) {
@@ -422,7 +414,6 @@ public class WorkspaceFileBrowser extends JPanel {
 						libName = "Gradle: " + libName;
 					}
 
-					// Try to load from sources where possible
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
 						if (sourceFile.isFile() && (ZipIO.checkIfZip(sourceFile) || ZipIO.checkIfJMod(sourceFile))) {
@@ -436,10 +427,8 @@ public class WorkspaceFileBrowser extends JPanel {
 
 					// If a source file is not found, add the library file itself
 					FileTree<Void> lib = new FileTree<>(new FileNode<>(libName, libraryFile.getAbsolutePath() + ":%:"));
-					LibraryInfoIterator.iterateLibraryInfo(libraryInfo, entry -> lib.addElement(entry.path()), true);
+					ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
 					JFileTree.addFileNodeToFilterTreeNode(extDeps, lib.root());
-				} catch (IOException e) {
-					LOG.warn("Failed to load library sources", e);
 				}
 			}
 		}

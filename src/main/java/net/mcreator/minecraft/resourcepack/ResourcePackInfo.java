@@ -19,7 +19,6 @@
 
 package net.mcreator.minecraft.resourcepack;
 
-import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +29,6 @@ import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 public class ResourcePackInfo {
@@ -100,30 +98,26 @@ public class ResourcePackInfo {
 
 		private final Workspace workspace;
 
-		private final Map<GeneratorConfiguration, File> CACHE = new ConcurrentHashMap<>();
-
 		public Vanilla(Workspace workspace) {
 			super(null, "minecraft");
 			this.workspace = workspace;
 		}
 
 		@Nullable @Override public File packFile() {
-			return CACHE.computeIfAbsent(workspace.getGeneratorConfiguration(), generatorConfiguration -> {
-				String vanillaResourcesJar = generatorConfiguration.getSpecificRoot("vanilla_resources_jar");
-				if (vanillaResourcesJar != null) {
-					List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
-							workspace.getGenerator().getProjectJarManager().getClassFileSources() :
-							List.of();
-					for (LibraryInfo libraryInfo : libraryInfos) {
-						File libraryFile = new File(libraryInfo.getLocationAsString());
-						if (libraryFile.isFile() && Pattern.compile(vanillaResourcesJar).matcher(libraryFile.getName())
-								.find()) {
-							return libraryFile;
-						}
+			String vanillaResourcesJar = workspace.getGeneratorConfiguration().getSpecificRoot("vanilla_resources_jar");
+			if (vanillaResourcesJar != null) {
+				List<LibraryInfo> libraryInfos = workspace.getGenerator().getProjectJarManager() != null ?
+						workspace.getGenerator().getProjectJarManager().getClassFileSources() :
+						List.of();
+				for (LibraryInfo libraryInfo : libraryInfos) {
+					File libraryFile = new File(libraryInfo.getLocationAsString());
+					if (libraryFile.isFile() && Pattern.compile(vanillaResourcesJar).matcher(libraryFile.getName())
+							.find()) {
+						return libraryFile;
 					}
 				}
-				return null;
-			});
+			}
+			return null;
 		}
 
 	}
