@@ -30,16 +30,14 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JarManager;
-import org.fife.rsta.ac.java.buildpath.DirSourceLocation;
-import org.fife.rsta.ac.java.buildpath.JarLibraryInfo;
-import org.fife.rsta.ac.java.buildpath.LibraryInfo;
-import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
+import org.fife.rsta.ac.java.buildpath.*;
 import org.gradle.tooling.BuildException;
 import org.gradle.tooling.ModelBuilder;
 import org.gradle.tooling.ProjectConnection;
 import org.gradle.tooling.model.ExternalDependency;
 import org.gradle.tooling.model.eclipse.EclipseProject;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -201,18 +199,14 @@ public class ProjectJarManager extends JarManager {
 		LOG.debug("Loading JVM {} info from {}", javaReleaseInfo, javaHome);
 
 		final File classesArchive = findExistingPath(javaHome, "lib/rt.jar", "../Classes/classes.jar",
-				"jmods/java.base.jmod");
+				"jmods/java.base.jmod", "lib/jrt-fs.jar");
 		if (classesArchive == null) {
 			throw new GradleCacheImportFailedException(new FileNotFoundException("Failed to find SDK base library"));
 		}
 
-		final LibraryInfo info;
+		final LibraryInfo info = getLibraryInfo(classesArchive);
 
-		if (classesArchive.getName().endsWith(".jmod")) {
-			info = new JModLibraryInfo(classesArchive);
-		} else {
-			info = new JarLibraryInfo(classesArchive);
-		}
+		LOG.debug("Loaded JVM info of type {}", info.getClass().getSimpleName());
 
 		final File sourcesArchive = findExistingPath(javaHome, "lib/src.zip", "lib/src.jar", "src.zip", "../src.zip",
 				"src.jar", "../src.jar");
@@ -226,6 +220,16 @@ public class ProjectJarManager extends JarManager {
 			addClassFileSource(info);
 		} catch (IOException e) {
 			throw new GradleCacheImportFailedException(e);
+		}
+	}
+
+	@Nonnull private LibraryInfo getLibraryInfo(File classesArchive) {
+		if (classesArchive.getName().equals("jrt-fs.jar")) {
+			return new ModulesFileLibraryInfo(javaHome);
+		} else if (classesArchive.getName().endsWith(".jmod")) {
+			return new JModLibraryInfo(classesArchive);
+		} else {
+			return new JarLibraryInfo(classesArchive);
 		}
 	}
 
