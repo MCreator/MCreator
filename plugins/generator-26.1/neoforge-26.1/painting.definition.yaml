@@ -1,10 +1,10 @@
 templates:
-  - template: json/painting.json.ftl
+  - template: painting/painting.json.ftl
     writer: json
     name: "@MODDATAROOT/painting_variant/@registryname.json"
 
 global_templates:
-  - template: json/paintingtag.json.ftl
+  - template: painting/paintingtag.json.ftl
     writer: json
     name: "@RESROOT/data/minecraft/tags/painting_variant/placeable.json"
 
