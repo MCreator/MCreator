@@ -320,7 +320,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 			boolean isRecipeJSON = List.of("Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting",
 					"Campfire cooking", "Smithing").contains(recipeTypeValue);
-			groupPanel.setVisible(isRecipeJSON);
 			namespacePanel.setVisible(isRecipeJSON);
 			namePanel.setVisible(isRecipeJSON);
 			unlockRecipePanel.setVisible(isRecipeJSON);
@@ -328,6 +327,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			boolean isRecipeCrafting = recipeTypeValue.equals("Crafting");
 			shapelessPanel.setVisible(isRecipeCrafting);
 			craftingBookCategoryPanel.setVisible(isRecipeCrafting);
+
+			groupPanel.setVisible(isRecipeCrafting || isCookingRecipe);
 
 			if (!isEditingMode() && isCookingRecipe) {
 				if (recipeTypeValue.equals("Smelting")) {
