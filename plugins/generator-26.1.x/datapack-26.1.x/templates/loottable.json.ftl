@@ -79,18 +79,26 @@
           "functions": [
             {
               "function": "minecraft:set_count",
+              <#if entry.minCount == entry.maxCount>
+              "count": ${entry.minCount}
+              <#else>
               "count": {
                 "min": ${entry.minCount},
                 "max": ${entry.maxCount}
               }
+              </#if>
             }
             <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
             ,{
               "function": "minecraft:enchant_with_levels",
+              <#if entry.minEnchantmentLevel == entry.maxEnchantmentLevel>
+              "levels": ${entry.minEnchantmentLevel}
+              <#else>
               "levels": {
                 "min": ${entry.minEnchantmentLevel},
                 "max": ${entry.maxEnchantmentLevel}
               }
+              </#if>
             }
             </#if>
             <#if entry.explosionDecay>
