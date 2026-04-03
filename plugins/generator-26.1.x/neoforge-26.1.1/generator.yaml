@@ -1,9 +1,9 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 26.1.0.1-beta
+buildfileversion: 26.1.1.1-beta
 
 import:
-  - datapack-26.1
+  - datapack-26.1.x
 
 # gradle task definitions
 gradle:
