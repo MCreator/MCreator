@@ -12,10 +12,6 @@
   type: logic
 - DO_ENTITY_DROPS:
   type: logic
-- DO_FIRE_TICK:
-  type: logic
-- ALLOWFIRETICKAWAYFROMPLAYERS:
-  type: logic
 - DO_INSOMNIA:
   type: logic
 - DO_IMMEDIATE_RESPAWN:
@@ -102,9 +98,21 @@
   type: number
 - ENDER_PEARLS_VANISH_ON_DEATH:
   type: logic
-- SPAWN_CHUNK_RADIUS:
-  type: number
 - TNT_EXPLODES:
   type: logic
 - LOCATOR_BAR:
+  type: logic
+- ALLOW_ENTERING_NETHER_USING_PORTALS:
+  type: logic
+- COMMAND_BLOCKS_WORK:
+  type: logic
+- SPAWN_MONSTERS:
+  type: logic
+- SPAWNER_BLOCKS_WORK:
+  type: logic
+- FIRE_SPREAD_RADIUS_AROUND_PLAYER:
+  type: number
+- MAX_MINECART_SPEED:
+  type: number
+- PVP:
   type: logic

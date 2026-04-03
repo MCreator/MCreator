@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,33 +36,28 @@
 
 package ${package}.init;
 
-@EventBusSubscriber
 public class ${JavaModName}GameRules {
 
+	public static final DeferredRegister<GameRule<?>> REGISTRY = DeferredRegister.create(Registries.GAME_RULE, ${JavaModName}.MODID);
+
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
-		public static GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()};
+		public static DeferredHolder<GameRule<?>, GameRule<Integer>> ${gamerule.getModElement().getRegistryNameUpper()} = registerInteger("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueNumber});
 		<#else>
-		public static GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()};
+		public static DeferredHolder<GameRule<?>, GameRule<Boolean>> ${gamerule.getModElement().getRegistryNameUpper()} = registerBoolean("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueLogic});
 		</#if>
 	</#list>
 
-	@SubscribeEvent
-	public static void registerGameRules(FMLCommonSetupEvent event) {
-	<@javacompress>
-	<#list gamerules as gamerule>
-		<#if gamerule.type == "Number">
-		 ${gamerule.getModElement().getRegistryNameUpper()} =
-				GameRules.register("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}",
-				GameRules.Category.${gamerule.category}, GameRules.IntegerValue.create(${gamerule.defaultValueNumber}));
-		<#else>
-		${gamerule.getModElement().getRegistryNameUpper()} =
-				GameRules.register("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}",
-				GameRules.Category.${gamerule.category}, GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
-		</#if>
-	</#list>
-	</@javacompress>
+	private static DeferredHolder<GameRule<?>, GameRule<Boolean>> registerBoolean(String registryname, GameRuleCategory category, boolean value) {
+		return REGISTRY.register(registryname, () -> new GameRule<>(category, GameRuleType.BOOL, BoolArgumentType.bool(), GameRuleTypeVisitor::visitBoolean,
+				Codec.BOOL, b -> b ? 1 : 0, value, FeatureFlagSet.of()));
 	}
+
+    private static DeferredHolder<GameRule<?>, GameRule<Integer>> registerInteger(String registryname, GameRuleCategory category, int value) {
+        return REGISTRY.register(registryname, () -> new GameRule<>(category, GameRuleType.INT, IntegerArgumentType.integer(Integer.MIN_VALUE, Integer.MAX_VALUE),
+                GameRuleTypeVisitor::visitInteger,
+                Codec.intRange(Integer.MIN_VALUE, Integer.MAX_VALUE), i -> i, value, FeatureFlagSet.of()));
+    }
 
 }
 <#-- @formatter:on -->
