@@ -205,7 +205,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	private void setXML(String xml) {
 		webView.executeScript("""
 				workspace.clear();
-				Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('%s'), workspace);
+				Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom('%s'), workspace);
 				workspace.clearUndo();
 				""".formatted(escapeXML(xml)), WebView.JSExecutionType.LOCAL_SAFE);
 
@@ -218,15 +218,15 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks
 		if (index == -1) { // The separator wasn't found
 			webView.executeScript(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)",
+					"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('" + cleanXML + "'), workspace)",
 					WebView.JSExecutionType.LOCAL_SAFE);
 		} else { // We add the blocks separately so that they don't overlap, currently used by feature editor where two chains of blocks are possible
 			index += 8; //We add the length of "</block>" to the index
 			webView.executeScript(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML.substring(0, index)
+					"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('" + cleanXML.substring(0, index)
 							+ "</xml>'), workspace)", WebView.JSExecutionType.LOCAL_SAFE);
 			webView.executeScript(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('<xml>" + cleanXML.substring(index)
+					"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('<xml>" + cleanXML.substring(index)
 							+ "'), workspace)", WebView.JSExecutionType.LOCAL_SAFE);
 		}
 	}
