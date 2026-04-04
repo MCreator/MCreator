@@ -20,7 +20,6 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -34,6 +33,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.TagElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -43,6 +43,8 @@ import java.util.List;
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 	protected ValidationGroup validableElements = new ValidationGroup();
+
+	private final List<GeneratableElement> toGenerate = new ArrayList<>();
 
 	public AbstractPackMakerTool(MCreator mcreator, String localizationKey, Image icon) {
 		super(mcreator, L10N.t("dialog.tools." + localizationKey + "_title"), true);
@@ -54,7 +56,17 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		ok.addActionListener(e -> {
 			if (validableElements.validateIsErrorFree()) {
 				this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
 				generatePack(mcreator);
+
+				// generate mod base (this is needed so imports tree generator can see base
+				// files while generating imports for the mod element Java files)
+				mcreator.getWorkspace().getGenerator().generateBase();
+
+				for (GeneratableElement element : toGenerate) {
+					mcreator.getWorkspace().getGenerator().generateElement(element);
+				}
+
 				mcreator.reloadWorkspaceTabContents();
 				this.setCursor(Cursor.getDefaultCursor());
 				this.dispose();
@@ -69,7 +81,7 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 	protected abstract void generatePack(MCreator mcreator);
 
-	public static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
+	protected static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
 		List<String> usedElementNames = workspace.getWorkspaceInfo().getUsedElementNames();
 		for (String name : names) {
 			if (usedElementNames.contains(name)) {
@@ -79,19 +91,24 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		return true;
 	}
 
-	public static void addGeneratableElementToWorkspace(Workspace workspace, FolderElement folder,
-			GeneratableElement generatableElement) {
+	protected static void addGeneratableElementToWorkspace(@Nullable AbstractPackMakerTool packMakerTool,
+			Workspace workspace, FolderElement folder, GeneratableElement generatableElement) {
 		if (!workspace.containsModElement(generatableElement.getModElement().getName())) {
 			generatableElement.getModElement().setParentFolder(folder);
 			workspace.getModElementManager().storeModElementPicture(generatableElement);
 			workspace.getWorkspace().addModElement(generatableElement.getModElement());
-			workspace.getGenerator().generateElement(generatableElement);
+			if (packMakerTool != null) {
+				packMakerTool.toGenerate.add(
+						generatableElement); // if inside AbstractPackMakerTool, we can queue generation
+			} else {
+				workspace.getGenerator().generateElement(generatableElement);
+			}
 			workspace.getModElementManager().storeModElement(generatableElement);
 		}
 	}
 
-	public static void addTagEntries(Workspace workspace, TagType tagType, String tagName, String... entries) {
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
+	protected static void addTagEntries(Workspace workspace, TagType tagType, String tagName, String... entries) {
+		if (workspace.getGeneratorStats().hasBaseCoverage("tags")) {
 			// Create tag if it doesn't exist yet
 			TagElement tag = new TagElement(tagType, tagName);
 			if (!workspace.getTagElements().containsKey(tag)) {

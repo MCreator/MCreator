@@ -58,11 +58,11 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 		search = new JTextField(34) {
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				if (getText().isEmpty()) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					g.setFont(g.getFont().deriveFont(11f));
-					g.setColor(new Color(120, 120, 120));
+					g.setColor(Theme.current().getAltForegroundColor());
 					g.drawString(getSearchPlaceholderText(), 8, 19);
 				}
 			}
@@ -100,14 +100,27 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 
 		subTabs = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT) {
 			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getAltBackgroundColor());
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
+				if (mcreator.hasBackgroundImage()) {
+					Graphics2D g2d = (Graphics2D) g.create();
+					g2d.setColor(Theme.current().getAltBackgroundColor());
+					g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+					g2d.fillRect(0, 0, getWidth(), getHeight());
+					g2d.dispose();
+				}
 				super.paintComponent(g);
 			}
 		};
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
+				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
+
+		if (mcreator.hasBackgroundImage()) {
+			subTabs.setOpaque(false);
+			subTabs.setBackground(ColorUtils.applyAlpha(subTabs.getBackground(), 0));
+		} else {
+			subTabs.setOpaque(true);
+		}
+
 		subTabs.setModel(new DefaultSingleSelectionModel() {
 			@Override public void setSelectedIndex(int index) {
 				if (subTabs.getComponentAt(index) instanceof AbstractWorkspacePanel tabComponent) {
@@ -123,11 +136,6 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 				afterVerticalTabChanged();
 			}
 		});
-
-		subTabs.setOpaque(false);
-		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
-		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
-				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
 
 		add("Center", subTabs);
 	}

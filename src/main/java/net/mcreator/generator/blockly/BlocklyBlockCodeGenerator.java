@@ -460,7 +460,7 @@ public class BlocklyBlockCodeGenerator {
 			if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				IBlockGeneratorWithSections.handleSections(master, sections);
 			}
-			master.append(code);
+			master.append(code.strip());
 		}
 
 		customBlockIndex++;

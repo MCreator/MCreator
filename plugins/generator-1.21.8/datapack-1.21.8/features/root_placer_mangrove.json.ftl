@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 {
   "type": "minecraft:mangrove_root_placer",
   "root_provider": ${mappedBlockToBlockStateProvider(input$root_provider)},

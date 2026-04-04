@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
-import net.mcreator.blockly.feature.BlocklyToFeature;
+import net.mcreator.blockly.datapack.BlocklyToFeature;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;

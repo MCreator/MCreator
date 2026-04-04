@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.action.impl.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -44,8 +43,7 @@ public class TextureAction extends BasicAction {
 		if (textureType != null && !textureType.isSupported(actionRegistry.getMCreator().getWorkspace()))
 			return false;
 
-		return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("textures");
 	}
 
 }

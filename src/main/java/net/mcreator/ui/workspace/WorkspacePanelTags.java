@@ -21,7 +21,6 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
@@ -302,8 +301,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	}
 
 	@Override public boolean isSupportedInWorkspace() {
-		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("tags")
-				!= GeneratorStats.CoverageStatus.NONE;
+		return workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("tags");
 	}
 
 	private void deleteCurrentlySelected() {
@@ -360,7 +358,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.getSearchTerm()));
+			sorter.setRowFilter(RowFilter.regexFilter("(?i)" + workspacePanel.getSearchTerm()));
 		} catch (Exception ignored) {
 		}
 	}

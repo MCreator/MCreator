@@ -1,0 +1,1 @@
+Zvuková skupina, která definuje tento blok. Tento parametr ovlivňuje zvuky jako zvuk umístění bloku, zvuk rozbití bloku a zvuku přehraný při chůzi na bloku.

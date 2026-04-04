@@ -29,7 +29,7 @@ import javax.swing.*;
 public class ImageEditorSwapColorsAction extends BasicAction {
 	public ImageEditorSwapColorsAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.image_editor.color_selector.swap"), actionEvent -> {
-			JPanel pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
+			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getToolPanel().getColorSelector().swapColors();
 			}

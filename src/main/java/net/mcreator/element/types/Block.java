@@ -22,11 +22,14 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Fluid;
+import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.minecraft.states.PropertyData;
@@ -43,18 +46,24 @@ import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IBlockWithBoundingBox,
+		IMultipleNames, IBlockWithLootTable {
+
+	private static final Logger LOG = LogManager.getLogger(Block.class);
 
 	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
@@ -79,6 +88,10 @@ import java.util.stream.Collectors;
 	public String blockBase;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
+	public Particle leavesParticleType;
+	public double leavesParticleChance;
+	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
+	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -116,6 +129,7 @@ import java.util.stream.Collectors;
 	public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
+	public boolean hasCustomOpacity;
 	public int lightOpacity;
 
 	public int tickRate;
@@ -152,7 +166,7 @@ import java.util.stream.Collectors;
 	public Sound placeSound;
 	public Sound stepSound;
 
-	public int luminance;
+	public NumberProcedure luminance;
 	public boolean unbreakable;
 	public String vanillaToolTier;
 	public Procedure additionalHarvestCondition;
@@ -232,6 +246,7 @@ import java.util.stream.Collectors;
 		this.customProperties = new ArrayList<>();
 
 		this.blockSetType = "OAK";
+		this.leavesParticleChance = 0;
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
@@ -239,6 +254,7 @@ import java.util.stream.Collectors;
 		this.slipperiness = 0.6;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
+		this.hasCustomOpacity = true;
 		this.colorOnMap = "DEFAULT";
 		this.noteBlockInstrument = "harp";
 		this.aiPathNodeType = "DEFAULT";
@@ -259,6 +275,30 @@ import java.util.stream.Collectors;
 		this.animations = new ArrayList<>();
 
 		this.states = new ArrayList<>();
+	}
+
+	@Override public void finalizeModElementGeneration() {
+		if (isSign()) {
+			try {
+				File entityTextureLocation = new File(
+						getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+						("Sign".equals(blockBase) ? "entity/signs/" : "entity/signs/hanging/")
+								+ getModElement().getRegistryName() + ".png");
+				FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
+			} catch (Exception e) {
+				LOG.error("Failed to copy sign entity texture", e);
+			}
+			if ("HangingSign".equals(blockBase)) {
+				try {
+					File GUITextureLocation = new File(
+							getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
+							"gui/hanging_signs/" + getModElement().getRegistryName() + ".png");
+					FileIO.copyFile(signGUITexture.toFile(TextureType.SCREEN), GUITextureLocation);
+				} catch (Exception e) {
+					LOG.error("Failed to copy sign GUI texture", e);
+				}
+			}
+		}
 	}
 
 	public int renderType() {
@@ -283,6 +323,10 @@ import java.util.stream.Collectors;
 		return "Door".equals(blockBase);
 	}
 
+	public boolean isSign() {
+		return "Sign".equals(blockBase) || "HangingSign".equals(blockBase);
+	}
+
 	public boolean shouldOpenGUIOnRightClick() {
 		return guiBoundTo != null && openGUIOnRightClick;
 	}
@@ -295,8 +339,27 @@ import java.util.stream.Collectors;
 		return disableOffset || offsetType.equals("NONE");
 	}
 
-	public boolean hasDrops() {
-		return dropAmount > 0 && (hasBlockItem || hasCustomDrop() || "FlowerPot".equals(blockBase));
+	@Override public MItemBlock getDefaultDrop() {
+		if (dropAmount == 0) {
+			return new MItemBlock(getModElement().getWorkspace(), "Blocks.AIR");
+		} else if (hasCustomDrop()) {
+			return customDrop;
+		} else if ("FlowerPot".equals(blockBase)) {
+			return pottedPlant;
+		} else if (hasBlockItem) {
+			return new MItemBlock(getModElement().getWorkspace(),
+					NameMapper.MCREATOR_PREFIX + this.getModElement().getName());
+		} else {
+			return new MItemBlock(getModElement().getWorkspace(), "Blocks.AIR");
+		}
+	}
+
+	@Override public boolean dropsWithSilkTouch() {
+		return hasBlockItem && "Leaves".equals(blockBase);
+	}
+
+	@Override public boolean dropsWithShears() {
+		return hasBlockItem && "Leaves".equals(blockBase);
 	}
 
 	public boolean supportsBlockStates() {
@@ -310,7 +373,7 @@ import java.util.stream.Collectors;
 		if ("Stairs".equals(blockBase) || "Slab".equals(blockBase) || "Fence".equals(blockBase) || "Wall".equals(
 				blockBase) || "TrapDoor".equals(blockBase) || "Door".equals(blockBase) || "FenceGate".equals(blockBase)
 				|| "EndRod".equals(blockBase) || "PressurePlate".equals(blockBase) || "Button".equals(blockBase)
-				|| "FlowerPot".equals(blockBase))
+				|| "FlowerPot".equals(blockBase) || "Sign".equals(blockBase) || "HangingSign".equals(blockBase))
 			return false;
 
 		return IBlockWithBoundingBox.super.isFullCube();
@@ -382,11 +445,30 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public List<MCItem> providedMCItems() {
-		return List.of(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
+		ArrayList<MCItem> retval = new ArrayList<>();
+		retval.add(new MCItem.Custom(this.getModElement(), null, hasBlockItem ? "block" : "block_without_item"));
+
+		if (isSign()) // Provide sign wall block
+			retval.add(new MCItem.Custom(this.getModElement(), "wall", "block_without_item", "Wall sign"));
+
+		return retval;
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if ("wall".equals(suffix)) {
+			if ("Sign".equals(blockBase)) {
+				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallSignIcon(
+						signEntityTexture.getImage(TextureType.ENTITY)));
+			} else if ("HangingSign".equals(blockBase)) {
+				return new ImageIcon(MinecraftImageGenerator.Preview.generateWallHangingSignIcon(
+						signEntityTexture.getImage(TextureType.ENTITY)));
+			}
+		}
+		return null;
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		return hasBlockItem ? providedMCItems() : Collections.emptyList();
+		return hasBlockItem ? List.of(new MCItem.Custom(this.getModElement(), null, "block")) : Collections.emptyList();
 	}
 
 	@Override public StringListProcedure getSpecialInfoProcedure() {
@@ -437,6 +519,11 @@ import java.util.stream.Collectors;
 
 	public Set<String> getVibrationalEvents() {
 		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
+	}
+
+	public int getLeavesParticleColor() {
+		return ImageUtils.getAverageColor(ImageUtils.toBufferedImage(texture.getImage(TextureType.BLOCK))).brighter()
+				.brighter().getRGB();
 	}
 
 	public TextureHolder textureTop() {
@@ -528,6 +615,37 @@ import java.util.stream.Collectors;
 		if (!supportsBlockStates() || states.isEmpty())
 			return List.of();
 		return states.getFirst().stateMap.keySet().stream().map(PropertyData::getName).collect(Collectors.toList());
+	}
+
+	public String getWallName() {
+		String elementName = this.getModElement().getName();
+		if (elementName.endsWith("HangingSign"))
+			return elementName.substring(0, elementName.length() - 11) + "WallHangingSign";
+		else if (elementName.endsWith("Sign"))
+			return elementName.substring(0, elementName.length() - 4) + "WallSign";
+		else
+			return "Wall" + elementName;
+	}
+
+	public String getWallRegistryName() {
+		String registryName = this.getModElement().getRegistryName();
+		if (registryName.endsWith("hanging_sign"))
+			return registryName.substring(0, registryName.length() - 12) + "wall_hanging_sign";
+		else if (registryName.endsWith("sign"))
+			return registryName.substring(0, registryName.length() - 4) + "wall_sign";
+		else
+			return "wall_" + registryName;
+	}
+
+	public String getWallRegistryNameUpper() {
+		return getWallRegistryName().toUpperCase(Locale.ENGLISH);
+	}
+
+	@Override public Collection<String> getAdditionalNames() {
+		if (isSign())
+			return List.of(this.getWallName());
+		else
+			return Collections.emptyList();
 	}
 
 	public static class StateEntry implements IWorkspaceDependent, IItemWithModel, IBlockWithBoundingBox {

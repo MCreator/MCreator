@@ -68,12 +68,19 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					<#if data.isAlwaysEdible>.alwaysEdible()</#if>
 					.build())
 				</#if>
-				<#if data.enableMeleeDamage>
+				<#if data.enableMeleeDamage || (data.attributeModifiers?size gt 0)>
 				.attributes(ItemAttributeModifiers.builder()
+					<#if data.enableMeleeDamage>
 					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.4,
+					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					</#if>
+					<#list data.attributeModifiers as modifier>
+					.add(${modifier.attribute}, new AttributeModifier(
+							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+					</#list>
 					.build())
 				</#if>
 				<#if data.isMusicDisc>
@@ -185,6 +192,12 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	}
 	</#if>
 
+	<#if data.damageCount != 0 && data.repairItems?has_content>
+	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
+	}
+	</#if>
+
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	<#assign shouldExplicitlyCallStartUsing = !data.isFood && (data.useDuration > 0)> <#-- ranged items handled in if below so no need to check for that here too -->
@@ -209,7 +222,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 			}, false/>)
 			</#if>
 			if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
-				ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+				ar = InteractionResultHolder.consume(entity.getItemInHand(hand));
 				entity.startUsingItem(hand);
 			}
 		<#elseif shouldExplicitlyCallStartUsing>

@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 <#include "mcelements.ftl">
 {
   "surface": ${field$surface},

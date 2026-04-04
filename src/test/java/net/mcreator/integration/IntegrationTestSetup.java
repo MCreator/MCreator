@@ -19,7 +19,6 @@
 
 package net.mcreator.integration;
 
-import javafx.embed.swing.JFXPanel;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
@@ -33,9 +32,8 @@ import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.data.GradleSection;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.WebConsoleListener;
+import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.ConsolePane;
-import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.themes.ThemeManager;
@@ -116,9 +114,6 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 		// load preferences
 		PreferencesManager.init();
 
-		// Init JFX Toolkit
-		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
-		WebConsoleListener.registerLogger(LOG);
 		/* ****************************
 		 * END: Launcher.java emulation
 		 * ****************************/
@@ -153,6 +148,9 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 		UIRES.preloadImages();
 
 		ThemeManager.applySelectedTheme();
+
+		// preload CEF into RAM so it loads faster when needed
+		WebView.preload();
 
 		// preload help entries cache
 		HelpLoader.preloadCache();

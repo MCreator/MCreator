@@ -47,6 +47,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
@@ -111,12 +112,12 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
-		addArmorPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(), color.getColor(),
-				(Double) power.getValue());
+		addArmorPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
+				color.getColor(), (Double) power.getValue());
 	}
 
-	static void addArmorPackToWorkspace(MCreator mcreator, Workspace workspace, String name, MItemBlock base,
-			Color color, double factor) {
+	static void addArmorPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+			Workspace workspace, String name, MItemBlock base, Color color, double factor) {
 		if (!checkIfNamesAvailable(workspace, name + "Armor", name + "ArmorHelmetRecipe",
 				name + "ArmorChestplateRecipe", name + "ArmorLeggingsRecipe", name + "ArmorBootsRecipe"))
 			return;
@@ -154,7 +155,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armor.damageValueLeggings = (int) Math.round(5 * factor);
 		armor.damageValueBoots = (int) Math.round(2 * factor);
 		armor.repairItems = Collections.singletonList(base);
-		addGeneratableElementToWorkspace(workspace, folder, armor);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, armor);
 
 		// generate recipes
 		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -168,7 +169,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armorHelmetRecipe.recipeSlots[5] = base;
 		armorHelmetRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".helmet");
 		armorHelmetRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, armorHelmetRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, armorHelmetRecipe);
 
 		Recipe armorBodyRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorChestplateRecipe", ModElementType.RECIPE), false)
@@ -184,7 +185,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armorBodyRecipe.recipeSlots[8] = base;
 		armorBodyRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".body");
 		armorBodyRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, armorBodyRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, armorBodyRecipe);
 
 		Recipe armorLeggingsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.RECIPE), false)
@@ -199,7 +200,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armorLeggingsRecipe.recipeSlots[8] = base;
 		armorLeggingsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".legs");
 		armorLeggingsRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, armorLeggingsRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, armorLeggingsRecipe);
 
 		Recipe armorBootsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ArmorBootsRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -210,7 +211,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armorBootsRecipe.recipeSlots[8] = base;
 		armorBootsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".boots");
 		armorBootsRecipe.unlockingItems.add(base);
-		addGeneratableElementToWorkspace(workspace, folder, armorBootsRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, armorBootsRecipe);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {

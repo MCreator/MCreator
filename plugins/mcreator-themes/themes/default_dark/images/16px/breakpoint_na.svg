@@ -1,3 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="16" height="16" version="1.1" viewBox="0 0 4.2333 4.2333" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><circle cx="2.1167" cy="2.1167" r="1.4552" fill="#c79e9e" stroke="#b43131" stroke-linecap="round" stroke-linejoin="round" stroke-width=".26458"/></svg>
+<svg
+  height="16"
+  viewBox="0 0 4.2333 4.2333"
+  width="16"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <circle
+    cx="2.1167"
+    cy="2.1167"
+    fill="#C43B3940"
+    r="1.4552"
+    stroke="#C43B39"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width=".26458"
+  />
+</svg>

@@ -120,10 +120,7 @@ public class JJigsawPool extends JEntriesList {
 		add("North", PanelUtils.westAndEastElement(poolParams, PanelUtils.join(add, remove)));
 		add("Center", entries);
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.structuregen.jigsaw_pool"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(this, L10N.t("elementgui.structuregen.jigsaw_pool"));
 
 		parent.revalidate();
 		parent.repaint();

@@ -21,20 +21,17 @@ package net.mcreator.ui;
 
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.io.OS;
-import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.SquareLoaderIcon;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.BackgroundLoader;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
-import net.mcreator.util.ListUtils;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 
@@ -42,11 +39,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MCreatorFrame extends JFrame
 		implements IWorkspaceProvider, IGeneratorProvider, INotificationConsumer {
+
+	private static final List<Dimension> FRAME_SIZES = List.of(
+			//@formatter:off
+			new Dimension(1886, 1100),
+			new Dimension(1600, 974),
+			new Dimension(1310, 798),
+			new Dimension(1022, 647)
+			//@formatter:on
+	);
+	private static final double FRAME_SIZE_PADDING = 1.15;
 
 	protected final MCreatorApplication application;
 
@@ -68,14 +74,15 @@ public abstract class MCreatorFrame extends JFrame
 		setLayout(new BorderLayout(0, 0));
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		if (screenSize.getWidth() > 2144 && screenSize.getHeight() > 1250)
-			setSize(2144, 1250);
-		else if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
-			setSize(1574, 967);
-		else if (screenSize.getWidth() > 1290 && screenSize.getHeight() > 795)
-			setSize(1290, 791);
-		else
-			setSize(1002, 640);
+		Dimension frameSizeToUse = FRAME_SIZES.getLast();
+		for (Dimension size : FRAME_SIZES) {
+			if (screenSize.getWidth() >= size.getWidth() * FRAME_SIZE_PADDING
+					&& screenSize.getHeight() >= size.getHeight() * FRAME_SIZE_PADDING) {
+				frameSizeToUse = size;
+				break;
+			}
+		}
+		setSize(frameSizeToUse);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -90,7 +97,7 @@ public abstract class MCreatorFrame extends JFrame
 
 		this.statusBar = new StatusBar(this);
 
-		Image bgimage = getBackgroundImage();
+		Image bgimage = BackgroundLoader.getBackgroundImage();
 		if (bgimage != null) {
 			mainContent = new ImagePanel(bgimage);
 			((ImagePanel) mainContent).setKeepRatio(true);
@@ -112,13 +119,15 @@ public abstract class MCreatorFrame extends JFrame
 	}
 
 	protected JComponent getPreloaderPane() {
-		JPanel wrap = new BlockingGlassPane();
-		JLabel loading = L10N.label("workspace.loading");
-		loading.setIconTextGap(5);
-		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
-		wrap.add(PanelUtils.totalCenterInPanel(loading));
+		JPanel wrap;
+		// For small workspaces, the preloader only briefly flashes, causing bad UX, so we don't show it in such cases
+		if (this instanceof ModMaker && workspace.getModElements().size() > 10) {
+			wrap = new BlockingGlassPane(true);
+			wrap.add(ComponentUtils.bigCenteredText("workspace.loading",
+					new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor())));
+		} else {
+			wrap = new BlockingGlassPane(false);
+		}
 		return wrap;
 	}
 
@@ -157,38 +166,6 @@ public abstract class MCreatorFrame extends JFrame
 
 	public boolean hasBackgroundImage() {
 		return mainContent instanceof ImagePanel;
-	}
-
-	private Image getBackgroundImage() {
-		UserFolderManager.getFileFromUserFolder("backgrounds").mkdirs();
-
-		// Load backgrounds depending on the background source
-		List<Image> bgimages = new ArrayList<>();
-		switch (PreferencesManager.PREFERENCES.ui.backgroundSource.get()) {
-		case "All":
-			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
-			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
-			break;
-		case "Current theme":
-			bgimages = BackgroundLoader.loadThemeBackgrounds();
-			break;
-		case "Custom":
-			bgimages = BackgroundLoader.loadUserBackgrounds();
-			break;
-		}
-
-		Image bgimage = null;
-		if (!bgimages.isEmpty()) {
-			bgimage = ListUtils.getRandomItem(bgimages);
-			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
-			if (avg > 0.15) {
-				avg = (float) Math.min(avg * 1.7, 0.85);
-				bgimage = ImageUtils.drawOver(new ImageIcon(bgimage), new ImageIcon(
-						ImageUtils.emptyImageWithSize(bgimage.getWidth(this), bgimage.getHeight(this),
-								new Color(0.12f, 0.12f, 0.12f, avg)))).getImage();
-			}
-		}
-		return bgimage;
 	}
 
 }

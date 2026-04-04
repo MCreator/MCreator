@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
+<#include "../mcitems_json.ftl">
 {
     "type": "minecraft:campfire_cooking",
     <#if data.group?has_content>"group": "${data.group}",</#if>

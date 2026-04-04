@@ -1,0 +1,2 @@
+Wenn aktiviert, sorgt dieser Parameter dafür, dass der Gegenstand nach kurzer Zeit, in der er auf dem Boden liegt, despawnt.
+Wenn diese Option jedoch deaktiviert ist, wird der Gegenstand niemals despawnen.

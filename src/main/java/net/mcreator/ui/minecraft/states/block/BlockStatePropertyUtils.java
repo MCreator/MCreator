@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.minecraft.states.block;
 
+import net.mcreator.element.ModElementType;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
@@ -28,10 +30,7 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BlockStatePropertyUtils {
 
@@ -98,6 +97,26 @@ public class BlockStatePropertyUtils {
 			return null;
 		}
 		}
+	}
+
+	public static Map<String, List<String>> getBlockBaseProperties(GeneratorConfiguration generatorConfiguration) {
+		Map<?, ?> definition = generatorConfiguration.getDefinitionsProvider()
+				.getModElementDefinition(ModElementType.BLOCK);
+		if (definition == null)
+			return Collections.emptyMap();
+
+		if (definition.get("block_base_properties") instanceof Map<?, ?> raw) {
+			Map<String, List<String>> retval = new HashMap<>();
+			for (Map.Entry<?, ?> entry : raw.entrySet()) {
+				if (entry.getValue() instanceof List<?> list)
+					retval.put((String) entry.getKey(), list.stream().map(Object::toString).toList());
+				else
+					retval.put((String) entry.getKey(), Collections.singletonList(entry.getValue().toString()));
+			}
+			return retval;
+		}
+
+		return Collections.emptyMap();
 	}
 
 }

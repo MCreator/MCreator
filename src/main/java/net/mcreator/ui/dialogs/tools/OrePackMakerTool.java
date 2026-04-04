@@ -45,6 +45,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -91,20 +92,20 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
-		addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
+		addOrePackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(),
 				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
-	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
-			Color color, double factor) {
+	static MItemBlock addOrePackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+			Workspace workspace, String name, String type, Color color, double factor) {
 		String oreItemName = switch (type) {
 			case "Dust based" -> name + "Dust";
 			case "Gem based" -> name;
 			default -> name + "Ingot";
 		};
 
-		if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
-				name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting"))
+		if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block", name + "OreBlockRecipe",
+				name + "BlockOreRecipe", name + "OreSmelting"))
 			return null;
 
 		String registryName = RegistryNameFixer.fromCamelCase(name);
@@ -127,8 +128,8 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				getCachedTexture("oreblock1", "oreblock2", "oreblock3", "oreblock4", "oreblock5", "oreblock6",
 						"oreblock7", "oreblock8"), color, true);
 		String oreBlockTextureName = registryName + "_ore_block";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()), mcreator.getFolderManager()
-				.getTextureFile(oreBlockTextureName, TextureType.BLOCK));
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlockIc.getImage()),
+				mcreator.getFolderManager().getTextureFile(oreBlockTextureName, TextureType.BLOCK));
 
 		// next, gem texture
 		ImageIcon gem;
@@ -152,7 +153,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreItem.name = readableName;
 		oreItem.texture = new TextureHolder(workspace, gemTextureName);
 		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
-		addGeneratableElementToWorkspace(workspace, folder, oreItem);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, oreItem);
 
 		// We use element GUIs to get the default values for the elements
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
@@ -185,7 +186,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			oreBlock.dropAmount = 3;
 		}
 		oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-		addGeneratableElementToWorkspace(workspace, folder, oreBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, oreBlock);
 
 		Block oreBlockBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Block", ModElementType.BLOCK), false).getElementFromGUI();
@@ -206,7 +207,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
 		oreBlockBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
-		addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, oreBlockBlock);
 
 		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -222,7 +223,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
 		itemToBlockRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + oreItemName));
-		addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, itemToBlockRecipe);
 
 		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -231,7 +232,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
 		blockToItemRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Block"));
-		addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, blockToItemRecipe);
 
 		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false).getElementFromGUI();
@@ -241,7 +242,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
 		oreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Ore"));
-		addGeneratableElementToWorkspace(workspace, folder, oreSmeltingRecipe);
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, oreSmeltingRecipe);
 
 		return new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 	}

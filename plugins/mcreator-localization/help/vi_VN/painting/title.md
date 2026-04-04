@@ -1,0 +1,1 @@
+Tham số này xác định tiêu đề của bức tranh.

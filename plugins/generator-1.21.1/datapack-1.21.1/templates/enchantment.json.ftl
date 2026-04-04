@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 
 <#assign supportedItems = w.filterBrokenReferences(data.supportedItems)>
 <#assign incompatibleEnchantments = w.filterBrokenReferences(data.incompatibleEnchantments)>
@@ -30,7 +30,7 @@
   },
   "anvil_cost": ${data.anvilCost},
   "slots": [
-    ${generator.map(data.supportedSlots, "equipmentslots")}
+    ${generator.map(data.supportedSlots, "equipmentslots", 1)}
   ],
   <#if incompatibleEnchantments?size == 1>
   "exclusive_set": "${generator.map(incompatibleEnchantments?first.getUnmappedValue(), "enchantments", 1)}"

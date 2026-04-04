@@ -1,0 +1,1 @@
+Si ce paramètre est sélectionné, l'objet n'apparaîtra pas dans les commandes comme `/give`

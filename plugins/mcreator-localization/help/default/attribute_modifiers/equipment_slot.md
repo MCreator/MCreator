@@ -1,0 +1,1 @@
+This attribute modifier is applied only if the item is equipped in this slot.

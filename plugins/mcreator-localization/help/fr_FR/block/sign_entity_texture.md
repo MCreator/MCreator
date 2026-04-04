@@ -1,0 +1,1 @@
+Il s'agit de la texture utilisée par les panneaux pour s'afficher dans le monde. Assurez-vous que la texture est compatible avec le modèle du panneau.

@@ -1,0 +1,1 @@
+Tham số này xác định loại ô phù hợp với loại phù phép này.

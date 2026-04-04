@@ -77,7 +77,7 @@ public class RunServerAction extends GradleAction {
 						" " + actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client");
 			}
 
-			actionRegistry.getMCreator().getTabs().showTab(actionRegistry.getMCreator().consoleTab);
+			actionRegistry.getMCreator().showConsole();
 			actionRegistry.getMCreator().getGradleConsole().exec(tasksToRun);
 		} catch (Exception e) { // if something fails, we still need to free the gradle console
 			LOG.error("Failed to run server", e);

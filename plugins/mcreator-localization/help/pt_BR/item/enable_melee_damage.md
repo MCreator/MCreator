@@ -1,0 +1,1 @@
+Marcando este parâmetro, você permitirá seu item a ser uma arma corpo a corpo com dano e velocidade de ataque.

@@ -21,72 +21,108 @@ package net.mcreator.ui.component;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class ImagePanel extends JPanel {
 
-	private Image img;
+	@Nonnull private final Image originalImage;
+
+	private BufferedImage cached;
+	private Dimension cachedSize;
 
 	private boolean keepRatio = false;
-	private boolean original = false;
 	private boolean fitToWidth = false;
-
-	private final Color defaultColor = Theme.current().getBackgroundColor();
 
 	private int offsetY = 0;
 
-	public ImagePanel(Image img) {
-		this.img = img;
+	public ImagePanel(@Nonnull Image originalImage) {
+		this.originalImage = originalImage;
+		setOpaque(true);
+		setBackground(Theme.current().getBackgroundColor());
 	}
 
 	public void setOffsetY(int offsetY) {
 		this.offsetY = offsetY;
+		invalidateCache();
+	}
+
+	public void setKeepRatio(boolean flag) {
+		this.keepRatio = flag;
+		invalidateCache();
+	}
+
+	public void setFitToWidth(boolean fitToWidth) {
+		this.fitToWidth = fitToWidth;
+		invalidateCache();
+	}
+
+	private void invalidateCache() {
+		cached = null;
+		cachedSize = null;
+	}
+
+	@Override protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+
+		Dimension size = getSize();
+
+		if (cached == null || !size.equals(cachedSize)) {
+			cachedSize = size;
+			cached = renderImage(size);
+		}
+
+		g.drawImage(cached, 0, 0, null);
 	}
 
 	public void fitToImage() {
-		Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+		Dimension size = new Dimension(originalImage.getWidth(null), originalImage.getHeight(null));
 		setPreferredSize(size);
 		setMinimumSize(size);
 		setMaximumSize(size);
 		setSize(size);
 	}
 
-	public void setImage(Image img) {
-		this.img = img;
-		repaint();
-	}
+	private BufferedImage renderImage(Dimension size) {
+		if (size.width <= 0 || size.height <= 0)
+			return null;
 
-	public void setRenderOriginal(boolean flag) {
-		this.original = flag;
-	}
+		GraphicsConfiguration gc = getGraphicsConfiguration();
+		if (gc == null)
+			return null; // GraphicsConfiguration is not ready yet
 
-	public void setKeepRatio(boolean flag) {
-		this.keepRatio = flag;
-	}
+		int w = size.width;
+		int h = size.height;
 
-	public void setFitToWidth(boolean fitToWidth) {
-		this.fitToWidth = fitToWidth;
-	}
+		BufferedImage bi = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+		Graphics2D g2 = bi.createGraphics();
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-	@Override public void paintComponent(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(defaultColor);
-		g2d.fillRect(0, 0, getSize().width, getSize().height);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		int drawY = offsetY;
 
-		if (img != null) {
-			if (original)
-				g2d.drawImage(img, 0, offsetY, this);
-			else if (fitToWidth)
-				g2d.drawImage(img, 0, offsetY, getSize().width,
-						(int) ((float) getSize().width * ((float) img.getHeight(this) / (float) img.getWidth(this))),
-						this);
-			else if (!keepRatio)
-				g2d.drawImage(img, 0, offsetY, getSize().width, getSize().height, this);
-			else
-				g2d.drawImage(ImageUtils.cover(img, getSize()), 0, offsetY, this);
+		if (fitToWidth) {
+			int iw = originalImage.getWidth(this);
+			int ih = originalImage.getHeight(this);
+
+			int scaledH = (int) ((float) w * ((float) ih / iw));
+
+			if (drawY < -scaledH)
+				drawY = -scaledH;
+			if (drawY > h)
+				drawY = h - 1;
+
+			g2.drawImage(originalImage, 0, drawY, w, scaledH, null);
+		} else if (!keepRatio) {
+			g2.drawImage(originalImage, 0, drawY, w, h, null);
+		} else {
+			Image covered = ImageUtils.cover(originalImage, size);
+			g2.drawImage(covered, 0, drawY, null);
 		}
+
+		g2.dispose();
+		return bi;
 	}
 
 }

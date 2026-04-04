@@ -51,6 +51,7 @@ public class ColorSelector extends JPanel {
 		reset.setMargin(new Insets(0, 0, 0, 0));
 		reset.setBounds(new Rectangle(1, 39, 16, 16));
 		reset.setOpaque(false);
+		reset.setContentAreaFilled(false);
 		reset.setBorder(BorderFactory.createEmptyBorder());
 
 		JButton swap = new JButton();
@@ -59,6 +60,7 @@ public class ColorSelector extends JPanel {
 		swap.setMargin(new Insets(0, 0, 0, 0));
 		swap.setBounds(new Rectangle(46, 1, 16, 16));
 		swap.setOpaque(false);
+		swap.setContentAreaFilled(false);
 		swap.setBorder(BorderFactory.createEmptyBorder());
 
 		foregroundColor.addActionListener(e -> {

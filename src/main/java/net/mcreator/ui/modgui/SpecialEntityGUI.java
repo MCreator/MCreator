@@ -29,7 +29,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
@@ -42,7 +41,6 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -105,11 +103,6 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
 		creativeTabs.setPreferredSize(new java.awt.Dimension(0, 42));
 
-		properties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.common.properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
-
 		page1group.addValidationElement(entityTexture);
 		page1group.addValidationElement(itemTexture);
 		page1group.addValidationElement(name);
@@ -121,7 +114,8 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
 			String readableName = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableName.endsWith("Chest Boat") ?
-					readableName.substring(0, readableName.length() - 10) + "Boat with Chest" : readableName);
+					readableName.substring(0, readableName.length() - 10) + "Boat with Chest" :
+					readableName);
 			if (readableName.endsWith("Chest Boat"))
 				entityType.setSelectedItem("ChestBoat");
 		}

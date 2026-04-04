@@ -28,8 +28,13 @@ import java.awt.event.MouseMotionAdapter;
 
 public class BlockingGlassPane extends JPanel {
 
-	public BlockingGlassPane() {
+	private final boolean hasBackdrop;
+
+	public BlockingGlassPane(boolean hasBackdrop) {
 		super(new BorderLayout());
+
+		this.hasBackdrop = hasBackdrop;
+
 		setOpaque(false);
 
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -55,8 +60,10 @@ public class BlockingGlassPane extends JPanel {
 
 	@Override protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(new Color(0, 0, 0, 150));
-		g.fillRect(0, 0, getWidth(), getHeight());
+		if (hasBackdrop) {
+			g.setColor(new Color(0, 0, 0, 150));
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
 	}
 
 }

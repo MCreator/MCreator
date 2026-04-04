@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
+<#include "../mcitems_json.ftl">
 
 <#macro vanilla biome coverAny=false>
   <#if biome?contains("badlands")>

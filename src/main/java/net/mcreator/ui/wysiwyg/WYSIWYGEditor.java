@@ -30,6 +30,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.wysiwyg.*;
@@ -226,10 +227,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		JPanel comppan = new JPanel(new BorderLayout());
 		comppan.setOpaque(false);
-		comppan.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(comppan, L10N.t("elementgui.gui.component_list"));
 
 		JToolBar bar2 = new JToolBar();
 		bar2.setOpaque(false);
@@ -342,10 +340,7 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentDown.setEnabled(false);
 		lockComponent.setEnabled(false);
 
-		adds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-				(L10N.t("elementgui.gui.editor_options")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(adds, L10N.t("elementgui.gui.editor_options"));
 
 		adds.setOpaque(false);
 
@@ -354,10 +349,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		JPanel adds2 = new JPanel();
 		adds2.setLayout(new BoxLayout(adds2, BoxLayout.PAGE_AXIS));
-		adds2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(adds2, L10N.t("elementgui.gui.gui_properties"));
 
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
@@ -415,10 +407,7 @@ public class WYSIWYGEditor extends JPanel {
 			JPanel ovst2 = new JPanel(new GridLayout(3, 2, 2, 2));
 			ovst2.setOpaque(false);
 
-			ovst.setBorder(BorderFactory.createTitledBorder(
-					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
-					Theme.current().getForegroundColor()));
+			ComponentUtils.makeSection(ovst, L10N.t("elementgui.gui.overlay_properties"));
 
 			overlayBaseTexture.getComboBox().addActionListener(e -> editor.repaint());
 

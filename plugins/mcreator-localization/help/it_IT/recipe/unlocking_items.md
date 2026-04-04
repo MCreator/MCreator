@@ -1,0 +1,1 @@
+Quando viene raccolto qualsiasi item di questa lista, la ricetta sarà sbloccata nel libro delle ricette.

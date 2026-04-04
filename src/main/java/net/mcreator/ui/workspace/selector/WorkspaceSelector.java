@@ -132,13 +132,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.import"), UIRES.get("impfile"), e -> {
 			File file = FileDialogs.getOpenDialog(this, new String[] { ".zip" });
 			if (file != null) {
-				File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
-				if (workspaceDir != null) {
-					ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
-							this);
-					if (workspaceFile != null)
-						workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
-				}
+				importWorkspaceFromZip(file);
 			}
 		});
 
@@ -292,7 +286,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		userTip.setOpaque(true);
 		ComponentUtils.deriveFont(userTip, 11);
 		userTip.setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 0));
-		userTip.setForeground(Theme.current().getAltBackgroundColor());
+		userTip.setForeground(Theme.current().getAltBackgroundColor().brighter());
 		userTip.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		recentsList.setBorder(BorderFactory.createEmptyBorder(0, 0, 17, 0));
@@ -344,6 +338,15 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
 			recentPanel.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
 			centerComponent.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
+		}
+	}
+
+	private void importWorkspaceFromZip(File file) {
+		File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
+		if (workspaceDir != null) {
+			ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
+			if (workspaceFile != null)
+				workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
 		}
 	}
 
@@ -441,6 +444,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 					if (transfObj instanceof File workspaceFile) {
 						if (workspaceFile.getName().endsWith(".mcreator")) {
 							workspaceOpenListener.workspaceOpened(workspaceFile);
+						} else if (workspaceFile.getName().endsWith(".zip")) {
+							importWorkspaceFromZip(workspaceFile);
 						} else {
 							Toolkit.getDefaultToolkit().beep();
 						}

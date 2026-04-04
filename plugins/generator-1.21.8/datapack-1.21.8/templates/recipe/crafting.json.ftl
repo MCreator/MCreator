@@ -1,5 +1,5 @@
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
+<#include "../mcitems_json.ftl">
 {
     <#if data.recipeShapeless>
         "type": "minecraft:crafting_shapeless",

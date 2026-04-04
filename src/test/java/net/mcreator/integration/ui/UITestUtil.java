@@ -64,8 +64,8 @@ public class UITestUtil {
 				}
 			});
 
-			// Give it time for panel to load and propagate the event
-			assertTrue(latch.await(5, TimeUnit.SECONDS));
+			// Give it time for BlocklyPanel(s) to load and propagate the event
+			assertTrue(latch.await(10, TimeUnit.SECONDS));
 		}
 
 		// Reload data lists to test this functionality

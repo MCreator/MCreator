@@ -1,0 +1,1 @@
+If the parameter is selected, the item will not appear in commands like `/give`

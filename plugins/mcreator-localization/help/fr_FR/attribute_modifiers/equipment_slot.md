@@ -1,0 +1,1 @@
+Ce modificateur d'attribut n'est appliqué que si l'item est équipé dans cet emplacement.

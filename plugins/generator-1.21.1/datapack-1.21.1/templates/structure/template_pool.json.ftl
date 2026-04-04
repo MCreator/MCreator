@@ -1,4 +1,4 @@
-<#include "../mcitems.ftl">
+<#include "../mcitems_json.ftl">
 {
   <#if data.poolName??>
   "name": "${modid}:${registryname}_${data.poolName}",

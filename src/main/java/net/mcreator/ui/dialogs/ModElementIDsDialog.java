@@ -21,9 +21,9 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -47,10 +47,7 @@ public class ModElementIDsDialog {
 
 		VTextField registryName = new VTextField();
 		JComponent reghol = PanelUtils.join(L10N.label("dialog.modelement_id.registry_name"), registryName);
-		reghol.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.modelement_id.registry_name_info"), 0, 0, reghol.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(reghol, L10N.t("dialog.modelement_id.registry_name_info"));
 
 		panel.add(PanelUtils.centerInPanel(L10N.label("dialog.modelement_id.use_caution_warn")));
 

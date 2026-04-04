@@ -26,7 +26,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -35,7 +34,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -86,10 +84,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 
 		slpa.setMaximumSize(new Dimension(700, 110));
 
-		slpa.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.tab.add_stuff_tip"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(slpa, L10N.t("elementgui.tab.add_stuff_tip"));
 
 		pane3.add(PanelUtils.totalCenterInPanel(slpa));
 		pane3.setOpaque(false);

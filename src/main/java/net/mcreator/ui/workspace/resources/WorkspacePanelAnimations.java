@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
@@ -46,8 +45,7 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 						(item, query) -> item.getName().toLowerCase(Locale.ENGLISH).contains(query), Animation::getName),
 				new Render(), JList.HORIZONTAL_WRAP);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
-				!= GeneratorStats.CoverageStatus.NONE)
+		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_animations_java"))
 			addToolBarButton("action.workspace.resources.import_java_animation",
 					UIRES.get("16px.importjavamodelanimation"),
 					e -> workspacePanel.getMCreator().getActionRegistry().importJavaModelAnimation.doAction());

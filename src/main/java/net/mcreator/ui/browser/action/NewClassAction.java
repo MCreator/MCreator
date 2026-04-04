@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.browser.action;
 
-import net.mcreator.io.writer.ClassWriter;
+import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
@@ -88,7 +88,7 @@ public class NewClassAction extends BasicAction {
 
 							code += "public class " + classname + " {\n\n\n}";
 
-							ClassWriter.writeClassToFile(actionRegistry.getMCreator().getWorkspace(), code,
+							JavaWriter.writeJavaToFile(actionRegistry.getMCreator().getWorkspace(), code,
 									new File(path), true);
 
 							actionRegistry.getMCreator().getProjectBrowser().reloadTree();

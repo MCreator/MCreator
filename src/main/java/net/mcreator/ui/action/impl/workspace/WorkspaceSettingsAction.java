@@ -20,7 +20,6 @@ package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.Launcher;
 import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleUtils;
@@ -192,8 +191,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 					// check the Java models situation and warn the user if needed
 					try {
 						if (Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator())
-								.getGeneratorStats().getBaseCoverageInfo().get("model_java")
-								!= GeneratorStats.CoverageStatus.NONE) {
+								.getGeneratorStats().hasBaseCoverage("model_java")) {
 							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace(),
 									Generator.GENERATOR_CACHE.get(change.oldSettings.getCurrentGenerator())
 											.getCompatibleJavaModelKeys());

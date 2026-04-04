@@ -91,20 +91,22 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			TOOL_TIER,
 			</#if>
 			new Item.Properties()
-				<#if (data.usageCount != 0) && (data.toolType == "Shears" || data.toolType == "Shield")>
-				.durability(${data.usageCount})
+				<#if data.toolType == "Shears" || data.toolType == "Shield">
+					<#if data.usageCount != 0>
+					.durability(${data.usageCount})
+					<#else>
+					.stacksTo(1)
+					</#if>
 				</#if>
-				<#if data.toolType == "MultiTool">
-				.attributes(ItemAttributeModifiers.builder()
-						.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
-								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-						.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
-								AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-						.build())
+				<#if data.toolType == "MultiTool" || data.attributeModifiers?size gt 0>
+				.attributes(<@itemAttributeModifiers (data.toolType != "Shield" && data.toolType != "Shears")/>)
 				<#elseif data.toolType == "Sword">
 				.attributes(SwordItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
 				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
+				</#if>
+				<#if data.rarity != "COMMON">
+				.rarity(Rarity.${data.rarity})
 				</#if>
 				<#if data.immuneToFire>
 				.fireResistant()
@@ -196,16 +198,16 @@ public class ${name}Item extends Item {
 		super(new Item.Properties()
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			<#else>
+			.stacksTo(1)
+			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
-			.attributes(ItemAttributeModifiers.builder()
-				.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
-						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-				.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
-						AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-				.build())
+			.attributes(<@itemAttributeModifiers true/>)
 		);
 	}
 
@@ -238,17 +240,25 @@ public class ${name}Item extends FishingRodItem {
 		super(new Item.Properties()
 			<#if data.usageCount != 0>
 			.durability(${data.usageCount})
+			<#else>
+			.stacksTo(1)
+			</#if>
+			<#if data.rarity != "COMMON">
+			.rarity(Rarity.${data.rarity})
 			</#if>
 			<#if data.immuneToFire>
 			.fireResistant()
+			</#if>
+			<#if data.attributeModifiers?size gt 0>
+			.attributes(<@itemAttributeModifiers/>)
 			</#if>
 		);
 	}
 
 	<#if data.repairItems?has_content>
-    	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 			return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
-    	}
+		}
 	</#if>
 
 	@Override public int getEnchantmentValue() {
@@ -280,6 +290,20 @@ public class ${name}Item extends FishingRodItem {
 }
 </#if>
 </@javacompress>
+
+<#macro itemAttributeModifiers includeMeleeAttributes=false>
+	ItemAttributeModifiers.builder()
+	<#if includeMeleeAttributes>
+	.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1}, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+	.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4}, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+	</#if>
+	<#list data.attributeModifiers as modifier>
+	.add(${modifier.attribute}, new AttributeModifier(
+			ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+	</#list>
+	.build()
+</#macro>
 
 <#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>
@@ -322,6 +346,10 @@ public class ${name}Item extends FishingRodItem {
 	<@onEntitySwing data.onEntitySwing/>
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
+
+	<@onDroppedByPlayer data.onDroppedByPlayer/>
+
+	<@onItemEntityDestroyed data.onItemEntityDestroyed/>
 
 	<@hasGlow data.glowCondition/>
 

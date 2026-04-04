@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 {
   "state_provider": ${mappedBlockToBlockStateProvider(input$block)}
 }

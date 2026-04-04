@@ -1,3 +1,3 @@
-Pokrok po kterém váš pokrok bude zobrazen.
+Toto je pokrok pod kterým bude tento pokrok uveden.
 
 Při použití "Žádný rodič: kořen" vytvoří novou kategorii.

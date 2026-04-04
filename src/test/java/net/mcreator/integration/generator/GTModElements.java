@@ -45,7 +45,7 @@ public class GTModElements {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		for (ModElementType<?> modElementType : TestWorkspaceDataProvider.getOrderedModElementTypesForTests(
-				workspace.getGeneratorConfiguration(), false)) {
+				workspace.getGeneratorConfiguration())) {
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, false, random);
 

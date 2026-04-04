@@ -55,6 +55,8 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static net.mcreator.ui.action.ActionUtils.hideableMenu;
+
 public class WorkspacePanelTextures extends JPanel implements IReloadableFilterable {
 
 	private final Map<String, JComponentWithList<File>> mapLists = new HashMap<>();
@@ -108,23 +110,24 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JPopupMenu createMenu = new JPopupMenu();
-		createMenu.add(workspacePanel.getMCreator().getActionRegistry().createMCItemTexture);
-		createMenu.add(workspacePanel.getMCreator().getActionRegistry().createArmorTexture);
-		createMenu.add(workspacePanel.getMCreator().getActionRegistry().createAnimatedTexture);
+		createMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().createTexture));
+		createMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().createArmorTexture));
+		createMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().createAnimatedTexture));
 
 		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new", UIRES.get("16px.add"));
 		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
 		bar.add(create);
 
 		JPopupMenu importMenu = new JPopupMenu();
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importBlockTexture);
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importItemTexture);
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importEntityTexture);
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importEffectTexture);
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importParticleTexture);
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importScreenTexture);
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importArmorTexture);
-		importMenu.add(workspacePanel.getMCreator().getActionRegistry().importOtherTexture);
+
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importBlockTexture));
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importItemTexture));
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importEntityTexture));
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importEffectTexture));
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importParticleTexture));
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importScreenTexture));
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importArmorTexture));
+		importMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().importOtherTexture));
 
 		JButton importt = AbstractWorkspacePanel.createToolBarButton("workspace.textures.import",
 				UIRES.get("16px.open"));

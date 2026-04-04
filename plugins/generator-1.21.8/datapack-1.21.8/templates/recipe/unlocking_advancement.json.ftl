@@ -1,4 +1,4 @@
-<#include "../mcitems.ftl">
+<#include "../mcitems_json.ftl">
 {
   "parent": "minecraft:recipes/root",
   "criteria": {

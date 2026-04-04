@@ -18,10 +18,12 @@
 
 package net.mcreator.ui.component.util;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -50,6 +52,19 @@ public class ComponentUtils {
 		return component;
 	}
 
+	public static JComponent bigCenteredText(String translationKey) {
+		return bigCenteredText(translationKey, null);
+	}
+
+	public static JComponent bigCenteredText(String translationKey, @Nullable Icon icon) {
+		JLabel loading = L10N.label(translationKey);
+		loading.setIconTextGap(5);
+		loading.setFont(loading.getFont().deriveFont(16f));
+		loading.setForeground(Theme.current().getAltForegroundColor());
+		loading.setIcon(icon);
+		return PanelUtils.totalCenterInPanel(loading);
+	}
+
 	public static Component wrapWithInfoButton(Component ca, String url) {
 		JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		pan.setOpaque(false);
@@ -66,14 +81,29 @@ public class ComponentUtils {
 		return pan;
 	}
 
+	public static void makeSection(JComponent input, String title) {
+		input.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2),
+				BorderFactory.createTitledBorder(
+						BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()), title,
+						TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null,
+						Theme.current().getAltForegroundColor())));
+	}
+
+	public static void borderWrap(JComponent input) {
+		input.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
+						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
+	}
+
 	public static JPanel squareAndBorder(Component gor, Color color, String text) {
 		JPanel p = new JPanel();
 		p.add(gor);
 		p.setOpaque(false);
 		p.setPreferredSize(new Dimension(94, 94));
-		p.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(color, 1), text, TitledBorder.LEADING,
-						TitledBorder.BOTTOM, gor.getFont(), color));
+		p.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor(), 1), text, TitledBorder.LEADING,
+				TitledBorder.BOTTOM, null, color));
 		return p;
 	}
 

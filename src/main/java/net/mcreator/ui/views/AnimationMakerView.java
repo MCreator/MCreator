@@ -139,10 +139,7 @@ public class AnimationMakerView extends ViewBase {
 		settings.add(interpolate);
 
 		JComponent stp = PanelUtils.centerInPanel(settings);
-		stp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.animation_maker.settings"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(stp, L10N.t("dialog.animation_maker.settings"));
 
 		editor.add("Center", PanelUtils.centerAndEastElement(preview2, stp));
 
@@ -222,10 +219,7 @@ public class AnimationMakerView extends ViewBase {
 
 		JPanel timelinee = new JPanel(new BorderLayout());
 		timelinee.setOpaque(false);
-		timelinee.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.animation_maker.animation_timeline"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(timelinee, L10N.t("dialog.animation_maker.animation_timeline"));
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);

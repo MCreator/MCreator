@@ -20,6 +20,7 @@
 package net.mcreator.ui.laf.themes;
 
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -30,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -73,7 +75,7 @@ public class Theme {
 	private transient ImageIcon icon;
 	private transient Font consoleFont;
 
-	protected Theme init() {
+	@SuppressWarnings("unchecked") protected Theme init() {
 		if (colorScheme != null)
 			colorScheme.init();
 
@@ -88,6 +90,16 @@ public class Theme {
 						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf")));
 				LOG.info("Console font from default_dark will be used.");
 			}
+
+			Map<TextAttribute, Object> attributes = (Map<TextAttribute, Object>) consoleFont.getAttributes();
+
+			if (PreferencesManager.PREFERENCES.ide.useLigatures.get()) {
+				attributes.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
+				attributes.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
+			}
+
+			consoleFont = consoleFont.deriveFont(attributes);
+
 			consoleFont = consoleFont.deriveFont(12.0f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(consoleFont);
 		} catch (NullPointerException | FontFormatException | IOException e2) {

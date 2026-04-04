@@ -22,9 +22,9 @@ package net.mcreator.ui.minecraft.potions;
 import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.util.List;
@@ -36,10 +36,7 @@ public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.Cus
 
 		add.setText(L10N.t("elementgui.potion.add_entry"));
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.potion.effects"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(this, L10N.t("elementgui.potion.effects"));
 	}
 
 	@Override protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList, boolean userAction) {

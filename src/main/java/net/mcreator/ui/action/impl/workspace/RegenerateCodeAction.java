@@ -22,7 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.writer.ClassWriter;
+import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
@@ -200,7 +200,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 			int ftfCount = filesToReformat.size();
 			// after all files are generated, we can perform global import organization and code reformat
-			ClassWriter.formatAndOrganiseImportsForFiles(mcreator.getWorkspace(), filesToReformat,
+			JavaWriter.formatAndOrganiseImportsForFiles(mcreator.getWorkspace(), filesToReformat,
 					idx -> p22.setPercent((int) (((float) idx / (float) ftfCount) * 100.0f)));
 
 			p22.markStateOk();

@@ -1,0 +1,1 @@
+Se o seu avanço for o primeiro de um novo caminho, você pode escolher o plano de fundo da aba de avanços com esta opção.

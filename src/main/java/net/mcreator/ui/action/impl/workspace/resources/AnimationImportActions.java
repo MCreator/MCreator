@@ -27,7 +27,6 @@
 
 package net.mcreator.ui.action.impl.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
@@ -66,8 +65,7 @@ public class AnimationImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_animations_java")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_animations_java");
 		}
 	}
 

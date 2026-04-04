@@ -156,6 +156,9 @@ public class GradleUtils {
 		environment.remove("GRADLE_HOME");
 		environment.remove("GRADLE_OPTS");
 		environment.remove("GRADLE_USER_HOME");
+
+		// Workaround for https://github.com/neoforged/ModDevGradle/pull/320
+		environment.remove("CI");
 	}
 
 	public static void clearGradleConfigurationCache(Workspace workspace) {

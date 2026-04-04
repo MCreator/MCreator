@@ -32,6 +32,8 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.MCreatorDialog;
+import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -60,10 +62,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.*;
@@ -401,7 +400,8 @@ public class WorkspaceDialogs {
 			generatorSelector = PanelUtils.centerAndEastElement(generator, selectGenerator);
 
 			JPanel generalSettings = new JPanel(new GridLayout(4, 2, 5, 2));
-			generalSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+			generalSettings.setBorder(BorderFactory.createTitledBorder(
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.basic")));
 			_basicSettings.add(generalSettings);
 			generalSettings.add(L10N.label("dialog.workspace_settings.display_name"));
@@ -416,11 +416,12 @@ public class WorkspaceDialogs {
 			_basicSettings.add(new JEmptyBox(5, 5));
 
 			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 7 : 2, 2, 5, 2));
-			descriptionSettings.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
-							L10N.t("dialog.workspace_settings.section.details")));
+			descriptionSettings.setBorder(BorderFactory.createTitledBorder(
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
+					L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
-			descriptionSettings.add(L10N.label("dialog.workspace_settings.version"));
+			descriptionSettings.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, L10N.label("dialog.workspace_settings.version"),
+					PanelUtils.join(FlowLayout.RIGHT, HelpUtils.helpButton(IHelpContext.NONE.withEntry("common/mod_version")))));
 			descriptionSettings.add(version);
 			descriptionSettings.add(L10N.label("dialog.workspace_settings.description"));
 			descriptionSettings.add(description);
@@ -484,7 +485,8 @@ public class WorkspaceDialogs {
 
 			if (workspace != null) {
 				JPanel apiSettings = new JPanel(new BorderLayout());
-				apiSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+				apiSettings.setBorder(BorderFactory.createTitledBorder(
+						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 						L10N.t("dialog.workspace_settings.section.external_apis")));
 				apiSettings.add("North", L10N.label("dialog.workspace_settings.section.external_apis.tooltip"));
 
@@ -527,7 +529,8 @@ public class WorkspaceDialogs {
 			}
 
 			JPanel advancedSettings = new JPanel(new GridLayout(2, 2, 5, 2));
-			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+			advancedSettings.setBorder(BorderFactory.createTitledBorder(
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));

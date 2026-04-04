@@ -46,7 +46,8 @@ public class ItemListFieldSingleTagValidator implements Validator {
 							(MCItem) object.getDataListEntry().get() :
 							null;
 					if (object.toString().startsWith("TAG:") || (dle != null && !dle.hasNoSubtypes()))
-						return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validator.singletag.multiple"));
+						return new ValidationResult(ValidationResult.Type.ERROR,
+								L10N.t("validator.singletag.multiple"));
 				}
 			}
 		} else {
@@ -54,7 +55,8 @@ public class ItemListFieldSingleTagValidator implements Validator {
 			if (listElements.size() > 1) {
 				for (Object object : listElements) {
 					if (object.toString().startsWith("#"))
-						return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validator.singletag.multiple"));
+						return new ValidationResult(ValidationResult.Type.ERROR,
+								L10N.t("validator.singletag.multiple"));
 				}
 			}
 		}

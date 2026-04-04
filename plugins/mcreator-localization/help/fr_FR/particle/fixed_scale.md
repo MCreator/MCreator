@@ -1,0 +1,1 @@
+Si coché, ce paramètre fera en sorte que la particule n'affichera aucune variation de taille une fois apparue.

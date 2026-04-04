@@ -28,21 +28,21 @@ public class PanelUtils {
 	}
 
 	public static JPanel join(int align, Component... c1) {
-		JPanel skup = new JPanel(new FlowLayout(align));
-		skup.setOpaque(false);
+		JPanel p = new JPanel(new FlowLayout(align));
+		p.setOpaque(false);
 		for (Component c : c1) {
-			skup.add(c);
+			p.add(c);
 		}
-		return skup;
+		return p;
 	}
 
 	public static JPanel join(int align, int hgap, int vgap, Component... c1) {
-		JPanel skup = new JPanel(new FlowLayout(align, hgap, vgap));
-		skup.setOpaque(false);
+		JPanel p = new JPanel(new FlowLayout(align, hgap, vgap));
+		p.setOpaque(false);
 		for (Component c : c1) {
-			skup.add(c);
+			p.add(c);
 		}
-		return skup;
+		return p;
 	}
 
 	public static JPanel column(Component... components) {
@@ -86,7 +86,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent northAndCenterElement(Component top, Component center) {
+	public static JPanel northAndCenterElement(Component top, Component center) {
 		JPanel p = new JPanel(new BorderLayout());
 		p.setOpaque(false);
 		p.add("North", top);
@@ -94,7 +94,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent centerAndSouthElement(Component top, Component center) {
+	public static JPanel centerAndSouthElement(Component top, Component center) {
 		JPanel p = new JPanel(new BorderLayout());
 		p.setOpaque(false);
 		p.add("Center", top);
@@ -102,7 +102,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent centerAndSouthElement(Component top, Component center, int hg, int vg) {
+	public static JPanel centerAndSouthElement(Component top, Component center, int hg, int vg) {
 		JPanel p = new JPanel(new BorderLayout(hg, vg));
 		p.setOpaque(false);
 		p.add("Center", top);
@@ -110,11 +110,11 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent westAndEastElement(Component west, Component east) {
+	public static JPanel westAndEastElement(Component west, Component east) {
 		return westAndEastElement(west, east, 0, 0);
 	}
 
-	public static JComponent gridElements(int row, int col, int mw, int mh, Component... components) {
+	public static JPanel gridElements(int row, int col, int mw, int mh, Component... components) {
 		JPanel p = new JPanel(new GridLayout(row, col, mw, mh));
 		p.setOpaque(false);
 		for (Component component : components)
@@ -122,7 +122,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent gridElements(int row, int col, Component... components) {
+	public static JPanel gridElements(int row, int col, Component... components) {
 		JPanel p = new JPanel(new GridLayout(row, col));
 		p.setOpaque(false);
 		for (Component component : components)
@@ -130,7 +130,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent northAndCenterElement(Component top, Component center, int px, int py) {
+	public static JPanel northAndCenterElement(Component top, Component center, int px, int py) {
 		JPanel p = new JPanel(new BorderLayout(px, py));
 		p.setOpaque(false);
 		p.add("North", top);
@@ -138,7 +138,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent westAndEastElement(Component west, Component east, int px, int py) {
+	public static JPanel westAndEastElement(Component west, Component east, int px, int py) {
 		JPanel p = new JPanel(new BorderLayout(px, py));
 		p.setOpaque(false);
 		p.add("West", west);
@@ -146,7 +146,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent westAndCenterElement(Component west, Component center) {
+	public static JPanel westAndCenterElement(Component west, Component center) {
 		JPanel p = new JPanel(new BorderLayout());
 		p.setOpaque(false);
 		p.add("West", west);
@@ -154,7 +154,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent centerAndEastElement(Component center, Component east) {
+	public static JPanel centerAndEastElement(Component center, Component east) {
 		JPanel p = new JPanel(new BorderLayout());
 		p.setOpaque(false);
 		p.add("East", east);
@@ -162,7 +162,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent centerAndEastElement(Component center, Component east, int px, int py) {
+	public static JPanel centerAndEastElement(Component center, Component east, int px, int py) {
 		JPanel p = new JPanel(new BorderLayout(px, py));
 		p.setOpaque(false);
 		p.add("East", east);
@@ -170,14 +170,14 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent pullElementUp(Component element) {
+	public static JPanel pullElementUp(Component element) {
 		JPanel p = new JPanel(new BorderLayout());
 		p.setOpaque(false);
 		p.add("North", element);
 		return p;
 	}
 
-	public static JComponent westAndCenterElement(JComponent west, JComponent center, int px, int py) {
+	public static JPanel westAndCenterElement(JComponent west, JComponent center, int px, int py) {
 		JPanel p = new JPanel(new BorderLayout(px, py));
 		p.setOpaque(false);
 		p.add("West", west);
@@ -185,7 +185,7 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JComponent expandHorizontally(Component element) {
+	public static JPanel expandHorizontally(Component element) {
 		JPanel p = new JPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints();

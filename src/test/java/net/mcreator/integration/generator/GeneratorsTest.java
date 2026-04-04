@@ -30,7 +30,7 @@ import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.writer.ClassWriter;
+import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
@@ -120,10 +120,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						mcreator.get().getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 							if (taskResult == GradleResultCode.STATUS_OK) {
 								workspace.get().getGenerator().reloadGradleCaches();
+								latch.countDown();
 							} else {
+								latch.countDown();
 								fail("Gradle MDK setup failed!");
 							}
-							latch.countDown();
 						});
 						latch.await();
 
@@ -156,11 +157,11 @@ import static org.junit.jupiter.api.Assertions.*;
 							generatorConfiguration)) {
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing pack maker tools", () -> {
 							if (MaterialPackMakerTool.isSupported(generatorConfiguration))
-								MaterialPackMakerTool.addMaterialPackToWorkspace(mcreator.get(), workspace.get(),
+								MaterialPackMakerTool.addMaterialPackToWorkspace(null, mcreator.get(), workspace.get(),
 										"Material", "Dust based", Color.red, 1.234);
 							if (WoodPackMakerTool.isSupported(generatorConfiguration))
-								WoodPackMakerTool.addWoodPackToWorkspace(mcreator.get(), workspace.get(), "Wood",
-										Color.green, 0.123);
+								WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator.get(), workspace.get(), "Wood",
+										Color.green, Color.red, 0.123);
 						}));
 					}
 
@@ -172,11 +173,18 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace.get())));
 
 						// If we support variables and procedures, also test this combination
-						if (generatorConfiguration.getGeneratorStats().getBaseCoverageInfo().get("variables")
-								!= GeneratorStats.CoverageStatus.NONE) {
+						if (generatorConfiguration.getGeneratorStats().hasBaseCoverage("variables")) {
 							tests.add(DynamicTest.dynamicTest(generator + " - Testing variables",
 									() -> GTVariables.runTest(LOG, generator, random, workspace.get())));
 						}
+					}
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.BESCRIPT) != GeneratorStats.CoverageStatus.NONE) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing script triggers",
+								() -> GTScriptTriggers.runTest(LOG, generator, workspace.get())));
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing script blocks",
+								() -> GTScriptBlocks.runTest(LOG, generator, random, workspace.get())));
 					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
@@ -213,7 +221,7 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> {
 									try (Stream<Path> entries = Files.walk(
 											workspace.get().getGenerator().getSourceRoot().toPath())) {
-										ClassWriter.formatAndOrganiseImportsForFiles(workspace.get(),
+										JavaWriter.formatAndOrganiseImportsForFiles(workspace.get(),
 												entries.filter(Files::isRegularFile).map(Path::toFile)
 														.collect(Collectors.toList()), null);
 									}

@@ -96,7 +96,7 @@ public class CodeErrorDialog {
 
 		if (problematicMods.isEmpty()) { // if list is empty, there are no mod elements to show
 			if (stderroutput.contains("see the compiler error output for details")) {
-				mcreator.getTabs().showTab(mcreator.consoleTab);
+				mcreator.showConsole();
 				return true;
 			}
 			return false;
@@ -128,7 +128,7 @@ public class CodeErrorDialog {
 			if (mcreator instanceof ModMaker modMaker)
 				modMaker.getWorkspacePanel().setSearchTerm("f:err");
 		} else if (n == 1) {
-			mcreator.getTabs().showTab(mcreator.consoleTab);
+			mcreator.showConsole();
 		} else if (n == 3) {
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/support");
 		}

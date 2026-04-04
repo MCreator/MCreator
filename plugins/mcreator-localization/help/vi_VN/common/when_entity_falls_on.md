@@ -1,0 +1,1 @@
+Kích hoạt một quy trình _chỉ khi_ thực thể rơi xuống khối từ một độ cao bất kì.

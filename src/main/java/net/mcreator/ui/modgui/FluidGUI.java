@@ -35,7 +35,6 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TabListField;
@@ -53,11 +52,11 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.Objects;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
@@ -227,10 +226,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		refreshFogSettings();
 
 		JComponent visualMerger = PanelUtils.northAndCenterElement(visualSettings, fogProcedures, 2, 2);
-		visualMerger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.fluid.visual_settings"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(visualMerger, L10N.t("elementgui.fluid.visual_settings"));
 
 		visualsPage.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(mainTextures, visualMerger)));
 
@@ -339,18 +335,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			specialInformation.setEnabled(generateBucket.isSelected());
 		});
 
-		bcProp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(bcProp, L10N.t("elementgui.fluid.bucket_properties"));
 
 		JComponent destala = PanelUtils.northAndCenterElement(destal,
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), flowCondition), 0, 2);
 
-		destala.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(destala, L10N.t("elementgui.fluid.fluid_properties"));
 
 		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp));
 		fluidBucketProperties.setOpaque(false);
@@ -407,10 +397,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.common.emissive_rendering")));
 		blockProperties.add(emissiveRendering);
 
-		blockProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.fluid.block_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(blockProperties, L10N.t("elementgui.fluid.block_properties"));
 
 		JPanel forgeProperties = new JPanel(new GridLayout(4, 2, 20, 2));
 		forgeProperties.setOpaque(false);
@@ -431,10 +418,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.temperature")));
 		forgeProperties.add(temperature);
 
-		forgeProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.fluid.modded_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(forgeProperties, L10N.t("elementgui.fluid.modded_properties"));
 
 		JComponent properties = PanelUtils.westAndEastElement(blockProperties,
 				PanelUtils.pullElementUp(forgeProperties));
@@ -612,7 +596,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.onDestroyedByExplosion = onDestroyedByExplosion.getSelectedProcedure();
 		fluid.flowCondition = flowCondition.getSelectedProcedure();
 		fluid.beforeReplacingBlock = beforeReplacingBlock.getSelectedProcedure();
-		fluid.type = (String) fluidtype.getSelectedItem();
+		fluid.type = (String) Objects.requireNonNull(fluidtype.getSelectedItem());
 		fluid.specialInformation = specialInformation.getSelectedProcedure();
 
 		fluid.creativeTabs = creativeTabs.getListElements();

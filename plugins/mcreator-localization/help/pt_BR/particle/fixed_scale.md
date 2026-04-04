@@ -1,0 +1,1 @@
+Se selecionado, este parâmetro garante que a partícula não apresentará nenhuma variação de tamanho ao ser gerada.

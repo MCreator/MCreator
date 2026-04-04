@@ -38,25 +38,40 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	private final Workspace workspace;
 
+	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
-	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01));
+	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.001));
 	private final JComboBox<String> operation = new JComboBox<>(
 			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JAttributeModifierEntry> entryList) {
+			List<JAttributeModifierEntry> entryList, boolean isPotionEffectEntry) {
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
 
+		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
+		equipmentSlot.setRenderer(new JComboBox<>().getRenderer());
+
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
 		attribute.setRenderer(new JComboBox<>().getRenderer());
+
+		if (!isPotionEffectEntry) {
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/equipment_slot"),
+					L10N.label("elementgui.common.attribute_modifier.equipment_slot")));
+			line.add(equipmentSlot);
+		}
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/attribute"),
 				L10N.label("elementgui.common.attribute_modifier.attribute")));
 		line.add(attribute);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount_per_level"),
-				L10N.label("elementgui.common.attribute_modifier.amount_per_level")));
+		if (isPotionEffectEntry) {
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount_per_level"),
+					L10N.label("elementgui.common.attribute_modifier.amount_per_level")));
+		} else {
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount"),
+					L10N.label("elementgui.common.attribute_modifier.amount")));
+		}
 		line.add(amount);
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/operation"),
@@ -66,10 +81,12 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	}
 
 	@Override public void reloadDataLists() {
+		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots());
 		ComboBoxUtil.updateComboBoxContents(attribute, ElementUtil.loadAllAttributes(workspace));
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
+		equipmentSlot.setEnabled(enabled);
 		attribute.setEnabled(enabled);
 		amount.setEnabled(enabled);
 		operation.setEnabled(enabled);
@@ -77,6 +94,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	@Override public AttributeModifierEntry getEntry() {
 		AttributeModifierEntry entry = new AttributeModifierEntry();
+		entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();
@@ -84,6 +102,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	}
 
 	@Override public void setEntry(AttributeModifierEntry e) {
+		equipmentSlot.setSelectedItem(e.equipmentSlot);
 		attribute.setSelectedItem(e.attribute);
 		amount.setValue(e.amount);
 		operation.setSelectedItem(e.operation);

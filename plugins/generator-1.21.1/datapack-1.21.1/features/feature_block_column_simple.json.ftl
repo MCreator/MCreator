@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 {
   "allowed_placement": {
     "type": "minecraft:matching_blocks",

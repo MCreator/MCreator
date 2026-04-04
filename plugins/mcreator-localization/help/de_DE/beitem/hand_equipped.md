@@ -1,0 +1,1 @@
+Wenn dieser Parameter aktiviert ist, wird das Objekt mit der Werkzeugobjekt-Transformation in der Hand des Spielers gerendert.

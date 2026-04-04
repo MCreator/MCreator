@@ -30,11 +30,11 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.TestUtil;
@@ -42,7 +42,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,8 +52,14 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 	private final VTextField commandName = new VTextField(25).requireValue("elementgui.command.warning.empty_string")
 			.enableRealtimeValidation();
-	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
+	private final TranslatedComboBox type = new TranslatedComboBox(
+			//@formatter:off
+			Map.entry("STANDARD","elementgui.command.type.standard"),
+			Map.entry("SINGLEPLAYER_ONLY","elementgui.command.type.singleplayer_only"),
+			Map.entry("MULTIPLAYER_ONLY","elementgui.command.type.multiplayer_only"),
+			Map.entry("CLIENTSIDE","elementgui.command.type.clientside")
+			//@formatter:on
+	);
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
 			new String[] { "No requirement", "1", "2", "3", "4" });
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -99,23 +104,19 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"CommandRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Command.XML_BASE);
-			}
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "CommandRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(Command.XML_BASE);
+		}
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
 
-		JPanel args = (JPanel) PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
+		JPanel args = PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
 						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel, false), blocklyPanel),
 				compileNotesPanel);
-		args.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(args, L10N.t("elementgui.command.arguments"));
 		args.setOpaque(false);
 
 		page1group.addValidationElement(commandName);
@@ -154,14 +155,13 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		commandName.setText(command.commandName);
 		type.setSelectedItem(command.type);
 		permissionLevel.setSelectedItem(command.permissionLevel);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(command.argsxml));
+		blocklyPanel.setInitialXML(command.argsxml);
 	}
 
 	@Override public Command getElementFromGUI() {
 		Command command = new Command(modElement);
 		command.commandName = commandName.getText();
-		command.type = (String) type.getSelectedItem();
+		command.type = type.getSelectedItem();
 
 		command.permissionLevel = (String) permissionLevel.getSelectedItem();
 		command.argsxml = blocklyPanel.getXML();

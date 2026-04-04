@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 {
   "type": "minecraft:attached_to_leaves",
   "block_provider": ${mappedBlockToBlockStateProvider(input$provider)},

@@ -32,12 +32,14 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SquareLoaderIcon;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.DesktopUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,6 +57,7 @@ public class DebugPanel extends JPanel {
 
 	public static final Color DEBUG_COLOR = new Color(239, 50, 61);
 
+	private static final String WAITING_FOR_DEBUG_SESSION = "waiting_for_debug_session";
 	private static final String WAITING_TO_CONNECT = "waiting_to_connect";
 	private static final String DEBUGGING = "debugging";
 
@@ -67,6 +70,8 @@ public class DebugPanel extends JPanel {
 	private final DebugThreadView debugThreadView = new DebugThreadView();
 
 	private final DebugFramesView debugFramesView = new DebugFramesView();
+
+	private final JButton stop = new JButton(UIRES.get("16px.stop"));
 
 	private final JButton resume = new JButton(UIRES.get("16px.debug_resume"));
 	private final JButton stepOver = new JButton(UIRES.get("16px.debug_step_over"));
@@ -94,17 +99,17 @@ public class DebugPanel extends JPanel {
 
 		markersParent.setOpaque(false);
 
+		JPanel waitingForDebugSession = new JPanel(new BorderLayout());
+		waitingForDebugSession.add("Center", ComponentUtils.bigCenteredText("debug.waiting_for_debug"));
+		add(waitingForDebugSession, WAITING_FOR_DEBUG_SESSION);
+
 		JPanel waitingToConnect = new JPanel(new BorderLayout());
 		waitingToConnect.setOpaque(false);
-		JLabel loading = L10N.label("debug.loading");
-		loading.setIconTextGap(5);
-		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
-		waitingToConnect.add("Center", PanelUtils.totalCenterInPanel(loading));
+		waitingToConnect.add("Center", ComponentUtils.bigCenteredText("debug.loading",
+				new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor())));
 		add(waitingToConnect, WAITING_TO_CONNECT);
 
-		JPanel debugging = new JPanel(new BorderLayout(5, 5));
+		JPanel debugging = new JPanel(new BorderLayout(2, 2));
 		debugging.setOpaque(false);
 
 		JScrollPane threadsScroll = new JScrollPane(debugThreadView);
@@ -116,10 +121,10 @@ public class DebugPanel extends JPanel {
 
 		debugFramesView.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.frames")));
 
-		debugging.add("Center", PanelUtils.westAndCenterElement(threadsScroll, debugFramesView));
+		debugging.add("Center", PanelUtils.westAndCenterElement(threadsScroll, debugFramesView, 2, 2));
 
 		JLabel nomarkers = L10N.label("debug.no_markers");
-		nomarkers.setFont(loading.getFont().deriveFont(13f));
+		ComponentUtils.deriveFont(nomarkers, 13);
 		nomarkers.setForeground(Theme.current().getAltForegroundColor());
 		JButton showHelp = new JButton(L10N.t("common.help"));
 		showHelp.addActionListener(
@@ -143,7 +148,8 @@ public class DebugPanel extends JPanel {
 		markersScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		markersScroll.getViewport().setOpaque(false);
 
-		markersParent.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.markers")));
+		markersParent.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2),
+				BorderFactory.createTitledBorder(L10N.t("debug.markers"))));
 		markersParent.setLayout(markersLayout);
 		markersParent.add(markersScroll, "markers");
 		markersParent.add(nomarkerwrap, "no_markers");
@@ -176,7 +182,6 @@ public class DebugPanel extends JPanel {
 		});
 		bar.add(resume);
 
-		JButton stop = new JButton(UIRES.get("16px.stop"));
 		stop.setToolTipText(L10N.t("debug.stop"));
 		stop.addActionListener(e -> mcreator.getGradleConsole().cancelTask());
 		bar.add(stop);
@@ -228,14 +233,20 @@ public class DebugPanel extends JPanel {
 		});
 		bar.add(stepOut);
 
+		// Disable step actions at start
+		markVMResumed();
+
+		// Also disable stop
+		stop.setEnabled(false);
+
 		debugging.add("South", new JEmptyBox(2, 2));
 
 		add(debugging, DEBUGGING);
-
-		setVisible(false);
 	}
 
 	public void startDebug(@Nonnull JVMDebugClient debugClient) {
+		stop.setEnabled(true);
+
 		this.debugClient = debugClient;
 		this.debugClient.addEventListener((vm, eventSet, resumed) -> {
 			if (!resumed) {
@@ -317,7 +328,7 @@ public class DebugPanel extends JPanel {
 		markersLayout.show(markersParent, "no_markers");
 
 		cardLayout.show(this, WAITING_TO_CONNECT);
-		setVisible(true);
+		mcreator.getBottomDockRegion().setDockVisibility(ModMaker.DOCK_DEBUGGER, true);
 	}
 
 	public void addMarker(DebugMarker marker) {
@@ -329,8 +340,11 @@ public class DebugPanel extends JPanel {
 	}
 
 	public void stopDebug() {
-		setVisible(false);
+		stop.setEnabled(false);
 		this.debugClient = null;
+
+		// In case debug was stopped in the WAITING state, we switch to DEBUGGING here to show the right panel
+		cardLayout.show(this, DEBUGGING);
 	}
 
 	private void initiateDebugSession() {

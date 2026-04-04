@@ -151,11 +151,6 @@ public abstract class MainMenuBar extends JMenuBar {
 		assembleMenuBar(mcreator);
 
 		JMenu window = L10N.menu("menubar.window");
-		if (mcreator.hasProjectBrowser()) {
-			window.add(mcreator.getActionRegistry().showWorkspaceBrowser);
-			window.add(mcreator.getActionRegistry().hideWorkspaceBrowser);
-			window.addSeparator();
-		}
 		window.add(mcreator.getActionRegistry().closeCurrentTab);
 		window.add(mcreator.getActionRegistry().closeAllTabs);
 		window.addSeparator();

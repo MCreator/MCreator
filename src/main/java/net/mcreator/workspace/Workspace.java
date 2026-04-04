@@ -162,7 +162,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void addLanguage(String language, LinkedHashMap<String, String> data) {
-		language_map.putIfAbsent(language, data);
+		language_map.putIfAbsent(language, new LinkedHashMap<>(data)); // deep copy
 		markDirty();
 	}
 

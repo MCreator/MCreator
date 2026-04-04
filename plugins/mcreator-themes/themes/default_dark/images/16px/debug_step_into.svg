@@ -1,3 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="16" height="16" version="1.1" viewBox="0 0 4.2333 4.2333" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m2.1167 0.52917v2.1167" fill="none" stroke="#afd775" stroke-width=".52917"/><path d="m1.3229 2.3813h1.5875l-0.79375 0.79375z" fill="#afd775"/><rect x=".26458" y="3.4396" width="3.7042" height=".52917" fill="#c1bebe"/></svg>
+<svg height="16" viewBox="0 0 4.2333 4.2333" width="16" xmlns="http://www.w3.org/2000/svg"><path d="m2.1167.52917v2.1167" fill="none" stroke="#93c54b" stroke-width=".52917"/><path d="m1.3229 2.3813h1.5875l-.79375.79375z" fill="#93c54b"/><path d="m.26458 3.4396h3.7042v.52917h-3.7042z" fill="#231f20"/></svg>

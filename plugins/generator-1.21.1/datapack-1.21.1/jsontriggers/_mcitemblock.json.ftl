@@ -1,2 +1,2 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 "${mappedMCItemToRegistryName(block)}"

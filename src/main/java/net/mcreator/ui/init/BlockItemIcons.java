@@ -111,6 +111,8 @@ public class BlockItemIcons {
 		put("PressurePlate",		"STONE_PRESSURE_PLATE");
 		put("Button", 				"STONE_BUTTON");
 		put("FlowerPot",			"POTTED_DANDELION");
+		put("Sign",					"SIGN");
+		put("HangingSign",			"OAK_HANGING_SIGN_ITEM");
 
 		// biome types
 		put("WARM", 				"GRASS");

@@ -18,6 +18,7 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
@@ -62,6 +63,7 @@ import java.io.IOException;
 	public boolean canCollide;
 	public boolean alwaysShow;
 	public boolean emissiveRendering;
+	public Procedure rotationProvider;
 
 	public String renderType;
 
@@ -124,6 +126,12 @@ import java.io.IOException;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(texture.getImage(TextureType.PARTICLE),
 				getTextureTileCount() > 1, getModElement().getName());
+	}
+
+	public boolean hasAngularVelocityOrAcceleration() {
+		return angularVelocity != 0 || angularAcceleration != 0 || (rotationProvider != null
+				&& rotationProvider.getDependencies(this.getModElement().getWorkspace()).stream().map(Dependency::name)
+				.anyMatch(name -> "angularVelocity".equals(name) || "angularAcceleration".equals(name)));
 	}
 
 }

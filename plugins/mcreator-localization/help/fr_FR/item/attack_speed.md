@@ -1,0 +1,1 @@
+Ce paramètre détermine la rapidité du temps de recharge de votre item lorsque vous attaquez des entités.
