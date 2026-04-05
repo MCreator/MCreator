@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _plr ? _plr.getAbilities().instabuild:false)
+(${input$entity} instanceof Player _plr && _plr.getAbilities().instabuild)
