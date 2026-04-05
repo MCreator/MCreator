@@ -193,7 +193,7 @@
 - entity.chicken.step
 - entity.baby_chicken.ambient
 - entity.baby_chicken.death
-- entity.chicken.hurt
+- entity.baby_chicken.hurt
 - entity.baby_chicken.step
 - entity.chicken_picky.ambient
 - entity.chicken_picky.death
@@ -413,6 +413,7 @@
 - entity.baby_pig.death
 - entity.pig.ambient
 - entity.pig.death
+- entity.pig.eat
 - entity.pig.hurt
 - entity.pig.saddle
 - entity.pig.step
