@@ -494,7 +494,9 @@ public class WebView extends JPanel implements Closeable {
 		WebView preloader = new WebView("about:blank", false, true);
 		try (preloader) {
 			preloader.addLoadListener(latch::countDown);
-			latch.await();
+			if (!latch.await(5, TimeUnit.SECONDS)) {
+				LOG.error("Failed to preload WebView in time");
+			}
 		} catch (InterruptedException ignored) {
 		}
 	}

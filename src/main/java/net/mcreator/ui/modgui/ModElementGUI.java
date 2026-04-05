@@ -334,7 +334,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					JButton help = L10N.button("common.help");
 					help.setMargin(new Insets(1, 40, 1, 40));
 					toolBarLeft.add(help);
-					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+					help.addActionListener(e -> DesktopUtils.browseSafe(helpURI.toString()));
 				}
 			} catch (URISyntaxException e) {
 				LOG.warn("Failed to create help context", e);
@@ -398,7 +398,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					JButton help = L10N.button("common.help");
 					help.setMargin(new Insets(1, 40, 1, 40));
 					toolBarLeft.add(help);
-					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+					help.addActionListener(e -> DesktopUtils.browseSafe(helpURI.toString()));
 				}
 			} catch (URISyntaxException e) {
 				LOG.warn("Failed to create help context", e);
