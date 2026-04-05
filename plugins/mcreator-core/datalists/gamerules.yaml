@@ -112,7 +112,5 @@
   type: logic
 - FIRE_SPREAD_RADIUS_AROUND_PLAYER:
   type: number
-- MAX_MINECART_SPEED:
-  type: number
 - PVP:
   type: logic
