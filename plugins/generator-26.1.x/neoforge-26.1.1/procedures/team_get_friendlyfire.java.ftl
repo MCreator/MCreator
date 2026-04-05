@@ -1,1 +1,1 @@
-(world instanceof Level _level && _level.getScoreboard().getPlayerTeam(${input$name}) != null && _level.getScoreboard().getPlayerTeam(${input$name}).isAllowFriendlyFire())
+(world instanceof Level _level${cbi} && _level${cbi}.getScoreboard().getPlayerTeam(${input$name}) != null && _level${cbi}.getScoreboard().getPlayerTeam(${input$name}).isAllowFriendlyFire())

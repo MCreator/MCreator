@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _plr && _plr.getAbilities().instabuild)
+(${input$entity} instanceof Player _plr${cbi} && _plr${cbi}.getAbilities().instabuild)
