@@ -14,6 +14,34 @@ feature_simple_block:
   - SimpleBlockFeature
   - SimpleBlockConfiguration
   - "minecraft:simple_block"
+feature_block_pile:
+  - BlockPileFeature
+  - BlockPileConfiguration
+  - "minecraft:block_pile"
+feature_huge_brown_mushroom:
+  - HugeBrownMushroomFeature
+  - HugeMushroomFeatureConfiguration
+  - "minecraft:huge_brown_mushroom"
+feature_huge_red_mushroom:
+  - HugeRedMushroomFeature
+  - HugeMushroomFeatureConfiguration
+  - "minecraft:huge_red_mushroom"
+feature_coral_claw:
+  - CoralClawFeature
+  - NoneFeatureConfiguration
+  - "minecraft:coral_claw"
+feature_coral_mushroom:
+  - CoralMushroomFeature
+  - NoneFeatureConfiguration
+  - "minecraft:coral_mushroom"
+feature_coral_tree:
+  - CoralTreeFeature
+  - NoneFeatureConfiguration
+  - "minecraft:coral_tree"
+feature_forest_rock:
+  - BlockBlobFeature
+  - BlockBlobConfiguration
+  - "minecraft:block_blob"
 
 # Custom NBT-based feature, not present in vanilla
 feature_custom_structure:
