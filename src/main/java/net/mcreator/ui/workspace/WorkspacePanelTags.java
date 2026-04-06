@@ -70,6 +70,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<GameEventEntry> listFieldGameEvents = new GameEventListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
+	private final JItemListField<NonMappableElement> listFieldPaintingVariants = new ModElementListField(
+			workspacePanel.getMCreator(), ModElementType.PAINTING);
+	private final JItemListField<NonMappableElement> listFieldBannerPatterns = new ModElementListField(
+			workspacePanel.getMCreator(), ModElementType.BANNERPATTERN);
 
 	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
@@ -87,6 +91,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldDamageTypes.disableItemCentering();
 		listFieldEnchantment.disableItemCentering();
 		listFieldGameEvents.disableItemCentering();
+		listFieldPaintingVariants.disableItemCentering();
+		listFieldBannerPatterns.disableItemCentering();
 
 		listFieldBlocksItems.hideButtons();
 		listFieldEntities.hideButtons();
@@ -96,6 +102,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldDamageTypes.hideButtons();
 		listFieldEnchantment.hideButtons();
 		listFieldGameEvents.hideButtons();
+		listFieldPaintingVariants.hideButtons();
+		listFieldBannerPatterns.hideButtons();
 
 		listFieldBlocksItems.setEnabled(false);
 		listFieldEntities.setEnabled(false);
@@ -105,6 +113,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldDamageTypes.setEnabled(false);
 		listFieldEnchantment.setEnabled(false);
 		listFieldGameEvents.setEnabled(false);
+		listFieldPaintingVariants.setEnabled(false);
+		listFieldBannerPatterns.setEnabled(false);
 
 		listFieldBlocksItems.setOpaque(false);
 		listFieldEntities.setOpaque(false);
@@ -114,6 +124,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldDamageTypes.setOpaque(false);
 		listFieldEnchantment.setOpaque(false);
 		listFieldGameEvents.setOpaque(false);
+		listFieldPaintingVariants.setOpaque(false);
+		listFieldBannerPatterns.setOpaque(false);
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
@@ -201,6 +213,20 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldGameEvents;
+						}
+						case PAINTING_VARIANTS -> {
+							listFieldPaintingVariants.setListElements(entries.map(
+											e -> (NonMappableElement) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldPaintingVariants;
+						}
+						case BANNER_PATTERNS -> {
+							listFieldBannerPatterns.setListElements(entries.map(
+											e -> (NonMappableElement) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldBannerPatterns;
 						}
 					};
 					listField.setBorder(retval.getBorder());
@@ -481,6 +507,22 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (GameEventEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
+				case PAINTING_VARIANTS -> {
+					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
+							ModElementType.PAINTING);
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
+				case BANNER_PATTERNS -> {
+					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
+							ModElementType.BANNERPATTERN);
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
