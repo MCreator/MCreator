@@ -36,14 +36,15 @@ public class StructureUtils {
 
 	public static void renamePrefixInStructures(File fileToFix, String oldmodid, String newmodid) {
 		try {
-			FileInputStream fis = new FileInputStream(fileToFix);
-			NBTInputStream nbt = new NBTInputStream(fis);
-			Tag tag = nbt.readTag();
+			Tag tag;
+			try (FileInputStream fis = new FileInputStream(fileToFix);
+					NBTInputStream nbt = new NBTInputStream(fis)) {
+				tag = nbt.readTag();
+			}
 			Tag out = replaceAllStringTags(tag, oldmodid + ":", newmodid + ":");
-			NBTOutputStream nbtOutputStream = new NBTOutputStream(new FileOutputStream(fileToFix));
-			nbtOutputStream.writeTag(out);
-			nbt.close();
-			nbtOutputStream.close();
+			try (NBTOutputStream nbtOutputStream = new NBTOutputStream(new FileOutputStream(fileToFix))) {
+				nbtOutputStream.writeTag(out);
+			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 		}

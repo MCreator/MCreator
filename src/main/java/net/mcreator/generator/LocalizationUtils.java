@@ -56,8 +56,10 @@ public class LocalizationUtils {
 				langFileContent.append(lang_entry.getKey()).append("=").append(lang_entry.getValue()).append("\n");
 			}
 
-			String uppercaseLangName =
-					entry.getKey().split("_")[0] + "_" + entry.getKey().split("_")[1].toUpperCase(Locale.ENGLISH);
+			String[] langParts = entry.getKey().split("_", 2);
+			String uppercaseLangName = langParts.length == 2
+					? langParts[0] + "_" + langParts[1].toUpperCase(Locale.ENGLISH)
+					: entry.getKey();
 
 			String fileName = GeneratorTokens.replaceTokens(workspace,
 					rawName.replace("@langname", entry.getKey()).replace("@lang_NAME", uppercaseLangName));
