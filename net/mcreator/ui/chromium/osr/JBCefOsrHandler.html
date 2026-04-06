@@ -108,11 +108,17 @@ implements org.cef.handler.CefRenderHandler</span></div>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#myContentOutdated" class="member-name-link">myContentOutdated</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="JBHiDPIScaledImage.html" title="class in net.mcreator.ui.chromium.osr">JBHiDPIScaledImage</a></code></div>
+<div class="col-second even-row-color"><code><a href="#myBackImage" class="member-name-link">myBackImage</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="JBHiDPIScaledImage.html" title="class in net.mcreator.ui.chromium.osr">JBHiDPIScaledImage</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#myImage" class="member-name-link">myImage</a></code></div>
+<div class="col-first odd-row-color"><code>protected boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#myContentOutdated" class="member-name-link">myContentOutdated</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="JBHiDPIScaledImage.html" title="class in net.mcreator.ui.chromium.osr">JBHiDPIScaledImage</a></code></div>
+<div class="col-second even-row-color"><code><a href="#myImage" class="member-name-link">myImage</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#myImageMutex" class="member-name-link">myImageMutex</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="JBHiDPIScaledImage.html" title="class in net.mcreator.ui.chromium.osr">JBHiDPIScaledImage</a></code></div>
 <div class="col-second even-row-color"><code><a href="#myPopupImage" class="member-name-link">myPopupImage</a></code></div>
@@ -148,7 +154,8 @@ implements org.cef.handler.CefRenderHandler</span></div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#drawVolatileImage(java.awt.image.VolatileImage)" class="member-name-link">drawVolatileImage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/VolatileImage.html" title="class or interface in java.awt.image" class="external-link">VolatileImage</a>&nbsp;vi)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#drawVolatileImage(java.awt.image.VolatileImage,java.util.List)" class="member-name-link">drawVolatileImage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/VolatileImage.html" title="class or interface in java.awt.image" class="external-link">VolatileImage</a>&nbsp;vi,
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a>&gt;&nbsp;dirtyRects)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Dimension.html" title="class or interface in java.awt" class="external-link">Dimension</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentFrameSize()" class="member-name-link">getCurrentFrameSize</a>()</code></div>
@@ -245,6 +252,19 @@ implements org.cef.handler.CefRenderHandler</span></div>
 <h3>myImage</h3>
 <div class="member-signature"><span class="annotations">@Nullable
 </span><span class="modifiers">protected volatile</span>&nbsp;<span class="return-type"><a href="JBHiDPIScaledImage.html" title="class in net.mcreator.ui.chromium.osr">JBHiDPIScaledImage</a></span>&nbsp;<span class="element-name">myImage</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="myBackImage">
+<h3>myBackImage</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="JBHiDPIScaledImage.html" title="class in net.mcreator.ui.chromium.osr">JBHiDPIScaledImage</a></span>&nbsp;<span class="element-name">myBackImage</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="myImageMutex">
+<h3>myImageMutex</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">myImageMutex</span></div>
 </section>
 </li>
 <li>
@@ -459,9 +479,11 @@ implements org.cef.handler.CefRenderHandler</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="drawVolatileImage(java.awt.image.VolatileImage)">
+<section class="detail" id="drawVolatileImage(java.awt.image.VolatileImage,java.util.List)">
 <h3>drawVolatileImage</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">drawVolatileImage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/VolatileImage.html" title="class or interface in java.awt.image" class="external-link">VolatileImage</a>&nbsp;vi)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">drawVolatileImage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/image/VolatileImage.html" title="class or interface in java.awt.image" class="external-link">VolatileImage</a>&nbsp;vi,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Rectangle.html" title="class or interface in java.awt" class="external-link">Rectangle</a>&gt;&nbsp;dirtyRects)</span></div>
 </section>
 </li>
 </ul>
