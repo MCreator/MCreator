@@ -22,6 +22,14 @@ EntitySpellcasterIllager: SpellcasterIllager
 EntityTameable: TamableAnimal
 EntityThrowable: ThrowableProjectile
 EntityWaterMob: WaterAnimal
+EntityAcaciaBoat:
+  - Boat
+  - EntityType.ACACIA_BOAT
+  - acacia_boat
+EntityAcaciaChestBoat:
+  - ChestBoat
+  - EntityType.ACACIA_CHEST_BOAT
+  - acacia_chest_boat
 EntityAllay:
   - Allay
   - EntityType.ALLAY
@@ -46,38 +54,6 @@ EntityAxolotl:
   - Axolotl
   - EntityType.AXOLOTL
   - axolotl
-EntityBat:
-  - Bat
-  - EntityType.BAT
-  - bat
-EntityBee:
-  - Bee
-  - EntityType.BEE
-  - bee
-EntityBlaze:
-  - Blaze
-  - EntityType.BLAZE
-  - blaze
-EntityBlockDisplay:
-  - Display.BlockDisplay
-  - EntityType.BLOCK_DISPLAY
-  - block_display
-EntityBoat:
-  - Boat
-  - EntityType.OAK_BOAT
-  - oak_boat
-EntityChestBoat:
-  - ChestBoat
-  - EntityType.OAK_CHEST_BOAT
-  - oak_chest_boat
-EntityAcaciaBoat:
-  - Boat
-  - EntityType.ACACIA_BOAT
-  - acacia_boat
-EntityAcaciaChestBoat:
-  - ChestBoat
-  - EntityType.ACACIA_CHEST_BOAT
-  - acacia_chest_boat
 EntityBambooChestRaft:
   - ChestRaft
   - EntityType.BAMBOO_CHEST_RAFT
@@ -86,6 +62,14 @@ EntityBambooRaft:
   - Raft
   - EntityType.BAMBOO_RAFT
   - bamboo_raft
+EntityBat:
+  - Bat
+  - EntityType.BAT
+  - bat
+EntityBee:
+  - Bee
+  - EntityType.BEE
+  - bee
 EntityBirchBoat:
   - Boat
   - EntityType.BIRCH_BOAT
@@ -94,54 +78,14 @@ EntityBirchChestBoat:
   - ChestBoat
   - EntityType.BIRCH_CHEST_BOAT
   - birch_chest_boat
-EntityCherryBoat:
-  - Boat
-  - EntityType.CHERRY_BOAT
-  - cherry_boat
-EntityCherryChestBoat:
-  - ChestBoat
-  - EntityType.CHERRY_CHEST_BOAT
-  - cherry_chest_boat
-EntityDarkOakBoat:
-  - Boat
-  - EntityType.DARK_OAK_BOAT
-  - dark_oak_boat
-EntityDarkOakChestBoat:
-  - ChestBoat
-  - EntityType.DARK_OAK_CHEST_BOAT
-  - dark_oak_chest_boat
-EntityJungleBoat:
-  - Boat
-  - EntityType.JUNGLE_BOAT
-  - jungle_boat
-EntityJungleChestBoat:
-  - ChestBoat
-  - EntityType.JUNGLE_CHEST_BOAT
-  - jungle_chest_boat
-EntityMangroveBoat:
-  - Boat
-  - EntityType.MANGROVE_BOAT
-  - mangrove_boat
-EntityMangroveChestBoat:
-  - ChestBoat
-  - EntityType.MANGROVE_CHEST_BOAT
-  - mangrove_chest_boat
-EntityPaleOakBoat:
-  - Boat
-  - EntityType.PALE_OAK_BOAT
-  - pale_oak_boat
-EntityPaleOakChestBoat:
-  - ChestBoat
-  - EntityType.PALE_OAK_CHEST_BOAT
-  - pale_oak_chest_boat
-EntitySpruceBoat:
-  - Boat
-  - EntityType.SPRUCE_BOAT
-  - spruce_boat
-EntitySpruceChestBoat:
-  - ChestBoat
-  - EntityType.SPRUCE_CHEST_BOAT
-  - spruce_chest_boat
+EntityBlaze:
+  - Blaze
+  - EntityType.BLAZE
+  - blaze
+EntityBlockDisplay:
+  - Display.BlockDisplay
+  - EntityType.BLOCK_DISPLAY
+  - block_display
 EntityBogged:
   - Bogged
   - EntityType.BOGGED
@@ -166,6 +110,14 @@ EntityCaveSpider:
   - CaveSpider
   - EntityType.CAVE_SPIDER
   - cave_spider
+EntityCherryBoat:
+  - Boat
+  - EntityType.CHERRY_BOAT
+  - cherry_boat
+EntityCherryChestBoat:
+  - ChestBoat
+  - EntityType.CHERRY_CHEST_BOAT
+  - cherry_chest_boat
 EntityMinecartChest:
   - MinecartChest
   - EntityType.CHEST_MINECART
@@ -194,6 +146,14 @@ EntityCreeper:
   - Creeper
   - EntityType.CREEPER
   - creeper
+EntityDarkOakBoat:
+  - Boat
+  - EntityType.DARK_OAK_BOAT
+  - dark_oak_boat
+EntityDarkOakChestBoat:
+  - ChestBoat
+  - EntityType.DARK_OAK_CHEST_BOAT
+  - dark_oak_chest_boat
 EntityDolphin:
   - Dolphin
   - EntityType.DOLPHIN
@@ -218,18 +178,6 @@ EntityElderGuardian:
   - ElderGuardian
   - EntityType.ELDER_GUARDIAN
   - elder_guardian
-EntityEnderCrystal:
-  - EndCrystal
-  - EntityType.END_CRYSTAL
-  - end_crystal
-EntityDragon:
-  - EnderDragon
-  - EntityType.ENDER_DRAGON
-  - ender_dragon
-EntityEnderPearl:
-  - ThrownEnderpearl
-  - EntityType.ENDER_PEARL
-  - ender_pearl
 EntityEnderman:
   - EnderMan
   - EntityType.ENDERMAN
@@ -238,6 +186,18 @@ EntityEndermite:
   - Endermite
   - EntityType.ENDERMITE
   - endermite
+EntityDragon:
+  - EnderDragon
+  - EntityType.ENDER_DRAGON
+  - ender_dragon
+EntityEnderPearl:
+  - ThrownEnderpearl
+  - EntityType.ENDER_PEARL
+  - ender_pearl
+EntityEnderCrystal:
+  - EndCrystal
+  - EntityType.END_CRYSTAL
+  - end_crystal
 EntityEvoker:
   - Evoker
   - EntityType.EVOKER
@@ -262,6 +222,10 @@ EntityFallingBlock:
   - FallingBlockEntity
   - EntityType.FALLING_BLOCK
   - falling_block
+EntityFireball:
+  - LargeFireball
+  - EntityType.FIREBALL
+  - fireball
 EntityFireworkRocket:
   - FireworkRocketEntity
   - EntityType.FIREWORK_ROCKET
@@ -346,14 +310,14 @@ EntityItemFrame:
   - ItemFrame
   - EntityType.ITEM_FRAME
   - item_frame
-EntityOminousItemSpawner:
-  - OminousItemSpawner
-  - EntityType.OMINOUS_ITEM_SPAWNER
-  - ominous_item_spawner
-EntityFireball:
-  - LargeFireball
-  - EntityType.FIREBALL
-  - fireball
+EntityJungleBoat:
+  - Boat
+  - EntityType.JUNGLE_BOAT
+  - jungle_boat
+EntityJungleChestBoat:
+  - ChestBoat
+  - EntityType.JUNGLE_CHEST_BOAT
+  - jungle_chest_boat
 EntityLeashKnot:
   - LeashFenceKnotEntity
   - EntityType.LEASH_KNOT
@@ -374,6 +338,14 @@ EntityMagmaCube:
   - MagmaCube
   - EntityType.MAGMA_CUBE
   - magma_cube
+EntityMangroveBoat:
+  - Boat
+  - EntityType.MANGROVE_BOAT
+  - mangrove_boat
+EntityMangroveChestBoat:
+  - ChestBoat
+  - EntityType.MANGROVE_CHEST_BOAT
+  - mangrove_chest_boat
 EntityMarker:
   - Marker
   - EntityType.MARKER
@@ -390,14 +362,34 @@ EntityMule:
   - Mule
   - EntityType.MULE
   - mule
+EntityBoat:
+  - Boat
+  - EntityType.OAK_BOAT
+  - oak_boat
+EntityChestBoat:
+  - ChestBoat
+  - EntityType.OAK_CHEST_BOAT
+  - oak_chest_boat
 EntityOcelot:
   - Ocelot
   - EntityType.OCELOT
   - ocelot
+EntityOminousItemSpawner:
+  - OminousItemSpawner
+  - EntityType.OMINOUS_ITEM_SPAWNER
+  - ominous_item_spawner
 EntityPainting:
   - Painting
   - EntityType.PAINTING
   - painting
+EntityPaleOakBoat:
+  - Boat
+  - EntityType.PALE_OAK_BOAT
+  - pale_oak_boat
+EntityPaleOakChestBoat:
+  - ChestBoat
+  - EntityType.PALE_OAK_CHEST_BOAT
+  - pale_oak_chest_boat
 EntityPanda:
   - Panda
   - EntityType.PANDA
@@ -490,14 +482,14 @@ EntitySniffer:
   - Sniffer
   - EntityType.SNIFFER
   - sniffer
-EntitySnowman:
-  - SnowGolem
-  - EntityType.SNOW_GOLEM
-  - snow_golem
 EntitySnowball:
   - Snowball
   - EntityType.SNOWBALL
   - snowball
+EntitySnowman:
+  - SnowGolem
+  - EntityType.SNOW_GOLEM
+  - snow_golem
 EntityMinecartMobSpawner:
   - MinecartSpawner
   - EntityType.SPAWNER_MINECART
@@ -510,6 +502,14 @@ EntitySpider:
   - Spider
   - EntityType.SPIDER
   - spider
+EntitySpruceBoat:
+  - Boat
+  - EntityType.SPRUCE_BOAT
+  - spruce_boat
+EntitySpruceChestBoat:
+  - ChestBoat
+  - EntityType.SPRUCE_CHEST_BOAT
+  - spruce_chest_boat
 EntitySquid:
   - Squid
   - EntityType.SQUID
