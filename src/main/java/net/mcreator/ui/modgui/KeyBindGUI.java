@@ -38,10 +38,13 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
@@ -55,7 +58,10 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 			.enableRealtimeValidation();
 
 	private final VComboBox<String> keyBindingCategoryKey = new VComboBox<>(
-			new String[] { "misc", "movement", "multiplayer", "gameplay", "ui", "inventory", "creative" });
+			new String[] { "movement", "misc", "multiplayer", "gameplay", "inventory", "creative", "spectator",
+					"debug" });
+
+	private final JLabel keyCategoryLabel = new JLabel();
 
 	public KeyBindGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -90,7 +96,21 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("keybinding/category"),
 				L10N.label("elementgui.keybind.key_binding_category")));
-		enderpanel.add(PanelUtils.westAndCenterElement(new JLabel("key.categories."), keyBindingCategoryKey));
+
+		enderpanel.add(PanelUtils.westAndCenterElement(keyCategoryLabel, keyBindingCategoryKey));
+
+		Component editorComponent = keyBindingCategoryKey.getEditor().getEditorComponent();
+		if (editorComponent instanceof JTextField textField) {
+			textField.getDocument().addDocumentListener(new DocumentListener() {
+				@Override public void insertUpdate(DocumentEvent e) {updateCategoryKeyUI();}
+
+				@Override public void removeUpdate(DocumentEvent e) {updateCategoryKeyUI();}
+
+				@Override public void changedUpdate(DocumentEvent e) {updateCategoryKeyUI();}
+			});
+		}
+
+		keyBindingCategoryKey.addActionListener(e -> updateCategoryKeyUI());
 
 		keyBindingCategoryKey.setEditable(true);
 
@@ -115,11 +135,25 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 				L10N.t("elementgui.keybind.error_key_category_needs_name")));
 		keyBindingCategoryKey.enableRealtimeValidation();
 
+		updateCategoryKeyUI();
+
 		addPage(pane5).validate(keyBindingName).validate(keyBindingCategoryKey);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			keyBindingName.setText(readableNameFromModElement);
+		}
+	}
+
+	private void updateCategoryKeyUI() {
+		Object value = keyBindingCategoryKey.getEditor().getItem();
+		boolean isCustom = IntStream.range(0, keyBindingCategoryKey.getModel().getSize())
+				.mapToObj(keyBindingCategoryKey.getModel()::getElementAt)
+				.noneMatch(item -> Objects.equals(item, value));
+		if (isCustom) {
+			keyCategoryLabel.setText("key.category." + mcreator.getWorkspace().getWorkspaceSettings().getModID() + ".");
+		} else {
+			keyCategoryLabel.setText("");
 		}
 	}
 
@@ -139,6 +173,8 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		onKeyPressed.setSelectedProcedure(keyBinding.onKeyPressed);
 		onKeyReleased.setSelectedProcedure(keyBinding.onKeyReleased);
 		keyBindingCategoryKey.getEditor().setItem(keyBinding.keyBindingCategoryKey);
+
+		updateCategoryKeyUI();
 	}
 
 	@Override public KeyBinding getElementFromGUI() {
