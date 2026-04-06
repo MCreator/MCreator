@@ -10,6 +10,7 @@ _bypass_prefix: "#"
 EntityAgeable: AgeableMob
 EntityAmbientCreature: AmbientCreature
 EntityAnimal: Animal
+EntityAvatar: Avatar
 EntityCreature: PathfinderMob
 EntityGolem: AbstractGolem
 EntityHanging: HangingEntity
@@ -102,6 +103,10 @@ EntityCamel:
   - Camel
   - EntityType.CAMEL
   - camel
+EntityCamelHusk:
+  - CamelHusk
+  - EntityType.CAMEL_HUSK
+  - camel_husk
 EntityCat:
   - Cat
   - EntityType.CAT
@@ -130,6 +135,10 @@ EntityCod:
   - Cod
   - EntityType.COD
   - cod
+EntityCopperGolem:
+  - CopperGolem
+  - EntityType.COPPER_GOLEM
+  - copper_golem
 EntityMinecartCommandBlock:
   - MinecartCommandBlock
   - EntityType.COMMAND_BLOCK_MINECART
@@ -346,6 +355,10 @@ EntityMangroveChestBoat:
   - ChestBoat
   - EntityType.MANGROVE_CHEST_BOAT
   - mangrove_chest_boat
+EntityMannequin:
+  - Mannequin
+  - EntityType.MANNEQUIN
+  - mannequin
 EntityMarker:
   - Marker
   - EntityType.MARKER
@@ -362,6 +375,10 @@ EntityMule:
   - Mule
   - EntityType.MULE
   - mule
+EntityNautilus:
+  - Nautilus
+  - EntityType.NAUTILUS
+  - nautilus
 EntityBoat:
   - Boat
   - EntityType.OAK_BOAT
@@ -394,6 +411,10 @@ EntityPanda:
   - Panda
   - EntityType.PANDA
   - panda
+EntityParched:
+  - Parched
+  - EntityType.PARCHED
+  - parched
 EntityParrot:
   - Parrot
   - EntityType.PARROT
@@ -610,6 +631,10 @@ EntityZombieHorse:
   - ZombieHorse
   - EntityType.ZOMBIE_HORSE
   - zombie_horse
+EntityZombieNautilus:
+  - ZombieNautilus
+  - EntityType.ZOMBIE_NAUTILUS
+  - zombie_nautilus
 EntityZombieVillager:
   - ZombieVillager
   - EntityType.ZOMBIE_VILLAGER
