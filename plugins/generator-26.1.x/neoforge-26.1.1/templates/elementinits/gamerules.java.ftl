@@ -36,27 +36,36 @@
 
 package ${package}.init;
 
+<#assign hasLogicRules = false>
+<#assign hasNumberRules = false>
+
 public class ${JavaModName}GameRules {
 
 	public static final DeferredRegister<GameRule<?>> REGISTRY = DeferredRegister.create(Registries.GAME_RULE, ${JavaModName}.MODID);
 
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
+		<#assign hasNumberRules = true>
 		public static DeferredHolder<GameRule<?>, GameRule<Integer>> ${gamerule.getModElement().getRegistryNameUpper()} = registerInteger("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueNumber});
 		<#else>
+		<#assign hasLogicRules = true>
 		public static DeferredHolder<GameRule<?>, GameRule<Boolean>> ${gamerule.getModElement().getRegistryNameUpper()} = registerBoolean("${StringUtils.lowercaseFirstLetter(gamerule.getModElement().getName())}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueLogic});
 		</#if>
 	</#list>
 
+	<#if hasLogicRules>
 	private static DeferredHolder<GameRule<?>, GameRule<Boolean>> registerBoolean(String registryname, GameRuleCategory category, boolean value) {
 		return REGISTRY.register(registryname, () -> new GameRule<>(category, GameRuleType.BOOL, BoolArgumentType.bool(), GameRuleTypeVisitor::visitBoolean,
 				Codec.BOOL, b -> b ? 1 : 0, value, FeatureFlagSet.of()));
 	}
+	</#if>
 
+	<#if hasNumberRules>
 	private static DeferredHolder<GameRule<?>, GameRule<Integer>> registerInteger(String registryname, GameRuleCategory category, int value) {
 		return REGISTRY.register(registryname, () -> new GameRule<>(category, GameRuleType.INT, IntegerArgumentType.integer(Integer.MIN_VALUE, Integer.MAX_VALUE),
 				GameRuleTypeVisitor::visitInteger, Codec.intRange(Integer.MIN_VALUE, Integer.MAX_VALUE), i -> i, value, FeatureFlagSet.of()));
 	}
+	</#if>
 
 }
 <#-- @formatter:on -->
