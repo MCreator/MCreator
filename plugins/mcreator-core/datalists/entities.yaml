@@ -7,6 +7,8 @@
 - EntityAreaEffectCloud:
   readable_name: "Area of effect cloud"
   type: spawnable
+- EntityAvatar:
+  readable_name: "Avatar entity"
 - EntityArmadillo:
   readable_name: "Armadillo"
   type: spawnable
@@ -100,6 +102,9 @@
 - EntityCamel:
   readable_name: "Camel"
   type: spawnable
+- EntityCamelHusk:
+  readable_name: "Camel Husk"
+  type: spawnable
 - EntityCaveSpider:
   readable_name: "Cave spider"
   type: spawnable
@@ -108,6 +113,9 @@
   type: spawnable
 - EntityCod:
   readable_name: "Cod"
+  type: spawnable
+- EntityCopperGolem:
+  readable_name: "Copper Golem"
   type: spawnable
 - EntityCow:
   readable_name: "Cow"
@@ -265,6 +273,9 @@
 - EntityMule:
   readable_name: "Mule"
   type: spawnable
+- EntityNautilus:
+  readable_name: "Nautilus"
+  type: spawnable
 - EntityOcelot:
   readable_name: "Ocelot"
   type: spawnable
@@ -276,6 +287,9 @@
   type: spawnable
 - EntityPanda:
   readable_name: "Panda"
+  type: spawnable
+- EntityParched:
+  readable_name: "Parched"
   type: spawnable
 - EntityParrot:
   readable_name: "Parrot"
@@ -420,6 +434,9 @@
 - EntityZombieHorse:
   readable_name: "Zombie horse"
   type: spawnable
+- EntityZombieNautilus:
+  readable_name: "Zombie nautilus"
+  type: spawnable
 - EntityZombieVillager:
   readable_name: "Zombie villager"
   type: spawnable
@@ -450,6 +467,9 @@
   type: spawnable
 - EntityGoat:
   readable_name: "Goat"
+  type: spawnable
+- EntityMannequin:
+  readable_name: "Mannequin"
   type: spawnable
 - EntityMarker:
   readable_name: "Marker"

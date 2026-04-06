@@ -143,3 +143,8 @@ EntityFrog: frog
 EntityTadpole: tadpole
 EntityWarden: warden
 EntityWindCharge: wind_charge_projectile
+EntityCamelHusk: camel_husk
+EntityCopperGolem: copper_golem
+EntityNautilus: nautilus
+EntityParched: parched
+EntityZombieNautilus: zombie_nautilus
