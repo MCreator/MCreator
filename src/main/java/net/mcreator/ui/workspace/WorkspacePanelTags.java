@@ -74,6 +74,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator(), ModElementType.PAINTING);
 	private final JItemListField<NonMappableElement> listFieldBannerPatterns = new ModElementListField(
 			workspacePanel.getMCreator(), ModElementType.BANNERPATTERN);
+	private final JItemListField<NonMappableElement> listFieldPointsOfInterest = new ModElementListField(
+			workspacePanel.getMCreator(), ModElementType.VILLAGERPROFESSION);
 
 	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
@@ -93,6 +95,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		prepareListField(listFieldGameEvents);
 		prepareListField(listFieldPaintingVariants);
 		prepareListField(listFieldBannerPatterns);
+		prepareListField(listFieldPointsOfInterest);
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
@@ -194,6 +197,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldBannerPatterns;
+						}
+						case POINTS_OF_INTEREST -> {
+							listFieldPointsOfInterest.setListElements(entries.map(
+											e -> (NonMappableElement) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldPointsOfInterest;
 						}
 					};
 					listField.setBorder(retval.getBorder());
@@ -495,6 +505,14 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case BANNER_PATTERNS -> {
 					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
 							ModElementType.BANNERPATTERN);
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
+				case POINTS_OF_INTEREST -> {
+					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
+							ModElementType.VILLAGERPROFESSION);
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
