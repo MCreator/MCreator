@@ -4,21 +4,6 @@
       "type": "input_value",
       "name": "point",
       "check": "Vector"
-    },
-    {
-      "type": "input_value",
-      "name": "x",
-      "check": "Number"
-    },
-    {
-      "type": "input_value",
-      "name": "y",
-      "check": "Number"
-    },
-    {
-      "type": "input_value",
-      "name": "z",
-      "check": "Number"
     }
   ],
   "inputsInline": true,
@@ -27,16 +12,10 @@
   "mcreator": {
     "toolbox_id": "worlddata",
     "toolbox_init": [
-      "~<value name=\"point\"><block type=\"vector_new_vector\"><value name=\"x\"><block type=\"coord_x\"></block></value><value name=\"y\"><block type=\"coord_y\"></block></value><value name=\"z\"><block type=\"coord_z\"></block></value></block></value>",
-      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
-      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
-      "<value name=\"z\"><block type=\"coord_z\"></block></value>"
+      "~<value name=\"point\"><block type=\"vector_new_vector\"><value name=\"x\"><block type=\"coord_x\"></block></value><value name=\"y\"><block type=\"coord_y\"></block></value><value name=\"z\"><block type=\"coord_z\"></block></value></block></value>"
     ],
     "inputs": [
-      "point",
-      "x",
-      "y",
-      "z"
+      "point"
     ],
     "dependencies": [
       {
