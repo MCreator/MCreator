@@ -35,6 +35,7 @@ import org.apache.logging.log4j.Logger;
 		<#if types["guis"]??>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
 		<#if types["particles"]??>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
 		<#if types["villagerprofessions"]??>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
+		<#if types["gamerules"]??>${JavaModName}GameRules.REGISTRY.register(modEventBus);</#if>
 		<#if types["fluids"]??>
 			${JavaModName}Fluids.REGISTRY.register(modEventBus);
 			${JavaModName}FluidTypes.REGISTRY.register(modEventBus);
