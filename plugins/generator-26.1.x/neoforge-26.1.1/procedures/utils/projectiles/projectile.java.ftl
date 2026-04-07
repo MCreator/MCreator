@@ -2,7 +2,7 @@ private static Projectile initProjectileProperties(Projectile entityToSpawn, Ent
 	entityToSpawn.setOwner(shooter);
 	if (!Vec3.ZERO.equals(acceleration)) {
 		entityToSpawn.setDeltaMovement(acceleration);
-		entityToSpawn.hasImpulse = true;
+		entityToSpawn.needsSync = true;
 	}
 	return entityToSpawn;
 }
