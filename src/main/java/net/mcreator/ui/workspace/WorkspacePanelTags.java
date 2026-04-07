@@ -83,49 +83,16 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
 
-		listFieldBlocksItems.disableItemCentering();
-		listFieldEntities.disableItemCentering();
-		listFieldBiomes.disableItemCentering();
-		listFieldStructures.disableItemCentering();
-		listFieldFunctions.disableItemCentering();
-		listFieldDamageTypes.disableItemCentering();
-		listFieldEnchantment.disableItemCentering();
-		listFieldGameEvents.disableItemCentering();
-		listFieldPaintingVariants.disableItemCentering();
-		listFieldBannerPatterns.disableItemCentering();
-
-		listFieldBlocksItems.hideButtons();
-		listFieldEntities.hideButtons();
-		listFieldBiomes.hideButtons();
-		listFieldStructures.hideButtons();
-		listFieldFunctions.hideButtons();
-		listFieldDamageTypes.hideButtons();
-		listFieldEnchantment.hideButtons();
-		listFieldGameEvents.hideButtons();
-		listFieldPaintingVariants.hideButtons();
-		listFieldBannerPatterns.hideButtons();
-
-		listFieldBlocksItems.setEnabled(false);
-		listFieldEntities.setEnabled(false);
-		listFieldBiomes.setEnabled(false);
-		listFieldStructures.setEnabled(false);
-		listFieldFunctions.setEnabled(false);
-		listFieldDamageTypes.setEnabled(false);
-		listFieldEnchantment.setEnabled(false);
-		listFieldGameEvents.setEnabled(false);
-		listFieldPaintingVariants.setEnabled(false);
-		listFieldBannerPatterns.setEnabled(false);
-
-		listFieldBlocksItems.setOpaque(false);
-		listFieldEntities.setOpaque(false);
-		listFieldBiomes.setOpaque(false);
-		listFieldStructures.setOpaque(false);
-		listFieldFunctions.setOpaque(false);
-		listFieldDamageTypes.setOpaque(false);
-		listFieldEnchantment.setOpaque(false);
-		listFieldGameEvents.setOpaque(false);
-		listFieldPaintingVariants.setOpaque(false);
-		listFieldBannerPatterns.setOpaque(false);
+		prepareListField(listFieldBlocksItems);
+		prepareListField(listFieldEntities);
+		prepareListField(listFieldBiomes);
+		prepareListField(listFieldStructures);
+		prepareListField(listFieldFunctions);
+		prepareListField(listFieldDamageTypes);
+		prepareListField(listFieldEnchantment);
+		prepareListField(listFieldGameEvents);
+		prepareListField(listFieldPaintingVariants);
+		prepareListField(listFieldBannerPatterns);
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
@@ -319,6 +286,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				}
 			}
 		});
+	}
+
+	private static void prepareListField(JItemListField<?> listField) {
+		listField.disableItemCentering();
+		listField.hideButtons();
+		listField.setEnabled(false);
+		listField.setOpaque(false);
 	}
 
 	private TagElement tagElementForRow(int row) {
