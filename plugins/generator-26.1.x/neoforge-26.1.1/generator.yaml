@@ -41,7 +41,7 @@ sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structure"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"
-#entity_textures_dir: "@MODASSETSROOT/textures/entities"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
 #effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
@@ -84,11 +84,11 @@ base_templates:
 #      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
 #      - "${w.hasElementsOfType('feature')}"
 #      - "${w.hasElementsOfType('armor')}"
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition_any:
-#      - hasJavaModels()
-#      - "${w.hasElementsOfType('specialentity')}"
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition_any:
+      - hasJavaModels()
+      - "${w.hasElementsOfType('specialentity')}"
 #  - template: modbase/enumextensions.json.ftl
 #    writer: json
 #    name: "@RESROOT/META-INF/enumextensions.json"
@@ -105,17 +105,17 @@ base_templates:
 #      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
 #      - "${w.hasElementsOfType('specialentity')}"
 
-#java_models:
-#  key: mojmap-1.21.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
+java_models:
+  key: mojmap-26.1.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 #  - task: copy_model_animations
 #    type: JAVA_viatemplate
 #    cleanupBeforeCopy: true
