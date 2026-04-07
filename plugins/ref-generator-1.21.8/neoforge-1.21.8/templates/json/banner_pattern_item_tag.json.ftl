@@ -1,7 +1,7 @@
 {
   "values": [
     <#list data.providedBannerPatterns as pattern>
-      "${generator.getIdentifierForModElement(pattern)}"<#sep>,
+      "${generator.getResourceLocationForModElement(pattern)}"<#sep>,
     </#list>
   ]
 }
