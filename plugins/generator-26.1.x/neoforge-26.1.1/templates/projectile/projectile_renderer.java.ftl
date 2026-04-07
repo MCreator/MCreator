@@ -44,16 +44,15 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity, LivingEntityR
 		model = new ${data.entityModel}(context.bakeLayer(${data.entityModel}.LAYER_LOCATION));
 	}
 
-	@Override public void render(LivingEntityRenderState state, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
-		VertexConsumer vb = bufferIn.getBuffer(RenderType.entityCutout(texture));
+	@Override public void submit(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		poseStack.pushPose();
 		poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90));
 		poseStack.mulPose(Axis.ZP.rotationDegrees(90 + state.xRot));
 		model.setupAnim(state);
-		model.renderToBuffer(poseStack, vb, packedLightIn, OverlayTexture.NO_OVERLAY);
+		submitNodeCollector.submitModel(this.model, state, poseStack, texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 		poseStack.popPose();
 
-		super.render(state, poseStack, bufferIn, packedLightIn);
+		super.submit(state, poseStack, submitNodeCollector, camera);
 	}
 
 	@Override public LivingEntityRenderState createRenderState() {
