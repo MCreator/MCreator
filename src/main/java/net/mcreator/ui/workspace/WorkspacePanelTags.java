@@ -97,6 +97,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		prepareListField(listFieldBannerPatterns);
 		prepareListField(listFieldPointsOfInterest);
 
+		listFieldPaintingVariants.setReadOnly();
+		listFieldBannerPatterns.setReadOnly();
+		listFieldPointsOfInterest.setReadOnly();
+
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
 						L10N.t("workspace.tags.tag_name"), L10N.t("workspace.tags.tag_elements") }, 0) {
@@ -500,6 +504,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
+					retval.setReadOnly();
 					yield retval;
 				}
 				case BANNER_PATTERNS -> {
@@ -508,6 +513,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
+					retval.setReadOnly();
 					yield retval;
 				}
 				case POINTS_OF_INTEREST -> {
@@ -516,6 +522,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
+					retval.setReadOnly();
 					yield retval;
 				}
 			};
