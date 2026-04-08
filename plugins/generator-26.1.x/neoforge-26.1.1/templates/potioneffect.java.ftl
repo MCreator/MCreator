@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -111,7 +111,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				"entity": "entity",
 				"amplifier": "amplifier",
 				"damagesource": "damagesource",
-				"damage": "damage"
+				"amount": "damage"
 			}/>
 		}
 	</#if>
@@ -139,7 +139,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				return false;
 			}
 
-			@Override public boolean renderInventoryText(MobEffectInstance instance, AbstractContainerScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
+			@Override public boolean renderInventoryText(MobEffectInstance instance, AbstractContainerScreen<?> screen, GuiGraphicsExtractor guiGraphics, int x, int y, int blitOffset) {
 				return false;
 			}
 			</#if>
@@ -155,7 +155,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 
 	<#if data.isCuredbyHoney>
 	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
-		Consumable original = Items.HONEY_BOTTLE.components().get(DataComponents.CONSUMABLE);
+		Consumable original = Consumables.HONEY_BOTTLE;
 		if (original != null) {
 			List<ConsumeEffect> onConsumeEffects = new ArrayList<>(original.onConsumeEffects());
 			onConsumeEffects.add(new RemoveStatusEffectsConsumeEffect(${JavaModName}MobEffects.${REGISTRYNAME}));

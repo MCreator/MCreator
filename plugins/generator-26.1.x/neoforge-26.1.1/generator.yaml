@@ -29,6 +29,7 @@ import_formatter:
     Potion: net.minecraft.world.item.alchemy
     AttachmentType: net.neoforged.neoforge.attachment
     MapColor: net.minecraft.world.level.material
+    AttributeModifier: net.minecraft.world.entity.ai.attributes
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -42,7 +43,7 @@ structures_dir: "@MODDATAROOT/structure"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
-#effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
+effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
