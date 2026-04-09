@@ -44,7 +44,7 @@ structures_dir: "@MODDATAROOT/structure"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
 #effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
-#screen_textures_dir: "@MODASSETSROOT/textures/screens"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
@@ -94,11 +94,12 @@ base_templates:
 #    name: "@RESROOT/META-INF/enumextensions.json"
 #    condition_any:
 #      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
-#  - template: modbase/mixin.json.ftl
-#    writer: json
-#    condition_any:
-#      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-#    name: "@RESROOT/@modid.mixins.json"
+  - template: modbase/mixin.json.ftl
+    writer: json
+    condition_any:
+      - "${w.getGElementsOfType('gui')?filter(e -> e.hasSlotChangedEvents())?size != 0}"
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@RESROOT/@modid.mixins.json"
 #  - template: elementinits/dispensebehaviors.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
 #    condition_any:

@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,28 +29,32 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
-/*
- *	MCreator note: This file will be REGENERATED on each build.
- */
+package ${package}.mixin;
 
-package ${package}.init;
+@Mixin(StackCopySlot.class) public class StackCopySlotMixin {
 
-<#assign hasEntityModels = false>
-
-@EventBusSubscriber(Dist.CLIENT) public class ${JavaModName}Screens {
-
-	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
-		<#list guis as gui>
-			<#if gui.getComponentsOfType("EntityModel")?has_content><#assign hasEntityModels = true></#if>
-			event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
+	<#-- The method is final and cannot be overridden, and since this is a neoforge class AT won't fix it either -->
+	@Inject(method = "setChanged()V", at = @At("HEAD"), remap = false)
+	private void setChanged(CallbackInfo ci) {
+		IndexModifier<ItemResource> slotModifier = null;
+		StackCopySlot self = (StackCopySlot) (Object) this;
+		if (self instanceof ResourceHandlerSlot slot) {
+			try {
+				Field modifier = ResourceHandlerSlot.class.getDeclaredField("slotModifier");
+				modifier.setAccessible(true);
+				slotModifier = (IndexModifier<ItemResource>) modifier.get(slot);
+			} catch (Exception ignored) {}
+		}
+		<#list w.getGElementsOfType('gui')?filter(e -> e.hasSlotChangedEvents()) as gui>
+			<#list gui.components as component>
+				<#if hasProcedure(component.onSlotChanged)>
+					if (slotModifier instanceof ${gui.getModElement().getName()}Menu menu && self == menu.getSlots().get(${component.id}))
+						menu.slotChanged(${component.id}, 0, 0);
+				</#if>
+			</#list>
 		</#list>
 	}
 
-	public interface ScreenAccessor {
-		void updateMenuState(int elementType, String name, Object elementState);
-	}
-
 }
-
-<#-- @formatter:on -->

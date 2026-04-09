@@ -2,6 +2,9 @@
 <#if w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
 	<#assign mixins = mixins + ['NoiseGeneratorSettingsMixin']>
 </#if>
+<#if w.getGElementsOfType('gui')?filter(e -> e.hasSlotChangedEvents())?size != 0>
+	<#assign mixins = mixins + ['StackCopySlotMixin']>
+</#if>
 
 {
   "required": true,

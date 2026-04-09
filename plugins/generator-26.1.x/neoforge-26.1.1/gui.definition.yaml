@@ -20,6 +20,10 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameScreens.java"
   - template: gui/gui_msg_menustate.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/MenuStateUpdateMessage.java"
+  - template: gui/mixin_stackcopyslot.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('gui')?filter(e -> e.hasSlotChangedEvents())?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/StackCopySlotMixin.java"
 
 localizationkeys:
   - fromlist: data.getFixedTextLabels()
