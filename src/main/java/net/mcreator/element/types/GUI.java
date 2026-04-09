@@ -121,14 +121,6 @@ import java.util.List;
 		return false;
 	}
 
-	public boolean hasSlotChangedEvents() {
-		for (GUIComponent component : components)
-			if (component instanceof Slot)
-				if ((((Slot) component).onSlotChanged != null && ((Slot) component).onSlotChanged.getName() != null))
-					return true;
-		return false;
-	}
-
 	public int getInventorySlotsX() {
 		return (int) Math.ceil((width - 176) / 2.0) + inventoryOffsetX;
 	}

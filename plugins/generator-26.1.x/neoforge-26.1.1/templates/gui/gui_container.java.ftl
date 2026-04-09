@@ -43,7 +43,7 @@ import ${package}.${JavaModName};
 @EventBusSubscriber
 </#if>
 
-public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}Menus.MenuAccessor, IndexModifier<ItemResource> {
+public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}Menus.MenuAccessor {
 
 	public final Map<String, Object> menuState = new HashMap<>() {
 		@Override public Object put(String key, Object value) {
@@ -118,7 +118,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName()?ends_with("Slot")>
 					<#assign slotnum += 1>
-					this.customSlots.put(${component.id}, this.addSlot(new ResourceHandlerSlot(internal, this, ${component.id},
+					this.customSlots.put(${component.id}, this.addSlot(new ResourceHandlerSlot(internal, this::set, ${component.id},
 						${component.gx(data.width) + 1},
 						${component.gy(data.height) + 1}) {
 						private final int slot = ${component.id}; <#-- #5209, this is needed for procedure dependencies -->
@@ -128,6 +128,13 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 						@Override public boolean mayPickup(Player entity) {
 							return <@procedureOBJToConditionCode component.disablePickup false true/>;
+						}
+						</#if>
+
+						<#if hasProcedure(component.onSlotChanged)>
+						@Override protected void setStackCopy(ItemStack stack) {
+							super.setStackCopy(stack);
+							slotChanged(${component.id}, 0, 0);
 						}
 						</#if>
 
@@ -181,7 +188,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		</#if>
 	}
 
-	@Override public void set(int index, ItemResource resource, int amount) {
+	private void set(int index, ItemResource resource, int amount) {
 		if (!internal.getResource(index).isEmpty())
 			try (var tx = Transaction.openRoot()) {
 				internal.extract(index, internal.getResource(index), internal.getAmountAsInt(index), tx);
@@ -280,7 +287,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		}
 
 		<#if data.hasSlotEvents()>
-			public void slotChanged(int slotid, int ctype, int meta) {
+			private void slotChanged(int slotid, int ctype, int meta) {
 				if(this.world != null && this.world.isClientSide()) {
 					ClientPacketDistributor.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
 					${name}SlotMessage.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
