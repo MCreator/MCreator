@@ -61,7 +61,7 @@ DatapackFailure: DatapackLoadFailureScreen
 Death: DeathScreen
 DirtMessage: GenericMessageScreen
 Disconnected: DisconnectedScreen
-EditGamerules: WorldCreationGameRules
+EditGamerules: WorldCreationGameRulesScreen
 EditWorld: EditWorldScreen
 Error: ErrorScreen
 Experiments: ExperimentsScreen
