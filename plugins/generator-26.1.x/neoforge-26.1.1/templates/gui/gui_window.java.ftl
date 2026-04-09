@@ -154,9 +154,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			}
 		</#list>
 
-		<#if tooltips?has_content>
-		boolean customTooltipShown = false;
-		</#if>
 		<#list tooltips as component>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
@@ -172,7 +169,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#else>
 						guiGraphics.setTooltipForNextFrame(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
 					</#if>
-					customTooltipShown = true;
 				}
 		</#list>
 	}
