@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	public int x, y, z;
 	private ContainerLevelAccess access = ContainerLevelAccess.NULL;
 
-	private IItemHandler internal;
+	private ResourceHandler<ItemResource> internal;
 
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
 
@@ -73,7 +73,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		this.entity = inv.player;
 		this.world = inv.player.level();
 
-		this.internal = new ItemStackHandler(${data.getMaxSlotID() + 1});
+		this.internal = new ItemStacksResourceHandler(${data.getMaxSlotID() + 1});
 
 		BlockPos pos = null;
 		if (extraData != null) {
@@ -90,7 +90,8 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 					byte hand = extraData.readByte();
 					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
 					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
-					IItemHandler cap = itemstack.getCapability(Capabilities.ItemHandler.ITEM);
+					ResourceHandler<ItemResource> cap = itemstack.getCapability(Capabilities.Item.ITEM,
+						ItemAccess.forPlayerInteraction(this.entity, hand == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND));
 					if (cap != null) {
 						this.internal = cap;
 						this.bound = true;
@@ -99,7 +100,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 					extraData.readByte(); // drop padding
 					boundEntity = world.getEntity(extraData.readVarInt());
 					if(boundEntity != null) {
-						IItemHandler cap = boundEntity.getCapability(Capabilities.ItemHandler.ENTITY);
+						ResourceHandler<ItemResource> cap = boundEntity.getCapability(Capabilities.Item.ENTITY);
 						if (cap != null) {
 							this.internal = cap;
 							this.bound = true;
@@ -108,7 +109,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 				} else { // might be bound to block
 					boundBlockEntity = this.world.getBlockEntity(pos);
 					if (boundBlockEntity instanceof BaseContainerBlockEntity baseContainerBlockEntity) {
-						this.internal = new InvWrapper(baseContainerBlockEntity);
+						this.internal = VanillaContainerWrapper.of(baseContainerBlockEntity);
 						this.bound = true;
 					}
 				}
@@ -117,7 +118,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName()?ends_with("Slot")>
 					<#assign slotnum += 1>
-					this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
+					this.customSlots.put(${component.id}, this.addSlot(new ResourceHandlerSlot(internal, this::set, ${component.id},
 						${component.gx(data.width) + 1},
 						${component.gy(data.height) + 1}) {
 						private final int slot = ${component.id}; <#-- #5209, this is needed for procedure dependencies -->
@@ -131,8 +132,8 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 						</#if>
 
 						<#if hasProcedure(component.onSlotChanged)>
-						@Override public void setChanged() {
-							super.setChanged();
+						@Override protected void setStackCopy(ItemStack stack) {
+							super.setStackCopy(stack);
 							slotChanged(${component.id}, 0, 0);
 						}
 						</#if>
@@ -185,6 +186,16 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 			for (int si = 0; si < 9; ++si)
 				this.addSlot(new Slot(inv, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
 		</#if>
+	}
+
+	private void set(int index, ItemResource resource, int amount) {
+		if (!internal.getResource(index).isEmpty())
+			try (var tx = Transaction.openRoot()) {
+				internal.extract(index, internal.getResource(index), internal.getAmountAsInt(index), tx);
+				tx.commit();
+			}
+		if (!resource.isEmpty() && amount > 0)
+			ItemUtil.insertItemReturnRemaining(internal, index, resource.toStack(amount), false, null);
 	}
 
 	@Override public boolean stillValid(Player player) {
@@ -240,8 +251,8 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 
 		<#-- #47997 -->
 		@Override ${mcc.getMethod("net.minecraft.world.inventory.AbstractContainerMenu", "moveItemStackTo", "ItemStack", "int", "int", "boolean")
-			.replace("slot.setChanged();", "slot.set(itemstack);")
-			.replace("!itemstack.isEmpty()", "slot.mayPlace(itemstack) && !itemstack.isEmpty()")}
+			.replace("slot.setChanged();", "slot.set(target);")
+			.replace("!target.isEmpty()", "slot.mayPlace(target) && !target.isEmpty()")}
 
 		@Override public void removed(Player playerIn) {
 			super.removed(playerIn);
@@ -252,26 +263,24 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 
 			if (!bound && playerIn instanceof ServerPlayer serverPlayer) {
 				if (!serverPlayer.isAlive() || serverPlayer.hasDisconnected()) {
-					for(int j = 0; j < internal.getSlots(); ++j) {
+					for(int j = 0; j < internal.size(); ++j) {
 						<#list data.components as component>
 							<#if component.getClass().getSimpleName()?ends_with("Slot") && !component.dropItemsWhenNotBound>
 								if(j == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.drop(internal.getStackInSlot(j), false);
-						if (internal instanceof IItemHandlerModifiable ihm)
-							ihm.setStackInSlot(j, ItemStack.EMPTY);
+						playerIn.drop(ItemUtil.getStack(internal, j), false);
+						set(j, ItemResource.EMPTY, 0);
 					}
 				} else {
-					for(int i = 0; i < internal.getSlots(); ++i) {
+					for(int i = 0; i < internal.size(); ++i) {
 						<#list data.components as component>
 							<#if component.getClass().getSimpleName()?ends_with("Slot") && !component.dropItemsWhenNotBound>
 								if(i == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.getInventory().placeItemBackInInventory(internal.getStackInSlot(i));
-						if (internal instanceof IItemHandlerModifiable ihm)
-							ihm.setStackInSlot(i, ItemStack.EMPTY);
+						playerIn.getInventory().placeItemBackInInventory(ItemUtil.getStack(internal, i));
+						set(i, ItemResource.EMPTY, 0);
 					}
 				}
 			}

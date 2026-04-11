@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -81,14 +81,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
-		super(container, inventory, text);
+		super(container, inventory, text, ${data.width}, ${data.height});
 		this.world = container.world;
 		this.x = container.x;
 		this.y = container.y;
 		this.z = container.z;
 		this.entity = container.entity;
-		this.imageWidth = ${data.width};
-		this.imageHeight = ${data.height};
 	}
 
 	@Override public void updateMenuState(int elementType, String name, Object elementState) {
@@ -107,7 +105,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		if (elementType == 1 && elementState instanceof Boolean logicState) {
 			<#list checkboxes as component>
 				<#if !component?is_first>else</#if> if (name.equals("${component.getName()}")) {
-					if (${component.getName()}.selected() != logicState) ${component.getName()}.onPress();
+					if (${component.getName()}.selected() != logicState) ${component.getName()}.onPress(null);
 				}
 			</#list>
 		}
@@ -131,11 +129,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	}
 	</#if>
 
-	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+	@Override public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 
 		<#list textFields as component>
-		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
+		${component.getName()}.extractWidgetRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
 		<#list data.getComponentsOfType("EntityModel") as component>
@@ -156,9 +154,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			}
 		</#list>
 
-		<#if tooltips?has_content>
-		boolean customTooltipShown = false;
-		</#if>
 		<#list tooltips as component>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
@@ -174,17 +169,11 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#else>
 						guiGraphics.setTooltipForNextFrame(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
 					</#if>
-					customTooltipShown = true;
 				}
 		</#list>
-
-		<#if tooltips?has_content>
-		if (!customTooltipShown)
-		</#if>
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
-	@Override protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+	@Override public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		<#if data.renderBgLayer>
 			guiGraphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>
@@ -213,7 +202,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		</#list>
 	}
 
-	@Override public boolean keyPressed(int key, int b, int c) {
+	@Override public boolean keyPressed(KeyEvent event) {
+		int key = InputConstants.getKey(event).getValue();
 		if (key == 256) {
 			this.minecraft.player.closeContainer();
 			return true;
@@ -221,37 +211,36 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 
 		<#list textFields as component>
 			if(${component.getName()}.isFocused())
-				return ${component.getName()}.keyPressed(key, b, c);
+				return ${component.getName()}.keyPressed(event);
 		</#list>
 
-		return super.keyPressed(key, b, c);
+		return super.keyPressed(event);
 	}
 
 	<#if sliders?has_content> <#-- AbstractContainerScreen overrides it for slots only, causing a bug with Sliders, so we override it again -->
-	@Override public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		return (this.getFocused() != null && this.isDragging() && button == 0) ? this.getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY)
-			: super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	@Override public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		return (this.getFocused() != null && this.isDragging() && event.button() == 0) ? this.getFocused().mouseDragged(event, dragX, dragY) : super.mouseDragged(event, dragX, dragY);
 	}
 	</#if>
 
 	<#if textFields?has_content>
-	@Override public void resize(Minecraft minecraft, int width, int height) {
+	@Override public void resize(int width, int height) {
 		<#list textFields as component>
 		String ${component.getName()}Value = ${component.getName()}.getValue();
 		</#list>
-		super.resize(minecraft, width, height);
+		super.resize(width, height);
 		<#list textFields as component>
 		${component.getName()}.setValue(${component.getName()}Value);
 		</#list>
 	}
 	</#if>
 
-	@Override protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+	@Override protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
 		<#list data.getComponentsOfType("Label") as component>
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
-			guiGraphics.drawString(this.font,
+			guiGraphics.text(this.font,
 				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
 				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()}, ${component.hasShadow});
 		</#list>
@@ -306,7 +295,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				</#if>
 				<@buttonOnClick component/>
 			) {
-				@Override public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+				@Override public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
 					<#if hasProcedure(component.displayCondition)>
 					int x = ${name}Screen.this.x; <#-- x and y provided by buttons are in-GUI, not in-world coordinates -->
 					int y = ${name}Screen.this.y;

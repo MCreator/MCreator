@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2025, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,54 +33,61 @@
 
 package ${package}.network;
 
-@EventBusSubscriber public record ${name}SliderMessage(int sliderID, int x, int y, int z, double value) implements CustomPacketPayload {
+@EventBusSubscriber public record ${name}ButtonMessage(int buttonID, int x, int y, int z) implements CustomPacketPayload {
 
-	public static final Type<${name}SliderMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_sliders"));
+	public static final Type<${name}ButtonMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_buttons"));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}SliderMessage> STREAM_CODEC = StreamCodec.of(
-			(RegistryFriendlyByteBuf buffer, ${name}SliderMessage message) -> {
-				buffer.writeInt(message.sliderID);
+	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}ButtonMessage> STREAM_CODEC = StreamCodec.of(
+			(RegistryFriendlyByteBuf buffer, ${name}ButtonMessage message) -> {
+				buffer.writeInt(message.buttonID);
 				buffer.writeInt(message.x);
 				buffer.writeInt(message.y);
 				buffer.writeInt(message.z);
-				buffer.writeDouble(message.value);
 			},
-			(RegistryFriendlyByteBuf buffer) -> new ${name}SliderMessage(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readDouble())
+			(RegistryFriendlyByteBuf buffer) -> new ${name}ButtonMessage(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt())
 	);
 
-	@Override public Type<${name}SliderMessage> type() {
+	@Override public Type<${name}ButtonMessage> type() {
 		return TYPE;
 	}
 
-	public static void handleData(final ${name}SliderMessage message, final IPayloadContext context) {
+	public static void handleData(final ${name}ButtonMessage message, final IPayloadContext context) {
 		if (context.flow() == PacketFlow.SERVERBOUND) {
-			context.enqueueWork(() -> handleSliderAction(context.player(), message.sliderID, message.x, message.y, message.z, message.value)).exceptionally(e -> {
+			context.enqueueWork(() -> handleButtonAction(context.player(), message.buttonID, message.x, message.y, message.z)).exceptionally(e -> {
 				context.connection().disconnect(Component.literal(e.getMessage()));
 				return null;
 			});
 		}
 	}
 
-	public static void handleSliderAction(Player entity, int sliderID, int x, int y, int z, double value) {
+	public static void handleButtonAction(Player entity, int buttonID, int x, int y, int z) {
 		Level world = entity.level();
 
 		// security measure to prevent arbitrary chunk generation
 		if (!world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z)))
 			return;
 
-		<#assign slid = 0>
-		<#list data.getComponentsOfType("Slider") as component>
-			<#if hasProcedure(component.whenSliderMoves)>
-				if (sliderID == ${slid}) {
-					<@procedureOBJToCode component.whenSliderMoves/>
+		<#assign btid = 0>
+		<#list data.getComponentsOfType("Button") as component>
+			<#if hasProcedure(component.onClick)>
+				if (buttonID == ${btid}) {
+					<@procedureOBJToCode component.onClick/>
 				}
 			</#if>
-			<#assign slid +=1>
+			<#assign btid +=1>
+		</#list>
+		<#list data.getComponentsOfType("ImageButton") as component>
+			<#if hasProcedure(component.onClick)>
+				if (buttonID == ${btid}) {
+					<@procedureOBJToCode component.onClick/>
+				}
+			</#if>
+			<#assign btid +=1>
 		</#list>
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}SliderMessage.TYPE, ${name}SliderMessage.STREAM_CODEC, ${name}SliderMessage::handleData);
+		${JavaModName}.addNetworkMessage(${name}ButtonMessage.TYPE, ${name}ButtonMessage.STREAM_CODEC, ${name}ButtonMessage::handleData);
 	}
 
 }
