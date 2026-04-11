@@ -40,7 +40,6 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.lang.module.ModuleDescriptor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -86,8 +85,7 @@ import java.util.List;
 		baseTypes.add(BaseType.ITEM);
 
 		// Since 1.21.2 custom boats are stand-alone entity types, not variants of the vanilla boat entity
-		if (ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
-				.compareTo(ModuleDescriptor.Version.parse("1.21.2")) >= 0)
+		if (!getModElement().getGenerator().getGeneratorMinecraftVersion().equals("1.21.1"))
 			baseTypes.add(BaseType.ENTITY);
 
 		return baseTypes;
