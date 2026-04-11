@@ -1,9 +1,9 @@
 global_templates:
-  - template: itemextension/fuels.java.ftl
+  - template: elementinits/fuels.java.ftl
     writer: java
     condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.enableFuel)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"
-  - template: itemextension/compostable_items.json.ftl
+  - template: json/compostable_items.json.ftl
     writer: json
     condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.compostLayerChance gt 0)?size != 0}"
     name: "@RESROOT/data/neoforge/data_maps/item/compostables.json"

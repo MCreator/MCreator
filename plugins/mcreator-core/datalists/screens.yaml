@@ -58,8 +58,10 @@
 - CustomizeSkin
 - DatapackFailure
 - Death
+- Demo
 - DirtMessage
 - Disconnected
+- DownloadTerrain
 - EditGamerules
 - EditWorld
 - AbstractRecipeBook
@@ -115,13 +117,3 @@
 - BookSign
 - TestBlockEdit
 - TestInstanceBlockEdit
-- DebugOptions
-- AbstractMountInventory
-- NautilusInventory
-- CodeOfConduct
-- Restrictions
-- InWorldGameRules
-- WorldOptions
-- AbstractGameRules
-- FileFixerProgress
-- FileFixerAborted
