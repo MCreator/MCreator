@@ -62,7 +62,7 @@ public class ModulesFileLibraryInfo extends LibraryInfo {
 						new URL[] { new File(jdkHome, "lib/jrt-fs.jar").toURI().toURL() },
 						ClassLoader.getPlatformClassLoader());
 
-				// Load the JRT FileSystem using the external provider a
+				// Load the JRT FileSystem using the external provider
 				jrtFileSystem = FileSystems.newFileSystem(URI.create("jrt:/"),
 						Map.of("java.home", jdkHome.getAbsolutePath()), classLoader);
 			} catch (Exception e) {
