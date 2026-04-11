@@ -21,7 +21,6 @@ package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.element.types.Block;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.ScrollWheelPassLayer;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -59,10 +58,6 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		add.setText(L10N.t("elementgui.block.custom_states.add"));
 
 		ComponentUtils.borderWrap(this);
-
-		// Make sure inner scroll panes work correctly in tandem with outer one
-		remove(scrollPane);
-		add("Center", new JLayer<>(scrollPane, new ScrollWheelPassLayer()));
 	}
 
 	// called when a property is removed
