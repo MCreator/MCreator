@@ -58,13 +58,15 @@ public class ModulesFileLibraryInfo extends LibraryInfo {
 	public FileSystem getJrtFileSystem() throws IOException {
 		if (jrtFileSystem == null || !jrtFileSystem.isOpen()) {
 			try {
-				ClassLoader classLoader = new URLClassLoader(
-						new URL[] { new File(jdkHome, "lib/jrt-fs.jar").toURI().toURL() },
+				Path jdkPath = jdkHome.toPath().toAbsolutePath().normalize();
+				Path jrtFsPath = jdkPath.resolve("lib").resolve("jrt-fs.jar");
+
+				ClassLoader classLoader = new URLClassLoader(new URL[] { jrtFsPath.toUri().toURL() },
 						ClassLoader.getPlatformClassLoader());
 
 				// Load the JRT FileSystem using the external provider
-				jrtFileSystem = FileSystems.newFileSystem(URI.create("jrt:/"),
-						Map.of("java.home", jdkHome.getAbsolutePath()), classLoader);
+				jrtFileSystem = FileSystems.newFileSystem(URI.create("jrt:/"), Map.of("java.home", jdkPath.toString()),
+						classLoader);
 			} catch (Exception e) {
 				throw new IOException("Failed to initialize JRT FileSystem", e);
 			}
