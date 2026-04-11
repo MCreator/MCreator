@@ -93,11 +93,8 @@ public class JStateLabel extends JPanel {
 
 	public boolean editState() {
 		List<PropertyData<?>> propertyList = properties.get();
-		if (propertyList == null || propertyList.isEmpty()) {
-			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_no_properties"),
-					L10N.t("components.state_label.error_no_properties.title"), JOptionPane.WARNING_MESSAGE);
+		if (propertyList == null)
 			return false;
-		}
 
 		StateMap stateMap = StateEditorDialog.open(mcreator, propertyList, getStateMap(), numberMatchType);
 		if (stateMap == null)

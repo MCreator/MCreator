@@ -42,7 +42,7 @@ public class ${JavaModName}FluidTypes {
 
 	<#list fluids as fluid>
 	public static final DeferredHolder<FluidType, FluidType> ${fluid.getModElement().getRegistryNameUpper()}_TYPE =
-		REGISTRY.register("${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}FluidType::new);
+		REGISTRY.register("${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}FluidType());
 	</#list>
 }
 

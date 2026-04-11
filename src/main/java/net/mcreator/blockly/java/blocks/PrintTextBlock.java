@@ -35,7 +35,7 @@ public class PrintTextBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		org.w3c.dom.Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
-			String elementcode = master.processOutputBlockToStringCompatible(element);
+			String elementcode = BlocklyToCode.directProcessOutputBlock(master, element);
 			if (master.getTemplateGenerator() != null) {
 				if (master.getTemplateGenerator().hasTemplate("_print.java.ftl")) {
 					Map<String, Object> dataModel = new HashMap<>();

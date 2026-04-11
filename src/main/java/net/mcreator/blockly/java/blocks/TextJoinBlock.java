@@ -50,7 +50,7 @@ public class TextJoinBlock implements IBlockGenerator {
 				for (Element element : elements) {
 					if (element.getAttribute("name").equals("ADD" + i)) {
 						match = true;
-						String code = master.processOutputBlockToStringCompatible(element);
+						String code = BlocklyToCode.directProcessOutputBlock(master, element);
 						// Remove parentheses, unless it contains operations with same or lower precedence
 						inputCodes.add(code.contains("instanceof") ?
 								code :

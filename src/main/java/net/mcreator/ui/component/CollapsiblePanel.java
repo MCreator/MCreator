@@ -56,16 +56,7 @@ public class CollapsiblePanel extends JPanel {
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				FontMetrics fm = getFontMetrics(border.getTitleFont() != null ? border.getTitleFont() : getFont());
-
-				// Title height + some offset
-				int titleHeight = fm.getHeight() + 4;
-
-				int y = e.getY();
-				Insets insets = getInsets();
-				if (y >= insets.top - titleHeight && y <= insets.top) {
-					toggleVisibility();
-				}
+				toggleVisibility();
 			}
 		});
 	}
