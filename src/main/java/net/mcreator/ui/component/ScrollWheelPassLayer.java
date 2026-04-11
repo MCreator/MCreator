@@ -43,7 +43,8 @@ public class ScrollWheelPassLayer extends LayerUI<JScrollPane> {
 		int dir = e.getWheelRotation();
 		JScrollPane main = l.getView();
 		if (c instanceof JScrollPane child && !c.equals(main)) {
-			BoundedRangeModel m = child.getVerticalScrollBar().getModel();
+			boolean horizontal = e.isShiftDown();
+			BoundedRangeModel m = (horizontal ? child.getHorizontalScrollBar() : child.getVerticalScrollBar()).getModel();
 			int extent = m.getExtent();
 			int minimum = m.getMinimum();
 			int maximum = m.getMaximum();
