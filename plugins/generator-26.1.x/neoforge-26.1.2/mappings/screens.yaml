@@ -38,7 +38,7 @@ Stonecutter: StonecutterScreen
 AbstractReport: AbstractReportScreen
 AccessibilityOnboarding: AccessibilityOnboardingScreen
 AccessibilityOptions: AccessibilityOptionsScreen
-AddServer: EditServerScreen
+AddServer: ManageServerScreen
 Advancements: AdvancementsScreen
 Alert: AlertScreen
 Chat: ChatScreen
@@ -59,11 +59,9 @@ CreditsAndAttribution: CreditsAndAttributionScreen
 CustomizeSkin: SkinCustomizationScreen
 DatapackFailure: DatapackLoadFailureScreen
 Death: DeathScreen
-Demo: DemoIntroScreen
 DirtMessage: GenericMessageScreen
 Disconnected: DisconnectedScreen
-DownloadTerrain: ReceivingLevelScreen
-EditGamerules: EditGameRulesScreen
+EditGamerules: WorldCreationGameRulesScreen
 EditWorld: EditWorldScreen
 Error: ErrorScreen
 Experiments: ExperimentsScreen
@@ -118,3 +116,13 @@ WaitingForResponse: WaitingForResponseScreen
 BookSign: BookSignScreen
 TestBlockEdit: TestBlockEditScreen
 TestInstanceBlockEdit: TestInstanceBlockEditScreen
+DebugOptions: DebugOptionsScreen
+AbstractMountInventory: AbstractMountInventoryScreen
+NautilusInventory: NautilusInventoryScreen
+CodeOfConduct: CodeOfConductScreen
+Restrictions: RestrictionsScreen
+InWorldGameRules: InWorldGameRulesScreen
+WorldOptions: WorldOptionsScreen
+AbstractGameRules: AbstractGameRulesScreen
+FileFixerProgress: FileFixerProgressScreen
+FileFixerAborted: FileFixerAbortedScreen

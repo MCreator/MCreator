@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,14 +36,13 @@
 
 package ${package}.init;
 
-public class ${JavaModName}ParticleTypes {
+@EventBusSubscriber(Dist.CLIENT) public class ${JavaModName}Particles {
 
-	public static final DeferredRegister<ParticleType<?>> REGISTRY = DeferredRegister.create(Registries.PARTICLE_TYPE, ${JavaModName}.MODID);
-
-	<#list particles as particle>
-	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ${particle.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${particle.getModElement().getRegistryName()}", () -> new SimpleParticleType(${particle.alwaysShow}));
-	</#list>
+	@SubscribeEvent public static void registerParticles(RegisterParticleProvidersEvent event) {
+		<#list particles as particle>
+		event.registerSpriteSet(${JavaModName}ParticleTypes.${particle.getModElement().getRegistryNameUpper()}.get(), ${particle.getModElement().getName()}Particle::provider);
+		</#list>
+	}
 
 }
 <#-- @formatter:on -->
