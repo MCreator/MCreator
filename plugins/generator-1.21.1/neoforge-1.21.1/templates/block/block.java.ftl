@@ -141,7 +141,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			.strength(${data.hardness}f, ${data.resistance}f)
 		</#if>
 		<#if hasProcedure(data.luminance) || data.luminance.getFixedValue() != 0>
-			.lightLevel(s -> <#if hasProcedure(data.luminance)>(int) <@procedureOBJToNumberCode data.luminance/><#else>${data.luminance.getFixedValue()}</#if>)
+			.lightLevel(blockstate -> <#if hasProcedure(data.luminance)>(int) <@procedureOBJToNumberCode data.luminance/><#else>${data.luminance.getFixedValue()}</#if>)
 		</#if>
 		<#if data.requiresCorrectTool>
 			.requiresCorrectToolForDrops()

@@ -197,7 +197,11 @@ public class CefUtils {
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
 			settings.locale = L10N.getLocale().stripExtensions().toLanguageTag();
-			settings.log_file = null;
+
+			settings.log_file = UserFolderManager.getFileFromUserFolder("/cef_log.txt").toString();
+			if (System.getenv("MCREATOR_CEF_DEBUG") != null) {
+				settings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_VERBOSE;
+			}
 
 			settings.cache_path = Objects.requireNonNullElseGet(getTmpCacheFolder(),
 					() -> UserFolderManager.getFileFromUserFolder("/cef/")).toString();
@@ -227,7 +231,7 @@ public class CefUtils {
 			cefApp = CefApp.getInstance(args, settings, null);
 
 			try {
-				if (!latch.await(10, TimeUnit.SECONDS)) {
+				if (!latch.await(5, TimeUnit.SECONDS)) {
 					LOG.error("Failed to initialize JCEF in time. Things may not work properly.");
 				}
 			} catch (InterruptedException ignored) {
