@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 26.1.2.4-beta
+buildfileversion: 26.1.1.1-beta
 
 import:
   - datapack-26.1.x
@@ -29,7 +29,6 @@ import_formatter:
     Potion: net.minecraft.world.item.alchemy
     AttachmentType: net.neoforged.neoforge.attachment
     MapColor: net.minecraft.world.level.material
-    AttributeModifier: net.minecraft.world.entity.ai.attributes
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -43,8 +42,8 @@ structures_dir: "@MODDATAROOT/structure"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
-effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
-particle_textures_dir: "@MODASSETSROOT/textures/particle"
+#effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
+#particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
@@ -100,11 +99,11 @@ base_templates:
 #    condition_any:
 #      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
 #    name: "@RESROOT/@modid.mixins.json"
-  - template: elementinits/dispensebehaviors.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
-    condition_any:
-      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
-      - "${w.hasElementsOfType('specialentity')}"
+#  - template: elementinits/dispensebehaviors.java.ftl
+#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
+#    condition_any:
+#      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
+#      - "${w.hasElementsOfType('specialentity')}"
 
 java_models:
   key: mojmap-26.1.x

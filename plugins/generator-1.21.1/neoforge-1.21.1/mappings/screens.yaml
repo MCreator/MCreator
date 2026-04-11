@@ -59,8 +59,10 @@ CreditsAndAttribution: CreditsAndAttributionScreen
 CustomizeSkin: SkinCustomizationScreen
 DatapackFailure: DatapackLoadFailureScreen
 Death: DeathScreen
+Demo: DemoIntroScreen
 DirtMessage: GenericMessageScreen
 Disconnected: DisconnectedScreen
+DownloadTerrain: ReceivingLevelScreen
 EditGamerules: EditGameRulesScreen
 EditWorld: EditWorldScreen
 Error: ErrorScreen
