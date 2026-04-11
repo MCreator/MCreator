@@ -33,7 +33,7 @@ public class PrintTextBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
-			String elementcode = BlocklyToCode.directProcessOutputBlock(master, element);
+			String elementcode = master.processOutputBlockToStringCompatible(element);
 			if (master.getTemplateGenerator() != null) {
 				master.append("console.log(");
 				master.append(ProcedureCodeOptimizer.removeParentheses(elementcode));
