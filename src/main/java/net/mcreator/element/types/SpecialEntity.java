@@ -84,7 +84,7 @@ import java.util.List;
 		List<BaseType> baseTypes = new ArrayList<>();
 		baseTypes.add(BaseType.ITEM);
 
-		// Since 1.21.2 custom boats are stand-alone entity types, not variants of the vanilla boat entity
+		// Since 1.21.2 custom boats are stand-alone entity types, not variants of the vanilla boat entity, 1.21-1.21.1 have custom enum extensions for this, older versions need to make a custom entity
 		if (!getModElement().getGenerator().getGeneratorMinecraftVersion().equals("1.21.1"))
 			baseTypes.add(BaseType.ENTITY);
 
