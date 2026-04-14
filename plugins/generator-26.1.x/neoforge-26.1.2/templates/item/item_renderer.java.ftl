@@ -81,6 +81,8 @@ package ${package}.client.renderer.item;
 	}
 
 	@Override public void submit(ItemStack itemstack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean glint, int outlineColor) {
+		ItemDisplayContext displayContext = ItemDisplayContext.NONE;
+
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
 		</#if>
