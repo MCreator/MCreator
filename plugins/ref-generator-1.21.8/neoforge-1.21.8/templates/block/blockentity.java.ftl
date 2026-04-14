@@ -302,7 +302,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 			</#if>
 		}
 
-		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity entity, Entity projectileShooter, float distance) {
+		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, Entity entity, Entity sourceentity, float distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
 				<@procedureCode data.onReceivedVibration {
 					"x": "x",
@@ -314,7 +314,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 					"world": "world",
 					"blockstate": "${name}BlockEntity.this.getBlockState()",
 					"entity": "entity",
-					"sourceentity": "projectileShooter"
+					"sourceentity": "sourceentity",
+					"distance": "distance"
 				}/>
 			</#if>
 		}
