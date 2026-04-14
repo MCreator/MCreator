@@ -1099,7 +1099,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					"world": "world",
 					"entity": "entity",
 					"sourceentity": "vibrationSource",
-					"immediatesourceentity": "projectileShooter"
+					"immediatesourceentity": "projectileShooter",
+					"distance": "distance"
 				}/>
 			</#if>
 		}
