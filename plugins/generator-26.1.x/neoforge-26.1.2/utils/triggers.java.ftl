@@ -45,7 +45,7 @@
 		@Override public void appendHoverText(ItemStack itemstack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> componentConsumer, TooltipFlag flag) {
 			super.appendHoverText(itemstack, context, tooltipDisplay, componentConsumer, flag);
 		<#if hasProcedure(procedure)>
-			Entity entity = itemstack.getEntityRepresentation() != null ? itemstack.getEntityRepresentation() : ${JavaModName}.clientPlayer();
+			Entity entity = ${JavaModName}.clientPlayer();
 			String hoverText = <@procedureCode procedure, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
@@ -109,7 +109,7 @@
 <#if hasProcedure(procedure) || hurtStack>
 @Override public void hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 	<#if hurtStack>
-		itemstack.hurtAndBreak(${hurtStackAmount}, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
+		itemstack.hurtAndBreak(${hurtStackAmount}, entity, entity.getUsedItemHand().asEquipmentSlot());
 	<#else>
 		super.hurtEnemy(itemstack, entity, sourceentity);
 	</#if>
@@ -237,7 +237,7 @@
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean mineBlock(ItemStack itemstack, Level world, BlockState blockstate, BlockPos pos, LivingEntity entity) {
 	<#if hurtStack>
-		itemstack.hurtAndBreak(1, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
+		itemstack.hurtAndBreak(1, entity, entity.getUsedItemHand().asEquipmentSlot());
 	<#else>
 		boolean retval = super.mineBlock(itemstack,world,blockstate,pos,entity);
 	</#if>

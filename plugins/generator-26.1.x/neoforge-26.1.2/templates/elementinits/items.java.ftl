@@ -159,7 +159,7 @@ public class ${JavaModName}Items {
 	// End of user code block custom items
 
 	private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, ? extends I> supplier) {
-		return REGISTRY.registerItem(name, supplier, new Item.Properties());
+		return REGISTRY.registerItem(name, supplier, Item.Properties::new);
 	}
 
 	<#if hasBlocks>
@@ -208,14 +208,14 @@ public class ${JavaModName}Items {
 		<#list itemsWithInventory as item>
 			event.registerItem(
 				Capabilities.ItemHandler.ITEM,
-				(stack, context) -> new ${item.getModElement().getName()}InventoryCapability(stack),
+				(stack, access) -> new ${item.getModElement().getName()}InventoryCapability(access),
 				${item.getModElement().getRegistryNameUpper()}.get()
 			);
 		</#list>
 		<#list buckets as item>
 			event.registerItem(
 				Capabilities.FluidHandler.ITEM,
-				(stack, context) -> new FluidBucketWrapper(stack),
+				(stack, access) -> new BucketResourceHandler(access),
 				${item.getModElement().getRegistryNameUpper()}_BUCKET.get()
 			);
 		</#list>

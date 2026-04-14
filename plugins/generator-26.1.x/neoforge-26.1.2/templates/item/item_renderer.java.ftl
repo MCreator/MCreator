@@ -80,7 +80,7 @@ package ${package}.client.renderer.item;
 		this.start = System.currentTimeMillis();
 	}
 
-	@Override public void render(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, boolean glint) {
+	@Override public void submit(ItemStack itemstack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean glint, int outlineColor) {
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
 		</#if>
@@ -88,7 +88,7 @@ package ${package}.client.renderer.item;
 		poseStack.pushPose();
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
-		VertexConsumer vertexConsumer = ItemRenderer.getFoilBuffer(bufferSource, model.renderType(texture), false, glint);
+
 		renderState.ageInTicks = (System.currentTimeMillis() - start) / 50.0f;
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
@@ -96,7 +96,10 @@ package ${package}.client.renderer.item;
 		else
 		</#if>
 		model.setupAnim(renderState);
-		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
+
+		RenderType renderType = glint ? ItemFeatureRenderer.getFoilRenderType(this.model.renderType(texture), false) : this.model.renderType(texture);
+		submitNodeCollector.submitModel(this.model, renderState, poseStack, renderType, lightCoords, OverlayTexture.NO_OVERLAY, outlineColor, null);
+
 		poseStack.popPose();
 	}
 
@@ -104,16 +107,16 @@ package ${package}.client.renderer.item;
 		return itemstack;
 	}
 
-	@Override public void getExtents(Set<Vector3f> extentsSet) {
+	@Override public void getExtents(Consumer<Vector3fc> output) {
 		PoseStack posestack = new PoseStack();
-		this.model.root().getExtentsForGui(posestack, extentsSet);
+		this.model.root().getExtentsForGui(posestack, output);
 	}
 
 	private static boolean isInventory(ItemDisplayContext type) {
 		return type == ItemDisplayContext.GUI || type == ItemDisplayContext.FIXED;
 	}
 
-	public record Unbaked(int index) implements SpecialModelRenderer.Unbaked {
+	public record Unbaked(int index) implements SpecialModelRenderer.Unbaked<ItemStack> {
 		public static final MapCodec<${name}ItemRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
 			ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("index").xmap(opt -> opt.orElse(-1), i -> i == -1 ? Optional.empty() : Optional.of(i)).forGetter(${name}ItemRenderer.Unbaked::index)
 		).apply(instance, ${name}ItemRenderer.Unbaked::new));
@@ -124,8 +127,8 @@ package ${package}.client.renderer.item;
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-			return ${name}ItemRenderer.MODELS.get(index).apply(modelSet);
+		public SpecialModelRenderer<ItemStack> bake(BakingContext bakingContext) {
+			return ${name}ItemRenderer.MODELS.get(index).apply(bakingContext.entityModelSet());
 		}
 	}
 

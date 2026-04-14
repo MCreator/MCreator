@@ -44,15 +44,15 @@ package ${package}.client.renderer.item;
 	}
 
 	@Override public void update(ItemStackRenderState renderState, ItemStack itemStack, ItemModelResolver modelResolver,
-			ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
+			ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable ItemOwner owner, int seed) {
 		ItemModel model = fallback;
 		for (int i = overrides.length - 1; i >= 0; i--) {
-			if (overrides[i].test(itemStack, level, entity, seed, displayContext)) {
+			if (overrides[i].test(itemStack, level, owner != null ? owner.asLivingEntity() : null, seed, displayContext)) {
 				model = models[i];
 				break;
 			}
 		}
-		model.update(renderState, itemStack, modelResolver, displayContext, level, entity, seed);
+		model.update(renderState, itemStack, modelResolver, displayContext, level, owner, seed);
 	}
 
 	public record FloatEntry(RangeSelectItemModelProperty property, float value) implements PredicateEntry {
@@ -124,11 +124,11 @@ package ${package}.client.renderer.item;
 			return MAP_CODEC;
 		}
 
-		@Override public ItemModel bake(ItemModel.BakingContext bakingContext) {
+		@Override public ItemModel bake(ItemModel.BakingContext bakingContext, Matrix4fc transformation) {
 			ItemModel[] models = new ItemModel[overrides.size()];
 			for (int i = 0; i < overrides.size(); i++)
-				models[i] = overrides.get(i).model.bake(bakingContext);
-			return new LegacyOverrideSelectItemModel(overrides.toArray(LegacyOverrideSelectItemModel.ModelOverride[]::new), models, fallback.bake(bakingContext));
+				models[i] = overrides.get(i).model.bake(bakingContext, transformation);
+			return new LegacyOverrideSelectItemModel(overrides.toArray(LegacyOverrideSelectItemModel.ModelOverride[]::new), models, fallback.bake(bakingContext, transformation));
 		}
 
 		@Override public void resolveDependencies(ResolvableModel.Resolver resolver) {
