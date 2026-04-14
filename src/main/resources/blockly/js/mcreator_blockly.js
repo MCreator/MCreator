@@ -25,6 +25,12 @@ const workspace = Blockly.inject(blockly, {
     toolbox: '<xml id="toolbox"><category name="" colour=""></category></xml>'
 });
 
+const crossTabPlugin = new CrossTabCopyPaste();
+crossTabPlugin.init({
+    contextMenu: true,
+    shortcut: true
+}, null, editorType);
+
 workspace.addChangeListener(function (event) {
     if (workspace.isDragging())
         return; // Don't update while changes are happening.

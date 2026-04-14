@@ -34,6 +34,7 @@ import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
 import org.cef.callback.CefMenuModel;
 import org.cef.callback.CefRunContextMenuCallback;
+import org.cef.callback.CefSchemeRegistrar;
 import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefContextMenuHandler;
 import org.cef.handler.CefDisplayHandlerAdapter;
@@ -224,6 +225,20 @@ public class CefUtils {
 								cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
 						latch.countDown();
 					}
+				}
+
+				@Override
+				public void onRegisterCustomSchemes(CefSchemeRegistrar registrar) {
+					registrar.addCustomScheme(
+							"classloader",
+							true,  // isStandard = true (Treats it like HTTP/HTTPS so it has an Origin)
+							true,  // true (Allows it to access local resources)
+							false, // isDisplayIsolated
+							true,  // true (Allows it to bypass certain modern web restrictions)
+							true,  // isCorsEnabled
+							false, // isCspBypassing
+							true   // isFetchEnabled
+					);
 				}
 			});
 
