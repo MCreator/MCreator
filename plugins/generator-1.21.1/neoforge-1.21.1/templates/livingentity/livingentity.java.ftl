@@ -1109,7 +1109,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			</#if>
 		}
 
-		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, @Nullable Entity vibrationSource, @Nullable Entity projectileShooter, float distance) {
+		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, @Nullable Entity vibrationSource, @Nullable Entity immediateSource, float distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
 				<@procedureCode data.onReceivedVibration {
 					"x": "entity.getX()",
@@ -1121,7 +1121,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					"world": "world",
 					"entity": "entity",
 					"sourceentity": "vibrationSource",
-					"immediatesourceentity": "projectileShooter"
+					"immediatesourceentity": "immediateSource",
+					"distance": "distance"
 				}/>
 			</#if>
 		}
