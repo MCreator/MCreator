@@ -40,8 +40,10 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 
 	private static final Logger LOG = LogManager.getLogger(CefClassLoaderSchemeHandler.class);
 
-	private InputStream inputStream;
 	private String contentType;
+
+	private int offset = 0;
+	private byte[] resourceData;
 
 	private static final String blocklyThemeID;
 
@@ -66,7 +68,7 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 				//@formatter:on
 				;
 
-		inputStream = getClass().getResourceAsStream(path);
+		InputStream inputStream = getClass().getResourceAsStream(path);
 		if (inputStream == null) {
 			// if resource not found, try to load it from the plugins
 			inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
@@ -76,44 +78,47 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 			}
 		}
 
+		try {
+			resourceData = inputStream.readAllBytes();
+			inputStream.close();
+		} catch (IOException e) {
+			LOG.warn("Error reading resource: {}", path, e);
+			return false;
+		}
+
 		contentType = detectMimeType(path);
 		callback.Continue();
 		return true;
 	}
 
 	@Override public void getResponseHeaders(CefResponse response, IntRef responseLength, StringRef redirectUrl) {
-		response.setMimeType(contentType);
 		response.setStatus(200);
 		response.setStatusText("OK");
-		responseLength.set(-1);
+		response.setMimeType(contentType);
+		responseLength.set(resourceData != null ? resourceData.length : 0);
 	}
 
-	@Override public boolean readResponse(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefCallback callback) {
-		try {
-			int n = inputStream.read(dataOut, 0, bytesToRead);
-			if (n == -1) {
-				closeStream();
-				return false;
-			}
-			bytesRead.set(n);
-			return true;
-		} catch (IOException e) {
-			LOG.warn("Error reading resource: {}", e.getMessage());
-			closeStream();
-			return false;
+	@Override
+	public boolean readResponse(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefCallback callback) {
+		if (resourceData == null || offset >= resourceData.length) {
+			bytesRead.set(0);
+			return false; // EOF
 		}
+
+		// Calculate how many bytes CEF wants vs. how many we have left
+		int bytesToCopy = Math.min(bytesToRead, resourceData.length - offset);
+
+		// Copy our cached byte array into the CEF JNI buffer
+		System.arraycopy(resourceData, offset, dataOut, 0, bytesToCopy);
+
+		offset += bytesToCopy;
+		bytesRead.set(bytesToCopy);
+		return true;
 	}
 
 	@Override public void cancel() {
-		closeStream();
-	}
-
-	private void closeStream() {
-		try {
-			if (inputStream != null)
-				inputStream.close();
-		} catch (IOException ignored) {
-		}
+		resourceData = null;
+		offset = 0;
 	}
 
 	private String detectMimeType(String path) {
