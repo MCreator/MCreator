@@ -80,7 +80,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
-		webView = new WebView("classloader://blockly/blockly.html", isTransparent());
+		webView = new WebView("http://mcreator/blockly/blockly.html", isTransparent());
 
 		add("Center", webView);
 

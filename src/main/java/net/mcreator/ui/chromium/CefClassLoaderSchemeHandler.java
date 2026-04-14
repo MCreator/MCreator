@@ -59,12 +59,16 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
-		String path = request.getURL().replaceFirst("^classloader://", "/")
+		String path = request.getURL().replaceFirst("^http://mcreator/", "/")
 				//@formatter:off
 				.replace("__LANG__", L10N.getBlocklyLangName())
 				.replace("__BLOCKLY_THEME_ID__", blocklyThemeID)
 				//@formatter:on
 				;
+
+		if (path.contains("favicon.ico")) {
+			return false; // ignore favicon requests
+		}
 
 		inputStream = getClass().getResourceAsStream(path);
 		if (inputStream == null) {
