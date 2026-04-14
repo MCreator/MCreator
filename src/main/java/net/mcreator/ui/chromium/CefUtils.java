@@ -226,20 +226,6 @@ public class CefUtils {
 						latch.countDown();
 					}
 				}
-
-				@Override
-				public void onRegisterCustomSchemes(CefSchemeRegistrar registrar) {
-					registrar.addCustomScheme(
-							"classloader",
-							true,  // isStandard
-							true,  // isLocal
-							false, // isDisplayIsolated
-							true,  // isSecure
-							true,  // isCorsEnabled
-							false, // isCspBypassing
-							true   // isFetchEnabled
-					);
-				}
 			});
 
 			CefApp.startup(args);
