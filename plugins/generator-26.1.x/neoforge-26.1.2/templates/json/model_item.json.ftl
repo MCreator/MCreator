@@ -65,13 +65,47 @@
 
 <#macro modelRef model suffix="" itemIndex=-1>
   <#if model.hasCustomJAVAModel?? && model.hasCustomJAVAModel()>
-    "type": "minecraft:special",
-    "base": "${modid}:item/${registryname}${suffix}",
-    "model": {
-      "type": "${modid}:${registryname}"
-      <#if (itemIndex >= 0)>,
-      "index": ${itemIndex}
-      </#if>
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+       "when": "gui",
+       "model": {
+        "type": "minecraft:special",
+        "base": "${modid}:item/${registryname}${suffix}",
+        "model": {
+          "type": "${modid}:${registryname}",
+          "display": "gui"
+          <#if (itemIndex >= 0)>,
+          "index": ${itemIndex}
+          </#if>
+        }
+       }
+      },
+      {
+       "when": "fixed",
+       "model": {
+        "type": "minecraft:special",
+        "base": "${modid}:item/${registryname}${suffix}",
+        "model": {
+          "type": "${modid}:${registryname}",
+          "display": "fixed"
+          <#if (itemIndex >= 0)>,
+          "index": ${itemIndex}
+          </#if>
+        }
+       }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:special",
+      "base": "${modid}:item/${registryname}${suffix}",
+      "model": {
+        "type": "${modid}:${registryname}"
+        <#if (itemIndex >= 0)>,
+        "index": ${itemIndex}
+        </#if>
+      }
     }
   <#else>
     "type": "minecraft:model",

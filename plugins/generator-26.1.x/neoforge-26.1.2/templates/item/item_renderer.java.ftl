@@ -58,31 +58,32 @@ package ${package}.client.renderer.item;
 		event.register(Identifier.parse("${modid}:${registryname}"), ${name}ItemRenderer.Unbaked.MAP_CODEC);
 	}
 
-	private static final Map<Integer, Function<EntityModelSet, ${name}ItemRenderer>> MODELS = Map.ofEntries(
+	private static final Map<Integer, Function<Unbaked.CustomBakingContext, ${name}ItemRenderer>> MODELS = Map.ofEntries(
 		<#list models as model>
-			Map.entry(${model[0]}, modelSet -> new ${name}ItemRenderer(
-				new <#if model[0] == -1 && data.animations?has_content>AnimatedModel<#else>${model[1]}</#if>(modelSet.bakeLayer(${model[1]}.LAYER_LOCATION)),
-				Identifier.parse("${model[2].format("%s:textures/item/%s")}.png")
+			Map.entry(${model[0]}, context -> new ${name}ItemRenderer(
+				new <#if model[0] == -1 && data.animations?has_content>AnimatedModel<#else>${model[1]}</#if>(context.bakingContext().entityModelSet().bakeLayer(${model[1]}.LAYER_LOCATION)),
+				Identifier.parse("${model[2].format("%s:textures/item/%s")}.png"),
+				context.display()
 			))<#sep>,
 		</#list>
 	);
 
 	private final EntityModel<LivingEntityRenderState> model;
 	private final Identifier texture;
+	private final ItemDisplayContext displayContext;
 
 	private final LivingEntityRenderState renderState;
 	private final long start;
 
-	private ${name}ItemRenderer(EntityModel<LivingEntityRenderState> model, Identifier texture) {
+	private ${name}ItemRenderer(EntityModel<LivingEntityRenderState> model, Identifier texture, ItemDisplayContext displayContext) {
 		this.model = model;
 		this.texture = texture;
+		this.displayContext = displayContext;
 		this.renderState = new LivingEntityRenderState();
 		this.start = System.currentTimeMillis();
 	}
 
 	@Override public void submit(ItemStack itemstack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean glint, int outlineColor) {
-		ItemDisplayContext displayContext = ItemDisplayContext.NONE;
-
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
 		</#if>
@@ -99,8 +100,11 @@ package ${package}.client.renderer.item;
 		</#if>
 		model.setupAnim(renderState);
 
-		RenderType renderType = glint ? ItemFeatureRenderer.getFoilRenderType(this.model.renderType(texture), false) : this.model.renderType(texture);
-		submitNodeCollector.submitModel(this.model, renderState, poseStack, renderType, lightCoords, OverlayTexture.NO_OVERLAY, outlineColor, null);
+		submitNodeCollector.submitModel(this.model, renderState, poseStack, texture, lightCoords, overlayCoords, outlineColor, null);
+
+		if (glint) {
+			submitNodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityGlint(), lightCoords, overlayCoords, -1, null);
+		}
 
 		poseStack.popPose();
 	}
@@ -118,9 +122,10 @@ package ${package}.client.renderer.item;
 		return type == ItemDisplayContext.GUI || type == ItemDisplayContext.FIXED;
 	}
 
-	public record Unbaked(int index) implements SpecialModelRenderer.Unbaked<ItemStack> {
+	public record Unbaked(int index, ItemDisplayContext display) implements SpecialModelRenderer.Unbaked<ItemStack> {
 		public static final MapCodec<${name}ItemRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-			ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("index").xmap(opt -> opt.orElse(-1), i -> i == -1 ? Optional.empty() : Optional.of(i)).forGetter(${name}ItemRenderer.Unbaked::index)
+				ExtraCodecs.NON_NEGATIVE_INT.optionalFieldOf("index").xmap(opt -> opt.orElse(-1), i -> i == -1 ? Optional.empty() : Optional.of(i)).forGetter(${name}ItemRenderer.Unbaked::index),
+				ItemDisplayContext.CODEC.optionalFieldOf("display", ItemDisplayContext.NONE).forGetter(${name}ItemRenderer.Unbaked::display)
 		).apply(instance, ${name}ItemRenderer.Unbaked::new));
 
 		@Override
@@ -130,8 +135,11 @@ package ${package}.client.renderer.item;
 
 		@Override
 		public SpecialModelRenderer<ItemStack> bake(BakingContext bakingContext) {
-			return ${name}ItemRenderer.MODELS.get(index).apply(bakingContext.entityModelSet());
+			return ${name}ItemRenderer.MODELS.get(index).apply(new CustomBakingContext(bakingContext, display));
 		}
+
+		public record CustomBakingContext(BakingContext bakingContext, ItemDisplayContext display) {}
+
 	}
 
 	<#if data.hasCustomJAVAModel() && data.animations?has_content>
