@@ -84,6 +84,7 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	@Override public void getResponseHeaders(CefResponse response, IntRef responseLength, StringRef redirectUrl) {
 		response.setMimeType(contentType);
 		response.setStatus(200);
+		response.setStatusText("OK");
 		responseLength.set(-1);
 	}
 

@@ -232,7 +232,7 @@ public class CefUtils {
 					registrar.addCustomScheme(
 							"classloader",
 							true,  // isStandard
-							true,  // isLocal
+							false,  // isLocal
 							false, // isDisplayIsolated
 							true,  // isSecure
 							true,  // isCorsEnabled
