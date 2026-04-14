@@ -61,8 +61,8 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
 		String path = request.getURL().replaceFirst("^classloader://", "/")
 				//@formatter:off
-				.replace("[LANG]", L10N.getBlocklyLangName())
-				.replace("[BLOCKLY_THEME_ID]", blocklyThemeID)
+				.replace("__LANG__", L10N.getBlocklyLangName())
+				.replace("__BLOCKLY_THEME_ID__", blocklyThemeID)
 				//@formatter:on
 				;
 

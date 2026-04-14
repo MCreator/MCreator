@@ -231,10 +231,10 @@ public class CefUtils {
 				public void onRegisterCustomSchemes(CefSchemeRegistrar registrar) {
 					registrar.addCustomScheme(
 							"classloader",
-							true,  // isStandard = true (Treats it like HTTP/HTTPS so it has an Origin)
-							true,  // true (Allows it to access local resources)
+							true,  // isStandard
+							true,  // isLocal
 							false, // isDisplayIsolated
-							true,  // true (Allows it to bypass certain modern web restrictions)
+							true,  // isSecure
 							true,  // isCorsEnabled
 							false, // isCspBypassing
 							true   // isFetchEnabled
