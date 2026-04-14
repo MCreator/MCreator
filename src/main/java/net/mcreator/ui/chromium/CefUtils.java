@@ -34,7 +34,6 @@ import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
 import org.cef.callback.CefMenuModel;
 import org.cef.callback.CefRunContextMenuCallback;
-import org.cef.callback.CefSchemeRegistrar;
 import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefContextMenuHandler;
 import org.cef.handler.CefDisplayHandlerAdapter;
