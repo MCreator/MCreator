@@ -217,12 +217,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		return super.keyPressed(event);
 	}
 
-	<#if sliders?has_content> <#-- AbstractContainerScreen overrides it for slots only, causing a bug with Sliders, so we override it again -->
-	@Override public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
-		return (this.getFocused() != null && this.isDragging() && event.button() == 0) ? this.getFocused().mouseDragged(event, dragX, dragY) : super.mouseDragged(event, dragX, dragY);
-	}
-	</#if>
-
 	<#if textFields?has_content>
 	@Override public void resize(int width, int height) {
 		<#list textFields as component>
