@@ -67,16 +67,17 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 				;
 
 		if (path.contains("favicon.ico")) {
-			return false; // ignore favicon requests
-		}
-
-		inputStream = getClass().getResourceAsStream(path);
-		if (inputStream == null) {
-			// if resource not found, try to load it from the plugins
-			inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
+			// return empty stream for favicon requests
+			inputStream = InputStream.nullInputStream();
+		} else {
+			inputStream = getClass().getResourceAsStream(path);
 			if (inputStream == null) {
-				LOG.warn("Resource not found: {}", path);
-				return false; // resource not found
+				// if resource not found, try to load it from the plugins
+				inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
+				if (inputStream == null) {
+					LOG.warn("Resource not found: {}", path);
+					return false; // resource not found
+				}
 			}
 		}
 
