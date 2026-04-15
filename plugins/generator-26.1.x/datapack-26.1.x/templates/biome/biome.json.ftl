@@ -69,51 +69,59 @@
     "temperature": ${data.temperature},
     "downfall": ${data.rainingPossibility},
     "effects": {
-		<#if data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
-		"ambient_sound": "${data.ambientSound}",
-		</#if>
-	  	<#if data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
-		"mood_sound": {
-			"sound": "${data.moodSound}",
-			"tick_delay": ${data.moodSoundDelay},
-			"offset": 8,
-			"block_search_extent": 2
-		},
-	  	</#if>
-	  	<#if data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
-		"additions_sound": {
-			"sound": "${data.additionsSound}",
-		  	"tick_chance": 0.0111
-		},
-	  	</#if>
-	  	<#if data.music?has_content && data.music.getMappedValue()?has_content>
-		"music": [
-          {
-            "weight": 1,
-            "data": {
-              "sound": "${data.music}",
-              "min_delay": 12000,
-              "max_delay": 24000,
-              "replace_current_music": true
-            }
-          }
-        ],
-	  	</#if>
-	  	<#if data.spawnParticles>
-		"particle": {
-			"options": {
-				"type": "${data.particleToSpawn.getMappedValue(1)}"
-			},
-			"probability": ${data.particlesProbability / 100}
-        },
-		</#if>
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
-    	"sky_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)},
-    	"fog_color": ${data.fogColor?has_content?then(data.fogColor.getRGB(), 12638463)},
-    	"water_color": ${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)},
-    	"water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)}
+    	"water_color": ${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)}
     },
+  	<#assign hasAmbientSound = data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
+  	<#assign hasMoodSound = data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
+  	<#assign hasAdditionsSound = data.additionsSound?has_content && data.additionsSound.getMappedValue()?has_content>
+    "attributes": {
+	    <#if hasAmbientSound || hasMoodSound || hasAdditionsSound>
+		"minecraft:audio/ambient_sounds": {
+		  <#if hasAmbientSound>
+          "loop": "${data.ambientSound}"<#if hasMoodSound || hasAdditionsSound>,</#if>
+		  </#if>
+		  <#if hasMoodSound>
+		  "mood": {
+              "sound": "${data.moodSound}",
+              "tick_delay": ${data.moodSoundDelay},
+              "block_search_extent": 8,
+              "offset": 2
+          }<#if hasAdditionsSound>,</#if>
+		  </#if>
+	  	  <#if hasAdditionsSound>
+		  "additions": {
+              "sound": "${data.additionsSound}",
+              "tick_chance": 0.0111
+          }
+		  </#if>
+        },
+        </#if>
+	  	<#if data.music?has_content && data.music.getMappedValue()?has_content>
+		"minecraft:audio/background_music": {
+            "default": {
+                "sound": "${data.music}",
+                "min_delay": 12000,
+                "max_delay": 24000,
+                "replace_current_music": true
+            }
+        },
+		</#if>
+	  	<#if data.spawnParticles>
+		"minecraft:visual/ambient_particles": [
+            {
+                "particle": {
+                    "type": "${data.particleToSpawn.getMappedValue(1)}"
+                },
+                "probability": ${data.particlesProbability / 100}
+            }
+        ],
+		</#if>
+        "minecraft:visual/sky_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)},
+        "minecraft:visual/fog_color": ${data.fogColor?has_content?then(data.fogColor.getRGB(), 12638463)},
+        "minecraft:visual/water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)}
+	},
 	"spawners": {
 		"monster": [<@generateEntityList data.spawnEntries "monster"/>],
 		"creature": [<@generateEntityList data.spawnEntries "creature"/>],
