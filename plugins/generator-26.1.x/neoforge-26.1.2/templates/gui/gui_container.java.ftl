@@ -118,7 +118,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 			<#list data.components as component>
 				<#if component.getClass().getSimpleName()?ends_with("Slot")>
 					<#assign slotnum += 1>
-					this.customSlots.put(${component.id}, this.addSlot(new ResourceHandlerSlot(internal, this::set, ${component.id},
+					this.customSlots.put(${component.id}, this.addSlot(new ResourceHandlerSlot(internal, this::setItemInSlot, ${component.id},
 						${component.gx(data.width) + 1},
 						${component.gy(data.height) + 1}) {
 						private final int slot = ${component.id}; <#-- #5209, this is needed for procedure dependencies -->
@@ -188,7 +188,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		</#if>
 	}
 
-	private void set(int index, ItemResource resource, int amount) {
+	private void setItemInSlot(int index, ItemResource resource, int amount) {
 		if (!internal.getResource(index).isEmpty())
 			try (var tx = Transaction.openRoot()) {
 				internal.extract(index, internal.getResource(index), internal.getAmountAsInt(index), tx);
@@ -270,7 +270,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 							</#if>
 						</#list>
 						playerIn.drop(ItemUtil.getStack(internal, j), false);
-						set(j, ItemResource.EMPTY, 0);
+						setItemInSlot(j, ItemResource.EMPTY, 0);
 					}
 				} else {
 					for(int i = 0; i < internal.size(); ++i) {
@@ -280,7 +280,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 							</#if>
 						</#list>
 						playerIn.getInventory().placeItemBackInInventory(ItemUtil.getStack(internal, i));
-						set(i, ItemResource.EMPTY, 0);
+						setItemInSlot(i, ItemResource.EMPTY, 0);
 					}
 				}
 			}
