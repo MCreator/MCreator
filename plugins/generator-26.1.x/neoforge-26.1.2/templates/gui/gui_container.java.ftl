@@ -189,13 +189,17 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	}
 
 	private void setItemInSlot(int index, ItemResource resource, int amount) {
-		if (!internal.getResource(index).isEmpty())
-			try (var tx = Transaction.openRoot()) {
-				internal.extract(index, internal.getResource(index), internal.getAmountAsInt(index), tx);
-				tx.commit();
-			}
-		if (!resource.isEmpty() && amount > 0)
-			ItemUtil.insertItemReturnRemaining(internal, index, resource.toStack(amount), false, null);
+		if (internal instanceof ItemStacksResourceHandler handler) {
+			handler.set(index, resource, amount);
+		} else {
+			if (!internal.getResource(index).isEmpty())
+				try (var tx = Transaction.openRoot()) {
+					internal.extract(index, internal.getResource(index), internal.getAmountAsInt(index), tx);
+					tx.commit();
+				}
+			if (!resource.isEmpty() && amount > 0)
+				ItemUtil.insertItemReturnRemaining(internal, index, resource.toStack(amount), false, null);
+		}
 	}
 
 	@Override public boolean stillValid(Player player) {
