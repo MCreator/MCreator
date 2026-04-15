@@ -130,6 +130,24 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	</#if>
 
 	@Override public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		<#list tooltips as component>
+			<#assign x = component.gx(data.width)>
+			<#assign y = component.gy(data.height)>
+			<#if hasProcedure(component.displayCondition)>
+				if (<@procedureOBJToConditionCode component.displayCondition/>)
+			</#if>
+				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
+					<#if hasProcedure(component.text)>
+					String hoverText = <@procedureOBJToStringCode component.text/>;
+					if (hoverText != null) {
+						guiGraphics.setComponentTooltipForNextFrame(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
+					}
+					<#else>
+						guiGraphics.setTooltipForNextFrame(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
+					</#if>
+				}
+		</#list>
+
 		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 
 		<#list textFields as component>
@@ -152,24 +170,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>, livingEntity
 				);
 			}
-		</#list>
-
-		<#list tooltips as component>
-			<#assign x = component.gx(data.width)>
-			<#assign y = component.gy(data.height)>
-			<#if hasProcedure(component.displayCondition)>
-				if (<@procedureOBJToConditionCode component.displayCondition/>)
-			</#if>
-				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
-					<#if hasProcedure(component.text)>
-					String hoverText = <@procedureOBJToStringCode component.text/>;
-					if (hoverText != null) {
-						guiGraphics.setComponentTooltipForNextFrame(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
-					}
-					<#else>
-						guiGraphics.setTooltipForNextFrame(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
-					</#if>
-				}
 		</#list>
 	}
 
