@@ -53,7 +53,7 @@ package ${package}.item.inventory;
 	</#if>
 
 	@Override public boolean isValid(int index, ItemResource resource) {
-		return super.isValid(index, resource) && stack.getItem() != ${JavaModName}Items.${REGISTRYNAME}.get();
+		return super.isValid(index, resource) && resource.getItem() != ${JavaModName}Items.${REGISTRYNAME}.get();
 	}
 
 }

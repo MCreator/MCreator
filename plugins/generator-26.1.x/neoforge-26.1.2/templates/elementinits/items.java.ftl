@@ -207,14 +207,14 @@ public class ${JavaModName}Items {
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
 			event.registerItem(
-				Capabilities.ItemHandler.ITEM,
+				Capabilities.Item.ITEM,
 				(stack, access) -> new ${item.getModElement().getName()}InventoryCapability(access),
 				${item.getModElement().getRegistryNameUpper()}.get()
 			);
 		</#list>
 		<#list buckets as item>
 			event.registerItem(
-				Capabilities.FluidHandler.ITEM,
+				Capabilities.Fluid.ITEM,
 				(stack, access) -> new BucketResourceHandler(access),
 				${item.getModElement().getRegistryNameUpper()}_BUCKET.get()
 			);
