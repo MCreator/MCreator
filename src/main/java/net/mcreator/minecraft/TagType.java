@@ -43,9 +43,9 @@ public enum TagType {
 	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new, true),
 	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new, true),
 	GAME_EVENTS("game_event", new Color(0x5057A1), GameEventEntry::new, true),
-	PAINTING_VARIANTS("painting_variant", new Color(0x33B080), (w, e) -> new NonMappableElement(e), false),
-	BANNER_PATTERNS("banner_pattern", new Color(0xB51F2A), (w, e) -> new NonMappableElement(e), false),
-	POINTS_OF_INTEREST("point_of_interest_type", new Color(0xCA7538), (w, e) -> new NonMappableElement(e), false);
+	PAINTING_VARIANTS("painting_variant", new Color(0x59806C), (w, e) -> new NonMappableElement(e), false),
+	BANNER_PATTERNS("banner_pattern", new Color(0x805959), (w, e) -> new NonMappableElement(e), false),
+	POINTS_OF_INTEREST("point_of_interest_type", new Color(0x807659), (w, e) -> new NonMappableElement(e), false);
 	//@formatter:on
 
 	private final String folder;
