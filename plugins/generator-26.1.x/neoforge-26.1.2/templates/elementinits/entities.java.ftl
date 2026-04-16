@@ -89,7 +89,7 @@ public class ${JavaModName}Entities {
 	<#-- #4780: entities have equipment inventory capability registered before custom ones without priority set -->
 	@SubscribeEvent(priority = EventPriority.HIGHEST) public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list entitiesWithInventory as entity>
-			event.registerEntity(Capabilities.ItemHandler.ENTITY, ${entity.getModElement().getRegistryNameUpper()}.get(), (living, context) -> living.getCombinedInventory());
+			event.registerEntity(Capabilities.Item.ENTITY, ${entity.getModElement().getRegistryNameUpper()}.get(), (living, context) -> living.getCombinedInventory());
 		</#list>
 	}
 	</@javacompress>
