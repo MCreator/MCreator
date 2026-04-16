@@ -91,7 +91,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
 					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
 					ResourceHandler<ItemResource> cap = itemstack.getCapability(Capabilities.Item.ITEM,
-						ItemAccess.forPlayerInteraction(this.entity, hand == 0 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND));
+						ItemAccess.forPlayerSlot(this.entity, hand == 0 ? this.entity.getInventory().getSelectedSlot() : Inventory.SLOT_OFFHAND));
 					if (cap != null) {
 						this.internal = cap;
 						this.bound = true;
