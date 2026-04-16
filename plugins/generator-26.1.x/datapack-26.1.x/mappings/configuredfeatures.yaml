@@ -1,5 +1,5 @@
 _mcreator_map_template: "@modid:@registryname"
-_default: oak
+_default: grass
 acacia: acacia
 amethyst_geode: amethyst_geode
 azalea_tree: azalea_tree
@@ -221,9 +221,3 @@ warped_fungus_planted: warped_fungus_planted
 patch_waterlily: waterlily
 weeping_vines: weeping_vines
 wildflower: wildflower
-
-# These configured features are now handled by placements
-single_piece_of_grass: grass
-patch_grass_meadow: grass
-wildflowers_birch_forest: wildflower
-wildflowers_meadow: wildflower

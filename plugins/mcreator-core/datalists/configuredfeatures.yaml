@@ -152,7 +152,6 @@
 - patch_firefly_bush
 - patch_grass
 - patch_grass_jungle
-- patch_grass_meadow
 - patch_large_fern
 - patch_leaf_litter
 - patch_melon
@@ -180,7 +179,6 @@
 - seagrass_slightly_less_short
 - seagrass_tall
 - sea_pickle
-- single_piece_of_grass
 - small_basalt_columns
 - spore_blossom
 - spring_lava_frozen
@@ -221,5 +219,3 @@
 - warped_fungus_planted
 - weeping_vines
 - wildflower
-- wildflowers_birch_forest
-- wildflowers_meadow
