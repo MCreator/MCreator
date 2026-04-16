@@ -268,6 +268,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		this.warnOnRemoveAll = warnOnDeleteAll;
 	}
 
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
 	public void setReadOnly() {
 		add.setVisible(false);
 		remove.setVisible(false);

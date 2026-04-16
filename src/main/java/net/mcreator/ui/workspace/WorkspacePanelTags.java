@@ -422,7 +422,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		@SuppressWarnings("unchecked") @Override public boolean stopCellEditing() {
 			ArrayList<String> newValue = (ArrayList<String>) getCellEditorValue();
-			if (newValue != null) {
+			if (newValue != null && !listField.isReadOnly()) {
 				workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElement, newValue);
 				workspacePanel.getMCreator().getWorkspace().markDirty();
 			}
