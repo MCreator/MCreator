@@ -21,11 +21,11 @@ package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.BlocklyTemplateIO;
-import net.mcreator.blockly.java.BlocklyVariables;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.modgui.ProcedureGUI;
+import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,12 +43,12 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 	 * <p>This component will display in the form of a scrollable list, all templates found by {@link net.mcreator.io.TemplatesLoader}.
 	 * This component is a part of {@link BlocklyEditorToolbar}.</p>
 	 *
-	 * @param blocklyPanel    <p>The {@link BlocklyPanel} to use for some features</p>
-	 * @param templatesSorted <p>This list contains a {@link ResourcePointer} pointing to every template found in plugins or in the user's folder.</p>
-	 * @param procedureGUI    <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param blocklyPanel                <p>The {@link BlocklyPanel} to use for some features</p>
+	 * @param templatesSorted             <p>This list contains a {@link ResourcePointer} pointing to every template found in plugins or in the user's folder.</p>
+	 * @param blocklyPanelVariablesHolder <p>When a {@link IBlocklyPanelHolder.IBlocklyPanelVariablesHolder} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
 	 */
 	public BlocklyTemplateDropdown(BlocklyPanel blocklyPanel, List<ResourcePointer> templatesSorted,
-			ProcedureGUI procedureGUI) {
+			IBlocklyPanelHolder.IBlocklyPanelVariablesHolder blocklyPanelVariablesHolder) {
 		setBorder(BorderFactory.createEmptyBorder());
 		putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
 
@@ -66,7 +66,7 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 
 				modTypeButton.addActionListener(actionEvent -> {
 					new Thread(() -> {
-						if (procedureGUI != null) {
+						if (blocklyPanelVariablesHolder != null) {
 							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
 							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
@@ -76,7 +76,7 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 
 								blocklyPanel.addLocalVariable(localVariable.getName(),
 										localVariable.getType().getBlocklyVariableType());
-								procedureGUI.localVars.addElement(localVariable);
+								blocklyPanelVariablesHolder.getLocalVariablesListModel().addElement(localVariable);
 							}
 						}
 

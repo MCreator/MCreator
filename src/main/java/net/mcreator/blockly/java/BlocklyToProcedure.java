@@ -20,6 +20,7 @@ package net.mcreator.blockly.java;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.java.blocks.ReturnBlock;
 import net.mcreator.generator.template.TemplateGenerator;
