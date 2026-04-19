@@ -102,14 +102,14 @@ feature_underwater_magma:
   - UnderwaterMagmaFeature
   - UnderwaterMagmaConfiguration
   - "minecraft:underwater_magma"
-feature_random_patch_simple:
-  - RandomPatchFeature
-  - RandomPatchConfiguration
-  - "minecraft:random_patch"
 feature_random_patch:
   - RandomPatchFeature
   - RandomPatchConfiguration
   - "minecraft:random_patch"
+feature_random_patch_simple: # This feature type no longer exists, we use simple random selector as a workaround
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
 feature_disk_simple:
   - DiskFeature
   - DiskConfiguration
