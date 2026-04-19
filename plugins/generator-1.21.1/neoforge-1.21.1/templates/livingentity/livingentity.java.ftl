@@ -831,7 +831,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
-    <#if data.ridable && (data.canControlForward || data.canControlStrafe) || data.flyingMob>
+    <#if data.ridable && (data.canControlForward || data.canControlStrafe)>
         @Override public void travel(Vec3 dir) {
         	<#if data.canControlForward || data.canControlStrafe>
 			Entity entity = this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
@@ -858,11 +858,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 						float strafe = 0;
 					</#if>
 
-					<#if data.flyingMob>
-					this.travelFlying(new Vec3(strafe, 0, forward));
-					<#else>
 					super.travel(new Vec3(strafe, 0, forward));
-					</#if>
 				}
 
 				double d1 = this.getX() - this.xo;
@@ -876,30 +872,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			}
 			</#if>
 
-			<#if data.flyingMob>
-			this.travelFlying(dir);
-			<#else>
 			super.travel(dir);
-			</#if>
 		}
-
-		<#if data.flyingMob>
-		private void travelFlying(Vec3 dir) {
-			if (this.isInWater()) {
-				this.moveRelative(0.02F, dir);
-				this.move(MoverType.SELF, this.getDeltaMovement());
-				this.setDeltaMovement(this.getDeltaMovement().scale(0.8));
-			} else if (this.isInLava()) {
-				this.moveRelative(0.02F, dir);
-				this.move(MoverType.SELF, this.getDeltaMovement());
-				this.setDeltaMovement(this.getDeltaMovement().scale(0.5));
-			} else {
-				this.moveRelative((float) this.getAttributeValue(Attributes.FLYING_SPEED), dir);
-				this.move(MoverType.SELF, this.getDeltaMovement());
-				this.setDeltaMovement(this.getDeltaMovement().scale(0.91));
-			}
-		}
-		</#if>
     </#if>
 
 	<#if hasProcedure(data.boundingBoxScale) || (data.boundingBoxScale?? && data.boundingBoxScale.getFixedValue() != 1)>
