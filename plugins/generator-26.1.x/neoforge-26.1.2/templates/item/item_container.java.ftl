@@ -32,7 +32,7 @@
 package ${package}.item.inventory;
 
 <@javacompress>
-@EventBusSubscriber public class ${name}InventoryCapability extends ComponentItemHandler {
+@EventBusSubscriber public class ${name}InventoryCapability extends ItemAccessItemHandler {
 
 	@SubscribeEvent public static void onItemDropped(ItemTossEvent event) {
 		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${REGISTRYNAME}.get()) {
@@ -42,22 +42,18 @@ package ${package}.item.inventory;
 		}
 	}
 
-	public ${name}InventoryCapability(MutableDataComponentHolder parent) {
-		super(parent, DataComponents.CONTAINER, ${data.inventorySize});
+	public ${name}InventoryCapability(ItemAccess access) {
+		super(access, DataComponents.CONTAINER, ${data.inventorySize});
 	}
 
 	<#if data.inventoryStackSize != 99>
-	@Override public int getSlotLimit(int slot) {
-		return ${data.inventoryStackSize};
+	@Override protected int getCapacity(int index, ItemResource resource) {
+		return Math.min(${data.inventoryStackSize}, super.getCapacity(index, resource));
 	}
 	</#if>
 
-	@Override public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-		return stack.getItem() != ${JavaModName}Items.${REGISTRYNAME}.get();
-	}
-
-	@Override public ItemStack getStackInSlot(int slot) {
-		return super.getStackInSlot(slot).copy();
+	@Override public boolean isValid(int index, ItemResource resource) {
+		return super.isValid(index, resource) && resource.getItem() != ${JavaModName}Items.${REGISTRYNAME}.get();
 	}
 
 }

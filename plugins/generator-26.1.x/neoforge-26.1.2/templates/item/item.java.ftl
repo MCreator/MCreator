@@ -64,7 +64,7 @@ public class ${name}Item extends Item {
 				.fireResistant()
 				</#if>
 				<#if data.hasBannerPatterns()>
-				.component(DataComponents.PROVIDES_BANNER_PATTERNS, PROVIDED_PATTERNS)
+				.delayedComponent(DataComponents.PROVIDES_BANNER_PATTERNS, context -> context.getOrThrow(PROVIDED_PATTERNS))
 				</#if>
 				<#if data.isFood>
 				.food((new FoodProperties.Builder())
@@ -140,21 +140,21 @@ public class ${name}Item extends Item {
 
 	<#if data.stayInGridWhenCrafting>
 		<#if data.recipeRemainder?? && !data.recipeRemainder.isEmpty()>
-			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
-				return ${mappedMCItemToItemStackCode(data.recipeRemainder, 1)};
+			@Override public ItemStackTemplate getCraftingRemainder(ItemInstance itemInstance) {
+				return new ItemStackTemplate(${mappedMCItemToItem(data.recipeRemainder)});
 			}
 		<#elseif data.damageOnCrafting && data.damageCount != 0>
-			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
+			@Override public ItemStackTemplate getCraftingRemainder(ItemInstance itemInstance) {
 				ItemStack retval = new ItemStack(this);
-				retval.setDamageValue(itemstack.getDamageValue() + 1);
+				retval.setDamageValue(itemInstance.getOrDefault(DataComponents.DAMAGE, 0) + 1);
 				if(retval.getDamageValue() >= retval.getMaxDamage()) {
-					return ItemStack.EMPTY;
+					return null;
 				}
-				return retval;
+				return ItemStackTemplate.fromNonEmptyStack(retval);
 			}
 		<#else>
-			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
-				return new ItemStack(this);
+			@Override public ItemStackTemplate getCraftingRemainder(ItemInstance itemInstance) {
+				return ItemStackTemplate.fromNonEmptyStack(this);
 			}
 		</#if>
 	</#if>
@@ -359,14 +359,14 @@ public class ${name}Item extends Item {
 			public static final MapCodec<${propClassName}Property> MAP_CODEC = MapCodec.unit(new ${propClassName}Property());
 
 			@Override
-			public float get(ItemStack itemStackToRender, @Nullable ClientLevel clientWorld, @Nullable LivingEntity entity, int seed) {
+			public float get(ItemStack itemStackToRender, @Nullable ClientLevel clientWorld, @Nullable ItemOwner owner, int seed) {
 				<#if hasProcedure(property.getValue())>
 				return (float) <@procedureCode property.getValue(), {
-					"x": "entity != null ? entity.getX() : 0",
-					"y": "entity != null ? entity.getY() : 0",
-					"z": "entity != null ? entity.getZ() : 0",
-					"world": "entity != null ? entity.level() : clientWorld",
-					"entity": "entity",
+					"x": "owner != null ? owner.position().x() : 0",
+					"y": "owner != null ? owner.position().y() : 0",
+					"z": "owner != null ? owner.position().z() : 0",
+					"world": "owner != null ? owner.level() : clientWorld",
+					"entity": "owner.asLivingEntity()",
 					"itemstack": "itemStackToRender"
 				}, false/>;
 				<#else>
@@ -405,7 +405,7 @@ public class ${name}Item extends Item {
 		</#if>
 
 		<#if data.damageCount != 0>
-		itemstack.hurtAndBreak(1, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
+		itemstack.hurtAndBreak(1, entity, entity.getUsedItemHand().asEquipmentSlot());
 		</#if>
 
 		if (player.getAbilities().instabuild) {
