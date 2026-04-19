@@ -1,4 +1,5 @@
 <#include "mcitems_json.ftl">
+<#include "mcelements.ftl">
 {
   "features": [
     {
@@ -10,25 +11,7 @@
         }
       },
       "placement": [
-        {
-          "type": "minecraft:count",
-          "count": ${field$tries}
-        },
-        {
-          "type": "minecraft:random_offset",
-          "xz_spread": {
-            "type": "minecraft:trapezoid",
-            "plateau": 0,
-            "min": -${field$xzSpread},
-            "max": ${field$xzSpread}
-          },
-          "y_spread": {
-            "type": "minecraft:trapezoid",
-            "plateau": 0,
-            "min": -${field$ySpread},
-            "max": ${field$ySpread}
-          }
-        }
+        ${patchFeaturePlacement(field$tries, field$xzSpread, field$ySpread)}
         <#if input_id$condition != "block_predicate_true">,
         {
           "type": "minecraft:block_predicate_filter",
