@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,67 +33,54 @@
 
 package ${package}.network;
 
-@EventBusSubscriber public record ${name}SlotMessage(int slotID, int x, int y, int z, int changeType, int meta) implements CustomPacketPayload {
+@EventBusSubscriber public record ${name}SliderMessage(int sliderID, int x, int y, int z, double value) implements CustomPacketPayload {
 
-	public static final Type<${name}SlotMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_slots"));
+	public static final Type<${name}SliderMessage> TYPE = new Type<>(Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_sliders"));
 
-	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}SlotMessage> STREAM_CODEC = StreamCodec.of(
-			(RegistryFriendlyByteBuf buffer, ${name}SlotMessage message) -> {
-				buffer.writeInt(message.slotID);
+	public static final StreamCodec<RegistryFriendlyByteBuf, ${name}SliderMessage> STREAM_CODEC = StreamCodec.of(
+			(RegistryFriendlyByteBuf buffer, ${name}SliderMessage message) -> {
+				buffer.writeInt(message.sliderID);
 				buffer.writeInt(message.x);
 				buffer.writeInt(message.y);
 				buffer.writeInt(message.z);
-				buffer.writeInt(message.changeType);
-				buffer.writeInt(message.meta);
+				buffer.writeDouble(message.value);
 			},
-			(RegistryFriendlyByteBuf buffer) -> new ${name}SlotMessage(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt())
+			(RegistryFriendlyByteBuf buffer) -> new ${name}SliderMessage(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readDouble())
 	);
 
-	@Override public Type<${name}SlotMessage> type() {
+	@Override public Type<${name}SliderMessage> type() {
 		return TYPE;
 	}
 
-	public static void handleData(final ${name}SlotMessage message, final IPayloadContext context) {
+	public static void handleData(final ${name}SliderMessage message, final IPayloadContext context) {
 		if (context.flow() == PacketFlow.SERVERBOUND) {
-			context.enqueueWork(() -> handleSlotAction(context.player(), message.slotID, message.changeType, message.meta, message.x, message.y, message.z)).exceptionally(e -> {
+			context.enqueueWork(() -> handleSliderAction(context.player(), message.sliderID, message.x, message.y, message.z, message.value)).exceptionally(e -> {
 				context.connection().disconnect(Component.literal(e.getMessage()));
 				return null;
 			});
 		}
 	}
 
-	public static void handleSlotAction(Player entity, int slot, int changeType, int meta, int x, int y, int z) {
+	public static void handleSliderAction(Player entity, int sliderID, int x, int y, int z, double value) {
 		Level world = entity.level();
 
 		// security measure to prevent arbitrary chunk generation
 		if (!world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z)))
 			return;
 
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName()?ends_with("Slot")>
-				<#if hasProcedure(component.onSlotChanged)>
-					if (slot == ${component.id} && changeType == 0) {
-						<@procedureOBJToCode component.onSlotChanged/>
-					}
-				</#if>
-				<#if hasProcedure(component.onTakenFromSlot)>
-					if (slot == ${component.id} && changeType == 1) {
-						int amount = meta;
-						<@procedureOBJToCode component.onTakenFromSlot/>
-					}
-				</#if>
-				<#if hasProcedure(component.onStackTransfer)>
-					if (slot == ${component.id} && changeType == 2) {
-						int amount = meta;
-						<@procedureOBJToCode component.onStackTransfer/>
-					}
-				</#if>
+		<#assign slid = 0>
+		<#list data.getComponentsOfType("Slider") as component>
+			<#if hasProcedure(component.whenSliderMoves)>
+				if (sliderID == ${slid}) {
+					<@procedureOBJToCode component.whenSliderMoves/>
+				}
 			</#if>
+			<#assign slid +=1>
 		</#list>
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}SlotMessage.TYPE, ${name}SlotMessage.STREAM_CODEC, ${name}SlotMessage::handleData);
+		${JavaModName}.addNetworkMessage(${name}SliderMessage.TYPE, ${name}SliderMessage.STREAM_CODEC, ${name}SliderMessage::handleData);
 	}
 
 }

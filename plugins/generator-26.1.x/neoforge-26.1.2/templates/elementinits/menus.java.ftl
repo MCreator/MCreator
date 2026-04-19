@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@ public class ${JavaModName}Menus {
 			getMenuState().put(elementType + ":" + name, elementState);
 			if (player instanceof ServerPlayer serverPlayer) {
 				PacketDistributor.sendToPlayer(serverPlayer, new MenuStateUpdateMessage(elementType, name, elementState));
-			} else if (player.level().isClientSide) {
+			} else if (player.level().isClientSide()) {
 				if (Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor && needClientUpdate)
 					accessor.updateMenuState(elementType, name, elementState);
 				ClientPacketDistributor.sendToServer(new MenuStateUpdateMessage(elementType, name, elementState));
