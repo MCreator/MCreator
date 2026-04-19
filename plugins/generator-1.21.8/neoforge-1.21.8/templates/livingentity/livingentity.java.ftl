@@ -890,13 +890,14 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	@Override public void setNoGravity(boolean ignored) {
 		super.setNoGravity(true);
 	}
-	</#if>
 
-	<#if data.flyingMob>
-	public void aiStep() {
+	@Override public void aiStep() {
 		super.aiStep();
-
 		this.setNoGravity(true);
+	}
+
+	@Override protected float getFlyingSpeed() {
+		return (float) this.getAttributeValue(Attributes.FLYING_SPEED);
 	}
 	</#if>
 
