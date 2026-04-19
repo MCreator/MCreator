@@ -574,7 +574,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				if (news != null) {
 					nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
 							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">"
-							+ StringUtils.abbreviateString(news[0], 43));
+							+ StringUtils.abbreviateString(news[0], 41));
 					nov.addMouseListener(new MouseAdapter() {
 						@Override public void mouseClicked(MouseEvent en) {
 							DesktopUtils.browseSafe(news[1]);
