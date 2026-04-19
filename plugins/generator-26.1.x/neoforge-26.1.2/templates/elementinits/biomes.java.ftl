@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,7 +38,6 @@
 package ${package}.init;
 
 import com.mojang.datafixers.util.Pair;
-import com.google.common.base.Suppliers;
 
 <#assign spawn_overworld = biomes?filter(biome -> biome.spawnBiome)>
 <#assign spawn_overworld_caves = biomes?filter(biome -> biome.spawnInCaves)>
@@ -46,122 +45,18 @@ import com.google.common.base.Suppliers;
 
 @EventBusSubscriber public class ${JavaModName}Biomes {
 
-	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
-		MinecraftServer server = event.getServer();
-		Registry<LevelStem> levelStemTypeRegistry = server.registryAccess().lookupOrThrow(Registries.LEVEL_STEM);
-		Registry<Biome> biomeRegistry = server.registryAccess().lookupOrThrow(Registries.BIOME);
+	public static Identifier OVERWORLD_BIOMESOURCE_PRESET_ID = Identifier.withDefaultNamespace("overworld");
+	public static Identifier NETHER_BIOMESOURCE_PRESET_ID = Identifier.withDefaultNamespace("nether");
 
+	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
+		Registry<LevelStem> levelStemTypeRegistry = event.getServer().registryAccess().lookupOrThrow(Registries.LEVEL_STEM);
 		for (LevelStem levelStem : levelStemTypeRegistry.stream().toList()) {
 			Holder<DimensionType> dimensionType = levelStem.type();
-
-			<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-			if (dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) {
-				ChunkGenerator chunkGenerator = levelStem.generator();
-
-				// Inject biomes to biome source
-				if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
-					List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
-
-					<#list spawn_overworld as biome>
-					addParameterPoint(parameters, new Pair<>(
-						new Climate.ParameterPoint(
-							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
-							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
-							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
-							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
-							Climate.Parameter.point(0.0f),
-							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
-							0 <#-- offset -->
-						),
-						biomeRegistry.getOrThrow(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
-					));
-					addParameterPoint(parameters, new Pair<>(
-						new Climate.ParameterPoint(
-							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
-							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
-							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
-							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
-							Climate.Parameter.point(1.0f),
-							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
-							0 <#-- offset -->
-						),
-						biomeRegistry.getOrThrow(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
-					));
-					</#list>
-
-					<#list spawn_overworld_caves as biome>
-					addParameterPoint(parameters, new Pair<>(
-						new Climate.ParameterPoint(
-							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
-							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
-							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
-							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
-							Climate.Parameter.span(${biome.genDepth.min}f, ${biome.genDepth.max}f),
-							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
-							0 <#-- offset -->
-						),
-						biomeRegistry.getOrThrow(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
-					));
-					</#list>
-
-					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
-					chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
-							FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
-									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
-				}
-
-				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.settings.value()).set${modid}DimensionTypeReference(dimensionType);
+			if (dimensionType.is(BuiltinDimensionTypes.NETHER) || dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) {
+				if(levelStem.generator() instanceof NoiseBasedChunkGenerator noiseGenerator) {
+					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.generatorSettings().value()).set${modid}DimensionTypeReference(dimensionType);
 				}
 			}
-			</#if>
-
-			<#if spawn_nether?has_content>
-			if (dimensionType.is(BuiltinDimensionTypes.NETHER)) {
-				ChunkGenerator chunkGenerator = levelStem.generator();
-
-				// Inject biomes to biome source
-				if(chunkGenerator.getBiomeSource() instanceof MultiNoiseBiomeSource noiseSource) {
-					List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
-
-					<#list spawn_nether as biome>
-					addParameterPoint(parameters, new Pair<>(
-						new Climate.ParameterPoint(
-							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
-							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
-							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
-							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
-							Climate.Parameter.point(0.0f),
-							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
-							0 <#-- offset -->
-						),
-						biomeRegistry.getOrThrow(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
-					));
-					addParameterPoint(parameters, new Pair<>(
-						new Climate.ParameterPoint(
-							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
-							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
-							Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
-							Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
-							Climate.Parameter.point(1.0f),
-							Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
-							0 <#-- offset -->
-						),
-						biomeRegistry.getOrThrow(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
-					));
-					</#list>
-
-					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
-					chunkGenerator.featuresPerStep = Suppliers.memoize(() ->
-							FeatureSorter.buildFeaturesPerStep(List.copyOf(chunkGenerator.biomeSource.possibleBiomes()), biome ->
-									chunkGenerator.generationSettingsGetter.apply(biome).features(), true));
-				}
-
-				if(chunkGenerator instanceof NoiseBasedChunkGenerator noiseGenerator) {
-					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.settings.value()).set${modid}DimensionTypeReference(dimensionType);
-				}
-			}
-			</#if>
 		}
 	}
 
@@ -175,6 +70,18 @@ import com.google.common.base.Suppliers;
 		</#if>
 
 		return currentRuleSource;
+	}
+
+	public static <T> Climate.ParameterList<T> adaptPresetParameterList(Identifier idArg, Climate.ParameterList<T> originalList, Function<ResourceKey<Biome>, T> lookup) {
+		<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
+		if (idArg.equals(OVERWORLD_BIOMESOURCE_PRESET_ID)) return ${JavaModName}Biomes.modifyOverworldParameterPoints(originalList, lookup);
+		</#if>
+
+		<#if spawn_nether?has_content>
+		if (idArg.equals(NETHER_BIOMESOURCE_PRESET_ID)) return ${JavaModName}Biomes.modifyNetherParameterPoints(originalList, lookup);
+		</#if>
+
+		return originalList;
 	}
 
 	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
@@ -207,6 +114,54 @@ import com.google.common.base.Suppliers;
 			return SurfaceRules.sequence(customSurfaceRules.toArray(SurfaceRules.RuleSource[]::new));
 		}
 	}
+
+	public static <T> Climate.ParameterList<T> modifyOverworldParameterPoints(Climate.ParameterList<T> originalList, Function<ResourceKey<Biome>, T> lookup) {
+		List<Pair<Climate.ParameterPoint, T>> parameters = new ArrayList<>(originalList.values());
+
+		<#list spawn_overworld as biome>
+		parameters.add(new Pair<>(
+			new Climate.ParameterPoint(
+				Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+				Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+				Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+				Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+				Climate.Parameter.point(0.0f),
+				Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+				0 <#-- offset -->
+			),
+			lookup.apply(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
+		));
+		parameters.add(new Pair<>(
+			new Climate.ParameterPoint(
+				Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+				Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+				Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+				Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+				Climate.Parameter.point(1.0f),
+				Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+				0 <#-- offset -->
+			),
+			lookup.apply(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
+		));
+		</#list>
+
+		<#list spawn_overworld_caves as biome>
+		parameters.add(new Pair<>(
+			new Climate.ParameterPoint(
+				Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+				Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+				Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+				Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+				Climate.Parameter.span(${biome.genDepth.min}f, ${biome.genDepth.max}f),
+				Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+				0 <#-- offset -->
+			),
+			lookup.apply(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
+		));
+		</#list>
+
+		return new Climate.ParameterList<>(parameters);
+	}
 	</#if>
 
 	<#if spawn_nether?has_content>
@@ -229,6 +184,39 @@ import com.google.common.base.Suppliers;
 			customSurfaceRules.add(currentRuleSource);
 			return SurfaceRules.sequence(customSurfaceRules.toArray(SurfaceRules.RuleSource[]::new));
 		}
+	}
+
+	public static <T> Climate.ParameterList<T> modifyNetherParameterPoints(Climate.ParameterList<T> originalList, Function<ResourceKey<Biome>, T> lookup) {
+		List<Pair<Climate.ParameterPoint, T>> parameters = new ArrayList<>(originalList.values());
+
+		<#list spawn_nether as biome>
+		parameters.add(new Pair<>(
+			new Climate.ParameterPoint(
+				Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+				Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+				Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+				Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+				Climate.Parameter.point(0.0f),
+				Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+				0 <#-- offset -->
+			),
+			lookup.apply(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
+		));
+		parameters.add(new Pair<>(
+			new Climate.ParameterPoint(
+				Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
+				Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
+				Climate.Parameter.span(${biome.genContinentalness.min}f, ${biome.genContinentalness.max}f),
+				Climate.Parameter.span(${biome.genErosion.min}f, ${biome.genErosion.max}f),
+				Climate.Parameter.point(1.0f),
+				Climate.Parameter.span(${biome.genWeirdness.min}f, ${biome.genWeirdness.max}f),
+				0 <#-- offset -->
+			),
+			lookup.apply(ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")))
+		));
+		</#list>
+
+		return new Climate.ParameterList<>(parameters);
 	}
 	</#if>
 
@@ -277,11 +265,6 @@ import com.google.common.base.Suppliers;
 		);
 	}
 	</#if>
-
-	private static void addParameterPoint(List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters, Pair<Climate.ParameterPoint, Holder<Biome>> point) {
-		if (!parameters.contains(point))
-			parameters.add(point);
-	}
 
 	public interface ${JavaModName}NoiseGeneratorSettings {
 		void set${modid}DimensionTypeReference(Holder<DimensionType> dimensionType);
