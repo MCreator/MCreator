@@ -1,6 +1,6 @@
 <#function toPlacedFeature featureType featureConfig placement="">
 	<#if featureType == "placed_feature_inline"> <#-- Replace the /*@extra*/ marker with additional placement (if any) -->
-		<#return featureConfig?replace("/*@extra*/", placement)>
+		<#return featureConfig?replace("/*@extra*/,", (placement == "")?then("", placement + ","))?replace("/*@extra*/", placement)>
 	<#else> <#-- Treat as a placed feature with no placement of its own -->
 		<#return '{"feature": ' + toConfiguredFeature(featureType, featureConfig) + ', "placement": [' + placement + ']}'>
 	</#if>
