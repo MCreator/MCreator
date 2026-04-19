@@ -47,13 +47,6 @@ import org.spongepowered.asm.mixin.Mutable;
 				@Override public <T> Climate.ParameterList<T> apply(Function<ResourceKey<Biome>, T> lookup) {
 					<#-- Call the chain. If another mod ran before us, this safely calls their logic first. -->
 					Climate.ParameterList<T> originalList = existingProvider.apply(lookup);
-
-					<#-- Skip injection during server bootstrap validation, as custom biomes are not available yet -->
-					if (StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE)
-							.walk(stream -> stream.anyMatch(frame -> frame.getDeclaringClass() == Bootstrap.class))) {
-						return originalList;
-					}
-
 					return ${JavaModName}Biomes.adaptPresetParameterList(idArg, originalList, lookup);
 				}
 			};

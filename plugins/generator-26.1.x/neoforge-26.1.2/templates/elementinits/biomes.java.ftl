@@ -45,8 +45,15 @@ import com.mojang.datafixers.util.Pair;
 
 @EventBusSubscriber public class ${JavaModName}Biomes {
 
-	public static Identifier OVERWORLD_BIOMESOURCE_PRESET_ID = Identifier.withDefaultNamespace("overworld");
-	public static Identifier NETHER_BIOMESOURCE_PRESET_ID = Identifier.withDefaultNamespace("nether");
+	public static final Identifier OVERWORLD_BIOMESOURCE_PRESET_ID = Identifier.withDefaultNamespace("overworld");
+	public static final Identifier NETHER_BIOMESOURCE_PRESET_ID = Identifier.withDefaultNamespace("nether");
+
+	private static boolean BOOTSTRAP_VALIDATION_PASSED = false;
+
+	@SubscribeEvent public static void onCommonSetup(FMLCommonSetupEvent event) {
+		<#-- At FMLCommonSetupEvent, bootstrap validation is already done -->
+		BOOTSTRAP_VALIDATION_PASSED = true;
+	}
 
 	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
 		Registry<LevelStem> levelStemTypeRegistry = event.getServer().registryAccess().lookupOrThrow(Registries.LEVEL_STEM);
@@ -73,6 +80,9 @@ import com.mojang.datafixers.util.Pair;
 	}
 
 	public static <T> Climate.ParameterList<T> adaptPresetParameterList(Identifier idArg, Climate.ParameterList<T> originalList, Function<ResourceKey<Biome>, T> lookup) {
+		<#-- Skip adaptation during server bootstrap validation, as custom biomes are not available yet -->
+		if (!BOOTSTRAP_VALIDATION_PASSED) return originalList;
+
 		<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
 		if (idArg.equals(OVERWORLD_BIOMESOURCE_PRESET_ID)) return ${JavaModName}Biomes.modifyOverworldParameterPoints(originalList, lookup);
 		</#if>
