@@ -1,9 +1,9 @@
 <#include "mcelements.ftl">
 <#-- @formatter:off -->
-if (${input$entity} instanceof LivingEntity _entLootTbl && _entLootTbl.getServer() != null) {
+if (${input$entity} instanceof LivingEntity _entLootTbl && _entLootTbl.level().getServer() != null) {
 	DamageSource _dsLootTbl = _entLootTbl.getLastDamageSource();
 	if (_dsLootTbl == null) _dsLootTbl = _entLootTbl.damageSources().generic();
-	for (ItemStack itemstackiterator : _entLootTbl.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, ${toIdentifier(input$location)}))
+	for (ItemStack itemstackiterator : _entLootTbl.level().getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, ${toIdentifier(input$location)}))
 			.getRandomItems(new LootParams.Builder((ServerLevel) _entLootTbl.level())
 					.withParameter(LootContextParams.THIS_ENTITY, _entLootTbl)
 					.withOptionalParameter(LootContextParams.LAST_DAMAGE_PLAYER, _entLootTbl.getLastHurtByMob() instanceof Player _player ?  _player : null)

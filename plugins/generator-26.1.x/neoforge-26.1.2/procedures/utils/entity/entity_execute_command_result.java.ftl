@@ -1,6 +1,6 @@
 private static String executeCommandGetResult(Entity entity, String command) {
 	StringBuilder result = new StringBuilder();
-	if(!entity.level().isClientSide() && entity.getServer() != null) {
+	if(!entity.level().isClientSide() && entity.level().getServer() != null) {
 		CommandSource dataConsumer = new CommandSource() {
 			@Override public void sendSystemMessage(Component message) {
 				result.append(message.getString());
@@ -18,9 +18,9 @@ private static String executeCommandGetResult(Entity entity, String command) {
 				return false;
 			}
 		};
-		entity.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(
+		entity.level().getServer().getCommands().performPrefixedCommand(new CommandSourceStack(
 				dataConsumer, entity.position(), entity.getRotationVector(),
-				entity.level() instanceof ServerLevel ? (ServerLevel) entity.level() : null, 4,
+				entity.level() instanceof ServerLevel ? (ServerLevel) entity.level() : null, LevelBasedPermissionSet.OWNER,
 				entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity
 		), command);
 	}
