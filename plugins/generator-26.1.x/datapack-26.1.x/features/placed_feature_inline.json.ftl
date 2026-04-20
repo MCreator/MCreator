@@ -1,4 +1,4 @@
-<#include "mcelements.ftl">
+<#include "mcelements_json.ftl">
 {
   "feature": ${toConfiguredFeature(input_id$feature, input$feature)},
   "placement": [

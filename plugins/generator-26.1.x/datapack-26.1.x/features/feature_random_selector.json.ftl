@@ -1,4 +1,4 @@
-<#include "mcelements.ftl">
+<#include "mcelements_json.ftl">
 {
   "default": ${toPlacedFeature(input_id$default, input$default)},
   "features": [
