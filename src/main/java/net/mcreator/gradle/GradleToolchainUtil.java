@@ -105,7 +105,9 @@ public class GradleToolchainUtil {
 		for (String line : output.split("\n")) {
 			line = line.trim();
 			if (line.startsWith("TOOLCHAIN_JDK_HOME=")) {
-				return new File(line.substring("TOOLCHAIN_JDK_HOME=".length()).trim());
+				// Normalize path to ensure consistent representation
+				return new File(line.substring("TOOLCHAIN_JDK_HOME=".length()).strip()).toPath().toAbsolutePath()
+						.normalize().toFile();
 			}
 		}
 		throw new RuntimeException("Could not determine compileJava toolchain JDK home. Output: " + output);
