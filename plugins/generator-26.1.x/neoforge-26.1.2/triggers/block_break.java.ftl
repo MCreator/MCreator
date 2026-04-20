@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onBlockBreak(BlockEvent.BreakEvent event) {
+	@SubscribeEvent public static void onBlockBreak(BreakBlockEvent event) {
 		<#assign dependenciesCode>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
