@@ -14,9 +14,23 @@
 	</#if>
 </#function>
 
-<#function patchFeaturePlacement tries xzSpread ySpread>
-	<#return '{"type": "minecraft:count", "count": ' + tries + '},'
-		+ '{"type": "minecraft:random_offset", "xz_spread": { "type": "minecraft:trapezoid", "plateau": 0, "min": -' + xzSpread
-		+ ', "max": ' + xzSpread + '}, "y_spread": { "type": "minecraft:trapezoid", "plateau": 0, "min": -' + ySpread
-		+ ', "max": ' + ySpread + '}}'>
-</#function>
+<#function patchFeaturePlacement tries xzSpread ySpread><#return '
+{
+  "type": "minecraft:count",
+  "count": ${tries}
+},
+{
+  "type": "minecraft:random_offset",
+  "xz_spread": {
+    "type": "minecraft:trapezoid",
+    "plateau": 0,
+    "min": -${xzSpread},
+    "max": ${xzSpread}
+  },
+  "y_spread": {
+    "type": "minecraft:trapezoid",
+    "plateau": 0,
+    "min": -${ySpread},
+    "max": ${ySpread}
+  }
+}'></#function>
