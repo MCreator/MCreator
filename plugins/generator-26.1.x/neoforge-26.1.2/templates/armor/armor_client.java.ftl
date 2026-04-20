@@ -67,7 +67,7 @@ import net.minecraft.client.model.Model;
 					{
 						@Override
 						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(getArmorTexture(null, null, null, null)));
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.entityTranslucent(getArmorTexture(null, null, null, null)));
 							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
 						}
 					}
@@ -110,7 +110,7 @@ import net.minecraft.client.model.Model;
 					{
 						@Override
 						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(getArmorTexture(null, null, null, null)));
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.entityTranslucent(getArmorTexture(null, null, null, null)));
 							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
 						}
 					}
@@ -153,7 +153,7 @@ import net.minecraft.client.model.Model;
 					{
 						@Override
 						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(getArmorTexture(null, null, null, null)));
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.entityTranslucent(getArmorTexture(null, null, null, null)));
 							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
 						}
 					}
@@ -196,7 +196,7 @@ import net.minecraft.client.model.Model;
 					{
 						@Override
 						public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int color) {
-							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.entityTranslucent(getArmorTexture(null, null, null, null)));
+							VertexConsumer translucentTexture = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderTypes.entityTranslucent(getArmorTexture(null, null, null, null)));
 							super.renderToBuffer(poseStack, translucentTexture, packedLight, packedOverlay, color);
 						}
 					}
