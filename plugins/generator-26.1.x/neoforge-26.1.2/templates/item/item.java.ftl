@@ -154,7 +154,7 @@ public class ${name}Item extends Item {
 			}
 		<#else>
 			@Override public ItemStackTemplate getCraftingRemainder(ItemInstance itemInstance) {
-				return ItemStackTemplate.fromNonEmptyStack(this);
+				return new ItemStackTemplate(this);
 			}
 		</#if>
 	</#if>
