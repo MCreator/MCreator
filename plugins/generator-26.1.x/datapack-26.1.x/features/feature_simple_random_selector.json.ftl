@@ -1,4 +1,4 @@
-<#include "mcelements.ftl">
+<#include "mcelements_json.ftl">
 {
   "features": [
     <#list input_list$feature as feature>

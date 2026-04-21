@@ -1,5 +1,5 @@
 <#include "mcitems_json.ftl">
-<#include "mcelements.ftl">
+<#include "mcelements_json.ftl">
 {
   "root_state_provider": ${mappedBlockToBlockStateProvider(input$root_state_provider)},
   "root_radius": ${field$root_radius},

@@ -102,6 +102,34 @@ feature_underwater_magma:
   - UnderwaterMagmaFeature
   - UnderwaterMagmaConfiguration
   - "minecraft:underwater_magma"
+feature_random_patch_simple: # This feature type no longer exists, we use simple random selector as a workaround
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
+feature_random_patch: # This feature type no longer exists, we use simple random selector as a workaround
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
+feature_disk_simple:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
+feature_disk:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
+feature_root_system:
+  - RootSystemFeature
+  - RootSystemConfiguration
+  - "minecraft:root_system"
+feature_vegetation_patch:
+  - VegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:vegetation_patch"
+feature_waterlogged_vegetation_patch:
+  - WaterloggedVegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:waterlogged_vegetation_patch"
 
 # Custom NBT-based feature, not present in vanilla
 feature_custom_structure:

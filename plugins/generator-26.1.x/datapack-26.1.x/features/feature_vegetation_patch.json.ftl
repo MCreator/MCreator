@@ -1,5 +1,5 @@
 <#include "mcitems_json.ftl">
-<#include "mcelements.ftl">
+<#include "mcelements_json.ftl">
 {
   "surface": ${field$surface},
   "xz_radius": ${input$xz_radius},
