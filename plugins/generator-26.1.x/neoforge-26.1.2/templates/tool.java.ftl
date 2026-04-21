@@ -80,12 +80,12 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			.repairable(TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")))
 			.component(DataComponents.BREAK_SOUND, SoundEvents.SHIELD_BREAK)
 			.equippableUnswappable(EquipmentSlot.OFFHAND)
-			.component(DataComponents.BLOCKS_ATTACKS, new BlocksAttacks(
+			.delayedComponent(DataComponents.BLOCKS_ATTACKS, context -> new BlocksAttacks(
 				0.25f,
 				1,
 				List.of(new BlocksAttacks.DamageReduction(90.0f, Optional.empty(), 0, 1)),
 				new BlocksAttacks.ItemDamageFunction(3, 1, 1),
-				Optional.of(DamageTypeTags.BYPASSES_SHIELD),
+				Optional.of(context.getOrThrow(DamageTypeTags.BYPASSES_SHIELD)),
 				Optional.of(SoundEvents.SHIELD_BLOCK),
 				Optional.of(SoundEvents.SHIELD_BREAK)
 			))
@@ -166,7 +166,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			</#if>
 		}
 
-		@Override public boolean canPerformAction(ItemStack stack, ItemAbility toolAction) {
+		@Override public boolean canPerformAction(ItemInstance stack, ItemAbility toolAction) {
 			return ItemAbilities.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
 					ItemAbilities.DEFAULT_HOE_ACTIONS.contains(toolAction) ||
 					ItemAbilities.DEFAULT_SHOVEL_ACTIONS.contains(toolAction) ||
@@ -316,17 +316,17 @@ public class ${name}Item extends FishingRodItem {
 <#macro commonMethods>
 	<#if data.stayInGridWhenCrafting>
 		<#if data.damageOnCrafting && data.usageCount != 0>
-			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
+			@Override public ItemStackTemplate getCraftingRemainder(ItemInstance itemInstance) {
 				ItemStack retval = new ItemStack(this);
-				retval.setDamageValue(itemstack.getDamageValue() + 1);
+				retval.setDamageValue(itemInstance.getOrDefault(DataComponents.DAMAGE, 0) + 1);
 				if(retval.getDamageValue() >= retval.getMaxDamage()) {
-					return ItemStack.EMPTY;
+					return null;
 				}
-				return retval;
+				return ItemStackTemplate.fromNonEmptyStack(retval);
 			}
 		<#else>
-			@Override public ItemStack getCraftingRemainder(ItemStack itemstack) {
-				return new ItemStack(this);
+			@Override public ItemStackTemplate getCraftingRemainder(ItemInstance itemInstance) {
+				return new ItemStackTemplate(this);
 			}
 		</#if>
 	</#if>
