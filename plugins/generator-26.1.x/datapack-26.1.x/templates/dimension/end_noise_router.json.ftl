@@ -14,52 +14,7 @@
   },
   "depth": 0,
   "ridges": 0,
-  "initial_density_without_jaggedness": {
-    "type": "minecraft:add",
-    "argument1": -0.234375,
-    "argument2": {
-      "type": "minecraft:mul",
-      "argument1": {
-        "type": "minecraft:y_clamped_gradient",
-        "from_y": 4,
-        "to_y": 32,
-        "from_value": 0,
-        "to_value": 1
-      },
-      "argument2": {
-        "type": "minecraft:add",
-        "argument1": 0.234375,
-        "argument2": {
-          "type": "minecraft:add",
-          "argument1": -23.4375,
-          "argument2": {
-            "type": "minecraft:mul",
-            "argument1": {
-              "type": "minecraft:y_clamped_gradient",
-              "from_y": 56,
-              "to_y": 312,
-              "from_value": 1,
-              "to_value": 0
-            },
-            "argument2": {
-              "type": "minecraft:add",
-              "argument1": 23.4375,
-              "argument2": {
-                "type": "minecraft:add",
-                "argument1": -0.703125,
-                "argument2": {
-                  "type": "minecraft:cache_2d",
-                  "argument": {
-                    "type": "minecraft:end_islands"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
+  "preliminary_surface_level": 0,
   "final_density": {
     "type": "minecraft:squeeze",
     "argument": {
