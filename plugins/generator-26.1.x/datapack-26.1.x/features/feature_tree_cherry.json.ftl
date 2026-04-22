@@ -1,13 +1,12 @@
 <#include "mcitems_json.ftl">
 <#include "trees.ftl">
 {
-  "dirt_provider": ${mappedBlockToBlockStateProvider(input$dirt)},
+  "dirt_provider": <@dirtProvider field$force_dirt mappedBlockToBlockStateProvider(input$dirt)/>,
   "foliage_provider": ${mappedBlockToBlockStateProvider(input$foliage)},
   "trunk_provider": ${mappedBlockToBlockStateProvider(input$trunk)},
   <#if input_id$root_placer != "root_placer_none">
   "root_placer": ${input$root_placer},
   </#if>
-  "force_dirt": ${field$force_dirt?lower_case},
   "ignore_vines": ${field$ignore_vines?lower_case},
   "foliage_placer": {
     "type": "minecraft:cherry_foliage_placer",
