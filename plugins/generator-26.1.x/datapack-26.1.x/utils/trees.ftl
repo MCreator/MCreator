@@ -1,5 +1,5 @@
 <#-- Replacement for the force_dirt field that got removed in 26.1 -->
-<#macro dirtProvider forceDirt dirtProvider>
+<#macro belowTrunkProvider forceDirt dirtProvider>
 <#if forceDirt == "FALSE">
 {
   "type": "minecraft:rule_based_state_provider",

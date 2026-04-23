@@ -1,7 +1,7 @@
 <#include "mcitems_json.ftl">
 <#include "trees.ftl">
 {
-  "dirt_provider": <@dirtProvider field$force_dirt mappedBlockToBlockStateProvider(input$dirt)/>,
+  "below_trunk_provider": <@belowTrunkProvider field$force_dirt mappedBlockToBlockStateProvider(input$dirt)/>,
   "foliage_provider": ${mappedBlockToBlockStateProvider(input$foliage)},
   "trunk_provider": ${mappedBlockToBlockStateProvider(input$trunk)},
   <#if input_id$root_placer != "root_placer_none">
