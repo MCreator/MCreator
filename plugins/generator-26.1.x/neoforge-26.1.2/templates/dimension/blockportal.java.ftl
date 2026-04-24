@@ -48,7 +48,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	public ${name}PortalBlock(BlockBehaviour.Properties properties) {
-		super(properties.noCollission().randomTicks().pushReaction(PushReaction.BLOCK)
+		super(properties.noCollision().randomTicks().pushReaction(PushReaction.BLOCK)
 				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noLootTable());
 	}
 
@@ -63,7 +63,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 					 .replace("Level.NETHER", "ResourceKey.create(Registries.DIMENSION, Identifier.parse(\"${modid}:${registryname}\"))")}
 
 	@Nullable ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getExitPortal", "ServerLevel", "Entity", "BlockPos", "BlockPos", "boolean", "WorldBorder")
-					.replace("p_350564_.getPortalForcer()", "getTeleporter(p_350564_)")}
+					.replace("newLevel.getPortalForcer()", "getTeleporter(newLevel)")}
 
 	${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "getDimensionTransitionFromExit",
 			"Entity", "BlockPos", "BlockUtil.FoundRectangle", "ServerLevel", "TeleportTransition.PostTeleportTransition")}
@@ -122,7 +122,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	<#if hasProcedure(data.portalUseCondition)>
-	@Override protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
+	@Override protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean isPrecise) {
 		if (<@procedureCode data.portalUseCondition, {
 			"x": "pos.getX()",
 			"y": "pos.getY()",
@@ -130,7 +130,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 			"entity": "entity",
 			"world": "world"
 		}, false/>)
-			super.entityInside(state, world, pos, entity, insideBlockEffectApplier);
+			super.entityInside(state, world, pos, entity, effectApplier, isPrecise);
 	}
 	</#if>
 
