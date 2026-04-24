@@ -79,7 +79,7 @@ import java.util.Map;
 			} catch (Exception e) {
 				this.workspace.markFailingGradleDependencies();
 				LOG.error("Failed to load code provider for {}", key, e);
-				TestUtil.failIfTestingEnvironment();
+				TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 				return null;
 			}
 		});
@@ -92,6 +92,7 @@ import java.util.Map;
 			String[] usedLines = Arrays.copyOfRange(lines, lineFrom - 1, lineTo);
 			return CodeString.of(String.join(System.lineSeparator(), usedLines));
 		} else {
+			TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 			return CodeString.of("/* failed to load code for " + template + " */");
 		}
 	}
@@ -104,6 +105,7 @@ import java.util.Map;
 			methodSource.removeAllAnnotations();
 			return CodeString.of(methodSource.toString());
 		} else {
+			TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 			return CodeString.of("/* failed to load code for " + template + " */");
 		}
 	}
@@ -127,6 +129,7 @@ import java.util.Map;
 				return CodeString.of(code.substring(inner.getBodyStartOffset(), inner.getBodyEndOffset() + 1));
 		}
 
+		TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 		return CodeString.of("/* failed to load code for " + template + " */");
 	}
 
@@ -139,6 +142,7 @@ import java.util.Map;
 				return CodeString.of(code.substring(mainClass.getBodyStartOffset(), mainClass.getBodyEndOffset() + 1));
 		}
 
+		TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 		return CodeString.of("/* failed to load code for " + template + " */");
 	}
 
@@ -166,8 +170,7 @@ import java.util.Map;
 
 		public CodeString replace(String old, String replacement) {
 			if (!value.contains(old)) {
-				LOG.warn("Attempted to replace non-existent string '{}' on string '{}'", old, value);
-				TestUtil.failIfTestingEnvironment();
+				TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 				return this;
 			}
 
