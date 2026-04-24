@@ -1,4 +1,4 @@
-private static ItemStack getItemStackFromItemStackSlot(LevelAccessor level, ItemStack input) {
+private static ItemStack getItemStackSmeltingResult(LevelAccessor level, ItemStack input) {
 	SingleRecipeInput recipeInput = new SingleRecipeInput(input);
 	if (level instanceof ServerLevel serverLevel) {
 		return serverLevel.recipeAccess().getRecipeFor(RecipeType.SMELTING, recipeInput, serverLevel)
