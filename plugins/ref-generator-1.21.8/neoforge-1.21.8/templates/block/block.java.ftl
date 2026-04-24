@@ -148,7 +148,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			.requiresCorrectToolForDrops()
 		</#if>
 		<#if data.isNotColidable>
-			.noCollission()
+			.noCollision()
 		</#if>
 		<#if data.slipperiness != 0.6>
 			.friction(${data.slipperiness}f)

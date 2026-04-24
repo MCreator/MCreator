@@ -113,7 +113,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 			.noOcclusion()
 			<#if data.offsetType != "NONE">.dynamicShape()</#if>
 		<#else>
-			.noCollission()
+			.noCollision()
 		</#if>
 		<#if data.isReplaceable>
 		.replaceable()
