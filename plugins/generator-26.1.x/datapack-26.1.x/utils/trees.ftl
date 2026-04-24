@@ -1,3 +1,26 @@
+<#-- Replacement for the force_dirt field that got removed in 26.1 -->
+<#macro belowTrunkProvider forceDirt dirtProvider>
+<#if forceDirt == "FALSE">
+{
+  "type": "minecraft:rule_based_state_provider",
+  "rules": [
+    {
+      "if_true": {
+        "type": "minecraft:not",
+        "predicate": {
+          "type": "minecraft:matching_block_tag",
+          "tag": "minecraft:cannot_replace_below_tree_trunk"
+        }
+      },
+      "then": ${dirtProvider}
+    }
+  ]
+}
+<#else>
+${dirtProvider}
+</#if>
+</#macro>
+
 <#-- Macro for trunk placers that only use height parameters -->
 <#macro simpleTrunkPlacer type height rand_a rand_b>
 {
