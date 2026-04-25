@@ -1,9 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jbr25_win_64 = 'jbrsdk_jcef-25.0.2-windows-x64-b329.72'
-def jbr25_linux_64 = 'jbrsdk_jcef-25.0.2-linux-x64-b329.72'
-def jbr25_mac_x64 = 'jbrsdk_jcef-25.0.2-osx-x64-b329.72'
-def jbr25_mac_aarch64 = 'jbrsdk_jcef-25.0.2-osx-aarch64-b329.72'
+def jbr25_win_64 = 'jbrsdk_jcef-25.0.2-windows-x64-b329.117'
+def jbr25_linux_64 = 'jbrsdk_jcef-25.0.2-linux-x64-b329.117'
+def jbr25_mac_x64 = 'jbrsdk_jcef-25.0.2-osx-x64-b329.117'
+def jbr25_mac_aarch64 = 'jbrsdk_jcef-25.0.2-osx-aarch64-b329.117'
 
 // Binaries needed on Windows for export (install them using Gradle since Windows does not have a package manager)
 def nsis_url = 'https://altushost-swe.dl.sourceforge.net/project/nsis/NSIS%203/3.11/nsis-3.11.zip'
