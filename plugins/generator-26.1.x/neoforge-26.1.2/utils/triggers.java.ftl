@@ -291,8 +291,8 @@
 
 <#macro onEntityCollides procedure="">
 <#if hasProcedure(procedure)>
-@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier) {
-	super.entityInside(blockstate, world, pos, entity, insideBlockEffectApplier);
+@Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity, InsideBlockEffectApplier insideBlockEffectApplier, boolean isPrecise) {
+	super.entityInside(blockstate, world, pos, entity, insideBlockEffectApplier, isPrecise);
 	<@procedureCode procedure, {
 		"x": "pos.getX()",
 		"y": "pos.getY()",
@@ -385,8 +385,8 @@
 
 <#macro onDestroyedByPlayer procedure="">
 <#if hasProcedure(procedure)>
-@Override public boolean onDestroyedByPlayer(BlockState blockstate, Level world, BlockPos pos, Player entity, boolean willHarvest, FluidState fluid) {
-	boolean retval = super.onDestroyedByPlayer(blockstate, world, pos, entity, willHarvest, fluid);
+@Override public boolean onDestroyedByPlayer(BlockState blockstate, Level world, BlockPos pos, Player entity, ItemStack toolStack, boolean willHarvest, FluidState fluid) {
+	boolean retval = super.onDestroyedByPlayer(blockstate, world, pos, entity, toolStack, willHarvest, fluid);
 	<@procedureCode procedure, {
 		"x": "pos.getX()",
 		"y": "pos.getY()",
