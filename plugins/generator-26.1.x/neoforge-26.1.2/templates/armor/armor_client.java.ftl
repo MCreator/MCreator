@@ -49,10 +49,10 @@ import net.minecraft.client.model.Model;
 			</#if>
 
 			<#if data.helmetModelName != "Default" && data.getHelmetModel()??>
-			private HumanoidModel armorModel = null;
-			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			private HumanoidModel<?> armorModel = null;
+			@Override public Model getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				if (armorModel == null) {
-					armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
+					armorModel = new HumanoidModel<>(new ModelPart(Collections.emptyList(), Map.of(
 						"head", new ModelPart(Collections.emptyList(), Map.of(
 							"head", new ${data.helmetModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.helmetModelName}.LAYER_LOCATION)).${data.helmetModelPart},
 							"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap())
@@ -92,11 +92,11 @@ import net.minecraft.client.model.Model;
 			</#if>
 
 			<#if data.bodyModelName != "Default" && data.getBodyModel()??>
-			private HumanoidModel armorModel = null;
-			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			private HumanoidModel<?> armorModel = null;
+			@Override public Model getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				if (armorModel == null) {
 					${data.bodyModelName} model = new ${data.bodyModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bodyModelName}.LAYER_LOCATION));
-					armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
+					armorModel = new HumanoidModel<>(new ModelPart(Collections.emptyList(), Map.of(
 						"body", model.${data.bodyModelPart},
 						"left_arm", model.${data.armsModelPartL},
 						"right_arm", model.${data.armsModelPartR},
@@ -135,11 +135,11 @@ import net.minecraft.client.model.Model;
 			</#if>
 
 			<#if data.leggingsModelName != "Default" && data.getLeggingsModel()??>
-			private HumanoidModel armorModel = null;
-			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			private HumanoidModel<?> armorModel = null;
+			@Override public Model getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				if (armorModel == null) {
 					${data.leggingsModelName} model = new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION));
-					armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
+					armorModel = new HumanoidModel<>(new ModelPart(Collections.emptyList(), Map.of(
 						"left_leg", model.${data.leggingsModelPartL},
 						"right_leg", model.${data.leggingsModelPartR},
 						"head", new ModelPart(Collections.emptyList(), Map.of(
@@ -178,11 +178,11 @@ import net.minecraft.client.model.Model;
 			</#if>
 
 			<#if data.bootsModelName != "Default" && data.getBootsModel()??>
-			private HumanoidModel armorModel = null;
-			@Override public HumanoidModel getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
+			private HumanoidModel<?> armorModel = null;
+			@Override public Model getHumanoidArmorModel(ItemStack itemStack, EquipmentClientInfo.LayerType layerType, Model original) {
 				if (armorModel == null) {
 					${data.bootsModelName} model = new ${data.bootsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.bootsModelName}.LAYER_LOCATION));
-					armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
+					armorModel = new HumanoidModel<>(new ModelPart(Collections.emptyList(), Map.of(
 						"left_leg", model.${data.bootsModelPartL},
 						"right_leg", model.${data.bootsModelPartR},
 						"head", new ModelPart(Collections.emptyList(), Map.of(
