@@ -84,12 +84,12 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	</#list>
 
 	<#if data.isBoss>
-	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
+	private final ServerBossEvent bossInfo = new ServerBossEvent(Mth.createInsecureUUID(this.random), this.getDisplayName(),
 		ServerBossEvent.BossBarColor.${data.bossBarColor}, ServerBossEvent.BossBarOverlay.${data.bossBarType});
 	</#if>
 
 	<#if data.sensitiveToVibration>
-	private final DynamicGameEventListener<VibrationSystem.Listener> dynamicGameEventListener = new DynamicGameEventListener(new VibrationSystem.Listener(this));
+	private final DynamicGameEventListener<VibrationSystem.Listener> dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationSystem.Listener(this));
 	private final VibrationSystem.User vibrationUser = new VibrationUser();
 	private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
 	</#if>
@@ -435,25 +435,28 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	</#if>
 
 	<#if data.guiBoundTo?has_content>
-	private final ItemStackHandler inventory = new ItemStackHandler(${data.inventorySize})
+	private final ItemStacksResourceHandler inventory = new ItemStacksResourceHandler(${data.inventorySize})
 	<#if data.inventoryStackSize != 99>
 	{
-		@Override public int getSlotLimit(int slot) {
-			return ${data.inventoryStackSize};
+		@Override protected int getCapacity(int index, ItemResource resource) {
+			return Math.min(${data.inventoryStackSize}, super.getCapacity(index, resource));
 		}
 	}
 	</#if>;
 
-	private final CombinedInvWrapper combined = new CombinedInvWrapper(inventory, new EntityHandsInvWrapper(this), new EntityArmorInvWrapper(this));
+	private final CombinedResourceHandler combined = new CombinedResourceHandler(inventory,
+		LivingEntityEquipmentWrapper.of(this, EquipmentSlot.Type.HAND),
+		LivingEntityEquipmentWrapper.of(this, EquipmentSlot.Type.HUMANOID_ARMOR)
+	);
 
-	public CombinedInvWrapper getCombinedInventory() {
+	public CombinedResourceHandler getCombinedInventory() {
 		return combined;
 	}
 
 	@Override protected void dropEquipment(ServerLevel serverLevel) {
 		super.dropEquipment(serverLevel);
-		for (int i = 0; i < inventory.getSlots(); ++i) {
-			ItemStack itemstack = inventory.getStackInSlot(i);
+		for (int i = 0; i < inventory.size(); i++) {
+			ItemStack itemstack = ItemUtil.getStack(inventory, i);
 			if (!itemstack.isEmpty() && !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
 				this.spawnAtLocation(serverLevel, itemstack);
 			}

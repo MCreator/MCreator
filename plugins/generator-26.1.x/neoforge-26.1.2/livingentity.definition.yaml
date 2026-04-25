@@ -20,7 +20,7 @@ templates:
     name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
 
 global_templates:
-  - template: json/monster_room_mobs.json.ftl
+  - template: livingentity/monster_room_mobs.json.ftl
     writer: json
     condition: "${w.getGElementsOfType('livingentity')?filter(e -> e.spawnInDungeons)?size != 0}"
     name: "@RESROOT/data/neoforge/data_maps/entity_type/monster_room_mobs.json"
