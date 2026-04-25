@@ -89,7 +89,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	</#if>
 
 	<#if data.sensitiveToVibration>
-	private final DynamicGameEventListener<VibrationSystem.Listener> dynamicGameEventListener = new DynamicGameEventListener(new VibrationSystem.Listener(this));
+	private final DynamicGameEventListener<VibrationSystem.Listener> dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationSystem.Listener(this));
 	private final VibrationSystem.User vibrationUser = new VibrationUser();
 	private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
 	</#if>
