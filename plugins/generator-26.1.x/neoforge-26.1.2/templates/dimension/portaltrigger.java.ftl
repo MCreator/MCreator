@@ -60,7 +60,7 @@ public class ${name}Item extends Item {
 
 			if (world.isEmptyBlock(pos) && <@procedureOBJToConditionCode data.portalMakeCondition/>) {
 				${name}PortalBlock.portalSpawn(world, pos);
-				itemstack.hurtAndBreak(1, entity, LivingEntity.getSlotForHand(context.getHand()));
+				itemstack.hurtAndBreak(1, entity, context.getHand().asEquipmentSlot());
 				success = true;
 			}
 

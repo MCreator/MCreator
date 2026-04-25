@@ -1,7 +1,7 @@
 templates:
   - template: dimension/dimension.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/dimension/@NAMEDimension.java"
-    condition: hasEffectsOrDimensionTriggers()
+    condition: hasDimensionTriggers()
   - template: dimension/teleporter.java.ftl
     condition: enablePortal
     name: "@SRCROOT/@BASEPACKAGEPATH/world/teleporter/@NAMETeleporter.java"

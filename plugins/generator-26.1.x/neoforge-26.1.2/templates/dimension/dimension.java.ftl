@@ -36,42 +36,8 @@ package ${package}.world.dimension;
 
 <@javacompress>
 
-<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
-@EventBusSubscriber
-</#if>
-public class ${name}Dimension {
+@EventBusSubscriber public class ${name}Dimension {
 
-	<#if data.useCustomEffects>
-	@EventBusSubscriber(Dist.CLIENT) public static class ${name}SpecialEffectsHandler {
-
-		@SubscribeEvent public static void registerDimensionSpecialEffects(RegisterDimensionSpecialEffectsEvent event) {
-			DimensionSpecialEffects customEffect = new DimensionSpecialEffects(
-				DimensionSpecialEffects.SkyType.${data.skyType?replace("NORMAL", "OVERWORLD")},
-				false,
-				false
-			) {
-				@Override public Vec3 getBrightnessDependentFogColor(Vec3 color, float sunHeight) {
-					<#if data.airColor?has_content>
-						return new Vec3(${data.airColor.getRed()/255},${data.airColor.getGreen()/255},${data.airColor.getBlue()/255})
-					<#else>
-						return color
-					</#if>
-					<#if data.sunHeightAffectsFog>
-						.multiply(sunHeight * 0.94 + 0.06, sunHeight * 0.94 + 0.06, sunHeight * 0.91 + 0.09)
-					</#if>;
-				}
-
-				@Override public boolean isFoggyAt(int x, int y) {
-					return ${data.hasFog};
-				}
-			};
-			event.register(Identifier.parse("${modid}:${registryname}"), customEffect);
-		}
-
-	}
-	</#if>
-
-	<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
 	@SubscribeEvent public static void onPlayerChangedDimensionEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
 		Entity entity = event.getEntity();
 		Level world = entity.level();
@@ -91,7 +57,6 @@ public class ${name}Dimension {
 		}
 		</#if>
 	}
-	</#if>
 
 }
 </@javacompress>

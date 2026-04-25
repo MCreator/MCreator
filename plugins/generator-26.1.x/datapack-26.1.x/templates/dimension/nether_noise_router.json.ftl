@@ -5,7 +5,7 @@
   "lava": 0,
   "temperature": {
     "type": "minecraft:shifted_noise",
-    "noise": "minecraft:temperature",
+    "noise": "minecraft:nether/temperature",
     "xz_scale": 0.25,
     "y_scale": 0,
     "shift_x": "minecraft:shift_x",
@@ -14,7 +14,7 @@
   },
   "vegetation": {
     "type": "minecraft:shifted_noise",
-    "noise": "minecraft:vegetation",
+    "noise": "minecraft:nether/vegetation",
     "xz_scale": 0.25,
     "y_scale": 0,
     "shift_x": "minecraft:shift_x",
@@ -25,7 +25,7 @@
   "erosion": 0,
   "depth": 0,
   "ridges": 0,
-  "initial_density_without_jaggedness": 0,
+  "preliminary_surface_level": 0,
   "final_density": {
     "type": "minecraft:squeeze",
     "argument": {
