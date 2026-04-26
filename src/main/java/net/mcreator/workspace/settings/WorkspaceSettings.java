@@ -62,10 +62,10 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
-	private static final Pattern cleanExcessCharactersPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanExcessMmpCharactersPattern = Pattern.compile("[^0-9.]+");
 	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
 	private static final Pattern cleanLeadingTrailingDotsPattern = Pattern.compile("(\\.$)|(^\\.)");
-
+	private static final Pattern cleanExcessSemVerCharactersPattern = Pattern.compile("[^0-9a-zA-Z.+-]+");
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
@@ -223,16 +223,21 @@ import java.util.stream.Stream;
 	}
 
 	private String getSemVerCompliantVersion() {
-		Matcher compliantVersionMatcher = semVerPattern.matcher(version);
+		String baseVersion = getTrimmedVersion(true);
+		Matcher compliantVersionMatcher = semVerPattern.matcher(baseVersion);
 		if (compliantVersionMatcher.matches())
 			return compliantVersionMatcher.group();
 		return "";
 	}
 
-	private String getCleanMmpVersion() {
-		String cleanVersion = cleanExcessCharactersPattern.matcher(version).replaceAll("");
-		cleanVersion = cleanMultiDotsPattern.matcher(cleanVersion).replaceAll(".");
-		return cleanLeadingTrailingDotsPattern.matcher(cleanVersion).replaceAll("");
+	private String getTrimmedVersion(boolean SemVer) {
+		String nonExcessCharsVersion;
+		if (SemVer)
+			nonExcessCharsVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
+		else
+			nonExcessCharsVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
+		String nonMultiDotsVersion = cleanMultiDotsPattern.matcher(nonExcessCharsVersion).replaceAll(".");
+		return cleanLeadingTrailingDotsPattern.matcher(nonMultiDotsVersion).replaceAll("");
 	}
 
 	public String getCleanVersion() {
@@ -240,7 +245,7 @@ import java.util.stream.Stream;
 		if (!semVerCompliantVersion.isEmpty())
 			return semVerCompliantVersion;
 
-		String cleanVersion = getCleanMmpVersion();
+		String cleanVersion = getTrimmedVersion(false);
 		if (!cleanVersion.isEmpty())
 			return cleanVersion;
 
@@ -306,12 +311,12 @@ import java.util.stream.Stream;
 	}
 
 	public int[] get3DigitVersion() {
+		String baseVersion = getTrimmedVersion(false);
 		int[] ver3 = { 0, 0, 0 };
 		try {
-			String[] parts = version.split("\\.");
+			String[] parts = baseVersion.split("\\.");
 			for (int i = 0; i < Math.min(parts.length, ver3.length); i++) {
-				String digit = parts[i].replaceAll("[^\\d]", "");
-				ver3[i] = Integer.parseInt(digit);
+				ver3[i] = Integer.parseInt(parts[i]);
 			}
 		} catch (Exception ignored) {
 		}
