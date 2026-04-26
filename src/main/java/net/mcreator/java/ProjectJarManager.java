@@ -30,7 +30,10 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JarManager;
-import org.fife.rsta.ac.java.buildpath.*;
+import org.fife.rsta.ac.java.buildpath.DirSourceLocation;
+import org.fife.rsta.ac.java.buildpath.JarLibraryInfo;
+import org.fife.rsta.ac.java.buildpath.LibraryInfo;
+import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.gradle.tooling.BuildException;
 import org.gradle.tooling.ModelBuilder;
 import org.gradle.tooling.ProjectConnection;
@@ -198,8 +201,8 @@ public class ProjectJarManager extends JarManager {
 
 		LOG.debug("Loading JVM {} info from {}", javaReleaseInfo, javaHome);
 
-		final File classesArchive = findExistingPath(javaHome, "lib/rt.jar", "../Classes/classes.jar",
-				"jmods/java.base.jmod", "lib/jrt-fs.jar");
+		final File classesArchive = findExistingPath(javaHome, "lib/rt.jar", "../Classes/classes.jar", "lib/jrt-fs.jar",
+				"jmods/java.base.jmod");
 		if (classesArchive == null) {
 			throw new GradleCacheImportFailedException(new FileNotFoundException("Failed to find SDK base library"));
 		}

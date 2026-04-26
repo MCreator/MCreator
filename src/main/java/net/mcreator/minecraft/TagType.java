@@ -27,31 +27,37 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.BiFunction;
 
 public enum TagType {
 
 	//@formatter:off
-	ITEMS("item", Dependency.getColor("itemstack"), MItemBlock::new),
-	BLOCKS("block", Dependency.getColor("blockstate"), MItemBlock::new),
-	ENTITIES("entity_type", Dependency.getColor("entity"), EntityEntry::new),
-	FUNCTIONS("function", Dependency.getColor("string"), (w, e) -> new NonMappableElement(e)),
-	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new),
-	STRUCTURES("worldgen/structure", new Color(0xA16350), StructureEntry::new),
-	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new),
-	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new),
-	GAME_EVENTS("game_event", new Color(0x5057A1), GameEventEntry::new);
+	ITEMS("item", Dependency.getColor("itemstack"), MItemBlock::new, true),
+	BLOCKS("block", Dependency.getColor("blockstate"), MItemBlock::new, true),
+	ENTITIES("entity_type", Dependency.getColor("entity"), EntityEntry::new, true),
+	FUNCTIONS("function", Dependency.getColor("string"), (w, e) -> new NonMappableElement(e), true),
+	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new, true),
+	STRUCTURES("worldgen/structure", new Color(0xA16350), StructureEntry::new, true),
+	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new, true),
+	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new, true),
+	GAME_EVENTS("game_event", new Color(0x5057A1), GameEventEntry::new, true),
+	PAINTING_VARIANTS("painting_variant", new Color(0x59806C), (w, e) -> new NonMappableElement(e), false),
+	BANNER_PATTERNS("banner_pattern", new Color(0x805959), (w, e) -> new NonMappableElement(e), false),
+	POINTS_OF_INTEREST("point_of_interest_type", new Color(0x807659), (w, e) -> new NonMappableElement(e), false);
 	//@formatter:on
 
 	private final String folder;
 	private final Color color;
 	private final BiFunction<Workspace, String, MappableElement> mappableElementProvider;
+	private final boolean visible;
 
-	TagType(String folder, Color color, BiFunction<Workspace, String, MappableElement> mappableElementProvider) {
+	TagType(String folder, Color color, BiFunction<Workspace, String, MappableElement> mappableElementProvider, boolean visible) {
 		this.folder = folder;
 		this.color = color;
 		this.mappableElementProvider = mappableElementProvider;
+		this.visible = visible;
 	}
 
 	public BiFunction<Workspace, String, MappableElement> getMappableElementProvider() {
@@ -71,6 +77,10 @@ public enum TagType {
 
 	public Color getColor() {
 		return color;
+	}
+
+	public static TagType[] visibleValues() {
+		return Arrays.stream(TagType.values()).filter(e -> e.visible).toArray(TagType[]::new);
 	}
 
 	@Override public String toString() {
