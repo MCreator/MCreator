@@ -1,4 +1,5 @@
 <#-- @formatter:off -->
+<#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 {
   "format_version": "1.21.40",
   "minecraft:block": {
@@ -27,10 +28,17 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry": <#if data.hasCustomModel()>"geometry.${data.getModel().getReadableName()}"<#else>"minecraft:geometry.full_block"</#if>,
-      "minecraft:material_instances": {
+      "minecraft:geometry":
         <#if data.hasCustomModel()>
-		"*": <@material_face/>
+          "geometry.${data.getModel().getReadableName()}"
+        <#elseif data.renderType() == 11>
+          "minecraft:geometry.cross"
+        <#else>
+          "minecraft:geometry.full_block"
+        </#if>,
+      "minecraft:material_instances": {
+        <#if data.hasOneTexture()>
+		"*": <@material_face "" data.renderType() == 11 data.renderType() == 11/>
 		<#else>
         "up": <@material_face "up"/>,
         "down": <@material_face "down"/>,
@@ -53,11 +61,16 @@
       "minecraft:destructible_by_explosion": {
         "explosion_resistance": ${data.resistance}
       },
+      <#if data.friction != 0.4>
       "minecraft:friction": ${data.friction},
+      </#if>
       "minecraft:flammable": {
         "catch_chance_modifier": ${data.flammability},
         "destroy_chance_modifier": ${data.flammableDestroyChance}
-      }
+      }<#if localScripts?has_content>,</#if>
+      <#list localScripts as script>
+      "${script}": {}<#sep>,
+      </#list>
     }
     <#if data.rotationMode != 0>,
     "permutations": [
@@ -142,11 +155,13 @@
   </#if>
 </#function>
 
-<#macro material_face suffix="">
+<#macro material_face suffix="" disableAmbientOcclusion=false disableFaceDimming=false>
 {
   "texture": "${modid}_${registryname}<#if suffix?has_content>_${suffix}</#if>"
   <#if data.renderMethod != "opaque">,"render_method": "${data.renderMethod}"</#if>
   <#if data.tintMethod != "(none)">,"tint_method": "${data.tintMethod}"</#if>
+  <#if disableAmbientOcclusion>,"ambient_occlusion": false</#if>
+  <#if disableFaceDimming>,"face_dimming": false</#if>
 }
 </#macro>
 

@@ -120,10 +120,11 @@ import static org.junit.jupiter.api.Assertions.*;
 						mcreator.get().getGradleConsole().exec(GradleConsole.GRADLE_SYNC_TASK, taskResult -> {
 							if (taskResult == GradleResultCode.STATUS_OK) {
 								workspace.get().getGenerator().reloadGradleCaches();
+								latch.countDown();
 							} else {
+								latch.countDown();
 								fail("Gradle MDK setup failed!");
 							}
-							latch.countDown();
 						});
 						latch.await();
 
@@ -176,6 +177,14 @@ import static org.junit.jupiter.api.Assertions.*;
 							tests.add(DynamicTest.dynamicTest(generator + " - Testing variables",
 									() -> GTVariables.runTest(LOG, generator, random, workspace.get())));
 						}
+					}
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.BESCRIPT) != GeneratorStats.CoverageStatus.NONE) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing script triggers",
+								() -> GTScriptTriggers.runTest(LOG, generator, workspace.get())));
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing script blocks",
+								() -> GTScriptBlocks.runTest(LOG, generator, random, workspace.get())));
 					}
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()

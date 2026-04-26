@@ -344,8 +344,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private void importWorkspaceFromZip(File file) {
 		File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
 		if (workspaceDir != null) {
-			ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
-					this);
+			ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
 			if (workspaceFile != null)
 				workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
 		}
@@ -575,7 +574,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				if (news != null) {
 					nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
 							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">"
-							+ StringUtils.abbreviateString(news[0], 43));
+							+ StringUtils.abbreviateString(news[0], 41));
 					nov.addMouseListener(new MouseAdapter() {
 						@Override public void mouseClicked(MouseEvent en) {
 							DesktopUtils.browseSafe(news[1]);
@@ -662,7 +661,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-80);
+			((ImagePanel) soim).setOffsetY(-365);
 		} else {
 			soim = new JPanel();
 			soim.setBackground(Theme.current().getSecondAltBackgroundColor());

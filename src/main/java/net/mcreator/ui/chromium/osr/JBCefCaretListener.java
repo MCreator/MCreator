@@ -10,6 +10,7 @@ import java.awt.*;
 interface JBCefCaretListener {
 
 	void onImeCompositionRangeChanged(CefRange selectionRange, Rectangle[] characterBounds);
+
 	void onTextSelectionChanged(String selectedText, CefRange selectionRange);
 
 }

@@ -468,8 +468,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
 		immuneToFire.setSelected(tool.immuneToFire);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
-
-		blocksAffected.setListElements(tool.blocksAffected);
 		attributeModifiersList.setEntries(tool.attributeModifiers);
 
 		updateCraftingSettings();
@@ -479,17 +477,25 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		if (model != null)
 			renderType.setSelectedItem(model);
 
-		Model modelBlocking = tool.getBlockingModel();
-		if (modelBlocking != null)
-			blockingModel.setSelectedItem(modelBlocking);
+		// Handle some tool type-dependant properties that may contain references
+		if ("Special".equals(tool.toolType)) {
+			blocksAffected.setListElements(tool.blocksAffected);
+		} else if ("Shield".equals(tool.toolType)) {
+			Model modelBlocking = tool.getBlockingModel();
+			if (modelBlocking != null)
+				blockingModel.setSelectedItem(modelBlocking);
+		}
+
 	}
 
 	@Override public Tool getElementFromGUI() {
+		String selectedToolType = (String) Objects.requireNonNull(toolType.getSelectedItem());
+
 		Tool tool = new Tool(modElement);
 		tool.name = name.getText();
 		tool.rarity = rarity.getSelectedItem();
 		tool.creativeTabs = creativeTabs.getListElements();
-		tool.toolType = (String) Objects.requireNonNull(toolType.getSelectedItem());
+		tool.toolType = selectedToolType;
 		tool.blockDropsTier = (String) blockDropsTier.getSelectedItem();
 		tool.additionalDropCondition = additionalDropCondition.getSelectedProcedure();
 		tool.efficiency = (double) efficiency.getValue();
@@ -497,7 +503,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.attackSpeed = (double) attackSpeed.getValue();
 		tool.damageVsEntity = (double) damageVsEntity.getValue();
 		tool.usageCount = (int) usageCount.getValue();
-		tool.blocksAffected = blocksAffected.getListElements();
 		tool.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		tool.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		tool.onCrafted = onCrafted.getSelectedProcedure();
@@ -528,13 +533,18 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			tool.renderType = 2;
 		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
 
-		Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
-		tool.blockingRenderType = 0;
-		if (blockingModelType == Model.Type.JSON)
-			tool.blockingRenderType = 1;
-		else if (blockingModelType == Model.Type.OBJ)
-			tool.blockingRenderType = 2;
-		tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
+		// Handle some tool type-dependant properties that may contain references
+		if ("Special".equals(selectedToolType)) {
+			tool.blocksAffected = blocksAffected.getListElements();
+		} else if ("Shield".equals(selectedToolType)) {
+			Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
+			tool.blockingRenderType = 0;
+			if (blockingModelType == Model.Type.JSON)
+				tool.blockingRenderType = 1;
+			else if (blockingModelType == Model.Type.OBJ)
+				tool.blockingRenderType = 2;
+			tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
+		}
 
 		return tool;
 	}

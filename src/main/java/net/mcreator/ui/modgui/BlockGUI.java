@@ -59,7 +59,10 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.*;
+import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -169,11 +172,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
-	private final SoundSelector breakSound = new SoundSelector(mcreator);
-	private final SoundSelector fallSound = new SoundSelector(mcreator);
-	private final SoundSelector hitSound = new SoundSelector(mcreator);
-	private final SoundSelector placeSound = new SoundSelector(mcreator);
-	private final SoundSelector stepSound = new SoundSelector(mcreator);
+	private final SoundSelector breakSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_break_sound");
+	private final SoundSelector fallSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_fall_sound");
+	private final SoundSelector hitSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_hit_sound");
+	private final SoundSelector placeSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_place_sound");
+	private final SoundSelector stepSound = new SoundSelector(mcreator).requireValue(
+			"elementgui.block.error_block_needs_step_sound");
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
@@ -1460,18 +1468,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
 
 		page3group.addValidationElement(name);
-
-		breakSound.getVTextField().setValidator(new ConditionalTextFieldValidator(breakSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		fallSound.getVTextField().setValidator(new ConditionalTextFieldValidator(fallSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		hitSound.getVTextField().setValidator(new ConditionalTextFieldValidator(hitSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		placeSound.getVTextField().setValidator(new ConditionalTextFieldValidator(placeSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-		stepSound.getVTextField().setValidator(new ConditionalTextFieldValidator(stepSound.getVTextField(),
-				L10N.t("elementgui.common.error_sound_empty_null"), customSoundType, true));
-
 		page3group.addValidationElement(breakSound.getVTextField());
 		page3group.addValidationElement(fallSound.getVTextField());
 		page3group.addValidationElement(hitSound.getVTextField());
@@ -1842,13 +1838,20 @@ public class BlockGUI extends ModElementGUI<Block> {
 		} else {
 			signGUITexturePanel.setVisible("HangingSign".equals(block.blockBase));
 			blockBase.setSelectedItem(block.blockBase);
+			switch (block.blockBase) {
+			case "Leaves" -> {
+				leavesParticleType.setEntry(block.leavesParticleType);
+				leavesParticleChance.setValue(block.leavesParticleChance);
+			}
+			case "FlowerPot" -> pottedPlant.setBlock(block.pottedPlant);
+			case "Sign" -> signEntityTexture.setTexture(block.signEntityTexture);
+			case "HangingSign" -> {
+				signEntityTexture.setTexture(block.signEntityTexture);
+				signGUITexture.setTexture(block.signGUITexture);
+			}
+			}
 		}
 		blockSetType.setSelectedItem(block.blockSetType);
-		pottedPlant.setBlock(block.pottedPlant);
-		leavesParticleType.setEntry(block.leavesParticleType);
-		leavesParticleChance.setValue(block.leavesParticleChance);
-		signEntityTexture.setTexture(block.signEntityTexture);
-		signGUITexture.setTexture(block.signGUITexture);
 
 		plantsGrowOn.setSelected(block.plantsGrowOn);
 		hasInventory.setSelected(block.hasInventory);
@@ -2073,11 +2076,18 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
-		block.pottedPlant = pottedPlant.getBlock();
-		block.leavesParticleType = leavesParticleType.getEntry();
-		block.leavesParticleChance = (double) leavesParticleChance.getValue();
-		block.signEntityTexture = signEntityTexture.getTextureHolder();
-		block.signGUITexture = signGUITexture.getTextureHolder();
+		switch (Objects.requireNonNull(blockBase.getSelectedItem())) {
+		case "Leaves" -> {
+			block.leavesParticleType = leavesParticleType.getEntry();
+			block.leavesParticleChance = (double) leavesParticleChance.getValue();
+		}
+		case "FlowerPot" -> block.pottedPlant = pottedPlant.getBlock();
+		case "Sign" -> block.signEntityTexture = signEntityTexture.getTextureHolder();
+		case "HangingSign" -> {
+			block.signEntityTexture = signEntityTexture.getTextureHolder();
+			block.signGUITexture = signGUITexture.getTextureHolder();
+		}
+		}
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

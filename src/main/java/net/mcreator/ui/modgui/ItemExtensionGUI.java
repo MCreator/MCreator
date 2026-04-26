@@ -137,6 +137,9 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		parameters.add(dispenserBehaviourPanel);
 
 		addPage(PanelUtils.totalCenterInPanel(parameters)).validate(pageGroup);
+
+		updateDispenseElements();
+		updateFuelElements();
 	}
 
 	@Override public void reloadDataLists() {

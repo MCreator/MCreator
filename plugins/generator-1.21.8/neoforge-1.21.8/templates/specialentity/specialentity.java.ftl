@@ -40,7 +40,7 @@ package ${package}.entity;
 public class ${name}Entity extends ${extendsClass} {
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
-    	super(type, world, ${JavaModName}Items.${REGISTRYNAME});
+		super(type, world, ${JavaModName}Items.${REGISTRYNAME});
 	}
 }
 <#-- @formatter:off -->

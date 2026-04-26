@@ -503,8 +503,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		ComponentUtils.makeSection(rangedPanel, L10N.t("elementgui.item.ranged_properties"));
 
 		useProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
-				PanelUtils.pullElementUp(
-						PanelUtils.northAndCenterElement(itemUseSubpane, foodSubpane)),
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(itemUseSubpane, foodSubpane)),
 				PanelUtils.pullElementUp(rangedPanel), 5, 5)));
 		useProperties.setOpaque(false);
 
@@ -534,23 +533,23 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel guiProperties = new JPanel(new GridLayout(2, 1, 35, 2));
 		guiProperties.setOpaque(false);
 
-        JPanel boundGuiPanel = new JPanel(new GridLayout(1, 2, 35, 2));
-        boundGuiPanel.setOpaque(false);
+		JPanel boundGuiPanel = new JPanel(new GridLayout(1, 2, 35, 2));
+		boundGuiPanel.setOpaque(false);
 
-        boundGuiPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"),
-                L10N.label("elementgui.item.bind_gui")));
-        boundGuiPanel.add(guiBoundTo);
+		boundGuiPanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
+		boundGuiPanel.add(guiBoundTo);
 
 		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
 		refreshGUIProperties();
 
-        guiProperties.add(boundGuiPanel);
+		guiProperties.add(boundGuiPanel);
 
-        JPanel openGuiPanel = new JPanel(new BorderLayout());
-        openGuiPanel.setOpaque(false);
-        openGuiPanel.add("Center", openGUIOnRightClick);
+		JPanel openGuiPanel = new JPanel(new BorderLayout());
+		openGuiPanel.setOpaque(false);
+		openGuiPanel.add("Center", openGUIOnRightClick);
 
-        guiProperties.add(openGuiPanel);
+		guiProperties.add(openGuiPanel);
 
 		JPanel stackSizeProperties = new JPanel(new GridLayout(2, 2, 35, 2));
 		stackSizeProperties.setOpaque(false);

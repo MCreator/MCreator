@@ -45,7 +45,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public double useDuration;
 	public int maxDurability;
 	public boolean enableMeleeDamage;
-	public double damageVsEntity;
+	public int damageVsEntity;
 	public boolean hasGlint;
 	public boolean handEquipped;
 	public String rarity;
@@ -56,6 +56,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean allowOffHand;
 	public double fuelDuration;
 	public boolean shouldDespawn;
+	public boolean stackedByData;
 	public MItemBlock blockToPlace;
 	@ModElementReference public List<MItemBlock> blockPlaceableOn;
 	public EntityEntry entityToPlace;
@@ -70,21 +71,27 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@ModElementReference public MItemBlock usingConvertsTo;
 	public String animation;
 
+	@ModElementReference public List<String> localScripts;
+
 	public BEItem() {
 		this(null);
 	}
 
 	public BEItem(ModElement element) {
 		super(element);
-		this.rarity = "COMMON";
-		this.movementModifier = 1.0;
-		this.shouldDespawn = true;
-		this.animation = "eat";
-		this.enableCreativeTab = true;
-		this.creativeTab = "MATERIALS";
-		this.blockPlaceableOn = new ArrayList<>();
-		this.entityDispensableOn = new ArrayList<>();
-		this.entityPlaceableOn = new ArrayList<>();
+
+		rarity = "COMMON";
+		movementModifier = 1.0;
+		shouldDespawn = true;
+		animation = "eat";
+		enableCreativeTab = true;
+		creativeTab = "MATERIALS";
+
+		blockPlaceableOn = new ArrayList<>();
+		entityDispensableOn = new ArrayList<>();
+		entityPlaceableOn = new ArrayList<>();
+
+		localScripts = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

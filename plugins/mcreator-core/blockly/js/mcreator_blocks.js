@@ -37,6 +37,18 @@ Blockly.Blocks['event_trigger'] = {
     }
 };
 
+Blockly.Blocks['script_trigger'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.script_trigger"))
+            .appendField(new FieldDataListSelector('global_triggers'), 'trigger');
+        this.setNextStatement(true);
+        this.setStyle('hat_blocks');
+        this.setColour(90);
+        this.setTooltip(javabridge.t("blockly.block.script_trigger.tooltip"));
+    }
+};
+
 Blockly.Blocks["event_number_parameter_set"] = {
 	init: function () {
 		this.appendDummyInput()

@@ -19,8 +19,10 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
