@@ -223,16 +223,16 @@ import java.util.stream.Stream;
 	}
 
 	private String getSemVerCompliantVersion() {
-		String baseVersion = getTrimmedVersion(true);
-		Matcher compliantVersionMatcher = semVerPattern.matcher(baseVersion);
+		String trimmedVersion = getTrimmedVersion(true);
+		Matcher compliantVersionMatcher = semVerPattern.matcher(trimmedVersion);
 		if (compliantVersionMatcher.matches())
 			return compliantVersionMatcher.group();
 		return "";
 	}
 
-	private String getTrimmedVersion(boolean SemVer) {
+	private String getTrimmedVersion(boolean semVer) {
 		String nonExcessCharsVersion;
-		if (SemVer)
+		if (semVer)
 			nonExcessCharsVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
 		else
 			nonExcessCharsVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
@@ -311,10 +311,10 @@ import java.util.stream.Stream;
 	}
 
 	public int[] get3DigitVersion() {
-		String baseVersion = getTrimmedVersion(false);
+		String trimmedVersion = getTrimmedVersion(false);
 		int[] ver3 = { 0, 0, 0 };
 		try {
-			String[] parts = baseVersion.split("\\.");
+			String[] parts = trimmedVersion.split("\\.");
 			for (int i = 0; i < Math.min(parts.length, ver3.length); i++) {
 				ver3[i] = Integer.parseInt(parts[i]);
 			}
