@@ -7,6 +7,5 @@
     <#else>
     "particle": "${data.textureBottom().format("%s:block/%s")}"
     </#if>
-  },
-  "render_type": "cutout"
+  }
 }

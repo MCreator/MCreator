@@ -8,6 +8,5 @@
           "${texture.getKey()}": "${texture.getValue().format("%s:block/%s")}"
         </#list>
       </#if>
-  },
-  "render_type": "${(parent???then(parent, data)).getRenderType()}"
+  }
 }
