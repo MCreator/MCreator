@@ -28,15 +28,12 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class PrintTextBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (element != null) {
-			String elementcode = BlocklyToCode.directProcessOutputBlock(master, element);
+			String elementcode = master.processOutputBlockToStringCompatible(element);
 			if (master.getTemplateGenerator() != null) {
 				master.append("console.log(");
 				master.append(ProcedureCodeOptimizer.removeParentheses(elementcode));

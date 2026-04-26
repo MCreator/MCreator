@@ -33,8 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class JAttributeModifierList
-		extends JSimpleEntriesList<JAttributeModifierEntry, AttributeModifierEntry> {
+public class JAttributeModifierList extends JSimpleEntriesList<JAttributeModifierEntry, AttributeModifierEntry> {
 
 	private final EntryType entryType;
 

@@ -22,6 +22,10 @@
           <#list w.filterBrokenReferences(elements) as value>
 			<@tagEntry value generator.getResourceLocationForModElement(value)/><#sep>,
           </#list>
+      <#elseif type == "painting_variants" || type == "banner_patterns" || type == "points_of_interest">
+          <#list w.filterBrokenReferences(elements) as value>
+            <@tagEntry value generator.getResourceLocationForModElement(value?remove_beginning("CUSTOM:"))/><#sep>,
+          </#list>
       </#if>
     ]
 }

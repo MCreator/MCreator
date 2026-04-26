@@ -30,7 +30,7 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
-public class ToolToBedrockConverter implements IConverter{
+public class ToolToBedrockConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
 			throws Exception {

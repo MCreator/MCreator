@@ -406,7 +406,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
 
-		helmetModel.addActionListener(e -> helmetTranslucency.setEnabled(helmetModel.getSelectedItem() != defaultModel));
+		helmetModel.addActionListener(
+				e -> helmetTranslucency.setEnabled(helmetModel.getSelectedItem() != defaultModel));
 
 		JPanel helmetConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		helmetConditionsPanel.setOpaque(false);
@@ -514,7 +515,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
-		leggingsModel.addActionListener(e -> leggingsTranslucency.setEnabled(leggingsModel.getSelectedItem() != defaultModel));
+		leggingsModel.addActionListener(
+				e -> leggingsTranslucency.setEnabled(leggingsModel.getSelectedItem() != defaultModel));
 
 		JPanel leggingsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		leggingsConditionsPanel.setOpaque(false);

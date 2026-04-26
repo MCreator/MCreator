@@ -352,6 +352,14 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	private void updateBlockUsableOnList() {
 		blockPlaceableOn.setEnabled(blockToPlace.containsItem());
+		updateEntityPlacerFromBlockPlacer();
+	}
+
+	private void updateEntityPlacerFromBlockPlacer() {
+		boolean enableEntityPlacer = !blockToPlace.containsItem();
+		entityToPlace.setEnabled(enableEntityPlacer);
+		entityPlaceableOn.setEnabled(enableEntityPlacer);
+		entityDispensableOn.setEnabled(enableEntityPlacer);
 	}
 
 	@Override protected void openInEditingMode(BEItem item) {

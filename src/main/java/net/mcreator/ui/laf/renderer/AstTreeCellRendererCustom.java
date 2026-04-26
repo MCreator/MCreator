@@ -71,7 +71,8 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 			int row, boolean hasFocus) {
 		super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 
-		if (value == null) return this;
+		if (value == null)
+			return this;
 
 		if (!sel) {
 			setBackground(Theme.current().getBackgroundColor());
