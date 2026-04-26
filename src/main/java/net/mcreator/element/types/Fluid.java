@@ -28,6 +28,7 @@ import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.IMultipleNames;
 import net.mcreator.element.types.interfaces.ISpecialInfoHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
@@ -48,7 +49,7 @@ import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement, ISpecialInfoHolder {
+		implements IBlock, ITabContainedElement, ISpecialInfoHolder, IMultipleNames {
 
 	public String name;
 	public String bucketName;
@@ -193,6 +194,10 @@ import java.util.List;
 
 	public boolean hasCustomBucketTexture() {
 		return generateBucket && textureBucket != null && !textureBucket.isEmpty();
+	}
+
+	@Override public Collection<String> getAdditionalNames() {
+		return List.of("Flowing" + getModElement().getName());
 	}
 
 }

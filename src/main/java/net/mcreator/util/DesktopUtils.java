@@ -62,7 +62,7 @@ public class DesktopUtils {
 		}
 	}
 
-	public static boolean browse(URI uri) {
+	private static boolean browse(URI uri) {
 		if (browseDESKTOP(uri)) {
 			return true;
 		}
@@ -71,7 +71,7 @@ public class DesktopUtils {
 			return true;
 		}
 
-		LOG.warn(String.format("Failed to browse %s", uri));
+		LOG.warn("Failed to browse {}", uri);
 
 		return false;
 	}
@@ -85,7 +85,7 @@ public class DesktopUtils {
 			return true;
 		}
 
-		LOG.warn(String.format("Failed to open %s", file.getAbsolutePath()));
+		LOG.warn("Failed to open {}", file.getAbsolutePath());
 
 		return false;
 	}
@@ -99,7 +99,7 @@ public class DesktopUtils {
 			return true;
 		}
 
-		LOG.warn(String.format("Failed to edit %s", file.getAbsolutePath()));
+		LOG.warn("Failed to edit {}", file.getAbsolutePath());
 
 		return false;
 	}
@@ -142,7 +142,7 @@ public class DesktopUtils {
 	private static boolean browseDESKTOP(URI uri) {
 		try {
 			if (!Desktop.isDesktopSupported()) {
-				LOG.debug("Platform is not supported.");
+				LOG.debug("Platform is not supported for browse.");
 				return false;
 			}
 
@@ -164,7 +164,7 @@ public class DesktopUtils {
 	private static boolean openDESKTOP(File file, boolean selectOnly) {
 		try {
 			if (!Desktop.isDesktopSupported()) {
-				LOG.debug("Platform is not supported.");
+				LOG.debug("Platform is not supported for oepn.");
 				return false;
 			}
 
