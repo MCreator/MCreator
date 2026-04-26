@@ -6,7 +6,7 @@
   "texture_data": {
   <#list w.getElementsOfType("beblock") as mod>
   	<#assign ge = mod.getGeneratableElement()>
-  	<#if ge.hasCustomModel()>
+  	<#if ge.hasOneTexture()>
   	"${modid}_${mod.getRegistryName()}": { "textures": [ "textures/blocks/${ge.texture}" ] }
   	<#else>
   	"${modid}_${mod.getRegistryName()}_up": { "textures": [ "textures/blocks/${ge.textureTop()}" ] },

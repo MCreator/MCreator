@@ -231,12 +231,11 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		workspaceType.add(fabric);
 		workspaceType.add(forge);
 		workspaceType.add(quilt);
-		workspaceType.add(separator("dialog.new_workspace.je_dp"));
-		workspaceType.add(datapack);
-		workspaceType.add(separator("dialog.new_workspace.je_rp"));
-		workspaceType.add(resourcepack);
 		workspaceType.add(separator("dialog.new_workspace.be_addon"));
 		workspaceType.add(addon);
+		workspaceType.add(separator("dialog.new_workspace.je_packs"));
+		workspaceType.add(datapack);
+		workspaceType.add(resourcepack);
 		workspaceType.add(separator("dialog.new_workspace.je_plugin"));
 		workspaceType.add(spigot);
 		workspaceType.add(paper);

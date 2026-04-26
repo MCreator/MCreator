@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.action.impl.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -29,6 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.FilenameUtilsPatched;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +42,8 @@ public class StructureImportActions {
 	public static class ImportStructure extends BasicAction {
 		public ImportStructure(ActionRegistry actionRegistry) {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_structure"), actionEvent -> {
-				File[] schs = FileDialogs.getMultiOpenDialog(actionRegistry.getMCreator(), new String[] { ".nbt" });
+				File[] schs = FileDialogs.getMultiOpenDialog(actionRegistry.getMCreator(), new String[] {
+						"." + actionRegistry.getMCreator().getGeneratorConfiguration().getStructureExtension() });
 				if (schs != null)
 					importStructure(actionRegistry.getMCreator(), schs);
 			});
@@ -107,13 +109,15 @@ public class StructureImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("structures");
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("structures")
+					&& actionRegistry.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.JAVAEDITION;
 		}
 	}
 
 	private record Structure(String name, File file) {
 
-		@Override public String toString() {
+		@Nonnull @Override public String toString() {
 			return name;
 		}
 	}

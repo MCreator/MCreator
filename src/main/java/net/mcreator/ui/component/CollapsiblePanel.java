@@ -44,8 +44,7 @@ public class CollapsiblePanel extends JPanel {
 
 		setBorder(border = BorderFactory.createTitledBorder(
 				BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()), title,
-				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null,
-				Theme.current().getAltForegroundColor()));
+				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null, Theme.current().getAltForegroundColor()));
 
 		setTitle(text);
 		updateBorderTitle();
@@ -57,7 +56,16 @@ public class CollapsiblePanel extends JPanel {
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				toggleVisibility();
+				FontMetrics fm = getFontMetrics(border.getTitleFont() != null ? border.getTitleFont() : getFont());
+
+				// Title height + some offset
+				int titleHeight = fm.getHeight() + 4;
+
+				int y = e.getY();
+				Insets insets = getInsets();
+				if (y >= insets.top - titleHeight && y <= insets.top) {
+					toggleVisibility();
+				}
 			}
 		});
 	}

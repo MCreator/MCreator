@@ -24,6 +24,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,6 +50,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class CefUtils {
@@ -109,7 +111,7 @@ public class CefUtils {
 		return settings;
 	}
 
-	private static CefApp getCefApp() {
+	private synchronized static CefApp getCefApp() {
 		if (cefApp == null) {
 			LOG.info("Initializing JCEF in {} mode",
 					useOSR() ? "OSR (" + getCefBrowserSettings().windowless_frame_rate + " FPS)" : "WR");
@@ -184,14 +186,27 @@ public class CefUtils {
 			List<String> appArgs = config.getAppArgsAsList();
 			CefSettings settings = config.getCefSettings();
 			settings.no_sandbox = true;
-			settings.background_color = settings.new ColorType(0, 0, 0, 0);
+			if (useOSR()) {
+				// On OSR, use transparency
+				settings.background_color = settings.new ColorType(0, 0, 0, 0);
+			} else {
+				settings.background_color = settings.new ColorType(255, Theme.current().getBackgroundColor().getRed(),
+						Theme.current().getBackgroundColor().getGreen(),
+						Theme.current().getBackgroundColor().getBlue());
+			}
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
 			settings.locale = L10N.getLocale().stripExtensions().toLanguageTag();
-			settings.log_file = null;
+
+			settings.log_file = UserFolderManager.getFileFromUserFolder("/cef_log.txt").toString();
+			if (System.getenv("MCREATOR_CEF_DEBUG") != null) {
+				settings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_VERBOSE;
+			}
 
 			settings.cache_path = Objects.requireNonNullElseGet(getTmpCacheFolder(),
 					() -> UserFolderManager.getFileFromUserFolder("/cef/")).toString();
+
+			CountDownLatch latch = new CountDownLatch(1);
 
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
@@ -202,21 +217,23 @@ public class CefUtils {
 				@Override public boolean onBeforeTerminate() {
 					return true; // Do not let JCEF terminate itself
 				}
+
+				@Override public void stateHasChanged(CefApp.CefAppState state) {
+					if (state == CefApp.CefAppState.INITIALIZED) {
+						LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})", cefApp.getVersion().getJcefVersion(),
+								cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
+						latch.countDown();
+					}
+				}
 			});
 
 			CefApp.startup(args);
-
-			cefApp = CefApp.getInstance(settings);
-
-			CountDownLatch latch = new CountDownLatch(1);
-			cefApp.onInitialization(s -> {
-				LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})", cefApp.getVersion().getJcefVersion(),
-						cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
-				latch.countDown();
-			});
+			cefApp = CefApp.getInstance(args, settings, null);
 
 			try {
-				latch.await();
+				if (!latch.await(5, TimeUnit.SECONDS)) {
+					LOG.error("Failed to initialize JCEF in time. Things may not work properly.");
+				}
 			} catch (InterruptedException ignored) {
 			}
 		}
@@ -314,9 +331,8 @@ public class CefUtils {
 			// Clean up old orphaned folders in the same parent directory
 			Path parentDir = cacheDir.getParent();
 			try (Stream<Path> paths = Files.list(parentDir)) {
-				paths.filter(
-						p -> Files.isDirectory(p) && p.getFileName().toString().startsWith(CEF_CACHE_PREFIX) && !p.equals(
-								cacheDir)).forEach(p -> {
+				paths.filter(p -> Files.isDirectory(p) && p.getFileName().toString().startsWith(CEF_CACHE_PREFIX)
+						&& !p.equals(cacheDir)).forEach(p -> {
 					File lock = p.resolve("lockfile").toFile();
 					if (!lock.exists()) {
 						LOG.debug("Deleting orphaned CEF cache folder {}", p);

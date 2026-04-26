@@ -39,6 +39,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -131,6 +132,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private JComponent blockingModelPanel;
 	private JComponent blocksAffectedPanel;
 
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
+
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public ToolGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -194,6 +197,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
+		JPanel attributeModifiersPage = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
@@ -319,6 +323,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		toolType.addActionListener(event -> updateFields());
 
+		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),
+						L10N.label("elementgui.common.attribute_modifier.modifiers")), attributeModifiersList);
+		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		attributeModifiersPage.add("Center", modifiersEditor);
+		attributeModifiersPage.setOpaque(false);
+
 		pane4.setOpaque(false);
 
 		pane4.add("Center",
@@ -344,6 +356,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(name);
+		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), attributeModifiersPage).lazyValidate(
+				attributeModifiersList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
 
 		if (!isEditingMode()) {
@@ -420,6 +434,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal), itemModels));
 		ComboBoxUtil.updateComboBoxContents(blockingModel,
 				ListUtils.merge(Collections.singletonList(normalBlocking), itemModels));
+
+		attributeModifiersList.reloadDataLists();
 	}
 
 	@Override public void openInEditingMode(Tool tool) {
@@ -452,8 +468,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
 		immuneToFire.setSelected(tool.immuneToFire);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
-
-		blocksAffected.setListElements(tool.blocksAffected);
+		attributeModifiersList.setEntries(tool.attributeModifiers);
 
 		updateCraftingSettings();
 		updateFields();
@@ -462,17 +477,25 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		if (model != null)
 			renderType.setSelectedItem(model);
 
-		Model modelBlocking = tool.getBlockingModel();
-		if (modelBlocking != null)
-			blockingModel.setSelectedItem(modelBlocking);
+		// Handle some tool type-dependant properties that may contain references
+		if ("Special".equals(tool.toolType)) {
+			blocksAffected.setListElements(tool.blocksAffected);
+		} else if ("Shield".equals(tool.toolType)) {
+			Model modelBlocking = tool.getBlockingModel();
+			if (modelBlocking != null)
+				blockingModel.setSelectedItem(modelBlocking);
+		}
+
 	}
 
 	@Override public Tool getElementFromGUI() {
+		String selectedToolType = (String) Objects.requireNonNull(toolType.getSelectedItem());
+
 		Tool tool = new Tool(modElement);
 		tool.name = name.getText();
 		tool.rarity = rarity.getSelectedItem();
 		tool.creativeTabs = creativeTabs.getListElements();
-		tool.toolType = (String) Objects.requireNonNull(toolType.getSelectedItem());
+		tool.toolType = selectedToolType;
 		tool.blockDropsTier = (String) blockDropsTier.getSelectedItem();
 		tool.additionalDropCondition = additionalDropCondition.getSelectedProcedure();
 		tool.efficiency = (double) efficiency.getValue();
@@ -480,7 +503,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.attackSpeed = (double) attackSpeed.getValue();
 		tool.damageVsEntity = (double) damageVsEntity.getValue();
 		tool.usageCount = (int) usageCount.getValue();
-		tool.blocksAffected = blocksAffected.getListElements();
 		tool.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		tool.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		tool.onCrafted = onCrafted.getSelectedProcedure();
@@ -494,6 +516,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.glowCondition = glowCondition.getSelectedProcedure();
 		tool.specialInformation = specialInformation.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();
+		tool.attributeModifiers = attributeModifiersList.getEntries();
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		tool.immuneToFire = immuneToFire.isSelected();
@@ -510,13 +533,18 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			tool.renderType = 2;
 		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
 
-		Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
-		tool.blockingRenderType = 0;
-		if (blockingModelType == Model.Type.JSON)
-			tool.blockingRenderType = 1;
-		else if (blockingModelType == Model.Type.OBJ)
-			tool.blockingRenderType = 2;
-		tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
+		// Handle some tool type-dependant properties that may contain references
+		if ("Special".equals(selectedToolType)) {
+			tool.blocksAffected = blocksAffected.getListElements();
+		} else if ("Shield".equals(selectedToolType)) {
+			Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
+			tool.blockingRenderType = 0;
+			if (blockingModelType == Model.Type.JSON)
+				tool.blockingRenderType = 1;
+			else if (blockingModelType == Model.Type.OBJ)
+				tool.blockingRenderType = 2;
+			tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
+		}
 
 		return tool;
 	}

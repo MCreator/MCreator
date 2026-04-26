@@ -4,7 +4,7 @@ Unicode true
 !addplugindir "${NSIS_DIR}\Plugins\x86-unicode"
 !addincludedir "${NSIS_DIR}\Include"
 
-SetCompressor "lzma" ; to improve installer open performance and its size
+SetCompressor "bzip2" ; to improve installer open performance and its size
 
 !include "MUI2.nsh"
 
@@ -44,8 +44,9 @@ InstallDir "$PROGRAMFILES${BITS}\Pylo\MCreator"
 
 !define MUI_LICENSEPAGE_TEXT_TOP "Read the license agreement below."
 
+!define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT "Start MCreator after finish"
-!define MUI_FINISHPAGE_RUN "$INSTDIR\mcreator.exe"
+!define MUI_FINISHPAGE_RUN_FUNCTION LaunchAsUser
 
 !define MUI_FINISHPAGE_LINK "Donate and support MCreator project"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://mcreator.net/donate"
@@ -230,4 +231,8 @@ Function GetParent
     Pop $R1
     Exch $R0
 
+FunctionEnd
+
+Function LaunchAsUser
+  Exec '"$WINDIR\explorer.exe" "$INSTDIR\mcreator.exe"'
 FunctionEnd

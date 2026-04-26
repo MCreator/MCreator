@@ -6,7 +6,7 @@ launch4j {
     dontWrapJar = false
     copyConfigurable = []
     classpath = ["./lib/*"]
-    jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED"]
+    jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED", "--enable-native-access=ALL-UNNAMED,jcef"]
     libraryDir = "null"
     stayAlive = true
 
@@ -50,7 +50,7 @@ tasks.register('exportWin64', Copy.class) {
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { from 'license' }
-    into('jdk') { from 'jdk/jbr21_win_64' }
+    into('jdk') { from 'jdk/jbr25_win_64' }
 
     doLast {
         signFile(file('build/export/win64/mcreator.exe'))
@@ -112,7 +112,7 @@ tasks.register('exportWindows') {
 void signFile(File fileToSign) {
     if (System.getenv('WIN_CERT_KEYSTORE') != null) {
         execCtx.execOps.exec {
-            commandLine 'java', '-jar', file('platform/windows/lib/jsign-7.1.jar'),
+            commandLine 'java', '-jar', file('platform/windows/lib/jsign-7.4.jar'),
                     '--storetype', 'GOOGLECLOUD',
                     '--storepass', System.getenv('WIN_CERT_STOREPASS'),
                     '--keystore', System.getenv('WIN_CERT_KEYSTORE'),

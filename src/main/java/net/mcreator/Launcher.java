@@ -46,6 +46,9 @@ public class Launcher {
 
 		UTF8Forcer.forceGlobalUTF8();
 
+		// Disable XML parser depth limit as Blockly XML can go quite nested
+		System.setProperty("jdk.xml.maxElementDepth", "0");
+
 		final Logger LOG = LogManager.getLogger("Launcher"); // init logger after log directory is set
 
 		try {

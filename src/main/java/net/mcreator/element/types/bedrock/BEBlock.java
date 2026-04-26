@@ -36,6 +36,7 @@ import net.mcreator.workspace.resources.Model;
 import javax.annotation.Nonnull;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BEBlock extends GeneratableElement implements IBlock {
@@ -51,6 +52,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@Nonnull public String customModelName;
 
 	public String name;
+	public boolean enableCreativeTab;
+	public String creativeTab;
+	public boolean isHiddenInCommands;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public double friction;
@@ -63,11 +67,18 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String colorOnMap;
 
 	public boolean generateFeature;
+	public String generationShape;
 	public int frequencyPerChunks;
 	public int oreCount;
 	public int minGenerateHeight;
 	public int maxGenerateHeight;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
+
+	public int rotationMode;
+	public String renderMethod;
+	public String tintMethod;
+
+	@ModElementReference public List<String> localScripts;
 
 	private BEBlock() {
 		this(null);
@@ -75,8 +86,23 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public BEBlock(ModElement element) {
 		super(element);
+
 		customModelName = "Normal";
 		renderType = 10;
+
+		enableCreativeTab = true;
+		creativeTab = "BUILDING_BLOCKS";
+
+		renderMethod = "opaque";
+		tintMethod = "(none)";
+
+		generationShape = "uniform";
+
+		localScripts = new ArrayList<>();
+	}
+
+	public int renderType() {
+		return renderType;
 	}
 
 	public boolean hasCustomDrop() {
@@ -87,6 +113,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		if (renderType == 10) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getTextureWithFallback(textureTop),
 					getTextureWithFallback(textureLeft), getTextureWithFallback(textureFront));
+		} else if (renderType == 12) {
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateBlockIcon(getMainTexture(), getMainTexture(),
+					getMainTexture());
 		} else {
 			return ImageUtils.resizeAndCrop(getMainTexture(), 32);
 		}
@@ -115,6 +144,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public boolean hasCustomModel() {
 		return renderType == 2;
+	}
+
+	public boolean hasOneTexture() {
+		return hasCustomModel() || renderType == 11 || renderType == 12;
 	}
 
 	private Image getMainTexture() {

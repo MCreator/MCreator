@@ -310,6 +310,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return null;
 	}
 
+	public String getStructureExtension() {
+		return generatorFlavor.getGamePlatform() == GeneratorFlavor.GamePlatform.JAVAEDITION ? "nbt" : "mcstructure";
+	}
+
 	@Nullable public List<String> getUnsupportedDefinitionFields(ModElementType<?> type) {
 		if (type == ModElementType.UNKNOWN)
 			return null; // silently return null for unknown mod element type

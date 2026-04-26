@@ -84,6 +84,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final JComponent buttons;
 
 	private boolean warnOnRemoveAll = false;
+	private boolean readOnly = false;
 
 	protected JItemListField(MCreator mcreator) {
 		this(mcreator, false);
@@ -159,7 +160,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		elementsList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON2) {
+				if (e.getButton() == MouseEvent.BUTTON2 && !readOnly) {
 					int index = elementsList.locationToIndex(e.getPoint());
 					if (index >= 0)
 						deleteElements(Collections.singletonList(elementsListModel.get(index)));
@@ -267,6 +268,17 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		this.warnOnRemoveAll = warnOnDeleteAll;
 	}
 
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly() {
+		add.setVisible(false);
+		remove.setVisible(false);
+		removeall.setVisible(false);
+		this.readOnly = true;
+	}
+
 	private void deleteElements(List<T> elements) {
 		boolean anyRemoved = false;
 
@@ -324,10 +336,13 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				L10N.t("itemlistfield.addexternal.title"), null, new OptionPaneValidator() {
 					@Override public ValidationResult validate(JComponent component) {
 						String text = ((VTextField) component).getText();
-						if (!text.contains(":") || text.startsWith("minecraft:") || text.startsWith("mod:")
-								|| text.startsWith(mcreator.getWorkspaceSettings().getModID() + ":")) {
+						if (!text.contains(":") || text.startsWith("minecraft:")) {
 							return new ValidationResult(ValidationResult.Type.ERROR,
 									L10N.t("itemlistfield.addexternal.entry.error"));
+						} else if (text.startsWith("mod:") || text.startsWith(
+								mcreator.getWorkspaceSettings().getModID() + ":")) {
+							return new ValidationResult(ValidationResult.Type.WARNING,
+									L10N.t("itemlistfield.addexternal.entry.warning"));
 						}
 						return new ResourceLocationValidator<>(L10N.t("itemlistfield.addexternal.entry"),
 								(VTextField) component, true).validate();

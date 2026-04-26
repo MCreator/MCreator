@@ -35,7 +35,9 @@ import java.util.function.Predicate;
 
 public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 	public DataListSelectorDialog(MCreator mcreator, Function<Workspace, List<DataListEntry>> entryProvider) {
-		super(mcreator, entryProvider);
+		super(mcreator,
+				workspace -> entryProvider.apply(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.toList());
 		list.setCellRenderer(new DataListCellRenderer());
 	}
 
