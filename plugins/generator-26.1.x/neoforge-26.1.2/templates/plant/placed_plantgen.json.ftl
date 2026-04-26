@@ -41,6 +41,48 @@
         </#if>
         {
             "type": "minecraft:biome"
+        },
+        {
+            "type": "minecraft:count",
+            "count": ${data.patchSize}
+        },
+        {
+            "type": "minecraft:random_offset",
+            "xz_spread": {
+                "type": "minecraft:trapezoid",
+                "plateau": 0,
+                "min": -7,
+                "max": 7
+            },
+            "y_spread": {
+                "type": "minecraft:trapezoid",
+                "plateau": 0,
+                "min": -3,
+                "max": 3
+            }
+        },
+        {
+            "type": "minecraft:block_predicate_filter",
+            "predicate": {
+                <#if data.plantType == "growapable">
+                "type": "minecraft:all_of",
+                "predicates": [
+                    {
+                        "type": "minecraft:matching_blocks",
+                        "blocks": "minecraft:air"
+                    },
+                    {
+                        "type": "minecraft:would_survive",
+                        "state": {
+                            "Name": "${modid}:${registryname}"
+                        }
+                    }
+                ]
+                <#else>
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:air"
+                </#if>
+            }
         }
     ]
 }
