@@ -51,8 +51,9 @@ public class MCItem extends DataListEntry {
 	public static final ImageIcon TAG_ICON = UIRES.get("tag");
 	public static final ImageIcon EXTERNAL_ICON = UIRES.get("mod_external");
 
-	public ImageIcon icon;
-	boolean hasSubtypes;
+	protected ImageIcon icon;
+
+	private boolean hasSubtypes;
 
 	private MCItem(String name) {
 		super(name);
@@ -75,6 +76,10 @@ public class MCItem extends DataListEntry {
 
 	public void setSubtypes(boolean hasSubtypes) {
 		this.hasSubtypes = hasSubtypes;
+	}
+
+	public ImageIcon getIcon() {
+		return icon;
 	}
 
 	protected void setIcon(ImageIcon icon) {
@@ -126,11 +131,11 @@ public class MCItem extends DataListEntry {
 				}
 
 				// Otherwise, try using the mod element icon
-				if (!hasGeneratableIcon && new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-						elementName + ".png").isFile()) {
-					retval = new ImageIcon(
-							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
-									+ elementName + ".png");
+				File elementIconFile = new File(
+						workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + elementName
+								+ ".png");
+				if (!hasGeneratableIcon && elementIconFile.isFile()) {
+					retval = new ImageIcon(elementIconFile.getAbsolutePath());
 				}
 			} else if (name.startsWith("POTION:")) {
 				String potion = name.replace("POTION:", "");

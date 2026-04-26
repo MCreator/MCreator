@@ -54,6 +54,106 @@ feature_replace_single_block:
   - ReplaceBlockFeature
   - ReplaceBlockConfiguration
   - "minecraft:replace_single_block"
+feature_huge_fungus:
+  - HugeFungusFeature
+  - HugeFungusConfiguration
+  - "minecraft:huge_fungus"
+feature_delta:
+  - DeltaFeature
+  - DeltaFeatureConfiguration
+  - "minecraft:delta_feature"
+feature_replace_sphere:
+  - ReplaceBlobsFeature
+  - ReplaceSphereConfiguration
+  - "minecraft:netherrack_replace_blobs"
+feature_seagrass:
+  - SeagrassFeature
+  - ProbabilityFeatureConfiguration
+  - "minecraft:seagrass"
+feature_bamboo:
+  - BambooFeature
+  - ProbabilityFeatureConfiguration
+  - "minecraft:bamboo"
+feature_block_column_simple:
+  - BlockColumnFeature
+  - BlockColumnConfiguration
+  - "minecraft:block_column"
+feature_block_column:
+  - BlockColumnFeature
+  - BlockColumnConfiguration
+  - "minecraft:block_column"
+feature_geode_simple:
+  - GeodeFeature
+  - GeodeConfiguration
+  - "minecraft:geode"
+feature_random_selector:
+  - RandomSelectorFeature
+  - RandomFeatureConfiguration
+  - "minecraft:random_selector"
+feature_simple_random_selector:
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
+feature_spring:
+  - SpringFeature
+  - SpringConfiguration
+  - "minecraft:spring_feature"
+feature_underwater_magma:
+  - UnderwaterMagmaFeature
+  - UnderwaterMagmaConfiguration
+  - "minecraft:underwater_magma"
+feature_random_patch_simple: # This feature type no longer exists, we use simple random selector as a workaround
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
+feature_random_patch: # This feature type no longer exists, we use simple random selector as a workaround
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
+feature_disk_simple:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
+feature_disk:
+  - DiskFeature
+  - DiskConfiguration
+  - "minecraft:disk"
+feature_root_system:
+  - RootSystemFeature
+  - RootSystemConfiguration
+  - "minecraft:root_system"
+feature_vegetation_patch:
+  - VegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:vegetation_patch"
+feature_waterlogged_vegetation_patch:
+  - WaterloggedVegetationPatchFeature
+  - VegetationPatchConfiguration
+  - "minecraft:waterlogged_vegetation_patch"
+feature_tree_simple:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_spruce:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_pine:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_azalea:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_cherry:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_mangrove:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
 
 # Custom NBT-based feature, not present in vanilla
 feature_custom_structure:

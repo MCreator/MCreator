@@ -134,7 +134,11 @@ import java.util.List;
 	}
 
 	public boolean hasEffectsOrDimensionTriggers() {
-		return useCustomEffects || onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
+		return useCustomEffects || hasDimensionTriggers();
+	}
+
+	public boolean hasDimensionTriggers() {
+		return onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
 	}
 
 	public Set<String> getWorldgenBlocks() {

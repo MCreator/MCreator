@@ -29,6 +29,10 @@ global_templates:
     writer: java
     condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/NoiseGeneratorSettingsMixin.java"
+  - template: biome/mixin_biomesourcepreset.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/BiomeSourcePresetMixin.java"
 
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft

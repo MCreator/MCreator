@@ -7,7 +7,7 @@
       "name": "${settings.getModName()}",
       "uuid": "${w.getUUID()}",
       "version": [${v[0]}, ${v[1]}, ${v[2]}],
-      "min_engine_version": [26, 10, 0]
+      "min_engine_version": [1, 26, 10]
     },
     "modules": [
       {

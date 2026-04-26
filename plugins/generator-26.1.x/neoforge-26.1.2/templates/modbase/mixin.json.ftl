@@ -1,12 +1,12 @@
 <#assign mixins = []>
 <#if w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
-	<#assign mixins = mixins + ['NoiseGeneratorSettingsMixin']>
+	<#assign mixins = mixins + ['NoiseGeneratorSettingsMixin', 'BiomeSourcePresetMixin']>
 </#if>
 
 {
   "required": true,
   "package": "${package}.mixin",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_25",
   "mixins": [
 	<#list mixins as mixin>"${mixin}"<#sep>,</#list>
   ],
