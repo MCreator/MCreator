@@ -22,6 +22,7 @@ package net.mcreator.ui.chromium;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
@@ -134,6 +135,7 @@ public class CefJavaBridgeHandler {
 				args = gson.fromJson(argsJson, Object[].class);
 			} catch (JsonSyntaxException e) {
 				LOG.error("Invalid JSON arguments: {} for method: {}", e.getMessage(), methodName, e);
+				TestUtil.failIfTestingEnvironment();
 				return null;
 			}
 
@@ -146,6 +148,7 @@ public class CefJavaBridgeHandler {
 
 			if (targetMethod == null) {
 				LOG.error("Method not found or wrong number of parameters: {}", methodName);
+				TestUtil.failIfTestingEnvironment();
 				return null;
 			}
 
@@ -163,6 +166,7 @@ public class CefJavaBridgeHandler {
 				return (result instanceof String) ? (String) result : gson.toJson(result);
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			LOG.error("Error invoking method: {}", e.getMessage(), e);
+			TestUtil.failIfTestingEnvironment();
 		}
 
 		return null; // void methods return null
