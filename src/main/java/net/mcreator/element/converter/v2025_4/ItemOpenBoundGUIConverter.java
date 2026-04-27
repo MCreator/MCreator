@@ -29,7 +29,8 @@ import net.mcreator.workspace.Workspace;
 public class ItemOpenBoundGUIConverter implements IConverter {
 
 	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) throws Exception {
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws Exception {
 		Item item = (Item) input;
 		item.openGUIOnRightClick = new LogicProcedure(null, item.hasInventory());
 		return item;

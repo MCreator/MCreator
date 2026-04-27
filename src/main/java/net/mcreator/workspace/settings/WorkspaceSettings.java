@@ -28,6 +28,7 @@ import net.mcreator.workspace.Workspace;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -61,7 +62,12 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
-	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanExcessCharactersPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
+	private static final Pattern cleanLeadingTrailingDotsPattern = Pattern.compile("(\\.$)|(^\\.)");
+
+	private static final Pattern semVerPattern = Pattern.compile(
+			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
 	public WorkspaceSettings(WorkspaceSettings other) {
 		this.modid = other.modid;
@@ -216,11 +222,29 @@ import java.util.stream.Stream;
 		return version;
 	}
 
+	private String getSemVerCompliantVersion() {
+		Matcher compliantVersionMatcher = semVerPattern.matcher(version);
+		if (compliantVersionMatcher.matches())
+			return compliantVersionMatcher.group();
+		return "";
+	}
+
+	private String getCleanMmpVersion() {
+		String cleanVersion = cleanExcessCharactersPattern.matcher(version).replaceAll("");
+		cleanVersion = cleanMultiDotsPattern.matcher(cleanVersion).replaceAll(".");
+		return cleanLeadingTrailingDotsPattern.matcher(cleanVersion).replaceAll("");
+	}
+
 	public String getCleanVersion() {
-		String cleanVersion = cleanVersionPattern.matcher(version).replaceAll("");
+		String semVerCompliantVersion = getSemVerCompliantVersion();
+		if (!semVerCompliantVersion.isEmpty())
+			return semVerCompliantVersion;
+
+		String cleanVersion = getCleanMmpVersion();
 		if (!cleanVersion.isEmpty())
 			return cleanVersion;
-		return "0.0.0.0";
+
+		return "0.0.0";
 	}
 
 	public String getDescription() {

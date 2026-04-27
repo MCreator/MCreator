@@ -33,7 +33,7 @@
         "extent": [ 0, 16 ]
       },
       "y": {
-        "distribution": "uniform",
+        "distribution": "${data.generationShape}",
         "extent": [ ${data.minGenerateHeight}, ${data.maxGenerateHeight} ]
       },
       "z": {

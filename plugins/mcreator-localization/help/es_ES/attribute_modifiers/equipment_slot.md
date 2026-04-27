@@ -1,0 +1,1 @@
+Este modificador de atributo solo se aplica si el elemento está equipado en esta ranura.

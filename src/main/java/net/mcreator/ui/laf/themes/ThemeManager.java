@@ -125,7 +125,7 @@ public class ThemeManager {
 	 * @param id The theme's id we want to get
 	 * @return Returns the {@link Theme}, if found in the cache, otherwise null
 	 */
-	static Theme getTheme(String id) {
+	public static Theme getTheme(String id) {
 		for (Theme pack : THEMES) {
 			if (pack.getID().equals(id))
 				return pack;

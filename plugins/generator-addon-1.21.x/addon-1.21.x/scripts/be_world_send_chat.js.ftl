@@ -1,0 +1,1 @@
+world.sendMessage(${input$text});

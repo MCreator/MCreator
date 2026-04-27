@@ -21,7 +21,6 @@ package net.mcreator.ui;
 
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.io.OS;
-import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
@@ -33,9 +32,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.variants.modmaker.ModMaker;
-import net.mcreator.util.ColorUtils;
-import net.mcreator.util.ListUtils;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 
@@ -43,11 +39,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MCreatorFrame extends JFrame
 		implements IWorkspaceProvider, IGeneratorProvider, INotificationConsumer {
+
+	private static final List<Dimension> FRAME_SIZES = List.of(
+			//@formatter:off
+			new Dimension(1886, 1100),
+			new Dimension(1600, 974),
+			new Dimension(1310, 798),
+			new Dimension(1022, 647)
+			//@formatter:on
+	);
+	private static final double FRAME_SIZE_PADDING = 1.15;
 
 	protected final MCreatorApplication application;
 
@@ -69,14 +74,15 @@ public abstract class MCreatorFrame extends JFrame
 		setLayout(new BorderLayout(0, 0));
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		if (screenSize.getWidth() > 2144 && screenSize.getHeight() > 1250)
-			setSize(2164, 1257);
-		else if (screenSize.getWidth() > 1574 && screenSize.getHeight() > 970)
-			setSize(1594, 974);
-		else if (screenSize.getWidth() > 1290 && screenSize.getHeight() > 795)
-			setSize(1310, 798);
-		else
-			setSize(1022, 647);
+		Dimension frameSizeToUse = FRAME_SIZES.getLast();
+		for (Dimension size : FRAME_SIZES) {
+			if (screenSize.getWidth() >= size.getWidth() * FRAME_SIZE_PADDING
+					&& screenSize.getHeight() >= size.getHeight() * FRAME_SIZE_PADDING) {
+				frameSizeToUse = size;
+				break;
+			}
+		}
+		setSize(frameSizeToUse);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 

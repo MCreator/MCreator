@@ -20,6 +20,9 @@ package net.mcreator.generator;
 
 import com.google.gson.Gson;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalTrigger;
+import net.mcreator.blockly.data.ExternalTriggerLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.minecraft.DataListEntry;
@@ -46,17 +49,20 @@ public class GeneratorStats {
 
 	private final Status status;
 
-	private final Map<String, Set<String>> generatorBlocklyBlocks;
+	private final Map<BlocklyEditorType, Set<String>> generatorBlocklyBlocks;
+
+	private final Map<BlocklyEditorType, Set<String>> generatorBlocklyTriggers;
 
 	private final Map<TextureType, CoverageStatus> textureCoverageInfo = new HashMap<>();
 
-	private final Set<String> procedureTriggers;
+	private final GeneratorConfiguration generatorConfiguration;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
+		this.generatorConfiguration = generatorConfiguration;
 		this.status = Status.valueOf(
 				generatorConfiguration.getRaw().get("status").toString().toUpperCase(Locale.ENGLISH));
 		this.generatorBlocklyBlocks = new LinkedHashMap<>();
-		this.procedureTriggers = new HashSet<>();
+		this.generatorBlocklyTriggers = new HashMap<>();
 
 		// determine supported mod element types
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
@@ -74,33 +80,45 @@ public class GeneratorStats {
 
 		Map<String, LinkedHashMap<String, DataListEntry>> datalistchache = DataListLoader.getCache();
 
-		// calculate percentage of mappings/element lists supported
+		// calculate the percentage of mappings/element lists supported
 		for (Map.Entry<String, LinkedHashMap<String, DataListEntry>> list : datalistchache.entrySet()) {
-			int elementsCount = list.getValue().size();
-			int supportedElementsCount = 0;
+			Set<String> definedElements = list.getValue().values().stream()
+					.filter(e -> generatorConfiguration.getGeneratorFlavor().supportsAPIs()
+							|| e.getRequiredAPIs() == null || e.getRequiredAPIs().isEmpty()).map(DataListEntry::getName)
+					.collect(Collectors.toSet());
+
+			if (definedElements.isEmpty())
+				continue;
+
+			Set<String> supportedElements = new HashSet<>();
 			Map<?, ?> mapping = generatorConfiguration.getMappingLoader().getMapping(list.getKey());
 			if (mapping != null) {
-				for (String element : list.getValue().keySet()) {
-					if (mapping.containsKey(element))
-						supportedElementsCount++;
+				for (Object key : mapping.keySet()) {
+					supportedElements.add(key.toString());
 				}
 			}
-			coverageInfo.put(list.getKey(), (((double) supportedElementsCount) / elementsCount) * 100);
+
+			Set<String> missingElements = new HashSet<>(definedElements);
+			missingElements.removeAll(supportedElements);
+
+			double supportedPercent =
+					(definedElements.size() - missingElements.size()) / (double) definedElements.size() * 100;
+			coverageInfo.put(list.getKey(), Math.min(supportedPercent, 100));
 		}
 
 		// load dummy values
-		coverageInfo.put("procedures", 100d);
-		coverageInfo.put("triggers", 100d);
-		coverageInfo.put("jsontriggers", 100d);
-		coverageInfo.put("aitasks", 100d);
-		coverageInfo.put("cmdargs", 100d);
-		coverageInfo.put("features", 100d);
+		BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> coverageInfo.put(name.registryName(), 0d));
+		BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders().forEach((key, value) -> {
+			ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
+			coverageInfo.put(loader.getResourceFolder(), 0d);
+		});
 
 		// lazy load actual values
 		new Thread(() -> {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders()
 					.forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
-			addGlobalTriggerFolder(generatorConfiguration);
+			BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders()
+					.forEach((key, value) -> addBlocklyTriggerFolder(generatorConfiguration, key));
 		}, "GeneratorStats-Loader").start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
@@ -121,6 +139,8 @@ public class GeneratorStats {
 				resourceTasksJSON.contains("\"type\":\"JSON") ? CoverageStatus.FULL : CoverageStatus.NONE);
 		baseCoverageInfo.put("model_obj",
 				resourceTasksJSON.contains("\"type\":\"OBJ") ? CoverageStatus.FULL : CoverageStatus.NONE);
+		baseCoverageInfo.put("model_bedrock",
+				resourceTasksJSON.contains("\"type\":\"BEDROCK") ? CoverageStatus.FULL : CoverageStatus.NONE);
 
 		String sourceTasksJSON = new Gson().toJson(generatorConfiguration.getSourceSetupTasks());
 		baseCoverageInfo.put("model_animations_java",
@@ -163,48 +183,75 @@ public class GeneratorStats {
 
 	/**
 	 * Load all Blockly files of a {@link Generator} inside the provided folder.
-	 * Global triggers are loaded with their own method using {@link #addGlobalTriggerFolder(GeneratorConfiguration)}.
+	 * Global triggers are loaded with their own method using {@link #addBlocklyTriggerFolder(GeneratorConfiguration, BlocklyEditorType)}.
 	 *
 	 * @param genConfig The current generator's config to use
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
 	 */
 	public void addBlocklyFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
-		Set<String> blocks = new HashSet<>();
+		Set<String> definedBlocks = BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().values().stream()
+				.filter(b -> genConfig.getGeneratorFlavor().supportsAPIs() || b.getRequiredAPIs() == null
+						|| b.getRequiredAPIs().isEmpty()).map(ToolboxBlock::getMachineName).collect(Collectors.toSet());
+
+		if (definedBlocks.isEmpty())
+			return;
+
+		Set<String> supportedBlocks = new HashSet<>();
 		for (String path : genConfig.getGeneratorPaths(type.registryName())) {
-			blocks.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
+			supportedBlocks.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
 					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet()));
 		}
 
-		coverageInfo.put(type.registryName(), Math.min(
-				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
-						* 100, 100));
+		generatorBlocklyBlocks.put(type, supportedBlocks);
 
-		generatorBlocklyBlocks.put(type.registryName(), blocks);
+		// Determine which blocks from defined blocks we are missing
+		Set<String> missingBlocks = new HashSet<>(definedBlocks);
+		missingBlocks.removeAll(supportedBlocks);
+
+		double supportedPercent = (definedBlocks.size() - missingBlocks.size()) / (double) definedBlocks.size() * 100;
+		coverageInfo.put(type.registryName(), Math.min(supportedPercent, 100));
 	}
 
-	public void addGlobalTriggerFolder(GeneratorConfiguration genConfig) {
-		for (String path : genConfig.getGeneratorPaths("triggers")) {
-			procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
+	public void addBlocklyTriggerFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
+		ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(type);
+		Set<String> definedTriggers = loader.getExternalTriggers().stream()
+				.filter(t -> genConfig.getGeneratorFlavor().supportsAPIs() || t.required_apis == null
+						|| t.required_apis.isEmpty()).map(ExternalTrigger::getID).collect(Collectors.toSet());
+
+		if (definedTriggers.isEmpty())
+			return;
+
+		Set<String> supportedTriggers = generatorBlocklyTriggers.computeIfAbsent(type, k -> new HashSet<>());
+		for (String path : genConfig.getGeneratorPaths(loader.getResourceFolder())) {
+			supportedTriggers.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
 					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 					.collect(Collectors.toSet()));
 		}
 
-		coverageInfo.put("triggers", Math.min(
-				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTriggers().size()) * 100, 100));
+		// Determine which triggers from defined triggers we are missing
+		Set<String> missingTriggers = new HashSet<>(definedTriggers);
+		missingTriggers.removeAll(supportedTriggers);
+
+		double supportedPercent =
+				(definedTriggers.size() - missingTriggers.size()) / (double) definedTriggers.size() * 100;
+		coverageInfo.put(loader.getResourceFolder(), Math.min(supportedPercent, 100));
 	}
 
-	public Map<String, Set<String>> getGeneratorBlocklyBlocks() {
+	public Map<BlocklyEditorType, Set<String>> getGeneratorBlocklyBlocks() {
 		return generatorBlocklyBlocks;
 	}
 
 	public Set<String> getBlocklyBlocks(BlocklyEditorType type) {
-		return generatorBlocklyBlocks.get(type.registryName());
+		return generatorBlocklyBlocks.get(type);
 	}
 
-	public Set<String> getProcedureTriggers() {
-		return procedureTriggers;
+	public Map<BlocklyEditorType, Set<String>> getGeneratorBlocklyTriggers() {
+		return generatorBlocklyTriggers;
+	}
+
+	public Set<String> getBlocklyTriggers(BlocklyEditorType type) {
+		return generatorBlocklyTriggers.get(type);
 	}
 
 	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
@@ -244,6 +291,10 @@ public class GeneratorStats {
 
 	public Status getStatus() {
 		return status;
+	}
+
+	public GeneratorConfiguration getAssociatedGeneratorConfiguration() {
+		return generatorConfiguration;
 	}
 
 	public enum CoverageStatus {

@@ -131,7 +131,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 		// first we generate wood texture
 		ImageIcon wood = ImageUtils.colorize(
-				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), barkColor, true);
+				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), barkColor,
+				true);
 		String woodTextureName = registryName + "_log";
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
 				mcreator.getFolderManager().getTextureFile(woodTextureName, TextureType.BLOCK));
@@ -370,6 +371,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		leavesBlock.blockBase = "Leaves";
 		leavesBlock.hasTransparency = true;
 		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
+		leavesBlock.renderType = 11; // single texture
+		leavesBlock.customModelName = "Single texture";
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
 		leavesBlock.hardness = 0.2 * factor;
 		leavesBlock.resistance = 0.2 * factor;
@@ -388,6 +391,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		stairsBlock.texture = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
 		stairsBlock.textureFront = new TextureHolder(workspace, planksTextureName);
+		stairsBlock.renderType = 11; // single texture
+		stairsBlock.customModelName = "Single texture";
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		stairsBlock.hardness = 2 * factor;
 		stairsBlock.resistance = 3 * factor;
@@ -406,6 +411,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		slabBlock.texture = new TextureHolder(workspace, planksTextureName);
 		slabBlock.textureTop = new TextureHolder(workspace, planksTextureName);
 		slabBlock.textureFront = new TextureHolder(workspace, planksTextureName);
+		slabBlock.renderType = 11; // single texture
+		slabBlock.customModelName = "Single texture";
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
@@ -422,6 +429,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceBlock.name = readableName + " Fence";
 		fenceBlock.blockBase = "Fence";
 		fenceBlock.texture = new TextureHolder(workspace, planksTextureName);
+		fenceBlock.renderType = 11; // single texture
+		fenceBlock.customModelName = "Single texture";
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
@@ -438,6 +447,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceGateBlock.name = readableName + " Fence Gate";
 		fenceGateBlock.blockBase = "FenceGate";
 		fenceGateBlock.texture = new TextureHolder(workspace, planksTextureName);
+		fenceGateBlock.renderType = 11; // single texture
+		fenceGateBlock.customModelName = "Single texture";
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
@@ -456,6 +467,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		doorBlock.texture = new TextureHolder(workspace, doorBottomTextureName);
 		doorBlock.textureTop = new TextureHolder(workspace, doorTopTextureName);
 		doorBlock.itemTexture = new TextureHolder(workspace, doorItemTextureName);
+		doorBlock.renderType = 11; // single texture
+		doorBlock.customModelName = "Single texture";
 		doorBlock.hasTransparency = true;
 		doorBlock.transparencyType = "CUTOUT";
 		doorBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -472,6 +485,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		trapdoorBlock.name = readableName + " Trapdoor";
 		trapdoorBlock.blockBase = "TrapDoor";
 		trapdoorBlock.texture = new TextureHolder(workspace, trapdoorTextureName);
+		trapdoorBlock.renderType = 11; // single texture
+		trapdoorBlock.customModelName = "Single texture";
 		trapdoorBlock.hasTransparency = true;
 		trapdoorBlock.transparencyType = "CUTOUT";
 		trapdoorBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -488,6 +503,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		pressurePlateBlock.name = readableName + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
 		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
+		pressurePlateBlock.renderType = 11; // single texture
+		pressurePlateBlock.customModelName = "Single texture";
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		pressurePlateBlock.hardness = 0.5 * factor;
 		pressurePlateBlock.resistance = 0.5 * factor;
@@ -504,6 +521,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		buttonBlock.name = readableName + " Button";
 		buttonBlock.blockBase = "Button";
 		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
+		buttonBlock.renderType = 11; // single texture
+		buttonBlock.customModelName = "Single texture";
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		buttonBlock.hardness = 0.5 * factor;
 		buttonBlock.resistance = 0.5 * factor;
@@ -520,6 +539,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		signBlock.texture = new TextureHolder(workspace, planksTextureName);
 		signBlock.itemTexture = new TextureHolder(workspace, signItemTextureName);
 		signBlock.signEntityTexture = new TextureHolder(workspace, signEntityTextureName);
+		signBlock.renderType = 11; // single texture
+		signBlock.customModelName = "Single texture";
 		signBlock.maxStackSize = 16;
 		signBlock.soundOnStep = new StepSound(workspace, "WOOD");
 		signBlock.hardness = 1 * factor;
@@ -539,6 +560,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		hangingSignBlock.itemTexture = new TextureHolder(workspace, hangingSignItemTextureName);
 		hangingSignBlock.signEntityTexture = new TextureHolder(workspace, hangingSignEntityTextureName);
 		hangingSignBlock.signGUITexture = new TextureHolder(workspace, hangingSignGUITextureName);
+		hangingSignBlock.renderType = 11; // single texture
+		hangingSignBlock.customModelName = "Single texture";
 		hangingSignBlock.maxStackSize = 16;
 		hangingSignBlock.soundOnStep = new StepSound(workspace, "HANGING_SIGN");
 		hangingSignBlock.hardness = 1 * factor;

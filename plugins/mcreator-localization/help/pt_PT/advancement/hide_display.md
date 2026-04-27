@@ -1,0 +1,1 @@
+Selecione este parâmetro para esconder o avanço na guia de avanço até que seja concluído.

@@ -20,11 +20,11 @@
 package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -120,8 +120,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				if (getText().isEmpty()) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					g.setFont(g.getFont().deriveFont(11f));
-					g.setColor(new Color(120, 120, 120));
+					g.setColor(Theme.current().getAltForegroundColor());
 					g.drawString(L10N.t("blockly.search_" + blocklyEditorType.registryName()), 8, 18);
 				}
 			}

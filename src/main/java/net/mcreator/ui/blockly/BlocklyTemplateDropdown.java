@@ -20,8 +20,8 @@
 package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.BlocklyTemplateIO;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
