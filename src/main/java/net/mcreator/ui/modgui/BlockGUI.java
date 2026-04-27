@@ -59,7 +59,10 @@ import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.*;
+import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
+import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -2074,16 +2077,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 			block.blockBase = blockBase.getSelectedItem();
 		block.blockSetType = (String) blockSetType.getSelectedItem();
 		switch (Objects.requireNonNull(blockBase.getSelectedItem())) {
-			case "Leaves" -> {
-				block.leavesParticleType = leavesParticleType.getEntry();
-				block.leavesParticleChance = (double) leavesParticleChance.getValue();
-			}
-			case "FlowerPot" -> block.pottedPlant = pottedPlant.getBlock();
-			case "Sign" -> block.signEntityTexture = signEntityTexture.getTextureHolder();
-			case "HangingSign" -> {
-				block.signEntityTexture = signEntityTexture.getTextureHolder();
-				block.signGUITexture = signGUITexture.getTextureHolder();
-			}
+		case "Leaves" -> {
+			block.leavesParticleType = leavesParticleType.getEntry();
+			block.leavesParticleChance = (double) leavesParticleChance.getValue();
+		}
+		case "FlowerPot" -> block.pottedPlant = pottedPlant.getBlock();
+		case "Sign" -> block.signEntityTexture = signEntityTexture.getTextureHolder();
+		case "HangingSign" -> {
+			block.signEntityTexture = signEntityTexture.getTextureHolder();
+			block.signGUITexture = signGUITexture.getTextureHolder();
+		}
 		}
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());

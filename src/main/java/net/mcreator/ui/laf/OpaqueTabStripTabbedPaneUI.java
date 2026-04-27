@@ -26,8 +26,7 @@ import java.awt.*;
 
 public class OpaqueTabStripTabbedPaneUI extends FlatTabbedPaneUI {
 
-	@Override
-	public void paint(Graphics g, JComponent c) {
+	@Override public void paint(Graphics g, JComponent c) {
 		Rectangle tr = null;
 
 		if (tabPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT) {

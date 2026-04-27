@@ -41,7 +41,7 @@
           ]
       },
       </#if>
-      <#if data.entityToPlace?? && !data.entityToPlace.isEmpty()>
+      <#if data.entityToPlace?? && !data.entityToPlace.isEmpty() && (!data.blockToPlace?? || data.blockToPlace.isEmpty())>
       "minecraft:entity_placer": {
         "entity": "${generator.map(data.entityToPlace.getUnmappedValue(), "entities")}",
         "dispense_on": [

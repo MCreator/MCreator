@@ -30,13 +30,17 @@ public class JBRHacks {
 
 	private static final Logger LOG = LogManager.getLogger(JBRHacks.class);
 
+	private static MethodHandle disableInThisThreadHandle = null;
+
 	public static void permanentlyDisableIoOverNioInThisThread() {
 		try {
-			Class<?> ioOverNio = Class.forName("com.jetbrains.internal.IoOverNio");
-			Class<?> returnType = Class.forName("com.jetbrains.internal.IoOverNio$ThreadLocalCloseable");
-			MethodHandle mh = MethodHandles.lookup()
-					.findStatic(ioOverNio, "disableInThisThread", MethodType.methodType(returnType));
-			mh.invoke();
+			if (disableInThisThreadHandle == null) {
+				Class<?> ioOverNio = Class.forName("com.jetbrains.internal.IoOverNio");
+				Class<?> returnType = Class.forName("com.jetbrains.internal.IoOverNio$ThreadLocalCloseable");
+				disableInThisThreadHandle = MethodHandles.lookup()
+						.findStatic(ioOverNio, "disableInThisThread", MethodType.methodType(returnType));
+			}
+			disableInThisThreadHandle.invoke();
 		} catch (Throwable e) {
 			LOG.warn("Failed to disable IO via NIO", e);
 		}

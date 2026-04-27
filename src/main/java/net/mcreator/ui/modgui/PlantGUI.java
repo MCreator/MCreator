@@ -689,8 +689,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.can_be_placed_on")));
 		advancedProperties.add(canBePlacedOn);
 
-		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
-				placingCondition, 2, 2);
+		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 2, 2);
 		ComponentUtils.makeSection(plocb, L10N.t("elementgui.plant.properties_advanced_plant"));
 		plocb.setOpaque(false);
 
@@ -1046,20 +1045,20 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		// Plant type specific fields
 		switch (plant.plantType) {
-			case "normal" -> {
-				suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
-				suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
+		case "normal" -> {
+			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
+			suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
+		}
+		case "double" -> textureBottom.setTexture(plant.textureBottom);
+		case "growapable" -> growapableMaxHeight.setValue(plant.growapableMaxHeight);
+		case "sapling" -> {
+			secondaryTreeChance.setValue(plant.secondaryTreeChance);
+			for (int i = 0; i < 2; i++) {
+				trees[i].setEntry(plant.trees[i]);
+				flowerTrees[i].setEntry(plant.flowerTrees[i]);
+				megaTrees[i].setEntry(plant.megaTrees[i]);
 			}
-			case "double" -> textureBottom.setTexture(plant.textureBottom);
-			case "growapable" -> growapableMaxHeight.setValue(plant.growapableMaxHeight);
-			case "sapling" -> {
-				secondaryTreeChance.setValue(plant.secondaryTreeChance);
-				for (int i = 0; i < 2; i++) {
-					trees[i].setEntry(plant.trees[i]);
-					flowerTrees[i].setEntry(plant.flowerTrees[i]);
-					megaTrees[i].setEntry(plant.megaTrees[i]);
-				}
-			}
+		}
 		}
 
 		tintType.setSelectedItem(plant.tintType);
@@ -1090,20 +1089,20 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		// Plant type specific fields
 		switch (Objects.requireNonNull((String) plantType.getSelectedItem())) {
-			case "normal" -> {
-				plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
-				plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
+		case "normal" -> {
+			plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
+			plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
+		}
+		case "double" -> plant.textureBottom = textureBottom.getTextureHolder();
+		case "growapable" -> plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
+		case "sapling" -> {
+			plant.secondaryTreeChance = (double) secondaryTreeChance.getValue();
+			for (int i = 0; i < 2; i++) {
+				plant.trees[i] = trees[i].getEntry();
+				plant.flowerTrees[i] = flowerTrees[i].getEntry();
+				plant.megaTrees[i] = megaTrees[i].getEntry();
 			}
-			case "double" -> plant.textureBottom = textureBottom.getTextureHolder();
-			case "growapable" -> plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
-			case "sapling" -> {
-				plant.secondaryTreeChance = (double) secondaryTreeChance.getValue();
-				for (int i = 0; i < 2; i++) {
-					plant.trees[i] = trees[i].getEntry();
-					plant.flowerTrees[i] = flowerTrees[i].getEntry();
-					plant.megaTrees[i] = megaTrees[i].getEntry();
-				}
-			}
+		}
 		}
 
 		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
