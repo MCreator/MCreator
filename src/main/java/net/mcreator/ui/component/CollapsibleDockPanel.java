@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.MCreatorFrame;
 import net.mcreator.ui.laf.OpaqueFlatSplitPaneUI;
 import net.mcreator.ui.laf.themes.Theme;
 
@@ -27,6 +28,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 import java.util.*;
 import java.util.List;
 
@@ -61,6 +64,7 @@ public class CollapsibleDockPanel extends JSplitPane {
 		dockStrip.setOpaque(false);
 		dockStrip.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 1));
 		dockStrip.putClientProperty("FlatLaf.style", "hoverButtonGroupBackground: #00000000");
+		dockStrip.setMargin(new Insets(0, 0, 0, 0));
 
 		dockPanel.setOpaque(false);
 
@@ -266,6 +270,45 @@ public class CollapsibleDockPanel extends JSplitPane {
 
 	public interface DockVisibilityListener {
 		void dockShown(String dockID);
+	}
+
+	public static JToolBar createStaticTwoRegionsStrip(MCreatorFrame parent, CollapsibleDockPanel collapsibleDockPanelA, CollapsibleDockPanel collapsibleDockPaneB) {
+		JToolBar dockStrip = parent.hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
+		dockStrip.setOrientation(JToolBar.VERTICAL);
+		dockStrip.setFloatable(false);
+		dockStrip.setBorder(
+				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));
+		dockStrip.add(collapsibleDockPanelA.getDockStrip());
+		dockStrip.add(Box.createVerticalGlue());
+		dockStrip.add(collapsibleDockPaneB.getDockStrip());
+		return dockStrip;
+	}
+
+	public static JToolBar createDynamicDockStrip(MCreatorFrame parent, CollapsibleDockPanel collapsibleDockPanel) {
+		JToolBar dockStrip = parent.hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
+		dockStrip.setOrientation(JToolBar.VERTICAL);
+		dockStrip.setFloatable(false);
+		dockStrip.add(collapsibleDockPanel.getDockStrip());
+
+		collapsibleDockPanel.getDockStrip().addContainerListener(new ContainerAdapter() {
+			@Override public void componentAdded(ContainerEvent e) {
+				updateVisibility();
+			}
+
+			@Override public void componentRemoved(ContainerEvent e) {
+				updateVisibility();
+			}
+
+			private void updateVisibility() {
+				dockStrip.setVisible(collapsibleDockPanel.getDockStrip().getComponentCount() > 0);
+				dockStrip.getParent().revalidate();
+				dockStrip.getParent().repaint();
+			}
+		});
+
+		dockStrip.setVisible(collapsibleDockPanel.getDockStrip().getComponentCount() > 0);
+
+		return dockStrip;
 	}
 
 }

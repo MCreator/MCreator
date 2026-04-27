@@ -29,13 +29,11 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.GlobalSearchListener;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
@@ -138,22 +136,13 @@ public abstract class MCreator extends MCreatorFrame {
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
-		JToolBar dockStripLeft = hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
-		dockStripLeft.setOrientation(JToolBar.VERTICAL);
-		dockStripLeft.setFloatable(false);
-		dockStripLeft.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));
-		dockStripLeft.add(leftDockRegion.getDockStrip());
-		dockStripLeft.add(Box.createVerticalGlue());
-		dockStripLeft.add(bottomDockRegion.getDockStrip());
+		JToolBar dockStripLeft = CollapsibleDockPanel.createStaticTwoRegionsStrip(this, leftDockRegion,
+				bottomDockRegion);
 
-		JToolBar dockStripRight = hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
-		dockStripRight.setOrientation(JToolBar.VERTICAL);
-		dockStripRight.setFloatable(false);
-		dockStripRight.add(rightDockRegion.getDockStrip());
+		JToolBar dockStripRight = CollapsibleDockPanel.createDynamicDockStrip(this, rightDockRegion);
 
 		setMainContent(PanelUtils.westAndCenterElement(dockStripLeft,
-				PanelUtils.centerAndEastElement(bottomDockRegion, dockStripRight), 0, 0));
+				PanelUtils.centerAndEastElement(bottomDockRegion, dockStripRight, 0, 0), 0, 0));
 
 		add("North", toolBar);
 
@@ -163,6 +152,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 				// Apply dock state after the window is shown
 				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().leftDockState, leftDockRegion);
+				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().rightDockState, rightDockRegion);
 				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().bottomDockState,
 						bottomDockRegion);
 
@@ -309,6 +299,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 			workspace.getWorkspaceUserSettings().bottomDockState = CollapsibleDockPanel.State.get(bottomDockRegion);
 			workspace.getWorkspaceUserSettings().leftDockState = CollapsibleDockPanel.State.get(leftDockRegion);
+			workspace.getWorkspaceUserSettings().rightDockState = CollapsibleDockPanel.State.get(rightDockRegion);
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)
@@ -387,6 +378,10 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public CollapsibleDockPanel getLeftDockRegion() {
 		return leftDockRegion;
+	}
+
+	public CollapsibleDockPanel getRightDockRegion() {
+		return rightDockRegion;
 	}
 
 	public CollapsibleDockPanel getBottomDockRegion() {
