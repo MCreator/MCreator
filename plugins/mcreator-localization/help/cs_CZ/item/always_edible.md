@@ -1,0 +1,1 @@
+Povolení tohoto parametru dovolí hráči sníst toto jídlo i když má plné pole hladu (např. Zlaté Jablko)

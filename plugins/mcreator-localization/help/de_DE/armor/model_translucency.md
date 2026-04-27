@@ -1,0 +1,2 @@
+Dieser Parameter steuert, ob das ausgewählte benutzerdefinierte Java-Modell Transparenz in seinem Rendering unterstützt.
+Aktiviere diese Option nur für Modelle, die dafür vorgesehen sind, transparente Texturen darzustellen, da transparentes Rendering bei unnötiger Verwendung zu Leistungseinbußen führen kann.

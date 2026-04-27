@@ -19,6 +19,7 @@ other_textures_dir: "@MODASSETSROOT/textures"
 block_textures_dir: "@MODASSETSROOT/textures/blocks"
 item_textures_dir: "@MODASSETSROOT/textures/items"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
+structures_dir: "@MODDATAROOT/structures/@modid"
 
 base_templates:
   - template: manifest_behaviourpack.json.ftl
@@ -30,15 +31,15 @@ base_templates:
   - template: resourcepack/sound_definitions.json.ftl
     writer: json
     name: "@RESROOT/sounds/sound_definitions.json"
+  - template: resourcepack/music_definitions.json.ftl
+    writer: json
+    name: "@RESROOT/sounds/music_definitions.json"
   - template: resourcepack/blocks.json.ftl
     writer: json
     name: "@RESROOT/blocks.json"
   - template: resourcepack/terrain_texture.json.ftl
     writer: json
     name: "@RESROOT/textures/terrain_texture.json"
-  - template: player.json.ftl
-    writer: json
-    name: "@SRCROOT/entities/player.json"
 
 language_file:
   format: keyvalue
@@ -56,3 +57,6 @@ resources_setup_tasks:
     height: 128
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@SRCROOT/pack_icon.png"
+  - task: copy_models
+    type: BEDROCK
+    to: "@MODASSETSROOT/models/blocks"

@@ -93,12 +93,12 @@ public class ModElementGUISearch extends JTextField {
 
 	@Override public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		if (getText().isEmpty()) {
+			Graphics2D g2 = (Graphics2D) g;
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawImage(UIRES.get("searchsmall").getImage(), getWidth() - 12 - 4, getHeight() / 2 - 12 / 2, null);
 			g.setFont(g.getFont().deriveFont(10f));
-			g.setColor(new Color(120, 120, 120));
+			g.setColor(Theme.current().getAltForegroundColor());
 			g.drawString(L10N.t("elementgui.search"), 8, 16);
 		}
 	}

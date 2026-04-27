@@ -52,7 +52,7 @@ public class VOptionPane {
 			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
 		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
-		VTextField textField = new VTextField(20);
+		VTextField textField = new VTextField(25);
 		ComponentUtils.deriveFont(textField, 17);
 		textField.setPreferredSize(new Dimension(200, 28));
 		textField.enableRealtimeValidation();

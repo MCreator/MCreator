@@ -23,6 +23,7 @@ import com.google.gson.JsonParser;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.TrackingFileIO;
 import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.io.writer.JSWriter;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;
@@ -551,12 +552,21 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			int pos = te.getCaretPosition();
 			String ncode = codeCleanup.reformatTheCodeOnly(te.getText());
 			te.setText(ncode);
-			te.setCaretPosition(pos);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
 			int pos = te.getCaretPosition();
 			JsonElement json = JsonParser.parseString(te.getText());
-			te.setText(JSONWriter.gson.toJson(json));
-			te.setCaretPosition(pos);
+			String ncode = JSONWriter.gson.toJson(json);
+			te.setText(ncode);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
+		} else if (SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT.equals(language)) {
+			int pos = te.getCaretPosition();
+			String ncode = JSWriter.formatJS(te.getText());
+			te.setText(ncode);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
 		}
 	}
 
@@ -572,6 +582,12 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			int pos = te.getCaretPosition();
 			JsonElement json = JsonParser.parseString(te.getText());
 			String ncode = JSONWriter.gson.toJson(json);
+			te.setText(ncode);
+			if (pos < ncode.length())
+				te.setCaretPosition(pos);
+		} else if (SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT.equals(language)) {
+			int pos = te.getCaretPosition();
+			String ncode = JSWriter.formatJS(te.getText());
 			te.setText(ncode);
 			if (pos < ncode.length())
 				te.setCaretPosition(pos);

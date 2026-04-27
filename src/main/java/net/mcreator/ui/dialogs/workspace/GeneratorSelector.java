@@ -18,13 +18,15 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
-import net.mcreator.Launcher;
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalTriggerLoader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -36,6 +38,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +48,68 @@ public class GeneratorSelector {
 
 	private static final List<GeneratorFlavor> compatible1 = List.of(GeneratorFlavor.FORGE, GeneratorFlavor.FABRIC,
 			GeneratorFlavor.NEOFORGE, GeneratorFlavor.QUILT);
+
+	//@formatter:off
+	private static final Map<GeneratorFlavor, List<String>> statsBarsToAlwaysShow = new HashMap<>() {{
+		put(GeneratorFlavor.NEOFORGE, List.of(
+			"achievements",
+			"animations",
+			"attributes",
+			"biomes",
+			"blocksitems",
+			"blockstateproperties",
+			"configuredfeatures",
+			"damagesources",
+			"defaultfeatures",
+			"dimensions",
+			"effects",
+			"enchantments",
+			"entities",
+			"equipmentslots",
+			"eventparameters",
+			"fluids",
+			"gameevents",
+			"gamemodes",
+			"gamerules",
+			"generationsteps",
+			"itemproperties",
+			"itemtypes",
+			"keybuttons",
+			"mapcolors",
+			"mobspawntypes",
+			"noteblockinstruments",
+			"particles",
+			"pathnodetypes",
+			"planttypes",
+			"potions",
+			"projectiles",
+			"screens",
+			"soundcategories",
+			"sounds",
+			"stepsounds",
+			"structures",
+			"suggestionproviders",
+			"tabs",
+			"villagerprofessions",
+			"jsontriggers",
+			"procedures",
+			"aitasks",
+			"features",
+			"cmdargs",
+			"triggers"
+		));
+		put(GeneratorFlavor.ADDON, List.of(
+			"blocksitems",
+			"entities",
+			"mapcolors",
+			"stepsounds",
+			"tabs",
+			"scripts",
+			"aitasks",
+			"jstriggers"
+		));
+	}};
+	//@formatter:on
 
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
@@ -90,10 +155,8 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "textures"), stats.getBaseCoverageInfo().get("textures"), baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "sounds"), stats.getBaseCoverageInfo().get("sounds"), baseCoverageInfo);
 
-			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
-					== GeneratorFlavor.GamePlatform.JAVAEDITION)
-				addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
-						baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
+					baseCoverageInfo);
 
 			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
 
@@ -112,6 +175,11 @@ public class GeneratorSelector {
 			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
 					== GeneratorFlavor.GamePlatform.JAVAEDITION)
 				addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
+						baseCoverageInfo);
+
+			if (generatorConfiguration.getGeneratorFlavor().getGamePlatform()
+					== GeneratorFlavor.GamePlatform.BEDROCKEDITION)
+				addStatusLabel(L10N.t(covpfx + "bedrock_models"), stats.getBaseCoverageInfo().get("model_bedrock"),
 						baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE
@@ -163,19 +231,28 @@ public class GeneratorSelector {
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 
 			stats.getGeneratorBlocklyBlocks().forEach((key, value) -> {
-				String name = L10N.t(covpfx + key);
+				String name = L10N.t(covpfx + key.registryName());
 				if (name != null)
-					addStatsBar(name, key, supportedProcedures, stats);
+					addStatsBar(name, key.registryName(), supportedProcedures, stats);
 			});
 
-			addStatsBar(L10N.t(covpfx + "triggers"), "triggers", supportedProcedures, stats);
+			stats.getGeneratorBlocklyTriggers().forEach((key, value) -> {
+				ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
+
+				if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() != GeneratorFlavor.BaseLanguage.JAVA
+						|| key != BlocklyEditorType.SCRIPT) {
+					String name = L10N.t(covpfx + loader.getResourceFolder());
+					if (name != null)
+						addStatsBar(name, loader.getResourceFolder(), supportedProcedures, stats);
+				}
+			});
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.procedure_coverage"),
 					supportedProcedures, 10, 10));
 
-			JPanel genStatsW = new JPanel();
+			JPanel genStatsW = new JPanel(new BorderLayout());
 			genStatsW.setBorder(BorderFactory.createTitledBorder(L10N.t("dialog.generator_selector.generator_info")));
-			genStatsW.add(ComponentUtils.applyPadding(genStats, 5, true, true, true, false));
+			genStatsW.add("North", ComponentUtils.applyPadding(genStats, 5, true, true, true, true));
 			statsPan.add(genStatsW, generatorConfiguration.getGeneratorName());
 		}
 
@@ -226,8 +303,10 @@ public class GeneratorSelector {
 	}
 
 	private static void addStatsBar(String label, String registry, JPanel supportedElements, GeneratorStats stats) {
+		GeneratorFlavor flavor = stats.getAssociatedGeneratorConfiguration().getGeneratorFlavor();
+
 		if ((stats.getCoverageInfo().get(registry) == null || stats.getCoverageInfo().get(registry).intValue() == 0)
-				&& !Launcher.version.isDevelopment())
+				&& !statsBarsToAlwaysShow.getOrDefault(flavor, List.of()).contains(registry))
 			return;
 
 		JProgressBar bar = new JProgressBar();
