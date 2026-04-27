@@ -78,6 +78,7 @@ public abstract class MCreator extends MCreatorFrame {
 	public final MCreatorTabs.Tab workspaceTab;
 
 	private final CollapsibleDockPanel leftDockRegion;
+	private final CollapsibleDockPanel rightDockRegion;
 	private final CollapsibleDockPanel bottomDockRegion;
 
 	public static MCreator create(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
@@ -129,23 +130,30 @@ public abstract class MCreator extends MCreatorFrame {
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
 		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mcreatorTabs);
-		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, leftDockRegion);
+		rightDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.RIGHT, leftDockRegion);
+		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, rightDockRegion);
 
 		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
-		JToolBar outerStrip = hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
-		outerStrip.setOrientation(JToolBar.VERTICAL);
-		outerStrip.setFloatable(false);
-		outerStrip.setBorder(
+		JToolBar dockStripLeft = hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
+		dockStripLeft.setOrientation(JToolBar.VERTICAL);
+		dockStripLeft.setFloatable(false);
+		dockStripLeft.setBorder(
 				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));
-		outerStrip.add(leftDockRegion.getDockStrip());
-		outerStrip.add(Box.createVerticalGlue());
-		outerStrip.add(bottomDockRegion.getDockStrip());
+		dockStripLeft.add(leftDockRegion.getDockStrip());
+		dockStripLeft.add(Box.createVerticalGlue());
+		dockStripLeft.add(bottomDockRegion.getDockStrip());
 
-		setMainContent(PanelUtils.westAndCenterElement(outerStrip, bottomDockRegion, 0, 0));
+		JToolBar dockStripRight = hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
+		dockStripRight.setOrientation(JToolBar.VERTICAL);
+		dockStripRight.setFloatable(false);
+		dockStripRight.add(rightDockRegion.getDockStrip());
+
+		setMainContent(PanelUtils.westAndCenterElement(dockStripLeft,
+				PanelUtils.centerAndEastElement(bottomDockRegion, dockStripRight), 0, 0));
 
 		add("North", toolBar);
 
