@@ -192,13 +192,13 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 		if (internal instanceof ItemStacksResourceHandler handler) {
 			handler.set(index, resource, amount);
 		} else {
-			if (!internal.getResource(index).isEmpty())
-				try (var tx = Transaction.openRoot()) {
+			try (var tx = Transaction.openRoot()) {
+				if (!internal.getResource(index).isEmpty())
 					internal.extract(index, internal.getResource(index), internal.getAmountAsInt(index), tx);
-					tx.commit();
-				}
-			if (!resource.isEmpty() && amount > 0)
-				ItemUtil.insertItemReturnRemaining(internal, index, resource.toStack(amount), false, null);
+				if (!resource.isEmpty() && amount > 0)
+					internal.insert(index, resource, amount, tx);
+				tx.commit();
+			}
 		}
 	}
 
