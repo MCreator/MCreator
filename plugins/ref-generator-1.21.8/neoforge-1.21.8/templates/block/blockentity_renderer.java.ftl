@@ -33,22 +33,32 @@
 
 package ${package}.client.renderer.block;
 
-@EventBusSubscriber(Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity> {
+@EventBusSubscriber(Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity, CustomRenderState> {
 
 	private final CustomHierarchicalModel model;
 	private final Identifier texture;
 
-	private final LivingEntityRenderState renderState;
+	public class CustomRenderState extends BlockEntityRenderState {
+		protected final LivingEntityRenderState entityRenderState = new LivingEntityRenderState();
+		protected BlockState blockState;
+	}
 
 	${name}Renderer(BlockEntityRendererProvider.Context context) {
 		this.model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
 		this.texture = Identifier.parse("${data.texture.format("%s:textures/block/%s")}.png");
-		this.renderState = new LivingEntityRenderState();
 	}
 
-	private void updateRenderState(${name}BlockEntity blockEntity, float partialTick) {
+	@Override public CustomRenderState createRenderState() {
+		return new CustomRenderState();
+	}
+
+	@Override public void extractRenderState(${name}BlockEntity blockEntity, CustomRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+		super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+		state.blockState = blockEntity.getBlockState();
+
 		int tickCount = (int) blockEntity.getLevel().getGameTime();
-		renderState.ageInTicks = tickCount + partialTick;
+		state.entityRenderState.ageInTicks = tickCount + partialTicks;
+
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
 				blockEntity.animationState${animation?index}.animateWhen(<@procedureCode animation.condition, {
@@ -65,14 +75,13 @@ package ${package}.client.renderer.block;
 		</#list>
 	}
 
-	@Override public void render(${name}BlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource renderer, int light, int overlayLight, Vec3 cameraPos) {
+	@Override public void submit(CustomRenderState renderState, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
 		<@javacompress>
-		updateRenderState(blockEntity, partialTick);
 		poseStack.pushPose();
 		poseStack.scale(-1, -1, 1);
 		poseStack.translate(-0.5, -0.5, 0.5);
 		<#if data.rotationMode != 0>
-			BlockState state = blockEntity.getBlockState();
+			BlockState state = renderState.blockState;
 			<#if data.rotationMode != 5>
 			Direction facing = state.getValue(${name}Block.FACING);
 			switch (facing) {
@@ -103,9 +112,8 @@ package ${package}.client.renderer.block;
 			</#if>
 		</#if>
 		poseStack.translate(0, -1, 0);
-		VertexConsumer builder = renderer.getBuffer(RenderType.entityCutout(texture));
-		model.setupBlockEntityAnim(blockEntity, renderState);
-		model.renderToBuffer(poseStack, builder, light, overlayLight);
+		model.setupBlockEntityAnim(blockEntity, renderState.entityRenderState);
+		submitNodeCollector.submitModel(this.model, renderState.entityRenderState, poseStack, RenderType.entityCutout(texture), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
 		poseStack.popPose();
 		</@javacompress>
 	}

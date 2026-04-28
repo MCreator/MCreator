@@ -191,48 +191,38 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	<#-- END: WorldlyContainer -->
 
 	<#if data.hasEnergyStorage>
-	private final EnergyStorage energyStorage = new EnergyStorage(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {
-		@Override public int receiveEnergy(int maxReceive, boolean simulate) {
-			int retval = super.receiveEnergy(maxReceive, simulate);
-			if(!simulate) {
-				setChanged();
-				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-			}
-			return retval;
+	private final SimpleEnergyHandler energyStorage = new SimpleEnergyHandler(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {
+
+		@Override protected void onEnergyChanged(int previousAmount) {
+			setChanged();
+			level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
 		}
 
-		@Override public int extractEnergy(int maxExtract, boolean simulate) {
-			int retval = super.extractEnergy(maxExtract, simulate);
-			if(!simulate) {
-				setChanged();
-				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-			}
-			return retval;
-		}
 	};
 
-	public EnergyStorage getEnergyStorage() {
+	public SimpleEnergyHandler getEnergyStorage() {
 		return energyStorage;
 	}
 	</#if>
 
 	<#if data.isFluidTank>
-	private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}
-		<#if data.fluidRestrictions?has_content>, fs -> {
-		<#list data.fluidRestrictions as fluidRestriction>
-			if (fs.getFluid() == ${fluidRestriction}) return true;
-		</#list>
-		return false;
-		}</#if>
-	) {
-		@Override protected void onContentsChanged() {
-			super.onContentsChanged();
+	private final FluidStacksResourceHandler fluidTank = new FluidStacksResourceHandler(1, ${data.fluidCapacity}) {
+		@Override public void onContentsChanged() {
 			setChanged();
 			level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
 		}
+
+		<#if data.fluidRestrictions?has_content>
+		@Override public boolean isValid(int index, FluidResource resource) {
+			<#list data.fluidRestrictions as fluidRestriction>
+			if (resource.getFluid() == ${fluidRestriction}) return true;
+			</#list>
+			return false;
+		}
+		</#if>
 	};
 
-	public FluidTank getFluidTank() {
+	public FluidStacksResourceHandler getFluidTank() {
 		return fluidTank;
 	}
 	</#if>
