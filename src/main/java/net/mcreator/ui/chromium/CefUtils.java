@@ -228,7 +228,7 @@ public class CefUtils {
 			});
 
 			CefApp.startup(args);
-			cefApp = CefApp.getInstance(settings);
+			cefApp = CefApp.getInstance(args, settings, null);
 
 			try {
 				if (!latch.await(5, TimeUnit.SECONDS)) {

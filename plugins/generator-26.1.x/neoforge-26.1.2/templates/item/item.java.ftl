@@ -122,7 +122,7 @@ public class ${name}Item extends Item {
 	<#if data.hasCustomEatResultItem()>
 	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
 		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(),
-				builder -> builder.set(DataComponents.USE_REMAINDER, new UseRemainder(${mappedMCItemToItemStackCode(data.eatResultItem, 1)})));
+				builder -> builder.set(DataComponents.USE_REMAINDER, new UseRemainder(new ItemStackTemplate(${mappedMCItemToItem(data.eatResultItem, 1)}))));
 	}
 	</#if>
 
