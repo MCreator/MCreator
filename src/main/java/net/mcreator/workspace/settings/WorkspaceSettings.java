@@ -63,9 +63,12 @@ import java.util.stream.Stream;
 	private transient Workspace workspace; // we should never serialize this!!
 
 	private static final Pattern cleanExcessMmpCharactersPattern = Pattern.compile("[^0-9.]+");
-	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
-	private static final Pattern cleanLeadingTrailingDotsPattern = Pattern.compile("(\\.$)|(^\\.)");
 	private static final Pattern cleanExcessSemVerCharactersPattern = Pattern.compile("[^0-9a-zA-Z.+-]+");
+	private static final Pattern cleanMultiDotPattern = Pattern.compile("(?:\\.[.]+)+");
+	private static final Pattern cleanMultiHyphenPattern = Pattern.compile("(?:--+)+");
+	private static final Pattern cleanMultiPlusPattern = Pattern.compile("(?:\\+[+]+)+");
+	private static final Pattern cleanLeadingTrailingCharactersPattern = Pattern.compile(
+			"(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
@@ -231,13 +234,16 @@ import java.util.stream.Stream;
 	}
 
 	private String getTrimmedVersion(boolean semVer) {
-		String nonExcessCharsVersion;
-		if (semVer)
-			nonExcessCharsVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
-		else
-			nonExcessCharsVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
-		String nonMultiDotsVersion = cleanMultiDotsPattern.matcher(nonExcessCharsVersion).replaceAll(".");
-		return cleanLeadingTrailingDotsPattern.matcher(nonMultiDotsVersion).replaceAll("");
+		String trimmedVersion;
+		if (semVer) {
+			trimmedVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
+			trimmedVersion = cleanMultiHyphenPattern.matcher(trimmedVersion).replaceAll("-");
+			trimmedVersion = cleanMultiPlusPattern.matcher(trimmedVersion).replaceAll("+");
+		} else {
+			trimmedVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
+		}
+		trimmedVersion = cleanMultiDotPattern.matcher(trimmedVersion).replaceAll(".");
+		return cleanLeadingTrailingCharactersPattern.matcher(trimmedVersion).replaceAll("");
 	}
 
 	public String getCleanVersion() {
