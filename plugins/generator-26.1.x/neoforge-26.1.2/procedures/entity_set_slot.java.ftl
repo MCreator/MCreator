@@ -1,7 +1,6 @@
 <#include "mcitems.ftl">
+<@addTemplate file="utils/item/itemhandler_set_slot.java.ftl"/>
 ResourceHandler<ItemResource> _resourceHandler${cbi} = entity.getCapability(Capabilities.Item.ENTITY, null);
 if (_resourceHandler${cbi} != null) {
-	ItemStack _setstack = ${mappedMCItemToItemStackCode(input$slotitem, 1)}.copy();
-	_setstack.setCount(${opt.toInt(input$amount)});
-	ItemUtil.insertItemReturnRemaining(_resourceHandler${cbi}, ${opt.toInt(input$slotid)}, _setstack, false, null);
+	setStackInSlot(_resourceHandler${cbi}, ${opt.toInt(input$slotid)}, ItemResource.of(${mappedMCItemToItemStackCode(input$slotitem, 1)}), ${opt.toInt(input$amount)});
 }
