@@ -204,6 +204,10 @@ HALF:
   - BlockStateProperties.HALF
   - half
   - Half
+SIDE_CHAIN_PART:
+  - BlockStateProperties.SIDE_CHAIN_PART
+  - side_chain
+  - SideChainPart
 RAIL_SHAPE:
   - BlockStateProperties.RAIL_SHAPE
   - shape
@@ -356,22 +360,22 @@ SCULK_SENSOR_PHASE:
   - sculk_sensor_phase
   - SculkSensorPhase
 CHISELED_BOOKSHELF_SLOT_0_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_0_OCCUPIED
+  - BlockStateProperties.SLOT_0_OCCUPIED
   - slot_0_occupied
 CHISELED_BOOKSHELF_SLOT_1_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_1_OCCUPIED
+  - BlockStateProperties.SLOT_1_OCCUPIED
   - slot_1_occupied
 CHISELED_BOOKSHELF_SLOT_2_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_2_OCCUPIED
+  - BlockStateProperties.SLOT_2_OCCUPIED
   - slot_2_occupied
 CHISELED_BOOKSHELF_SLOT_3_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_3_OCCUPIED
+  - BlockStateProperties.SLOT_3_OCCUPIED
   - slot_3_occupied
 CHISELED_BOOKSHELF_SLOT_4_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_4_OCCUPIED
+  - BlockStateProperties.SLOT_4_OCCUPIED
   - slot_4_occupied
 CHISELED_BOOKSHELF_SLOT_5_OCCUPIED:
-  - BlockStateProperties.CHISELED_BOOKSHELF_SLOT_5_OCCUPIED
+  - BlockStateProperties.SLOT_5_OCCUPIED
   - slot_5_occupied
 DUSTED:
   - BlockStateProperties.DUSTED
@@ -404,3 +408,7 @@ TEST_BLOCK_MODE:
 MAP:
   - BlockStateProperties.MAP
   - map
+COPPER_GOLEM_POSE:
+  - BlockStateProperties.COPPER_GOLEM_POSE
+  - copper_golem_pose
+  - CopperGolemStatueBlock.Pose
