@@ -105,7 +105,7 @@ package ${package}.init;
 	<#if hasTintedBlocks || (signs?size != 0)>
 	@EventBusSubscriber(Dist.CLIENT) public static class BlocksClientSideHandler {
 		<#if hasTintedBlocks>
-		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.Block event) {
+		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.BlockTintSources event) {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
 					<#if block.tintType != "No tint">
