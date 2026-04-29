@@ -59,20 +59,25 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
-		String path = request.getURL().replaceFirst("^classloader://", "/")
+		String path = request.getURL().replaceFirst("^http://mcreator/", "/")
 				//@formatter:off
-				.replace("[LANG]", L10N.getBlocklyLangName())
-				.replace("[BLOCKLY_THEME_ID]", blocklyThemeID)
+				.replace("__LANG__", L10N.getBlocklyLangName())
+				.replace("__BLOCKLY_THEME_ID__", blocklyThemeID)
 				//@formatter:on
 				;
 
-		inputStream = getClass().getResourceAsStream(path);
-		if (inputStream == null) {
-			// if resource not found, try to load it from the plugins
-			inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
+		if (path.contains("favicon.ico")) {
+			// return empty stream for favicon requests
+			inputStream = InputStream.nullInputStream();
+		} else {
+			inputStream = getClass().getResourceAsStream(path);
 			if (inputStream == null) {
-				LOG.warn("Resource not found: {}", path);
-				return false; // resource not found
+				// if resource not found, try to load it from the plugins
+				inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
+				if (inputStream == null) {
+					LOG.warn("Resource not found: {}", path);
+					return false; // resource not found
+				}
 			}
 		}
 

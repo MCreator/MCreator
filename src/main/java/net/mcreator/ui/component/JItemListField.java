@@ -84,6 +84,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final JComponent buttons;
 
 	private boolean warnOnRemoveAll = false;
+	private boolean readOnly = false;
 
 	protected JItemListField(MCreator mcreator) {
 		this(mcreator, false);
@@ -159,7 +160,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		elementsList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getButton() == MouseEvent.BUTTON2) {
+				if (e.getButton() == MouseEvent.BUTTON2 && !readOnly) {
 					int index = elementsList.locationToIndex(e.getPoint());
 					if (index >= 0)
 						deleteElements(Collections.singletonList(elementsListModel.get(index)));
@@ -265,6 +266,17 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	public void setWarnOnRemoveAll(boolean warnOnDeleteAll) {
 		this.warnOnRemoveAll = warnOnDeleteAll;
+	}
+
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly() {
+		add.setVisible(false);
+		remove.setVisible(false);
+		removeall.setVisible(false);
+		this.readOnly = true;
 	}
 
 	private void deleteElements(List<T> elements) {

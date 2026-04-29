@@ -3,10 +3,8 @@ templates:
     writer: json
     name: "@MODDATAROOT/painting_variant/@registryname.json"
 
-global_templates:
-  - template: json/paintingtag.json.ftl
-    writer: json
-    name: "@RESROOT/data/minecraft/tags/painting_variant/placeable.json"
+tags:
+  - tag: PAINTING_VARIANTS:minecraft:placeable
 
 localizationkeys:
   - key: painting.@modid.@registryname.title
