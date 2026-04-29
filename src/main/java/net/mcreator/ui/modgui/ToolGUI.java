@@ -132,7 +132,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private JComponent blockingModelPanel;
 	private JComponent blocksAffectedPanel;
 
-	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this,
+			JAttributeModifierList.EntryType.ITEM);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

@@ -45,6 +45,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -204,6 +205,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private MCItemListField repairItems;
 
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this,
+			JAttributeModifierList.EntryType.ARMOR);
+
 	public ArmorGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -287,6 +291,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane6 = new JPanel(new BorderLayout(10, 10));
+		JPanel attributeModifiersPage = new JPanel(new BorderLayout(0, 0));
 
 		ComponentUtils.deriveFont(helmetModelTexture, 16);
 		ComponentUtils.deriveFont(bodyModelTexture, 16);
@@ -772,6 +777,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsModelListener.actionPerformed(new ActionEvent("", 0, ""));
 		bootsModelListener.actionPerformed(new ActionEvent("", 0, ""));
 
+		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),
+						L10N.label("elementgui.common.attribute_modifier.modifiers")), attributeModifiersList);
+		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		attributeModifiersPage.add("Center", modifiersEditor);
+		attributeModifiersPage.setOpaque(false);
+
 		group1page.addValidationElement(textureHelmet);
 		group1page.addValidationElement(textureBody);
 		group1page.addValidationElement(textureLeggings);
@@ -786,6 +799,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(group1page);
 		addPage(L10N.t("elementgui.common.page_properties"), pane5).validate(group2page);
+		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), attributeModifiersPage).lazyValidate(
+				attributeModifiersList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane6);
 
 		if (!isEditingMode()) {
@@ -860,6 +875,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyModel.addActionListener(bodyModelListener);
 		leggingsModel.addActionListener(leggingsModelListener);
 		bootsModel.addActionListener(bootsModelListener);
+
+		attributeModifiersList.reloadDataLists();
 	}
 
 	private void updateArmorTexturePreview() {
@@ -920,6 +937,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsName.setText(armor.bootsName);
 		repairItems.setListElements(armor.repairItems);
 		equipSound.setSound(armor.equipSound);
+		attributeModifiersList.setEntries(armor.attributeModifiers);
 
 		Model _helmetModel = armor.getHelmetModel();
 		if (_helmetModel != null)
@@ -1070,6 +1088,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyPiglinNeutral = bodyPiglinNeutral.getSelectedProcedure();
 		armor.leggingsPiglinNeutral = leggingsPiglinNeutral.getSelectedProcedure();
 		armor.bootsPiglinNeutral = bootsPiglinNeutral.getSelectedProcedure();
+		armor.attributeModifiers = attributeModifiersList.getEntries();
 
 		Model.Type helmetModelType = Objects.requireNonNull(helmetItemRenderType.getSelectedItem()).getType();
 		armor.helmetItemRenderType = 0;
