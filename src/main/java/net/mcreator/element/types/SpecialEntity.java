@@ -84,7 +84,7 @@ import java.util.List;
 		List<BaseType> baseTypes = new ArrayList<>();
 		baseTypes.add(BaseType.ITEM);
 
-		// 1.21-1.21.1 use enum extensions for custom boats so they do not require the creation of a new entity type
+		// 1.21-1.21.1 uses enum extensions for custom boats so they do not require the creation of a new entity type
 		if (!getModElement().getGenerator().getGeneratorMinecraftVersion().equals("1.21.1"))
 			baseTypes.add(BaseType.ENTITY);
 
