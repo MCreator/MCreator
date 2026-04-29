@@ -3,11 +3,9 @@ templates:
     writer: json
     name: "@MODDATAROOT/banner_pattern/@registryname.json"
 
-global_templates:
-  - template: bannerpattern/banner_pattern_tag.json.ftl
-    writer: json
-    condition: "${w.getGElementsOfType('bannerpattern')?filter(e -> !e.requireItem)?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/banner_pattern/no_item_required.json"
+tags:
+  - tag: BANNER_PATTERNS:minecraft:no_item_required
+    condition: "!requireItem"
 
 localizationkeys:
   - key: block.@modid.banner.@registryname.white
