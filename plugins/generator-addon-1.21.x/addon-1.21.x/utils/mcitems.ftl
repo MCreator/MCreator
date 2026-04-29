@@ -92,3 +92,25 @@
         </#if>
     </#if>
 </#function>
+
+<#function mappedMCItemToRegistryNameOrTag mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
+        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
+        <#if customelement?has_content>
+            <#return "\"${modid}:" + customelement + transformExtension(mappedBlock.getUnmappedValue()) + "\"">
+        <#else>
+            <#return "\"minecraft:air\"">
+        </#if>
+    <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return "{\"tags\": \"q.any_tag(\'" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\')\" }">
+    <#else>
+        <#assign mapped = mappedBlock.toString() />
+        <#if mapped.startsWith("#")>
+            <#return "\"minecraft:air\"">
+        <#elseif mapped.contains(":")>
+            <#return "\"" + mapped + "\"">
+        <#else>
+            <#return "\"minecraft:" + mapped + "\"">
+        </#if>
+    </#if>
+</#function>

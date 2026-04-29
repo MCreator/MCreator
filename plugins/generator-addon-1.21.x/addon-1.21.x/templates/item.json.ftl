@@ -31,6 +31,25 @@
       "minecraft:max_stack_size": ${data.stackSize},
       </#if>
       <#if data.enableMeleeDamage>"minecraft:damage": ${[data.damageVsEntity, 255]?min},</#if>
+      <#if data.isEnchantable>
+      "minecraft:enchantable": {
+        "slot": "${generator.map(data.enchantmentSlot, "equipmentslots")}",
+        "value": ${data.enchantmentValue}
+      },
+      </#if>
+      <#if data.diggerEntries?? && !data.diggerEntries.isEmpty()>
+      "minecraft:digger": {
+        "use_efficiency": ${data.diggerUseEfficiency},
+        "destroy_speeds": [
+          <#list data.diggerEntries as entry>
+            {
+              "block": ${mappedMCItemToRegistryNameOrTag(entry.block)},
+              "speed": ${entry.speed}
+            }<#sep>,
+          </#list>
+        ]
+      },
+      </#if>
       <#if data.blockToPlace?? && !data.blockToPlace.isEmpty()>
       "minecraft:block_placer": {
           "block": "${mappedMCItemToRegistryNameNoTags(data.blockToPlace)}",
