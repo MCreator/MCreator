@@ -137,6 +137,7 @@ import java.util.stream.Collectors;
 
 	public boolean isReplaceable;
 	public boolean canProvidePower;
+	public boolean forceRedstoneConductor;
 	public NumberProcedure emittedRedstonePower;
 	public String colorOnMap;
 	public String noteBlockInstrument;
