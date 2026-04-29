@@ -36,6 +36,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
+import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
@@ -181,7 +182,7 @@ public class TestWorkspaceDataProvider {
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
 				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM || type == ModElementType.BEBLOCK
-				|| type == ModElementType.BESCRIPT) {
+				|| type == ModElementType.BESCRIPT || type == ModElementType.BEBIOME) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -1773,13 +1774,59 @@ public class TestWorkspaceDataProvider {
 			beblock.tintMethod = getRandomItem(random,
 					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
 							"water"));
-
 			beblock.localScripts = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.localScripts.add("Examplebescript1");
 				beblock.localScripts.add("Examplebescript3");
 			}
 			return beblock;
+		} else if (ModElementType.BEBIOME.equals(modElement.getType())) {
+			BEBiome bebiome = new BEBiome(modElement);
+			bebiome.downfall = 0.72;
+			bebiome.temperature = 0.45;
+			bebiome.maxSnow = 0.250;
+			bebiome.minSnow = 0;
+			bebiome.airColor = Color.red;
+			if (!emptyLists) {
+				bebiome.fogColor = Color.yellow;
+				bebiome.grassColor = Color.green;
+				bebiome.foliageColor = Color.magenta;
+				bebiome.waterColor = Color.blue;
+				bebiome.waterFogColor = Color.cyan;
+			}
+			bebiome.topMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.midMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.foundationMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.seaFloorMaterial = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.seaMaterial = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.seaFloorDepth = 4;
+			bebiome.noiseType = List.of("default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
+					"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp").get(random.nextInt(14));
+			NameMapper tagMapper = new NameMapper(modElement.getWorkspace(), "be_biometags");
+			List<String> biometags = DataListLoader.loadDataMap("blockstateproperties")
+					.values().stream().map(e -> tagMapper.getMapping(e.getName())).collect(Collectors.toList());
+			Collections.shuffle(biometags);
+			bebiome.biomeTags = _true ? List.of() : biometags.stream().limit(5).toList();
+			bebiome.biomeReplacements = subset(random, 5, biomes,
+					e -> new BiomeEntry(modElement.getWorkspace(), e.getName()));
+			bebiome.replacementAmount = 0.6;
+			bebiome.replacementNoiseFrequencyScale = 0.4;
+			bebiome.ambientSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			bebiome.moodSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			bebiome.additionsSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			bebiome.music = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			bebiome.spawnParticles = _true;
+			bebiome.particleToSpawn = List.of("ash", "blue_spores", "red_spores", "white_ash").get(random.nextInt(3));
+			bebiome.particleDensity = 2;
 		}
 		return null;
 	}

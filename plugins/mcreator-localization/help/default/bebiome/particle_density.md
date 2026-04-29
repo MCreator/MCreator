@@ -1,0 +1,1 @@
+This parameter determines how densely packed the spawned particles will be in the biome.

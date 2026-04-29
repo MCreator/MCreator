@@ -1,0 +1,16 @@
+templates:
+  - template: biome/biome.json.ftl
+    writer: json
+    name: "@SRCROOT/biomes/@registryname.json"
+  - template: resourcepack/biome/biome.json.ftl
+    writer: json
+    name: "@RESROOT/biomes/@registryname.json"
+  - template: resourcepack/biome/fog.json.ftl
+    writer: json
+    name: "@RESROOT/fogs/@registryname.json"
+    condition: hasFog()
+
+global_templates:
+  - template: resourcepack/sounds.json.ftl
+    writer: json
+    name: "@RESROOT/sounds.json"
