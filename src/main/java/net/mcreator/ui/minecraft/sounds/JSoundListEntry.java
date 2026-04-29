@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.SoundElement;
@@ -65,23 +66,24 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		line.add(L10N.label("dialog.sounds.category"));
 		line.add(soundCategory);
 
-		line.add(L10N.label("dialog.sounds.volume"));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/volume"), L10N.label("dialog.sounds.volume")));
 		line.add(volume);
 
-		line.add(L10N.label("dialog.sounds.pitch"));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/pitch"), L10N.label("dialog.sounds.pitch")));
 		line.add(pitch);
 
-		line.add(L10N.label("dialog.sounds.weight"));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/weight"), L10N.label("dialog.sounds.weight")));
 		line.add(weight);
 
 		if (!isForBedrock) {
-			line.add(preload);
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/preload"), preload));
 
-			line.add(L10N.label("dialog.sounds.attenuation_distance"));
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/attenuation_distance"),
+					L10N.label("dialog.sounds.attenuation_distance")));
 			line.add(attenuationDistance);
 		} else {
-			line.add(is3D);
-			line.add(interruptible);
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/is3D"), is3D));
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/interruptible"), interruptible));
 			is3D.setSelected(true);
 			interruptible.setSelected(true);
 		}
