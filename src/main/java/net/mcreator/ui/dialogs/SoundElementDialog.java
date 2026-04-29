@@ -66,7 +66,7 @@ public class SoundElementDialog {
 		JComponent component = PanelUtils.northAndCenterElement(L10N.label("dialog.sounds.declarations"),
 				soundsEntries);
 
-		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		component.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
 
 		JPanel pane1 = new JPanel(new BorderLayout());
 		pane1.setOpaque(false);
