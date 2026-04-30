@@ -30,6 +30,8 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class VillagerTrade extends GeneratableElement {
 
+	public ProfessionEntry villagerProfession;
+	@ModElementReference public List<TradeEntry> trades;
 	@ModElementReference public List<CustomTradeEntry> tradeEntries;
 
 	private VillagerTrade() {
@@ -39,6 +41,7 @@ import java.util.List;
 	public VillagerTrade(ModElement element) {
 		super(element);
 		tradeEntries = new ArrayList<>();
+		trades = new ArrayList<>();
 	}
 
 	public static class CustomTradeEntry {
