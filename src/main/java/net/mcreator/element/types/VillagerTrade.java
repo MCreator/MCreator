@@ -44,25 +44,8 @@ import java.util.List;
 	public static class CustomTradeEntry {
 
 		public ProfessionEntry villagerProfession;
-		@ModElementReference public List<Entry> entries;
+		@ModElementReference public List<TradeEntry> entries;
 
-		public static class Entry {
-
-			public MItemBlock price1;
-			public int countPrice1;
-
-			public MItemBlock price2;
-			public int countPrice2;
-
-			public MItemBlock offer;
-			public int countOffer;
-
-			public int level;
-			public int maxTrades;
-			public int xp;
-
-			public double priceMultiplier;
-		}
 	}
 
 	public boolean hasVillagerTrades(boolean wandering) {
@@ -73,5 +56,23 @@ import java.util.List;
 				return true;
 		}
 		return false;
+	}
+
+	public static class TradeEntry {
+
+		public MItemBlock price1;
+		public int countPrice1;
+
+		public MItemBlock price2;
+		public int countPrice2;
+
+		public MItemBlock offer;
+		public int countOffer;
+
+		public int level;
+		public int maxTrades;
+		public int xp;
+
+		public double priceMultiplier;
 	}
 }

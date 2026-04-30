@@ -1587,7 +1587,7 @@ public class TestWorkspaceDataProvider {
 
 					int entries = random.nextInt(5) + 1;
 					for (int j = 0; j < entries; j++) {
-						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+						VillagerTrade.TradeEntry entry = new VillagerTrade.TradeEntry();
 						entry.price1 = new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 						entry.price2 = new MItemBlock(modElement.getWorkspace(),
@@ -1611,7 +1611,7 @@ public class TestWorkspaceDataProvider {
 
 					int wanderingEntries = random.nextInt(5) + 1;
 					for (int j = 0; j < wanderingEntries; j++) {
-						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+						VillagerTrade.TradeEntry entry = new VillagerTrade.TradeEntry();
 						entry.price1 = new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 						entry.price2 = new MItemBlock(modElement.getWorkspace(),

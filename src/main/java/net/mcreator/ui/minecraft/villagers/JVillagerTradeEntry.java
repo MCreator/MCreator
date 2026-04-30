@@ -129,8 +129,8 @@ public class JVillagerTradeEntry extends JPanel {
 		parent.repaint();
 	}
 
-	public VillagerTrade.CustomTradeEntry.Entry getEntry() {
-		VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+	public VillagerTrade.TradeEntry getEntry() {
+		VillagerTrade.TradeEntry entry = new VillagerTrade.TradeEntry();
 		entry.price1 = price1.getBlock();
 		entry.countPrice1 = (int) countPrice1.getValue();
 		entry.price2 = price2.getBlock();
@@ -144,7 +144,7 @@ public class JVillagerTradeEntry extends JPanel {
 		return entry;
 	}
 
-	public void setEntry(VillagerTrade.CustomTradeEntry.Entry e) {
+	public void setEntry(VillagerTrade.TradeEntry e) {
 		price1.setBlock(e.price1);
 		countPrice1.setValue(e.countPrice1);
 		price2.setBlock(e.price2);
