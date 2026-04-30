@@ -1503,6 +1503,7 @@ public class TestWorkspaceDataProvider {
 									"#minecraft:non_treasure"));
 				}
 			}
+			enchantment.effectsxml = Enchantment.XML_BASE;
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
