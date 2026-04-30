@@ -22,6 +22,8 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Procedure;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -598,7 +600,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML(net.mcreator.element.types.Procedure.XML_BASE);
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Procedure.class, "procedurexml"));
 		}
 
 		skipDependencyNullCheck.addActionListener(e -> regenerateBlockAssemblies(false));

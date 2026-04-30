@@ -68,6 +68,16 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
 
+	private static final String XML_BASE = """
+					<xml xmlns="https://developers.google.com/blockly/xml">
+					<block type="aitasks_container" deletable="false" x="40" y="40"><next>
+					<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
+					<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
+					<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
+					<block type="look_around"><field name="condition">null,null</field><next>
+					<block type="swim_in_water"><field name="condition">null,null</field></block></next>
+					</block></next></block></next></block></next></block></next></block></xml>""";
+
 	public String mobName;
 	public String mobLabel;
 
@@ -167,7 +177,7 @@ import java.util.stream.Collectors;
 
 	public boolean hasAI;
 	public String aiBase;
-	@BlocklyXML("aitasks") public String aixml;
+	@BlocklyXML(name = "aitasks", defaultXML = LivingEntity.XML_BASE) public String aixml;
 
 	public boolean breedable;
 	public boolean tameable;
