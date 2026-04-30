@@ -180,6 +180,9 @@ public final class MCreatorApplication {
 			// load entity animations for the Java Model animation editor
 			EntityAnimationsLoader.init();
 
+			// load recipe templates for the quick recipes tool
+			RecipeTemplatesLoader.init();
+
 			// register mod element types
 			ModElementTypeLoader.loadModElements();
 
