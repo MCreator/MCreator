@@ -36,6 +36,7 @@ import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -58,6 +59,7 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 				"dialog.tools.quick_recipes.result_validator");
 
 		line.add(L10N.label("dialog.tools.quick_recipes.name"));
+		name.setPreferredSize(new Dimension(300, 30));
 		name.setValidator(new UniqueNameValidator(L10N.t("modelement.recipe"), name::getText, () -> {
 			List<String> names = new ArrayList<>();
 			names.addAll(mcreator.getWorkspace().getModElements().stream()
@@ -72,6 +74,7 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 		line.add(name);
 
 		line.add(L10N.label("dialog.tools.quick_recipes.template"));
+		template.setPreferredSize(new Dimension(125, 30));
 		line.add(template);
 
 		generateStonecuttingRecipe.setSelected(true);
