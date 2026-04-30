@@ -143,7 +143,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
 
         // Reconnect any child blocks and update values
         for (let i = 0, dummyIndex = 0; i < this.inputCount_; i++) {
-            Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
+            connections[i]?.reconnect(this, 'arg' + i);
             const currentField = this.getField('name' + i);
 
             // Remove validator to avoid validation errors as we set new values
@@ -187,7 +187,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     updateShape_: function () {
         for (let i = 0; i < this.inputCount_; i++) {
             if (!this.getInput('arg' + i)) {
-                this.appendValueInput('arg' + i).setAlign(Blockly.Input.Align.RIGHT)
+                this.appendValueInput('arg' + i).setAlign(Blockly.ALIGN_RIGHT)
                     .appendField(javabridge.t('blockly.block.call_procedure.name'))
                     .appendField(new FieldJavaName('', uniqueValueValidator('name')), 'name' + i)
                     .appendField(javabridge.t('blockly.block.call_procedure.arg'));
