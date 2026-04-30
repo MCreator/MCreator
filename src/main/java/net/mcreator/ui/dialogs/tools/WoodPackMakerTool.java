@@ -830,6 +830,10 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
 				!= GeneratorStats.CoverageStatus.NONE
 				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+				!= GeneratorStats.CoverageStatus.NONE
+				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.SPECIALENTITY)
+				!= GeneratorStats.CoverageStatus.NONE
+				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEMEXTENSION)
 				!= GeneratorStats.CoverageStatus.NONE;
 	}
 
