@@ -33,8 +33,6 @@
 
 package ${package}.client.renderer.block;
 
-import org.jspecify.annotations.Nullable;
-
 @EventBusSubscriber(Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity, ${name}Renderer.CustomRenderState> {
 
 	private final CustomHierarchicalModel model;
@@ -49,7 +47,7 @@ import org.jspecify.annotations.Nullable;
 		return new CustomRenderState();
 	}
 
-	@Override public void extractRenderState(${name}BlockEntity blockEntity, CustomRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
+	@Override public void extractRenderState(${name}BlockEntity blockEntity, CustomRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
 		BlockEntityRenderState.extractBase(blockEntity, state, breakProgress);
 
 		state.blockEntity = blockEntity;
