@@ -314,7 +314,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 	<#if data.displayFluidOverlay>
-	@Override public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndTintGetter world, BlockPos pos, FluidState fluidstate) {
+	@Override public boolean shouldDisplayFluidOverlay(BlockState state, BlockAndLightGetter world, BlockPos pos, FluidState fluidstate) {
 		return true;
 	}
 	</#if>
@@ -339,7 +339,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		</#if>
 
 		<#if !data.blockBase?has_content || data.blockBase == "Leaves" || data.lightOpacity != 15>
-		@Override public int getLightBlock(BlockState state) {
+		@Override public int getLightDampening(BlockState state) {
 			<#if data.isWaterloggable && data.lightOpacity == 0> <#-- Prevent fully transparent blocks from overriding water opacity -->
 				return propagatesSkylightDown(state) ? 0 : 1;
 			<#else>
@@ -376,17 +376,19 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		builder.add(${props?join(", ")});
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
+	@Override public BlockState getStateForPlacement(BlockPlaceContext context) {
+		BlockState state = super.getStateForPlacement(context);
+		if (state == null) return null;
+
 		<#if data.isWaterloggable>
 		boolean flag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
 		</#if>
 		<#if data.rotationMode != 3>
-		return super.getStateForPlacement(context)
+		return state
 			<#if data.rotationMode == 1>
-				<#if data.enablePitch>
-				.setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
-				</#if>
+			<#if data.enablePitch>
+			.setValue(FACE, faceForDirection(context.getNearestLookingDirection()))
+			</#if>
 			.setValue(FACING, context.getHorizontalDirection().getOpposite())
 			<#elseif data.rotationMode == 2>
 			.setValue(FACING, context.getNearestLookingDirection().getOpposite())
@@ -401,21 +403,21 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			</#if>;
 		<#elseif data.rotationMode == 3>
 		if (context.getClickedFace().getAxis() == Direction.Axis.Y)
-			return super.getStateForPlacement(context)
+			return state
 				<#if data.enablePitch>
-					.setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
-					.setValue(FACING, context.getHorizontalDirection())
+				.setValue(FACE, context.getClickedFace().getOpposite() == Direction.UP ? AttachFace.CEILING : AttachFace.FLOOR)
+				.setValue(FACING, context.getHorizontalDirection())
 				<#else>
-					.setValue(FACING, Direction.NORTH)
+				.setValue(FACING, Direction.NORTH)
 				</#if>
 				<@initCustomBlockStateProperties />
 				<#if data.isWaterloggable>
 				.setValue(WATERLOGGED, flag)
 				</#if>;
 
-		return super.getStateForPlacement(context)
+		return state
 			<#if data.enablePitch>
-				.setValue(FACE, AttachFace.WALL)
+			.setValue(FACE, AttachFace.WALL)
 			</#if>
 			.setValue(FACING, context.getClickedFace())
 			<@initCustomBlockStateProperties />
@@ -500,7 +502,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 
 	<#if data.enchantPowerBonus != 0>
-	@Override public float getEnchantPowerBonus(BlockState state, LevelReader world, BlockPos pos) {
+	@Override public float getEnchantPowerBonus(BlockState state, BlockGetter world, BlockPos pos) {
 		return ${data.enchantPowerBonus}f;
 	}
 	</#if>
@@ -708,7 +710,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			return true;
 		}
 
-		@Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos) {
+		@Override public int getAnalogOutputSignal(BlockState blockState, Level world, BlockPos pos, Direction direction) {
 			BlockEntity tileentity = world.getBlockEntity(pos);
 			if (tileentity instanceof ${name}BlockEntity be)
 				return AbstractContainerMenu.getRedstoneSignalFromContainer(be);
@@ -720,7 +722,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#if data.sensitiveToVibration && data.hasInventory>
 	@Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockstate, BlockEntityType<T> blockEntityType) {
-		if (!level.isClientSide && blockEntityType == ${JavaModName}BlockEntities.${REGISTRYNAME}.get()) {
+		if (!level.isClientSide() && blockEntityType == ${JavaModName}BlockEntities.${REGISTRYNAME}.get()) {
 			return (_level, pos, state, blockEntity) -> {
 				if (blockEntity instanceof ${name}BlockEntity be)
 					VibrationSystem.Ticker.tick(_level, be.getVibrationData(), be.getVibrationUser());

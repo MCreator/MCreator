@@ -207,7 +207,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 	<#if data.isFluidTank>
 	private final FluidStacksResourceHandler fluidTank = new FluidStacksResourceHandler(1, ${data.fluidCapacity}) {
-		@Override public void onContentsChanged() {
+		@Override public void onContentsChanged(int index, FluidStack previousStack) {
 			setChanged();
 			level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
 		}

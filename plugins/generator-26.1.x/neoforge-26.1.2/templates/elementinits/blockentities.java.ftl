@@ -62,12 +62,12 @@ public class ${JavaModName}BlockEntities {
 	<@javacompress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list blockentitiesWithInventory as blockentity>
-			event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), SidedInvWrapper::new);
+			event.registerBlockEntity(Capabilities.Item.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), WorldlyContainerWrapper::new);
 			<#if blockentity.hasEnergyStorage>
-			event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), (blockEntity, side) -> blockEntity.getEnergyStorage());
+			event.registerBlockEntity(Capabilities.Energy.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), (blockEntity, side) -> blockEntity.getEnergyStorage());
 			</#if>
 			<#if blockentity.isFluidTank>
-			event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), (blockEntity, side) -> blockEntity.getFluidTank());
+			event.registerBlockEntity(Capabilities.Fluid.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), (blockEntity, side) -> blockEntity.getFluidTank());
 			</#if>
 		</#list>
 	}

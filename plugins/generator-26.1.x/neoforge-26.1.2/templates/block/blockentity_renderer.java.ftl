@@ -33,15 +33,10 @@
 
 package ${package}.client.renderer.block;
 
-@EventBusSubscriber(Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity, CustomRenderState> {
+@EventBusSubscriber(Dist.CLIENT) public class ${name}Renderer implements BlockEntityRenderer<${name}BlockEntity, ${name}Renderer.CustomRenderState> {
 
 	private final CustomHierarchicalModel model;
 	private final Identifier texture;
-
-	public class CustomRenderState extends BlockEntityRenderState {
-		protected final LivingEntityRenderState entityRenderState = new LivingEntityRenderState();
-		protected BlockState blockState;
-	}
 
 	${name}Renderer(BlockEntityRendererProvider.Context context) {
 		this.model = new CustomHierarchicalModel(context.bakeLayer(${data.customModelName.split(":")[0]}.LAYER_LOCATION));
@@ -52,8 +47,10 @@ package ${package}.client.renderer.block;
 		return new CustomRenderState();
 	}
 
-	@Override public void extractRenderState(${name}BlockEntity blockEntity, CustomRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.@Nullable CrumblingOverlay breakProgress) {
-		super.extractRenderState(blockEntity, state, partialTicks, cameraPosition, breakProgress);
+	@Override public void extractRenderState(${name}BlockEntity blockEntity, CustomRenderState state, float partialTicks, Vec3 cameraPosition, ModelFeatureRenderer.CrumblingOverlay breakProgress) {
+		BlockEntityRenderState.extractBase(blockEntity, state, breakProgress);
+
+		state.blockEntity = blockEntity;
 		state.blockState = blockEntity.getBlockState();
 
 		int tickCount = (int) blockEntity.getLevel().getGameTime();
@@ -112,14 +109,20 @@ package ${package}.client.renderer.block;
 			</#if>
 		</#if>
 		poseStack.translate(0, -1, 0);
-		model.setupBlockEntityAnim(blockEntity, renderState.entityRenderState);
-		submitNodeCollector.submitModel(this.model, renderState.entityRenderState, poseStack, RenderType.entityCutout(texture), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
+		model.setupBlockEntityAnim(renderState.blockEntity, renderState.entityRenderState);
+		submitNodeCollector.submitModel(this.model, renderState.entityRenderState, poseStack, RenderTypes.entityCutout(texture), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
 		poseStack.popPose();
 		</@javacompress>
 	}
 
 	@SubscribeEvent public static void registerBlockEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), ${name}Renderer::new);
+	}
+
+	public static class CustomRenderState extends BlockEntityRenderState {
+		protected final LivingEntityRenderState entityRenderState = new LivingEntityRenderState();
+		protected ${name}BlockEntity blockEntity;
+		protected BlockState blockState;
 	}
 
 	private static final class CustomHierarchicalModel extends ${data.customModelName.split(":")[0]} {
