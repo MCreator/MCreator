@@ -275,17 +275,7 @@ public class GTProcedureBlocks {
 				                </value>
 				              </block>
 				            </value>
-				            <next>
-				              <block type="variables_set_itemstack">
-				                <field name="VAR">local:stackvar</field>
-				                <value name="VAL">
-				                  <block type="mcitem_all">
-				                    <field name="value">Blocks.STONE</field>
-				                  </block>
-				                </value>
-				                <next>""" + customXML + """
-				                </next>
-				              </block>
+				            <next>""" + customXML + """
 				            </next>
 				          </block>
 				        </next>
