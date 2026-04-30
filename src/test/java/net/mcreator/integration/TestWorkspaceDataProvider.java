@@ -174,7 +174,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), "Boat", true));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
-		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
+		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
@@ -635,7 +635,9 @@ public class TestWorkspaceDataProvider {
 			keyBinding.triggerKey = getRandomString(random,
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
-			keyBinding.keyBindingCategoryKey = "test_category";
+			keyBinding.keyBindingCategoryKey = _true ?
+					"multiplayer" :
+					getRandomItem(random, List.of("custom1", "custom2"));
 			if (!emptyLists)
 				keyBinding.onKeyPressed = new Procedure("procedure3");
 			if (_true)
@@ -1816,7 +1818,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomItem(random,
 				new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 		livingEntity.bossBarType = getRandomItem(random,
@@ -2356,7 +2358,7 @@ public class TestWorkspaceDataProvider {
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
 		tool.blockDropsTier = getRandomString(random,
 				Arrays.asList("WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE"));
@@ -2587,7 +2589,7 @@ public class TestWorkspaceDataProvider {
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 
 		return specialEntity;
 	}
