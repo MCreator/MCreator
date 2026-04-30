@@ -46,9 +46,9 @@ import java.util.Map;
 
 @SuppressWarnings("unused") public class Procedure extends GeneratableElement {
 
-	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field></block></xml>";
+	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field></block></xml>";
 
-	@BlocklyXML("procedures") public String procedurexml;
+	@BlocklyXML(name = "procedures", defaultXML = XML_BASE) public String procedurexml;
 	public boolean skipDependencyNullCheck;
 
 	private transient List<Dependency> dependencies = null;

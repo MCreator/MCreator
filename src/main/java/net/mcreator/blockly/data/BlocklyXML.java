@@ -26,6 +26,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface BlocklyXML {
 
-	String value();
+	String name();
+
+	String defaultXML();
 
 }

@@ -35,7 +35,7 @@ import java.util.Locale;
 
 @SuppressWarnings("unused") public class Command extends GeneratableElement {
 
-	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
+	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
 
 	public String commandName;
 
@@ -43,7 +43,7 @@ import java.util.Locale;
 
 	public String permissionLevel;
 
-	@BlocklyXML("cmdargs") public String argsxml;
+	@BlocklyXML(name = "cmdargs", defaultXML = XML_BASE) public String argsxml;
 
 	private Command() {
 		this(null);

@@ -40,6 +40,7 @@ import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
@@ -745,18 +746,22 @@ public class TestWorkspaceDataProvider {
 							new MItemBlock(modElement.getWorkspace(), "")));
 					components.add(new InputSlot(3, 20, 30, Color.white, new LogicProcedure(null, true),
 							new LogicProcedure("condition1", true), !_true, new Procedure("procedure4"), null, null,
-							new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName())));
+							new MItemBlock(modElement.getWorkspace(),
+									getRandomMCItem(random, blocksAndItems).getName())));
 					new InputSlot(5, 20, 30, Color.white, new LogicProcedure("condition1", true),
 							new LogicProcedure(null, true), !_true, new Procedure("procedure4"), null, null,
-							new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+							new MItemBlock(modElement.getWorkspace(),
+									getRandomMCItem(random, blocksAndItems).getName()));
 					components.add(new InputSlot(4, 20, 30, Color.green, new LogicProcedure(null, _true),
 							new LogicProcedure("condition1", !_true), _true, new Procedure("procedure5"), null, null,
 							new MItemBlock(modElement.getWorkspace(), "TAG:walls")));
-					components.add(new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", _true), !_true,
-							new Procedure("procedure10"), new Procedure("procedure2"), new Procedure("procedure3")));
 					components.add(
-							new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true), _true, null,
-									null, null));
+							new OutputSlot(5, 10, 20, Color.black, new LogicProcedure("condition2", _true), !_true,
+									new Procedure("procedure10"), new Procedure("procedure2"),
+									new Procedure("procedure3")));
+					components.add(
+							new OutputSlot(6, 243, 563, Color.black, new LogicProcedure("condition2", true), _true,
+									null, null, null));
 				}
 				components.add(new TextField("text1", 0, 10, 100, 20, "Input value ..."));
 				components.add(new TextField("text2", 55, 231, 90, 20, ""));
@@ -1630,12 +1635,13 @@ public class TestWorkspaceDataProvider {
 			return villagerTrade;
 		} else if (ModElementType.PROCEDURE.equals(modElement.getType())) {
 			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
-			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
+			procedure.procedurexml = AnnotationUtils.getBlocklyXMLDefaultValue(procedure.getClass(), "procedurexml");
 			procedure.skipDependencyNullCheck = _true;
 			return procedure;
 		} else if (ModElementType.BESCRIPT.equals(modElement.getType())) {
 			BEScript bescript = new BEScript(modElement);
-			bescript.scriptxml = BEScript.XML_BASE.replace("no_ext_trigger", "be_global_world_loaded");
+			bescript.scriptxml = AnnotationUtils.getBlocklyXMLDefaultValue(bescript.getClass(), "scriptxml")
+					.replace("no_ext_trigger", "be_global_world_loaded");
 			return bescript;
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
@@ -1663,7 +1669,7 @@ public class TestWorkspaceDataProvider {
 				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#minecraft:test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
-			feature.featurexml = Feature.XML_BASE;
+			feature.featurexml = AnnotationUtils.getBlocklyXMLDefaultValue(feature.getClass(), "featurexml");
 			feature.skipPlacement = !_true;
 			return feature;
 		} else if (ModElementType.ATTRIBUTE.equals(modElement.getType())) {
@@ -1789,7 +1795,7 @@ public class TestWorkspaceDataProvider {
 		command.commandName = modElement.getName();
 		command.type = type;
 		command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
-		command.argsxml = Command.XML_BASE;
+		command.argsxml = AnnotationUtils.getBlocklyXMLDefaultValue(command.getClass(), "argsxml");
 		return command;
 	}
 
@@ -1816,7 +1822,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomItem(random,
 				new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
 		livingEntity.bossBarType = getRandomItem(random,
@@ -2356,7 +2362,7 @@ public class TestWorkspaceDataProvider {
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
 		tool.blockDropsTier = getRandomString(random,
 				Arrays.asList("WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE"));
@@ -2571,9 +2577,7 @@ public class TestWorkspaceDataProvider {
 			achievement.rewardRecipes.add("ExampleRecipe1");
 			achievement.rewardRecipes.add("ExampleRecipe2");
 		}
-		achievement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
-				+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
-				+ "<block type=\"tick\"></block></next></block></xml>";
+		achievement.triggerxml =  AnnotationUtils.getBlocklyXMLDefaultValue(achievement.getClass(), "triggerxml");;
 
 		return achievement;
 	}
@@ -2587,7 +2591,7 @@ public class TestWorkspaceDataProvider {
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 
 		return specialEntity;
 	}
