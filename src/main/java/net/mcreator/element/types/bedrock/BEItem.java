@@ -71,6 +71,13 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@ModElementReference public MItemBlock usingConvertsTo;
 	public String animation;
 
+	// Tool
+	public boolean isEnchantable;
+	public String enchantmentSlot;
+	public int enchantmentValue;
+	public boolean diggerUseEfficiency;
+	@ModElementReference public List<DiggerEntry> diggerEntries;
+
 	@ModElementReference public List<String> localScripts;
 
 	public BEItem() {
@@ -86,10 +93,12 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		animation = "eat";
 		enableCreativeTab = true;
 		creativeTab = "MATERIALS";
+		enchantmentSlot = "any";
 
 		blockPlaceableOn = new ArrayList<>();
 		entityDispensableOn = new ArrayList<>();
 		entityPlaceableOn = new ArrayList<>();
+		diggerEntries = new ArrayList<>();
 
 		localScripts = new ArrayList<>();
 	}
@@ -104,6 +113,16 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
+	}
+
+	public static class DiggerEntry {
+		@ModElementReference public MItemBlock block;
+		public int speed;
+
+		public DiggerEntry(MItemBlock block, int speed) {
+			this.block = block;
+			this.speed = speed;
+		}
 	}
 
 }

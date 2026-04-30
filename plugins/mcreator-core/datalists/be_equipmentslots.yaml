@@ -1,0 +1,50 @@
+- all:
+  readable_name: "All"
+- armor_head:
+  readable_name: "Armor helmet"
+- armor_torso:
+  readable_name: "Armor chestplate"
+- armor_legs:
+  readable_name: "Armor leggings"
+- armor_feet:
+  readable_name: "Armor boots"
+- axe:
+  readable_name: "Axe"
+- bow:
+  readable_name: "Bow"
+- carrot_stick:
+  readable_name: "Carrot and stick"
+- cosmetic_head:
+  readable_name: "Cosmetic head"
+- crossbow:
+  readable_name: "Crossbow"
+- elytra:
+  readable_name: "Elytra"
+- fishing_rod:
+  readable_name: "Fishing rod"
+- flintsteel:
+  readable_name: "Flint and steel"
+- g_armor:
+  readable_name: "Group armor"
+- g_digging:
+  readable_name: "Group digging tool"
+- g_tool:
+  readable_name: "Group tool"
+- hoe:
+  readable_name: "Hoe"
+- melee_spear:
+  readable_name: "Spear"
+- none:
+  readable_name: "None"
+- pickaxe:
+  readable_name: "Pickaxe"
+- shears:
+  readable_name: "Shears"
+- shield:
+  readable_name: "Shield"
+- shovel:
+  readable_name: "Shovel"
+- spear:
+  readable_name: "Trident"
+- sword:
+  readable_name: "Sword"
