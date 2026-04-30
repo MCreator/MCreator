@@ -24,6 +24,7 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -60,7 +61,7 @@ import java.util.List;
 	@ModElementReference public List<String> rewardLoot;
 	@ModElementReference public List<String> rewardRecipes;
 	@ModElementReference @Nullable public String rewardFunction;
-	public int rewardXP;
+	@NumericParameter(defaultValue = 0, min = 0, max = 64000, step = 1) public int rewardXP;
 
 	public String achievementType;
 	public AchievementEntry parent;
