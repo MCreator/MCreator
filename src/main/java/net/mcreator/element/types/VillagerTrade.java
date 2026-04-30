@@ -77,5 +77,15 @@ import java.util.List;
 		public int xp;
 
 		public double priceMultiplier;
+
+		public TradeEntry() {
+			this.countPrice1 = 1;
+			this.countPrice2 = 1;
+			this.countOffer = 1;
+			this.level = 1;
+			this.maxTrades = 10;
+			this.xp = 5;
+			this.priceMultiplier = 0.05;
+		}
 	}
 }

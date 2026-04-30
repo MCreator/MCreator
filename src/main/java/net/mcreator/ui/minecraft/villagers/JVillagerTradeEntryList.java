@@ -52,8 +52,4 @@ public class JVillagerTradeEntryList extends JSimpleEntriesList<JVillagerTradeEn
 		entryList.forEach(e -> validationResult.addValidationGroup(e.getValidationResult()));
 		return validationResult;
 	}
-
-	public void addInitialTrade() {
-		new JVillagerTradeEntry(mcreator, gui, entries, entryList);
-	}
 }

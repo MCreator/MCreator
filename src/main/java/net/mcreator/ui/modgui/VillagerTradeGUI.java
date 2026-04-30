@@ -38,6 +38,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 
 public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
@@ -69,7 +70,7 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
 		// Add first trade
 		if (!isEditingMode()) {
-			trades.addInitialTrade();
+			trades.setEntries(Collections.singletonList(new VillagerTrade.TradeEntry()));
 		}
 	}
 
