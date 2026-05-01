@@ -24,27 +24,40 @@
       "type": "input_value",
       "name": "slotid",
       "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "simulated",
+      "checked": false
     }
   ],
-  "inputsInline": true,
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 60,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
-    "toolbox_id": "blockactions",
+    "toolbox_id": "blockdata",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
       "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
       "<value name=\"amount\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
       "<value name=\"slotid\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "fields": [
+      "simulated"
     ],
     "inputs": [
       "x",
       "y",
       "z",
       "slotid",
-      "amount"
+      "amount",
+      "item"
     ],
     "dependencies": [
       {
