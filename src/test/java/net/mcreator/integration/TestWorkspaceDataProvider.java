@@ -40,6 +40,7 @@ import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -2560,7 +2561,7 @@ public class TestWorkspaceDataProvider {
 		achievement.announceToChat = _true;
 		achievement.showPopup = _true;
 		achievement.disableDisplay = !_true;
-		achievement.rewardXP = 14;
+		achievement.rewardXP = getRandomInt(random, Achievement.class, "rewardXP");
 		achievement.hideIfNotCompleted = !_true;
 		var functions = modElement.getWorkspace().getModElements().stream()
 				.filter(var -> var.getType() == ModElementType.FUNCTION).map(ModElement::getName)
@@ -2639,6 +2640,16 @@ public class TestWorkspaceDataProvider {
 		return source.stream()
 				.filter(e -> !(e.getName().equals("Blocks.AIR") || e.getName().equals("Blocks.VOID_AIR") || e.getName()
 						.equals("Blocks.CAVE_AIR"))).toList();
+	}
+
+	private static int getRandomInt(Random random, Class<?> type, String field) {
+		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
+		return random.nextInt((int) annotation.min(), (int) (annotation.max() + 1));
+	}
+
+	private static double getRandomDouble(Random random, Class<?> type, String field) {
+		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
+		return annotation.min() + (annotation.max() - annotation.min()) * random.nextDouble();
 	}
 
 	public static void provideAndGenerateSampleElements(Random random, Workspace workspace) {
