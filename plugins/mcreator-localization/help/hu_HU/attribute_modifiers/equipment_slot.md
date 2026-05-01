@@ -1,0 +1,1 @@
+Ez az attribútummódosító csak akkor érvényesül, ha az adott tárgyat ebbe a helyre helyezték.
