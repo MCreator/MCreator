@@ -458,9 +458,8 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, worldgenBlocks).getName());
 			biome.underwaterBlock = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
-			biome.vanillaTreeType = getRandomItem(random,
-					new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
-							"Mega spruce trees" });
+			biome.vanillaTreeType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Biome.class, "vanillaTreeType"));
 			biome.airColor = Color.red;
 			if (!emptyLists) {
 				biome.fogColor = Color.yellow;
@@ -485,7 +484,8 @@ public class TestWorkspaceDataProvider {
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
 			biome.spawnShipwreck = _true;
 			biome.spawnShipwreckBeached = _true;
-			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
+			biome.oceanRuinType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Biome.class, "oceanRuinType"));
 			biome.spawnOceanMonument = !_true;
 			biome.spawnBuriedTreasure = !_true;
 			biome.spawnWoodlandMansion = _true;
@@ -501,10 +501,10 @@ public class TestWorkspaceDataProvider {
 			biome.spawnNetherFossil = !_true;
 			biome.spawnBastionRemnant = !_true;
 			biome.spawnEndCity = !_true;
-			biome.spawnRuinedPortal = getRandomItem(random,
-					new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" });
-			biome.villageType = getRandomItem(random,
-					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
+			biome.spawnRuinedPortal = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Biome.class, "spawnRuinedPortal"));
+			biome.villageType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Biome.class, "villageType"));
 			biome.genTemperature = new Biome.ClimatePoint(0.1, 0.4);
 			biome.genHumidity = new Biome.ClimatePoint(-0.1, 0.4);
 			biome.genContinentalness = new Biome.ClimatePoint(-2.0, 2.0);
@@ -609,7 +609,7 @@ public class TestWorkspaceDataProvider {
 					new Sound(modElement.getWorkspace(), "") :
 					new Sound(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			fluid.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Fluid.class, "rarity"));
 			fluid.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			fluid.resistance = 52.2;
@@ -830,7 +830,8 @@ public class TestWorkspaceDataProvider {
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
-			dimension.igniterRarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			dimension.igniterRarity = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Dimension.class, "igniterRarity"));
 			dimension.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
@@ -1005,7 +1006,7 @@ public class TestWorkspaceDataProvider {
 			armor.bodyName = modElement.getName() + " appendix2";
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
-			armor.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			armor.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Armor.class, "rarity"));
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armor_texture";
 			armor.maxDamage = 12;
@@ -1090,7 +1091,7 @@ public class TestWorkspaceDataProvider {
 			plant.isWaterloggable = emptyLists; // saplings with mega trees can't be waterloggable
 			plant.hasBlockItem = !emptyLists;
 			plant.maxStackSize = 37;
-			plant.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			plant.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Plant.class, "rarity"));
 			plant.immuneToFire = _true;
 			plant.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
@@ -1184,7 +1185,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ITEM.equals(modElement.getType())) {
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
-			item.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+			item.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Item.class, "rarity"));
 			item.creativeTabs = emptyLists ? List.of() : tabs;
 			item.stackSize = 52;
 			item.enchantability = 3;
@@ -1635,12 +1636,13 @@ public class TestWorkspaceDataProvider {
 			return villagerTrade;
 		} else if (ModElementType.PROCEDURE.equals(modElement.getType())) {
 			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
-			procedure.procedurexml = AnnotationUtils.getBlocklyXMLDefaultValue(procedure.getClass(), "procedurexml");
+			procedure.procedurexml = AnnotationUtils.getBlocklyXMLDefaultValue(
+					net.mcreator.element.types.Procedure.class, "procedurexml");
 			procedure.skipDependencyNullCheck = _true;
 			return procedure;
 		} else if (ModElementType.BESCRIPT.equals(modElement.getType())) {
 			BEScript bescript = new BEScript(modElement);
-			bescript.scriptxml = AnnotationUtils.getBlocklyXMLDefaultValue(bescript.getClass(), "scriptxml")
+			bescript.scriptxml = AnnotationUtils.getBlocklyXMLDefaultValue(BEScript.class, "scriptxml")
 					.replace("no_ext_trigger", "be_global_world_loaded");
 			return bescript;
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
@@ -1669,7 +1671,7 @@ public class TestWorkspaceDataProvider {
 				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#minecraft:test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
-			feature.featurexml = AnnotationUtils.getBlocklyXMLDefaultValue(feature.getClass(), "featurexml");
+			feature.featurexml = AnnotationUtils.getBlocklyXMLDefaultValue(Feature.class, "featurexml");
 			feature.skipPlacement = !_true;
 			return feature;
 		} else if (ModElementType.ATTRIBUTE.equals(modElement.getType())) {
@@ -1679,7 +1681,8 @@ public class TestWorkspaceDataProvider {
 			attribute.minValue = 24.42;
 			attribute.maxValue = 200d;
 			attribute.entities = new ArrayList<>();
-			attribute.sentiment = new String[] { "POSITIVE", "NEUTRAL", "NEGATIVE", "NEUTRAL" }[valueIndex];
+			attribute.sentiment = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Attribute.class, "sentiment"));
 			if (!emptyLists) {
 				attribute.entities = subset(random, 20, ElementUtil.loadAllSpawnableEntities(modElement.getWorkspace()),
 						e -> new net.mcreator.element.parts.EntityEntry(modElement.getWorkspace(), e.getName()));
@@ -1703,7 +1706,7 @@ public class TestWorkspaceDataProvider {
 			beitem.foodSaturation = 0.82;
 			beitem.foodCanAlwaysEat = _true;
 			beitem.handEquipped = _true;
-			beitem.rarity = getRandomString(random, Arrays.asList("common", "uncommon", "rare", "epic"));
+			beitem.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(BEItem.class, "rarity"));
 			beitem.enableCreativeTab = !_true;
 			beitem.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
 			beitem.isHiddenInCommands = _true;
@@ -1795,7 +1798,7 @@ public class TestWorkspaceDataProvider {
 		command.commandName = modElement.getName();
 		command.type = type;
 		command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
-		command.argsxml = AnnotationUtils.getBlocklyXMLDefaultValue(command.getClass(), "argsxml");
+		command.argsxml = AnnotationUtils.getBlocklyXMLDefaultValue(Command.class, "argsxml");
 		return command;
 	}
 
@@ -2107,7 +2110,7 @@ public class TestWorkspaceDataProvider {
 		block.requiresCorrectTool = _true;
 		block.hasBlockItem = !emptyLists;
 		block.maxStackSize = 37;
-		block.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+		block.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "rarity"));
 		block.immuneToFire = _true;
 		block.creativeTabs = emptyLists ? List.of() : tabs;
 		block.destroyTool = getRandomItem(random, new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
@@ -2358,7 +2361,7 @@ public class TestWorkspaceDataProvider {
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
-		tool.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+		tool.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Tool.class, "rarity"));
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
@@ -2554,7 +2557,7 @@ public class TestWorkspaceDataProvider {
 		achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		achievement.achievementType = ListUtils.getRandomItem(random,
-				List.of("task", "goal", "challenge", "challenge"));
+				AnnotationUtils.getLimitedOptionsList(Achievement.class, "achievementType"));
 		achievement.parent = new AchievementEntry(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllAchievements(modElement.getWorkspace())));
 		achievement.announceToChat = _true;
@@ -2577,7 +2580,8 @@ public class TestWorkspaceDataProvider {
 			achievement.rewardRecipes.add("ExampleRecipe1");
 			achievement.rewardRecipes.add("ExampleRecipe2");
 		}
-		achievement.triggerxml =  AnnotationUtils.getBlocklyXMLDefaultValue(achievement.getClass(), "triggerxml");;
+		achievement.triggerxml = AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml");
+		;
 
 		return achievement;
 	}

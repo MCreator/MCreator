@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
 
 	public String name;
-	public String rarity;
+	@LimitedOptionsField({"COMMON", "UNCOMMON", "RARE", "EPIC"}) public String rarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public double efficiency;

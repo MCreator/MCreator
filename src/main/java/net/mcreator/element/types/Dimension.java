@@ -91,7 +91,7 @@ import java.util.List;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
-	public String igniterRarity;
+	@LimitedOptionsField({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String igniterRarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;

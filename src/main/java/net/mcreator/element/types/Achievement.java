@@ -24,6 +24,7 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.LimitedOptionsField;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -62,7 +63,7 @@ import java.util.List;
 	@ModElementReference(acceptedTypes = { "function" }) @Nullable public String rewardFunction;
 	public int rewardXP;
 
-	public String achievementType;
+	@LimitedOptionsField({ "task", "goal", "challenge" }) public String achievementType;
 	public AchievementEntry parent;
 
 	@BlocklyXML(name = "jsontriggers", defaultXML = XML_BASE) public String triggerxml;

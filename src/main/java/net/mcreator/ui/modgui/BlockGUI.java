@@ -52,6 +52,7 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
 import net.mcreator.ui.minecraft.states.block.JBlockStatesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -219,14 +220,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Block.class, "rarity",
+			"elementgui.common.rarity_");
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 

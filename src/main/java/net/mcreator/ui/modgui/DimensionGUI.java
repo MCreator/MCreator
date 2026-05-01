@@ -40,6 +40,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
@@ -64,14 +65,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(19).requireValue(
 			"elementgui.dimension.error_portal_igniter_needs_name").enableRealtimeValidation();
-	private final TranslatedComboBox igniterRarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox igniterRarity = ComponentFromAnnotation.translatedOptions(Dimension.class,
+			"igniterRarity", "elementgui.common.rarity_");
 
 	private StringListProcedureSelector specialInformation;
 

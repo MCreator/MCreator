@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
@@ -132,14 +133,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Plant.class, "rarity",
+			"elementgui.common.rarity_");
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 

@@ -114,7 +114,7 @@ import java.util.stream.Collectors;
 
 	public boolean hasBlockItem;
 	public int maxStackSize;
-	public String rarity;
+	@LimitedOptionsField({"COMMON", "UNCOMMON", "RARE", "EPIC"}) public String rarity;
 	public boolean immuneToFire;
 	@ModElementReference public List<TabEntry> creativeTabs;
 

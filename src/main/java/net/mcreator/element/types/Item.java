@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
 	public String name;
-	public String rarity;
+	@LimitedOptionsField({"COMMON", "UNCOMMON", "RARE", "EPIC"}) public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;

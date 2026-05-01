@@ -33,6 +33,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -56,14 +57,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("common", "elementgui.common.rarity_common"),
-			Map.entry("uncommon", "elementgui.common.rarity_uncommon"),
-			Map.entry("rare", "elementgui.common.rarity_rare"),
-			Map.entry("epic", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(BEItem.class, "rarity",
+			"elementgui.common.rarity_");
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
 	private final JCheckBox enableCreativeTab = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,

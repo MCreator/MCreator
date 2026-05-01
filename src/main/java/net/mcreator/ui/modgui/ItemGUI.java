@@ -42,6 +42,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -75,14 +76,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Item.class, "rarity",
+			"elementgui.common.rarity_");
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
