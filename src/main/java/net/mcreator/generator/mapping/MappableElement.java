@@ -18,6 +18,7 @@
 
 package net.mcreator.generator.mapping;
 
+import com.google.gson.*;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.minecraft.DataListEntry;
@@ -29,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Optional;
 
@@ -169,6 +171,39 @@ public abstract class MappableElement implements IWorkspaceDependent {
 
 	@Override public boolean equals(Object element) {
 		return element instanceof MappableElement && (value != null && value.equals(((MappableElement) element).value));
+	}
+
+	public static class GSONAdapter implements JsonSerializer<MappableElement>, JsonDeserializer<MappableElement> {
+
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setStrictness(Strictness.LENIENT)
+				.create();
+
+		@Override
+		public MappableElement deserialize(JsonElement jsonElement, Type type,
+				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+			if (jsonElement.isJsonPrimitive()) {
+				JsonObject legacyObject = new JsonObject();
+				legacyObject.addProperty("value", jsonElement.getAsString());
+				return gson.fromJson(legacyObject, type);
+			} else if (jsonElement.isJsonObject()) {
+				JsonObject jsonObject = jsonElement.getAsJsonObject();
+				if (jsonObject.has("value")) {
+					return gson.fromJson(jsonObject, type);
+				}
+			}
+			throw new JsonParseException("Invalid mappable element JSON format");
+		}
+
+		@Override
+		public JsonElement serialize(MappableElement element, Type type,
+				JsonSerializationContext jsonSerializationContext) {
+			if (element == null || element.value == null) {
+				return JsonNull.INSTANCE;
+			}
+
+			return new JsonPrimitive(element.value);
+		}
+
 	}
 
 }
