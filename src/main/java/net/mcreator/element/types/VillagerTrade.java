@@ -61,6 +61,10 @@ import java.util.List;
 		return false;
 	}
 
+	public boolean isWanderingTrader() {
+		return "WANDERING_TRADER".equals(villagerProfession.getUnmappedValue());
+	}
+
 	public static class TradeEntry {
 
 		public MItemBlock price1;
