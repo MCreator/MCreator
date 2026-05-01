@@ -19,8 +19,12 @@
 
 package net.mcreator.ui.dialogs.tools.quickrecipestool;
 
+import javax.annotation.Nullable;
+
 public class RecipeTemplate {
 	public int stackSize;
-	public int[] inputSlots;
+	public int[] inputSlots = new int[] {};
 	public boolean isShapeless;
+	public String recipeType;
+	@Nullable public String craftingBookCategory;
 }

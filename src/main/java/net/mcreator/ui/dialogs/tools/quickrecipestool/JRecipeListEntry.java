@@ -46,13 +46,13 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 	private final VTextField name = new VTextField(15);
 	private final JComboBox<String> template;
 	private final MCItemHolder input, result;
-	private final JCheckBox generateStonecuttingRecipe = L10N.checkbox("dialog.tools.quick_recipes.generate_stonecutting_recipe");
 
-	public JRecipeListEntry(MCreator mcreator, JPanel parent, List<? extends JSimpleListEntry<RecipeListEntry>> entryList,
+	public JRecipeListEntry(MCreator mcreator, JPanel parent, List<JRecipeListEntry> entryList,
 			ValidationGroup validableElements) {
 		super(parent, entryList);
 
-		template = new JComboBox<>(RecipeTemplatesLoader.getRecipeTemplates().stream().sorted().toList().toArray(new String[0]));
+		template = new JComboBox<>(
+				RecipeTemplatesLoader.getRecipeTemplates().stream().sorted().toList().toArray(new String[0]));
 		input = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItemsAndTags, true).requireValue(
 				"dialog.tools.quick_recipes.input_validator");
 		result = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems, false).requireValue(
@@ -77,9 +77,6 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 		template.setPreferredSize(new Dimension(125, 30));
 		line.add(template);
 
-		generateStonecuttingRecipe.setSelected(true);
-		line.add(generateStonecuttingRecipe);
-
 		line.add(L10N.label("dialog.tools.quick_recipes.input"));
 		input.setValidator(new MCItemHolderValidator(input).considerAirAsEmpty());
 		validableElements.addValidationElement(input);
@@ -94,7 +91,6 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 	@Override protected void setEntryEnabled(boolean enabled) {
 		name.setEnabled(enabled);
 		template.setEnabled(enabled);
-		generateStonecuttingRecipe.setEnabled(enabled);
 		input.setEnabled(enabled);
 		result.setEnabled(enabled);
 	}
@@ -103,13 +99,11 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 		RecipeListEntry entry = new RecipeListEntry();
 		entry.name = name.getText();
 		entry.template = (String) template.getSelectedItem();
-		entry.generateStonecuttingRecipe = generateStonecuttingRecipe.isSelected();
 		entry.input = input.getBlock();
 		entry.result = result.getBlock();
 
 		return entry;
 	}
 
-	@Override public void setEntry(RecipeListEntry entry) {
-	}
+	@Override public void setEntry(RecipeListEntry entry) {}
 }

@@ -1,5 +1,7 @@
 {
   "stackSize" : 9,
   "inputSlots": [4],
-  "isShapeless": true
+  "isShapeless": true,
+  "recipeType": "Crafting",
+  "craftingBookCategory": "BUILDING"
 }

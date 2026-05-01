@@ -22,6 +22,7 @@ package net.mcreator.ui.init;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.dialogs.tools.quickrecipestool.QuickRecipesTool;
 import net.mcreator.ui.dialogs.tools.quickrecipestool.RecipeTemplate;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.IntegerRange;
@@ -50,15 +51,25 @@ public class RecipeTemplatesLoader {
 			RecipeTemplate recipeTemplate = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
 					RecipeTemplate.class);
 
-			if (Arrays.stream(recipeTemplate.inputSlots).anyMatch(i -> !IntegerRange.of(0, 8).contains(i))) {
-				LOG.error("Recipe template file {} contains a slot outside of the range (0-8)", name);
-				return;
+			if (recipeTemplate.recipeType == null || !QuickRecipesTool.SUPPORTED_RECIPE_TYPES.contains(
+					recipeTemplate.recipeType)) {
+				LOG.error("Recipe type {} of recipe template file {} is not supported. It will be skipped.",
+						recipeTemplate.recipeType, name);
+				continue;
+			}
+
+			if (!recipeTemplate.recipeType.equals("Crafting") && Arrays.stream(recipeTemplate.inputSlots)
+					.anyMatch(i -> !IntegerRange.of(0, 8).contains(i))) {
+				LOG.error("Recipe template file {} contains a slot outside of the range (0-8). It will be skipped.",
+						name);
+				continue;
 			}
 
 			if (!IntegerRange.of(1, 99).contains(recipeTemplate.stackSize)) {
-				LOG.error("Stack size {} of recipe template file {} is outside of the range (1-99)",
+				LOG.error(
+						"Stack size {} of recipe template file {} is outside of the range (1-99). It will be skipped.",
 						recipeTemplate.stackSize, name);
-				return;
+				continue;
 			}
 
 			recipeTemplates.put(name, recipeTemplate);

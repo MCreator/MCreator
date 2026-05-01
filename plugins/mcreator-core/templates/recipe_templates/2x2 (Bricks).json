@@ -1,4 +1,6 @@
 {
   "stackSize" : 1,
-  "inputSlots": [3, 4, 6, 7]
+  "inputSlots": [3, 4, 6, 7],
+  "recipeType": "Crafting",
+  "craftingBookCategory": "BUILDING"
 }

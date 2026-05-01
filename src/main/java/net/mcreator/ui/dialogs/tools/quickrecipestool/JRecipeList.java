@@ -27,7 +27,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.ValidationGroup;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class JRecipeList extends JSimpleEntriesList<JRecipeListEntry, RecipeListEntry> {

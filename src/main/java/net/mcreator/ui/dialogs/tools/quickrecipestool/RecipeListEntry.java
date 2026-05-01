@@ -26,5 +26,4 @@ public class RecipeListEntry {
 	public String template;
 	public MItemBlock input;
 	public MItemBlock result;
-	public boolean generateStonecuttingRecipe;
 }

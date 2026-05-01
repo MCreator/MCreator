@@ -39,10 +39,13 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class QuickRecipesTool extends AbstractPackMakerTool {
 
-	public static final String[] AVAILABLE_TEMPLATES = new String[] { "Stairs", "Slab", "Wall", "1x1 (Ingots)", "2x2 (Bricks)", "3x3 (Ore block)" };
+	public static final List<String> SUPPORTED_RECIPE_TYPES = List.of("Crafting", "Blasting", "Campfire cooking",
+			"Smelting", "Smoking", "Stone cutting");
 
 	private final JRecipeList recipes;
 
@@ -53,7 +56,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 
 		this.add("Center", recipes);
 
-		this.setSize(1105, 620);
+		this.setSize(880, 550);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}
@@ -61,12 +64,11 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 	@Override protected void generatePack(MCreator mcreator) {
 		recipes.getEntries().forEach(
 				recipe -> addRecipeToWorkspace(this, mcreator, mcreator.getWorkspace(), recipe.name, recipe.template,
-						recipe.input, recipe.result, recipe.generateStonecuttingRecipe));
+						recipe.input, recipe.result));
 	}
 
 	public static void addRecipeToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
-			Workspace workspace, String name, String template, MItemBlock input, MItemBlock result,
-			boolean generateStonecuttingRecipe) {
+			Workspace workspace, String name, String template, MItemBlock input, MItemBlock result) {
 
 		if (!checkIfNamesAvailable(workspace, name, name + "Stonecutting"))
 			return;
@@ -76,31 +78,46 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 				modMaker.getWorkspacePanel().currentFolder :
 				null;
 
+		RecipeTemplate recipeTemplate = RecipeTemplatesLoader.getRecipeTemplatesFromID(template);
+
 		Recipe recipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name, ModElementType.RECIPE), false).getElementFromGUI();
-		recipe.recipeType = "Crafting";
-		recipe.craftingBookCategory = "BUILDING";
+
+		recipe.recipeType = Objects.requireNonNullElse(recipeTemplate.recipeType, "Crafting");
 		recipe.unlockingItems.add(input);
-		recipe.recipeReturnStack = result;
-
-		RecipeTemplate recipeTemplate = RecipeTemplatesLoader.getRecipeTemplatesFromID(template);
 		recipe.recipeRetstackSize = recipeTemplate.stackSize;
-		Arrays.stream(recipeTemplate.inputSlots).forEach(slot -> recipe.recipeSlots[slot] = input);
-		if (recipeTemplate.isShapeless)
-			recipe.recipeShapeless = true;
-		addGeneratableElementToWorkspace(packMaker, workspace, folder, recipe);
 
-		if (generateStonecuttingRecipe) {
-			Recipe stonecutter = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
-							new ModElement(mcreator.getWorkspace(), name + "Stonecutting", ModElementType.RECIPE), false)
-					.getElementFromGUI();
-			stonecutter.recipeType = "Stone cutting";
-			stonecutter.unlockingItems.add(input);
-			stonecutter.stoneCuttingReturnStack = result;
-			stonecutter.stoneCuttingInputStack = input;
-
-			addGeneratableElementToWorkspace(packMaker, mcreator.getWorkspace(), folder, stonecutter);
+		switch (recipeTemplate.recipeType) {
+		case "Crafting":
+			Arrays.stream(recipeTemplate.inputSlots).forEach(slot -> recipe.recipeSlots[slot] = input);
+			if (recipeTemplate.craftingBookCategory != null && !recipeTemplate.craftingBookCategory.isEmpty())
+				recipe.craftingBookCategory = recipeTemplate.craftingBookCategory;
+			recipe.recipeReturnStack = result;
+			recipe.recipeShapeless = recipeTemplate.isShapeless;
+			break;
+		case "Blasting":
+			recipe.blastingInputStack = input;
+			recipe.blastingReturnStack = result;
+			break;
+		case "Campfire cooking":
+			recipe.campfireCookingInputStack = input;
+			recipe.campfireCookingReturnStack = result;
+			break;
+		case "Smelting":
+			recipe.smeltingInputStack = input;
+			recipe.smeltingReturnStack = result;
+			break;
+		case "Smoking":
+			recipe.smokingInputStack = input;
+			recipe.smokingReturnStack = result;
+			break;
+		case "Stone cutting":
+			recipe.stoneCuttingInputStack = input;
+			recipe.stoneCuttingReturnStack = result;
+			break;
 		}
+
+		addGeneratableElementToWorkspace(packMaker, workspace, folder, recipe);
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
