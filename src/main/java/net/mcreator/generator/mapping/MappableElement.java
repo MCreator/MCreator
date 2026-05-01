@@ -78,6 +78,14 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		return value;
 	}
 
+	public NameMapper getNameMapper() {
+		return mapper;
+	}
+
+	public String getMappingSource() {
+		return mapper.getMappingSource();
+	}
+
 	/**
 	 * @return true if the value exists in the workspace. Always returns true for vanilla elements,
 	 * even if they are not supported in the selected Minecraft version. Returns false if the element is empty.
