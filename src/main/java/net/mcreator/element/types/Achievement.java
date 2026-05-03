@@ -57,9 +57,9 @@ import java.util.List;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
-	@ModElementReference public List<String> rewardLoot;
-	@ModElementReference public List<String> rewardRecipes;
-	@ModElementReference @Nullable public String rewardFunction;
+	@ModElementReference(acceptedTypes = { "loottable" }) public List<String> rewardLoot;
+	@ModElementReference(acceptedTypes = { "recipe" }) public List<String> rewardRecipes;
+	@ModElementReference(acceptedTypes = { "function" }) @Nullable public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;

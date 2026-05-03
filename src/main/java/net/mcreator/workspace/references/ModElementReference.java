@@ -44,4 +44,6 @@ import java.util.Collection;
 	 */
 	String[] defaultValues() default "";
 
+	String[] acceptedTypes() default {};
+
 }

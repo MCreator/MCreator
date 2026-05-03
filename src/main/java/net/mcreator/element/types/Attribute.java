@@ -29,9 +29,9 @@ import java.util.List;
 @SuppressWarnings("unused") public class Attribute extends GeneratableElement {
 
 	public String name;
-	public Double minValue;
-	public Double maxValue;
-	public Double defaultValue;
+	public double minValue;
+	public double maxValue;
+	public double defaultValue;
 	public String sentiment;
 	public boolean addToAllEntities;
 	public boolean addToPlayers;
