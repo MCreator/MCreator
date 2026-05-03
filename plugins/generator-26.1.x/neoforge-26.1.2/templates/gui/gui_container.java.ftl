@@ -217,7 +217,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	<#if data.type == 1>
 		@Override public ItemStack quickMoveStack(Player playerIn, int index) {
 			ItemStack itemstack = ItemStack.EMPTY;
-			Slot slot = (Slot) this.slots.get(index);
+			Slot slot = this.slots.get(index);
 
 			if (slot != null && slot.hasItem()) {
 				ItemStack itemstack1 = slot.getItem();
