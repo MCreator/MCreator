@@ -18,9 +18,11 @@
 
 package net.mcreator.ui.action.impl.gradle;
 
+import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.minecraft.MinecraftOptionsUtils;
 import net.mcreator.minecraft.ServerUtil;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.DesktopUtils;
@@ -78,7 +80,12 @@ public class RunServerAction extends GradleAction {
 			}
 
 			actionRegistry.getMCreator().showConsole();
-			actionRegistry.getMCreator().getGradleConsole().exec(tasksToRun);
+			actionRegistry.getMCreator().getGradleConsole().exec(tasksToRun, result -> {
+				if (result == GradleResultCode.STATUS_OK) {
+					actionRegistry.getMCreator().getBottomDockRegion()
+							.setDockVisibility(MCreator.DOCK_CONSOLE, false);
+				}
+			});
 		} catch (Exception e) { // if something fails, we still need to free the gradle console
 			LOG.error("Failed to run server", e);
 			actionRegistry.getMCreator().getGradleConsole().markReady();
