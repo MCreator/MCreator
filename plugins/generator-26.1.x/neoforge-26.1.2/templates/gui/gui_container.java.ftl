@@ -191,6 +191,8 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 	private void setItemInSlot(int index, ItemResource resource, int amount) {
 		if (internal instanceof ItemStacksResourceHandler handler) {
 			handler.set(index, resource, amount);
+		} else if (boundBlockEntity instanceof Container container) {
+			container.setItem(index, resource.toStack(Math.max(0, amount)));
 		} else {
 			try (var tx = Transaction.openRoot()) {
 				if (!internal.getResource(index).isEmpty())
