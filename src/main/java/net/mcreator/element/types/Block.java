@@ -185,7 +185,7 @@ import java.util.stream.Collectors;
 	public Procedure onReceivedVibration;
 
 	public boolean hasInventory;
-	@ModElementReference @Nullable public String guiBoundTo;
+	@ModElementReference(acceptedTypes = { "gui" }) @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
