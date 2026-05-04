@@ -39,6 +39,7 @@ net.mcreator.element.parts.procedure
 net.mcreator.element.types
 net.mcreator.element.types.bedrock
 net.mcreator.element.types.interfaces
+net.mcreator.element.util
 net.mcreator.generator
 net.mcreator.generator.blockly
 net.mcreator.generator.mapping

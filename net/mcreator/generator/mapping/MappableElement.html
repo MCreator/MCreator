@@ -53,6 +53,7 @@ loadScripts(document, 'script');</script>
 <div class="toc-header">Contents&nbsp;<input type="text" class="filter-input" disabled placeholder="Filter contents (type .)" aria-label="Filter table of contents" autocomplete="off" spellcheck="false"><input type="reset" class="reset-filter" disabled tabindex="-1" value="Reset"></div>
 <ol class="toc-list" tabindex="-1">
 <li><a href="#" tabindex="0">Description</a></li>
+<li><a href="#nested-class-summary" tabindex="0">Nested Class Summary</a></li>
 <li><a href="#field-summary" tabindex="0">Field Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
@@ -74,6 +75,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#getMappedValue()" tabindex="0">getMappedValue()</a></li>
 <li><a href="#getMappedValue(int)" tabindex="0">getMappedValue(int)</a></li>
 <li><a href="#getUnmappedValue()" tabindex="0">getUnmappedValue()</a></li>
+<li><a href="#getNameMapper()" tabindex="0">getNameMapper()</a></li>
+<li><a href="#getMappingSource()" tabindex="0">getMappingSource()</a></li>
 <li><a href="#isValidReference()" tabindex="0">isValidReference()</a></li>
 <li><a href="#validateReference(java.lang.String,net.mcreator.workspace.Workspace)" tabindex="0">validateReference(String, Workspace)</a></li>
 <li><a href="#getDataListEntry()" tabindex="0">getDataListEntry()</a></li>
@@ -114,6 +117,21 @@ implements <a href="../../element/parts/IWorkspaceDependent.html" title="interfa
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="MappableElement.GSONAdapter.html" class="type-name-link" title="class in net.mcreator.generator.mapping">MappableElement.GSONAdapter</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
 <!-- =========== FIELD SUMMARY =========== -->
 <li>
 <section class="field-summary" id="field-summary">
@@ -170,6 +188,12 @@ implements <a href="../../element/parts/IWorkspaceDependent.html" title="interfa
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMappedValue(int)" class="member-name-link">getMappedValue</a><wbr>(int&nbsp;mappingTable)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMappingSource()" class="member-name-link">getMappingSource</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="NameMapper.html" title="class in net.mcreator.generator.mapping">NameMapper</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNameMapper()" class="member-name-link">getNameMapper</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getUnmappedValue()" class="member-name-link">getUnmappedValue</a>()</code></div>
@@ -303,6 +327,22 @@ implements <a href="../../element/parts/IWorkspaceDependent.html" title="interfa
 <h3>getUnmappedValue</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getUnmappedValue</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getNameMapper()">
+<h3>getNameMapper</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="NameMapper.html" title="class in net.mcreator.generator.mapping">NameMapper</a></span>&nbsp;<span class="element-name">getNameMapper</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getMappingSource()">
+<h3>getMappingSource</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMappingSource</span>()</div>
 </div>
 </section>
 </li>

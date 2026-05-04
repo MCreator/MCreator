@@ -71,6 +71,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#setToggleEnabled(java.lang.String,boolean)" tabindex="0">setToggleEnabled(String, boolean)</a></li>
 <li><a href="#clearSelection()" tabindex="0">clearSelection()</a></li>
 <li><a href="#getDockStrip()" tabindex="0">getDockStrip()</a></li>
+<li><a href="#createStaticTwoRegionsStrip(net.mcreator.ui.MCreatorFrame,net.mcreator.ui.component.CollapsibleDockPanel,net.mcreator.ui.component.CollapsibleDockPanel)" tabindex="0">createStaticTwoRegionsStrip(MCreatorFrame, CollapsibleDockPanel, CollapsibleDockPanel)</a></li>
+<li><a href="#createDynamicDockStrip(net.mcreator.ui.MCreatorFrame,net.mcreator.ui.component.CollapsibleDockPanel)" tabindex="0">createDynamicDockStrip(MCreatorFrame, CollapsibleDockPanel)</a></li>
 </ol>
 </li>
 </ol>
@@ -182,7 +184,7 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
@@ -208,6 +210,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearSelection()" class="member-name-link">clearSelection</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JToolBar.html" title="class or interface in javax.swing" class="external-link">JToolBar</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createDynamicDockStrip(net.mcreator.ui.MCreatorFrame,net.mcreator.ui.component.CollapsibleDockPanel)" class="member-name-link">createDynamicDockStrip</a><wbr>(<a href="../MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a>&nbsp;parent,
+ <a href="CollapsibleDockPanel.html" title="class in net.mcreator.ui.component">CollapsibleDockPanel</a>&nbsp;collapsibleDockPanel)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JToolBar.html" title="class or interface in javax.swing" class="external-link">JToolBar</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createStaticTwoRegionsStrip(net.mcreator.ui.MCreatorFrame,net.mcreator.ui.component.CollapsibleDockPanel,net.mcreator.ui.component.CollapsibleDockPanel)" class="member-name-link">createStaticTwoRegionsStrip</a><wbr>(<a href="../MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a>&nbsp;parent,
+ <a href="CollapsibleDockPanel.html" title="class in net.mcreator.ui.component">CollapsibleDockPanel</a>&nbsp;collapsibleDockPanelA,
+ <a href="CollapsibleDockPanel.html" title="class in net.mcreator.ui.component">CollapsibleDockPanel</a>&nbsp;collapsibleDockPaneB)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JToolBar.html" title="class or interface in javax.swing" class="external-link">JToolBar</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDockStrip()" class="member-name-link">getDockStrip</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -335,6 +346,25 @@ loadScripts(document, 'script');</script>
 <h3>getDockStrip</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JToolBar.html" title="class or interface in javax.swing" class="external-link">JToolBar</a></span>&nbsp;<span class="element-name">getDockStrip</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createStaticTwoRegionsStrip(net.mcreator.ui.MCreatorFrame,net.mcreator.ui.component.CollapsibleDockPanel,net.mcreator.ui.component.CollapsibleDockPanel)">
+<h3>createStaticTwoRegionsStrip</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JToolBar.html" title="class or interface in javax.swing" class="external-link">JToolBar</a></span>&nbsp;<span class="element-name">createStaticTwoRegionsStrip</span><wbr><span class="parameters">(<a href="../MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a>&nbsp;parent,
+ <a href="CollapsibleDockPanel.html" title="class in net.mcreator.ui.component">CollapsibleDockPanel</a>&nbsp;collapsibleDockPanelA,
+ <a href="CollapsibleDockPanel.html" title="class in net.mcreator.ui.component">CollapsibleDockPanel</a>&nbsp;collapsibleDockPaneB)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createDynamicDockStrip(net.mcreator.ui.MCreatorFrame,net.mcreator.ui.component.CollapsibleDockPanel)">
+<h3>createDynamicDockStrip</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JToolBar.html" title="class or interface in javax.swing" class="external-link">JToolBar</a></span>&nbsp;<span class="element-name">createDynamicDockStrip</span><wbr><span class="parameters">(<a href="../MCreatorFrame.html" title="class in net.mcreator.ui">MCreatorFrame</a>&nbsp;parent,
+ <a href="CollapsibleDockPanel.html" title="class in net.mcreator.ui.component">CollapsibleDockPanel</a>&nbsp;collapsibleDockPanel)</span></div>
 </div>
 </section>
 </li>
