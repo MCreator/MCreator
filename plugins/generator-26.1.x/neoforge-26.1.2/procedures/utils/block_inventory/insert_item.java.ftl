@@ -2,8 +2,9 @@ private static int insertInBlockInventory(LevelAccessor world, BlockPos pos, int
 	if (world instanceof ILevelExtension ext) {
 		ResourceHandler<ItemResource> itemHandler = ext.getCapability(Capabilities.Item.BLOCK, pos, null);
 		if (itemHandler != null && slotId >= 0 && slotId < itemHandler.size()) {
-			itemstack.setCount(amount);
-			return ItemUtil.insertItemReturnRemaining(itemHandler, slotId, itemstack, simulate, null).getCount();
+			ItemStack inserted = itemstack.copy();
+			inserted.setCount(amount);
+			return ItemUtil.insertItemReturnRemaining(itemHandler, slotId, inserted, simulate, null).getCount();
 		}
 	}
 	return itemstack.getCount();
