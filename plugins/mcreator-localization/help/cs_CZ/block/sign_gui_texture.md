@@ -1,0 +1,1 @@
+Tato textura se objeví při upravě textu visící cedulky. Tato textura by měla být 16x16.

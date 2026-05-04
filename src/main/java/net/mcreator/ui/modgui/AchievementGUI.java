@@ -26,6 +26,7 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.types.Achievement;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -213,8 +214,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "TriggerRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML(
-					"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml"));
 		}
 
 		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);

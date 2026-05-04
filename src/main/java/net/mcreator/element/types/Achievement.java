@@ -42,6 +42,8 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Achievement extends GeneratableElement {
 
+	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"></block></xml>";
+
 	public String achievementName;
 	public String achievementDescription;
 
@@ -55,15 +57,15 @@ import java.util.List;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
-	@ModElementReference public List<String> rewardLoot;
-	@ModElementReference public List<String> rewardRecipes;
-	@ModElementReference @Nullable public String rewardFunction;
+	@ModElementReference(acceptedTypes = { "loottable" }) public List<String> rewardLoot;
+	@ModElementReference(acceptedTypes = { "recipe" }) public List<String> rewardRecipes;
+	@ModElementReference(acceptedTypes = { "function" }) @Nullable public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;
 	public AchievementEntry parent;
 
-	@BlocklyXML("jsontriggers") public String triggerxml;
+	@BlocklyXML(name = "jsontriggers", defaultXML = XML_BASE) public String triggerxml;
 
 	private Achievement() {
 		this(null);

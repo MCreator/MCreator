@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 
 	public String plantType;
 
-	@ModElementReference public String suspiciousStewEffect;
+	@ModElementReference(acceptedTypes = { "potioneffect" }) public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
 	public double secondaryTreeChance;

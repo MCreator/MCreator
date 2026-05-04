@@ -24,6 +24,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.types.Command;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -108,7 +109,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "CommandRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML(Command.XML_BASE);
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Command.class, "argsxml"));
 		}
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
