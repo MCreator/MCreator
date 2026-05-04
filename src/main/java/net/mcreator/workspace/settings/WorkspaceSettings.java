@@ -67,7 +67,7 @@ import java.util.stream.Stream;
 	private static final Pattern cleanMultiDotPattern = Pattern.compile("(?:\\.[.]+)+");
 	private static final Pattern cleanMultiHyphenPattern = Pattern.compile("(?:--+)+");
 	private static final Pattern cleanMultiPlusPattern = Pattern.compile("(?:\\+[+]+)+");
-	private static final Pattern cleanLeadingTrailingCharactersPattern = Pattern.compile(
+	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile(
 			"(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
@@ -243,7 +243,7 @@ import java.util.stream.Stream;
 			trimmedVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
 		}
 		trimmedVersion = cleanMultiDotPattern.matcher(trimmedVersion).replaceAll(".");
-		return cleanLeadingTrailingCharactersPattern.matcher(trimmedVersion).replaceAll("");
+		return cleanEdgeCharactersPattern.matcher(trimmedVersion).replaceAll("");
 	}
 
 	public String getCleanVersion() {
