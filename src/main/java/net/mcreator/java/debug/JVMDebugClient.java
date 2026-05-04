@@ -57,7 +57,7 @@ public class JVMDebugClient {
 			return;
 		}
 
-		String mcreatorJvmOptions = "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort;
+		String mcreatorJvmOptions = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:" + vmDebugPort;
 		if (environment.containsKey("MCREATOR_JVM_OPTIONS")) {
 			environment.put("MCREATOR_JVM_OPTIONS",
 					environment.get("MCREATOR_JVM_OPTIONS").trim() + " " + mcreatorJvmOptions);
@@ -139,7 +139,7 @@ public class JVMDebugClient {
 		}
 
 		Map<String, Connector.Argument> arguments = connector.defaultArguments();
-		arguments.get("hostname").setValue("localhost");
+		arguments.get("hostname").setValue("127.0.0.1");
 		arguments.get("port").setValue(String.valueOf(port));
 
 		// try to connect until connection is established or task is cancelled
