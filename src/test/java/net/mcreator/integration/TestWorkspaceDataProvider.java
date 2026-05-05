@@ -1010,14 +1010,14 @@ public class TestWorkspaceDataProvider {
 			armor.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armor_texture";
-			armor.maxDamage = 12;
-			armor.damageValueHelmet = 3;
-			armor.damageValueBody = 4;
-			armor.damageValueLeggings = 5;
-			armor.damageValueBoots = 6;
-			armor.enchantability = 7;
-			armor.toughness = 1.23;
-			armor.knockbackResistance = 3.148;
+			armor.maxDamage = getRandomInt(random, Armor.class, "maxDamage");
+			armor.damageValueHelmet = getRandomInt(random, Armor.class, "damageValueHelmet");
+			armor.damageValueBody = getRandomInt(random, Armor.class, "damageValueBody");
+			armor.damageValueLeggings = getRandomInt(random, Armor.class, "damageValueLeggings");
+			armor.damageValueBoots = getRandomInt(random, Armor.class, "damageValueBoots");
+			armor.enchantability = getRandomInt(random, Armor.class, "enchantability");
+			armor.toughness = getRandomDouble(random, Armor.class, "toughness");
+			armor.knockbackResistance = getRandomDouble(random, Armor.class, "knockbackResistance");
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
 				armor.repairItems = subset(random, blocksAndItemsAndTags.size() / 8, blocksAndItemsAndTags,

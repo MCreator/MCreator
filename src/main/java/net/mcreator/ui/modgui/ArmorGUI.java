@@ -39,6 +39,7 @@ import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -170,14 +171,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final SoundSelector equipSound = new SoundSelector(mcreator);
 
-	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(15, 0, 1024, 1));
-	private final JSpinner damageValueBoots = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner damageValueLeggings = new JSpinner(new SpinnerNumberModel(5, 0, 1024, 1));
-	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));
-	private final JSpinner damageValueHelmet = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 1, 128000, 1));
-	private final JSpinner toughness = new JSpinner(new SpinnerNumberModel(0.0, 0, 1024, 0.1));
-	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0.0, 0, 5.0, 0.1));
+	private final JSpinner maxDamage = ComponentFromAnnotation.spinner(Armor.class, "maxDamage");
+	private final JSpinner damageValueBoots = ComponentFromAnnotation.spinner(Armor.class, "damageValueBoots");
+	private final JSpinner damageValueLeggings = ComponentFromAnnotation.spinner(Armor.class, "damageValueLeggings");
+	private final JSpinner damageValueBody = ComponentFromAnnotation.spinner(Armor.class, "damageValueBody");
+	private final JSpinner damageValueHelmet = ComponentFromAnnotation.spinner(Armor.class, "damageValueHelmet");
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Armor.class, "enchantability");
+	private final JSpinner toughness = ComponentFromAnnotation.spinner(Armor.class, "toughness");
+	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(Armor.class, "knockbackResistance");
 
 	private ProcedureSelector onHelmetTick;
 	private ProcedureSelector onBodyTick;
