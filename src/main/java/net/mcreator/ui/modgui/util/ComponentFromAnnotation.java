@@ -29,7 +29,7 @@ public class ComponentFromAnnotation {
 
 	public static JSpinner spinner(Class<?> type, String field) {
 		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
-		if (isInteger(annotation.step())) {
+		if (isInteger(annotation)) {
 			return new JSpinner(
 					new SpinnerNumberModel((int) annotation.min(), (int) annotation.min(), (int) annotation.max(),
 							(int) annotation.step()));
@@ -50,7 +50,7 @@ public class ComponentFromAnnotation {
 		if (minAnnotation.max() != maxAnnotation.max())
 			throw new IllegalArgumentException("Max field must be greater than or equal to min field");
 
-		if (isInteger(minAnnotation.step()) && isInteger(maxAnnotation.step())) {
+		if (isInteger(minAnnotation) && isInteger(maxAnnotation)) {
 			return new JMinMaxSpinner((int) minAnnotation.defaultValue(), (int) maxAnnotation.defaultValue(),
 					(int) minAnnotation.min(), (int) minAnnotation.max(), (int) minAnnotation.step());
 		} else {
@@ -59,8 +59,13 @@ public class ComponentFromAnnotation {
 		}
 	}
 
+	private static boolean isInteger(NumericParameter annotation) {
+		return isInteger(annotation.defaultValue()) && isInteger(annotation.min()) && isInteger(annotation.max())
+				&& isInteger(annotation.step());
+	}
+
 	private static boolean isInteger(double d) {
-		return Double.isFinite(d) && d == Math.rint(d);
+		return Double.isFinite(d) && d >= Integer.MIN_VALUE && d <= Integer.MAX_VALUE && d == Math.rint(d);
 	}
 
 }
