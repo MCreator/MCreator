@@ -23,6 +23,7 @@ import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.init.L10N;
 
+import javax.swing.*;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -33,6 +34,10 @@ public class ComponentFromAnnotation {
 		return new TranslatedComboBox(AnnotationUtils.getLimitedOptionsList(type, field).stream().collect(
 				Collectors.toMap(o -> o, o -> L10N.t(translationPrefix + o.replace(' ', '_').toLowerCase(Locale.ROOT)),
 						(_, b) -> b, LinkedHashMap::new)));
+	}
+
+	public static JComboBox<String> options(Class<?> type, String field) {
+		return new JComboBox<>(AnnotationUtils.getLimitedOptionsList(type, field).toArray(new String[0]));
 	}
 
 }

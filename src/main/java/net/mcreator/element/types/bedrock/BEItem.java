@@ -70,7 +70,8 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public double foodSaturation;
 	public boolean foodCanAlwaysEat;
 	@ModElementReference public MItemBlock usingConvertsTo;
-	public String animation;
+	@LimitedOptionsField({ "none", "eat", "block", "bow", "crossbow", "drink", "spear", "brush",
+			"spyglass", "camera" }) public String animation;
 
 	@ModElementReference(acceptedTypes = { "bescript" }) public List<String> localScripts;
 

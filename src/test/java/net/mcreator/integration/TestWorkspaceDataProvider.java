@@ -1717,9 +1717,7 @@ public class TestWorkspaceDataProvider {
 			beitem.stackedByData = _true;
 			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
-			beitem.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear", "camera", "brush",
-							"spyglass" });
+			beitem.animation = getRandomString(random, AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
 			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocks)).getName());
 			beitem.blockPlaceableOn = new ArrayList<>();
@@ -1768,7 +1766,8 @@ public class TestWorkspaceDataProvider {
 			beblock.lightEmission = 3;
 			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			beblock.generateFeature = _true;
-			beblock.generationShape = getRandomString(random, List.of("uniform", "triangle"));
+			beblock.generationShape = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "generationShape"));
 			beblock.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.blocksToReplace = subset(random, blocksAndTags.size() / 8, blocksAndTags,
@@ -1776,12 +1775,10 @@ public class TestWorkspaceDataProvider {
 			}
 
 			beblock.rotationMode = random.nextInt(0, 5);
-			beblock.renderMethod = getRandomItem(random,
-					List.of("opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
-							"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque"));
-			beblock.tintMethod = getRandomItem(random,
-					List.of("(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
-							"water"));
+			beblock.renderMethod = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "renderMethod"));
+			beblock.tintMethod = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "tintMethod"));
 
 			beblock.localScripts = new ArrayList<>();
 			if (!emptyLists) {
