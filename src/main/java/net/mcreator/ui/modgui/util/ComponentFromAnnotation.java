@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui.util;
 
 import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.element.util.AnnotationUtils;
+import net.mcreator.ui.component.JMinMaxSpinner;
 
 import javax.swing.*;
 
@@ -35,6 +36,26 @@ public class ComponentFromAnnotation {
 		} else {
 			return new JSpinner(
 					new SpinnerNumberModel(annotation.min(), annotation.min(), annotation.max(), annotation.step()));
+		}
+	}
+
+	public static JMinMaxSpinner minMaxSpinner(Class<?> type, String minField, String maxField) {
+		NumericParameter minAnnotation = AnnotationUtils.getAnnotation(type, minField, NumericParameter.class);
+		NumericParameter maxAnnotation = AnnotationUtils.getAnnotation(type, maxField, NumericParameter.class);
+
+		if (minAnnotation.step() != maxAnnotation.step())
+			throw new IllegalArgumentException("Min and max fields must have the same step value");
+		if (minAnnotation.min() != maxAnnotation.min())
+			throw new IllegalArgumentException("Min field must be less than or equal to max field");
+		if (minAnnotation.max() != maxAnnotation.max())
+			throw new IllegalArgumentException("Max field must be greater than or equal to min field");
+
+		if (isInteger(minAnnotation.step()) && isInteger(maxAnnotation.step())) {
+			return new JMinMaxSpinner((int) minAnnotation.defaultValue(), (int) maxAnnotation.defaultValue(),
+					(int) minAnnotation.min(), (int) minAnnotation.max(), (int) minAnnotation.step());
+		} else {
+			return new JMinMaxSpinner(minAnnotation.defaultValue(), maxAnnotation.defaultValue(), minAnnotation.min(),
+					minAnnotation.max(), minAnnotation.step());
 		}
 	}
 
