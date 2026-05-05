@@ -35,6 +35,7 @@ import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -61,17 +62,23 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final VTextField name = new VTextField(20).requireValue("elementgui.biome.needs_name")
 			.enableRealtimeValidation();
 
-	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
+	private final JSpinner treesPerChunk = ComponentFromAnnotation.spinner(Biome.class, "treesPerChunk");
 
-	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
-	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
+	private final JSpinner rainingPossibility = ComponentFromAnnotation.spinner(Biome.class, "rainingPossibility");
+	private final JSpinner temperature = ComponentFromAnnotation.spinner(Biome.class, "temperature");
 
-	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genDepth = new JMinMaxSpinner(0.2, 0.9, 0.0, 1.5, 0.0001).allowEqualValues();
+	private final JMinMaxSpinner genTemperature = ComponentFromAnnotation.minMaxSpinner(Biome.class,
+			"genTemperatureMin", "genTemperatureMax");
+	private final JMinMaxSpinner genHumidity = ComponentFromAnnotation.minMaxSpinner(Biome.class, "genHumidityMin",
+			"genHumidityMax");
+	private final JMinMaxSpinner genContinentalness = ComponentFromAnnotation.minMaxSpinner(Biome.class,
+			"genContinentalnessMin", "genContinentalnessMax");
+	private final JMinMaxSpinner genErosion = ComponentFromAnnotation.minMaxSpinner(Biome.class, "genErosionMin",
+			"genErosionMax");
+	private final JMinMaxSpinner genWeirdness = ComponentFromAnnotation.minMaxSpinner(Biome.class,
+			"genWeirdnessMin", "genWeirdnessMax");
+	private final JMinMaxSpinner genDepth = ComponentFromAnnotation.minMaxSpinner(Biome.class, "genDepthMin",
+			"genDepthMax").allowEqualValues();
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
@@ -133,7 +140,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder undergroundBlock;
 	private MCItemHolder underwaterBlock;
 
-	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 32, 1));
+	private final JSpinner minHeight = ComponentFromAnnotation.spinner(Biome.class, "minHeight");
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
 	private MCItemHolder treeVines;
@@ -148,12 +155,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final SoundSelector ambientSound = new SoundSelector(mcreator);
 	private final SoundSelector moodSound = new SoundSelector(mcreator);
-	private final JSpinner moodSoundDelay = new JSpinner(new SpinnerNumberModel(6000, 1, 30000, 1));
+	private final JSpinner moodSoundDelay = ComponentFromAnnotation.spinner(Biome.class, "moodSoundDelay");
 	private final SoundSelector additionsSound = new SoundSelector(mcreator);
 	private final SoundSelector music = new SoundSelector(mcreator);
 	private final JCheckBox spawnParticle = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
-	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
+	private final JSpinner particlesProbability = ComponentFromAnnotation.spinner(Biome.class, "particlesProbability");
 
 	private final TranslatedComboBox vanillaTreeType = new TranslatedComboBox(
 			//@formatter:off

@@ -475,7 +475,7 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			biome.moodSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			biome.moodSoundDelay = new int[] { 1, 266, 479, 393 }[valueIndex];
+			biome.moodSoundDelay = getRandomInt(random, Biome.class, "moodSoundDelay");
 			biome.additionsSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			biome.music = new Sound(modElement.getWorkspace(),
@@ -483,8 +483,8 @@ public class TestWorkspaceDataProvider {
 			biome.spawnParticles = _true;
 			biome.particleToSpawn = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			biome.particlesProbability = 0.0123;
-			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
+			biome.particlesProbability = getRandomDouble(random, Biome.class, "particlesProbability");
+			biome.treesPerChunk = getRandomInt(random, Biome.class, "treesPerChunk");
 			biome.spawnShipwreck = _true;
 			biome.spawnShipwreckBeached = _true;
 			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
@@ -514,8 +514,8 @@ public class TestWorkspaceDataProvider {
 			biome.genWeirdness = new Biome.ClimatePoint(1.0, 1.1);
 			biome.genDepth = new Biome.ClimatePoint(0.3, 1.2);
 
-			biome.rainingPossibility = 1.1;
-			biome.temperature = 2.1;
+			biome.rainingPossibility = getRandomDouble(random, Biome.class, "rainingPossibility");
+			biome.temperature = getRandomDouble(random, Biome.class, "temperature");
 
 			List<Biome.SpawnEntry> entities = new ArrayList<>();
 			if (!emptyLists) {
@@ -556,7 +556,7 @@ public class TestWorkspaceDataProvider {
 				entities.add(entry4);
 			}
 			biome.spawnEntries = entities;
-			biome.minHeight = 2;
+			biome.minHeight = getRandomInt(random, Biome.class, "minHeight");
 			List<String> biomeDefaultFeatures = new ArrayList<>();
 			if (!emptyLists)
 				biomeDefaultFeatures.addAll(Arrays.asList(ElementUtil.getDataListAsStringArray("defaultfeatures")));
@@ -2103,38 +2103,39 @@ public class TestWorkspaceDataProvider {
 				block.animations.add(animation);
 			}
 		}
-		block.hardness = 2.3;
-		block.resistance = 3.1;
+		block.hardness = getRandomDouble(random, Block.class, "hardness");
+		block.resistance = getRandomDouble(random, Block.class, "resistance");
 		block.hasGravity = _true && blockBase == null;
 		block.useLootTableForDrops = !_true;
 		block.requiresCorrectTool = _true;
 		block.hasBlockItem = !emptyLists;
-		block.maxStackSize = 37;
+		block.maxStackSize = getRandomInt(random, Block.class, "maxStackSize");
 		block.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 		block.immuneToFire = _true;
 		block.creativeTabs = emptyLists ? List.of() : tabs;
 		block.destroyTool = getRandomItem(random, new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 		block.customDrop = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 		block.ignitedByLava = _true;
-		block.flammability = 5;
-		block.fireSpreadSpeed = 12;
-		block.dropAmount = 3;
-		block.xpAmountMin = 2;
-		block.xpAmountMax = 5;
+		block.flammability = getRandomInt(random, Block.class, "flammability");
+		block.fireSpreadSpeed = getRandomInt(random, Block.class, "fireSpreadSpeed");
+		block.dropAmount = getRandomInt(random, Block.class, "dropAmount");
+		Range<Integer> xpAmount = getRandomIntRange(random, Block.class, "xpAmountMin", "xpAmountMax");
+		block.xpAmountMin = xpAmount.getMinimum();
+		block.xpAmountMax = xpAmount.getMaximum();
 		block.plantsGrowOn = _true;
 		block.isNotColidable = _true && blockBase == null;
 		block.canRedstoneConnect = _true;
 		block.isWaterloggable = !block.hasGravity && blockBase == null;
 		block.isLadder = _true;
-		block.enchantPowerBonus = 1.2342;
+		block.enchantPowerBonus = getRandomDouble(random, Block.class, "enchantPowerBonus");
 		block.reactionToPushing = getRandomItem(random,
 				new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
-		block.slipperiness = 12.342;
-		block.speedFactor = 34.632;
-		block.jumpFactor = 17.732;
+		block.slipperiness = getRandomDouble(random, Block.class, "slipperiness");
+		block.speedFactor = getRandomDouble(random, Block.class, "speedFactor");
+		block.jumpFactor = getRandomDouble(random, Block.class, "jumpFactor");
 		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
-		block.tickRate = _true ? 0 : 24;
+		block.tickRate = _true ? 0 : getRandomInt(random, Block.class, "tickRate");
 		block.isCustomSoundType = !_true;
 		block.soundOnStep = new StepSound(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
@@ -2163,10 +2164,10 @@ public class TestWorkspaceDataProvider {
 		block.tickRandomly = _true;
 		block.guiBoundTo = emptyLists || guis.isEmpty() ? null : getRandomItem(random, guis);
 		block.openGUIOnRightClick = random.nextBoolean();
-		block.inventorySize = 10;
+		block.inventorySize = getRandomInt(random, Block.class, "inventorySize");
 		block.inventoryAutomationTakeCondition = random.nextBoolean() ? null : new Procedure("condition1");
 		block.inventoryAutomationPlaceCondition = random.nextBoolean() ? null : new Procedure("condition2");
-		block.inventoryStackSize = 42;
+		block.inventoryStackSize = getRandomInt(random, Block.class, "inventoryStackSize");
 		block.inventoryDropWhenDestroyed = random.nextBoolean();
 		block.inventoryComparatorPower = random.nextBoolean();
 		block.inventoryOutSlotIDs = new ArrayList<>();
@@ -2194,12 +2195,12 @@ public class TestWorkspaceDataProvider {
 		block.canReceiveVibrationCondition = new Procedure("condition1");
 		block.onReceivedVibration = new Procedure("procedure1");
 		block.hasEnergyStorage = _true;
-		block.energyCapacity = 123;
-		block.energyInitial = 22;
-		block.energyMaxExtract = 4245;
-		block.energyMaxReceive = 1234;
+		block.energyCapacity = getRandomInt(random, Block.class, "energyCapacity");
+		block.energyInitial = getRandomInt(random, Block.class, "energyInitial");
+		block.energyMaxExtract = getRandomInt(random, Block.class, "energyMaxExtract");
+		block.energyMaxReceive = getRandomInt(random, Block.class, "energyMaxReceive");
 		block.isFluidTank = !_true;
-		block.fluidCapacity = 451;
+		block.fluidCapacity = getRandomInt(random, Block.class, "fluidCapacity");
 		block.fluidRestrictions = new ArrayList<>();
 		if (!emptyLists) {
 			block.fluidRestrictions.addAll(ElementUtil.loadAllFluids(modElement.getWorkspace()).stream()
@@ -2222,10 +2223,11 @@ public class TestWorkspaceDataProvider {
 			block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 		}
 		block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
-		block.frequencyPerChunks = 3;
-		block.frequencyOnChunk = 2;
-		block.minGenerateHeight = 21;
-		block.maxGenerateHeight = 92;
+		block.frequencyPerChunks = getRandomInt(random, Block.class, "frequencyPerChunks");
+		block.frequencyOnChunk = getRandomInt(random, Block.class, "frequencyOnChunk");
+		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight", "maxGenerateHeight");
+		block.minGenerateHeight = generateHeight.getMinimum();
+		block.maxGenerateHeight = generateHeight.getMaximum();
 		if (!emptyLists) {
 			block.isBonemealable = true;
 			block.onBlockAdded = new Procedure("procedure10");
@@ -2258,7 +2260,7 @@ public class TestWorkspaceDataProvider {
 					null :
 					new Particle(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			block.leavesParticleChance = 0.265;
+			block.leavesParticleChance = getRandomDouble(random, Block.class, "leavesParticleChance");
 		} else if ("FlowerPot".equals(blockBase)) {
 			block.pottedPlant = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksWithItemForm).getName());
@@ -2658,6 +2660,12 @@ public class TestWorkspaceDataProvider {
 	private static double getRandomDouble(Random random, Class<?> type, String field) {
 		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
 		return getRandomDouble(random, annotation.min(), annotation.max());
+	}
+
+	private static Range<Integer> getRandomIntRange(Random random, Class<?> type, String minField, String maxField) {
+		int v1 = getRandomInt(random, type, minField);
+		int v2 = getRandomInt(random, type, maxField);
+		return Range.of(Math.min(v1, v2), Math.max(v1, v2));
 	}
 
 	private static Range<Double> getRandomDoubleRange(Random random, Class<?> type, String minField, String maxField) {

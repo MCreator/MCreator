@@ -23,6 +23,7 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -54,14 +55,14 @@ import java.util.List;
 	public Sound additionsSound;
 	public Sound music;
 	public Sound moodSound;
-	public int moodSoundDelay;
+	@NumericParameter(defaultValue = 6000, min = 1, max = 30000, step = 1) public int moodSoundDelay;
 
 	public boolean spawnParticles;
 	public Particle particleToSpawn;
-	public double particlesProbability;
+	@NumericParameter(defaultValue = 0.5, min = 0, max = 100, step = 0.1) public double particlesProbability;
 
-	public double rainingPossibility;
-	public double temperature;
+	@NumericParameter(defaultValue = 0.5, min = 0, max = 1, step = 0.1) public double rainingPossibility;
+	@NumericParameter(defaultValue = 0.5, min = -1, max = 2, step = 0.1) public double temperature;
 
 	public boolean spawnBiome;
 	public boolean spawnInCaves;
@@ -74,10 +75,23 @@ import java.util.List;
 	public ClimatePoint genWeirdness;
 	public ClimatePoint genDepth;
 
-	public int treesPerChunk;
+	@NumericParameter(defaultValue = -0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genTemperatureMin;
+	@NumericParameter(defaultValue = 0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genTemperatureMax;
+	@NumericParameter(defaultValue = -0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genHumidityMin;
+	@NumericParameter(defaultValue = 0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genHumidityMax;
+	@NumericParameter(defaultValue = 0.3, min = -2.0, max = 2.0, step = 0.0001) public transient double genContinentalnessMin;
+	@NumericParameter(defaultValue = 1.0, min = -2.0, max = 2.0, step = 0.0001) public transient double genContinentalnessMax;
+	@NumericParameter(defaultValue = -0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genErosionMin;
+	@NumericParameter(defaultValue = 0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genErosionMax;
+	@NumericParameter(defaultValue = -1.0, min = -2.0, max = 2.0, step = 0.0001) public transient double genWeirdnessMin;
+	@NumericParameter(defaultValue = 1.0, min = -2.0, max = 2.0, step = 0.0001) public transient double genWeirdnessMax;
+	@NumericParameter(defaultValue = 0.2, min = 0.0, max = 1.5, step = 0.0001, rangeMinMaxCanBeEqual = true) public transient double genDepthMin;
+	@NumericParameter(defaultValue = 0.9, min = 0.0, max = 1.5, step = 0.0001, rangeMinMaxCanBeEqual = true) public transient double genDepthMax;
+
+	@NumericParameter(defaultValue = 1, min = 0, max = 256, step = 1) public int treesPerChunk;
 	public String vanillaTreeType;
 	public int treeType;
-	public int minHeight;
+	@NumericParameter(defaultValue = 7, min = 0, max = 32, step = 1) public int minHeight;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;

@@ -34,4 +34,6 @@ import java.lang.annotation.Target;
 
 	double step();
 
+	boolean rangeMinMaxCanBeEqual() default false;
+
 }
