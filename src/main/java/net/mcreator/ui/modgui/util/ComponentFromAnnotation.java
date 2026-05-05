@@ -38,6 +38,7 @@ public class ComponentFromAnnotation {
 			retval = new JSpinner(
 					new SpinnerNumberModel(annotation.defaultValue(), annotation.min(), annotation.max(), annotation.step()));
 		}
+		retval.putClientProperty("MCreator.fieldName", field);
 		return retval;
 	}
 
@@ -60,6 +61,8 @@ public class ComponentFromAnnotation {
 			retval = new JMinMaxSpinner(minAnnotation.defaultValue(), maxAnnotation.defaultValue(), minAnnotation.min(),
 					minAnnotation.max(), minAnnotation.step());
 		}
+
+		retval.putClientProperty("MCreator.fieldName", minField + ", " + maxField);
 		return retval;
 	}
 
