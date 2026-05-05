@@ -32,11 +32,11 @@ public class ComponentFromAnnotation {
 		JSpinner retval;
 		if (isInteger(annotation)) {
 			retval = new JSpinner(
-					new SpinnerNumberModel((int) annotation.defaultValue(), (int) annotation.min(), (int) annotation.max(),
+					new SpinnerNumberModel((int) annotation.init(), (int) annotation.min(), (int) annotation.max(),
 							(int) annotation.step()));
 		} else {
 			retval = new JSpinner(
-					new SpinnerNumberModel(annotation.defaultValue(), annotation.min(), annotation.max(), annotation.step()));
+					new SpinnerNumberModel(annotation.init(), annotation.min(), annotation.max(), annotation.step()));
 		}
 		retval.putClientProperty("MCreator.fieldName", field);
 		return retval;
@@ -55,10 +55,10 @@ public class ComponentFromAnnotation {
 
 		JMinMaxSpinner retval;
 		if (isInteger(minAnnotation) && isInteger(maxAnnotation)) {
-			retval = new JMinMaxSpinner((int) minAnnotation.defaultValue(), (int) maxAnnotation.defaultValue(),
+			retval = new JMinMaxSpinner((int) minAnnotation.init(), (int) maxAnnotation.init(),
 					(int) minAnnotation.min(), (int) minAnnotation.max(), (int) minAnnotation.step());
 		} else {
-			retval = new JMinMaxSpinner(minAnnotation.defaultValue(), maxAnnotation.defaultValue(), minAnnotation.min(),
+			retval = new JMinMaxSpinner(minAnnotation.init(), maxAnnotation.init(), minAnnotation.min(),
 					minAnnotation.max(), minAnnotation.step());
 		}
 
@@ -67,7 +67,7 @@ public class ComponentFromAnnotation {
 	}
 
 	private static boolean isInteger(NumericParameter annotation) {
-		return isInteger(annotation.defaultValue()) && isInteger(annotation.min()) && isInteger(annotation.max())
+		return isInteger(annotation.init()) && isInteger(annotation.min()) && isInteger(annotation.max())
 				&& isInteger(annotation.step());
 	}
 

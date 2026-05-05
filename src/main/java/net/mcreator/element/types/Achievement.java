@@ -61,7 +61,7 @@ import java.util.List;
 	@ModElementReference(acceptedTypes = { "loottable" }) public List<String> rewardLoot;
 	@ModElementReference(acceptedTypes = { "recipe" }) public List<String> rewardRecipes;
 	@ModElementReference(acceptedTypes = { "function" }) @Nullable public String rewardFunction;
-	@NumericParameter(defaultValue = 0, min = 0, max = 64000, step = 1) public int rewardXP;
+	@NumericParameter(init = 0, min = 0, max = 64000, step = 1) public int rewardXP;
 
 	public String achievementType;
 	public AchievementEntry parent;

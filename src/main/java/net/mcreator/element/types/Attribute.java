@@ -30,9 +30,9 @@ import java.util.List;
 @SuppressWarnings("unused") public class Attribute extends GeneratableElement {
 
 	public String name;
-	@NumericParameter(defaultValue = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double minValue;
-	@NumericParameter(defaultValue = 1, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double maxValue;
-	@NumericParameter(defaultValue = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double defaultValue;
+	@NumericParameter(init = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double minValue;
+	@NumericParameter(init = 1, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double maxValue;
+	@NumericParameter(init = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double defaultValue;
 	public String sentiment;
 	public boolean addToAllEntities;
 	public boolean addToPlayers;
