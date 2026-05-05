@@ -70,6 +70,7 @@ import net.mcreator.workspace.elements.TagElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.Range;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -1676,9 +1677,10 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ATTRIBUTE.equals(modElement.getType())) {
 			Attribute attribute = new Attribute(modElement);
 			attribute.name = modElement.getName();
-			attribute.defaultValue = 127.53;
-			attribute.minValue = 24.42;
-			attribute.maxValue = 200d;
+			Range<Double> value = getRandomDoubleRange(random, Attribute.class, "minValue", "maxValue");
+			attribute.minValue = value.getMinimum();
+			attribute.maxValue = value.getMaximum();
+			attribute.defaultValue = getRandomDouble(random, attribute.minValue, attribute.maxValue);
 			attribute.entities = new ArrayList<>();
 			attribute.sentiment = new String[] { "POSITIVE", "NEUTRAL", "NEGATIVE", "NEUTRAL" }[valueIndex];
 			if (!emptyLists) {
@@ -2578,7 +2580,8 @@ public class TestWorkspaceDataProvider {
 			achievement.rewardRecipes.add("ExampleRecipe1");
 			achievement.rewardRecipes.add("ExampleRecipe2");
 		}
-		achievement.triggerxml =  AnnotationUtils.getBlocklyXMLDefaultValue(achievement.getClass(), "triggerxml");;
+		achievement.triggerxml = AnnotationUtils.getBlocklyXMLDefaultValue(achievement.getClass(), "triggerxml");
+		;
 
 		return achievement;
 	}
@@ -2642,6 +2645,11 @@ public class TestWorkspaceDataProvider {
 						.equals("Blocks.CAVE_AIR"))).toList();
 	}
 
+	private static double getRandomDouble(Random random, double min, double max) {
+		double r = random.nextDouble();
+		return min * (1 - r) + max * r;
+	}
+
 	private static int getRandomInt(Random random, Class<?> type, String field) {
 		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
 		return random.nextInt((int) annotation.min(), (int) (annotation.max() + 1));
@@ -2649,7 +2657,13 @@ public class TestWorkspaceDataProvider {
 
 	private static double getRandomDouble(Random random, Class<?> type, String field) {
 		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
-		return annotation.min() + (annotation.max() - annotation.min()) * random.nextDouble();
+		return getRandomDouble(random, annotation.min(), annotation.max());
+	}
+
+	private static Range<Double> getRandomDoubleRange(Random random, Class<?> type, String minField, String maxField) {
+		double v1 = getRandomDouble(random, type, minField);
+		double v2 = getRandomDouble(random, type, maxField);
+		return Range.of(Math.min(v1, v2), Math.max(v1, v2));
 	}
 
 	public static void provideAndGenerateSampleElements(Random random, Workspace workspace) {

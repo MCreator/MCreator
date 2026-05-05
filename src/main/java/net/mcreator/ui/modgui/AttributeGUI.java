@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.Attribute;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
@@ -46,9 +47,9 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 	private final VTextField name = new VTextField(38).requireValue("elementgui.attribute.needs_name")
 			.enableRealtimeValidation();
-	private final JSpinner defaultValue = new JSpinner(
-			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
-	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
+	private final JSpinner defaultValue = ComponentFromAnnotation.spinner(Attribute.class, "defaultValue");
+	private final JMinMaxSpinner minMaxValue = ComponentFromAnnotation.minMaxSpinner(Attribute.class, "minValue",
+			"maxValue");
 	private final TranslatedComboBox sentiment = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("POSITIVE", "elementgui.attribute.sentiment.positive"),
