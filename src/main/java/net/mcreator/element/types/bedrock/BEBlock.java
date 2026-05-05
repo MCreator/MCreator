@@ -24,6 +24,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -56,21 +57,23 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String creativeTab;
 	public boolean isHiddenInCommands;
 	public MItemBlock customDrop;
-	public int dropAmount;
-	public double friction;
+	@NumericParameter(init = 1, min = 0, max = 64, step = 1) public int dropAmount;
+	@NumericParameter(init = 0.4, min = 0, max = 0.9, step = 0.01) public double friction;
 	public StepSound soundOnStep;
-	public double hardness;
-	public double resistance;
-	public int lightEmission;
-	public int flammability;
-	public int flammableDestroyChance;
+	@NumericParameter(init = 1, min = -1, max = 64000, step = 0.05) public double hardness;
+	@NumericParameter(init = 10, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
+	@NumericParameter(init = 0, min = 0, max = 15, step = 1) public int lightEmission;
+	@NumericParameter(init = 0, min = 0, max = 1024, step = 1) public int flammability;
+	@NumericParameter(init = 0, min = 0, max = 1024, step = 1) public int flammableDestroyChance;
 	public String colorOnMap;
 
 	public boolean generateFeature;
 	public String generationShape;
-	public int frequencyPerChunks;
-	public int oreCount;
+	@NumericParameter(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@NumericParameter(init = 16, min = 1, max = 64, step = 1) public int oreCount;
+	@NumericParameter(init = 0, min = -2032, max = 2016, step = 1, rangeMinMaxCanBeEqual = true)
 	public int minGenerateHeight;
+	@NumericParameter(init = 64, min = -2032, max = 2016, step = 1, rangeMinMaxCanBeEqual = true)
 	public int maxGenerateHeight;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 

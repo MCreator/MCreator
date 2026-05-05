@@ -33,6 +33,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -64,19 +65,19 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			Map.entry("epic", "elementgui.common.rarity_epic")
 			//@formatter:on
 	);
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
+	private final JSpinner stackSize = ComponentFromAnnotation.spinner(BEItem.class, "stackSize");
 	private final JCheckBox enableCreativeTab = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,
 			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
-	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
-	private final JSpinner movementModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.05));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
+	private final JSpinner maxDurability = ComponentFromAnnotation.spinner(BEItem.class, "maxDurability");
+	private final JSpinner useDuration = ComponentFromAnnotation.spinner(BEItem.class, "useDuration");
+	private final JSpinner movementModifier = ComponentFromAnnotation.spinner(BEItem.class, "movementModifier");
+	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(BEItem.class, "damageVsEntity");
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox allowOffHand = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner fuelDuration = new JSpinner(new SpinnerNumberModel(0, 0, 107374180, 0.05));
+	private final JSpinner fuelDuration = ComponentFromAnnotation.spinner(BEItem.class, "fuelDuration");
 	private final JCheckBox shouldDespawn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stackedByData = L10N.checkbox("elementgui.common.enable");
 	private final MCItemHolder blockToPlace = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -86,8 +87,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final MCItemListField entityPlaceableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner foodNutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
-	private final JSpinner foodSaturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
+	private final JSpinner foodNutritionalValue = ComponentFromAnnotation.spinner(BEItem.class, "foodNutritionalValue");
+	private final JSpinner foodSaturation = ComponentFromAnnotation.spinner(BEItem.class, "foodSaturation");
 	private final JCheckBox foodCanAlwaysEat = L10N.checkbox("elementgui.common.enable");
 	private final MCItemHolder usingConvertsTo = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 	private final TranslatedComboBox animation = new TranslatedComboBox(
