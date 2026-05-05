@@ -29,14 +29,16 @@ public class ComponentFromAnnotation {
 
 	public static JSpinner spinner(Class<?> type, String field) {
 		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
+		JSpinner retval;
 		if (isInteger(annotation)) {
-			return new JSpinner(
-					new SpinnerNumberModel((int) annotation.min(), (int) annotation.min(), (int) annotation.max(),
+			retval = new JSpinner(
+					new SpinnerNumberModel((int) annotation.defaultValue(), (int) annotation.min(), (int) annotation.max(),
 							(int) annotation.step()));
 		} else {
-			return new JSpinner(
-					new SpinnerNumberModel(annotation.min(), annotation.min(), annotation.max(), annotation.step()));
+			retval = new JSpinner(
+					new SpinnerNumberModel(annotation.defaultValue(), annotation.min(), annotation.max(), annotation.step()));
 		}
+		return retval;
 	}
 
 	public static JMinMaxSpinner minMaxSpinner(Class<?> type, String minField, String maxField) {
@@ -50,13 +52,15 @@ public class ComponentFromAnnotation {
 		if (minAnnotation.max() != maxAnnotation.max())
 			throw new IllegalArgumentException("Max field must be greater than or equal to min field");
 
+		JMinMaxSpinner retval;
 		if (isInteger(minAnnotation) && isInteger(maxAnnotation)) {
-			return new JMinMaxSpinner((int) minAnnotation.defaultValue(), (int) maxAnnotation.defaultValue(),
+			retval = new JMinMaxSpinner((int) minAnnotation.defaultValue(), (int) maxAnnotation.defaultValue(),
 					(int) minAnnotation.min(), (int) minAnnotation.max(), (int) minAnnotation.step());
 		} else {
-			return new JMinMaxSpinner(minAnnotation.defaultValue(), maxAnnotation.defaultValue(), minAnnotation.min(),
+			retval = new JMinMaxSpinner(minAnnotation.defaultValue(), maxAnnotation.defaultValue(), minAnnotation.min(),
 					minAnnotation.max(), minAnnotation.step());
 		}
+		return retval;
 	}
 
 	private static boolean isInteger(NumericParameter annotation) {
