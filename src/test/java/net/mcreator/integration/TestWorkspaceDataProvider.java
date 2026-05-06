@@ -1543,9 +1543,9 @@ public class TestWorkspaceDataProvider {
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.displayName = modElement.getName();
 			gamerule.description = modElement.getName() + " description";
-			gamerule.category = getRandomString(random,
-					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
-			gamerule.type = _true ? "Number" : "Logic";
+			gamerule.category = getRandomString(random, AnnotationUtils.getLimitedOptionsList(GameRule.class,
+					"category"));
+			gamerule.type = getRandomString(random, AnnotationUtils.getLimitedOptionsList(GameRule.class, "type"));
 			gamerule.defaultValueLogic = random.nextBoolean();
 			gamerule.defaultValueNumber = -45;
 			gamerule.getModElement().putMetadata("type", "Number".equals(gamerule.type) ?
