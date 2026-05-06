@@ -47,9 +47,8 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
 
-	@LimitedOptionsField({"Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod",
-			"Special", "MultiTool"})
-	@Nonnull public String toolType;
+	@LimitedOptions({ "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
+			"MultiTool" }) @Nonnull public String toolType;
 
 	public int renderType;
 	public int blockingRenderType;
@@ -59,7 +58,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
 
 	public String name;
-	@LimitedOptionsField({"COMMON", "UNCOMMON", "RARE", "EPIC"}) public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public double efficiency;
@@ -71,7 +70,7 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
 
-	@LimitedOptionsField({"WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE"}) public String blockDropsTier;
+	@LimitedOptions({ "WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE" }) public String blockDropsTier;
 	public Procedure additionalDropCondition;
 
 	@ModElementReference public List<MItemBlock> blocksAffected;

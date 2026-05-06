@@ -60,8 +60,8 @@ import java.util.List;
 	public NumberProcedure fogStartDistance;
 	public NumberProcedure fogEndDistance;
 
-	@LimitedOptionsField({"No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"})
-	public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+			"Sky", "Fog", "Water fog" }) public String tintType;
 
 	public boolean canMultiply;
 	public int flowRate;
@@ -81,7 +81,7 @@ import java.util.List;
 	@TextureReference(TextureType.ITEM) public TextureHolder textureBucket;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public Sound emptySound;
-	@LimitedOptionsField({"COMMON", "UNCOMMON", "RARE", "EPIC"}) public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public StringListProcedure specialInformation;
 
 	public double resistance;

@@ -24,7 +24,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -68,7 +68,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String colorOnMap;
 
 	public boolean generateFeature;
-	@LimitedOptionsField({ "uniform", "triangle" }) public String generationShape;
+	@LimitedOptions({ "uniform", "triangle" }) public String generationShape;
 	public int frequencyPerChunks;
 	public int oreCount;
 	public int minGenerateHeight;
@@ -76,10 +76,11 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 
 	public int rotationMode;
-	@LimitedOptionsField({ "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
-			"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" }) public String renderMethod;
-	@LimitedOptionsField({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage",
-			"grass", "water" }) public String tintMethod;
+	@LimitedOptions({ "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
+			"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" })
+	public String renderMethod;
+	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+			"water" }) public String tintMethod;
 
 	@ModElementReference(acceptedTypes = { "bescript" }) public List<String> localScripts;
 

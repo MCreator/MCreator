@@ -20,7 +20,7 @@
 package net.mcreator.element.util;
 
 import net.mcreator.blockly.data.BlocklyXML;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,7 +41,7 @@ public class AnnotationUtils {
 	}
 
 	public static List<String> getLimitedOptionsList(Class<?> type, String field) {
-		return List.of(getAnnotation(type, field, LimitedOptionsField.class).value());
+		return List.of(getAnnotation(type, field, LimitedOptions.class).value());
 	}
 
 	private static final Map<FieldKey, Annotation> CACHE = new ConcurrentHashMap<>();

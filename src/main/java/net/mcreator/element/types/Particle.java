@@ -23,7 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -66,7 +66,7 @@ import java.io.IOException;
 	public boolean emissiveRendering;
 	public Procedure rotationProvider;
 
-	@LimitedOptionsField({ "OPAQUE", "TRANSLUCENT" }) public String renderType;
+	@LimitedOptions({ "OPAQUE", "TRANSLUCENT" }) public String renderType;
 
 	public Procedure additionalExpiryCondition;
 

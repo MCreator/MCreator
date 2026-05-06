@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
 	public String name;
-	@LimitedOptionsField({"COMMON", "UNCOMMON", "RARE", "EPIC"}) public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public int stackSize;
 	public int enchantability;
@@ -117,7 +117,7 @@ import java.util.stream.Collectors;
 	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
-	@LimitedOptionsField({ "none", "eat", "block", "bow", "crossbow", "drink", "spear" }) public String animation;
+	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear" }) public String animation;
 
 	// Music disc
 	public boolean isMusicDisc;

@@ -24,7 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -51,8 +51,7 @@ import java.util.List;
 	@Nullable public Particle particle;
 	public Sound onAddedSound;
 	public boolean isInstant;
-	@LimitedOptionsField({ "NEUTRAL", "HARMFUL", "BENEFICIAL" })
-	public String mobEffectCategory;
+	@LimitedOptions({ "NEUTRAL", "HARMFUL", "BENEFICIAL" }) public String mobEffectCategory;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
 	public boolean isCuredbyHoney;

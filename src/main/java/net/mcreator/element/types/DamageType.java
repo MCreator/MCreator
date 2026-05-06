@@ -20,14 +20,14 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.workspace.elements.ModElement;
 
 @SuppressWarnings("unused") public class DamageType extends GeneratableElement {
 
 	public double exhaustion;
-	@LimitedOptionsField({ "never", "always", "when_caused_by_living_non_player" }) public String scaling;
-	@LimitedOptionsField({ "hurt", "thorns", "drowning", "burning", "poking", "freezing" }) public String effects;
+	@LimitedOptions({ "never", "always", "when_caused_by_living_non_player" }) public String scaling;
+	@LimitedOptions({ "hurt", "thorns", "drowning", "burning", "poking", "freezing" }) public String effects;
 
 	public String normalDeathMessage;
 	public String itemDeathMessage;

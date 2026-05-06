@@ -24,7 +24,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface LimitedOptionsField {
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface LimitedOptions {
 
 	String[] value();
 

@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
@@ -35,7 +35,7 @@ import java.util.List;
 	public double maxValue;
 	public double defaultValue;
 
-	@LimitedOptionsField({ "POSITIVE", "NEUTRAL", "NEGATIVE" }) public String sentiment;
+	@LimitedOptions({ "POSITIVE", "NEUTRAL", "NEGATIVE" }) public String sentiment;
 
 	public boolean addToAllEntities;
 	public boolean addToPlayers;

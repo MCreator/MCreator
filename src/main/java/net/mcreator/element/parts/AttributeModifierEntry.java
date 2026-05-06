@@ -19,11 +19,11 @@
 
 package net.mcreator.element.parts;
 
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 
 public class AttributeModifierEntry {
 	public String equipmentSlot = "any";
 	public AttributeEntry attribute;
 	public double amount;
-	@LimitedOptionsField({ "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" }) public String operation;
+	@LimitedOptions({ "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" }) public String operation;
 }

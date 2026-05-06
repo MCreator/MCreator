@@ -28,11 +28,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IEntityWithModel;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -105,10 +101,8 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
-	@LimitedOptionsField({ "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" })
-	public String bossBarColor;
-	@LimitedOptionsField({ "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" })
-	public String bossBarType;
+	@LimitedOptions({ "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" }) public String bossBarColor;
+	@LimitedOptions({ "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" }) public String bossBarType;
 
 	public MItemBlock equipmentMainHand;
 	public MItemBlock equipmentOffHand;
@@ -117,10 +111,8 @@ import java.util.stream.Collectors;
 	public MItemBlock equipmentLeggings;
 	public MItemBlock equipmentBoots;
 
-	@LimitedOptionsField({ "Mob", "Creature", "Raider" })
-	public String mobBehaviourType;
-	@LimitedOptionsField({ "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" })
-	public String mobCreatureType;
+	@LimitedOptions({ "Mob", "Creature", "Raider" }) public String mobBehaviourType;
+	@LimitedOptions({ "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" }) public String mobCreatureType;
 	public int attackStrength;
 	public double attackKnockback;
 	public double knockbackResistance;
@@ -181,10 +173,9 @@ import java.util.stream.Collectors;
 	public Procedure onInitialSpawn;
 
 	public boolean hasAI;
-	@LimitedOptionsField({ "(none)", "Bat", "Blaze", "Chicken", "Cow", "Creeper", "Enderman", "Horse", "IronGolem",
+	@LimitedOptions({ "(none)", "Bat", "Blaze", "Chicken", "Cow", "Creeper", "Enderman", "Horse", "IronGolem",
 			"MagmaCube", "Ocelot", "Pig", "Skeleton", "Slime", "Spider", "Squid", "Villager", "Witch", "Wolf",
-			"Zombie" })
-	public String aiBase;
+			"Zombie" }) public String aiBase;
 	@BlocklyXML(name = "aitasks", defaultXML = LivingEntity.XML_BASE) public String aixml;
 
 	public boolean breedable;

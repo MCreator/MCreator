@@ -53,11 +53,11 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	@LimitedOptionsField({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-			"Water", "Sky", "Fog", "Water fog" }) public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+			"Sky", "Fog", "Water fog" }) public String tintType;
 	public boolean isItemTinted;
 
-	@LimitedOptionsField({ "normal", "double", "growapable", "sapling" }) public String plantType;
+	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
 
 	@ModElementReference(acceptedTypes = { "potioneffect" }) public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
@@ -86,7 +86,7 @@ import java.util.stream.Collectors;
 
 	public boolean hasBlockItem;
 	public int maxStackSize;
-	@LimitedOptionsField({"COMMON", "UNCOMMON", "RARE", "EPIC"}) public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public boolean immuneToFire;
 
 	public boolean isCustomSoundType;
@@ -110,7 +110,7 @@ import java.util.stream.Collectors;
 	public boolean isReplaceable;
 	public String colorOnMap;
 	public MItemBlock creativePickItem;
-	@LimitedOptionsField({ "XZ", "XYZ", "NONE" }) public String offsetType;
+	@LimitedOptions({ "XZ", "XYZ", "NONE" }) public String offsetType;
 	public String aiPathNodeType;
 	public MItemBlock strippingResult;
 
@@ -131,7 +131,7 @@ import java.util.stream.Collectors;
 	public int frequencyOnChunks;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
-	@LimitedOptionsField({ "Flower", "Grass" }) public String generationType;
+	@LimitedOptions({ "Flower", "Grass" }) public String generationType;
 	public int patchSize;
 	public boolean generateAtAnyHeight;
 

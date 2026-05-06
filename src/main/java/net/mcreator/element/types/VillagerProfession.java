@@ -23,7 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.types.interfaces.IPOIProvider;
-import net.mcreator.element.types.interfaces.LimitedOptionsField;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -38,7 +38,7 @@ import java.util.List;
 	public String displayName;
 	public MItemBlock pointOfInterest;
 	public Sound actionSound;
-	@LimitedOptionsField({ "None", "Partial", "Full" }) public String hat;
+	@LimitedOptions({ "None", "Partial", "Full" }) public String hat;
 	@TextureReference(TextureType.ENTITY) public String professionTextureFile;
 	@TextureReference(TextureType.ENTITY) public String zombifiedProfessionTextureFile;
 
