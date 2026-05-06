@@ -24,7 +24,6 @@ import net.mcreator.element.types.interfaces.Numeric;
 public class AttributeModifierEntry {
 	public String equipmentSlot = "any";
 	public AttributeEntry attribute;
-	@Numeric(init = 0, min = -1024, max = 1024, step = 0.001)
-	public double amount;
+	@Numeric(init = 0, min = -1024, max = 1024, step = 0.001) public double amount;
 	public String operation;
 }
