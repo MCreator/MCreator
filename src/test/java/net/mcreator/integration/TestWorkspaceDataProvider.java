@@ -1794,7 +1794,8 @@ public class TestWorkspaceDataProvider {
 		Command command = new Command(modElement);
 		command.commandName = modElement.getName();
 		command.type = type;
-		command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
+		command.permissionLevel = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Command.class, "permissionLevel"));
 		command.argsxml = AnnotationUtils.getBlocklyXMLDefaultValue(Command.class, "argsxml");
 		return command;
 	}
