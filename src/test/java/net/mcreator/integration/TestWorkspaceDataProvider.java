@@ -1307,7 +1307,7 @@ public class TestWorkspaceDataProvider {
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
-							new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+							AnnotationUtils.getLimitedOptionsList(AttributeModifierEntry.class, "operation"));
 					item.attributeModifiers.add(entry);
 				}
 			}
@@ -1409,7 +1409,7 @@ public class TestWorkspaceDataProvider {
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
-							new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+							AnnotationUtils.getLimitedOptionsList(AttributeModifierEntry.class, "operation"));
 					modifiers.add(entry);
 				}
 			}
@@ -2401,7 +2401,7 @@ public class TestWorkspaceDataProvider {
 				entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 				entry.amount = random.nextDouble(-5, 5);
 				entry.operation = getRandomItem(random,
-						new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+						AnnotationUtils.getLimitedOptionsList(AttributeModifierEntry.class, "operation"));
 				tool.attributeModifiers.add(entry);
 			}
 		}
