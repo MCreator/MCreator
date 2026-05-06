@@ -23,9 +23,9 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
@@ -48,18 +48,18 @@ import java.io.IOException;
 	@TextureReference(TextureType.PARTICLE) public TextureHolder texture;
 
 	public boolean animate;
-	@NumericParameter(init = 1, min = 1, max = 100000, step = 1) public int frameDuration;
+	@Numeric(init = 1, min = 1, max = 100000, step = 1) public int frameDuration;
 
-	@NumericParameter(init = 0.2, min = 0, max = 4096, step = 0.1) public double width;
-	@NumericParameter(init = 0.2, min = 0, max = 4096, step = 0.1) public double height;
+	@Numeric(init = 0.2, min = 0, max = 4096, step = 0.1) public double width;
+	@Numeric(init = 0.2, min = 0, max = 4096, step = 0.1) public double height;
 	public NumberProcedure scale;
 	public boolean fixedScale;
-	@NumericParameter(init = 1, min = -100, max = 100, step = 0.1) public double speedFactor;
-	@NumericParameter(init = 0, min = -100, max = 100, step = 0.1) public double gravity;
-	@NumericParameter(init = 7, min = 0, max = 100000, step = 1) public int maxAge;
-	@NumericParameter(init = 0, min = 0, max = 100000, step = 1) public int maxAgeDiff;
-	@NumericParameter(init = 0, min = -100, max = 100, step = 0.01) public double angularVelocity;
-	@NumericParameter(init = 0, min = -100, max = 100, step = 0.01) public double angularAcceleration;
+	@Numeric(init = 1, min = -100, max = 100, step = 0.1) public double speedFactor;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.1) public double gravity;
+	@Numeric(init = 7, min = 0, max = 100000, step = 1) public int maxAge;
+	@Numeric(init = 0, min = 0, max = 100000, step = 1) public int maxAgeDiff;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.01) public double angularVelocity;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.01) public double angularAcceleration;
 
 	public boolean canCollide;
 	public boolean alwaysShow;

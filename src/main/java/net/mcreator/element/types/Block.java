@@ -89,7 +89,7 @@ import java.util.stream.Collectors;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
 	public Particle leavesParticleType;
-	@NumericParameter(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
+	@Numeric(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
@@ -107,32 +107,32 @@ import java.util.stream.Collectors;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	@NumericParameter(init = 1, min = -1, max = 64000, step = 0.05) public double hardness;
-	@NumericParameter(init = 10, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
+	@Numeric(init = 1, min = -1, max = 64000, step = 0.05) public double hardness;
+	@Numeric(init = 10, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
 
 	public boolean hasBlockItem;
-	@NumericParameter(init = 64, min = 1, max = 99, step = 1) public int maxStackSize;
+	@Numeric(init = 64, min = 1, max = 99, step = 1) public int maxStackSize;
 	public String rarity;
 	public boolean immuneToFire;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
-	@NumericParameter(init = 1, min = 0, max = 99, step = 1) public int dropAmount;
-	@NumericParameter(init = 0, min = 0, max = 1024, step = 1, rangeMinMaxCanBeEqual = true) public int xpAmountMin;
-	@NumericParameter(init = 0, min = 0, max = 1024, step = 1, rangeMinMaxCanBeEqual = true) public int xpAmountMax;
+	@Numeric(init = 1, min = 0, max = 99, step = 1) public int dropAmount;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1, allowMinMaxEqual = true) public int xpAmountMin;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1, allowMinMaxEqual = true) public int xpAmountMax;
 	public boolean useLootTableForDrops;
 	public boolean requiresCorrectTool;
 
-	@NumericParameter(init = 0, min = 0, max = 1024, step = 0.1) public double enchantPowerBonus;
+	@Numeric(init = 0, min = 0, max = 1024, step = 0.1) public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
 	public boolean hasCustomOpacity;
-	@NumericParameter(init = 15, min = 0, max = 15, step = 1) public int lightOpacity;
+	@Numeric(init = 15, min = 0, max = 15, step = 1) public int lightOpacity;
 
-	@NumericParameter(init = 0, min = 0, max = 9999999, step = 1) public int tickRate;
+	@Numeric(init = 0, min = 0, max = 9999999, step = 1) public int tickRate;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
@@ -147,13 +147,13 @@ import java.util.stream.Collectors;
 	public MItemBlock strippingResult;
 
 	public boolean ignitedByLava;
-	@NumericParameter(init = 0, min = 0, max = 1024, step = 1) public int flammability;
-	@NumericParameter(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
 
 	public boolean isLadder;
-	@NumericParameter(init = 0.6, min = 0.01, max = 5, step = 0.01) public double slipperiness;
-	@NumericParameter(init = 1, min = -1000, max = 1000, step = 0.1) public double speedFactor;
-	@NumericParameter(init = 1, min = -1000, max = 1000, step = 0.1) public double jumpFactor;
+	@Numeric(init = 0.6, min = 0.01, max = 5, step = 0.01) public double slipperiness;
+	@Numeric(init = 1, min = -1000, max = 1000, step = 0.1) public double speedFactor;
+	@Numeric(init = 1, min = -1000, max = 1000, step = 0.1) public double jumpFactor;
 	public String reactionToPushing;
 
 	public boolean isNotColidable;
@@ -187,8 +187,8 @@ import java.util.stream.Collectors;
 	public boolean hasInventory;
 	@ModElementReference(acceptedTypes = { "gui" }) @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
-	@NumericParameter(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
-	@NumericParameter(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
+	@Numeric(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
+	@Numeric(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
 	public boolean inventoryDropWhenDestroyed;
 	public boolean inventoryComparatorPower;
 	public List<Integer> inventoryOutSlotIDs;
@@ -197,13 +197,13 @@ import java.util.stream.Collectors;
 	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
-	@NumericParameter(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyInitial;
-	@NumericParameter(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyCapacity;
-	@NumericParameter(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxReceive;
-	@NumericParameter(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxExtract;
+	@Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyInitial;
+	@Numeric(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyCapacity;
+	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxReceive;
+	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxExtract;
 
 	public boolean isFluidTank;
-	@NumericParameter(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
+	@Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
 	@ModElementReference public List<Fluid> fluidRestrictions;
 
 	public Procedure onRightClicked;
@@ -226,12 +226,10 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 	public String generationShape;
-	@NumericParameter(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
-	@NumericParameter(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
-	@NumericParameter(init = 0, min = -2032, max = 2016, step = 1, rangeMinMaxCanBeEqual = true)
-	public int minGenerateHeight;
-	@NumericParameter(init = 64, min = -2032, max = 2016, step = 1, rangeMinMaxCanBeEqual = true)
-	public int maxGenerateHeight;
+	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
+	@Numeric(init = 0, min = -2032, max = 2016, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
+	@Numeric(init = 64, min = -2032, max = 2016, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
 
 	private Block() {
 		this(null);

@@ -23,7 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 
 @SuppressWarnings("unused") public class ItemExtension extends GeneratableElement {
@@ -38,7 +38,7 @@ import net.mcreator.workspace.elements.ModElement;
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
 
-	@NumericParameter(init = 0, min = 0, max = 1, step = 0.01) public double compostLayerChance;
+	@Numeric(init = 0, min = 0, max = 1, step = 0.01) public double compostLayerChance;
 
 	private ItemExtension() {
 		this(null);

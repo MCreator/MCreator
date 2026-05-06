@@ -28,11 +28,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IEntityWithModel;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -95,10 +91,10 @@ import java.util.stream.Collectors;
 
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
-	@NumericParameter(init = 0.6, min = 0, max = 1024, step = 0.1) public double modelWidth;
-	@NumericParameter(init = 1.8, min = 0, max = 1024, step = 0.1) public double modelHeight;
-	@NumericParameter(init = 0.5, min = 0, max = 20, step = 0.1) public double modelShadowSize;
-	@NumericParameter(init = 0, min = -1024, max = 1024, step = 0.1) public double mountedYOffset;
+	@Numeric(init = 0.6, min = 0, max = 1024, step = 0.1) public double modelWidth;
+	@Numeric(init = 1.8, min = 0, max = 1024, step = 0.1) public double modelHeight;
+	@Numeric(init = 0.5, min = 0, max = 20, step = 0.1) public double modelShadowSize;
+	@Numeric(init = 0, min = -1024, max = 1024, step = 0.1) public double mountedYOffset;
 
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
@@ -119,24 +115,24 @@ import java.util.stream.Collectors;
 
 	public String mobBehaviourType;
 	public String mobCreatureType;
-	@NumericParameter(init = 3, min = 0, max = 10000, step = 1) public int attackStrength;
-	@NumericParameter(init = 0, min = 0, max = 1000, step = 0.1) public double attackKnockback;
-	@NumericParameter(init = 0, min = 0, max = 1000, step = 0.1) public double knockbackResistance;
-	@NumericParameter(init = 0.3, min = 0, max = 50, step = 0.1) public double movementSpeed;
-	@NumericParameter(init = 0.6, min = 0, max = 255, step = 0.1) public double stepHeight;
-	@NumericParameter(init = 0, min = 0, max = 100, step = 0.1) public double armorBaseValue;
-	@NumericParameter(init = 64, min = 0, max = 10000, step = 1) public int trackingRange;
-	@NumericParameter(init = 16, min = 0, max = 2048, step = 1) public int followRange;
-	@NumericParameter(init = 10, min = 0, max = 1024, step = 1) public int health;
-	@NumericParameter(init = 0, min = 0, max = 100000, step = 1) public int xpAmount;
+	@Numeric(init = 3, min = 0, max = 10000, step = 1) public int attackStrength;
+	@Numeric(init = 0, min = 0, max = 1000, step = 0.1) public double attackKnockback;
+	@Numeric(init = 0, min = 0, max = 1000, step = 0.1) public double knockbackResistance;
+	@Numeric(init = 0.3, min = 0, max = 50, step = 0.1) public double movementSpeed;
+	@Numeric(init = 0.6, min = 0, max = 255, step = 0.1) public double stepHeight;
+	@Numeric(init = 0, min = 0, max = 100, step = 0.1) public double armorBaseValue;
+	@Numeric(init = 64, min = 0, max = 10000, step = 1) public int trackingRange;
+	@Numeric(init = 16, min = 0, max = 2048, step = 1) public int followRange;
+	@Numeric(init = 10, min = 0, max = 1024, step = 1) public int health;
+	@Numeric(init = 0, min = 0, max = 100000, step = 1) public int xpAmount;
 	public boolean waterMob;
 	public LogicProcedure breatheUnderwater;
 	public LogicProcedure pushedByFluids;
 	public boolean flyingMob;
 
 	@ModElementReference(acceptedTypes = { "gui" }) @Nullable public String guiBoundTo;
-	@NumericParameter(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
-	@NumericParameter(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
+	@Numeric(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
+	@Numeric(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
 
 	public boolean disableCollisions;
 
@@ -189,16 +185,16 @@ import java.util.stream.Collectors;
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
 	@ModElementReference(defaultValues = "Default item", acceptedTypes = "projectile") public String rangedItemType;
-	@NumericParameter(init = 20, min = 0, max = 1024, step = 1) public int rangedAttackInterval;
-	@NumericParameter(init = 10, min = 0, max = 1024, step = 0.1) public double rangedAttackRadius;
+	@Numeric(init = 20, min = 0, max = 1024, step = 1) public int rangedAttackInterval;
+	@Numeric(init = 10, min = 0, max = 1024, step = 0.1) public double rangedAttackRadius;
 
 	public boolean spawnThisMob;
 	public boolean doesDespawnWhenIdle;
 	public Procedure spawningCondition;
-	@NumericParameter(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
+	@Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
 	public String mobSpawningType;
-	@NumericParameter(init = 4, min = 1, max = 1000, step = 1, rangeMinMaxCanBeEqual = true) public int minNumberOfMobsPerGroup;
-	@NumericParameter(init = 4, min = 1, max = 1000, step = 1, rangeMinMaxCanBeEqual = true) public int maxNumberOfMobsPerGroup;
+	@Numeric(init = 4, min = 1, max = 1000, step = 1, allowMinMaxEqual = true) public int minNumberOfMobsPerGroup;
+	@Numeric(init = 4, min = 1, max = 1000, step = 1, allowMinMaxEqual = true) public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
 	public int[] raidSpawnsCount;

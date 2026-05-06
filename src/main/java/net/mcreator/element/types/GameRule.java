@@ -19,7 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -35,7 +35,7 @@ import java.awt.image.BufferedImage;
 	public String category;
 
 	public boolean defaultValueLogic;
-	@NumericParameter(init = 0, min = Integer.MIN_VALUE, max = Integer.MAX_VALUE, step = 1) public int defaultValueNumber;
+	@Numeric(init = 0, min = Integer.MIN_VALUE, max = Integer.MAX_VALUE, step = 1) public int defaultValueNumber;
 
 	private GameRule() {
 		this(null);

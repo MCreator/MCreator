@@ -40,7 +40,7 @@ import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
@@ -2682,12 +2682,12 @@ public class TestWorkspaceDataProvider {
 	}
 
 	private static int getRandomInt(Random random, Class<?> type, String field) {
-		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
+		Numeric annotation = AnnotationUtils.getAnnotation(type, field, Numeric.class);
 		return random.nextInt((int) annotation.min(), (int) (annotation.max() + 1));
 	}
 
 	private static double getRandomDouble(Random random, Class<?> type, String field) {
-		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
+		Numeric annotation = AnnotationUtils.getAnnotation(type, field, Numeric.class);
 		return getRandomDouble(random, annotation.min(), annotation.max());
 	}
 

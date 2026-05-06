@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
@@ -37,8 +37,8 @@ import java.util.List;
 	public String projection;
 	@ModElementReference public List<MItemBlock> ignoredBlocks;
 
-	@NumericParameter(init = 5, min = 0, max = 1000000, step = 1) public int spacing;
-	@NumericParameter(init = 2, min = 0, max = 1000000, step = 1) public int separation;
+	@Numeric(init = 5, min = 0, max = 1000000, step = 1) public int spacing;
+	@Numeric(init = 2, min = 0, max = 1000000, step = 1) public int separation;
 
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public String terrainAdaptation;
@@ -47,11 +47,11 @@ import java.util.List;
 	public String surfaceDetectionType;
 	public boolean useStartHeight;
 	public String startHeightProviderType;
-	@NumericParameter(init = 0, min = -1024, max = 1024, step = 1) public int startHeightMin;
-	@NumericParameter(init = 128, min = -1024, max = 1024, step = 1) public int startHeightMax;
+	@Numeric(init = 0, min = -1024, max = 1024, step = 1) public int startHeightMin;
+	@Numeric(init = 128, min = -1024, max = 1024, step = 1) public int startHeightMax;
 
-	@NumericParameter(init = 1, min = 0, max = 20, step = 1) public int size;
-	@NumericParameter(init = 64, min = 1, max = 128, step = 1) public int maxDistanceFromCenter;
+	@Numeric(init = 1, min = 0, max = 20, step = 1) public int size;
+	@Numeric(init = 64, min = 1, max = 128, step = 1) public int maxDistanceFromCenter;
 	@ModElementReference @ResourceReference("structure") public List<JigsawPool> jigsawPools;
 
 	private Structure() {
@@ -92,7 +92,7 @@ import java.util.List;
 
 		public static class JigsawPart {
 
-			@NumericParameter(init = 1, min = 1, max = 150, step = 1) public int weight;
+			@Numeric(init = 1, min = 1, max = 150, step = 1) public int weight;
 			@ResourceReference("structure") public String structure;
 			public String projection;
 			@ModElementReference public List<MItemBlock> ignoredBlocks;

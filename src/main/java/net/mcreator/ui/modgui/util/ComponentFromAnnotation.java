@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.modgui.util;
 
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.ui.component.JMinMaxSpinner;
 
@@ -28,7 +28,7 @@ import javax.swing.*;
 public class ComponentFromAnnotation {
 
 	public static JSpinner spinner(Class<?> type, String field) {
-		NumericParameter annotation = AnnotationUtils.getAnnotation(type, field, NumericParameter.class);
+		Numeric annotation = AnnotationUtils.getAnnotation(type, field, Numeric.class);
 		JSpinner retval;
 		if (isInteger(annotation)) {
 			retval = new JSpinner(
@@ -43,8 +43,8 @@ public class ComponentFromAnnotation {
 	}
 
 	public static JMinMaxSpinner minMaxSpinner(Class<?> type, String minField, String maxField) {
-		NumericParameter minAnnotation = AnnotationUtils.getAnnotation(type, minField, NumericParameter.class);
-		NumericParameter maxAnnotation = AnnotationUtils.getAnnotation(type, maxField, NumericParameter.class);
+		Numeric minAnnotation = AnnotationUtils.getAnnotation(type, minField, Numeric.class);
+		Numeric maxAnnotation = AnnotationUtils.getAnnotation(type, maxField, Numeric.class);
 
 		if (minAnnotation.step() != maxAnnotation.step())
 			throw new IllegalArgumentException("Min and max fields must have the same step value");
@@ -66,7 +66,7 @@ public class ComponentFromAnnotation {
 		return retval;
 	}
 
-	private static boolean isInteger(NumericParameter annotation) {
+	private static boolean isInteger(Numeric annotation) {
 		return isInteger(annotation.init()) && isInteger(annotation.min()) && isInteger(annotation.max())
 				&& isInteger(annotation.step());
 	}

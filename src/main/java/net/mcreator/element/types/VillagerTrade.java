@@ -22,7 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProfessionEntry;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
@@ -50,19 +50,19 @@ import java.util.List;
 		public static class Entry {
 
 			public MItemBlock price1;
-			@NumericParameter(init = 1, min = 1, max = 99, step = 1) public int countPrice1;
+			@Numeric(init = 1, min = 1, max = 99, step = 1) public int countPrice1;
 
 			public MItemBlock price2;
-			@NumericParameter(init = 1, min = 1, max = 99, step = 1) public int countPrice2;
+			@Numeric(init = 1, min = 1, max = 99, step = 1) public int countPrice2;
 
 			public MItemBlock offer;
-			@NumericParameter(init = 1, min = 1, max = 99, step = 1) public int countOffer;
+			@Numeric(init = 1, min = 1, max = 99, step = 1) public int countOffer;
 
 			public int level;
-			@NumericParameter(init = 10, min = 1, max = 72000, step = 1) public int maxTrades;
-			@NumericParameter(init = 5, min = 0, max = 72000, step = 1) public int xp;
+			@Numeric(init = 10, min = 1, max = 72000, step = 1) public int maxTrades;
+			@Numeric(init = 5, min = 0, max = 72000, step = 1) public int xp;
 
-			@NumericParameter(init = 0.05, min = 0, max = 1, step = 0.01) public double priceMultiplier;
+			@Numeric(init = 0.05, min = 0, max = 1, step = 0.01) public double priceMultiplier;
 		}
 	}
 

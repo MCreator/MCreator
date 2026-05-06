@@ -23,7 +23,7 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -55,14 +55,14 @@ import java.util.List;
 	public Sound additionsSound;
 	public Sound music;
 	public Sound moodSound;
-	@NumericParameter(init = 6000, min = 1, max = 30000, step = 1) public int moodSoundDelay;
+	@Numeric(init = 6000, min = 1, max = 30000, step = 1) public int moodSoundDelay;
 
 	public boolean spawnParticles;
 	public Particle particleToSpawn;
-	@NumericParameter(init = 0.5, min = 0, max = 100, step = 0.1) public double particlesProbability;
+	@Numeric(init = 0.5, min = 0, max = 100, step = 0.1) public double particlesProbability;
 
-	@NumericParameter(init = 0.5, min = 0, max = 1, step = 0.1) public double rainingPossibility;
-	@NumericParameter(init = 0.5, min = -1, max = 2, step = 0.1) public double temperature;
+	@Numeric(init = 0.5, min = 0, max = 1, step = 0.1) public double rainingPossibility;
+	@Numeric(init = 0.5, min = -1, max = 2, step = 0.1) public double temperature;
 
 	public boolean spawnBiome;
 	public boolean spawnInCaves;
@@ -75,15 +75,15 @@ import java.util.List;
 	public ClimatePoint genWeirdness;
 	public ClimatePoint genDepth;
 
-	@NumericParameter(init = 0.2, min = 0.0, max = 1.5, step = 0.0001, rangeMinMaxCanBeEqual = true)
+	@Numeric(init = 0.2, min = 0.0, max = 1.5, step = 0.0001, allowMinMaxEqual = true)
 	public transient double genDepthMin;
-	@NumericParameter(init = 0.9, min = 0.0, max = 1.5, step = 0.0001, rangeMinMaxCanBeEqual = true)
+	@Numeric(init = 0.9, min = 0.0, max = 1.5, step = 0.0001, allowMinMaxEqual = true)
 	public transient double genDepthMax;
 
-	@NumericParameter(init = 1, min = 0, max = 256, step = 1) public int treesPerChunk;
+	@Numeric(init = 1, min = 0, max = 256, step = 1) public int treesPerChunk;
 	public String vanillaTreeType;
 	public int treeType;
-	@NumericParameter(init = 7, min = 0, max = 32, step = 1) public int minHeight;
+	@Numeric(init = 7, min = 0, max = 32, step = 1) public int minHeight;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
 	public MItemBlock treeVines;
@@ -166,17 +166,17 @@ import java.util.List;
 	public static class SpawnEntry {
 
 		public EntityEntry entity;
-		@NumericParameter(init = 4, min = 1, max = 1000, step = 1, rangeMinMaxCanBeEqual = true) public int minGroup;
-		@NumericParameter(init = 4, min = 1, max = 1000, step = 1, rangeMinMaxCanBeEqual = true) public int maxGroup;
-		@NumericParameter(init = 20, min = 1, max = 1000, step = 1) public int weight;
+		@Numeric(init = 4, min = 1, max = 1000, step = 1, allowMinMaxEqual = true) public int minGroup;
+		@Numeric(init = 4, min = 1, max = 1000, step = 1, allowMinMaxEqual = true) public int maxGroup;
+		@Numeric(init = 20, min = 1, max = 1000, step = 1) public int weight;
 		public String spawnType;
 
 	}
 
 	public static class ClimatePoint {
 
-		@NumericParameter(init = 0, min = -2.0, max = 2.0, step = 0.0001) public double min;
-		@NumericParameter(init = 0, min = -2.0, max = 2.0, step = 0.0001) public double max;
+		@Numeric(init = 0, min = -2.0, max = 2.0, step = 0.0001) public double min;
+		@Numeric(init = 0, min = -2.0, max = 2.0, step = 0.0001) public double max;
 
 		public ClimatePoint(double min, double max) {
 			this.min = min;

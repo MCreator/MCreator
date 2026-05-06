@@ -20,12 +20,12 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.NumericParameter;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 
 @SuppressWarnings("unused") public class DamageType extends GeneratableElement {
 
-	@NumericParameter(init = 0.1, min = 0, max = 100, step = 0.01) public double exhaustion;
+	@Numeric(init = 0.1, min = 0, max = 100, step = 0.01) public double exhaustion;
 	public String scaling;
 	public String effects;
 

@@ -24,7 +24,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface NumericParameter {
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface Numeric {
 
 	double init();
 
@@ -34,6 +34,6 @@ import java.lang.annotation.Target;
 
 	double step();
 
-	boolean rangeMinMaxCanBeEqual() default false;
+	boolean allowMinMaxEqual() default false;
 
 }
