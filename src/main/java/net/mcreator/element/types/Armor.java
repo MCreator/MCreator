@@ -79,23 +79,23 @@ import java.util.stream.Collectors;
 	public StringListProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
-	public String helmetModelPart;
+	@Nullable public String helmetModelPart;;
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String helmetModelTexture;
 
 	public String bodyModelName;
-	public String bodyModelPart;
-	public String armsModelPartL;
-	public String armsModelPartR;
+	@Nullable public String bodyModelPart;
+	@Nullable public String armsModelPartL;
+	@Nullable public String armsModelPartR;
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bodyModelTexture;
 
 	public String leggingsModelName;
-	public String leggingsModelPartL;
-	public String leggingsModelPartR;
+	@Nullable public String leggingsModelPartL;
+	@Nullable public String leggingsModelPartR;
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String leggingsModelTexture;
 
 	public String bootsModelName;
-	public String bootsModelPartL;
-	public String bootsModelPartR;
+	@Nullable public String bootsModelPartL;
+	@Nullable public String bootsModelPartR;
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bootsModelTexture;
 
 	public int helmetItemRenderType;
@@ -135,7 +135,7 @@ import java.util.stream.Collectors;
 	@Numeric(init = 9, min = 1, max = 128000, step = 1) public int enchantability;
 	@Numeric(init = 0, min = 0, max = 1024, step = 0.1) public double toughness;
 	@Numeric(init = 0, min = 0, max = 5.0, step = 0.1) public double knockbackResistance;
-	public Sound equipSound;
+	@Nullable public Sound equipSound;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public String rarity;
 

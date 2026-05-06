@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 
 	public String plantType;
 
-	@ModElementReference(acceptedTypes = { "potioneffect" }) public String suspiciousStewEffect;
+	@ModElementReference(acceptedTypes = { PotionEffect.class }) public String suspiciousStewEffect;
 	@Numeric(init = 100, min = 0, max = 100000, step = 1) public int suspiciousStewDuration;
 
 	@Numeric(init = 0.1, min = 0, max = 1, step = 0.01) public double secondaryTreeChance;
