@@ -59,7 +59,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
@@ -99,17 +98,12 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JMinMaxSpinner monsterSpawnLightLimit = new JMinMaxSpinner(0, 7, 0, 15, 1).allowEqualValues();
 	private final JSpinner monsterSpawnBlockLightLimit = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
-	private final TranslatedComboBox defaultEffects = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("overworld", "elementgui.dimension.effects_overworld"),
-			Map.entry("the_nether", "elementgui.dimension.effects_the_nether"),
-			Map.entry("the_end", "elementgui.dimension.effects_the_end")
-			//@formatter:on
-	);
+	private final TranslatedComboBox defaultEffects = ComponentFromAnnotation.translatedOptions(Dimension.class,
+			"defaultEffects", "elementgui.dimension.effects_");
 	private final JCheckBox useCustomEffects = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasClouds = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner cloudHeight = new JSpinner(new SpinnerNumberModel(192, -2032, 2031, 16));
-	private final JComboBox<String> skyType = new JComboBox<>(new String[] { "NONE", "NORMAL", "END" });
+	private final JComboBox<String> skyType = ComponentFromAnnotation.options(Dimension.class, "skyType");
 	private final JCheckBox sunHeightAffectsFog = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
@@ -120,8 +114,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final DataListComboBox portalParticles = new DataListComboBox(mcreator);
 
-	private final JComboBox<String> worldGenType = new JComboBox<>(
-			new String[] { "Normal world gen", "Nether like gen", "End like gen" });
+	private final JComboBox<String> worldGenType = ComponentFromAnnotation.options(Dimension.class, "worldGenType");
 
 	private BiomeListField biomesInDimension;
 	private BiomeListField biomesInDimensionCaves;

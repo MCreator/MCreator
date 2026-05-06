@@ -47,7 +47,7 @@ import java.util.List;
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
-	public String worldGenType;
+	@LimitedOptionsField({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
 
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
@@ -57,11 +57,11 @@ import java.util.List;
 	public int horizontalNoiseSize;
 	public int verticalNoiseSize;
 
-	public String defaultEffects;
+	@LimitedOptionsField({ "overworld", "the_nether", "the_end" }) public String defaultEffects;
 	public boolean useCustomEffects;
 	public boolean hasClouds;
 	public int cloudHeight;
-	public String skyType;
+	@LimitedOptionsField({ "NONE", "NORMAL", "END" }) public String skyType;
 	public Color airColor;
 	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;

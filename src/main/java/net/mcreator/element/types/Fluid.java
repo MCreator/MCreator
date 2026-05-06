@@ -60,6 +60,7 @@ import java.util.List;
 	public NumberProcedure fogStartDistance;
 	public NumberProcedure fogEndDistance;
 
+	@LimitedOptionsField({"No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water", "Sky", "Fog", "Water fog"})
 	public String tintType;
 
 	public boolean canMultiply;

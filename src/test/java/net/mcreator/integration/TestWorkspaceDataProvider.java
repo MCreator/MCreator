@@ -593,9 +593,7 @@ public class TestWorkspaceDataProvider {
 			fluid.spawnParticles = !_true;
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			fluid.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-							"Water", "Sky", "Fog", "Water fog"));
+			fluid.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Fluid.class, "tintType"));
 			fluid.flowStrength = 2.3;
 			fluid.luminosity = 3;
 			fluid.density = 5;
@@ -819,12 +817,14 @@ public class TestWorkspaceDataProvider {
 			dimension.minMonsterSpawnLightLimit = _true ? 4 : 12;
 			dimension.maxMonsterSpawnLightLimit = 12;
 			dimension.monsterSpawnBlockLightLimit = 5;
-			dimension.defaultEffects = new String[] { "overworld", "overworld", "the_nether", "the_end" }[valueIndex];
+			dimension.defaultEffects = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Dimension.class, "defaultEffects"));
 			dimension.useCustomEffects = emptyLists;
 			dimension.hasClouds = _true;
 			dimension.cloudHeight = 16 * 5;
 			dimension.sunHeightAffectsFog = !_true;
-			dimension.skyType = new String[] { "NONE", "NORMAL", "END", "NORMAL" }[valueIndex];
+			dimension.skyType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Dimension.class, "skyType"));
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
 			dimension.portalLuminance = 8;
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
@@ -834,8 +834,8 @@ public class TestWorkspaceDataProvider {
 					AnnotationUtils.getLimitedOptionsList(Dimension.class, "igniterRarity"));
 			dimension.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
-					"Normal world gen" }[valueIndex];
+			dimension.worldGenType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Dimension.class, "worldGenType"));
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, worldgenBlocks).getName());
 			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(),
