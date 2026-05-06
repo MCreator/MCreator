@@ -2018,7 +2018,8 @@ public class TestWorkspaceDataProvider {
 		block.connectedSides = _true;
 		block.displayFluidOverlay = _true;
 		block.emissiveRendering = _true;
-		block.transparencyType = new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }[valueIndex];
+		block.transparencyType = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "transparencyType"));
 		block.disableOffset = random.nextBoolean();
 		block.boundingBoxes = new ArrayList<>();
 		if (!emptyLists) {
@@ -2036,7 +2037,9 @@ public class TestWorkspaceDataProvider {
 				block.boundingBoxes.add(box);
 			}
 		}
-		block.rotationMode = blockBase == null ? new int[] { 0, 1, 4, 5 }[valueIndex] : 0;
+		block.rotationMode = blockBase == null
+				? random.nextInt(AnnotationUtils.getLimitedOptionsList(Block.class, "rotationMode").size())
+				: 0;
 		block.enablePitch = !_true;
 		block.customProperties = new ArrayList<>();
 		if (!emptyLists) {
@@ -2111,7 +2114,7 @@ public class TestWorkspaceDataProvider {
 		block.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "rarity"));
 		block.immuneToFire = _true;
 		block.creativeTabs = emptyLists ? List.of() : tabs;
-		block.destroyTool = getRandomItem(random, new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
+		block.destroyTool = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "destroyTool"));
 		block.customDrop = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 		block.ignitedByLava = _true;
 		block.flammability = 5;
@@ -2125,13 +2128,13 @@ public class TestWorkspaceDataProvider {
 		block.isWaterloggable = !block.hasGravity && blockBase == null;
 		block.isLadder = _true;
 		block.enchantPowerBonus = 1.2342;
-		block.reactionToPushing = getRandomItem(random,
-				new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
+		block.reactionToPushing = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "reactionToPushing"));
 		block.slipperiness = 12.342;
 		block.speedFactor = 34.632;
 		block.jumpFactor = 17.732;
 		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-		block.blockSetType = getRandomItem(random, new String[] { "OAK", "STONE", "IRON" });
+		block.blockSetType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "blockSetType"));
 		block.tickRate = _true ? 0 : 24;
 		block.isCustomSoundType = !_true;
 		block.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -2153,11 +2156,14 @@ public class TestWorkspaceDataProvider {
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 		block.noteBlockInstrument = getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments"));
-		block.offsetType = blockBase == null ? getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ")) : "NONE";
+		block.offsetType = blockBase == null
+				? getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType"))
+				: "NONE";
 		block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 		block.beaconColorModifier = emptyLists ? null : Color.cyan;
 		block.unbreakable = _true;
-		block.vanillaToolTier = getRandomString(random, Arrays.asList("NONE", "STONE", "IRON", "DIAMOND"));
+		block.vanillaToolTier = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "vanillaToolTier"));
 		block.tickRandomly = _true;
 		block.guiBoundTo = emptyLists || guis.isEmpty() ? null : getRandomItem(random, guis);
 		block.openGUIOnRightClick = random.nextBoolean();
