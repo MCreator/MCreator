@@ -19,6 +19,8 @@
 
 package net.mcreator.element.parts.procedure;
 
+import com.google.gson.*;
+import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.util.TestUtil;
@@ -28,11 +30,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Procedure {
+@SuppressWarnings("unused") @JsonAdapter(Procedure.GSONAdapter.class) public class Procedure {
 
 	private static final Logger LOG = LogManager.getLogger(Procedure.class);
 
@@ -81,6 +84,28 @@ import java.util.List;
 		}
 
 		return "none";
+	}
+
+	public static class GSONAdapter implements JsonSerializer<Procedure>, JsonDeserializer<Procedure> {
+
+		@Override public Procedure deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			if (json.isJsonNull()) {
+				return new Procedure(null);
+			} else if (json.isJsonPrimitive()) {
+				return new Procedure(json.getAsString());
+			} else if (json.isJsonObject()) {
+				return new Procedure(json.getAsJsonObject().get("name").getAsString());
+			} else {
+				throw new JsonParseException("Invalid JSON for Procedure: " + json);
+			}
+		}
+
+		@Override
+		public JsonElement serialize(Procedure procedure, Type typeOfSrc, JsonSerializationContext context) {
+			return (procedure.name == null || procedure.name.isEmpty()) ? JsonNull.INSTANCE : new JsonPrimitive(procedure.name);
+		}
+
 	}
 
 }
