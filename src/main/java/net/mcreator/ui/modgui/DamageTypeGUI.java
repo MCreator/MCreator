@@ -27,6 +27,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.elements.ModElement;
@@ -41,7 +42,7 @@ import java.util.Map;
 
 public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
-	private final JSpinner exhaustion = new JSpinner(new SpinnerNumberModel(0.1, 0, 100, 0.01));
+	private final JSpinner exhaustion = ComponentFromAnnotation.spinner(DamageType.class, "exhaustion");
 	private final TranslatedComboBox scaling = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("never","elementgui.damagetype.scaling.never"),

@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.EnchantmentListField;
 import net.mcreator.ui.minecraft.MCItemListField;
@@ -48,14 +49,14 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final VTextField name = new VTextField(20).requireValue("elementgui.enchantment.needs_name")
 			.enableRealtimeValidation();
 
-	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(10, 1, 1024, 1));
-	private final JSpinner anvilCost = new JSpinner(new SpinnerNumberModel(1, 1, 1024, 1));
+	private final JSpinner weight = ComponentFromAnnotation.spinner(Enchantment.class, "weight");
+	private final JSpinner anvilCost = ComponentFromAnnotation.spinner(Enchantment.class, "anvilCost");
 
 	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
 
-	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(4, 1, 255, 1));
+	private final JSpinner maxLevel = ComponentFromAnnotation.spinner(Enchantment.class, "maxLevel");
 
-	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner damageModifier = ComponentFromAnnotation.spinner(Enchantment.class, "damageModifier");
 
 	private final JCheckBox isTreasureEnchantment = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isCurse = L10N.checkbox("elementgui.common.enable");

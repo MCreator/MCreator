@@ -589,20 +589,20 @@ public class TestWorkspaceDataProvider {
 			fluid.fogStartDistance = new NumberProcedure(emptyLists ? null : "number3", 8);
 			fluid.fogEndDistance = new NumberProcedure(emptyLists ? null : "number3", 16);
 			fluid.canMultiply = _true;
-			fluid.flowRate = 8;
-			fluid.levelDecrease = 2;
-			fluid.slopeFindDistance = 3;
+			fluid.flowRate = getRandomInt(random, Fluid.class, "flowRate");
+			fluid.levelDecrease = getRandomInt(random, Fluid.class, "levelDecrease");
+			fluid.slopeFindDistance = getRandomInt(random, Fluid.class, "slopeFindDistance");
 			fluid.spawnParticles = !_true;
 			fluid.dripParticle = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
-			fluid.flowStrength = 2.3;
-			fluid.luminosity = 3;
-			fluid.density = 5;
-			fluid.viscosity = 10;
-			fluid.temperature = 375;
+			fluid.flowStrength = getRandomDouble(random, Fluid.class, "flowStrength");
+			fluid.luminosity = getRandomInt(random, Fluid.class, "luminosity");
+			fluid.density = getRandomInt(random, Fluid.class, "density");
+			fluid.viscosity = getRandomInt(random, Fluid.class, "viscosity");
+			fluid.temperature = getRandomInt(random, Fluid.class, "temperature");
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
 			fluid.textureBucket = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
@@ -614,14 +614,14 @@ public class TestWorkspaceDataProvider {
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			fluid.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-			fluid.resistance = 52.2;
+			fluid.resistance = getRandomDouble(random, Fluid.class, "resistance");
 			fluid.emissiveRendering = _true;
-			fluid.luminance = 6;
-			fluid.tickRate = _true ? 0 : 13;
-			fluid.lightOpacity = _true ? 2 : 0;
+			fluid.luminance = getRandomInt(random, Fluid.class, "luminance");
+			fluid.tickRate = getRandomInt(random, Fluid.class, "tickRate");
+			fluid.lightOpacity = getRandomInt(random, Fluid.class, "lightOpacity");
 			fluid.ignitedByLava = !_true;
-			fluid.flammability = 5;
-			fluid.fireSpreadSpeed = 12;
+			fluid.flammability = getRandomInt(random, Fluid.class, "flammability");
+			fluid.fireSpreadSpeed = getRandomInt(random, Fluid.class, "fireSpreadSpeed");
 			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 			fluid.onBlockAdded = new Procedure("procedure5");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
@@ -688,8 +688,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
 			GUI gui = new GUI(modElement);
 			gui.type = new int[] { 0, 0, 1, 1 }[valueIndex];
-			gui.width = new int[] { 600, 400, 352, 500 }[valueIndex];
-			gui.height = new int[] { 500, 400, 353, 450 }[valueIndex];
+			gui.width = getRandomInt(random, GUI.class, "width");
+			gui.height = getRandomInt(random, GUI.class, "height");
 			gui.renderBgLayer = !_true;
 			gui.doesPauseGame = _true;
 			gui.inventoryOffsetX = 20;
@@ -785,6 +785,8 @@ public class TestWorkspaceDataProvider {
 					blocksAndItemsAndTags, biomes, guis);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
+			Range<Integer> monsterSpawnLightLimit = getRandomIntRange(random, Dimension.class,
+					"minMonsterSpawnLightLimit", "maxMonsterSpawnLightLimit");
 			dimension.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			dimension.portalTexture = new TextureHolder(modElement.getWorkspace(), "test2");
 			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
@@ -810,25 +812,25 @@ public class TestWorkspaceDataProvider {
 			dimension.hasFog = _true;
 			dimension.hasSkyLight = !_true;
 			dimension.imitateOverworldBehaviour = _true;
-			dimension.ambientLight = 0.12;
+			dimension.ambientLight = getRandomDouble(random, Dimension.class, "ambientLight");
 			dimension.doesWaterVaporize = !_true;
 			dimension.hasFixedTime = !_true;
-			dimension.fixedTimeValue = _true ? 0 : 1523;
-			dimension.coordinateScale = 4.23;
+			dimension.fixedTimeValue = getRandomInt(random, Dimension.class, "fixedTimeValue");
+			dimension.coordinateScale = getRandomDouble(random, Dimension.class, "coordinateScale");
 			dimension.infiniburnTag = "minecraft:infiniburn_end";
 			dimension.piglinSafe = !_true;
 			dimension.hasRaids = _true;
-			dimension.minMonsterSpawnLightLimit = _true ? 4 : 12;
-			dimension.maxMonsterSpawnLightLimit = 12;
-			dimension.monsterSpawnBlockLightLimit = 5;
+			dimension.minMonsterSpawnLightLimit = monsterSpawnLightLimit.getMinimum();
+			dimension.maxMonsterSpawnLightLimit = monsterSpawnLightLimit.getMaximum();
+			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class, "monsterSpawnBlockLightLimit");
 			dimension.defaultEffects = new String[] { "overworld", "overworld", "the_nether", "the_end" }[valueIndex];
 			dimension.useCustomEffects = emptyLists;
 			dimension.hasClouds = _true;
-			dimension.cloudHeight = 16 * 5;
+			dimension.cloudHeight = getRandomInt(random, Dimension.class, "cloudHeight");
 			dimension.sunHeightAffectsFog = !_true;
 			dimension.skyType = new String[] { "NONE", "NORMAL", "END", "NORMAL" }[valueIndex];
 			dimension.enablePortal = true; // we always want it as it can be referenced in other tests
-			dimension.portalLuminance = 8;
+			dimension.portalLuminance = getRandomInt(random, Dimension.class, "portalLuminance");
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
@@ -841,7 +843,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, worldgenBlocks).getName());
 			dimension.fluidBlock = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, worldgenBlocks).getName());
-			dimension.seaLevel = 24;
+			dimension.seaLevel = getRandomInt(random, Dimension.class, "seaLevel");
 			dimension.generateOreVeins = _true;
 			dimension.generateAquifers = !_true;
 			dimension.horizontalNoiseSize = new int[] { 1, 2, 1, 4 }[valueIndex];
@@ -1188,14 +1190,14 @@ public class TestWorkspaceDataProvider {
 			item.name = modElement.getName();
 			item.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			item.creativeTabs = emptyLists ? List.of() : tabs;
-			item.stackSize = 52;
-			item.enchantability = 3;
-			item.useDuration = 8;
-			item.toolType = 1.43;
-			item.damageCount = 4;
+			item.stackSize = getRandomInt(random, Item.class, "stackSize");
+			item.enchantability = getRandomInt(random, Item.class, "enchantability");
+			item.useDuration = getRandomInt(random, Item.class, "useDuration");
+			item.toolType = getRandomDouble(random, Item.class, "toolType");
+			item.damageCount = getRandomInt(random, Item.class, "damageCount");
 			item.destroyAnyBlock = _true;
-			item.inventorySize = 10;
-			item.inventoryStackSize = 42;
+			item.inventorySize = getRandomInt(random, Item.class, "inventorySize");
+			item.inventoryStackSize = getRandomInt(random, Item.class, "inventoryStackSize");
 			item.guiBoundTo = emptyLists || guis.isEmpty() ? null : getRandomItem(random, guis);
 			item.openGUIOnRightClick = new LogicProcedure(_true ? null : "condition3", _true);
 			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
@@ -1223,8 +1225,8 @@ public class TestWorkspaceDataProvider {
 			item.everyTickWhileUsing = new Procedure("procedure10");
 			item.onItemEntityDestroyed = new Procedure("procedure11");
 			item.enableMeleeDamage = !_true;
-			item.damageVsEntity = 6.53;
-			item.attackSpeed = 4.20;
+			item.damageVsEntity = getRandomDouble(random, Item.class, "damageVsEntity");
+			item.attackSpeed = getRandomDouble(random, Item.class, "attackSpeed");
 			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -1263,8 +1265,8 @@ public class TestWorkspaceDataProvider {
 			}
 
 			item.isFood = _true;
-			item.nutritionalValue = 5;
-			item.saturation = 0.82;
+			item.nutritionalValue = getRandomInt(random, Item.class, "nutritionalValue");
+			item.saturation = getRandomDouble(random, Item.class, "saturation");
 			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
 			item.animation = getRandomItem(random,
@@ -1282,8 +1284,8 @@ public class TestWorkspaceDataProvider {
 			item.rangedUseCondition = new Procedure("condition1");
 			item.isMusicDisc = !_true;
 			item.musicDiscDescription = modElement.getName();
-			item.musicDiscLengthInTicks = 13;
-			item.musicDiscAnalogOutput = 6;
+			item.musicDiscLengthInTicks = getRandomInt(random, Item.class, "musicDiscLengthInTicks");
+			item.musicDiscAnalogOutput = getRandomInt(random, Item.class, "musicDiscAnalogOutput");
 			item.musicDiscMusic = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {
@@ -1321,7 +1323,7 @@ public class TestWorkspaceDataProvider {
 			itemExtension.enableFuel = !emptyLists;
 			itemExtension.fuelPower = new NumberProcedure(_true ? "number3" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
-			itemExtension.compostLayerChance = _true ? 0 : 1.2;
+			itemExtension.compostLayerChance = getRandomDouble(random, ItemExtension.class, "compostLayerChance");
 			itemExtension.hasDispenseBehavior = emptyLists;
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
@@ -1481,10 +1483,10 @@ public class TestWorkspaceDataProvider {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			enchantment.supportedSlots = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
-			enchantment.weight = 42;
-			enchantment.anvilCost = 32;
-			enchantment.maxLevel = 45;
-			enchantment.damageModifier = 3;
+			enchantment.weight = getRandomInt(random, Enchantment.class, "weight");
+			enchantment.anvilCost = getRandomInt(random, Enchantment.class, "anvilCost");
+			enchantment.maxLevel = getRandomInt(random, Enchantment.class, "maxLevel");
+			enchantment.damageModifier = getRandomInt(random, Enchantment.class, "damageModifier");
 			enchantment.isTreasureEnchantment = _true;
 			enchantment.isCurse = _true;
 			enchantment.canGenerateInLootTables = !_true;
@@ -1549,7 +1551,7 @@ public class TestWorkspaceDataProvider {
 					Arrays.asList("PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING"));
 			gamerule.type = _true ? "Number" : "Logic";
 			gamerule.defaultValueLogic = random.nextBoolean();
-			gamerule.defaultValueNumber = -45;
+			gamerule.defaultValueNumber = getRandomInt(random, GameRule.class, "defaultValueNumber");
 			gamerule.getModElement().putMetadata("type", "Number".equals(gamerule.type) ?
 					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 					VariableTypeLoader.BuiltInTypes.LOGIC.getName());
@@ -1647,7 +1649,7 @@ public class TestWorkspaceDataProvider {
 			return bescript;
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
-			damageType.exhaustion = 0.37;
+			damageType.exhaustion = getRandomDouble(random, DamageType.class, "exhaustion");
 			damageType.scaling = getRandomString(random,
 					Arrays.asList("never", "always", "when_caused_by_living_non_player"));
 			damageType.effects = getRandomString(random,
@@ -1850,21 +1852,21 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobBehaviourType = getRandomString(random, List.of("Creature", "Mob", "Raider"));
 		livingEntity.mobCreatureType = getRandomItem(random,
 				new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
-		livingEntity.attackStrength = 4;
-		livingEntity.attackKnockback = 1.5;
-		livingEntity.knockbackResistance = 0.5;
-		livingEntity.movementSpeed = 0.76;
-		livingEntity.stepHeight = 2.24;
-		livingEntity.armorBaseValue = 0.123;
-		livingEntity.health = 42;
-		livingEntity.trackingRange = 27;
-		livingEntity.followRange = 11;
+		livingEntity.attackStrength = getRandomInt(random, LivingEntity.class, "attackStrength");
+		livingEntity.attackKnockback = getRandomDouble(random, LivingEntity.class, "attackKnockback");
+		livingEntity.knockbackResistance = getRandomDouble(random, LivingEntity.class, "knockbackResistance");
+		livingEntity.movementSpeed = getRandomDouble(random, LivingEntity.class, "movementSpeed");
+		livingEntity.stepHeight = getRandomDouble(random, LivingEntity.class, "stepHeight");
+		livingEntity.armorBaseValue = getRandomDouble(random, LivingEntity.class, "armorBaseValue");
+		livingEntity.health = getRandomInt(random, LivingEntity.class, "health");
+		livingEntity.trackingRange = getRandomInt(random, LivingEntity.class, "trackingRange");
+		livingEntity.followRange = getRandomInt(random, LivingEntity.class, "followRange");
 		livingEntity.waterMob = !_true;
 		livingEntity.breatheUnderwater = new LogicProcedure(emptyLists ? null : "condition3", _true);
 		livingEntity.pushedByFluids = new LogicProcedure(emptyLists ? null : "condition4", _true);
 		livingEntity.flyingMob = !_true;
-		livingEntity.inventorySize = 10;
-		livingEntity.inventoryStackSize = 42;
+		livingEntity.inventorySize = getRandomInt(random, LivingEntity.class, "inventorySize");
+		livingEntity.inventoryStackSize = getRandomInt(random, LivingEntity.class, "inventoryStackSize");
 		livingEntity.disableCollisions = !_true;
 		livingEntity.immuneToFire = _true;
 		livingEntity.immuneToArrows = !_true;
@@ -1879,7 +1881,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.immuneToAnvil = !_true;
 		livingEntity.immuneToDragonBreath = !_true;
 		livingEntity.immuneToWither = _true;
-		livingEntity.xpAmount = 8;
+		livingEntity.xpAmount = getRandomInt(random, LivingEntity.class, "xpAmount");
 		livingEntity.ridable = _true;
 		livingEntity.canControlStrafe = !_true;
 		livingEntity.canControlForward = _true;
@@ -1925,14 +1927,16 @@ public class TestWorkspaceDataProvider {
 		livingEntity.ranged = _true;
 		livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
-		livingEntity.rangedAttackInterval = 15;
-		livingEntity.rangedAttackRadius = 8.75;
+		livingEntity.rangedAttackInterval = getRandomInt(random, LivingEntity.class, "rangedAttackInterval");
+		livingEntity.rangedAttackRadius = getRandomDouble(random, LivingEntity.class, "rangedAttackRadius");
 		livingEntity.spawnThisMob = !_true;
 		livingEntity.doesDespawnWhenIdle = _true;
-		livingEntity.spawningProbability = 23;
+		livingEntity.spawningProbability = getRandomInt(random, LivingEntity.class, "spawningProbability");
 		livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
-		livingEntity.minNumberOfMobsPerGroup = 4;
-		livingEntity.maxNumberOfMobsPerGroup = 40;
+		var numberOfMobsPerGroup = getRandomIntRange(random, LivingEntity.class, "minNumberOfMobsPerGroup",
+				"maxNumberOfMobsPerGroup");
+		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getMinimum();
+		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getMaximum();
 		livingEntity.restrictionBiomes = new ArrayList<>();
 		if (!emptyLists) {
 			if (_true) {
@@ -1943,10 +1947,10 @@ public class TestWorkspaceDataProvider {
 			}
 		}
 		livingEntity.spawnInDungeons = _true;
-		livingEntity.modelWidth = 0.4;
-		livingEntity.modelHeight = 1.3;
-		livingEntity.mountedYOffset = -3.1;
-		livingEntity.modelShadowSize = 1.8;
+		livingEntity.modelWidth = getRandomDouble(random, LivingEntity.class, "modelWidth");
+		livingEntity.modelHeight = getRandomDouble(random, LivingEntity.class, "modelHeight");
+		livingEntity.mountedYOffset = getRandomDouble(random, LivingEntity.class, "mountedYOffset");
+		livingEntity.modelShadowSize = getRandomDouble(random, LivingEntity.class, "modelShadowSize");
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			livingEntity.raidSpawnsCount[i] = (4 + i);
 		livingEntity.modelLayers = new ArrayList<>();

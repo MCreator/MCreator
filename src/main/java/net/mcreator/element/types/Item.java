@@ -62,11 +62,11 @@ import java.util.stream.Collectors;
 	public String name;
 	public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
-	public int stackSize;
-	public int enchantability;
-	public int useDuration;
-	public double toolType;
-	public int damageCount;
+	@NumericParameter(init = 64, min = 1, max = 99, step = 1) public int stackSize;
+	@NumericParameter(init = 0, min = -100, max = 128000, step = 1) public int enchantability;
+	@NumericParameter(init = 0, min = -100, max = 128000, step = 1) public int useDuration;
+	@NumericParameter(init = 1.0, min = -100.0, max = 128000.0, step = 0.1) public double toolType;
+	@NumericParameter(init = 0, min = 0, max = 128000, step = 1) public int damageCount;
 	public MItemBlock recipeRemainder;
 	public boolean destroyAnyBlock;
 	public boolean immuneToFire;
@@ -77,16 +77,16 @@ import java.util.stream.Collectors;
 	public boolean damageOnCrafting;
 
 	public boolean enableMeleeDamage;
-	public double damageVsEntity;
-	public double attackSpeed;
+	@NumericParameter(init = 4, min = 0, max = 128000, step = 0.1) public double damageVsEntity;
+	@NumericParameter(init = 1.2, min = 0, max = 128000, step = 0.1) public double attackSpeed;
 
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
 	@Nullable @ModElementReference(acceptedTypes = { "gui" }) public String guiBoundTo;
 	public LogicProcedure openGUIOnRightClick;
-	public int inventorySize;
-	public int inventoryStackSize;
+	@NumericParameter(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
+	@NumericParameter(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
 
 	public Procedure onRightClickedInAir;
 	public Procedure onRightClickedOnBlock;
@@ -112,8 +112,8 @@ import java.util.stream.Collectors;
 
 	// Food
 	public boolean isFood;
-	public int nutritionalValue;
-	public double saturation;
+	@NumericParameter(init = 4, min = -1000, max = 1000, step = 1) public int nutritionalValue;
+	@NumericParameter(init = 0.3, min = -1000, max = 1000, step = 0.1) public double saturation;
 	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
@@ -123,8 +123,8 @@ import java.util.stream.Collectors;
 	public boolean isMusicDisc;
 	public Sound musicDiscMusic;
 	public String musicDiscDescription;
-	public int musicDiscLengthInTicks;
-	public int musicDiscAnalogOutput;
+	@NumericParameter(init = 100, min = 1, max = 20 * 3600, step = 1) public int musicDiscLengthInTicks;
+	@NumericParameter(init = 0, min = 0, max = 15, step = 1) public int musicDiscAnalogOutput;
 
 	@ModElementReference(acceptedTypes = { "bannerpattern" }) public List<String> providedBannerPatterns;
 

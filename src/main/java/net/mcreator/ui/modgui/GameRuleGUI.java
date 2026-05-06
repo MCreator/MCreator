@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.types.GameRule;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -50,8 +51,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	private final JComboBox<String> gameruleType = new JComboBox<>(new String[] { "Number", "Logic" });
 
 	private final JComboBox<String> defaultValueLogic = new JComboBox<>(new String[] { "false", "true" });
-	private final JSpinner defaultValueNumber = new JSpinner(
-			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
+	private final JSpinner defaultValueNumber = ComponentFromAnnotation.spinner(GameRule.class, "defaultValueNumber");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

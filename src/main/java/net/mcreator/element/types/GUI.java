@@ -24,6 +24,7 @@ import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
+import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -43,7 +44,8 @@ import java.util.List;
 @SuppressWarnings("unused") public class GUI extends GeneratableElement implements IGUI {
 
 	public int type;
-	public int width, height;
+	@NumericParameter(init = 176, min = 0, max = 512, step = 1) public int width;
+	@NumericParameter(init = 166, min = 0, max = 512, step = 1) public int height;
 
 	public int inventoryOffsetX, inventoryOffsetY;
 
