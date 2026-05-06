@@ -1434,33 +1434,38 @@ public class TestWorkspaceDataProvider {
 
 			lootTable.pools = new ArrayList<>();
 			if (!emptyLists) {
-				int pools = random.nextInt(5) + 1;
+				int pools = random.nextInt(4) + 1;
 				for (int i = 0; i < pools; i++) {
 					LootTable.Pool pool = new LootTable.Pool();
-					pool.minrolls = new int[] { 2, 4, 1, 3 }[valueIndex];
-					pool.maxrolls = new int[] { 3, 4, 6, 3 }[valueIndex];
+					Range<Integer> rollsRange = getRandomIntRange(random, LootTable.Pool.class, "minrolls", "maxrolls");
+					pool.minrolls = rollsRange.getMinimum();
+					pool.maxrolls = rollsRange.getMaximum();
 					pool.hasbonusrolls = _true;
-					pool.minbonusrolls = new int[] { 0, 9, 4, 6 }[valueIndex];
-					pool.maxbonusrolls = new int[] { 2, 9, 4, 7 }[valueIndex];
+					Range<Integer> bonusRollsRange = getRandomIntRange(random, LootTable.Pool.class, "minbonusrolls",
+							"maxbonusrolls");
+					pool.minbonusrolls = bonusRollsRange.getMinimum();
+					pool.maxbonusrolls = bonusRollsRange.getMaximum();
 					pool.entries = new ArrayList<>();
 
-					int entries = random.nextInt(5) + 1;
+					int entries = random.nextInt(4) + 1;
 					for (int j = 0; j < entries; j++) {
 						LootTable.Pool.Entry entry = new LootTable.Pool.Entry();
 
 						entry.type = "item";
-						entry.weight = new int[] { 1, 2, 3, -3 }[valueIndex];
+						entry.weight = getRandomInt(random, LootTable.Pool.Entry.class, "weight");
 
-						entry.minCount = new int[] { 1, 6, 2, 8 }[valueIndex];
-						entry.maxCount = new int[] { 4, 6, 7, 8 }[valueIndex];
+						entry.minCount = new int[] { 1, 2, 2, 3 }[valueIndex];
+						entry.maxCount = new int[] { 4, 2, 7, 3 }[valueIndex];
 
 						entry.affectedByFortune = _true;
 						entry.explosionDecay = _true;
 
 						entry.silkTouchMode = new int[] { 0, 1, 2, 1 }[valueIndex];
 
-						entry.minEnchantmentLevel = new int[] { 2, 5, 1, 6 }[valueIndex];
-						entry.maxEnchantmentLevel = new int[] { 3, 9, 5, 6 }[valueIndex];
+						Range<Integer> enchantmentLevelRange = getRandomIntRange(random, LootTable.Pool.Entry.class,
+								"minEnchantmentLevel", "maxEnchantmentLevel");
+						entry.minEnchantmentLevel = enchantmentLevelRange.getMinimum();
+						entry.maxEnchantmentLevel = enchantmentLevelRange.getMaximum();
 
 						entry.item = new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
@@ -1518,27 +1523,30 @@ public class TestWorkspaceDataProvider {
 			painting.texture = new TextureHolder(modElement.getWorkspace(), "other0");
 			painting.title = modElement.getName();
 			painting.author = modElement.getName() + " author";
-			painting.width = 16;
-			painting.height = 16;
+			painting.width = getRandomInt(random, Painting.class, "width");
+			painting.height = getRandomInt(random, Painting.class, "height");
 			return painting;
 		} else if (ModElementType.PARTICLE.equals(modElement.getType())) {
 			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
 			particle.texture = new TextureHolder(modElement.getWorkspace(), "particle1");
-			particle.width = 2.3;
-			particle.frameDuration = 2;
+			particle.width = getRandomDouble(random, net.mcreator.element.types.Particle.class, "width");
+			particle.frameDuration = getRandomInt(random, net.mcreator.element.types.Particle.class, "frameDuration");
 			particle.emissiveRendering = _true;
-			particle.height = 1.38;
+			particle.height = getRandomDouble(random, net.mcreator.element.types.Particle.class, "height");
 			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			particle.fixedScale = _true;
-			particle.gravity = 12.3;
-			particle.speedFactor = 1.3;
+			particle.gravity = getRandomDouble(random, net.mcreator.element.types.Particle.class, "gravity");
+			particle.speedFactor = getRandomDouble(random, net.mcreator.element.types.Particle.class, "speedFactor");
 			particle.canCollide = _true;
-			particle.angularVelocity = 0.23;
-			particle.angularAcceleration = -0.09;
+			particle.angularVelocity = getRandomDouble(random, net.mcreator.element.types.Particle.class,
+					"angularVelocity");
+			particle.angularAcceleration = getRandomDouble(random, net.mcreator.element.types.Particle.class,
+					"angularAcceleration");
 			particle.alwaysShow = !_true;
 			particle.animate = _true;
-			particle.maxAge = 12;
-			particle.maxAgeDiff = emptyLists ? 0 : 15;
+			particle.maxAge = getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAge");
+			particle.maxAgeDiff = emptyLists ? 0 :
+					getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAgeDiff");
 			particle.rotationProvider = emptyLists ? null : new Procedure("vector1");
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "TRANSLUCENT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");

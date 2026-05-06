@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.entries.JEntriesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -38,8 +39,10 @@ import java.util.Objects;
 
 public class JLootTablePool extends JEntriesList {
 
-	private final JMinMaxSpinner rolls = new JMinMaxSpinner(1, 1, 0, 64000, 1).allowEqualValues();
-	private final JMinMaxSpinner bonusrolls = new JMinMaxSpinner(1, 1, 0, 64000, 1).allowEqualValues();
+	private final JMinMaxSpinner rolls = ComponentFromAnnotation
+			.minMaxSpinner(LootTable.Pool.class, "minrolls", "maxrolls").allowEqualValues();
+	private final JMinMaxSpinner bonusrolls = ComponentFromAnnotation
+			.minMaxSpinner(LootTable.Pool.class, "minbonusrolls", "maxbonusrolls").allowEqualValues();
 	private final JCheckBox hasbonusrolls = L10N.checkbox("elementgui.loot_table.enable_pool_rolls");
 
 	private final List<JLootTableEntry> entryList = new ArrayList<>();
