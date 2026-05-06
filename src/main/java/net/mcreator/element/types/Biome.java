@@ -75,16 +75,6 @@ import java.util.List;
 	public ClimatePoint genWeirdness;
 	public ClimatePoint genDepth;
 
-	@NumericParameter(init = -0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genTemperatureMin;
-	@NumericParameter(init = 0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genTemperatureMax;
-	@NumericParameter(init = -0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genHumidityMin;
-	@NumericParameter(init = 0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genHumidityMax;
-	@NumericParameter(init = 0.3, min = -2.0, max = 2.0, step = 0.0001) public transient double genContinentalnessMin;
-	@NumericParameter(init = 1.0, min = -2.0, max = 2.0, step = 0.0001) public transient double genContinentalnessMax;
-	@NumericParameter(init = -0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genErosionMin;
-	@NumericParameter(init = 0.5, min = -2.0, max = 2.0, step = 0.0001) public transient double genErosionMax;
-	@NumericParameter(init = -1.0, min = -2.0, max = 2.0, step = 0.0001) public transient double genWeirdnessMin;
-	@NumericParameter(init = 1.0, min = -2.0, max = 2.0, step = 0.0001) public transient double genWeirdnessMax;
 	@NumericParameter(init = 0.2, min = 0.0, max = 1.5, step = 0.0001, rangeMinMaxCanBeEqual = true)
 	public transient double genDepthMin;
 	@NumericParameter(init = 0.9, min = 0.0, max = 1.5, step = 0.0001, rangeMinMaxCanBeEqual = true)
@@ -185,8 +175,8 @@ import java.util.List;
 
 	public static class ClimatePoint {
 
-		public double min;
-		public double max;
+		@NumericParameter(init = 0, min = -2.0, max = 2.0, step = 0.0001) public double min;
+		@NumericParameter(init = 0, min = -2.0, max = 2.0, step = 0.0001) public double max;
 
 		public ClimatePoint(double min, double max) {
 			this.min = min;

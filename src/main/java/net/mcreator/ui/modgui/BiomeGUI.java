@@ -67,18 +67,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner rainingPossibility = ComponentFromAnnotation.spinner(Biome.class, "rainingPossibility");
 	private final JSpinner temperature = ComponentFromAnnotation.spinner(Biome.class, "temperature");
 
-	private final JMinMaxSpinner genTemperature = ComponentFromAnnotation.minMaxSpinner(Biome.class,
-			"genTemperatureMin", "genTemperatureMax");
-	private final JMinMaxSpinner genHumidity = ComponentFromAnnotation.minMaxSpinner(Biome.class, "genHumidityMin",
-			"genHumidityMax");
-	private final JMinMaxSpinner genContinentalness = ComponentFromAnnotation.minMaxSpinner(Biome.class,
-			"genContinentalnessMin", "genContinentalnessMax");
-	private final JMinMaxSpinner genErosion = ComponentFromAnnotation.minMaxSpinner(Biome.class, "genErosionMin",
-			"genErosionMax");
-	private final JMinMaxSpinner genWeirdness = ComponentFromAnnotation.minMaxSpinner(Biome.class,
-			"genWeirdnessMin", "genWeirdnessMax");
-	private final JMinMaxSpinner genDepth = ComponentFromAnnotation.minMaxSpinner(Biome.class, "genDepthMin",
-			"genDepthMax").allowEqualValues();
+	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.0001);
+	private final JMinMaxSpinner genDepth = new JMinMaxSpinner(0.2, 0.9, 0.0, 1.5, 0.0001).allowEqualValues();
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
