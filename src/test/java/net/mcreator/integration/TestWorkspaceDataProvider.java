@@ -1610,13 +1610,17 @@ public class TestWorkspaceDataProvider {
 								_true ? getRandomMCItem(random, blocksAndItems).getName() : "");
 						entry.offer = new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
-						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
-						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
-						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.countPrice1 = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"countPrice1");
+						entry.countPrice2 = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"countPrice2");
+						entry.countOffer = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"countOffer");
 						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
-						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
-						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
-						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];
+						entry.maxTrades = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class, "maxTrades");
+						entry.xp = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class, "xp");
+						entry.priceMultiplier = getRandomDouble(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"priceMultiplier");
 
 						trade.entries.add(entry);
 					}
@@ -1634,13 +1638,17 @@ public class TestWorkspaceDataProvider {
 								_true ? getRandomMCItem(random, blocksAndItems).getName() : "");
 						entry.offer = new MItemBlock(modElement.getWorkspace(),
 								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
-						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
-						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
-						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
+						entry.countPrice1 = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"countPrice1");
+						entry.countPrice2 = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"countPrice2");
+						entry.countOffer = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"countOffer");
 						entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
-						entry.maxTrades = new int[] { 3, 10, 46, 27 }[valueIndex];
-						entry.xp = new int[] { 2, 5, 10, 15 }[valueIndex];
-						entry.priceMultiplier = new double[] { 0.01, 0.05, 0.1, 0.5 }[valueIndex];
+						entry.maxTrades = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class, "maxTrades");
+						entry.xp = getRandomInt(random, VillagerTrade.CustomTradeEntry.Entry.class, "xp");
+						entry.priceMultiplier = getRandomDouble(random, VillagerTrade.CustomTradeEntry.Entry.class,
+								"priceMultiplier");
 
 						wanderingTrade.entries.add(entry);
 					}

@@ -22,6 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProfessionEntry;
+import net.mcreator.element.types.interfaces.NumericParameter;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
@@ -49,19 +50,19 @@ import java.util.List;
 		public static class Entry {
 
 			public MItemBlock price1;
-			public int countPrice1;
+			@NumericParameter(init = 1, min = 1, max = 99, step = 1) public int countPrice1;
 
 			public MItemBlock price2;
-			public int countPrice2;
+			@NumericParameter(init = 1, min = 1, max = 99, step = 1) public int countPrice2;
 
 			public MItemBlock offer;
-			public int countOffer;
+			@NumericParameter(init = 1, min = 1, max = 99, step = 1) public int countOffer;
 
 			public int level;
-			public int maxTrades;
-			public int xp;
+			@NumericParameter(init = 10, min = 1, max = 72000, step = 1) public int maxTrades;
+			@NumericParameter(init = 5, min = 0, max = 72000, step = 1) public int xp;
 
-			public double priceMultiplier;
+			@NumericParameter(init = 0.05, min = 0, max = 1, step = 0.01) public double priceMultiplier;
 		}
 	}
 
