@@ -1647,10 +1647,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
 			damageType.exhaustion = 0.37;
-			damageType.scaling = getRandomString(random,
-					Arrays.asList("never", "always", "when_caused_by_living_non_player"));
-			damageType.effects = getRandomString(random,
-					Arrays.asList("hurt", "thorns", "drowning", "burning", "poking", "freezing"));
+			damageType.scaling = getRandomString(random, AnnotationUtils.getLimitedOptionsList(DamageType.class, "scaling"));
+			damageType.effects = getRandomString(random, AnnotationUtils.getLimitedOptionsList(DamageType.class, "effects"));
 			damageType.normalDeathMessage = "%1$s was slain";
 			damageType.itemDeathMessage = "%1$s was slain by %2$s using %3$s";
 			damageType.playerDeathMessage = "%1$s was slain whilst escaping %2$s";
