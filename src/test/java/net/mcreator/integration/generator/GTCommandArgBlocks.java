@@ -59,7 +59,7 @@ public class GTCommandArgBlocks {
 				for (StatementInput statement : commandArg.getStatements()) {
 					additionalXML.append("<statement name=\"").append(statement.name).append("\">")
 							.append("<block type=\"")
-							.append(getRandomItem(random, new String[] { "call_procedure" , "old_command" }))
+							.append(getRandomItem(random, new String[] { "call_procedure", "old_command" }))
 							.append("\"><field name=\"procedure\">procedure1</field></block>").append("</statement>\n");
 				}
 			}
@@ -70,7 +70,7 @@ public class GTCommandArgBlocks {
 			String testXML = commandArg.getToolboxTestXML();
 
 			// add additional xml to the cmd arg block definition
-			testXML = testXML.replace("<block type=\"" + commandArg.getMachineName() + "\">" ,
+			testXML = testXML.replace("<block type=\"" + commandArg.getMachineName() + "\">",
 					"<block type=\"" + commandArg.getMachineName() + "\">" + additionalXML);
 
 			Command command = new Command(modElement);
