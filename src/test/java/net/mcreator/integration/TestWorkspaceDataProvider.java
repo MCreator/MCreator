@@ -1027,7 +1027,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
-			plant.plantType = List.of("normal", "growapable", "double", "sapling").get(valueIndex);
+			plant.plantType = AnnotationUtils.getLimitedOptionsList(Plant.class, "plantType").get(valueIndex);
 			plant.creativeTabs = emptyLists ? List.of() : tabs;
 			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			plant.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
@@ -1098,7 +1098,7 @@ public class TestWorkspaceDataProvider {
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-			plant.offsetType = getRandomString(random, Arrays.asList("NONE", "XZ", "XYZ"));
+			plant.offsetType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Plant.class, "offsetType"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			plant.strippingResult = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
@@ -1126,7 +1126,8 @@ public class TestWorkspaceDataProvider {
 			plant.frequencyOnChunks = 4;
 			plant.patchSize = 6;
 			plant.generateAtAnyHeight = _true;
-			plant.generationType = getRandomItem(random, new String[] { "Grass", "Flower" });
+			plant.generationType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Plant.class, "generationType"));
 			plant.ignitedByLava = !_true;
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
@@ -1161,9 +1162,7 @@ public class TestWorkspaceDataProvider {
 			plant.onEntityFallsOn = new Procedure("procedure12");
 			plant.onHitByProjectile = new Procedure("procedure13");
 			plant.placingCondition = emptyLists ? null : new Procedure("condition2");
-			plant.tintType = getRandomString(random,
-					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-							"Water", "Sky", "Fog", "Water fog"));
+			plant.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Plant.class, "tintType"));
 
 			if ("double".equals(plant.plantType)) {
 				plant.renderType = !"No tint".equals(plant.tintType) ? 120 : 12;
