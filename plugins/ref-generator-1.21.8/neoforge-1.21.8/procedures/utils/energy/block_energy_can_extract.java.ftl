@@ -1,7 +1,6 @@
 private static boolean canExtractEnergy(LevelAccessor level, BlockPos pos, Direction direction) {
 	if (level instanceof ILevelExtension levelExtension) {
-		IEnergyStorage energyStorage = levelExtension.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction);
-		if (energyStorage != null)
+		if (levelExtension.getCapability(Capabilities.Energy.BLOCK, pos, direction) instanceof EnergyHandler energyHandler)
 			return energyStorage.canExtract();
 	}
 	return false;
