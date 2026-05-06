@@ -2694,12 +2694,22 @@ public class TestWorkspaceDataProvider {
 	private static Range<Integer> getRandomIntRange(Random random, Class<?> type, String minField, String maxField) {
 		int v1 = getRandomInt(random, type, minField);
 		int v2 = getRandomInt(random, type, maxField);
+
+		Numeric min = AnnotationUtils.getAnnotation(type, minField, Numeric.class);
+		if (!min.allowMinMaxEqual() && v1 == v2)
+			return getRandomIntRange(random, type, minField, maxField);
+
 		return Range.of(Math.min(v1, v2), Math.max(v1, v2));
 	}
 
 	private static Range<Double> getRandomDoubleRange(Random random, Class<?> type, String minField, String maxField) {
 		double v1 = getRandomDouble(random, type, minField);
 		double v2 = getRandomDouble(random, type, maxField);
+
+		Numeric min = AnnotationUtils.getAnnotation(type, minField, Numeric.class);
+		if (!min.allowMinMaxEqual() && v1 == v2)
+			return getRandomDoubleRange(random, type, minField, maxField);
+
 		return Range.of(Math.min(v1, v2), Math.max(v1, v2));
 	}
 
