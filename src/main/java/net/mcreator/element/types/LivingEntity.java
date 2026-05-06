@@ -131,7 +131,7 @@ import java.util.stream.Collectors;
 	public LogicProcedure pushedByFluids;
 	public boolean flyingMob;
 
-	@ModElementReference(acceptedTypes = { "gui" }) @Nullable public String guiBoundTo;
+	@ModElementReference(acceptedTypes = { GUI.class }) @Nullable public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -185,7 +185,7 @@ import java.util.stream.Collectors;
 
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
-	@ModElementReference(defaultValues = "Default item", acceptedTypes = "projectile") public String rangedItemType;
+	@ModElementReference(defaultValues = "Default item", acceptedTypes = Projectile.class) public String rangedItemType;
 	public int rangedAttackInterval;
 	public double rangedAttackRadius;
 
