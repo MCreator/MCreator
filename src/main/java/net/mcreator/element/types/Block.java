@@ -85,7 +85,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	public String blockBase;
+	@Nullable public String blockBase;
 	public String blockSetType;
 	public MItemBlock pottedPlant;
 	public Particle leavesParticleType;
