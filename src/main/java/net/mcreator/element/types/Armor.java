@@ -79,7 +79,8 @@ import java.util.stream.Collectors;
 	public StringListProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
-	@Nullable public String helmetModelPart;;
+	@Nullable public String helmetModelPart;
+
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String helmetModelTexture;
 
 	public String bodyModelName;

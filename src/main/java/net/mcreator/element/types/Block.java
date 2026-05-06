@@ -86,7 +86,8 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	@Nullable @LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
+	@Nullable
+	@LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
 			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
 	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
 	public MItemBlock pottedPlant;

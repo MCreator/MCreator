@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
-	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;
 
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
