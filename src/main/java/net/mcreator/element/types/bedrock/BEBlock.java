@@ -78,7 +78,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String renderMethod;
 	public String tintMethod;
 
-	@ModElementReference(acceptedTypes = { "bescript" }) public List<String> localScripts;
+	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 
 	private BEBlock() {
 		this(null);

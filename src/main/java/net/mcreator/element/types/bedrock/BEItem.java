@@ -71,7 +71,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@ModElementReference public MItemBlock usingConvertsTo;
 	public String animation;
 
-	@ModElementReference(acceptedTypes = { "bescript" }) public List<String> localScripts;
+	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 
 	public BEItem() {
 		this(null);
