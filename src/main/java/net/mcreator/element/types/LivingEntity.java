@@ -32,6 +32,7 @@ import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.LimitedOptionsField;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -104,7 +105,9 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
+	@LimitedOptionsField({ "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" })
 	public String bossBarColor;
+	@LimitedOptionsField({ "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" })
 	public String bossBarType;
 
 	public MItemBlock equipmentMainHand;
@@ -114,7 +117,9 @@ import java.util.stream.Collectors;
 	public MItemBlock equipmentLeggings;
 	public MItemBlock equipmentBoots;
 
+	@LimitedOptionsField({ "Mob", "Creature", "Raider" })
 	public String mobBehaviourType;
+	@LimitedOptionsField({ "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" })
 	public String mobCreatureType;
 	public int attackStrength;
 	public double attackKnockback;
@@ -176,6 +181,9 @@ import java.util.stream.Collectors;
 	public Procedure onInitialSpawn;
 
 	public boolean hasAI;
+	@LimitedOptionsField({ "(none)", "Bat", "Blaze", "Chicken", "Cow", "Creeper", "Enderman", "Horse", "IronGolem",
+			"MagmaCube", "Ocelot", "Pig", "Skeleton", "Slime", "Spider", "Squid", "Villager", "Witch", "Wolf",
+			"Zombie" })
 	public String aiBase;
 	@BlocklyXML(name = "aitasks", defaultXML = LivingEntity.XML_BASE) public String aixml;
 

@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.minecraft.SingleParticleEntryField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
@@ -61,8 +62,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isCuredbyHoney = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> mobEffectCategory = new JComboBox<>(
-			new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL" });
+	private final JComboBox<String> mobEffectCategory = ComponentFromAnnotation.options(PotionEffect.class,
+			"mobEffectCategory");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.KeyBinding;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
@@ -28,6 +29,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -54,8 +56,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 	private final VTextField keyBindingName = new VTextField(20).requireValue("elementgui.keybind.error_key_needs_name")
 			.enableRealtimeValidation();
 
-	private final VComboBox<String> keyBindingCategoryKey = new VComboBox<>(
-			new String[] { "misc", "movement", "multiplayer", "gameplay", "ui", "inventory", "creative" });
+	private final VComboBox<String> keyBindingCategoryKey = ComponentFromAnnotation.optionsValidated(KeyBinding.class, "keyBindingCategoryKey");
 
 	public KeyBindGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);

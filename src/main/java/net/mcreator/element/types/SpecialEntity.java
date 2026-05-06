@@ -26,6 +26,7 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.LimitedOptionsField;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -50,7 +51,7 @@ import java.util.List;
 
 	private static final Logger LOG = LogManager.getLogger(SpecialEntity.class);
 
-	public String entityType;
+	@LimitedOptionsField({ "Boat", "ChestBoat" }) public String entityType;
 	public String name;
 	@ModElementReference public List<TabEntry> creativeTabs;
 

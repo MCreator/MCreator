@@ -117,7 +117,7 @@ import java.util.stream.Collectors;
 	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
-	public String animation;
+	@LimitedOptionsField({ "none", "eat", "block", "bow", "crossbow", "drink", "spear" }) public String animation;
 
 	// Music disc
 	public boolean isMusicDisc;

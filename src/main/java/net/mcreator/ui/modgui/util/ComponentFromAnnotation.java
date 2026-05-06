@@ -20,8 +20,10 @@
 package net.mcreator.ui.modgui.util;
 
 import net.mcreator.element.util.AnnotationUtils;
+import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.component.VComboBox;
 
 import javax.swing.*;
 import java.util.LinkedHashMap;
@@ -38,6 +40,14 @@ public class ComponentFromAnnotation {
 
 	public static JComboBox<String> options(Class<?> type, String field) {
 		return new JComboBox<>(AnnotationUtils.getLimitedOptionsList(type, field).toArray(new String[0]));
+	}
+
+	public static VComboBox<String> optionsValidated(Class<?> type, String field) {
+		return new VComboBox<>(AnnotationUtils.getLimitedOptionsList(type, field).toArray(new String[0]));
+	}
+
+	public static SearchableComboBox<String> searchableOptions(Class<?> type, String field) {
+		return new SearchableComboBox<>(AnnotationUtils.getLimitedOptionsList(type, field));
 	}
 
 }
