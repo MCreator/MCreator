@@ -30,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -43,7 +44,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 	private final MCreator mcreator;
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
-	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(1, 1, 150, 1));
+	private final JSpinner weight = ComponentFromAnnotation.spinner(Structure.JigsawPool.JigsawPart.class, "weight");
 	private final SearchableComboBox<String> structureSelector = new SearchableComboBox<>();
 	private final JComboBox<String> projection = new JComboBox<>(new String[] { "rigid", "terrain_matching" });
 	private final MCItemListField ignoreBlocks;

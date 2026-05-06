@@ -31,6 +31,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -39,8 +40,9 @@ import java.util.stream.Collectors;
 
 public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 
-	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
+	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(Biome.SpawnEntry.class, "weight");
+	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation
+			.minMaxSpinner(Biome.SpawnEntry.class, "minGroup", "maxGroup").allowEqualValues();
 	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JComboBox<String> entityType = new SearchableComboBox<>();

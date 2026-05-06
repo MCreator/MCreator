@@ -166,9 +166,9 @@ import java.util.List;
 	public static class SpawnEntry {
 
 		public EntityEntry entity;
-		public int minGroup;
-		public int maxGroup;
-		public int weight;
+		@NumericParameter(init = 4, min = 1, max = 1000, step = 1, rangeMinMaxCanBeEqual = true) public int minGroup;
+		@NumericParameter(init = 4, min = 1, max = 1000, step = 1, rangeMinMaxCanBeEqual = true) public int maxGroup;
+		@NumericParameter(init = 20, min = 1, max = 1000, step = 1) public int weight;
 		public String spawnType;
 
 	}

@@ -19,9 +19,12 @@
 
 package net.mcreator.element.parts;
 
+import net.mcreator.element.types.interfaces.NumericParameter;
+
 public class AttributeModifierEntry {
 	public String equipmentSlot = "any";
 	public AttributeEntry attribute;
+	@NumericParameter(init = 0, min = -1024, max = 1024, step = 0.001)
 	public double amount;
 	public String operation;
 }

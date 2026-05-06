@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
@@ -76,12 +77,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
 	private JBoundingBoxList boundingBoxList;
 
-	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
-	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
+	private final JSpinner hardness = ComponentFromAnnotation.spinner(Plant.class, "hardness");
+	private final JSpinner luminance = ComponentFromAnnotation.spinner(Plant.class, "luminance");
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(Plant.class, "resistance");
+	private final JSpinner frequencyOnChunks = ComponentFromAnnotation.spinner(Plant.class, "frequencyOnChunks");
+	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(Plant.class, "dropAmount");
+	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation
+			.minMaxSpinner(Plant.class, "xpAmountMin", "xpAmountMax").allowEqualValues();
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
@@ -125,13 +127,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
-	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
+	private final JSpinner growapableMaxHeight = ComponentFromAnnotation.spinner(Plant.class, "growapableMaxHeight");
 
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
-	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
+	private final JSpinner suspiciousStewDuration = ComponentFromAnnotation.spinner(Plant.class,
+			"suspiciousStewDuration");
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
+	private final JSpinner maxStackSize = ComponentFromAnnotation.spinner(Plant.class, "maxStackSize");
 	private final TranslatedComboBox rarity = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("COMMON", "elementgui.common.rarity_common"),
@@ -144,7 +147,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	// Sapling properties
-	private final JSpinner secondaryTreeChance = new JSpinner(new SpinnerNumberModel(0.1, 0, 1, 0.01));
+	private final JSpinner secondaryTreeChance = ComponentFromAnnotation.spinner(Plant.class, "secondaryTreeChance");
 	private final SingleConfiguredFeatureField[] trees = new SingleConfiguredFeatureField[] {
 			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator) };
 	private final SingleConfiguredFeatureField[] flowerTrees = new SingleConfiguredFeatureField[] {
@@ -188,17 +191,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 	private BiomeListField restrictionBiomes;
-	private final JSpinner patchSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner patchSize = ComponentFromAnnotation.spinner(Plant.class, "patchSize");
 	private final JCheckBox generateAtAnyHeight = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> generationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
-	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
-	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(Plant.class, "flammability");
+	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Plant.class, "fireSpreadSpeed");
+	private final JSpinner speedFactor = ComponentFromAnnotation.spinner(Plant.class, "speedFactor");
+	private final JSpinner jumpFactor = ComponentFromAnnotation.spinner(Plant.class, "jumpFactor");
 
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);

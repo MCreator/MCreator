@@ -37,6 +37,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.jigsaw.JJigsawPoolsList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.validators.CompoundValidator;
@@ -69,21 +70,23 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	private BiomeListField restrictionBiomes;
 
-	private final JMinMaxSpinner separation_spacing = new JMinMaxSpinner(2, 5, 0, 1000000, 1,
-			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
+	private final JMinMaxSpinner separation_spacing = ComponentFromAnnotation
+			.minMaxSpinner(Structure.class, "separation", "spacing");
 
 	private final JCheckBox useStartHeight = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> startHeightProviderType = new JComboBox<>(
 			new String[] { "UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID" });
-	private final JMinMaxSpinner startHeightRange = new JMinMaxSpinner(0, 128, -1024, 1024, 1);
+	private final JMinMaxSpinner startHeightRange = ComponentFromAnnotation
+			.minMaxSpinner(Structure.class, "startHeightMin", "startHeightMax");
 
 	private SearchableComboBox<String> structureSelector;
 
 	private final JComboBox<String> generationStep = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("generationsteps"));
 
-	private final JSpinner size = new JSpinner(new SpinnerNumberModel(1, 0, 20, 1));
-	private final JSpinner maxDistanceFromCenter = new JSpinner(new SpinnerNumberModel(64, 1, 128, 1));
+	private final JSpinner size = ComponentFromAnnotation.spinner(Structure.class, "size");
+	private final JSpinner maxDistanceFromCenter = ComponentFromAnnotation
+			.spinner(Structure.class, "maxDistanceFromCenter");
 	private JJigsawPoolsList jigsaw;
 
 	private final ValidationGroup page1group = new ValidationGroup();

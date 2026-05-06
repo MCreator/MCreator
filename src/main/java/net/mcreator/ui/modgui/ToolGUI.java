@@ -44,6 +44,7 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -69,11 +70,11 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private TextureSelectionButton texture;
 	private TextureSelectionButton guiTexture;
 
-	private final JSpinner efficiency = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.5));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 1, 128000, 1));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
-	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
-	private final JSpinner usageCount = new JSpinner(new SpinnerNumberModel(100, 0, 128000, 1));
+	private final JSpinner efficiency = ComponentFromAnnotation.spinner(Tool.class, "efficiency");
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Tool.class, "enchantability");
+	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Tool.class, "damageVsEntity");
+	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Tool.class, "attackSpeed");
+	private final JSpinner usageCount = ComponentFromAnnotation.spinner(Tool.class, "usageCount");
 
 	private final JComboBox<String> blockDropsTier = new JComboBox<>(
 			new String[] { "WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE" });
