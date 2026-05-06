@@ -82,7 +82,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
 			"water" }) public String tintMethod;
 
-	@ModElementReference(acceptedTypes = { "bescript" }) public List<String> localScripts;
+	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 
 	private BEBlock() {
 		this(null);

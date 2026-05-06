@@ -88,7 +88,7 @@ public class ModElementTypeLoader {
 		ModElementType.BESCRIPT = register(new ModElementType<>("bescript", "procedure", 's', BEScriptGUI::new, BEScript.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
 
 		// Unregistered type used to mask legacy removed mod element types
-		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, (mc, me, e) -> null, GeneratableElement.Unknown.class);
+		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, (_, _, _) -> null, GeneratableElement.Unknown.class);
 
 		//@formatter:on
 	}
@@ -111,6 +111,17 @@ public class ModElementTypeLoader {
 		}
 
 		throw new IllegalArgumentException("Mod element type " + typeName + " is not a registered type");
+	}
+
+	public static ModElementType<?> getModElementType(Class<? extends GeneratableElement> elementClass)
+			throws IllegalArgumentException {
+		for (ModElementType<?> me : REGISTRY) {
+			if (me.getModElementStorageClass() == elementClass) {
+				return me;
+			}
+		}
+		throw new IllegalArgumentException(
+				"Mod element type for class " + elementClass.getName() + " is not a registered type");
 	}
 
 	public static Collection<ModElementType<?>> getAllModElementTypes() {

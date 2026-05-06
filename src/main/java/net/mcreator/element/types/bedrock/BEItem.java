@@ -73,7 +73,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear", "brush", "spyglass", "camera" })
 	public String animation;
 
-	@ModElementReference(acceptedTypes = { "bescript" }) public List<String> localScripts;
+	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 
 	public BEItem() {
 		this(null);

@@ -30,6 +30,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.Locale;

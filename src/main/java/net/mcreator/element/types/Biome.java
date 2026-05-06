@@ -28,6 +28,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -44,12 +45,12 @@ import java.util.List;
 	public MItemBlock undergroundBlock;
 	public MItemBlock underwaterBlock;
 
-	public Color airColor;
-	public Color fogColor;
-	public Color grassColor;
-	public Color foliageColor;
-	public Color waterColor;
-	public Color waterFogColor;
+	@Nullable public Color airColor;
+	@Nullable public Color fogColor;
+	@Nullable public Color grassColor;
+	@Nullable public Color foliageColor;
+	@Nullable public Color waterColor;
+	@Nullable public Color waterFogColor;
 
 	public Sound ambientSound;
 	public Sound additionsSound;

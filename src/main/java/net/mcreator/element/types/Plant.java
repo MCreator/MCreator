@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 
 	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
 
-	@ModElementReference(acceptedTypes = { "potioneffect" }) public String suspiciousStewEffect;
+	@ModElementReference(acceptedTypes = { PotionEffect.class }) public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
 	public double secondaryTreeChance;

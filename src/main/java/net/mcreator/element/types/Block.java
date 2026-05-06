@@ -86,7 +86,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	@LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
+	@Nullable @LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
 			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
 	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
 	public MItemBlock pottedPlant;
@@ -188,7 +188,7 @@ import java.util.stream.Collectors;
 	public Procedure onReceivedVibration;
 
 	public boolean hasInventory;
-	@ModElementReference(acceptedTypes = { "gui" }) @Nullable public String guiBoundTo;
+	@ModElementReference(acceptedTypes = { GUI.class }) @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;

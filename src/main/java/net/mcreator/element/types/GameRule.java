@@ -30,7 +30,7 @@ import java.awt.image.BufferedImage;
 
 	@Nonnull @LimitedOptions({ "Number", "Logic" }) public String type;
 
-	public String displayName;
+	@Nonnull public String displayName;
 	public String description;
 	@LimitedOptions({ "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" }) public String category;
 	public boolean defaultValueLogic;
