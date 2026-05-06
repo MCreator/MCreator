@@ -254,6 +254,10 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 				if (dependenciesList != null) {
 					List<Dependency> realdepsList = new ArrayList<>();
 					for (Object depobj : dependenciesList) {
+						// skip null dependencies that may have been added due to plugins supporting certain types being removed
+						if (depobj == null)
+							continue;
+
 						Dependency dependency = gson.fromJson(gson.toJsonTree(depobj).getAsJsonObject(),
 								Dependency.class);
 						realdepsList.add(dependency);
