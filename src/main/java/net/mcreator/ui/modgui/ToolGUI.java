@@ -40,6 +40,7 @@ import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -61,7 +62,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -76,25 +76,16 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Tool.class, "attackSpeed");
 	private final JSpinner usageCount = ComponentFromAnnotation.spinner(Tool.class, "usageCount");
 
-	private final JComboBox<String> blockDropsTier = new JComboBox<>(
-			new String[] { "WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE" });
+	private final JComboBox<String> blockDropsTier = ComponentFromAnnotation.options(Tool.class, "blockDropsTier");
 
 	private ProcedureSelector additionalDropCondition;
 
 	private final VTextField name = new VTextField(26).requireValue("elementgui.tool.needs_a_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Tool.class, "rarity",
+			"elementgui.common.rarity_");
 
-	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
-					"MultiTool" });
+	private final JComboBox<String> toolType = ComponentFromAnnotation.options(Tool.class, "toolType");
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");

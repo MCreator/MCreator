@@ -24,6 +24,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -82,6 +83,7 @@ import java.util.List;
 	public transient double genDepthMax;
 
 	@Numeric(init = 1, min = 0, max = 256, step = 1) public int treesPerChunk;
+	@LimitedOptions({ "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees", "Mega spruce trees" })
 	public String vanillaTreeType;
 	public int treeType;
 	@Numeric(init = 7, min = 0, max = 32, step = 1) public int minHeight;
@@ -96,7 +98,7 @@ import java.util.List;
 	public boolean spawnMineshaft;
 	public boolean spawnMineshaftMesa;
 	public boolean spawnPillagerOutpost;
-	public String villageType;
+	@LimitedOptions({ "none", "desert", "plains", "savanna", "snowy", "taiga" }) public String villageType;
 	public boolean spawnWoodlandMansion;
 	public boolean spawnJungleTemple;
 	public boolean spawnDesertPyramid;
@@ -106,11 +108,12 @@ import java.util.List;
 	public boolean spawnShipwreck;
 	public boolean spawnShipwreckBeached;
 	public boolean spawnBuriedTreasure;
-	public String oceanRuinType;
+	@LimitedOptions({ "NONE", "COLD", "WARM" }) public String oceanRuinType;
 	public boolean spawnNetherBridge;
 	public boolean spawnNetherFossil;
 	public boolean spawnBastionRemnant;
 	public boolean spawnEndCity;
+	@LimitedOptions({ "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" })
 	public String spawnRuinedPortal;
 
 	@ModElementReference public List<SpawnEntry> spawnEntries;

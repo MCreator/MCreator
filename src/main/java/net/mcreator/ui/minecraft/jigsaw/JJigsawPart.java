@@ -46,7 +46,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 
 	private final JSpinner weight = ComponentFromAnnotation.spinner(Structure.JigsawPool.JigsawPart.class, "weight");
 	private final SearchableComboBox<String> structureSelector = new SearchableComboBox<>();
-	private final JComboBox<String> projection = new JComboBox<>(new String[] { "rigid", "terrain_matching" });
+	private final JComboBox<String> projection = ComponentFromAnnotation.options(Structure.JigsawPool.JigsawPart.class, "projection");
 	private final MCItemListField ignoreBlocks;
 
 	public JJigsawPart(MCreator mcreator, JJigsawPool listParent, JPanel parent, List<JJigsawPart> entryList) {

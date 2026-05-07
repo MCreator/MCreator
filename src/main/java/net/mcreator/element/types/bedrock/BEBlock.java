@@ -24,6 +24,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -68,7 +69,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String colorOnMap;
 
 	public boolean generateFeature;
-	public String generationShape;
+	@LimitedOptions({ "uniform", "triangle" }) public String generationShape;
 	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
 	@Numeric(init = 16, min = 1, max = 64, step = 1) public int oreCount;
 	@Numeric(init = 0, min = -2032, max = 2016, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
@@ -76,8 +77,11 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 
 	public int rotationMode;
+	@LimitedOptions({ "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
+			"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" })
 	public String renderMethod;
-	public String tintMethod;
+	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+			"water" }) public String tintMethod;
 
 	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 

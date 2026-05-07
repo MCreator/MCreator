@@ -62,7 +62,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -76,14 +75,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner stackSize = ComponentFromAnnotation.spinner(Item.class, "stackSize");
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Item.class, "rarity",
+			"elementgui.common.rarity_");
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -153,17 +146,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner saturation = ComponentFromAnnotation.spinner(Item.class, "saturation");
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
-	private final TranslatedComboBox animation = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("none", "elementgui.item.item_animation_none"),
-			Map.entry("eat", "elementgui.item.item_animation_eat"),
-			Map.entry("block", "elementgui.item.item_animation_block"),
-			Map.entry("bow", "elementgui.item.item_animation_bow"),
-			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
-			Map.entry("drink", "elementgui.item.item_animation_drink"),
-			Map.entry("spear", "elementgui.item.item_animation_spear")
-			//@formatter:on
-	);
+	private final TranslatedComboBox animation = ComponentFromAnnotation.translatedOptions(Item.class, "animation",
+			"elementgui.item.item_animation_");
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	// Music disc parameters

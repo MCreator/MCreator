@@ -22,6 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
@@ -30,10 +31,13 @@ import java.util.List;
 @SuppressWarnings("unused") public class Attribute extends GeneratableElement {
 
 	public String name;
+
 	@Numeric(init = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double minValue;
 	@Numeric(init = 1, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double maxValue;
 	@Numeric(init = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double defaultValue;
-	public String sentiment;
+
+	@LimitedOptions({ "POSITIVE", "NEUTRAL", "NEGATIVE" }) public String sentiment;
+
 	public boolean addToAllEntities;
 	public boolean addToPlayers;
 	@ModElementReference public List<EntityEntry> entities;

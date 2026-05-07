@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
-	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;
 
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
 	public String name;
-	public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	@Numeric(init = 64, min = 1, max = 99, step = 1) public int stackSize;
 	@Numeric(init = 0, min = -100, max = 128000, step = 1) public int enchantability;
@@ -117,7 +117,7 @@ import java.util.stream.Collectors;
 	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
-	public String animation;
+	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear" }) public String animation;
 
 	// Music disc
 	public boolean isMusicDisc;

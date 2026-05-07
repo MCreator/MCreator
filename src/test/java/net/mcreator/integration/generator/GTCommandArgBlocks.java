@@ -25,6 +25,7 @@ import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -74,9 +75,9 @@ public class GTCommandArgBlocks {
 
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
-			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
-			command.type = getRandomItem(random,
-					new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
+			command.permissionLevel = getRandomItem(random,
+					AnnotationUtils.getLimitedOptionsList(Command.class, "permissionLevel"));
+			command.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(Command.class, "type"));
 
 			if (commandArg.getType() == IBlockGenerator.BlockType.PROCEDURAL)
 				command.argsxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\""

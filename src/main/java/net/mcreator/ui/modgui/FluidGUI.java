@@ -40,6 +40,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -79,9 +80,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
 	private final JSpinner flowStrength = ComponentFromAnnotation.spinner(Fluid.class, "flowStrength");
-	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-					"Sky", "Fog", "Water fog" });
+	private final JComboBox<String> tintType = ComponentFromAnnotation.options(Fluid.class, "tintType");
 
 	private final JSpinner luminosity = ComponentFromAnnotation.spinner(Fluid.class, "luminosity");
 	private final JSpinner density = ComponentFromAnnotation.spinner(Fluid.class, "density");
@@ -94,14 +93,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private TextureSelectionButton textureBucket;
 	private final TabListField creativeTabs = new TabListField(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Fluid.class, "rarity",
+			"elementgui.common.rarity_");
 	private StringListProcedureSelector specialInformation;
 
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });

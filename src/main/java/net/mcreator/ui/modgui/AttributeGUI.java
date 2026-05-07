@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.SpawnableEntityListField;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
@@ -50,13 +51,8 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 	private final JSpinner defaultValue = ComponentFromAnnotation.spinner(Attribute.class, "defaultValue");
 	private final JMinMaxSpinner minMaxValue = ComponentFromAnnotation.minMaxSpinner(Attribute.class, "minValue",
 			"maxValue");
-	private final TranslatedComboBox sentiment = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("POSITIVE", "elementgui.attribute.sentiment.positive"),
-			Map.entry("NEUTRAL", "elementgui.attribute.sentiment.neutral"),
-			Map.entry("NEGATIVE", "elementgui.attribute.sentiment.negative")
-			//@formatter:on
-	);
+	private final TranslatedComboBox sentiment = ComponentFromAnnotation.translatedOptions(Attribute.class, "sentiment",
+			"elementgui.attribute.sentiment.");
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
 	private final JCheckBox addToAllEntities = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox addToPlayers = L10N.checkbox("elementgui.common.enable");

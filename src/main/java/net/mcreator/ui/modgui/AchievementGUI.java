@@ -77,10 +77,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private MCItemHolder achievementIcon;
 
-	private final TranslatedComboBox achievementType = new TranslatedComboBox(
-			Map.entry("task", "elementgui.advancement.achievement_type.task"),
-			Map.entry("goal", "elementgui.advancement.achievement_type.goal"),
-			Map.entry("challenge", "elementgui.advancement.achievement_type.challenge"));
+	private final TranslatedComboBox achievementType = ComponentFromAnnotation.translatedOptions(Achievement.class,
+			"achievementType", "elementgui.advancement.achievement_type.");
 
 	private TextureComboBox background;
 

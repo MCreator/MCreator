@@ -26,6 +26,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -78,14 +79,13 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final VTextField group = new VTextField();
 
-	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting",
-					"Campfire cooking", "Smithing" });
+	private final JComboBox<String> recipeType = ComponentFromAnnotation.options(Recipe.class, "recipeType");
 
-	private final JComboBox<String> cookingBookCategory = new JComboBox<>(new String[] { "MISC", "FOOD", "BLOCKS" });
+	private final JComboBox<String> cookingBookCategory = ComponentFromAnnotation.options(Recipe.class,
+			"cookingBookCategory");
 
-	private final JComboBox<String> craftingBookCategory = new JComboBox<>(
-			new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
+	private final JComboBox<String> craftingBookCategory = ComponentFromAnnotation.options(Recipe.class,
+			"craftingBookCategory");
 
 	private final CardLayout recipesPanelLayout = new CardLayout();
 	private final JPanel recipesPanel = new JPanel(recipesPanelLayout);

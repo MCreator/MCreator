@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -32,19 +33,20 @@ import java.util.*;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Recipe extends NamespacedGeneratableElement {
 
-	@Nonnull public String recipeType;
+	@LimitedOptions({ "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting", "Campfire cooking",
+			"Smithing" }) @Nonnull public String recipeType;
 
 	@Numeric(init = 1, min = 1, max = 99, step = 1) public int recipeRetstackSize;
 	public String group;
 	@ModElementReference public List<MItemBlock> unlockingItems;
 
 	// Cooking recipes common fields
-	public String cookingBookCategory;
+	@LimitedOptions({ "MISC", "FOOD", "BLOCKS" }) public String cookingBookCategory;
 	@Numeric(init = 1.0, min = 0, max = 256, step = 0.1) public double xpReward;
 	@Numeric(init = 200, min = 0, max = 1000000, step = 1) public int cookingTime;
 
 	// Crafting recipe
-	public String craftingBookCategory;
+	@LimitedOptions({ "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" }) public String craftingBookCategory;
 	public boolean recipeShapeless;
 	@ModElementReference public MItemBlock[] recipeSlots;
 	public MItemBlock recipeReturnStack;

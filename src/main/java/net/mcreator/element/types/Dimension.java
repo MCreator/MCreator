@@ -48,7 +48,7 @@ import java.util.List;
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
-	public String worldGenType;
+	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
 
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
@@ -58,11 +58,11 @@ import java.util.List;
 	public int horizontalNoiseSize;
 	public int verticalNoiseSize;
 
-	public String defaultEffects;
+	@LimitedOptions({ "overworld", "the_nether", "the_end" }) public String defaultEffects;
 	public boolean useCustomEffects;
 	public boolean hasClouds;
 	@Numeric(init = 192, min = -2032, max = 2031, step = 16) public int cloudHeight;
-	public String skyType;
+	@LimitedOptions({ "NONE", "NORMAL", "END" }) public String skyType;
 	@Nullable public Color airColor;
 	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
@@ -92,7 +92,7 @@ import java.util.List;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
-	public String igniterRarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String igniterRarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;

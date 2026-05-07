@@ -103,8 +103,8 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
-	public String bossBarColor;
-	public String bossBarType;
+	@LimitedOptions({ "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" }) public String bossBarColor;
+	@LimitedOptions({ "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" }) public String bossBarType;
 
 	public MItemBlock equipmentMainHand;
 	public MItemBlock equipmentOffHand;
@@ -113,8 +113,8 @@ import java.util.stream.Collectors;
 	public MItemBlock equipmentLeggings;
 	public MItemBlock equipmentBoots;
 
-	public String mobBehaviourType;
-	public String mobCreatureType;
+	@LimitedOptions({ "Mob", "Creature", "Raider" }) public String mobBehaviourType;
+	@LimitedOptions({ "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" }) public String mobCreatureType;
 	@Numeric(init = 3, min = 0, max = 10000, step = 1) public int attackStrength;
 	@Numeric(init = 0, min = 0, max = 1000, step = 0.1) public double attackKnockback;
 	@Numeric(init = 0, min = 0, max = 1000, step = 0.1) public double knockbackResistance;
@@ -175,7 +175,9 @@ import java.util.stream.Collectors;
 	public Procedure onInitialSpawn;
 
 	public boolean hasAI;
-	public String aiBase;
+	@LimitedOptions({ "(none)", "Bat", "Blaze", "Chicken", "Cow", "Creeper", "Enderman", "Horse", "IronGolem",
+			"MagmaCube", "Ocelot", "Pig", "Skeleton", "Slime", "Spider", "Squid", "Villager", "Witch", "Wolf",
+			"Zombie" }) public String aiBase;
 	@BlocklyXML(name = "aitasks", defaultXML = LivingEntity.XML_BASE) public String aixml;
 
 	public boolean breedable;

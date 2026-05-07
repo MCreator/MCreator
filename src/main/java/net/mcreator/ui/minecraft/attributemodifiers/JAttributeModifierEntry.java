@@ -30,6 +30,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -42,8 +43,8 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
 	private final JSpinner amount = ComponentFromAnnotation.spinner(AttributeModifierEntry.class, "amount");
-	private final JComboBox<String> operation = new JComboBox<>(
-			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+	private final JComboBox<String> operation = ComponentFromAnnotation.options(AttributeModifierEntry.class,
+			"operation");
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JAttributeModifierEntry> entryList, boolean isPotionEffectEntry) {

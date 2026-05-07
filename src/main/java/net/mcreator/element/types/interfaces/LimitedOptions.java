@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2025, Pylo, opensource contributors
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,15 +17,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.parts;
+package net.mcreator.element.types.interfaces;
 
-import net.mcreator.element.types.interfaces.LimitedOptions;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import net.mcreator.element.types.interfaces.Numeric;
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface LimitedOptions {
 
-public class AttributeModifierEntry {
-	public String equipmentSlot = "any";
-	public AttributeEntry attribute;
-	@Numeric(init = 0, min = -1024, max = 1024, step = 0.001) public double amount;
-	@LimitedOptions({ "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" }) public String operation;
+	String[] value();
+
 }

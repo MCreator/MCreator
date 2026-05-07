@@ -26,6 +26,7 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -49,7 +50,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@Numeric(init = 0, min = 0, max = 255, step = 1) public int damageVsEntity;
 	public boolean hasGlint;
 	public boolean handEquipped;
-	public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public boolean enableCreativeTab;
 	public String creativeTab;
 	public boolean isHiddenInCommands;
@@ -70,6 +71,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@Numeric(init = 0.3, min = -1000, max = 1000, step = 0.1) public double foodSaturation;
 	public boolean foodCanAlwaysEat;
 	@ModElementReference public MItemBlock usingConvertsTo;
+	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear", "brush", "spyglass", "camera" })
 	public String animation;
 
 	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;

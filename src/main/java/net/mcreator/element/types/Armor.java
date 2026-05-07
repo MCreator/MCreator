@@ -29,6 +29,7 @@ import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
@@ -79,7 +80,8 @@ import java.util.stream.Collectors;
 	public StringListProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
-	@Nullable public String helmetModelPart;;
+	@Nullable public String helmetModelPart;
+
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String helmetModelTexture;
 
 	public String bodyModelName;
@@ -137,7 +139,7 @@ import java.util.stream.Collectors;
 	@Numeric(init = 0, min = 0, max = 5.0, step = 0.1) public double knockbackResistance;
 	@Nullable public Sound equipSound;
 	@ModElementReference public List<MItemBlock> repairItems;
-	public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 
 	private Armor() {
 		this(null);

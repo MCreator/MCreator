@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -30,6 +31,7 @@ import java.awt.image.BufferedImage;
 
 	@Nonnull public String triggerKey;
 	public String keyBindingName;
+	@LimitedOptions({ "misc", "movement", "multiplayer", "gameplay", "ui", "inventory", "creative" })
 	public String keyBindingCategoryKey;
 
 	public Procedure onKeyPressed;
