@@ -1,0 +1,20 @@
+templates:
+  - template: enchantment.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/enchantment/@registryname.json"
+
+tags:
+  - tag: ENCHANTMENTS:minecraft:tradeable
+    condition: canVillagerTrade
+  - tag: ENCHANTMENTS:minecraft:curse
+    condition: isCurse
+  - tag: ENCHANTMENTS:minecraft:on_random_loot
+    condition: canGenerateInLootTables
+  - tag: ENCHANTMENTS:minecraft:treasure
+    condition: isTreasureEnchantment
+  - tag: ENCHANTMENTS:minecraft:non_treasure
+    condition: "!isTreasureEnchantment"
+
+localizationkeys:
+  - key: enchantment.@modid.@registryname
+    mapto: name

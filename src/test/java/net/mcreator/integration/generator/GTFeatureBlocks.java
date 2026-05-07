@@ -91,13 +91,13 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value></block></xml>
 						""".formatted(testXML);
-				// Placed features are tested with the "Random patch" feature
+				// Placed features are tested with the "Simple random selector" feature
 				case "PlacedFeature" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
-						<value name="feature"><block type="feature_random_patch">
-							<value name="feature">%s</value>
-							<field name="tries">128</field><field name="xzSpread">7</field><field name="ySpread">3</field>
+						<value name="feature"><block type="feature_simple_random_selector">
+							<mutation inputs="1"></mutation>
+							<value name="feature0">%s</value>
 						</block></value></block></xml>
 						""".formatted(testXML);
 				// Vertical anchors are tested with the "Height: At constant height" placement
