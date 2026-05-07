@@ -40,6 +40,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
-	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;
 
 	public String name;
 	public String rarity;

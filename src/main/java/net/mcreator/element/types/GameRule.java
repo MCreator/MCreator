@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 
 	@Nonnull public String type;
 
-	public String displayName;
+	@Nonnull public String displayName;
 	public String description;
 	public String category;
 

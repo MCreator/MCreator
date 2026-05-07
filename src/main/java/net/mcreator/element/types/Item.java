@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
-	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;;
 
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
-	@Nullable @ModElementReference(acceptedTypes = { "gui" }) public String guiBoundTo;
+	@Nullable @ModElementReference(acceptedTypes = { GUI.class }) public String guiBoundTo;
 	public LogicProcedure openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
@@ -126,7 +126,7 @@ import java.util.stream.Collectors;
 	public int musicDiscLengthInTicks;
 	public int musicDiscAnalogOutput;
 
-	@ModElementReference(acceptedTypes = { "bannerpattern" }) public List<String> providedBannerPatterns;
+	@ModElementReference(acceptedTypes = { BannerPattern.class }) public List<String> providedBannerPatterns;
 
 	@ModElementReference public List<AttributeModifierEntry> attributeModifiers;
 
