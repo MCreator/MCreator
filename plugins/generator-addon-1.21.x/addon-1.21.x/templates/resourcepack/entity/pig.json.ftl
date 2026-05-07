@@ -5,8 +5,8 @@
       "description": {
         "identifier": "${modid}:${registryname}",
         "textures": {
-          "default": "textures/entities/${data.mobModelTexture}",
-          "saddled": "textures/entities/${data.mobModelTexture}"
+          "default": "textures/entities/${data.modelTexture}",
+          "saddled": "textures/entities/${data.modelTexture}"
         },
         <#if data.hasSpawnEgg>
         "spawn_egg": {

@@ -1,0 +1,1 @@
+If enabled, the entity will be able to breath indefinitely underwater like fishes.
