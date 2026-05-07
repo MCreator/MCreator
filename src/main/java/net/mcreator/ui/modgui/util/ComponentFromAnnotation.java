@@ -21,11 +21,11 @@ package net.mcreator.ui.modgui.util;
 
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.component.JMinMaxSpinner;
 
 import javax.swing.*;
 import java.util.LinkedHashMap;
@@ -35,21 +35,33 @@ import java.util.stream.Collectors;
 public class ComponentFromAnnotation {
 
 	public static TranslatedComboBox translatedOptions(Class<?> type, String field, String translationPrefix) {
-		return new TranslatedComboBox(AnnotationUtils.getLimitedOptionsList(type, field).stream().collect(
-				Collectors.toMap(o -> o, o -> L10N.t(translationPrefix + o.replace(' ', '_').toLowerCase(Locale.ROOT)),
-						(_, b) -> b, LinkedHashMap::new)));
+		TranslatedComboBox retval = new TranslatedComboBox(AnnotationUtils.getLimitedOptionsList(type, field).stream()
+				.collect(Collectors.toMap(o -> o,
+						o -> L10N.t(translationPrefix + o.replace(' ', '_').toLowerCase(Locale.ROOT)), (_, b) -> b,
+						LinkedHashMap::new)));
+		retval.putClientProperty("MCreator.fieldName", field);
+		return retval;
 	}
 
 	public static JComboBox<String> options(Class<?> type, String field) {
-		return new JComboBox<>(AnnotationUtils.getLimitedOptionsList(type, field).toArray(new String[0]));
+		JComboBox<String> retval = new JComboBox<>(
+				AnnotationUtils.getLimitedOptionsList(type, field).toArray(new String[0]));
+		retval.putClientProperty("MCreator.fieldName", field);
+		return retval;
 	}
 
 	public static VComboBox<String> optionsValidated(Class<?> type, String field) {
-		return new VComboBox<>(AnnotationUtils.getLimitedOptionsList(type, field).toArray(new String[0]));
+		VComboBox<String> retval = new VComboBox<>(
+				AnnotationUtils.getLimitedOptionsList(type, field).toArray(new String[0]));
+		retval.putClientProperty("MCreator.fieldName", field);
+		return retval;
 	}
 
 	public static SearchableComboBox<String> searchableOptions(Class<?> type, String field) {
-		return new SearchableComboBox<>(AnnotationUtils.getLimitedOptionsList(type, field));
+		SearchableComboBox<String> retval = new SearchableComboBox<>(
+				AnnotationUtils.getLimitedOptionsList(type, field));
+		retval.putClientProperty("MCreator.fieldName", field);
+		return retval;
 	}
 
 	public static JSpinner spinner(Class<?> type, String field) {
@@ -92,8 +104,8 @@ public class ComponentFromAnnotation {
 	}
 
 	private static boolean isInteger(Numeric annotation) {
-		return isInteger(annotation.init()) && isInteger(annotation.min()) && isInteger(annotation.max())
-				&& isInteger(annotation.step());
+		return isInteger(annotation.init()) && isInteger(annotation.min()) && isInteger(annotation.max()) && isInteger(
+				annotation.step());
 	}
 
 	private static boolean isInteger(double d) {
