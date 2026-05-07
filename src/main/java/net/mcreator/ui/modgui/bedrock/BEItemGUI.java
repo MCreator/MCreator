@@ -33,6 +33,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -45,7 +46,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BEItemGUI extends ModElementGUI<BEItem> {
@@ -56,14 +56,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("common", "elementgui.common.rarity_common"),
-			Map.entry("uncommon", "elementgui.common.rarity_uncommon"),
-			Map.entry("rare", "elementgui.common.rarity_rare"),
-			Map.entry("epic", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(BEItem.class, "rarity",
+			"elementgui.common.rarity_");
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
 	private final JCheckBox enableCreativeTab = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,
@@ -90,20 +84,8 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JSpinner foodSaturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
 	private final JCheckBox foodCanAlwaysEat = L10N.checkbox("elementgui.common.enable");
 	private final MCItemHolder usingConvertsTo = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-	private final TranslatedComboBox animation = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("none", "elementgui.item.item_animation_none"),
-			Map.entry("eat", "elementgui.item.item_animation_eat"),
-			Map.entry("block", "elementgui.item.item_animation_block"),
-			Map.entry("bow", "elementgui.item.item_animation_bow"),
-			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
-			Map.entry("drink", "elementgui.item.item_animation_drink"),
-			Map.entry("spear", "elementgui.item.item_animation_spear"),
-			Map.entry("brush", "elementgui.item.item_animation_brush"),
-			Map.entry("spyglass", "elementgui.item.item_animation_spyglass"),
-			Map.entry("camera", "elementgui.item.item_animation_camera")
-			//@formatter:on
-	);
+	private final TranslatedComboBox animation = ComponentFromAnnotation.translatedOptions(BEItem.class, "animation",
+			"elementgui.item.item_animation_");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

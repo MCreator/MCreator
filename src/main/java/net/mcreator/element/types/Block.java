@@ -73,6 +73,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 	public int renderType;
 	@Nonnull public String customModelName;
+	@LimitedOptions({ "none", "player_y_axis", "player_all_axis", "block_y_axis", "block_all_axis", "log" })
 	public int rotationMode;
 	public boolean enablePitch;
 	public boolean emissiveRendering;
@@ -85,20 +86,23 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	@Nullable public String blockBase;
-	public String blockSetType;
+	@Nullable
+	@LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
+			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
+	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
 	public MItemBlock pottedPlant;
 	public Particle leavesParticleType;
 	public double leavesParticleChance;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
-	public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+			"Sky", "Fog", "Water fog" }) public String tintType;
 	public boolean isItemTinted;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;
-	public String transparencyType;
+	@LimitedOptions({ "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }) public String transparencyType;
 
 	public boolean disableOffset;
 	public List<BoxEntry> boundingBoxes;
@@ -114,11 +118,11 @@ import java.util.stream.Collectors;
 
 	public boolean hasBlockItem;
 	public int maxStackSize;
-	public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public boolean immuneToFire;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
-	@Nonnull public String destroyTool;
+	@LimitedOptions({ "Not specified", "pickaxe", "axe", "shovel", "hoe" }) @Nonnull public String destroyTool;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public int xpAmountMin;
@@ -141,7 +145,7 @@ import java.util.stream.Collectors;
 	public String colorOnMap;
 	public String noteBlockInstrument;
 	public MItemBlock creativePickItem;
-	public String offsetType;
+	@LimitedOptions({ "NONE", "XZ", "XYZ" }) public String offsetType;
 	public String aiPathNodeType;
 	public Color beaconColorModifier;
 	public MItemBlock strippingResult;
@@ -154,7 +158,7 @@ import java.util.stream.Collectors;
 	public double slipperiness;
 	public double speedFactor;
 	public double jumpFactor;
-	public String reactionToPushing;
+	@LimitedOptions({ "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" }) public String reactionToPushing;
 
 	public boolean isNotColidable;
 
@@ -168,7 +172,7 @@ import java.util.stream.Collectors;
 
 	public NumberProcedure luminance;
 	public boolean unbreakable;
-	public String vanillaToolTier;
+	@LimitedOptions({ "NONE", "STONE", "IRON", "DIAMOND" }) public String vanillaToolTier;
 	public Procedure additionalHarvestCondition;
 
 	public Procedure placingCondition;

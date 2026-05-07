@@ -27,10 +27,7 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
-import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.IMultipleNames;
-import net.mcreator.element.types.interfaces.ISpecialInfoHolder;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -63,7 +60,8 @@ import java.util.List;
 	public NumberProcedure fogStartDistance;
 	public NumberProcedure fogEndDistance;
 
-	public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+			"Sky", "Fog", "Water fog" }) public String tintType;
 
 	public boolean canMultiply;
 	public int flowRate;
@@ -83,7 +81,7 @@ import java.util.List;
 	@TextureReference(TextureType.ITEM) public TextureHolder textureBucket;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public Sound emptySound;
-	public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public StringListProcedure specialInformation;
 
 	public double resistance;

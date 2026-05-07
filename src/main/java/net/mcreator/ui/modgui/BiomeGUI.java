@@ -42,6 +42,7 @@ import net.mcreator.ui.minecraft.DefaultFeaturesListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.StringUtils;
@@ -97,35 +98,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JCheckBox spawnNetherFossil = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnBastionRemnant = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox spawnEndCity = L10N.checkbox("elementgui.common.enable");
-	private final TranslatedComboBox spawnRuinedPortal = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("NONE", "elementgui.biome.spawn_ruined_portal.none"),
-			Map.entry("STANDARD", "elementgui.biome.spawn_ruined_portal.standard"),
-			Map.entry("DESERT", "elementgui.biome.spawn_ruined_portal.desert"),
-			Map.entry("JUNGLE", "elementgui.biome.spawn_ruined_portal.jungle"),
-			Map.entry("SWAMP", "elementgui.biome.spawn_ruined_portal.swamp"),
-			Map.entry("MOUNTAIN", "elementgui.biome.spawn_ruined_portal.mountain"),
-			Map.entry("OCEAN", "elementgui.biome.spawn_ruined_portal.ocean"),
-			Map.entry("NETHER", "elementgui.biome.spawn_ruined_portal.nether")
-			//@formatter:on
-	);
-	private final TranslatedComboBox villageType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("none", "elementgui.biome.village_type.none"),
-			Map.entry("desert", "elementgui.biome.village_type.desert"),
-			Map.entry("plains", "elementgui.biome.village_type.plains"),
-			Map.entry("savanna", "elementgui.biome.village_type.savanna"),
-			Map.entry("snowy", "elementgui.biome.village_type.snowy"),
-			Map.entry("taiga", "elementgui.biome.village_type.taiga")
-			//@formatter:on
-	);
-	private final TranslatedComboBox oceanRuinType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("NONE", "elementgui.biome.ocean_ruin_type.none"),
-			Map.entry("COLD", "elementgui.biome.ocean_ruin_type.cold"),
-			Map.entry("WARM", "elementgui.biome.ocean_ruin_type.warm")
-			//@formatter:on
-	);
+	private final TranslatedComboBox spawnRuinedPortal = ComponentFromAnnotation.translatedOptions(Biome.class,
+			"spawnRuinedPortal", "elementgui.biome.spawn_ruined_portal.");
+	private final TranslatedComboBox villageType = ComponentFromAnnotation.translatedOptions(Biome.class, "villageType",
+			"elementgui.biome.village_type.");
+	private final TranslatedComboBox oceanRuinType = ComponentFromAnnotation.translatedOptions(Biome.class,
+			"oceanRuinType", "elementgui.biome.ocean_ruin_type.");
 
 	private JSpawnEntriesList spawnEntries;
 
@@ -155,16 +133,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
-	private final TranslatedComboBox vanillaTreeType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("Default", "elementgui.biome.vanilla_tree_type.default"),
-			Map.entry("Big trees", "elementgui.biome.vanilla_tree_type.big_trees"),
-			Map.entry("Birch trees", "elementgui.biome.vanilla_tree_type.birch_trees"),
-			Map.entry("Savanna trees", "elementgui.biome.vanilla_tree_type.savanna_trees"),
-			Map.entry("Mega pine trees", "elementgui.biome.vanilla_tree_type.mega_pine_trees"),
-			Map.entry("Mega spruce trees", "elementgui.biome.vanilla_tree_type.mega_spruce_trees")
-			//@formatter:on
-	);
+	private final TranslatedComboBox vanillaTreeType = ComponentFromAnnotation.translatedOptions(Biome.class,
+			"vanillaTreeType", "elementgui.biome.vanilla_tree_type.");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();

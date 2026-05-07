@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
@@ -116,8 +117,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JComboBox<String> plantType = new JComboBox<>(
-			new String[] { "normal", "double", "growapable", "sapling" });
+	private final JComboBox<String> plantType = ComponentFromAnnotation.options(Plant.class, "plantType");
 	private final CardLayout plantTypesLayout = new CardLayout();
 	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
 	private final JLabel plantTypeIndicator = new JLabel();
@@ -132,14 +132,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Plant.class, "rarity",
+			"elementgui.common.rarity_");
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
@@ -154,13 +148,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
-	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
+	private final JComboBox<String> offsetType = ComponentFromAnnotation.options(Plant.class, "offsetType");
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 	private final MCItemHolder strippingResult = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
-	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-					"Sky", "Fog", "Water fog" });
+	private final JComboBox<String> tintType = ComponentFromAnnotation.options(Plant.class, "tintType");
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox isBonemealable = L10N.checkbox("elementgui.common.enable");
@@ -190,7 +182,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private BiomeListField restrictionBiomes;
 	private final JSpinner patchSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 	private final JCheckBox generateAtAnyHeight = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> generationType = new JComboBox<>(new String[] { "Flower", "Grass" });
+	private final JComboBox<String> generationType = ComponentFromAnnotation.options(Plant.class, "generationType");
 
 	private final ValidationGroup page3group = new ValidationGroup();
 

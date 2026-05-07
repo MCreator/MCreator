@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
@@ -29,7 +30,6 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
@@ -40,9 +40,9 @@ import java.util.Locale;
 
 	public String commandName;
 
-	public String type;
+	@LimitedOptions({ "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" }) public String type;
 
-	public String permissionLevel;
+	@LimitedOptions({ "No requirement", "1", "2", "3", "4" }) public String permissionLevel;
 
 	@BlocklyXML(name = "cmdargs", defaultXML = XML_BASE) public String argsxml;
 

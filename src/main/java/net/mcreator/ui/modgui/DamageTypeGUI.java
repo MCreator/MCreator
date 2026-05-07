@@ -23,6 +23,7 @@ import net.mcreator.element.types.DamageType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -37,28 +38,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
-
 public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
 	private final JSpinner exhaustion = new JSpinner(new SpinnerNumberModel(0.1, 0, 100, 0.01));
-	private final TranslatedComboBox scaling = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("never","elementgui.damagetype.scaling.never"),
-			Map.entry("always","elementgui.damagetype.scaling.always"),
-			Map.entry("when_caused_by_living_non_player","elementgui.damagetype.scaling.when_caused_by_living_non_player")
-			//@formatter:on
-	);
-	private final TranslatedComboBox effects = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("hurt","elementgui.damagetype.effects.hurt"),
-			Map.entry("thorns","elementgui.damagetype.effects.thorns"),
-			Map.entry("drowning","elementgui.damagetype.effects.drowning"),
-			Map.entry("burning","elementgui.damagetype.effects.burning"),
-			Map.entry("poking","elementgui.damagetype.effects.poking"),
-			Map.entry("freezing","elementgui.damagetype.effects.freezing")
-			//@formatter:on
-	);
+	private final TranslatedComboBox scaling = ComponentFromAnnotation.translatedOptions(DamageType.class, "scaling",
+			"elementgui.damagetype.scaling.");
+	private final TranslatedComboBox effects = ComponentFromAnnotation.translatedOptions(DamageType.class, "effects",
+			"elementgui.damagetype.effects.");
 	private final VTextField normalDeathMessage = new VTextField(28).requireValue(
 			"elementgui.damagetype.error_empty_death_message").enableRealtimeValidation();
 	private final VTextField itemDeathMessage = new VTextField(28).requireValue(

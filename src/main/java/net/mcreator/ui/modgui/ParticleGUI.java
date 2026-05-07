@@ -29,6 +29,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -63,7 +64,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JCheckBox alwaysShow = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox animate = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> renderType = new JComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT" });
+	private final JComboBox<String> renderType = ComponentFromAnnotation.options(Particle.class, "renderType");
 
 	private ProcedureSelector additionalExpiryCondition;
 	private ProcedureSelector rotationProvider;

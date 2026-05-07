@@ -47,6 +47,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -76,10 +77,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private MCItemHolder achievementIcon;
 
-	private final TranslatedComboBox achievementType = new TranslatedComboBox(
-			Map.entry("task", "elementgui.advancement.achievement_type.task"),
-			Map.entry("goal", "elementgui.advancement.achievement_type.goal"),
-			Map.entry("challenge", "elementgui.advancement.achievement_type.challenge"));
+	private final TranslatedComboBox achievementType = ComponentFromAnnotation.translatedOptions(Achievement.class,
+			"achievementType", "elementgui.advancement.achievement_type.");
 
 	private TextureComboBox background;
 
