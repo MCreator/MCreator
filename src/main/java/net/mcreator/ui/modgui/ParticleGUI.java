@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -47,17 +48,17 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	private TextureSelectionButton texture;
 
-	private final JSpinner width = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
-	private final JSpinner height = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
+	private final JSpinner width = ComponentFromAnnotation.spinner(Particle.class, "width");
+	private final JSpinner height = ComponentFromAnnotation.spinner(Particle.class, "height");
 	private NumberProcedureSelector scale;
 	private final JCheckBox fixedScale = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner gravity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
-	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
-	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
-	private final JSpinner maxAgeDiff = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
-	private final JSpinner frameDuration = new JSpinner(new SpinnerNumberModel(1, 1, 100000, 1));
-	private final JSpinner angularVelocity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.01));
-	private final JSpinner angularAcceleration = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.01));
+	private final JSpinner gravity = ComponentFromAnnotation.spinner(Particle.class, "gravity");
+	private final JSpinner speedFactor = ComponentFromAnnotation.spinner(Particle.class, "speedFactor");
+	private final JSpinner maxAge = ComponentFromAnnotation.spinner(Particle.class, "maxAge");
+	private final JSpinner maxAgeDiff = ComponentFromAnnotation.spinner(Particle.class, "maxAgeDiff");
+	private final JSpinner frameDuration = ComponentFromAnnotation.spinner(Particle.class, "frameDuration");
+	private final JSpinner angularVelocity = ComponentFromAnnotation.spinner(Particle.class, "angularVelocity");
+	private final JSpinner angularAcceleration = ComponentFromAnnotation.spinner(Particle.class, "angularAcceleration");
 
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canCollide = L10N.checkbox("elementgui.common.enable");

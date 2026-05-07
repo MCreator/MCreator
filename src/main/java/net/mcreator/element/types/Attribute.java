@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -31,9 +32,9 @@ import java.util.List;
 
 	public String name;
 
-	public double minValue;
-	public double maxValue;
-	public double defaultValue;
+	@Numeric(init = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double minValue;
+	@Numeric(init = 1, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double maxValue;
+	@Numeric(init = 0, min = -Double.MAX_VALUE, max = Double.MAX_VALUE, step = 1.0) public double defaultValue;
 
 	@LimitedOptions({ "POSITIVE", "NEUTRAL", "NEGATIVE" }) public String sentiment;
 

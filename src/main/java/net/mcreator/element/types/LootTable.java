@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
@@ -42,7 +43,8 @@ import java.util.List;
 	}
 
 	public static class Pool {
-		public int minrolls, maxrolls;
+		@Numeric(init = 1, min = 0, max = 64000, step = 1, allowMinMaxEqual = true) public int minrolls, maxrolls;
+		@Numeric(init = 1, min = 0, max = 64000, step = 1, allowMinMaxEqual = true)
 		public int minbonusrolls, maxbonusrolls;
 		public boolean hasbonusrolls;
 
@@ -53,10 +55,11 @@ import java.util.List;
 			public String type;
 			public MItemBlock item;
 
-			public int weight;
+			@Numeric(init = 1, min = 0, max = 64000, step = 1) public int weight;
 
-			public int minCount, maxCount;
+			@Numeric(init = 1, min = 0, max = 64000, step = 1, allowMinMaxEqual = true) public int minCount, maxCount;
 
+			@Numeric(init = 0, min = 0, max = 64000, step = 1, allowMinMaxEqual = true)
 			public int minEnchantmentLevel, maxEnchantmentLevel;
 
 			public boolean affectedByFortune, explosionDecay;

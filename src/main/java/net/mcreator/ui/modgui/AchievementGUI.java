@@ -93,7 +93,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	private ModElementListField rewardLoot;
 	private ModElementListField rewardRecipes;
 
-	private final JSpinner rewardXP = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
+	private final JSpinner rewardXP = ComponentFromAnnotation.spinner(Achievement.class, "rewardXP");
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();

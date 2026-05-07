@@ -19,11 +19,13 @@
 package net.mcreator.ui.minecraft.recipemakers;
 
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.Recipe;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +50,7 @@ public class StoneCutterRecipeMaker extends AbstractRecipeMaker {
 		imagePanel.add(cb1);
 		imagePanel.add(cb2);
 
-		sp = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+		sp = ComponentFromAnnotation.spinner(Recipe.class, "recipeRetstackSize");
 		sp.setBounds(196, 108, 53, 22);
 		imagePanel.add(sp);
 

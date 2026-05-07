@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -37,8 +38,8 @@ import java.util.List;
 	@LimitedOptions({ "rigid", "terrain_matching" }) public String projection;
 	@ModElementReference public List<MItemBlock> ignoredBlocks;
 
-	public int spacing;
-	public int separation;
+	@Numeric(init = 5, min = 0, max = 1000000, step = 1) public int spacing;
+	@Numeric(init = 2, min = 0, max = 1000000, step = 1) public int separation;
 
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@LimitedOptions({ "none", "beard_thin", "beard_box", "bury", "encapsulate" }) public String terrainAdaptation;
@@ -49,11 +50,11 @@ import java.util.List;
 	public boolean useStartHeight;
 	@LimitedOptions({ "UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID" })
 	public String startHeightProviderType;
-	public int startHeightMin;
-	public int startHeightMax;
+	@Numeric(init = 0, min = -1024, max = 1024, step = 1) public int startHeightMin;
+	@Numeric(init = 128, min = -1024, max = 1024, step = 1) public int startHeightMax;
 
-	public int size;
-	public int maxDistanceFromCenter;
+	@Numeric(init = 1, min = 0, max = 20, step = 1) public int size;
+	@Numeric(init = 64, min = 1, max = 128, step = 1) public int maxDistanceFromCenter;
 	@ModElementReference @ResourceReference("structure") public List<JigsawPool> jigsawPools;
 
 	private Structure() {
@@ -94,7 +95,7 @@ import java.util.List;
 
 		public static class JigsawPart {
 
-			public int weight;
+			@Numeric(init = 1, min = 1, max = 150, step = 1) public int weight;
 			@ResourceReference("structure") public String structure;
 			@LimitedOptions({ "rigid", "terrain_matching" }) public String projection;
 			@ModElementReference public List<MItemBlock> ignoredBlocks;

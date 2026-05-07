@@ -26,6 +26,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -47,13 +48,14 @@ import java.util.Collections;
 	public boolean igniteFire;
 	public boolean disableGravity;
 	public boolean disableDiscarding;
-	public double power;
-	public double damage;
-	public int knockback;
+	@Numeric(init = 1, min = 0, max = 100, step = 0.1) public double power;
+	@Numeric(init = 5, min = 0, max = 10000, step = 0.1) public double damage;
+	@Numeric(init = 5, min = 0, max = 500, step = 1) public int knockback;
 	public String entityModel;
 	@TextureReference(TextureType.ENTITY) public String customModelTexture;
 
-	public double modelWidth, modelHeight;
+	@Numeric(init = 0.5, min = 0, max = 1024, step = 0.1) public double modelWidth;
+	@Numeric(init = 0.5, min = 0, max = 1024, step = 0.1) public double modelHeight;
 
 	public Procedure onHitsBlock;
 	public Procedure onHitsPlayer;

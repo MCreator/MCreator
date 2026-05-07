@@ -75,24 +75,26 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner lightEmission = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner hardness = ComponentFromAnnotation.spinner(BEBlock.class, "hardness");
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(BEBlock.class, "resistance");
+	private final JSpinner lightEmission = ComponentFromAnnotation.spinner(BEBlock.class, "lightEmission");
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
+	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(BEBlock.class, "dropAmount");
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
-	private final JSpinner friction = new JSpinner(new SpinnerNumberModel(0.4, 0, 0.9, 0.01));
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner flammableDestroyChance = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner friction = ComponentFromAnnotation.spinner(BEBlock.class, "friction");
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(BEBlock.class, "flammability");
+	private final JSpinner flammableDestroyChance = ComponentFromAnnotation.spinner(BEBlock.class,
+			"flammableDestroyChance");
 
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 	private final TranslatedComboBox generationShape = ComponentFromAnnotation.translatedOptions(BEBlock.class,
 			"generationShape", "elementgui.block.generation_shape.");
-	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
-	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
-	private final JSpinner oreCount = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
+	private final JMinMaxSpinner generateHeight = ComponentFromAnnotation.minMaxSpinner(BEBlock.class,
+			"minGenerateHeight", "maxGenerateHeight").allowEqualValues();
+	private final JSpinner frequencyPerChunks = ComponentFromAnnotation.spinner(BEBlock.class, "frequencyPerChunks");
+	private final JSpinner oreCount = ComponentFromAnnotation.spinner(BEBlock.class, "oreCount");
 	private final MCItemListField blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(

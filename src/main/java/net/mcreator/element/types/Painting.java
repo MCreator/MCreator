@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -36,8 +37,8 @@ import java.io.File;
 	private static final Logger LOG = LogManager.getLogger(Painting.class);
 
 	@TextureReference(TextureType.OTHER) public TextureHolder texture;
-	public int width;
-	public int height;
+	@Numeric(init = 16, min = 16, max = 64000, step = 16) public int width;
+	@Numeric(init = 16, min = 16, max = 64000, step = 16) public int height;
 	public String title;
 	public String author;
 

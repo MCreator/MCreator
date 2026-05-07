@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -48,18 +49,18 @@ import java.io.IOException;
 	@TextureReference(TextureType.PARTICLE) public TextureHolder texture;
 
 	public boolean animate;
-	public int frameDuration;
+	@Numeric(init = 1, min = 1, max = 100000, step = 1) public int frameDuration;
 
-	public double width;
-	public double height;
+	@Numeric(init = 0.2, min = 0, max = 4096, step = 0.1) public double width;
+	@Numeric(init = 0.2, min = 0, max = 4096, step = 0.1) public double height;
 	public NumberProcedure scale;
 	public boolean fixedScale;
-	public double speedFactor;
-	public double gravity;
-	public int maxAge;
-	public int maxAgeDiff;
-	public double angularVelocity;
-	public double angularAcceleration;
+	@Numeric(init = 1, min = -100, max = 100, step = 0.1) public double speedFactor;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.1) public double gravity;
+	@Numeric(init = 7, min = 0, max = 100000, step = 1) public int maxAge;
+	@Numeric(init = 0, min = 0, max = 100000, step = 1) public int maxAgeDiff;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.01) public double angularVelocity;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.01) public double angularAcceleration;
 
 	public boolean canCollide;
 	public boolean alwaysShow;
