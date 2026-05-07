@@ -99,6 +99,7 @@ class ModMakerMenuBar extends MainMenuBar {
 		tools.add(hideableMenu(mcreator.getActionRegistry().openToolPackMaker));
 		tools.add(hideableMenu(mcreator.getActionRegistry().openArmorPackMaker));
 		tools.add(hideableMenu(mcreator.getActionRegistry().openWoodPackMaker));
+		tools.add(hideableMenu(mcreator.getActionRegistry().openQuickRecipeTool));
 		tools.addSeparator();
 		tools.add(mcreator.getActionRegistry().openJavaEditionFolder);
 		tools.add(mcreator.getActionRegistry().openBedrockEditionFolder);
