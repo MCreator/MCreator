@@ -38,8 +38,8 @@ import java.util.List;
 	@LimitedOptions({ "rigid", "terrain_matching" }) public String projection;
 	@ModElementReference public List<MItemBlock> ignoredBlocks;
 
-	@Numeric(init = 5, min = 0, max = 1000000, step = 1) public int spacing;
-	@Numeric(init = 2, min = 0, max = 1000000, step = 1) public int separation;
+	@Numeric(init = 5, min = 0, max = 4096, step = 1) public int spacing;
+	@Numeric(init = 2, min = 0, max = 4096, step = 1) public int separation;
 
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@LimitedOptions({ "none", "beard_thin", "beard_box", "bury", "encapsulate" }) public String terrainAdaptation;

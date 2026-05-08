@@ -37,8 +37,8 @@ import java.io.File;
 	private static final Logger LOG = LogManager.getLogger(Painting.class);
 
 	@TextureReference(TextureType.OTHER) public TextureHolder texture;
-	@Numeric(init = 16, min = 16, max = 64000, step = 16) public int width;
-	@Numeric(init = 16, min = 16, max = 64000, step = 16) public int height;
+	@Numeric(init = 16, min = 16, max = 16 * 16, step = 16) public int width;
+	@Numeric(init = 16, min = 16, max = 16 * 16, step = 16) public int height;
 	public String title;
 	public String author;
 
