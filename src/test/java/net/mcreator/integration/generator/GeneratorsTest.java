@@ -244,6 +244,7 @@ import static org.junit.jupiter.api.Assertions.*;
 					}
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
+						workspace.get().markDirty();
 						workspace.get().close();
 						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
 					}));
