@@ -89,7 +89,7 @@ function validateIntProviderInputs(...inputs) {
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
-                this.setEnabled(isValid);
+                this.setDisabledReason(!isValid, "int_provider_out_of_bounds");
                 Blockly.Events.setGroup(group);
             }
         });

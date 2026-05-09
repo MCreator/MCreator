@@ -42,9 +42,9 @@ public class ${JavaModName}Fluids {
 
 	<#list fluids as fluid>
 	public static final DeferredHolder<Fluid, FlowingFluid> ${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Source());
+		REGISTRY.register("${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}Fluid.Source::new);
 	public static final DeferredHolder<Fluid, FlowingFluid> FLOWING_${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Flowing());
+		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", ${fluid.getModElement().getName()}Fluid.Flowing::new);
 	</#list>
 
 	@EventBusSubscriber(Dist.CLIENT) public static class FluidsClientSideHandler {

@@ -26,6 +26,7 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.datapack.BlocklyToFeature;
 import net.mcreator.element.types.Feature;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -135,7 +136,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "FeatureRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML(Feature.XML_BASE);
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Feature.class, "featurexml"));
 		}
 
 		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());

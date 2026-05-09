@@ -20,6 +20,8 @@
 package net.mcreator.util;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
 public class TestUtil {
 
@@ -36,6 +38,17 @@ public class TestUtil {
 	}
 
 	public static void failIfTestingEnvironment() {
+		if (failureHandler != null) {
+			failureHandler.run();
+		}
+	}
+
+	public static void failIfTestingEnvironmentIgnoreIf(String... ignoreStackClasses) {
+		List<String> ignored = Arrays.asList(ignoreStackClasses);
+		if (StackWalker.getInstance().walk(s -> s.anyMatch(f -> ignored.contains(f.getClassName())))) {
+			return;
+		}
+
 		if (failureHandler != null) {
 			failureHandler.run();
 		}

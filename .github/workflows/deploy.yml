@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       release-type:
-        description: 'Release type (snapshot/release)'
+        type: choice
+        description: 'Release type'
         required: true
         default: 'snapshot'
+        options:
+          - snapshot
+          - release
 
 jobs:
   export1:
@@ -20,6 +24,7 @@ jobs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
       build_date: ${{ steps.determineExportVersion.outputs.build_date }}
+      vt_analysis_export1: ${{ steps.vt_scan.outputs.analysis }}
     steps:
       - uses: actions/checkout@v6
       - name: Verify Repository
@@ -31,10 +36,10 @@ jobs:
           For more information, read LICENSE.txt.
           EOF
           exit 1
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
-          java-version: '21.0.10'
+          java-version: '25.0.2'
           distribution: 'jetbrains'
           java-package: 'jdk+jcef'
         env:
@@ -46,12 +51,16 @@ jobs:
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           sudo unzip LockedList.zip -d /usr/share/nsis/
-      - uses: google-github-actions/auth@a6e2e39c0a0331da29f7fd2c2a20a427e8d3ad1f
+      - name: Run Gradle build environment preparation tasks
+        # download JDKs before authentication, so we don't time out
+        run: gradle downloadJDKWin64 downloadJDKLinux64
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093
         name: Authenticate to Google Cloud
         with:
           workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ secrets.GC_PROJECT_ID }}
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200
+          # note: without using a service account, the signing needs to happen within 5 minutes due to KMS key expiry
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db
         name: Set up Google Cloud SDK
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
@@ -62,7 +71,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          xvfb-run -a gradle generateExportReport exportWindows exportLinux
+          gradle generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
@@ -72,7 +81,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          xvfb-run -a gradle generateExportReport exportWindows exportLinux -Psnapshot=true
+          gradle generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |
@@ -85,8 +94,15 @@ jobs:
           echo "mcr_version=$MCR_VERSION" >> $GITHUB_OUTPUT
           echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
           echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
+      - name: VirusTotal Scan
+        id: vt_scan
+        uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: build/export/*
+          request_rate: 4
       - name: Upload Binaries and Tag Release
-        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.MCR_VERSION }}
@@ -94,7 +110,7 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
-          body: >
+          body: |
             ### **Download: https://mcreator.net/download**
             
             ### Changelog: https://mcreator.net/changelog
@@ -112,10 +128,10 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v6
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
-          java-version: '21.0.10'
+          java-version: '25.0.2'
           distribution: 'jetbrains'
           java-package: 'jdk+jcef'
         env:
@@ -155,8 +171,26 @@ jobs:
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
         run: gradle generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
+      - name: VirusTotal Scan
+        id: vt_scan
+        uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          files: build/export/*
+          request_rate: 4
+      - name: Format All VirusTotal Results
+        id: vt_format
+        run: |
+          {
+            echo "vt_markdown<<EOF"
+            echo "### VirusTotal Scans"
+            echo "${{ needs.export1.outputs.vt_analysis_export1 }},${{ steps.vt_scan.outputs.analysis }}" | tr ',' '\n' | while IFS='=' read -r file url; do
+              [ -n "$file" ] && echo "- [$(basename "$file")]($url)"
+            done
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
       - name: Upload Binaries and Tag Release
-        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ needs.export1.outputs.mcr_version }}
@@ -164,10 +198,12 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
-          body: >
+          body: |
             ### **Download: https://mcreator.net/download**
             
             ### Changelog: https://mcreator.net/changelog
+            
+            ${{ steps.vt_format.outputs.vt_markdown }}
             
             <!--[[
             {

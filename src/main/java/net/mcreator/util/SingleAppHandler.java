@@ -26,6 +26,7 @@ import net.mcreator.io.UserFolderManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.*;
 import java.net.InetAddress;
@@ -124,7 +125,10 @@ public class SingleAppHandler implements Closeable {
 		return true;
 	}
 
-	public static void bringToFront(JFrame frame) {
+	public static void bringToFront(@Nullable JFrame frame) {
+		if (frame == null)
+			return;
+
 		if (frame.getExtendedState() == JFrame.ICONIFIED) {
 			frame.setExtendedState(JFrame.NORMAL);
 		} else {

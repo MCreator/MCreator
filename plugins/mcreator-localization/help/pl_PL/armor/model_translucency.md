@@ -1,0 +1,2 @@
+Ten parametr sprawdza, czy zaznaczony model java wspiera przeźroczystości podczas jego renderowania.
+Zaznacz to tylko dla modeli z przeźroczystymi teksturami, zaznaczenie tej opcji może zmniejszyć wydajność dla zwykłych tekstur.

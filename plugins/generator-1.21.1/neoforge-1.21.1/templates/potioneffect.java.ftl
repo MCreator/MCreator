@@ -125,7 +125,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				"entity": "entity",
 				"amplifier": "amplifier",
 				"damagesource": "damagesource",
-				"damage": "damage"
+				"amount": "damage"
 			}/>
 		}
 	</#if>
