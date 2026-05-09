@@ -35,6 +35,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.recipemakers.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -69,8 +70,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.common.enable");
 
-	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 0.1));
-	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
+	private final JSpinner xpReward = ComponentFromAnnotation.spinner(Recipe.class, "xpReward");
+	private final JSpinner cookingTime = ComponentFromAnnotation.spinner(Recipe.class, "cookingTime");
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 

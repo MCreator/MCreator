@@ -39,6 +39,7 @@ import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -115,20 +116,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector isBonemealTargetCondition;
 	private ProcedureSelector bonemealSuccessCondition;
 
-	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
+	private final JSpinner hardness = ComponentFromAnnotation.spinner(Block.class, "hardness");
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(Block.class, "resistance");
 	private final VTextField name = new VTextField(18).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
 
 	private NumberProcedureSelector luminance;
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
+	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(Block.class, "dropAmount");
+	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation.minMaxSpinner(Block.class, "xpAmountMin",
+			"xpAmountMax").allowEqualValues();
 	private final JCheckBox hasCustomOpacity = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
+	private final JSpinner lightOpacity = ComponentFromAnnotation.spinner(Block.class, "lightOpacity");
 
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
+	private final JSpinner tickRate = ComponentFromAnnotation.spinner(Block.class, "tickRate");
 
-	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
+	private final JSpinner enchantPowerBonus = ComponentFromAnnotation.spinner(Block.class, "enchantPowerBonus");
 
 	private final JColor beaconColorModifier = new JColor(mcreator, true, false);
 
@@ -152,11 +154,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox hasEnergyStorage = L10N.checkbox("elementgui.block.enable_energy_storage");
 	private final JCheckBox isFluidTank = L10N.checkbox("elementgui.block.enable_fluid_storage");
 
-	private final JSpinner energyInitial = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner energyCapacity = new JSpinner(new SpinnerNumberModel(400000, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner energyMaxReceive = new JSpinner(new SpinnerNumberModel(200, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner energyMaxExtract = new JSpinner(new SpinnerNumberModel(200, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner fluidCapacity = new JSpinner(new SpinnerNumberModel(8000, 0, Integer.MAX_VALUE, 1));
+	private final JSpinner energyInitial = ComponentFromAnnotation.spinner(Block.class, "energyInitial");
+	private final JSpinner energyCapacity = ComponentFromAnnotation.spinner(Block.class, "energyCapacity");
+	private final JSpinner energyMaxReceive = ComponentFromAnnotation.spinner(Block.class, "energyMaxReceive");
+	private final JSpinner energyMaxExtract = ComponentFromAnnotation.spinner(Block.class, "energyMaxExtract");
+	private final JSpinner fluidCapacity = ComponentFromAnnotation.spinner(Block.class, "fluidCapacity");
 	private FluidListField fluidRestrictions;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
@@ -185,9 +187,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder strippingResult = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
 	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
-	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
-	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
-	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
+	private final JMinMaxSpinner generateHeight = ComponentFromAnnotation.minMaxSpinner(Block.class,
+			"minGenerateHeight", "maxGenerateHeight").allowEqualValues();
+	private final JSpinner frequencyPerChunks = ComponentFromAnnotation.spinner(Block.class, "frequencyPerChunks");
+	private final JSpinner frequencyOnChunk = ComponentFromAnnotation.spinner(Block.class, "frequencyOnChunk");
 	private BiomeListField restrictionBiomes;
 	private MCItemListField blocksToReplace;
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
@@ -202,15 +205,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
+	private final JSpinner maxStackSize = ComponentFromAnnotation.spinner(Block.class, "maxStackSize");
 	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Block.class, "rarity",
 			"elementgui.common.rarity_");
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
-	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.01));
-	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
-	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private final JSpinner slipperiness = ComponentFromAnnotation.spinner(Block.class, "slipperiness");
+	private final JSpinner speedFactor = ComponentFromAnnotation.spinner(Block.class, "speedFactor");
+	private final JSpinner jumpFactor = ComponentFromAnnotation.spinner(Block.class, "jumpFactor");
 
 	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
 	private GameEventListField vibrationalEvents;
@@ -254,8 +257,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
 	private SingleModElementSelector guiBoundTo;
 
-	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
+	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(Block.class, "inventorySize");
+	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(Block.class, "inventoryStackSize");
 	private final JCheckBox inventoryDropWhenDestroyed = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox inventoryComparatorPower = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector inventoryAutomationTakeCondition;
@@ -276,14 +279,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 			"blockSetType", "elementgui.block.block_set_type.");
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
-	private final JSpinner leavesParticleChance = new JSpinner(new SpinnerNumberModel(0.01, 0, 1, 0.001));
+	private final JSpinner leavesParticleChance = ComponentFromAnnotation.spinner(Block.class, "leavesParticleChance");
 	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
 	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN);
 	private JComponent signGUITexturePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(Block.class, "flammability");
+	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Block.class, "fireSpreadSpeed");
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 
