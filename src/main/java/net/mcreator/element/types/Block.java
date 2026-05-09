@@ -232,8 +232,8 @@ import java.util.stream.Collectors;
 	public String generationShape;
 	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
 	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
-	@Numeric(init = 0, min = -2032, max = 2016, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
-	@Numeric(init = 64, min = -2032, max = 2016, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
+	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
+	@Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
 
 	private Block() {
 		this(null);

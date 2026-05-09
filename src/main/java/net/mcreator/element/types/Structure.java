@@ -50,8 +50,8 @@ import java.util.List;
 	public boolean useStartHeight;
 	@LimitedOptions({ "UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID" })
 	public String startHeightProviderType;
-	@Numeric(init = 0, min = -1024, max = 1024, step = 1) public int startHeightMin;
-	@Numeric(init = 128, min = -1024, max = 1024, step = 1) public int startHeightMax;
+	@Numeric(init = 0, min = -64, max = 320, step = 1) public int startHeightMin;
+	@Numeric(init = 128, min = -64, max = 320, step = 1) public int startHeightMax;
 
 	@Numeric(init = 1, min = 0, max = 20, step = 1) public int size;
 	@Numeric(init = 64, min = 1, max = 128, step = 1) public int maxDistanceFromCenter;
