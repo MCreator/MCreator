@@ -1,3 +1,6 @@
+import com.github.jk1.license.filter.LicenseBundleNormalizer
+import com.github.jk1.license.render.InventoryHtmlReportRenderer
+import com.github.jk1.license.render.TextReportRenderer
 import org.apache.tools.ant.taskdefs.condition.Os
 
 import java.text.SimpleDateFormat
@@ -8,6 +11,7 @@ plugins {
     id "de.undercouch.download" version "5.7.0"
     id 'edu.sc.seis.launch4j' version '4.0.0'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.4.1'
+    id 'com.github.jk1.dependency-license-report' version '3.1.2'
 }
 
 repositories {
@@ -190,6 +194,14 @@ javadoc {
     options.addStringOption('Xdoclint:none', '-quiet')
     options.addStringOption('tag', 'apiNote:a:API note:')
     options.addStringOption('tag', 'implNote:a:Implementation note:')
+}
+
+licenseReport {
+    unionParentPomLicenses = false
+    configurations = ['runtimeClasspath']
+    excludeOwnGroup = true
+    filters = [new LicenseBundleNormalizer()]
+    renderers = [new InventoryHtmlReportRenderer('THIRD-PARTY-NOTICES.html'), new TextReportRenderer('THIRD-PARTY-NOTICES.txt')]
 }
 
 tasks.register('runMCreator', JavaExec.class) {

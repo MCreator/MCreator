@@ -2,6 +2,7 @@ tasks.register('exportLinux64', Copy.class) {
     dependsOn downloadJDKLinux64
     dependsOn jar
     dependsOn exportPlugins
+    dependsOn generateLicenseReport
 
     def icon = project.snapshot ? "icon_eap.png" : "icon.png"
 
@@ -18,6 +19,7 @@ tasks.register('exportLinux64', Copy.class) {
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { from 'license' }
+    into('license') { from 'build/reports/dependency-license' }
     into('jdk') { from 'jdk/jbr25_linux_64' }
     doLast {
         convertCRLF(file('build/export/linux64/mcreator.shdos'), file('build/export/linux64/mcreator.sh'))
