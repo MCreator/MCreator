@@ -170,8 +170,8 @@ import java.util.List;
 	public static class SpawnEntry {
 
 		public EntityEntry entity;
-		@Numeric(init = 4, min = 1, max = 1000, step = 1, allowMinMaxEqual = true) public int minGroup;
-		@Numeric(init = 4, min = 1, max = 1000, step = 1, allowMinMaxEqual = true) public int maxGroup;
+		@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minGroup;
+		@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxGroup;
 		@Numeric(init = 20, min = 1, max = 1000, step = 1) public int weight;
 		public String spawnType;
 
