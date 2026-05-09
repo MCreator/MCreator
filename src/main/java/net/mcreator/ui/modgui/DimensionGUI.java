@@ -30,6 +30,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.JStringListField;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -75,7 +76,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private MCItemHolder portalFrame;
 	private MCItemHolder mainFillerBlock;
 	private MCItemHolder fluidBlock;
-	private final JSpinner seaLevel = new JSpinner(new SpinnerNumberModel(63, -1024, 1024, 1));
+	private final JSpinner seaLevel = ComponentFromAnnotation.spinner(Dimension.class, "seaLevel");
 	private final JCheckBox generateOreVeins = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox generateAquifers = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner horizontalNoiseSize = new JSpinner(
@@ -85,24 +86,27 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bedWorks = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasFog = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner ambientLight = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
+	private final JSpinner ambientLight = ComponentFromAnnotation.spinner(Dimension.class, "ambientLight");
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner coordinateScale = new JSpinner(new SpinnerNumberModel(1, 0.01, 1000, 0.01));
+	private final JSpinner coordinateScale = ComponentFromAnnotation.spinner(Dimension.class, "coordinateScale");
 	private final VTextField infiniburnTag = new VTextField(24);
 	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner fixedTimeValue = new JSpinner(new SpinnerNumberModel(0, 0, 24000, 1));
+	private final JSpinner fixedTimeValue = ComponentFromAnnotation.spinner(Dimension.class, "fixedTimeValue");
 	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasRaids = L10N.checkbox("elementgui.common.enable");
-	private final JMinMaxSpinner monsterSpawnLightLimit = new JMinMaxSpinner(0, 7, 0, 15, 1).allowEqualValues();
-	private final JSpinner monsterSpawnBlockLightLimit = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JMinMaxSpinner monsterSpawnLightLimit = ComponentFromAnnotation
+			.minMaxSpinner(Dimension.class, "minMonsterSpawnLightLimit", "maxMonsterSpawnLightLimit")
+			.allowEqualValues();
+	private final JSpinner monsterSpawnBlockLightLimit = ComponentFromAnnotation
+			.spinner(Dimension.class, "monsterSpawnBlockLightLimit");
 
 	private final TranslatedComboBox defaultEffects = ComponentFromAnnotation.translatedOptions(Dimension.class,
 			"defaultEffects", "elementgui.dimension.effects_");
 	private final JCheckBox useCustomEffects = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasClouds = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner cloudHeight = new JSpinner(new SpinnerNumberModel(192, -2032, 2031, 16));
+	private final JSpinner cloudHeight = ComponentFromAnnotation.spinner(Dimension.class, "cloudHeight");
 	private final JComboBox<String> skyType = ComponentFromAnnotation.options(Dimension.class, "skyType");
 	private final JCheckBox sunHeightAffectsFog = L10N.checkbox("elementgui.common.enable");
 
@@ -121,7 +125,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner portalLuminance = ComponentFromAnnotation.spinner(Dimension.class, "portalLuminance");
 
 	private ProcedureSelector portalMakeCondition;
 	private ProcedureSelector portalUseCondition;
@@ -429,7 +433,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.dimension.portal_luminance")));
-		proper.add(luminance);
+		proper.add(portalLuminance);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
 				L10N.label("elementgui.dimension.portal_frame_block")));
@@ -547,7 +551,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalFrame.setEnabled(enablePortal.isSelected());
 		portalParticles.setEnabled(enablePortal.isSelected());
 		portalSound.setEnabled(enablePortal.isSelected());
-		luminance.setEnabled(enablePortal.isSelected());
+		portalLuminance.setEnabled(enablePortal.isSelected());
 		portalTexture.setEnabled(enablePortal.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
 		enableIgniter.setEnabled(enablePortal.isSelected());
@@ -670,7 +674,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		onPortalTickUpdate.setSelectedProcedure(dimension.onPortalTickUpdate);
 		onPlayerEntersDimension.setSelectedProcedure(dimension.onPlayerEntersDimension);
 		onPlayerLeavesDimension.setSelectedProcedure(dimension.onPlayerLeavesDimension);
-		luminance.setValue(dimension.portalLuminance);
+		portalLuminance.setValue(dimension.portalLuminance);
 		portalMakeCondition.setSelectedProcedure(dimension.portalMakeCondition);
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 
@@ -729,7 +733,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.onPortalTickUpdate = onPortalTickUpdate.getSelectedProcedure();
 		dimension.onPlayerEntersDimension = onPlayerEntersDimension.getSelectedProcedure();
 		dimension.onPlayerLeavesDimension = onPlayerLeavesDimension.getSelectedProcedure();
-		dimension.portalLuminance = (int) luminance.getValue();
+		dimension.portalLuminance = (int) portalLuminance.getValue();
 		dimension.doesWaterVaporize = doesWaterVaporize.isSelected();
 		dimension.portalMakeCondition = portalMakeCondition.getSelectedProcedure();
 		dimension.portalUseCondition = portalUseCondition.getSelectedProcedure();

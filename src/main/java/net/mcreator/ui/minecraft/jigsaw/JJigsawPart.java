@@ -44,7 +44,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 	private final MCreator mcreator;
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
-	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(1, 1, 150, 1));
+	private final JSpinner weight = ComponentFromAnnotation.spinner(Structure.JigsawPool.JigsawPart.class, "weight");
 	private final SearchableComboBox<String> structureSelector = new SearchableComboBox<>();
 	private final JComboBox<String> projection = ComponentFromAnnotation.options(Structure.JigsawPool.JigsawPart.class, "projection");
 	private final MCItemListField ignoreBlocks;
