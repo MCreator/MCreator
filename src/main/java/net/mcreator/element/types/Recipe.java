@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
@@ -31,19 +32,20 @@ import java.util.*;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Recipe extends NamespacedGeneratableElement {
 
-	@Nonnull public String recipeType;
+	@LimitedOptions({ "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting", "Campfire cooking",
+			"Smithing" }) @Nonnull public String recipeType;
 
 	public int recipeRetstackSize;
 	public String group;
 	@ModElementReference public List<MItemBlock> unlockingItems;
 
 	// Cooking recipes common fields
-	public String cookingBookCategory;
+	@LimitedOptions({ "MISC", "FOOD", "BLOCKS" }) public String cookingBookCategory;
 	public double xpReward;
 	public int cookingTime;
 
 	// Crafting recipe
-	public String craftingBookCategory;
+	@LimitedOptions({ "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" }) public String craftingBookCategory;
 	public boolean recipeShapeless;
 	@ModElementReference public MItemBlock[] recipeSlots;
 	public MItemBlock recipeReturnStack;

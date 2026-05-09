@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.ListUtils;
@@ -54,7 +55,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -88,12 +88,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JSpinner flammableDestroyChance = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
-	private final TranslatedComboBox generationShape = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("uniform", "elementgui.block.generation_shape.uniform"),
-			Map.entry("triangle", "elementgui.block.generation_shape.triangle")
-			//@formatter:on
-	);
+	private final TranslatedComboBox generationShape = ComponentFromAnnotation.translatedOptions(BEBlock.class,
+			"generationShape", "elementgui.block.generation_shape.");
 	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
 	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
 	private final JSpinner oreCount = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
@@ -106,13 +102,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
 					L10N.t("elementgui.block.rotation_mode.log") });
 
-	private final JComboBox<String> renderMethod = new JComboBox<>(
-			new String[] { "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
-					"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" });
+	private final JComboBox<String> renderMethod = ComponentFromAnnotation.options(BEBlock.class, "renderMethod");
 
-	private final JComboBox<String> tintMethod = new JComboBox<>(
-			new String[] { "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
-					"water" });
+	private final JComboBox<String> tintMethod = ComponentFromAnnotation.options(BEBlock.class, "tintMethod");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();

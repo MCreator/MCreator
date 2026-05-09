@@ -43,13 +43,13 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
 
-	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
 	public boolean skipPlacement;
 	public String generationStep;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
-	@BlocklyXML("features") public String featurexml;
+	@BlocklyXML(name = "features", defaultXML = XML_BASE) public String featurexml;
 
 	private transient Boolean hasConfiguredFeature = null;
 

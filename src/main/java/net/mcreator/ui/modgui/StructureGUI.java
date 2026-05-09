@@ -37,6 +37,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.jigsaw.JJigsawPoolsList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.validators.CompoundValidator;
@@ -58,14 +59,13 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	private MCItemListField ignoreBlocks;
 
-	private final JComboBox<String> surfaceDetectionType = new JComboBox<>(
-			new String[] { "WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR", "MOTION_BLOCKING",
-					"MOTION_BLOCKING_NO_LEAVES" });
+	private final JComboBox<String> surfaceDetectionType =
+			ComponentFromAnnotation.options(Structure.class, "surfaceDetectionType");
 
-	private final JComboBox<String> terrainAdaptation = new JComboBox<>(
-			new String[] { "none", "beard_thin", "beard_box", "bury", "encapsulate" });
+	private final JComboBox<String> terrainAdaptation =
+			ComponentFromAnnotation.options(Structure.class, "terrainAdaptation");
 
-	private final JComboBox<String> projection = new JComboBox<>(new String[] { "rigid", "terrain_matching" });
+	private final JComboBox<String> projection = ComponentFromAnnotation.options(Structure.class, "projection");
 
 	private BiomeListField restrictionBiomes;
 
@@ -73,8 +73,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
 
 	private final JCheckBox useStartHeight = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> startHeightProviderType = new JComboBox<>(
-			new String[] { "UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID" });
+	private final JComboBox<String> startHeightProviderType =
+			ComponentFromAnnotation.options(Structure.class, "startHeightProviderType");
 	private final JMinMaxSpinner startHeightRange = new JMinMaxSpinner(0, 128, -1024, 1024, 1);
 
 	private SearchableComboBox<String> structureSelector;

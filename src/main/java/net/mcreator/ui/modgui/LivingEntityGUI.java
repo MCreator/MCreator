@@ -29,6 +29,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -51,6 +52,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.entityanimations.JEntityAnimationList;
 import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
 import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
@@ -73,7 +75,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
 
@@ -205,18 +206,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
-	private final SearchableComboBox<String> aiBase = new SearchableComboBox<>(
-			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
-					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().toArray(String[]::new));
+	private final SearchableComboBox<String> aiBase = ComponentFromAnnotation.searchableOptions(LivingEntity.class, "aiBase");
 
-	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature", "Raider" });
-	private final JComboBox<String> mobCreatureType = new JComboBox<>(
-			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
-	private final JComboBox<String> bossBarColor = new JComboBox<>(
-			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
-	private final JComboBox<String> bossBarType = new JComboBox<>(
-			new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
+	private final JComboBox<String> mobBehaviourType = ComponentFromAnnotation.options(LivingEntity.class, "mobBehaviourType");
+	private final JComboBox<String> mobCreatureType = ComponentFromAnnotation.options(LivingEntity.class, "mobCreatureType");
+	private final JComboBox<String> bossBarColor = ComponentFromAnnotation.options(LivingEntity.class, "bossBarColor");
+	private final JComboBox<String> bossBarType = ComponentFromAnnotation.options(LivingEntity.class, "bossBarType");
 
 	private final JCheckBox ridable = L10N.checkbox("elementgui.living_entity.is_rideable");
 
@@ -791,15 +786,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "AITasksRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML("""
-					<xml xmlns="https://developers.google.com/blockly/xml">
-					<block type="aitasks_container" deletable="false" x="40" y="40"><next>
-					<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
-					<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
-					<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
-					<block type="look_around"><field name="condition">null,null</field><next>
-					<block type="swim_in_water"><field name="condition">null,null</field></block></next>
-					</block></next></block></next></block></next></block></next></block></xml>""");
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(LivingEntity.class, "aixml"));
 		}
 
 		aipan.add("North", aitopoveral);
