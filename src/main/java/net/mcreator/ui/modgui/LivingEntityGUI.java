@@ -52,6 +52,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.entityanimations.JEntityAnimationList;
 import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
 import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
@@ -74,7 +75,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
 
@@ -206,18 +206,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
-	private final SearchableComboBox<String> aiBase = new SearchableComboBox<>(
-			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
-					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().toArray(String[]::new));
+	private final SearchableComboBox<String> aiBase = ComponentFromAnnotation.searchableOptions(LivingEntity.class, "aiBase");
 
-	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature", "Raider" });
-	private final JComboBox<String> mobCreatureType = new JComboBox<>(
-			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
-	private final JComboBox<String> bossBarColor = new JComboBox<>(
-			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
-	private final JComboBox<String> bossBarType = new JComboBox<>(
-			new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
+	private final JComboBox<String> mobBehaviourType = ComponentFromAnnotation.options(LivingEntity.class, "mobBehaviourType");
+	private final JComboBox<String> mobCreatureType = ComponentFromAnnotation.options(LivingEntity.class, "mobCreatureType");
+	private final JComboBox<String> bossBarColor = ComponentFromAnnotation.options(LivingEntity.class, "bossBarColor");
+	private final JComboBox<String> bossBarType = ComponentFromAnnotation.options(LivingEntity.class, "bossBarType");
 
 	private final JCheckBox ridable = L10N.checkbox("elementgui.living_entity.is_rideable");
 

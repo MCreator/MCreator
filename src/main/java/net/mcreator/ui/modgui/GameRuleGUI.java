@@ -25,6 +25,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.StringUtils;
@@ -45,9 +46,8 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	private final VTextField description = new VTextField(30).requireValue(
 			"elementgui.gamerule.gamerule_needs_description").enableRealtimeValidation();
 
-	private final JComboBox<String> gameruleCategory = new JComboBox<>(
-			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" });
-	private final JComboBox<String> gameruleType = new JComboBox<>(new String[] { "Number", "Logic" });
+	private final JComboBox<String> gameruleCategory = ComponentFromAnnotation.options(GameRule.class, "category");
+	private final JComboBox<String> gameruleType = ComponentFromAnnotation.options(GameRule.class, "type");
 
 	private final JComboBox<String> defaultValueLogic = new JComboBox<>(new String[] { "false", "true" });
 	private final JSpinner defaultValueNumber = new JSpinner(

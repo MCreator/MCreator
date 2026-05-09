@@ -20,12 +20,14 @@
 package net.mcreator.element.util;
 
 import net.mcreator.blockly.data.BlocklyXML;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,6 +38,10 @@ public class AnnotationUtils {
 
 	public static String getBlocklyXMLDefaultValue(Class<?> type, String field) {
 		return getAnnotation(type, field, BlocklyXML.class).defaultXML();
+	}
+
+	public static List<String> getLimitedOptionsList(Class<?> type, String field) {
+		return List.of(getAnnotation(type, field, LimitedOptions.class).value());
 	}
 
 	private static final Map<FieldKey, Annotation> CACHE = new ConcurrentHashMap<>();

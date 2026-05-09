@@ -31,6 +31,7 @@ import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
@@ -52,6 +53,7 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
 import net.mcreator.ui.minecraft.states.block.JBlockStatesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -138,20 +140,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isBonemealable = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox tintType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("No tint", "elementgui.block.tint_type.no_tint"),
-			Map.entry("Grass", "elementgui.block.tint_type.grass"),
-			Map.entry("Foliage", "elementgui.block.tint_type.foliage"),
-			Map.entry("Birch foliage", "elementgui.block.tint_type.birch_foliage"),
-			Map.entry("Spruce foliage", "elementgui.block.tint_type.spruce_foliage"),
-			Map.entry("Default foliage", "elementgui.block.tint_type.default_foliage"),
-			Map.entry("Water", "elementgui.block.tint_type.water"),
-			Map.entry("Sky", "elementgui.block.tint_type.sky"),
-			Map.entry("Fog", "elementgui.block.tint_type.fog"),
-			Map.entry("Water fog", "elementgui.block.tint_type.water_fog")
-			//@formatter:on
-	);
+	private final TranslatedComboBox tintType = ComponentFromAnnotation.translatedOptions(Block.class, "tintType",
+			"elementgui.block.tint_type.");
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -205,28 +195,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox reactionToPushing = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("NORMAL", "elementgui.block.reaction_to_push.normal"),
-			Map.entry("DESTROY", "elementgui.block.reaction_to_push.destroy"),
-			Map.entry("BLOCK", "elementgui.block.reaction_to_push.block"),
-			Map.entry("PUSH_ONLY", "elementgui.block.reaction_to_push.push_only"),
-			Map.entry("IGNORE", "elementgui.block.reaction_to_push.ignore"));
-			//@formatter:on
+	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptions(Block.class,
+			"reactionToPushing", "elementgui.block.reaction_to_push.");
 
-	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
+	private final JComboBox<String> offsetType = ComponentFromAnnotation.options(Block.class, "offsetType");
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Block.class, "rarity",
+			"elementgui.common.rarity_");
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
@@ -240,20 +218,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector canReceiveVibrationCondition;
 	private ProcedureSelector onReceivedVibration;
 
-	private final JComboBox<String> rotationMode = new JComboBox<>(
-			new String[] { L10N.t("elementgui.block.rotation_mode.none"),
-					L10N.t("elementgui.block.rotation_mode.player_y_axis"),
-					L10N.t("elementgui.block.rotation_mode.player_all_axis"),
-					L10N.t("elementgui.block.rotation_mode.block_y_axis"),
-					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
-					L10N.t("elementgui.block.rotation_mode.log") });
+	private final JComboBox<String> rotationMode = ComponentFromAnnotation.translatedOptions(Block.class,
+			"rotationMode", "elementgui.block.rotation_mode.");
 	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> destroyTool = new JComboBox<>(
-			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
+	private final JComboBox<String> destroyTool = ComponentFromAnnotation.options(Block.class, "destroyTool");
 
-	private final JComboBox<String> vanillaToolTier = new JComboBox<>(
-			new String[] { "NONE", "STONE", "IRON", "DIAMOND" });
+	private final JComboBox<String> vanillaToolTier = ComponentFromAnnotation.options(Block.class, "vanillaToolTier");
 
 	private ProcedureSelector additionalHarvestCondition;
 
@@ -275,8 +246,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private JBlockStatesList blockStatesList;
 
-	private final JComboBox<String> transparencyType = new JComboBox<>(
-			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
+	private final JComboBox<String> transparencyType = ComponentFromAnnotation.options(Block.class,
+			"transparencyType");
 
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 
@@ -296,19 +267,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
-	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign");
+	public static final List<String> blockBases = AnnotationUtils.getLimitedOptionsList(Block.class, "blockBase");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final CardLayout blockBaseCardLayout = new CardLayout();
 	private final JPanel blockBasePropertiesPanel = new JPanel(blockBaseCardLayout);
-	private final JComboBox<String> blockSetType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("OAK", "elementgui.block.block_set_type.oak"),
-			Map.entry("STONE", "elementgui.block.block_set_type.stone"),
-			Map.entry("IRON", "elementgui.block.block_set_type.iron")
-			//@formatter:on
-	);
+	private final JComboBox<String> blockSetType = ComponentFromAnnotation.translatedOptions(Block.class,
+			"blockSetType", "elementgui.block.block_set_type.");
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
 	private final JSpinner leavesParticleChance = new JSpinner(new SpinnerNumberModel(0.01, 0, 1, 0.001));
