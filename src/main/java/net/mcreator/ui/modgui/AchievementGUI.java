@@ -26,6 +26,7 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.types.Achievement;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -46,6 +47,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -75,10 +77,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private MCItemHolder achievementIcon;
 
-	private final TranslatedComboBox achievementType = new TranslatedComboBox(
-			Map.entry("task", "elementgui.advancement.achievement_type.task"),
-			Map.entry("goal", "elementgui.advancement.achievement_type.goal"),
-			Map.entry("challenge", "elementgui.advancement.achievement_type.challenge"));
+	private final TranslatedComboBox achievementType = ComponentFromAnnotation.translatedOptions(Achievement.class,
+			"achievementType", "elementgui.advancement.achievement_type.");
 
 	private TextureComboBox background;
 
@@ -213,8 +213,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "TriggerRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML(
-					"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml"));
 		}
 
 		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);

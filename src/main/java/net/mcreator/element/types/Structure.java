@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
@@ -33,18 +34,20 @@ import java.util.List;
 @SuppressWarnings("unused") public class Structure extends GeneratableElement {
 
 	@ResourceReference("structure") public String structure;
-	public String projection;
+	@LimitedOptions({ "rigid", "terrain_matching" }) public String projection;
 	@ModElementReference public List<MItemBlock> ignoredBlocks;
 
 	public int spacing;
 	public int separation;
 
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
-	public String terrainAdaptation;
+	@LimitedOptions({ "none", "beard_thin", "beard_box", "bury", "encapsulate" }) public String terrainAdaptation;
 	public String generationStep;
 
-	public String surfaceDetectionType;
+	@LimitedOptions({ "WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR", "MOTION_BLOCKING",
+			"MOTION_BLOCKING_NO_LEAVES" }) public String surfaceDetectionType;
 	public boolean useStartHeight;
+	@LimitedOptions({ "UNIFORM", "BIASED_TO_BOTTOM", "VERY_BIASED_TO_BOTTOM", "TRAPEZOID" })
 	public String startHeightProviderType;
 	public int startHeightMin;
 	public int startHeightMax;
@@ -93,7 +96,7 @@ import java.util.List;
 
 			public int weight;
 			@ResourceReference("structure") public String structure;
-			public String projection;
+			@LimitedOptions({ "rigid", "terrain_matching" }) public String projection;
 			@ModElementReference public List<MItemBlock> ignoredBlocks;
 
 		}
