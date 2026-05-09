@@ -82,7 +82,7 @@ import java.util.List;
 	@Numeric(init = 0.9, min = 0.0, max = 1.5, step = 0.0001, allowMinMaxEqual = true)
 	public transient double genDepthMax;
 
-	@Numeric(init = 1, min = 0, max = 256, step = 1) public int treesPerChunk;
+	@Numeric(init = 1, min = 0, max = 64, step = 1) public int treesPerChunk;
 	@LimitedOptions({ "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees", "Mega spruce trees" })
 	public String vanillaTreeType;
 	public int treeType;
