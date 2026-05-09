@@ -91,9 +91,9 @@ import java.util.stream.Collectors;
 
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
-	@Numeric(init = 0.6, min = 0, max = 1024, step = 0.1) public double modelWidth;
-	@Numeric(init = 1.8, min = 0, max = 1024, step = 0.1) public double modelHeight;
-	@Numeric(init = 0.5, min = 0, max = 20, step = 0.1) public double modelShadowSize;
+	@Numeric(init = 0.6, min = 0, max = 16, step = 0.1) public double modelWidth;
+	@Numeric(init = 1.8, min = 0, max = 16, step = 0.1) public double modelHeight;
+	@Numeric(init = 0.5, min = 0, max = 16, step = 0.1) public double modelShadowSize;
 	@Numeric(init = 0, min = -1024, max = 1024, step = 0.1) public double mountedYOffset;
 
 	public boolean hasSpawnEgg;
