@@ -124,7 +124,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	@SubscribeEvent public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
 		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), builder -> builder
 		<#if data.usageCount == 0>
-			.remove(DataComponents.MAX_DAMAGE)
+			.set(DataComponents.MAX_DAMAGE, null)
 		</#if>
 		<#if data.attributeModifiers?size gt 0 && (data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe")>
 			.set(DataComponents.ATTRIBUTE_MODIFIERS, <@itemAttributeModifiers true/>)

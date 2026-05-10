@@ -2423,7 +2423,7 @@ public class TestWorkspaceDataProvider {
 		tool.attackSpeed = getRandomDouble(random, Tool.class, "attackSpeed");
 		tool.enchantability = getRandomInt(random, Tool.class, "enchantability");
 		tool.damageVsEntity = getRandomDouble(random, Tool.class, "damageVsEntity");
-		tool.usageCount = getRandomInt(random, Tool.class, "usageCount");
+		tool.usageCount = emptyLists ? 0 : getRandomInt(random, Tool.class, "usageCount");
 		tool.stayInGridWhenCrafting = _true;
 		tool.damageOnCrafting = emptyLists;
 		tool.immuneToFire = _true;
