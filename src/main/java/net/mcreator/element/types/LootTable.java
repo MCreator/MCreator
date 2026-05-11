@@ -31,8 +31,8 @@ import java.util.List;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LootTable
 		extends NamespacedGeneratableElement {
 
-	@LimitedOptions({ "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-			"Barter", "Archaeology" }) @Nonnull public String type;
+	@LimitedOptions({ "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift", "Barter",
+			"Archaeology" }) @Nonnull public String type;
 
 	@ModElementReference public List<Pool> pools;
 
@@ -54,7 +54,7 @@ import java.util.List;
 
 		public static class Entry {
 
-			public String type = "item";
+			@LimitedOptions({ "item" }) public String type = "item";
 			public MItemBlock item;
 
 			@Numeric(init = 1, min = 0, max = 64000, step = 1) public int weight;

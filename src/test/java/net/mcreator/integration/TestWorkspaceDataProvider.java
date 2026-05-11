@@ -1437,7 +1437,7 @@ public class TestWorkspaceDataProvider {
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
-			lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type").toArray(String[]::new));
+			lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type"));
 
 			lootTable.pools = new ArrayList<>();
 			if (!emptyLists) {
@@ -2900,7 +2900,7 @@ public class TestWorkspaceDataProvider {
 				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
 
 				LootTable lootTable = new LootTable(me);
-				lootTable.type = "Generic";
+				lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type"));
 				lootTable.name = me.getRegistryName();
 				lootTable.namespace = "mod";
 				lootTable.pools = Collections.emptyList();
