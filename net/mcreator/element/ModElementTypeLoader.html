@@ -65,6 +65,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#loadModElements()" tabindex="0">loadModElements()</a></li>
 <li><a href="#register(net.mcreator.element.ModElementType)" tabindex="0">register(ModElementType)</a></li>
 <li><a href="#getModElementType(java.lang.String)" tabindex="0">getModElementType(String)</a></li>
+<li><a href="#getModElementType(java.lang.Class)" tabindex="0">getModElementType(Class)</a></li>
 <li><a href="#getAllModElementTypes()" tabindex="0">getAllModElementTypes()</a></li>
 </ol>
 </li>
@@ -115,14 +116,17 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getAllModElementTypes()" class="member-name-link">getAllModElementTypes</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a><wbr>&lt;?&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModElementType(java.lang.String)" class="member-name-link">getModElementType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModElementType(java.lang.Class)" class="member-name-link">getModElementType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;elementClass)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadModElements()" class="member-name-link">loadModElements</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a><wbr>&lt;?&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModElementType(java.lang.String)" class="member-name-link">getModElementType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a><wbr>&lt;?&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#register(net.mcreator.element.ModElementType)" class="member-name-link">register</a><wbr>(<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;&nbsp;elementType)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadModElements()" class="member-name-link">loadModElements</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a><wbr>&lt;?&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#register(net.mcreator.element.ModElementType)" class="member-name-link">register</a><wbr>(<a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;&nbsp;elementType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -177,6 +181,19 @@ loadScripts(document, 'script');</script>
 <h3>getModElementType</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</span>&nbsp;<span class="element-name">getModElementType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span>
+                                           throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></span></div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getModElementType(java.lang.Class)">
+<h3>getModElementType</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;</span>&nbsp;<span class="element-name">getModElementType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;? extends <a href="GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;elementClass)</span>
                                            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a></span></div>
 <dl class="notes">
 <dt>Throws:</dt>

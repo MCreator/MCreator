@@ -129,6 +129,7 @@ net.mcreator.ui.minecraft.villagers
 net.mcreator.ui.modgui
 net.mcreator.ui.modgui.bedrock
 net.mcreator.ui.modgui.codeviewer
+net.mcreator.ui.modgui.util
 net.mcreator.ui.notifications
 net.mcreator.ui.procedure
 net.mcreator.ui.search
