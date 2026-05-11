@@ -23,19 +23,22 @@ import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.dialogs.tools.quickrecipestool.QuickRecipesTool;
-import net.mcreator.ui.dialogs.tools.quickrecipestool.RecipeTemplate;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.IntegerRange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class RecipeTemplatesLoader {
 	private static final Logger LOG = LogManager.getLogger("Recipe Templates Loader");
 
 	private static final LinkedHashMap<String, RecipeTemplate> recipeTemplates = new LinkedHashMap<>();
+	private static String[] sortedTemplateNames;
 
 	public static void init() {
 		LOG.debug("Loading recipe templates");
@@ -74,14 +77,23 @@ public class RecipeTemplatesLoader {
 
 			recipeTemplates.put(name, recipeTemplate);
 		}
+
+		sortedTemplateNames = recipeTemplates.keySet().stream().sorted().toList().toArray(new String[0]);
 	}
 
-	public static List<String> getRecipeTemplates() {
-		return new ArrayList<>(recipeTemplates.keySet());
+	public static String[] getSortedTemplateNames() {
+		return sortedTemplateNames;
 	}
 
 	public static RecipeTemplate getRecipeTemplatesFromID(String templateID) {
 		return recipeTemplates.get(templateID);
 	}
 
+	public static class RecipeTemplate {
+		public int stackSize;
+		public int[] inputSlots = new int[] {};
+		public boolean isShapeless;
+		public String recipeType;
+		@Nullable public String craftingBookCategory;
+	}
 }

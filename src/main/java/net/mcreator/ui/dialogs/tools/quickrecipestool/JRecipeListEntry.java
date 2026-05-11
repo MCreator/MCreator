@@ -51,8 +51,7 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 			ValidationGroup validableElements) {
 		super(parent, entryList);
 
-		template = new JComboBox<>(
-				RecipeTemplatesLoader.getRecipeTemplates().stream().sorted().toList().toArray(new String[0]));
+		template = new JComboBox<>(RecipeTemplatesLoader.getSortedTemplateNames());
 		input = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItemsAndTags, true).requireValue(
 				"dialog.tools.quick_recipes.input_validator");
 		result = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems, false).requireValue(

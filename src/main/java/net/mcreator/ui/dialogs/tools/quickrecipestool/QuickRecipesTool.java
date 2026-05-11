@@ -78,7 +78,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 				modMaker.getWorkspacePanel().currentFolder :
 				null;
 
-		RecipeTemplate recipeTemplate = RecipeTemplatesLoader.getRecipeTemplatesFromID(template);
+		RecipeTemplatesLoader.RecipeTemplate recipeTemplate = RecipeTemplatesLoader.getRecipeTemplatesFromID(template);
 
 		Recipe recipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name, ModElementType.RECIPE), false).getElementFromGUI();
