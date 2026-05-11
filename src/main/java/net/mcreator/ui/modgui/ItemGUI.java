@@ -42,6 +42,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -61,7 +62,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -72,24 +72,18 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private StringListProcedureSelector specialInformation;
 
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
+	private final JSpinner stackSize = ComponentFromAnnotation.spinner(Item.class, "stackSize");
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Item.class, "rarity",
+			"elementgui.common.rarity_");
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
-	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
-	private final JSpinner toolType = new JSpinner(new SpinnerNumberModel(1.0, -100.0, 128000.0, 0.1));
-	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Item.class, "enchantability");
+	private final JSpinner useDuration = ComponentFromAnnotation.spinner(Item.class, "useDuration");
+	private final JSpinner toolType = ComponentFromAnnotation.spinner(Item.class, "toolType");
+	private final JSpinner damageCount = ComponentFromAnnotation.spinner(Item.class, "damageCount");
 	private final MCItemListField repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 			false, true);
 
@@ -136,33 +130,24 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final ValidationGroup page5group = new ValidationGroup();
 
 	private final JCheckBox enableMeleeDamage = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
-	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1.2, 0, 128000, 0.1));
+	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Item.class, "damageVsEntity");
+	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Item.class, "attackSpeed");
 
 	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
 
 	private SingleModElementSelector guiBoundTo;
 	private LogicProcedureSelector openGUIOnRightClick;
-	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
+	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(Item.class, "inventorySize");
+	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(Item.class, "inventoryStackSize");
 
 	// Food parameters
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner nutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
-	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
+	private final JSpinner nutritionalValue = ComponentFromAnnotation.spinner(Item.class, "nutritionalValue");
+	private final JSpinner saturation = ComponentFromAnnotation.spinner(Item.class, "saturation");
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
-	private final TranslatedComboBox animation = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("none", "elementgui.item.item_animation_none"),
-			Map.entry("eat", "elementgui.item.item_animation_eat"),
-			Map.entry("block", "elementgui.item.item_animation_block"),
-			Map.entry("bow", "elementgui.item.item_animation_bow"),
-			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
-			Map.entry("drink", "elementgui.item.item_animation_drink"),
-			Map.entry("spear", "elementgui.item.item_animation_spear")
-			//@formatter:on
-	);
+	private final TranslatedComboBox animation = ComponentFromAnnotation.translatedOptions(Item.class, "animation",
+			"elementgui.item.item_animation_");
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	// Music disc parameters
@@ -171,8 +156,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 			"elementgui.item.musicdisc.error_needs_sound").enableRealTimeValidation();
 	private final VTextField musicDiscDescription = new VTextField(20).requireValue(
 			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
-	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
-	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner musicDiscLengthInTicks = ComponentFromAnnotation.spinner(Item.class,
+			"musicDiscLengthInTicks");
+	private final JSpinner musicDiscAnalogOutput = ComponentFromAnnotation.spinner(Item.class,
+			"musicDiscAnalogOutput");
 
 	private ModElementListField providedBannerPatterns;
 

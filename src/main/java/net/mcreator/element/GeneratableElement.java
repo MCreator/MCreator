@@ -26,6 +26,7 @@ import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.util.TestUtil;
@@ -125,7 +126,7 @@ public abstract class GeneratableElement {
 					.setStrictness(Strictness.LENIENT);
 
 			RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
-
+			gsonBuilder.registerTypeHierarchyAdapter(MappableElement.class, new MappableElement.GSONAdapter());
 			gsonBuilder.registerTypeAdapter(StateMap.class, new StateMap.GSONAdapter());
 
 			gson = gsonBuilder.create();

@@ -24,6 +24,8 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -56,29 +58,32 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public String creativeTab;
 	public boolean isHiddenInCommands;
 	public MItemBlock customDrop;
-	public int dropAmount;
-	public double friction;
+	@Numeric(init = 1, min = 0, max = 64, step = 1) public int dropAmount;
+	@Numeric(init = 0.4, min = 0, max = 0.9, step = 0.01) public double friction;
 	public StepSound soundOnStep;
-	public double hardness;
-	public double resistance;
-	public int lightEmission;
-	public int flammability;
-	public int flammableDestroyChance;
+	@Numeric(init = 1, min = -1, max = 64000, step = 0.05) public double hardness;
+	@Numeric(init = 10, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int lightEmission;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammableDestroyChance;
 	public String colorOnMap;
 
 	public boolean generateFeature;
-	public String generationShape;
-	public int frequencyPerChunks;
-	public int oreCount;
-	public int minGenerateHeight;
-	public int maxGenerateHeight;
+	@LimitedOptions({ "uniform", "triangle" }) public String generationShape;
+	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@Numeric(init = 16, min = 1, max = 64, step = 1) public int oreCount;
+	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
+	@Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
 
 	public int rotationMode;
+	@LimitedOptions({ "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
+			"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" })
 	public String renderMethod;
-	public String tintMethod;
+	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+			"water" }) public String tintMethod;
 
-	@ModElementReference public List<String> localScripts;
+	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 
 	private BEBlock() {
 		this(null);

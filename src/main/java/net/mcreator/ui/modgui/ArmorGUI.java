@@ -39,12 +39,14 @@ import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -71,8 +73,10 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ArmorGUI extends ModElementGUI<Armor> {
@@ -170,28 +174,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final SoundSelector equipSound = new SoundSelector(mcreator);
 
-	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(15, 0, 1024, 1));
-	private final JSpinner damageValueBoots = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner damageValueLeggings = new JSpinner(new SpinnerNumberModel(5, 0, 1024, 1));
-	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));
-	private final JSpinner damageValueHelmet = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 1, 128000, 1));
-	private final JSpinner toughness = new JSpinner(new SpinnerNumberModel(0.0, 0, 1024, 0.1));
-	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0.0, 0, 5.0, 0.1));
+	private final JSpinner maxDamage = ComponentFromAnnotation.spinner(Armor.class, "maxDamage");
+	private final JSpinner damageValueBoots = ComponentFromAnnotation.spinner(Armor.class, "damageValueBoots");
+	private final JSpinner damageValueLeggings = ComponentFromAnnotation.spinner(Armor.class, "damageValueLeggings");
+	private final JSpinner damageValueBody = ComponentFromAnnotation.spinner(Armor.class, "damageValueBody");
+	private final JSpinner damageValueHelmet = ComponentFromAnnotation.spinner(Armor.class, "damageValueHelmet");
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Armor.class, "enchantability");
+	private final JSpinner toughness = ComponentFromAnnotation.spinner(Armor.class, "toughness");
+	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(Armor.class, "knockbackResistance");
 
 	private ProcedureSelector onHelmetTick;
 	private ProcedureSelector onBodyTick;
 	private ProcedureSelector onLeggingsTick;
 	private ProcedureSelector onBootsTick;
 
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Armor.class, "rarity",
+			"elementgui.common.rarity_");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final ValidationGroup group1page = new ValidationGroup();

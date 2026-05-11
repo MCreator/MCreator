@@ -22,12 +22,17 @@ body {
     font-size: 13px;
 }
 
-.blocklyTreeRow {
-    line-height: 1 !important;
+.blocklyToolboxCategory {
+    line-height: 16px;
 }
 
-#toolbox {
-    display: none;
+.blocklyToolboxCategoryLabel {
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.blocklyTreeRow {
+    line-height: 1 !important;
 }
 
 #blockly {
@@ -66,7 +71,7 @@ body {
     font-size: 12px !important;
 }
 
-.blocklyWidgetDiv .goog-menu {
+.blocklyWidgetDiv .blocklyMenu {
     border-radius: 0;
 }
 

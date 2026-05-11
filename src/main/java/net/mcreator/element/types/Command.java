@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
@@ -35,15 +36,15 @@ import java.util.Locale;
 
 @SuppressWarnings("unused") public class Command extends GeneratableElement {
 
-	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
+	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
 
 	public String commandName;
 
-	public String type;
+	@LimitedOptions({ "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" }) public String type;
 
-	public String permissionLevel;
+	@LimitedOptions({ "No requirement", "1", "2", "3", "4" }) public String permissionLevel;
 
-	@BlocklyXML("cmdargs") public String argsxml;
+	@BlocklyXML(name = "cmdargs", defaultXML = XML_BASE) public String argsxml;
 
 	private Command() {
 		this(null);
