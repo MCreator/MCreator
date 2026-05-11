@@ -25,9 +25,8 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IEntityWithModel;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
+import net.mcreator.element.types.LivingEntity;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
@@ -49,38 +48,48 @@ import java.util.List;
 
 public class BEEntity extends GeneratableElement implements IEntityWithModel, ICommonType, IMCItemProvider {
 
+	private static final String XML_BASE = """
+			<xml xmlns="https://developers.google.com/blockly/xml">
+			<block type="aitasks_container" deletable="false" x="40" y="40"><next>
+			<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
+			<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
+			<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
+			<block type="look_around"><field name="condition">null,null</field><next>
+			<block type="swim_in_water"><field name="condition">null,null</field></block></next>
+			</block></next></block></next></block></next></block></next></block></xml>""";
+
 	public String entityName;
 	public String modelName;
 	public String modelTexture;
-	public double collisionBoxWidth;
-	public double collisionBoxHeight;
+	@Numeric(init=0.6, min=0, max=1024, step=0.1) public double collisionBoxWidth;
+	@Numeric(init=1.9, min=0, max=1024, step=0.1) public double collisionBoxHeight;
 
 	public boolean isSummonable;
-	public int xpAmountOnDeath;
+	@Numeric(init=0, min=0, max=100000, step=1) public int xpAmountOnDeath;
 	public MItemBlock entityDrop;
-	public int healthValue;
-	public int attackDamage;
-	public double speedValue;
+	@Numeric(init=20, min=0, max=1024, step=1) public int healthValue;
+	@Numeric(init=3, min=-10000, max=10000, step=1) public int attackDamage;
+	@Numeric(init=0.3, min=0, max=50, step=0.1) public double speedValue;
 	public boolean canFly;
-	public double flyingSpeedValue;
-	public int followRangeValue;
+	@Numeric(init=0.3, min=0, max=50, step=0.1) public double flyingSpeedValue;
+	@Numeric(init=64, min=0, max=10000, step=1) public int followRangeValue;
 	public boolean isImmuneToFire;
 	public boolean isPushable;
 	public boolean isPushableByPiston;
 
 	public boolean spawnNaturally;
 	public String populationControl;
-	public int spawningProbability;
-	public int minHerdSize;
-	public int maxHerdSize;
+	@Numeric(init=20, min=1, max=1000, step=1) public int spawningProbability;
+	@Numeric(init=4, min=1, max=1000, step=1, allowMinMaxEqual = true) public int minHerdSize;
+	@Numeric(init=4, min=1, max=1000, step=1, allowMinMaxEqual = true) public int maxHerdSize;
 
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
 	public Color spawnEggDotColor;
 
-	@BlocklyXML("aitasks") public String aixml;
+	@BlocklyXML(name = "aitasks", defaultXML = XML_BASE) public String aixml;
 
-	public String entityBehaviourType;
+	@LimitedOptions({ "Mob", "Creature" }) public String entityBehaviourType;
 	public boolean waterEntity;
 	public boolean isImmuneToDrowning;
 	public boolean isImmuneToFallDamage;

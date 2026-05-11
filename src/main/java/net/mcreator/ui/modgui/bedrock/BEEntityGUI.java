@@ -36,7 +36,6 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -45,6 +44,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -80,20 +80,21 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 			slime, spider, villager };
 	private final SearchableComboBox<Model> entityModel = new SearchableComboBox<>(builtinmobmodels);
 	private TextureComboBox modelTexture;
-	private final JSpinner collisionBoxWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
-	private final JSpinner collisionBoxHeight = new JSpinner(new SpinnerNumberModel(1.9, 0, 1024, 0.1));
+	private final JSpinner collisionBoxWidth = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxWidth");
+	private final JSpinner collisionBoxHeight = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxHeight");
 
-	private final JComboBox<String> entityBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
+	private final JComboBox<String> entityBehaviourType = ComponentFromAnnotation.options(BEEntity.class,
+			"entityBehaviourType");
 	private final JCheckBox isSummonable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox waterEntity = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canFly = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flyingSpeedValue = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
+	private final JSpinner flyingSpeedValue = ComponentFromAnnotation.spinner(BEEntity.class, "flyingSpeedValue");
 
-	private final JSpinner attackDamage = new JSpinner(new SpinnerNumberModel(3, -10000, 10000, 1));
-	private final JSpinner speedValue = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
-	private final JSpinner healthValue = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
-	private final JSpinner followRangeValue = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
-	private final JSpinner xpAmountOnDeath = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
+	private final JSpinner attackDamage = ComponentFromAnnotation.spinner(BEEntity.class, "attackDamage");
+	private final JSpinner speedValue = ComponentFromAnnotation.spinner(BEEntity.class, "speedValue");
+	private final JSpinner healthValue = ComponentFromAnnotation.spinner(BEEntity.class, "healthValue");
+	private final JSpinner followRangeValue = ComponentFromAnnotation.spinner(BEEntity.class, "followRangeValue");
+	private final JSpinner xpAmountOnDeath = ComponentFromAnnotation.spinner(BEEntity.class, "xpAmountOnDeath");
 	private MCItemHolder entityDrop;
 	private final JCheckBox isPushable = L10N.checkbox("elementgui.beentity.is_pushable");
 	private final JCheckBox isPushableByPiston = L10N.checkbox("elementgui.beentity.is_pushable_by_piston");
@@ -108,8 +109,9 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final JCheckBox spawnNaturally = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> populationControl = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
-	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxSpinner entityHerd = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
+	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(BEEntity.class, "spawningProbability");
+	private final JMinMaxSpinner entityHerd = ComponentFromAnnotation.minMaxSpinner(BEEntity.class, "minHerdSize",
+			"maxHerdSize");
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
