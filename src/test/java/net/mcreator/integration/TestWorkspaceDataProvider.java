@@ -1437,8 +1437,7 @@ public class TestWorkspaceDataProvider {
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
-			lootTable.type = getRandomItem(random,
-					new String[] { "Generic", "Entity", "Block", "Chest", "Fishing", "Empty", "Advancement reward" });
+			lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type").toArray(String[]::new));
 
 			lootTable.pools = new ArrayList<>();
 			if (!emptyLists) {
