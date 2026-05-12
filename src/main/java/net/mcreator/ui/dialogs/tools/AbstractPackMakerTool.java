@@ -46,15 +46,17 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 	private final List<GeneratableElement> toGenerate = new ArrayList<>();
 
+	protected JButton ok;
+
 	public AbstractPackMakerTool(MCreator mcreator, String localizationKey, Image icon) {
 		super(mcreator, L10N.t("dialog.tools." + localizationKey + "_title"), true);
 		this.setLayout(new BorderLayout(10, 10));
 		this.setIconImage(icon);
 		this.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools." + localizationKey + "_info")));
 
-		JButton ok = L10N.button("dialog.tools." + localizationKey + "_create");
+		ok = L10N.button("dialog.tools." + localizationKey + "_create");
 		ok.addActionListener(e -> {
-			if (validableElements.validateIsErrorFree()) {
+			if (validableElements.validateIsErrorFree() && entriesValidationResult()) {
 				this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 				generatePack(mcreator);
@@ -80,6 +82,10 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	}
 
 	protected abstract void generatePack(MCreator mcreator);
+
+	protected boolean entriesValidationResult() {
+		return true;
+	}
 
 	protected static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
 		List<String> usedElementNames = workspace.getWorkspaceInfo().getUsedElementNames();

@@ -24,6 +24,7 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 
 import javax.swing.*;
@@ -31,11 +32,8 @@ import java.util.List;
 
 public class JRecipeList extends JSimpleEntriesList<JRecipeListEntry, RecipeListEntry> {
 
-	private final ValidationGroup validableElements;
-
-	public JRecipeList(MCreator mcreator, IHelpContext gui, ValidationGroup validableElements) {
+	public JRecipeList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
-		this.validableElements = validableElements;
 
 		add.setText(L10N.t("dialog.tools.quick_recipes.add_recipe"));
 
@@ -50,6 +48,12 @@ public class JRecipeList extends JSimpleEntriesList<JRecipeListEntry, RecipeList
 	}
 
 	@Override protected JRecipeListEntry newEntry(JPanel parent, List<JRecipeListEntry> entryList, boolean userAction) {
-		return new JRecipeListEntry(mcreator, parent, entryList, validableElements);
+		return new JRecipeListEntry(mcreator, parent, entryList);
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		AggregatedValidationResult validationResult = new AggregatedValidationResult();
+		entryList.forEach(e -> validationResult.addValidationGroup(e.getValidationResult()));
+		return validationResult;
 	}
 }

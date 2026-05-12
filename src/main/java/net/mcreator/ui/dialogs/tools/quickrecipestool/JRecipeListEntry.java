@@ -28,7 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.RecipeTemplatesLoader;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.*;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
@@ -47,8 +47,7 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 	private final JComboBox<String> template;
 	private final MCItemHolder input, result;
 
-	public JRecipeListEntry(MCreator mcreator, JPanel parent, List<JRecipeListEntry> entryList,
-			ValidationGroup validableElements) {
+	public JRecipeListEntry(MCreator mcreator, JPanel parent, List<JRecipeListEntry> entryList) {
 		super(parent, entryList);
 
 		template = new JComboBox<>(RecipeTemplatesLoader.getSortedTemplateNames());
@@ -69,7 +68,6 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 			return names.stream();
 		}, new ModElementNameValidator(mcreator.getWorkspace(), name, name.getText())));
 		name.enableRealtimeValidation();
-		validableElements.addValidationElement(name);
 		line.add(name);
 
 		line.add(L10N.label("dialog.tools.quick_recipes.template"));
@@ -78,12 +76,10 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 
 		line.add(L10N.label("dialog.tools.quick_recipes.input"));
 		input.setValidator(new MCItemHolderValidator(input).considerAirAsEmpty());
-		validableElements.addValidationElement(input);
 		line.add(PanelUtils.totalCenterInPanel(input));
 
 		line.add(L10N.label("dialog.tools.quick_recipes.result"));
 		result.setValidator(new MCItemHolderValidator(result).considerAirAsEmpty());
-		validableElements.addValidationElement(result);
 		line.add(PanelUtils.totalCenterInPanel(result));
 	}
 
@@ -105,4 +101,8 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 	}
 
 	@Override public void setEntry(RecipeListEntry entry) {}
+
+	public AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult(name, input, result);
+	}
 }
