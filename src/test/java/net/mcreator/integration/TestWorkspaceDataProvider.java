@@ -2260,7 +2260,8 @@ public class TestWorkspaceDataProvider {
 					e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 		}
-		block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
+			block.generationShape = getRandomItem(random,
+					AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
 		block.frequencyPerChunks = getRandomInt(random, Block.class, "frequencyPerChunks");
 		block.frequencyOnChunk = getRandomInt(random, Block.class, "frequencyOnChunk");
 		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight", "maxGenerateHeight");
