@@ -25,7 +25,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.ValidationGroup;
 
 import javax.swing.*;
 import java.util.List;

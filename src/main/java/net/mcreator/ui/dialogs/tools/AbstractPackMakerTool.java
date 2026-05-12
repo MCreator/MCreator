@@ -27,6 +27,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -39,14 +40,15 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 	protected ValidationGroup validableElements = new ValidationGroup();
 
-	private final List<GeneratableElement> toGenerate = new ArrayList<>();
+	protected List<Supplier<AggregatedValidationResult>> lazyValidators = new ArrayList<>();
 
-	protected JButton ok;
+	private final List<GeneratableElement> toGenerate = new ArrayList<>();
 
 	public AbstractPackMakerTool(MCreator mcreator, String localizationKey, Image icon) {
 		super(mcreator, L10N.t("dialog.tools." + localizationKey + "_title"), true);
@@ -54,9 +56,10 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		this.setIconImage(icon);
 		this.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools." + localizationKey + "_info")));
 
-		ok = L10N.button("dialog.tools." + localizationKey + "_create");
+		JButton ok = L10N.button("dialog.tools." + localizationKey + "_create");
 		ok.addActionListener(e -> {
-			if (validableElements.validateIsErrorFree() && entriesValidationResult()) {
+			if (validableElements.validateIsErrorFree() && lazyValidators.stream()
+					.allMatch(validator -> validator.get().validateIsErrorFree())) {
 				this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 				generatePack(mcreator);
@@ -82,10 +85,6 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	}
 
 	protected abstract void generatePack(MCreator mcreator);
-
-	protected boolean entriesValidationResult() {
-		return true;
-	}
 
 	protected static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
 		List<String> usedElementNames = workspace.getWorkspaceInfo().getUsedElementNames();

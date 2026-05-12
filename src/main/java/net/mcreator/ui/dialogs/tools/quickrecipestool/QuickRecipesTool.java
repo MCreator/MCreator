@@ -38,7 +38,6 @@ import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -55,6 +54,8 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 
 		recipes = new JRecipeList(mcreator, IHelpContext.NONE);
 
+		lazyValidators.add(recipes::getValidationResult);
+
 		this.add("Center", recipes);
 
 		this.setSize(880, 550);
@@ -64,12 +65,8 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 
 	@Override protected void generatePack(MCreator mcreator) {
 		recipes.getEntries().forEach(
-				recipe -> addRecipeToWorkspace(this, mcreator, mcreator.getWorkspace(), recipe.name,
-						recipe.template, recipe.input, recipe.result));
-	}
-
-	@Override protected boolean entriesValidationResult() {
-		return recipes.getValidationResult().validateIsErrorFree();
+				recipe -> addRecipeToWorkspace(this, mcreator, mcreator.getWorkspace(), recipe.name, recipe.template,
+						recipe.input, recipe.result));
 	}
 
 	public static void addRecipeToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
