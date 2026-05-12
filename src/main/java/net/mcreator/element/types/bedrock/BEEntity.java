@@ -61,8 +61,8 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public String entityName;
 	public String modelName;
 	public String modelTexture;
-	@Numeric(init=0.6, min=0, max=1024, step=0.1) public double collisionBoxWidth;
-	@Numeric(init=1.9, min=0, max=1024, step=0.1) public double collisionBoxHeight;
+	@Numeric(init=0.6, min=0, max=16, step=0.1) public double collisionBoxWidth;
+	@Numeric(init=1.9, min=0, max=16, step=0.1) public double collisionBoxHeight;
 
 	public boolean isSummonable;
 	@Numeric(init=0, min=0, max=100000, step=1) public int xpAmountOnDeath;
@@ -80,8 +80,8 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public boolean spawnNaturally;
 	public String populationControl;
 	@Numeric(init=20, min=1, max=1000, step=1) public int spawningProbability;
-	@Numeric(init=4, min=1, max=1000, step=1, allowMinMaxEqual = true) public int minHerdSize;
-	@Numeric(init=4, min=1, max=1000, step=1, allowMinMaxEqual = true) public int maxHerdSize;
+	@Numeric(init=4, min=1, max=128, step=1, allowMinMaxEqual = true) public int minHerdSize;
+	@Numeric(init=4, min=1, max=128, step=1, allowMinMaxEqual = true) public int maxHerdSize;
 
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
