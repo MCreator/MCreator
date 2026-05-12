@@ -895,8 +895,8 @@ public class TestWorkspaceDataProvider {
 			} else {
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 			}
-			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
-					ElementUtil.getDataListAsStringArray("generationsteps"));
+			structure.generationStep = new GenerationStep(modElement.getWorkspace(), TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps")));
 			structure.size = getRandomInt(random, Structure.class, "size");
 			structure.maxDistanceFromCenter = getRandomInt(random, Structure.class, "maxDistanceFromCenter");
 			structure.jigsawPools = new ArrayList<>();
@@ -1686,8 +1686,9 @@ public class TestWorkspaceDataProvider {
 		// For generator tests, it will be tested by GTFeatureBlocks anyway
 		else if (ModElementType.FEATURE.equals(modElement.getType()) && uiTest) {
 			Feature feature = new Feature(modElement);
-			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
-					ElementUtil.getDataListAsStringArray("generationsteps"));
+			feature.generationStep = new GenerationStep(modElement.getWorkspace(),
+					TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.getDataListAsStringArray("generationsteps")));
 			feature.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				feature.restrictionBiomes = subset(random, 5, biomes,

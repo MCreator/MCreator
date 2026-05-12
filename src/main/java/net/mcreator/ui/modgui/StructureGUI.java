@@ -18,9 +18,11 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Structure;
 import net.mcreator.io.FileIO;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -35,6 +37,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.jigsaw.JJigsawPoolsList;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
@@ -80,8 +83,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	private SearchableComboBox<String> structureSelector;
 
-	private final JComboBox<String> generationStep = new JComboBox<>(
-			ElementUtil.getDataListAsStringArray("generationsteps"));
+	private final DataListComboBox generationStep = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("generationsteps"));
 
 	private final JSpinner size = ComponentFromAnnotation.spinner(Structure.class, "size");
 	private final JSpinner maxDistanceFromCenter = ComponentFromAnnotation
@@ -272,7 +275,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		structure.structure = structureSelector.getSelectedItem();
 		structure.separation = separation_spacing.getIntMinValue();
 		structure.spacing = separation_spacing.getIntMaxValue();
-		structure.generationStep = (String) generationStep.getSelectedItem();
+		structure.generationStep = new GenerationStep(modElement.getWorkspace(), generationStep.getSelectedItem());
 		structure.size = (int) size.getValue();
 		structure.maxDistanceFromCenter = (int) maxDistanceFromCenter.getValue();
 		structure.jigsawPools = jigsaw.getEntries();
