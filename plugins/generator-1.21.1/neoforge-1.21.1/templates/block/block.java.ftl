@@ -117,8 +117,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro blockProperties>
 		BlockBehaviour.Properties.of()
-		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
+		<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+			.mapColor(MapColor.${data.colorOnMap})
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new DeferredSoundType(1.0f, 1.0f,

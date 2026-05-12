@@ -624,7 +624,7 @@ public class TestWorkspaceDataProvider {
 			fluid.ignitedByLava = !_true;
 			fluid.flammability = getRandomInt(random, Fluid.class, "flammability");
 			fluid.fireSpreadSpeed = getRandomInt(random, Fluid.class, "fireSpreadSpeed");
-			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			fluid.colorOnMap = new MapColor(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
 			fluid.onBlockAdded = new Procedure("procedure5");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
@@ -1113,7 +1113,7 @@ public class TestWorkspaceDataProvider {
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
-			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			plant.colorOnMap = new MapColor(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
 			plant.offsetType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Plant.class, "offsetType"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			plant.strippingResult = new MItemBlock(modElement.getWorkspace(),
@@ -1790,7 +1790,7 @@ public class TestWorkspaceDataProvider {
 			beblock.soundOnStep = new StepSound(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
 			beblock.lightEmission = getRandomInt(random, BEBlock.class, "lightEmission");
-			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			beblock.colorOnMap = new MapColor(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
 			beblock.generateFeature = _true;
 			beblock.generationShape = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "generationShape"));
@@ -2189,7 +2189,7 @@ public class TestWorkspaceDataProvider {
 		block.canProvidePower = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-		block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+		block.colorOnMap = new MapColor(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
 		block.noteBlockInstrument = getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments"));
 		block.offsetType = blockBase == null
 				? getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType"))

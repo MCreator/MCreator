@@ -71,8 +71,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		TREE_GROWER,
 		</#if>
 		BlockBehaviour.Properties.of()
-		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
+		<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+		.mapColor(MapColor.${data.colorOnMap})
 		<#else>
 		.mapColor(MapColor.PLANT)
 		</#if>

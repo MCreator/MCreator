@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.generator.mapping.NonMappableElement;
@@ -381,7 +382,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.dropAmount = (int) dropAmount.getValue();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		block.lightEmission = (int) lightEmission.getValue();
-		block.colorOnMap = colorOnMap.getSelectedItem().toString();
+		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		block.flammability = (int) flammability.getValue();
 		block.flammableDestroyChance = (int) flammableDestroyChance.getValue();
 		block.friction = (double) friction.getValue();

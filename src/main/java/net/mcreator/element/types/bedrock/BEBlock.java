@@ -21,6 +21,7 @@ package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
@@ -66,7 +67,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@Numeric(init = 0, min = 0, max = 15, step = 1) public int lightEmission;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammableDestroyChance;
-	public String colorOnMap;
+	public MapColor colorOnMap;
 
 	public boolean generateFeature;
 	@LimitedOptions({ "uniform", "triangle" }) public String generationShape;

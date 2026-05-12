@@ -48,8 +48,8 @@
         "west": <@material_face "west"/>
 		</#if>
       },
-      <#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-      "minecraft:map_color": "${generator.map(data.colorOnMap, "mapcolors")}",
+      <#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+      "minecraft:map_color": "${data.colorOnMap}",
       </#if>
       <#if data.hasCustomDrop()>
       "minecraft:loot": "loot_tables/blocks/${modid}_${registryname}.json",

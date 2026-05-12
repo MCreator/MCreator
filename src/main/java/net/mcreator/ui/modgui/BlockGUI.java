@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
@@ -2014,7 +2015,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
-		block.colorOnMap = colorOnMap.getSelectedItem().toString();
+		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		block.noteBlockInstrument = noteBlockInstrument.getSelectedItem().toString();
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = aiPathNodeType.getSelectedItem();

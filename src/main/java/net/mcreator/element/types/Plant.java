@@ -108,7 +108,7 @@ import java.util.stream.Collectors;
 	public boolean hasTileEntity;
 
 	public boolean isReplaceable;
-	public String colorOnMap;
+	public MapColor colorOnMap;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "XZ", "XYZ", "NONE" }) public String offsetType;
 	public String aiPathNodeType;
@@ -166,7 +166,6 @@ import java.util.stream.Collectors;
 		this.growapableSpawnType = "Plains";
 		this.renderType = 12;
 		this.customModelName = "Cross model";
-		this.colorOnMap = "DEFAULT";
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "XZ";
 		this.tintType = "No tint";

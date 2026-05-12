@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -1140,7 +1141,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.generationType = (String) generationType.getSelectedItem();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
-		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
+		plant.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		plant.offsetType = (String) offsetType.getSelectedItem();
 		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		plant.strippingResult = strippingResult.getBlock();
