@@ -20,6 +20,7 @@
 package net.mcreator.ui.init;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.dialogs.tools.quickrecipestool.QuickRecipesTool;
@@ -51,31 +52,22 @@ public class RecipeTemplatesLoader {
 		for (String file : fileNames) {
 			String name = FilenameUtils.removeExtension(file.replace("templates/recipe_templates/", ""));
 
-			RecipeTemplate recipeTemplate = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
-					RecipeTemplate.class);
+			try {
+				RecipeTemplate recipeTemplate = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
+						RecipeTemplate.class);
+				try {
+					recipeTemplate.selfValidate();
+				} catch (IllegalArgumentException e) {
+					LOG.error("Recipe template {} contains one or many invalid parameters. It will be skipped. {}", name,
+							e.getMessage());
+					continue;
+				}
 
-			if (recipeTemplate.recipeType == null || !QuickRecipesTool.SUPPORTED_RECIPE_TYPES.contains(
-					recipeTemplate.recipeType)) {
-				LOG.error("Recipe type {} of recipe template file {} is not supported. It will be skipped.",
-						recipeTemplate.recipeType, name);
-				continue;
+				recipeTemplates.put(name, recipeTemplate);
+			} catch (JsonSyntaxException e) {
+				LOG.error("Recipe template format of {} is invalid. It will be skipped. {}", name, e.getMessage());
 			}
 
-			if (!recipeTemplate.recipeType.equals("Crafting") && Arrays.stream(recipeTemplate.inputSlots)
-					.anyMatch(i -> !IntegerRange.of(0, 8).contains(i))) {
-				LOG.error("Recipe template file {} contains a slot outside of the range (0-8). It will be skipped.",
-						name);
-				continue;
-			}
-
-			if (!IntegerRange.of(1, 99).contains(recipeTemplate.stackSize)) {
-				LOG.error(
-						"Stack size {} of recipe template file {} is outside of the range (1-99). It will be skipped.",
-						recipeTemplate.stackSize, name);
-				continue;
-			}
-
-			recipeTemplates.put(name, recipeTemplate);
 		}
 
 		sortedTemplateNames = recipeTemplates.keySet().stream().sorted().toList().toArray(new String[0]);
@@ -95,5 +87,20 @@ public class RecipeTemplatesLoader {
 		public boolean isShapeless;
 		public String recipeType;
 		@Nullable public String craftingBookCategory;
+
+		public void selfValidate() throws IllegalArgumentException {
+			if (recipeType == null || !QuickRecipesTool.SUPPORTED_RECIPE_TYPES.contains(recipeType)) {
+				throw new IllegalArgumentException("Invalid recipe type: " + recipeType);
+			}
+
+			if (!recipeType.equals("Crafting") && Arrays.stream(inputSlots)
+					.anyMatch(i -> !IntegerRange.of(0, 8).contains(i))) {
+				throw new IllegalArgumentException("One or many slots are outside the valid range (0-8)");
+			}
+
+			if (!IntegerRange.of(1, 99).contains(stackSize)) {
+				throw new IllegalArgumentException("Invalid stack size: " + stackSize);
+			}
+		}
 	}
 }

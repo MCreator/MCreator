@@ -70,7 +70,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 	public static void addRecipeToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
 			Workspace workspace, String name, String template, MItemBlock input, MItemBlock result) {
 
-		if (!checkIfNamesAvailable(workspace, name, name + "Stonecutting"))
+		if (!checkIfNamesAvailable(workspace, name))
 			return;
 
 		// select folder the mod pack should be in
