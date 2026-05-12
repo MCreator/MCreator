@@ -23,6 +23,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.types.Feature;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
@@ -72,8 +73,8 @@ public class GTFeatureBlocks {
 					"<block type=\"" + featureBlock.getMachineName() + "\">" + additionalXML);
 
 			Feature feature = new Feature(modElement);
-			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
-					ElementUtil.getDataListAsStringArray("generationsteps"));
+			feature.generationStep = new GenerationStep(workspace, TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps")));
 			feature.restrictionBiomes = new ArrayList<>();
 			feature.generateCondition = null;
 
