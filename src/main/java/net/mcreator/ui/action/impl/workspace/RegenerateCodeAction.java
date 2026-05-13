@@ -186,7 +186,11 @@ public class RegenerateCodeAction extends GradleAction {
 
 			mcreator.getGenerator().runResourceSetupTasks();
 			// generate base files without organizing imports as we first need all files generated so we can properly organize imports
-			mcreator.getGenerator().generateBase(false);
+			try {
+				mcreator.getGenerator().generateBase(false);
+			} catch (Exception e) {
+				LOG.warn("Failed to regenerate workspace base code", e);
+			}
 			mcreator.reloadWorkspaceTabContents();
 
 			// remove custom API libraries so they get re-downloaded
