@@ -20,7 +20,6 @@ package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.Strictness;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -35,11 +34,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -152,7 +153,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 		String importJSON = FileIO.readFileToString(genFile);
 
-		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
+		GeneratableElement generatableElement = fromJSONtoGeneratableElementOrNull(importJSON, element);
 		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
 			// Make sure after conversion and importing, no Nonnull fields are null to prevent NPEs and check GE integrity
 			if (!generatableElement.performQuickValidation())
@@ -173,15 +174,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 		return gson.toJson(element);
 	}
 
-	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement) {
+	@Nullable public GeneratableElement fromJSONtoGeneratableElementOrNull(String json, ModElement modElement) {
+		try {
+			return fromJSONtoGeneratableElement(json, modElement);
+		} catch (IOException e) {
+			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
+					modElement.getName(), e);
+			return null;
+		}
+	}
+
+	@Nonnull public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement)
+			throws IOException {
 		this.modElementsInConversion.push(modElement);
 
 		try {
 			return gson.fromJson(json, GeneratableElement.class);
-		} catch (JsonSyntaxException e) {
-			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
-					modElement.getName(), e);
-			return null;
+		} catch (Exception e) {
+			throw new IOException("Failed to parse and load JSON of:" + modElement.getName(), e);
 		} finally {
 			this.modElementsInConversion.pop();
 		}

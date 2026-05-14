@@ -229,7 +229,7 @@ import java.util.stream.Collectors;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
-	public String generationShape;
+	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
 	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
 	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
 	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;

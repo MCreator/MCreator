@@ -1440,8 +1440,7 @@ public class TestWorkspaceDataProvider {
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
-			lootTable.type = getRandomItem(random,
-					new String[] { "Generic", "Entity", "Block", "Chest", "Fishing", "Empty", "Advancement reward" });
+			lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type"));
 
 			lootTable.pools = new ArrayList<>();
 			if (!emptyLists) {
@@ -2269,7 +2268,8 @@ public class TestWorkspaceDataProvider {
 					e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 		}
-		block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
+			block.generationShape = getRandomItem(random,
+					AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
 		block.frequencyPerChunks = getRandomInt(random, Block.class, "frequencyPerChunks");
 		block.frequencyOnChunk = getRandomInt(random, Block.class, "frequencyOnChunk");
 		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight", "maxGenerateHeight");
@@ -2910,7 +2910,7 @@ public class TestWorkspaceDataProvider {
 				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
 
 				LootTable lootTable = new LootTable(me);
-				lootTable.type = "Generic";
+				lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type"));
 				lootTable.name = me.getRegistryName();
 				lootTable.namespace = "mod";
 				lootTable.pools = Collections.emptyList();
