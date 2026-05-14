@@ -186,7 +186,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final MCItemHolder strippingResult = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
-	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
+	private final JComboBox<String> generationShape = ComponentFromAnnotation.options(Block.class, "generationShape");
 	private final JMinMaxSpinner generateHeight = ComponentFromAnnotation.minMaxSpinner(Block.class,
 			"minGenerateHeight", "maxGenerateHeight").allowEqualValues();
 	private final JSpinner frequencyPerChunks = ComponentFromAnnotation.spinner(Block.class, "frequencyPerChunks");
