@@ -30,6 +30,16 @@ global_templates:
 
 tags:
   - tag: POINTS_OF_INTEREST:minecraft:acquirable_job_site
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_1
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_2
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_3
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_4
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_5
+    noentry: true
 
 localizationkeys:
   - key: entity.villager.@modid.@registryname
