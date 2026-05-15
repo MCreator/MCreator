@@ -13,7 +13,7 @@ on:
           - release
 
 jobs:
-  export1:
+  export_linux_windows:
     name: Build and Export (all but MacOS)
     runs-on: ubuntu-latest
     environment: production
@@ -24,7 +24,7 @@ jobs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
       build_date: ${{ steps.determineExportVersion.outputs.build_date }}
-      vt_analysis_export1: ${{ steps.vt_scan.outputs.analysis }}
+      vt_analysis_export_linux_windows: ${{ steps.vt_scan.outputs.analysis }}
     steps:
       - uses: actions/checkout@v6
       - name: Verify Repository
@@ -121,9 +121,9 @@ jobs:
             }
             ]]-->
           overwrite: true
-  export2:
+  export_macos:
     name: Build and Export (only MacOS)
-    needs: export1
+    needs: export_linux_windows
     runs-on: macos-latest
     environment: production
     steps:
@@ -165,12 +165,12 @@ jobs:
         if: github.event.inputs.release-type == 'release'
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
-        run: gradle generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
+        run: gradle generateExportReport exportMac -Pbuilddate=${{ needs.export_linux_windows.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
-        run: gradle generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
+        run: gradle generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export_linux_windows.outputs.build_date }}
       - name: VirusTotal Scan
         id: vt_scan
         uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
@@ -184,7 +184,7 @@ jobs:
           {
             echo "vt_markdown<<EOF"
             echo "### VirusTotal Scans"
-            echo "${{ needs.export1.outputs.vt_analysis_export1 }},${{ steps.vt_scan.outputs.analysis }}" | tr ',' '\n' | while IFS='=' read -r file url; do
+            echo "${{ needs.export_linux_windows.outputs.vt_analysis_export_linux_windows }},${{ steps.vt_scan.outputs.analysis }}" | tr ',' '\n' | while IFS='=' read -r file url; do
               [ -n "$file" ] && echo "- [$(basename "$file")]($url)"
             done
             echo "EOF"
@@ -193,8 +193,8 @@ jobs:
         uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.export1.outputs.mcr_version }}
-          release_name: ${{ needs.export1.outputs.mcr_version }}
+          tag: ${{ needs.export_linux_windows.outputs.mcr_version }}
+          release_name: ${{ needs.export_linux_windows.outputs.mcr_version }}
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
@@ -207,7 +207,7 @@ jobs:
             
             <!--[[
             {
-            "minecraft": "${{ needs.export1.outputs.mc_version }}"
+            "minecraft": "${{ needs.export_linux_windows.outputs.mc_version }}"
             }
             ]]-->
           overwrite: true
