@@ -50,7 +50,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@Numeric(init = 0, min = 0, max = 255, step = 1) public int damageVsEntity;
 	public boolean hasGlint;
 	public boolean handEquipped;
-	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
+	@LimitedOptions({ "common", "uncommon", "rare", "epic" }) public String rarity;
 	public boolean enableCreativeTab;
 	public String creativeTab;
 	public boolean isHiddenInCommands;
@@ -83,7 +83,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public BEItem(ModElement element) {
 		super(element);
 
-		rarity = "COMMON";
+		rarity = "common";
 		movementModifier = 1.0;
 		shouldDespawn = true;
 		animation = "eat";

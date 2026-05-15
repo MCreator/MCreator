@@ -141,6 +141,7 @@ import java.util.List;
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
 		genDepth = new ClimatePoint(0.2, 0.9);
+		moodSoundDelay = 6000;
 	}
 
 	public boolean hasTrees() {

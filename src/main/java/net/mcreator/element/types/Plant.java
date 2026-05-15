@@ -68,7 +68,7 @@ import java.util.stream.Collectors;
 	@ModElementReference public ConfiguredFeatureEntry[] megaTrees;
 
 	public String growapableSpawnType;
-	@Numeric(init = 3, min = 1, max = 14, step = 1) public int growapableMaxHeight;
+	@Numeric(init = 3, min = 1, max = 14, step = 1, optional = true) public int growapableMaxHeight;
 
 	public boolean customBoundingBox;
 	public boolean disableOffset;
@@ -181,6 +181,8 @@ import java.util.stream.Collectors;
 		this.patchSize = 64;
 
 		this.boundingBoxes = new ArrayList<>();
+
+		this.growapableMaxHeight = 3;
 
 		this.secondaryTreeChance = 0.1;
 		this.trees = new ConfiguredFeatureEntry[2];
