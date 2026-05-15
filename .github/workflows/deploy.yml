@@ -250,6 +250,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v6
       - name: Format All VirusTotal Results
         id: vt_format
         run: |
