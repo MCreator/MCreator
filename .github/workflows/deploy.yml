@@ -150,7 +150,7 @@ jobs:
           file: build/export/*
 
   export_macos:
-    name: Build and Export (only MacOS)
+    name: Build and Export (macOS)
     needs: export_linux
     runs-on: macos-latest
     environment: production
