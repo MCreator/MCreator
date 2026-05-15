@@ -13,18 +13,14 @@ on:
           - release
 
 jobs:
-  export_linux:
-    name: Build and Export (Linux)
+  prepare_export:
+    name: Prepare Export
     runs-on: ubuntu-latest
     environment: production
-    permissions:
-      contents: write
-      id-token: write
     outputs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
       build_date: ${{ steps.determineExportVersion.outputs.build_date }}
-      vt_analysis: ${{ steps.vt_scan.outputs.analysis }}
     steps:
       - uses: actions/checkout@v6
       - name: Verify Repository
@@ -46,24 +42,50 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
-      - name: Build and Export Release Using Gradle
+      - name: Generate Export Report Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: gradle generateExportReport exportLinux
-      - name: Build and Export Snapshot Using Gradle
+        run: gradle generateExportReport
+      - name: Generate Export Report Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: gradle generateExportReport exportLinux -Psnapshot=true
+        run: gradle generateExportReport -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |
           MCR_VERSION=$(cat build/reports/export.txt | grep "mcreator=" | cut -d'=' -f2)
           MC_VERSION=$(cat build/reports/export.txt | grep "minecraft=" | cut -d'=' -f2)
           BUILD_DATE=$(cat build/reports/export.txt | grep "builddate=" | cut -d'=' -f2)
-          echo "MCR_VERSION=$MCR_VERSION" >> $GITHUB_ENV
-          echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
-          echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
           echo "mcr_version=$MCR_VERSION" >> $GITHUB_OUTPUT
           echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
           echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
+
+  export_linux:
+    name: Build and Export (Linux)
+    needs: prepare_export
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write
+      id-token: write
+    outputs:
+      vt_analysis: ${{ steps.vt_scan.outputs.analysis }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25.0.2'
+          distribution: 'jetbrains'
+          java-package: 'jdk+jcef'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+      - name: Build and Export Release Using Gradle
+        if: github.event.inputs.release-type == 'release'
+        run: gradle exportLinux
+      - name: Build and Export Snapshot Using Gradle
+        if: github.event.inputs.release-type == 'snapshot'
+        run: gradle exportLinux -Psnapshot=true
       - name: VirusTotal Scan
         id: vt_scan
         uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
@@ -75,15 +97,15 @@ jobs:
         uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.MCR_VERSION }}
-          release_name: ${{ env.MCR_VERSION }}
+          tag: ${{ needs.prepare_export.outputs.mcr_version }}
+          release_name: ${{ needs.prepare_export.outputs.mcr_version }}
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
 
   export_windows:
     name: Build and Export (Windows)
-    needs: export_linux
+    needs: prepare_export
     runs-on: windows-latest
     environment: production
     permissions:
@@ -120,7 +142,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          gradle exportWindows -Pbuilddate=${{ needs.export_linux.outputs.build_date }}
+          gradle exportWindows -Pbuilddate=${{ needs.prepare_export.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         shell: bash
@@ -131,7 +153,7 @@ jobs:
         run: |
           export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
           echo "$WIN_CERT_PEM" > codesign-chain.pem
-          gradle exportWindows -Psnapshot=true -Pbuilddate=${{ needs.export_linux.outputs.build_date }}
+          gradle exportWindows -Psnapshot=true -Pbuilddate=${{ needs.prepare_export.outputs.build_date }}
       - name: VirusTotal Scan
         id: vt_scan
         uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
@@ -143,15 +165,15 @@ jobs:
         uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.export_linux.outputs.mcr_version }}
-          release_name: ${{ needs.export_linux.outputs.mcr_version }}
+          tag: ${{ needs.prepare_export.outputs.mcr_version }}
+          release_name: ${{ needs.prepare_export.outputs.mcr_version }}
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
 
   export_macos:
     name: Build and Export (macOS)
-    needs: export_linux
+    needs: prepare_export
     runs-on: macos-latest
     environment: production
     outputs:
@@ -195,12 +217,12 @@ jobs:
         if: github.event.inputs.release-type == 'release'
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
-        run: gradle exportMac -Pbuilddate=${{ needs.export_linux.outputs.build_date }}
+        run: gradle exportMac -Pbuilddate=${{ needs.prepare_export.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
           MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
-        run: gradle exportMac -Psnapshot=true -Pbuilddate=${{ needs.export_linux.outputs.build_date }}
+        run: gradle exportMac -Psnapshot=true -Pbuilddate=${{ needs.prepare_export.outputs.build_date }}
       - name: VirusTotal Scan
         id: vt_scan
         uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
@@ -212,15 +234,15 @@ jobs:
         uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.export_linux.outputs.mcr_version }}
-          release_name: ${{ needs.export_linux.outputs.mcr_version }}
+          tag: ${{ needs.prepare_export.outputs.mcr_version }}
+          release_name: ${{ needs.prepare_export.outputs.mcr_version }}
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
 
   update_release:
     name: Update Release Notes
-    needs: [export_linux, export_windows, export_macos]
+    needs: [prepare_export, export_linux, export_windows, export_macos]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -239,7 +261,7 @@ jobs:
       - name: Update Release Notes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ needs.export_linux.outputs.mcr_version }}
+          TAG_NAME: ${{ needs.prepare_export.outputs.mcr_version }}
           RELEASE_BODY: |
             ### **Download: https://mcreator.net/download**
             
@@ -249,7 +271,7 @@ jobs:
             
             <!--[[
             {
-            "minecraft": "${{ needs.export_linux.outputs.mc_version }}"
+            "minecraft": "${{ needs.prepare_export.outputs.mc_version }}"
             }
             ]]-->
         run: gh release edit "$TAG_NAME" --notes "$RELEASE_BODY"
