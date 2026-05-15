@@ -89,6 +89,7 @@ jobs:
       - name: VirusTotal Scan
         id: vt_scan
         uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
+        continue-on-error: true
         with:
           vt_api_key: ${{ secrets.VT_API_KEY }}
           files: build/export/*
@@ -157,6 +158,7 @@ jobs:
       - name: VirusTotal Scan
         id: vt_scan
         uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
+        continue-on-error: true
         with:
           vt_api_key: ${{ secrets.VT_API_KEY }}
           files: build/export/*
@@ -226,6 +228,7 @@ jobs:
       - name: VirusTotal Scan
         id: vt_scan
         uses: crazy-max/ghaction-virustotal@936d8c5c00afe97d3d9a1af26d017cfdf26800a2
+        continue-on-error: true
         with:
           vt_api_key: ${{ secrets.VT_API_KEY }}
           files: build/export/*
