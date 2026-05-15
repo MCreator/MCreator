@@ -80,6 +80,7 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
+
   export_windows:
     name: Build and Export (Windows)
     needs: export_linux
@@ -147,11 +148,14 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
+
   export_macos:
     name: Build and Export (only MacOS)
-    needs: [export_linux, export_windows]
+    needs: export_linux
     runs-on: macos-latest
     environment: production
+    outputs:
+      vt_analysis: ${{ steps.vt_scan.outputs.analysis }}
     steps:
       - uses: actions/checkout@v6
       - name: Set up JDK 25
@@ -204,17 +208,6 @@ jobs:
           vt_api_key: ${{ secrets.VT_API_KEY }}
           files: build/export/*
           request_rate: 4
-      - name: Format All VirusTotal Results
-        id: vt_format
-        run: |
-          {
-            echo "vt_markdown<<EOF"
-            echo "### VirusTotal Scans"
-            echo "${{ needs.export_linux.outputs.vt_analysis }},${{ needs.export_windows.outputs.vt_analysis }},${{ steps.vt_scan.outputs.analysis }}" | tr ',' '\n' | while IFS='=' read -r file url; do
-              [ -n "$file" ] && echo "- [$(basename "$file")]($url)"
-            done
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
       - name: Upload Binaries and Tag Release
         uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de
         with:
@@ -224,7 +217,30 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
-          body: |
+
+  update_release:
+    name: Update Release Notes
+    needs: [export_linux, export_windows, export_macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Format All VirusTotal Results
+        id: vt_format
+        run: |
+          {
+            echo "vt_markdown<<EOF"
+            echo "### VirusTotal Scans"
+            echo "${{ needs.export_linux.outputs.vt_analysis }},${{ needs.export_windows.outputs.vt_analysis }},${{ needs.export_macos.outputs.vt_analysis }}" | tr ',' '\n' | while IFS='=' read -r file url; do
+              [ -n "$file" ] && echo "- [$(basename "$file")]($url)"
+            done
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+      - name: Update Release Notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ needs.export_linux.outputs.mcr_version }}
+          RELEASE_BODY: |
             ### **Download: https://mcreator.net/download**
             
             ### Changelog: https://mcreator.net/changelog
@@ -236,3 +252,4 @@ jobs:
             "minecraft": "${{ needs.export_linux.outputs.mc_version }}"
             }
             ]]-->
+        run: gh release edit "$TAG_NAME" --notes "$RELEASE_BODY"
