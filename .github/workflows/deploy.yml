@@ -258,7 +258,7 @@ jobs:
             echo "vt_markdown<<EOF"
             echo "### VirusTotal Scans"
             echo "${{ needs.export_linux.outputs.vt_analysis }},${{ needs.export_windows.outputs.vt_analysis }},${{ needs.export_macos.outputs.vt_analysis }}" | tr ',' '\n' | while IFS='=' read -r file url; do
-              [ -n "$file" ] && echo "- [$(basename "$file")]($url)"
+              [ -n "$file" ] && file=$(echo "$file" | tr '\\' '/') && echo "- [$(basename "$file")]($url)"
             done
             echo "EOF"
           } >> $GITHUB_OUTPUT
