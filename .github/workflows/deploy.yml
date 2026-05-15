@@ -48,7 +48,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
       - name: Install Dependencies
         run: |
-          sudo apt-get install -y mkisofs nsis nsis-pluginapi
+          sudo apt-get install -y nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           sudo unzip LockedList.zip -d /usr/share/nsis/
       - name: Run Gradle build environment preparation tasks
