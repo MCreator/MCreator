@@ -46,7 +46,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 		<@javacompress>
 		<#list villagertrades?filter(e -> e.isWanderingTrader()) as villagertrade>
 			<#list villagertrade.trades as entry>
-				event.getGenericTrades().add(
+				event.<#if entry.level == 1>getGenericTrades()<#else>getRareTrades()</#if>.add(
 					new BasicItemListing(
 						${mappedMCItemToItemStackCode(entry.price1, entry.countPrice1)},
 						<#if !entry.price2.isEmpty()>${mappedMCItemToItemStackCode(entry.price2, entry.countPrice2)},</#if>
