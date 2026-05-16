@@ -52,16 +52,6 @@ import java.util.List;
 
 	}
 
-	public boolean hasVillagerTrades(boolean wandering) {
-		for (CustomTradeEntry tradeEntry : tradeEntries) {
-			if (wandering && "WANDERING_TRADER".equals(tradeEntry.villagerProfession.getUnmappedValue()))
-				return true;
-			if (!wandering && !"WANDERING_TRADER".equals(tradeEntry.villagerProfession.getUnmappedValue()))
-				return true;
-		}
-		return false;
-	}
-
 	public boolean isWanderingTrader() {
 		return "WANDERING_TRADER".equals(villagerProfession.getUnmappedValue());
 	}
