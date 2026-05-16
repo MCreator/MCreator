@@ -25,6 +25,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.CustomElement;
+import net.mcreator.element.util.GEValidator;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.TagsUtils;
 import net.mcreator.io.FileIO;
@@ -79,7 +80,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	}
 
 	/**
-	 * Also stores to cache. Is thread safe.
+	 * Also stores to cache. It is thread safe.
 	 *
 	 * @param element GeneratableElement to convert to store
 	 */
@@ -155,9 +156,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 		GeneratableElement generatableElement = fromJSONtoGeneratableElementOrNull(importJSON, element);
 		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
-			// Make sure after conversion and importing, no Nonnull fields are null to prevent NPEs and check GE integrity
-			if (!generatableElement.performQuickValidation())
-				return null;
 
 			// Store the mod element in case the conversion was applied
 			if (generatableElement.wasConversionApplied())
@@ -177,7 +175,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	@Nullable public GeneratableElement fromJSONtoGeneratableElementOrNull(String json, ModElement modElement) {
 		try {
 			return fromJSONtoGeneratableElement(json, modElement);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
 					modElement.getName(), e);
 			return null;
@@ -185,11 +183,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 	}
 
 	@Nonnull public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement)
-			throws IOException {
+			throws IOException, GEValidator.ValidationException {
 		this.modElementsInConversion.push(modElement);
 
 		try {
-			return gson.fromJson(json, GeneratableElement.class);
+			GeneratableElement retval = gson.fromJson(json, GeneratableElement.class);
+			GEValidator.validateAndTryToCorrect(retval);
+			return retval;
+		} catch (GEValidator.ValidationException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new IOException("Failed to parse and load JSON of:" + modElement.getName(), e);
 		} finally {
@@ -249,7 +251,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	/**
 	 * Invalidates the generatable element cache
 	 *
-	 * @apiNote This method performs sensitive operations on host workspace. Avoid using it!
+	 * @apiNote This method performs sensitive operations on the host workspace. Avoid using it!
 	 */
 	@SuppressWarnings("unused") public void invalidateCache() {
 		cache.clear();

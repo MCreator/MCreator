@@ -36,7 +36,7 @@ import java.util.*;
 	@LimitedOptions({ "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting", "Campfire cooking",
 			"Smithing" }) @Nonnull public String recipeType;
 
-	@Numeric(init = 1, min = 1, max = 99, step = 1) public int recipeRetstackSize;
+	@Numeric(init = 1, min = 1, max = 99, step = 1, optional = true) public int recipeRetstackSize;
 	public String group;
 	@ModElementReference public List<MItemBlock> unlockingItems;
 
