@@ -27,6 +27,7 @@ import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
@@ -97,6 +98,8 @@ public class JVillagerTradeEntry extends JSimpleListEntry<VillagerTrade.TradeEnt
 		line2.add(priceMultiplier);
 
 		add(line2);
+
+		setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Theme.current().getSecondAltBackgroundColor()));
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
