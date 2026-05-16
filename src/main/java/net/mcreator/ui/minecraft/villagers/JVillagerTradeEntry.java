@@ -45,12 +45,9 @@ public class JVillagerTradeEntry extends JSimpleListEntry<VillagerTrade.TradeEnt
 	private final MCItemHolder price2;
 	private final MCItemHolder offer;
 
-	private final JSpinner countPrice1 = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
-			"countPrice1");
-	private final JSpinner countPrice2 = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
-			"countPrice2");
-	private final JSpinner countOffer = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
-			"countOffer");
+	private final JSpinner countPrice1 = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "countPrice1");
+	private final JSpinner countPrice2 = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "countPrice2");
+	private final JSpinner countOffer = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "countOffer");
 
 	private final CardLayout tradeLevelLayout = new CardLayout();
 	private final JPanel tradeLevelPanel = new JPanel(tradeLevelLayout);
@@ -59,10 +56,9 @@ public class JVillagerTradeEntry extends JSimpleListEntry<VillagerTrade.TradeEnt
 	private final JComboBox<String> wanderingTraderCategory = new JComboBox<>(
 			new String[] { "Common", "Uncommon", "Buying" });
 
-	private final JSpinner maxTrades = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
-			"maxTrades");
-	private final JSpinner xp = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class, "xp");
-	private final JSpinner priceMultiplier = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
+	private final JSpinner maxTrades = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "maxTrades");
+	private final JSpinner xp = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "xp");
+	private final JSpinner priceMultiplier = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class,
 			"priceMultiplier");
 
 	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
