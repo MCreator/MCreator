@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ MCreator (https://mcreator.net/)
+  ~ Copyright (C) 2012-2020, Pylo
+  ~ Copyright (C) 2020-2026, Pylo, opensource contributors
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+         xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+         IgnorableNamespaces="uap rescap">
+
+    <Identity Name="Pylo.MCreator"
+              Publisher="CN=Pylo"
+              Version="%version%.0"
+              ProcessorArchitecture="x64"/>
+
+    <Properties>
+        <DisplayName>MCreator %ui_version%</DisplayName>
+        <PublisherDisplayName>Pylo</PublisherDisplayName>
+        <Logo>Assets\StoreLogo.png</Logo>
+    </Properties>
+
+    <Resources>
+        <Resource Language="en-us"/>
+    </Resources>
+
+    <Dependencies>
+        <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.19041.0"/>
+    </Dependencies>
+
+    <Capabilities>
+        <rescap:Capability Name="runFullTrust"/>
+    </Capabilities>
+
+    <Applications>
+        <Application Id="MCreator"
+                     Executable="mcreator.exe"
+                     EntryPoint="Windows.FullTrustApplication">
+            <uap:VisualElements DisplayName="MCreator"
+                                Description="Minecraft mod maker"
+                                BackgroundColor="transparent"
+                                Square150x150Logo="Assets\Square150x150Logo.png"
+                                Square44x44Logo="Assets\Square44x44Logo.png">
+            </uap:VisualElements>
+        </Application>
+    </Applications>
+</Package>
