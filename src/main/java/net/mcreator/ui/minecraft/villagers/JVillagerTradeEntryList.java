@@ -29,9 +29,12 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 public class JVillagerTradeEntryList extends JSimpleEntriesList<JVillagerTradeEntry, VillagerTrade.TradeEntry> {
+
+	private boolean isWanderingTrader;
 
 	public JVillagerTradeEntryList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
@@ -44,7 +47,12 @@ public class JVillagerTradeEntryList extends JSimpleEntriesList<JVillagerTradeEn
 
 	@Nullable @Override
 	protected JVillagerTradeEntry newEntry(JPanel parent, List<JVillagerTradeEntry> entryList, boolean userAction) {
-		return new JVillagerTradeEntry(mcreator, gui, entries, entryList);
+		return new JVillagerTradeEntry(mcreator, gui, entries, entryList, isWanderingTrader);
+	}
+
+	public void setWanderingTrader(boolean isWanderingTrader) {
+		this.isWanderingTrader = isWanderingTrader;
+		entryList.forEach(e -> e.updateTradeLevelCard(isWanderingTrader));
 	}
 
 	public AggregatedValidationResult getValidationResult() {

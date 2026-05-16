@@ -59,9 +59,12 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 		JPanel properties = new JPanel(new GridLayout(1, 2, 4, 2));
 		properties.setOpaque(false);
 
-		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("villager_trade/profession"),
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagertrades/profession"),
 				L10N.label("elementgui.villager_trade.profession")));
 		properties.add(villagerProfession);
+
+		villagerProfession.addActionListener(_ -> trades.setWanderingTrader(
+				"WANDERING_TRADER".equals(villagerProfession.getSelectedItem().getName())));
 
 		trades = new JVillagerTradeEntryList(mcreator, this);
 
