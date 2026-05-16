@@ -76,6 +76,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator(), ModElementType.BANNERPATTERN);
 	private final JItemListField<NonMappableElement> listFieldPointsOfInterest = new ModElementListField(
 			workspacePanel.getMCreator(), ModElementType.VILLAGERPROFESSION);
+	private final JItemListField<NonMappableElement> listVillagerTrades = new ModElementListField(
+			workspacePanel.getMCreator(), ModElementType.VILLAGERTRADE);
 
 	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
@@ -96,10 +98,12 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		prepareListField(listFieldPaintingVariants);
 		prepareListField(listFieldBannerPatterns);
 		prepareListField(listFieldPointsOfInterest);
+		prepareListField(listVillagerTrades);
 
 		listFieldPaintingVariants.setReadOnly();
 		listFieldBannerPatterns.setReadOnly();
 		listFieldPointsOfInterest.setReadOnly();
+		listVillagerTrades.setReadOnly();
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
@@ -208,6 +212,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldPointsOfInterest;
+						}
+						case VILLAGER_TRADES -> {
+							listVillagerTrades.setListElements(entries.map(
+											e -> (NonMappableElement) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listVillagerTrades;
 						}
 					};
 					listField.setBorder(retval.getBorder());
@@ -519,6 +530,15 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case POINTS_OF_INTEREST -> {
 					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
 							ModElementType.VILLAGERPROFESSION);
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					retval.setReadOnly();
+					yield retval;
+				}
+				case VILLAGER_TRADES -> {
+					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
+							ModElementType.VILLAGERTRADE);
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());

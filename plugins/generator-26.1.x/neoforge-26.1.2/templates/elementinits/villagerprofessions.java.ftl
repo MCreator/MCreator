@@ -58,8 +58,19 @@ package ${package}.init;
 
 		return PROFESSIONS.register(name, () -> {
 			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.value() == POI_TYPES.get(name).poiType.value());
-			return new VillagerProfession(Component.translatable("entity.villager." + ${JavaModName}.MODID + "." + name), poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
+			return new VillagerProfession(Component.translatable("entity.villager." + ${JavaModName}.MODID + "." + name),
+				poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get(), Int2ObjectMap.ofEntries(
+					Int2ObjectMap.entry(1, tradeSetResourceKey(name, 1)),
+					Int2ObjectMap.entry(2, tradeSetResourceKey(name, 2)),
+					Int2ObjectMap.entry(3, tradeSetResourceKey(name, 3)),
+					Int2ObjectMap.entry(4, tradeSetResourceKey(name, 4)),
+					Int2ObjectMap.entry(5, tradeSetResourceKey(name, 5))
+			));
 		});
+	}
+
+	private static ResourceKey<TradeSet> tradeSetResourceKey(String name, int level) {
+		return ResourceKey.create(Registries.TRADE_SET, Identifier.fromNamespaceAndPath("${modid}", name + "/level_" + level));
 	}
 
 	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegisterEvent event) {
