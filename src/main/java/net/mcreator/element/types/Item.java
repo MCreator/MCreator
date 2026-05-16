@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
-	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;
 
 	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
@@ -60,13 +60,13 @@ import java.util.stream.Collectors;
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
 	public String name;
-	public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
-	public int stackSize;
-	public int enchantability;
-	public int useDuration;
-	public double toolType;
-	public int damageCount;
+	@Numeric(init = 64, min = 1, max = 99, step = 1) public int stackSize;
+	@Numeric(init = 0, min = -100, max = 128000, step = 1) public int enchantability;
+	@Numeric(init = 0, min = -100, max = 128000, step = 1) public int useDuration;
+	@Numeric(init = 1.0, min = -100.0, max = 128000.0, step = 0.1) public double toolType;
+	@Numeric(init = 0, min = 0, max = 128000, step = 1) public int damageCount;
 	public MItemBlock recipeRemainder;
 	public boolean destroyAnyBlock;
 	public boolean immuneToFire;
@@ -77,16 +77,16 @@ import java.util.stream.Collectors;
 	public boolean damageOnCrafting;
 
 	public boolean enableMeleeDamage;
-	public double damageVsEntity;
-	public double attackSpeed;
+	@Numeric(init = 4, min = 0, max = 128000, step = 0.1) public double damageVsEntity;
+	@Numeric(init = 1.2, min = 0, max = 128000, step = 0.1) public double attackSpeed;
 
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
-	@Nullable @ModElementReference(acceptedTypes = { "gui" }) public String guiBoundTo;
+	@Nullable @ModElementReference(acceptedTypes = { GUI.class }) public String guiBoundTo;
 	public LogicProcedure openGUIOnRightClick;
-	public int inventorySize;
-	public int inventoryStackSize;
+	@Numeric(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
+	@Numeric(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
 
 	public Procedure onRightClickedInAir;
 	public Procedure onRightClickedOnBlock;
@@ -112,21 +112,21 @@ import java.util.stream.Collectors;
 
 	// Food
 	public boolean isFood;
-	public int nutritionalValue;
-	public double saturation;
+	@Numeric(init = 4, min = -1000, max = 1000, step = 1) public int nutritionalValue;
+	@Numeric(init = 0.3, min = -1000, max = 1000, step = 0.1) public double saturation;
 	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
-	public String animation;
+	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear" }) public String animation;
 
 	// Music disc
 	public boolean isMusicDisc;
 	public Sound musicDiscMusic;
 	public String musicDiscDescription;
-	public int musicDiscLengthInTicks;
-	public int musicDiscAnalogOutput;
+	@Numeric(init = 100, min = 1, max = 20 * 3600, step = 1) public int musicDiscLengthInTicks;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int musicDiscAnalogOutput;
 
-	@ModElementReference(acceptedTypes = { "bannerpattern" }) public List<String> providedBannerPatterns;
+	@ModElementReference(acceptedTypes = { BannerPattern.class }) public List<String> providedBannerPatterns;
 
 	@ModElementReference public List<AttributeModifierEntry> attributeModifiers;
 
@@ -155,6 +155,8 @@ import java.util.stream.Collectors;
 		this.attributeModifiers = new ArrayList<>();
 
 		this.attackSpeed = 1.6;
+
+		this.musicDiscLengthInTicks = 100;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

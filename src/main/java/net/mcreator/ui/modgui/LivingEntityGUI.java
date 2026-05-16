@@ -52,6 +52,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.entityanimations.JEntityAnimationList;
 import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
 import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
@@ -74,7 +75,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
 
@@ -106,30 +106,32 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final VTextField mobName = new VTextField().requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
-	private final JSpinner attackStrength = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
-	private final JSpinner movementSpeed = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
-	private final JSpinner stepHeight = new JSpinner(new SpinnerNumberModel(0.6, 0, 255, 0.1));
-	private final JSpinner armorBaseValue = new JSpinner(new SpinnerNumberModel(0.0, 0, 100, 0.1));
-	private final JSpinner health = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
-	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
-	private final JSpinner attackKnockback = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
+	private final JSpinner attackStrength = ComponentFromAnnotation.spinner(LivingEntity.class, "attackStrength");
+	private final JSpinner movementSpeed = ComponentFromAnnotation.spinner(LivingEntity.class, "movementSpeed");
+	private final JSpinner stepHeight = ComponentFromAnnotation.spinner(LivingEntity.class, "stepHeight");
+	private final JSpinner armorBaseValue = ComponentFromAnnotation.spinner(LivingEntity.class, "armorBaseValue");
+	private final JSpinner health = ComponentFromAnnotation.spinner(LivingEntity.class, "health");
+	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(LivingEntity.class, "knockbackResistance");
+	private final JSpinner attackKnockback = ComponentFromAnnotation.spinner(LivingEntity.class, "attackKnockback");
 
-	private final JSpinner trackingRange = new JSpinner(new SpinnerNumberModel(64, 0, 10000, 1));
-	private final JSpinner followRange = new JSpinner(new SpinnerNumberModel(16, 0, 2048, 1));
+	private final JSpinner trackingRange = ComponentFromAnnotation.spinner(LivingEntity.class, "trackingRange");
+	private final JSpinner followRange = ComponentFromAnnotation.spinner(LivingEntity.class, "followRange");
 
-	private final JSpinner rangedAttackInterval = new JSpinner(new SpinnerNumberModel(20, 0, 1024, 1));
-	private final JSpinner rangedAttackRadius = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 0.1));
+	private final JSpinner rangedAttackInterval = ComponentFromAnnotation.spinner(LivingEntity.class, "rangedAttackInterval");
+	private final JSpinner rangedAttackRadius = ComponentFromAnnotation.spinner(LivingEntity.class, "rangedAttackRadius");
 
-	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
+	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(LivingEntity.class, "spawningProbability");
+	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation
+			.minMaxSpinner(LivingEntity.class, "minNumberOfMobsPerGroup", "maxNumberOfMobsPerGroup")
+			.allowEqualValues();
 
-	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
-	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
-	private final JSpinner mountedYOffset = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.1));
-	private final JSpinner modelShadowSize = new JSpinner(new SpinnerNumberModel(0.5, 0, 20, 0.1));
+	private final JSpinner modelWidth = ComponentFromAnnotation.spinner(LivingEntity.class, "modelWidth");
+	private final JSpinner modelHeight = ComponentFromAnnotation.spinner(LivingEntity.class, "modelHeight");
+	private final JSpinner mountedYOffset = ComponentFromAnnotation.spinner(LivingEntity.class, "mountedYOffset");
+	private final JSpinner modelShadowSize = ComponentFromAnnotation.spinner(LivingEntity.class, "modelShadowSize");
 	private final JCheckBox disableCollisions = L10N.checkbox("elementgui.living_entity.disable_collisions");
 
-	private final JSpinner xpAmount = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
+	private final JSpinner xpAmount = ComponentFromAnnotation.spinner(LivingEntity.class, "xpAmount");
 
 	private final JCheckBox hasAI = L10N.checkbox("elementgui.living_entity.has_ai");
 	private final JCheckBox isBoss = new JCheckBox();
@@ -170,8 +172,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private MCItemHolder equipmentOffHand;
 
 	private SingleModElementSelector guiBoundTo;
-	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
+	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(LivingEntity.class, "inventorySize");
+	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(LivingEntity.class, "inventoryStackSize");
 
 	private MCItemHolder rangedAttackItem;
 	private final SearchableComboBox<String> rangedItemType = new SearchableComboBox<>();
@@ -206,18 +208,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
-	private final SearchableComboBox<String> aiBase = new SearchableComboBox<>(
-			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
-					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
-					"IronGolem").sorted().toArray(String[]::new));
+	private final SearchableComboBox<String> aiBase = ComponentFromAnnotation.searchableOptions(LivingEntity.class, "aiBase");
 
-	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature", "Raider" });
-	private final JComboBox<String> mobCreatureType = new JComboBox<>(
-			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
-	private final JComboBox<String> bossBarColor = new JComboBox<>(
-			new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
-	private final JComboBox<String> bossBarType = new JComboBox<>(
-			new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
+	private final JComboBox<String> mobBehaviourType = ComponentFromAnnotation.options(LivingEntity.class, "mobBehaviourType");
+	private final JComboBox<String> mobCreatureType = ComponentFromAnnotation.options(LivingEntity.class, "mobCreatureType");
+	private final JComboBox<String> bossBarColor = ComponentFromAnnotation.options(LivingEntity.class, "bossBarColor");
+	private final JComboBox<String> bossBarType = ComponentFromAnnotation.options(LivingEntity.class, "bossBarType");
 
 	private final JCheckBox ridable = L10N.checkbox("elementgui.living_entity.is_rideable");
 

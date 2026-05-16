@@ -26,6 +26,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -34,6 +35,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.recipemakers.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -68,8 +70,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.common.enable");
 
-	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 0.1));
-	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
+	private final JSpinner xpReward = ComponentFromAnnotation.spinner(Recipe.class, "xpReward");
+	private final JSpinner cookingTime = ComponentFromAnnotation.spinner(Recipe.class, "cookingTime");
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 
@@ -77,14 +79,13 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final VTextField group = new VTextField();
 
-	private final JComboBox<String> recipeType = new JComboBox<>(
-			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting",
-					"Campfire cooking", "Smithing" });
+	private final JComboBox<String> recipeType = ComponentFromAnnotation.options(Recipe.class, "recipeType");
 
-	private final JComboBox<String> cookingBookCategory = new JComboBox<>(new String[] { "MISC", "FOOD", "BLOCKS" });
+	private final JComboBox<String> cookingBookCategory = ComponentFromAnnotation.options(Recipe.class,
+			"cookingBookCategory");
 
-	private final JComboBox<String> craftingBookCategory = new JComboBox<>(
-			new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
+	private final JComboBox<String> craftingBookCategory = ComponentFromAnnotation.options(Recipe.class,
+			"craftingBookCategory");
 
 	private final CardLayout recipesPanelLayout = new CardLayout();
 	private final JPanel recipesPanel = new JPanel(recipesPanelLayout);

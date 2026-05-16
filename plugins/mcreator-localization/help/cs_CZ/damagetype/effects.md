@@ -1,0 +1,1 @@
+Tento parametr určuje jaký zvuk by se měl přehrát při získání tohoto typu poškození

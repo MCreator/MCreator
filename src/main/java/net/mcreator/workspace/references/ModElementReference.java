@@ -19,6 +19,7 @@
 
 package net.mcreator.workspace.references;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.MappableElement;
 
@@ -44,6 +45,6 @@ import java.util.Collection;
 	 */
 	String[] defaultValues() default "";
 
-	String[] acceptedTypes() default {};
+	Class<? extends GeneratableElement>[] acceptedTypes() default {};
 
 }

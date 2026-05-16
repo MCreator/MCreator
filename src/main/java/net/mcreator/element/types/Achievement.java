@@ -24,6 +24,8 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -57,12 +59,12 @@ import java.util.List;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
-	@ModElementReference(acceptedTypes = { "loottable" }) public List<String> rewardLoot;
-	@ModElementReference(acceptedTypes = { "recipe" }) public List<String> rewardRecipes;
-	@ModElementReference(acceptedTypes = { "function" }) @Nullable public String rewardFunction;
-	public int rewardXP;
+	@ModElementReference(acceptedTypes = { LootTable.class }) public List<String> rewardLoot;
+	@ModElementReference(acceptedTypes = { Recipe.class }) public List<String> rewardRecipes;
+	@ModElementReference(acceptedTypes = { Function.class }) @Nullable public String rewardFunction;
+	@Numeric(init = 0, min = 0, max = 64000, step = 1) public int rewardXP;
 
-	public String achievementType;
+	@LimitedOptions({ "task", "goal", "challenge" }) public String achievementType;
 	public AchievementEntry parent;
 
 	@BlocklyXML(name = "jsontriggers", defaultXML = XML_BASE) public String triggerxml;

@@ -30,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
@@ -42,16 +43,21 @@ public class JVillagerTradeEntry extends JPanel {
 	private final MCItemHolder price2;
 	private final MCItemHolder offer;
 
-	private final JSpinner countPrice1 = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
-	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
-	private final JSpinner countOffer = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+	private final JSpinner countPrice1 = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
+			"countPrice1");
+	private final JSpinner countPrice2 = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
+			"countPrice2");
+	private final JSpinner countOffer = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
+			"countOffer");
 
 	private final JComboBox<String> level = new JComboBox<>(
 			new String[] { "Novice", "Apprentice", "Journeyman", "Expert", "Master" });
 
-	private final JSpinner maxTrades = new JSpinner(new SpinnerNumberModel(10, 1, 72000, 1));
-	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));
-	private final JSpinner priceMultiplier = new JSpinner(new SpinnerNumberModel(0.05, 0, 1, 0.01));
+	private final JSpinner maxTrades = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
+			"maxTrades");
+	private final JSpinner xp = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class, "xp");
+	private final JSpinner priceMultiplier = ComponentFromAnnotation.spinner(VillagerTrade.CustomTradeEntry.Entry.class,
+			"priceMultiplier");
 
 	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JVillagerTradeEntry> entryList) {

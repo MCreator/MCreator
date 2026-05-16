@@ -29,6 +29,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
 import net.mcreator.ui.minecraft.loottable.LootTablePreview;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -47,9 +48,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 	private final VComboBox<String> name = new VComboBox<>();
 
-	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-					"Barter", "Archaeology" });
+	private final JComboBox<String> type = ComponentFromAnnotation.options(LootTable.class, "type");
 
 	private JLootTablePoolsList lootTablePools;
 
