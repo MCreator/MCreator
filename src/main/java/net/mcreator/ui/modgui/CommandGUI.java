@@ -36,6 +36,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.TestUtil;
@@ -53,16 +54,10 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 	private final VTextField commandName = new VTextField(25).requireValue("elementgui.command.warning.empty_string")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox type = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("STANDARD","elementgui.command.type.standard"),
-			Map.entry("SINGLEPLAYER_ONLY","elementgui.command.type.singleplayer_only"),
-			Map.entry("MULTIPLAYER_ONLY","elementgui.command.type.multiplayer_only"),
-			Map.entry("CLIENTSIDE","elementgui.command.type.clientside")
-			//@formatter:on
-	);
-	private final JComboBox<String> permissionLevel = new JComboBox<>(
-			new String[] { "No requirement", "1", "2", "3", "4" });
+	private final TranslatedComboBox type = ComponentFromAnnotation.translatedOptions(Command.class, "type",
+			"elementgui.command.type.");
+	private final JComboBox<String> permissionLevel = ComponentFromAnnotation.options(Command.class,
+			"permissionLevel");
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	private BlocklyPanel blocklyPanel;
