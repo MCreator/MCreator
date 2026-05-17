@@ -38,6 +38,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -276,8 +277,11 @@ import java.util.stream.Collectors;
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-				baseTypes.add(BaseType.FEATURE);
+					== GeneratorFlavor.FABRIC ||
+					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+				baseTypes.add(
+						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
 		if (hasTileEntity)
