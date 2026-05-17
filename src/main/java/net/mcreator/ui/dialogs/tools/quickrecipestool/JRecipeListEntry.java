@@ -20,7 +20,7 @@
 package net.mcreator.ui.dialogs.tools.quickrecipestool;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.Recipe;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -28,12 +28,11 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.RecipeTemplatesLoader;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.validation.*;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +49,7 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 	public JRecipeListEntry(MCreator mcreator, JPanel parent, List<JRecipeListEntry> entryList) {
 		super(parent, entryList);
 
-		template = new JComboBox<>(RecipeTemplatesLoader.getSortedTemplateNames());
+		template = new JComboBox<>(RecipeTemplatesLoader.getTemplateNames());
 		input = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItemsAndTags, true).requireValue(
 				"dialog.tools.quick_recipes.input_validator");
 		result = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems, false).requireValue(
@@ -58,15 +57,18 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 
 		line.add(L10N.label("dialog.tools.quick_recipes.name"));
 		name.setPreferredSize(new Dimension(300, 30));
+		//@formatter:off
 		name.setValidator(new UniqueNameValidator(L10N.t("modelement.recipe"), name::getText, () -> {
 			List<String> names = new ArrayList<>();
 			names.addAll(mcreator.getWorkspace().getModElements().stream()
-					.filter(me -> me.getType() == ModElementType.RECIPE).map(ModElement::getGeneratableElement)
-					.filter(Objects::nonNull).map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name).toList());
+					.filter(me -> me.getType() == ModElementType.RECIPE)
+					.map(me -> (NamespacedGeneratableElement) me.getGeneratableElement()).filter(Objects::nonNull)
+					.map(NamespacedGeneratableElement::getResourceLocation).toList());
 			names.addAll(entryList.stream().map(e -> e.getEntry().name).toList());
-
 			return names.stream();
 		}, new ModElementNameValidator(mcreator.getWorkspace(), name, name.getText())));
+		//@formatter:on
+
 		name.enableRealtimeValidation();
 		line.add(name);
 

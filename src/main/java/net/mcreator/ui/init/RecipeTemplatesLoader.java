@@ -39,7 +39,6 @@ public class RecipeTemplatesLoader {
 	private static final Logger LOG = LogManager.getLogger("Recipe Templates Loader");
 
 	private static final LinkedHashMap<String, RecipeTemplate> recipeTemplates = new LinkedHashMap<>();
-	private static String[] sortedTemplateNames;
 
 	public static void init() {
 		LOG.debug("Loading recipe templates");
@@ -49,32 +48,26 @@ public class RecipeTemplatesLoader {
 
 		final Gson gson = new Gson();
 
-		for (String file : fileNames) {
+		for (String file : fileNames.stream().sorted().toList()) {
 			String name = FilenameUtils.removeExtension(file.replace("templates/recipe_templates/", ""));
 
 			try {
 				RecipeTemplate recipeTemplate = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file),
 						RecipeTemplate.class);
-				try {
-					recipeTemplate.selfValidate();
-				} catch (IllegalArgumentException e) {
-					LOG.error("Recipe template {} contains one or many invalid parameters. It will be skipped. {}", name,
-							e.getMessage());
-					continue;
-				}
 
+				recipeTemplate.selfValidate();
 				recipeTemplates.put(name, recipeTemplate);
 			} catch (JsonSyntaxException e) {
 				LOG.error("Recipe template format of {} is invalid. It will be skipped. {}", name, e.getMessage());
+			} catch (IllegalArgumentException e) {
+				LOG.error("Recipe template {} contains one or many invalid parameters. It will be skipped. {}", name,
+						e.getMessage());
 			}
-
 		}
-
-		sortedTemplateNames = recipeTemplates.keySet().stream().sorted().toList().toArray(new String[0]);
 	}
 
-	public static String[] getSortedTemplateNames() {
-		return sortedTemplateNames;
+	public static String[] getTemplateNames() {
+		return recipeTemplates.keySet().toArray(new String[0]);
 	}
 
 	public static RecipeTemplate getRecipeTemplatesFromID(String templateID) {
@@ -93,7 +86,7 @@ public class RecipeTemplatesLoader {
 				throw new IllegalArgumentException("Invalid recipe type: " + recipeType);
 			}
 
-			if (!recipeType.equals("Crafting") && Arrays.stream(inputSlots)
+			if (recipeType.equals("Crafting") && Arrays.stream(inputSlots)
 					.anyMatch(i -> !IntegerRange.of(0, 8).contains(i))) {
 				throw new IllegalArgumentException("One or many slots are outside the valid range (0-8)");
 			}
