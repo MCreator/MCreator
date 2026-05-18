@@ -44,15 +44,16 @@ public class VillagerTradeSplitter implements IConverter {
 		String originalName = input.getModElement().getName();
 		JsonObject originalJsonDef = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-		// If the list of villager trades is empty, we don't have to do anything
+		// If the list of villager trades is not empty, convert the old list
 		if (originalJsonDef.get("tradeEntries") != null && !originalJsonDef.getAsJsonArray("tradeEntries").isEmpty()) {
 			// Get all defined trades and group them by profession
 			LinkedHashMap<String, ArrayList<JsonElement>> professionToTrades = new LinkedHashMap<>();
 
 			originalJsonDef.getAsJsonArray("tradeEntries").iterator().forEachRemaining(e -> {
-				String profession = e.getAsJsonObject().get("villagerProfession").getAsString();
+				String profession = e.getAsJsonObject().getAsJsonObject("villagerProfession").get("value")
+						.getAsString();
 				professionToTrades.computeIfAbsent(profession, _ -> new ArrayList<>());
-				professionToTrades.get(profession).addAll(e.getAsJsonObject().get("entries").getAsJsonArray().asList());
+				professionToTrades.get(profession).addAll(e.getAsJsonObject().getAsJsonArray("entries").asList());
 			});
 
 			// Reuse the current mod element for the first profession in the map
@@ -80,6 +81,8 @@ public class VillagerTradeSplitter implements IConverter {
 				workspace.getGenerator().generateElement(newTrade);
 				workspace.getModElementManager().storeModElement(newTrade);
 			});
+		} else { // If the list of trades was empty, update the profession to a default value
+			originalTrade.villagerProfession = new ProfessionEntry(workspace, "ARMORER");
 		}
 
 		return originalTrade;
@@ -91,13 +94,13 @@ public class VillagerTradeSplitter implements IConverter {
 
 	private VillagerTrade.TradeEntry entryFromJsonObject(Workspace workspace, JsonObject tradeJson, String profession) {
 		VillagerTrade.TradeEntry entry = new VillagerTrade.TradeEntry();
-		entry.price1 = new MItemBlock(workspace, tradeJson.get("price1").getAsString());
+		entry.price1 = new MItemBlock(workspace, tradeJson.getAsJsonObject("price1").get("value").getAsString());
 		entry.countPrice1 = tradeJson.get("countPrice1").getAsInt();
 		if (tradeJson.get("price2") != null) {
-			entry.price2 = new MItemBlock(workspace, tradeJson.get("price2").getAsString());
+			entry.price2 = new MItemBlock(workspace, tradeJson.getAsJsonObject("price2").get("value").getAsString());
 		}
 		entry.countPrice2 = tradeJson.get("countPrice2").getAsInt();
-		entry.offer = new MItemBlock(workspace, tradeJson.get("offer").getAsString());
+		entry.offer = new MItemBlock(workspace, tradeJson.getAsJsonObject("offer").get("value").getAsString());
 		entry.countOffer = tradeJson.get("countOffer").getAsInt();
 		// Level was previously ignored for wandering traders, defaulting to the COMMON trade set
 		entry.level = "WANDERING_TRADER".equals(profession) ? 1 : tradeJson.get("level").getAsInt();
