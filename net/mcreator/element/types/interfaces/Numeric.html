@@ -62,6 +62,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#max()" tabindex="0">max</a></li>
 <li><a href="#step()" tabindex="0">step</a></li>
 <li><a href="#allowMinMaxEqual()" tabindex="0">allowMinMaxEqual</a></li>
+<li><a href="#optional()" tabindex="0">optional</a></li>
 </ol>
 </li>
 </ol>
@@ -117,6 +118,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code>boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#allowMinMaxEqual()" class="member-name-link">allowMinMaxEqual</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#optional()" class="member-name-link">optional</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -166,6 +170,26 @@ loadScripts(document, 'script');</script>
 <h3>allowMinMaxEqual</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">allowMinMaxEqual</span></div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if a field is used in min-max range selector and min and max values can be equal</dd>
+</dl>
+<dl class="notes">
+<dt>Default:</dt>
+<dd><code>false</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="optional()">
+<h3>optional</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="return-type">boolean</span>&nbsp;<span class="element-name">optional</span></div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if the field is not used in all cases and can be left at 0 in those cases</dd>
+</dl>
 <dl class="notes">
 <dt>Default:</dt>
 <dd><code>false</code></dd>

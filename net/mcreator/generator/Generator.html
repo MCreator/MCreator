@@ -173,7 +173,7 @@ implements <a href="IGenerator.html" title="interface in net.mcreator.generator"
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Generates the generator mod base files.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateBase(boolean)" class="member-name-link">generateBase</a><wbr>(boolean&nbsp;formatAndOrganiseImports)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Generates the generator mod base files and writes them to disk.</div>
@@ -430,13 +430,14 @@ as it can be altered in this process</div>
 <section class="detail" id="generateBase(boolean)">
 <h3>generateBase</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">generateBase</span><wbr><span class="parameters">(boolean&nbsp;formatAndOrganiseImports)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">generateBase</span><wbr><span class="parameters">(boolean&nbsp;formatAndOrganiseImports)</span>
+                  throws <span class="exceptions"><a href="template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></span></div>
 <div class="block">Generates the generator mod base files and writes them to disk.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>formatAndOrganiseImports</code> - true if imports should be formatted</dd>
-<dt>Returns:</dt>
-<dd>true if generator generated all files without any errors</dd>
+<dt>Throws:</dt>
+<dd><code><a href="template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code></dd>
 </dl>
 </div>
 </section>
