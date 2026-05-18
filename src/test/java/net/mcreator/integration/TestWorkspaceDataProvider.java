@@ -1596,6 +1596,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
 			villagerTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(),
+					_true ? new DataListEntry.Dummy("WANDERING_TRADER") :
 					getRandomDataListEntry(random,
 							ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
 			villagerTrade.trades = new ArrayList<>();
@@ -1606,13 +1607,15 @@ public class TestWorkspaceDataProvider {
 					entry.price1 = new MItemBlock(modElement.getWorkspace(),
 							getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 					entry.price2 = new MItemBlock(modElement.getWorkspace(),
-							_true ? getRandomMCItem(random, filterAir(blocksAndItems)).getName() : "");
+							random.nextBoolean() ? getRandomMCItem(random, filterAir(blocksAndItems)).getName() : "");
 					entry.offer = new MItemBlock(modElement.getWorkspace(),
 							getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 					entry.countPrice1 = getRandomInt(random, VillagerTrade.TradeEntry.class, "countPrice1");
 					entry.countPrice2 = getRandomInt(random, VillagerTrade.TradeEntry.class, "countPrice2");
 					entry.countOffer = getRandomInt(random, VillagerTrade.TradeEntry.class, "countOffer");
 					entry.level = new int[] { 1, 2, 3, 4, 5 }[valueIndex];
+					if (villagerTrade.isWanderingTrader())
+						entry.level = Math.min(entry.level, 2);
 					entry.maxTrades = getRandomInt(random, VillagerTrade.TradeEntry.class, "maxTrades");
 					entry.xp = getRandomInt(random, VillagerTrade.TradeEntry.class, "xp");
 					entry.priceMultiplier = getRandomDouble(random, VillagerTrade.TradeEntry.class, "priceMultiplier");
