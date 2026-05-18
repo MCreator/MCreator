@@ -33,7 +33,6 @@ import java.util.List;
 
 	public ProfessionEntry villagerProfession;
 	@ModElementReference public List<TradeEntry> trades;
-	@ModElementReference public List<CustomTradeEntry> tradeEntries;
 
 	private VillagerTrade() {
 		this(null);
@@ -41,15 +40,7 @@ import java.util.List;
 
 	public VillagerTrade(ModElement element) {
 		super(element);
-		tradeEntries = new ArrayList<>();
 		trades = new ArrayList<>();
-	}
-
-	public static class CustomTradeEntry {
-
-		public ProfessionEntry villagerProfession;
-		@ModElementReference public List<TradeEntry> entries;
-
 	}
 
 	public boolean isWanderingTrader() {
