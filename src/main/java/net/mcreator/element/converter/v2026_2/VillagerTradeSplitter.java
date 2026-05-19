@@ -50,8 +50,7 @@ public class VillagerTradeSplitter implements IConverter {
 			LinkedHashMap<String, ArrayList<JsonElement>> professionToTrades = new LinkedHashMap<>();
 
 			originalJsonDef.getAsJsonArray("tradeEntries").iterator().forEachRemaining(e -> {
-				String profession = e.getAsJsonObject().getAsJsonObject("villagerProfession").get("value")
-						.getAsString();
+				String profession = getValueFrom(e.getAsJsonObject().get("villagerProfession"));
 				professionToTrades.computeIfAbsent(profession, _ -> new ArrayList<>());
 				professionToTrades.get(profession).addAll(e.getAsJsonObject().getAsJsonArray("entries").asList());
 			});
@@ -92,15 +91,22 @@ public class VillagerTradeSplitter implements IConverter {
 		return 86;
 	}
 
+	private String getValueFrom(JsonElement element) {
+		if (element.isJsonObject())
+			return element.getAsJsonObject().get("value").getAsString();
+		else
+			return element.getAsString();
+	}
+
 	private VillagerTrade.TradeEntry entryFromJsonObject(Workspace workspace, JsonObject tradeJson, String profession) {
 		VillagerTrade.TradeEntry entry = new VillagerTrade.TradeEntry();
-		entry.price1 = new MItemBlock(workspace, tradeJson.getAsJsonObject("price1").get("value").getAsString());
+		entry.price1 = new MItemBlock(workspace, getValueFrom(tradeJson.get("price1")));
 		entry.countPrice1 = tradeJson.get("countPrice1").getAsInt();
 		if (tradeJson.get("price2") != null) {
-			entry.price2 = new MItemBlock(workspace, tradeJson.getAsJsonObject("price2").get("value").getAsString());
+			entry.price2 = new MItemBlock(workspace, getValueFrom(tradeJson.get("price2")));
 		}
 		entry.countPrice2 = tradeJson.get("countPrice2").getAsInt();
-		entry.offer = new MItemBlock(workspace, tradeJson.getAsJsonObject("offer").get("value").getAsString());
+		entry.offer = new MItemBlock(workspace,  getValueFrom(tradeJson.get("offer")));
 		entry.countOffer = tradeJson.get("countOffer").getAsInt();
 		// Level was previously ignored for wandering traders, defaulting to the COMMON trade set
 		entry.level = "WANDERING_TRADER".equals(profession) ? 1 : tradeJson.get("level").getAsInt();
