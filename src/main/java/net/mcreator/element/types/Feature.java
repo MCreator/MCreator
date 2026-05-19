@@ -37,19 +37,20 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nullable;
+import java.lang.module.ModuleDescriptor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
 
-	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
 	public boolean skipPlacement;
 	public String generationStep;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
-	@BlocklyXML("features") public String featurexml;
+	@BlocklyXML(name = "features", defaultXML = XML_BASE) public String featurexml;
 
 	private transient Boolean hasConfiguredFeature = null;
 
@@ -120,8 +121,11 @@ import java.util.List;
 		if (hasConfiguredFeature())
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 
-		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
-			baseTypes.add(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
+		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
+				ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+						.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+			baseTypes.add(
+					BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		else if (hasGenerationConditions())
 			baseTypes.add(BaseType.FEATURE);
 
