@@ -2638,7 +2638,7 @@ public class TestWorkspaceDataProvider {
 		specialEntity.entityType = entityType;
 		specialEntity.entityTexture = new TextureHolder(modElement.getWorkspace(), "entity_texture_0");
 		specialEntity.itemTexture = new TextureHolder(modElement.getWorkspace(), "itest");
-		specialEntity.rarity =  getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
+		specialEntity.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(SpecialEntity.class, "rarity"));
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()

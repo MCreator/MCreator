@@ -49,7 +49,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 
 public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
@@ -64,14 +63,8 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32).requireValue(
 			"elementgui.special_entity.error_entity_needs_item_texture");
 
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(SpecialEntity.class, "rarity",
+			"elementgui.common.rarity_");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private ProcedureSelector onTickUpdate;

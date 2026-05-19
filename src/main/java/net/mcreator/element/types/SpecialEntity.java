@@ -52,9 +52,9 @@ import java.util.List;
 
 	private static final Logger LOG = LogManager.getLogger(SpecialEntity.class);
 
-	@LimitedOptions({ "Boat", "ChestBoat" }) public String entityType;
+	@LimitedOptions({ "Boat", "ChestBoat", "Raft", "ChestRaft" }) public String entityType;
 	public String name;
-	public String rarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@TextureReference(TextureType.ENTITY) public TextureHolder entityTexture;
