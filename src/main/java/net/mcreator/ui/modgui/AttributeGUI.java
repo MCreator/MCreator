@@ -93,7 +93,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 				L10N.label("elementgui.attribute.entities")));
 		pane1.add(entities);
 
-		addToAllEntities.addActionListener((e) -> {
+		addToAllEntities.addActionListener(_ -> {
 			addToPlayers.setEnabled(!addToAllEntities.isSelected());
 			entities.setEnabled(!addToAllEntities.isSelected());
 		});

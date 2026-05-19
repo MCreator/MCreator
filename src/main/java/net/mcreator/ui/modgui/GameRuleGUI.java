@@ -108,7 +108,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		pane3.add(PanelUtils.totalCenterInPanel(subpane2));
 		pane3.setOpaque(false);
 
-		gameruleType.addActionListener(e -> updateDefaultValueUI());
+		gameruleType.addActionListener(_ -> updateDefaultValueUI());
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 

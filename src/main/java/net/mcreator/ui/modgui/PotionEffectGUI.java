@@ -114,7 +114,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		ComponentUtils.deriveFont(effectName, 16);
 
 		isInstant.setOpaque(false);
-		isInstant.addActionListener(e -> particle.setEnabled(!isInstant.isSelected()));
+		isInstant.addActionListener(_ -> particle.setEnabled(!isInstant.isSelected()));
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 		isCuredbyHoney.setOpaque(false);

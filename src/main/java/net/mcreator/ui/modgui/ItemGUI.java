@@ -237,7 +237,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		animations = new JItemAnimationList(mcreator, this);
 
-		guiBoundTo.addEntrySelectedListener(e -> {
+		guiBoundTo.addEntrySelectedListener(_ -> {
 			if (!isEditingMode()) {
 				String selected = guiBoundTo.getEntry();
 				if (selected != null) {
@@ -252,7 +252,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			}
 		});
 
-		useDuration.addChangeListener(change -> onStoppedUsing.setEnabled((int) useDuration.getValue() > 0));
+		useDuration.addChangeListener(_ -> onStoppedUsing.setEnabled((int) useDuration.getValue() > 0));
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel cipp = new JPanel(new BorderLayout(10, 10));
@@ -290,7 +290,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		renderType.addActionListener(e -> updateTextureOptions());
+		renderType.addActionListener(_ -> updateTextureOptions());
 
 		ComponentUtils.makeSection(rent, L10N.t("elementgui.item.item_3d_model"));
 		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
@@ -373,12 +373,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
 		damageCount.setOpaque(false);
-		damageCount.addChangeListener(e -> updateDamageDependantSettings());
+		damageCount.addChangeListener(_ -> updateDamageDependantSettings());
 		immuneToFire.setOpaque(false);
 		isPiglinCurrency.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
-		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
+		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
 		updateDamageDependantSettings();
@@ -410,7 +410,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
 
-		isFood.addActionListener(e -> {
+		isFood.addActionListener(_ -> {
 			updateFoodPanel();
 			if (!isEditingMode()) {
 				animation.setSelectedItem("eat");
@@ -450,7 +450,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
 				L10N.label("elementgui.item.enable_ranged_item")));
 		enableRanged.setOpaque(false);
-		enableRanged.addActionListener(e -> updateRangedPanel());
+		enableRanged.addActionListener(_ -> updateRangedPanel());
 		rangedProperties.add(enableRanged);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
@@ -474,7 +474,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateRangedPanel();
 
-		shootConstantly.addActionListener((e) -> {
+		shootConstantly.addActionListener(_ -> {
 			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
 			if (shootConstantly.isSelected())
 				rangedItemChargesPower.setSelected(false);
@@ -527,7 +527,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
 		boundGuiPanel.add(guiBoundTo);
 
-		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		guiBoundTo.addEntrySelectedListener(_ -> refreshGUIProperties());
 		refreshGUIProperties();
 
 		guiProperties.add(boundGuiPanel);
@@ -583,7 +583,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateMusicDiscBannerPanel();
 
-		isMusicDisc.addActionListener(e -> updateMusicDiscBannerPanel());
+		isMusicDisc.addActionListener(_ -> updateMusicDiscBannerPanel());
 
 		JPanel meleePanel = new JPanel(new GridLayout(3, 2, 35, 2));
 		meleePanel.setOpaque(false);
@@ -592,7 +592,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_melee_damage"),
 				L10N.label("elementgui.item.enable_melee_damage")));
 		enableMeleeDamage.setOpaque(false);
-		enableMeleeDamage.addActionListener(e -> updateMeleePanel());
+		enableMeleeDamage.addActionListener(_ -> updateMeleePanel());
 		meleePanel.add(enableMeleeDamage);
 
 		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),

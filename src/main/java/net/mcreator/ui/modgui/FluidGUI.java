@@ -214,7 +214,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fogProcedures.add(fogStartDistance);
 		fogProcedures.add(fogEndDistance);
 
-		hasFog.addActionListener(e -> refreshFogSettings());
+		hasFog.addActionListener(_ -> refreshFogSettings());
 		refreshFogSettings();
 
 		JComponent visualMerger = PanelUtils.northAndCenterElement(visualSettings, fogProcedures, 2, 2);
@@ -269,7 +269,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.spawn_particles")));
 		destal.add(spawnParticles);
 
-		spawnParticles.addActionListener(e -> refreshDripSettings());
+		spawnParticles.addActionListener(_ -> refreshDripSettings());
 		refreshDripSettings();
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
@@ -318,7 +318,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		generateBucket.setSelected(true);
 
-		generateBucket.addActionListener(e -> {
+		generateBucket.addActionListener(_ -> {
 			bucketName.setEnabled(generateBucket.isSelected());
 			textureBucket.setEnabled(generateBucket.isSelected());
 			creativeTabs.setEnabled(generateBucket.isSelected());

@@ -103,7 +103,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		jigsaw = new JJigsawPoolsList(mcreator, this, modElement);
 
-		terrainAdaptation.addActionListener(e -> {
+		terrainAdaptation.addActionListener(_ -> {
 			int max = "none".equals(terrainAdaptation.getSelectedItem()) ? 128 : 116;
 			SpinnerNumberModel spinnerModel = (SpinnerNumberModel) maxDistanceFromCenter.getModel();
 			spinnerModel.setMaximum(max);
@@ -126,7 +126,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		JButton importnbt = new JButton(UIRES.get("18px.add"));
 		importnbt.setToolTipText(L10N.t("elementgui.structuregen.import_tooltip"));
 		importnbt.setOpaque(false);
-		importnbt.addActionListener(e -> {
+		importnbt.addActionListener(_ -> {
 			File sch = FileDialogs.getOpenDialog(mcreator, new String[] { ".nbt" });
 			if (sch != null) {
 				String strname = RegistryNameFixer.fix(sch.getName().toLowerCase(Locale.ENGLISH));
@@ -158,7 +158,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		params.add(PanelUtils.westAndCenterElement(useStartHeight,
 				PanelUtils.westAndCenterElement(startHeightProviderType, startHeightRange, 5, 5), 5, 5));
 
-		useStartHeight.addActionListener(e -> updateEnabledFields());
+		useStartHeight.addActionListener(_ -> updateEnabledFields());
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/terrain_adaptation"),
 				L10N.label("elementgui.structuregen.terrain_adaptation")));
