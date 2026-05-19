@@ -106,7 +106,7 @@ public class VillagerTradeSplitter implements IConverter {
 			entry.price2 = new MItemBlock(workspace, getValueFrom(tradeJson.get("price2")));
 		}
 		entry.countPrice2 = tradeJson.get("countPrice2").getAsInt();
-		entry.offer = new MItemBlock(workspace,  getValueFrom(tradeJson.get("offer")));
+		entry.offer = new MItemBlock(workspace, getValueFrom(tradeJson.get("offer")));
 		entry.countOffer = tradeJson.get("countOffer").getAsInt();
 		// Level was previously ignored for wandering traders, defaulting to the COMMON trade set
 		entry.level = "WANDERING_TRADER".equals(profession) ? 1 : tradeJson.get("level").getAsInt();

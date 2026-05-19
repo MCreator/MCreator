@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.element.types.VillagerTrade;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -62,6 +63,8 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagertrades/profession"),
 				L10N.label("elementgui.villager_trade.profession")));
 		properties.add(villagerProfession);
+
+		villagerProfession.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
 
 		villagerProfession.addActionListener(_ -> trades.setWanderingTrader(
 				"WANDERING_TRADER".equals(villagerProfession.getSelectedItem().getName())));

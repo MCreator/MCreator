@@ -80,4 +80,5 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 		</@javacompress>
 	}
 	</#if>
+
 }
