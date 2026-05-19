@@ -30,7 +30,6 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.JStringListField;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -172,7 +171,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
-		worldGenType.addActionListener(e -> updateWorldgenSettings());
+		worldGenType.addActionListener(_ -> updateWorldgenSettings());
 		biomesInDimension = new BiomeListField(mcreator);
 		biomesInDimensionCaves = new BiomeListField(mcreator);
 
@@ -304,7 +303,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		canRespawnHere.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 		hasFixedTime.setOpaque(false);
-		hasFixedTime.addActionListener(e -> fixedTimeValue.setEnabled(hasFixedTime.isSelected()));
+		hasFixedTime.addActionListener(_ -> fixedTimeValue.setEnabled(hasFixedTime.isSelected()));
 		fixedTimeValue.setEnabled(false);
 		if (!isEditingMode()) {
 			bedWorks.setSelected(true);
@@ -316,10 +315,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
 
 		useCustomEffects.setOpaque(false);
-		useCustomEffects.addActionListener(e -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
+		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
 		hasClouds.setOpaque(false);
 		hasClouds.addActionListener(
-				e -> cloudHeight.setEnabled(hasClouds.isSelected()));
+				_ -> cloudHeight.setEnabled(hasClouds.isSelected()));
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
 		sunHeightAffectsFog.setOpaque(false);
@@ -505,8 +504,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComponentUtils.deriveFont(igniterName, 16);
 
-		enablePortal.addActionListener(e -> updatePortalElements());
-		enableIgniter.addActionListener(e -> updateIgniterElements(enableIgniter.isSelected()));
+		enablePortal.addActionListener(_ -> updatePortalElements());
+		enableIgniter.addActionListener(_ -> updateIgniterElements(enableIgniter.isSelected()));
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
 		events.add(whenPortaTriggerlUsed);

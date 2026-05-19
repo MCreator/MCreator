@@ -39,7 +39,6 @@ import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -439,7 +438,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		animations = new JBlockEntityAnimationList(mcreator, this);
 
-		blockBase.addActionListener(e -> {
+		blockBase.addActionListener(_ -> {
 			boolean hasBlockBase = blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0;
 			renderType.setEnabled(!hasBlockBase);
 			disableOffset.setEnabled(!hasBlockBase);
@@ -571,12 +570,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 			refreshBonemealProperties();
 		});
 
-		renderType.addActionListener(e -> {
+		renderType.addActionListener(_ -> {
 			updateTextureOptions();
 			refreshBlockStatesList();
 		});
 
-		hasTransparency.addActionListener(e -> {
+		hasTransparency.addActionListener(_ -> {
 			if (!isEditingMode()) {
 				// We can assume the user wants to make the block fully transparent
 				hasCustomOpacity.setSelected(hasTransparency.isSelected());
@@ -754,7 +753,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		enablePitch.setOpaque(false);
 		enablePitch.setEnabled(false);
-		rotationMode.addActionListener(e -> {
+		rotationMode.addActionListener(_ -> {
 			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
 			if (!enablePitch.isEnabled())
 				enablePitch.setSelected(false);
@@ -804,7 +803,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (!isEditingMode()) // add first bounding box
 			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 
-		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
+		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", _ -> updateParametersBasedOnBoundingBoxSize());
 
 		bsPane.setOpaque(false);
 		bsPane.add("Center", statePropertiesList);
@@ -821,10 +820,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
 		requiresCorrectTool.setOpaque(false);
-		destroyTool.addActionListener(e -> updateRequiresCorrectTool());
+		destroyTool.addActionListener(_ -> updateRequiresCorrectTool());
 		hasBlockItem.setOpaque(false);
 		hasBlockItem.setSelected(true);
-		hasBlockItem.addActionListener(e -> updateBlockItemSettings());
+		hasBlockItem.addActionListener(_ -> updateBlockItemSettings());
 		immuneToFire.setOpaque(false);
 
 		selp3.setOpaque(false);
@@ -854,13 +853,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_unbreakable")));
 		selp.add(unbreakable);
 
-		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
+		unbreakable.addActionListener(_ -> refreshUnbreakableProperties());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_custom_opacity"),
 				L10N.label("elementgui.block.has_custom_opacity")));
 		selp.add(hasCustomOpacity);
 
-		hasCustomOpacity.addActionListener(e -> refreshLightOpacitySetting());
+		hasCustomOpacity.addActionListener(_ -> refreshLightOpacitySetting());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
 				L10N.label("elementgui.common.light_opacity")));
@@ -939,8 +938,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		defaultSoundType.setOpaque(false);
 		customSoundType.setOpaque(false);
 
-		defaultSoundType.addActionListener(event -> updateSoundType());
-		customSoundType.addActionListener(event -> updateSoundType());
+		defaultSoundType.addActionListener(_ -> updateSoundType());
+		customSoundType.addActionListener(_ -> updateSoundType());
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), defaultSoundType));
 		soundProperties.add(soundOnStep);
@@ -976,7 +975,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.tick_randomly")));
 		advancedProperties.add(tickRandomly);
 
-		tickRandomly.addActionListener(e -> tickRate.setEnabled(!tickRandomly.isSelected()));
+		tickRandomly.addActionListener(_ -> tickRate.setEnabled(!tickRandomly.isSelected()));
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
 				L10N.label("elementgui.block.color_on_map")));
@@ -1033,12 +1032,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealable.setOpaque(false);
 		isLadder.setOpaque(false);
 
-		useLootTableForDrops.addActionListener(e -> {
+		useLootTableForDrops.addActionListener(_ -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		isWaterloggable.addActionListener(e -> {
+		isWaterloggable.addActionListener(_ -> {
 			hasGravity.setEnabled(!isWaterloggable.isSelected());
 			if (isWaterloggable.isSelected()) {
 				hasGravity.setSelected(false);
@@ -1112,7 +1111,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bind_gui")));
 		props.add(guiBoundTo);
 
-		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		guiBoundTo.addEntrySelectedListener(_ -> refreshGUIProperties());
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui_open"),
 				L10N.label("elementgui.block.bind_gui_open")));
@@ -1150,7 +1149,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inSlotIDs.setValidator(new CommaSeparatedNumbersValidator(inSlotIDs));
 		inSlotIDs.enableRealtimeValidation();
 
-		guiBoundTo.addEntrySelectedListener(e -> {
+		guiBoundTo.addEntrySelectedListener(_ -> {
 			if (!isEditingMode()) {
 				String selected = guiBoundTo.getEntry();
 				if (selected != null) {
@@ -1227,7 +1226,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						PanelUtils.westAndEastElement(energyStorage,
 								PanelUtils.northAndCenterElement(fluidTank, new JEmptyBox())), 10, 10)));
 
-		hasInventory.addActionListener(e -> refreshFieldsTileEntity());
+		hasInventory.addActionListener(_ -> refreshFieldsTileEntity());
 		refreshFieldsTileEntity();
 
 		JPanel invpropsbottom = new JPanel(new GridLayout(2, 1, 0, 2));
@@ -1244,7 +1243,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.sensitive_to_vibration")));
 		vibrationPanel.add(sensitiveToVibration);
 
-		sensitiveToVibration.addActionListener(e -> refreshVibrationProperties());
+		sensitiveToVibration.addActionListener(_ -> refreshVibrationProperties());
 
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
 				L10N.label("elementgui.block.vibrational_events")));
@@ -1282,7 +1281,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.generate_feature")));
 		genPanel.add(generateFeature);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
@@ -1326,7 +1325,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.makeSection(redstoneMerger, L10N.t("elementgui.block.properties_redstone"));
 
-		canProvidePower.addActionListener(e -> refreshRedstoneEmitted());
+		canProvidePower.addActionListener(_ -> refreshRedstoneEmitted());
 		refreshRedstoneEmitted();
 
 		JPanel bonemealPanel = new JPanel(new GridLayout(1, 2, 0, 2));
@@ -1346,7 +1345,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
 		ComponentUtils.makeSection(bonemealMerger, L10N.t("elementgui.common.properties_bonemeal"));
 
-		isBonemealable.addActionListener(e -> refreshBonemealProperties());
+		isBonemealable.addActionListener(_ -> refreshBonemealProperties());
 		refreshBonemealProperties();
 
 		JPanel flammabilityProperties = new JPanel(new GridLayout(3, 2, 0, 2));
@@ -1366,7 +1365,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.makeSection(flammabilityProperties, L10N.t("elementgui.common.properties_flammability"));
 
-		renderType.addActionListener(e -> {
+		renderType.addActionListener(_ -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
 				boundingBoxList.modelChanged();

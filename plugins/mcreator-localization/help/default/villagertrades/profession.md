@@ -1,0 +1,1 @@
+This parameter controls which villager profession can offer the trades

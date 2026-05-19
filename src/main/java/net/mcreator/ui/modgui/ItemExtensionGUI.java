@@ -69,7 +69,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	@Override protected void initGUI() {
 		//Fuel
 		enableFuel.setOpaque(false);
-		enableFuel.addActionListener(e -> updateFuelElements());
+		enableFuel.addActionListener(_ -> updateFuelElements());
 
 		fuelPower = new NumberProcedureSelector(null, mcreator,
 				new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1)), 75,
@@ -113,7 +113,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 		hasDispenseBehavior.setOpaque(false);
 		hasDispenseBehavior.setSelected(false);
-		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
+		hasDispenseBehavior.addActionListener(_ -> updateDispenseElements());
 
 		dispenseResultItemstack.setPreferredSize(new Dimension(300, 0));
 

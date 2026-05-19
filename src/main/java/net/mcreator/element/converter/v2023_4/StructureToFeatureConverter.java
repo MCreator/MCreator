@@ -98,9 +98,9 @@ public class StructureToFeatureConverter implements IConverter {
 		if (spawnLocation.equals("Ground"))
 			spawnYOffset -= 1; // Old ground structures were 1 block lower (#4917)
 
-		spawnXOffset = Math.max(-47, Math.min(47, spawnXOffset));
-		spawnYOffset = Math.max(-47, Math.min(47, spawnYOffset));
-		spawnZOffset = Math.max(-47, Math.min(47, spawnZOffset));
+		spawnXOffset = Math.clamp(spawnXOffset, -47, 47);
+		spawnYOffset = Math.clamp(spawnYOffset, -47, 47);
+		spawnZOffset = Math.clamp(spawnZOffset, -47, 47);
 
 		boolean randomlyRotateStructure =
 				!definition.has("randomlyRotateStructure") || definition.get("randomlyRotateStructure").getAsBoolean();
@@ -283,7 +283,7 @@ public class StructureToFeatureConverter implements IConverter {
 		xml.append("<block type=\"placement_biome_filter\"></block>");
 
 		// Close all the remaining blocks
-		xml.append("</next></block>".repeat(blocksToClose));
+		xml.repeat("</next></block>", blocksToClose);
 
 		return xml.toString();
 	}
