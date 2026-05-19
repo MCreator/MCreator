@@ -125,6 +125,12 @@ public class TagsUtils {
 					);
 
 					handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
+				} else if (map.containsKey("noentry")) {
+					if (deleteMode || shouldSkip) {
+						removeTagElementIfSafe(generator.getWorkspace(), tag);
+					} else if (generator.getWorkspace().getTagElements().get(tag) == null) {
+						generator.getWorkspace().addTagElement(tag);
+					}
 				} else {
 					handleTagEntryEntry(generator, tag, NameMapper.MCREATOR_PREFIX + element.getModElement().getName(),
 							deleteMode || shouldSkip);
@@ -170,11 +176,8 @@ public class TagsUtils {
 		if (delete) {
 			// only delete the entry if it is present in the list as managed
 			if (entries != null && entries.contains(entryManaged)) {
-				if (entries.size() == 1) { // only current/our entry is present, delete the tag itself
-					generator.getWorkspace().removeTagElement(tag);
-				} else {
-					generator.getWorkspace().getTagElements().get(tag).remove(entryManaged);
-				}
+				generator.getWorkspace().getTagElements().get(tag).remove(entryManaged);
+				removeTagElementIfSafe(generator.getWorkspace(), tag);
 			}
 		} else {
 			if (entries == null) { // tag does not exist yet, create it
@@ -205,8 +208,19 @@ public class TagsUtils {
 		}
 
 		for (TagElement tag : toRemove) {
-			workspace.removeTagElement(tag);
+			removeTagElementIfSafe(workspace, tag);
 		}
+	}
+
+	private static void removeTagElementIfSafe(Workspace workspace, TagElement tag) {
+		if (tag.getMinecraftNamespace(workspace).equals(workspace.getWorkspaceSettings().getModID()))
+			return; // we leave removal of mod-namespaced tags to the user in case there are still any references to them
+
+		List<String> entries = workspace.getTagElements().get(tag);
+		if (entries == null || !entries.isEmpty())
+			return; // tag is not empty, we cannot remove it
+
+		workspace.removeTagElement(tag);
 	}
 
 }

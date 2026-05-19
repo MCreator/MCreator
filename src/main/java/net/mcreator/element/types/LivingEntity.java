@@ -28,10 +28,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IEntityWithModel;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -68,6 +65,16 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
 
+	private static final String XML_BASE = """
+			<xml xmlns="https://developers.google.com/blockly/xml">
+			<block type="aitasks_container" deletable="false" x="40" y="40"><next>
+			<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
+			<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
+			<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
+			<block type="look_around"><field name="condition">null,null</field><next>
+			<block type="swim_in_water"><field name="condition">null,null</field></block></next>
+			</block></next></block></next></block></next></block></next></block></xml>""";
+
 	public String mobName;
 	public String mobLabel;
 
@@ -84,8 +91,10 @@ import java.util.stream.Collectors;
 
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
-	public double modelWidth, modelHeight, modelShadowSize;
-	public double mountedYOffset;
+	@Numeric(init = 0.6, min = 0, max = 16, step = 0.1) public double modelWidth;
+	@Numeric(init = 1.8, min = 0, max = 16, step = 0.1) public double modelHeight;
+	@Numeric(init = 0.5, min = 0, max = 16, step = 0.1) public double modelShadowSize;
+	@Numeric(init = 0, min = -1024, max = 1024, step = 0.1) public double mountedYOffset;
 
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
@@ -94,8 +103,8 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
-	public String bossBarColor;
-	public String bossBarType;
+	@LimitedOptions({ "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" }) public String bossBarColor;
+	@LimitedOptions({ "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" }) public String bossBarType;
 
 	public MItemBlock equipmentMainHand;
 	public MItemBlock equipmentOffHand;
@@ -104,26 +113,26 @@ import java.util.stream.Collectors;
 	public MItemBlock equipmentLeggings;
 	public MItemBlock equipmentBoots;
 
-	public String mobBehaviourType;
-	public String mobCreatureType;
-	public int attackStrength;
-	public double attackKnockback;
-	public double knockbackResistance;
-	public double movementSpeed;
-	public double stepHeight;
-	public double armorBaseValue;
-	public int trackingRange;
-	public int followRange;
-	public int health;
-	public int xpAmount;
+	@LimitedOptions({ "Mob", "Creature", "Raider" }) public String mobBehaviourType;
+	@LimitedOptions({ "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" }) public String mobCreatureType;
+	@Numeric(init = 3, min = 0, max = 10000, step = 1) public int attackStrength;
+	@Numeric(init = 0, min = 0, max = 1000, step = 0.1) public double attackKnockback;
+	@Numeric(init = 0, min = 0, max = 1000, step = 0.1) public double knockbackResistance;
+	@Numeric(init = 0.3, min = 0, max = 50, step = 0.1) public double movementSpeed;
+	@Numeric(init = 0.6, min = 0, max = 255, step = 0.1) public double stepHeight;
+	@Numeric(init = 0, min = 0, max = 100, step = 0.1) public double armorBaseValue;
+	@Numeric(init = 64, min = 0, max = 2048, step = 1) public int trackingRange;
+	@Numeric(init = 16, min = 0, max = 1024, step = 1) public int followRange;
+	@Numeric(init = 10, min = 0, max = 1024, step = 1) public int health;
+	@Numeric(init = 0, min = 0, max = 100000, step = 1) public int xpAmount;
 	public boolean waterMob;
 	public LogicProcedure breatheUnderwater;
 	public LogicProcedure pushedByFluids;
 	public boolean flyingMob;
 
-	@ModElementReference @Nullable public String guiBoundTo;
-	public int inventorySize;
-	public int inventoryStackSize;
+	@ModElementReference(acceptedTypes = { GUI.class }) @Nullable public String guiBoundTo;
+	@Numeric(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
+	@Numeric(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
 
 	public boolean disableCollisions;
 
@@ -166,8 +175,10 @@ import java.util.stream.Collectors;
 	public Procedure onInitialSpawn;
 
 	public boolean hasAI;
-	public String aiBase;
-	@BlocklyXML("aitasks") public String aixml;
+	@LimitedOptions({ "(none)", "Bat", "Blaze", "Chicken", "Cow", "Creeper", "Enderman", "Horse", "IronGolem",
+			"MagmaCube", "Ocelot", "Pig", "Skeleton", "Slime", "Spider", "Squid", "Villager", "Witch", "Wolf",
+			"Zombie" }) public String aiBase;
+	@BlocklyXML(name = "aitasks", defaultXML = LivingEntity.XML_BASE) public String aixml;
 
 	public boolean breedable;
 	public boolean tameable;
@@ -175,17 +186,17 @@ import java.util.stream.Collectors;
 
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
-	@ModElementReference(defaultValues = "Default item") public String rangedItemType;
-	public int rangedAttackInterval;
-	public double rangedAttackRadius;
+	@ModElementReference(defaultValues = "Default item", acceptedTypes = Projectile.class) public String rangedItemType;
+	@Numeric(init = 20, min = 0, max = 1024, step = 1) public int rangedAttackInterval;
+	@Numeric(init = 10, min = 0, max = 1024, step = 0.1) public double rangedAttackRadius;
 
 	public boolean spawnThisMob;
 	public boolean doesDespawnWhenIdle;
 	public Procedure spawningCondition;
-	public int spawningProbability;
+	@Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
 	public String mobSpawningType;
-	public int minNumberOfMobsPerGroup;
-	public int maxNumberOfMobsPerGroup;
+	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minNumberOfMobsPerGroup;
+	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
 	public int[] raidSpawnsCount;

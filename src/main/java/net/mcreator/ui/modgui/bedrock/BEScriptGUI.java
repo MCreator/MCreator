@@ -26,6 +26,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -341,7 +342,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML(BEScript.XML_BASE);
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(BEScript.class, "scriptxml"));
 		}
 
 		pane5.add("Center", blocklyPanel);

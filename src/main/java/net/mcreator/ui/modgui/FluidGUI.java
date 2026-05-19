@@ -31,6 +31,7 @@ import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -39,6 +40,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -72,20 +74,18 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final VTextField name = new VTextField(18).requireValue("elementgui.fluid.error_fluid_needs_name")
 			.enableRealtimeValidation();
 	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flowRate = new JSpinner(new SpinnerNumberModel(5, 1, 100000, 1));
-	private final JSpinner levelDecrease = new JSpinner(new SpinnerNumberModel(1, 1, 8, 1));
-	private final JSpinner slopeFindDistance = new JSpinner(new SpinnerNumberModel(4, 1, 16, 1));
+	private final JSpinner flowRate = ComponentFromAnnotation.spinner(Fluid.class, "flowRate");
+	private final JSpinner levelDecrease = ComponentFromAnnotation.spinner(Fluid.class, "levelDecrease");
+	private final JSpinner slopeFindDistance = ComponentFromAnnotation.spinner(Fluid.class, "slopeFindDistance");
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
-	private final JSpinner flowStrength = new JSpinner(new SpinnerNumberModel(1, -25, 25, 0.1));
-	private final JComboBox<String> tintType = new JComboBox<>(
-			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-					"Sky", "Fog", "Water fog" });
+	private final JSpinner flowStrength = ComponentFromAnnotation.spinner(Fluid.class, "flowStrength");
+	private final JComboBox<String> tintType = ComponentFromAnnotation.options(Fluid.class, "tintType");
 
-	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
-	private final JSpinner viscosity = new JSpinner(new SpinnerNumberModel(1000, 0, 100000, 1));
-	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(300, 0, 100000, 1));
+	private final JSpinner luminosity = ComponentFromAnnotation.spinner(Fluid.class, "luminosity");
+	private final JSpinner density = ComponentFromAnnotation.spinner(Fluid.class, "density");
+	private final JSpinner viscosity = ComponentFromAnnotation.spinner(Fluid.class, "viscosity");
+	private final JSpinner temperature = ComponentFromAnnotation.spinner(Fluid.class, "temperature");
 
 	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
 	private final VTextField bucketName = new VTextField(18).requireValue("elementgui.fluid.error_bucket_needs_name")
@@ -93,26 +93,20 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private TextureSelectionButton textureBucket;
 	private final TabListField creativeTabs = new TabListField(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Fluid.class, "rarity",
+			"elementgui.common.rarity_");
 	private StringListProcedureSelector specialInformation;
 
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(100, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(1, 0, 15, 1));
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(Fluid.class, "resistance");
+	private final JSpinner luminance = ComponentFromAnnotation.spinner(Fluid.class, "luminance");
+	private final JSpinner lightOpacity = ComponentFromAnnotation.spinner(Fluid.class, "lightOpacity");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
+	private final JSpinner tickRate = ComponentFromAnnotation.spinner(Fluid.class, "tickRate");
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(Fluid.class, "flammability");
+	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Fluid.class, "fireSpreadSpeed");
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 
 	private ProcedureSelector onBlockAdded;

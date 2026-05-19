@@ -211,7 +211,7 @@ public class CefUtils {
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
 				@Override public void onContextInitialized() {
-					cefApp.registerSchemeHandlerFactory("classloader", "", CefClassLoaderSchemeHandler::new);
+					cefApp.registerSchemeHandlerFactory("http", "mcreator", CefClassLoaderSchemeHandler::new);
 				}
 
 				@Override public boolean onBeforeTerminate() {
@@ -313,8 +313,7 @@ public class CefUtils {
 			@Override
 			public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, boolean userGesture,
 					boolean isRedirect) {
-				String url = request.getURL();
-				return url.startsWith("http://") || url.startsWith("https://"); // return true to block the request
+				return !request.getURL().startsWith("http://mcreator/"); // return true to block the request
 			}
 		});
 

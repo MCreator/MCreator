@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -61,11 +62,11 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	private final JCheckBox disableDiscarding = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
 	private final JCheckBox igniteFire = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
-	private final JSpinner damage = new JSpinner(new SpinnerNumberModel(5, 0, 10000, 0.1));
-	private final JSpinner knockback = new JSpinner(new SpinnerNumberModel(5, 0, 500, 1));
-	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
-	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(0.5, 0, 1024, 0.1));
+	private final JSpinner power = ComponentFromAnnotation.spinner(Projectile.class, "power");
+	private final JSpinner damage = ComponentFromAnnotation.spinner(Projectile.class, "damage");
+	private final JSpinner knockback = ComponentFromAnnotation.spinner(Projectile.class, "knockback");
+	private final JSpinner modelWidth = ComponentFromAnnotation.spinner(Projectile.class, "modelWidth");
+	private final JSpinner modelHeight = ComponentFromAnnotation.spinner(Projectile.class, "modelHeight");
 
 	private final Model modelDefault = new Model.BuiltInModel("Default");
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { modelDefault });
