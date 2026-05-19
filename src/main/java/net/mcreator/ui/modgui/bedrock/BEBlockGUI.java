@@ -134,7 +134,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		page1group.addValidationElement(textures);
 
 		ComponentUtils.deriveFont(renderType, 16);
-		renderType.addActionListener(event -> updateTextureOptions());
+		renderType.addActionListener(_ -> updateTextureOptions());
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -167,7 +167,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
-		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
@@ -237,7 +237,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.block.generation_shape")));
 		genPanel.add(generationShape);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),

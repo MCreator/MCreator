@@ -2585,7 +2585,6 @@ public class TestWorkspaceDataProvider {
 			achievement.rewardRecipes.add("ExampleRecipe2");
 		}
 		achievement.triggerxml = AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml");
-		;
 
 		return achievement;
 	}

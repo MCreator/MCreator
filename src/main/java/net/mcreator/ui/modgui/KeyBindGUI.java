@@ -20,7 +20,6 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.KeyBinding;
-import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;

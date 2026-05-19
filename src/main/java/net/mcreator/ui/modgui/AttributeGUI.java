@@ -29,7 +29,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.SpawnableEntityListField;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
@@ -42,7 +41,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 
 public class AttributeGUI extends ModElementGUI<Attribute> {
 
@@ -95,7 +93,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 				L10N.label("elementgui.attribute.entities")));
 		pane1.add(entities);
 
-		addToAllEntities.addActionListener((e) -> {
+		addToAllEntities.addActionListener(_ -> {
 			addToPlayers.setEnabled(!addToAllEntities.isSelected());
 			entities.setEnabled(!addToAllEntities.isSelected());
 		});
