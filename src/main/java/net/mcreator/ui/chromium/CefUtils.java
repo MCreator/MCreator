@@ -197,7 +197,11 @@ public class CefUtils {
 			settings.windowless_rendering_enabled = useOSR();
 			settings.persist_session_cookies = false;
 			settings.locale = L10N.getLocale().stripExtensions().toLanguageTag();
-			settings.log_file = null;
+
+			settings.log_file = UserFolderManager.getFileFromUserFolder("/cef_log.txt").toString();
+			if (System.getenv("MCREATOR_CEF_DEBUG") != null) {
+				settings.log_severity = CefSettings.LogSeverity.LOGSEVERITY_VERBOSE;
+			}
 
 			settings.cache_path = Objects.requireNonNullElseGet(getTmpCacheFolder(),
 					() -> UserFolderManager.getFileFromUserFolder("/cef/")).toString();
@@ -207,7 +211,7 @@ public class CefUtils {
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
 				@Override public void onContextInitialized() {
-					cefApp.registerSchemeHandlerFactory("classloader", "", CefClassLoaderSchemeHandler::new);
+					cefApp.registerSchemeHandlerFactory("http", "mcreator", CefClassLoaderSchemeHandler::new);
 				}
 
 				@Override public boolean onBeforeTerminate() {
@@ -224,10 +228,10 @@ public class CefUtils {
 			});
 
 			CefApp.startup(args);
-			cefApp = CefApp.getInstance(settings);
+			cefApp = CefApp.getInstance(args, settings, null);
 
 			try {
-				if (!latch.await(10, TimeUnit.SECONDS)) {
+				if (!latch.await(5, TimeUnit.SECONDS)) {
 					LOG.error("Failed to initialize JCEF in time. Things may not work properly.");
 				}
 			} catch (InterruptedException ignored) {
@@ -309,8 +313,7 @@ public class CefUtils {
 			@Override
 			public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, boolean userGesture,
 					boolean isRedirect) {
-				String url = request.getURL();
-				return url.startsWith("http://") || url.startsWith("https://"); // return true to block the request
+				return !request.getURL().startsWith("http://mcreator/"); // return true to block the request
 			}
 		});
 

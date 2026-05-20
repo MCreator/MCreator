@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
+import net.mcreator.io.OS;
 import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.SplashScreenPanel;
 import net.mcreator.ui.init.UIRES;
@@ -97,6 +98,13 @@ public class SplashScreen extends JWindow {
 			setBackground(new Color(0, 0, 0, 0));
 		} catch (Exception ignored) {
 		}
+
+		// If MacOS >=26, disable native shadow to stop liquid glass border
+		try {
+			if (OS.getOS() == OS.MAC && Integer.parseInt(System.getProperty("os.version").split("\\.")[0]) >= 26) {
+				getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
+			}
+		} catch (Exception ignored) {}
 
 		setSize(imagePanel.getSize());
 		setLocationRelativeTo(null);

@@ -21,7 +21,6 @@ package net.mcreator.java;
 import javassist.bytecode.AccessFlag;
 import javassist.bytecode.ConstPool;
 import net.mcreator.generator.Generator;
-import net.mcreator.io.zip.ZipIO;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,10 +29,11 @@ import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class ImportTreeBuilder {
 
@@ -43,76 +43,71 @@ public class ImportTreeBuilder {
 		Map<String, List<String>> retval = new ConcurrentHashMap<>();
 		List<LibraryInfo> libraryInfos = projectJarManager.getClassFileSources();
 		libraryInfos.parallelStream().forEach(libraryInfo -> {
-			File libraryFile = new File(libraryInfo.getLocationAsString());
-			if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
-				try (ZipFile zipFile = ZipIO.openZipFile(libraryFile)) {
-					Enumeration<? extends ZipEntry> entries = zipFile.entries();
-					boolean isJmod = libraryFile.getName().endsWith(".jmod");
-					while (entries.hasMoreElements()) {
-						ZipEntry entry = entries.nextElement();
-						String entryName = entry.getName();
+			try {
+				boolean isJmod = libraryInfo instanceof JModLibraryInfo;
+				LibraryInfoIterator.iterateLibraryInfo(libraryInfo, entry -> {
+					String entryPath = entry.path();
 
-						if (isJmod) {
-							if (!entryName.startsWith("classes/"))
-								continue;
-							entryName = entryName.substring(8);
-						}
-
-						// only load classes that are not inner
-						if (!entryName.endsWith(".class") || entryName.contains("$"))
-							continue;
-
-						// skip internal JDK APIs
-						if (entryName.startsWith("jdk/internal/"))
-							continue;
-
-						// skip Sun APIs
-						if (entryName.startsWith("sun/") || entryName.startsWith("com/sun/"))
-							continue;
-
-						// skip package and modules info entries
-						if (entryName.endsWith("package-info.class") || entryName.endsWith("module-info.class"))
-							continue;
-
-						// skip some libraries
-						if (entryName.startsWith("org/antlr"))
-							continue;
-
-						// skip all meta-info paths
-						if (entryName.startsWith("META-INF/"))
-							continue;
-
-						// check if class is public or protected
-						try {
-							DataInputStream dis = new DataInputStream(zipFile.getInputStream(entry));
-							int magic = dis.readInt(); // check magic number
-							if (magic != 0xCAFEBABE)
-								throw new Exception();
-							dis.readUnsignedShort();// class minor
-							dis.readUnsignedShort();// class major
-							new ConstPool(dis);// read const pool
-							int accessFlags = dis.readUnsignedShort(); //accessFlags
-							if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
-								continue;
-						} catch (Exception e) {
-							LOG.debug("Failed to check access flags of {} - assuming public", entryName);
-						}
-
-						String fqdn = entryName.replace('\\', '.').replace('/', '.');
-						fqdn = fqdn.substring(0, fqdn.length() - 6);
-						int lastIndxDot = fqdn.lastIndexOf('.');
-						String className = fqdn;
-						String packageName = "";
-						if (lastIndxDot != -1) {
-							packageName = fqdn.substring(0, lastIndxDot);
-							className = fqdn.substring(lastIndxDot + 1);
-						}
-
-						addClassToTree(packageName, className, retval);
+					if (isJmod) {
+						if (!entryPath.startsWith("classes/"))
+							return;
+						entryPath = entryPath.substring(8);
 					}
-				} catch (IOException e) {
-					LOG.warn("Failed to load import format classes", e);
-				}
+
+					// only load classes that are not inner
+					if (!entryPath.endsWith(".class") || entryPath.contains("$"))
+						return;
+
+					// skip internal JDK APIs
+					if (entryPath.startsWith("jdk/internal/"))
+						return;
+
+					// skip Sun APIs
+					if (entryPath.startsWith("sun/") || entryPath.startsWith("com/sun/"))
+						return;
+
+					// skip package and modules info entries
+					if (entryPath.endsWith("package-info.class") || entryPath.endsWith("module-info.class"))
+						return;
+
+					// skip some libraries
+					if (entryPath.startsWith("org/antlr"))
+						return;
+
+					// skip all meta-info paths
+					if (entryPath.startsWith("META-INF/"))
+						return;
+
+					// check if class is public or protected
+					try {
+						DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream());
+						int magic = dis.readInt(); // check magic number
+						if (magic != 0xCAFEBABE)
+							throw new Exception();
+						dis.readUnsignedShort();// class minor
+						dis.readUnsignedShort();// class major
+						new ConstPool(dis);// read const pool
+						int accessFlags = dis.readUnsignedShort(); //accessFlags
+						if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
+							return;
+					} catch (Exception e) {
+						LOG.debug("Failed to check access flags of {} - assuming public", entryPath);
+					}
+
+					String fqdn = entryPath.replace('\\', '.').replace('/', '.');
+					fqdn = fqdn.substring(0, fqdn.length() - 6);
+					int lastIndxDot = fqdn.lastIndexOf('.');
+					String className = fqdn;
+					String packageName = "";
+					if (lastIndxDot != -1) {
+						packageName = fqdn.substring(0, lastIndxDot);
+						className = fqdn.substring(lastIndxDot + 1);
+					}
+
+					addClassToTree(packageName, className, retval);
+				}, false);
+			} catch (IOException e) {
+				LOG.warn("Failed to load import format classes", e);
 			}
 		});
 		return retval;

@@ -27,6 +27,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -40,8 +41,8 @@ import java.net.URISyntaxException;
 
 public class PaintingGUI extends ModElementGUI<Painting> {
 
-	private final JSpinner width = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
-	private final JSpinner height = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
+	private final JSpinner width = ComponentFromAnnotation.spinner(Painting.class, "width");
+	private final JSpinner height = ComponentFromAnnotation.spinner(Painting.class, "height");
 	private final VTextField title = new VTextField(28).requireValue("elementgui.painting.painting_needs_title")
 			.enableRealtimeValidation();
 	private final VTextField author = new VTextField(28).requireValue("elementgui.painting.painting_needs_author")

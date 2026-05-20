@@ -33,6 +33,7 @@ public class WorkspaceUserSettings {
 	@Nullable public SerializableTreeExpansionState projectBrowserState = null;
 
 	@Nullable public CollapsibleDockPanel.State leftDockState = null;
+	@Nullable public CollapsibleDockPanel.State rightDockState = null;
 	@Nullable public CollapsibleDockPanel.State bottomDockState = null;
 
 	public enum SortType {
