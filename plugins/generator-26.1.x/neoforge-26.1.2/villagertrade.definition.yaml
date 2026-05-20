@@ -1,0 +1,7 @@
+list_templates:
+  - name: "Trade definitions"
+    listData: data.trades
+    forEach:
+      - template: villager_trade.json.ftl # loaded from datapack generator
+        writer: json
+        name: "@MODDATAROOT/villager_trade/@[item.level]/@registryname_@itemindex.json"
