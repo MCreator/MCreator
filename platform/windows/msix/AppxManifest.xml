@@ -11,7 +11,7 @@
               ProcessorArchitecture="x64"/>
 
     <Properties>
-        <DisplayName>MCreator %ui_version%</DisplayName>
+        <DisplayName>MCreator</DisplayName>
         <PublisherDisplayName>Pylo</PublisherDisplayName>
         <Logo>Assets\StoreLogo.png</Logo>
     </Properties>

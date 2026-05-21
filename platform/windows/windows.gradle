@@ -112,10 +112,7 @@ tasks.register('buildMsixWin64') {
 
         copy {
             from 'platform/windows/msix/AppxManifest.xml' into workingDir
-            filter { line -> line
-                        .replace('%version%', fullVersion)
-                        .replace('%ui_version%', (String) project.mcreatorconf.getProperty('mcreator'))
-            }
+            filter { line -> line.replace('%version%', fullVersion) }
         }
 
         def toolSearchPath = (System.getenv('ProgramFiles(x86)') ?: 'C:\\Program Files (x86)') + "\\Windows Kits\\10\\bin\\*\\x64\\makeappx.exe"
