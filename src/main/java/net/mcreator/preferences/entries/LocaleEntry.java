@@ -24,13 +24,10 @@ import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.image.ImageUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.List;
@@ -90,20 +87,27 @@ public class LocaleEntry extends PreferencesEntry<Locale> {
 			setForeground(Color.white);
 			setBorder(new EmptyBorder(0, 1, 0, 0));
 
-			setText(" " + value.getDisplayName(Locale.ROOT));
+			setText(getLanguageLabelText(value));
 
 			uiTextsPercent = L10N.getUITextsLocaleSupport(value);
 			helpTipsPercent = L10N.getHelpTipsSupport(value);
 
-			try {
-				String flagpath = "/flags/" + value.toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
-				@SuppressWarnings("ConstantConditions") BufferedImage image = ImageIO.read(
-						getClass().getResourceAsStream(flagpath));
-				setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
-			} catch (Exception ignored) { // flag not found, ignore
-			}
-
 			return this;
+		}
+
+		private static String getLanguageLabelText(Locale locale) {
+			if (locale.equals(Locale.US)) {
+				return "English";
+			} else
+			if (locale.equals(Locale.SIMPLIFIED_CHINESE) || "CN".equalsIgnoreCase(locale.getCountry())) {
+				return "Simplified Chinese";
+			} else if (locale.equals(Locale.TRADITIONAL_CHINESE) || "TW".equalsIgnoreCase(locale.getCountry())) {
+				return "Traditional Chinese";
+			} else if (locale.getCountry().toLowerCase(Locale.ROOT).equals(locale.getLanguage())) {
+				return locale.getDisplayLanguage(Locale.ROOT);
+			} else {
+				return locale.getDisplayName(Locale.ROOT);
+			}
 		}
 
 		@Override public Dimension getPreferredSize() {
