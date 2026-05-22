@@ -4,4 +4,4 @@ list_templates:
     forEach:
       - template: villager_trade.json.ftl
         writer: json
-        name: "@MODDATAROOT/villager_trade/@[item.level]/@registryname_@itemindex.json"
+        name: "@MODDATAROOT/villager_trade/@[professionFolder()]/@[item.level]/@registryname_@itemindex.json"
