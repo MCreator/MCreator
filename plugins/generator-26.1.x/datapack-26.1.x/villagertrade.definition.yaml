@@ -5,3 +5,15 @@ list_templates:
       - template: villager_trade.json.ftl
         writer: json
         name: "@MODDATAROOT/villager_trade/@[professionFolder()]/@[item.level]/@registryname_@itemindex.json"
+
+tags:
+  # Wandering trader tags
+  - tag: VILLAGER_TRADES:minecraft:wandering_trader/common
+    condition: isWanderingTrader()
+    entryprovider: level1Trades()
+  - tag: VILLAGER_TRADES:minecraft:wandering_trader/uncommon
+    condition: isWanderingTrader()
+    entryprovider: level2Trades()
+  - tag: VILLAGER_TRADES:minecraft:wandering_trader/buying
+    condition: isWanderingTrader()
+    entryprovider: level3Trades()

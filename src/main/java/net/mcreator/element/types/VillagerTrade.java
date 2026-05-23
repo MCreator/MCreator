@@ -55,6 +55,35 @@ import java.util.List;
 		return retval;
 	}
 
+	public List<String> level1Trades() {
+		return getTradesForLevel(1);
+	}
+
+	public List<String> level2Trades() {
+		return getTradesForLevel(2);
+	}
+
+	public List<String> level3Trades() {
+		return getTradesForLevel(3);
+	}
+
+	public List<String> level4Trades() {
+		return getTradesForLevel(4);
+	}
+
+	public List<String> level5Trades() {
+		return getTradesForLevel(5);
+	}
+
+	private List<String> getTradesForLevel(int level) {
+		ArrayList<String> retval = new ArrayList<>();
+		for (int i = 0; i < trades.size(); i++) {
+			if (trades.get(i).level == level)
+				retval.add(this.getModElement().getRegistryName() + "_" + i);
+		}
+		return retval;
+	}
+
 	public static class TradeEntry {
 
 		public MItemBlock price1;

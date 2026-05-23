@@ -22,6 +22,10 @@
           <#list w.filterBrokenReferences(elements) as value>
             <@tagEntry value generator.getResourceLocationForModElement(value)/><#sep>,
           </#list>
+      <#elseif type == "villager_trades">
+          <#list elements as value>
+            "${modid}:${tag.getName()?keep_before("/")}/${tradeFolder(tag.getName()?keep_after("/"))}/${value}"<#sep>,
+          </#list>
       <#else>
           <#list w.filterBrokenReferences(elements) as value>
             <@tagEntry value generator.getResourceLocationForModElement(value?remove_beginning("CUSTOM:"))/><#sep>,
@@ -42,3 +46,11 @@
 		"${name}"
     </#if>
 </#macro>
+
+<#function tradeFolder suffix>
+  <#if suffix == "common"><#return "1">
+  <#elseif suffix == "uncommon"><#return "2">
+  <#elseif suffix == "buying"><#return "3">
+  <#else><#return suffix[suffix?length-1]>
+  </#if>
+</#function>
