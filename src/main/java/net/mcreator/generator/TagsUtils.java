@@ -87,11 +87,11 @@ public class TagsUtils {
 			for (Object template : tags) {
 				Map<?, ?> map = (Map<?, ?>) template;
 				String tagRawName = (String) map.get("tag");
-				TagElement tag = TagElement.fromString(tagRawName
+				TagElement tag = TagElement.fromString(GeneratorTokens.replaceVariableTokens(element, tagRawName
 								//@formatter:off
 								.replace("@NAME", element.getModElement().getName())
 								.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-								.replace("@registryname", element.getModElement().getRegistryName())
+								.replace("@registryname", element.getModElement().getRegistryName()))
 						//@formatter:on
 				);
 
