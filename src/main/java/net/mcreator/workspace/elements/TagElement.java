@@ -19,15 +19,14 @@
 
 package net.mcreator.workspace.elements;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.*;
+import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.Type;
 
 public record TagElement(TagType type, String resourcePath) implements IElement {
 
@@ -71,28 +70,16 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 
 	// Helper functions for tag entries below
 
-	private static final String MANAGED_PREFIX = "~";
-
-	public static String entryFromMappableElement(MappableElement element) {
-		return (element.isManaged() ? MANAGED_PREFIX : "") + element.getUnmappedValue();
+	public static TagElement.Entry entryFromMappableElement(MappableElement element) {
+		return element.getAssociatedTagEntry() != null ?
+				element.getAssociatedTagEntry() :
+				new TagElement.Entry(element.getUnmappedValue(), element.isManaged());
 	}
 
-	public static MappableElement entryToMappableElement(Workspace workspace, TagType type, String entry) {
-		MappableElement retval = type.getMappableElementProvider().apply(workspace, getEntryName(entry));
-		retval.setManaged(TagElement.isEntryManaged(entry));
+	public static MappableElement entryToMappableElement(Workspace workspace, TagType type, TagElement.Entry entry) {
+		MappableElement retval = type.getMappableElementProvider().apply(workspace, entry.name);
+		retval.setAssociatedTagEntry(entry);
 		return retval;
-	}
-
-	public static boolean isEntryManaged(String rawData) {
-		return rawData.startsWith(MANAGED_PREFIX);
-	}
-
-	public static String makeEntryManaged(String rawData) {
-		return MANAGED_PREFIX + rawData;
-	}
-
-	public static String getEntryName(String rawData) {
-		return rawData.replace(MANAGED_PREFIX, "");
 	}
 
 	public static TagElement fromString(String raw) {
@@ -135,6 +122,49 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 			}
 		}
 		return input;
+	}
+
+	@JsonAdapter(TagElement.Entry.GSONAdapter.class) public record Entry(String name, boolean isManaged) {
+
+		public static Entry unmanaged(String name) {
+			return new Entry(name, false);
+		}
+
+		public static Entry managed(String name) {
+			return new Entry(name, true);
+		}
+
+		@Override public boolean equals(Object o) {
+			if (!(o instanceof Entry entry))
+				return false;
+
+			return name.equals(entry.name);
+		}
+
+		@Override public int hashCode() {
+			return name.hashCode();
+		}
+
+		private static class GSONAdapter implements JsonSerializer<Entry>, JsonDeserializer<Entry> {
+
+			private static final String MANAGED_PREFIX = "~";
+
+			@Override public Entry deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+					throws JsonParseException {
+				String value = json.getAsString();
+				if (value.startsWith(MANAGED_PREFIX)) {
+					return managed(value.substring(MANAGED_PREFIX.length()));
+				} else {
+					return unmanaged(value);
+				}
+			}
+
+			@Override public JsonElement serialize(Entry entry, Type typeOfSrc, JsonSerializationContext context) {
+				return new JsonPrimitive((entry.isManaged ? MANAGED_PREFIX : "") + entry.name);
+			}
+
+		}
+
 	}
 
 }

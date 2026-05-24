@@ -59,24 +59,24 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	private MCItemListField ignoreBlocks;
 
-	private final JComboBox<String> surfaceDetectionType =
-			ComponentFromAnnotation.options(Structure.class, "surfaceDetectionType");
+	private final JComboBox<String> surfaceDetectionType = ComponentFromAnnotation.options(Structure.class,
+			"surfaceDetectionType");
 
-	private final JComboBox<String> terrainAdaptation =
-			ComponentFromAnnotation.options(Structure.class, "terrainAdaptation");
+	private final JComboBox<String> terrainAdaptation = ComponentFromAnnotation.options(Structure.class,
+			"terrainAdaptation");
 
 	private final JComboBox<String> projection = ComponentFromAnnotation.options(Structure.class, "projection");
 
 	private BiomeListField restrictionBiomes;
 
-	private final JMinMaxSpinner separation_spacing = ComponentFromAnnotation
-			.minMaxSpinner(Structure.class, "separation", "spacing");
+	private final JMinMaxSpinner separation_spacing = ComponentFromAnnotation.minMaxSpinner(Structure.class,
+			"separation", "spacing");
 
 	private final JCheckBox useStartHeight = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> startHeightProviderType =
-			ComponentFromAnnotation.options(Structure.class, "startHeightProviderType");
-	private final JMinMaxSpinner startHeightRange = ComponentFromAnnotation
-			.minMaxSpinner(Structure.class, "startHeightMin", "startHeightMax");
+	private final JComboBox<String> startHeightProviderType = ComponentFromAnnotation.options(Structure.class,
+			"startHeightProviderType");
+	private final JMinMaxSpinner startHeightRange = ComponentFromAnnotation.minMaxSpinner(Structure.class,
+			"startHeightMin", "startHeightMax");
 
 	private SearchableComboBox<String> structureSelector;
 
@@ -84,8 +84,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 			ElementUtil.getDataListAsStringArray("generationsteps"));
 
 	private final JSpinner size = ComponentFromAnnotation.spinner(Structure.class, "size");
-	private final JSpinner maxDistanceFromCenter = ComponentFromAnnotation
-			.spinner(Structure.class, "maxDistanceFromCenter");
+	private final JSpinner maxDistanceFromCenter = ComponentFromAnnotation.spinner(Structure.class,
+			"maxDistanceFromCenter");
 	private JJigsawPoolsList jigsaw;
 
 	private final ValidationGroup page1group = new ValidationGroup();

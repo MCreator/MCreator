@@ -61,8 +61,8 @@ public class JVillagerTradeEntry extends JSimpleListEntry<VillagerTrade.TradeEnt
 	private final JSpinner priceMultiplier = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class,
 			"priceMultiplier");
 
-	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JVillagerTradeEntry> entryList, boolean isWanderingTrader) {
+	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JVillagerTradeEntry> entryList,
+			boolean isWanderingTrader) {
 		super(parent, entryList);
 		this.isWanderingTrader = isWanderingTrader;
 

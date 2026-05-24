@@ -158,8 +158,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
 	private final JSpinner musicDiscLengthInTicks = ComponentFromAnnotation.spinner(Item.class,
 			"musicDiscLengthInTicks");
-	private final JSpinner musicDiscAnalogOutput = ComponentFromAnnotation.spinner(Item.class,
-			"musicDiscAnalogOutput");
+	private final JSpinner musicDiscAnalogOutput = ComponentFromAnnotation.spinner(Item.class, "musicDiscAnalogOutput");
 
 	private ModElementListField providedBannerPatterns;
 

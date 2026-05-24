@@ -46,7 +46,7 @@ public class TagsUtils {
 			if (tagFile != null) {
 				try {
 					// In case duplicates somehow exist, here is the last chance to remove them
-					Set<String> uniqueEntries = tag.getValue().stream().map(TagElement::getEntryName)
+					Set<String> uniqueEntries = tag.getValue().stream().map(TagElement.Entry::name)
 							.collect(Collectors.toSet()); // use toSet, we loose order, but should not matter
 
 					Map<String, Object> datamodel = new HashMap<>();
@@ -87,11 +87,11 @@ public class TagsUtils {
 			for (Object template : tags) {
 				Map<?, ?> map = (Map<?, ?>) template;
 				String tagRawName = (String) map.get("tag");
-				TagElement tag = TagElement.fromString(tagRawName
+				TagElement tag = TagElement.fromString(GeneratorTokens.replaceVariableTokens(element, tagRawName
 								//@formatter:off
 								.replace("@NAME", element.getModElement().getName())
 								.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-								.replace("@registryname", element.getModElement().getRegistryName())
+								.replace("@registryname", element.getModElement().getRegistryName()))
 						//@formatter:on
 				);
 
@@ -112,7 +112,8 @@ public class TagsUtils {
 							(String) map.get("entryprovider"));
 					if (entryprovider != null) {
 						for (String entry : entryprovider) {
-							handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
+							handleTagEntryEntry(generator, tag, TagElement.Entry.managed(entry),
+									deleteMode || shouldSkip);
 						}
 					}
 				} else if (map.containsKey("entry")) {
@@ -124,7 +125,7 @@ public class TagsUtils {
 							//@formatter:on
 					);
 
-					handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
+					handleTagEntryEntry(generator, tag, TagElement.Entry.managed(entry), deleteMode || shouldSkip);
 				} else if (map.containsKey("noentry")) {
 					if (deleteMode || shouldSkip) {
 						removeTagElementIfSafe(generator.getWorkspace(), tag);
@@ -132,7 +133,8 @@ public class TagsUtils {
 						generator.getWorkspace().addTagElement(tag);
 					}
 				} else {
-					handleTagEntryEntry(generator, tag, NameMapper.MCREATOR_PREFIX + element.getModElement().getName(),
+					handleTagEntryEntry(generator, tag,
+							TagElement.Entry.managed(NameMapper.MCREATOR_PREFIX + element.getModElement().getName()),
 							deleteMode || shouldSkip);
 				}
 			}
@@ -157,50 +159,47 @@ public class TagsUtils {
 	}
 
 	private static void removeAllManagedTagEntries(Generator generator, TagElement tag) {
-		List<String> entries = generator.getWorkspace().getTagElements().get(tag);
+		List<TagElement.Entry> entries = generator.getWorkspace().getTagElements().get(tag);
 		if (entries != null) {
 			// make a copy of the list to avoid concurrent modification
-			for (String entry : new ArrayList<>(entries)) {
-				if (TagElement.isEntryManaged(entry)) {
+			for (TagElement.Entry entry : new ArrayList<>(entries)) {
+				if (entry.isManaged()) {
 					generator.getWorkspace().getTagElements().get(tag).remove(entry);
 				}
 			}
 		}
 	}
 
-	private static void handleTagEntryEntry(Generator generator, TagElement tag, String entry, boolean delete) {
-		String entryManaged = TagElement.makeEntryManaged(entry);
-
-		List<String> entries = generator.getWorkspace().getTagElements().get(tag);
+	private static void handleTagEntryEntry(Generator generator, TagElement tag, TagElement.Entry entry,
+			boolean delete) {
+		List<TagElement.Entry> entries = generator.getWorkspace().getTagElements().get(tag);
 
 		if (delete) {
 			// only delete the entry if it is present in the list as managed
-			if (entries != null && entries.contains(entryManaged)) {
-				generator.getWorkspace().getTagElements().get(tag).remove(entryManaged);
+			if (entries != null && entries.contains(entry)) {
+				generator.getWorkspace().getTagElements().get(tag).remove(entry);
 				removeTagElementIfSafe(generator.getWorkspace(), tag);
 			}
 		} else {
 			if (entries == null) { // tag does not exist yet, create it
 				generator.getWorkspace().addTagElement(tag);
-				generator.getWorkspace().getTagElements().get(tag).add(entryManaged);
+				generator.getWorkspace().getTagElements().get(tag).add(entry);
 			}
-			// only add this entry if it does not already exist in managed or unmanaged form
-			else if (!entries.contains(entryManaged) && !entries.contains(entry)) {
+			// only add this entry if it does not already exist
+			else if (!entries.contains(entry)) {
 				// We add managed entries to the beginning of the list
-				generator.getWorkspace().getTagElements().get(tag).addFirst(entryManaged);
+				generator.getWorkspace().getTagElements().get(tag).addFirst(entry);
 			}
 		}
 	}
 
 	public static void removeTagsForModElement(Workspace workspace, ModElement modElement) {
-		String entryToCheck = NameMapper.MCREATOR_PREFIX + modElement.getName();
-		String entryToCheckManaged = TagElement.makeEntryManaged(entryToCheck);
+		TagElement.Entry entryToCheck = TagElement.Entry.managed(NameMapper.MCREATOR_PREFIX + modElement.getName());
 
 		List<TagElement> toRemove = new ArrayList<>();
 
-		for (Map.Entry<TagElement, ArrayList<String>> entry : workspace.getTagElements().entrySet()) {
+		for (Map.Entry<TagElement, ArrayList<TagElement.Entry>> entry : workspace.getTagElements().entrySet()) {
 			entry.getValue().remove(entryToCheck);
-			entry.getValue().remove(entryToCheckManaged);
 
 			if (entry.getValue().isEmpty()) {
 				toRemove.add(entry.getKey());
@@ -216,7 +215,7 @@ public class TagsUtils {
 		if (tag.getMinecraftNamespace(workspace).equals(workspace.getWorkspaceSettings().getModID()))
 			return; // we leave removal of mod-namespaced tags to the user in case there are still any references to them
 
-		List<String> entries = workspace.getTagElements().get(tag);
+		List<TagElement.Entry> entries = workspace.getTagElements().get(tag);
 		if (entries == null || !entries.isEmpty())
 			return; // tag is not empty, we cannot remove it
 
