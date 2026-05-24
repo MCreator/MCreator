@@ -26,6 +26,7 @@ import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 
 public record TagElement(TagType type, String resourcePath) implements IElement {
@@ -73,7 +74,7 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 	public static TagElement.Entry entryFromMappableElement(MappableElement element) {
 		return element.getAssociatedTagEntry() != null ?
 				element.getAssociatedTagEntry() :
-				new TagElement.Entry(element.getUnmappedValue(), element.isManaged());
+				new TagElement.Entry(element.getUnmappedValue(), element.isManaged(), null);
 	}
 
 	public static MappableElement entryToMappableElement(Workspace workspace, TagType type, TagElement.Entry entry) {
@@ -124,14 +125,23 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		return input;
 	}
 
-	@JsonAdapter(TagElement.Entry.GSONAdapter.class) public record Entry(String name, boolean isManaged) {
+	@JsonAdapter(TagElement.Entry.GSONAdapter.class) public record Entry(String name, boolean isManaged,
+	                                                                     @Nullable String owner) {
 
 		public static Entry unmanaged(String name) {
-			return new Entry(name, false);
+			return new Entry(name, false, null);
 		}
 
 		public static Entry managed(String name) {
-			return new Entry(name, true);
+			return new Entry(name, true, null);
+		}
+
+		public static Entry managedBy(ModElement owner, String name) {
+			return managedBy(owner.getName(), name);
+		}
+
+		private static Entry managedBy(String owner, String name) {
+			return new Entry(name, true, owner);
 		}
 
 		@Override public boolean equals(Object o) {
@@ -148,19 +158,29 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		private static class GSONAdapter implements JsonSerializer<Entry>, JsonDeserializer<Entry> {
 
 			private static final String MANAGED_PREFIX = "~";
+			private static final String OWNER_TAG = "@";
 
 			@Override public Entry deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 					throws JsonParseException {
 				String value = json.getAsString();
 				if (value.startsWith(MANAGED_PREFIX)) {
-					return managed(value.substring(MANAGED_PREFIX.length()));
+					if (value.contains(OWNER_TAG)) {
+						String[] parts = value.substring(1).split(OWNER_TAG, 2);
+						return managedBy(parts[0], parts[1]);
+					} else {
+						return managed(value.substring(1));
+					}
 				} else {
 					return unmanaged(value);
 				}
 			}
 
 			@Override public JsonElement serialize(Entry entry, Type typeOfSrc, JsonSerializationContext context) {
-				return new JsonPrimitive((entry.isManaged ? MANAGED_PREFIX : "") + entry.name);
+				if (entry.owner == null) {
+					return new JsonPrimitive((entry.isManaged ? MANAGED_PREFIX : "") + entry.name);
+				} else {
+					return new JsonPrimitive(MANAGED_PREFIX + entry.owner + OWNER_TAG + entry.name);
+				}
 			}
 
 		}

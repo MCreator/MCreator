@@ -114,7 +114,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 
 		// remove any potential references to this mod element in tags
-		TagsUtils.removeTagsForModElement(workspace, element);
+		TagsUtils.removeTagEntriesReferencingModElement(workspace, element);
 
 		// after we don't need the definition anymore, remove actual files
 		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();

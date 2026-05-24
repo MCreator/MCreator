@@ -83,6 +83,10 @@ public class TagsUtils {
 
 	public static void processDefinitionToTags(Generator generator, GeneratableElement element, @Nullable List<?> tags,
 			boolean deleteMode) {
+		// Before processing tags, we delete existing entries owned(added) by this mod element
+		// We still do deletion later in this method too for legacy workspaces where tag ownership is not tagged yet
+		removeAllTagEntriesOwnedBy(generator.getWorkspace(), element.getModElement());
+
 		if (tags != null) {
 			for (Object template : tags) {
 				Map<?, ?> map = (Map<?, ?>) template;
@@ -112,7 +116,8 @@ public class TagsUtils {
 							(String) map.get("entryprovider"));
 					if (entryprovider != null) {
 						for (String entry : entryprovider) {
-							handleTagEntryEntry(generator, tag, TagElement.Entry.managed(entry),
+							handleTagEntryEntry(generator, tag,
+									TagElement.Entry.managedBy(element.getModElement(), entry),
 									deleteMode || shouldSkip);
 						}
 					}
@@ -125,7 +130,8 @@ public class TagsUtils {
 							//@formatter:on
 					);
 
-					handleTagEntryEntry(generator, tag, TagElement.Entry.managed(entry), deleteMode || shouldSkip);
+					handleTagEntryEntry(generator, tag, TagElement.Entry.managedBy(element.getModElement(), entry),
+							deleteMode || shouldSkip);
 				} else if (map.containsKey("noentry")) {
 					if (deleteMode || shouldSkip) {
 						removeTagElementIfSafe(generator.getWorkspace(), tag);
@@ -133,9 +139,8 @@ public class TagsUtils {
 						generator.getWorkspace().addTagElement(tag);
 					}
 				} else {
-					handleTagEntryEntry(generator, tag,
-							TagElement.Entry.managed(NameMapper.MCREATOR_PREFIX + element.getModElement().getName()),
-							deleteMode || shouldSkip);
+					handleTagEntryEntry(generator, tag, TagElement.Entry.managedBy(element.getModElement(),
+							NameMapper.MCREATOR_PREFIX + element.getModElement().getName()), deleteMode || shouldSkip);
 				}
 			}
 		}
@@ -156,18 +161,6 @@ public class TagsUtils {
 			TestUtil.failIfTestingEnvironment();
 		}
 		return null;
-	}
-
-	private static void removeAllManagedTagEntries(Generator generator, TagElement tag) {
-		List<TagElement.Entry> entries = generator.getWorkspace().getTagElements().get(tag);
-		if (entries != null) {
-			// make a copy of the list to avoid concurrent modification
-			for (TagElement.Entry entry : new ArrayList<>(entries)) {
-				if (entry.isManaged()) {
-					generator.getWorkspace().getTagElements().get(tag).remove(entry);
-				}
-			}
-		}
 	}
 
 	private static void handleTagEntryEntry(Generator generator, TagElement tag, TagElement.Entry entry,
@@ -193,7 +186,37 @@ public class TagsUtils {
 		}
 	}
 
-	public static void removeTagsForModElement(Workspace workspace, ModElement modElement) {
+	private static void removeAllManagedTagEntries(Generator generator, TagElement tag) {
+		List<TagElement.Entry> entries = generator.getWorkspace().getTagElements().get(tag);
+		if (entries != null) {
+			// make a copy of the list to avoid concurrent modification
+			for (TagElement.Entry entry : new ArrayList<>(entries)) {
+				if (entry.isManaged()) {
+					generator.getWorkspace().getTagElements().get(tag).remove(entry);
+				}
+			}
+		}
+	}
+
+	private static void removeAllTagEntriesOwnedBy(Workspace workspace, ModElement modElement) {
+		String modElementName = modElement.getName();
+
+		List<TagElement> toRemove = new ArrayList<>();
+
+		for (Map.Entry<TagElement, ArrayList<TagElement.Entry>> entry : workspace.getTagElements().entrySet()) {
+			entry.getValue().removeIf(e -> e.name().equals(modElementName));
+
+			if (entry.getValue().isEmpty()) {
+				toRemove.add(entry.getKey());
+			}
+		}
+
+		for (TagElement tag : toRemove) {
+			removeTagElementIfSafe(workspace, tag);
+		}
+	}
+
+	public static void removeTagEntriesReferencingModElement(Workspace workspace, ModElement modElement) {
 		TagElement.Entry entryToCheck = TagElement.Entry.managed(NameMapper.MCREATOR_PREFIX + modElement.getName());
 
 		List<TagElement> toRemove = new ArrayList<>();
