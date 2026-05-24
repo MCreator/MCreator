@@ -95,7 +95,7 @@ public class TagsUtils {
 								//@formatter:off
 								.replace("@NAME", element.getModElement().getName())
 								.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-								.replace("@registryname", element.getModElement().getRegistryName()))
+								.replace("@registryname", element.getModElement().getRegistryName())
 						//@formatter:on
 				);
 
