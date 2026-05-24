@@ -98,8 +98,7 @@ public class LocaleEntry extends PreferencesEntry<Locale> {
 		private static String getLanguageLabelText(Locale locale) {
 			if (locale.equals(Locale.US)) {
 				return "English";
-			} else
-			if (locale.equals(Locale.SIMPLIFIED_CHINESE) || "CN".equalsIgnoreCase(locale.getCountry())) {
+			} else if (locale.equals(Locale.SIMPLIFIED_CHINESE) || "CN".equalsIgnoreCase(locale.getCountry())) {
 				return "Simplified Chinese";
 			} else if (locale.equals(Locale.TRADITIONAL_CHINESE) || "TW".equalsIgnoreCase(locale.getCountry())) {
 				return "Traditional Chinese";

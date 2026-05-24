@@ -95,11 +95,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JSpinner fixedTimeValue = ComponentFromAnnotation.spinner(Dimension.class, "fixedTimeValue");
 	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasRaids = L10N.checkbox("elementgui.common.enable");
-	private final JMinMaxSpinner monsterSpawnLightLimit = ComponentFromAnnotation
-			.minMaxSpinner(Dimension.class, "minMonsterSpawnLightLimit", "maxMonsterSpawnLightLimit")
-			.allowEqualValues();
-	private final JSpinner monsterSpawnBlockLightLimit = ComponentFromAnnotation
-			.spinner(Dimension.class, "monsterSpawnBlockLightLimit");
+	private final JMinMaxSpinner monsterSpawnLightLimit = ComponentFromAnnotation.minMaxSpinner(Dimension.class,
+			"minMonsterSpawnLightLimit", "maxMonsterSpawnLightLimit").allowEqualValues();
+	private final JSpinner monsterSpawnBlockLightLimit = ComponentFromAnnotation.spinner(Dimension.class,
+			"monsterSpawnBlockLightLimit");
 
 	private final TranslatedComboBox defaultEffects = ComponentFromAnnotation.translatedOptions(Dimension.class,
 			"defaultEffects", "elementgui.dimension.effects_");

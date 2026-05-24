@@ -825,7 +825,8 @@ public class TestWorkspaceDataProvider {
 			dimension.hasRaids = _true;
 			dimension.minMonsterSpawnLightLimit = monsterSpawnLightLimit.getMinimum();
 			dimension.maxMonsterSpawnLightLimit = monsterSpawnLightLimit.getMaximum();
-			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class, "monsterSpawnBlockLightLimit");
+			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class,
+					"monsterSpawnBlockLightLimit");
 			dimension.defaultEffects = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(Dimension.class, "defaultEffects"));
 			dimension.useCustomEffects = emptyLists;
@@ -885,8 +886,7 @@ public class TestWorkspaceDataProvider {
 			structure.projection = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(Structure.class, "projection"));
 			structure.restrictionBiomes = new ArrayList<>();
-			Range<Integer> separationSpacingRange = getRandomIntRange(random, Structure.class, "separation",
-					"spacing");
+			Range<Integer> separationSpacingRange = getRandomIntRange(random, Structure.class, "separation", "spacing");
 			structure.separation = separationSpacingRange.getMinimum();
 			structure.spacing = separationSpacingRange.getMaximum();
 			if (_true) {
@@ -1114,7 +1114,8 @@ public class TestWorkspaceDataProvider {
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-			plant.offsetType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Plant.class, "offsetType"));
+			plant.offsetType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Plant.class, "offsetType"));
 			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 			plant.strippingResult = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
@@ -1552,19 +1553,20 @@ public class TestWorkspaceDataProvider {
 			particle.alwaysShow = !_true;
 			particle.animate = _true;
 			particle.maxAge = getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAge");
-			particle.maxAgeDiff = emptyLists ? 0 :
+			particle.maxAgeDiff = emptyLists ?
+					0 :
 					getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAgeDiff");
 			particle.rotationProvider = emptyLists ? null : new Procedure("vector1");
-			particle.renderType = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(net.mcreator.element.types.Particle.class,
-					"renderType"));
+			particle.renderType = getRandomItem(random,
+					AnnotationUtils.getLimitedOptionsList(net.mcreator.element.types.Particle.class, "renderType"));
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.displayName = modElement.getName();
 			gamerule.description = modElement.getName() + " description";
-			gamerule.category = getRandomString(random, AnnotationUtils.getLimitedOptionsList(GameRule.class,
-					"category"));
+			gamerule.category = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(GameRule.class, "category"));
 			gamerule.type = getRandomString(random, AnnotationUtils.getLimitedOptionsList(GameRule.class, "type"));
 			gamerule.defaultValueLogic = random.nextBoolean();
 			gamerule.defaultValueNumber = getRandomInt(random, GameRule.class, "defaultValueNumber");
@@ -1589,16 +1591,16 @@ public class TestWorkspaceDataProvider {
 							.collect(Collectors.toList())).getName());
 			profession.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			profession.hat = getRandomString(random, AnnotationUtils.getLimitedOptionsList(VillagerProfession.class, "hat"));
+			profession.hat = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(VillagerProfession.class, "hat"));
 			profession.professionTextureFile = "entity_texture_0.png";
 			profession.zombifiedProfessionTextureFile = "entity_texture_1.png";
 			return profession;
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
-			villagerTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(),
-					_true ? new DataListEntry.Dummy("WANDERING_TRADER") :
-					getRandomDataListEntry(random,
-							ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
+			villagerTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(), _true ?
+					new DataListEntry.Dummy("WANDERING_TRADER") :
+					getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
 			villagerTrade.trades = new ArrayList<>();
 			if (!emptyLists) {
 				int entries = random.nextInt(5) + 1;
@@ -1638,8 +1640,10 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
 			damageType.exhaustion = getRandomDouble(random, DamageType.class, "exhaustion");
-			damageType.scaling = getRandomString(random, AnnotationUtils.getLimitedOptionsList(DamageType.class, "scaling"));
-			damageType.effects = getRandomString(random, AnnotationUtils.getLimitedOptionsList(DamageType.class, "effects"));
+			damageType.scaling = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(DamageType.class, "scaling"));
+			damageType.effects = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(DamageType.class, "effects"));
 			damageType.normalDeathMessage = "%1$s was slain";
 			damageType.itemDeathMessage = "%1$s was slain by %2$s using %3$s";
 			damageType.playerDeathMessage = "%1$s was slain whilst escaping %2$s";
@@ -1706,7 +1710,8 @@ public class TestWorkspaceDataProvider {
 			beitem.stackedByData = _true;
 			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
-			beitem.animation = getRandomString(random, AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
+			beitem.animation = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
 			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocks)).getName());
 			beitem.blockPlaceableOn = new ArrayList<>();
@@ -1817,7 +1822,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomString(random,
 				AnnotationUtils.getLimitedOptionsList(LivingEntity.class, "bossBarColor"));
 		livingEntity.bossBarType = getRandomString(random,
@@ -2034,9 +2039,9 @@ public class TestWorkspaceDataProvider {
 				block.boundingBoxes.add(box);
 			}
 		}
-		block.rotationMode = blockBase == null
-				? random.nextInt(AnnotationUtils.getLimitedOptionsList(Block.class, "rotationMode").size())
-				: 0;
+		block.rotationMode = blockBase == null ?
+				random.nextInt(AnnotationUtils.getLimitedOptionsList(Block.class, "rotationMode").size()) :
+				0;
 		block.enablePitch = !_true;
 		block.customProperties = new ArrayList<>();
 		if (!emptyLists) {
@@ -2132,7 +2137,8 @@ public class TestWorkspaceDataProvider {
 		block.speedFactor = getRandomDouble(random, Block.class, "speedFactor");
 		block.jumpFactor = getRandomDouble(random, Block.class, "jumpFactor");
 		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-		block.blockSetType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "blockSetType"));
+		block.blockSetType = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "blockSetType"));
 		block.tickRate = _true ? 0 : getRandomInt(random, Block.class, "tickRate");
 		block.isCustomSoundType = !_true;
 		block.soundOnStep = new StepSound(modElement.getWorkspace(),
@@ -2154,9 +2160,9 @@ public class TestWorkspaceDataProvider {
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
 		block.noteBlockInstrument = getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments"));
-		block.offsetType = blockBase == null
-				? getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType"))
-				: "NONE";
+		block.offsetType = blockBase == null ?
+				getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType")) :
+				"NONE";
 		block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
 		block.beaconColorModifier = emptyLists ? null : Color.cyan;
 		block.unbreakable = _true;
@@ -2223,11 +2229,12 @@ public class TestWorkspaceDataProvider {
 					e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 		}
-			block.generationShape = getRandomItem(random,
-					AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
+		block.generationShape = getRandomItem(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
 		block.frequencyPerChunks = getRandomInt(random, Block.class, "frequencyPerChunks");
 		block.frequencyOnChunk = getRandomInt(random, Block.class, "frequencyOnChunk");
-		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight", "maxGenerateHeight");
+		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight",
+				"maxGenerateHeight");
 		block.minGenerateHeight = generateHeight.getMinimum();
 		block.maxGenerateHeight = generateHeight.getMaximum();
 		if (!emptyLists) {
@@ -2369,9 +2376,10 @@ public class TestWorkspaceDataProvider {
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
-		tool.blockDropsTier = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Tool.class, "blockDropsTier"));
+		tool.blockDropsTier = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Tool.class, "blockDropsTier"));
 		tool.additionalDropCondition = new Procedure("condition3");
 		tool.efficiency = getRandomDouble(random, Tool.class, "efficiency");
 		tool.attackSpeed = getRandomDouble(random, Tool.class, "attackSpeed");
@@ -2598,7 +2606,7 @@ public class TestWorkspaceDataProvider {
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 
 		return specialEntity;
 	}

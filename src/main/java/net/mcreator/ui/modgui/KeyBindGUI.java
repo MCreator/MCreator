@@ -55,7 +55,8 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 	private final VTextField keyBindingName = new VTextField(20).requireValue("elementgui.keybind.error_key_needs_name")
 			.enableRealtimeValidation();
 
-	private final VComboBox<String> keyBindingCategoryKey = ComponentFromAnnotation.optionsValidated(KeyBinding.class, "keyBindingCategoryKey");
+	private final VComboBox<String> keyBindingCategoryKey = ComponentFromAnnotation.optionsValidated(KeyBinding.class,
+			"keyBindingCategoryKey");
 
 	public KeyBindGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
