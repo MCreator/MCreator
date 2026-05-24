@@ -204,7 +204,7 @@ public class TagsUtils {
 		List<TagElement> toRemove = new ArrayList<>();
 
 		for (Map.Entry<TagElement, ArrayList<TagElement.Entry>> entry : workspace.getTagElements().entrySet()) {
-			entry.getValue().removeIf(e -> e.name().equals(modElementName));
+			entry.getValue().removeIf(e -> e.owner() != null && e.owner().equals(modElementName));
 
 			if (entry.getValue().isEmpty()) {
 				toRemove.add(entry.getKey());

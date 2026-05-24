@@ -641,7 +641,7 @@ public class TestWorkspaceDataProvider {
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
 			keyBinding.keyBindingCategoryKey = _true ?
-					"multiplayer" :
+					"custom_category" :
 					getRandomString(random,
 							AnnotationUtils.getLimitedOptionsList(KeyBinding.class, "keyBindingCategoryKey"));
 			if (!emptyLists)
