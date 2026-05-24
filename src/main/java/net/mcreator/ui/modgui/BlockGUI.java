@@ -30,8 +30,8 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.element.util.AnnotationUtils;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
@@ -248,8 +248,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private JBlockStatesList blockStatesList;
 
-	private final JComboBox<String> transparencyType = ComponentFromAnnotation.options(Block.class,
-			"transparencyType");
+	private final JComboBox<String> transparencyType = ComponentFromAnnotation.options(Block.class, "transparencyType");
 
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 

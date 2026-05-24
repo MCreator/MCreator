@@ -54,7 +54,8 @@ public enum TagType {
 	private final BiFunction<Workspace, String, MappableElement> mappableElementProvider;
 	private final boolean visible;
 
-	TagType(String folder, Color color, BiFunction<Workspace, String, MappableElement> mappableElementProvider, boolean visible) {
+	TagType(String folder, Color color, BiFunction<Workspace, String, MappableElement> mappableElementProvider,
+			boolean visible) {
 		this.folder = folder;
 		this.color = color;
 		this.mappableElementProvider = mappableElementProvider;

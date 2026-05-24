@@ -90,10 +90,10 @@ import java.util.List;
 		@Numeric(init = 1, min = 1, max = 99, step = 1) public int countPrice1;
 
 		public MItemBlock price2;
-		@Numeric(init = 1, min = 1, max = 99, step = 1)public int countPrice2;
+		@Numeric(init = 1, min = 1, max = 99, step = 1) public int countPrice2;
 
 		public MItemBlock offer;
-		@Numeric(init = 1, min = 1, max = 99, step = 1)public int countOffer;
+		@Numeric(init = 1, min = 1, max = 99, step = 1) public int countOffer;
 
 		@Numeric(init = 1, min = 1, max = 5, step = 1) public int level;
 		@Numeric(init = 10, min = 1, max = 72000, step = 1) public int maxTrades;

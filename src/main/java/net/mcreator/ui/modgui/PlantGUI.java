@@ -59,8 +59,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PlantGUI extends ModElementGUI<Plant> {
@@ -82,8 +84,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner resistance = ComponentFromAnnotation.spinner(Plant.class, "resistance");
 	private final JSpinner frequencyOnChunks = ComponentFromAnnotation.spinner(Plant.class, "frequencyOnChunks");
 	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(Plant.class, "dropAmount");
-	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation
-			.minMaxSpinner(Plant.class, "xpAmountMin", "xpAmountMax").allowEqualValues();
+	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation.minMaxSpinner(Plant.class, "xpAmountMin",
+			"xpAmountMax").allowEqualValues();
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");

@@ -333,87 +333,87 @@ public class TestWorkspaceDataProvider {
 		if (workspace.getGeneratorStats().hasBaseCoverage("tags")) {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:dirt");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:item");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:item"));
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampleitem1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleitem2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleitem1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleitem2"));
 			}
 
 			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:dirt");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:block");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:block"));
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampleblock1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleblock2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleblock1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleblock2"));
 			}
 
 			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:creeper");
-			workspace.getTagElements().get(tag).add("~minecraft:zombie");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:entity");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:creeper"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:zombie"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:entity"));
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Examplelivingentity1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplelivingentity2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplelivingentity1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplelivingentity2"));
 			}
 
 			tag = new TagElement(TagType.BIOMES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:plains");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:biome");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:plains"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:biome"));
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplebiome1"));
 			}
 
 			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stronghold");
-			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:structure");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stronghold"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:mineshaft"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:structure"));
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplestructure2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplestructure1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplestructure2"));
 			}
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:damage_type");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:damage_type"));
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampledamagetype1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampledamagetype2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampledamagetype1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampledamagetype2"));
 			}
 
 			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:enchantment");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:enchantment"));
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampleenchantment1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleenchantment1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleenchantment2"));
 			}
 
 			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:game_event");
-			workspace.getTagElements().get(tag).add("minecraft:block_attach");
-			workspace.getTagElements().get(tag).add("~minecraft:container_open");
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:game_event"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:block_attach"));
+			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:container_open"));
 
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("ExampleFunction1");
-				workspace.getTagElements().get(tag).add("~ExampleFunction2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("ExampleFunction1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("ExampleFunction2"));
 			}
 		}
 	}
@@ -827,7 +827,8 @@ public class TestWorkspaceDataProvider {
 			dimension.hasRaids = _true;
 			dimension.minMonsterSpawnLightLimit = monsterSpawnLightLimit.getMinimum();
 			dimension.maxMonsterSpawnLightLimit = monsterSpawnLightLimit.getMaximum();
-			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class, "monsterSpawnBlockLightLimit");
+			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class,
+					"monsterSpawnBlockLightLimit");
 			dimension.defaultEffects = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(Dimension.class, "defaultEffects"));
 			dimension.useCustomEffects = emptyLists;
@@ -887,8 +888,7 @@ public class TestWorkspaceDataProvider {
 			structure.projection = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(Structure.class, "projection"));
 			structure.restrictionBiomes = new ArrayList<>();
-			Range<Integer> separationSpacingRange = getRandomIntRange(random, Structure.class, "separation",
-					"spacing");
+			Range<Integer> separationSpacingRange = getRandomIntRange(random, Structure.class, "separation", "spacing");
 			structure.separation = separationSpacingRange.getMinimum();
 			structure.spacing = separationSpacingRange.getMaximum();
 			if (_true) {
@@ -1555,7 +1555,8 @@ public class TestWorkspaceDataProvider {
 			particle.alwaysShow = !_true;
 			particle.animate = _true;
 			particle.maxAge = getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAge");
-			particle.maxAgeDiff = emptyLists ? 0 :
+			particle.maxAgeDiff = emptyLists ?
+					0 :
 					getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAgeDiff");
 			particle.rotationProvider = emptyLists ? null : new Procedure("vector1");
 			particle.renderType = getRandomItem(random,
@@ -1599,10 +1600,9 @@ public class TestWorkspaceDataProvider {
 			return profession;
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
-			villagerTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(),
-					_true ? new DataListEntry.Dummy("WANDERING_TRADER") :
-					getRandomDataListEntry(random,
-							ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
+			villagerTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(), _true ?
+					new DataListEntry.Dummy("WANDERING_TRADER") :
+					getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
 			villagerTrade.trades = new ArrayList<>();
 			if (!emptyLists) {
 				int entries = random.nextInt(5) + 1;
@@ -1824,7 +1824,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomString(random,
 				AnnotationUtils.getLimitedOptionsList(LivingEntity.class, "bossBarColor"));
 		livingEntity.bossBarType = getRandomString(random,
@@ -2231,11 +2231,12 @@ public class TestWorkspaceDataProvider {
 					e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 		}
-			block.generationShape = getRandomItem(random,
-					AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
+		block.generationShape = getRandomItem(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
 		block.frequencyPerChunks = getRandomInt(random, Block.class, "frequencyPerChunks");
 		block.frequencyOnChunk = getRandomInt(random, Block.class, "frequencyOnChunk");
-		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight", "maxGenerateHeight");
+		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight",
+				"maxGenerateHeight");
 		block.minGenerateHeight = generateHeight.getMinimum();
 		block.maxGenerateHeight = generateHeight.getMaximum();
 		if (!emptyLists) {
@@ -2377,7 +2378,7 @@ public class TestWorkspaceDataProvider {
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
 		tool.blockDropsTier = getRandomString(random,
 				AnnotationUtils.getLimitedOptionsList(Tool.class, "blockDropsTier"));
@@ -2607,7 +2608,7 @@ public class TestWorkspaceDataProvider {
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 
 		return specialEntity;
 	}

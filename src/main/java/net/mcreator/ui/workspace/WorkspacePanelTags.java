@@ -133,7 +133,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					// Calculate how many elements can fit in the cell (assuming 31px per element which is true for ITEMS and BLOCKS)
 					int visibleCount = (int) Math.ceil(elements.getColumnModel().getColumn(3).getWidth() / 31.0);
 					TagElement tagElement = tagElementForRow(row);
-					Stream<String> entries = workspacePanel.getMCreator().getWorkspace().getTagElements()
+					Stream<TagElement.Entry> entries = workspacePanel.getMCreator().getWorkspace().getTagElements()
 							.get(tagElement).stream().limit(visibleCount);
 					JItemListField<?> listField = switch (tagElement.type()) {
 						case ITEMS, BLOCKS -> {
@@ -336,7 +336,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		TagElement tagElement = tagElementForRow(elements.getSelectedRow());
 
 		if (workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
-				.anyMatch(TagElement::isEntryManaged)) {
+				.anyMatch(TagElement.Entry::isManaged)) {
 			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.tags.remove_tags_managed_error"), L10N.t("common.warning"),
 					JOptionPane.ERROR_MESSAGE);
@@ -367,7 +367,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
-		for (Map.Entry<TagElement, ArrayList<String>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
+		for (Map.Entry<TagElement, ArrayList<TagElement.Entry>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
 				.entrySet()) {
 			model.addRow(
 					new Object[] { tag.getKey().type(), tag.getKey().getMCreatorNamespace(), tag.getKey().getName(),
@@ -432,7 +432,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		}
 
 		@SuppressWarnings("unchecked") @Override public boolean stopCellEditing() {
-			ArrayList<String> newValue = (ArrayList<String>) getCellEditorValue();
+			ArrayList<TagElement.Entry> newValue = (ArrayList<TagElement.Entry>) getCellEditorValue();
 			if (newValue != null && !listField.isReadOnly()) {
 				workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElement, newValue);
 				workspacePanel.getMCreator().getWorkspace().markDirty();
