@@ -31,8 +31,8 @@ import java.awt.image.BufferedImage;
 
 	@Nonnull public String triggerKey;
 	public String keyBindingName;
-	@LimitedOptions({ "misc", "movement", "multiplayer", "gameplay", "ui", "inventory", "creative" })
-	public String keyBindingCategoryKey;
+	@LimitedOptions(value = { "misc", "movement", "multiplayer", "gameplay", "ui", "inventory",
+			"creative" }, allowCustom = true) public String keyBindingCategoryKey;
 
 	public Procedure onKeyPressed;
 	public Procedure onKeyReleased;

@@ -640,8 +640,10 @@ public class TestWorkspaceDataProvider {
 			keyBinding.triggerKey = getRandomString(random,
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
-			keyBinding.keyBindingCategoryKey = getRandomString(random,
-					AnnotationUtils.getLimitedOptionsList(KeyBinding.class, "keyBindingCategoryKey"));
+			keyBinding.keyBindingCategoryKey = _true ?
+					"custom_category" :
+					getRandomString(random,
+							AnnotationUtils.getLimitedOptionsList(KeyBinding.class, "keyBindingCategoryKey"));
 			if (!emptyLists)
 				keyBinding.onKeyPressed = new Procedure("procedure3");
 			if (_true)
