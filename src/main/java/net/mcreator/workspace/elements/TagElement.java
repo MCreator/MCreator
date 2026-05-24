@@ -71,12 +71,14 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 	// Helper functions for tag entries below
 
 	public static TagElement.Entry entryFromMappableElement(MappableElement element) {
-		return new TagElement.Entry(element.getUnmappedValue(), element.isManaged());
+		return element.getAssociatedTagEntry() != null ?
+				element.getAssociatedTagEntry() :
+				new TagElement.Entry(element.getUnmappedValue(), element.isManaged());
 	}
 
 	public static MappableElement entryToMappableElement(Workspace workspace, TagType type, TagElement.Entry entry) {
 		MappableElement retval = type.getMappableElementProvider().apply(workspace, entry.name);
-		retval.setManaged(entry.isManaged);
+		retval.setAssociatedTagEntry(entry);
 		return retval;
 	}
 
