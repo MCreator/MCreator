@@ -48,9 +48,9 @@
 </#macro>
 
 <#function tradeFolder suffix>
-  <#if suffix == "common"><#return "1">
-  <#elseif suffix == "uncommon"><#return "2">
-  <#elseif suffix == "buying"><#return "3">
-  <#else><#return suffix[suffix?length-1]>
-  </#if>
+    <#if suffix == "common"><#return "1">
+    <#elseif suffix == "uncommon"><#return "2">
+    <#elseif suffix == "buying"><#return "3">
+    <#else><#return suffix[suffix?length-1]>
+    </#if>
 </#function>
