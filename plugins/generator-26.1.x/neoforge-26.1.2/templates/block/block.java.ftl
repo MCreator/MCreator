@@ -742,7 +742,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 				<#elseif data.tintType == "Spruce foliage">
 					List.of(BlockTintSources.constant(FoliageColor.FOLIAGE_EVERGREEN))
 				<#elseif data.tintType == "Grass">
-					List.of(BlockTintSources.grassBlock())
+					List.of(BlockTintSources.grass())
 				<#elseif data.tintType == "Foliage">
 					List.of(BlockTintSources.foliage())
 				<#elseif data.tintType == "Water">
