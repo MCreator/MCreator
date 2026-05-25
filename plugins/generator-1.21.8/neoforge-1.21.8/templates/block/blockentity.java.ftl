@@ -220,8 +220,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}
 		<#if data.fluidRestrictions?has_content>, fs -> {
 		<#list data.fluidRestrictions as fluidRestriction>
-            if (fs.getFluid() == ${fluidRestriction}) return true;
-        </#list>
+			if (fs.getFluid() == ${fluidRestriction}) return true;
+		</#list>
 		return false;
 		}</#if>
 	) {
@@ -235,20 +235,20 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	public FluidTank getFluidTank() {
 		return fluidTank;
 	}
-    </#if>
+	</#if>
 
-    <#if data.sensitiveToVibration>
-    @Override public VibrationSystem.Data getVibrationData() {
-    	return this.vibrationData;
-    }
+	<#if data.sensitiveToVibration>
+	@Override public VibrationSystem.Data getVibrationData() {
+		return this.vibrationData;
+	}
 
-    @Override public VibrationSystem.User getVibrationUser() {
-    	return this.vibrationUser;
-    }
+	@Override public VibrationSystem.User getVibrationUser() {
+		return this.vibrationUser;
+	}
 
-    @Override public VibrationSystem.Listener getListener() {
-    	return this.vibrationListener;
-    }
+	@Override public VibrationSystem.Listener getListener() {
+		return this.vibrationListener;
+	}
 
 	private class VibrationUser implements VibrationSystem.User {
 
@@ -314,7 +314,8 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 					"world": "world",
 					"blockstate": "${name}BlockEntity.this.getBlockState()",
 					"entity": "entity",
-					"sourceentity": "projectileShooter"
+					"sourceentity": "projectileShooter",
+					"distance": "distance"
 				}/>
 			</#if>
 		}
@@ -327,7 +328,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 			return true;
 		}
 	}
-    </#if>
+	</#if>
 }
 </@javacompress>
 <#-- @formatter:on -->

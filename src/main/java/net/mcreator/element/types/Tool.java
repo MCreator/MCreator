@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
@@ -39,6 +40,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,31 +48,35 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
 
-	@Nonnull public String toolType;
+	@LimitedOptions({ "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
+			"MultiTool" }) @Nonnull public String toolType;
 
 	public int renderType;
 	public int blockingRenderType;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
-	@TextureReference(TextureType.ITEM) public TextureHolder guiTexture;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;
 
 	public String name;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
-	public double efficiency;
-	public double attackSpeed;
-	public int enchantability;
-	public double damageVsEntity;
-	public int usageCount;
+	@Numeric(init = 4, min = 0, max = 128000, step = 0.5) public double efficiency;
+	@Numeric(init = 1, min = 0, max = 100, step = 0.1) public double attackSpeed;
+	@Numeric(init = 2, min = 1, max = 128000, step = 1) public int enchantability;
+	@Numeric(init = 4, min = 0, max = 128000, step = 0.1) public double damageVsEntity;
+	@Numeric(init = 100, min = 0, max = 128000, step = 1) public int usageCount;
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
 
-	public String blockDropsTier;
+	@LimitedOptions({ "WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE" }) public String blockDropsTier;
 	public Procedure additionalDropCondition;
 
 	@ModElementReference public List<MItemBlock> blocksAffected;
+
+	@ModElementReference public List<AttributeModifierEntry> attributeModifiers;
 
 	public boolean stayInGridWhenCrafting;
 	public boolean damageOnCrafting;
@@ -83,6 +89,8 @@ import java.util.stream.Collectors;
 	public Procedure onItemInUseTick;
 	public Procedure onBlockDestroyedWithTool;
 	public Procedure onEntitySwing;
+	public Procedure onDroppedByPlayer;
+	public Procedure onItemEntityDestroyed;
 
 	private Tool() {
 		this(null);
@@ -91,8 +99,11 @@ import java.util.stream.Collectors;
 	public Tool(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
+		this.blocksAffected = new ArrayList<>();
+		this.attributeModifiers = new ArrayList<>();
 
 		this.attackSpeed = 2.8;
 

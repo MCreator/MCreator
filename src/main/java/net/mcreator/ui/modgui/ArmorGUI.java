@@ -35,10 +35,7 @@ import net.mcreator.minecraft.JavaModels;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.CollapsiblePanel;
-import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JStringListField;
-import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -48,6 +45,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -175,20 +173,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final SoundSelector equipSound = new SoundSelector(mcreator);
 
-	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(15, 0, 1024, 1));
-	private final JSpinner damageValueBoots = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner damageValueLeggings = new JSpinner(new SpinnerNumberModel(5, 0, 1024, 1));
-	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));
-	private final JSpinner damageValueHelmet = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(9, 1, 128000, 1));
-	private final JSpinner toughness = new JSpinner(new SpinnerNumberModel(0.0, 0, 1024, 0.1));
-	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0.0, 0, 5.0, 0.1));
+	private final JSpinner maxDamage = ComponentFromAnnotation.spinner(Armor.class, "maxDamage");
+	private final JSpinner damageValueBoots = ComponentFromAnnotation.spinner(Armor.class, "damageValueBoots");
+	private final JSpinner damageValueLeggings = ComponentFromAnnotation.spinner(Armor.class, "damageValueLeggings");
+	private final JSpinner damageValueBody = ComponentFromAnnotation.spinner(Armor.class, "damageValueBody");
+	private final JSpinner damageValueHelmet = ComponentFromAnnotation.spinner(Armor.class, "damageValueHelmet");
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Armor.class, "enchantability");
+	private final JSpinner toughness = ComponentFromAnnotation.spinner(Armor.class, "toughness");
+	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(Armor.class, "knockbackResistance");
 
 	private ProcedureSelector onHelmetTick;
 	private ProcedureSelector onBodyTick;
 	private ProcedureSelector onLeggingsTick;
 	private ProcedureSelector onBootsTick;
 
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Armor.class, "rarity",
+			"elementgui.common.rarity_");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final ValidationGroup group1page = new ValidationGroup();
@@ -398,7 +398,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
 
-		helmetModel.addActionListener(e -> helmetTranslucency.setEnabled(helmetModel.getSelectedItem() != defaultModel));
+		helmetModel.addActionListener(
+				_ -> helmetTranslucency.setEnabled(helmetModel.getSelectedItem() != defaultModel));
 
 		JPanel helmetConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		helmetConditionsPanel.setOpaque(false);
@@ -455,7 +456,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
-		bodyModel.addActionListener(e -> bodyTranslucency.setEnabled(bodyModel.getSelectedItem() != defaultModel));
+		bodyModel.addActionListener(_ -> bodyTranslucency.setEnabled(bodyModel.getSelectedItem() != defaultModel));
 
 		JPanel bodyConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		bodyConditionsPanel.setOpaque(false);
@@ -506,7 +507,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
-		leggingsModel.addActionListener(e -> leggingsTranslucency.setEnabled(leggingsModel.getSelectedItem() != defaultModel));
+		leggingsModel.addActionListener(
+				_ -> leggingsTranslucency.setEnabled(leggingsModel.getSelectedItem() != defaultModel));
 
 		JPanel leggingsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		leggingsConditionsPanel.setOpaque(false);
@@ -557,7 +559,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
 
-		bootsModel.addActionListener(e -> bootsTranslucency.setEnabled(bootsModel.getSelectedItem() != defaultModel));
+		bootsModel.addActionListener(_ -> bootsTranslucency.setEnabled(bootsModel.getSelectedItem() != defaultModel));
 
 		JPanel bootsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		bootsConditionsPanel.setOpaque(false);
@@ -572,27 +574,27 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
 				bootsCollapsiblePanel), 5, 0));
 
-		enableHelmet.addActionListener(event -> {
+		enableHelmet.addActionListener(_ -> {
 			textureHelmet.setEnabled(enableHelmet.isSelected());
 			helmetName.setEnabled(enableHelmet.isSelected());
 		});
 
-		enableBody.addActionListener(event -> {
+		enableBody.addActionListener(_ -> {
 			textureBody.setEnabled(enableBody.isSelected());
 			bodyName.setEnabled(enableBody.isSelected());
 		});
 
-		enableLeggings.addActionListener(event -> {
+		enableLeggings.addActionListener(_ -> {
 			textureLeggings.setEnabled(enableLeggings.isSelected());
 			leggingsName.setEnabled(enableLeggings.isSelected());
 		});
 
-		enableBoots.addActionListener(event -> {
+		enableBoots.addActionListener(_ -> {
 			textureBoots.setEnabled(enableBoots.isSelected());
 			bootsName.setEnabled(enableBoots.isSelected());
 		});
 
-		armorTextureFile.getComboBox().addActionListener(e -> updateArmorTexturePreview());
+		armorTextureFile.getComboBox().addActionListener(_ -> updateArmorTexturePreview());
 
 		JPanel sbbp22 = new JPanel();
 		sbbp22.setOpaque(false);
@@ -609,11 +611,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp22));
 
-		JPanel enderpanel = new JPanel(new GridLayout(9, 2, 20, 2));
+		JPanel enderpanel = new JPanel(new GridLayout(10, 2, 20, 2));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/armor_layer_texture"),
 				L10N.label("elementgui.armor.layer_texture")));
 		enderpanel.add(armorTextureFile);
+
+		enderpanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		enderpanel.add(rarity);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
@@ -669,7 +675,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(clopa));
 
-		helmetModelListener = actionEvent -> {
+		helmetModelListener = _ -> {
 			Model model = helmetModel.getSelectedItem();
 			if (model != null && model != defaultModel) {
 				helmetModelPart.removeAllItems();
@@ -686,7 +692,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			helmetModelPart.addItem("Helmet");
 		};
 
-		bodyModelListener = actionEvent -> {
+		bodyModelListener = _ -> {
 			Model model = bodyModel.getSelectedItem();
 			if (model != null && model != defaultModel) {
 				bodyModelPart.removeAllItems();
@@ -716,7 +722,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			armsModelPartR.addItem("Arms R");
 		};
 
-		leggingsModelListener = actionEvent -> {
+		leggingsModelListener = _ -> {
 			Model model = leggingsModel.getSelectedItem();
 			if (model != null && model != defaultModel) {
 				leggingsModelPartL.removeAllItems();
@@ -737,7 +743,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			leggingsModelPartR.addItem("Leggings R");
 		};
 
-		bootsModelListener = actionEvent -> {
+		bootsModelListener = _ -> {
 			Model model = bootsModel.getSelectedItem();
 			if (model != null && model != defaultModel) {
 				bootsModelPartL.removeAllItems();
@@ -899,6 +905,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		enableBody.setSelected(armor.enableBody);
 		enableLeggings.setSelected(armor.enableLeggings);
 		enableBoots.setSelected(armor.enableBoots);
+		rarity.setSelectedItem(armor.rarity);
 		creativeTabs.setListElements(armor.creativeTabs);
 		textureHelmet.setEnabled(enableHelmet.isSelected());
 		textureBody.setEnabled(enableBody.isSelected());
@@ -1011,6 +1018,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodySpecialInformation = bodySpecialInformation.getSelectedProcedure();
 		armor.leggingsSpecialInformation = leggingsSpecialInformation.getSelectedProcedure();
 		armor.bootsSpecialInformation = bootsSpecialInformation.getSelectedProcedure();
+		armor.rarity = rarity.getSelectedItem();
 		armor.creativeTabs = creativeTabs.getListElements();
 		armor.armorTextureFile = armorTextureFile.getTextureName();
 		armor.maxDamage = (int) maxDamage.getValue();

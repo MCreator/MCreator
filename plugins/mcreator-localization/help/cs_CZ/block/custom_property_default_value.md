@@ -1,0 +1,1 @@
+Toto je výchozí hodnota vlastnosti stavu bloku, když je generován/položen do světa.

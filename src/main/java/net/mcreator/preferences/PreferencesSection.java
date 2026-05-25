@@ -85,17 +85,17 @@ public abstract class PreferencesSection {
 	 *
 	 * 	public final BooleanEntry myEntry = new BooleanEntry("displayMCreator", true);
 	 *
-	 *	public MyPlugin(Plugin plugin) {
+	 * 	public MyPlugin(Plugin plugin) {
 	 * 		addListener(ApplicationLoadedEvent.class, event -> {
 	 * 			PreferencesManager.PREFERENCES.ui.addJavaEntry("myIdentifier", myEntry);
-	 * 		});
-	 * 	}
+	 *        });
+	 *    }
 	 *
 	 * }
 	 * }</pre></p>
 	 *
 	 * @param pluginPreferencesIdentifier A unique {@link String} acting like a mod's id for this system. If you use this method with one of the built-in section (see {@link PreferencesData}), this parameter can <b><u>NOT</u></b> be {@code "core"} as the system use it for all built-in entries.
-	 * @param entry The new {@link PreferencesEntry} to add to this section
+	 * @param entry                       The new {@link PreferencesEntry} to add to this section
 	 * @return The provided {@link PreferencesEntry} to register
 	 */
 	public final <T, S extends PreferencesEntry<T>> S addPluginEntry(String pluginPreferencesIdentifier, S entry) {

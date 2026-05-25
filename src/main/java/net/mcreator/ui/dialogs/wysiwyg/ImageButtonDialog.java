@@ -116,8 +116,7 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 
 		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			if (hoveredTextureSelector.getValidationStatus().type()
-					!= ValidationResult.Type.ERROR) {
+			if (hoveredTextureSelector.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				if (textureSelector.hasTexture()) {
 					if (button == null) {

@@ -24,8 +24,6 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.SpecialEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.TranslatedComboBox;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
@@ -33,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -46,16 +45,11 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Map;
 
 public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
-	private final JComboBox<String> entityType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("Boat", "elementgui.special_entity.entity_type.boat"),
-			Map.entry("ChestBoat", "elementgui.special_entity.entity_type.chest_boat")
-			//@formatter:on
-	);
+	private final JComboBox<String> entityType = ComponentFromAnnotation.translatedOptions(SpecialEntity.class,
+			"entityType", "elementgui.special_entity.entity_type.");
 	private final VTextField name = new VTextField(28).requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
@@ -115,7 +109,8 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
 			String readableName = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableName.endsWith("Chest Boat") ?
-					readableName.substring(0, readableName.length() - 10) + "Boat with Chest" : readableName);
+					readableName.substring(0, readableName.length() - 10) + "Boat with Chest" :
+					readableName);
 			if (readableName.endsWith("Chest Boat"))
 				entityType.setSelectedItem("ChestBoat");
 		}

@@ -25,6 +25,7 @@ import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
+import net.mcreator.element.types.GUI;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
@@ -40,6 +41,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -88,8 +90,8 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
 	private final JButton lockComponent = new JButton(UIRES.get("18px.lock"));
 
-	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
-	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
+	public final JSpinner spa1 = ComponentFromAnnotation.spinner(GUI.class, "width");
+	public final JSpinner spa2 = ComponentFromAnnotation.spinner(GUI.class, "height");
 
 	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
@@ -278,7 +280,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, null);
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-							 InvocationTargetException ex) {
+					         InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 				});
@@ -469,7 +471,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, component).getEditingComponent();
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-							 InvocationTargetException ex) {
+					         InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 					break;

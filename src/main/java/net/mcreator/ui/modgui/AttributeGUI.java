@@ -23,10 +23,12 @@ import net.mcreator.element.types.Attribute;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.SpawnableEntityListField;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
@@ -44,10 +46,11 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 
 	private final VTextField name = new VTextField(38).requireValue("elementgui.attribute.needs_name")
 			.enableRealtimeValidation();
-	private final JSpinner defaultValue = new JSpinner(
-			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
-	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
-	private final JComboBox<String> sentiment = new JComboBox<>(new String[] { "POSITIVE", "NEUTRAL", "NEGATIVE" });
+	private final JSpinner defaultValue = ComponentFromAnnotation.spinner(Attribute.class, "defaultValue");
+	private final JMinMaxSpinner minMaxValue = ComponentFromAnnotation.minMaxSpinner(Attribute.class, "minValue",
+			"maxValue");
+	private final TranslatedComboBox sentiment = ComponentFromAnnotation.translatedOptions(Attribute.class, "sentiment",
+			"elementgui.attribute.sentiment.");
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
 	private final JCheckBox addToAllEntities = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox addToPlayers = L10N.checkbox("elementgui.common.enable");
@@ -90,7 +93,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 				L10N.label("elementgui.attribute.entities")));
 		pane1.add(entities);
 
-		addToAllEntities.addActionListener((e) -> {
+		addToAllEntities.addActionListener(_ -> {
 			addToPlayers.setEnabled(!addToAllEntities.isSelected());
 			entities.setEnabled(!addToAllEntities.isSelected());
 		});
@@ -142,7 +145,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		attribute.defaultValue = (Double) defaultValue.getValue();
 		attribute.minValue = minMaxValue.getMinValue();
 		attribute.maxValue = minMaxValue.getMaxValue();
-		attribute.sentiment = (String) sentiment.getSelectedItem();
+		attribute.sentiment = sentiment.getSelectedItem();
 		attribute.addToAllEntities = addToAllEntities.isSelected();
 		attribute.addToPlayers = addToPlayers.isSelected();
 		attribute.entities = entities.getListElements();

@@ -175,10 +175,10 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			setToolTipText("<html>" + value.getReadableName() + (value.getDescription().isEmpty() ?
 					"" :
 					("<br><small>" + value.getDescription())));
-			if (value.icon.getIconWidth() != 32)
-				setIcon(new ImageIcon(ImageUtils.resize(value.icon.getImage(), 32)));
+			if (value.getIcon().getIconWidth() != 32)
+				setIcon(new ImageIcon(ImageUtils.resize(value.getIcon().getImage(), 32)));
 			else
-				setIcon(value.icon);
+				setIcon(value.getIcon());
 
 			if (isSelected) {
 				setOpaque(true);

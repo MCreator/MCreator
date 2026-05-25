@@ -1,0 +1,62 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "x",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "y",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "z",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "amount",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "slotid",
+      "check": "Number"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "simulated",
+      "checked": false
+    }
+  ],
+  "output": "MCItem",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "blockdata",
+    "toolbox_init": [
+      "<value name=\"x\"><block type=\"coord_x\"></block></value>",
+      "<value name=\"y\"><block type=\"coord_y\"></block></value>",
+      "<value name=\"z\"><block type=\"coord_z\"></block></value>",
+      "<value name=\"amount\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"slotid\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "fields": [
+      "simulated"
+    ],
+    "inputs": [
+      "x",
+      "y",
+      "z",
+      "slotid",
+      "amount"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

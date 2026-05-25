@@ -48,45 +48,45 @@ package ${package}.client.screens;
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
 	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
-        public static void eventHandler(RenderGuiEvent.Pre event) {
-            int w = event.getGuiGraphics().guiWidth();
-            int h = event.getGuiGraphics().guiHeight();
+		public static void eventHandler(RenderGuiEvent.Pre event) {
+			int w = event.getGuiGraphics().guiWidth();
+			int h = event.getGuiGraphics().guiHeight();
 	<#else>
-        public static void eventHandler(ScreenEvent.Render.Post event) {
-            if (event.getScreen() instanceof ${generator.map(data.overlayTarget, "screens")}) {
-                int w = event.getGuiGraphics().guiWidth();
-                int h = event.getGuiGraphics().guiHeight();
+		public static void eventHandler(ScreenEvent.Render.Post event) {
+			if (event.getScreen() instanceof ${generator.map(data.overlayTarget, "screens")}) {
+				int w = event.getGuiGraphics().guiWidth();
+				int h = event.getGuiGraphics().guiHeight();
 	</#if>
 
-        Level world = null;
-        double x = 0;
-        double y = 0;
-        double z = 0;
+		Level world = null;
+		double x = 0;
+		double y = 0;
+		double z = 0;
 
-        Player entity = Minecraft.getInstance().player;
-        if (entity != null) {
-            world = entity.level();
-            x = entity.getX();
-            y = entity.getY();
-            z = entity.getZ();
-        }
+		Player entity = Minecraft.getInstance().player;
+		if (entity != null) {
+			world = entity.level();
+			x = entity.getX();
+			y = entity.getY();
+			z = entity.getZ();
+		}
 
-        if (<@procedureOBJToConditionCode data.displayCondition/>) {
-            <#if data.baseTexture?has_content>
-                event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, 0, 0, 0, 0, w, h, w, h);
-            </#if>
+		if (<@procedureOBJToConditionCode data.displayCondition/>) {
+			<#if data.baseTexture?has_content>
+				event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, 0, 0, 0, 0, w, h, w, h);
+			</#if>
 
-            <#list data.getComponentsOfType("Image") as component>
-                <#if hasProcedure(component.displayCondition)>
-                        if (<@procedureOBJToConditionCode component.displayCondition/>) {
-                </#if>
-                    event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, IMAGE_${component?index}, <@calculatePosition component/>, 0, 0,
-                        ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-                        ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
-                <#if hasProcedure(component.displayCondition)>}</#if>
-            </#list>
+			<#list data.getComponentsOfType("Image") as component>
+				<#if hasProcedure(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>) {
+				</#if>
+					event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, IMAGE_${component?index}, <@calculatePosition component/>, 0, 0,
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+				<#if hasProcedure(component.displayCondition)>}</#if>
+			</#list>
 
-        	<#list data.getComponentsOfType("Sprite") as component>
+			<#list data.getComponentsOfType("Sprite") as component>
 				<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 					event.getGuiGraphics().blit(RenderPipelines.GUI_TEXTURED, SPRITE_${component?index}, <@calculatePosition component/>,
 						<#if (component.getTextureWidth(w.getWorkspace()) > component.getTextureHeight(w.getWorkspace()))>
@@ -97,33 +97,33 @@ package ${package}.client.screens;
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getTextureWidth(w.getWorkspace())}, ${component.getTextureHeight(w.getWorkspace())});
 				<#if hasProcedure(component.displayCondition)>}</#if>
-        	</#list>
+			</#list>
 
-            <#list data.getComponentsOfType("Label") as component>
-                <#if hasProcedure(component.displayCondition)>
-                    if (<@procedureOBJToConditionCode component.displayCondition/>)
-                </#if>
-                event.getGuiGraphics().drawString(Minecraft.getInstance().font,
-                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-                    <@calculatePosition component/>, ${component.color.getRGB()}, ${component.hasShadow});
-            </#list>
+			<#list data.getComponentsOfType("Label") as component>
+				<#if hasProcedure(component.displayCondition)>
+					if (<@procedureOBJToConditionCode component.displayCondition/>)
+				</#if>
+				event.getGuiGraphics().drawString(Minecraft.getInstance().font,
+					<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+					<@calculatePosition component/>, ${component.color.getRGB()}, ${component.hasShadow});
+			</#list>
 
 			<#list data.getComponentsOfType("EntityModel") as component>
-			    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
-			    	<#if hasProcedure(component.displayCondition)>
-                        if (<@procedureOBJToConditionCode component.displayCondition/>)
-                    </#if>
+				if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
+					<#if hasProcedure(component.displayCondition)>
+						if (<@procedureOBJToConditionCode component.displayCondition/>)
+					</#if>
 					InventoryScreen.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(),
 						<@calculatePosition component=component x_offset=(10 - 1000) y_offset=(20 - 1000)/>,
 						<@calculatePosition component=component x_offset=(10 + 1000) y_offset=(20 + 1000)/>,
-                        ${component.scale}, -livingEntity.getBbHeight() / (2.0f * livingEntity.getScale()),
+						${component.scale}, -livingEntity.getBbHeight() / (2.0f * livingEntity.getScale()),
 						${component.rotationX / 20.0}f, 0, livingEntity);
-			    }
+				}
 			</#list>
-        }
-    <#if generator.map(data.overlayTarget, "screens") != "Ingame">
-        }
-    </#if>
+		}
+	<#if generator.map(data.overlayTarget, "screens") != "Ingame">
+		}
+	</#if>
 	}
 
 }

@@ -22,10 +22,12 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.types.DamageType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.elements.ModElement;
@@ -39,11 +41,11 @@ import java.net.URISyntaxException;
 
 public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
-	private final JSpinner exhaustion = new JSpinner(new SpinnerNumberModel(0.1, 0, 100, 0.01));
-	private final JComboBox<String> scaling = new JComboBox<>(
-			new String[] { "never", "always", "when_caused_by_living_non_player" });
-	private final JComboBox<String> effects = new JComboBox<>(
-			new String[] { "hurt", "thorns", "drowning", "burning", "poking", "freezing" });
+	private final JSpinner exhaustion = ComponentFromAnnotation.spinner(DamageType.class, "exhaustion");
+	private final TranslatedComboBox scaling = ComponentFromAnnotation.translatedOptions(DamageType.class, "scaling",
+			"elementgui.damagetype.scaling.");
+	private final TranslatedComboBox effects = ComponentFromAnnotation.translatedOptions(DamageType.class, "effects",
+			"elementgui.damagetype.effects.");
 	private final VTextField normalDeathMessage = new VTextField(28).requireValue(
 			"elementgui.damagetype.error_empty_death_message").enableRealtimeValidation();
 	private final VTextField itemDeathMessage = new VTextField(28).requireValue(
@@ -131,8 +133,8 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 	@Override public DamageType getElementFromGUI() {
 		DamageType damageType = new DamageType(modElement);
 		damageType.exhaustion = (double) exhaustion.getValue();
-		damageType.scaling = (String) scaling.getSelectedItem();
-		damageType.effects = (String) effects.getSelectedItem();
+		damageType.scaling = scaling.getSelectedItem();
+		damageType.effects = effects.getSelectedItem();
 		damageType.normalDeathMessage = normalDeathMessage.getText().replace("<player>", "%1$s")
 				.replace("<attacker>", "%2$s");
 		damageType.itemDeathMessage = itemDeathMessage.getText().replace("<player>", "%1$s")

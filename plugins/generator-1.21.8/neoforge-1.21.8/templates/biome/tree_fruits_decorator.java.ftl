@@ -36,35 +36,35 @@ package ${package}.world.features.treedecorators;
 
 @EventBusSubscriber public class ${name}FruitDecorator extends CocoaDecorator {
 
-    public static MapCodec<${name}FruitDecorator> CODEC = MapCodec.unit(${name}FruitDecorator::new);
+	public static MapCodec<${name}FruitDecorator> CODEC = MapCodec.unit(${name}FruitDecorator::new);
 
-    public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
+	public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
 
-    @SubscribeEvent public static void registerTreeDecorator(RegisterEvent event) {
-        event.register(Registries.TREE_DECORATOR_TYPE, ResourceLocation.parse("${modid}:${registryname}_tree_fruit_decorator"), () -> DECORATOR_TYPE);
-    }
+	@SubscribeEvent public static void registerTreeDecorator(RegisterEvent event) {
+		event.register(Registries.TREE_DECORATOR_TYPE, ResourceLocation.parse("${modid}:${registryname}_tree_fruit_decorator"), () -> DECORATOR_TYPE);
+	}
 
-    public ${name}FruitDecorator() {
-        super(0.2f);
-    }
+	public ${name}FruitDecorator() {
+		super(0.2f);
+	}
 
-    @Override protected TreeDecoratorType<?> type() {
-        return DECORATOR_TYPE;
-    }
+	@Override protected TreeDecoratorType<?> type() {
+		return DECORATOR_TYPE;
+	}
 
-    @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "TreeDecorator.Context")
-        .replace("this.probability", "0.2F")
-        .replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(randomsource.nextInt(3))).setValue(CocoaBlock.FACING,direction)", "oriented(" + mappedBlockToBlockStateCode(data.treeFruits) + ", direction1)")
-        .replace("p_226028_", "context")}
+	@Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "TreeDecorator.Context")
+		.replace("this.probability", "0.2F")
+		.replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,randomsource.nextInt(3)).setValue(CocoaBlock.FACING,direction)", "oriented(" + mappedBlockToBlockStateCode(data.treeFruits) + ", direction1)")
+		.replace("p_226028_", "context")}
 
-    @SuppressWarnings("deprecation") private static BlockState oriented(BlockState blockstate, Direction direction) {
-        return switch (direction) {
-            case SOUTH -> blockstate.rotate(Rotation.CLOCKWISE_180);
-            case EAST -> blockstate.rotate(Rotation.CLOCKWISE_90);
-            case WEST -> blockstate.rotate(Rotation.COUNTERCLOCKWISE_90);
-            default -> blockstate;
-        };
-    }
+	@SuppressWarnings("deprecation") private static BlockState oriented(BlockState blockstate, Direction direction) {
+		return switch (direction) {
+			case SOUTH -> blockstate.rotate(Rotation.CLOCKWISE_180);
+			case EAST -> blockstate.rotate(Rotation.CLOCKWISE_90);
+			case WEST -> blockstate.rotate(Rotation.COUNTERCLOCKWISE_90);
+			default -> blockstate;
+		};
+	}
 
 }
 <#-- @formatter:on -->

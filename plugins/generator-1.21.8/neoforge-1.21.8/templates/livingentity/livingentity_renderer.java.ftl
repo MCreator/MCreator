@@ -114,11 +114,11 @@ package ${package}.client.renderer;
 public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${name}Entity, ${renderState}, ${model}> {
 
 	<#-- This entity reference is shared for all entities as renderer only has one instance.
-	     This currently works, but is somewhat hacky. It works because all methods requiring it
-	     are called after extractRenderState where this entity is assigned to the current entity.
-	     On the other hand, vanilla code reuses state for all entities too, so it may be fine.
-	     If we need to change this, we can use RegisterRenderStateModifiersEvent and
-	     and IRenderStateExtension#setRenderData with custom ContextKey-->
+		 This currently works, but is somewhat hacky. It works because all methods requiring it
+		 are called after extractRenderState where this entity is assigned to the current entity.
+		 On the other hand, vanilla code reuses state for all entities too, so it may be fine.
+		 If we need to change this, we can use RegisterRenderStateModifiersEvent and
+		 and IRenderStateExtension#setRenderData with custom ContextKey-->
 	private ${name}Entity entity = null;
 
 	private final ResourceLocation entityTexture = ResourceLocation.parse("${modid}:textures/entities/${data.mobModelTexture}");
@@ -250,7 +250,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		}
 
 		<#-- ideally we would not do this, but many users use animations that animate parts
-		     that don't exist in their model and then complain the game is crashing -->
+			 that don't exist in their model and then complain the game is crashing -->
 		private KeyframeAnimation safeBake(AnimationDefinition source) {
 			try {
 				return source.bake(root);

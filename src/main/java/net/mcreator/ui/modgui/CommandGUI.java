@@ -24,16 +24,19 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.types.Command;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.TestUtil;
@@ -51,10 +54,9 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 	private final VTextField commandName = new VTextField(25).requireValue("elementgui.command.warning.empty_string")
 			.enableRealtimeValidation();
-	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
-	private final JComboBox<String> permissionLevel = new JComboBox<>(
-			new String[] { "No requirement", "1", "2", "3", "4" });
+	private final TranslatedComboBox type = ComponentFromAnnotation.translatedOptions(Command.class, "type",
+			"elementgui.command.type.");
+	private final JComboBox<String> permissionLevel = ComponentFromAnnotation.options(Command.class, "permissionLevel");
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	private BlocklyPanel blocklyPanel;
@@ -98,10 +100,10 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "CommandRegenerate").start());
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "CommandRegenerate").start());
 		});
 		if (!isEditingMode()) {
-			blocklyPanel.setInitialXML(Command.XML_BASE);
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Command.class, "argsxml"));
 		}
 
 		blocklyPanel.setPreferredSize(new Dimension(450, 440));
@@ -154,7 +156,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 	@Override public Command getElementFromGUI() {
 		Command command = new Command(modElement);
 		command.commandName = commandName.getText();
-		command.type = (String) type.getSelectedItem();
+		command.type = type.getSelectedItem();
 
 		command.permissionLevel = (String) permissionLevel.getSelectedItem();
 		command.argsxml = blocklyPanel.getXML();

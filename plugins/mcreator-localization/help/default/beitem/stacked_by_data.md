@@ -1,0 +1,1 @@
+If selected, items of the same type with different data are stacked separately in container slots and on the ground.
