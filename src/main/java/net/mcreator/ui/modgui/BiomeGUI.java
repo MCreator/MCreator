@@ -35,7 +35,6 @@ import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
@@ -56,7 +55,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Map;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
@@ -368,11 +366,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.generate_nether")));
 		spawnproperties.add(spawnBiomeNether);
 
-		genTemperature.addChangeListener(e -> estimateGenCoverage());
-		genHumidity.addChangeListener(e -> estimateGenCoverage());
-		genContinentalness.addChangeListener(e -> estimateGenCoverage());
-		genErosion.addChangeListener(e -> estimateGenCoverage());
-		genWeirdness.addChangeListener(e -> estimateGenCoverage());
+		genTemperature.addChangeListener(_ -> estimateGenCoverage());
+		genHumidity.addChangeListener(_ -> estimateGenCoverage());
+		genContinentalness.addChangeListener(_ -> estimateGenCoverage());
+		genErosion.addChangeListener(_ -> estimateGenCoverage());
+		genWeirdness.addChangeListener(_ -> estimateGenCoverage());
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
@@ -464,8 +462,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		sbbp4.add(waterFogColor);
 
-		customTrees.addActionListener(event -> updateBiomeTreesForm());
-		vanillaTrees.addActionListener(event -> updateBiomeTreesForm());
+		customTrees.addActionListener(_ -> updateBiomeTreesForm());
+		vanillaTrees.addActionListener(_ -> updateBiomeTreesForm());
 
 		customTrees.setOpaque(false);
 		vanillaTrees.setOpaque(false);
@@ -534,7 +532,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		ComponentUtils.makeSection(particles, L10N.t("elementgui.biome.particles"));
 
 		spawnParticle.setOpaque(false);
-		spawnParticle.addActionListener(event -> updateParticleParameters());
+		spawnParticle.addActionListener(_ -> updateParticleParameters());
 
 		effectsPane.setOpaque(false);
 		effectsPane.add("Center", PanelUtils.totalCenterInPanel(

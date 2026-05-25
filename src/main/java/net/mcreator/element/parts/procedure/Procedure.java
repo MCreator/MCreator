@@ -101,9 +101,10 @@ import java.util.List;
 			}
 		}
 
-		@Override
-		public JsonElement serialize(Procedure procedure, Type typeOfSrc, JsonSerializationContext context) {
-			return (procedure.name == null || procedure.name.isEmpty()) ? JsonNull.INSTANCE : new JsonPrimitive(procedure.name);
+		@Override public JsonElement serialize(Procedure procedure, Type typeOfSrc, JsonSerializationContext context) {
+			return (procedure.name == null || procedure.name.isEmpty()) ?
+					JsonNull.INSTANCE :
+					new JsonPrimitive(procedure.name);
 		}
 
 	}

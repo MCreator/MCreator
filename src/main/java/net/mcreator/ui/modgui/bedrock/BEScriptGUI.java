@@ -339,7 +339,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(BEScript.class, "scriptxml"));

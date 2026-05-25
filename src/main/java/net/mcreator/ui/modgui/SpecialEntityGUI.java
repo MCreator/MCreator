@@ -30,10 +30,10 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -52,8 +52,8 @@ import java.util.List;
 
 public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
-	private final JComboBox<String> entityType = ComponentFromAnnotation
-			.translatedOptions(SpecialEntity.class, "entityType", "elementgui.special_entity.entity_type.");
+	private final JComboBox<String> entityType = ComponentFromAnnotation.translatedOptions(SpecialEntity.class,
+			"entityType", "elementgui.special_entity.entity_type.");
 	private final VTextField name = new VTextField(28).requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
