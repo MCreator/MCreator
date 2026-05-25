@@ -70,10 +70,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#equals(java.lang.Object)" tabindex="0">equals(Object)</a></li>
 <li><a href="#toString()" tabindex="0">toString()</a></li>
 <li><a href="#entryFromMappableElement(net.mcreator.generator.mapping.MappableElement)" tabindex="0">entryFromMappableElement(MappableElement)</a></li>
-<li><a href="#entryToMappableElement(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String)" tabindex="0">entryToMappableElement(Workspace, TagType, String)</a></li>
-<li><a href="#isEntryManaged(java.lang.String)" tabindex="0">isEntryManaged(String)</a></li>
-<li><a href="#makeEntryManaged(java.lang.String)" tabindex="0">makeEntryManaged(String)</a></li>
-<li><a href="#getEntryName(java.lang.String)" tabindex="0">getEntryName(String)</a></li>
+<li><a href="#entryToMappableElement(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,net.mcreator.workspace.elements.TagElement.Entry)" tabindex="0">entryToMappableElement(Workspace, TagType, TagElement.Entry)</a></li>
 <li><a href="#fromString(java.lang.String)" tabindex="0">fromString(String)</a></li>
 <li><a href="#normalizeTag(java.lang.String)" tabindex="0">normalizeTag(String)</a></li>
 <li><a href="#type()" tabindex="0">type()</a></li>
@@ -115,9 +112,12 @@ implements <a href="IElement.html" title="interface in net.mcreator.workspace.el
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="TagElement.TagElementDeserializer.html" class="type-name-link" title="class in net.mcreator.workspace.elements">TagElement.TagElementDeserializer</a></code></div>
+<div class="col-first even-row-color"><code>static final record&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="TagElement.Entry.html" class="type-name-link" title="class in net.mcreator.workspace.elements">TagElement.Entry</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second odd-row-color"><code><a href="TagElement.TagElementDeserializer.html" class="type-name-link" title="class in net.mcreator.workspace.elements">TagElement.TagElementDeserializer</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -148,13 +148,13 @@ implements <a href="IElement.html" title="interface in net.mcreator.workspace.el
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TagElement.Entry.html" title="class in net.mcreator.workspace.elements">TagElement.Entry</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#entryFromMappableElement(net.mcreator.generator.mapping.MappableElement)" class="member-name-link">entryFromMappableElement</a><wbr>(<a href="../../generator/mapping/MappableElement.html" title="class in net.mcreator.generator.mapping">MappableElement</a>&nbsp;element)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../generator/mapping/MappableElement.html" title="class in net.mcreator.generator.mapping">MappableElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#entryToMappableElement(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String)" class="member-name-link">entryToMappableElement</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#entryToMappableElement(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,net.mcreator.workspace.elements.TagElement.Entry)" class="member-name-link">entryToMappableElement</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="../../minecraft/TagType.html" title="enum class in net.mcreator.minecraft">TagType</a>&nbsp;type,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry)</code></div>
+ <a href="TagElement.Entry.html" title="class in net.mcreator.workspace.elements">TagElement.Entry</a>&nbsp;entry)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;obj)</code></div>
@@ -164,47 +164,38 @@ implements <a href="IElement.html" title="interface in net.mcreator.workspace.el
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TagElement.html" title="class in net.mcreator.workspace.elements">TagElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#fromString(java.lang.String)" class="member-name-link">fromString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;raw)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getEntryName(java.lang.String)" class="member-name-link">getEntryName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawData)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCreatorNamespace()" class="member-name-link">getMCreatorNamespace</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinecraftNamespace(net.mcreator.workspace.Workspace)" class="member-name-link">getMinecraftNamespace</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCreatorNamespace()" class="member-name-link">getMCreatorNamespace</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinecraftNamespace(net.mcreator.workspace.Workspace)" class="member-name-link">getMinecraftNamespace</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getName()" class="member-name-link">getName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a hash code value for this object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isEntryManaged(java.lang.String)" class="member-name-link">isEntryManaged</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawData)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#makeEntryManaged(java.lang.String)" class="member-name-link">makeEntryManaged</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawData)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#normalizeTag(java.lang.String)" class="member-name-link">normalizeTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#normalizeTag(java.lang.String)" class="member-name-link">normalizeTag</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;input)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Utility method for normalizing tag name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resourcePath()" class="member-name-link">resourcePath</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resourcePath()" class="member-name-link">resourcePath</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>resourcePath</code> record component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a string representation of this record class.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../minecraft/TagType.html" title="enum class in net.mcreator.minecraft">TagType</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type()" class="member-name-link">type</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../minecraft/TagType.html" title="enum class in net.mcreator.minecraft">TagType</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#type()" class="member-name-link">type</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <code>type</code> record component.</div>
 </div>
 </div>
@@ -327,41 +318,17 @@ implements <a href="IElement.html" title="interface in net.mcreator.workspace.el
 <section class="detail" id="entryFromMappableElement(net.mcreator.generator.mapping.MappableElement)">
 <h3>entryFromMappableElement</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">entryFromMappableElement</span><wbr><span class="parameters">(<a href="../../generator/mapping/MappableElement.html" title="class in net.mcreator.generator.mapping">MappableElement</a>&nbsp;element)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TagElement.Entry.html" title="class in net.mcreator.workspace.elements">TagElement.Entry</a></span>&nbsp;<span class="element-name">entryFromMappableElement</span><wbr><span class="parameters">(<a href="../../generator/mapping/MappableElement.html" title="class in net.mcreator.generator.mapping">MappableElement</a>&nbsp;element)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="entryToMappableElement(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String)">
+<section class="detail" id="entryToMappableElement(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,net.mcreator.workspace.elements.TagElement.Entry)">
 <h3>entryToMappableElement</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../generator/mapping/MappableElement.html" title="class in net.mcreator.generator.mapping">MappableElement</a></span>&nbsp;<span class="element-name">entryToMappableElement</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="../../minecraft/TagType.html" title="enum class in net.mcreator.minecraft">TagType</a>&nbsp;type,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entry)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="isEntryManaged(java.lang.String)">
-<h3>isEntryManaged</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isEntryManaged</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawData)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="makeEntryManaged(java.lang.String)">
-<h3>makeEntryManaged</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">makeEntryManaged</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawData)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getEntryName(java.lang.String)">
-<h3>getEntryName</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getEntryName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;rawData)</span></div>
+ <a href="TagElement.Entry.html" title="class in net.mcreator.workspace.elements">TagElement.Entry</a>&nbsp;entry)</span></div>
 </div>
 </section>
 </li>

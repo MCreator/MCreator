@@ -5880,7 +5880,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.minecraft.villagers.JVillagerTradeEntry">
 <h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeEntry.html" title="class in net.mcreator.ui.minecraft.villagers">net.mcreator.ui.minecraft.villagers.JVillagerTradeEntry</a></h3>
-<div class="type-signature">class JVillagerTradeEntry extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class JVillagerTradeEntry extends <a href="net/mcreator/ui/component/entries/JSimpleListEntry.html" title="class in net.mcreator.ui.component.entries">JSimpleListEntry</a>&lt;<a href="net/mcreator/element/types/VillagerTrade.TradeEntry.html" title="class in net.mcreator.element.types">VillagerTrade.TradeEntry</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -5897,6 +5897,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>countPrice2</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> countPrice2</pre>
+</li>
+<li class="block-list">
+<h5>isWanderingTrader</h5>
+<pre>boolean isWanderingTrader</pre>
 </li>
 <li class="block-list">
 <h5>level</h5>
@@ -5923,6 +5927,18 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> priceMultiplier</pre>
 </li>
 <li class="block-list">
+<h5>tradeLevelLayout</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/CardLayout.html" title="class or interface in java.awt" class="external-link">CardLayout</a> tradeLevelLayout</pre>
+</li>
+<li class="block-list">
+<h5>tradeLevelPanel</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> tradeLevelPanel</pre>
+</li>
+<li class="block-list">
+<h5>wanderingTraderCategory</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; wanderingTraderCategory</pre>
+</li>
+<li class="block-list">
 <h5>xp</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> xp</pre>
 </li>
@@ -5933,40 +5949,22 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="net.mcreator.ui.minecraft.villagers.JVillagerTradeProfession">
-<h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeProfession.html" title="class in net.mcreator.ui.minecraft.villagers">net.mcreator.ui.minecraft.villagers.JVillagerTradeProfession</a></h3>
-<div class="type-signature">class JVillagerTradeProfession extends <a href="net/mcreator/ui/component/entries/JEntriesList.html" title="class in net.mcreator.ui.component.entries">JEntriesList</a> implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.villagers.JVillagerTradeEntryList">
+<h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeEntryList.html" title="class in net.mcreator.ui.minecraft.villagers">net.mcreator.ui.minecraft.villagers.JVillagerTradeEntryList</a></h3>
+<div class="type-signature">class JVillagerTradeEntryList extends <a href="net/mcreator/ui/component/entries/JSimpleEntriesList.html" title="class in net.mcreator.ui.component.entries">JSimpleEntriesList</a>&lt;<a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeEntry.html" title="class in net.mcreator.ui.minecraft.villagers">JVillagerTradeEntry</a>, <a href="net/mcreator/element/types/VillagerTrade.TradeEntry.html" title="class in net.mcreator.element.types">VillagerTrade.TradeEntry</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>entries</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> entries</pre>
-</li>
-<li class="block-list">
-<h5>entryList</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeEntry.html" title="class in net.mcreator.ui.minecraft.villagers">JVillagerTradeEntry</a>&gt; entryList</pre>
-</li>
-<li class="block-list">
-<h5>villagerProfession</h5>
-<pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> villagerProfession</pre>
-</li>
-<li class="block-list">
-<h5>workspace</h5>
-<pre><a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a> workspace</pre>
+<h5>isWanderingTrader</h5>
+<pre>boolean isWanderingTrader</pre>
 </li>
 </ul>
 </section>
 </li>
 </ul>
-</section>
-</li>
-<li>
-<section class="serialized-class-details" id="net.mcreator.ui.minecraft.villagers.JVillagerTradeProfessionsList">
-<h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeProfessionsList.html" title="class in net.mcreator.ui.minecraft.villagers">net.mcreator.ui.minecraft.villagers.JVillagerTradeProfessionsList</a></h3>
-<div class="type-signature">class JVillagerTradeProfessionsList extends <a href="net/mcreator/ui/component/entries/JSingleEntriesList.html" title="class in net.mcreator.ui.component.entries">JSingleEntriesList</a>&lt;<a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeProfession.html" title="class in net.mcreator.ui.minecraft.villagers">JVillagerTradeProfession</a>, <a href="net/mcreator/element/types/VillagerTrade.CustomTradeEntry.html" title="class in net.mcreator.element.types">VillagerTrade.CustomTradeEntry</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
 </ul>
@@ -10419,8 +10417,12 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>villagerTradeProfessions</h5>
-<pre><a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeProfessionsList.html" title="class in net.mcreator.ui.minecraft.villagers">JVillagerTradeProfessionsList</a> villagerTradeProfessions</pre>
+<h5>trades</h5>
+<pre><a href="net/mcreator/ui/minecraft/villagers/JVillagerTradeEntryList.html" title="class in net.mcreator.ui.minecraft.villagers">JVillagerTradeEntryList</a> trades</pre>
+</li>
+<li class="block-list">
+<h5>villagerProfession</h5>
+<pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> villagerProfession</pre>
 </li>
 </ul>
 </section>

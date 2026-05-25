@@ -59,7 +59,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
-<li><a href="#tradeEntries" tabindex="0">tradeEntries</a></li>
+<li><a href="#villagerProfession" tabindex="0">villagerProfession</a></li>
+<li><a href="#trades" tabindex="0">trades</a></li>
 </ol>
 </li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
@@ -69,7 +70,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#hasVillagerTrades(boolean)" tabindex="0">hasVillagerTrades(boolean)</a></li>
+<li><a href="#isWanderingTrader()" tabindex="0">isWanderingTrader()</a></li>
 </ol>
 </li>
 </ol>
@@ -103,7 +104,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static class&nbsp;</code></div>
-<div class="col-second even-row-color"><code><a href="VillagerTrade.CustomTradeEntry.html" class="type-name-link" title="class in net.mcreator.element.types">VillagerTrade.CustomTradeEntry</a></code></div>
+<div class="col-second even-row-color"><code><a href="VillagerTrade.TradeEntry.html" class="type-name-link" title="class in net.mcreator.element.types">VillagerTrade.TradeEntry</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
@@ -120,9 +121,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="VillagerTrade.CustomTradeEntry.html" title="class in net.mcreator.element.types">VillagerTrade.CustomTradeEntry</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#tradeEntries" class="member-name-link">tradeEntries</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="VillagerTrade.TradeEntry.html" title="class in net.mcreator.element.types">VillagerTrade.TradeEntry</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#trades" class="member-name-link">trades</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/ProfessionEntry.html" title="class in net.mcreator.element.parts">ProfessionEntry</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#villagerProfession" class="member-name-link">villagerProfession</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.element.GeneratableElement">Fields inherited from class&nbsp;<a href="../GeneratableElement.html#field-summary" title="class in net.mcreator.element">GeneratableElement</a></h3>
@@ -154,7 +158,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasVillagerTrades(boolean)" class="member-name-link">hasVillagerTrades</a><wbr>(boolean&nbsp;wandering)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isWanderingTrader()" class="member-name-link">isWanderingTrader</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -177,10 +181,18 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="tradeEntries">
-<h3>tradeEntries</h3>
+<section class="detail" id="villagerProfession">
+<h3>villagerProfession</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VillagerTrade.CustomTradeEntry.html" title="class in net.mcreator.element.types">VillagerTrade.CustomTradeEntry</a>&gt;</span>&nbsp;<span class="element-name">tradeEntries</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/ProfessionEntry.html" title="class in net.mcreator.element.parts">ProfessionEntry</a></span>&nbsp;<span class="element-name">villagerProfession</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="trades">
+<h3>trades</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="VillagerTrade.TradeEntry.html" title="class in net.mcreator.element.types">VillagerTrade.TradeEntry</a>&gt;</span>&nbsp;<span class="element-name">trades</span></div>
 </div>
 </section>
 </li>
@@ -209,10 +221,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="hasVillagerTrades(boolean)">
-<h3>hasVillagerTrades</h3>
+<section class="detail" id="isWanderingTrader()">
+<h3>isWanderingTrader</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasVillagerTrades</span><wbr><span class="parameters">(boolean&nbsp;wandering)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isWanderingTrader</span>()</div>
 </div>
 </section>
 </li>
