@@ -1,0 +1,1 @@
+/*@float*/(${input$damagesource}.getFoodExhaustion())

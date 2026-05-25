@@ -284,7 +284,7 @@ public class StructureToFeatureConverter implements IConverter {
 		xml.append("<block type=\"placement_biome_filter\"></block>");
 
 		// Close all the remaining blocks
-		xml.append("</next></block>".repeat(blocksToClose));
+		xml.repeat("</next></block>", blocksToClose);
 
 		return xml.toString();
 	}

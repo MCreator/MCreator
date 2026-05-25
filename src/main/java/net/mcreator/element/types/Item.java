@@ -155,6 +155,8 @@ import java.util.stream.Collectors;
 		this.attributeModifiers = new ArrayList<>();
 
 		this.attackSpeed = 1.6;
+
+		this.musicDiscLengthInTicks = 100;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

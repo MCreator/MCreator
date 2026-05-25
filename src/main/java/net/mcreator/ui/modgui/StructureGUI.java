@@ -62,24 +62,24 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	private MCItemListField ignoreBlocks;
 
-	private final JComboBox<String> surfaceDetectionType =
-			ComponentFromAnnotation.options(Structure.class, "surfaceDetectionType");
+	private final JComboBox<String> surfaceDetectionType = ComponentFromAnnotation.options(Structure.class,
+			"surfaceDetectionType");
 
-	private final JComboBox<String> terrainAdaptation =
-			ComponentFromAnnotation.options(Structure.class, "terrainAdaptation");
+	private final JComboBox<String> terrainAdaptation = ComponentFromAnnotation.options(Structure.class,
+			"terrainAdaptation");
 
 	private final JComboBox<String> projection = ComponentFromAnnotation.options(Structure.class, "projection");
 
 	private BiomeListField restrictionBiomes;
 
-	private final JMinMaxSpinner separation_spacing = ComponentFromAnnotation
-			.minMaxSpinner(Structure.class, "separation", "spacing");
+	private final JMinMaxSpinner separation_spacing = ComponentFromAnnotation.minMaxSpinner(Structure.class,
+			"separation", "spacing");
 
 	private final JCheckBox useStartHeight = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> startHeightProviderType =
-			ComponentFromAnnotation.options(Structure.class, "startHeightProviderType");
-	private final JMinMaxSpinner startHeightRange = ComponentFromAnnotation
-			.minMaxSpinner(Structure.class, "startHeightMin", "startHeightMax");
+	private final JComboBox<String> startHeightProviderType = ComponentFromAnnotation.options(Structure.class,
+			"startHeightProviderType");
+	private final JMinMaxSpinner startHeightRange = ComponentFromAnnotation.minMaxSpinner(Structure.class,
+			"startHeightMin", "startHeightMax");
 
 	private SearchableComboBox<String> structureSelector;
 
@@ -87,8 +87,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 			DataListLoader.loadDataList("generationsteps"));
 
 	private final JSpinner size = ComponentFromAnnotation.spinner(Structure.class, "size");
-	private final JSpinner maxDistanceFromCenter = ComponentFromAnnotation
-			.spinner(Structure.class, "maxDistanceFromCenter");
+	private final JSpinner maxDistanceFromCenter = ComponentFromAnnotation.spinner(Structure.class,
+			"maxDistanceFromCenter");
 	private JJigsawPoolsList jigsaw;
 
 	private final ValidationGroup page1group = new ValidationGroup();
@@ -106,7 +106,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		jigsaw = new JJigsawPoolsList(mcreator, this, modElement);
 
-		terrainAdaptation.addActionListener(e -> {
+		terrainAdaptation.addActionListener(_ -> {
 			int max = "none".equals(terrainAdaptation.getSelectedItem()) ? 128 : 116;
 			SpinnerNumberModel spinnerModel = (SpinnerNumberModel) maxDistanceFromCenter.getModel();
 			spinnerModel.setMaximum(max);
@@ -129,7 +129,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		JButton importnbt = new JButton(UIRES.get("18px.add"));
 		importnbt.setToolTipText(L10N.t("elementgui.structuregen.import_tooltip"));
 		importnbt.setOpaque(false);
-		importnbt.addActionListener(e -> {
+		importnbt.addActionListener(_ -> {
 			File sch = FileDialogs.getOpenDialog(mcreator, new String[] { ".nbt" });
 			if (sch != null) {
 				String strname = RegistryNameFixer.fix(sch.getName().toLowerCase(Locale.ENGLISH));
@@ -161,7 +161,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		params.add(PanelUtils.westAndCenterElement(useStartHeight,
 				PanelUtils.westAndCenterElement(startHeightProviderType, startHeightRange, 5, 5), 5, 5));
 
-		useStartHeight.addActionListener(e -> updateEnabledFields());
+		useStartHeight.addActionListener(_ -> updateEnabledFields());
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/terrain_adaptation"),
 				L10N.label("elementgui.structuregen.terrain_adaptation")));

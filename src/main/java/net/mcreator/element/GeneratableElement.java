@@ -28,8 +28,11 @@ import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.util.TestUtil;
+import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -38,14 +41,13 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 85;
+	public static final int formatVersion = 86;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -93,27 +95,22 @@ public abstract class GeneratableElement {
 		return conversionApplied;
 	}
 
-	public final boolean performQuickValidation() {
-		for (Field field : getClass().getDeclaredFields()) {
-			if (field.isAnnotationPresent(Nonnull.class)) {
-				field.setAccessible(true);
-				try {
-					if (field.get(this) == null) {
-						LOG.warn(
-								"Field {} of mod element {} is null, but should not be. Assuming invalid generatable element.",
-								field.getName(), this.element.getName());
-						return false;
-					}
-				} catch (IllegalAccessException ignored) {
-				}
-			}
-		}
-
-		return true;
-	}
-
 	public boolean isUnknown() {
 		return false;
+	}
+
+	/**
+	 * Checks if the type of the passed value is likely part of the data model and not related to the technical part of the application.
+	 * Scanning values that do not pass this condition will most probably lead to a {@link StackOverflowError}.
+	 * <br>NOTE: If the checked values are instances of a class not contained in this module, they will still be checked.
+	 *
+	 * @param value The value that should be checked.
+	 * @return Whether it is safe to scan the {@code value} object deeper.
+	 */
+	public static boolean isDataModelObject(Object value) {
+		return (value.getClass().getModule() == MCreator.class.getModule() || PluginLoader.INSTANCE.getPluginModules()
+				.contains(value.getClass().getModule()))
+				&& !(value instanceof IWorkspaceProvider); // prevent from being stuck in the app structure
 	}
 
 	public static class GSONAdapter

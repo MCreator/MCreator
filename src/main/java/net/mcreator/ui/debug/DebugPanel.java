@@ -346,8 +346,7 @@ public class DebugPanel extends JPanel {
 		// In case debug was stopped in the WAITING state, we switch to DEBUGGING here to show the right panel
 		cardLayout.show(this, DEBUGGING);
 
-		mcreator.getBottomDockRegion()
-				.setDockVisibility(ModMaker.DOCK_DEBUGGER, false);
+		mcreator.getBottomDockRegion().setDockVisibility(ModMaker.DOCK_DEBUGGER, false);
 	}
 
 	private void initiateDebugSession() {

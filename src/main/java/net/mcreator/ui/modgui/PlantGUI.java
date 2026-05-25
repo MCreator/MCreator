@@ -60,8 +60,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PlantGUI extends ModElementGUI<Plant> {
@@ -83,8 +85,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner resistance = ComponentFromAnnotation.spinner(Plant.class, "resistance");
 	private final JSpinner frequencyOnChunks = ComponentFromAnnotation.spinner(Plant.class, "frequencyOnChunks");
 	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(Plant.class, "dropAmount");
-	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation
-			.minMaxSpinner(Plant.class, "xpAmountMin", "xpAmountMax").allowEqualValues();
+	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation.minMaxSpinner(Plant.class, "xpAmountMin",
+			"xpAmountMax").allowEqualValues();
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
@@ -208,7 +210,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
-		renderType.addActionListener(e -> boundingBoxList.modelChanged());
+		renderType.addActionListener(_ -> boundingBoxList.modelChanged());
 
 		generateFeature.setOpaque(false);
 
@@ -437,7 +439,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			trees[i].setPreferredSize(new Dimension(280, -1));
 			flowerTrees[i].setPreferredSize(new Dimension(280, -1));
 			megaTrees[i].setPreferredSize(new Dimension(280, -1));
-			megaTrees[i].addEntrySelectedListener(e -> updateWaterloggableSetting());
+			megaTrees[i].addEntrySelectedListener(_ -> updateWaterloggableSetting());
 		}
 
 		saplingCard.add("Center", PanelUtils.pullElementUp(saplingProperties));
@@ -448,7 +450,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plantTypesCardPanel.add(doublePlantCard, "double");
 		plantTypesCardPanel.add(saplingCard, "sapling");
 
-		plantType.addActionListener(e -> updatePlantType());
+		plantType.addActionListener(_ -> updatePlantType());
 
 		sbbp2.add("North", PanelUtils.centerInPanel(plantTypeSelector));
 		sbbp2.add("Center", texturesAndRent);
@@ -478,7 +480,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		customBoundingBox.addActionListener(e -> {
+		customBoundingBox.addActionListener(_ -> {
 			disableOffset.setEnabled(customBoundingBox.isSelected());
 			if (!customBoundingBox.isSelected()) {
 				disableOffset.setSelected(false);
@@ -511,7 +513,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		dropAmount.setOpaque(false);
 		hasBlockItem.setOpaque(false);
 		hasBlockItem.setSelected(true);
-		hasBlockItem.addActionListener(e -> updateBlockItemSettings());
+		hasBlockItem.addActionListener(_ -> updateBlockItemSettings());
 		immuneToFire.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -532,7 +534,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.is_unbreakable")));
 		selp.add(unbreakable);
 
-		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
+		unbreakable.addActionListener(_ -> refreshUnbreakableProperties());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.common.luminance")));
@@ -577,8 +579,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		defaultSoundType.setOpaque(false);
 		customSoundType.setOpaque(false);
 
-		defaultSoundType.addActionListener(event -> updateSoundType());
-		customSoundType.addActionListener(event -> updateSoundType());
+		defaultSoundType.addActionListener(_ -> updateSoundType());
+		customSoundType.addActionListener(_ -> updateSoundType());
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), defaultSoundType));
 		soundProperties.add(soundOnStep);
@@ -606,7 +608,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.soundtypes.fall_sound")));
 		soundProperties.add(fallSound);
 
-		useLootTableForDrops.addActionListener(e -> {
+		useLootTableForDrops.addActionListener(_ -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
@@ -702,7 +704,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		bonemealEvents.add(bonemealSuccessCondition);
 		bonemealEvents.add(onBonemealSuccess);
 
-		isBonemealable.addActionListener(e -> refreshBonemealProperties());
+		isBonemealable.addActionListener(_ -> refreshBonemealProperties());
 		refreshBonemealProperties();
 
 		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
@@ -756,7 +758,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.generate_feature")));
 		spawning.add(generateFeature);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),

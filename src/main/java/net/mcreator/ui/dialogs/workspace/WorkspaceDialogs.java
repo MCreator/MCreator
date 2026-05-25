@@ -62,7 +62,10 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.*;
@@ -420,8 +423,10 @@ public class WorkspaceDialogs {
 					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.details")));
 			_basicSettings.add(descriptionSettings);
-			descriptionSettings.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, L10N.label("dialog.workspace_settings.version"),
-					PanelUtils.join(FlowLayout.RIGHT, HelpUtils.helpButton(IHelpContext.NONE.withEntry("common/mod_version")))));
+			descriptionSettings.add(
+					PanelUtils.join(FlowLayout.LEFT, 0, 0, L10N.label("dialog.workspace_settings.version"),
+							PanelUtils.join(FlowLayout.RIGHT,
+									HelpUtils.helpButton(IHelpContext.NONE.withEntry("common/mod_version")))));
 			descriptionSettings.add(version);
 			descriptionSettings.add(L10N.label("dialog.workspace_settings.description"));
 			descriptionSettings.add(description);

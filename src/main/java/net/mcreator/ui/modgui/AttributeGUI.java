@@ -20,7 +20,6 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.Attribute;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
@@ -42,7 +41,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 
 public class AttributeGUI extends ModElementGUI<Attribute> {
 
@@ -95,7 +93,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 				L10N.label("elementgui.attribute.entities")));
 		pane1.add(entities);
 
-		addToAllEntities.addActionListener((e) -> {
+		addToAllEntities.addActionListener(_ -> {
 			addToPlayers.setEnabled(!addToAllEntities.isSelected());
 			entities.setEnabled(!addToAllEntities.isSelected());
 		});

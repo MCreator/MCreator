@@ -55,6 +55,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -229,7 +230,7 @@ import java.util.stream.Collectors;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
-	public String generationShape;
+	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
 	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
 	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
 	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
@@ -510,8 +511,11 @@ import java.util.stream.Collectors;
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-				baseTypes.add(BaseType.FEATURE);
+					== GeneratorFlavor.FABRIC ||
+					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+				baseTypes.add(
+						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
 		if (hasInventory)

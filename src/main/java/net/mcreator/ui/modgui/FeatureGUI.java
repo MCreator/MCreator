@@ -121,7 +121,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		properties.setOpaque(false);
 
-		skipPlacement.addActionListener(e -> refreshPlacementSettings(true));
+		skipPlacement.addActionListener(_ -> refreshPlacementSettings(true));
 		refreshPlacementSettings(false);
 
 		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
@@ -135,7 +135,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "FeatureRegenerate").start());
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "FeatureRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Feature.class, "featurexml"));
@@ -146,7 +146,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		JButton featureHelperButton = L10N.button("elementgui.feature.generate_placement");
 		featureHelperButton.setIcon(UIRES.get("18px.add"));
-		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
+		featureHelperButton.addActionListener(_ -> new PlacementHelperDialog(blocklyPanel, mcreator));
 		BlocklyEditorToolbar.styleButton(featureHelperButton);
 
 		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE, blocklyPanel, null,
