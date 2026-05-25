@@ -237,13 +237,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 2));
 		dimensionEffects.setOpaque(false);
 
-		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/default_effects"),
-				L10N.label("elementgui.dimension.default_effects")));
-		dimensionEffects.add(defaultEffects);
-
-		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/use_custom_effects"),
-				L10N.label("elementgui.dimension.use_custom_effects")));
-		dimensionEffects.add(useCustomEffects);
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sky_type"),
+				L10N.label("elementgui.dimension.sky_type")));
+		dimensionEffects.add(skyType);
 
 		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_clouds"),
 				L10N.label("elementgui.dimension.has_clouds")));
@@ -253,9 +249,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.cloud_height")));
 		dimensionEffects.add(cloudHeight);
 
-		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sky_type"),
-				L10N.label("elementgui.dimension.sky_type")));
-		dimensionEffects.add(skyType);
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/default_effects"),
+				L10N.label("elementgui.dimension.default_effects")));
+		dimensionEffects.add(defaultEffects);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/use_custom_effects"),
+				L10N.label("elementgui.dimension.use_custom_effects")));
+		dimensionEffects.add(useCustomEffects);
 
 		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
 				L10N.label("elementgui.dimension.fog_air_color")));
@@ -317,7 +317,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
 		hasClouds.setOpaque(false);
 		hasClouds.addActionListener(
-				_ -> cloudHeight.setEnabled(useCustomEffects.isSelected() && hasClouds.isSelected()));
+				_ -> cloudHeight.setEnabled(hasClouds.isSelected()));
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
 		sunHeightAffectsFog.setOpaque(false);
@@ -567,9 +567,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private void updateDimensionEffectSettings(boolean hasCustomEffects) {
 		defaultEffects.setEnabled(!hasCustomEffects);
-		hasClouds.setEnabled(hasCustomEffects);
-		cloudHeight.setEnabled(hasCustomEffects && hasClouds.isSelected());
-		skyType.setEnabled(hasCustomEffects);
 		airColor.setEnabled(hasCustomEffects);
 		sunHeightAffectsFog.setEnabled(hasCustomEffects);
 		hasFog.setEnabled(hasCustomEffects);

@@ -25,6 +25,7 @@ import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,42 @@ import java.util.List;
 
 	public boolean isWanderingTrader() {
 		return "WANDERING_TRADER".equals(villagerProfession.getUnmappedValue());
+	}
+
+	public String professionFolder() {
+		String retval = villagerProfession.getMappedValue();
+		if (retval.contains(":"))
+			return StringUtils.substringAfterLast(retval, ":");
+		return retval;
+	}
+
+	public List<String> level1Trades() {
+		return getTradesForLevel(1);
+	}
+
+	public List<String> level2Trades() {
+		return getTradesForLevel(2);
+	}
+
+	public List<String> level3Trades() {
+		return getTradesForLevel(3);
+	}
+
+	public List<String> level4Trades() {
+		return getTradesForLevel(4);
+	}
+
+	public List<String> level5Trades() {
+		return getTradesForLevel(5);
+	}
+
+	private List<String> getTradesForLevel(int level) {
+		ArrayList<String> retval = new ArrayList<>();
+		for (int i = 0; i < trades.size(); i++) {
+			if (trades.get(i).level == level)
+				retval.add(this.getModElement().getRegistryName() + "_" + i);
+		}
+		return retval;
 	}
 
 	public static class TradeEntry {

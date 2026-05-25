@@ -177,7 +177,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), "Boat", true));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
 			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
-		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
+		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
@@ -2387,7 +2387,7 @@ public class TestWorkspaceDataProvider {
 		tool.attackSpeed = getRandomDouble(random, Tool.class, "attackSpeed");
 		tool.enchantability = getRandomInt(random, Tool.class, "enchantability");
 		tool.damageVsEntity = getRandomDouble(random, Tool.class, "damageVsEntity");
-		tool.usageCount = getRandomInt(random, Tool.class, "usageCount");
+		tool.usageCount = emptyLists ? 0 : getRandomInt(random, Tool.class, "usageCount");
 		tool.stayInGridWhenCrafting = _true;
 		tool.damageOnCrafting = emptyLists;
 		tool.immuneToFire = _true;
