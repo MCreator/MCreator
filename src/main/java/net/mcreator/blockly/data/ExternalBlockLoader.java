@@ -144,10 +144,7 @@ public class ExternalBlockLoader {
 		this.blocksJSONString = blocksJSON.toString();
 
 		// after cache is made, we can load dynamic blocks if supported
-		if (blocklyEditorType == BlocklyEditorType.PROCEDURE) {
-			// At this time, only procedures use dynamic blocks
-			toolboxBlocksList.addAll(DynamicBlockLoader.getDynamicBlocks());
-		}
+		toolboxBlocksList.addAll(DynamicBlockLoader.getDynamicBlocks(blocklyEditorType));
 
 		// and then sort them for toolbox display
 		if (PreferencesManager.PREFERENCES.blockly.useSmartSort.get()) {

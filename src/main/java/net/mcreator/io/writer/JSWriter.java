@@ -42,10 +42,8 @@ public class JSWriter {
 
 	public static String formatJS(String srcjs) {
 		try {
-			JavaScriptOptions options = JavaScriptOptions.builder()
-					.brace_style(JavaScriptOptions.BraceStyle.none)
-					.brace_preserve_inline(true)
-					.build();
+			JavaScriptOptions options = JavaScriptOptions.builder().brace_style(JavaScriptOptions.BraceStyle.none)
+					.brace_preserve_inline(true).build();
 			options.indent_char = "\t";
 			options.indent_size = 1;
 			options.wrap_line_length = 150;

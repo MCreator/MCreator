@@ -20,10 +20,13 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -32,6 +35,7 @@ import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BEItem extends GeneratableElement implements IItem, IItemWithTexture {
@@ -39,29 +43,38 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 
 	public String name;
-	public int stackSize;
-	public double useDuration;
-	public int maxDurability;
+	@Numeric(init = 64, min = 1, max = 64, step = 1) public int stackSize;
+	@Numeric(init = 0, min = 0, max = 128000, step = 0.1) public double useDuration;
+	@Numeric(init = 0, min = 0, max = 128000, step = 1) public int maxDurability;
 	public boolean enableMeleeDamage;
-	public double damageVsEntity;
+	@Numeric(init = 0, min = 0, max = 255, step = 1) public int damageVsEntity;
 	public boolean hasGlint;
 	public boolean handEquipped;
-	public String rarity;
+	@LimitedOptions({ "common", "uncommon", "rare", "epic" }) public String rarity;
 	public boolean enableCreativeTab;
 	public String creativeTab;
 	public boolean isHiddenInCommands;
-	public double movementModifier;
+	@Numeric(init = 0, min = 0, max = 1, step = 0.05) public double movementModifier;
 	public boolean allowOffHand;
-	public double fuelDuration;
+	@Numeric(init = 0, min = 0, max = 107374180, step = 0.05) public double fuelDuration;
 	public boolean shouldDespawn;
+	public boolean stackedByData;
+	public MItemBlock blockToPlace;
+	@ModElementReference public List<MItemBlock> blockPlaceableOn;
+	public EntityEntry entityToPlace;
+	@ModElementReference public List<MItemBlock> entityPlaceableOn;
+	@ModElementReference public List<MItemBlock> entityDispensableOn;
 
 	// Food
 	public boolean isFood;
-	public int foodNutritionalValue;
-	public double foodSaturation;
+	@Numeric(init = 4, min = -1000, max = 1000, step = 1) public int foodNutritionalValue;
+	@Numeric(init = 0.3, min = -1000, max = 1000, step = 0.1) public double foodSaturation;
 	public boolean foodCanAlwaysEat;
 	@ModElementReference public MItemBlock usingConvertsTo;
+	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear", "brush", "spyglass", "camera" })
 	public String animation;
+
+	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 
 	public BEItem() {
 		this(null);
@@ -69,12 +82,19 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 
 	public BEItem(ModElement element) {
 		super(element);
-		this.rarity = "COMMON";
-		this.movementModifier = 1.0;
-		this.shouldDespawn = true;
-		this.animation = "eat";
-		this.enableCreativeTab = true;
-		this.creativeTab = "MATERIALS";
+
+		rarity = "common";
+		movementModifier = 1.0;
+		shouldDespawn = true;
+		animation = "eat";
+		enableCreativeTab = true;
+		creativeTab = "MATERIALS";
+
+		blockPlaceableOn = new ArrayList<>();
+		entityDispensableOn = new ArrayList<>();
+		entityPlaceableOn = new ArrayList<>();
+
+		localScripts = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

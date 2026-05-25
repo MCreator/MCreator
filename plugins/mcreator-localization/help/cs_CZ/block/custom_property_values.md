@@ -1,0 +1,1 @@
+Toto jsou hodnoty, které vlastnosti vlastního bloku mohou mít.

@@ -20,8 +20,8 @@
 package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.BlocklyTemplateIO;
+import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -64,25 +64,23 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 				else
 					procedureXml = BlocklyTemplateIO.importBlocklyXML((File) template.identifier);
 
-				modTypeButton.addActionListener(actionEvent -> {
-					new Thread(() -> {
-						if (procedureGUI != null) {
-							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
-							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
+				modTypeButton.addActionListener(_ -> new Thread(() -> {
+					if (procedureGUI != null) {
+						Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
+						List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
-							for (VariableElement localVariable : localVariables) {
-								if (existingLocalVariables.contains(localVariable))
-									continue; // skip if variable with this name already exists
+						for (VariableElement localVariable : localVariables) {
+							if (existingLocalVariables.contains(localVariable))
+								continue; // skip if variable with this name already exists
 
-								blocklyPanel.addLocalVariable(localVariable.getName(),
-										localVariable.getType().getBlocklyVariableType());
-								procedureGUI.localVars.addElement(localVariable);
-							}
+							blocklyPanel.addLocalVariable(localVariable.getName(),
+									localVariable.getType().getBlocklyVariableType());
+							procedureGUI.localVars.addElement(localVariable);
 						}
+					}
 
-						blocklyPanel.addBlocksFromXML(procedureXml);
-					}, "Blockly-Template-Placer").start();
-				});
+					blocklyPanel.addBlocksFromXML(procedureXml);
+				}, "Blockly-Template-Placer").start());
 
 				modTypeButton.setOpaque(true);
 				ComponentUtils.deriveFont(modTypeButton, 12);

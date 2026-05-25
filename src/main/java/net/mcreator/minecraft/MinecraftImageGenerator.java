@@ -237,7 +237,7 @@ public class MinecraftImageGenerator {
 	}
 
 	public static ImageIcon generateItemWithCount(MCItem item, int count) {
-		Image baseImage = item.icon.getImage();
+		Image baseImage = item.getIcon().getImage();
 
 		BufferedImage itemImage = new BufferedImage(baseImage.getWidth(null), baseImage.getHeight(null),
 				BufferedImage.TYPE_INT_ARGB);

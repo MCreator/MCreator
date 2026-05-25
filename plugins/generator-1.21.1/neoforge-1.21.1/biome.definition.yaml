@@ -19,6 +19,10 @@ templates:
   - template: biome/tree_trunk_decorator.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMETrunkDecorator.java"
     condition: hasVines()
+  - template: biome/mixin_biomesourcepreset.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/BiomeSourcePresetMixin.java"
 
 global_templates:
   - template: elementinits/biomes.java.ftl

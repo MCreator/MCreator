@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------
 
 #WARNING: WHEN CHANGING THIS FILE, MCREATOR BINARIES NEED TO BE RECOMPILED WITH SHC.
-#To compile for both binaries on an aarch64 machine, follow these instructions:
+#To compile for both architectures (x64 and aarch64) on an aarch64 machine, follow these instructions:
 #1. Install Rosetta
 #2. Install 2 instances of homebrew, one with the arch -x86_64 prefix
 #3. Brew shc for both instances with brew install shc and arch -x86_64 brew install shc
@@ -20,6 +20,7 @@ cd ..
 
 ./jdk.bundle/Contents/Home/bin/java \
   --add-opens=java.base/java.lang=ALL-UNNAMED \
+  --enable-native-access=ALL-UNNAMED,jcef \
   -Xdock:name=MCreator \
   -Xdock:icon=./Resources/mcreatorapp.icns \
   -Dapple.awt.application.appearance=system \

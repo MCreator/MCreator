@@ -139,7 +139,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		cancel.addActionListener(event -> dispose());
 
 		pack();
-		setSize(Math.max(940, getBounds().width), 547);
+		setSize(Math.max(960, getBounds().width), 570);
 		setLocationRelativeTo(parent);
 		setVisible(true);
 	}

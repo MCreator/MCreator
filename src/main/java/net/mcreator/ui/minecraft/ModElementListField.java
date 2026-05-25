@@ -26,22 +26,32 @@ import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
 
 public class ModElementListField extends JItemListField<NonMappableElement> {
 
 	private final ModElementType<?> type;
 
+	private final Predicate<ModElement> additionalFilter;
+
 	public ModElementListField(MCreator mcreator, ModElementType<?> type) {
+		this(mcreator, type, me -> true);
+	}
+
+	public ModElementListField(MCreator mcreator, ModElementType<?> type,
+			@Nonnull Predicate<ModElement> additionalFilter) {
 		super(mcreator);
 		this.type = type;
+		this.additionalFilter = additionalFilter;
 	}
 
 	@Override protected List<NonMappableElement> getElementsToAdd() {
 		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
-						w -> w.getModElements().stream().filter(e -> e.getType() == this.type).map(ModElement::getName)
-								.toArray(String[]::new), L10N.t("dialog.list_field.mod_element_title"),
+						w -> w.getModElements().stream().filter(e -> e.getType() == this.type).filter(additionalFilter)
+								.map(ModElement::getName).toArray(String[]::new), L10N.t("dialog.list_field.mod_element_title"),
 						L10N.t("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)))
 				.stream().map(NonMappableElement::new).toList();
 	}

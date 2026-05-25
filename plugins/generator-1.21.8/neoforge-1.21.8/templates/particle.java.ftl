@@ -54,7 +54,7 @@ public class ${name}Particle extends TextureSheetParticle {
 
 	private final SpriteSet spriteSet;
 
-	<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+	<#if data.hasAngularVelocityOrAcceleration()>
 	private float angularVelocity;
 	private float angularAcceleration;
 	</#if>
@@ -82,7 +82,7 @@ public class ${name}Particle extends TextureSheetParticle {
 		this.yd = vy * ${data.speedFactor};
 		this.zd = vz * ${data.speedFactor};
 
-		<#if data.angularVelocity != 0 || data.angularAcceleration != 0>
+		<#if data.hasAngularVelocityOrAcceleration()>
 		this.angularVelocity = ${data.angularVelocity}f;
 		this.angularAcceleration = ${data.angularAcceleration}f;
 		</#if>
@@ -124,7 +124,7 @@ public class ${name}Particle extends TextureSheetParticle {
 			"angularVelocity": "this.angularVelocity",
 			"angularAcceleration": "this.angularAcceleration",
 			"age": "this.age + partialTicks"
-		}/>;
+		}/>
 		Quaternionf tilt = new Quaternionf().rotationXYZ((float) vec.x(), (float) vec.y(), (float) vec.z());
 		this.renderRotatedQuad(buffer, camera, tilt, partialTicks);
 		<#-- render a flipped face because by default only a single side renders this makes particle visible from all angles -->

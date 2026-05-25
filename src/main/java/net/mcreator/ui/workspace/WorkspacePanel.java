@@ -1036,13 +1036,18 @@ import java.util.regex.Pattern;
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
 
 					GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
-							.fromJSONtoGeneratableElement(mcreator.getModElementManager()
+							.fromJSONtoGeneratableElementOrNull(mcreator.getModElementManager()
 									.generatableElementToJSON(generatableElementOriginal), duplicateModElement);
 
 					if (generatableElementDuplicate instanceof NamespacedGeneratableElement) {
 						((NamespacedGeneratableElement) generatableElementDuplicate).name = RegistryNameFixer.fromCamelCase(
 								modName);
 					}
+
+					duplicateModElement.setParentFolder(
+							Objects.requireNonNullElse(breadcrumb.getCurrentFolder(), currentFolder));
+					mcreator.getWorkspace().getModElementManager().storeModElementPicture(generatableElementDuplicate);
+					mcreator.getWorkspace().addModElement(duplicateModElement);
 
 					mcreator.getGenerator().generateElement(generatableElementDuplicate);
 					mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
@@ -1071,12 +1076,6 @@ import java.util.regex.Pattern;
 
 						duplicateModElement.setCodeLock(true);
 					}
-
-					// specify the folder of the mod element
-					duplicateModElement.setParentFolder(
-							Objects.requireNonNullElse(breadcrumb.getCurrentFolder(), currentFolder));
-
-					mcreator.getWorkspace().addModElement(duplicateModElement);
 
 					reloadWorkspaceTab();
 				}

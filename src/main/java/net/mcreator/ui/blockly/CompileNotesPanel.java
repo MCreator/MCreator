@@ -58,7 +58,7 @@ public class CompileNotesPanel extends JPanel {
 		varHeader2.add(ComponentUtils.deriveFont(compileNotesLabel, 12.0f));
 		add("North", varHeader2);
 		setPreferredSize(new Dimension(0, 50));
-		setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 	}
 
 	@Override public void paintComponent(Graphics g) {
@@ -76,13 +76,17 @@ public class CompileNotesPanel extends JPanel {
 	}
 
 	static class CompileNotesListRenderer extends JLabel implements ListCellRenderer<BlocklyCompileNote> {
+
+		CompileNotesListRenderer() {
+			setBackground(Theme.current().getBackgroundColor());
+			setForeground(Theme.current().getForegroundColor());
+			ComponentUtils.deriveFont(this, 12);
+		}
+
 		@Override
 		public Component getListCellRendererComponent(JList<? extends BlocklyCompileNote> list,
 				BlocklyCompileNote value, int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(Theme.current().getBackgroundColor());
-			setForeground(Theme.current().getForegroundColor());
-			ComponentUtils.deriveFont(this, 12);
 			switch (value.type()) {
 			case ERROR -> setIcon(UIRES.get("18px.remove"));
 			case WARNING -> setIcon(UIRES.get("18px.warning"));

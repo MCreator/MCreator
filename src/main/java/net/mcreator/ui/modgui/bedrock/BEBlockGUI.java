@@ -19,14 +19,17 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.types.bedrock.BEBlock;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -34,11 +37,9 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.minecraft.BlockTexturesSelector;
-import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.ListUtils;
@@ -52,7 +53,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -62,7 +63,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private BlockTexturesSelector textures;
 
 	public static final Model normal = new Model.BuiltInModel("Normal");
-	public static final Model[] builtinitemmodels = new Model[] { normal };
+	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
+	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
@@ -72,22 +75,26 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner lightEmission = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner hardness = ComponentFromAnnotation.spinner(BEBlock.class, "hardness");
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(BEBlock.class, "resistance");
+	private final JSpinner lightEmission = ComponentFromAnnotation.spinner(BEBlock.class, "lightEmission");
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
+	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(BEBlock.class, "dropAmount");
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
-	private final JSpinner friction = new JSpinner(new SpinnerNumberModel(0.6, 0, 0.9, 0.01));
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner flammableDestroyChance = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner friction = ComponentFromAnnotation.spinner(BEBlock.class, "friction");
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(BEBlock.class, "flammability");
+	private final JSpinner flammableDestroyChance = ComponentFromAnnotation.spinner(BEBlock.class,
+			"flammableDestroyChance");
 
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
-	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
-	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
-	private final JSpinner oreCount = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
+	private final TranslatedComboBox generationShape = ComponentFromAnnotation.translatedOptions(BEBlock.class,
+			"generationShape", "elementgui.block.generation_shape.");
+	private final JMinMaxSpinner generateHeight = ComponentFromAnnotation.minMaxSpinner(BEBlock.class,
+			"minGenerateHeight", "maxGenerateHeight").allowEqualValues();
+	private final JSpinner frequencyPerChunks = ComponentFromAnnotation.spinner(BEBlock.class, "frequencyPerChunks");
+	private final JSpinner oreCount = ComponentFromAnnotation.spinner(BEBlock.class, "oreCount");
 	private final MCItemListField blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(
@@ -97,16 +104,15 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
 					L10N.t("elementgui.block.rotation_mode.log") });
 
-	private final JComboBox<String> renderMethod = new JComboBox<>(
-			new String[] { "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
-					"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" });
+	private final JComboBox<String> renderMethod = ComponentFromAnnotation.options(BEBlock.class, "renderMethod");
 
-	private final JComboBox<String> tintMethod = new JComboBox<>(
-			new String[] { "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
-					"water" });
+	private final JComboBox<String> tintMethod = ComponentFromAnnotation.options(BEBlock.class, "tintMethod");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
+
+	private final ModElementListField localScripts = new ModElementListField(mcreator, ModElementType.BESCRIPT,
+			me -> "block".equals(me.getMetadata("type")));
 
 	public BEBlockGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -121,12 +127,14 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		propertiesPanel.setOpaque(false);
 		JPanel generationPanel = new JPanel(new BorderLayout(10, 10));
 		generationPanel.setOpaque(false);
+		JPanel scriptsPanel = new JPanel(new BorderLayout(10, 10));
+		scriptsPanel.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
 		page1group.addValidationElement(textures);
 
 		ComponentUtils.deriveFont(renderType, 16);
-		renderType.addActionListener(event -> updateTextureOptions());
+		renderType.addActionListener(_ -> updateTextureOptions());
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -159,7 +167,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
-		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
@@ -202,7 +210,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(colorOnMap);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/slipperiness"),
-				L10N.label("elementgui.block.slipperiness")));
+				L10N.label("elementgui.beblock.friction")));
 		basicProperties.add(friction);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
@@ -218,14 +226,18 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
 
-		JPanel genPanel = new JPanel(new GridLayout(5, 2, 65, 2));
+		JPanel genPanel = new JPanel(new GridLayout(6, 2, 65, 2));
 		genPanel.setOpaque(false);
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
 				L10N.label("elementgui.block.generate_feature")));
 		genPanel.add(generateFeature);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/generation_shape"),
+				L10N.label("elementgui.block.generation_shape")));
+		genPanel.add(generationShape);
+
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
@@ -249,12 +261,20 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				PanelUtils.totalCenterInPanel(genPanel), 25, 0);
 		generationPanel.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
+		scriptsPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("beblock/scripts"),
+						L10N.label("elementgui.beblock.scripts")), localScripts)));
+
+		localScripts.setPreferredSize(new Dimension(640, 34));
+
 		addPage(L10N.t("elementgui.common.page_visual"), visualPanel).validate(page1group);
-		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page2group);
+		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_generation"), generationPanel);
+		addPage(L10N.t("elementgui.common.page_scripts"), scriptsPanel);
 
 		if (!isEditingMode()) {
 			name.setText(StringUtils.machineToReadableName(modElement.getName()));
+			enableCreativeTab.setSelected(true);
 		}
 		updateTextureOptions();
 		updateCreativeTab();
@@ -285,7 +305,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, cross, singleTexture),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 	}
@@ -313,6 +333,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		flammableDestroyChance.setValue(block.flammableDestroyChance);
 
 		generateFeature.setSelected(block.generateFeature);
+		generationShape.setSelectedItem(block.generationShape);
 		blocksToReplace.setListElements(block.blocksToReplace);
 		generateHeight.setMinValue(block.minGenerateHeight);
 		generateHeight.setMaxValue(block.maxGenerateHeight);
@@ -322,6 +343,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		rotationMode.setSelectedIndex(block.rotationMode);
 		renderMethod.setSelectedItem(block.renderMethod);
 		tintMethod.setSelectedItem(block.tintMethod);
+
+		localScripts.setListElements(block.localScripts.stream().map(NonMappableElement::new).toList());
 
 		updateTextureOptions();
 		updateCreativeTab();
@@ -342,6 +365,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.renderType = 10;
 		if (model.getType() == Model.Type.BEDROCK)
 			block.renderType = 2;
+		else if (model.equals(cross))
+			block.renderType = 11;
+		else if (model.equals(singleTexture))
+			block.renderType = 12;
 		block.customModelName = model.getReadableName();
 
 		block.name = name.getText();
@@ -360,6 +387,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.friction = (double) friction.getValue();
 
 		block.generateFeature = generateFeature.isSelected();
+		block.generationShape = generationShape.getSelectedItem();
 		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
 		block.oreCount = (int) oreCount.getValue();
 		block.minGenerateHeight = generateHeight.getIntMinValue();
@@ -369,6 +397,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.renderMethod = (String) renderMethod.getSelectedItem();
 		block.tintMethod = (String) tintMethod.getSelectedItem();
+
+		block.localScripts = localScripts.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
 
 		return block;
 	}

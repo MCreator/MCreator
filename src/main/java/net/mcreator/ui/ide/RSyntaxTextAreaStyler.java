@@ -48,7 +48,7 @@ public class RSyntaxTextAreaStyler {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml");
 				themeXML = themeXML
-				//@formatter:off
+						//@formatter:off
 				.replace("${backgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getBackgroundColor()).getRGB()).substring(2))
 				.replace("${altBackgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getAltBackgroundColor()).getRGB()).substring(2))
 				.replace("${secondAltBackgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getSecondAltBackgroundColor()).getRGB()).substring(2))

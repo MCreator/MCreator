@@ -40,7 +40,8 @@ public class BlockToBedrockConverter implements IConverter {
 		if (workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
 			JsonObject blockJSON = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			BEBlock beblock = new BEBlock(new ModElement(workspace, block.getModElement().getName(), ModElementType.BEBLOCK));
+			BEBlock beblock = new BEBlock(
+					new ModElement(workspace, block.getModElement().getName(), ModElementType.BEBLOCK));
 			beblock.name = block.name;
 			beblock.texture = block.texture;
 			beblock.textureBack = block.textureBack;
@@ -60,7 +61,7 @@ public class BlockToBedrockConverter implements IConverter {
 			beblock.flammableDestroyChance = block.fireSpreadSpeed;
 			beblock.friction = block.slipperiness;
 			if (beblock.friction > 0.9)
-					beblock.friction = 0.9; // Current Bedrock limit
+				beblock.friction = 0.9; // Current Bedrock limit
 			if (blockJSON.has("luminance")) {
 				JsonElement luminance = blockJSON.get("luminance");
 				if (luminance.isJsonPrimitive()) {
@@ -76,7 +77,7 @@ public class BlockToBedrockConverter implements IConverter {
 			beblock.oreCount = block.frequencyOnChunk;
 			beblock.minGenerateHeight = block.minGenerateHeight;
 			beblock.maxGenerateHeight = block.maxGenerateHeight;
-			beblock.blocksToReplace  = block.blocksToReplace;
+			beblock.blocksToReplace = block.blocksToReplace;
 
 			return beblock;
 		}

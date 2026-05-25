@@ -124,7 +124,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 	private final SimpleLineChart cpuChart = new SimpleLineChart();
 	private final SimpleLineChart memoryChart = new SimpleLineChart();
-	
+
 	private final JPanel monitorPanel = new JPanel();
 
 	private CancellationTokenSource cancellationSource = GradleConnector.newCancellationTokenSource();
@@ -195,7 +195,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 				if (slock.isSelected() && fraction > 0.99)
 					slock.setSelected(false);
-				// only turn off scroll lock if scrolled more than 85% above the bottom, and we have at least 2000 scroll entries
+					// only turn off scroll lock if scrolled more than 85% above the bottom, and we have at least 2000 scroll entries
 				else if (!slock.isSelected() && fraction < 0.85 && maxValue > 2000)
 					slock.setSelected(true);
 			}
@@ -719,7 +719,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 					if (resultcode == GradleResultCode.STATUS_OK)
 						resultcode = GradleResultCode.GRADLE_BUILD_FAILED;
 
-					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskError(ref, resultcode, taskOut.toString(), taskErr.toString()));
+					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskError(ref, resultcode, taskOut.toString(),
+							taskErr.toString()));
 
 					taskComplete(resultcode);
 				});
@@ -963,6 +964,5 @@ public class GradleConsole extends JPanel implements ISearchable {
 		if (searchTerm != null)
 			searchBar.getSearchField().setText(searchTerm);
 	}
-
 
 }

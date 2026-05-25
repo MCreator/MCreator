@@ -30,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
 import net.mcreator.ui.minecraft.loottable.LootTablePreview;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -52,9 +53,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 	private final VComboBox<String> name = new VComboBox<>();
 
-	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Block", "Entity", "Generic", "Chest", "Fishing", "Empty", "Advancement reward", "Gift",
-					"Barter", "Archaeology" });
+	private final JComboBox<String> type = ComponentFromAnnotation.options(LootTable.class, "type");
 
 	private final VTextField lootTableToModify = new VTextField();
 
@@ -93,7 +92,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		} else {
 			name.getEditor().setItem("blocks/" + RegistryNameFixer.fromCamelCase(modElement.getName()));
 
-			type.addActionListener(e -> {
+			type.addActionListener(_ -> {
 				String currName = name.getEditor().getItem().toString();
 				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
 				if (type.getSelectedItem() != null)
@@ -115,7 +114,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				}
 			}
 
-			name.addActionListener(e -> {
+			name.addActionListener(_ -> {
 				String currName = name.getEditor().getItem().toString();
 				if (currName != null) {
 					if (currName.startsWith("blocks/")) {

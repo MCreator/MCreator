@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TransparentToolBar;

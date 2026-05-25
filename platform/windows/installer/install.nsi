@@ -4,7 +4,7 @@ Unicode true
 !addplugindir "${NSIS_DIR}\Plugins\x86-unicode"
 !addincludedir "${NSIS_DIR}\Include"
 
-SetCompressor "lzma" ; to improve installer open performance and its size
+SetCompressor "bzip2" ; to improve installer open performance and its size
 
 !include "MUI2.nsh"
 
@@ -44,8 +44,9 @@ InstallDir "$PROGRAMFILES${BITS}\Pylo\MCreator"
 
 !define MUI_LICENSEPAGE_TEXT_TOP "Read the license agreement below."
 
+!define MUI_FINISHPAGE_RUN
 !define MUI_FINISHPAGE_RUN_TEXT "Start MCreator after finish"
-!define MUI_FINISHPAGE_RUN "$INSTDIR\mcreator.exe"
+!define MUI_FINISHPAGE_RUN_FUNCTION LaunchAsUser
 
 !define MUI_FINISHPAGE_LINK "Donate and support MCreator project"
 !define MUI_FINISHPAGE_LINK_LOCATION "http://mcreator.net/donate"
@@ -76,7 +77,7 @@ ${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "Installer has detected a p
                  If you intend to install the new version in the same folder as the \
                  old version, you NEED to uninstall the old version first. \
                  Do you want to uninstall previous version?" /SD IDYES IDYES`
-	Call UninstallPrevious
+    Call UninstallPrevious
 ${EndIf}
 FunctionEnd
 
@@ -186,8 +187,12 @@ Function UninstallPrevious
         Call GetParent
         Pop $1
 
-        ; Run the uninstaller
-        ExecWait '"$0" _?=$1'
+        ; Run the uninstaller, dynamically passing /S if the current installer is running silently
+        ${If} ${Silent}
+            ExecWait '"$0" /S _?=$1'
+        ${Else}
+            ExecWait '"$0" _?=$1'
+        ${EndIf}
     ${EndIf}
 FunctionEnd
 
@@ -230,4 +235,8 @@ Function GetParent
     Pop $R1
     Exch $R0
 
+FunctionEnd
+
+Function LaunchAsUser
+  Exec '"$WINDIR\explorer.exe" "$INSTDIR\mcreator.exe"'
 FunctionEnd

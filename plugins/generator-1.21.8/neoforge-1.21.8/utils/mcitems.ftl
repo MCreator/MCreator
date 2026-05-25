@@ -1,7 +1,7 @@
 <#include "mcitems_json.ftl">
 
 <#function mappedBlockToBlockStateCode mappedBlock>
-    <#if mappedBlock?starts_with("/*@BlockState*/")>
+    <#if mappedBlock?trim?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","")>
     <#elseif mappedBlock?contains("/*@?*/")>
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
@@ -13,7 +13,7 @@
 </#function>
 
 <#function mappedBlockToBlock mappedBlock>
-    <#if mappedBlock?starts_with("/*@BlockState*/")>
+    <#if mappedBlock?trim?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
     <#elseif mappedBlock?contains("/*@?*/")>
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
@@ -27,7 +27,7 @@
 </#function>
 
 <#function mappedMCItemToItemStackCode mappedBlock amount=1>
-    <#if mappedBlock?starts_with("/*@ItemStack*/")>
+    <#if mappedBlock?trim?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
     <#elseif mappedBlock?contains("/*@?*/")>
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
@@ -49,7 +49,7 @@
 </#function>
 
 <#function mappedMCItemToItem mappedBlock>
-    <#if mappedBlock?starts_with("/*@ItemStack*/")>
+    <#if mappedBlock?trim?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
     <#elseif mappedBlock?contains("/*@?*/")>
         <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>

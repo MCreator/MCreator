@@ -47,7 +47,7 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.useDuration = (double) item.useDuration / 20;
 			beitem.maxDurability = item.damageCount;
 			beitem.enableMeleeDamage = item.enableMeleeDamage;
-			beitem.damageVsEntity = item.damageVsEntity;
+			beitem.damageVsEntity = Math.min((int) item.damageVsEntity, 255);
 
 			if (itemDefinition.has("glowCondition")) {
 				JsonObject itemGlowCondition = itemDefinition.getAsJsonObject("glowCondition");

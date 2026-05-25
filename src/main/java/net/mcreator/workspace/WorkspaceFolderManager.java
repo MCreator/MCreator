@@ -127,7 +127,7 @@ public final class WorkspaceFolderManager {
 		if (structuresDir != null) {
 			File[] files = structuresDir.listFiles();
 			for (File file : files != null ? files : new File[0])
-				if (file.getName().endsWith(".nbt"))
+				if (file.getName().endsWith("." + workspace.getGeneratorConfiguration().getStructureExtension()))
 					structures.add(FilenameUtilsPatched.removeExtension(file.getName()));
 		}
 		return structures;
