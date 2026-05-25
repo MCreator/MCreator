@@ -172,7 +172,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			.postProcess((bs, br, bp) -> bp)
 			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
-		<#if data.hasTransparency>
+		<#if data.forceRedstoneConductor>
+			.isRedstoneConductor((bs, br, bp) -> true)
+		<#elseif data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
 		</#if>
 		<#if (!data.isNotColidable && data.offsetType != "NONE")>
