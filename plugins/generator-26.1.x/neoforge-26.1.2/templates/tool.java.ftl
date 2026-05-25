@@ -122,7 +122,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 	<#if modifiesDefaultComponents(data.toolType)>
 	@SubscribeEvent public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
-		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), builder -> builder
+		event.modify(${JavaModName}Items.${REGISTRYNAME}.get(), (builder, _, _) -> builder
 		<#if data.usageCount == 0>
 			.set(DataComponents.MAX_DAMAGE, null)
 		</#if>

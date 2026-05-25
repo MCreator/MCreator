@@ -159,7 +159,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		List<ConsumeEffect> onConsumeEffects = new ArrayList<>(original.onConsumeEffects());
 		onConsumeEffects.add(new RemoveStatusEffectsConsumeEffect(${JavaModName}MobEffects.${REGISTRYNAME}));
 		Consumable replacementConsumable = new Consumable(original.consumeSeconds(), original.animation(), original.sound(), original.hasConsumeParticles(), onConsumeEffects);
-		event.modify(Items.HONEY_BOTTLE, builder -> builder.set(DataComponents.CONSUMABLE, replacementConsumable));
+		event.modify(Items.HONEY_BOTTLE, (builder, _, _) -> builder.set(DataComponents.CONSUMABLE, replacementConsumable));
 	}
 	</#if>
 
