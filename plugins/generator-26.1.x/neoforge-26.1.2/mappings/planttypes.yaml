@@ -1,0 +1,17 @@
+_default: ""
+Plains: "return state.is(BlockTags.DIRT) || state.getBlock() == Blocks.FARMLAND;"
+Desert: "return state.is(BlockTags.SAND) || state.is(BlockTags.TERRACOTTA);"
+Cave: "return state.isFaceSturdy(world, pos, Direction.UP);"
+Water: "return (state.is(Blocks.WATER) || state.getBlock() instanceof IceBlock) && world.getFluidState(pos.relative(Direction.UP)).isEmpty();"
+Nether: "return state.getBlock() == Blocks.SOUL_SAND;"
+Crop: "return state.is(Blocks.FARMLAND);"
+Beach: |
+  boolean isBeach = state.is(BlockTags.DIRT) || state.is(BlockTags.SAND);
+  boolean hasWater = false;
+  for (Direction face : Direction.Plane.HORIZONTAL) {
+      BlockState adjacentBlockState = world.getBlockState(pos.relative(face));
+      var adjacentFluidState = world.getFluidState(pos.relative(face));
+      hasWater = hasWater || adjacentBlockState.is(Blocks.FROSTED_ICE) || adjacentFluidState.is(FluidTags.WATER);
+      if (hasWater) break;
+  }
+  return isBeach && hasWater;

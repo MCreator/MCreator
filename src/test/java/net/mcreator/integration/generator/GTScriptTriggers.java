@@ -68,7 +68,7 @@ public class GTScriptTriggers {
 				additionalBlocks++;
 			}
 
-			additionalXML.append("</block></next>".repeat(additionalBlocks));
+			additionalXML.repeat("</block></next>", additionalBlocks);
 
 			beScript.scriptxml = """
 					<xml xmlns="https://developers.google.com/blockly/xml">

@@ -97,7 +97,7 @@ public class GTVariables {
 				blocksToClose += 2;
 			}
 		}
-		xml.append("</next></block>".repeat(blocksToClose));
+		xml.repeat("</next></block>", blocksToClose);
 
 		String procedureXML = wrapWithBaseTestXML(xml.toString());
 

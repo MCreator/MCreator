@@ -52,7 +52,7 @@ public class EnchantmentDefinitionConverter implements IConverter {
 			case "ARMOR_HEAD" -> "head";
 			case "ARMOR", "WEARABLE" -> "armor";
 			case "SWORD", "FIRE_ASPECT", "SHARP", "WEAPON", "DIGGER", "DIGGER_LOOT", "FISHING_ROD", "TRIDENT", "BOW",
-				 "CROSSBOW", "MACE" -> "mainhand";
+			     "CROSSBOW", "MACE" -> "mainhand";
 			default -> "any";
 		};
 

@@ -41,8 +41,8 @@ import java.util.stream.Collectors;
 public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 
 	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(Biome.SpawnEntry.class, "weight");
-	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation
-			.minMaxSpinner(Biome.SpawnEntry.class, "minGroup", "maxGroup").allowEqualValues();
+	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation.minMaxSpinner(Biome.SpawnEntry.class,
+			"minGroup", "maxGroup").allowEqualValues();
 	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JComboBox<String> entityType = new SearchableComboBox<>();

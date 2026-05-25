@@ -160,8 +160,12 @@ public class GEValidator {
 									+ " is annotated with @Numeric but is not a number.");
 				}
 			} else if (field.isAnnotationPresent(LimitedOptions.class)) {
+				LimitedOptions annotation = field.getAnnotation(LimitedOptions.class);
+				if (annotation.allowCustom()) {
+					return; // skip validation if custom values are allowed
+				}
+
 				if (fieldValue instanceof String string) {
-					LimitedOptions annotation = field.getAnnotation(LimitedOptions.class);
 					String[] options = annotation.value();
 					boolean valid = false;
 					for (String option : options) {
@@ -178,7 +182,6 @@ public class GEValidator {
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 					}
 				} else if (fieldValue instanceof Integer index) {
-					LimitedOptions annotation = field.getAnnotation(LimitedOptions.class);
 					if (index < 0 || index >= annotation.value().length) {
 						LOG.debug(
 								"Field {} of mod element {} has index value {} which is out of bounds for options. Setting it to 0.",
