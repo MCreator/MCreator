@@ -42,6 +42,7 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
 import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -61,7 +62,6 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -72,24 +72,20 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private StringListProcedureSelector specialInformation;
 
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
+	private final JSpinner stackSize = ComponentFromAnnotation.spinner(Item.class, "stackSize");
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Item.class, "rarity",
+			"elementgui.common.rarity_");
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
-	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, -100, 128000, 1));
-	private final JSpinner toolType = new JSpinner(new SpinnerNumberModel(1.0, -100.0, 128000.0, 0.1));
-	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Item.class, "enchantability");
+	private final JSpinner useDuration = ComponentFromAnnotation.spinner(Item.class, "useDuration");
+	private final JSpinner toolType = ComponentFromAnnotation.spinner(Item.class, "toolType");
+	private final JSpinner damageCount = ComponentFromAnnotation.spinner(Item.class, "damageCount");
+	private final MCItemListField repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+			false, true);
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isPiglinCurrency = L10N.checkbox("elementgui.common.enable");
@@ -134,33 +130,24 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final ValidationGroup page5group = new ValidationGroup();
 
 	private final JCheckBox enableMeleeDamage = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
-	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1.2, 0, 128000, 0.1));
+	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Item.class, "damageVsEntity");
+	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Item.class, "attackSpeed");
 
 	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
 
 	private SingleModElementSelector guiBoundTo;
 	private LogicProcedureSelector openGUIOnRightClick;
-	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
+	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(Item.class, "inventorySize");
+	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(Item.class, "inventoryStackSize");
 
 	// Food parameters
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner nutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
-	private final JSpinner saturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
+	private final JSpinner nutritionalValue = ComponentFromAnnotation.spinner(Item.class, "nutritionalValue");
+	private final JSpinner saturation = ComponentFromAnnotation.spinner(Item.class, "saturation");
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
-	private final TranslatedComboBox animation = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("none", "elementgui.item.item_animation_none"),
-			Map.entry("eat", "elementgui.item.item_animation_eat"),
-			Map.entry("block", "elementgui.item.item_animation_block"),
-			Map.entry("bow", "elementgui.item.item_animation_bow"),
-			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
-			Map.entry("drink", "elementgui.item.item_animation_drink"),
-			Map.entry("spear", "elementgui.item.item_animation_spear")
-			//@formatter:on
-	);
+	private final TranslatedComboBox animation = ComponentFromAnnotation.translatedOptions(Item.class, "animation",
+			"elementgui.item.item_animation_");
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	// Music disc parameters
@@ -169,8 +156,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 			"elementgui.item.musicdisc.error_needs_sound").enableRealTimeValidation();
 	private final VTextField musicDiscDescription = new VTextField(20).requireValue(
 			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
-	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
-	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner musicDiscLengthInTicks = ComponentFromAnnotation.spinner(Item.class,
+			"musicDiscLengthInTicks");
+	private final JSpinner musicDiscAnalogOutput = ComponentFromAnnotation.spinner(Item.class, "musicDiscAnalogOutput");
 
 	private ModElementListField providedBannerPatterns;
 
@@ -248,7 +236,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		animations = new JItemAnimationList(mcreator, this);
 
-		guiBoundTo.addEntrySelectedListener(e -> {
+		guiBoundTo.addEntrySelectedListener(_ -> {
 			if (!isEditingMode()) {
 				String selected = guiBoundTo.getEntry();
 				if (selected != null) {
@@ -263,14 +251,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 			}
 		});
 
-		useDuration.addChangeListener(change -> onStoppedUsing.setEnabled((int) useDuration.getValue() > 0));
+		useDuration.addChangeListener(_ -> onStoppedUsing.setEnabled((int) useDuration.getValue() > 0));
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel cipp = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
+		JPanel useProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
-		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel attributeModifiersPage = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
@@ -302,7 +289,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		renderType.addActionListener(e -> updateTextureOptions());
+		renderType.addActionListener(_ -> updateTextureOptions());
 
 		ComponentUtils.makeSection(rent, L10N.t("elementgui.item.item_3d_model"));
 		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
@@ -321,7 +308,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(14, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -353,6 +340,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.number_of_uses")));
 		subpane2.add(damageCount);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
+				L10N.label("elementgui.common.repair_items")));
+		subpane2.add(repairItems);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		subpane2.add(immuneToFire);
@@ -377,34 +368,39 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.recipe_remainder")));
 		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
-				L10N.label("elementgui.item.item_animation")));
-		subpane2.add(animation);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
-				L10N.label("elementgui.item.use_duration")));
-		subpane2.add(useDuration);
-
 		enchantability.setOpaque(false);
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
 		damageCount.setOpaque(false);
-		damageCount.addChangeListener(e -> updateCraftingSettings());
+		damageCount.addChangeListener(_ -> updateDamageDependantSettings());
 		immuneToFire.setOpaque(false);
 		isPiglinCurrency.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
-		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
+		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
-		updateCraftingSettings();
+		updateDamageDependantSettings();
 
 		subpane2.setOpaque(false);
 
 		pane3.setOpaque(false);
 		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
+		JPanel itemUseSubpane = new JPanel(new GridLayout(2, 2, 2, 2));
+		ComponentUtils.makeSection(itemUseSubpane, L10N.t("elementgui.item.use_properties"));
+		itemUseSubpane.setOpaque(false);
+
+		itemUseSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/animation"),
+				L10N.label("elementgui.item.item_animation")));
+		itemUseSubpane.add(animation);
+
+		itemUseSubpane.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/use_duration"),
+				L10N.label("elementgui.item.use_duration")));
+		itemUseSubpane.add(useDuration);
+
 		JPanel foodSubpane = new JPanel(new GridLayout(6, 2, 2, 2));
+		ComponentUtils.makeSection(foodSubpane, L10N.t("elementgui.item.food_properties"));
 		foodSubpane.setOpaque(false);
 
 		isFood.setOpaque(false);
@@ -413,7 +409,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		nutritionalValue.setOpaque(false);
 		saturation.setOpaque(false);
 
-		isFood.addActionListener(e -> {
+		isFood.addActionListener(_ -> {
 			updateFoodPanel();
 			if (!isEditingMode()) {
 				animation.setSelectedItem("eat");
@@ -447,8 +443,55 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
 
-		foodProperties.add("Center", PanelUtils.totalCenterInPanel(foodSubpane));
-		foodProperties.setOpaque(false);
+		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
+		rangedProperties.setOpaque(false);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
+				L10N.label("elementgui.item.enable_ranged_item")));
+		enableRanged.setOpaque(false);
+		enableRanged.addActionListener(_ -> updateRangedPanel());
+		rangedProperties.add(enableRanged);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
+				L10N.label("elementgui.item.projectile")));
+		rangedProperties.add(projectile);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile_disable_ammo_check"),
+				L10N.label("elementgui.item.projectile_disable_ammo_check")));
+		projectileDisableAmmoCheck.setOpaque(false);
+		rangedProperties.add(projectileDisableAmmoCheck);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
+				L10N.label("elementgui.item.shoot_constantly")));
+		shootConstantly.setOpaque(false);
+		rangedProperties.add(shootConstantly);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
+				L10N.label("elementgui.item.charges_power")));
+		rangedItemChargesPower.setOpaque(false);
+		rangedProperties.add(rangedItemChargesPower);
+
+		updateRangedPanel();
+
+		shootConstantly.addActionListener(_ -> {
+			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
+			if (shootConstantly.isSelected())
+				rangedItemChargesPower.setSelected(false);
+		});
+
+		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
+		rangedTriggers.setOpaque(false);
+		rangedTriggers.add(rangedUseCondition);
+		rangedTriggers.add(onRangedItemUsed);
+
+		JComponent rangedPanel = PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers);
+		rangedPanel.setOpaque(false);
+		ComponentUtils.makeSection(rangedPanel, L10N.t("elementgui.item.ranged_properties"));
+
+		useProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(itemUseSubpane, foodSubpane)),
+				PanelUtils.pullElementUp(rangedPanel), 5, 5)));
+		useProperties.setOpaque(false);
 
 		advancedProperties.setOpaque(false);
 
@@ -476,23 +519,23 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel guiProperties = new JPanel(new GridLayout(2, 1, 35, 2));
 		guiProperties.setOpaque(false);
 
-        JPanel boundGuiPanel = new JPanel(new GridLayout(1, 2, 35, 2));
-        boundGuiPanel.setOpaque(false);
+		JPanel boundGuiPanel = new JPanel(new GridLayout(1, 2, 35, 2));
+		boundGuiPanel.setOpaque(false);
 
-        boundGuiPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"),
-                L10N.label("elementgui.item.bind_gui")));
-        boundGuiPanel.add(guiBoundTo);
+		boundGuiPanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
+		boundGuiPanel.add(guiBoundTo);
 
-		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		guiBoundTo.addEntrySelectedListener(_ -> refreshGUIProperties());
 		refreshGUIProperties();
 
-        guiProperties.add(boundGuiPanel);
+		guiProperties.add(boundGuiPanel);
 
-        JPanel openGuiPanel = new JPanel(new BorderLayout());
-        openGuiPanel.setOpaque(false);
-        openGuiPanel.add("Center", openGUIOnRightClick);
+		JPanel openGuiPanel = new JPanel(new BorderLayout());
+		openGuiPanel.setOpaque(false);
+		openGuiPanel.add("Center", openGUIOnRightClick);
 
-        guiProperties.add(openGuiPanel);
+		guiProperties.add(openGuiPanel);
 
 		JPanel stackSizeProperties = new JPanel(new GridLayout(2, 2, 35, 2));
 		stackSizeProperties.setOpaque(false);
@@ -539,52 +582,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateMusicDiscBannerPanel();
 
-		isMusicDisc.addActionListener(e -> updateMusicDiscBannerPanel());
-
-		JPanel rangedProperties = new JPanel(new GridLayout(5, 2, 2, 2));
-		rangedProperties.setOpaque(false);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
-				L10N.label("elementgui.item.enable_ranged_item")));
-		enableRanged.setOpaque(false);
-		enableRanged.addActionListener(e -> updateRangedPanel());
-		rangedProperties.add(enableRanged);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
-				L10N.label("elementgui.item.projectile")));
-		rangedProperties.add(projectile);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile_disable_ammo_check"),
-				L10N.label("elementgui.item.projectile_disable_ammo_check")));
-		projectileDisableAmmoCheck.setOpaque(false);
-		rangedProperties.add(projectileDisableAmmoCheck);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
-				L10N.label("elementgui.item.shoot_constantly")));
-		shootConstantly.setOpaque(false);
-		rangedProperties.add(shootConstantly);
-
-		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
-				L10N.label("elementgui.item.charges_power")));
-		rangedItemChargesPower.setOpaque(false);
-		rangedProperties.add(rangedItemChargesPower);
-
-		updateRangedPanel();
-
-		shootConstantly.addActionListener((e) -> {
-			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
-			if (shootConstantly.isSelected())
-				rangedItemChargesPower.setSelected(false);
-		});
-
-		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
-		rangedTriggers.setOpaque(false);
-		rangedTriggers.add(rangedUseCondition);
-		rangedTriggers.add(onRangedItemUsed);
-
-		rangedPanel.setOpaque(false);
-		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
-		ComponentUtils.makeSection(rangedPanel, L10N.t("elementgui.item.ranged_properties"));
+		isMusicDisc.addActionListener(_ -> updateMusicDiscBannerPanel());
 
 		JPanel meleePanel = new JPanel(new GridLayout(3, 2, 35, 2));
 		meleePanel.setOpaque(false);
@@ -593,7 +591,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_melee_damage"),
 				L10N.label("elementgui.item.enable_melee_damage")));
 		enableMeleeDamage.setOpaque(false);
-		enableMeleeDamage.addActionListener(e -> updateMeleePanel());
+		enableMeleeDamage.addActionListener(_ -> updateMeleePanel());
 		meleePanel.add(enableMeleeDamage);
 
 		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
@@ -611,7 +609,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.pullElementUp(
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
-				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(rangedPanel, meleePanel)), 5, 5)));
+				PanelUtils.pullElementUp(meleePanel), 5, 5)));
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),
@@ -639,7 +637,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				customProperties::getValidationResult);
 		addPage(L10N.t("elementgui.item.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
-		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
+		addPage(L10N.t("elementgui.item.use_properties"), useProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
 		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), attributeModifiersPage).lazyValidate(
 				attributeModifiersList::getValidationResult);
@@ -654,6 +652,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private void updateTextureOptions() {
 		Model model = renderType.getSelectedItem();
 		animations.setEnabled(model != null && model.getType() == Model.Type.JAVA);
+	}
+
+	private void updateDamageDependantSettings() {
+		repairItems.setEnabled((int) damageCount.getValue() > 0);
+		updateCraftingSettings();
 	}
 
 	private void updateCraftingSettings() {
@@ -789,6 +792,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.setSelectedProcedure(item.onEntitySwing);
 		onDroppedByPlayer.setSelectedProcedure(item.onDroppedByPlayer);
 		creativeTabs.setListElements(item.creativeTabs);
+		repairItems.setListElements(item.repairItems);
 		stackSize.setValue(item.stackSize);
 		enchantability.setValue(item.enchantability);
 		toolType.setValue(item.toolType);
@@ -836,7 +840,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		animations.setEntries(item.animations);
 		attributeModifiersList.setEntries(item.attributeModifiers);
 
-		updateCraftingSettings();
+		updateDamageDependantSettings();
 		updateFoodPanel();
 		updateMeleePanel();
 		updateRangedPanel();
@@ -857,6 +861,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.name = name.getText();
 		item.rarity = rarity.getSelectedItem();
 		item.creativeTabs = creativeTabs.getListElements();
+		item.repairItems = repairItems.getListElements();
 		item.stackSize = (int) stackSize.getValue();
 		item.enchantability = (int) enchantability.getValue();
 		item.useDuration = (int) useDuration.getValue();

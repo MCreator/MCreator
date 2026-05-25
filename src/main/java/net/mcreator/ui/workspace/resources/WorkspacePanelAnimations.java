@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;

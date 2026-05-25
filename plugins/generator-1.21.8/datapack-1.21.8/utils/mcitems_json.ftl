@@ -1,5 +1,5 @@
 <#function mappedBlockToBlockStateProvider mappedBlock>
-    <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
+    <#if mappedBlock?trim?starts_with("/*@BlockStateProvider*/")>
         <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
     <#else>
         <#return '{"type": "minecraft:simple_state_provider", "state": ' + mappedBlock + '}'>

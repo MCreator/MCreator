@@ -36,7 +36,7 @@ tasks.register('exportMacX64', Copy.class) {
         from configurations.export
         from configurations.macX64
     }
-    into('jdk.bundle') { from 'jdk/jbr21_mac_x64/' }
+    into('jdk.bundle') { from 'jdk/jbr25_mac_x64/' }
 
     doLast {
         // fix line endings where needed
@@ -48,7 +48,8 @@ tasks.register('exportMacX64', Copy.class) {
             execCtx.execOps.exec { commandLine('chmod', '+x', exportPathX64 + '/Contents/MacOS/mcreator') }
         }
 
-        signAndNotarizeAPP(file(exportPathX64))
+        signAppBundle(file(exportPathX64), System.getenv('MACOS_CERTIFICATE_NAME'))
+        notarizeAppBundle(file(exportPathX64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
         makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -87,7 +88,7 @@ tasks.register('exportMacAarch64', Copy.class) {
         from configurations.export
         from configurations.macAarch64
     }
-    into('jdk.bundle') { from 'jdk/jbr21_mac_aarch64/' }
+    into('jdk.bundle') { from 'jdk/jbr25_mac_aarch64/' }
 
     doLast {
         // fix line endings where needed
@@ -99,7 +100,8 @@ tasks.register('exportMacAarch64', Copy.class) {
             execCtx.execOps.exec { commandLine('chmod', '+x', exportPathAarch64 + '/Contents/MacOS/mcreator') }
         }
 
-        signAndNotarizeAPP(file(exportPathAarch64))
+        signAppBundle(file(exportPathAarch64), System.getenv('MACOS_CERTIFICATE_NAME'))
+        notarizeAppBundle(file(exportPathAarch64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
         makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -120,26 +122,23 @@ tasks.register('exportMac') {
 
 // Utility functions below
 
-static void convertCRLF(File input, File out) {
-    out << input.text.replaceAll('\r\n', '\n')
-}
-
-void signAndNotarizeAPP(File appDirectory) {
+void signAppBundle(File appDirectory, String certName) {
     // Sign native libraries
     def libraries = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && (it.name.endsWith('.dylib') || it.name.endsWith('.jnilib')) }
-    libraries.each { signFile(it) }
+    libraries.each { signFile(it, certName) }
 
     // Sign the natives in the JAR files
     def jarFiles = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && it.name.endsWith('.jar') }
-    jarFiles.each { signNativesInJarFile(it) }
+    jarFiles.each { signNativesInJarFile(it, certName) }
 
     // Sign the main binary
-    signFile(new File(appDirectory, "Contents/MacOS/mcreator"))
+    signFile(new File(appDirectory, "Contents/MacOS/mcreator"), certName)
 
     // Finally, after others are signed, sign the app
-    signFile(appDirectory)
+    signFile(appDirectory, certName)
+}
 
-    // Notarize provided app
+void notarizeAppBundle(File appDirectory) {
     if (Os.isFamily(Os.FAMILY_MAC) && System.getenv('MACOS_CERTIFICATE_NAME') != null) {
         execCtx.execOps.exec { // Zip app folder for notarization
             commandLine 'ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', appDirectory, 'notarization.zip'
@@ -155,9 +154,9 @@ void signAndNotarizeAPP(File appDirectory) {
     }
 }
 
-void signFile(File fileToSign) {
+void signFile(File fileToSign, String certName) {
     if (Os.isFamily(Os.FAMILY_MAC)) {
-        if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
+        if (certName) {
             println("Signing $fileToSign")
 
             def entitlementsFile = file('platform/mac/entitlements.plistfixed')
@@ -167,7 +166,7 @@ void signFile(File fileToSign) {
                 commandLine 'codesign', '--timestamp', '--force', '--deep', '--verbose',
                         '--entitlements', entitlementsFile,
                         '--options', 'runtime',
-                        '--sign', System.getenv('MACOS_CERTIFICATE_NAME'),
+                        '--sign', certName,
                         fileToSign
             }
         } else {
@@ -184,7 +183,7 @@ void signFile(File fileToSign) {
     }
 }
 
-void signNativesInJarFile(File file) {
+void signNativesInJarFile(File file, String certName) {
     // Unzip JAR
     File tempDir = Files.createTempDirectory("unzipped-${file.getName()}").toFile()
     project.copy {
@@ -197,7 +196,7 @@ void signNativesInJarFile(File file) {
     // Sign .dylib files
     tempDir.eachFileRecurse { File extractedFile ->
         if (extractedFile.isFile() && (extractedFile.name.endsWith(".dylib") || extractedFile.name.endsWith(".jnilib"))) {
-            signFile(extractedFile)
+            signFile(extractedFile, certName)
             containsNatives = true
         }
     }
@@ -212,25 +211,6 @@ void signNativesInJarFile(File file) {
 
     // Clean up temporary files
     tempDir.deleteDir()
-}
-
-static void zipJar(File folder, File outputFile) {
-    outputFile.withOutputStream { outputStream ->
-        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)
-        folder.eachFileRecurse { File file ->
-            if (!file.isDirectory()) {
-                String relativePath = file.path - folder.path
-                relativePath = relativePath.startsWith(File.separator) ? relativePath.substring(1) : relativePath
-                relativePath = relativePath.replace("\\", "/")
-                zipOutputStream.putNextEntry(new ZipEntry(relativePath))
-                file.withInputStream { inputStream ->
-                    inputStream.transferTo(zipOutputStream)
-                }
-                zipOutputStream.closeEntry()
-            }
-        }
-        zipOutputStream.close()
-    }
 }
 
 void makeDMG(File directory, File outputDMGFile, String volumeName) {
@@ -267,4 +247,27 @@ void makeDMG(File directory, File outputDMGFile, String volumeName) {
             arg(value: directory)
         }
     }
+}
+
+static void zipJar(File folder, File outputFile) {
+    outputFile.withOutputStream { outputStream ->
+        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream)
+        folder.eachFileRecurse { File file ->
+            if (!file.isDirectory()) {
+                String relativePath = file.path - folder.path
+                relativePath = relativePath.startsWith(File.separator) ? relativePath.substring(1) : relativePath
+                relativePath = relativePath.replace("\\", "/")
+                zipOutputStream.putNextEntry(new ZipEntry(relativePath))
+                file.withInputStream { inputStream ->
+                    inputStream.transferTo(zipOutputStream)
+                }
+                zipOutputStream.closeEntry()
+            }
+        }
+        zipOutputStream.close()
+    }
+}
+
+static void convertCRLF(File input, File out) {
+    out << input.text.replaceAll('\r\n', '\n')
 }

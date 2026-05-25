@@ -54,6 +54,9 @@ public class ${name}Item extends Item {
 				.stacksTo(1)
 				<#elseif data.damageCount != 0>
 				.durability(${data.damageCount})
+					<#if data.repairItems?has_content>
+					.repairable(TagKey.create(Registries.ITEM, ResourceLocation.parse("${modid}:${registryname}_repair_items")))
+					</#if>
 				<#elseif data.stackSize != 64>
 				.stacksTo(${data.stackSize})
 				</#if>
@@ -312,15 +315,15 @@ public class ${name}Item extends Item {
 		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int time) {
 			<#if hasProcedure(data.everyTickWhileUsing)>
 				<@procedureCode data.everyTickWhileUsing, {
-            		"x": "entity.getX()",
-            		"y": "entity.getY()",
-            		"z": "entity.getZ()",
-            		"world": "world",
-            		"entity": "entity",
-            		"itemstack": "itemstack",
-            		"time": "time"
-            	}/>
-            </#if>
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
+					"world": "world",
+					"entity": "entity",
+					"itemstack": "itemstack",
+					"time": "time"
+				}/>
+			</#if>
 			<#if data.enableRanged && data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
 					<@arrowShootCode/>

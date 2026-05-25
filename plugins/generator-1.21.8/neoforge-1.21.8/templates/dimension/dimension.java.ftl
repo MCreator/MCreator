@@ -83,15 +83,15 @@ public class ${name}Dimension {
 		if (event.getFrom() == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("${modid}:${registryname}"))) {
 			<@procedureOBJToCode data.onPlayerLeavesDimension/>
 		}
-        </#if>
+		</#if>
 
 		<#if hasProcedure(data.onPlayerEntersDimension)>
 		if (event.getTo() == ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("${modid}:${registryname}"))) {
 			<@procedureOBJToCode data.onPlayerEntersDimension/>
 		}
-        </#if>
+		</#if>
 	}
-    </#if>
+	</#if>
 
 }
 </@javacompress>

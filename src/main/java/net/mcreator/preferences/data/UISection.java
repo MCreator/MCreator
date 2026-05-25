@@ -41,6 +41,7 @@ public class UISection extends PreferencesSection {
 	public final BooleanEntry autoReloadTabs;
 	public final BooleanEntry remindOfUnsavedChanges;
 	public final BooleanEntry discordRichPresenceEnable;
+	public final BooleanEntry googleAnalyticsEnable;
 
 	public UISection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -55,6 +56,7 @@ public class UISection extends PreferencesSection {
 		autoReloadTabs = addEntry(new BooleanEntry("autoReloadTabs", true));
 		remindOfUnsavedChanges = addEntry(new BooleanEntry("remindOfUnsavedChanges", false));
 		discordRichPresenceEnable = addEntry(new BooleanEntry("discordRichPresenceEnable", true));
+		googleAnalyticsEnable = addEntry(new BooleanEntry("googleAnalyticsEnable", true));
 	}
 
 	@Override public String getSectionKey() {

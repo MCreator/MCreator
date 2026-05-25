@@ -1,0 +1,1 @@
+dimension.runCommand(`structure load ${modid}:${field$structure} ${"$"}{${input$x}} ${"$"}{${input$y}} ${"$"}{${input$z}} ${field$rotation} ${field$mirror}`);

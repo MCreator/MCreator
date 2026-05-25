@@ -279,8 +279,8 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, hoeRecipe);
 	}
 
-	private static void setParametersBasedOnFactorAndAddElement(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator, double factor, Tool tool,
-			FolderElement folder) {
+	private static void setParametersBasedOnFactorAndAddElement(@Nullable AbstractPackMakerTool packMaker,
+			MCreator mcreator, double factor, Tool tool, FolderElement folder) {
 		if (factor < 0.5) {
 			tool.blockDropsTier = "WOOD";
 		} else if (factor < 1) {

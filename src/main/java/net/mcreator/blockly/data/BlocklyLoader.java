@@ -20,7 +20,10 @@ package net.mcreator.blockly.data;
 
 import net.mcreator.ui.blockly.BlocklyEditorType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BlocklyLoader {
 
@@ -62,12 +65,14 @@ public class BlocklyLoader {
 
 	private BlocklyLoader() {
 		registerExternalTriggerLoader(BlocklyEditorType.PROCEDURE, "triggers");
+		registerExternalTriggerLoader(BlocklyEditorType.SCRIPT, "jstriggers");
 
 		registerBlockLoader(BlocklyEditorType.PROCEDURE);
 		registerBlockLoader(BlocklyEditorType.AI_TASK);
 		registerBlockLoader(BlocklyEditorType.JSON_TRIGGER);
 		registerBlockLoader(BlocklyEditorType.COMMAND_ARG);
 		registerBlockLoader(BlocklyEditorType.FEATURE);
+		registerBlockLoader(BlocklyEditorType.SCRIPT);
 	}
 
 	/**

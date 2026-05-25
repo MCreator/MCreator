@@ -93,8 +93,11 @@ public class JStateLabel extends JPanel {
 
 	public boolean editState() {
 		List<PropertyData<?>> propertyList = properties.get();
-		if (propertyList == null)
+		if (propertyList == null || propertyList.isEmpty()) {
+			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_no_properties"),
+					L10N.t("components.state_label.error_no_properties.title"), JOptionPane.WARNING_MESSAGE);
 			return false;
+		}
 
 		StateMap stateMap = StateEditorDialog.open(mcreator, propertyList, getStateMap(), numberMatchType);
 		if (stateMap == null)
@@ -151,7 +154,8 @@ public class JStateLabel extends JPanel {
 		if (property.getClass() == PropertyData.IntegerType.class
 				|| property.getClass() == PropertyData.NumberType.class)
 			matchSymbol = numberMatchType.getSymbol();
-		return BlockStatePropertyUtils.propertyRegistryName(property) + " " + matchSymbol + " " + property.toString(value);
+		return BlockStatePropertyUtils.propertyRegistryName(property) + " " + matchSymbol + " " + property.toString(
+				value);
 	}
 
 	public enum NumberMatchType {

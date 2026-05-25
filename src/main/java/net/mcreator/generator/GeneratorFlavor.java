@@ -35,10 +35,10 @@ public enum GeneratorFlavor {
 	PAPER(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	QUILT(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
 	NEOFORGE(GamePlatform.JAVAEDITION, BaseLanguage.JAVA),
-	DATAPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON),
-	RESOURCEPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON),
-	ADDON(GamePlatform.BEDROCKEDITION, BaseLanguage.JSON),
-	UNKNOWN(null, null);
+	DATAPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON, false),
+	RESOURCEPACK(GamePlatform.JAVAEDITION, BaseLanguage.JSON, false),
+	ADDON(GamePlatform.BEDROCKEDITION, BaseLanguage.JSON, false),
+	UNKNOWN(null, null, false);
 	//@formatter:on
 
 	/**
@@ -56,9 +56,20 @@ public enum GeneratorFlavor {
 
 	private final GamePlatform gamePlatform;
 
+	private final boolean supportsAPIs;
+
 	GeneratorFlavor(GamePlatform gamePlatform, BaseLanguage baseLanguage) {
+		this(gamePlatform, baseLanguage, true);
+	}
+
+	GeneratorFlavor(GamePlatform gamePlatform, BaseLanguage baseLanguage, boolean supportsAPIs) {
 		this.gamePlatform = gamePlatform;
 		this.baseLanguage = baseLanguage;
+		this.supportsAPIs = supportsAPIs;
+	}
+
+	public boolean supportsAPIs() {
+		return supportsAPIs;
 	}
 
 	public BaseLanguage getBaseLanguage() {

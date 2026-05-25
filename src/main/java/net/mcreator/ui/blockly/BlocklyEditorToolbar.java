@@ -20,11 +20,11 @@
 package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;

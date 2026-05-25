@@ -19,6 +19,7 @@
 package net.mcreator.io.net.analytics;
 
 import net.mcreator.Launcher;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
@@ -122,9 +123,8 @@ public class GoogleAnalytics {
 			Map<String, Object> payload = new LinkedHashMap<>();
 			payload.put("en", "page_view");
 
-			processRequestURL(getGATrackURL(payload));
-
-			LOG.info("Tracked page: {}", page);
+			if (processRequestURL(getGATrackURL(payload)))
+				LOG.info("Tracked page: {}", page);
 		} catch (Exception e) {
 			LOG.warn("Failed to track page: {}", page, e);
 		}
@@ -133,12 +133,11 @@ public class GoogleAnalytics {
 	private void trackEventSync(String name, String context) {
 		try {
 			Map<String, Object> payload = new LinkedHashMap<>();
-
 			payload.put("en", name);
 			payload.put("ep.ctx", context);
-			processRequestURL(getGATrackURL(payload));
 
-			LOG.info("Tracked event: {}, context: {}", name, context);
+			if (processRequestURL(getGATrackURL(payload)))
+				LOG.info("Tracked event: {}, context: {}", name, context);
 		} catch (Exception e) {
 			LOG.warn("Failed to track event: {}, context: {}, error: {}", name, context, e.getMessage());
 		}
@@ -152,8 +151,9 @@ public class GoogleAnalytics {
 		requestExecutor.submit(() -> trackEventSync(name, context));
 	}
 
-	private void processRequestURL(String requesturl) throws IOException, URISyntaxException {
-		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED && !Launcher.version.isDevelopment()) {
+	private boolean processRequestURL(String requesturl) throws IOException, URISyntaxException {
+		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED && !Launcher.version.isDevelopment()
+				&& PreferencesManager.PREFERENCES.ui.googleAnalyticsEnable.get()) {
 			HttpURLConnection conn = (HttpURLConnection) new URI(requesturl).toURL().openConnection();
 			conn.setInstanceFollowRedirects(true);
 			conn.setUseCaches(false);
@@ -173,7 +173,10 @@ public class GoogleAnalytics {
 				throw new IOException(
 						"GA track failed! Response code: " + conn.getResponseCode() + "/" + conn.getResponseMessage());
 			}
+
+			return true;
 		}
+		return false;
 	}
 
 }

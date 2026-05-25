@@ -48,7 +48,7 @@ package ${package}.init;
 			<#else>
 				GLFW.GLFW_KEY_${generator.map(keybind.triggerKey, "keybuttons")},
 			</#if>
-			"key.categories.${keybind.keyBindingCategoryKey}")
+			"key.category.${modid}.${keybind.keyBindingCategoryKey}")
 				<#if hasProcedure(keybind.onKeyReleased) || hasProcedure(keybind.onKeyPressed)>
 				{
 					private boolean isDownOld = false;

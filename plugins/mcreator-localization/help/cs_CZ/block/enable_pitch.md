@@ -1,0 +1,1 @@
+Pokud se váš blok otáčí horizontálně, zaškrtněte toto políčko pro povolení otočení směrem k podlaze, stěně nebo stropu. Toto používají například páčky nebo brusný kámen.

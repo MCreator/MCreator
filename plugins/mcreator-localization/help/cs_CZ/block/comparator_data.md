@@ -1,0 +1,1 @@
+Zaškrtněte tento parametr, pokud chcete, aby blok fungoval s porovnávačem.

@@ -67,9 +67,9 @@ public class TagModElementConverter implements IConverter {
 				case DAMAGE_TYPES -> definition.getAsJsonArray("damageTypes");
 				default -> new JsonArray(); // Other tag types did not exist before FV 60
 			}) {
-				workspace.getTagElements().get(tagElement).add(type == TagType.FUNCTIONS ?
+				workspace.getTagElements().get(tagElement).add(TagElement.Entry.unmanaged(type == TagType.FUNCTIONS ?
 						value.getAsString() :
-						value.getAsJsonObject().get("value").getAsString());
+						value.getAsJsonObject().get("value").getAsString()));
 			}
 		} else {
 			throw new NullPointerException("Tag type is null / unknown tag type");
