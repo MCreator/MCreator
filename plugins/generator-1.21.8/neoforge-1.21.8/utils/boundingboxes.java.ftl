@@ -9,7 +9,6 @@
 		<#if rotationMode != 5>
 			<#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
 			switch (state.getValue(FACING)) {
-				default -> <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
 				case NORTH -> <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
 				case EAST -> <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
 				case WEST -> <@checkPitchSupport positiveBoxes negativeBoxes "west" pitch/>
@@ -17,6 +16,7 @@
 					case UP -> <@makeBoundingBox positiveBoxes negativeBoxes "up"/>;
 					case DOWN -> <@makeBoundingBox positiveBoxes negativeBoxes "down"/>;
 				</#if>
+				default -> <@checkPitchSupport positiveBoxes negativeBoxes "south" pitch/>
 			}
 		<#else>
 			switch (state.getValue(AXIS)) {

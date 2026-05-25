@@ -1,0 +1,1 @@
+Si se selecciona esta opción, este efecto de poción se curará después de consumir una botella de miel.

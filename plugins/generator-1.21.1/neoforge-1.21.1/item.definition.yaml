@@ -13,10 +13,6 @@ templates:
     writer: json
     name: "@MODDATAROOT/jukebox_song/@registryname.json"
     condition: isMusicDisc
-  - template: json/banner_pattern_item_tag.json.ftl
-    writer: json
-    name: "@MODDATAROOT/tags/banner_pattern/pattern_item/@registryname.json"
-    condition: hasBannerPatterns()
   - template: json/item.json.ftl
     writer: json
     condition_any:
@@ -78,6 +74,8 @@ tags:
     condition: isMusicDisc
   - tag: ITEMS:minecraft:piglin_loved
     condition: isPiglinCurrency
+  - tag: BANNER_PATTERNS:@modid:pattern_item/@registryname
+    entryprovider: providedBannerPatterns
 
 localizationkeys:
   - key: item.@modid.@registryname

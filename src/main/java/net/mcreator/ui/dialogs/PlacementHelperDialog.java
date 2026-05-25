@@ -315,7 +315,7 @@ public class PlacementHelperDialog extends BlocklyHelperDialog {
 		xml.append("<block type=\"placement_biome_filter\"></block>");
 
 		// Close all the remaining blocks
-		xml.append("</next></block>".repeat(blocksToClose)).append("</xml>");
+		xml.repeat("</next></block>", blocksToClose).append("</xml>");
 
 		return xml.toString();
 	}

@@ -79,36 +79,38 @@ import java.util.Map;
 			} catch (Exception e) {
 				this.workspace.markFailingGradleDependencies();
 				LOG.error("Failed to load code provider for {}", key, e);
-				TestUtil.failIfTestingEnvironment();
+				TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 				return null;
 			}
 		});
 	}
 
-	public String getCodeFor(@Nonnull String template, int lineFrom, int lineTo) {
+	public CodeString getCodeFor(@Nonnull String template, int lineFrom, int lineTo) {
 		String code = readCode(template);
 		if (code != null) {
 			String[] lines = code.split("\\r?\\n");
 			String[] usedLines = Arrays.copyOfRange(lines, lineFrom - 1, lineTo);
-			return String.join(System.lineSeparator(), usedLines);
+			return CodeString.of(String.join(System.lineSeparator(), usedLines));
 		} else {
-			return "/* failed to load code for " + template + " */";
+			TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+			return CodeString.of("/* failed to load code for " + template + " */");
 		}
 	}
 
-	public String getMethod(@Nonnull String template, String method, String... params) {
+	public CodeString getMethod(@Nonnull String template, String method, String... params) {
 		String code = readCode(template);
 		if (code != null) {
 			JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(code);
 			MethodSource<?> methodSource = classJavaSource.getMethod(method, params);
 			methodSource.removeAllAnnotations();
-			return methodSource.toString();
+			return CodeString.of(methodSource.toString());
 		} else {
-			return "/* failed to load code for " + template + " */";
+			TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+			return CodeString.of("/* failed to load code for " + template + " */");
 		}
 	}
 
-	public String getInnerClassBody(@Nonnull String template, String innerClass) {
+	public CodeString getInnerClassBody(@Nonnull String template, String innerClass) {
 		String code = readCode(template);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
@@ -124,22 +126,57 @@ import java.util.Map;
 			}
 
 			if (inner != null)
-				return code.substring(inner.getBodyStartOffset(), inner.getBodyEndOffset() + 1);
+				return CodeString.of(code.substring(inner.getBodyStartOffset(), inner.getBodyEndOffset() + 1));
 		}
 
-		return "/* failed to load code for " + template + " */";
+		TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+		return CodeString.of("/* failed to load code for " + template + " */");
 	}
 
-	public String getClassBody(@Nonnull String template) {
+	public CodeString getClassBody(@Nonnull String template) {
 		String code = readCode(template);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
 			TypeDeclaration mainClass = cu.getTypeDeclaration(0);
 			if (mainClass != null)
-				return code.substring(mainClass.getBodyStartOffset(), mainClass.getBodyEndOffset() + 1);
+				return CodeString.of(code.substring(mainClass.getBodyStartOffset(), mainClass.getBodyEndOffset() + 1));
 		}
 
-		return "/* failed to load code for " + template + " */";
+		TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+		return CodeString.of("/* failed to load code for " + template + " */");
+	}
+
+	public record CodeString(String value) implements CharSequence {
+
+		public static CodeString of(String value) {
+			return new CodeString(value);
+		}
+
+		@Override public int length() {
+			return value.length();
+		}
+
+		@Override public char charAt(int index) {
+			return value.charAt(index);
+		}
+
+		@Nonnull @Override public CharSequence subSequence(int start, int end) {
+			return value.subSequence(start, end);
+		}
+
+		@Nonnull @Override public String toString() {
+			return value;
+		}
+
+		public CodeString replace(String old, String replacement) {
+			if (!value.contains(old)) {
+				TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+				return this;
+			}
+
+			return new CodeString(value.replace(old, replacement));
+		}
+
 	}
 
 }

@@ -30,6 +30,7 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -52,6 +53,7 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.minecraft.states.block.JBlockStatePropertiesList;
 import net.mcreator.ui.minecraft.states.block.JBlockStatesList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -113,20 +115,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector isBonemealTargetCondition;
 	private ProcedureSelector bonemealSuccessCondition;
 
-	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
+	private final JSpinner hardness = ComponentFromAnnotation.spinner(Block.class, "hardness");
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(Block.class, "resistance");
 	private final VTextField name = new VTextField(18).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
 
 	private NumberProcedureSelector luminance;
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 99, 1));
-	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
+	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(Block.class, "dropAmount");
+	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation.minMaxSpinner(Block.class, "xpAmountMin",
+			"xpAmountMax").allowEqualValues();
 	private final JCheckBox hasCustomOpacity = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(15, 0, 15, 1));
+	private final JSpinner lightOpacity = ComponentFromAnnotation.spinner(Block.class, "lightOpacity");
 
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
+	private final JSpinner tickRate = ComponentFromAnnotation.spinner(Block.class, "tickRate");
 
-	private final JSpinner enchantPowerBonus = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 0.1));
+	private final JSpinner enchantPowerBonus = ComponentFromAnnotation.spinner(Block.class, "enchantPowerBonus");
 
 	private final JColor beaconColorModifier = new JColor(mcreator, true, false);
 
@@ -138,20 +141,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox canRedstoneConnect = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isBonemealable = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox tintType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("No tint", "elementgui.block.tint_type.no_tint"),
-			Map.entry("Grass", "elementgui.block.tint_type.grass"),
-			Map.entry("Foliage", "elementgui.block.tint_type.foliage"),
-			Map.entry("Birch foliage", "elementgui.block.tint_type.birch_foliage"),
-			Map.entry("Spruce foliage", "elementgui.block.tint_type.spruce_foliage"),
-			Map.entry("Default foliage", "elementgui.block.tint_type.default_foliage"),
-			Map.entry("Water", "elementgui.block.tint_type.water"),
-			Map.entry("Sky", "elementgui.block.tint_type.sky"),
-			Map.entry("Fog", "elementgui.block.tint_type.fog"),
-			Map.entry("Water fog", "elementgui.block.tint_type.water_fog")
-			//@formatter:on
-	);
+	private final TranslatedComboBox tintType = ComponentFromAnnotation.translatedOptions(Block.class, "tintType",
+			"elementgui.block.tint_type.");
 	private final JCheckBox isItemTinted = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox hasTransparency = L10N.checkbox("elementgui.common.enable");
@@ -162,11 +153,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox hasEnergyStorage = L10N.checkbox("elementgui.block.enable_energy_storage");
 	private final JCheckBox isFluidTank = L10N.checkbox("elementgui.block.enable_fluid_storage");
 
-	private final JSpinner energyInitial = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner energyCapacity = new JSpinner(new SpinnerNumberModel(400000, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner energyMaxReceive = new JSpinner(new SpinnerNumberModel(200, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner energyMaxExtract = new JSpinner(new SpinnerNumberModel(200, 0, Integer.MAX_VALUE, 1));
-	private final JSpinner fluidCapacity = new JSpinner(new SpinnerNumberModel(8000, 0, Integer.MAX_VALUE, 1));
+	private final JSpinner energyInitial = ComponentFromAnnotation.spinner(Block.class, "energyInitial");
+	private final JSpinner energyCapacity = ComponentFromAnnotation.spinner(Block.class, "energyCapacity");
+	private final JSpinner energyMaxReceive = ComponentFromAnnotation.spinner(Block.class, "energyMaxReceive");
+	private final JSpinner energyMaxExtract = ComponentFromAnnotation.spinner(Block.class, "energyMaxExtract");
+	private final JSpinner fluidCapacity = ComponentFromAnnotation.spinner(Block.class, "fluidCapacity");
 	private FluidListField fluidRestrictions;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
@@ -195,10 +186,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final MCItemHolder strippingResult = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 
-	private final JComboBox<String> generationShape = new JComboBox<>(new String[] { "UNIFORM", "TRIANGLE" });
-	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
-	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
-	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
+	private final JComboBox<String> generationShape = ComponentFromAnnotation.options(Block.class, "generationShape");
+	private final JMinMaxSpinner generateHeight = ComponentFromAnnotation.minMaxSpinner(Block.class,
+			"minGenerateHeight", "maxGenerateHeight").allowEqualValues();
+	private final JSpinner frequencyPerChunks = ComponentFromAnnotation.spinner(Block.class, "frequencyPerChunks");
+	private final JSpinner frequencyOnChunk = ComponentFromAnnotation.spinner(Block.class, "frequencyOnChunk");
 	private BiomeListField restrictionBiomes;
 	private MCItemListField blocksToReplace;
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
@@ -206,34 +198,22 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox reactionToPushing = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("NORMAL", "elementgui.block.reaction_to_push.normal"),
-			Map.entry("DESTROY", "elementgui.block.reaction_to_push.destroy"),
-			Map.entry("BLOCK", "elementgui.block.reaction_to_push.block"),
-			Map.entry("PUSH_ONLY", "elementgui.block.reaction_to_push.push_only"),
-			Map.entry("IGNORE", "elementgui.block.reaction_to_push.ignore"));
-			//@formatter:on
+	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptions(Block.class,
+			"reactionToPushing", "elementgui.block.reaction_to_push.");
 
-	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
+	private final JComboBox<String> offsetType = ComponentFromAnnotation.options(Block.class, "offsetType");
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("COMMON", "elementgui.common.rarity_common"),
-			Map.entry("UNCOMMON", "elementgui.common.rarity_uncommon"),
-			Map.entry("RARE", "elementgui.common.rarity_rare"),
-			Map.entry("EPIC", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
+	private final JSpinner maxStackSize = ComponentFromAnnotation.spinner(Block.class, "maxStackSize");
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Block.class, "rarity",
+			"elementgui.common.rarity_");
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
-	private final JSpinner slipperiness = new JSpinner(new SpinnerNumberModel(0.6, 0.01, 5, 0.01));
-	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
-	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private final JSpinner slipperiness = ComponentFromAnnotation.spinner(Block.class, "slipperiness");
+	private final JSpinner speedFactor = ComponentFromAnnotation.spinner(Block.class, "speedFactor");
+	private final JSpinner jumpFactor = ComponentFromAnnotation.spinner(Block.class, "jumpFactor");
 
 	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
 	private GameEventListField vibrationalEvents;
@@ -241,20 +221,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector canReceiveVibrationCondition;
 	private ProcedureSelector onReceivedVibration;
 
-	private final JComboBox<String> rotationMode = new JComboBox<>(
-			new String[] { L10N.t("elementgui.block.rotation_mode.none"),
-					L10N.t("elementgui.block.rotation_mode.player_y_axis"),
-					L10N.t("elementgui.block.rotation_mode.player_all_axis"),
-					L10N.t("elementgui.block.rotation_mode.block_y_axis"),
-					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
-					L10N.t("elementgui.block.rotation_mode.log") });
+	private final JComboBox<String> rotationMode = ComponentFromAnnotation.translatedOptions(Block.class,
+			"rotationMode", "elementgui.block.rotation_mode.");
 	private final JCheckBox enablePitch = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> destroyTool = new JComboBox<>(
-			new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
+	private final JComboBox<String> destroyTool = ComponentFromAnnotation.options(Block.class, "destroyTool");
 
-	private final JComboBox<String> vanillaToolTier = new JComboBox<>(
-			new String[] { "NONE", "STONE", "IRON", "DIAMOND" });
+	private final JComboBox<String> vanillaToolTier = ComponentFromAnnotation.options(Block.class, "vanillaToolTier");
 
 	private ProcedureSelector additionalHarvestCondition;
 
@@ -276,16 +249,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private JBlockStatesList blockStatesList;
 
-	private final JComboBox<String> transparencyType = new JComboBox<>(
-			new String[] { "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" });
+	private final JComboBox<String> transparencyType = ComponentFromAnnotation.options(Block.class, "transparencyType");
 
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 
 	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
 	private SingleModElementSelector guiBoundTo;
 
-	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
+	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(Block.class, "inventorySize");
+	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(Block.class, "inventoryStackSize");
 	private final JCheckBox inventoryDropWhenDestroyed = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox inventoryComparatorPower = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector inventoryAutomationTakeCondition;
@@ -297,29 +269,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
-	public static final List<String> blockBases = List.of("Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor",
-			"Pane", "Door", "FenceGate", "EndRod", "PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign");
+	public static final List<String> blockBases = AnnotationUtils.getLimitedOptionsList(Block.class, "blockBase");
 	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			ListUtils.merge(List.of("Default basic block"), blockBases));
 	private final CardLayout blockBaseCardLayout = new CardLayout();
 	private final JPanel blockBasePropertiesPanel = new JPanel(blockBaseCardLayout);
-	private final JComboBox<String> blockSetType = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("OAK", "elementgui.block.block_set_type.oak"),
-			Map.entry("STONE", "elementgui.block.block_set_type.stone"),
-			Map.entry("IRON", "elementgui.block.block_set_type.iron")
-			//@formatter:on
-	);
+	private final JComboBox<String> blockSetType = ComponentFromAnnotation.translatedOptions(Block.class,
+			"blockSetType", "elementgui.block.block_set_type.");
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
-	private final JSpinner leavesParticleChance = new JSpinner(new SpinnerNumberModel(0.01, 0, 1, 0.001));
+	private final JSpinner leavesParticleChance = ComponentFromAnnotation.spinner(Block.class, "leavesParticleChance");
 	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
 	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN);
 	private JComponent signGUITexturePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(Block.class, "flammability");
+	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Block.class, "fireSpreadSpeed");
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 
@@ -472,7 +438,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		animations = new JBlockEntityAnimationList(mcreator, this);
 
-		blockBase.addActionListener(e -> {
+		blockBase.addActionListener(_ -> {
 			boolean hasBlockBase = blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0;
 			renderType.setEnabled(!hasBlockBase);
 			disableOffset.setEnabled(!hasBlockBase);
@@ -604,12 +570,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 			refreshBonemealProperties();
 		});
 
-		renderType.addActionListener(e -> {
+		renderType.addActionListener(_ -> {
 			updateTextureOptions();
 			refreshBlockStatesList();
 		});
 
-		hasTransparency.addActionListener(e -> {
+		hasTransparency.addActionListener(_ -> {
 			if (!isEditingMode()) {
 				// We can assume the user wants to make the block fully transparent
 				hasCustomOpacity.setSelected(hasTransparency.isSelected());
@@ -787,7 +753,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		enablePitch.setOpaque(false);
 		enablePitch.setEnabled(false);
-		rotationMode.addActionListener(e -> {
+		rotationMode.addActionListener(_ -> {
 			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
 			if (!enablePitch.isEnabled())
 				enablePitch.setSelected(false);
@@ -837,7 +803,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (!isEditingMode()) // add first bounding box
 			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 
-		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
+		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", _ -> updateParametersBasedOnBoundingBoxSize());
 
 		bsPane.setOpaque(false);
 		bsPane.add("Center", statePropertiesList);
@@ -854,10 +820,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		unbreakable.setOpaque(false);
 		useLootTableForDrops.setOpaque(false);
 		requiresCorrectTool.setOpaque(false);
-		destroyTool.addActionListener(e -> updateRequiresCorrectTool());
+		destroyTool.addActionListener(_ -> updateRequiresCorrectTool());
 		hasBlockItem.setOpaque(false);
 		hasBlockItem.setSelected(true);
-		hasBlockItem.addActionListener(e -> updateBlockItemSettings());
+		hasBlockItem.addActionListener(_ -> updateBlockItemSettings());
 		immuneToFire.setOpaque(false);
 
 		selp3.setOpaque(false);
@@ -887,13 +853,13 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.is_unbreakable")));
 		selp.add(unbreakable);
 
-		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
+		unbreakable.addActionListener(_ -> refreshUnbreakableProperties());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/has_custom_opacity"),
 				L10N.label("elementgui.block.has_custom_opacity")));
 		selp.add(hasCustomOpacity);
 
-		hasCustomOpacity.addActionListener(e -> refreshLightOpacitySetting());
+		hasCustomOpacity.addActionListener(_ -> refreshLightOpacitySetting());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/light_opacity"),
 				L10N.label("elementgui.common.light_opacity")));
@@ -972,8 +938,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		defaultSoundType.setOpaque(false);
 		customSoundType.setOpaque(false);
 
-		defaultSoundType.addActionListener(event -> updateSoundType());
-		customSoundType.addActionListener(event -> updateSoundType());
+		defaultSoundType.addActionListener(_ -> updateSoundType());
+		customSoundType.addActionListener(_ -> updateSoundType());
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), defaultSoundType));
 		soundProperties.add(soundOnStep);
@@ -1009,7 +975,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.tick_randomly")));
 		advancedProperties.add(tickRandomly);
 
-		tickRandomly.addActionListener(e -> tickRate.setEnabled(!tickRandomly.isSelected()));
+		tickRandomly.addActionListener(_ -> tickRate.setEnabled(!tickRandomly.isSelected()));
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
 				L10N.label("elementgui.block.color_on_map")));
@@ -1066,12 +1032,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealable.setOpaque(false);
 		isLadder.setOpaque(false);
 
-		useLootTableForDrops.addActionListener(e -> {
+		useLootTableForDrops.addActionListener(_ -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
 
-		isWaterloggable.addActionListener(e -> {
+		isWaterloggable.addActionListener(_ -> {
 			hasGravity.setEnabled(!isWaterloggable.isSelected());
 			if (isWaterloggable.isSelected()) {
 				hasGravity.setSelected(false);
@@ -1145,7 +1111,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.bind_gui")));
 		props.add(guiBoundTo);
 
-		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		guiBoundTo.addEntrySelectedListener(_ -> refreshGUIProperties());
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/bind_gui_open"),
 				L10N.label("elementgui.block.bind_gui_open")));
@@ -1183,7 +1149,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inSlotIDs.setValidator(new CommaSeparatedNumbersValidator(inSlotIDs));
 		inSlotIDs.enableRealtimeValidation();
 
-		guiBoundTo.addEntrySelectedListener(e -> {
+		guiBoundTo.addEntrySelectedListener(_ -> {
 			if (!isEditingMode()) {
 				String selected = guiBoundTo.getEntry();
 				if (selected != null) {
@@ -1260,7 +1226,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						PanelUtils.westAndEastElement(energyStorage,
 								PanelUtils.northAndCenterElement(fluidTank, new JEmptyBox())), 10, 10)));
 
-		hasInventory.addActionListener(e -> refreshFieldsTileEntity());
+		hasInventory.addActionListener(_ -> refreshFieldsTileEntity());
 		refreshFieldsTileEntity();
 
 		JPanel invpropsbottom = new JPanel(new GridLayout(2, 1, 0, 2));
@@ -1277,7 +1243,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.sensitive_to_vibration")));
 		vibrationPanel.add(sensitiveToVibration);
 
-		sensitiveToVibration.addActionListener(e -> refreshVibrationProperties());
+		sensitiveToVibration.addActionListener(_ -> refreshVibrationProperties());
 
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/vibrational_events"),
 				L10N.label("elementgui.block.vibrational_events")));
@@ -1315,7 +1281,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.block.generate_feature")));
 		genPanel.add(generateFeature);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
@@ -1363,7 +1329,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.makeSection(redstoneMerger, L10N.t("elementgui.block.properties_redstone"));
 
-		canProvidePower.addActionListener(e -> refreshRedstoneEmitted());
+		canProvidePower.addActionListener(_ -> refreshRedstoneEmitted());
 		refreshRedstoneEmitted();
 
 		JPanel bonemealPanel = new JPanel(new GridLayout(1, 2, 0, 2));
@@ -1383,7 +1349,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
 		ComponentUtils.makeSection(bonemealMerger, L10N.t("elementgui.common.properties_bonemeal"));
 
-		isBonemealable.addActionListener(e -> refreshBonemealProperties());
+		isBonemealable.addActionListener(_ -> refreshBonemealProperties());
 		refreshBonemealProperties();
 
 		JPanel flammabilityProperties = new JPanel(new GridLayout(3, 2, 0, 2));
@@ -1403,7 +1369,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.makeSection(flammabilityProperties, L10N.t("elementgui.common.properties_flammability"));
 
-		renderType.addActionListener(e -> {
+		renderType.addActionListener(_ -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
 				boundingBoxList.modelChanged();

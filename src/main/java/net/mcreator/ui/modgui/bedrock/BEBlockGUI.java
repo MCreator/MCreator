@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.ListUtils;
@@ -54,7 +55,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -75,28 +75,26 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner lightEmission = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner hardness = ComponentFromAnnotation.spinner(BEBlock.class, "hardness");
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(BEBlock.class, "resistance");
+	private final JSpinner lightEmission = ComponentFromAnnotation.spinner(BEBlock.class, "lightEmission");
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 64, 1));
+	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(BEBlock.class, "dropAmount");
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
-	private final JSpinner friction = new JSpinner(new SpinnerNumberModel(0.4, 0, 0.9, 0.01));
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner flammableDestroyChance = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner friction = ComponentFromAnnotation.spinner(BEBlock.class, "friction");
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(BEBlock.class, "flammability");
+	private final JSpinner flammableDestroyChance = ComponentFromAnnotation.spinner(BEBlock.class,
+			"flammableDestroyChance");
 
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
-	private final TranslatedComboBox generationShape = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("uniform", "elementgui.block.generation_shape.uniform"),
-			Map.entry("triangle", "elementgui.block.generation_shape.triangle")
-			//@formatter:on
-	);
-	private final JMinMaxSpinner generateHeight = new JMinMaxSpinner(0, 64, -2032, 2016, 1).allowEqualValues();
-	private final JSpinner frequencyPerChunks = new JSpinner(new SpinnerNumberModel(10, 1, 64, 1));
-	private final JSpinner oreCount = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
+	private final TranslatedComboBox generationShape = ComponentFromAnnotation.translatedOptions(BEBlock.class,
+			"generationShape", "elementgui.block.generation_shape.");
+	private final JMinMaxSpinner generateHeight = ComponentFromAnnotation.minMaxSpinner(BEBlock.class,
+			"minGenerateHeight", "maxGenerateHeight").allowEqualValues();
+	private final JSpinner frequencyPerChunks = ComponentFromAnnotation.spinner(BEBlock.class, "frequencyPerChunks");
+	private final JSpinner oreCount = ComponentFromAnnotation.spinner(BEBlock.class, "oreCount");
 	private final MCItemListField blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 
 	private final JComboBox<String> rotationMode = new JComboBox<>(
@@ -106,13 +104,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
 					L10N.t("elementgui.block.rotation_mode.log") });
 
-	private final JComboBox<String> renderMethod = new JComboBox<>(
-			new String[] { "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
-					"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" });
+	private final JComboBox<String> renderMethod = ComponentFromAnnotation.options(BEBlock.class, "renderMethod");
 
-	private final JComboBox<String> tintMethod = new JComboBox<>(
-			new String[] { "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
-					"water" });
+	private final JComboBox<String> tintMethod = ComponentFromAnnotation.options(BEBlock.class, "tintMethod");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
@@ -140,7 +134,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		page1group.addValidationElement(textures);
 
 		ComponentUtils.deriveFont(renderType, 16);
-		renderType.addActionListener(event -> updateTextureOptions());
+		renderType.addActionListener(_ -> updateTextureOptions());
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -173,7 +167,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
-		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
@@ -243,7 +237,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.block.generation_shape")));
 		genPanel.add(generationShape);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
