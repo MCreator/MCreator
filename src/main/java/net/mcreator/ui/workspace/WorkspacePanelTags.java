@@ -335,10 +335,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		TagElement tagElement = tagElementForRow(elements.getSelectedRow());
 
-		if (tagElement.type() == TagType.PAINTING_VARIANTS || tagElement.type() == TagType.BANNER_PATTERNS || tagElement.type() == TagType.POINTS_OF_INTEREST) {
-			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.tags.remove_read_only"), L10N.t("common.warning"),
-					JOptionPane.ERROR_MESSAGE);
+		if (tagElement.type() == TagType.PAINTING_VARIANTS || tagElement.type() == TagType.BANNER_PATTERNS
+				|| tagElement.type() == TagType.POINTS_OF_INTEREST) {
+			JOptionPane.showMessageDialog(workspacePanel.getMCreator(), L10N.t("workspace.tags.remove_read_only"),
+					L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -374,8 +374,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
-		for (Map.Entry<TagElement, ArrayList<TagElement.Entry>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
-				.entrySet()) {
+		for (Map.Entry<TagElement, ArrayList<TagElement.Entry>> tag : workspacePanel.getMCreator().getWorkspace()
+				.getTagElements().entrySet()) {
 			model.addRow(
 					new Object[] { tag.getKey().type(), tag.getKey().getMCreatorNamespace(), tag.getKey().getName(),
 							tag.getValue() });

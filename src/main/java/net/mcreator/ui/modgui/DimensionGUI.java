@@ -316,8 +316,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		useCustomEffects.setOpaque(false);
 		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
 		hasClouds.setOpaque(false);
-		hasClouds.addActionListener(
-				_ -> cloudHeight.setEnabled(hasClouds.isSelected()));
+		hasClouds.addActionListener(_ -> cloudHeight.setEnabled(hasClouds.isSelected()));
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
 		sunHeightAffectsFog.setOpaque(false);
