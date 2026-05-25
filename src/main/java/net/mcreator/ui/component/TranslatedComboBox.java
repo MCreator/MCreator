@@ -40,7 +40,7 @@ public class TranslatedComboBox extends VComboBox<String> {
 	}
 
 	public TranslatedComboBox(LinkedHashMap<String, String> map) {
-				map.forEach((key, _) -> super.addItem(key));
+		map.forEach((key, _) -> super.addItem(key));
 		setRenderer(new BasicComboBoxRenderer() {
 			@Override
 			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
