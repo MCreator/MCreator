@@ -637,8 +637,8 @@ public class TestWorkspaceDataProvider {
 			return fluid;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
-			keyBinding.triggerKey = getRandomString(random,
-					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
+			keyBinding.triggerKey = new KeyButton(modElement.getWorkspace(), TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("keybuttons")));
 			keyBinding.keyBindingName = modElement.getName();
 			keyBinding.keyBindingCategoryKey = _true ?
 					"custom_category" :
