@@ -34,6 +34,14 @@ import java.lang.annotation.Target;
 
 	double step();
 
+	/**
+	 * @return true if a field is used in min-max range selector and min and max values can be equal
+	 */
 	boolean allowMinMaxEqual() default false;
+
+	/**
+	 * @return true if the field is not used in all cases and can be left at 0 in those cases
+	 */
+	boolean optional() default false;
 
 }

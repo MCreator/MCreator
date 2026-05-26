@@ -56,8 +56,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			.enableRealtimeValidation();
 	private final TranslatedComboBox type = ComponentFromAnnotation.translatedOptions(Command.class, "type",
 			"elementgui.command.type.");
-	private final JComboBox<String> permissionLevel = ComponentFromAnnotation.options(Command.class,
-			"permissionLevel");
+	private final JComboBox<String> permissionLevel = ComponentFromAnnotation.options(Command.class, "permissionLevel");
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	private BlocklyPanel blocklyPanel;
@@ -101,7 +100,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "CommandRegenerate").start());
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "CommandRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Command.class, "argsxml"));

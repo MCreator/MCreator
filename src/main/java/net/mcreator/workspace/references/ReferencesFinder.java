@@ -26,11 +26,8 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.plugin.PluginLoader;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -274,8 +271,8 @@ public class ReferencesFinder {
 			return false;
 
 		if (clazz.isInstance(value)) { // value of specified type
-			return (isCustomObject(value) || validIf == null || validIf.test(field)) && (condition == null
-					|| condition.test(field, (T) value));
+			return (GeneratableElement.isDataModelObject(value) || validIf == null || validIf.test(field)) && (
+					condition == null || condition.test(field, (T) value));
 		} else if (value instanceof Iterable<?> list) { // list of values
 			return listHasMatches(list, field, clazz, validIf, condition);
 		} else if (value instanceof Map<?, ?> map) { // map with values
@@ -287,7 +284,8 @@ public class ReferencesFinder {
 				if (checkValue(Array.get(value, i), field, clazz, validIf, condition))
 					return true;
 			}
-		} else if (isCustomObject(value)) { // value of unknown type but from MCreator system, do recursive check
+		} else if (GeneratableElement.isDataModelObject(
+				value)) { // value of unknown type but from MCreator system, do recursive check
 			return anyValueMatches(value, clazz, validIf, condition);
 		}
 
@@ -313,20 +311,6 @@ public class ReferencesFinder {
 				return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Checks if class of the passed value is from this module and not related to the technical part of the application.
-	 * Scanning values that do not pass this condition will most probably lead to a {@link StackOverflowError}.
-	 * <br>NOTE: If needed values are instances of a class not contained in this module, they will still be checked.
-	 *
-	 * @param value The value that should be checked.
-	 * @return Whether it is safe to scan the {@code value} object deeper.
-	 */
-	private static boolean isCustomObject(Object value) {
-		return (value.getClass().getModule() == MCreator.class.getModule() || PluginLoader.INSTANCE.getPluginModules()
-				.contains(value.getClass().getModule()))
-				&& !(value instanceof IWorkspaceProvider); // prevent from being stuck in app structure
 	}
 
 }

@@ -21,7 +21,6 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.types.GameRule;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -109,7 +108,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		pane3.add(PanelUtils.totalCenterInPanel(subpane2));
 		pane3.setOpaque(false);
 
-		gameruleType.addActionListener(e -> updateDefaultValueUI());
+		gameruleType.addActionListener(_ -> updateDefaultValueUI());
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 

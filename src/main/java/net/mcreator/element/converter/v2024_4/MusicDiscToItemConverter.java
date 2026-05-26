@@ -80,7 +80,7 @@ public class MusicDiscToItemConverter implements IConverter {
 		else
 			item.isMusicDisc = false;
 		if (musicdisc.has("lengthInTicks")) {
-			item.musicDiscLengthInTicks = musicdisc.get("lengthInTicks").getAsInt();
+			item.musicDiscLengthInTicks = Math.clamp(musicdisc.get("lengthInTicks").getAsInt(), 1, 20 * 3600);
 		} else {
 			item.musicDiscLengthInTicks = 100;
 		}

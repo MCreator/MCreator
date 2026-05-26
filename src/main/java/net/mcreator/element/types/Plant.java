@@ -38,6 +38,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,7 @@ import java.util.stream.Collectors;
 	@ModElementReference public ConfiguredFeatureEntry[] megaTrees;
 
 	public String growapableSpawnType;
-	@Numeric(init = 3, min = 1, max = 14, step = 1) public int growapableMaxHeight;
+	@Numeric(init = 3, min = 1, max = 14, step = 1, optional = true) public int growapableMaxHeight;
 
 	public boolean customBoundingBox;
 	public boolean disableOffset;
@@ -182,6 +183,8 @@ import java.util.stream.Collectors;
 
 		this.boundingBoxes = new ArrayList<>();
 
+		this.growapableMaxHeight = 3;
+
 		this.secondaryTreeChance = 0.1;
 		this.trees = new ConfiguredFeatureEntry[2];
 		this.flowerTrees = new ConfiguredFeatureEntry[2];
@@ -274,8 +277,11 @@ import java.util.stream.Collectors;
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-				baseTypes.add(BaseType.FEATURE);
+					== GeneratorFlavor.FABRIC ||
+					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+				baseTypes.add(
+						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
 		if (hasTileEntity)

@@ -37,6 +37,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nullable;
+import java.lang.module.ModuleDescriptor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -120,8 +121,11 @@ import java.util.List;
 		if (hasConfiguredFeature())
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 
-		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
-			baseTypes.add(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
+		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
+				ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+						.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+			baseTypes.add(
+					BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		else if (hasGenerationConditions())
 			baseTypes.add(BaseType.FEATURE);
 

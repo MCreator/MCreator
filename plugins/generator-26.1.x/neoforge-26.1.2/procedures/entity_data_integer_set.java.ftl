@@ -1,0 +1,2 @@
+if (${input$entity} instanceof ${generator.map(field$customEntity, "entities")} _datEntSetI)
+	_datEntSetI.getEntityData().set(${generator.map(field$customEntity, "entities")}.DATA_${field$accessor}, ${opt.toInt(input$value)});

@@ -424,7 +424,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		remvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 1));
 		bar.add(remvar);
 
-		addvar.addActionListener(e -> {
+		addvar.addActionListener(_ -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
@@ -451,7 +451,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 		});
 
-		remvar.addActionListener(e -> {
+		remvar.addActionListener(_ -> {
 			List<VariableElement> elements = localVarsList.getSelectedValuesList();
 			if (!elements.isEmpty()) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
@@ -597,13 +597,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Procedure.class, "procedurexml"));
 		}
 
-		skipDependencyNullCheck.addActionListener(e -> regenerateBlockAssemblies(false));
+		skipDependencyNullCheck.addActionListener(_ -> regenerateBlockAssemblies(false));
 
 		pane5.add("Center", blocklyPanel);
 

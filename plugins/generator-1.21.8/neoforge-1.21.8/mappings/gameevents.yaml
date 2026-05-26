@@ -1,3 +1,4 @@
+_bypass_prefix: "#"
 BLOCK_ACTIVATE:
   - GameEvent.BLOCK_ACTIVATE
   - block_activate

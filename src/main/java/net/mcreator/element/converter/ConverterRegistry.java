@@ -64,6 +64,7 @@ import net.mcreator.element.converter.v2026_1.BedrockBiomeRemover;
 import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2026_1.BlockToBedrockConverter;
 import net.mcreator.element.converter.v2026_1.ToolToBedrockConverter;
+import net.mcreator.element.converter.v2026_2.VillagerTradeSplitter;
 import net.mcreator.element.converter.v2026_2.LivingEntityToBedrockConverter;
 import net.mcreator.generator.GeneratorFlavor;
 
@@ -232,6 +233,9 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.ENCHANTMENT, List.of(
 			new EnchantmentDefinitionConverter()
+		));
+		put(ModElementType.VILLAGERTRADE, List.of(
+			new VillagerTradeSplitter()
 		));
 	}};
 	//@formatter:on

@@ -137,7 +137,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
-		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
@@ -147,7 +147,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.item.damage_vs_entity")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
-		enableMeleeDamage.addActionListener(e -> updateMeleeDamage());
+		enableMeleeDamage.addActionListener(_ -> updateMeleeDamage());
 		enableMeleeDamage.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
@@ -165,7 +165,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"), L10N.label("elementgui.item.is_food")));
 		foodProperties.add(isFood);
-		isFood.addActionListener(e -> {
+		isFood.addActionListener(_ -> {
 			updateFoodPanel();
 			if (!isEditingMode()) {
 				animation.setSelectedItem("eat");
@@ -243,7 +243,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.beitem.block_to_place")));
 		blockToPlace.setOpaque(false);
 		blockPlacerProps.add(PanelUtils.centerInPanel(blockToPlace));
-		blockToPlace.addBlockSelectedListener(e -> updateBlockUsableOnList());
+		blockToPlace.addBlockSelectedListener(_ -> updateBlockUsableOnList());
 
 		blockPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/block_placeable_on"),
 				L10N.label("elementgui.beitem.placeable_on")));
@@ -295,7 +295,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			shouldDespawn.setSelected(true);
 			enableCreativeTab.setSelected(true);
 			creativeTab.setSelectedItem("MATERIALS");
-			maxDurability.addChangeListener(e -> stackedByData.setSelected(((int) maxDurability.getValue()) > 0));
+			maxDurability.addChangeListener(_ -> stackedByData.setSelected(((int) maxDurability.getValue()) > 0));
 		}
 
 		updateCreativeTab();

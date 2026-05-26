@@ -113,7 +113,7 @@ public class GTProcedureTriggers {
 				}
 			}
 
-			additionalXML.append("</block></next>".repeat(additionalBlocks));
+			additionalXML.repeat("</block></next>", additionalBlocks);
 
 			procedure.procedurexml = """
 					<xml xmlns="https://developers.google.com/blockly/xml">

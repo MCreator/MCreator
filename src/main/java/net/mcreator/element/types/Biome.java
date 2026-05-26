@@ -23,8 +23,8 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
-import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -141,6 +141,7 @@ import java.util.List;
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
 		genDepth = new ClimatePoint(0.2, 0.9);
+		moodSoundDelay = 6000;
 	}
 
 	public boolean hasTrees() {
