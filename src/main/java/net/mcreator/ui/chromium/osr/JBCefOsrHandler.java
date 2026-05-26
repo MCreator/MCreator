@@ -59,7 +59,7 @@ public class JBCefOsrHandler implements CefRenderHandler {
 					return component.isShowing() ?
 							component.getGraphicsConfiguration().getDevice().getDefaultConfiguration().getBounds() :
 							GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-							.getDefaultConfiguration().getBounds();
+									.getDefaultConfiguration().getBounds();
 				} catch (Exception ignored) {
 				}
 			}

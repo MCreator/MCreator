@@ -215,6 +215,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public void openInEditMode(File image) {
 		try {
 			this.image = image;
+			this.name = image.getName();
 			try {
 				// references will be updated
 				canvas = MetadataManager.loadCanvasForFile(mcreator.getWorkspace(), image, this);
@@ -239,7 +240,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 					createCanvasFromBufferedImage(ImageIO.read(image));
 				}
 			}
-			name = image.getName();
 			toolPanel.initTools();
 			updateInfoBar(0, 0);
 		} catch (IOException e) {
@@ -248,7 +248,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	private void createCanvasFromBufferedImage(BufferedImage bufferedImage) throws IOException {
-		Layer layer = Layer.toLayer(bufferedImage, image.getName());
+		Layer layer = Layer.toLayer(bufferedImage, image != null ? image.getName() : name);
 		canvas = new Canvas(this, layer.getWidth(), layer.getHeight());
 		canvas.add(layer);
 	}
@@ -257,6 +257,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		try {
 			String[] path = image.splitPath();
 			canEdit = false;
+			name = FilenameUtilsPatched.getName(path[1]);
 
 			createCanvasFromBufferedImage(
 					Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
@@ -267,7 +268,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 							return null;
 						}
 					}), "Could not read source image asset!"));
-			name = FilenameUtilsPatched.getName(path[1]);
 			toolPanel.initTools();
 			updateInfoBar(0, 0);
 		} catch (IOException e) {
