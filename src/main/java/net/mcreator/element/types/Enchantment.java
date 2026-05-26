@@ -60,7 +60,7 @@ import java.util.List;
 	public boolean canGenerateInLootTables;
 	public boolean canVillagerTrade;
 
-	@BlocklyXML("enchantmenteffects") public String effectsxml;
+	@BlocklyXML(name = "enchantmenteffects", defaultXML = XML_BASE) public String effectsxml;
 
 	private Enchantment() {
 		this(null);

@@ -330,7 +330,7 @@ Blockly.Extensions.registerMixin('disable_repeated_enchantment_component',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
-                this.setEnabled(enabled);
+                this.setDisabledReason(!enabled, "repeated_enchantment_component");
                 Blockly.Events.setGroup(group);
             }
         }
