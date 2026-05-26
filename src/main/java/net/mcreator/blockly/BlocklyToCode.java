@@ -207,7 +207,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final List<Dependency> getDependencies() {
-		return dependencies.stream().sorted()
+		return dependencies.stream().filter(Objects::nonNull).sorted()
 				// this is here for compatibility with workspaces before 2020.4
 				.map(e -> {
 					if (e.getRawType().equals("int"))
@@ -230,6 +230,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final void addDependency(Dependency dependency) {
+		if (dependency == null)
+			return;
+
 		// check if used by statement input and skip in this case
 		if (checkIfDepProviderInputsProvide(dependency))
 			return;

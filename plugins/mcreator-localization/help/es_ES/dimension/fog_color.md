@@ -1,0 +1,1 @@
+El color de la niebla dentro de la dimensión. 

@@ -23,41 +23,48 @@ import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class JVillagerTradeEntry extends JPanel {
+public class JVillagerTradeEntry extends JSimpleListEntry<VillagerTrade.TradeEntry> {
+
+	private boolean isWanderingTrader;
 
 	private final MCItemHolder price1;
 	private final MCItemHolder price2;
 	private final MCItemHolder offer;
 
-	private final JSpinner countPrice1 = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
-	private final JSpinner countPrice2 = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
-	private final JSpinner countOffer = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
+	private final JSpinner countPrice1 = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "countPrice1");
+	private final JSpinner countPrice2 = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "countPrice2");
+	private final JSpinner countOffer = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "countOffer");
 
+	private final CardLayout tradeLevelLayout = new CardLayout();
+	private final JPanel tradeLevelPanel = new JPanel(tradeLevelLayout);
 	private final JComboBox<String> level = new JComboBox<>(
 			new String[] { "Novice", "Apprentice", "Journeyman", "Expert", "Master" });
+	private final JComboBox<String> wanderingTraderCategory = new JComboBox<>(
+			new String[] { "Common", "Uncommon", "Buying" });
 
-	private final JSpinner maxTrades = new JSpinner(new SpinnerNumberModel(10, 1, 72000, 1));
-	private final JSpinner xp = new JSpinner(new SpinnerNumberModel(5, 0, 72000, 1));
-	private final JSpinner priceMultiplier = new JSpinner(new SpinnerNumberModel(0.05, 0, 1, 0.01));
+	private final JSpinner maxTrades = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "maxTrades");
+	private final JSpinner xp = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class, "xp");
+	private final JSpinner priceMultiplier = ComponentFromAnnotation.spinner(VillagerTrade.TradeEntry.class,
+			"priceMultiplier");
 
-	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JVillagerTradeEntry> entryList) {
-		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-		setBackground(Theme.current().getAltBackgroundColor().darker());
+	public JVillagerTradeEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JVillagerTradeEntry> entryList,
+			boolean isWanderingTrader) {
+		super(parent, entryList);
+		this.isWanderingTrader = isWanderingTrader;
 
 		price1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
 				"elementgui.villager_trade.error_trade_needs_price", true);
@@ -65,53 +72,39 @@ public class JVillagerTradeEntry extends JPanel {
 		offer = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
 				"elementgui.villager_trade.error_trade_needs_offer", true);
 
-		final JComponent container = PanelUtils.expandHorizontally(this);
-
-		parent.add(container);
-		entryList.add(this);
-
-		priceMultiplier.setPreferredSize(new Dimension(92, 22));
-
-		JPanel line1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		line1.setOpaque(false);
-
-		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price1"),
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price1"),
 				L10N.label("elementgui.villager_trade.price1")));
-		line1.add(price1);
-		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
-		line1.add(countPrice1);
+		line.add(price1);
+		line.add(countPrice1);
 
-		line1.add(new JEmptyBox(15, 5));
+		line.add(new JEmptyBox(15, 5));
 
-		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price2"),
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/price2"),
 				L10N.label("elementgui.villager_trade.price2")));
-		line1.add(price2);
-		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
-		line1.add(countPrice2);
+		line.add(price2);
+		line.add(countPrice2);
 
-		line1.add(new JEmptyBox(15, 5));
+		line.add(new JEmptyBox(15, 5));
 
-		line1.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/sale"),
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/sale"),
 				L10N.label("elementgui.villager_trade.sale")));
-		line1.add(offer);
-		line1.add(L10N.label("elementgui.villager_trade.count_price_sale"));
-		line1.add(countOffer);
-
-		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.villager_trade.remove_entry"));
-		remove.addActionListener(e -> {
-			entryList.remove(this);
-			parent.remove(container);
-			parent.revalidate();
-			parent.repaint();
-		});
+		line.add(offer);
+		line.add(countOffer);
 
 		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line2.setOpaque(false);
 
-		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/level"),
-				L10N.label("elementgui.villager_trade.level")));
-		line2.add(level);
+		JPanel villagerLevel = PanelUtils.centerAndEastElement(
+				HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/level"),
+						L10N.label("elementgui.villager_trade.level")), level);
+		JPanel wanderingTraderLevel = PanelUtils.centerAndEastElement(
+				HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/wandering_trader_category"),
+						L10N.label("elementgui.villager_trade.wandering_trader_category")), wanderingTraderCategory);
+		tradeLevelPanel.add(villagerLevel, "villager");
+		tradeLevelPanel.add(wanderingTraderLevel, "wandering_trader");
+		tradeLevelPanel.setOpaque(false);
+
+		line2.add(tradeLevelPanel);
 		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("villagertrades/max_trades"),
 				L10N.label("elementgui.villager_trade.max_trades")));
 		line2.add(maxTrades);
@@ -122,29 +115,43 @@ public class JVillagerTradeEntry extends JPanel {
 				L10N.label("elementgui.villager_trade.price_multiplier")));
 		line2.add(priceMultiplier);
 
-		add(PanelUtils.centerAndEastElement(line1, PanelUtils.join(remove)));
 		add(line2);
 
-		parent.revalidate();
-		parent.repaint();
+		setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Theme.current().getSecondAltBackgroundColor()));
+
+		updateTradeLevelCard(isWanderingTrader);
 	}
 
-	public VillagerTrade.CustomTradeEntry.Entry getEntry() {
-		VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
+	@Override protected void setEntryEnabled(boolean enabled) {
+		price1.setEnabled(enabled);
+		countPrice1.setEnabled(enabled);
+		price2.setEnabled(enabled);
+		countPrice2.setEnabled(enabled);
+		offer.setEnabled(enabled);
+		countOffer.setEnabled(enabled);
+		level.setEnabled(enabled);
+		wanderingTraderCategory.setEnabled(enabled);
+		maxTrades.setEnabled(enabled);
+		xp.setEnabled(enabled);
+		priceMultiplier.setEnabled(enabled);
+	}
+
+	@Override public VillagerTrade.TradeEntry getEntry() {
+		VillagerTrade.TradeEntry entry = new VillagerTrade.TradeEntry();
 		entry.price1 = price1.getBlock();
 		entry.countPrice1 = (int) countPrice1.getValue();
 		entry.price2 = price2.getBlock();
 		entry.countPrice2 = (int) countPrice2.getValue();
 		entry.offer = offer.getBlock();
 		entry.countOffer = (int) countOffer.getValue();
-		entry.level = level.getSelectedIndex() + 1;
+		entry.level = (isWanderingTrader ? wanderingTraderCategory.getSelectedIndex() : level.getSelectedIndex()) + 1;
 		entry.maxTrades = (int) maxTrades.getValue();
 		entry.xp = (int) xp.getValue();
 		entry.priceMultiplier = (double) priceMultiplier.getValue();
 		return entry;
 	}
 
-	public void setEntry(VillagerTrade.CustomTradeEntry.Entry e) {
+	@Override public void setEntry(VillagerTrade.TradeEntry e) {
 		price1.setBlock(e.price1);
 		countPrice1.setValue(e.countPrice1);
 		price2.setBlock(e.price2);
@@ -152,9 +159,20 @@ public class JVillagerTradeEntry extends JPanel {
 		offer.setBlock(e.offer);
 		countOffer.setValue(e.countOffer);
 		level.setSelectedIndex(e.level - 1);
+		wanderingTraderCategory.setSelectedIndex(Math.min(e.level - 1, 2));
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);
 		priceMultiplier.setValue(e.priceMultiplier);
+	}
+
+	public void updateTradeLevelCard(boolean isWanderingTrader) {
+		this.isWanderingTrader = isWanderingTrader;
+		tradeLevelLayout.show(tradeLevelPanel, isWanderingTrader ? "wandering_trader" : "villager");
+		for (Component comp : tradeLevelPanel.getComponents()) {
+			if (comp.isVisible()) {
+				tradeLevelPanel.setPreferredSize(comp.getPreferredSize());
+			}
+		}
 	}
 
 	public AggregatedValidationResult getValidationResult() {

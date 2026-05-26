@@ -75,12 +75,12 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.banner_pattern.error_pattern_needs_banner_texture");
 		texture.setOpaque(false);
-		texture.addTextureSelectedListener(e -> updatePatternPreviews());
+		texture.addTextureSelectedListener(_ -> updatePatternPreviews());
 		shieldTexture = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.banner_pattern.error_pattern_needs_shield_texture");
 		shieldTexture.setOpaque(false);
-		shieldTexture.addTextureSelectedListener(e -> updatePatternPreviews());
+		shieldTexture.addTextureSelectedListener(_ -> updatePatternPreviews());
 
 		texturesPanel.add(ComponentUtils.squareAndBorder(
 				HelpUtils.wrapWithHelpButton(this.withEntry("banner_pattern/texture"), texture),
