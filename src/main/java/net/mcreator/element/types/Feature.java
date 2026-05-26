@@ -62,7 +62,6 @@ import java.util.List;
 	public Feature(ModElement element) {
 		super(element);
 
-		this.generationStep = "SURFACE_STRUCTURES"; // TODO: instead handle null and fallback to SURFACE_STRUCTURES in FTL
 		this.restrictionBiomes = new ArrayList<>();
 	}
 
