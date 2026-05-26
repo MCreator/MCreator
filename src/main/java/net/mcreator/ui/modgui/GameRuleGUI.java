@@ -35,6 +35,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.lang.module.ModuleDescriptor;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -113,7 +114,13 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 
 		if (!isEditingMode()) {
-			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
+			if (ModuleDescriptor.Version.parse(
+							mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorMinecraftVersion())
+					.compareTo(ModuleDescriptor.Version.parse("1.21.11")) >= 0) {
+				name.setText(StringUtils.camelToSnake(modElement.getName()).toLowerCase());
+			} else {
+				name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
+			}
 			updateDefaultValueUI();
 		}
 	}
@@ -130,7 +137,14 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		defaultValueLogic.setSelectedItem(Boolean.toString(gamerule.defaultValueLogic));
 		defaultValueNumber.setValue(gamerule.defaultValueNumber);
 
-		name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
+		// In 1.21.11 and higher, names were changed from camelCase to snake_case
+		if (ModuleDescriptor.Version.parse(
+						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorMinecraftVersion())
+				.compareTo(ModuleDescriptor.Version.parse("1.21.11")) >= 0) {
+			name.setText(StringUtils.camelToSnake(modElement.getName()).toLowerCase());
+		} else {
+			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
+		}
 		updateDefaultValueUI();
 	}
 
