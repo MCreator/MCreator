@@ -30,7 +30,7 @@
   },
   "anvil_cost": ${data.anvilCost},
   "slots": [
-    ${generator.map(data.supportedSlots, "equipmentslots", 1)}
+    ${data.supportedSlots.getMappedValue(1)}
   ],
   <#if incompatibleEnchantments?size == 1>
   "exclusive_set": "${generator.map(incompatibleEnchantments?first.getUnmappedValue(), "enchantments", 1)}"

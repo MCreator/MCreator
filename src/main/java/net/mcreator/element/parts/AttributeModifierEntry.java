@@ -24,7 +24,7 @@ import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
 
 public class AttributeModifierEntry {
-	public String equipmentSlot = "any";
+	public EquipmentSlotEntry equipmentSlot; // TODO: how to handle any default
 	public AttributeEntry attribute;
 	@Numeric(init = 0, min = -1024, max = 1024, step = 0.001) public double amount;
 	@LimitedOptions({ "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" }) public String operation;

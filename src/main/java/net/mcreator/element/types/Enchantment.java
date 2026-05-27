@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
@@ -31,7 +32,7 @@ import java.util.List;
 
 	public String name;
 
-	public String supportedSlots;
+	public EquipmentSlotEntry supportedSlots; // TODO: how to handle "any" default
 
 	@Numeric(init = 10, min = 1, max = 1024, step = 1) public int weight;
 	@Numeric(init = 1, min = 1, max = 1024, step = 1) public int anvilCost;
@@ -58,8 +59,6 @@ import java.util.List;
 
 		canGenerateInLootTables = true;
 		canVillagerTrade = true;
-
-		supportedSlots = "any";
 
 		incompatibleEnchantments = new ArrayList<>();
 		supportedItems = new ArrayList<>();
