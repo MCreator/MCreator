@@ -47,6 +47,8 @@ public class ItemToBedrockConverter implements IConverter {
 			beitem.enableCreativeTab = !item.creativeTabs.isEmpty();
 			if (beitem.enableCreativeTab)
 				beitem.creativeTab = new TabEntry(workspace, item.creativeTabs.getFirst().getUnmappedValue());
+			else
+				beitem.creativeTab = new TabEntry(workspace, "MATERIALS");
 			beitem.stackSize = item.stackSize;
 			beitem.useDuration = (double) item.useDuration / 20;
 			beitem.maxDurability = item.damageCount;

@@ -50,6 +50,8 @@ public class ToolToBedrockConverter implements IConverter {
 			beitem.enableCreativeTab = !tool.creativeTabs.isEmpty();
 			if (beitem.enableCreativeTab)
 				beitem.creativeTab = new TabEntry(workspace, tool.creativeTabs.getFirst().getUnmappedValue());
+			else
+				beitem.creativeTab = new TabEntry(workspace, "TOOLS");
 			beitem.handEquipped = true;
 			beitem.stackedByData = true;
 

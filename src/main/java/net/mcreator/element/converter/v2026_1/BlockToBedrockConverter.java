@@ -53,6 +53,8 @@ public class BlockToBedrockConverter implements IConverter {
 			beblock.enableCreativeTab = !block.creativeTabs.isEmpty();
 			if (beblock.enableCreativeTab)
 				beblock.creativeTab = new TabEntry(workspace, block.creativeTabs.getFirst().getUnmappedValue());
+			else
+				beblock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
 			beblock.hardness = block.hardness;
 			beblock.resistance = block.resistance;
 			beblock.customDrop = block.customDrop;
