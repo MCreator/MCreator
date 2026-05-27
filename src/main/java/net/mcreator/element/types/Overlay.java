@@ -60,7 +60,6 @@ import java.util.List;
 		super(element);
 
 		this.gridSettings = new GridSettings();
-		this.overlayTarget = "Ingame";
 		this.priority = "NORMAL";
 	}
 
