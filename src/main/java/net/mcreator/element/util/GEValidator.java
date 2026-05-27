@@ -131,19 +131,19 @@ public class GEValidator {
 									+ " is null, but should not be.");
 				}
 
-				if (field.isAnnotationPresent(NonNullMappable.class)) {
-					NonNullMappable annotation = field.getAnnotation(NonNullMappable.class);
-					if (MappableElement.class.isAssignableFrom(field.getType())) {
+				if (field.nonNullMappable() != null) {
+					NonNullMappable annotation = field.nonNullMappable();
+					if (MappableElement.class.isAssignableFrom(javaField.getType())) {
 						LOG.debug(
 								"Field {} of mod element {} is null but needs to have a value. Setting it to default value '{}'.",
-								field.getName(), element.getModElement().getName(), annotation.value());
+								javaField.getName(), element.getModElement().getName(), annotation.value());
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 
 						// Construct field object instance and set its value
-						@SuppressWarnings("unchecked") Constructor<? extends MappableElement> constructor = (Constructor<? extends MappableElement>) field.getType()
+						@SuppressWarnings("unchecked") Constructor<? extends MappableElement> constructor = (Constructor<? extends MappableElement>) javaField.getType()
 								.getDeclaredConstructor(Workspace.class, String.class);
 						constructor.setAccessible(true);
-						field.set(fieldHolder,
+						javaField.set(fieldHolder,
 								constructor.newInstance(element.getModElement().getWorkspace(), annotation.value()));
 					}
 				}
@@ -173,8 +173,6 @@ public class GEValidator {
 								javaField.getName(), element.getModElement().getName(), number, annotation.max());
 						javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.max()));
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
-
-						field.set(fieldHolder, castNumber(field.getType(), annotation.max()));
 					}
 				} else {
 					throw new ValidationException(
@@ -197,8 +195,6 @@ public class GEValidator {
 								javaField.getName(), element.getModElement().getName(), string, firstOption);
 						javaField.set(fieldHolder, firstOption);
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
-
-						field.set(fieldHolder, options[0]);
 					}
 				} else if (fieldValue instanceof Integer index) {
 					int optionsLength = limited.allowed().size();
@@ -220,7 +216,7 @@ public class GEValidator {
 							.getName(), e);
 		} catch (InvocationTargetException | NoSuchMethodException | InstantiationException | ClassCastException e) {
 			throw new ValidationException(
-					"Failed to construct default value for field " + field.getName() + " of mod element "
+					"Failed to construct default value for field " + javaField.getName() + " of mod element "
 							+ element.getModElement().getName(), e);
 		}
 	}
@@ -233,10 +229,12 @@ public class GEValidator {
 	}
 
 	private record CachedField(Field field, boolean notNullable, @Nullable Numeric numeric,
+	                           @Nullable NonNullMappable nonNullMappable,
 	                           @Nullable LimitedOptionsCache limitedOptions) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
 			this(field, field.isAnnotationPresent(Nonnull.class), field.getAnnotation(Numeric.class),
+					field.getAnnotation(NonNullMappable.class),
 					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null);
 		}
 	}
