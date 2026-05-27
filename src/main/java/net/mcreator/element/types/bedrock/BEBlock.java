@@ -23,8 +23,10 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
@@ -56,7 +58,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public String name;
 	public boolean enableCreativeTab;
-	public String creativeTab;
+	@NonNullMappable("BUILDING_BLOCKS") public TabEntry creativeTab;
 	public boolean isHiddenInCommands;
 	public MItemBlock customDrop;
 	@Numeric(init = 1, min = 0, max = 64, step = 1) public int dropAmount;
@@ -97,7 +99,6 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		renderType = 10;
 
 		enableCreativeTab = true;
-		creativeTab = "BUILDING_BLOCKS";
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";

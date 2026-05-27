@@ -1714,7 +1714,8 @@ public class TestWorkspaceDataProvider {
 			beitem.handEquipped = _true;
 			beitem.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(BEItem.class, "rarity"));
 			beitem.enableCreativeTab = !_true;
-			beitem.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beitem.creativeTab = new TabEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			beitem.isHiddenInCommands = _true;
 			beitem.movementModifier = getRandomDouble(random, BEItem.class, "movementModifier");
 			beitem.allowOffHand = _true;
@@ -1758,7 +1759,8 @@ public class TestWorkspaceDataProvider {
 			beblock.renderType = new int[] { 10, 11, 12, 10 }[valueIndex];
 			beblock.customModelName = new String[] { "Normal", "Cross model", "Single texture", "Normal" }[valueIndex];
 			beblock.enableCreativeTab = !_true;
-			beblock.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beblock.creativeTab = new TabEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			beblock.isHiddenInCommands = _true;
 			beblock.hardness = getRandomDouble(random, BEBlock.class, "hardness");
 			beblock.resistance = getRandomDouble(random, BEBlock.class, "resistance");
