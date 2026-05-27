@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.AIPathNodeType;
 import net.mcreator.element.parts.GrowapableSpawnType;
 import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
@@ -1011,7 +1012,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isReplaceable.setSelected(plant.isReplaceable);
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
-		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
+		aiPathNodeType.setSelectedItem(plant.aiPathNodeType.getUnmappedValue());
 		strippingResult.setBlock(plant.strippingResult);
 		creativePickItem.setBlock(plant.creativePickItem);
 		ignitedByLava.setSelected(plant.ignitedByLava);
@@ -1147,7 +1148,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		plant.offsetType = (String) offsetType.getSelectedItem();
-		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
+		plant.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(), aiPathNodeType.getSelectedItem());
 		plant.strippingResult = strippingResult.getBlock();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.ignitedByLava = ignitedByLava.isSelected();

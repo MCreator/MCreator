@@ -553,9 +553,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
+	<#if data.aiPathNodeType.getUnmappedValue() != "DEFAULT">
 	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		return PathType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		return PathType.${data.aiPathNodeType};
 	}
 	</#if>
 

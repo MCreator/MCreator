@@ -112,7 +112,7 @@ import java.util.stream.Collectors;
 	public MapColor colorOnMap;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "XZ", "XYZ", "NONE" }) public String offsetType;
-	public String aiPathNodeType;
+	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;
 	public MItemBlock strippingResult;
 
 	public boolean ignitedByLava;
@@ -166,7 +166,6 @@ import java.util.stream.Collectors;
 		this.restrictionBiomes = new ArrayList<>();
 		this.renderType = 12;
 		this.customModelName = "Cross model";
-		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "XZ";
 		this.tintType = "No tint";
 

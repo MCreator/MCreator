@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.MapColor;
+import net.mcreator.element.parts.AIPathNodeType;
 import net.mcreator.element.parts.NoteBlockInstrument;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.gui.GUIComponent;
@@ -1843,7 +1844,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		colorOnMap.setSelectedItem(block.colorOnMap);
 		noteBlockInstrument.setSelectedItem(block.noteBlockInstrument);
 		offsetType.setSelectedItem(block.offsetType);
-		aiPathNodeType.setSelectedItem(block.aiPathNodeType);
+		aiPathNodeType.setSelectedItem(block.aiPathNodeType.getUnmappedValue());
 		creativePickItem.setBlock(block.creativePickItem);
 		placingCondition.setSelectedProcedure(block.placingCondition);
 
@@ -2017,7 +2018,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		block.noteBlockInstrument = new NoteBlockInstrument(modElement.getWorkspace(), noteBlockInstrument.getSelectedItem());
 		block.offsetType = (String) offsetType.getSelectedItem();
-		block.aiPathNodeType = aiPathNodeType.getSelectedItem();
+		block.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(), aiPathNodeType.getSelectedItem());
 		block.creativePickItem = creativePickItem.getBlock();
 		block.placingCondition = placingCondition.getSelectedProcedure();
 

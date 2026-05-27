@@ -147,7 +147,7 @@ import java.util.stream.Collectors;
 	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "NONE", "XZ", "XYZ" }) public String offsetType;
-	public String aiPathNodeType;
+	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;
 	public Color beaconColorModifier;
 	public MItemBlock strippingResult;
 
@@ -260,7 +260,6 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.hasCustomOpacity = true;
-		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";

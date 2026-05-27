@@ -1123,7 +1123,8 @@ public class TestWorkspaceDataProvider {
 			plant.colorOnMap = new MapColor(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
 			plant.offsetType = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(Plant.class, "offsetType"));
-			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
+			plant.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes")));
 			plant.strippingResult = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			plant.unbreakable = _true;
@@ -2175,7 +2176,8 @@ public class TestWorkspaceDataProvider {
 		block.offsetType = blockBase == null ?
 				getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType")) :
 				"NONE";
-		block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
+		block.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes")));
 		block.beaconColorModifier = emptyLists ? null : Color.cyan;
 		block.unbreakable = _true;
 		block.vanillaToolTier = getRandomString(random,
