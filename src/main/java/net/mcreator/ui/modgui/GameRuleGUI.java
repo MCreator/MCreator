@@ -114,14 +114,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 
 		if (!isEditingMode()) {
-			if (ModuleDescriptor.Version.parse(
-							mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorMinecraftVersion())
-					.compareTo(ModuleDescriptor.Version.parse("1.21.11")) >= 0) {
-				name.setText(StringUtils.camelToSnake(modElement.getName()).toLowerCase());
-			} else {
-				name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
-			}
-			updateDefaultValueUI();
+			updateNameAndDefaultValue();
 		}
 	}
 
@@ -137,6 +130,10 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		defaultValueLogic.setSelectedItem(Boolean.toString(gamerule.defaultValueLogic));
 		defaultValueNumber.setValue(gamerule.defaultValueNumber);
 
+		updateNameAndDefaultValue();
+	}
+
+	private void updateNameAndDefaultValue() {
 		// In 1.21.11 and higher, names were changed from camelCase to snake_case
 		if (ModuleDescriptor.Version.parse(
 						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorMinecraftVersion())
@@ -145,6 +142,7 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		} else {
 			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
 		}
+
 		updateDefaultValueUI();
 	}
 
