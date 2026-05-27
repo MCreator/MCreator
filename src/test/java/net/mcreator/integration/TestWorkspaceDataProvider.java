@@ -431,8 +431,7 @@ public class TestWorkspaceDataProvider {
 		var blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
 		var blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		var blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
-		var blocksAndTagsNoAir = blocksAndTags.stream()
-				.filter(e -> !e.getName().toLowerCase(Locale.ENGLISH).contains("air")).toList();
+		var blocksAndTagsNoAir = filterAir(blocksAndTags);
 		var biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 		var tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
