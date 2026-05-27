@@ -526,7 +526,8 @@ public class TestWorkspaceDataProvider {
 				entry1.minGroup = groupSize1.getMinimum();
 				entry1.maxGroup = groupSize1.getMaximum();
 				entry1.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry1.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry1.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
@@ -536,7 +537,8 @@ public class TestWorkspaceDataProvider {
 				entry2.minGroup = groupSize2.getMinimum();
 				entry2.maxGroup = groupSize2.getMaximum();
 				entry2.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry2.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry2.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry2);
 
 				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
@@ -546,7 +548,8 @@ public class TestWorkspaceDataProvider {
 				entry3.minGroup = groupSize3.getMinimum();
 				entry3.maxGroup = groupSize3.getMaximum();
 				entry3.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry3.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry3.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry3);
 
 				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
@@ -556,7 +559,8 @@ public class TestWorkspaceDataProvider {
 				entry4.minGroup = groupSize4.getMinimum();
 				entry4.maxGroup = groupSize4.getMaximum();
 				entry4.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry4.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry4.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry4);
 			}
 			biome.spawnEntries = entities;
@@ -1928,7 +1932,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.spawnThisMob = !_true;
 		livingEntity.doesDespawnWhenIdle = _true;
 		livingEntity.spawningProbability = getRandomInt(random, LivingEntity.class, "spawningProbability");
-		livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+		livingEntity.mobSpawningType = new MobSpawnType(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 		var numberOfMobsPerGroup = getRandomIntRange(random, LivingEntity.class, "minNumberOfMobsPerGroup",
 				"maxNumberOfMobsPerGroup");
 		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getMinimum();
