@@ -68,7 +68,7 @@ import java.util.stream.Collectors;
 	@ModElementReference public ConfiguredFeatureEntry[] flowerTrees;
 	@ModElementReference public ConfiguredFeatureEntry[] megaTrees;
 
-	public String growapableSpawnType;
+	@NonNullMappable("Plains") public GrowapableSpawnType growapableSpawnType;
 	@Numeric(init = 3, min = 1, max = 14, step = 1, optional = true) public int growapableMaxHeight;
 
 	public boolean customBoundingBox;
@@ -164,7 +164,6 @@ import java.util.stream.Collectors;
 
 		this.canBePlacedOn = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
-		this.growapableSpawnType = "Plains";
 		this.renderType = 12;
 		this.customModelName = "Cross model";
 		this.aiPathNodeType = "DEFAULT";

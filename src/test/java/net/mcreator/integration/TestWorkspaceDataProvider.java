@@ -1054,7 +1054,8 @@ public class TestWorkspaceDataProvider {
 			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			plant.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 			plant.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
-			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes"));
+			plant.growapableSpawnType = new GrowapableSpawnType(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes")));
 
 			// Set some plant type properties
 			switch (plant.plantType) {

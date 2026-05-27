@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.GrowapableSpawnType;
 import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
@@ -1037,7 +1038,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plantType.setSelectedItem(plant.plantType);
 
-		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
+		growapableSpawnType.setSelectedItem(plant.growapableSpawnType.getUnmappedValue());
 		generationType.setSelectedItem(plant.generationType);
 
 		// Plant type specific fields
@@ -1102,7 +1103,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 		}
 
-		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
+		plant.growapableSpawnType = new GrowapableSpawnType(modElement.getWorkspace(),
+				(String) growapableSpawnType.getSelectedItem());
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (int) luminance.getValue();
