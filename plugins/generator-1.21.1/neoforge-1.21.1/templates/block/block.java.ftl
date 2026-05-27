@@ -186,8 +186,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		<#if data.ignitedByLava>
 			.ignitedByLava()
 		</#if>
-		<#if data.noteBlockInstrument != "harp">
-			.instrument(${generator.map(data.noteBlockInstrument, "noteblockinstruments")})
+		<#if data.noteBlockInstrument.getUnmappedValue() != "harp">
+			.instrument(${data.noteBlockInstrument})
 		</#if>
 		<#if data.blockBase?has_content && (
 				data.blockBase == "FenceGate" ||

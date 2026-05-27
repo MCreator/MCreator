@@ -2164,7 +2164,8 @@ public class TestWorkspaceDataProvider {
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = new MapColor(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
-		block.noteBlockInstrument = getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments"));
+		block.noteBlockInstrument = new NoteBlockInstrument(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments")));
 		block.offsetType = blockBase == null ?
 				getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType")) :
 				"NONE";
