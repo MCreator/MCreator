@@ -20,17 +20,17 @@
 package net.mcreator.element.util;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -124,15 +124,38 @@ public class GEValidator {
 	private static void validateFieldAndTryToCorrect(GeneratableElement element, Field field,
 			@Nullable Object fieldValue, Object fieldHolder) throws ValidationException {
 		try {
-			if (field.isAnnotationPresent(Nonnull.class) && fieldValue == null) {
-				throw new ValidationException(
-						"Field " + field.getName() + " of mod element " + element.getModElement().getName()
-								+ " is null, but should not be.");
+			if (fieldValue == null) {
+				if (field.isAnnotationPresent(Nonnull.class)) {
+					throw new ValidationException(
+							"Field " + field.getName() + " of mod element " + element.getModElement().getName()
+									+ " is null, but should not be.");
+				}
+
+				if (field.isAnnotationPresent(NonNullMappable.class)) {
+					NonNullMappable annotation = field.getAnnotation(NonNullMappable.class);
+					if (MappableElement.class.isAssignableFrom(field.getDeclaringClass())) {
+						LOG.debug(
+								"Field {} of mod element {} is null but needs to have a value. Setting it to default value '{}'.",
+								field.getName(), element.getModElement().getName(), annotation.value());
+						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+
+						// Construct field object instance and set its value
+						@SuppressWarnings("unchecked") Constructor<? extends MappableElement> constructor = (Constructor<? extends MappableElement>) field.getDeclaringClass()
+								.getConstructor();
+						constructor.setAccessible(true);
+						MappableElement defaultValue = constructor.newInstance();
+						Field value = MappableElement.class.getDeclaredField("value");
+						value.setAccessible(true);
+						value.set(defaultValue, annotation.value());
+						field.set(fieldHolder, defaultValue);
+					}
+				}
+
+				// no further validations can be done since this field is null
+				return;
 			}
 
-			if (fieldValue == null) {
-				return; // no need to check other annotations if value is null (and null is not explicitly forbidden)
-			}
+			// Validations for cases where fieldValue is not null below
 
 			if (field.isAnnotationPresent(Numeric.class)) {
 				if (fieldValue instanceof Number number) {
@@ -145,21 +168,25 @@ public class GEValidator {
 						LOG.debug(
 								"Field {} of mod element {} has value {} which is less than minimum {}. Setting it to minimum.",
 								field.getName(), element.getModElement().getName(), number, annotation.min());
-						field.set(fieldHolder, castNumber(field.getType(), annotation.min()));
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+
+						field.set(fieldHolder, castNumber(field.getType(), annotation.min()));
 					} else if (number.doubleValue() > annotation.max()) {
 						LOG.debug(
 								"Field {} of mod element {} has value {} which is greater than maximum {}. Setting it to maximum.",
 								field.getName(), element.getModElement().getName(), number, annotation.max());
-						field.set(fieldHolder, castNumber(field.getType(), annotation.max()));
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+
+						field.set(fieldHolder, castNumber(field.getType(), annotation.max()));
 					}
 				} else {
 					throw new ValidationException(
 							"Field " + field.getName() + " of mod element " + element.getModElement().getName()
 									+ " is annotated with @Numeric but is not a number.");
 				}
-			} else if (field.isAnnotationPresent(LimitedOptions.class)) {
+			}
+
+			if (field.isAnnotationPresent(LimitedOptions.class)) {
 				LimitedOptions annotation = field.getAnnotation(LimitedOptions.class);
 				if (annotation.allowCustom()) {
 					return; // skip validation if custom values are allowed
@@ -178,14 +205,17 @@ public class GEValidator {
 						LOG.debug(
 								"Field {} of mod element {} has value '{}' which is not allowed. Setting it to the first option '{}'.",
 								field.getName(), element.getModElement().getName(), string, options[0]);
-						field.set(fieldHolder, options[0]);
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+
+						field.set(fieldHolder, options[0]);
 					}
 				} else if (fieldValue instanceof Integer index) {
 					if (index < 0 || index >= annotation.value().length) {
 						LOG.debug(
 								"Field {} of mod element {} has index value {} which is out of bounds for options. Setting it to 0.",
 								field.getName(), element.getModElement().getName(), index);
+						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+
 						field.set(fieldHolder, 0);
 					}
 				} else {
@@ -198,6 +228,11 @@ public class GEValidator {
 			throw new ValidationException(
 					"Failed to access field " + field.getName() + " of mod element " + element.getModElement()
 							.getName(), e);
+		} catch (InvocationTargetException | NoSuchMethodException | InstantiationException | ClassCastException |
+		         NoSuchFieldException e) {
+			throw new ValidationException(
+					"Failed to construct default value for field " + field.getName() + " of mod element "
+							+ element.getModElement().getName(), e);
 		}
 	}
 
