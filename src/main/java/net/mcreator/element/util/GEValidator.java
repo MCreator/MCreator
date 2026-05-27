@@ -66,10 +66,9 @@ public class GEValidator {
 	private static Field[] getFields(Class<?> clazz) {
 		return FIELD_CACHE.computeIfAbsent(clazz, c -> {
 			Field[] fields = c.getDeclaredFields();
-			for (Field field : fields)
-				field.setAccessible(true);
 			return Arrays.stream(fields).filter(f -> !Modifier.isStatic(f.getModifiers()))
-					.filter(f -> !Modifier.isTransient(f.getModifiers())).toArray(Field[]::new);
+					.filter(f -> !Modifier.isTransient(f.getModifiers())).peek(f -> f.setAccessible(true))
+					.toArray(Field[]::new);
 		});
 	}
 
@@ -80,10 +79,6 @@ public class GEValidator {
 		}
 
 		for (Field field : getFields(input.getClass())) {
-			if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers())) {
-				continue; // skip static and transient fields
-			}
-
 			Object fieldValue;
 			try {
 				field.setAccessible(true);
@@ -167,14 +162,7 @@ public class GEValidator {
 
 				if (fieldValue instanceof String string) {
 					String[] options = annotation.value();
-					boolean valid = false;
-					for (String option : options) {
-						if (option.equals(string)) {
-							valid = true;
-							break;
-						}
-					}
-					if (!valid) {
+					if (!Arrays.asList(options).contains(string)) {
 						LOG.debug(
 								"Field {} of mod element {} has value '{}' which is not allowed. Setting it to the first option '{}'.",
 								field.getName(), element.getModElement().getName(), string, options[0]);
