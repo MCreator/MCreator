@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.AIPathNodeType;
+import net.mcreator.element.parts.EffectEntry;
 import net.mcreator.element.parts.GrowapableSpawnType;
 import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
@@ -1045,7 +1046,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		// Plant type specific fields
 		switch (plant.plantType) {
 		case "normal" -> {
-			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
+			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect.getUnmappedValue());
 			suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
 		}
 		case "double" -> textureBottom.setTexture(plant.textureBottom);
@@ -1089,7 +1090,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		// Plant type specific fields
 		switch (Objects.requireNonNull((String) plantType.getSelectedItem())) {
 		case "normal" -> {
-			plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
+			plant.suspiciousStewEffect = new EffectEntry(modElement.getWorkspace(),
+					(String) suspiciousStewEffect.getSelectedItem());
 			plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
 		}
 		case "double" -> plant.textureBottom = textureBottom.getTextureHolder();

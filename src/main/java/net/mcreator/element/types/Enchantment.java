@@ -33,7 +33,7 @@ import java.util.List;
 
 	public String name;
 
-	@NonNullMappable("any") public EquipmentSlotEntry supportedSlots; // TODO: test this by altering JSON
+	@NonNullMappable("any") public EquipmentSlotEntry supportedSlots;
 
 	@Numeric(init = 10, min = 1, max = 1024, step = 1) public int weight;
 	@Numeric(init = 1, min = 1, max = 1024, step = 1) public int anvilCost;

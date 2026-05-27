@@ -1060,9 +1060,10 @@ public class TestWorkspaceDataProvider {
 			// Set some plant type properties
 			switch (plant.plantType) {
 			case "normal" -> {
-				plant.suspiciousStewEffect = getRandomString(random,
-						ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.toList());
+				plant.suspiciousStewEffect = new EffectEntry(modElement.getWorkspace(),
+						getRandomString(random,
+								ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
+										.toList()));
 				plant.suspiciousStewDuration = getRandomInt(random, Plant.class, "suspiciousStewDuration");
 			}
 			case "double" -> plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -1427,6 +1428,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
+					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(), "any");
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = getRandomDouble(random, AttributeModifierEntry.class, "amount");
 					entry.operation = getRandomItem(random,

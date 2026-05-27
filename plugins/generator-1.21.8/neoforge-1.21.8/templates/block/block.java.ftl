@@ -566,7 +566,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if data.aiPathNodeType.getUnmappedValue() != "DEFAULT">
+	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
 		return PathType.${data.aiPathNodeType};
 	}

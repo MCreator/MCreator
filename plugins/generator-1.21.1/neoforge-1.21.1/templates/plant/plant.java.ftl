@@ -66,7 +66,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	public ${name}Block() {
 		super(
 		<#if data.plantType == "normal">
-		${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
+		${data.suspiciousStewEffect!"MobEffects.SATURATION"}, ${data.suspiciousStewDuration},
 		<#elseif data.plantType == "sapling">
 		TREE_GROWER,
 		</#if>
@@ -170,7 +170,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	}
 	</#if>
 
-	<#if data.aiPathNodeType.getUnmappedValue() != "DEFAULT">
+	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
 		return PathType.${data.aiPathNodeType};
 	}

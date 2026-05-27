@@ -60,7 +60,7 @@ import java.util.stream.Collectors;
 
 	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
 
-	@ModElementReference(acceptedTypes = { PotionEffect.class }) public String suspiciousStewEffect;
+	public EffectEntry suspiciousStewEffect;
 	@Numeric(init = 100, min = 0, max = 100000, step = 1) public int suspiciousStewDuration;
 
 	@Numeric(init = 0.1, min = 0, max = 1, step = 0.01) public double secondaryTreeChance;
@@ -172,7 +172,6 @@ import java.util.stream.Collectors;
 		this.jumpFactor = 1.0;
 		this.speedFactor = 1.0;
 
-		this.suspiciousStewEffect = "SATURATION";
 		this.suspiciousStewDuration = 0;
 
 		this.generationType = "Flower";
