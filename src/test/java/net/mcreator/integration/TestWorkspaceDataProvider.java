@@ -690,9 +690,10 @@ public class TestWorkspaceDataProvider {
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";
 			if (_true)
-				overlay.overlayTarget = "Ingame";
+				overlay.overlayTarget = new ScreenEntry(modElement.getWorkspace(), "Ingame");
 			else
-				overlay.overlayTarget = getRandomItem(random, ElementUtil.getDataListAsStringArray("screens"));
+				overlay.overlayTarget = new ScreenEntry(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("screens")));
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
 			GUI gui = new GUI(modElement);
