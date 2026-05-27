@@ -95,28 +95,34 @@ public class GEValidator {
 
 			validateFieldAndTryToCorrect(element, cachedField, fieldValue, input);
 
-			if (fieldValue == null) {
-				continue; // no need to check null values for nested validation
-			}
+			// Further unpack and validate if applicable
+			unpackAndValidate(element, fieldValue);
+		}
+	}
 
-			if (fieldValue instanceof Iterable<?> list) { // list of values
-				for (Object item : list) {
-					performValidation(element, item);
-				}
-			} else if (fieldValue instanceof Map<?, ?> map) { // map with values
-				for (Map.Entry<?, ?> entry : map.entrySet()) {
-					performValidation(element, entry.getKey());
-					performValidation(element, entry.getValue());
-				}
-			} else if (fieldValue.getClass().isArray()) { // array of values
-				int length = Array.getLength(fieldValue);
-				for (int i = 0; i < length; i++) {
-					performValidation(element, Array.get(fieldValue, i));
-				}
-			} else if (GeneratableElement.isDataModelObject(
-					fieldValue)) { // value of unknown type but from MCreator system, do recursive check
-				performValidation(element, fieldValue);
+	private static void unpackAndValidate(GeneratableElement element, @Nullable Object value)
+			throws ValidationException {
+		if (value == null) {
+			return;
+		}
+
+		if (value instanceof Iterable<?> list) { // list of values
+			for (Object item : list) {
+				unpackAndValidate(element, item);
 			}
+		} else if (value instanceof Map<?, ?> map) { // map with values
+			for (Map.Entry<?, ?> entry : map.entrySet()) {
+				unpackAndValidate(element, entry.getKey());
+				unpackAndValidate(element, entry.getValue());
+			}
+		} else if (value.getClass().isArray()) { // array of values
+			int length = Array.getLength(value);
+			for (int i = 0; i < length; i++) {
+				unpackAndValidate(element, Array.get(value, i));
+			}
+		} else if (GeneratableElement.isDataModelObject(value)) {
+			// Data model object. Pass it back to the reflection scanner.
+			performValidation(element, value);
 		}
 	}
 
