@@ -33,6 +33,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -45,7 +46,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BEItemGUI extends ModElementGUI<BEItem> {
@@ -56,27 +56,21 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
 			.enableRealtimeValidation();
-	private final TranslatedComboBox rarity = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("common", "elementgui.common.rarity_common"),
-			Map.entry("uncommon", "elementgui.common.rarity_uncommon"),
-			Map.entry("rare", "elementgui.common.rarity_rare"),
-			Map.entry("epic", "elementgui.common.rarity_epic")
-			//@formatter:on
-	);
-	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 64, 1));
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(BEItem.class, "rarity",
+			"elementgui.common.rarity_");
+	private final JSpinner stackSize = ComponentFromAnnotation.spinner(BEItem.class, "stackSize");
 	private final JCheckBox enableCreativeTab = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,
 			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-	private final JSpinner maxDurability = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
-	private final JSpinner useDuration = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
-	private final JSpinner movementModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.05));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
+	private final JSpinner maxDurability = ComponentFromAnnotation.spinner(BEItem.class, "maxDurability");
+	private final JSpinner useDuration = ComponentFromAnnotation.spinner(BEItem.class, "useDuration");
+	private final JSpinner movementModifier = ComponentFromAnnotation.spinner(BEItem.class, "movementModifier");
+	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(BEItem.class, "damageVsEntity");
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
 	private final JCheckBox isHiddenInCommands = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox allowOffHand = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner fuelDuration = new JSpinner(new SpinnerNumberModel(0, 0, 107374180, 0.05));
+	private final JSpinner fuelDuration = ComponentFromAnnotation.spinner(BEItem.class, "fuelDuration");
 	private final JCheckBox shouldDespawn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stackedByData = L10N.checkbox("elementgui.common.enable");
 	private final MCItemHolder blockToPlace = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -86,24 +80,12 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final MCItemListField entityPlaceableOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 	private final JCheckBox isFood = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner foodNutritionalValue = new JSpinner(new SpinnerNumberModel(4, -1000, 1000, 1));
-	private final JSpinner foodSaturation = new JSpinner(new SpinnerNumberModel(0.3, -1000, 1000, 0.1));
+	private final JSpinner foodNutritionalValue = ComponentFromAnnotation.spinner(BEItem.class, "foodNutritionalValue");
+	private final JSpinner foodSaturation = ComponentFromAnnotation.spinner(BEItem.class, "foodSaturation");
 	private final JCheckBox foodCanAlwaysEat = L10N.checkbox("elementgui.common.enable");
 	private final MCItemHolder usingConvertsTo = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-	private final TranslatedComboBox animation = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("none", "elementgui.item.item_animation_none"),
-			Map.entry("eat", "elementgui.item.item_animation_eat"),
-			Map.entry("block", "elementgui.item.item_animation_block"),
-			Map.entry("bow", "elementgui.item.item_animation_bow"),
-			Map.entry("crossbow", "elementgui.item.item_animation_crossbow"),
-			Map.entry("drink", "elementgui.item.item_animation_drink"),
-			Map.entry("spear", "elementgui.item.item_animation_spear"),
-			Map.entry("brush", "elementgui.item.item_animation_brush"),
-			Map.entry("spyglass", "elementgui.item.item_animation_spyglass"),
-			Map.entry("camera", "elementgui.item.item_animation_camera")
-			//@formatter:on
-	);
+	private final TranslatedComboBox animation = ComponentFromAnnotation.translatedOptions(BEItem.class, "animation",
+			"elementgui.item.item_animation_");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -155,7 +137,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
-		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
@@ -165,7 +147,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.item.damage_vs_entity")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
-		enableMeleeDamage.addActionListener(e -> updateMeleeDamage());
+		enableMeleeDamage.addActionListener(_ -> updateMeleeDamage());
 		enableMeleeDamage.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
@@ -183,7 +165,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/is_food"), L10N.label("elementgui.item.is_food")));
 		foodProperties.add(isFood);
-		isFood.addActionListener(e -> {
+		isFood.addActionListener(_ -> {
 			updateFoodPanel();
 			if (!isEditingMode()) {
 				animation.setSelectedItem("eat");
@@ -261,7 +243,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.beitem.block_to_place")));
 		blockToPlace.setOpaque(false);
 		blockPlacerProps.add(PanelUtils.centerInPanel(blockToPlace));
-		blockToPlace.addBlockSelectedListener(e -> updateBlockUsableOnList());
+		blockToPlace.addBlockSelectedListener(_ -> updateBlockUsableOnList());
 
 		blockPlacerProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/block_placeable_on"),
 				L10N.label("elementgui.beitem.placeable_on")));
@@ -313,7 +295,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 			shouldDespawn.setSelected(true);
 			enableCreativeTab.setSelected(true);
 			creativeTab.setSelectedItem("MATERIALS");
-			maxDurability.addChangeListener(e -> stackedByData.setSelected(((int) maxDurability.getValue()) > 0));
+			maxDurability.addChangeListener(_ -> stackedByData.setSelected(((int) maxDurability.getValue()) > 0));
 		}
 
 		updateCreativeTab();

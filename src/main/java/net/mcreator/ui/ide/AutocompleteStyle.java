@@ -84,7 +84,7 @@ class AutocompleteStyle {
 						BorderFactory.createLineBorder(Theme.current().getSecondAltBackgroundColor()));
 
 			} catch (ClassNotFoundException | SecurityException | IllegalArgumentException | IllegalAccessException |
-					 NoSuchFieldException e1) {
+			         NoSuchFieldException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
 		});

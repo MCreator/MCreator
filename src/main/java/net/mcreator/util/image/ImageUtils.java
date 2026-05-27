@@ -546,7 +546,7 @@ public class ImageUtils {
 	}
 
 	private static float limitDeviation(float original, float deviation, int sign) {
-		return Math.max(Math.min(original + deviation * sign, 1), 0);
+		return Math.clamp(original + deviation * sign, 0, 1);
 	}
 
 	/**

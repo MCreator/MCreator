@@ -29,13 +29,11 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.GlobalSearchListener;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
@@ -78,6 +76,7 @@ public abstract class MCreator extends MCreatorFrame {
 	public final MCreatorTabs.Tab workspaceTab;
 
 	private final CollapsibleDockPanel leftDockRegion;
+	private final CollapsibleDockPanel rightDockRegion;
 	private final CollapsibleDockPanel bottomDockRegion;
 
 	public static MCreator create(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
@@ -129,23 +128,21 @@ public abstract class MCreator extends MCreatorFrame {
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
 		leftDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.LEFT, mcreatorTabs);
-		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, leftDockRegion);
+		rightDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.RIGHT, leftDockRegion);
+		bottomDockRegion = new CollapsibleDockPanel(CollapsibleDockPanel.DockPosition.DOWN, rightDockRegion);
 
 		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
-		JToolBar outerStrip = hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
-		outerStrip.setOrientation(JToolBar.VERTICAL);
-		outerStrip.setFloatable(false);
-		outerStrip.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));
-		outerStrip.add(leftDockRegion.getDockStrip());
-		outerStrip.add(Box.createVerticalGlue());
-		outerStrip.add(bottomDockRegion.getDockStrip());
+		JToolBar dockStripLeft = CollapsibleDockPanel.createStaticTwoRegionsStrip(this, leftDockRegion,
+				bottomDockRegion);
 
-		setMainContent(PanelUtils.westAndCenterElement(outerStrip, bottomDockRegion, 0, 0));
+		JToolBar dockStripRight = CollapsibleDockPanel.createDynamicDockStrip(this, rightDockRegion);
+
+		setMainContent(PanelUtils.westAndCenterElement(dockStripLeft,
+				PanelUtils.centerAndEastElement(bottomDockRegion, dockStripRight, 0, 0), 0, 0));
 
 		add("North", toolBar);
 
@@ -155,6 +152,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 				// Apply dock state after the window is shown
 				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().leftDockState, leftDockRegion);
+				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().rightDockState, rightDockRegion);
 				CollapsibleDockPanel.State.apply(workspace.getWorkspaceUserSettings().bottomDockState,
 						bottomDockRegion);
 
@@ -301,6 +299,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 			workspace.getWorkspaceUserSettings().bottomDockState = CollapsibleDockPanel.State.get(bottomDockRegion);
 			workspace.getWorkspaceUserSettings().leftDockState = CollapsibleDockPanel.State.get(leftDockRegion);
+			workspace.getWorkspaceUserSettings().rightDockState = CollapsibleDockPanel.State.get(rightDockRegion);
 
 			mcreatorTabs.getTabs().forEach(tab -> {
 				if (tab.getTabClosedListener() != null)
@@ -379,6 +378,10 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public CollapsibleDockPanel getLeftDockRegion() {
 		return leftDockRegion;
+	}
+
+	public CollapsibleDockPanel getRightDockRegion() {
+		return rightDockRegion;
 	}
 
 	public CollapsibleDockPanel getBottomDockRegion() {
