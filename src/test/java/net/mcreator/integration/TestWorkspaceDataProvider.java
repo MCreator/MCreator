@@ -431,6 +431,8 @@ public class TestWorkspaceDataProvider {
 		var blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
 		var blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		var blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
+		var blocksAndTagsNoAir = blocksAndTags.stream()
+				.filter(e -> !e.getName().toLowerCase(Locale.ENGLISH).contains("air")).toList();
 		var biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 		var tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
@@ -1715,7 +1717,8 @@ public class TestWorkspaceDataProvider {
 			beitem.animation = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
 			beitem.isEnchantable = _true;
-			beitem.enchantmentSlot = getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())).toString();
+			beitem.enchantmentSlot = getRandomItem(random,
+					ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())).toString();
 			beitem.enchantmentValue = 10;
 			beitem.diggerUseEfficiency = _true;
 			beitem.diggerEntries = new ArrayList<>();
@@ -1733,7 +1736,7 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				beitem.entityPlaceableOn = subset(random, blocks.size() / 8, blocks,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
-				for (MItemBlock entry : subset(random, blocksAndTags.size() / 8, blocksAndTags,
+				for (MItemBlock entry : subset(random, blocksAndTagsNoAir.size() / 8, blocksAndTagsNoAir,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()))) {
 					beitem.diggerEntries.add(new BEItem.DiggerEntry(entry, random.nextInt(1, Integer.MAX_VALUE)));
 				}
