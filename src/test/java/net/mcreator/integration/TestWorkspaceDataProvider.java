@@ -661,7 +661,7 @@ public class TestWorkspaceDataProvider {
 			return tab;
 		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
 			Overlay overlay = new Overlay(modElement);
-			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+			overlay.priority = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Overlay.class, "priority"));
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
 			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
