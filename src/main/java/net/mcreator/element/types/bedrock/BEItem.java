@@ -77,7 +77,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	// Tool
 	public boolean isEnchantable;
 	public String enchantmentSlot;
-	public int enchantmentValue;
+	@Numeric(init = 0, min = 0, max = 255, step = 1) public int enchantmentValue;
 	public boolean diggerUseEfficiency;
 	@ModElementReference public List<DiggerEntry> diggerEntries;
 
@@ -120,7 +120,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 
 	public static class DiggerEntry {
 		@ModElementReference public MItemBlock block;
-		public int speed;
+		@Numeric(init = 1, min = 0, max = Integer.MAX_VALUE, step = 1) public int speed;
 
 		public DiggerEntry(MItemBlock block, int speed) {
 			this.block = block;

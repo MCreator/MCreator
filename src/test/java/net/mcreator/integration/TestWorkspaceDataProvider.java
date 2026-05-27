@@ -1718,7 +1718,7 @@ public class TestWorkspaceDataProvider {
 			beitem.isEnchantable = _true;
 			beitem.enchantmentSlot = getRandomItem(random,
 					ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())).toString();
-			beitem.enchantmentValue = 10;
+			beitem.enchantmentValue = getRandomInt(random, BEItem.class, "enchantmentValue");
 			beitem.diggerUseEfficiency = _true;
 			beitem.diggerEntries = new ArrayList<>();
 			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
@@ -1737,7 +1737,7 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				for (MItemBlock entry : subset(random, blocksAndTagsNoAir.size() / 8, blocksAndTagsNoAir,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()))) {
-					beitem.diggerEntries.add(new BEItem.DiggerEntry(entry, random.nextInt(1, Integer.MAX_VALUE)));
+					beitem.diggerEntries.add(new BEItem.DiggerEntry(entry, getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
 				}
 			}
 			beitem.localScripts = new ArrayList<>();

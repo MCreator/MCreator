@@ -91,7 +91,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox isEnchantable = new JCheckBox();
 	private final DataListComboBox enchantmentSlot = new DataListComboBox(mcreator,
 			ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
-	private final JSpinner enchantmentValue = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
+	private final JSpinner enchantmentValue = ComponentFromAnnotation.spinner(BEItem.class, "enchantmentValue");
 	private final JCheckBox diggerUseEfficiency = L10N.checkbox("elementgui.common.enable");
 	private final JDiggerList diggerEntries = new JDiggerList(mcreator, this);
 

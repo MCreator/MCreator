@@ -27,6 +27,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 
@@ -37,7 +38,7 @@ import java.util.List;
 public class JDiggerEntry extends JSimpleListEntry<BEItem.DiggerEntry> {
 
 	private final MCItemHolder block;
-	private final JSpinner speed = new JSpinner(new SpinnerNumberModel(1, 0, Integer.MAX_VALUE, 1));
+	private final JSpinner speed = ComponentFromAnnotation.spinner(BEItem.DiggerEntry.class, "speed");
 
 	public JDiggerEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<? extends JSimpleListEntry<BEItem.DiggerEntry>> entryList) {
