@@ -20,11 +20,12 @@
 package net.mcreator.element.util;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.util.TestUtil;
+import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -133,21 +134,18 @@ public class GEValidator {
 
 				if (field.isAnnotationPresent(NonNullMappable.class)) {
 					NonNullMappable annotation = field.getAnnotation(NonNullMappable.class);
-					if (MappableElement.class.isAssignableFrom(field.getDeclaringClass())) {
+					if (MappableElement.class.isAssignableFrom(field.getType())) {
 						LOG.debug(
 								"Field {} of mod element {} is null but needs to have a value. Setting it to default value '{}'.",
 								field.getName(), element.getModElement().getName(), annotation.value());
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 
 						// Construct field object instance and set its value
-						@SuppressWarnings("unchecked") Constructor<? extends MappableElement> constructor = (Constructor<? extends MappableElement>) field.getDeclaringClass()
-								.getConstructor();
+						@SuppressWarnings("unchecked") Constructor<? extends MappableElement> constructor = (Constructor<? extends MappableElement>) field.getType()
+								.getDeclaredConstructor(Workspace.class, String.class);
 						constructor.setAccessible(true);
-						MappableElement defaultValue = constructor.newInstance();
-						Field value = MappableElement.class.getDeclaredField("value");
-						value.setAccessible(true);
-						value.set(defaultValue, annotation.value());
-						field.set(fieldHolder, defaultValue);
+						field.set(fieldHolder,
+								constructor.newInstance(element.getModElement().getWorkspace(), annotation.value()));
 					}
 				}
 
@@ -228,8 +226,7 @@ public class GEValidator {
 			throw new ValidationException(
 					"Failed to access field " + field.getName() + " of mod element " + element.getModElement()
 							.getName(), e);
-		} catch (InvocationTargetException | NoSuchMethodException | InstantiationException | ClassCastException |
-		         NoSuchFieldException e) {
+		} catch (InvocationTargetException | NoSuchMethodException | InstantiationException | ClassCastException e) {
 			throw new ValidationException(
 					"Failed to construct default value for field " + field.getName() + " of mod element "
 							+ element.getModElement().getName(), e);
