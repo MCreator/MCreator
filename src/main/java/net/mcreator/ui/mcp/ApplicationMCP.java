@@ -23,6 +23,7 @@ import net.mcreator.Launcher;
 import net.mcreator.io.mcp.server.McpServer;
 import net.mcreator.io.mcp.transport.HttpMcpTransport;
 import net.mcreator.io.mcp.transport.McpTransport;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
@@ -39,15 +40,15 @@ public class ApplicationMCP implements Closeable {
 	private final McpServer server;
 
 	public ApplicationMCP(MCreatorApplication application, Supplier<MCreator> mcreatorReference) {
-		// TODO: make configurable - new preferences sections - Integrations: Discord, MCP
-
-		McpTransport transport = new HttpMcpTransport(8080);
+		McpTransport transport = new HttpMcpTransport(PreferencesManager.PREFERENCES.integrations.mcpPort.get());
 		this.server = new McpServer("MCreator", Launcher.version.full, transport);
-		try {
-			this.server.start();
-			LOG.debug("MCP server started");
-		} catch (IOException e) {
-			LOG.warn("Failed to start MCP server", e);
+		if (PreferencesManager.PREFERENCES.integrations.mcpEnable.get()) {
+			try {
+				this.server.start();
+				LOG.debug("MCP server started");
+			} catch (IOException e) {
+				LOG.warn("Failed to start MCP server", e);
+			}
 		}
 	}
 

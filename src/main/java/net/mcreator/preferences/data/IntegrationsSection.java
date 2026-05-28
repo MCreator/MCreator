@@ -21,17 +21,23 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
 
 public class IntegrationsSection extends PreferencesSection {
 
 	public final BooleanEntry discordRichPresenceEnable;
 	public final BooleanEntry googleAnalyticsEnable;
 
+	public final BooleanEntry mcpEnable;
+	public final IntegerEntry mcpPort;
+
 	public IntegrationsSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
 		discordRichPresenceEnable = addEntry(new BooleanEntry("discordRichPresenceEnable", true));
 		googleAnalyticsEnable = addEntry(new BooleanEntry("googleAnalyticsEnable", true));
+		mcpEnable = addEntry(new BooleanEntry("mcpEnable", false));
+		mcpPort = addEntry(new IntegerEntry("mcpPort", 8080, 1024, 60000));
 	}
 
 	@Override public String getSectionKey() {
