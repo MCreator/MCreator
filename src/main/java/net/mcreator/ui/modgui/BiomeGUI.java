@@ -22,7 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
@@ -753,7 +753,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.additionsSound = additionsSound.getSound();
 		biome.music = music.getSound();
 		biome.spawnParticles = spawnParticle.isSelected();
-		biome.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
+		biome.particleToSpawn = new ParticleEntry(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
 		biome.particlesProbability = (double) particlesProbability.getValue();
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
