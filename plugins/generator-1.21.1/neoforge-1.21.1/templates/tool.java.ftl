@@ -301,7 +301,7 @@ public class ${name}Item extends FishingRodItem {
 	.add(${modifier.attribute}, new AttributeModifier(
 			ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
 			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}),
-			<#if modifier.equipmentSlot == "default">EquipmentSlotGroup.MAINHAND<#else>${generator.map(modifier.equipmentSlot, "equipmentslots")}</#if>)
+			<#if modifier.equipmentSlot == "default">EquipmentSlotGroup.MAINHAND<#else>${modifier.equipmentSlot}</#if>)
 	</#list>
 	.build()
 </#macro>

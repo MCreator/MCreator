@@ -26,6 +26,7 @@ import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
@@ -1120,7 +1121,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
 		visualScale.setSelectedProcedure(livingEntity.visualScale);
 		boundingBoxScale.setSelectedProcedure(livingEntity.boundingBoxScale);
-		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
+		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType.getUnmappedValue());
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1314,7 +1315,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.spawnThisMob = spawnThisMob.isSelected();
 		livingEntity.doesDespawnWhenIdle = doesDespawnWhenIdle.isSelected();
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();
-		livingEntity.mobSpawningType = (String) mobSpawningType.getSelectedItem();
+		livingEntity.mobSpawningType = new MobSpawnType(modElement.getWorkspace(),
+				(String) mobSpawningType.getSelectedItem());
 		livingEntity.rangedItemType = rangedItemType.getSelectedItem();
 		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMinValue();
 		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();

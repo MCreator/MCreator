@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.parts.AttributeModifierEntry;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -126,7 +127,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		entry.operation = (String) operation.getSelectedItem();
 		// Do not store unused values for potion entry types
 		if (entryType != JAttributeModifierList.EntryType.POTION) {
-			entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
+			entry.equipmentSlot = new EquipmentSlotEntry(workspace, equipmentSlot.getSelectedItem());
 			if (entryType == JAttributeModifierList.EntryType.ARMOR) {
 				entry.armorPieces = new boolean[4];
 				for (int i = 0; i < 4; i++) {

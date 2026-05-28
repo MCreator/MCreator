@@ -55,6 +55,10 @@ public abstract class AbstractWorkspacePanel extends JPanel implements IReloadab
 		return true;
 	}
 
+	@Nullable public JToolBar getToolBarComponent() {
+		return null;
+	}
+
 	/**
 	 * Determines whether clicking the tab button will actually switch the section.
 	 *

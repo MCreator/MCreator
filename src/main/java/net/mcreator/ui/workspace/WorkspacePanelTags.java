@@ -38,6 +38,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -83,6 +84,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	// Cache of list editor
 	private ItemListFieldCellEditor lastEditor = null;
+
+	private final JToolBar bar = new JToolBar();
 
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -273,9 +276,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		add("Center", sp);
 
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
 		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add"), e -> {
 			TagElement tag = NewTagDialog.showNewTagDialog(workspacePanel.getMCreator());
 			if (tag != null) {
@@ -291,8 +291,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
-
-		add("North", bar);
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
@@ -311,6 +309,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				}
 			}
 		});
+	}
+
+	@Nullable @Override public JToolBar getToolBarComponent() {
+		return bar;
 	}
 
 	private static void prepareListField(JItemListField<?> listField) {
