@@ -116,7 +116,10 @@ public class McpServer {
 					case "tools/call":
 						resultFuture = handleCallTool(request.params());
 						break;
-					case "resources/list", "resources/read", "resources/subscribe", "ping", "resources/unsubscribe":
+					case "resources/list":
+						resultFuture = CompletableFuture.completedFuture(new McpSchema.ResourceListResponse(List.of()));
+						break;
+					case "ping":
 						resultFuture = CompletableFuture.completedFuture(new JsonObject());
 						break;
 					default:
@@ -183,7 +186,7 @@ public class McpServer {
 
 	private McpSchema.InitializeResponse handleInitialize() {
 		McpSchema.ServerCapabilities caps = new McpSchema.ServerCapabilities(Map.of(),
-				new McpSchema.ResourceCapability(true, false));
+				new McpSchema.ResourceCapability(false, false));
 		return new McpSchema.InitializeResponse("2025-11-25", caps, new McpSchema.Implementation(name, version));
 	}
 
