@@ -20,11 +20,12 @@
 package net.mcreator.ui.mcp;
 
 import net.mcreator.Launcher;
-import net.mcreator.io.mcp.server.McpServer;
+import net.mcreator.io.mcp.McpServer;
 import net.mcreator.io.mcp.transport.HttpMcpTransport;
 import net.mcreator.io.mcp.transport.McpTransport;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.mcp.tools.ListTool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,23 +33,40 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.function.Supplier;
 
-public class ApplicationMCP implements Closeable {
+public final class MCreatorMcp implements Closeable {
 
-	private static final Logger LOG = LogManager.getLogger(ApplicationMCP.class);
+	private static final Logger LOG = LogManager.getLogger(MCreatorMcp.class);
 
 	private final McpServer server;
 
-	public ApplicationMCP(Supplier<MCreator> currentMCreator) {
+	private final Supplier<MCreator> currentMCreator;
+
+	public MCreatorMcp(Supplier<MCreator> currentMCreator) {
+		this.currentMCreator = currentMCreator;
+
 		McpTransport transport = new HttpMcpTransport(PreferencesManager.PREFERENCES.integrations.mcpPort.get());
 		this.server = new McpServer("MCreator", Launcher.version.full, transport);
 		if (PreferencesManager.PREFERENCES.integrations.mcpEnable.get()) {
 			try {
+				registerTools();
 				this.server.start();
-				LOG.debug("MCP server started");
+				LOG.debug("MCP server started at port {}", PreferencesManager.PREFERENCES.integrations.mcpPort.get());
 			} catch (IOException e) {
 				LOG.warn("Failed to start MCP server", e);
 			}
 		}
+	}
+
+	private void registerTools() {
+		server.registerTool(new ListTool(currentMCreator));
+	}
+
+	public McpServer getServer() {
+		return server;
+	}
+
+	public Supplier<MCreator> getCurrentMCreator() {
+		return currentMCreator;
 	}
 
 	@Override public void close() throws IOException {

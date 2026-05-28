@@ -21,8 +21,10 @@ package net.mcreator.io.mcp.tool;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.io.mcp.protocol.McpSchema;
 
+import java.util.Collection;
 import java.util.List;
 
 public final class ToolResult {
@@ -43,16 +45,21 @@ public final class ToolResult {
 		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(text, annotations))));
 	}
 
-	/**
-	 * Returns a structured JSON object result per MCP 2025-11-25.
-	 * Includes serialized JSON in a text content block for backwards compatibility.
-	 */
 	public static ToolResult object(Object structured) {
 		JsonElement structuredContent = gson.toJsonTree(structured);
 		if (!structuredContent.isJsonObject()) {
 			throw new IllegalArgumentException("structuredContent must be a JSON object");
 		}
 		String json = gson.toJson(structured);
+		return new ToolResult(
+				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(json)), false, structuredContent));
+	}
+
+	public static ToolResult collection(Collection<?> items) {
+		JsonElement arrayContent = gson.toJsonTree(items);
+		JsonObject structuredContent = new JsonObject();
+		structuredContent.add("items", arrayContent);
+		String json = gson.toJson(items);
 		return new ToolResult(
 				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(json)), false, structuredContent));
 	}

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.mcp.server;
+package net.mcreator.io.mcp;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,7 +69,6 @@ public class McpServer {
 
 	public void registerTool(IMcpTool tool) {
 		tools.put(tool.getName(), tool);
-		LOG.debug("Registered tool: {}", tool.getName());
 	}
 
 	private CompletableFuture<String> handleMessage(String sessionId, String message) {
@@ -98,7 +97,6 @@ public class McpServer {
 					return;
 				}
 
-				LOG.trace("Received request from {}: {}", sessionId, request.method());
 				activeSessions.add(sessionId);
 
 				CompletableFuture<?> resultFuture;

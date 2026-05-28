@@ -37,7 +37,7 @@ public class IntegrationsSection extends PreferencesSection {
 		discordRichPresenceEnable = addEntry(new BooleanEntry("discordRichPresenceEnable", true));
 		googleAnalyticsEnable = addEntry(new BooleanEntry("googleAnalyticsEnable", true));
 		mcpEnable = addEntry(new BooleanEntry("mcpEnable", false));
-		mcpPort = addEntry(new IntegerEntry("mcpPort", 8080, 1024, 60000));
+		mcpPort = addEntry(new IntegerEntry("mcpPort", 3025, 1024, 60000));
 	}
 
 	@Override public String getSectionKey() {

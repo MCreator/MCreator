@@ -45,7 +45,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.themes.ThemeManager;
-import net.mcreator.ui.mcp.ApplicationMCP;
+import net.mcreator.ui.mcp.MCreatorMcp;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -88,7 +88,7 @@ public final class MCreatorApplication {
 	private GoogleAnalytics analytics;
 	private DiscordClient discordClient;
 	private TaskbarIntegration taskbarIntegration;
-	private ApplicationMCP applicationMCP;
+	private MCreatorMcp mcreatorMcp;
 
 	private final SingleAppHandler singleAppHandler;
 
@@ -217,7 +217,7 @@ public final class MCreatorApplication {
 
 			discordClient = new DiscordClient();
 
-			applicationMCP = new ApplicationMCP(this::getCurrentlyActiveMCreator);
+			mcreatorMcp = new MCreatorMcp(this::getCurrentlyActiveMCreator);
 
 			// Do not externalize this text
 			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
@@ -460,6 +460,10 @@ public final class MCreatorApplication {
 
 	public TaskbarIntegration getTaskbarIntegration() {
 		return taskbarIntegration;
+	}
+
+	public MCreatorMcp getMCreatorMcp() {
+		return mcreatorMcp;
 	}
 
 	@Nullable public MCreator getCurrentlyActiveMCreator() {
