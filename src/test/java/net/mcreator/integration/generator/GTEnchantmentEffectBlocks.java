@@ -23,7 +23,10 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.element.types.Enchantment;
+import net.mcreator.integration.TestWorkspaceDataProvider;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -67,6 +70,9 @@ public class GTEnchantmentEffectBlocks {
 			enchantment.weight = 3;
 			enchantment.anvilCost = 2;
 			enchantment.maxLevel = 3;
+			enchantment.supportedSlots = new EquipmentSlotEntry(workspace,
+					TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.getDataListAsStringArray("equipmentslots")));
 
 			if (effectBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				switch (effectBlock.getPreviousStatementConnectionType()) {
