@@ -19,8 +19,8 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.KeyButton;
 import net.mcreator.element.types.KeyBinding;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -51,8 +52,8 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 	private ProcedureSelector onKeyPressed;
 	private ProcedureSelector onKeyReleased;
 
-	private final JComboBox<String> triggerKey = new JComboBox<>(
-			DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toArray(String[]::new));
+	private final DataListComboBox triggerKey = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("keybuttons"));
 
 	private final VTextField keyBindingName = new VTextField(20).requireValue("elementgui.keybind.error_key_needs_name")
 			.enableRealtimeValidation();
@@ -179,7 +180,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 	@Override public KeyBinding getElementFromGUI() {
 		KeyBinding keyBinding = new KeyBinding(modElement);
-		keyBinding.triggerKey = (String) Objects.requireNonNull(triggerKey.getSelectedItem());
+		keyBinding.triggerKey = new KeyButton(modElement.getWorkspace(), triggerKey.getSelectedItem());
 		keyBinding.keyBindingName = keyBindingName.getText();
 		keyBinding.onKeyPressed = onKeyPressed.getSelectedProcedure();
 		keyBinding.onKeyReleased = onKeyReleased.getSelectedProcedure();

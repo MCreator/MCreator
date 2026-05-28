@@ -4,11 +4,11 @@
   "minecraft:spawn_rules": {
     "description": {
       "identifier": "${modid}:${registryname}",
-      "population_control": "<#if data.populationControl == "monster">monster<#else>animal</#if>"
+      "population_control": "<#if data.populationControl.getUnmappedValue() == "monster">monster<#else>animal</#if>"
     },
     "conditions": [
       {
-        <#if data.populationControl == "monster">
+        <#if data.populationControl.getUnmappedValue() == "monster">
         "minecraft:spawns_on_surface": {},
         "minecraft:spawns_underground": {},
         "minecraft:brightness_filter": {
@@ -23,7 +23,7 @@
         "minecraft:biome_filter": {
           "test": "has_biome_tag", "operator": "==", "value": "monster"
         },
-        <#elseif data.populationControl == "waterCreature">
+        <#elseif data.populationControl.getUnmappedValue() == "waterCreature">
         "minecraft:spawns_on_surface": {},
         "minecraft:spawns_underwater": {},
         "minecraft:biome_filter": {

@@ -27,6 +27,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Feature;
@@ -77,11 +78,11 @@ public class StructureToFeatureConverter implements IConverter {
 
 		String spawnLocation = definition.get("spawnLocation").getAsString();
 		if (spawnLocation.equals("Air")) {
-			feature.generationStep = "RAW_GENERATION";
+			feature.generationStep = new GenerationStep(workspace, "RAW_GENERATION");
 		} else if (spawnLocation.equals("Underground")) {
-			feature.generationStep = "UNDERGROUND_STRUCTURES";
+			feature.generationStep = new GenerationStep(workspace, "UNDERGROUND_STRUCTURES");
 		} else {
-			feature.generationStep = "SURFACE_STRUCTURES";
+			feature.generationStep = new GenerationStep(workspace, "SURFACE_STRUCTURES");
 		}
 
 		// Copy the generation condition
