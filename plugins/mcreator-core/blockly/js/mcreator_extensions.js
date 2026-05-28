@@ -71,15 +71,15 @@ Blockly.Extensions.registerMutator('variable_entity_input',
 
         // Helper function to add an 'entity' input to the block
         updateShape_: function (isPlayerVar, addEntityBlock) {
-            var entityInput = this.getInput('entity');
+            const entityInput = this.getInput('entity');
             if (isPlayerVar) {
                 if (!entityInput) {
-                    var connection = this.appendValueInput('entity').setCheck('Entity')
+                    const connection = this.appendValueInput('entity').setCheck('Entity')
                         .appendField(javabridge.t("blockly.block.var_for_entity")).connection;
                     if (addEntityBlock) {
-                        var blockXML = Blockly.utils.xml.createElement('block');
+                        const blockXML = Blockly.utils.xml.createElement('block');
                         blockXML.setAttribute('type', 'entity_from_deps');
-                        var entityBlock = Blockly.Xml.domToBlock(blockXML, this.workspace);
+                        const entityBlock = Blockly.Xml.domToBlock(blockXML, this.workspace);
                         connection.connect(entityBlock.outputConnection)
                     }
                 }
@@ -130,8 +130,8 @@ Blockly.Extensions.register('entity_data_string_list_provider',
 // Extension used by int providers to validate their min/max values, so that min can't be greater than max and vice versa
 Blockly.Extensions.register('min_max_fields_validator',
     function () {
-        var minField = this.getField('min');
-        var maxField = this.getField('max');
+        const minField = this.getField('min');
+        const maxField = this.getField('max');
 
         // If min > max, we set its value to that of max
         minField.setValidator(function (newValue) {
