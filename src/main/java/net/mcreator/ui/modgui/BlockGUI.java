@@ -59,12 +59,8 @@ import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -1425,13 +1421,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		signGUITexture.requireValue("elementgui.block.error_sign_needs_gui_texture",
 				() -> "HangingSign".equals(blockBase.getSelectedItem()));
 
-		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
-			@Override public ValidationResult validate() {
-				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
-					return ValidationResult.PASSED;
-				return super.validate();
-			}
-		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
+		pottedPlant.setValidator(new ConditionalValidator(() -> "FlowerPot".equals(blockBase.getSelectedItem()),
+				new MCItemHolderValidator(pottedPlant).setEmptyMessage(
+						L10N.t("elementgui.block.error_flower_pot_needs_plant"))));
 
 		page3group.addValidationElement(name);
 		page3group.addValidationElement(breakSound.getVTextField());
