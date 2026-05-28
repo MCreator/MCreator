@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2025, Pylo, opensource contributors
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,25 @@
 
 package net.mcreator.element.parts;
 
-import net.mcreator.element.types.interfaces.NonNullMappable;
-import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.workspace.Workspace;
 
-import net.mcreator.element.types.interfaces.Numeric;
+import javax.annotation.Nonnull;
 
-public class AttributeModifierEntry {
-	@NonNullMappable("any") public EquipmentSlotEntry equipmentSlot;
-	public AttributeEntry attribute;
-	@Numeric(init = 0, min = -1024, max = 1024, step = 0.001) public double amount;
-	@LimitedOptions({ "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" }) public String operation;
+public class GenerationStep extends MappableElement {
+
+	private GenerationStep() {
+		super(new NameMapper(null, "generationsteps"));
+	}
+
+	public GenerationStep(@Nonnull Workspace owner, String name) {
+		super(new NameMapper(owner, "generationsteps"), name);
+	}
+
+	public GenerationStep(@Nonnull Workspace owner, DataListEntry name) {
+		this(owner, name.getName());
+	}
+
 }

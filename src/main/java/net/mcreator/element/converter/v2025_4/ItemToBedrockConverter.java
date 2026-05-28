@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Item;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.GeneratorFlavor;
@@ -43,6 +44,11 @@ public class ItemToBedrockConverter implements IConverter {
 					new ModElement(workspace, item.getModElement().getName(), ModElementType.BEITEM));
 			beitem.name = item.name;
 			beitem.texture = item.texture;
+			beitem.enableCreativeTab = !item.creativeTabs.isEmpty();
+			if (beitem.enableCreativeTab)
+				beitem.creativeTab = new TabEntry(workspace, item.creativeTabs.getFirst().getUnmappedValue());
+			else
+				beitem.creativeTab = new TabEntry(workspace, "MATERIALS");
 			beitem.stackSize = item.stackSize;
 			beitem.useDuration = (double) item.useDuration / 20;
 			beitem.maxDurability = item.damageCount;

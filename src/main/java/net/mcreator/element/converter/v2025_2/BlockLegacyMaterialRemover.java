@@ -22,6 +22,7 @@ package net.mcreator.element.converter.v2025_2;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.NoteBlockInstrument;
 import net.mcreator.element.types.Block;
 import net.mcreator.workspace.Workspace;
 
@@ -38,13 +39,14 @@ public class BlockLegacyMaterialRemover implements IConverter {
 		switch (material) {
 		case "CARPET", "TALL_PLANTS", "BAMBOO_SAPLING", "BAMBOO", "CLOTH", "TNT", "LEAVES" ->
 				block.ignitedByLava = true;
-		case "OCEAN_PLANT", "ROCK" -> block.noteBlockInstrument = "basedrum";
-		case "SAND" -> block.noteBlockInstrument = "snare";
+		case "OCEAN_PLANT", "ROCK" ->
+				block.noteBlockInstrument = new NoteBlockInstrument(workspace, "basedrum");
+		case "SAND" -> block.noteBlockInstrument = new NoteBlockInstrument(workspace, "snare");
 		case "WOOD" -> {
-			block.noteBlockInstrument = "bass";
+			block.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 			block.ignitedByLava = true;
 		}
-		case "GLASS" -> block.noteBlockInstrument = "hat";
+		case "GLASS" -> block.noteBlockInstrument = new NoteBlockInstrument(workspace, "hat");
 		}
 
 		// Handle block set type for specific block bases
