@@ -21,16 +21,17 @@ package net.mcreator.element.util;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.util.TestUtil;
+import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -129,15 +130,35 @@ public class GEValidator {
 			@Nullable Object fieldValue, Object fieldHolder) throws ValidationException {
 		Field javaField = field.field();
 		try {
-			if (field.notNullable() && fieldValue == null) {
-				throw new ValidationException(
-						"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
-								+ " is null, but should not be.");
+			if (fieldValue == null) {
+				if (field.notNullable()) {
+					throw new ValidationException(
+							"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
+									+ " is null, but should not be.");
+				}
+
+				if (field.nonNullMappable() != null) {
+					NonNullMappable annotation = field.nonNullMappable();
+					if (MappableElement.class.isAssignableFrom(javaField.getType())) {
+						LOG.debug(
+								"Field {} of mod element {} is null but needs to have a value. Setting it to default value '{}'.",
+								javaField.getName(), element.getModElement().getName(), annotation.value());
+						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+
+						// Construct field object instance and set its value
+						@SuppressWarnings("unchecked") Constructor<? extends MappableElement> constructor = (Constructor<? extends MappableElement>) javaField.getType()
+								.getDeclaredConstructor(Workspace.class, String.class);
+						constructor.setAccessible(true);
+						javaField.set(fieldHolder,
+								constructor.newInstance(element.getModElement().getWorkspace(), annotation.value()));
+					}
+				}
+
+				// no further validations can be done since this field is null
+				return;
 			}
 
-			if (fieldValue == null) {
-				return; // no need to check other annotations if value is null (and null is not explicitly forbidden)
-			}
+			// Validations for cases where fieldValue is not null below
 
 			if (field.numeric() != null) {
 				if (fieldValue instanceof Number number) {
@@ -199,6 +220,10 @@ public class GEValidator {
 			throw new ValidationException(
 					"Failed to access field " + javaField.getName() + " of mod element " + element.getModElement()
 							.getName(), e);
+		} catch (InvocationTargetException | NoSuchMethodException | InstantiationException | ClassCastException e) {
+			throw new ValidationException(
+					"Failed to construct default value for field " + javaField.getName() + " of mod element "
+							+ element.getModElement().getName(), e);
 		}
 	}
 
@@ -210,10 +235,12 @@ public class GEValidator {
 	}
 
 	private record CachedField(Field field, boolean notNullable, @Nullable Numeric numeric,
+	                           @Nullable NonNullMappable nonNullMappable,
 	                           @Nullable LimitedOptionsCache limitedOptions) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
 			this(field, field.isAnnotationPresent(Nonnull.class), field.getAnnotation(Numeric.class),
+					field.getAnnotation(NonNullMappable.class),
 					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null);
 		}
 	}
