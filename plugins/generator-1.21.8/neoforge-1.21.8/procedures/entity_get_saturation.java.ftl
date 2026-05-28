@@ -1,1 +1,0 @@
-(${input$entity} instanceof Player _plr ? _plr.getFoodData().getSaturationLevel():0)

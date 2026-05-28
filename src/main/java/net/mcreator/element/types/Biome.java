@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.types.interfaces.LimitedOptions;
@@ -174,7 +175,7 @@ import java.util.List;
 		@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minGroup;
 		@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxGroup;
 		@Numeric(init = 20, min = 1, max = 1000, step = 1) public int weight;
-		public String spawnType;
+		public MobSpawnType spawnType;
 
 	}
 

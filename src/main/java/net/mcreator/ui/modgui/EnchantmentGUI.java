@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.datapack.BlocklyToEnchantmentEffects;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -265,7 +266,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 	@Override public Enchantment getElementFromGUI() {
 		Enchantment enchantment = new Enchantment(modElement);
 		enchantment.name = name.getText();
-		enchantment.supportedSlots = supportedSlots.getSelectedItem().toString();
+		enchantment.supportedSlots = new EquipmentSlotEntry(mcreator.getWorkspace(), supportedSlots.getSelectedItem());
 		enchantment.weight = (int) weight.getValue();
 		enchantment.anvilCost = (int) anvilCost.getValue();
 		enchantment.maxLevel = (int) maxLevel.getValue();

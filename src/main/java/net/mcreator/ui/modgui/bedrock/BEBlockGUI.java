@@ -21,7 +21,9 @@ package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
@@ -319,7 +321,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			renderType.setSelectedItem(model);
 		name.setText(block.name);
 		enableCreativeTab.setSelected(block.enableCreativeTab);
-		creativeTab.setSelectedItem(block.creativeTab);
+		creativeTab.setSelectedItem(block.creativeTab.getUnmappedValue());
 		isHiddenInCommands.setSelected(block.isHiddenInCommands);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
@@ -373,7 +375,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		block.name = name.getText();
 		block.enableCreativeTab = enableCreativeTab.isSelected();
-		block.creativeTab = creativeTab.getSelectedItem().toString();
+		block.creativeTab = new TabEntry(modElement.getWorkspace(), creativeTab.getSelectedItem());
 		block.isHiddenInCommands = isHiddenInCommands.isSelected();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
@@ -381,7 +383,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.dropAmount = (int) dropAmount.getValue();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		block.lightEmission = (int) lightEmission.getValue();
-		block.colorOnMap = colorOnMap.getSelectedItem().toString();
+		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		block.flammability = (int) flammability.getValue();
 		block.flammableDestroyChance = (int) flammableDestroyChance.getValue();
 		block.friction = (double) friction.getValue();

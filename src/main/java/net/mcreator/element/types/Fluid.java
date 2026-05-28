@@ -20,10 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -92,7 +90,7 @@ import java.util.List;
 	public boolean ignitedByLava;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
-	public String colorOnMap;
+	public MapColor colorOnMap;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourChanges;
@@ -127,7 +125,6 @@ import java.util.List;
 		this.temperature = 300;
 
 		this.resistance = 100;
-		this.colorOnMap = "DEFAULT";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
