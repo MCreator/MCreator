@@ -244,7 +244,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		sorter = new TableRowSorter<>(elements.getModel());
 		sorter.toggleSortOrder(2);
-		sorter.addRowSorterListener(e -> clearEditor());
+		sorter.addRowSorterListener(_ -> clearEditor());
 		elements.setRowSorter(sorter);
 
 		elements.setBackground(Theme.current().getBackgroundColor());
@@ -276,7 +276,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		add("Center", sp);
 
-		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add"), e -> {
+		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add"), _ -> {
 			TagElement tag = NewTagDialog.showNewTagDialog(workspacePanel.getMCreator());
 			if (tag != null) {
 				workspacePanel.getMCreator().getWorkspace().addTagElement(tag);
@@ -284,13 +284,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(createToolBarButton("workspace.tags.add_common", UIRES.get("16px.injecttags"), e -> {
+		bar.add(createToolBarButton("workspace.tags.add_common", UIRES.get("16px.injecttags"), _ -> {
 			AddCommonTagsDialog.open(workspacePanel.getMCreator());
 			reloadElements();
 		}));
 
 		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
-				e -> deleteCurrentlySelected()));
+				_ -> deleteCurrentlySelected()));
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
@@ -416,7 +416,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			this.listField.setBorder(UIManager.getBorder("Table.focusSelectedCellHighlightBorder"));
 
 			// Slight delay before enabling so initial click on the row doesn't trigger button actions
-			timer = new Timer(250, e -> listField.setEnabled(true));
+			timer = new Timer(250, _ -> listField.setEnabled(true));
 			timer.start();
 		}
 
