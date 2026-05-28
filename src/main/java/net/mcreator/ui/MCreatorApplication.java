@@ -45,6 +45,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.themes.ThemeManager;
+import net.mcreator.ui.mcp.ApplicationMCP;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -58,6 +59,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -86,6 +88,7 @@ public final class MCreatorApplication {
 	private GoogleAnalytics analytics;
 	private DiscordClient discordClient;
 	private TaskbarIntegration taskbarIntegration;
+	private ApplicationMCP applicationMCP;
 
 	private final SingleAppHandler singleAppHandler;
 
@@ -213,6 +216,8 @@ public final class MCreatorApplication {
 			analytics.trackPage(AnalyticsConstants.PAGE_LAUNCH);
 
 			discordClient = new DiscordClient();
+
+			applicationMCP = new ApplicationMCP(this, this::getCurrentlyActiveMCreator);
 
 			// Do not externalize this text
 			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
@@ -455,6 +460,24 @@ public final class MCreatorApplication {
 
 	public TaskbarIntegration getTaskbarIntegration() {
 		return taskbarIntegration;
+	}
+
+	@Nullable public MCreator getCurrentlyActiveMCreator() {
+		if (openMCreators.isEmpty())
+			return null;
+
+		if (openMCreators.size() == 1)
+			return openMCreators.getFirst();
+
+		long lastFocusTime = 0;
+		MCreator lastFocusedMCreator = openMCreators.getLast();
+		for (MCreator mcreator : openMCreators) {
+			if (mcreator.getLastFocusTime() > lastFocusTime) {
+				lastFocusTime = mcreator.getLastFocusTime();
+				lastFocusedMCreator = mcreator;
+			}
+		}
+		return lastFocusedMCreator;
 	}
 
 }

@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.mcp;
 
+import net.mcreator.Launcher;
 import net.mcreator.io.mcp.server.McpServer;
 import net.mcreator.io.mcp.transport.HttpMcpTransport;
 import net.mcreator.io.mcp.transport.McpTransport;
@@ -39,7 +40,7 @@ public class ApplicationMCP implements Closeable {
 
 	public ApplicationMCP(MCreatorApplication application, Supplier<MCreator> mcreatorReference) {
 		McpTransport transport = new HttpMcpTransport(8080);
-		this.server = new McpServer("ExampleServer", "1.0.0", transport);
+		this.server = new McpServer("MCreator", Launcher.version.full, transport);
 		try {
 			this.server.start();
 			LOG.debug("MCP server started");
