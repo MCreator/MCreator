@@ -103,7 +103,7 @@ public class ${name}Item extends Item {
 					<#list data.attributeModifiers as modifier>
 					.add(${modifier.attribute}, new AttributeModifier(
 							Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
-							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${modifier.equipmentSlot})
 					</#list>
 					.build())
 				</#if>

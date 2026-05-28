@@ -118,8 +118,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro blockProperties>
 		properties
-		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
+		<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+			.mapColor(MapColor.${data.colorOnMap})
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new DeferredSoundType(1.0f, 1.0f,
@@ -189,8 +189,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 		<#if data.ignitedByLava>
 			.ignitedByLava()
 		</#if>
-		<#if data.noteBlockInstrument != "harp">
-			.instrument(${generator.map(data.noteBlockInstrument, "noteblockinstruments")})
+		<#if data.noteBlockInstrument.getUnmappedValue() != "harp">
+			.instrument(${data.noteBlockInstrument})
 		</#if>
 		<#if data.blockBase?has_content && (
 				data.blockBase == "FenceGate" ||
@@ -568,9 +568,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
+	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		return PathType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		return PathType.${data.aiPathNodeType};
 	}
 	</#if>
 
@@ -744,7 +744,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 				<#elseif data.tintType == "Spruce foliage">
 					List.of(BlockTintSources.constant(FoliageColor.FOLIAGE_EVERGREEN))
 				<#elseif data.tintType == "Grass">
-					List.of(BlockTintSources.grassBlock())
+					List.of(BlockTintSources.grass())
 				<#elseif data.tintType == "Foliage">
 					List.of(BlockTintSources.foliage())
 				<#elseif data.tintType == "Water">

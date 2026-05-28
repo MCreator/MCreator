@@ -1,1 +1,0 @@
-((ResourceLocationArgument.getId(arguments, "${field$param}")).toString())
