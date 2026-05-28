@@ -25,7 +25,6 @@ import net.mcreator.io.mcp.transport.HttpMcpTransport;
 import net.mcreator.io.mcp.transport.McpTransport;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.MCreatorApplication;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +38,7 @@ public class ApplicationMCP implements Closeable {
 
 	private final McpServer server;
 
-	public ApplicationMCP(MCreatorApplication application, Supplier<MCreator> mcreatorReference) {
+	public ApplicationMCP(Supplier<MCreator> currentMCreator) {
 		McpTransport transport = new HttpMcpTransport(PreferencesManager.PREFERENCES.integrations.mcpPort.get());
 		this.server = new McpServer("MCreator", Launcher.version.full, transport);
 		if (PreferencesManager.PREFERENCES.integrations.mcpEnable.get()) {

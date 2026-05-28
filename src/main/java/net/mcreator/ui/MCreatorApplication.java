@@ -217,7 +217,7 @@ public final class MCreatorApplication {
 
 			discordClient = new DiscordClient();
 
-			applicationMCP = new ApplicationMCP(this, this::getCurrentlyActiveMCreator);
+			applicationMCP = new ApplicationMCP(this::getCurrentlyActiveMCreator);
 
 			// Do not externalize this text
 			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
