@@ -25,6 +25,7 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -78,7 +79,7 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	public boolean isPushableByPiston;
 
 	public boolean spawnNaturally;
-	public String populationControl;
+	public MobSpawnType populationControl;
 	@Numeric(init=20, min=1, max=1000, step=1) public int spawningProbability;
 	@Numeric(init=4, min=1, max=128, step=1, allowMinMaxEqual = true) public int minHerdSize;
 	@Numeric(init=4, min=1, max=128, step=1, allowMinMaxEqual = true) public int maxHerdSize;

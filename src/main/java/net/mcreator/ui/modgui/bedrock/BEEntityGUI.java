@@ -24,6 +24,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.types.bedrock.BEEntity;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -390,7 +391,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		isPushableByPiston.setSelected(entity.isPushableByPiston);
 
 		spawnNaturally.setSelected(entity.spawnNaturally);
-		populationControl.setSelectedItem(entity.populationControl);
+		populationControl.setSelectedItem(entity.populationControl.getUnmappedValue());
 		spawningProbability.setValue(entity.spawningProbability);
 		entityHerd.setMinValue(entity.minHerdSize);
 		entityHerd.setMaxValue(entity.maxHerdSize);
@@ -428,7 +429,8 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		entity.isPushable = isPushable.isSelected();
 		entity.isPushableByPiston = isPushableByPiston.isSelected();
 		entity.spawnNaturally = spawnNaturally.isSelected();
-		entity.populationControl = (String) populationControl.getSelectedItem();
+		entity.populationControl =  new MobSpawnType(modElement.getWorkspace(),
+				(String) populationControl.getSelectedItem());
 		entity.spawningProbability = (int) spawningProbability.getValue();
 		entity.minHerdSize = entityHerd.getIntMinValue();
 		entity.maxHerdSize = entityHerd.getIntMaxValue();
