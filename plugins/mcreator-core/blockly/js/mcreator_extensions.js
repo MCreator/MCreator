@@ -346,7 +346,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
-                this.setEnabled(isValid);
+                this.setDisabledReason(!isValid, "duplicate_input_type");
                 Blockly.Events.setGroup(group);
             }
         }
