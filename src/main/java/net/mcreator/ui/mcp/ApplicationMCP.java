@@ -39,6 +39,8 @@ public class ApplicationMCP implements Closeable {
 	private final McpServer server;
 
 	public ApplicationMCP(MCreatorApplication application, Supplier<MCreator> mcreatorReference) {
+		// TODO: make configurable - new preferences sections - Integrations: Discord, MCP
+
 		McpTransport transport = new HttpMcpTransport(8080);
 		this.server = new McpServer("MCreator", Launcher.version.full, transport);
 		try {
