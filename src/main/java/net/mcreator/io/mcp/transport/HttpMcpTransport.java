@@ -185,7 +185,6 @@ public class HttpMcpTransport implements McpTransport {
 			String payload = ": " + comment + "\n\n";
 			os.write(payload.getBytes(StandardCharsets.UTF_8));
 			os.flush();
-			LOG.debug("Sent heartbeat to session");
 		}
 
 		public synchronized void close() {
