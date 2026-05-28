@@ -2,28 +2,39 @@
   readable_name: "All"
 - armor_head:
   readable_name: "Armor helmet"
+  texture: IRON_HELMET
 - armor_torso:
   readable_name: "Armor chestplate"
+  texture: IRON_CHESTPLATE
 - armor_legs:
   readable_name: "Armor leggings"
+  texture: IRON_LEGGINGS
 - armor_feet:
   readable_name: "Armor boots"
+  texture: IRON_BOOTS
 - axe:
   readable_name: "Axe"
+  texture: IRON_AXE
 - bow:
   readable_name: "Bow"
+  texture: BOW
 - carrot_stick:
   readable_name: "Carrot and stick"
+  texture: CARROT_ON_A_STICK
 - cosmetic_head:
   readable_name: "Cosmetic head"
 - crossbow:
   readable_name: "Crossbow"
+  texture: CROSSBOW
 - elytra:
   readable_name: "Elytra"
+  texture: ELYTRA
 - fishing_rod:
   readable_name: "Fishing rod"
+  texture: FISHING_ROD
 - flintsteel:
   readable_name: "Flint and steel"
+  texture: FLINT_AND_STEEL
 - g_armor:
   readable_name: "Group armor"
 - g_digging:
@@ -32,19 +43,28 @@
   readable_name: "Group tool"
 - hoe:
   readable_name: "Hoe"
+  texture: IRON_HOE
 - melee_spear:
   readable_name: "Spear"
+  texture: IRON_SPEAR
 - none:
   readable_name: "None"
+  texture: BARRIER
 - pickaxe:
   readable_name: "Pickaxe"
+  texture: IRON_PICKAXE
 - shears:
   readable_name: "Shears"
+  texture: SHEARS
 - shield:
   readable_name: "Shield"
+  texture: SHIELD
 - shovel:
   readable_name: "Shovel"
+  texture: IRON_SHOVEL
 - spear:
   readable_name: "Trident"
+  texture: TRIDENT
 - sword:
   readable_name: "Sword"
+  texture: IRON_SWORD
