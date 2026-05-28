@@ -20,10 +20,7 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -78,7 +75,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 
 	// Tool
 	public boolean isEnchantable;
-	public String enchantmentSlot;
+	@NonNullMappable("any") public BEEquipmentSlotEntry enchantmentSlot;
 	@Numeric(init = 0, min = 0, max = 255, step = 1) public int enchantmentValue;
 	public boolean diggerUseEfficiency;
 	@ModElementReference public List<DiggerEntry> diggerEntries;
@@ -97,7 +94,6 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		shouldDespawn = true;
 		animation = "eat";
 		enableCreativeTab = true;
-		enchantmentSlot = "any";
 
 		blockPlaceableOn = new ArrayList<>();
 		entityDispensableOn = new ArrayList<>();

@@ -1729,8 +1729,8 @@ public class TestWorkspaceDataProvider {
 			beitem.animation = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
 			beitem.isEnchantable = _true;
-			beitem.enchantmentSlot = getRandomItem(random,
-					ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())).toString();
+			beitem.enchantmentSlot = new BEEquipmentSlotEntry(modElement.getWorkspace(), getRandomItem(random,
+					ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())));
 			beitem.enchantmentValue = getRandomInt(random, BEItem.class, "enchantmentValue");
 			beitem.diggerUseEfficiency = _true;
 			beitem.diggerEntries = new ArrayList<>();

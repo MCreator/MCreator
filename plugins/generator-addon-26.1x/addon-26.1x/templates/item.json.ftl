@@ -33,7 +33,7 @@
       <#if data.enableMeleeDamage>"minecraft:damage": ${[data.damageVsEntity, 255]?min},</#if>
       <#if data.isEnchantable>
       "minecraft:enchantable": {
-        "slot": "${generator.map(data.enchantmentSlot, "equipmentslots")}",
+        "slot": "${data.enchantmentSlot}",
         "value": ${data.enchantmentValue}
       },
       </#if>

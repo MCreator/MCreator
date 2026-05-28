@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.BEEquipmentSlotEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.mapping.NonMappableElement;
@@ -422,7 +423,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		entityDispensableOn.setListElements(item.entityDispensableOn);
 		entityPlaceableOn.setListElements(item.entityPlaceableOn);
 		isEnchantable.setSelected(item.isEnchantable);
-		enchantmentSlot.setSelectedItem(item.enchantmentSlot);
+		enchantmentSlot.setSelectedItem(item.enchantmentSlot.getUnmappedValue());
 		enchantmentValue.setValue(item.enchantmentValue);
 		diggerUseEfficiency.setSelected(item.diggerUseEfficiency);
 		diggerEntries.setEntries(item.diggerEntries);
@@ -468,7 +469,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.entityDispensableOn = entityDispensableOn.getListElements();
 		item.entityPlaceableOn = entityPlaceableOn.getListElements();
 		item.isEnchantable = isEnchantable.isSelected();
-		item.enchantmentSlot = enchantmentSlot.getSelectedItem().toString();
+		item.enchantmentSlot = new BEEquipmentSlotEntry(mcreator.getWorkspace(), enchantmentSlot.getSelectedItem());
 		item.enchantmentValue = (int) enchantmentValue.getValue();
 		item.diggerUseEfficiency = diggerUseEfficiency.isSelected();
 		item.diggerEntries = diggerEntries.getEntries();
