@@ -75,7 +75,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 
 	// Tool
 	public boolean isEnchantable;
-	@NonNullMappable("any") public BEEquipmentSlotEntry enchantmentSlot;
+	@NonNullMappable("all") public BEEquipmentSlotEntry enchantmentSlot;
 	@Numeric(init = 0, min = 0, max = 255, step = 1) public int enchantmentValue;
 	public boolean diggerUseEfficiency;
 	@ModElementReference public List<DiggerEntry> diggerEntries;
