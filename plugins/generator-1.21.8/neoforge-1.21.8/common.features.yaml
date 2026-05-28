@@ -1,3 +1,0 @@
-global_templates:
-  - template: elementinits/features.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
