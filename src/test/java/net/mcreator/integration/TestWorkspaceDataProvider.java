@@ -1822,7 +1822,7 @@ public class TestWorkspaceDataProvider {
 			beentity.isPushable = _true;
 			beentity.isPushableByPiston = _true;
 			beentity.spawnNaturally = !_true;
-			beentity.populationControl = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 			beentity.spawningProbability = getRandomInt(random, BEEntity.class, "spawningProbability");
 			var numberOfMobsPerGroup = getRandomIntRange(random, BEEntity.class, "minHerdSize",
 					"maxHerdSize");
