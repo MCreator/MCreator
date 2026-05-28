@@ -144,7 +144,7 @@
 <#function getEntitiesOfType entityList type>
 	<#assign retval = []>
 	<#list entityList as entity>
-		<#if entity.spawnType == type>
+		<#if entity.spawnType.getUnmappedValue() == type>
 			<#assign retval = retval + [entity]>
 		</#if>
 	</#list>

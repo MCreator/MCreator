@@ -20,12 +20,12 @@ package net.mcreator.workspace.elements;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.Strictness;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.CustomElement;
+import net.mcreator.element.util.GEValidator;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.TagsUtils;
 import net.mcreator.io.FileIO;
@@ -35,11 +35,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +80,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	}
 
 	/**
-	 * Also stores to cache. Is thread safe.
+	 * Also stores to cache. It is thread safe.
 	 *
 	 * @param element GeneratableElement to convert to store
 	 */
@@ -112,7 +114,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 
 		// remove any potential references to this mod element in tags
-		TagsUtils.removeTagsForModElement(workspace, element);
+		TagsUtils.removeTagEntriesReferencingModElement(workspace, element);
 
 		// after we don't need the definition anymore, remove actual files
 		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
@@ -152,11 +154,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 		String importJSON = FileIO.readFileToString(genFile);
 
-		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
+		GeneratableElement generatableElement = fromJSONtoGeneratableElementOrNull(importJSON, element);
 		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
-			// Make sure after conversion and importing, no Nonnull fields are null to prevent NPEs and check GE integrity
-			if (!generatableElement.performQuickValidation())
-				return null;
 
 			// Store the mod element in case the conversion was applied
 			if (generatableElement.wasConversionApplied())
@@ -173,15 +172,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 		return gson.toJson(element);
 	}
 
-	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement) {
-		this.modElementsInConversion.push(modElement);
-
+	@Nullable public GeneratableElement fromJSONtoGeneratableElementOrNull(String json, ModElement modElement) {
 		try {
-			return gson.fromJson(json, GeneratableElement.class);
-		} catch (JsonSyntaxException e) {
+			return fromJSONtoGeneratableElement(json, modElement);
+		} catch (Exception e) {
 			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
 					modElement.getName(), e);
 			return null;
+		}
+	}
+
+	@Nonnull public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement)
+			throws IOException, GEValidator.ValidationException {
+		this.modElementsInConversion.push(modElement);
+
+		try {
+			GeneratableElement retval = gson.fromJson(json, GeneratableElement.class);
+			GEValidator.validateAndTryToCorrect(retval);
+			return retval;
+		} catch (GEValidator.ValidationException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new IOException("Failed to parse and load JSON of:" + modElement.getName(), e);
 		} finally {
 			this.modElementsInConversion.pop();
 		}
@@ -239,7 +251,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 	/**
 	 * Invalidates the generatable element cache
 	 *
-	 * @apiNote This method performs sensitive operations on host workspace. Avoid using it!
+	 * @apiNote This method performs sensitive operations on the host workspace. Avoid using it!
 	 */
 	@SuppressWarnings("unused") public void invalidateCache() {
 		cache.clear();

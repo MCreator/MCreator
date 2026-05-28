@@ -55,6 +55,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +74,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureBack;
 	public int renderType;
 	@Nonnull public String customModelName;
+	@LimitedOptions({ "none", "player_y_axis", "player_all_axis", "block_y_axis", "block_all_axis", "log" })
 	public int rotationMode;
 	public boolean enablePitch;
 	public boolean emissiveRendering;
@@ -85,20 +87,23 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	public String blockBase;
-	public String blockSetType;
+	@Nullable
+	@LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
+			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
+	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
 	public MItemBlock pottedPlant;
 	public Particle leavesParticleType;
-	public double leavesParticleChance;
+	@Numeric(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
-	public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
+			"Sky", "Fog", "Water fog" }) public String tintType;
 	public boolean isItemTinted;
 
 	public boolean hasTransparency;
 	public boolean connectedSides;
-	public String transparencyType;
+	@LimitedOptions({ "SOLID", "CUTOUT", "CUTOUT_MIPPED", "TRANSLUCENT" }) public String transparencyType;
 
 	public boolean disableOffset;
 	public List<BoxEntry> boundingBoxes;
@@ -107,54 +112,54 @@ import java.util.stream.Collectors;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public double hardness;
-	public double resistance;
+	@Numeric(init = 1, min = -1, max = 64000, step = 0.05) public double hardness;
+	@Numeric(init = 10, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
 
 	public boolean hasBlockItem;
-	public int maxStackSize;
-	public String rarity;
+	@Numeric(init = 64, min = 1, max = 99, step = 1) public int maxStackSize;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public boolean immuneToFire;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
-	@Nonnull public String destroyTool;
+	@LimitedOptions({ "Not specified", "pickaxe", "axe", "shovel", "hoe" }) @Nonnull public String destroyTool;
 	public MItemBlock customDrop;
-	public int dropAmount;
-	public int xpAmountMin;
-	public int xpAmountMax;
+	@Numeric(init = 1, min = 0, max = 99, step = 1) public int dropAmount;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1, allowMinMaxEqual = true) public int xpAmountMin;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1, allowMinMaxEqual = true) public int xpAmountMax;
 	public boolean useLootTableForDrops;
 	public boolean requiresCorrectTool;
 
-	public double enchantPowerBonus;
+	@Numeric(init = 0, min = 0, max = 1024, step = 0.1) public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
 	public boolean hasCustomOpacity;
-	public int lightOpacity;
+	@Numeric(init = 15, min = 0, max = 15, step = 1) public int lightOpacity;
 
-	public int tickRate;
+	@Numeric(init = 0, min = 0, max = 9999999, step = 1) public int tickRate;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
-	public String colorOnMap;
-	public String noteBlockInstrument;
+	public MapColor colorOnMap;
+	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;
 	public MItemBlock creativePickItem;
-	public String offsetType;
-	public String aiPathNodeType;
+	@LimitedOptions({ "NONE", "XZ", "XYZ" }) public String offsetType;
+	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;
 	public Color beaconColorModifier;
 	public MItemBlock strippingResult;
 
 	public boolean ignitedByLava;
-	public int flammability;
-	public int fireSpreadSpeed;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
 
 	public boolean isLadder;
-	public double slipperiness;
-	public double speedFactor;
-	public double jumpFactor;
-	public String reactionToPushing;
+	@Numeric(init = 0.6, min = 0.01, max = 5, step = 0.01) public double slipperiness;
+	@Numeric(init = 1, min = -1000, max = 1000, step = 0.1) public double speedFactor;
+	@Numeric(init = 1, min = -1000, max = 1000, step = 0.1) public double jumpFactor;
+	@LimitedOptions({ "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" }) public String reactionToPushing;
 
 	public boolean isNotColidable;
 
@@ -168,7 +173,7 @@ import java.util.stream.Collectors;
 
 	public NumberProcedure luminance;
 	public boolean unbreakable;
-	public String vanillaToolTier;
+	@LimitedOptions({ "NONE", "STONE", "IRON", "DIAMOND" }) public String vanillaToolTier;
 	public Procedure additionalHarvestCondition;
 
 	public Procedure placingCondition;
@@ -185,10 +190,10 @@ import java.util.stream.Collectors;
 	public Procedure onReceivedVibration;
 
 	public boolean hasInventory;
-	@ModElementReference @Nullable public String guiBoundTo;
+	@ModElementReference(acceptedTypes = { GUI.class }) @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
-	public int inventorySize;
-	public int inventoryStackSize;
+	@Numeric(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
+	@Numeric(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
 	public boolean inventoryDropWhenDestroyed;
 	public boolean inventoryComparatorPower;
 	public List<Integer> inventoryOutSlotIDs;
@@ -197,13 +202,13 @@ import java.util.stream.Collectors;
 	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
-	public int energyInitial;
-	public int energyCapacity;
-	public int energyMaxReceive;
-	public int energyMaxExtract;
+	@Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyInitial;
+	@Numeric(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyCapacity;
+	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxReceive;
+	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxExtract;
 
 	public boolean isFluidTank;
-	public int fluidCapacity;
+	@Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
 	@ModElementReference public List<Fluid> fluidRestrictions;
 
 	public Procedure onRightClicked;
@@ -225,11 +230,11 @@ import java.util.stream.Collectors;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
-	public String generationShape;
-	public int frequencyPerChunks;
-	public int frequencyOnChunk;
-	public int minGenerateHeight;
-	public int maxGenerateHeight;
+	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
+	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
+	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
+	@Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
 
 	private Block() {
 		this(null);
@@ -255,9 +260,6 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.hasCustomOpacity = true;
-		this.colorOnMap = "DEFAULT";
-		this.noteBlockInstrument = "harp";
-		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";
@@ -507,8 +509,11 @@ import java.util.stream.Collectors;
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-				baseTypes.add(BaseType.FEATURE);
+					== GeneratorFlavor.FABRIC ||
+					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+				baseTypes.add(
+						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
 		if (hasInventory)

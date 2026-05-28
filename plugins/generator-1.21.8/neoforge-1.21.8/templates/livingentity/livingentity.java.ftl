@@ -903,7 +903,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 
 	public static void init(RegisterSpawnPlacementsEvent event) {
 		<#if data.spawnThisMob>
-			<#if data.mobSpawningType == "creature">
+			<#if data.mobSpawningType.getUnmappedValue() == "creature">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				<#if hasProcedure(data.spawningCondition)>
@@ -920,7 +920,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 				</#if>,
 				RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
-			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "ambient" || data.mobSpawningType.getUnmappedValue() == "misc">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -935,7 +935,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
-			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "waterCreature" || data.mobSpawningType.getUnmappedValue() == "waterAmbient">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -952,7 +952,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
-			<#elseif data.mobSpawningType == "undergroundWaterCreature">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "undergroundWaterCreature">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>

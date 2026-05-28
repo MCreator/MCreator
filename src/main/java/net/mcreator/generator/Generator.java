@@ -53,8 +53,8 @@ import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -142,17 +142,21 @@ public class Generator implements IGenerator, Closeable {
 	 * @return true if generator generated all files without any errors
 	 */
 	public boolean generateBase() {
-		return this.generateBase(true);
+		try {
+			this.generateBase(true);
+			return true;
+		} catch (TemplateGeneratorException e) {
+			return false;
+		}
 	}
 
 	/**
 	 * Generates the generator mod base files and writes them to disk.
 	 *
 	 * @param formatAndOrganiseImports true if imports should be formatted
-	 * @return true if generator generated all files without any errors
 	 */
-	public boolean generateBase(boolean formatAndOrganiseImports) {
-		AtomicBoolean success = new AtomicBoolean(true);
+	public void generateBase(boolean formatAndOrganiseImports) throws TemplateGeneratorException {
+		AtomicReference<TemplateGeneratorException> exception = new AtomicReference<>(null);
 
 		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
 
@@ -164,10 +168,13 @@ public class Generator implements IGenerator, Closeable {
 						(String) generatorTemplate.getTemplateDefinition().get("variables"));
 				return generatorTemplate.toGeneratorFile(code);
 			} catch (TemplateGeneratorException e) {
-				success.set(false);
+				exception.set(e);
 				return null;
 			}
 		}).filter(Objects::nonNull).collect(Collectors.toList());
+
+		if (exception.get() != null)
+			throw exception.get();
 
 		// remove outdated/stale global/base files from workspace files list
 		// (e.g. is a different generator added a file that is no longer present in the generator definition)
@@ -198,8 +205,6 @@ public class Generator implements IGenerator, Closeable {
 
 		// generate tags files
 		TagsUtils.generateTagsFiles(this, workspace, generatorConfiguration.getTagsSpecification());
-
-		return success.get();
 	}
 
 	/**

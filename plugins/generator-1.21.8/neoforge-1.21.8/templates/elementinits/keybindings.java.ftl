@@ -44,11 +44,11 @@ package ${package}.init;
 	public static final KeyMapping ${keybind.getModElement().getRegistryNameUpper()} = new KeyMapping(
 			"key.${modid}.${keybind.getModElement().getRegistryName()}",
 			<#if keybind.triggerKey?starts_with("MOUSE")>
-				InputConstants.Type.MOUSE, GLFW.GLFW_${generator.map(keybind.triggerKey, "keybuttons")},
+				InputConstants.Type.MOUSE, GLFW.GLFW_${keybind.triggerKey},
 			<#else>
-				GLFW.GLFW_KEY_${generator.map(keybind.triggerKey, "keybuttons")},
+				GLFW.GLFW_KEY_${keybind.triggerKey},
 			</#if>
-			"key.categories.${keybind.keyBindingCategoryKey}")
+			"key.category.${modid}.${keybind.keyBindingCategoryKey}")
 				<#if hasProcedure(keybind.onKeyReleased) || hasProcedure(keybind.onKeyPressed)>
 				{
 					private boolean isDownOld = false;

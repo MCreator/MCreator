@@ -24,14 +24,11 @@ import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.FlafIcons;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 
@@ -45,7 +42,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
@@ -205,14 +201,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			button.setEnabled(!entry.getKey().equals("en_us"));
 
 			JLabel label = new JLabel(" " + entry.getKey() + " ");
-			ComponentUtils.deriveFont(label, 12);
-			try {
-				BufferedImage image = FlafIcons.getFlag(entry.getKey().split("_")[1].toUpperCase(Locale.ENGLISH));
-				label.setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
-			} catch (Exception ignored) { // flag not found, ignore
-			}
-
-			label.setBorder(BorderFactory.createEmptyBorder());
 			tab.add(label);
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);

@@ -74,32 +74,30 @@ package ${package}.client.renderer.block;
 		<#if data.rotationMode != 0>
 			BlockState state = blockEntity.getBlockState();
 			<#if data.rotationMode != 5>
-			Direction facing = state.getValue(${name}Block.FACING);
-			switch (facing) {
-				case NORTH -> {}
-				case EAST -> poseStack.mulPose(Axis.YP.rotationDegrees(90));
-				case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-				case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(180));
-				<#if data.rotationMode == 2 || data.rotationMode == 4>
-					case UP -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
-					case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(-90));
-				</#if>
-			}
-			<#if data.enablePitch>
-			if (facing != Direction.UP && facing != Direction.DOWN) {
+				Direction facing = state.getValue(${name}Block.FACING);
+				switch (facing) {
+					case NORTH -> {}
+					case EAST -> poseStack.mulPose(Axis.YP.rotationDegrees(90));
+					case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(-90));
+					case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(180));
+					<#if data.rotationMode == 2 || data.rotationMode == 4>
+						case UP -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
+						case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(-90));
+					</#if>
+				}
+				<#if data.enablePitch && (data.rotationMode == 1 || data.rotationMode == 3)>
 				switch (state.getValue(${name}Block.FACE)) {
 					case FLOOR -> {}
 					case WALL -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
 					case CEILING -> poseStack.mulPose(Axis.XP.rotationDegrees(180));
 				};
-			}
-			</#if>
+				</#if>
 			<#else>
-			switch (state.getValue(${name}Block.AXIS)) {
-				case X -> poseStack.mulPose(Axis.ZN.rotationDegrees(90));
-				case Y -> {}
-				case Z -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
-			}
+				switch (state.getValue(${name}Block.AXIS)) {
+					case X -> poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+					case Y -> {}
+					case Z -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+				}
 			</#if>
 		</#if>
 		poseStack.translate(0, -1, 0);

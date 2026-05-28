@@ -1036,7 +1036,7 @@ import java.util.regex.Pattern;
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
 
 					GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
-							.fromJSONtoGeneratableElement(mcreator.getModElementManager()
+							.fromJSONtoGeneratableElementOrNull(mcreator.getModElementManager()
 									.generatableElementToJSON(generatableElementOriginal), duplicateModElement);
 
 					if (generatableElementDuplicate instanceof NamespacedGeneratableElement) {
