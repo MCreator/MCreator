@@ -27,44 +27,41 @@ import java.util.List;
 
 public final class ToolResult {
 
-    private static final Gson gson = new Gson();
+	private static final Gson gson = new Gson();
 
-    private final McpSchema.CallToolResponse response;
+	private final McpSchema.CallToolResponse response;
 
-    private ToolResult(McpSchema.CallToolResponse response) {
-        this.response = response;
-    }
+	private ToolResult(McpSchema.CallToolResponse response) {
+		this.response = response;
+	}
 
-    public static ToolResult text(String text) {
-        return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(text))));
-    }
+	public static ToolResult text(String text) {
+		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(text))));
+	}
 
-    public static ToolResult text(String text, McpSchema.Annotations annotations) {
-        return new ToolResult(new McpSchema.CallToolResponse(
-                List.of(McpSchema.Content.text(text, annotations))));
-    }
+	public static ToolResult text(String text, McpSchema.Annotations annotations) {
+		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(text, annotations))));
+	}
 
-    /**
-     * Returns a structured JSON object result per MCP 2025-11-25.
-     * Includes serialized JSON in a text content block for backwards compatibility.
-     */
-    public static ToolResult object(Object structured) {
-        JsonElement structuredContent = gson.toJsonTree(structured);
-        if (!structuredContent.isJsonObject()) {
-            throw new IllegalArgumentException("structuredContent must be a JSON object");
-        }
-        String json = gson.toJson(structured);
-        return new ToolResult(new McpSchema.CallToolResponse(
-                List.of(McpSchema.Content.text(json)),
-                false,
-                structuredContent));
-    }
+	/**
+	 * Returns a structured JSON object result per MCP 2025-11-25.
+	 * Includes serialized JSON in a text content block for backwards compatibility.
+	 */
+	public static ToolResult object(Object structured) {
+		JsonElement structuredContent = gson.toJsonTree(structured);
+		if (!structuredContent.isJsonObject()) {
+			throw new IllegalArgumentException("structuredContent must be a JSON object");
+		}
+		String json = gson.toJson(structured);
+		return new ToolResult(
+				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(json)), false, structuredContent));
+	}
 
-    public static ToolResult error(String message) {
-        return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(message)), true));
-    }
+	public static ToolResult error(String message) {
+		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(message)), true));
+	}
 
-    McpSchema.CallToolResponse toResponse() {
-        return response;
-    }
+	McpSchema.CallToolResponse toResponse() {
+		return response;
+	}
 }

@@ -25,88 +25,75 @@ import java.util.List;
 
 public class McpSchema {
 
-    public record Implementation(String name, String version) {
-    }
+	public record Implementation(String name, String version) {}
 
-    public record InitializeResponse(String protocolVersion, ServerCapabilities capabilities,
-                                     Implementation serverInfo, String instructions) {
-        public InitializeResponse(String protocolVersion, ServerCapabilities capabilities,
-                                  Implementation serverInfo) {
-            this(protocolVersion, capabilities, serverInfo, null);
-        }
-    }
+	public record InitializeResponse(String protocolVersion, ServerCapabilities capabilities, Implementation serverInfo,
+	                                 String instructions) {
+		public InitializeResponse(String protocolVersion, ServerCapabilities capabilities, Implementation serverInfo) {
+			this(protocolVersion, capabilities, serverInfo, null);
+		}
+	}
 
-    public record ServerCapabilities(Object tools, ResourceCapability resources) {
-    }
+	public record ServerCapabilities(Object tools, ResourceCapability resources) {}
 
-    public record ResourceCapability(boolean subscribe, boolean listChanged) {
-    }
+	public record ResourceCapability(boolean subscribe, boolean listChanged) {}
 
-    public record SubscribeRequest(String uri) {
-    }
+	public record SubscribeRequest(String uri) {}
 
-    public record Annotations(List<String> audience, Double priority, String lastModified) {
-    }
+	public record Annotations(List<String> audience, Double priority, String lastModified) {}
 
-    public record ToolAnnotations(Double priorityHint) {
-    }
+	public record ToolAnnotations(Double priorityHint) {}
 
-    public record Tool(String name, String description, Object inputSchema, ToolAnnotations annotations,
-                      Object outputSchema) {
-        public Tool(String name, String description, Object inputSchema, ToolAnnotations annotations) {
-            this(name, description, inputSchema, annotations, null);
-        }
-    }
+	public record Tool(String name, String description, Object inputSchema, ToolAnnotations annotations,
+	                   Object outputSchema) {
+		public Tool(String name, String description, Object inputSchema, ToolAnnotations annotations) {
+			this(name, description, inputSchema, annotations, null);
+		}
+	}
 
-    public record ToolListResponse(List<Tool> tools) {
-    }
+	public record ToolListResponse(List<Tool> tools) {}
 
-    public record CallToolRequest(String name, JsonElement arguments) {
-    }
+	public record CallToolRequest(String name, JsonElement arguments) {}
 
-    public record CallToolResponse(List<Content> content, boolean isError, JsonElement structuredContent) {
-        public CallToolResponse(List<Content> content) {
-            this(content, false, null);
-        }
+	public record CallToolResponse(List<Content> content, boolean isError, JsonElement structuredContent) {
+		public CallToolResponse(List<Content> content) {
+			this(content, false, null);
+		}
 
-        public CallToolResponse(List<Content> content, boolean isError) {
-            this(content, isError, null);
-        }
-    }
+		public CallToolResponse(List<Content> content, boolean isError) {
+			this(content, isError, null);
+		}
+	}
 
-    public record Content(String type, String text, Annotations annotations) {
-        public Content(String type, String text) {
-            this(type, text, null);
-        }
+	public record Content(String type, String text, Annotations annotations) {
+		public Content(String type, String text) {
+			this(type, text, null);
+		}
 
-        public static Content text(String text) {
-            return new Content("text", text, null);
-        }
+		public static Content text(String text) {
+			return new Content("text", text, null);
+		}
 
-        public static Content text(String text, Annotations annotations) {
-            return new Content("text", text, annotations);
-        }
-    }
+		public static Content text(String text, Annotations annotations) {
+			return new Content("text", text, annotations);
+		}
+	}
 
-    public record Resource(String uri, String name, String description, String mimeType, Annotations annotations) {
-    }
+	public record Resource(String uri, String name, String description, String mimeType, Annotations annotations) {}
 
-    public record ResourceListResponse(List<Resource> resources) {
-    }
+	public record ResourceListResponse(List<Resource> resources) {}
 
-    public record ReadResourceRequest(String uri) {
-    }
+	public record ReadResourceRequest(String uri) {}
 
-    public record ReadResourceResponse(List<ResourceContent> contents) {
-    }
+	public record ReadResourceResponse(List<ResourceContent> contents) {}
 
-    public record ResourceContent(String uri, String mimeType, String text, String blob, Annotations annotations) {
-        public static ResourceContent text(String uri, String mimeType, String text, Annotations annotations) {
-            return new ResourceContent(uri, mimeType, text, null, annotations);
-        }
+	public record ResourceContent(String uri, String mimeType, String text, String blob, Annotations annotations) {
+		public static ResourceContent text(String uri, String mimeType, String text, Annotations annotations) {
+			return new ResourceContent(uri, mimeType, text, null, annotations);
+		}
 
-        public static ResourceContent blob(String uri, String mimeType, String blobBase64, Annotations annotations) {
-            return new ResourceContent(uri, mimeType, null, blobBase64, annotations);
-        }
-    }
+		public static ResourceContent blob(String uri, String mimeType, String blobBase64, Annotations annotations) {
+			return new ResourceContent(uri, mimeType, null, blobBase64, annotations);
+		}
+	}
 }

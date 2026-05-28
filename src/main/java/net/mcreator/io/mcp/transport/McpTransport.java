@@ -28,40 +28,40 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface McpTransport {
 
-    /**
-     * Starts the transport.
-     *
-     * @param handler The handler to call when a new message is received.
-     * @throws IOException If the transport fails to start.
-     */
-    void start(McpHandler handler) throws IOException;
+	/**
+	 * Starts the transport.
+	 *
+	 * @param handler The handler to call when a new message is received.
+	 * @throws IOException If the transport fails to start.
+	 */
+	void start(McpHandler handler) throws IOException;
 
-    /**
-     * Stops the transport and releases any resources.
-     */
-    void stop();
+	/**
+	 * Stops the transport and releases any resources.
+	 */
+	void stop();
 
-    /**
-     * Sends a message to a specific session.
-     *
-     * @param sessionId The ID of the session to send the message to.
-     * @param message   The raw JSON-RPC message string.
-     */
-    void sendMessage(String sessionId, String message);
+	/**
+	 * Sends a message to a specific session.
+	 *
+	 * @param sessionId The ID of the session to send the message to.
+	 * @param message   The raw JSON-RPC message string.
+	 */
+	void sendMessage(String sessionId, String message);
 
-    /**
-     * Functional interface for handling incoming MCP messages.
-     */
-    interface McpHandler {
-        /**
-         * Processes an incoming message and returns a future for the response.
-         *
-         * @param sessionId The ID of the session that sent the message.
-         * @param message   The raw JSON-RPC message string.
-         * @return A CompletableFuture that will be completed with the JSON-RPC response,
-         *         or null if no immediate response is required (e.g. for notifications).
-         */
-        CompletableFuture<String> handleMessage(String sessionId, String message);
-    }
+	/**
+	 * Functional interface for handling incoming MCP messages.
+	 */
+	interface McpHandler {
+		/**
+		 * Processes an incoming message and returns a future for the response.
+		 *
+		 * @param sessionId The ID of the session that sent the message.
+		 * @param message   The raw JSON-RPC message string.
+		 * @return A CompletableFuture that will be completed with the JSON-RPC response,
+		 * or null if no immediate response is required (e.g. for notifications).
+		 */
+		CompletableFuture<String> handleMessage(String sessionId, String message);
+	}
 
 }

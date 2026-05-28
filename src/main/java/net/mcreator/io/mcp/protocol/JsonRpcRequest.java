@@ -22,7 +22,8 @@ package net.mcreator.io.mcp.protocol;
 import com.google.gson.JsonElement;
 
 public record JsonRpcRequest(String jsonrpc, String method, JsonElement params, JsonElement id) {
-    public JsonRpcRequest {
-        if (jsonrpc == null) jsonrpc = "2.0";
-    }
+	public JsonRpcRequest {
+		if (jsonrpc == null)
+			jsonrpc = "2.0";
+	}
 }

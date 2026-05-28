@@ -27,17 +27,17 @@ import java.util.concurrent.CompletableFuture;
 
 public interface IMcpTool {
 
-    String getName();
+	String getName();
 
-    String getDescription();
+	String getDescription();
 
-    Type getInputType();
+	Type getInputType();
 
-    default Type getOutputType() {
-        return null;
-    }
+	default Type getOutputType() {
+		return null;
+	}
 
-    McpSchema.ToolAnnotations getAnnotations();
+	McpSchema.ToolAnnotations getAnnotations();
 
-    CompletableFuture<McpSchema.CallToolResponse> invoke(JsonObject arguments);
+	CompletableFuture<McpSchema.CallToolResponse> invoke(JsonObject arguments);
 }

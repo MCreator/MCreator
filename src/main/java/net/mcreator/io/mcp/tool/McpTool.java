@@ -33,59 +33,55 @@ import java.util.concurrent.CompletableFuture;
  */
 public abstract class McpTool<I> implements IMcpTool {
 
-    private static final Gson gson = new Gson();
+	private static final Gson gson = new Gson();
 
-    private final Class<I> inputType;
-    private final Class<?> outputType;
+	private final Class<I> inputType;
+	private final Class<?> outputType;
 
-    protected McpTool(Class<I> inputType) {
-        this(inputType, null);
-    }
+	protected McpTool(Class<I> inputType) {
+		this(inputType, null);
+	}
 
-    protected McpTool(Class<I> inputType, Class<?> outputType) {
-        this.inputType = inputType;
-        this.outputType = outputType;
-    }
+	protected McpTool(Class<I> inputType, Class<?> outputType) {
+		this.inputType = inputType;
+		this.outputType = outputType;
+	}
 
-    @Override
-    public Class<I> getInputType() {
-        return inputType;
-    }
+	@Override public Class<I> getInputType() {
+		return inputType;
+	}
 
-    @Override
-    public Class<?> getOutputType() {
-        return outputType;
-    }
+	@Override public Class<?> getOutputType() {
+		return outputType;
+	}
 
-    @Override
-    public McpSchema.ToolAnnotations getAnnotations() {
-        return null;
-    }
+	@Override public McpSchema.ToolAnnotations getAnnotations() {
+		return null;
+	}
 
-    @Override
-    public final CompletableFuture<McpSchema.CallToolResponse> invoke(JsonObject arguments) {
-        I input = gson.fromJson(arguments, inputType);
-        return call(input).thenApply(ToolResult::toResponse);
-    }
+	@Override public final CompletableFuture<McpSchema.CallToolResponse> invoke(JsonObject arguments) {
+		I input = gson.fromJson(arguments, inputType);
+		return call(input).thenApply(ToolResult::toResponse);
+	}
 
-    /**
-     * Handles a tool invocation with deserialized, typed arguments.
-     */
-    protected abstract CompletableFuture<ToolResult> call(I input);
+	/**
+	 * Handles a tool invocation with deserialized, typed arguments.
+	 */
+	protected abstract CompletableFuture<ToolResult> call(I input);
 
-    protected static CompletableFuture<ToolResult> completed(ToolResult result) {
-        return CompletableFuture.completedFuture(result);
-    }
+	protected static CompletableFuture<ToolResult> completed(ToolResult result) {
+		return CompletableFuture.completedFuture(result);
+	}
 
-    protected static CompletableFuture<ToolResult> completedText(String text) {
-        return completed(ToolResult.text(text));
-    }
+	protected static CompletableFuture<ToolResult> completedText(String text) {
+		return completed(ToolResult.text(text));
+	}
 
-    protected static CompletableFuture<ToolResult> completedError(String message) {
-        return completed(ToolResult.error(message));
-    }
+	protected static CompletableFuture<ToolResult> completedError(String message) {
+		return completed(ToolResult.error(message));
+	}
 
-    protected static CompletableFuture<ToolResult> completedObject(Object structured) {
-        return completed(ToolResult.object(structured));
-    }
+	protected static CompletableFuture<ToolResult> completedObject(Object structured) {
+		return completed(ToolResult.object(structured));
+	}
 }
