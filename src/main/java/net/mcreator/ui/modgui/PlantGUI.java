@@ -20,6 +20,10 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.AIPathNodeType;
+import net.mcreator.element.parts.EffectEntry;
+import net.mcreator.element.parts.GrowapableSpawnType;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -1009,7 +1013,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isReplaceable.setSelected(plant.isReplaceable);
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
-		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
+		aiPathNodeType.setSelectedItem(plant.aiPathNodeType.getUnmappedValue());
 		strippingResult.setBlock(plant.strippingResult);
 		creativePickItem.setBlock(plant.creativePickItem);
 		ignitedByLava.setSelected(plant.ignitedByLava);
@@ -1036,13 +1040,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plantType.setSelectedItem(plant.plantType);
 
-		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
+		growapableSpawnType.setSelectedItem(plant.growapableSpawnType.getUnmappedValue());
 		generationType.setSelectedItem(plant.generationType);
 
 		// Plant type specific fields
 		switch (plant.plantType) {
 		case "normal" -> {
-			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
+			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect.getUnmappedValue());
 			suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
 		}
 		case "double" -> textureBottom.setTexture(plant.textureBottom);
@@ -1086,7 +1090,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		// Plant type specific fields
 		switch (Objects.requireNonNull((String) plantType.getSelectedItem())) {
 		case "normal" -> {
-			plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
+			plant.suspiciousStewEffect = new EffectEntry(modElement.getWorkspace(),
+					(String) suspiciousStewEffect.getSelectedItem());
 			plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
 		}
 		case "double" -> plant.textureBottom = textureBottom.getTextureHolder();
@@ -1101,7 +1106,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 		}
 
-		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
+		plant.growapableSpawnType = new GrowapableSpawnType(modElement.getWorkspace(),
+				(String) growapableSpawnType.getSelectedItem());
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (int) luminance.getValue();
@@ -1142,9 +1148,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.generationType = (String) generationType.getSelectedItem();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
-		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
+		plant.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		plant.offsetType = (String) offsetType.getSelectedItem();
-		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
+		plant.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(), aiPathNodeType.getSelectedItem());
 		plant.strippingResult = strippingResult.getBlock();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.ignitedByLava = ignitedByLava.isSelected();

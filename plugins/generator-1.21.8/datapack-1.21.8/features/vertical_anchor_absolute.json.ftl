@@ -1,3 +1,0 @@
-{
-  "absolute": ${field$value}
-}

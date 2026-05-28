@@ -20,6 +20,7 @@ package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.NoteBlockInstrument;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
@@ -272,7 +273,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		logBlock.hardness = 2.0 * factor;
 		logBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		logBlock.destroyTool = "axe";
-		logBlock.noteBlockInstrument = "bass";
+		logBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		logBlock.ignitedByLava = true;
 		logBlock.flammability = 5;
 		logBlock.fireSpreadSpeed = 5;
@@ -290,7 +291,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		woodBlock.hardness = 2.0 * factor;
 		woodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		woodBlock.destroyTool = "axe";
-		woodBlock.noteBlockInstrument = "bass";
+		woodBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		woodBlock.ignitedByLava = true;
 		woodBlock.flammability = 5;
 		woodBlock.fireSpreadSpeed = 5;
@@ -314,7 +315,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		strippedLogBlock.hardness = 2.0 * factor;
 		strippedLogBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		strippedLogBlock.destroyTool = "axe";
-		strippedLogBlock.noteBlockInstrument = "bass";
+		strippedLogBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		strippedLogBlock.ignitedByLava = true;
 		strippedLogBlock.flammability = 5;
 		strippedLogBlock.fireSpreadSpeed = 5;
@@ -332,7 +333,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		strippedWoodBlock.hardness = 2.0 * factor;
 		strippedWoodBlock.resistance = 2.0 * Math.pow(factor, 0.8);
 		strippedWoodBlock.destroyTool = "axe";
-		strippedWoodBlock.noteBlockInstrument = "bass";
+		strippedWoodBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		strippedWoodBlock.ignitedByLava = true;
 		strippedWoodBlock.flammability = 5;
 		strippedWoodBlock.fireSpreadSpeed = 5;
@@ -358,7 +359,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		planksBlock.hardness = 2.0 * factor;
 		planksBlock.resistance = 3.0 * Math.pow(factor, 0.8);
 		planksBlock.destroyTool = "axe";
-		planksBlock.noteBlockInstrument = "bass";
+		planksBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		planksBlock.ignitedByLava = true;
 		planksBlock.flammability = 20;
 		planksBlock.fireSpreadSpeed = 5;
@@ -397,7 +398,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		stairsBlock.hardness = 2 * factor;
 		stairsBlock.resistance = 3 * factor;
 		stairsBlock.destroyTool = "axe";
-		stairsBlock.noteBlockInstrument = "bass";
+		stairsBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		stairsBlock.ignitedByLava = true;
 		stairsBlock.flammability = 20;
 		stairsBlock.fireSpreadSpeed = 5;
@@ -417,7 +418,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		slabBlock.hardness = 2 * factor;
 		slabBlock.resistance = 3 * factor;
 		slabBlock.destroyTool = "axe";
-		slabBlock.noteBlockInstrument = "bass";
+		slabBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		slabBlock.ignitedByLava = true;
 		slabBlock.flammability = 20;
 		slabBlock.fireSpreadSpeed = 5;
@@ -435,7 +436,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceBlock.hardness = 2 * factor;
 		fenceBlock.resistance = 3 * factor;
 		fenceBlock.destroyTool = "axe";
-		fenceBlock.noteBlockInstrument = "bass";
+		fenceBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		fenceBlock.ignitedByLava = true;
 		fenceBlock.flammability = 20;
 		fenceBlock.fireSpreadSpeed = 5;
@@ -453,7 +454,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		fenceGateBlock.hardness = 2 * factor;
 		fenceGateBlock.resistance = 3 * factor;
 		fenceGateBlock.destroyTool = "axe";
-		fenceGateBlock.noteBlockInstrument = "bass";
+		fenceGateBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		fenceGateBlock.ignitedByLava = true;
 		fenceGateBlock.flammability = 20;
 		fenceGateBlock.fireSpreadSpeed = 5;
@@ -475,7 +476,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		doorBlock.hardness = 3 * factor;
 		doorBlock.resistance = 3 * factor;
 		doorBlock.destroyTool = "axe";
-		doorBlock.noteBlockInstrument = "bass";
+		doorBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		doorBlock.ignitedByLava = true;
 		doorBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, doorBlock);
@@ -493,7 +494,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		trapdoorBlock.hardness = 3 * factor;
 		trapdoorBlock.resistance = 3 * factor;
 		trapdoorBlock.destroyTool = "axe";
-		trapdoorBlock.noteBlockInstrument = "bass";
+		trapdoorBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		trapdoorBlock.ignitedByLava = true;
 		trapdoorBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, trapdoorBlock);
@@ -509,7 +510,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		pressurePlateBlock.hardness = 0.5 * factor;
 		pressurePlateBlock.resistance = 0.5 * factor;
 		pressurePlateBlock.destroyTool = "axe";
-		pressurePlateBlock.noteBlockInstrument = "bass";
+		pressurePlateBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		pressurePlateBlock.ignitedByLava = true;
 		pressurePlateBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		pressurePlateBlock.isNotColidable = true;
@@ -546,7 +547,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		signBlock.hardness = 1 * factor;
 		signBlock.resistance = 1 * factor;
 		signBlock.destroyTool = "axe";
-		signBlock.noteBlockInstrument = "bass";
+		signBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		signBlock.creativeTabs = List.of(new TabEntry(workspace, "TRANSPORTATION"));
 		signBlock.isNotColidable = true;
 		signBlock.ignitedByLava = true;
@@ -567,7 +568,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		hangingSignBlock.hardness = 1 * factor;
 		hangingSignBlock.resistance = 1 * factor;
 		hangingSignBlock.destroyTool = "axe";
-		hangingSignBlock.noteBlockInstrument = "bass";
+		hangingSignBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");
 		hangingSignBlock.creativeTabs = List.of(new TabEntry(workspace, "TRANSPORTATION"));
 		hangingSignBlock.isNotColidable = true;
 		hangingSignBlock.ignitedByLava = true;

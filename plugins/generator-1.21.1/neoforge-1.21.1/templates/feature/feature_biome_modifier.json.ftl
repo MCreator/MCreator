@@ -13,5 +13,5 @@
   },
   </#if>
   "features": "${modid}:${registryname}",
-  "step": "${generator.map(data.generationStep, "generationsteps")}"
+  "step": "${data.generationStep}"
 }
