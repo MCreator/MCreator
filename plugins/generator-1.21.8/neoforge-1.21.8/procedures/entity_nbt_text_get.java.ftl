@@ -1,1 +1,0 @@
-(${input$entity}.getPersistentData().getStringOr(${input$tagName}, ""))

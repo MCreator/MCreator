@@ -1,1 +1,0 @@
-/*@float*/(${input$entity}.getPercentFrozen() * 100)

@@ -1,1 +1,0 @@
-(${input$vector}.${field$vector_opcodes}${input$scaleValue}))
