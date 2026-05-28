@@ -1,1 +1,0 @@
-(itemstack -> itemstack.is(ItemTags.create(ResourceLocation.parse("${field$tag?lower_case}"))))

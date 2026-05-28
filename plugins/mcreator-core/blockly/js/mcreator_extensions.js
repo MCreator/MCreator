@@ -166,7 +166,7 @@ Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
-                this.setEnabled(enabled);
+                this.setDisabledReason(!enabled, "inside_inline_placed_feature")
                 Blockly.Events.setGroup(group);
             }
         }
@@ -196,7 +196,7 @@ Blockly.Extensions.registerMixin('controls_flow_in_loop_check_exclude_wait',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
-                this.setEnabled(isWithinLoop && !isWithinWaitBlock);
+                this.setDisabledReason(!(isWithinLoop && !isWithinWaitBlock), "inside_loop");
                 Blockly.Events.setGroup(group);
             }
         }
@@ -229,7 +229,7 @@ Blockly.Extensions.registerMixin('disable_repeated_random_xz',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
-                this.setEnabled(enabled);
+                this.setDisabledReason(!enabled, "repeated_random_xz");
                 Blockly.Events.setGroup(group);
             }
         }
@@ -268,7 +268,7 @@ Blockly.Extensions.registerMixin('disable_repeated_count_on_every_layer',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
-                this.setEnabled(enabled);
+                this.setDisabledReason(!enabled, "repeated_count_on_every_layer");
                 Blockly.Events.setGroup(group);
             }
         }
@@ -295,7 +295,7 @@ Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
                 changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
                 return;
             }
-            var isValid = true;
+            let isValid = true;
             // Check if the block attached to the "value" input isn't Number or Boolean
             const attachedType = this.getInput('value').connection.targetBlock()?.outputConnection.getCheck();
             if (attachedType && (attachedType.includes('Number') || attachedType.includes('Boolean'))) {
@@ -306,7 +306,7 @@ Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
-                this.setEnabled(isValid);
+                this.setDisabledReason(!isValid, "null_comparison_invalid_input");
                 Blockly.Events.setGroup(group);
             }
         }

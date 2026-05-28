@@ -64,7 +64,7 @@ public class Slider extends SizedComponent {
 
 		int knobWidth = 8;
 		double normalized = (max > min) ? (value - min) / (max - min) : 0.0;
-		normalized = Math.max(0.0, Math.min(1.0, normalized));
+		normalized = Math.clamp(normalized, 0.0, 1.0);
 		int knobX = cx + (int) Math.round(normalized * (this.width - knobWidth));
 		g.drawImage(MinecraftImageGenerator.generateButton(knobWidth, this.height), knobX, cy, knobWidth, height,
 				wysiwygEditor);

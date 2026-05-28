@@ -33,7 +33,7 @@ class FieldMCItemSelector extends Blockly.FieldImage {
         this.imageElement = Blockly.utils.dom.createSvgElement(
             'image',
             {
-                'height': this.imageHeight_ + 'px',
+                'height': this.size_.height + 'px',
                 'width': this.size_.width + 'px',
                 'style': 'cursor: default;'
             },

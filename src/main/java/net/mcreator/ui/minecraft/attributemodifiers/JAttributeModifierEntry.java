@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.parts.AttributeModifierEntry;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -29,6 +30,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -40,9 +42,9 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
-	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.001));
-	private final JComboBox<String> operation = new JComboBox<>(
-			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+	private final JSpinner amount = ComponentFromAnnotation.spinner(AttributeModifierEntry.class, "amount");
+	private final JComboBox<String> operation = ComponentFromAnnotation.options(AttributeModifierEntry.class,
+			"operation");
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JAttributeModifierEntry> entryList, boolean isPotionEffectEntry) {
@@ -94,7 +96,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	@Override public AttributeModifierEntry getEntry() {
 		AttributeModifierEntry entry = new AttributeModifierEntry();
-		entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
+		entry.equipmentSlot = new EquipmentSlotEntry(workspace, equipmentSlot.getSelectedItem());
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();

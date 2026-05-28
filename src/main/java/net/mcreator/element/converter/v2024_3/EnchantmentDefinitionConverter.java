@@ -25,6 +25,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.minecraft.DataListEntry;
@@ -45,16 +46,16 @@ public class EnchantmentDefinitionConverter implements IConverter {
 		JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 		String type = definition.get("type").getAsString();
-		enchantment.supportedSlots = switch (type) {
+		enchantment.supportedSlots = new EquipmentSlotEntry(workspace, switch (type) {
 			case "ARMOR_FEET" -> "feet";
 			case "ARMOR_LEGS" -> "legs";
 			case "ARMOR_CHEST" -> "chest";
 			case "ARMOR_HEAD" -> "head";
 			case "ARMOR", "WEARABLE" -> "armor";
 			case "SWORD", "FIRE_ASPECT", "SHARP", "WEAPON", "DIGGER", "DIGGER_LOOT", "FISHING_ROD", "TRIDENT", "BOW",
-				 "CROSSBOW", "MACE" -> "mainhand";
+			     "CROSSBOW", "MACE" -> "mainhand";
 			default -> "any";
-		};
+		});
 
 		String rarity = definition.get("rarity").getAsString();
 		enchantment.weight = switch (rarity) {

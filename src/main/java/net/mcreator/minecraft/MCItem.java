@@ -132,8 +132,8 @@ public class MCItem extends DataListEntry {
 
 				// Otherwise, try using the mod element icon
 				File elementIconFile = new File(
-						workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + elementName
-								+ ".png");
+						workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
+								+ elementName + ".png");
 				if (!hasGeneratableIcon && elementIconFile.isFile()) {
 					retval = new ImageIcon(elementIconFile.getAbsolutePath());
 				}

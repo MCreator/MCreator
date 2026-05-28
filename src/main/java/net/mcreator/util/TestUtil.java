@@ -44,14 +44,16 @@ public class TestUtil {
 	}
 
 	public static void failIfTestingEnvironmentIgnoreIf(String... ignoreStackClasses) {
+		if (failureHandler == null) {
+			return;
+		}
+
 		List<String> ignored = Arrays.asList(ignoreStackClasses);
 		if (StackWalker.getInstance().walk(s -> s.anyMatch(f -> ignored.contains(f.getClassName())))) {
 			return;
 		}
 
-		if (failureHandler != null) {
-			failureHandler.run();
-		}
+		failureHandler.run();
 	}
 
 	public static boolean isRunningInGitHubActions() {
