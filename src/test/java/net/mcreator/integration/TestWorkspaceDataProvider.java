@@ -1531,11 +1531,10 @@ public class TestWorkspaceDataProvider {
 				if (_true) {
 					enchantment.incompatibleEnchantments = subset(random, 10,
 							ElementUtil.loadAllEnchantments(modElement.getWorkspace()),
-							e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(), e.getName()));
+							e -> new EnchantmentEntry(modElement.getWorkspace(), e.getName()));
 				} else {
 					enchantment.incompatibleEnchantments.add(
-							new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
-									"#minecraft:non_treasure"));
+							new EnchantmentEntry(modElement.getWorkspace(), "#minecraft:non_treasure"));
 				}
 			}
 			return enchantment;
