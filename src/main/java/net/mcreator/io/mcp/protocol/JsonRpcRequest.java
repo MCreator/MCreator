@@ -17,26 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.mcp.protocol.model;
+package net.mcreator.io.mcp.protocol;
 
 import com.google.gson.JsonElement;
 
-public record JsonRpcResponse(String jsonrpc, JsonElement result, JsonRpcError error, JsonElement id) {
-    public JsonRpcResponse {
+public record JsonRpcRequest(String jsonrpc, String method, JsonElement params, JsonElement id) {
+    public JsonRpcRequest {
         if (jsonrpc == null) jsonrpc = "2.0";
-    }
-
-    public JsonRpcResponse(JsonElement id, JsonElement result) {
-        this("2.0", result, null, id);
-    }
-
-    public JsonRpcResponse(JsonElement id, JsonRpcError error) {
-        this("2.0", null, error, id);
-    }
-
-    public record JsonRpcError(int code, String message, JsonElement data) {
-        public JsonRpcError(int code, String message) {
-            this(code, message, null);
-        }
     }
 }

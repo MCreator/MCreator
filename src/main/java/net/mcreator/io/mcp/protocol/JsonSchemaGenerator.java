@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.mcp.protocol.schema;
+package net.mcreator.io.mcp.protocol;
 
 import com.github.victools.jsonschema.generator.*;
 import com.google.gson.Gson;

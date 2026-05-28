@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.mcp.protocol.model;
+package net.mcreator.io.mcp.protocol;
 
 import com.google.gson.JsonElement;
 

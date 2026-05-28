@@ -19,7 +19,7 @@
 
 package net.mcreator.io.mcp.resource;
 
-import net.mcreator.io.mcp.protocol.model.McpSchema;
+import net.mcreator.io.mcp.protocol.McpSchema;
 
 import java.util.Base64;
 import java.util.concurrent.CompletableFuture;

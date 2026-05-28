@@ -20,7 +20,7 @@
 package net.mcreator.io.mcp.tool;
 
 import com.google.gson.JsonObject;
-import net.mcreator.io.mcp.protocol.model.McpSchema;
+import net.mcreator.io.mcp.protocol.McpSchema;
 
 import java.lang.reflect.Type;
 import java.util.concurrent.CompletableFuture;

@@ -21,7 +21,7 @@ package net.mcreator.io.mcp.tool;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import net.mcreator.io.mcp.protocol.model.McpSchema;
+import net.mcreator.io.mcp.protocol.McpSchema;
 
 import java.util.List;
 
