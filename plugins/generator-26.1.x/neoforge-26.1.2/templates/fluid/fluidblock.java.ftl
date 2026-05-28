@@ -42,8 +42,8 @@ public class ${name}Block extends LiquidBlock {
 	public ${name}Block(BlockBehaviour.Properties properties) {
 		super(${JavaModName}Fluids.${REGISTRYNAME}.get(),
 			properties
-			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
+			<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+			.mapColor(MapColor.${data.colorOnMap})
 			<#else>
 			.mapColor(MapColor.${(data.type=="WATER")?then("WATER","FIRE")})
 			</#if>
