@@ -2230,7 +2230,7 @@ public class TestWorkspaceDataProvider {
 		block.fluidRestrictions = new ArrayList<>();
 		if (!emptyLists) {
 			block.fluidRestrictions.addAll(ElementUtil.loadAllFluids(modElement.getWorkspace()).stream()
-					.map(e -> new net.mcreator.element.parts.Fluid(modElement.getWorkspace(), e.getName())).toList());
+					.map(e -> new FluidEntry(modElement.getWorkspace(), e.getName())).toList());
 		}
 		block.restrictionBiomes = new ArrayList<>();
 		if (!emptyLists) {

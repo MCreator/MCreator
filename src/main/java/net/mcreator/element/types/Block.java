@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Fluid;
+import net.mcreator.element.parts.FluidEntry;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -209,7 +209,7 @@ import java.util.stream.Collectors;
 
 	public boolean isFluidTank;
 	@Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
-	@ModElementReference public List<Fluid> fluidRestrictions;
+	@ModElementReference public List<FluidEntry> fluidRestrictions;
 
 	public Procedure onRightClicked;
 	public Procedure onBlockAdded;
