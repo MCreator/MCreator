@@ -1,1 +1,0 @@
-(world instanceof Level _level && _level.getScoreboard().getPlayerTeam(${input$name}) != null ? _level.getScoreboard().getPlayerTeam(${input$name}).isAllowFriendlyFire() : false)
