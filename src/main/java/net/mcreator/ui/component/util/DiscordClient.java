@@ -98,7 +98,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	private boolean isDisabled() {
-		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get();
+		return !PreferencesManager.PREFERENCES.integrations.discordRichPresenceEnable.get();
 	}
 
 }
