@@ -47,7 +47,7 @@ public class HttpMcpTransport implements McpTransport {
         this.port = port;
     }
 
-    public void start(McpHandler handler) throws IOException {
+    @Override public void start(McpHandler handler) throws IOException {
         InetAddress loopbackAddress = InetAddress.getLoopbackAddress();
         server = HttpServer.create(new InetSocketAddress(loopbackAddress, port), 0);
 
