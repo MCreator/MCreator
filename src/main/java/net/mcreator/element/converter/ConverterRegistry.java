@@ -65,6 +65,7 @@ import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2026_1.BlockToBedrockConverter;
 import net.mcreator.element.converter.v2026_1.ToolToBedrockConverter;
 import net.mcreator.element.converter.v2026_2.VillagerTradeSplitter;
+import net.mcreator.element.converter.v2026_2.LivingEntityToBedrockConverter;
 import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.*;
@@ -142,7 +143,8 @@ public class ConverterRegistry {
 			new WaterEntitiesConverter(),
 			new EntityGlowLayerConverter(),
 			new ItemsCreativeTabsConverter(),
-			new NoGUISelectedConverter()
+			new NoGUISelectedConverter(),
+			new LivingEntityToBedrockConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
@@ -261,6 +263,7 @@ public class ConverterRegistry {
 		add(ModElementType.BIOME); // -> Currently bedrock no longer supports custom biomes
 		add(ModElementType.BLOCK); // -> BEBLOCK
 		add(ModElementType.TOOL); // -> BEITEM
+		add(ModElementType.LIVINGENTITY); // -> BEENTITY
 	}};
 
 	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {

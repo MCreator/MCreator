@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "item",
-          "name": "${mappedMCItemToRegistryNameNoTags(data.mobDrop)}",
+          "name": "${mappedMCItemToRegistryNameNoTags(data.entityDrop)}",
           "weight": 1
         }
       ]
