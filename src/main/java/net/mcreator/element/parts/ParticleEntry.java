@@ -25,17 +25,17 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
 
-public class Particle extends MappableElement {
+public class ParticleEntry extends MappableElement {
 
-	private Particle() {
+	private ParticleEntry() {
 		super(new NameMapper(null, "particles"));
 	}
 
-	public Particle(@Nonnull Workspace owner, String name) {
+	public ParticleEntry(@Nonnull Workspace owner, String name) {
 		super(new NameMapper(owner, "particles"), name);
 	}
 
-	public Particle(@Nonnull Workspace owner, DataListEntry name) {
+	public ParticleEntry(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 
