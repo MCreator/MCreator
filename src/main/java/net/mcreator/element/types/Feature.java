@@ -25,6 +25,7 @@ import net.mcreator.blockly.datapack.BlocklyToFeature;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorFlavor;
@@ -47,7 +48,7 @@ import java.util.List;
 	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
 	public boolean skipPlacement;
-	public String generationStep;
+	public GenerationStep generationStep;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	@BlocklyXML(name = "features", defaultXML = XML_BASE) public String featurexml;
@@ -61,7 +62,6 @@ import java.util.List;
 	public Feature(ModElement element) {
 		super(element);
 
-		this.generationStep = "SURFACE_STRUCTURES";
 		this.restrictionBiomes = new ArrayList<>();
 	}
 

@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
@@ -360,7 +361,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		handEquipped.setSelected(item.handEquipped);
 		rarity.setSelectedItem(item.rarity);
 		enableCreativeTab.setSelected(item.enableCreativeTab);
-		creativeTab.setSelectedItem(item.creativeTab);
+		creativeTab.setSelectedItem(item.creativeTab.getUnmappedValue());
 		isHiddenInCommands.setSelected(item.isHiddenInCommands);
 		movementModifier.setValue(item.movementModifier);
 		allowOffHand.setSelected(item.allowOffHand);
@@ -400,7 +401,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.handEquipped = handEquipped.isSelected();
 		item.rarity = rarity.getSelectedItem();
 		item.enableCreativeTab = enableCreativeTab.isSelected();
-		item.creativeTab = creativeTab.getSelectedItem().toString();
+		item.creativeTab = new TabEntry(modElement.getWorkspace(), creativeTab.getSelectedItem());
 		item.isHiddenInCommands = isHiddenInCommands.isSelected();
 		item.movementModifier = (double) movementModifier.getValue();
 		item.allowOffHand = allowOffHand.isSelected();

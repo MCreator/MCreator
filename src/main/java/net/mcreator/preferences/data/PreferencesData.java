@@ -24,9 +24,10 @@ public class PreferencesData {
 	public static final String CORE_PREFERENCES_KEY = "core";
 
 	public final UISection ui;
-	public final NotificationsSection notifications;
 	public final BackupsSection backups;
 	public final BlocklySection blockly;
+	public final NotificationsSection notifications;
+	public final IntegrationsSection integrations;
 	public final IDESection ide;
 	public final CodeStyleSection codeStyle;
 	public final ImageEditorSection imageEditor;
@@ -36,9 +37,10 @@ public class PreferencesData {
 
 	public PreferencesData() {
 		ui = new UISection(CORE_PREFERENCES_KEY);
-		notifications = new NotificationsSection(CORE_PREFERENCES_KEY);
 		backups = new BackupsSection(CORE_PREFERENCES_KEY);
 		blockly = new BlocklySection(CORE_PREFERENCES_KEY);
+		notifications = new NotificationsSection(CORE_PREFERENCES_KEY);
+		integrations = new IntegrationsSection(CORE_PREFERENCES_KEY);
 		ide = new IDESection(CORE_PREFERENCES_KEY);
 		codeStyle = new CodeStyleSection(CORE_PREFERENCES_KEY);
 		imageEditor = new ImageEditorSection(CORE_PREFERENCES_KEY);

@@ -28,9 +28,12 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
+import net.mcreator.util.ColorUtils;
+import net.mcreator.util.image.EmptyIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,12 +52,6 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 
 	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
 		super(mcreator, new BorderLayout(3, 3));
-
-		JPanel topPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		topPan.setOpaque(false);
-		topPan.add(search);
-
-		add("North", topPan);
 
 		vanillaResourcePackEditor = new ResourcePackEditor(mcreator,
 				new ResourcePackInfo.Vanilla(mcreator.getWorkspace()), () -> search.getText().trim());
@@ -154,6 +151,11 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 			for (ResourcePackEditor editor : modResourcePackEditors.values()) {
 				editor.reloadElements();
 			}
+
+			elementsCount.setText(
+					L10N.t("workspace.stats.current_workspace_rp", mcreator.getWorkspaceSettings().getModName(),
+							mcreator.getGenerator().getGeneratorName()));
+			elementsCount.setIcon(new EmptyIcon(0, 0));
 		}
 
 		@Override public void refilterElements() {

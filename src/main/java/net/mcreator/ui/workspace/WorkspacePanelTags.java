@@ -28,7 +28,6 @@ import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.AddCommonTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
@@ -38,6 +37,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -66,7 +66,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator(), ModElementType.FUNCTION);
 	private final JItemListField<DamageTypeEntry> listFieldDamageTypes = new DamageTypeListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
-	private final JItemListField<Enchantment> listFieldEnchantment = new EnchantmentListField(
+	private final JItemListField<EnchantmentEntry> listFieldEnchantment = new EnchantmentListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<GameEventEntry> listFieldGameEvents = new GameEventListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
@@ -83,6 +83,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	// Cache of list editor
 	private ItemListFieldCellEditor lastEditor = null;
+
+	private final JToolBar bar = new JToolBar();
 
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -180,7 +182,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 						}
 						case ENCHANTMENTS -> {
 							listFieldEnchantment.setListElements(entries.map(
-											e -> (Enchantment) TagElement.entryToMappableElement(
+											e -> (EnchantmentEntry) TagElement.entryToMappableElement(
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldEnchantment;
@@ -273,9 +275,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		add("Center", sp);
 
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
 		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add"), e -> {
 			TagElement tag = NewTagDialog.showNewTagDialog(workspacePanel.getMCreator());
 			if (tag != null) {
@@ -291,8 +290,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
-
-		add("North", bar);
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
@@ -311,6 +308,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				}
 			}
 		});
+	}
+
+	@Nullable @Override public JToolBar getToolBarComponent() {
+		return bar;
 	}
 
 	private static void prepareListField(JItemListField<?> listField) {
@@ -501,10 +502,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					yield retval;
 				}
 				case ENCHANTMENTS -> {
-					JItemListField<Enchantment> retval = new EnchantmentListField(mcreator).allowTags()
+					JItemListField<EnchantmentEntry> retval = new EnchantmentListField(mcreator).allowTags()
 							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
-							.map(e -> (Enchantment) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+							.map(e -> (EnchantmentEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}

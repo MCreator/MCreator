@@ -194,7 +194,7 @@ import java.util.stream.Collectors;
 	public boolean doesDespawnWhenIdle;
 	public Procedure spawningCondition;
 	@Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
-	public String mobSpawningType;
+	public MobSpawnType mobSpawningType;
 	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minNumberOfMobsPerGroup;
 	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
