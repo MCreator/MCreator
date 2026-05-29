@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
@@ -106,7 +106,7 @@ import java.util.List;
 	public Procedure onPlayerLeavesDimension;
 
 	public MItemBlock portalFrame;
-	public Particle portalParticles;
+	public ParticleEntry portalParticles;
 	@Numeric(init = 0, min = 0, max = 15, step = 1) public int portalLuminance;
 	public Sound portalSound;
 	public boolean enableIgniter;
