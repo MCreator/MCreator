@@ -423,7 +423,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		entityDispensableOn.setListElements(item.entityDispensableOn);
 		entityPlaceableOn.setListElements(item.entityPlaceableOn);
 		isEnchantable.setSelected(item.isEnchantable);
-		enchantmentSlot.setSelectedItem(item.enchantmentSlot.getUnmappedValue());
+		enchantmentSlot.setSelectedItem(item.enchantmentSlot);
 		enchantmentValue.setValue(item.enchantmentValue);
 		diggerUseEfficiency.setSelected(item.diggerUseEfficiency);
 		diggerEntries.setEntries(item.diggerEntries);
