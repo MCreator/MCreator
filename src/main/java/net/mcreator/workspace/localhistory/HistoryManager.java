@@ -102,16 +102,16 @@ public class HistoryManager implements AutoCloseable {
 		FileIO.writeStringToFile(String.join("\n", ignores), excludeFile);
 	}
 
-	public void saveCheckpoint(String eventName) {
+	public boolean saveCheckpoint(String eventName) {
 		if (git == null) {
-			return;
+			return false;
 		}
 
 		lock.lock();
 		try {
 			Status status = git.status().call();
 			if (status.isClean()) {
-				return;
+				return false;
 			}
 
 			if (!status.getUntracked().isEmpty() || !status.getModified().isEmpty()) {
@@ -129,6 +129,8 @@ public class HistoryManager implements AutoCloseable {
 		} finally {
 			lock.unlock();
 		}
+
+		return true;
 	}
 
 	public List<Checkpoint> getCheckpoints() {
