@@ -1,0 +1,1 @@
+Ez a paraméter az entitás elem textúráját szabályozza.
