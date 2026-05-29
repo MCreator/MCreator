@@ -332,7 +332,7 @@ Blockly.Extensions.register('empty_any_item_in_validation',
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
-                this.setEnabled(isValid);
+                this.setDisabledReason(!isValid, "empty_any_item_in");
                 Blockly.Events.setGroup(group);
             }
         });
