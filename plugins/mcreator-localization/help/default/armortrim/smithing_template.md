@@ -1,0 +1,1 @@
+This item will be used as the smithing template that will apply your trim to armor in the smithing table.
