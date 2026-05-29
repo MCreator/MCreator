@@ -50,6 +50,8 @@ public class HistoryManager implements AutoCloseable {
 	private final ReentrantLock lock = new ReentrantLock();
 
 	public HistoryManager(Workspace workspace) {
+		// TODO: make it configurable in workspace settings, on by default
+
 		File historyDatabaseDir = new File(workspace.getFolderManager().getWorkspaceCacheDir(), "localHistory");
 		File workspaceRoot = workspace.getWorkspaceFolder();
 
@@ -74,6 +76,7 @@ public class HistoryManager implements AutoCloseable {
 
 			if (isNewRepo) {
 				saveCheckpoint("Initial workspace state");
+				LOG.debug("Initialized local history repository");
 			}
 		} catch (IOException | GitAPIException e) {
 			LOG.warn("Failed to initialize local history: {}", e.getMessage());
@@ -84,16 +87,18 @@ public class HistoryManager implements AutoCloseable {
 
 	private void configureIgnores(File historyDatabaseDir) {
 		File excludeFile = new File(historyDatabaseDir, "info/exclude");
-		if (excludeFile.isFile()) {
+		if (excludeFile.isFile())
 			return;
-		}
 
 		excludeFile.getParentFile().mkdirs();
 
 		List<String> ignores = new ArrayList<>();
 		ignores.add(".git/");
-		ignores.add(".mcreator/localHistory/");
-
+		ignores.add(".gradle/");
+		ignores.add("build/");
+		ignores.add(".mcreator/");
+		ignores.add("run/");
+		ignores.add("runs/");
 		FileIO.writeStringToFile(String.join("\n", ignores), excludeFile);
 	}
 
@@ -102,9 +107,8 @@ public class HistoryManager implements AutoCloseable {
 			return;
 		}
 
+		lock.lock();
 		try {
-			lock.lock();
-
 			Status status = git.status().call();
 			if (status.isClean()) {
 				return;
@@ -133,8 +137,9 @@ public class HistoryManager implements AutoCloseable {
 		}
 
 		List<Checkpoint> history = new ArrayList<>();
+
+		lock.lock();
 		try {
-			lock.lock();
 			for (RevCommit commit : git.log().call()) {
 				history.add(new Checkpoint(commit.getName(), commit.getFullMessage(), commit.getCommitTime()));
 			}
@@ -143,6 +148,7 @@ public class HistoryManager implements AutoCloseable {
 		} finally {
 			lock.unlock();
 		}
+
 		return history;
 	}
 
@@ -151,9 +157,8 @@ public class HistoryManager implements AutoCloseable {
 			return;
 		}
 
+		lock.lock();
 		try (RevWalk walk = new RevWalk(git.getRepository())) {
-			lock.lock();
-
 			// Resolve the target commit
 			ObjectId targetId = git.getRepository().resolve(checkpointHash);
 			RevCommit targetCommit = walk.parseCommit(targetId);
