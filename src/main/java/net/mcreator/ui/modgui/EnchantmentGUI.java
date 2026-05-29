@@ -53,7 +53,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final JSpinner weight = ComponentFromAnnotation.spinner(Enchantment.class, "weight");
 	private final JSpinner anvilCost = ComponentFromAnnotation.spinner(Enchantment.class, "anvilCost");
 
-	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
+	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
 
 	private final JSpinner maxLevel = ComponentFromAnnotation.spinner(Enchantment.class, "maxLevel");
 
