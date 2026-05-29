@@ -41,7 +41,7 @@ public enum TagType {
 	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new, true),
 	STRUCTURES("worldgen/structure", new Color(0xA16350), StructureEntry::new, true),
 	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new, true),
-	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), Enchantment::new, true),
+	ENCHANTMENTS("enchantment", Dependency.getColor("enchantment"), EnchantmentEntry::new, true),
 	GAME_EVENTS("game_event", new Color(0x5057A1), GameEventEntry::new, true),
 	PAINTING_VARIANTS("painting_variant", new Color(0x59806C), (_, e) -> new NonMappableElement(e), false),
 	BANNER_PATTERNS("banner_pattern", new Color(0x805959), (_, e) -> new NonMappableElement(e), false),
