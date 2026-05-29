@@ -19,4 +19,46 @@
 
 package net.mcreator.ui.workspace.localhistory;
 
-public class HistoryPopup {}
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JScrollablePopupMenu;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.ColorUtils;
+import net.mcreator.workspace.localhistory.HistoryCheckpoint;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
+
+public class HistoryPopup {
+
+	// TODO: localize this popup
+	public static void showHistoryPopup(MCreator mcreator, JComponent parent, int x, int y) {
+		JScrollablePopupMenu popupMenu = new JScrollablePopupMenu();
+		List<HistoryCheckpoint> checkpoints = mcreator.getWorkspace().getHistoryManager().getCheckpoints();
+		if (checkpoints.isEmpty()) {
+			JMenuItem noHistoryItem = new JMenuItem("No history available");
+			noHistoryItem.setEnabled(false);
+			popupMenu.add(noHistoryItem);
+		} else {
+			for (HistoryCheckpoint checkpoint : checkpoints) {
+				String[] events = checkpoint.getEventNames();
+				String eventName = events[0];
+				if (events.length > 1) {
+					eventName += " and " + (events.length - 1) + " more changes";
+				}
+				JMenuItem item = new JMenuItem("<html>" + eventName + "<br><small color='" + ColorUtils.formatColor(
+						Theme.current().getAltForegroundColor()) + "'>" + checkpoint.getTimestampString());
+				item.addActionListener(_ -> {
+					// TODO: confirm message
+					// TODO: implement restore procedure, close mcreator, run restore, reopen mcreator
+				});
+				popupMenu.add(item);
+			}
+		}
+
+		popupMenu.pack();
+		Dimension size = popupMenu.getPreferredSize();
+		popupMenu.show(parent, x - size.width, y);
+	}
+
+}

@@ -20,7 +20,6 @@
 package net.mcreator.workspace.localhistory;
 
 import net.mcreator.io.FileIO;
-import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -54,34 +53,45 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	@Nullable static GitHistoryBackend tryCreate(File workspaceRoot) {
-		File historyDatabaseDir = new File(workspaceRoot, "./mcreator/localHistory");
+		File historyDatabaseDir = new File(workspaceRoot, ".mcreator/localHistory");
 
 		try {
 			boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").exists();
-			Git git;
+
 			if (isNewRepo) {
-				git = Git.init().setDirectory(workspaceRoot).setGitDir(historyDatabaseDir).setBare(false).call();
-			} else {
-				Repository repository = new FileRepositoryBuilder().setGitDir(historyDatabaseDir)
-						.setWorkTree(workspaceRoot).setup().build();
-				git = new Git(repository);
+				try (Repository initRepo = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setBare()
+						.build()) {
+
+					initRepo.create(true);
+
+					StoredConfig initConfig = initRepo.getConfig();
+					initConfig.setBoolean("core", null, "bare", false);
+					initConfig.setString("core", null, "worktree", workspaceRoot.getAbsolutePath());
+					initConfig.save();
+				}
 			}
 
-			// Enforce safe configurations
+			Repository repository = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setWorkTree(workspaceRoot)
+					.build();
+
+			Git git = new Git(repository);
+
 			StoredConfig config = git.getRepository().getConfig();
 			config.setBoolean("core", null, "autocrlf", false);
-			config.setString("core", null, "worktree", workspaceRoot.getAbsolutePath());
 			config.save();
 
 			configureIgnores(historyDatabaseDir);
 
 			GitHistoryBackend backend = new GitHistoryBackend(git);
 			if (isNewRepo) {
-				backend.saveCheckpoint("Initial workspace state");
+				backend.saveCheckpoint(HistoryManager.commitMessageFromEvents(List.of("Initial checkpoint")));
 				LOG.debug("Initialized local history repository");
+			} else {
+				LOG.debug("Loaded local history repository");
 			}
 			return backend;
-		} catch (IOException | GitAPIException e) {
+
+		} catch (IOException e) {
 			LOG.warn("Failed to initialize local history: {}", e.getMessage());
 			return null;
 		}

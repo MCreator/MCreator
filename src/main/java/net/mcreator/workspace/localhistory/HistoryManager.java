@@ -19,6 +19,7 @@
 
 package net.mcreator.workspace.localhistory;
 
+import com.google.gson.Gson;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
 
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class HistoryManager implements AutoCloseable {
+
+	private static final Gson gson = new Gson();
 
 	@Nullable private final GitHistoryBackend backend;
 	private final List<String> pendingEventNames = new ArrayList<>();
@@ -63,7 +66,7 @@ public final class HistoryManager implements AutoCloseable {
 			return;
 		}
 
-		String chainedEventNames = String.join(", ", pendingEventNames).trim();
+		String chainedEventNames = gson.toJson(pendingEventNames);
 		if (saveCheckpoint(chainedEventNames)) {
 			lastCheckpointMillis = System.currentTimeMillis();
 			pendingEventNames.clear();
@@ -99,6 +102,14 @@ public final class HistoryManager implements AutoCloseable {
 				backend.revertToCheckpoint(hash);
 			}
 		}
+	}
+
+	static String commitMessageFromEvents(List<String> eventNames) {
+		return gson.toJson(eventNames);
+	}
+
+	static String[] eventNamesFromCommitMessage(String commitMessage) {
+		return gson.fromJson(commitMessage, String[].class);
 	}
 
 }

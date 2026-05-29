@@ -34,4 +34,8 @@ public record HistoryCheckpoint(String hash, String message, int timestamp) {
 						.withLocale(L10N.getLocale()));
 	}
 
+	public String[] getEventNames() {
+		return HistoryManager.eventNamesFromCommitMessage(message);
+	}
+
 }

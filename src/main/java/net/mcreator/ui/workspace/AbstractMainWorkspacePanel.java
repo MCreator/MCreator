@@ -25,8 +25,10 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ITextFieldSearchable;
+import net.mcreator.ui.workspace.localhistory.HistoryPopup;
 import net.mcreator.util.ColorUtils;
 
 import javax.annotation.Nullable;
@@ -58,6 +60,9 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	private final Map<AbstractWorkspacePanel, JToolBar> sectionToolbars = new HashMap<>();
 
 	protected final JLabel elementsCount = new JLabel();
+
+	// TODO: correct icon
+	private JButton history = new JButton(UIRES.get("16px.json"));
 
 	public AbstractMainWorkspacePanel(MCreator mcreator, BorderLayout layout) {
 		super(layout);
@@ -119,6 +124,10 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 		workspaceRightBar.add(new JEmptyBox(7, 1));
 		workspaceRightBar.add(ComponentUtils.deriveFont(elementsCount, 12));
 		workspaceRightBar.add(new JEmptyBox(5, 1));
+		workspaceRightBar.add(history);
+		workspaceRightBar.add(new JEmptyBox(5, 1));
+
+		history.addActionListener(_ -> HistoryPopup.showHistoryPopup(mcreator, history, 16 + 5, history.getHeight() + 5));
 
 		se.setOpaque(false);
 
