@@ -25,14 +25,20 @@ import net.mcreator.preferences.entries.IntegerEntry;
 
 public class BackupsSection extends PreferencesSection {
 
+	public final BooleanEntry enableLocalHistory;
+	public final IntegerEntry localHistorySaveInterval;
+
 	public final IntegerEntry workspaceAutosaveInterval;
 	public final IntegerEntry automatedBackupInterval;
 	public final IntegerEntry numberOfBackupsToStore;
+
 	public final BooleanEntry backupOnVersionSwitch;
 
 	public BackupsSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
+		enableLocalHistory = addEntry(new BooleanEntry("enableLocalHistory", true));
+		localHistorySaveInterval = addEntry(new IntegerEntry("localHistorySaveInterval", 5, 1, 60));
 		workspaceAutosaveInterval = addEntry(new IntegerEntry("workspaceAutosaveInterval", 30, 10, 2000));
 		automatedBackupInterval = addEntry(new IntegerEntry("automatedBackupInterval", 5, 3, 120));
 		numberOfBackupsToStore = addEntry(new IntegerEntry("numberOfBackupsToStore", 10, 2, 20));
