@@ -25,17 +25,17 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
 
-public class Fluid extends MappableElement {
+public class FluidEntry extends MappableElement {
 
-	private Fluid() {
+	private FluidEntry() {
 		super(new NameMapper(null, "fluids"));
 	}
 
-	public Fluid(@Nonnull Workspace owner, String name) {
+	public FluidEntry(@Nonnull Workspace owner, String name) {
 		super(new NameMapper(owner, "fluids"), name);
 	}
 
-	public Fluid(@Nonnull Workspace owner, DataListEntry name) {
+	public FluidEntry(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 

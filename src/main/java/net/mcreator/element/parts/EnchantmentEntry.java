@@ -25,17 +25,17 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
 
-public class Enchantment extends MappableElement {
+public class EnchantmentEntry extends MappableElement {
 
-	private Enchantment() {
+	private EnchantmentEntry() {
 		super(new NameMapper(null, "enchantments"));
 	}
 
-	public Enchantment(@Nonnull Workspace owner, String name) {
+	public EnchantmentEntry(@Nonnull Workspace owner, String name) {
 		super(new NameMapper(owner, "enchantments"), name);
 	}
 
-	public Enchantment(@Nonnull Workspace owner, DataListEntry name) {
+	public EnchantmentEntry(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 

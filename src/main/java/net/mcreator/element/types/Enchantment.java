@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EnchantmentEntry;
 import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.interfaces.NonNullMappable;
@@ -42,7 +43,7 @@ import java.util.List;
 
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int damageModifier;
 
-	@ModElementReference public List<net.mcreator.element.parts.Enchantment> incompatibleEnchantments;
+	@ModElementReference public List<EnchantmentEntry> incompatibleEnchantments;
 
 	@ModElementReference public List<MItemBlock> supportedItems;
 

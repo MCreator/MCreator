@@ -23,7 +23,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
@@ -480,7 +480,7 @@ public class TestWorkspaceDataProvider {
 			biome.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			biome.spawnParticles = _true;
-			biome.particleToSpawn = new Particle(modElement.getWorkspace(),
+			biome.particleToSpawn = new ParticleEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			biome.particlesProbability = getRandomDouble(random, Biome.class, "particlesProbability");
 			biome.treesPerChunk = getRandomInt(random, Biome.class, "treesPerChunk");
@@ -601,7 +601,7 @@ public class TestWorkspaceDataProvider {
 			fluid.levelDecrease = getRandomInt(random, Fluid.class, "levelDecrease");
 			fluid.slopeFindDistance = getRandomInt(random, Fluid.class, "slopeFindDistance");
 			fluid.spawnParticles = !_true;
-			fluid.dripParticle = new Particle(modElement.getWorkspace(),
+			fluid.dripParticle = new ParticleEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Fluid.class, "tintType"));
 			fluid.flowStrength = getRandomDouble(random, Fluid.class, "flowStrength");
@@ -800,7 +800,7 @@ public class TestWorkspaceDataProvider {
 			dimension.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			dimension.portalTexture = new TextureHolder(modElement.getWorkspace(), "test2");
 			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
-			dimension.portalParticles = new Particle(modElement.getWorkspace(),
+			dimension.portalParticles = new ParticleEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			dimension.creativeTabs = emptyLists ? List.of() : tabs;
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
@@ -1421,7 +1421,7 @@ public class TestWorkspaceDataProvider {
 			potionEffect.isCuredbyHoney = _true;
 			potionEffect.particle = emptyLists ?
 					null :
-					new Particle(modElement.getWorkspace(),
+					new ParticleEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
@@ -1531,11 +1531,10 @@ public class TestWorkspaceDataProvider {
 				if (_true) {
 					enchantment.incompatibleEnchantments = subset(random, 10,
 							ElementUtil.loadAllEnchantments(modElement.getWorkspace()),
-							e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(), e.getName()));
+							e -> new EnchantmentEntry(modElement.getWorkspace(), e.getName()));
 				} else {
 					enchantment.incompatibleEnchantments.add(
-							new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
-									"#minecraft:non_treasure"));
+							new EnchantmentEntry(modElement.getWorkspace(), "#minecraft:non_treasure"));
 				}
 			}
 			return enchantment;
@@ -1548,30 +1547,26 @@ public class TestWorkspaceDataProvider {
 			painting.height = getRandomInt(random, Painting.class, "height");
 			return painting;
 		} else if (ModElementType.PARTICLE.equals(modElement.getType())) {
-			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
+			Particle particle = new Particle(modElement);
 			particle.texture = new TextureHolder(modElement.getWorkspace(), "particle1");
-			particle.width = getRandomDouble(random, net.mcreator.element.types.Particle.class, "width");
-			particle.frameDuration = getRandomInt(random, net.mcreator.element.types.Particle.class, "frameDuration");
+			particle.width = getRandomDouble(random, Particle.class, "width");
+			particle.frameDuration = getRandomInt(random, Particle.class, "frameDuration");
 			particle.emissiveRendering = _true;
-			particle.height = getRandomDouble(random, net.mcreator.element.types.Particle.class, "height");
+			particle.height = getRandomDouble(random, Particle.class, "height");
 			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			particle.fixedScale = _true;
-			particle.gravity = getRandomDouble(random, net.mcreator.element.types.Particle.class, "gravity");
-			particle.speedFactor = getRandomDouble(random, net.mcreator.element.types.Particle.class, "speedFactor");
+			particle.gravity = getRandomDouble(random, Particle.class, "gravity");
+			particle.speedFactor = getRandomDouble(random, Particle.class, "speedFactor");
 			particle.canCollide = _true;
-			particle.angularVelocity = getRandomDouble(random, net.mcreator.element.types.Particle.class,
-					"angularVelocity");
-			particle.angularAcceleration = getRandomDouble(random, net.mcreator.element.types.Particle.class,
-					"angularAcceleration");
+			particle.angularVelocity = getRandomDouble(random, Particle.class, "angularVelocity");
+			particle.angularAcceleration = getRandomDouble(random, Particle.class, "angularAcceleration");
 			particle.alwaysShow = !_true;
 			particle.animate = _true;
-			particle.maxAge = getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAge");
-			particle.maxAgeDiff = emptyLists ?
-					0 :
-					getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAgeDiff");
+			particle.maxAge = getRandomInt(random, Particle.class, "maxAge");
+			particle.maxAgeDiff = emptyLists ? 0 : getRandomInt(random, Particle.class, "maxAgeDiff");
 			particle.rotationProvider = emptyLists ? null : new Procedure("vector1");
 			particle.renderType = getRandomItem(random,
-					AnnotationUtils.getLimitedOptionsList(net.mcreator.element.types.Particle.class, "renderType"));
+					AnnotationUtils.getLimitedOptionsList(Particle.class, "renderType"));
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
@@ -2230,7 +2225,7 @@ public class TestWorkspaceDataProvider {
 		block.fluidRestrictions = new ArrayList<>();
 		if (!emptyLists) {
 			block.fluidRestrictions.addAll(ElementUtil.loadAllFluids(modElement.getWorkspace()).stream()
-					.map(e -> new net.mcreator.element.parts.Fluid(modElement.getWorkspace(), e.getName())).toList());
+					.map(e -> new FluidEntry(modElement.getWorkspace(), e.getName())).toList());
 		}
 		block.restrictionBiomes = new ArrayList<>();
 		if (!emptyLists) {
@@ -2286,7 +2281,7 @@ public class TestWorkspaceDataProvider {
 		if ("Leaves".equals(blockBase)) {
 			block.leavesParticleType = emptyLists ?
 					null :
-					new Particle(modElement.getWorkspace(),
+					new ParticleEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			block.leavesParticleChance = getRandomDouble(random, Block.class, "leavesParticleChance");
 		} else if ("FlowerPot".equals(blockBase)) {
