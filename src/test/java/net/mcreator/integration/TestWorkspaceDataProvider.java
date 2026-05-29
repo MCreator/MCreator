@@ -1050,7 +1050,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
-					entry.equipmentSlot = getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)).toString();
+					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(), getRandomItem(random,
+							ElementUtil.loadAllEquipmentSlots(true)));
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
@@ -1346,7 +1347,7 @@ public class TestWorkspaceDataProvider {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
 					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(), getRandomItem(random,
-							ElementUtil.loadAllEquipmentSlots(true)).toString());
+							ElementUtil.loadAllEquipmentSlots(true)));
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = getRandomDouble(random, AttributeModifierEntry.class, "amount");
 					entry.operation = getRandomItem(random,
@@ -2447,7 +2448,7 @@ public class TestWorkspaceDataProvider {
 			for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 				AttributeModifierEntry entry = new AttributeModifierEntry();
 				entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(), getRandomItem(random,
-						ElementUtil.loadAllEquipmentSlots(true)).toString());
+						ElementUtil.loadAllEquipmentSlots(true)));
 				entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 				entry.amount = getRandomDouble(random, AttributeModifierEntry.class, "amount");
 				entry.operation = getRandomItem(random,
