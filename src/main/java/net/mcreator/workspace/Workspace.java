@@ -32,6 +32,7 @@ import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.*;
+import net.mcreator.workspace.localhistory.HistoryManager;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -76,6 +77,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private transient boolean changed = false;
 	protected transient WorkspaceFileManager fileManager;
 	private transient WorkspaceUserSettingsManager userSettingsManager;
+	private transient HistoryManager historyManager;
 	protected transient Generator generator;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
@@ -297,6 +299,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getFolderManager();
 	}
 
+	@Override public HistoryManager getHistoryManager() {
+		return historyManager;
+	}
+
 	@Override public WorkspaceUserSettings getWorkspaceUserSettings() {
 		return userSettingsManager.getUserSettings();
 	}
@@ -429,6 +435,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 				retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 				retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
+				retval.historyManager = new HistoryManager(retval);
 			} catch (Exception e) {
 				throw new CorruptedWorkspaceFileException(e);
 			}
@@ -535,6 +542,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
+		retval.historyManager = new HistoryManager(retval);
 
 		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
 				!= generatorConfiguration) {
@@ -567,6 +575,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		retval.setMCreatorVersion(Launcher.version.versionlong);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
+		retval.historyManager = new HistoryManager(retval);
 		retval.generator = new Generator(retval);
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);
