@@ -26,8 +26,8 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.MobSpawnType;
-import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.*;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
@@ -38,6 +38,7 @@ import net.mcreator.ui.modgui.bedrock.BEEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
@@ -60,29 +61,30 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 			</block></next></block></next></block></next></block></next></block></xml>""";
 
 	public String entityName;
-	public String modelName;
-	public String modelTexture;
-	@Numeric(init=0.6, min=0, max=16, step=0.1) public double collisionBoxWidth;
-	@Numeric(init=1.9, min=0, max=16, step=0.1) public double collisionBoxHeight;
+	@LimitedOptions({ "Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
+			"Villager" }) public String modelName;
+	@TextureReference(value = TextureType.ENTITY) public String modelTexture;
+	@Numeric(init = 0.6, min = 0, max = 16, step = 0.1) public double collisionBoxWidth;
+	@Numeric(init = 1.9, min = 0, max = 16, step = 0.1) public double collisionBoxHeight;
 
 	public boolean isSummonable;
-	@Numeric(init=0, min=0, max=100000, step=1) public int xpAmountOnDeath;
+	@Numeric(init = 0, min = 0, max = 100000, step = 1) public int xpAmountOnDeath;
 	public MItemBlock entityDrop;
-	@Numeric(init=20, min=0, max=1024, step=1) public int healthValue;
-	@Numeric(init=3, min=-10000, max=10000, step=1) public int attackDamage;
-	@Numeric(init=0.3, min=0, max=50, step=0.1) public double speedValue;
+	@Numeric(init = 20, min = 0, max = 1024, step = 1) public int healthValue;
+	@Numeric(init = 3, min = -10000, max = 10000, step = 1) public int attackDamage;
+	@Numeric(init = 0.3, min = 0, max = 50, step = 0.1) public double speedValue;
 	public boolean canFly;
-	@Numeric(init=0.3, min=0, max=50, step=0.1) public double flyingSpeedValue;
-	@Numeric(init=64, min=0, max=10000, step=1) public int followRangeValue;
+	@Numeric(init = 0.3, min = 0, max = 50, step = 0.1) public double flyingSpeedValue;
+	@Numeric(init = 64, min = 0, max = 10000, step = 1) public int followRangeValue;
 	public boolean isImmuneToFire;
 	public boolean isPushable;
 	public boolean isPushableByPiston;
 
 	public boolean spawnNaturally;
 	public MobSpawnType populationControl;
-	@Numeric(init=20, min=1, max=1000, step=1) public int spawningProbability;
-	@Numeric(init=4, min=1, max=128, step=1, allowMinMaxEqual = true) public int minHerdSize;
-	@Numeric(init=4, min=1, max=128, step=1, allowMinMaxEqual = true) public int maxHerdSize;
+	@Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
+	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minHerdSize;
+	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxHerdSize;
 
 	public boolean hasSpawnEgg;
 	public Color spawnEggBaseColor;
@@ -108,7 +110,7 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 
 	@Override @Nullable public Model getEntityModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
-		if (Arrays.stream(BEEntityGUI.builtinmobmodels).map(Model::getReadableName).noneMatch(modelName::equals))
+		if (AnnotationUtils.getLimitedOptionsList(BEEntity.class, "modelName").stream().noneMatch(modelName::equals))
 			modelType = Model.Type.BEDROCK;
 		return Model.getModelByParams(getModElement().getWorkspace(), modelName, modelType);
 	}

@@ -67,19 +67,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final VTextField entityName = new VTextField().requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
-	private static final Model biped = new Model.BuiltInModel("Biped");
-	private static final Model chicken = new Model.BuiltInModel("Chicken");
-	private static final Model cow = new Model.BuiltInModel("Cow");
-	private static final Model creeper = new Model.BuiltInModel("Creeper");
-	private static final Model ghast = new Model.BuiltInModel("Ghast");
-	private static final Model pig = new Model.BuiltInModel("Pig");
-	private static final Model silverfish = new Model.BuiltInModel("Silverfish");
-	private static final Model slime = new Model.BuiltInModel("Slime");
-	private static final Model spider = new Model.BuiltInModel("Spider");
-	private static final Model villager = new Model.BuiltInModel("Villager");
-	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cow, creeper, ghast, pig, silverfish,
-			slime, spider, villager };
-	private final SearchableComboBox<Model> entityModel = new SearchableComboBox<>(builtinmobmodels);
+	private final SearchableComboBox<String> entityModel = ComponentFromAnnotation.searchableOptions(BEEntity.class, "modelName");
 	private TextureComboBox modelTexture;
 	private final JSpinner collisionBoxWidth = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxWidth");
 	private final JSpinner collisionBoxHeight = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxHeight");
@@ -366,10 +354,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	@Override protected void openInEditingMode(BEEntity entity) {
 		entityName.setText(entity.entityName);
 
-		Model model = entity.getEntityModel();
-		if (model != null)
-			entityModel.setSelectedItem(model);
-
+		entityModel.setSelectedItem(entity.modelName);
 		modelTexture.setTextureFromTextureName(entity.modelTexture);
 		collisionBoxHeight.setValue(entity.collisionBoxHeight);
 		collisionBoxWidth.setValue(entity.collisionBoxWidth);
@@ -408,7 +393,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	@Override public BEEntity getElementFromGUI() {
 		BEEntity entity = new BEEntity(this.modElement);
 		entity.entityName = entityName.getText();
-		entity.modelName = Objects.requireNonNull(entityModel.getSelectedItem()).toString();
+		entity.modelName = entityModel.getSelectedItem();
 		entity.modelTexture = modelTexture.getTextureName();
 		entity.collisionBoxHeight = (double) collisionBoxHeight.getValue();
 		entity.collisionBoxWidth = (double) collisionBoxWidth.getValue();
