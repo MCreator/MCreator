@@ -53,9 +53,8 @@ class GitHistoryBackend implements AutoCloseable {
 		this.git = git;
 	}
 
-	@Nullable static GitHistoryBackend tryCreate(Workspace workspace) {
-		File historyDatabaseDir = new File(workspace.getFolderManager().getWorkspaceCacheDir(), "localHistory");
-		File workspaceRoot = workspace.getWorkspaceFolder();
+	@Nullable static GitHistoryBackend tryCreate(File workspaceRoot) {
+		File historyDatabaseDir = new File(workspaceRoot, "./mcreator/localHistory");
 
 		try {
 			boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").exists();
@@ -159,8 +158,7 @@ class GitHistoryBackend implements AutoCloseable {
 			// Safe, exact snapshot restore. Replaces working tree and index exactly.
 			DirCache dirc = git.getRepository().lockDirCache();
 			try {
-				DirCacheCheckout dco = new DirCacheCheckout(git.getRepository(), git.getRepository().readDirCache(),
-						targetCommit.getTree());
+				DirCacheCheckout dco = new DirCacheCheckout(git.getRepository(), dirc, targetCommit.getTree());
 				dco.setFailOnConflict(false);
 				dco.checkout();
 			} finally {
@@ -181,7 +179,12 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	@Override public void close() {
-		git.close();
+		lock.lock();
+		try {
+			git.close();
+		} finally {
+			lock.unlock();
+		}
 	}
 
 }

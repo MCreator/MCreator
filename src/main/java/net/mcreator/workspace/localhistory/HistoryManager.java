@@ -23,6 +23,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public final class HistoryManager implements AutoCloseable {
 
 	public HistoryManager(Workspace workspace) {
 		if (PreferencesManager.PREFERENCES.backups.enableLocalHistory.get()) {
-			backend = GitHistoryBackend.tryCreate(workspace);
+			backend = GitHistoryBackend.tryCreate(workspace.getWorkspaceFolder());
 		} else {
 			backend = null;
 		}
@@ -85,18 +86,18 @@ public final class HistoryManager implements AutoCloseable {
 		return backend.getCheckpoints();
 	}
 
-	public void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
-		if (backend == null) {
-			return;
-		}
-
-		backend.revertToCheckpoint(checkpointHash);
-	}
-
 	@Override public synchronized void close() {
 		flushPendingCheckpoint();
 		if (backend != null) {
 			backend.close();
+		}
+	}
+
+	public static void revertToCommit(String hash, File workspaceFolder) throws LocalHistoryException {
+		try (GitHistoryBackend backend = GitHistoryBackend.tryCreate(workspaceFolder)) {
+			if (backend != null) {
+				backend.revertToCheckpoint(hash);
+			}
 		}
 	}
 

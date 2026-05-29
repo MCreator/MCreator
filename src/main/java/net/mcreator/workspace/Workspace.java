@@ -321,6 +321,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		generator.close();
 		fileManager.close();
 		userSettingsManager.close();
+		historyManager.close();
 	}
 
 	@Override public boolean equals(Object o) {
