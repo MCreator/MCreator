@@ -19,7 +19,10 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EnchantmentEntry;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -31,7 +34,7 @@ import java.util.List;
 
 	public String name;
 
-	public String supportedSlots;
+	@NonNullMappable("any") public EquipmentSlotEntry supportedSlots;
 
 	@Numeric(init = 10, min = 1, max = 1024, step = 1) public int weight;
 	@Numeric(init = 1, min = 1, max = 1024, step = 1) public int anvilCost;
@@ -40,7 +43,7 @@ import java.util.List;
 
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int damageModifier;
 
-	@ModElementReference public List<net.mcreator.element.parts.Enchantment> incompatibleEnchantments;
+	@ModElementReference public List<EnchantmentEntry> incompatibleEnchantments;
 
 	@ModElementReference public List<MItemBlock> supportedItems;
 
@@ -58,8 +61,6 @@ import java.util.List;
 
 		canGenerateInLootTables = true;
 		canVillagerTrade = true;
-
-		supportedSlots = "any";
 
 		incompatibleEnchantments = new ArrayList<>();
 		supportedItems = new ArrayList<>();
