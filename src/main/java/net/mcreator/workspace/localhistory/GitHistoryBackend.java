@@ -114,6 +114,10 @@ class GitHistoryBackend implements AutoCloseable {
 		FileIO.writeStringToFile(String.join("\n", ignores), excludeFile);
 	}
 
+	/**
+	 * @param eventName Name of commit
+	 * @return true if the commit was successful, false if no changes to commit
+	 */
 	boolean saveCheckpoint(String eventName) {
 		lock.lock();
 		try {

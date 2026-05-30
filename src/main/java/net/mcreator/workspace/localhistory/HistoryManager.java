@@ -69,8 +69,11 @@ public final class HistoryManager implements AutoCloseable {
 		String chainedEventNames = gson.toJson(pendingEventNames);
 		if (saveCheckpoint(chainedEventNames)) {
 			lastCheckpointMillis = System.currentTimeMillis();
-			pendingEventNames.clear();
 		}
+
+		// Clear events in every case, as even if saveCheckpoint returned false,
+		// this means no changes were needed to be committed, meaning events did not change any files
+		pendingEventNames.clear();
 	}
 
 	private boolean saveCheckpoint(String eventName) {
