@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.parts.AttributeModifierEntry;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -41,7 +42,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
-	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.001));
+	private final JSpinner amount = ComponentFromAnnotation.spinner(AttributeModifierEntry.class, "amount");
 	private final JComboBox<String> operation = ComponentFromAnnotation.options(AttributeModifierEntry.class,
 			"operation");
 
@@ -95,7 +96,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	@Override public AttributeModifierEntry getEntry() {
 		AttributeModifierEntry entry = new AttributeModifierEntry();
-		entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
+		entry.equipmentSlot = new EquipmentSlotEntry(workspace, equipmentSlot.getSelectedItem());
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();

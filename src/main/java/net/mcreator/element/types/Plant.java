@@ -38,6 +38,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -59,16 +60,16 @@ import java.util.stream.Collectors;
 
 	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
 
-	@ModElementReference(acceptedTypes = { PotionEffect.class }) public String suspiciousStewEffect;
-	public int suspiciousStewDuration;
+	public EffectEntry suspiciousStewEffect;
+	@Numeric(init = 100, min = 0, max = 100000, step = 1) public int suspiciousStewDuration;
 
-	public double secondaryTreeChance;
+	@Numeric(init = 0.1, min = 0, max = 1, step = 0.01) public double secondaryTreeChance;
 	@ModElementReference public ConfiguredFeatureEntry[] trees;
 	@ModElementReference public ConfiguredFeatureEntry[] flowerTrees;
 	@ModElementReference public ConfiguredFeatureEntry[] megaTrees;
 
-	public String growapableSpawnType;
-	public int growapableMaxHeight;
+	@NonNullMappable("Plains") public GrowapableSpawnType growapableSpawnType;
+	@Numeric(init = 3, min = 1, max = 14, step = 1, optional = true) public int growapableMaxHeight;
 
 	public boolean customBoundingBox;
 	public boolean disableOffset;
@@ -77,15 +78,15 @@ import java.util.stream.Collectors;
 	public String name;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
-	public double hardness;
-	public double resistance;
-	public int luminance;
+	@Numeric(init = 0, min = -1, max = 64000, step = 0.1) public double hardness;
+	@Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int luminance;
 	public boolean unbreakable;
 	public boolean isSolid;
 	public boolean isWaterloggable;
 
 	public boolean hasBlockItem;
-	public int maxStackSize;
+	@Numeric(init = 64, min = 1, max = 99, step = 1) public int maxStackSize;
 	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public boolean immuneToFire;
 
@@ -99,26 +100,26 @@ import java.util.stream.Collectors;
 
 	public boolean useLootTableForDrops;
 	public MItemBlock customDrop;
-	public int dropAmount;
-	public int xpAmountMin;
-	public int xpAmountMax;
+	@Numeric(init = 1, min = 0, max = 200, step = 1) public int dropAmount;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int xpAmountMin;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1, allowMinMaxEqual = true) public int xpAmountMax;
 	public boolean forceTicking;
 	public boolean emissiveRendering;
 
 	public boolean hasTileEntity;
 
 	public boolean isReplaceable;
-	public String colorOnMap;
+	public MapColor colorOnMap;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "XZ", "XYZ", "NONE" }) public String offsetType;
-	public String aiPathNodeType;
+	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;
 	public MItemBlock strippingResult;
 
 	public boolean ignitedByLava;
-	public int flammability;
-	public int fireSpreadSpeed;
-	public double jumpFactor;
-	public double speedFactor;
+	@Numeric(init = 100, min = 0, max = 1024, step = 1) public int flammability;
+	@Numeric(init = 60, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
+	@Numeric(init = 1.0, min = -1000, max = 1000, step = 0.1) public double jumpFactor;
+	@Numeric(init = 1.0, min = -1000, max = 1000, step = 0.1) public double speedFactor;
 
 	@ModElementReference public List<MItemBlock> canBePlacedOn;
 	public Procedure placingCondition;
@@ -128,11 +129,11 @@ import java.util.stream.Collectors;
 	public Procedure bonemealSuccessCondition;
 	public Procedure onBonemealSuccess;
 
-	public int frequencyOnChunks;
+	@Numeric(init = 5, min = 0, max = 40, step = 1) public int frequencyOnChunks;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@LimitedOptions({ "Flower", "Grass" }) public String generationType;
-	public int patchSize;
+	@Numeric(init = 64, min = 1, max = 1024, step = 1) public int patchSize;
 	public boolean generateAtAnyHeight;
 
 	public Procedure onBlockAdded;
@@ -163,24 +164,22 @@ import java.util.stream.Collectors;
 
 		this.canBePlacedOn = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
-		this.growapableSpawnType = "Plains";
 		this.renderType = 12;
 		this.customModelName = "Cross model";
-		this.colorOnMap = "DEFAULT";
-		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "XZ";
 		this.tintType = "No tint";
 
 		this.jumpFactor = 1.0;
 		this.speedFactor = 1.0;
 
-		this.suspiciousStewEffect = "SATURATION";
 		this.suspiciousStewDuration = 0;
 
 		this.generationType = "Flower";
 		this.patchSize = 64;
 
 		this.boundingBoxes = new ArrayList<>();
+
+		this.growapableMaxHeight = 3;
 
 		this.secondaryTreeChance = 0.1;
 		this.trees = new ConfiguredFeatureEntry[2];
@@ -274,8 +273,11 @@ import java.util.stream.Collectors;
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-				baseTypes.add(BaseType.FEATURE);
+					== GeneratorFlavor.FABRIC ||
+					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+				baseTypes.add(
+						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
 		if (hasTileEntity)

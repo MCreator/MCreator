@@ -19,7 +19,8 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.MapColor;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -56,7 +57,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.Objects;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
@@ -73,18 +73,18 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final VTextField name = new VTextField(18).requireValue("elementgui.fluid.error_fluid_needs_name")
 			.enableRealtimeValidation();
 	private final JCheckBox canMultiply = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flowRate = new JSpinner(new SpinnerNumberModel(5, 1, 100000, 1));
-	private final JSpinner levelDecrease = new JSpinner(new SpinnerNumberModel(1, 1, 8, 1));
-	private final JSpinner slopeFindDistance = new JSpinner(new SpinnerNumberModel(4, 1, 16, 1));
+	private final JSpinner flowRate = ComponentFromAnnotation.spinner(Fluid.class, "flowRate");
+	private final JSpinner levelDecrease = ComponentFromAnnotation.spinner(Fluid.class, "levelDecrease");
+	private final JSpinner slopeFindDistance = ComponentFromAnnotation.spinner(Fluid.class, "slopeFindDistance");
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox dripParticle = new DataListComboBox(mcreator);
-	private final JSpinner flowStrength = new JSpinner(new SpinnerNumberModel(1, -25, 25, 0.1));
+	private final JSpinner flowStrength = ComponentFromAnnotation.spinner(Fluid.class, "flowStrength");
 	private final JComboBox<String> tintType = ComponentFromAnnotation.options(Fluid.class, "tintType");
 
-	private final JSpinner luminosity = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-	private final JSpinner density = new JSpinner(new SpinnerNumberModel(1000, -100000, 100000, 1));
-	private final JSpinner viscosity = new JSpinner(new SpinnerNumberModel(1000, 0, 100000, 1));
-	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(300, 0, 100000, 1));
+	private final JSpinner luminosity = ComponentFromAnnotation.spinner(Fluid.class, "luminosity");
+	private final JSpinner density = ComponentFromAnnotation.spinner(Fluid.class, "density");
+	private final JSpinner viscosity = ComponentFromAnnotation.spinner(Fluid.class, "viscosity");
+	private final JSpinner temperature = ComponentFromAnnotation.spinner(Fluid.class, "temperature");
 
 	private final JCheckBox generateBucket = L10N.checkbox("elementgui.common.enable");
 	private final VTextField bucketName = new VTextField(18).requireValue("elementgui.fluid.error_bucket_needs_name")
@@ -98,14 +98,14 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(100, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(1, 0, 15, 1));
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(Fluid.class, "resistance");
+	private final JSpinner luminance = ComponentFromAnnotation.spinner(Fluid.class, "luminance");
+	private final JSpinner lightOpacity = ComponentFromAnnotation.spinner(Fluid.class, "lightOpacity");
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
+	private final JSpinner tickRate = ComponentFromAnnotation.spinner(Fluid.class, "tickRate");
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(Fluid.class, "flammability");
+	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Fluid.class, "fireSpreadSpeed");
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 
 	private ProcedureSelector onBlockAdded;
@@ -215,7 +215,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fogProcedures.add(fogStartDistance);
 		fogProcedures.add(fogEndDistance);
 
-		hasFog.addActionListener(e -> refreshFogSettings());
+		hasFog.addActionListener(_ -> refreshFogSettings());
 		refreshFogSettings();
 
 		JComponent visualMerger = PanelUtils.northAndCenterElement(visualSettings, fogProcedures, 2, 2);
@@ -270,7 +270,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.spawn_particles")));
 		destal.add(spawnParticles);
 
-		spawnParticles.addActionListener(e -> refreshDripSettings());
+		spawnParticles.addActionListener(_ -> refreshDripSettings());
 		refreshDripSettings();
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
@@ -319,7 +319,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		generateBucket.setSelected(true);
 
-		generateBucket.addActionListener(e -> {
+		generateBucket.addActionListener(_ -> {
 			bucketName.setEnabled(generateBucket.isSelected());
 			textureBucket.setEnabled(generateBucket.isSelected());
 			creativeTabs.setEnabled(generateBucket.isSelected());
@@ -561,7 +561,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.levelDecrease = (int) levelDecrease.getValue();
 		fluid.slopeFindDistance = (int) slopeFindDistance.getValue();
 		fluid.spawnParticles = spawnParticles.isSelected();
-		fluid.dripParticle = new Particle(mcreator.getWorkspace(), dripParticle.getSelectedItem());
+		fluid.dripParticle = new ParticleEntry(mcreator.getWorkspace(), dripParticle.getSelectedItem());
 		fluid.tintType = (String) tintType.getSelectedItem();
 		fluid.flowStrength = (double) flowStrength.getValue();
 		fluid.luminosity = (int) luminosity.getValue();
@@ -580,7 +580,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.ignitedByLava = ignitedByLava.isSelected();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
-		fluid.colorOnMap = colorOnMap.getSelectedItem().toString();
+		fluid.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		fluid.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		fluid.onNeighbourChanges = onNeighbourChanges.getSelectedProcedure();
 		fluid.onTickUpdate = onTickUpdate.getSelectedProcedure();

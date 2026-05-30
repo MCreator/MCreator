@@ -19,7 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.generator.GeneratorFlavor;
@@ -75,7 +75,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private MCItemHolder portalFrame;
 	private MCItemHolder mainFillerBlock;
 	private MCItemHolder fluidBlock;
-	private final JSpinner seaLevel = new JSpinner(new SpinnerNumberModel(63, -1024, 1024, 1));
+	private final JSpinner seaLevel = ComponentFromAnnotation.spinner(Dimension.class, "seaLevel");
 	private final JCheckBox generateOreVeins = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox generateAquifers = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner horizontalNoiseSize = new JSpinner(
@@ -85,24 +85,26 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox canRespawnHere = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bedWorks = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasFog = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner ambientLight = new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01));
+	private final JSpinner ambientLight = ComponentFromAnnotation.spinner(Dimension.class, "ambientLight");
 	private final JCheckBox doesWaterVaporize = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner coordinateScale = new JSpinner(new SpinnerNumberModel(1, 0.01, 1000, 0.01));
+	private final JSpinner coordinateScale = ComponentFromAnnotation.spinner(Dimension.class, "coordinateScale");
 	private final VTextField infiniburnTag = new VTextField(24);
 	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner fixedTimeValue = new JSpinner(new SpinnerNumberModel(0, 0, 24000, 1));
+	private final JSpinner fixedTimeValue = ComponentFromAnnotation.spinner(Dimension.class, "fixedTimeValue");
 	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasRaids = L10N.checkbox("elementgui.common.enable");
-	private final JMinMaxSpinner monsterSpawnLightLimit = new JMinMaxSpinner(0, 7, 0, 15, 1).allowEqualValues();
-	private final JSpinner monsterSpawnBlockLightLimit = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JMinMaxSpinner monsterSpawnLightLimit = ComponentFromAnnotation.minMaxSpinner(Dimension.class,
+			"minMonsterSpawnLightLimit", "maxMonsterSpawnLightLimit").allowEqualValues();
+	private final JSpinner monsterSpawnBlockLightLimit = ComponentFromAnnotation.spinner(Dimension.class,
+			"monsterSpawnBlockLightLimit");
 
 	private final TranslatedComboBox defaultEffects = ComponentFromAnnotation.translatedOptions(Dimension.class,
 			"defaultEffects", "elementgui.dimension.effects_");
 	private final JCheckBox useCustomEffects = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox hasClouds = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner cloudHeight = new JSpinner(new SpinnerNumberModel(192, -2032, 2031, 16));
+	private final JSpinner cloudHeight = ComponentFromAnnotation.spinner(Dimension.class, "cloudHeight");
 	private final JComboBox<String> skyType = ComponentFromAnnotation.options(Dimension.class, "skyType");
 	private final JCheckBox sunHeightAffectsFog = L10N.checkbox("elementgui.common.enable");
 
@@ -121,7 +123,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
+	private final JSpinner portalLuminance = ComponentFromAnnotation.spinner(Dimension.class, "portalLuminance");
 
 	private ProcedureSelector portalMakeCondition;
 	private ProcedureSelector portalUseCondition;
@@ -168,7 +170,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
-		worldGenType.addActionListener(e -> updateWorldgenSettings());
+		worldGenType.addActionListener(_ -> updateWorldgenSettings());
 		biomesInDimension = new BiomeListField(mcreator);
 		biomesInDimensionCaves = new BiomeListField(mcreator);
 
@@ -235,13 +237,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 2));
 		dimensionEffects.setOpaque(false);
 
-		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/default_effects"),
-				L10N.label("elementgui.dimension.default_effects")));
-		dimensionEffects.add(defaultEffects);
-
-		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/use_custom_effects"),
-				L10N.label("elementgui.dimension.use_custom_effects")));
-		dimensionEffects.add(useCustomEffects);
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sky_type"),
+				L10N.label("elementgui.dimension.sky_type")));
+		dimensionEffects.add(skyType);
 
 		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/has_clouds"),
 				L10N.label("elementgui.dimension.has_clouds")));
@@ -251,9 +249,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.cloud_height")));
 		dimensionEffects.add(cloudHeight);
 
-		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/sky_type"),
-				L10N.label("elementgui.dimension.sky_type")));
-		dimensionEffects.add(skyType);
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/default_effects"),
+				L10N.label("elementgui.dimension.default_effects")));
+		dimensionEffects.add(defaultEffects);
+
+		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/use_custom_effects"),
+				L10N.label("elementgui.dimension.use_custom_effects")));
+		dimensionEffects.add(useCustomEffects);
 
 		dimensionEffects.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/fog_color"),
 				L10N.label("elementgui.dimension.fog_air_color")));
@@ -300,7 +302,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		canRespawnHere.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 		hasFixedTime.setOpaque(false);
-		hasFixedTime.addActionListener(e -> fixedTimeValue.setEnabled(hasFixedTime.isSelected()));
+		hasFixedTime.addActionListener(_ -> fixedTimeValue.setEnabled(hasFixedTime.isSelected()));
 		fixedTimeValue.setEnabled(false);
 		if (!isEditingMode()) {
 			bedWorks.setSelected(true);
@@ -312,10 +314,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
 
 		useCustomEffects.setOpaque(false);
-		useCustomEffects.addActionListener(e -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
+		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
 		hasClouds.setOpaque(false);
-		hasClouds.addActionListener(
-				e -> cloudHeight.setEnabled(useCustomEffects.isSelected() && hasClouds.isSelected()));
+		hasClouds.addActionListener(_ -> cloudHeight.setEnabled(hasClouds.isSelected()));
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
 		sunHeightAffectsFog.setOpaque(false);
@@ -429,7 +430,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.dimension.portal_luminance")));
-		proper.add(luminance);
+		proper.add(portalLuminance);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
 				L10N.label("elementgui.dimension.portal_frame_block")));
@@ -501,8 +502,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComponentUtils.deriveFont(igniterName, 16);
 
-		enablePortal.addActionListener(e -> updatePortalElements());
-		enableIgniter.addActionListener(e -> updateIgniterElements(enableIgniter.isSelected()));
+		enablePortal.addActionListener(_ -> updatePortalElements());
+		enableIgniter.addActionListener(_ -> updateIgniterElements(enableIgniter.isSelected()));
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
 		events.add(whenPortaTriggerlUsed);
@@ -547,7 +548,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalFrame.setEnabled(enablePortal.isSelected());
 		portalParticles.setEnabled(enablePortal.isSelected());
 		portalSound.setEnabled(enablePortal.isSelected());
-		luminance.setEnabled(enablePortal.isSelected());
+		portalLuminance.setEnabled(enablePortal.isSelected());
 		portalTexture.setEnabled(enablePortal.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
 		enableIgniter.setEnabled(enablePortal.isSelected());
@@ -565,9 +566,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private void updateDimensionEffectSettings(boolean hasCustomEffects) {
 		defaultEffects.setEnabled(!hasCustomEffects);
-		hasClouds.setEnabled(hasCustomEffects);
-		cloudHeight.setEnabled(hasCustomEffects && hasClouds.isSelected());
-		skyType.setEnabled(hasCustomEffects);
 		airColor.setEnabled(hasCustomEffects);
 		sunHeightAffectsFog.setEnabled(hasCustomEffects);
 		hasFog.setEnabled(hasCustomEffects);
@@ -670,7 +668,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		onPortalTickUpdate.setSelectedProcedure(dimension.onPortalTickUpdate);
 		onPlayerEntersDimension.setSelectedProcedure(dimension.onPlayerEntersDimension);
 		onPlayerLeavesDimension.setSelectedProcedure(dimension.onPlayerLeavesDimension);
-		luminance.setValue(dimension.portalLuminance);
+		portalLuminance.setValue(dimension.portalLuminance);
 		portalMakeCondition.setSelectedProcedure(dimension.portalMakeCondition);
 		portalUseCondition.setSelectedProcedure(dimension.portalUseCondition);
 
@@ -684,7 +682,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		Dimension dimension = new Dimension(modElement);
 		dimension.texture = texture.getTextureHolder();
 		dimension.portalTexture = portalTexture.getTextureHolder();
-		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
+		dimension.portalParticles = new ParticleEntry(mcreator.getWorkspace(), portalParticles.getSelectedItem());
 		dimension.creativeTabs = creativeTabs.getListElements();
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
@@ -729,7 +727,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.onPortalTickUpdate = onPortalTickUpdate.getSelectedProcedure();
 		dimension.onPlayerEntersDimension = onPlayerEntersDimension.getSelectedProcedure();
 		dimension.onPlayerLeavesDimension = onPlayerLeavesDimension.getSelectedProcedure();
-		dimension.portalLuminance = (int) luminance.getValue();
+		dimension.portalLuminance = (int) portalLuminance.getValue();
 		dimension.doesWaterVaporize = doesWaterVaporize.isSelected();
 		dimension.portalMakeCondition = portalMakeCondition.getSelectedProcedure();
 		dimension.portalUseCondition = portalUseCondition.getSelectedProcedure();

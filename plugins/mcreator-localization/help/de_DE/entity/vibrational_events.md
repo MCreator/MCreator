@@ -1,0 +1,1 @@
+Spiel-Events, deren Vibrationen diese Einheit empfangen kann.

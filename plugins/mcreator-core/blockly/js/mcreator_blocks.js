@@ -50,35 +50,35 @@ Blockly.Blocks['script_trigger'] = {
 };
 
 Blockly.Blocks["event_number_parameter_set"] = {
-	init: function () {
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.event_number_parameter_set.line1"))
-			.appendField(new FieldDataListSelector('eventparametersnumber'), 'eventparameter');
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.set_to"))
-		this.appendValueInput('value')
-			.setCheck("Number");
-		this.setInputsInline(true);
-		this.setNextStatement(true);
-		this.setPreviousStatement(true);
-		this.setColour(90);
-	}
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.event_number_parameter_set.line1"))
+            .appendField(new FieldDataListSelector('eventparametersnumber'), 'eventparameter');
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.set_to"))
+        this.appendValueInput('value')
+            .setCheck("Number");
+        this.setInputsInline(true);
+        this.setNextStatement(true);
+        this.setPreviousStatement(true);
+        this.setColour(90);
+    }
 }
 
 Blockly.Blocks["event_logic_parameter_set"] = {
-	init: function () {
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.event_logic_parameter_set.line1"))
-			.appendField(new FieldDataListSelector('eventparametersboolean'), 'eventparameter');
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.set_to"))
-		this.appendValueInput('value')
-			.setCheck("Boolean");
-		this.setInputsInline(true);
-		this.setNextStatement(true);
-		this.setPreviousStatement(true);
-		this.setColour(90);
-	}
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.event_logic_parameter_set.line1"))
+            .appendField(new FieldDataListSelector('eventparametersboolean'), 'eventparameter');
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.set_to"))
+        this.appendValueInput('value')
+            .setCheck("Boolean");
+        this.setInputsInline(true);
+        this.setNextStatement(true);
+        this.setPreviousStatement(true);
+        this.setColour(90);
+    }
 }
 
 Blockly.Blocks['cancel_event'] = {
@@ -700,7 +700,7 @@ registerSimpleMutatorInput(
 
 // Mutator blocks for effect entry advancement trigger mixin
 registerSimpleMutatorContainer(
-	'player_effect_changed_mutator_container', 'blockly.block.player_effect_changed_mutator.container', 250);
+    'player_effect_changed_mutator_container', 'blockly.block.player_effect_changed_mutator.container', 250);
 registerSimpleMutatorInput('player_effect_changed_mutator_input', 'blockly.block.player_effect_changed_mutator.input', 250);
 
 // Mutator blocks for enchantment entry advancement trigger mixin

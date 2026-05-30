@@ -21,8 +21,8 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Fluid;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.FluidEntry;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -55,6 +55,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,8 +92,8 @@ import java.util.stream.Collectors;
 			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
 	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
 	public MItemBlock pottedPlant;
-	public Particle leavesParticleType;
-	public double leavesParticleChance;
+	public ParticleEntry leavesParticleType;
+	@Numeric(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
@@ -111,53 +112,53 @@ import java.util.stream.Collectors;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public double hardness;
-	public double resistance;
+	@Numeric(init = 1, min = -1, max = 64000, step = 0.05) public double hardness;
+	@Numeric(init = 10, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
 	public boolean hasGravity;
 	public boolean isWaterloggable;
 
 	public boolean hasBlockItem;
-	public int maxStackSize;
+	@Numeric(init = 64, min = 1, max = 99, step = 1) public int maxStackSize;
 	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public boolean immuneToFire;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@LimitedOptions({ "Not specified", "pickaxe", "axe", "shovel", "hoe" }) @Nonnull public String destroyTool;
 	public MItemBlock customDrop;
-	public int dropAmount;
-	public int xpAmountMin;
-	public int xpAmountMax;
+	@Numeric(init = 1, min = 0, max = 99, step = 1) public int dropAmount;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1, allowMinMaxEqual = true) public int xpAmountMin;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1, allowMinMaxEqual = true) public int xpAmountMax;
 	public boolean useLootTableForDrops;
 	public boolean requiresCorrectTool;
 
-	public double enchantPowerBonus;
+	@Numeric(init = 0, min = 0, max = 1024, step = 0.1) public double enchantPowerBonus;
 	public boolean plantsGrowOn;
 	public boolean canRedstoneConnect;
 	public boolean hasCustomOpacity;
-	public int lightOpacity;
+	@Numeric(init = 15, min = 0, max = 15, step = 1) public int lightOpacity;
 
-	public int tickRate;
+	@Numeric(init = 0, min = 0, max = 9999999, step = 1) public int tickRate;
 	public boolean tickRandomly;
 
 	public boolean isReplaceable;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
-	public String colorOnMap;
-	public String noteBlockInstrument;
+	public MapColor colorOnMap;
+	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "NONE", "XZ", "XYZ" }) public String offsetType;
-	public String aiPathNodeType;
+	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;
 	public Color beaconColorModifier;
 	public MItemBlock strippingResult;
 
 	public boolean ignitedByLava;
-	public int flammability;
-	public int fireSpreadSpeed;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
 
 	public boolean isLadder;
-	public double slipperiness;
-	public double speedFactor;
-	public double jumpFactor;
+	@Numeric(init = 0.6, min = 0.01, max = 5, step = 0.01) public double slipperiness;
+	@Numeric(init = 1, min = -1000, max = 1000, step = 0.1) public double speedFactor;
+	@Numeric(init = 1, min = -1000, max = 1000, step = 0.1) public double jumpFactor;
 	@LimitedOptions({ "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" }) public String reactionToPushing;
 
 	public boolean isNotColidable;
@@ -191,8 +192,8 @@ import java.util.stream.Collectors;
 	public boolean hasInventory;
 	@ModElementReference(acceptedTypes = { GUI.class }) @Nullable public String guiBoundTo;
 	public boolean openGUIOnRightClick;
-	public int inventorySize;
-	public int inventoryStackSize;
+	@Numeric(init = 9, min = 0, max = 256, step = 1) public int inventorySize;
+	@Numeric(init = 99, min = 1, max = 1024, step = 1) public int inventoryStackSize;
 	public boolean inventoryDropWhenDestroyed;
 	public boolean inventoryComparatorPower;
 	public List<Integer> inventoryOutSlotIDs;
@@ -201,14 +202,14 @@ import java.util.stream.Collectors;
 	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
-	public int energyInitial;
-	public int energyCapacity;
-	public int energyMaxReceive;
-	public int energyMaxExtract;
+	@Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyInitial;
+	@Numeric(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyCapacity;
+	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxReceive;
+	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxExtract;
 
 	public boolean isFluidTank;
-	public int fluidCapacity;
-	@ModElementReference public List<Fluid> fluidRestrictions;
+	@Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
+	@ModElementReference public List<FluidEntry> fluidRestrictions;
 
 	public Procedure onRightClicked;
 	public Procedure onBlockAdded;
@@ -229,11 +230,11 @@ import java.util.stream.Collectors;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
-	public String generationShape;
-	public int frequencyPerChunks;
-	public int frequencyOnChunk;
-	public int minGenerateHeight;
-	public int maxGenerateHeight;
+	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
+	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
+	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
+	@Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
 
 	private Block() {
 		this(null);
@@ -259,9 +260,6 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.hasCustomOpacity = true;
-		this.colorOnMap = "DEFAULT";
-		this.noteBlockInstrument = "harp";
-		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";
@@ -511,8 +509,11 @@ import java.util.stream.Collectors;
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-				baseTypes.add(BaseType.FEATURE);
+					== GeneratorFlavor.FABRIC ||
+					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+				baseTypes.add(
+						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
 		if (hasInventory)

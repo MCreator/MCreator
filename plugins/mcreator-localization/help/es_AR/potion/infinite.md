@@ -1,0 +1,1 @@
+Si se selecciona esta opción, el efecto tendrá una duración indefinida.

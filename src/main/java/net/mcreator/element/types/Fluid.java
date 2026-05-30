@@ -20,10 +20,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -64,17 +62,17 @@ import java.util.List;
 			"Sky", "Fog", "Water fog" }) public String tintType;
 
 	public boolean canMultiply;
-	public int flowRate;
-	public int levelDecrease;
-	public int slopeFindDistance;
+	@Numeric(init = 5, min = 1, max = 100000, step = 1) public int flowRate;
+	@Numeric(init = 1, min = 1, max = 8, step = 1) public int levelDecrease;
+	@Numeric(init = 4, min = 1, max = 16, step = 1) public int slopeFindDistance;
 	public boolean spawnParticles;
-	public Particle dripParticle;
-	public double flowStrength;
+	public ParticleEntry dripParticle;
+	@Numeric(init = 1, min = -25, max = 25, step = 0.1) public double flowStrength;
 
-	public int luminosity;
-	public int density;
-	public int viscosity;
-	public int temperature;
+	@Numeric(init = 0, min = 0, max = 100, step = 1) public int luminosity;
+	@Numeric(init = 1000, min = -100000, max = 100000, step = 1) public int density;
+	@Numeric(init = 1000, min = 0, max = 100000, step = 1) public int viscosity;
+	@Numeric(init = 300, min = 0, max = 100000, step = 1) public int temperature;
 	@Nonnull public String type;
 
 	public boolean generateBucket;
@@ -84,15 +82,15 @@ import java.util.List;
 	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public StringListProcedure specialInformation;
 
-	public double resistance;
-	public int luminance;
-	public int lightOpacity;
+	@Numeric(init = 100, min = 0, max = Integer.MAX_VALUE, step = 0.5) public double resistance;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int luminance;
+	@Numeric(init = 1, min = 0, max = 15, step = 1) public int lightOpacity;
 	public boolean emissiveRendering;
-	public int tickRate;
+	@Numeric(init = 0, min = 0, max = 9999999, step = 1) public int tickRate;
 	public boolean ignitedByLava;
-	public int flammability;
-	public int fireSpreadSpeed;
-	public String colorOnMap;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
+	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
+	public MapColor colorOnMap;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourChanges;
@@ -127,7 +125,6 @@ import java.util.List;
 		this.temperature = 300;
 
 		this.resistance = 100;
-		this.colorOnMap = "DEFAULT";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

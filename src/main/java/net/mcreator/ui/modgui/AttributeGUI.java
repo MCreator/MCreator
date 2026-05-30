@@ -32,7 +32,8 @@ import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ConditionalItemListFieldValidator;
+import net.mcreator.ui.validation.validators.ConditionalValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -41,15 +42,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 
 public class AttributeGUI extends ModElementGUI<Attribute> {
 
 	private final VTextField name = new VTextField(38).requireValue("elementgui.attribute.needs_name")
 			.enableRealtimeValidation();
-	private final JSpinner defaultValue = new JSpinner(
-			new SpinnerNumberModel(0.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0));
-	private final JMinMaxSpinner minMaxValue = new JMinMaxSpinner(0, 1, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
+	private final JSpinner defaultValue = ComponentFromAnnotation.spinner(Attribute.class, "defaultValue");
+	private final JMinMaxSpinner minMaxValue = ComponentFromAnnotation.minMaxSpinner(Attribute.class, "minValue",
+			"maxValue");
 	private final TranslatedComboBox sentiment = ComponentFromAnnotation.translatedOptions(Attribute.class, "sentiment",
 			"elementgui.attribute.sentiment.");
 	private final SpawnableEntityListField entities = new SpawnableEntityListField(mcreator);
@@ -94,7 +94,7 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 				L10N.label("elementgui.attribute.entities")));
 		pane1.add(entities);
 
-		addToAllEntities.addActionListener((e) -> {
+		addToAllEntities.addActionListener(_ -> {
 			addToPlayers.setEnabled(!addToAllEntities.isSelected());
 			entities.setEnabled(!addToAllEntities.isSelected());
 		});
@@ -113,8 +113,8 @@ public class AttributeGUI extends ModElementGUI<Attribute> {
 		page1group.addValidationElement(name);
 
 		entities.setValidator(
-				new ConditionalItemListFieldValidator(entities, L10N.t("elementgui.attribute.needs_entity"),
-						() -> addToAllEntities.isSelected() || addToPlayers.isSelected(), false));
+				new ConditionalValidator(() -> !(addToAllEntities.isSelected() || addToPlayers.isSelected()),
+						new ItemListFieldValidator(entities, L10N.t("elementgui.attribute.needs_entity"))));
 		page1group.addValidationElement(entities);
 
 		addPage(PanelUtils.totalCenterInPanel(pane1)).validate(page1group);

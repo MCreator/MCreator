@@ -30,6 +30,14 @@
   texture: HAY_BLOCK
 - pling:
   texture: GLOWSTONE
+- trumpet:
+  texture: COPPER_BLOCK
+- trumpet_exposed:
+  texture: EXPOSED_COPPER
+- trumpet_weathered:
+  texture: WEATHERED_COPPER
+- trumpet_oxidized:
+  texture: OXIDIZED_COPPER
 - zombie:
   texture: SKULL#2
 - skeleton:

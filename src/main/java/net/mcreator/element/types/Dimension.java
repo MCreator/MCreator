@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
@@ -52,7 +52,7 @@ import java.util.List;
 
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
-	public int seaLevel;
+	@Numeric(init = 63, min = -1024, max = 1024, step = 1) public int seaLevel;
 	public boolean generateOreVeins;
 	public boolean generateAquifers;
 	public int horizontalNoiseSize;
@@ -61,17 +61,17 @@ import java.util.List;
 	@LimitedOptions({ "overworld", "the_nether", "the_end" }) public String defaultEffects;
 	public boolean useCustomEffects;
 	public boolean hasClouds;
-	public int cloudHeight;
+	@Numeric(init = 192, min = -2032, max = 2031, step = 16) public int cloudHeight;
 	@LimitedOptions({ "NONE", "NORMAL", "END" }) public String skyType;
 	@Nullable public Color airColor;
 	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
 	public boolean hasFog;
-	public double ambientLight;
+	@Numeric(init = 0, min = 0, max = 1, step = 0.01) public double ambientLight;
 	public boolean doesWaterVaporize;
 	public boolean hasFixedTime;
-	public int fixedTimeValue;
-	public double coordinateScale;
+	@Numeric(init = 0, min = 0, max = 24000, step = 1) public int fixedTimeValue;
+	@Numeric(init = 1, min = 0.01, max = 1000, step = 0.01) public double coordinateScale;
 	public String infiniburnTag;
 
 	public boolean bedWorks;
@@ -79,16 +79,16 @@ import java.util.List;
 	public boolean imitateOverworldBehaviour;
 	public boolean piglinSafe;
 	public boolean hasRaids;
-	public int minMonsterSpawnLightLimit;
-	public int maxMonsterSpawnLightLimit;
-	public int monsterSpawnBlockLightLimit;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int minMonsterSpawnLightLimit;
+	@Numeric(init = 7, min = 0, max = 15, step = 1) public int maxMonsterSpawnLightLimit;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int monsterSpawnBlockLightLimit;
 
 	public Procedure onPlayerEntersDimension;
 	public Procedure onPlayerLeavesDimension;
 
 	public MItemBlock portalFrame;
-	public Particle portalParticles;
-	public int portalLuminance;
+	public ParticleEntry portalParticles;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int portalLuminance;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
@@ -135,7 +135,11 @@ import java.util.List;
 	}
 
 	public boolean hasEffectsOrDimensionTriggers() {
-		return useCustomEffects || onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
+		return useCustomEffects || hasDimensionTriggers();
+	}
+
+	public boolean hasDimensionTriggers() {
+		return onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
 	}
 
 	public Set<String> getWorldgenBlocks() {

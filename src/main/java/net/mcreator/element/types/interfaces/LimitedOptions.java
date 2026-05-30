@@ -28,4 +28,6 @@ import java.lang.annotation.Target;
 
 	String[] value();
 
+	boolean allowCustom() default false;
+
 }

@@ -20,6 +20,10 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.AIPathNodeType;
+import net.mcreator.element.parts.EffectEntry;
+import net.mcreator.element.parts.GrowapableSpawnType;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Plant;
@@ -59,8 +63,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PlantGUI extends ModElementGUI<Plant> {
@@ -77,12 +83,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
 	private JBoundingBoxList boundingBoxList;
 
-	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(0, -1, 64000, 0.1));
-	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
-	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 0.5));
-	private final JSpinner frequencyOnChunks = new JSpinner(new SpinnerNumberModel(5, 0, 40, 1));
-	private final JSpinner dropAmount = new JSpinner(new SpinnerNumberModel(1, 0, 200, 1));
-	private final JMinMaxSpinner xpAmount = new JMinMaxSpinner(0, 0, 0, 1024, 1).allowEqualValues();
+	private final JSpinner hardness = ComponentFromAnnotation.spinner(Plant.class, "hardness");
+	private final JSpinner luminance = ComponentFromAnnotation.spinner(Plant.class, "luminance");
+	private final JSpinner resistance = ComponentFromAnnotation.spinner(Plant.class, "resistance");
+	private final JSpinner frequencyOnChunks = ComponentFromAnnotation.spinner(Plant.class, "frequencyOnChunks");
+	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(Plant.class, "dropAmount");
+	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation.minMaxSpinner(Plant.class, "xpAmountMin",
+			"xpAmountMax").allowEqualValues();
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
@@ -125,20 +132,21 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
-	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
+	private final JSpinner growapableMaxHeight = ComponentFromAnnotation.spinner(Plant.class, "growapableMaxHeight");
 
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
-	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
+	private final JSpinner suspiciousStewDuration = ComponentFromAnnotation.spinner(Plant.class,
+			"suspiciousStewDuration");
 
 	private final JCheckBox hasBlockItem = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner maxStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
+	private final JSpinner maxStackSize = ComponentFromAnnotation.spinner(Plant.class, "maxStackSize");
 	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Plant.class, "rarity",
 			"elementgui.common.rarity_");
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	// Sapling properties
-	private final JSpinner secondaryTreeChance = new JSpinner(new SpinnerNumberModel(0.1, 0, 1, 0.01));
+	private final JSpinner secondaryTreeChance = ComponentFromAnnotation.spinner(Plant.class, "secondaryTreeChance");
 	private final SingleConfiguredFeatureField[] trees = new SingleConfiguredFeatureField[] {
 			new SingleConfiguredFeatureField(mcreator), new SingleConfiguredFeatureField(mcreator) };
 	private final SingleConfiguredFeatureField[] flowerTrees = new SingleConfiguredFeatureField[] {
@@ -180,17 +188,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 	private BiomeListField restrictionBiomes;
-	private final JSpinner patchSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner patchSize = ComponentFromAnnotation.spinner(Plant.class, "patchSize");
 	private final JCheckBox generateAtAnyHeight = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> generationType = ComponentFromAnnotation.options(Plant.class, "generationType");
 
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(100, 0, 1024, 1));
-	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(60, 0, 1024, 1));
-	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
-	private final JSpinner jumpFactor = new JSpinner(new SpinnerNumberModel(1.0, -1000, 1000, 0.1));
+	private final JSpinner flammability = ComponentFromAnnotation.spinner(Plant.class, "flammability");
+	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Plant.class, "fireSpreadSpeed");
+	private final JSpinner speedFactor = ComponentFromAnnotation.spinner(Plant.class, "speedFactor");
+	private final JSpinner jumpFactor = ComponentFromAnnotation.spinner(Plant.class, "jumpFactor");
 
 	public PlantGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -205,7 +213,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
-		renderType.addActionListener(e -> boundingBoxList.modelChanged());
+		renderType.addActionListener(_ -> boundingBoxList.modelChanged());
 
 		generateFeature.setOpaque(false);
 
@@ -434,7 +442,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			trees[i].setPreferredSize(new Dimension(280, -1));
 			flowerTrees[i].setPreferredSize(new Dimension(280, -1));
 			megaTrees[i].setPreferredSize(new Dimension(280, -1));
-			megaTrees[i].addEntrySelectedListener(e -> updateWaterloggableSetting());
+			megaTrees[i].addEntrySelectedListener(_ -> updateWaterloggableSetting());
 		}
 
 		saplingCard.add("Center", PanelUtils.pullElementUp(saplingProperties));
@@ -445,7 +453,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plantTypesCardPanel.add(doublePlantCard, "double");
 		plantTypesCardPanel.add(saplingCard, "sapling");
 
-		plantType.addActionListener(e -> updatePlantType());
+		plantType.addActionListener(_ -> updatePlantType());
 
 		sbbp2.add("North", PanelUtils.centerInPanel(plantTypeSelector));
 		sbbp2.add("Center", texturesAndRent);
@@ -475,7 +483,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		customBoundingBox.addActionListener(e -> {
+		customBoundingBox.addActionListener(_ -> {
 			disableOffset.setEnabled(customBoundingBox.isSelected());
 			if (!customBoundingBox.isSelected()) {
 				disableOffset.setSelected(false);
@@ -508,7 +516,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		dropAmount.setOpaque(false);
 		hasBlockItem.setOpaque(false);
 		hasBlockItem.setSelected(true);
-		hasBlockItem.addActionListener(e -> updateBlockItemSettings());
+		hasBlockItem.addActionListener(_ -> updateBlockItemSettings());
 		immuneToFire.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -529,7 +537,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.is_unbreakable")));
 		selp.add(unbreakable);
 
-		unbreakable.addActionListener(e -> refreshUnbreakableProperties());
+		unbreakable.addActionListener(_ -> refreshUnbreakableProperties());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.common.luminance")));
@@ -574,8 +582,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		defaultSoundType.setOpaque(false);
 		customSoundType.setOpaque(false);
 
-		defaultSoundType.addActionListener(event -> updateSoundType());
-		customSoundType.addActionListener(event -> updateSoundType());
+		defaultSoundType.addActionListener(_ -> updateSoundType());
+		customSoundType.addActionListener(_ -> updateSoundType());
 
 		soundProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/block_sound"), defaultSoundType));
 		soundProperties.add(soundOnStep);
@@ -603,7 +611,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.soundtypes.fall_sound")));
 		soundProperties.add(fallSound);
 
-		useLootTableForDrops.addActionListener(e -> {
+		useLootTableForDrops.addActionListener(_ -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
 		});
@@ -699,7 +707,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		bonemealEvents.add(bonemealSuccessCondition);
 		bonemealEvents.add(onBonemealSuccess);
 
-		isBonemealable.addActionListener(e -> refreshBonemealProperties());
+		isBonemealable.addActionListener(_ -> refreshBonemealProperties());
 		refreshBonemealProperties();
 
 		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
@@ -753,7 +761,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.generate_feature")));
 		spawning.add(generateFeature);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
@@ -1005,7 +1013,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isReplaceable.setSelected(plant.isReplaceable);
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
-		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
+		aiPathNodeType.setSelectedItem(plant.aiPathNodeType.getUnmappedValue());
 		strippingResult.setBlock(plant.strippingResult);
 		creativePickItem.setBlock(plant.creativePickItem);
 		ignitedByLava.setSelected(plant.ignitedByLava);
@@ -1032,13 +1040,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plantType.setSelectedItem(plant.plantType);
 
-		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
+		growapableSpawnType.setSelectedItem(plant.growapableSpawnType.getUnmappedValue());
 		generationType.setSelectedItem(plant.generationType);
 
 		// Plant type specific fields
 		switch (plant.plantType) {
 		case "normal" -> {
-			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
+			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect.getUnmappedValue());
 			suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
 		}
 		case "double" -> textureBottom.setTexture(plant.textureBottom);
@@ -1082,7 +1090,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		// Plant type specific fields
 		switch (Objects.requireNonNull((String) plantType.getSelectedItem())) {
 		case "normal" -> {
-			plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
+			plant.suspiciousStewEffect = new EffectEntry(modElement.getWorkspace(),
+					(String) suspiciousStewEffect.getSelectedItem());
 			plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
 		}
 		case "double" -> plant.textureBottom = textureBottom.getTextureHolder();
@@ -1097,7 +1106,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 		}
 
-		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
+		plant.growapableSpawnType = new GrowapableSpawnType(modElement.getWorkspace(),
+				(String) growapableSpawnType.getSelectedItem());
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (int) luminance.getValue();
@@ -1138,9 +1148,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.generationType = (String) generationType.getSelectedItem();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
-		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
+		plant.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		plant.offsetType = (String) offsetType.getSelectedItem();
-		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
+		plant.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(), aiPathNodeType.getSelectedItem());
 		plant.strippingResult = strippingResult.getBlock();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.ignitedByLava = ignitedByLava.isSelected();

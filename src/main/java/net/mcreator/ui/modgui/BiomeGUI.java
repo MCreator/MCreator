@@ -22,7 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
@@ -55,17 +55,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Map;
 
 public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final VTextField name = new VTextField(20).requireValue("elementgui.biome.needs_name")
 			.enableRealtimeValidation();
 
-	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
+	private final JSpinner treesPerChunk = ComponentFromAnnotation.spinner(Biome.class, "treesPerChunk");
 
-	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
-	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
+	private final JSpinner rainingPossibility = ComponentFromAnnotation.spinner(Biome.class, "rainingPossibility");
+	private final JSpinner temperature = ComponentFromAnnotation.spinner(Biome.class, "temperature");
 
 	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
 	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
@@ -111,7 +110,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private MCItemHolder undergroundBlock;
 	private MCItemHolder underwaterBlock;
 
-	private final JSpinner minHeight = new JSpinner(new SpinnerNumberModel(7, 0, 32, 1));
+	private final JSpinner minHeight = ComponentFromAnnotation.spinner(Biome.class, "minHeight");
 	private MCItemHolder treeStem;
 	private MCItemHolder treeBranch;
 	private MCItemHolder treeVines;
@@ -126,12 +125,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 	private final SoundSelector ambientSound = new SoundSelector(mcreator);
 	private final SoundSelector moodSound = new SoundSelector(mcreator);
-	private final JSpinner moodSoundDelay = new JSpinner(new SpinnerNumberModel(6000, 1, 30000, 1));
+	private final JSpinner moodSoundDelay = ComponentFromAnnotation.spinner(Biome.class, "moodSoundDelay");
 	private final SoundSelector additionsSound = new SoundSelector(mcreator);
 	private final SoundSelector music = new SoundSelector(mcreator);
 	private final JCheckBox spawnParticle = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
-	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
+	private final JSpinner particlesProbability = ComponentFromAnnotation.spinner(Biome.class, "particlesProbability");
 
 	private final TranslatedComboBox vanillaTreeType = ComponentFromAnnotation.translatedOptions(Biome.class,
 			"vanillaTreeType", "elementgui.biome.vanilla_tree_type.");
@@ -367,11 +366,11 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.generate_nether")));
 		spawnproperties.add(spawnBiomeNether);
 
-		genTemperature.addChangeListener(e -> estimateGenCoverage());
-		genHumidity.addChangeListener(e -> estimateGenCoverage());
-		genContinentalness.addChangeListener(e -> estimateGenCoverage());
-		genErosion.addChangeListener(e -> estimateGenCoverage());
-		genWeirdness.addChangeListener(e -> estimateGenCoverage());
+		genTemperature.addChangeListener(_ -> estimateGenCoverage());
+		genHumidity.addChangeListener(_ -> estimateGenCoverage());
+		genContinentalness.addChangeListener(_ -> estimateGenCoverage());
+		genErosion.addChangeListener(_ -> estimateGenCoverage());
+		genWeirdness.addChangeListener(_ -> estimateGenCoverage());
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
@@ -463,8 +462,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.water_fog_color")));
 		sbbp4.add(waterFogColor);
 
-		customTrees.addActionListener(event -> updateBiomeTreesForm());
-		vanillaTrees.addActionListener(event -> updateBiomeTreesForm());
+		customTrees.addActionListener(_ -> updateBiomeTreesForm());
+		vanillaTrees.addActionListener(_ -> updateBiomeTreesForm());
 
 		customTrees.setOpaque(false);
 		vanillaTrees.setOpaque(false);
@@ -533,7 +532,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		ComponentUtils.makeSection(particles, L10N.t("elementgui.biome.particles"));
 
 		spawnParticle.setOpaque(false);
-		spawnParticle.addActionListener(event -> updateParticleParameters());
+		spawnParticle.addActionListener(_ -> updateParticleParameters());
 
 		effectsPane.setOpaque(false);
 		effectsPane.add("Center", PanelUtils.totalCenterInPanel(
@@ -754,7 +753,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.additionsSound = additionsSound.getSound();
 		biome.music = music.getSound();
 		biome.spawnParticles = spawnParticle.isSelected();
-		biome.particleToSpawn = new Particle(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
+		biome.particleToSpawn = new ParticleEntry(mcreator.getWorkspace(), particleToSpawn.getSelectedItem());
 		biome.particlesProbability = (double) particlesProbability.getValue();
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();

@@ -69,11 +69,11 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private TextureSelectionButton texture;
 	private TextureSelectionButton guiTexture;
 
-	private final JSpinner efficiency = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.5));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 1, 128000, 1));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
-	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
-	private final JSpinner usageCount = new JSpinner(new SpinnerNumberModel(100, 0, 128000, 1));
+	private final JSpinner efficiency = ComponentFromAnnotation.spinner(Tool.class, "efficiency");
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Tool.class, "enchantability");
+	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Tool.class, "damageVsEntity");
+	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Tool.class, "attackSpeed");
+	private final JSpinner usageCount = ComponentFromAnnotation.spinner(Tool.class, "usageCount");
 
 	private final JComboBox<String> blockDropsTier = ComponentFromAnnotation.options(Tool.class, "blockDropsTier");
 
@@ -200,7 +200,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
-		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
+		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
@@ -310,9 +310,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 						L10N.label("elementgui.tool.blocks_affected")), blocksAffected));
 
-		usageCount.addChangeListener(e -> updateCraftingSettings());
+		usageCount.addChangeListener(_ -> updateCraftingSettings());
 
-		toolType.addActionListener(event -> updateFields());
+		toolType.addActionListener(_ -> updateFields());
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),

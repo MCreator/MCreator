@@ -26,7 +26,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -35,6 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.recipemakers.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -69,8 +69,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.common.enable");
 
-	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 0.1));
-	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
+	private final JSpinner xpReward = ComponentFromAnnotation.spinner(Recipe.class, "xpReward");
+	private final JSpinner cookingTime = ComponentFromAnnotation.spinner(Recipe.class, "cookingTime");
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 
@@ -164,7 +164,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
 		recipeShapeless.setOpaque(false);
-		recipeShapeless.addActionListener(event -> craftingRecipeMaker.setShapeless(recipeShapeless.isSelected()));
+		recipeShapeless.addActionListener(_ -> craftingRecipeMaker.setShapeless(recipeShapeless.isSelected()));
 
 		recipesPanel.setOpaque(false);
 
@@ -236,7 +236,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(northPanel), PanelUtils.pullElementUp(recwrap),
 						15, 15)));
 
-		recipeType.addActionListener(e -> updateUIFields());
+		recipeType.addActionListener(_ -> updateUIFields());
 
 		group.enableRealtimeValidation();
 		group.setValidator(new RegistryNameValidator(group, "Recipe group").setAllowEmpty(true).setMaxLength(128));
@@ -246,15 +246,15 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		// Automatically update the unlocking items when creating a new single input recipe
 		if (!isEditingMode()) {
 			smeltingRecipeMaker.cb1.addBlockSelectedListener(
-					e -> unlockingItems.setListElements(List.of(smeltingRecipeMaker.getBlock())));
+					_ -> unlockingItems.setListElements(List.of(smeltingRecipeMaker.getBlock())));
 			blastFurnaceRecipeMaker.cb1.addBlockSelectedListener(
-					e -> unlockingItems.setListElements(List.of(blastFurnaceRecipeMaker.getBlock())));
+					_ -> unlockingItems.setListElements(List.of(blastFurnaceRecipeMaker.getBlock())));
 			smokerRecipeMaker.cb1.addBlockSelectedListener(
-					e -> unlockingItems.setListElements(List.of(smokerRecipeMaker.getBlock())));
+					_ -> unlockingItems.setListElements(List.of(smokerRecipeMaker.getBlock())));
 			campfireCookingRecipeMaker.cb1.addBlockSelectedListener(
-					e -> unlockingItems.setListElements(List.of(campfireCookingRecipeMaker.getBlock())));
+					_ -> unlockingItems.setListElements(List.of(campfireCookingRecipeMaker.getBlock())));
 			stoneCutterRecipeMaker.cb1.addBlockSelectedListener(
-					e -> unlockingItems.setListElements(List.of(stoneCutterRecipeMaker.getBlock())));
+					_ -> unlockingItems.setListElements(List.of(stoneCutterRecipeMaker.getBlock())));
 		}
 
 		addPage(pane5).validate(name).validate(group).lazyValidate(() -> {
@@ -320,7 +320,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 			boolean isRecipeJSON = List.of("Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting",
 					"Campfire cooking", "Smithing").contains(recipeTypeValue);
-			groupPanel.setVisible(isRecipeJSON);
 			namespacePanel.setVisible(isRecipeJSON);
 			namePanel.setVisible(isRecipeJSON);
 			unlockRecipePanel.setVisible(isRecipeJSON);
@@ -328,6 +327,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			boolean isRecipeCrafting = recipeTypeValue.equals("Crafting");
 			shapelessPanel.setVisible(isRecipeCrafting);
 			craftingBookCategoryPanel.setVisible(isRecipeCrafting);
+
+			groupPanel.setVisible(isRecipeCrafting || isCookingRecipe);
 
 			if (!isEditingMode() && isCookingRecipe) {
 				if (recipeTypeValue.equals("Smelting")) {
