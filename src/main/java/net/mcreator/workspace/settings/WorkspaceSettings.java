@@ -64,9 +64,9 @@ import java.util.stream.Stream;
 
 	private static final Pattern cleanExcessMmpCharactersPattern = Pattern.compile("[^0-9.]+");
 	private static final Pattern cleanExcessSemVerCharactersPattern = Pattern.compile("[^0-9a-zA-Z.+-]+");
-	private static final Pattern cleanMultiDotPattern = Pattern.compile("(?:\\.[.]+)+");
-	private static final Pattern cleanMultiHyphenPattern = Pattern.compile("(?:--+)+");
-	private static final Pattern cleanMultiPlusPattern = Pattern.compile("(?:\\+[+]+)+");
+	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
+	private static final Pattern cleanMultiHyphensPattern = Pattern.compile("(?:--+)+");
+	private static final Pattern cleanMultiPlusesPattern = Pattern.compile("(?:\\+[+]+)+");
 	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile(
 			"(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
 	private static final Pattern semVerPattern = Pattern.compile(
@@ -236,17 +236,17 @@ import java.util.stream.Stream;
 	private String getTrimmedSemVerVersion() {
 		String trimmedVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
 
-		trimmedVersion = cleanMultiHyphenPattern.matcher(trimmedVersion).replaceAll("-");
-		trimmedVersion = cleanMultiPlusPattern.matcher(trimmedVersion).replaceAll("+");
+		trimmedVersion = cleanMultiHyphensPattern.matcher(trimmedVersion).replaceAll("-");
+		trimmedVersion = cleanMultiPlusesPattern.matcher(trimmedVersion).replaceAll("+");
 
-		trimmedVersion = cleanMultiDotPattern.matcher(trimmedVersion).replaceAll(".");
+		trimmedVersion = cleanMultiDotsPattern.matcher(trimmedVersion).replaceAll(".");
 		return cleanEdgeCharactersPattern.matcher(trimmedVersion).replaceAll("");
 	}
 
 	private String getCleanMmpVersion() {
-		String trimmedVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
-		trimmedVersion = cleanMultiDotPattern.matcher(trimmedVersion).replaceAll(".");
-		return cleanEdgeCharactersPattern.matcher(trimmedVersion).replaceAll("");
+		String cleanVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
+		cleanVersion = cleanMultiDotsPattern.matcher(cleanVersion).replaceAll(".");
+		return cleanEdgeCharactersPattern.matcher(cleanVersion).replaceAll("");
 	}
 
 	public String getCleanVersion() {
