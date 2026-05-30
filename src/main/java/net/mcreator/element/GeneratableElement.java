@@ -41,14 +41,13 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 85;
+	public static final int formatVersion = 86;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 

@@ -59,7 +59,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private LinkedHashSet<ModElement> mod_elements = new LinkedHashSet<>(0);
 	private LinkedHashSet<VariableElement> variable_elements = new LinkedHashSet<>(0);
 	private LinkedHashSet<SoundElement> sound_elements = new LinkedHashSet<>(0);
-	private LinkedHashMap<TagElement, ArrayList<String>> tag_elements = new LinkedHashMap<>();
+	private LinkedHashMap<TagElement, ArrayList<TagElement.Entry>> tag_elements = new LinkedHashMap<>();
 	private CreativeTabsOrder tab_element_order = new CreativeTabsOrder();
 	private LinkedHashMap<String, LinkedHashMap<String, String>> language_map = new LinkedHashMap<>() {{
 		put("en_us", new LinkedHashMap<>());
@@ -125,7 +125,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return tab_element_order;
 	}
 
-	public Map<TagElement, ArrayList<String>> getTagElements() {
+	public Map<TagElement, ArrayList<TagElement.Entry>> getTagElements() {
 		return tag_elements;
 	}
 

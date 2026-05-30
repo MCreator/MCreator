@@ -52,7 +52,8 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	private ProcedureSelector fuelSuccessCondition;
 	private NumberProcedureSelector fuelPower;
 
-	private final JSpinner compostLayerChance = ComponentFromAnnotation.spinner(ItemExtension.class, "compostLayerChance");
+	private final JSpinner compostLayerChance = ComponentFromAnnotation.spinner(ItemExtension.class,
+			"compostLayerChance");
 
 	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector dispenseSuccessCondition;
@@ -69,7 +70,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	@Override protected void initGUI() {
 		//Fuel
 		enableFuel.setOpaque(false);
-		enableFuel.addActionListener(e -> updateFuelElements());
+		enableFuel.addActionListener(_ -> updateFuelElements());
 
 		fuelPower = new NumberProcedureSelector(null, mcreator,
 				new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1)), 75,
@@ -113,7 +114,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 		hasDispenseBehavior.setOpaque(false);
 		hasDispenseBehavior.setSelected(false);
-		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
+		hasDispenseBehavior.addActionListener(_ -> updateDispenseElements());
 
 		dispenseResultItemstack.setPreferredSize(new Dimension(300, 0));
 

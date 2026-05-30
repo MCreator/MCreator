@@ -1,0 +1,16 @@
+_default: minecraft:armorer
+_mcreator_map_template: "@modid:@registryname"
+ARMORER: minecraft:armorer
+BUTCHER: minecraft:butcher
+CARTOGRAPHER: minecraft:cartographer
+CLERIC: minecraft:cleric
+FARMER: minecraft:farmer
+FISHERMAN: minecraft:fisherman
+FLETCHER: minecraft:fletcher
+LEATHERWORKER: minecraft:leatherworker
+LIBRARIAN: minecraft:librarian
+MASON: minecraft:mason
+SHEPHERD: minecraft:shepherd
+TOOLSMITH: minecraft:toolsmith
+WEAPONSMITH: minecraft:weaponsmith
+WANDERING_TRADER: minecraft:wandering_trader

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.parts.Fluid;
+import net.mcreator.element.parts.FluidEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
@@ -27,15 +27,15 @@ import net.mcreator.ui.init.L10N;
 
 import java.util.List;
 
-public class FluidListField extends JItemListField<Fluid> {
+public class FluidListField extends JItemListField<FluidEntry> {
 
 	public FluidListField(MCreator mcreator) {
 		super(mcreator);
 	}
 
-	@Override protected List<Fluid> getElementsToAdd() {
+	@Override protected List<FluidEntry> getElementsToAdd() {
 		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllFluids,
 						L10N.t("dialog.list_field.fluid_title"), L10N.t("dialog.list_field.fluid_message")).stream()
-				.map(e -> new Fluid(mcreator.getWorkspace(), e)).toList();
+				.map(e -> new FluidEntry(mcreator.getWorkspace(), e)).toList();
 	}
 }

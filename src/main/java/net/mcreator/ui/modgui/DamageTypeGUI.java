@@ -23,7 +23,6 @@ import net.mcreator.element.types.DamageType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -39,6 +38,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
 	private final JSpinner exhaustion = ComponentFromAnnotation.spinner(DamageType.class, "exhaustion");

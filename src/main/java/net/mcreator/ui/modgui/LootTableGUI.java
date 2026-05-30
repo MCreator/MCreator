@@ -84,7 +84,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		} else {
 			name.getEditor().setItem("blocks/" + RegistryNameFixer.fromCamelCase(modElement.getName()));
 
-			type.addActionListener(e -> {
+			type.addActionListener(_ -> {
 				String currName = name.getEditor().getItem().toString();
 				String currNameNoType = currName == null ? "" : currName.split("/")[currName.split("/").length - 1];
 				if (type.getSelectedItem() != null)
@@ -106,7 +106,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 				}
 			}
 
-			name.addActionListener(e -> {
+			name.addActionListener(_ -> {
 				String currName = name.getEditor().getItem().toString();
 				if (currName != null) {
 					if (currName.startsWith("blocks/")) {

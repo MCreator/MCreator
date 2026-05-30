@@ -22,11 +22,13 @@ package net.mcreator.element.types.bedrock;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
-import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -52,7 +54,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	public boolean handEquipped;
 	@LimitedOptions({ "common", "uncommon", "rare", "epic" }) public String rarity;
 	public boolean enableCreativeTab;
-	public String creativeTab;
+	@NonNullMappable("MATERIALS") public TabEntry creativeTab;
 	public boolean isHiddenInCommands;
 	@Numeric(init = 0, min = 0, max = 1, step = 0.05) public double movementModifier;
 	public boolean allowOffHand;
@@ -88,7 +90,6 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		shouldDespawn = true;
 		animation = "eat";
 		enableCreativeTab = true;
-		creativeTab = "MATERIALS";
 
 		blockPlaceableOn = new ArrayList<>();
 		entityDispensableOn = new ArrayList<>();

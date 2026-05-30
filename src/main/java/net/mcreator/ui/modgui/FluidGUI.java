@@ -19,7 +19,8 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.MapColor;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -31,7 +32,6 @@ import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -57,7 +57,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.Objects;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
@@ -216,7 +215,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fogProcedures.add(fogStartDistance);
 		fogProcedures.add(fogEndDistance);
 
-		hasFog.addActionListener(e -> refreshFogSettings());
+		hasFog.addActionListener(_ -> refreshFogSettings());
 		refreshFogSettings();
 
 		JComponent visualMerger = PanelUtils.northAndCenterElement(visualSettings, fogProcedures, 2, 2);
@@ -271,7 +270,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.spawn_particles")));
 		destal.add(spawnParticles);
 
-		spawnParticles.addActionListener(e -> refreshDripSettings());
+		spawnParticles.addActionListener(_ -> refreshDripSettings());
 		refreshDripSettings();
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/drip_particle"),
@@ -320,7 +319,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		generateBucket.setSelected(true);
 
-		generateBucket.addActionListener(e -> {
+		generateBucket.addActionListener(_ -> {
 			bucketName.setEnabled(generateBucket.isSelected());
 			textureBucket.setEnabled(generateBucket.isSelected());
 			creativeTabs.setEnabled(generateBucket.isSelected());
@@ -562,7 +561,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.levelDecrease = (int) levelDecrease.getValue();
 		fluid.slopeFindDistance = (int) slopeFindDistance.getValue();
 		fluid.spawnParticles = spawnParticles.isSelected();
-		fluid.dripParticle = new Particle(mcreator.getWorkspace(), dripParticle.getSelectedItem());
+		fluid.dripParticle = new ParticleEntry(mcreator.getWorkspace(), dripParticle.getSelectedItem());
 		fluid.tintType = (String) tintType.getSelectedItem();
 		fluid.flowStrength = (double) flowStrength.getValue();
 		fluid.luminosity = (int) luminosity.getValue();
@@ -581,7 +580,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.ignitedByLava = ignitedByLava.isSelected();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
-		fluid.colorOnMap = colorOnMap.getSelectedItem().toString();
+		fluid.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		fluid.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		fluid.onNeighbourChanges = onNeighbourChanges.getSelectedProcedure();
 		fluid.onTickUpdate = onTickUpdate.getSelectedProcedure();

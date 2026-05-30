@@ -21,8 +21,8 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 

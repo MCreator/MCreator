@@ -26,6 +26,7 @@ import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
@@ -111,19 +112,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JSpinner stepHeight = ComponentFromAnnotation.spinner(LivingEntity.class, "stepHeight");
 	private final JSpinner armorBaseValue = ComponentFromAnnotation.spinner(LivingEntity.class, "armorBaseValue");
 	private final JSpinner health = ComponentFromAnnotation.spinner(LivingEntity.class, "health");
-	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(LivingEntity.class, "knockbackResistance");
+	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"knockbackResistance");
 	private final JSpinner attackKnockback = ComponentFromAnnotation.spinner(LivingEntity.class, "attackKnockback");
 
 	private final JSpinner trackingRange = ComponentFromAnnotation.spinner(LivingEntity.class, "trackingRange");
 	private final JSpinner followRange = ComponentFromAnnotation.spinner(LivingEntity.class, "followRange");
 
-	private final JSpinner rangedAttackInterval = ComponentFromAnnotation.spinner(LivingEntity.class, "rangedAttackInterval");
-	private final JSpinner rangedAttackRadius = ComponentFromAnnotation.spinner(LivingEntity.class, "rangedAttackRadius");
+	private final JSpinner rangedAttackInterval = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"rangedAttackInterval");
+	private final JSpinner rangedAttackRadius = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"rangedAttackRadius");
 
-	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(LivingEntity.class, "spawningProbability");
-	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation
-			.minMaxSpinner(LivingEntity.class, "minNumberOfMobsPerGroup", "maxNumberOfMobsPerGroup")
-			.allowEqualValues();
+	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"spawningProbability");
+	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation.minMaxSpinner(LivingEntity.class,
+			"minNumberOfMobsPerGroup", "maxNumberOfMobsPerGroup").allowEqualValues();
 
 	private final JSpinner modelWidth = ComponentFromAnnotation.spinner(LivingEntity.class, "modelWidth");
 	private final JSpinner modelHeight = ComponentFromAnnotation.spinner(LivingEntity.class, "modelHeight");
@@ -173,7 +177,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private SingleModElementSelector guiBoundTo;
 	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(LivingEntity.class, "inventorySize");
-	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(LivingEntity.class, "inventoryStackSize");
+	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"inventoryStackSize");
 
 	private MCItemHolder rangedAttackItem;
 	private final SearchableComboBox<String> rangedItemType = new SearchableComboBox<>();
@@ -208,10 +213,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
-	private final SearchableComboBox<String> aiBase = ComponentFromAnnotation.searchableOptions(LivingEntity.class, "aiBase");
+	private final SearchableComboBox<String> aiBase = ComponentFromAnnotation.searchableOptions(LivingEntity.class,
+			"aiBase");
 
-	private final JComboBox<String> mobBehaviourType = ComponentFromAnnotation.options(LivingEntity.class, "mobBehaviourType");
-	private final JComboBox<String> mobCreatureType = ComponentFromAnnotation.options(LivingEntity.class, "mobCreatureType");
+	private final JComboBox<String> mobBehaviourType = ComponentFromAnnotation.options(LivingEntity.class,
+			"mobBehaviourType");
+	private final JComboBox<String> mobCreatureType = ComponentFromAnnotation.options(LivingEntity.class,
+			"mobCreatureType");
 	private final JComboBox<String> bossBarColor = ComponentFromAnnotation.options(LivingEntity.class, "bossBarColor");
 	private final JComboBox<String> bossBarType = ComponentFromAnnotation.options(LivingEntity.class, "bossBarType");
 
@@ -393,7 +401,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.error_entity_model_needs_texture");
 
-		guiBoundTo.addEntrySelectedListener(e -> {
+		guiBoundTo.addEntrySelectedListener(_ -> {
 			if (!isEditingMode() && !guiBoundTo.isEmpty()) {
 				String selected = guiBoundTo.getEntry();
 				if (selected != null) {
@@ -495,7 +503,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.water_mob")));
 		subpane1.add(waterMob);
 
-		waterMob.addChangeListener(e -> {
+		waterMob.addChangeListener(_ -> {
 			if (!isEditingMode()) {
 				breatheUnderwater.setFixedValue(waterMob.isSelected());
 				pushedByFluids.setFixedValue(!waterMob.isSelected());
@@ -627,7 +635,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		rangedAttackInterval.setPreferredSize(new Dimension(85, 32));
 		rangedAttackRadius.setPreferredSize(new Dimension(85, 32));
 
-		mobModel.addActionListener(e -> {
+		mobModel.addActionListener(_ -> {
 			if (disableMobModelCheckBoxListener)
 				return;
 
@@ -686,7 +694,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 								new JEmptyBox(5, 2), spawnEggBaseColor, new JEmptyBox(2, 2), spawnEggDotColor)), creativeTabs,
 				5, 0));
 
-		hasSpawnEgg.addActionListener(e -> refreshEggProperties());
+		hasSpawnEgg.addActionListener(_ -> refreshEggProperties());
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
@@ -753,7 +761,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						L10N.label("elementgui.living_entity.mob_base")), aiBase));
 
 		aiBase.setPreferredSize(new Dimension(250, 32));
-		aiBase.addActionListener(e -> {
+		aiBase.addActionListener(_ -> {
 			if (editorReady)
 				regenerateBlockAssemblies(false);
 		});
@@ -767,7 +775,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged), rangedItemType,
 				rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
 
-		rangedItemType.addActionListener(e -> enableOrDisableFields());
+		rangedItemType.addActionListener(_ -> enableOrDisableFields());
 
 		ridable.setOpaque(false);
 		canControlStrafe.setOpaque(false);
@@ -785,7 +793,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.addChangeListener(
-					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "AITasksRegenerate").start());
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "AITasksRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(LivingEntity.class, "aixml"));
@@ -815,9 +823,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		hasAI.setSelected(true);
 
-		mobBehaviourType.addActionListener(actionEvent -> enableOrDisableFields());
-		breedable.addActionListener(actionEvent -> enableOrDisableFields());
-		isBoss.addActionListener(e -> enableOrDisableFields());
+		mobBehaviourType.addActionListener(_ -> enableOrDisableFields());
+		breedable.addActionListener(_ -> enableOrDisableFields());
+		isBoss.addActionListener(_ -> enableOrDisableFields());
 
 		pane3.setOpaque(false);
 
@@ -855,7 +863,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.enable_mob_spawning")));
 		selp.add(spawnThisMob);
 
-		spawnThisMob.addActionListener(e -> refreshSpawnProperties());
+		spawnThisMob.addActionListener(_ -> refreshSpawnProperties());
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/despawn_idle"),
 				L10N.label("elementgui.living_entity.despawn_idle")));
@@ -904,7 +912,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.bind_to_gui")));
 		props.add(guiBoundTo);
 
-		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		guiBoundTo.addEntrySelectedListener(_ -> refreshGUIProperties());
 		refreshGUIProperties();
 
 		props.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/inventory_size"),
@@ -923,7 +931,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		vibrationProps.setOpaque(false);
 
 		sensitiveToVibration.setOpaque(false);
-		sensitiveToVibration.addActionListener(e -> enableOrDisableFields());
+		sensitiveToVibration.addActionListener(_ -> enableOrDisableFields());
 
 		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sensitive_to_vibration"),
 				L10N.label("elementgui.living_entity.sensitive_to_vibration")));
@@ -1113,7 +1121,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
 		visualScale.setSelectedProcedure(livingEntity.visualScale);
 		boundingBoxScale.setSelectedProcedure(livingEntity.boundingBoxScale);
-		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
+		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType.getUnmappedValue());
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1307,7 +1315,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.spawnThisMob = spawnThisMob.isSelected();
 		livingEntity.doesDespawnWhenIdle = doesDespawnWhenIdle.isSelected();
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();
-		livingEntity.mobSpawningType = (String) mobSpawningType.getSelectedItem();
+		livingEntity.mobSpawningType = new MobSpawnType(modElement.getWorkspace(),
+				(String) mobSpawningType.getSelectedItem());
 		livingEntity.rangedItemType = rangedItemType.getSelectedItem();
 		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMinValue();
 		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();

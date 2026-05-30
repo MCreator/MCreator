@@ -45,7 +45,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -201,7 +200,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
-		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
+		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
@@ -311,9 +310,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 						L10N.label("elementgui.tool.blocks_affected")), blocksAffected));
 
-		usageCount.addChangeListener(e -> updateCraftingSettings());
+		usageCount.addChangeListener(_ -> updateCraftingSettings());
 
-		toolType.addActionListener(event -> updateFields());
+		toolType.addActionListener(_ -> updateFields());
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),
