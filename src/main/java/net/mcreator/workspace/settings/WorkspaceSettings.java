@@ -226,22 +226,25 @@ import java.util.stream.Stream;
 	}
 
 	private String getSemVerCompliantVersion() {
-		String trimmedVersion = getTrimmedVersion(true);
+		String trimmedVersion = getTrimmedSemVerVersion();
 		Matcher compliantVersionMatcher = semVerPattern.matcher(trimmedVersion);
 		if (compliantVersionMatcher.matches())
 			return compliantVersionMatcher.group();
 		return "";
 	}
 
-	private String getTrimmedVersion(boolean semVer) {
-		String trimmedVersion;
-		if (semVer) {
-			trimmedVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
-			trimmedVersion = cleanMultiHyphenPattern.matcher(trimmedVersion).replaceAll("-");
-			trimmedVersion = cleanMultiPlusPattern.matcher(trimmedVersion).replaceAll("+");
-		} else {
-			trimmedVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
-		}
+	private String getTrimmedSemVerVersion() {
+		String trimmedVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
+
+		trimmedVersion = cleanMultiHyphenPattern.matcher(trimmedVersion).replaceAll("-");
+		trimmedVersion = cleanMultiPlusPattern.matcher(trimmedVersion).replaceAll("+");
+
+		trimmedVersion = cleanMultiDotPattern.matcher(trimmedVersion).replaceAll(".");
+		return cleanEdgeCharactersPattern.matcher(trimmedVersion).replaceAll("");
+	}
+
+	private String getCleanMmpVersion() {
+		String trimmedVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
 		trimmedVersion = cleanMultiDotPattern.matcher(trimmedVersion).replaceAll(".");
 		return cleanEdgeCharactersPattern.matcher(trimmedVersion).replaceAll("");
 	}
@@ -251,7 +254,7 @@ import java.util.stream.Stream;
 		if (!semVerCompliantVersion.isEmpty())
 			return semVerCompliantVersion;
 
-		String cleanVersion = getTrimmedVersion(false);
+		String cleanVersion = getCleanMmpVersion();
 		if (!cleanVersion.isEmpty())
 			return cleanVersion;
 
@@ -317,7 +320,7 @@ import java.util.stream.Stream;
 	}
 
 	public int[] get3DigitVersion() {
-		String trimmedVersion = getTrimmedVersion(false);
+		String trimmedVersion = getCleanVersion();
 		int[] ver3 = { 0, 0, 0 };
 		try {
 			String[] parts = trimmedVersion.split("\\.");
