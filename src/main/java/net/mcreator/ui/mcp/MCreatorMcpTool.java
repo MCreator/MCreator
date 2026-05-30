@@ -42,7 +42,12 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 					ToolResult.error("No active MCreator instance. Open a workspace first."));
 		}
 
-		return call(mcreator, input);
+		try {
+			return call(mcreator, input);
+		} catch (Exception e) {
+			return CompletableFuture.completedFuture(
+					ToolResult.error("An error occurred while executing the tool: " + e.getMessage()));
+		}
 	}
 
 	protected abstract CompletableFuture<ToolResult> call(MCreator mcreator, T input);
