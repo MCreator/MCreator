@@ -320,7 +320,7 @@ import java.util.stream.Stream;
 	}
 
 	public int[] get3DigitVersion() {
-		String trimmedVersion = getCleanVersion();
+		String trimmedVersion = getCleanMmpVersion();
 		int[] ver3 = { 0, 0, 0 };
 		try {
 			String[] parts = trimmedVersion.split("\\.");
