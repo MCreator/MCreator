@@ -64,9 +64,9 @@ import java.util.stream.Stream;
 
 	private static final Pattern cleanExcessMmpCharactersPattern = Pattern.compile("[^0-9.]+");
 	private static final Pattern cleanExcessSemVerCharactersPattern = Pattern.compile("[^0-9a-zA-Z.+-]+");
-	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
-	private static final Pattern cleanMultiHyphensPattern = Pattern.compile("(?:--+)+");
-	private static final Pattern cleanMultiPlusesPattern = Pattern.compile("(?:\\+[+]+)+");
+	private static final Pattern cleanMultiDotsPattern = Pattern.compile("\\.{2,}");
+	private static final Pattern cleanMultiHyphensPattern = Pattern.compile("-{2,}");
+	private static final Pattern cleanMultiPlusesPattern = Pattern.compile("\\+{2,}");
 	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile(
 			"(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
 	private static final Pattern semVerPattern = Pattern.compile(
