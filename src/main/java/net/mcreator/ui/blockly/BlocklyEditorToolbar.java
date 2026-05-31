@@ -239,24 +239,24 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private void updateSearch(BlocklyEditorType blocklyEditorType) {
 		if (!search.getText().isBlank()) {
-			String lowerCaseSearch = search.getText().toLowerCase(Locale.ENGLISH);
-			String[] keyWords = lowerCaseSearch.replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
+			String lowerCaseSearch = search.getText().toLowerCase(Locale.ROOT);
+			String[] keyWords = lowerCaseSearch.replaceAll("[^ \\p{L}\\p{Nd}/._-]+", "").split(" ");
 
 			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
 					.values()) {
-				if (block.getName().toLowerCase(Locale.ENGLISH).contains(lowerCaseSearch)) {
+				if (block.getName().toLowerCase(Locale.ROOT).contains(lowerCaseSearch)) {
 					filtered.add(block);
 					continue;
 				}
 
 				for (String keyWord : keyWords) {
-					if (block.getName().toLowerCase(Locale.ENGLISH).contains(keyWord) && (
+					if (block.getName().toLowerCase(Locale.ROOT).contains(keyWord) && (
 							block.getToolboxCategory() != null && block.getToolboxCategory().getName()
-									.toLowerCase(Locale.ENGLISH).contains(keyWord))) {
+									.toLowerCase(Locale.ROOT).contains(keyWord))) {
 						filtered.add(block);
 						break;
-					} else if (block.getName().toLowerCase(Locale.ENGLISH).contains(keyWord)) {
+					} else if (block.getName().toLowerCase(Locale.ROOT).contains(keyWord)) {
 						filtered.add(block);
 						break;
 					}

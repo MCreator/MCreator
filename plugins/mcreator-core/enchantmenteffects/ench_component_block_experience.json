@@ -1,0 +1,30 @@
+{
+  "args0": [
+    {
+      "type": "input_statement",
+      "name": "conditionalEffect",
+      "check": "ConditionalValueEffect"
+    }
+  ],
+  "extensions": [
+    "disable_repeated_enchantment_component"
+  ],
+  "previousStatement": "EnchantmentComponent",
+  "nextStatement": "EnchantmentComponent",
+  "colour": 60,
+  "inputsInline": false,
+  "mcreator": {
+    "toolbox_id": "enchantmentcomponents",
+    "toolbox_init": [
+      "<statement name=\"conditionalEffect\"><block type=\"conditional_value_effect\">",
+      "<value name=\"effect\"><block type=\"value_effect_set\"><value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value></block></value>",
+      "<value name=\"requirements\"><shadow type=\"predicate_true\"></shadow></value>",
+      "</block></statement>"
+    ],
+    "statements": [
+      {
+        "name": "conditionalEffect"
+      }
+    ]
+  }
+}
