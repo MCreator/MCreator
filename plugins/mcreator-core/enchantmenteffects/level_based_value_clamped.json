@@ -1,0 +1,37 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
+    },
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": 0
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 4
+    }
+  ],
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "extensions": [
+    "min_max_fields_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "levelbasedvalues",
+    "toolbox_init": [
+      "<value name=\"value\"><block type=\"level_based_value_linear\"><field name=\"base\">1</field><field name=\"per_level_above_first\">1</field></block></value>"
+    ],
+    "inputs": [
+      "value"
+    ],
+    "fields": [
+      "min",
+      "max"
+    ]
+  }
+}

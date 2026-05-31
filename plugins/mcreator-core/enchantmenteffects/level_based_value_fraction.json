@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "numerator",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "denominator",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "levelbasedvalues",
+    "toolbox_init": [
+      "<value name=\"numerator\"><block type=\"level_based_value_linear\"><field name=\"base\">1</field><field name=\"per_level_above_first\">1</field></block></value>",
+      "<value name=\"denominator\"><block type=\"math_number\"><field name=\"NUM\">2</field></block></value>"
+    ],
+    "inputs": [
+      "numerator",
+      "denominator"
+    ]
+  }
+}
