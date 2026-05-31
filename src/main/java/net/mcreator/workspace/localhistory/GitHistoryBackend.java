@@ -184,7 +184,10 @@ class GitHistoryBackend implements AutoCloseable {
 			git.clean().setCleanDirectories(true).call();
 
 			// Immediately save this reverted state as a new event on the timeline
-			saveCheckpoint("Reverted to checkpoint: " + checkpointHash.substring(0, 7));
+			HistoryCheckpoint checkpoint = new HistoryCheckpoint(targetCommit.getName(), targetCommit.getFullMessage(),
+					targetCommit.getCommitTime());
+			saveCheckpoint(
+					HistoryManager.commitMessageFromEvents(List.of("Reverted to " + checkpoint.getTimestampString())));
 		} catch (Exception e) {
 			throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, e);
 		} finally {
