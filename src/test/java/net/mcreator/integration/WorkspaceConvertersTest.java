@@ -117,7 +117,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 						workspace.getModElementManager().storeModElementPicture(ge);
 
 						// preload/update MCItem cache and MCItem icons
-						ge.getModElement().getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush());
+						ge.getModElement().getMCItems().forEach(mcItem -> mcItem.getIcon().getImage().flush());
 
 						// we reinit the mod to load new icons etc.
 						ge.getModElement().reinit(workspace);

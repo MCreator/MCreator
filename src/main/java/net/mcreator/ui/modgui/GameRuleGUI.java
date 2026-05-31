@@ -25,6 +25,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.StringUtils;
@@ -34,6 +35,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.lang.module.ModuleDescriptor;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -45,13 +47,11 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	private final VTextField description = new VTextField(30).requireValue(
 			"elementgui.gamerule.gamerule_needs_description").enableRealtimeValidation();
 
-	private final JComboBox<String> gameruleCategory = new JComboBox<>(
-			new String[] { "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" });
-	private final JComboBox<String> gameruleType = new JComboBox<>(new String[] { "Number", "Logic" });
+	private final JComboBox<String> gameruleCategory = ComponentFromAnnotation.options(GameRule.class, "category");
+	private final JComboBox<String> gameruleType = ComponentFromAnnotation.options(GameRule.class, "type");
 
 	private final JComboBox<String> defaultValueLogic = new JComboBox<>(new String[] { "false", "true" });
-	private final JSpinner defaultValueNumber = new JSpinner(
-			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
+	private final JSpinner defaultValueNumber = ComponentFromAnnotation.spinner(GameRule.class, "defaultValueNumber");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -109,13 +109,12 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		pane3.add(PanelUtils.totalCenterInPanel(subpane2));
 		pane3.setOpaque(false);
 
-		gameruleType.addActionListener(e -> updateDefaultValueUI());
+		gameruleType.addActionListener(_ -> updateDefaultValueUI());
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 
 		if (!isEditingMode()) {
-			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
-			updateDefaultValueUI();
+			updateNameAndDefaultValue();
 		}
 	}
 
@@ -131,7 +130,19 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		defaultValueLogic.setSelectedItem(Boolean.toString(gamerule.defaultValueLogic));
 		defaultValueNumber.setValue(gamerule.defaultValueNumber);
 
-		name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
+		updateNameAndDefaultValue();
+	}
+
+	private void updateNameAndDefaultValue() {
+		// In 1.21.11 and higher, names were changed from camelCase to snake_case
+		if (ModuleDescriptor.Version.parse(
+						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorMinecraftVersion())
+				.compareTo(ModuleDescriptor.Version.parse("1.21.11")) >= 0) {
+			name.setText(StringUtils.camelToSnake(modElement.getName()).toLowerCase());
+		} else {
+			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
+		}
+
 		updateDefaultValueUI();
 	}
 

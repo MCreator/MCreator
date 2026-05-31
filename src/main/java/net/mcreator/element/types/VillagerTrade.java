@@ -22,15 +22,18 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProfessionEntry;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class VillagerTrade extends GeneratableElement {
 
-	@ModElementReference public List<CustomTradeEntry> tradeEntries;
+	public ProfessionEntry villagerProfession;
+	@ModElementReference public List<TradeEntry> trades;
 
 	private VillagerTrade() {
 		this(null);
@@ -38,40 +41,74 @@ import java.util.List;
 
 	public VillagerTrade(ModElement element) {
 		super(element);
-		tradeEntries = new ArrayList<>();
+		trades = new ArrayList<>();
 	}
 
-	public static class CustomTradeEntry {
-
-		public ProfessionEntry villagerProfession;
-		@ModElementReference public List<Entry> entries;
-
-		public static class Entry {
-
-			public MItemBlock price1;
-			public int countPrice1;
-
-			public MItemBlock price2;
-			public int countPrice2;
-
-			public MItemBlock offer;
-			public int countOffer;
-
-			public int level;
-			public int maxTrades;
-			public int xp;
-
-			public double priceMultiplier;
-		}
+	public boolean isWanderingTrader() {
+		return "WANDERING_TRADER".equals(villagerProfession.getUnmappedValue());
 	}
 
-	public boolean hasVillagerTrades(boolean wandering) {
-		for (CustomTradeEntry tradeEntry : tradeEntries) {
-			if (wandering && "WANDERING_TRADER".equals(tradeEntry.villagerProfession.getUnmappedValue()))
-				return true;
-			if (!wandering && !"WANDERING_TRADER".equals(tradeEntry.villagerProfession.getUnmappedValue()))
-				return true;
+	public String professionFolder() {
+		String retval = villagerProfession.getMappedValue();
+		if (retval.contains(":"))
+			return StringUtils.substringAfterLast(retval, ":");
+		return retval;
+	}
+
+	public List<String> level1Trades() {
+		return getTradesForLevel(1);
+	}
+
+	public List<String> level2Trades() {
+		return getTradesForLevel(2);
+	}
+
+	public List<String> level3Trades() {
+		return getTradesForLevel(3);
+	}
+
+	public List<String> level4Trades() {
+		return getTradesForLevel(4);
+	}
+
+	public List<String> level5Trades() {
+		return getTradesForLevel(5);
+	}
+
+	private List<String> getTradesForLevel(int level) {
+		ArrayList<String> retval = new ArrayList<>();
+		for (int i = 0; i < trades.size(); i++) {
+			if (trades.get(i).level == level)
+				retval.add(this.getModElement().getRegistryName() + "_" + i);
 		}
-		return false;
+		return retval;
+	}
+
+	public static class TradeEntry {
+
+		public MItemBlock price1;
+		@Numeric(init = 1, min = 1, max = 99, step = 1) public int countPrice1;
+
+		public MItemBlock price2;
+		@Numeric(init = 1, min = 1, max = 99, step = 1) public int countPrice2;
+
+		public MItemBlock offer;
+		@Numeric(init = 1, min = 1, max = 99, step = 1) public int countOffer;
+
+		@Numeric(init = 1, min = 1, max = 5, step = 1) public int level;
+		@Numeric(init = 10, min = 1, max = 72000, step = 1) public int maxTrades;
+		@Numeric(init = 5, min = 1, max = 72000, step = 1) public int xp;
+
+		@Numeric(init = 0.05, min = 0, max = 1, step = 0.01) public double priceMultiplier;
+
+		public TradeEntry() {
+			this.countPrice1 = 1;
+			this.countPrice2 = 1;
+			this.countOffer = 1;
+			this.level = 1;
+			this.maxTrades = 10;
+			this.xp = 5;
+			this.priceMultiplier = 0.05;
+		}
 	}
 }

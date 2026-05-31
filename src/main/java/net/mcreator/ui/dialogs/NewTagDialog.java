@@ -37,7 +37,7 @@ public class NewTagDialog {
 	public static TagElement showNewTagDialog(MCreator mcreator) {
 		JPanel panel = new JPanel(new GridLayout(3, 2, 10, 2));
 
-		JComboBox<TagType> type = new JComboBox<>(TagType.values());
+		JComboBox<TagType> type = new JComboBox<>(TagType.visibleValues());
 		VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "c", "neoforge", "forge" });
 		VComboBox<String> name = new VComboBox<>();
 

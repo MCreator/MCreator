@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.DependencyProviderInput;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
+import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -206,7 +207,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final List<Dependency> getDependencies() {
-		return dependencies.stream().sorted()
+		return dependencies.stream().filter(Objects::nonNull).sorted()
 				// this is here for compatibility with workspaces before 2020.4
 				.map(e -> {
 					if (e.getRawType().equals("int"))
@@ -229,6 +230,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	}
 
 	public final void addDependency(Dependency dependency) {
+		if (dependency == null)
+			return;
+
 		// check if used by statement input and skip in this case
 		if (checkIfDepProviderInputsProvide(dependency))
 			return;
@@ -393,7 +397,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	/**
 	 * Helper method to process an output block and remove surrounding parentheses if possible
 	 *
-	 * @param element The element to process
+	 * @param element The element to proces
 	 * @throws TemplateGeneratorException If the template can't be generated
 	 */
 	public final void processOutputBlockWithoutParentheses(Element element) throws TemplateGeneratorException {
@@ -404,7 +408,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	/**
 	 * Helper method to process an output block and remove surrounding parentheses if possible
 	 *
-	 * @param element   The element to process
+	 * @param element   The element to proces
 	 * @param blacklist The characters that can't be contained at the top nesting level when optimizing the element
 	 * @throws TemplateGeneratorException If the template can't be generated
 	 */
@@ -417,7 +421,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	/**
 	 * Helper method to get the code of an output block and remove surrounding parentheses if possible
 	 *
-	 * @param element The element to process
+	 * @param element The element to proces
 	 * @return The generated code of the element with parentheses optimization
 	 * @throws TemplateGeneratorException If the template can't be generated
 	 */
@@ -428,12 +432,33 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	/**
 	 * Helper method to process an output block and cast to int when needed
 	 *
-	 * @param element The element to process
+	 * @param element The element to proces
 	 * @throws TemplateGeneratorException If the template can't be generated
 	 */
 	public final void processOutputBlockToInt(Element element) throws TemplateGeneratorException {
 		String code = directProcessOutputBlock(this, element);
 		this.append(ProcedureCodeOptimizer.toInt(code));
+	}
+
+	/**
+	 * Helper method to process an output block to an object that can be converted to string
+	 * and handles an edge case of custom MCItem objects that are not mapped correctly
+	 *
+	 * @param element The element to proces
+	 * @throws TemplateGeneratorException If the template can't be generated
+	 */
+	public final String processOutputBlockToStringCompatible(Element element) throws TemplateGeneratorException {
+		String elementcode = BlocklyToCode.directProcessOutputBlock(this, element);
+		Element blockInInput = XMLUtil.getFirstChildrenWithName(element, "block");
+		if (blockInInput != null) {
+			if (blockInInput.getAttribute("type").equals("mcitem_all") || blockInInput.getAttribute("type")
+					.equals("mcitem_allblocks")) {
+				GeneratorWrapper wrapper = new GeneratorWrapper(this.getGenerator());
+				return "\"" + this.getWorkspaceSettings().getModID() + ":" + wrapper.getRegistryNameFromFullName(
+						elementcode) + "\"";
+			}
+		}
+		return elementcode;
 	}
 
 	/**

@@ -1,0 +1,1 @@
+Ez az a textúra, amelyet a táblák a világban való megjelenítéshez használnak. Győződj meg arról, hogy a textúra kompatibilis a tábla modelljével.

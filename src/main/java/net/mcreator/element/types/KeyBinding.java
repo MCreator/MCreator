@@ -19,7 +19,9 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.KeyButton;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -28,9 +30,10 @@ import java.awt.image.BufferedImage;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class KeyBinding extends GeneratableElement {
 
-	@Nonnull public String triggerKey;
+	@Nonnull public KeyButton triggerKey;
 	public String keyBindingName;
-	public String keyBindingCategoryKey;
+	@LimitedOptions(value = { "movement", "misc", "multiplayer", "gameplay", "inventory", "creative", "spectator",
+			"debug" }, allowCustom = true) public String keyBindingCategoryKey;
 
 	public Procedure onKeyPressed;
 	public Procedure onKeyReleased;
@@ -46,7 +49,7 @@ import java.awt.image.BufferedImage;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateKeybindPreviewPicture(triggerKey);
+		return MinecraftImageGenerator.Preview.generateKeybindPreviewPicture(triggerKey.getUnmappedValue());
 	}
 
 }

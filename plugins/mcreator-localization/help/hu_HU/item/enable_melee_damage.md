@@ -1,0 +1,1 @@
+Ha bejelölöd ezt a paramétert, az tárgyad közelharci fegyverré válik, támadási sebzéssel és támadási sebességgel.

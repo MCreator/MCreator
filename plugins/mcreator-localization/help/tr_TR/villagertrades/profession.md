@@ -1,0 +1,1 @@
+Bu parametre, hangi köylü mesleklerinin takas teklif edebileceğini kontrol eder

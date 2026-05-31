@@ -33,6 +33,7 @@ import net.mcreator.ui.minecraft.SingleParticleEntryField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -61,8 +62,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isCuredbyHoney = L10N.checkbox("elementgui.common.enable");
 
-	private final JComboBox<String> mobEffectCategory = new JComboBox<>(
-			new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL" });
+	private final JComboBox<String> mobEffectCategory = ComponentFromAnnotation.options(PotionEffect.class,
+			"mobEffectCategory");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -113,7 +114,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		ComponentUtils.deriveFont(effectName, 16);
 
 		isInstant.setOpaque(false);
-		isInstant.addActionListener(e -> particle.setEnabled(!isInstant.isSelected()));
+		isInstant.addActionListener(_ -> particle.setEnabled(!isInstant.isSelected()));
 		renderStatusInInventory.setOpaque(false);
 		renderStatusInHUD.setOpaque(false);
 		isCuredbyHoney.setOpaque(false);
