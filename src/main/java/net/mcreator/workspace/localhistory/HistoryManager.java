@@ -44,12 +44,21 @@ public final class HistoryManager implements AutoCloseable {
 		}
 	}
 
-	public synchronized void checkpoint(String eventName, boolean important) {
+	/**
+	 * Saves checkpoint with a given name.
+	 *
+	 * @param checkpointName Checkpoint name should reflect the current state of the workspace at the time of the checkpoint.
+	 */
+	public void checkpoint(String checkpointName) {
+		checkpoint(checkpointName, false);
+	}
+
+	public synchronized void checkpoint(String checkpointName, boolean important) {
 		if (backend == null) {
 			return;
 		}
 
-		pendingEventNames.add(eventName);
+		pendingEventNames.add(checkpointName);
 
 		if (important || isSaveIntervalElapsed()) {
 			flushPendingCheckpoint();
@@ -98,6 +107,8 @@ public final class HistoryManager implements AutoCloseable {
 			backend.close();
 		}
 	}
+
+	// TODO: add a method to clear local history (delete repo), so user can clear history for space saving, should close manager, delete files and open new one
 
 	public static void revertToCommit(String hash, File workspaceFolder) throws LocalHistoryException {
 		try (GitHistoryBackend backend = GitHistoryBackend.tryCreate(workspaceFolder)) {
