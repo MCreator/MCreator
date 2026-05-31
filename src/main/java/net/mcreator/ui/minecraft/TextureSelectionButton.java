@@ -24,6 +24,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.Texture;
 
@@ -68,8 +69,8 @@ public class TextureSelectionButton extends VButton {
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (isEnabled()) {
-					if (e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1 && e.getY() > getHeight() - 11
-							&& selectedTexture != null) {
+					if (e.getX() > 1 && e.getX() < getDeleteButtonSize() && e.getY() < getHeight() - 1
+							&& e.getY() > getHeight() - getDeleteButtonSize() && selectedTexture != null) {
 						selectedTexture = null;
 						setIcon(null);
 						getValidationStatus();
@@ -91,8 +92,8 @@ public class TextureSelectionButton extends VButton {
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override public void mouseMoved(MouseEvent e) {
 				super.mouseMoved(e);
-				removeButtonHover =
-						e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1 && e.getY() > getHeight() - 11;
+				removeButtonHover = e.getX() > 1 && e.getX() < getDeleteButtonSize() && e.getY() < getHeight() - 1
+						&& e.getY() > getHeight() - getDeleteButtonSize();
 				repaint();
 			}
 		});
@@ -152,7 +153,8 @@ public class TextureSelectionButton extends VButton {
 			} else {
 				removeIcon = UIRES.get("18px.remove");
 			}
-			g.drawImage(removeIcon.getImage(), 1, getHeight() - 12, 11, 11, null);
+			removeIcon = IconUtils.resize(removeIcon, getDeleteButtonSize(), getDeleteButtonSize());
+			g.drawImage(removeIcon.getImage(), 1, getHeight() - (getDeleteButtonSize() + 1), null);
 		}
 	}
 
@@ -180,6 +182,10 @@ public class TextureSelectionButton extends VButton {
 				}
 			});
 		}
+	}
+
+	private int getDeleteButtonSize() {
+		return 14;
 	}
 
 }

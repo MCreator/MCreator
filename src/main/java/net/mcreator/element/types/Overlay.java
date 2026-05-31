@@ -20,9 +20,12 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
+import net.mcreator.element.parts.ScreenEntry;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -39,11 +42,11 @@ import java.util.List;
 
 	private static final Logger LOG = LogManager.getLogger(Overlay.class);
 
-	public String priority;
+	@LimitedOptions({ "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" }) public String priority;
 	@ModElementReference @TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
 
 	@TextureReference(TextureType.SCREEN) public String baseTexture;
-	public String overlayTarget;
+	@NonNullMappable("Ingame") public ScreenEntry overlayTarget;
 
 	public Procedure displayCondition;
 
@@ -57,7 +60,7 @@ import java.util.List;
 		super(element);
 
 		this.gridSettings = new GridSettings();
-		this.overlayTarget = "Ingame";
+		this.priority = "NORMAL";
 	}
 
 	public boolean hasTextures() {

@@ -100,6 +100,9 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 
 		UTF8Forcer.forceGlobalUTF8();
 
+		// Disable XML parser depth limit as Blockly XML can go quite nested
+		System.setProperty("jdk.xml.maxElementDepth", "0");
+
 		Logger LOG = LogManager.getLogger("Test setup");
 
 		Properties conf = new Properties();

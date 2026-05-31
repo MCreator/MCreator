@@ -1,0 +1,1 @@
+Ha a paramétert bejelölik, az elem nem jelenik meg olyan parancsokban, mint a `/give`

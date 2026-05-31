@@ -203,6 +203,11 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.ENCHANTMENT) != GeneratorStats.CoverageStatus.NONE)
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing enchantment effect blocks",
+								() -> GTEnchantmentEffectBlocks.runTest(LOG, generator, random, workspace.get())));
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.LIVINGENTITY) != GeneratorStats.CoverageStatus.NONE)
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
 								() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace.get())));
@@ -244,6 +249,7 @@ import static org.junit.jupiter.api.Assertions.*;
 					}
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
+						workspace.get().markDirty();
 						workspace.get().close();
 						FileIO.deleteDir(workspace.get().getWorkspaceFolder());
 					}));
