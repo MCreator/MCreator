@@ -149,7 +149,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (existing == null) {
 			mcreator.getTabs().addTab(this.tabIn);
 
-			this.tabIn.setTabShownListener(tab -> {
+			this.tabIn.setTabShownListener(_ -> {
 				if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
 					listeningEnabled = false;
 					reloadDataLists();
@@ -157,7 +157,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				}
 			});
 
-			this.tabIn.setTabClosingListener(tab -> {
+			this.tabIn.setTabClosingListener(_ -> {
 				if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
 					return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
 							L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
@@ -165,7 +165,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				return true;
 			});
 
-			this.tabIn.setTabClosedListener(tab -> onViewClosed());
+			this.tabIn.setTabClosedListener(_ -> onViewClosed());
 
 			retval = this;
 		} else {
@@ -197,7 +197,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			back.setFocusPainted(false);
 			back.setContentAreaFilled(false);
 			back.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			back.addActionListener(event -> {
+			back.addActionListener(_ -> {
 				AggregatedValidationResult validationResult = pages.get(split.getPage()).getValidationResult();
 				if (validationResult.validateIsErrorFree()) {
 					pagers.get(split.getPage()).setIcon(null);
@@ -213,7 +213,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			forward.setFocusPainted(false);
 			forward.setContentAreaFilled(false);
 			forward.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			forward.addActionListener(event -> {
+			forward.addActionListener(_ -> {
 				AggregatedValidationResult validationResult = pages.get(split.getPage()).getValidationResult();
 				if (validationResult.validateIsErrorFree()) {
 					pagers.get(split.getPage()).setIcon(null);
@@ -240,14 +240,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				page.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				ComponentUtils.deriveFont(page, 13);
 
-				page.addChangeListener(e -> page.setForeground(page.isSelected() ?
+				page.addChangeListener(_ -> page.setForeground(page.isSelected() ?
 						(Theme.current().getInterfaceAccentColor()) :
 						(Theme.current().getForegroundColor())));
 				pager.add(page);
 				buttonGroup.add(page);
 
 				int finalIdx = idx;
-				page.addActionListener(e -> split.setPage(finalIdx));
+				page.addActionListener(_ -> split.setPage(finalIdx));
 
 				pageEntry.setShowThisPageAction(page::doClick);
 
@@ -266,7 +266,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.addActionListener(event -> {
+			save.addActionListener(_ -> {
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
@@ -295,7 +295,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.addActionListener(event -> {
+			saveOnly.addActionListener(_ -> {
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
@@ -334,7 +334,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					JButton help = L10N.button("common.help");
 					help.setMargin(new Insets(1, 40, 1, 40));
 					toolBarLeft.add(help);
-					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+					help.addActionListener(_ -> DesktopUtils.browseSafe(helpURI.toString()));
 				}
 			} catch (URISyntaxException e) {
 				LOG.warn("Failed to create help context", e);
@@ -352,7 +352,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.addActionListener(event -> {
+			saveOnly.addActionListener(_ -> {
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
@@ -370,7 +370,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.addActionListener(event -> {
+			save.addActionListener(_ -> {
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
@@ -398,7 +398,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					JButton help = L10N.button("common.help");
 					help.setMargin(new Insets(1, 40, 1, 40));
 					toolBarLeft.add(help);
-					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+					help.addActionListener(_ -> DesktopUtils.browseSafe(helpURI.toString()));
 				}
 			} catch (URISyntaxException e) {
 				LOG.warn("Failed to create help context", e);
@@ -469,7 +469,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 					Component c = hierarchy.pop();
 					if (inclusions != null) // register component to exclude its "neighbors" later
-						includedComponents.computeIfAbsent((Container) hierarchy.peek(), e -> new ArrayList<>()).add(c);
+						includedComponents.computeIfAbsent((Container) hierarchy.peek(), _ -> new ArrayList<>()).add(c);
 					else // exclude the component itself
 						UnsupportedComponent.markUnsupported(c);
 				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
@@ -566,7 +566,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.getWorkspace().addModElement(modElement);
 		} else {
 			modElement.reloadElementIcon();
-			modElement.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
+			modElement.getMCItems().forEach(mcItem -> mcItem.getIcon().getImage().flush()); // update MCItem icons
 		}
 
 		// make sure workspace will also be saved

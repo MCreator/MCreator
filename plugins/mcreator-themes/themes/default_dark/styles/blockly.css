@@ -30,9 +30,13 @@ body {
     background: var(--altBackgroundColor);
 }
 
-.blocklyToolboxDiv {
+.blocklyToolbox {
     background-color: var(--backgroundColor);
     color: var(--foregroundColor);
+}
+
+.blocklyToolboxCategoryContainer {
+    outline: none;
 }
 
 .blocklyTreeRow:not(.blocklyTreeSelected):hover {
@@ -73,7 +77,7 @@ body {
     border-color: var(--secondAltBackgroundColor) !important;
 }
 
-.blocklyDropDownDiv .goog-menuitem-content {
+.blocklyDropDownDiv .blocklyMenuItemContent {
     color: var(--foregroundColor) !important;
 }
 
@@ -82,13 +86,17 @@ body {
     color: var(--foregroundColor);
 }
 
-.blocklyWidgetDiv .goog-menu {
+.blocklyWidgetDiv .blocklyMenu {
     background: var(--backgroundColor) !important;
     border-color: var(--altBackgroundColor) !important;
 }
 
-.blocklyWidgetDiv .goog-menuitem-content {
+.blocklyWidgetDiv .blocklyMenuItemContent {
     color: var(--foregroundColor);
+}
+
+.blocklyWidgetDiv .blocklyMenuItemDisabled .blocklyMenuItemContent {
+    color: var(--altForegroundColor);
 }
 
 .blocklyCommentTextarea {

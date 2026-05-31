@@ -4,7 +4,7 @@ Unicode true
 !addplugindir "${NSIS_DIR}\Plugins\x86-unicode"
 !addincludedir "${NSIS_DIR}\Include"
 
-SetCompressor "lzma" ; to improve installer open performance and its size
+SetCompressor "bzip2" ; to improve installer open performance and its size
 
 !include "MUI2.nsh"
 
@@ -77,7 +77,7 @@ ${AndIf} ${Cmd} `MessageBox MB_YESNO|MB_ICONQUESTION "Installer has detected a p
                  If you intend to install the new version in the same folder as the \
                  old version, you NEED to uninstall the old version first. \
                  Do you want to uninstall previous version?" /SD IDYES IDYES`
-	Call UninstallPrevious
+    Call UninstallPrevious
 ${EndIf}
 FunctionEnd
 
@@ -187,8 +187,12 @@ Function UninstallPrevious
         Call GetParent
         Pop $1
 
-        ; Run the uninstaller
-        ExecWait '"$0" _?=$1'
+        ; Run the uninstaller, dynamically passing /S if the current installer is running silently
+        ${If} ${Silent}
+            ExecWait '"$0" /S _?=$1'
+        ${Else}
+            ExecWait '"$0" _?=$1'
+        ${EndIf}
     ${EndIf}
 FunctionEnd
 

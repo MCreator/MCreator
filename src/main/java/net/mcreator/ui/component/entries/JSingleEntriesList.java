@@ -36,6 +36,8 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 
 	protected final JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
+	protected final JScrollPane scrollPane;
+
 	public JSingleEntriesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
@@ -47,7 +49,7 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 
 		entries.setOpaque(false);
 
-		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries)) {
+		scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
 				g2d.setColor(Theme.current().getAltBackgroundColor());
@@ -59,8 +61,8 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 		};
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.setOpaque(false);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(15);
-		scrollPane.getHorizontalScrollBar().setUnitIncrement(15);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+		scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
 		add("Center", scrollPane);
 	}
 
