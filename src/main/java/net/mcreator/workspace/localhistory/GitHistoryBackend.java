@@ -195,9 +195,22 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 	}
 
+	private void optimizeRepository() {
+		lock.lock();
+		try {
+			git.gc().call(); // Runs standard git gc to pack loose objects and compress history
+			LOG.debug("Local history garbage collection completed successfully.");
+		} catch (GitAPIException e) {
+			LOG.warn("Failed to run garbage collection on local history: {}", e.getMessage());
+		} finally {
+			lock.unlock();
+		}
+	}
+
 	@Override public void close() {
 		lock.lock();
 		try {
+			optimizeRepository();
 			git.close();
 		} finally {
 			lock.unlock();
