@@ -27,6 +27,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -39,10 +40,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 	protected ValidationGroup validableElements = new ValidationGroup();
+
+	protected List<Supplier<AggregatedValidationResult>> lazyValidators = new ArrayList<>();
 
 	private final List<GeneratableElement> toGenerate = new ArrayList<>();
 
@@ -54,7 +58,8 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 		JButton ok = L10N.button("dialog.tools." + localizationKey + "_create");
 		ok.addActionListener(e -> {
-			if (validableElements.validateIsErrorFree()) {
+			if (validableElements.validateIsErrorFree() && lazyValidators.stream()
+					.allMatch(validator -> validator.get().validateIsErrorFree())) {
 				this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 				generatePack(mcreator);
