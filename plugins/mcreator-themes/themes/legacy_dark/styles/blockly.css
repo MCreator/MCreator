@@ -30,7 +30,7 @@ body {
     background: var(--altBackgroundColor);
 }
 
-.blocklyToolboxDiv {
+.blocklyToolbox {
     background-color: var(--backgroundColor);
     color: var(--foregroundColor);
 }
@@ -73,7 +73,7 @@ body {
     border-color: var(--secondAltBackgroundColor) !important;
 }
 
-.blocklyDropDownDiv .goog-menuitem-content {
+.blocklyDropDownDiv .blocklyMenuItem-content {
     color: var(--foregroundColor) !important;
 }
 
@@ -82,12 +82,12 @@ body {
     color: var(--foregroundColor);
 }
 
-.blocklyWidgetDiv .goog-menu {
+.blocklyWidgetDiv .blocklyMenu {
     background: var(--backgroundColor) !important;
     border-color: var(--altBackgroundColor) !important;
 }
 
-.blocklyWidgetDiv .goog-menuitem-content {
+.blocklyWidgetDiv .blocklyMenuItem-content {
     color: var(--foregroundColor);
 }
 

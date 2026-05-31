@@ -73,7 +73,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 			if (change.generatorFlavorChanged) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
-								"FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator, true);
+								"fullBackups/FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator, true);
 			}
 
 			if (change.packagechanged) { // we need to copy all source files to new package and remove the old one

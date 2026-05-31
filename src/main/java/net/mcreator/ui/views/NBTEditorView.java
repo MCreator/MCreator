@@ -63,8 +63,7 @@ public class NBTEditorView extends ViewBase {
 	}
 
 	private void loadFromFile() {
-		try {
-			FileInputStream fis = new FileInputStream(file);
+		try (FileInputStream fis = new FileInputStream(file)) {
 			NBTInputStream nbt = new NBTInputStream(fis);
 			Tag tag = nbt.readTag();
 

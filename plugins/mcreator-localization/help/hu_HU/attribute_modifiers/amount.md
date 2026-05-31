@@ -1,0 +1,1 @@
+Az attribútum módosításának mértéke.

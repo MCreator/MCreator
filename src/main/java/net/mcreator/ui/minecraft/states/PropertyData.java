@@ -215,7 +215,7 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Integer) value, getDefaultValue())));
+			value = Math.clamp(Objects.requireNonNullElse((Integer) value, getDefaultValue()), min, max);
 			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, min, max, 1));
 			box.setPreferredSize(new Dimension(105, 22));
 			return box;
@@ -266,7 +266,7 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Double) value, getDefaultValue())));
+			value = Math.clamp(Objects.requireNonNullElse((Double) value, getDefaultValue()), min, max);
 			JSpinner box = new JSpinner(new SpinnerNumberModel((double) value, min, max, 0.000000001));
 			box.setEditor(new JSpinner.NumberEditor(box, "#.#########"));
 			((JSpinner.NumberEditor) box.getEditor()).getFormat().setMaximumFractionDigits(9);

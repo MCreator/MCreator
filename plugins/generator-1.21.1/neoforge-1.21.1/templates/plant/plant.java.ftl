@@ -66,13 +66,13 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	public ${name}Block() {
 		super(
 		<#if data.plantType == "normal">
-		${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},
+		${data.suspiciousStewEffect!"MobEffects.SATURATION"}, ${data.suspiciousStewDuration},
 		<#elseif data.plantType == "sapling">
 		TREE_GROWER,
 		</#if>
 		BlockBehaviour.Properties.of()
-		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
+		<#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
+		.mapColor(MapColor.${data.colorOnMap})
 		<#else>
 		.mapColor(MapColor.PLANT)
 		</#if>
@@ -170,9 +170,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	}
 	</#if>
 
-	<#if generator.map(data.aiPathNodeType, "pathnodetypes") != "DEFAULT">
+	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
-		return PathType.${generator.map(data.aiPathNodeType, "pathnodetypes")};
+		return PathType.${data.aiPathNodeType};
 	}
 	</#if>
 
@@ -266,9 +266,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 					return this.mayPlaceOn(groundState, worldIn, blockpos)
 			</#if>;
 		}
-	<#elseif !(data.growapableSpawnType == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
+	<#elseif !(data.growapableSpawnType.getUnmappedValue() == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
 		private boolean canPlantTypeSurvive(BlockState state, LevelReader world, BlockPos pos) {
-			${generator.map(data.growapableSpawnType, "planttypes")}
+			${data.growapableSpawnType}
 		}
 
 		@Override public boolean canSurvive(BlockState blockstate, LevelReader world, BlockPos pos) {
