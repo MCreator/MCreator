@@ -6,36 +6,14 @@
       "check": "Vector"
     },
     {
-      "type": "field_dropdown",
-      "name": "vector_opcodes",
-      "options": [
-        [
-          "+",
-          "add"
-        ],
-        [
-          "-",
-          "subtract"
-        ],
-        [
-          "*",
-          "multiply"
-        ],
-        [
-          "cross",
-          "cross"
-        ]
-      ]
-    },
-    {
       "type": "input_value",
       "name": "vector2",
       "check": "Vector"
     }
   ],
   "inputsInline": true,
-  "output": "Vector",
-  "colour": 270,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
     "toolbox_id": "vector",
     "toolbox_init": [
@@ -45,9 +23,6 @@
     "inputs": [
       "vector1",
       "vector2"
-    ],
-    "fields": [
-      "vector_opcodes"
     ]
   }
 }
