@@ -139,7 +139,7 @@ public class TemplateGenerator {
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: {}", templateName, e);
 			TestUtil.failIfTestingEnvironment();
-			throw new TemplateGeneratorException();
+			throw new TemplateGeneratorException(e);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class TemplateGenerator {
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
 			TestUtil.failIfTestingEnvironment();
-			throw new TemplateGeneratorException();
+			throw new TemplateGeneratorException(e);
 		}
 	}
 

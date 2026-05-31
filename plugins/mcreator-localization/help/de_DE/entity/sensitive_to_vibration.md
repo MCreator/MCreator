@@ -1,0 +1,1 @@
+Wenn dieser Parameter aktiviert ist, ist diese Entität empfindlich auf Vibrationen wie _Warden_.
