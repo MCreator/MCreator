@@ -33,6 +33,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.IconUtils;
 
@@ -42,6 +43,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -116,6 +118,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	}
 
 	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
 		readableText.setEnabled(enabled);
 		edit.setEnabled(enabled);
 		remove.setEnabled(enabled);
@@ -128,12 +131,14 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	public void updateReadableText() {
 		boolean isSupported = true;
 		readableText.setIcon(null);
-		if (currentEntry == null) {
+		switch (currentEntry) {
+		case null -> {
 			readableText.setText(defaultText);
 			readableText.setForeground(Theme.current().getAltForegroundColor());
 			readableText.setToolTipText(readableText.getText());
 			return;
-		} else if (currentEntry instanceof MappableElement mappableElement) {
+		}
+		case MappableElement mappableElement -> {
 			Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
 			if (dataListEntryOpt.isPresent()) {
 				DataListEntry dataListEntry = dataListEntryOpt.get();
@@ -157,12 +162,15 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 				else if (unmappedValue.startsWith("#"))
 					readableText.setIcon(IconUtils.resize(MCItem.TAG_ICON, 18));
 			}
-		} else {
+		}
+		case File file -> readableText.setText(FilenameUtilsPatched.removeExtension(file.getName()));
+		default -> {
 			readableText.setText(StringUtils.machineToReadableName(currentEntry.toString().replace("CUSTOM:", "")));
 
 			if (currentEntry.toString().contains("CUSTOM:"))
 				readableText.setIcon(IconUtils.resize(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), currentEntry.toString()), 18));
+		}
 		}
 		readableText.setForeground(Theme.current().getForegroundColor());
 		readableText.setToolTipText(
