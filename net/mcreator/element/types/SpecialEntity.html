@@ -61,9 +61,12 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#entityType" tabindex="0">entityType</a></li>
 <li><a href="#name" tabindex="0">name</a></li>
+<li><a href="#rarity" tabindex="0">rarity</a></li>
 <li><a href="#creativeTabs" tabindex="0">creativeTabs</a></li>
 <li><a href="#entityTexture" tabindex="0">entityTexture</a></li>
 <li><a href="#itemTexture" tabindex="0">itemTexture</a></li>
+<li><a href="#onTickUpdate" tabindex="0">onTickUpdate</a></li>
+<li><a href="#onPlayerCollidesWith" tabindex="0">onPlayerCollidesWith</a></li>
 </ol>
 </li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
@@ -80,6 +83,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#providedMCItems()" tabindex="0">providedMCItems()</a></li>
 <li><a href="#getCreativeTabs()" tabindex="0">getCreativeTabs()</a></li>
 <li><a href="#getCreativeTabItems()" tabindex="0">getCreativeTabItems()</a></li>
+<li><a href="#isBoatChestVariant()" tabindex="0">isBoatChestVariant()</a></li>
+<li><a href="#isAnyRaft()" tabindex="0">isAnyRaft()</a></li>
 </ol>
 </li>
 </ol>
@@ -141,6 +146,15 @@ implements <a href="interfaces/ICommonType.html" title="interface in net.mcreato
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onPlayerCollidesWith" class="member-name-link">onPlayerCollidesWith</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onTickUpdate" class="member-name-link">onTickUpdate</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#rarity" class="member-name-link">rarity</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.element.GeneratableElement">Fields inherited from class&nbsp;<a href="../GeneratableElement.html#field-summary" title="class in net.mcreator.element">GeneratableElement</a></h3>
@@ -197,6 +211,12 @@ element resources for cases such as GUI mod element</div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method determines what icon should be used for a custom MCItem, according to its eventual suffix</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isAnyRaft()" class="member-name-link">isAnyRaft</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBoatChestVariant()" class="member-name-link">isBoatChestVariant</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#providedMCItems()" class="member-name-link">providedMCItems</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -242,6 +262,14 @@ element resources for cases such as GUI mod element</div>
 </section>
 </li>
 <li>
+<section class="detail" id="rarity">
+<h3>rarity</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">rarity</span></div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="creativeTabs">
 <h3>creativeTabs</h3>
 <div class="horizontal-scroll">
@@ -262,6 +290,22 @@ element resources for cases such as GUI mod element</div>
 <h3>itemTexture</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></span>&nbsp;<span class="element-name">itemTexture</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="onTickUpdate">
+<h3>onTickUpdate</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">onTickUpdate</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="onPlayerCollidesWith">
+<h3>onPlayerCollidesWith</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">onPlayerCollidesWith</span></div>
 </div>
 </section>
 </li>
@@ -399,6 +443,22 @@ which is not thread safe</div>
 <dt>Returns:</dt>
 <dd>list of items in the creative tab of this element</dd>
 </dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isBoatChestVariant()">
+<h3>isBoatChestVariant</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isBoatChestVariant</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isAnyRaft()">
+<h3>isAnyRaft</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isAnyRaft</span>()</div>
 </div>
 </section>
 </li>

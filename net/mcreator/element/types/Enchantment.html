@@ -59,6 +59,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
+<li><a href="#XML_BASE" tabindex="0">XML_BASE</a></li>
 <li><a href="#name" tabindex="0">name</a></li>
 <li><a href="#supportedSlots" tabindex="0">supportedSlots</a></li>
 <li><a href="#weight" tabindex="0">weight</a></li>
@@ -71,11 +72,17 @@ loadScripts(document, 'script');</script>
 <li><a href="#isCurse" tabindex="0">isCurse</a></li>
 <li><a href="#canGenerateInLootTables" tabindex="0">canGenerateInLootTables</a></li>
 <li><a href="#canVillagerTrade" tabindex="0">canVillagerTrade</a></li>
+<li><a href="#effectsxml" tabindex="0">effectsxml</a></li>
 </ol>
 </li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
 <li><a href="#%3Cinit%3E(net.mcreator.workspace.elements.ModElement)" tabindex="0">Enchantment(ModElement)</a></li>
+</ol>
+</li>
+<li><a href="#method-detail" tabindex="0">Method Details</a>
+<ol class="toc-list">
+<li><a href="#getAdditionalTemplateData()" tabindex="0">getAdditionalTemplateData()</a></li>
 </ol>
 </li>
 </ol>
@@ -129,29 +136,35 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>int</code></div>
 <div class="col-second odd-row-color"><code><a href="#damageModifier" class="member-name-link">damageModifier</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/Enchantment.html" title="class in net.mcreator.element.parts">Enchantment</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#incompatibleEnchantments" class="member-name-link">incompatibleEnchantments</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#effectsxml" class="member-name-link">effectsxml</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isCurse" class="member-name-link">isCurse</a></code></div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/EnchantmentEntry.html" title="class in net.mcreator.element.parts">EnchantmentEntry</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#incompatibleEnchantments" class="member-name-link">incompatibleEnchantments</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isTreasureEnchantment" class="member-name-link">isTreasureEnchantment</a></code></div>
+<div class="col-second even-row-color"><code><a href="#isCurse" class="member-name-link">isCurse</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#maxLevel" class="member-name-link">maxLevel</a></code></div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isTreasureEnchantment" class="member-name-link">isTreasureEnchantment</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#maxLevel" class="member-name-link">maxLevel</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#supportedItems" class="member-name-link">supportedItems</a></code></div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#supportedSlots" class="member-name-link">supportedSlots</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#supportedItems" class="member-name-link">supportedItems</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#weight" class="member-name-link">weight</a></code></div>
+<div class="col-first odd-row-color"><code><a href="../parts/EquipmentSlotEntry.html" title="class in net.mcreator.element.parts">EquipmentSlotEntry</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#supportedSlots" class="member-name-link">supportedSlots</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#weight" class="member-name-link">weight</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#XML_BASE" class="member-name-link">XML_BASE</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
@@ -176,9 +189,24 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../generator/template/IAdditionalTemplateDataProvider.html" title="interface in net.mcreator.generator.template">IAdditionalTemplateDataProvider</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAdditionalTemplateData()" class="member-name-link">getAdditionalTemplateData</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Override this to add additional data to the element data model</div>
+</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.GeneratableElement">Methods inherited from class&nbsp;<a href="../GeneratableElement.html#method-summary" title="class in net.mcreator.element">GeneratableElement</a></h3>
-<code><a href="../GeneratableElement.html#finalizeModElementGeneration()" title="finalizeModElementGeneration()">finalizeModElementGeneration</a>, <a href="../GeneratableElement.html#generateModElementPicture()" title="generateModElementPicture()">generateModElementPicture</a>, <a href="../GeneratableElement.html#getAdditionalTemplateData()" title="getAdditionalTemplateData()">getAdditionalTemplateData</a>, <a href="../GeneratableElement.html#getModElement()" title="getModElement()">getModElement</a>, <a href="../GeneratableElement.html#isDataModelObject(java.lang.Object)" title="isDataModelObject(Object)">isDataModelObject</a>, <a href="../GeneratableElement.html#isUnknown()" title="isUnknown()">isUnknown</a>, <a href="../GeneratableElement.html#setModElement(net.mcreator.workspace.elements.ModElement)" title="setModElement(ModElement)">setModElement</a>, <a href="../GeneratableElement.html#wasConversionApplied()" title="wasConversionApplied()">wasConversionApplied</a></code></div>
+<code><a href="../GeneratableElement.html#finalizeModElementGeneration()" title="finalizeModElementGeneration()">finalizeModElementGeneration</a>, <a href="../GeneratableElement.html#generateModElementPicture()" title="generateModElementPicture()">generateModElementPicture</a>, <a href="../GeneratableElement.html#getModElement()" title="getModElement()">getModElement</a>, <a href="../GeneratableElement.html#isDataModelObject(java.lang.Object)" title="isDataModelObject(Object)">isDataModelObject</a>, <a href="../GeneratableElement.html#isUnknown()" title="isUnknown()">isUnknown</a>, <a href="../GeneratableElement.html#setModElement(net.mcreator.workspace.elements.ModElement)" title="setModElement(ModElement)">setModElement</a>, <a href="../GeneratableElement.html#wasConversionApplied()" title="wasConversionApplied()">wasConversionApplied</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#method-summary" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -194,6 +222,22 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="XML_BASE">
+<h3>XML_BASE</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">XML_BASE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.element.types.Enchantment.XML_BASE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="name">
 <h3>name</h3>
 <div class="horizontal-scroll">
@@ -205,7 +249,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="supportedSlots">
 <h3>supportedSlots</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">supportedSlots</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/EquipmentSlotEntry.html" title="class in net.mcreator.element.parts">EquipmentSlotEntry</a></span>&nbsp;<span class="element-name">supportedSlots</span></div>
 </div>
 </section>
 </li>
@@ -245,7 +289,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="incompatibleEnchantments">
 <h3>incompatibleEnchantments</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/Enchantment.html" title="class in net.mcreator.element.parts">Enchantment</a>&gt;</span>&nbsp;<span class="element-name">incompatibleEnchantments</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/EnchantmentEntry.html" title="class in net.mcreator.element.parts">EnchantmentEntry</a>&gt;</span>&nbsp;<span class="element-name">incompatibleEnchantments</span></div>
 </div>
 </section>
 </li>
@@ -289,6 +333,14 @@ loadScripts(document, 'script');</script>
 </div>
 </section>
 </li>
+<li>
+<section class="detail" id="effectsxml">
+<h3>effectsxml</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">effectsxml</span></div>
+</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -302,6 +354,31 @@ loadScripts(document, 'script');</script>
 <h3>Enchantment</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Enchantment</span><wbr><span class="parameters">(<a href="../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;element)</span></div>
+</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="getAdditionalTemplateData()">
+<h3>getAdditionalTemplateData</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../generator/template/IAdditionalTemplateDataProvider.html" title="interface in net.mcreator.generator.template">IAdditionalTemplateDataProvider</a></span>&nbsp;<span class="element-name">getAdditionalTemplateData</span>()</div>
+<div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="../GeneratableElement.html#getAdditionalTemplateData()">GeneratableElement</a></code></span></div>
+<div class="block">Override this to add additional data to the element data model</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../GeneratableElement.html#getAdditionalTemplateData()">getAdditionalTemplateData</a></code>&nbsp;in class&nbsp;<code><a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></dd>
+<dt>Returns:</dt>
+<dd>null if no additional data, or IAdditionalTemplateDataProvider implementation</dd>
+</dl>
 </div>
 </section>
 </li>
