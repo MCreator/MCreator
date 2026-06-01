@@ -133,7 +133,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Item.class, "damageVsEntity");
 	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Item.class, "attackSpeed");
 
-	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this,
+			JAttributeModifierList.EntryType.ITEM);
 
 	private SingleModElementSelector guiBoundTo;
 	private LogicProcedureSelector openGUIOnRightClick;
