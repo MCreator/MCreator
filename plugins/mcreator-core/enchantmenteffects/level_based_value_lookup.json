@@ -1,0 +1,33 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "fallback",
+      "check": "Number"
+    }
+  ],
+  "mutator": "level_based_value_lookup_mutator",
+  "inputsInline": false,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "levelbasedvalues",
+    "toolbox_init": [
+      "<mutation inputs=\"3\"></mutation>",
+      "<value name=\"fallback\"><block type=\"math_number\"><field name=\"NUM\">2</field></block></value>"
+    ],
+    "inputs": [
+      "fallback"
+    ],
+    "repeating_fields": [
+      {
+        "name": "value",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_number",
+          "value": 1
+        }
+      }
+    ]
+  }
+}

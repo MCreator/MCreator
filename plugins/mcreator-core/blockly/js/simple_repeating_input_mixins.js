@@ -313,3 +313,13 @@ Blockly.Extensions.registerMutator('any_item_mutator', simpleRepeatingInputMixin
                 .appendField(new FieldMCItemSelector(), 'item' + index);
         }, false, ['item']),
     undefined, ['any_item_mutator_input']);
+
+// Mutator for lookup level-based value
+Blockly.Extensions.registerMutator('level_based_value_lookup_mutator', simpleRepeatingInputMixin(
+        'level_based_value_lookup_mutator_container', 'level_based_value_lookup_mutator_input', 'value',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.entry').replace('%1', index + 1))
+                .appendField(new Blockly.FieldNumber(index + 1), 'value' + index)
+        }, false, ['value']),
+    undefined, ['level_based_value_lookup_mutator_input']);
