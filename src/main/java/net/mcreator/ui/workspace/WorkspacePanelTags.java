@@ -28,7 +28,6 @@ import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.AddCommonTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
@@ -67,7 +66,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator(), ModElementType.FUNCTION);
 	private final JItemListField<DamageTypeEntry> listFieldDamageTypes = new DamageTypeListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
-	private final JItemListField<Enchantment> listFieldEnchantment = new EnchantmentListField(
+	private final JItemListField<EnchantmentEntry> listFieldEnchantment = new EnchantmentListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<GameEventEntry> listFieldGameEvents = new GameEventListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
@@ -183,7 +182,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 						}
 						case ENCHANTMENTS -> {
 							listFieldEnchantment.setListElements(entries.map(
-											e -> (Enchantment) TagElement.entryToMappableElement(
+											e -> (EnchantmentEntry) TagElement.entryToMappableElement(
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldEnchantment;
@@ -503,10 +502,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					yield retval;
 				}
 				case ENCHANTMENTS -> {
-					JItemListField<Enchantment> retval = new EnchantmentListField(mcreator).allowTags()
+					JItemListField<EnchantmentEntry> retval = new EnchantmentListField(mcreator).allowTags()
 							.allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
-							.map(e -> (Enchantment) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+							.map(e -> (EnchantmentEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
