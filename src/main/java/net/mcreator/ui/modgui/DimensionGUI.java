@@ -19,7 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.generator.GeneratorFlavor;
@@ -682,7 +682,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		Dimension dimension = new Dimension(modElement);
 		dimension.texture = texture.getTextureHolder();
 		dimension.portalTexture = portalTexture.getTextureHolder();
-		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
+		dimension.portalParticles = new ParticleEntry(mcreator.getWorkspace(), portalParticles.getSelectedItem());
 		dimension.creativeTabs = creativeTabs.getListElements();
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
