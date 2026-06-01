@@ -25,17 +25,25 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.List;
+import java.util.function.Supplier;
 
-public record HistoryCheckpoint(String hash, String message, int timestamp) {
+public record HistoryCheckpoint(String hash, String message, int timestamp, Supplier<List<DiffEntry>> diffSupplier) {
 
 	public String getTimestampString() {
-		return Instant.ofEpochSecond(timestamp).atZone(ZoneId.systemDefault()).format(
-				DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
+		return Instant.ofEpochSecond(timestamp).atZone(ZoneId.systemDefault())
+				.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
 						.withLocale(L10N.getLocale()));
 	}
 
 	public String[] getEventNames() {
 		return HistoryManager.eventNamesFromCommitMessage(message);
+	}
+
+	record DiffEntry(ChangeType changeType, String affectedPath) {}
+
+	enum ChangeType {
+		ADD, REMOVE, MODIFY, RENAME, COPY
 	}
 
 }

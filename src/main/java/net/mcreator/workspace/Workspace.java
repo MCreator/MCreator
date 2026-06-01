@@ -165,6 +165,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void addLanguage(String language, LinkedHashMap<String, String> data) {
 		language_map.putIfAbsent(language, new LinkedHashMap<>(data)); // deep copy
+		historyManager.checkpoint("language_added", language);
 		markDirty();
 	}
 
@@ -202,6 +203,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
 
+			historyManager.checkpoint("mod_element_added", element.getType().getReadableName(), element.getName());
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing mod element: {} of type {}", element.getName(), element.getTypeString());
@@ -211,6 +213,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	public void addVariableElement(VariableElement element) {
 		if (!variable_elements.contains(element)) {
 			variable_elements.add(element);
+
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing variable element: {}", element.getName());
@@ -243,6 +246,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// finally remove element form the list
 		mod_elements.remove(element);
+
+		historyManager.checkpoint("mod_element_removed", element.getType().getReadableName(), element.getName());
 
 		markDirty();
 	}

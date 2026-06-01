@@ -116,6 +116,9 @@ public class WorkspaceGeneratorSetupDialog {
 
 				WorkspaceGeneratorSetup.completeSetup(m.getGenerator());
 
+				m.getWorkspace().getHistoryManager().importantCheckpoint("generator_setup_complete",
+						m.getGeneratorConfiguration().getGeneratorName());
+
 				dial.hideDialog();
 
 				SwingUtilities.invokeLater(() -> {

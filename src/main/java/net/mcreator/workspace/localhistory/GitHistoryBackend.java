@@ -25,6 +25,9 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffFormatter;
+import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.dircache.DirCache;
 import org.eclipse.jgit.dircache.DirCacheCheckout;
 import org.eclipse.jgit.lib.ObjectId;
@@ -33,6 +36,7 @@ import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -48,11 +52,16 @@ class GitHistoryBackend implements AutoCloseable {
 	private final Git git;
 	private final ReentrantLock lock = new ReentrantLock();
 
-	private GitHistoryBackend(Git git) {
+	private final HistoryManager historyManager;
+
+	private GitHistoryBackend(HistoryManager historyManager, Git git) {
 		this.git = git;
+		this.historyManager = historyManager;
 	}
 
-	@Nullable static GitHistoryBackend tryCreate(File workspaceRoot) {
+	@Nullable static GitHistoryBackend tryCreate(HistoryManager historyManager) {
+		File workspaceRoot = historyManager.getWorkspaceFolder();
+
 		File historyDatabaseDir = new File(workspaceRoot, ".mcreator/localHistory");
 
 		try {
@@ -82,9 +91,9 @@ class GitHistoryBackend implements AutoCloseable {
 
 			configureIgnores(historyDatabaseDir);
 
-			GitHistoryBackend backend = new GitHistoryBackend(git);
+			GitHistoryBackend backend = new GitHistoryBackend(historyManager, git);
 			if (isNewRepo) {
-				backend.saveCheckpoint(HistoryManager.commitMessageFromEvents(List.of("Initial checkpoint")));
+				historyManager.checkpoint("initial");
 				LOG.debug("Initialized local history repository");
 			} else {
 				LOG.debug("Loaded local history repository");
@@ -135,7 +144,7 @@ class GitHistoryBackend implements AutoCloseable {
 				git.add().setUpdate(true).addFilepattern(".").call();
 			}
 
-			git.commit().setMessage(eventName).setAuthor("MCreator Local History", "system@localhost").call();
+			git.commit().setMessage(eventName).call();
 		} catch (GitAPIException e) {
 			LOG.warn("Failed to save local history checkpoint: {}", e.getMessage());
 		} finally {
@@ -151,7 +160,8 @@ class GitHistoryBackend implements AutoCloseable {
 		lock.lock();
 		try {
 			for (RevCommit commit : git.log().call()) {
-				history.add(new HistoryCheckpoint(commit.getName(), commit.getFullMessage(), commit.getCommitTime()));
+				history.add(new HistoryCheckpoint(commit.getName(), commit.getFullMessage(), commit.getCommitTime(),
+						() -> getDiffEntries(commit)));
 			}
 		} catch (GitAPIException e) {
 			LOG.warn("Failed to retrieve local history checkpoints: {}", e.getMessage());
@@ -160,6 +170,38 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 
 		return history;
+	}
+
+	private List<HistoryCheckpoint.DiffEntry> getDiffEntries(RevCommit commit) {
+		List<HistoryCheckpoint.DiffEntry> diffList = new ArrayList<>();
+		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
+			df.setRepository(git.getRepository());
+			df.setDiffComparator(RawTextComparator.DEFAULT);
+			df.setDetectRenames(true);
+			try {
+				RevCommit parent = commit.getParentCount() > 0 ? commit.getParent(0) : null;
+				if (parent != null) {
+					for (DiffEntry diff : df.scan(parent.getTree(), commit.getTree())) {
+						switch (diff.getChangeType()) {
+						case ADD -> diffList.add(
+								new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.ADD, diff.getNewPath()));
+						case MODIFY -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.MODIFY,
+								diff.getNewPath()));
+						case DELETE -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.REMOVE,
+								diff.getOldPath()));
+						case RENAME -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.RENAME,
+								diff.getNewPath()));
+						case COPY -> diffList.add(
+								new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.COPY, diff.getNewPath()));
+						default -> throw new IllegalStateException("Unexpected value: " + diff.getChangeType());
+						}
+					}
+				}
+			} catch (IOException e) {
+				LOG.warn("Failed to calculate diff for commit {}: {}", commit.getName(), e.getMessage());
+			}
+		}
+		return diffList;
 	}
 
 	void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
@@ -185,23 +227,10 @@ class GitHistoryBackend implements AutoCloseable {
 
 			// Immediately save this reverted state as a new event on the timeline
 			HistoryCheckpoint checkpoint = new HistoryCheckpoint(targetCommit.getName(), targetCommit.getFullMessage(),
-					targetCommit.getCommitTime());
-			saveCheckpoint(
-					HistoryManager.commitMessageFromEvents(List.of("Reverted to " + checkpoint.getTimestampString())));
+					targetCommit.getCommitTime(), List::of);
+			historyManager.checkpoint("revert", checkpoint.getTimestampString());
 		} catch (Exception e) {
 			throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, e);
-		} finally {
-			lock.unlock();
-		}
-	}
-
-	private void optimizeRepository() {
-		lock.lock();
-		try {
-			git.gc().call(); // Runs standard git gc to pack loose objects and compress history
-			LOG.debug("Local history garbage collection completed successfully.");
-		} catch (GitAPIException e) {
-			LOG.warn("Failed to run garbage collection on local history: {}", e.getMessage());
 		} finally {
 			lock.unlock();
 		}
@@ -210,7 +239,6 @@ class GitHistoryBackend implements AutoCloseable {
 	@Override public void close() {
 		lock.lock();
 		try {
-			optimizeRepository();
 			git.close();
 		} finally {
 			lock.unlock();

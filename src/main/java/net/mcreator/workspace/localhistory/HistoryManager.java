@@ -21,6 +21,7 @@ package net.mcreator.workspace.localhistory;
 
 import com.google.gson.Gson;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
@@ -33,12 +34,20 @@ public final class HistoryManager implements AutoCloseable {
 	private static final Gson gson = new Gson();
 
 	@Nullable private final GitHistoryBackend backend;
-	private final List<String> pendingEventNames = new ArrayList<>();
+	private final List<String> pendingEvents = new ArrayList<>();
 	private long lastCheckpointMillis = System.currentTimeMillis();
 
+	private final File workspaceFolder;
+
 	public HistoryManager(Workspace workspace) {
+		this(workspace.getWorkspaceFolder());
+	}
+
+	public HistoryManager(File workspaceFolder) {
+		this.workspaceFolder = workspaceFolder;
+
 		if (PreferencesManager.PREFERENCES.backups.enableLocalHistory.get()) {
-			backend = GitHistoryBackend.tryCreate(workspace.getWorkspaceFolder());
+			backend = GitHistoryBackend.tryCreate(this);
 		} else {
 			backend = null;
 		}
@@ -49,16 +58,20 @@ public final class HistoryManager implements AutoCloseable {
 	 *
 	 * @param checkpointName Checkpoint name should reflect the current state of the workspace at the time of the checkpoint.
 	 */
-	public void checkpoint(String checkpointName) {
-		checkpoint(checkpointName, false);
+	public void checkpoint(String checkpointName, Object... parameters) {
+		checkpoint(false, checkpointName, parameters);
 	}
 
-	public synchronized void checkpoint(String checkpointName, boolean important) {
+	public void importantCheckpoint(String checkpointName, Object... parameters) {
+		checkpoint(true, checkpointName, parameters);
+	}
+
+	private synchronized void checkpoint(boolean important, String checkpointName, Object... parameters) {
 		if (backend == null) {
 			return;
 		}
 
-		pendingEventNames.add(checkpointName);
+		pendingEvents.add(L10N.t("local_history.checkpoint." + checkpointName, parameters));
 
 		if (important || isSaveIntervalElapsed()) {
 			flushPendingCheckpoint();
@@ -71,18 +84,18 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	private void flushPendingCheckpoint() {
-		if (pendingEventNames.isEmpty()) {
+		if (pendingEvents.isEmpty()) {
 			return;
 		}
 
-		String chainedEventNames = gson.toJson(pendingEventNames);
-		if (saveCheckpoint(chainedEventNames)) {
+		// TODO: we may want to do pagination of multiple events here
+		if (saveCheckpoint(commitMessageFromEvents(pendingEvents))) {
 			lastCheckpointMillis = System.currentTimeMillis();
 		}
 
 		// Clear events in every case, as even if saveCheckpoint returned false,
 		// this means no changes were needed to be committed, meaning events did not change any files
-		pendingEventNames.clear();
+		pendingEvents.clear();
 	}
 
 	private boolean saveCheckpoint(String eventName) {
@@ -101,6 +114,10 @@ public final class HistoryManager implements AutoCloseable {
 		return backend.getCheckpoints();
 	}
 
+	public File getWorkspaceFolder() {
+		return workspaceFolder;
+	}
+
 	@Override public synchronized void close() {
 		flushPendingCheckpoint();
 		if (backend != null) {
@@ -111,14 +128,14 @@ public final class HistoryManager implements AutoCloseable {
 	// TODO: add a method to clear local history (delete repo), so user can clear history for space saving, should close manager, delete files and open new one
 
 	public static void revertToCommit(String hash, File workspaceFolder) throws LocalHistoryException {
-		try (GitHistoryBackend backend = GitHistoryBackend.tryCreate(workspaceFolder)) {
+		try (GitHistoryBackend backend = GitHistoryBackend.tryCreate(new HistoryManager(workspaceFolder))) {
 			if (backend != null) {
 				backend.revertToCheckpoint(hash);
 			}
 		}
 	}
 
-	static String commitMessageFromEvents(List<String> eventNames) {
+	private static String commitMessageFromEvents(List<String> eventNames) {
 		return gson.toJson(eventNames);
 	}
 

@@ -47,6 +47,8 @@ public class WorkspaceGeneratorSetup {
 	private static final Logger LOG = LogManager.getLogger("Workspace Setup");
 
 	public static void cleanupGeneratorForSwitchTo(Workspace workspace, GeneratorConfiguration newGenerator) {
+		workspace.getHistoryManager().checkpoint("generator_switch_cleanup", newGenerator.getGeneratorName());
+
 		Generator currentGenerator = workspace.getGenerator();
 
 		if (currentGenerator != null) { // conversion from a generator that is present
