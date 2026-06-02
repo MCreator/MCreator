@@ -314,6 +314,14 @@ Blockly.Extensions.registerMutator('any_item_mutator', simpleRepeatingInputMixin
         }, false, ['item']),
     undefined, ['any_item_mutator_input']);
 
+Blockly.Extensions.registerMutator('item_predicate_mutator', simpleRepeatingInputMixin(
+        'item_predicate_mutator_container', 'item_predicate_mutator_input', 'predicateComponent',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('DataComponentPredicate').setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['item_predicate_mutator_input']);
+
 // Mutator for lookup level-based value
 Blockly.Extensions.registerMutator('level_based_value_lookup_mutator', simpleRepeatingInputMixin(
         'level_based_value_lookup_mutator_container', 'level_based_value_lookup_mutator_input', 'value',
