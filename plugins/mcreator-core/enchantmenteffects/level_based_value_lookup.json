@@ -14,7 +14,7 @@
     "toolbox_id": "levelbasedvalues",
     "toolbox_init": [
       "<mutation inputs=\"3\"></mutation>",
-      "<value name=\"fallback\"><block type=\"math_number\"><field name=\"NUM\">2</field></block></value>"
+      "<value name=\"fallback\"><block type=\"math_number\"><field name=\"NUM\">4</field></block></value>"
     ],
     "inputs": [
       "fallback"
