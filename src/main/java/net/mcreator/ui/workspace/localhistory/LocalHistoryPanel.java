@@ -48,9 +48,9 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.util.List;
 
-public class HistoryPanel extends JPanel {
+public class LocalHistoryPanel extends JPanel {
 
-	private static final Logger LOG = LogManager.getLogger(HistoryPanel.class);
+	private static final Logger LOG = LogManager.getLogger(LocalHistoryPanel.class);
 
 	private final MCreator mcreator;
 
@@ -66,7 +66,7 @@ public class HistoryPanel extends JPanel {
 
 	@Nullable private SwingWorker<List<HistoryCheckpoint.DiffEntry>, Void> diffWorker;
 
-	public HistoryPanel(MCreator mcreator) {
+	public LocalHistoryPanel(MCreator mcreator) {
 		super(new BorderLayout());
 		setOpaque(false);
 

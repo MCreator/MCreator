@@ -27,7 +27,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
-import net.mcreator.ui.workspace.localhistory.HistoryPanel;
+import net.mcreator.ui.workspace.localhistory.LocalHistoryPanel;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -67,7 +67,7 @@ public abstract class MCreator extends MCreatorFrame {
 	private final GradleConsole gradleConsole;
 
 	private final WorkspaceFileBrowser workspaceFileBrowser;
-	private final HistoryPanel localHistoryPanel;
+	private final LocalHistoryPanel localHistoryPanel;
 
 	private final ActionRegistry actionRegistry;
 
@@ -101,7 +101,7 @@ public abstract class MCreator extends MCreatorFrame {
 		this.actionRegistry = new ActionRegistry(this);
 
 		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
-		this.localHistoryPanel = new HistoryPanel(this);
+		this.localHistoryPanel = new LocalHistoryPanel(this);
 
 		this.menuBar = createMenuBar();
 		this.toolBar = createToolBar();
