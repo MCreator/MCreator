@@ -21,17 +21,17 @@ package net.mcreator.workspace.localhistory;
 
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class HistoryManager implements AutoCloseable {
 
@@ -39,6 +39,7 @@ public final class HistoryManager implements AutoCloseable {
 
 	@Nullable private final GitHistoryBackend backend;
 	private final List<HistoryEvent> pendingEvents = new ArrayList<>();
+	private final List<Runnable> checkpointListeners = new CopyOnWriteArrayList<>();
 	private long lastCheckpointMillis = System.currentTimeMillis();
 
 	private final File workspaceFolder;
@@ -92,16 +93,15 @@ public final class HistoryManager implements AutoCloseable {
 		String commitMessage;
 		if (pendingEvents.size() == 1) {
 			commitMessage = pendingEvents.getFirst().eventName();
-		} else if (pendingEvents.size() == 2) {
-			commitMessage = L10N.t("local_history.checkpoint.two_events", pendingEvents.getLast().eventName(),
-					StringUtils.lowercaseFirstLetter(pendingEvents.getFirst().eventName()));
 		} else {
 			commitMessage = L10N.t("local_history.checkpoint.and_n_more",
-					pendingEvents.stream().limit(2).map(HistoryEvent::eventName).collect(Collectors.toList()),
-					pendingEvents.size() - 2);
+					pendingEvents.stream().limit(1).map(HistoryEvent::eventName).findFirst().orElse(""),
+					pendingEvents.size() - 1);
 		}
+
 		if (saveCheckpoint(commitMessage)) {
 			lastCheckpointMillis = System.currentTimeMillis();
+			notifyCheckpointListeners();
 		} else {
 			LOG.debug("Checkpoint '{}' was not saved as there were no changes to commit", commitMessage);
 		}
@@ -119,12 +119,24 @@ public final class HistoryManager implements AutoCloseable {
 		return backend.saveCheckpoint(eventName);
 	}
 
+	public void addCheckpointListener(Runnable listener) {
+		checkpointListeners.add(listener);
+	}
+
 	public List<HistoryCheckpoint> getCheckpoints() {
 		if (backend == null) {
 			return List.of();
 		}
 
 		return backend.getCheckpoints();
+	}
+
+	public boolean optimizeStorage() {
+		if (backend == null) {
+			return false;
+		}
+
+		return backend.optimizeStorage();
 	}
 
 	// TODO: add revert
@@ -134,6 +146,12 @@ public final class HistoryManager implements AutoCloseable {
 
 	public File getWorkspaceFolder() {
 		return workspaceFolder;
+	}
+
+	private void notifyCheckpointListeners() {
+		for (Runnable listener : checkpointListeners) {
+			SwingUtilities.invokeLater(listener);
+		}
 	}
 
 	@Override public synchronized void close() {

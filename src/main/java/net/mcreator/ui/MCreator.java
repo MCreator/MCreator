@@ -27,6 +27,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
+import net.mcreator.ui.workspace.localhistory.HistoryPanel;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -61,10 +62,12 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public static final String DOCK_CONSOLE = "console";
 	public static final String DOCK_PROJECT_BROWSER = "project_browser";
+	public static final String DOCK_LOCAL_HISTORY = "local_history";
 
 	private final GradleConsole gradleConsole;
 
 	private final WorkspaceFileBrowser workspaceFileBrowser;
+	private final HistoryPanel localHistoryPanel;
 
 	private final ActionRegistry actionRegistry;
 
@@ -98,6 +101,7 @@ public abstract class MCreator extends MCreatorFrame {
 		this.actionRegistry = new ActionRegistry(this);
 
 		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
+		this.localHistoryPanel = new HistoryPanel(this);
 
 		this.menuBar = createMenuBar();
 		this.toolBar = createToolBar();
@@ -133,6 +137,9 @@ public abstract class MCreator extends MCreatorFrame {
 
 		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);
+		leftDockRegion.addDock(DOCK_LOCAL_HISTORY, 280, L10N.t("dock.local_history"), UIRES.get("16px.dock_history"),
+				localHistoryPanel);
+		leftDockRegion.addDockVisibilityListener(DOCK_LOCAL_HISTORY, _ -> localHistoryPanel.reloadContent());
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 

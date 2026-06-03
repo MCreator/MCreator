@@ -248,4 +248,18 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 	}
 
+	public boolean optimizeStorage() {
+		lock.lock();
+		try {
+			git.gc().call();
+			LOG.debug("Optimized local history storage");
+			return true;
+		} catch (GitAPIException e) {
+			LOG.warn("Failed to optimize local history storage: {}", e.getMessage());
+		} finally {
+			lock.unlock();
+		}
+		return false;
+	}
+
 }

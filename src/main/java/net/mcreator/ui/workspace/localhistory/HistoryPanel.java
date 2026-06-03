@@ -20,11 +20,10 @@
 package net.mcreator.ui.workspace.localhistory;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.workspace.localhistory.HistoryCheckpoint;
@@ -36,7 +35,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.util.List;
 
-public class HistoryDialog extends MCreatorDialog {
+public class HistoryPanel extends JPanel {
 
 	private final MCreator mcreator;
 
@@ -48,16 +47,13 @@ public class HistoryDialog extends MCreatorDialog {
 	private final JPanel mainContent;
 
 	private final JButton revertCheckpoint;
-	private final JButton resetHistory;
+	private final JMenuItem resetHistory;
 
 	@Nullable private SwingWorker<List<HistoryCheckpoint.DiffEntry>, Void> diffWorker;
 
-	public static void showHistoryDialog(MCreator mcreator) {
-		new HistoryDialog(mcreator).setVisible(true);
-	}
-
-	private HistoryDialog(MCreator mcreator) {
-		super(mcreator, L10N.t("dialog.local_history.title"), true);
+	public HistoryPanel(MCreator mcreator) {
+		super(new BorderLayout());
+		setOpaque(false);
 
 		this.mcreator = mcreator;
 
@@ -71,27 +67,27 @@ public class HistoryDialog extends MCreatorDialog {
 		JScrollPane checkpointScroll = new JScrollPane(checkpointList);
 		checkpointScroll.setBackground(Theme.current().getSecondAltBackgroundColor());
 
-		diffModel = new DefaultTableModel(
-				new Object[] { L10N.t("dialog.local_history.column_change_type"),
-						L10N.t("dialog.local_history.column_file") }, 0) {
+		diffModel = new DefaultTableModel(new Object[] { "", "" }, 0) {
 			@Override public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		JTable diffTable = new JTable(diffModel);
-		diffTable.setRowHeight(24);
+		diffTable.setRowHeight(28);
 		diffTable.setCellSelectionEnabled(false);
 		diffTable.setRowSelectionAllowed(true);
 		diffTable.setColumnSelectionAllowed(false);
 		diffTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		diffTable.getColumnModel().getColumn(0).setMaxWidth(120);
-		diffTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+		diffTable.getColumnModel().getColumn(0).setMaxWidth(90);
+		diffTable.getColumnModel().getColumn(0).setPreferredWidth(75);
 		diffTable.setDefaultRenderer(Object.class,
 				new DiffTableCellRenderer(diffTable.getDefaultRenderer(Object.class)));
 		diffTable.setShowVerticalLines(false);
-		diffTable.setIntercellSpacing(new Dimension(0, 0));
+		diffTable.setBackground(Theme.current().getSecondAltBackgroundColor());
+		diffTable.setTableHeader(null);
 
 		JScrollPane diffScroll = new JScrollPane(diffTable);
+		diffScroll.setBorder(BorderFactory.createEmptyBorder(5, 2, 5, 3));
 
 		JLabel emptyHistoryLabel = new JLabel(L10N.t("dialog.local_history.no_history"), SwingConstants.CENTER);
 		emptyHistoryLabel.setForeground(Theme.current().getAltForegroundColor());
@@ -107,12 +103,10 @@ public class HistoryDialog extends MCreatorDialog {
 		diffContent.add(diffScroll, "table");
 		diffContent.add(PanelUtils.totalCenterInPanel(noChangesLabel), "empty");
 
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, checkpointScroll, diffContent);
-		splitPane.setContinuousLayout(true);
-		splitPane.setDividerLocation(260);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, checkpointScroll, diffContent);
+		splitPane.setDividerLocation((int) (mcreator.getHeight() * 0.6));
+		splitPane.setResizeWeight(1);
 		splitPane.setOpaque(false);
-		splitPane.setBackground(Theme.current().getBackgroundColor());
-		splitPane.setResizeWeight(0.35);
 
 		mainCardLayout = new CardLayout();
 		mainContent = new JPanel(mainCardLayout);
@@ -120,29 +114,37 @@ public class HistoryDialog extends MCreatorDialog {
 		mainContent.add(PanelUtils.totalCenterInPanel(emptyHistoryLabel), "empty");
 		mainContent.add(splitPane, "history");
 
-		TransparentToolBar toolBar = new TransparentToolBar();
-		toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.X_AXIS));
+		JToolBar topBar = new JToolBar();
+		topBar.setOpaque(false);
+		topBar.setFloatable(false);
 
 		revertCheckpoint = L10N.button("dialog.local_history.revert");
-		resetHistory = L10N.button("dialog.local_history.reset");
-		JButton optimizeStorage = L10N.button("dialog.local_history.optimize");
-
-		toolBar.add(revertCheckpoint);
-		toolBar.add(Box.createHorizontalGlue());
-		toolBar.add(resetHistory);
-		toolBar.add(optimizeStorage);
-
+		revertCheckpoint.setIcon(UIRES.get("16px.rwd"));
 		// TODO: implement revert checkpoint
+
+		topBar.add(revertCheckpoint);
+		topBar.add(Box.createHorizontalGlue());
+
+		JPopupMenu moreOptionsMenu = new JPopupMenu();
+		resetHistory = new JMenuItem(L10N.t("dialog.local_history.reset"));
+		JMenuItem optimizeStorage = new JMenuItem(L10N.t("dialog.local_history.optimize"));
+		moreOptionsMenu.add(resetHistory);
+		moreOptionsMenu.add(optimizeStorage);
 		// TODO: implement optimize storage
 
 		resetHistory.addActionListener(_ -> {
-			int option = JOptionPane.showConfirmDialog(this, L10N.t("dialog.local_history.reset_confirm"),
+			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.local_history.reset_confirm"),
 					L10N.t("dialog.local_history.reset"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (option == JOptionPane.YES_OPTION) {
 				mcreator.getWorkspace().resetLocalHistory();
+				registerCheckpointListener();
 				reloadContent();
 			}
 		});
+
+		JButton moreOptions = new JButton(UIRES.get("more"));
+		moreOptions.addActionListener(_ -> moreOptionsMenu.show(moreOptions, 0, moreOptions.getHeight()));
+		topBar.add(moreOptions);
 
 		checkpointList.addListSelectionListener(e -> {
 			if (e.getValueIsAdjusting()) {
@@ -151,18 +153,33 @@ public class HistoryDialog extends MCreatorDialog {
 			loadSelectedCheckpointDiff();
 		});
 
-		add("Center", PanelUtils.northAndCenterElement(toolBar, mainContent));
+		add("Center", mainContent);
+		add("North", topBar);
 
-		setSize(880, 520);
-		setLocationRelativeTo(mcreator);
-
+		registerCheckpointListener();
 		reloadContent();
 	}
 
-	private void reloadContent() {
+	private void registerCheckpointListener() {
+		mcreator.getWorkspace().getHistoryManager().addCheckpointListener(() -> reloadContent(true));
+	}
+
+	public void reloadContent() {
+		reloadContent(false);
+	}
+
+	private void reloadContent(boolean selectNewestCheckpoint) {
 		cancelDiffWorker();
 		diffModel.setRowCount(0);
 		diffCardLayout.show(diffContent, "empty");
+
+		@Nullable String selectedHash = null;
+		if (!selectNewestCheckpoint) {
+			HistoryCheckpoint selected = checkpointList.getSelectedValue();
+			if (selected != null) {
+				selectedHash = selected.hash();
+			}
+		}
 
 		List<HistoryCheckpoint> checkpoints = mcreator.getWorkspace().getHistoryManager().getCheckpoints();
 		checkpointList.setListData(checkpoints.toArray(HistoryCheckpoint[]::new));
@@ -178,6 +195,16 @@ public class HistoryDialog extends MCreatorDialog {
 		}
 
 		mainCardLayout.show(mainContent, "history");
+
+		if (selectedHash != null) {
+			for (int i = 0; i < checkpoints.size(); i++) {
+				if (checkpoints.get(i).hash().equals(selectedHash)) {
+					checkpointList.setSelectedIndex(i);
+					return;
+				}
+			}
+		}
+
 		checkpointList.setSelectedIndex(0);
 	}
 
@@ -246,10 +273,10 @@ public class HistoryDialog extends MCreatorDialog {
 	private static Color getChangeTypeColor(HistoryCheckpoint.ChangeType changeType) {
 		return switch (changeType) {
 			case ADD -> new Color(96, 175, 110);
-			case MODIFY -> new Color(214, 168, 78);
+			case MODIFY -> new Color(92, 168, 220);
 			case REMOVE -> new Color(224, 102, 96);
-			case RENAME -> new Color(92, 168, 220);
-			case COPY -> new Color(168, 118, 192);
+			case RENAME -> new Color(168, 118, 192);
+			case COPY -> new Color(214, 168, 78);
 		};
 	}
 
@@ -259,7 +286,7 @@ public class HistoryDialog extends MCreatorDialog {
 				HistoryCheckpoint checkpoint, int index, boolean isSelected, boolean cellHasFocus) {
 			JLabel label = new JLabel();
 			label.setOpaque(true);
-			label.setBorder(BorderFactory.createEmptyBorder(6, 10, 6, 10));
+			label.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
 			Color titleColor;
 			Color subtitleColor;
