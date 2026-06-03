@@ -413,6 +413,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 
+	public void resetLocalHistory() {
+		this.historyManager.close();
+		FileIO.deleteDir(HistoryManager.getLocalHistoryRoot(this.getWorkspaceFolder()));
+		this.historyManager = new HistoryManager(this);
+	}
+
 	public void markFailingGradleDependencies() {
 		this.failingGradleDependencies = true;
 		LOG.error("Detected failing Gradle dependencies. Will try to recover on next build.");

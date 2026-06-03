@@ -26,6 +26,7 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
@@ -149,9 +150,13 @@ public final class HistoryManager implements AutoCloseable {
 
 	record HistoryEvent(String eventName, boolean important) {
 
-		@Override public String toString() {
+		@Nonnull @Override public String toString() {
 			return eventName;
 		}
+	}
+
+	public static File getLocalHistoryRoot(File workspaceFolder) {
+		return new File(workspaceFolder, ".mcreator/localHistory");
 	}
 
 }

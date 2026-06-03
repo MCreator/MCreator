@@ -63,7 +63,7 @@ class GitHistoryBackend implements AutoCloseable {
 	@Nullable static GitHistoryBackend tryCreate(HistoryManager historyManager) {
 		File workspaceRoot = historyManager.getWorkspaceFolder();
 
-		File historyDatabaseDir = new File(workspaceRoot, ".mcreator/localHistory");
+		File historyDatabaseDir = HistoryManager.getLocalHistoryRoot(workspaceRoot);
 
 		try {
 			boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").isFile();
