@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.ColorUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.localhistory.HistoryCheckpoint;
 
 import javax.annotation.Nullable;
@@ -104,7 +105,7 @@ public class HistoryPanel extends JPanel {
 		diffContent.add(PanelUtils.totalCenterInPanel(noChangesLabel), "empty");
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, checkpointScroll, diffContent);
-		splitPane.setDividerLocation((int) (mcreator.getHeight() * 0.6));
+		splitPane.setDividerLocation((int) (mcreator.getHeight() * 0.55));
 		splitPane.setResizeWeight(1);
 		splitPane.setOpaque(false);
 
@@ -130,7 +131,17 @@ public class HistoryPanel extends JPanel {
 		JMenuItem optimizeStorage = new JMenuItem(L10N.t("dialog.local_history.optimize"));
 		moreOptionsMenu.add(resetHistory);
 		moreOptionsMenu.add(optimizeStorage);
-		// TODO: implement optimize storage
+
+		optimizeStorage.addActionListener(_ -> {
+			boolean success = mcreator.getWorkspace().getHistoryManager().optimizeStorage();
+			if (success) {
+				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_success.message"),
+						L10N.t("dialog.local_history.optimize.title"), JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_failed.message"),
+						L10N.t("dialog.local_history.optimize.title"), JOptionPane.WARNING_MESSAGE);
+			}
+		});
 
 		resetHistory.addActionListener(_ -> {
 			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.local_history.reset_confirm"),
@@ -274,9 +285,9 @@ public class HistoryPanel extends JPanel {
 		return switch (changeType) {
 			case ADD -> new Color(96, 175, 110);
 			case MODIFY -> new Color(92, 168, 220);
-			case REMOVE -> new Color(224, 102, 96);
-			case RENAME -> new Color(168, 118, 192);
-			case COPY -> new Color(214, 168, 78);
+			case REMOVE -> new Color(163, 163, 163);
+			case RENAME -> new Color(118, 192, 161);
+			case COPY -> new Color(144, 78, 214);
 		};
 	}
 
@@ -300,9 +311,11 @@ public class HistoryPanel extends JPanel {
 				subtitleColor = Theme.current().getAltForegroundColor();
 			}
 
-			label.setText("<html><b><font color='" + ColorUtils.formatColor(titleColor) + "'>" + checkpoint.name()
-					+ "</font></b><br><font size='-1' color='" + ColorUtils.formatColor(subtitleColor) + "'>"
-					+ checkpoint.getTimestampString() + "</font>");
+			label.setText(
+					"<html><b><font color='" + ColorUtils.formatColor(titleColor) + "'>" + StringUtils.abbreviateString(
+							checkpoint.name(), 40) + "</font></b><br><font size='-1' color='" + ColorUtils.formatColor(
+							subtitleColor) + "'>" + checkpoint.getTimestampString() + "</font>");
+			label.setToolTipText(checkpoint.name());
 			return label;
 		}
 	}
