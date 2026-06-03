@@ -127,6 +127,11 @@ public final class HistoryManager implements AutoCloseable {
 		return backend.getCheckpoints();
 	}
 
+	// TODO: add revert
+	// handling of workspace:
+	// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/vcs/ui/actions/impl/RollbackLocalChangesAction.java
+	// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/workspace/TerribleWorkspaceHacks.java
+
 	public File getWorkspaceFolder() {
 		return workspaceFolder;
 	}
@@ -135,16 +140,6 @@ public final class HistoryManager implements AutoCloseable {
 		flushPendingEventsIntoCheckpoint();
 		if (backend != null) {
 			backend.close();
-		}
-	}
-
-	// TODO: add a method to clear local history (delete repo), so user can clear history for space saving, should close manager, delete files and open new one
-
-	public static void revertToCommit(String hash, File workspaceFolder) throws LocalHistoryException {
-		try (GitHistoryBackend backend = GitHistoryBackend.tryCreate(new HistoryManager(workspaceFolder))) {
-			if (backend != null) {
-				backend.revertToCheckpoint(hash);
-			}
 		}
 	}
 

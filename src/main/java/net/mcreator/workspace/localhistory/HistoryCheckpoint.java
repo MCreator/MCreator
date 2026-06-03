@@ -36,9 +36,9 @@ public record HistoryCheckpoint(String hash, String name, int timestamp, Supplie
 						.withLocale(L10N.getLocale()));
 	}
 
-	record DiffEntry(ChangeType changeType, String affectedPath) {}
+	public record DiffEntry(ChangeType changeType, String affectedPath) {}
 
-	enum ChangeType {
+	public enum ChangeType {
 		ADD, REMOVE, MODIFY, RENAME, COPY
 	}
 
