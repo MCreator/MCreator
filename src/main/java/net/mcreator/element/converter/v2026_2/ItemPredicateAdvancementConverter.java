@@ -112,6 +112,42 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 					Element predicateBlock = createPredicateBlock(doc, item, createDamageComponent(doc, min, max));
 					item.appendChild(predicateBlock);
 				}
+			} else if (type.equals("item_in_inventory")) {
+				Element item = null;
+				String min = "1", max = "99";
+
+				for (Element e : XMLUtil.getChildrenWithName(element, "value")) {
+					if (e.hasAttribute("name")) {
+						switch (e.getAttribute("name")) {
+						case "item" -> item = e;
+						case "amount_l" -> {
+							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
+							if (block != null) {
+								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
+								if (field != null) {
+									min = field.getTextContent();
+								}
+							}
+							element.removeChild(e);
+						}
+						case "amount_h" -> {
+							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
+							if (block != null) {
+								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
+								if (field != null) {
+									max = field.getTextContent();
+								}
+							}
+							element.removeChild(e);
+						}
+						}
+					}
+				}
+
+				if (item != null) {
+					Element predicateBlock = createPredicateBlock(doc, item, null, min, max);
+					item.appendChild(predicateBlock);
+				}
 			}
 		}
 
@@ -124,29 +160,38 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 	}
 
 	private Element createPredicateBlock(Document doc, Element item, Element dataComponent) {
+		return createPredicateBlock(doc, item, dataComponent, "1", "99");
+	}
+
+	private Element createPredicateBlock(Document doc, Element item, Element dataComponent, String countMin, String countMax) {
 		Element predicateBlock = doc.createElement("block");
 		predicateBlock.setAttribute("type", "item_predicate");
 
 		Element predicateMutation = doc.createElement("mutation");
-		predicateMutation.setAttribute("inputs", "1");
+		predicateMutation.setAttribute("inputs", dataComponent != null ? "1" : "0");
+		predicateBlock.appendChild(predicateMutation);
+
 		Element minField = doc.createElement("field");
 		minField.setAttribute("name", "min");
-		minField.setTextContent("1");
+		minField.setTextContent(countMin);
+		predicateBlock.appendChild(minField);
+
 		Element maxField = doc.createElement("field");
 		maxField.setAttribute("name", "max");
-		maxField.setTextContent("99");
+		maxField.setTextContent(countMax);
+		predicateBlock.appendChild(maxField);
+
 		Element itemValue = doc.createElement("value");
 		itemValue.setAttribute("name", "item");
 		itemValue.appendChild(XMLUtil.getFirstChildrenWithName(item, "block"));
-		Element predicateComponent = doc.createElement("value");
-		predicateComponent.setAttribute("name", "predicateComponent0");
-		predicateComponent.appendChild(dataComponent);
-
-		predicateBlock.appendChild(predicateMutation);
-		predicateBlock.appendChild(minField);
-		predicateBlock.appendChild(maxField);
 		predicateBlock.appendChild(itemValue);
-		predicateBlock.appendChild(predicateComponent);
+
+		if (dataComponent != null) {
+			Element predicateComponent = doc.createElement("value");
+			predicateComponent.setAttribute("name", "predicateComponent0");
+			predicateComponent.appendChild(dataComponent);
+			predicateBlock.appendChild(predicateComponent);
+		}
 
 		return predicateBlock;
 	}
