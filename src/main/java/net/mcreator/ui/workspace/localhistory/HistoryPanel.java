@@ -27,7 +27,9 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.math.TimeUtils;
 import net.mcreator.workspace.localhistory.HistoryCheckpoint;
+import net.mcreator.workspace.localhistory.LocalHistoryException;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -121,7 +123,7 @@ public class HistoryPanel extends JPanel {
 
 		revertCheckpoint = L10N.button("dialog.local_history.revert");
 		revertCheckpoint.setIcon(UIRES.get("16px.rwd"));
-		// TODO: implement revert checkpoint
+		revertCheckpoint.addActionListener(_ -> revertToSelectedCheckpoint());
 
 		topBar.add(revertCheckpoint);
 		topBar.add(Box.createHorizontalGlue());
@@ -217,6 +219,38 @@ public class HistoryPanel extends JPanel {
 		}
 
 		checkpointList.setSelectedIndex(0);
+	}
+
+	private void revertToSelectedCheckpoint() {
+		HistoryCheckpoint selected = checkpointList.getSelectedValue();
+		if (selected == null) {
+			return;
+		}
+
+		int checkpointsToRevert = checkpointList.getSelectedIndex() + 1;
+		long timeBackMillis = Math.max(0, System.currentTimeMillis() - selected.timestamp() * 1000L);
+		timeBackMillis = (timeBackMillis / TimeUtils.ONE_MINUTE) * TimeUtils.ONE_MINUTE;
+
+		int option = JOptionPane.showConfirmDialog(mcreator,
+				L10N.t("dialog.local_history.revert_confirm", checkpointsToRevert,
+						TimeUtils.millisToLongDHMS(timeBackMillis)), L10N.t("dialog.local_history.revert"),
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		if (option != JOptionPane.YES_OPTION) {
+			return;
+		}
+
+		try {
+			// TODO: add revert
+			// handling of workspace:
+			// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/vcs/ui/actions/impl/RollbackLocalChangesAction.java
+			// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/workspace/TerribleWorkspaceHacks.java
+
+			mcreator.getWorkspace().getHistoryManager().revertToCheckpoint(selected);
+			reloadContent();
+		} catch (LocalHistoryException e) {
+			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.revert_failed.message"),
+					L10N.t("dialog.local_history.revert"), JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	private void loadSelectedCheckpointDiff() {

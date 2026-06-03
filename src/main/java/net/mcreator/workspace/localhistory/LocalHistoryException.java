@@ -21,6 +21,10 @@ package net.mcreator.workspace.localhistory;
 
 public class LocalHistoryException extends Exception {
 
+	public LocalHistoryException(String message) {
+		super(message);
+	}
+
 	public LocalHistoryException(String message, Throwable cause) {
 		super(message, cause);
 	}

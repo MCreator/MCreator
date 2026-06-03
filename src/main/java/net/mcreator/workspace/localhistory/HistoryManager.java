@@ -139,10 +139,13 @@ public final class HistoryManager implements AutoCloseable {
 		return backend.optimizeStorage();
 	}
 
-	// TODO: add revert
-	// handling of workspace:
-	// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/vcs/ui/actions/impl/RollbackLocalChangesAction.java
-	// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/workspace/TerribleWorkspaceHacks.java
+	public void revertToCheckpoint(HistoryCheckpoint checkpoint) throws LocalHistoryException {
+		if (backend == null) {
+			throw new LocalHistoryException("");
+		}
+
+		backend.revertToCheckpoint(checkpoint.hash());
+	}
 
 	public File getWorkspaceFolder() {
 		return workspaceFolder;
