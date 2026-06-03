@@ -21,11 +21,14 @@ package net.mcreator.ui.workspace.localhistory;
 
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
+import net.mcreator.gradle.GradleResultCode;
+import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.workspace.WorkspaceSettingsAction;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
+import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -137,6 +140,16 @@ public class LocalHistoryPanel extends JPanel {
 		revertCheckpoint.setIcon(UIRES.get("16px.rwd"));
 		revertCheckpoint.addActionListener(_ -> revertToSelectedCheckpoint());
 
+		mcreator.getGradleConsole().addGradleStateListener(new GradleStateListener() {
+			@Override public void taskStarted(String taskName) {
+				updateRevertButtonState();
+			}
+
+			@Override public void taskFinished(GradleResultCode result) {
+				updateRevertButtonState();
+			}
+		});
+
 		topBar.add(revertCheckpoint);
 		topBar.add(Box.createHorizontalGlue());
 
@@ -234,12 +247,14 @@ public class LocalHistoryPanel extends JPanel {
 	}
 
 	private void revertToSelectedCheckpoint() {
+		if (isGradleRunning()) {
+			return;
+		}
+
 		HistoryCheckpoint selected = checkpointList.getSelectedValue();
 		if (selected == null) {
 			return;
 		}
-
-		// TODO: do not run revert if Gradle is running
 
 		int checkpointsToRevert = checkpointList.getSelectedIndex() + 1;
 		long timeBackMillis = Math.max(0, System.currentTimeMillis() - selected.timestamp() * 1000L);
@@ -287,9 +302,24 @@ public class LocalHistoryPanel extends JPanel {
 		}
 	}
 
+	private boolean isGradleRunning() {
+		return mcreator.getGradleConsole().getStatus() == GradleConsole.RUNNING;
+	}
+
+	private void updateRevertButtonState() {
+		HistoryCheckpoint selected = checkpointList.getSelectedValue();
+		boolean gradleRunning = isGradleRunning();
+		revertCheckpoint.setEnabled(selected != null && !gradleRunning);
+		if (selected != null && gradleRunning) {
+			revertCheckpoint.setToolTipText(L10N.t("action.gradle.disabled"));
+		} else {
+			revertCheckpoint.setToolTipText(null);
+		}
+	}
+
 	private void loadSelectedCheckpointDiff() {
 		HistoryCheckpoint selected = checkpointList.getSelectedValue();
-		revertCheckpoint.setEnabled(selected != null);
+		updateRevertButtonState();
 
 		cancelDiffWorker();
 
@@ -351,7 +381,7 @@ public class LocalHistoryPanel extends JPanel {
 
 	private static Color getChangeTypeColor(HistoryCheckpoint.ChangeType changeType) {
 		return switch (changeType) {
-			case ADD -> new Color(96, 175, 110);
+			case ADD -> new Color(120, 175, 110);
 			case MODIFY -> new Color(92, 168, 220);
 			case REMOVE -> new Color(163, 163, 163);
 			case RENAME -> new Color(118, 192, 161);
