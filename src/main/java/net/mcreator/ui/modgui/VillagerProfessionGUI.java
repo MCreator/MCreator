@@ -33,6 +33,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
@@ -54,7 +55,7 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 	private final MCItemHolder pointOfInterest = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 	private final SoundSelector actionSound = new SoundSelector(mcreator).requireValue(
 			"elementgui.common.error_sound_empty_null").enableRealTimeValidation();
-	private final JComboBox<String> hat = new JComboBox<>(new String[] { "None", "Partial", "Full" });
+	private final JComboBox<String> hat = ComponentFromAnnotation.options(VillagerProfession.class, "hat");
 
 	private TextureComboBox professionTextureFile;
 	private TextureComboBox zombifiedProfessionTextureFile;

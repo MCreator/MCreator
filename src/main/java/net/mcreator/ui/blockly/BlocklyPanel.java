@@ -237,12 +237,15 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	}
 
 	public void addLocalVariable(String name, String type) {
-		webView.executeScript("workspace.createVariable('" + name + "', '" + type + "', '" + name + "')",
+		webView.executeScript(
+				"workspace.getVariableMap().createVariable('" + name + "', '" + type + "', '" + name + "')",
 				WebView.JSExecutionType.LOCAL_SAFE);
 	}
 
 	public void removeLocalVariable(String name) {
-		webView.executeScript("workspace.deleteVariableById('" + name + "')", WebView.JSExecutionType.LOCAL_SAFE);
+		webView.executeScript(
+				"workspace.getVariableMap().deleteVariable(workspace.getVariableMap().getVariableById('" + name + "'))",
+				WebView.JSExecutionType.LOCAL_SAFE);
 	}
 
 	public List<VariableElement> getLocalVariablesList() {

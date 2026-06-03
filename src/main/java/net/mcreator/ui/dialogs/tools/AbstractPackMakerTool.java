@@ -120,10 +120,12 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 				workspace.addTagElement(tag);
 			}
 
+			List<TagElement.Entry> toAdd = Arrays.stream(entries).map(TagElement.Entry::unmanaged).toList();
+
 			// Add entries if they're not already contained in the tag (in normal or managed form)
-			ArrayList<String> tagEntries = workspace.getTagElements().get(tag);
-			for (String entry : entries) {
-				if (!tagEntries.contains(entry) && !tagEntries.contains(TagElement.makeEntryManaged(entry))) {
+			ArrayList<TagElement.Entry> tagEntries = workspace.getTagElements().get(tag);
+			for (TagElement.Entry entry : toAdd) {
+				if (!tagEntries.contains(entry)) {
 					tagEntries.add(entry);
 				}
 			}

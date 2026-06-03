@@ -232,7 +232,7 @@ public class WebView extends JPanel implements Closeable {
 			}
 		});
 
-		this.client.addJSDialogHandler(new CefJSDialogHandlerAdapter() {
+		this.client.addJSDialogHandler(new SwingJSDialogHandler(this) {
 			@Override
 			public boolean onJSDialog(CefBrowser browser, String origin_url, JSDialogType dialog_type,
 					String message_text, String default_prompt_text, CefJSDialogCallback callback,
@@ -243,7 +243,8 @@ public class WebView extends JPanel implements Closeable {
 						return true;
 					}
 				}
-				return false;
+				return super.onJSDialog(browser, origin_url, dialog_type, message_text, default_prompt_text, callback,
+						suppress_message);
 			}
 		});
 

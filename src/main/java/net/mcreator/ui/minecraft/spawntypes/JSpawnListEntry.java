@@ -19,6 +19,7 @@
 package net.mcreator.ui.minecraft.spawntypes;
 
 import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
@@ -31,6 +32,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -39,8 +41,9 @@ import java.util.stream.Collectors;
 
 public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 
-	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1).allowEqualValues();
+	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(Biome.SpawnEntry.class, "weight");
+	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation.minMaxSpinner(Biome.SpawnEntry.class,
+			"minGroup", "maxGroup").allowEqualValues();
 	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JComboBox<String> entityType = new SearchableComboBox<>();
@@ -90,7 +93,7 @@ public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 	@Override public Biome.SpawnEntry getEntry() {
 		Biome.SpawnEntry entry = new Biome.SpawnEntry();
 		entry.entity = new EntityEntry(workspace, (String) entityType.getSelectedItem());
-		entry.spawnType = (String) mobSpawningType.getSelectedItem();
+		entry.spawnType = new MobSpawnType(workspace, (String) mobSpawningType.getSelectedItem());
 		entry.weight = (int) spawningProbability.getValue();
 		entry.minGroup = numberOfMobsPerGroup.getIntMinValue();
 		entry.maxGroup = numberOfMobsPerGroup.getIntMaxValue();
@@ -99,7 +102,7 @@ public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 
 	@Override public void setEntry(Biome.SpawnEntry e) {
 		entityType.setSelectedItem(e.entity.getUnmappedValue());
-		mobSpawningType.setSelectedItem(e.spawnType);
+		mobSpawningType.setSelectedItem(e.spawnType.getUnmappedValue());
 		spawningProbability.setValue(e.weight);
 		numberOfMobsPerGroup.setMinValue(e.minGroup);
 		numberOfMobsPerGroup.setMaxValue(e.maxGroup);

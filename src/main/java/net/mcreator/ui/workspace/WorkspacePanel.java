@@ -34,7 +34,6 @@ import net.mcreator.ui.action.UnregisteredAction;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.JSelectableList;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.EventButtonGroup;
 import net.mcreator.ui.component.util.ListUtil;
@@ -71,6 +70,7 @@ import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import java.awt.*;
@@ -96,6 +96,7 @@ import java.util.regex.Pattern;
 
 	public final WorkspacePanelResources resourcesPan;
 
+	private final JButton addFolder;
 	private final JButton upFolder;
 	private final JButton renameFolder;
 
@@ -121,11 +122,7 @@ import java.util.regex.Pattern;
 
 	private final JButton view = L10N.button("workspace.elements.list.icon_size");
 
-	private final TransparentToolBar modElementsBar = new TransparentToolBar();
-
 	private final WorkspaceFolderBreadcrumb elementsBreadcrumb;
-
-	private final JLabel elementsCount = new JLabel();
 
 	public final JRadioButtonMenuItem desc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.descending"));
 
@@ -305,8 +302,6 @@ import java.util.regex.Pattern;
 			modElementsPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
 
-		JPanel se = new JPanel(new BorderLayout());
-
 		search.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DOWN && list.getModel().getSize() > 0) {
@@ -317,9 +312,7 @@ import java.util.regex.Pattern;
 			}
 		});
 
-		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		JButton addFolder = new JButton(UIRES.get("laf.newFolder"));
+		addFolder = new JButton(UIRES.get("laf.newFolder"));
 		upFolder = new JButton(UIRES.get("laf.upFolder"));
 		renameFolder = new JButton(UIRES.get("laf.renameFolder"));
 
@@ -343,41 +336,22 @@ import java.util.regex.Pattern;
 		renameFolder.setToolTipText(L10N.t("workspace.elements.folders.rename_tooltip"));
 		renameFolder.setEnabled(false);
 
-		addFolder.addActionListener(e -> addNewFolder());
+		addFolder.addActionListener(_ -> addNewFolder());
 
-		upFolder.addActionListener(e -> {
+		upFolder.addActionListener(_ -> {
 			if (!currentFolder.isRoot()) {
 				switchFolder(currentFolder.getParent());
 			}
 		});
 
-		renameFolder.addActionListener(e -> {
+		renameFolder.addActionListener(_ -> {
 			if (list.getSelectedValue() instanceof FolderElement) {
 				renameFolder((FolderElement) list.getSelectedValue());
 			}
 		});
 
-		JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions"), 12);
-		modElementsBar.add(folderactions);
-
-		modElementsBar.add(addFolder);
-		modElementsBar.add(upFolder);
-		modElementsBar.add(renameFolder);
-
-		modElementsBar.add(new JEmptyBox(7, 1));
-
-		JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
-		isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
-		modElementsBar.add(isize);
-		view.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		view.setContentAreaFilled(false);
-		view.setOpaque(false);
-		view.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		ComponentUtils.deriveFont(view, 12);
-		modElementsBar.add(view);
-
 		JRadioButtonMenuItem tilesIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.tiles"));
-		tilesIcons.addActionListener(e -> {
+		tilesIcons.addActionListener(_ -> {
 			if (tilesIcons.isSelected()) {
 				mcreator.getWorkspaceUserSettings().workspacePanelIconSize = WorkspaceUserSettings.IconSize.TILES;
 				updateElementListRenderer();
@@ -390,7 +364,7 @@ import java.util.regex.Pattern;
 		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
 		JRadioButtonMenuItem largeIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.large"));
-		largeIcons.addActionListener(e -> {
+		largeIcons.addActionListener(_ -> {
 			if (largeIcons.isSelected()) {
 				mcreator.getWorkspaceUserSettings().workspacePanelIconSize = WorkspaceUserSettings.IconSize.LARGE;
 				updateElementListRenderer();
@@ -403,7 +377,7 @@ import java.util.regex.Pattern;
 		largeIcons.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		JRadioButtonMenuItem mediumIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.medium"));
-		mediumIcons.addActionListener(e -> {
+		mediumIcons.addActionListener(_ -> {
 			if (mediumIcons.isSelected()) {
 				mcreator.getWorkspaceUserSettings().workspacePanelIconSize = WorkspaceUserSettings.IconSize.MEDIUM;
 				updateElementListRenderer();
@@ -416,7 +390,7 @@ import java.util.regex.Pattern;
 		mediumIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
 		JRadioButtonMenuItem smallIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.small"));
-		smallIcons.addActionListener(e -> {
+		smallIcons.addActionListener(_ -> {
 			if (smallIcons.isSelected()) {
 				mcreator.getWorkspaceUserSettings().workspacePanelIconSize = WorkspaceUserSettings.IconSize.SMALL;
 				updateElementListRenderer();
@@ -429,7 +403,7 @@ import java.util.regex.Pattern;
 		smallIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
 		JRadioButtonMenuItem listIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.list"));
-		listIcons.addActionListener(e -> {
+		listIcons.addActionListener(_ -> {
 			if (listIcons.isSelected()) {
 				mcreator.getWorkspaceUserSettings().workspacePanelIconSize = WorkspaceUserSettings.IconSize.LIST;
 				updateElementListRenderer();
@@ -442,7 +416,7 @@ import java.util.regex.Pattern;
 		listIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
 
 		JRadioButtonMenuItem detailsIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.details"));
-		detailsIcons.addActionListener(e -> {
+		detailsIcons.addActionListener(_ -> {
 			if (detailsIcons.isSelected()) {
 				mcreator.getWorkspaceUserSettings().workspacePanelIconSize = WorkspaceUserSettings.IconSize.DETAILS;
 				updateElementListRenderer();
@@ -495,18 +469,6 @@ import java.util.regex.Pattern;
 		buttonGroup.add(listIcons);
 		buttonGroup.add(detailsIcons);
 
-		elementsCount.setHorizontalTextPosition(SwingConstants.LEFT);
-
-		modElementsBar.add(new JEmptyBox(7, 1));
-		modElementsBar.add(ComponentUtils.deriveFont(elementsCount, 12));
-		modElementsBar.add(new JEmptyBox(5, 1));
-
-		se.add("East", modElementsBar);
-
-		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		leftPan.setOpaque(false);
-		leftPan.add(search);
-
 		JPanel filterSort = new JPanel(new GridLayout(1, 2, 0, 0));
 		filterSort.setOpaque(false);
 
@@ -530,27 +492,25 @@ import java.util.regex.Pattern;
 		filterSort.add(filter);
 		filterSort.add(sort);
 
-		se.add("West", leftPan);
-
 		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
-		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
+		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), _ -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(
-				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), e -> toggleFilter("f:locked")));
+				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), _ -> toggleFilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> toggleFilter("f:err")));
+				_ -> toggleFilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : mcreator.getGeneratorStats().getSupportedModElementTypes()) {
-			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> toggleFilter(
+			filterPopup.add(new UnregisteredAction(type.getReadableName(), _ -> toggleFilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
 					IconUtils.resize(type.getIcon(), 16, 16)));
 		}
 
-		filter.addActionListener(e -> filterPopup.show(filter, -1, 26));
+		filter.addActionListener(_ -> filterPopup.show(filter, -1, 26));
 
 		JPopupMenu sortPopup = new JPopupMenu();
 		EventButtonGroup sortOne = new EventButtonGroup();
-		sortOne.addActionListener(e -> resort());
+		sortOne.addActionListener(_ -> resort());
 		JRadioButtonMenuItem asc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.ascending"));
 		asc.setSelected(mcreator.getWorkspaceUserSettings().workspacePanelSortAscending);
 		desc.setSelected(!mcreator.getWorkspaceUserSettings().workspacePanelSortAscending);
@@ -561,7 +521,7 @@ import java.util.regex.Pattern;
 		sortPopup.addSeparator();
 
 		EventButtonGroup sortTwo = new EventButtonGroup();
-		sortTwo.addActionListener(e -> resort());
+		sortTwo.addActionListener(_ -> resort());
 
 		sortTwo.add(sortDateCreated);
 		sortPopup.add(sortDateCreated);
@@ -572,7 +532,7 @@ import java.util.regex.Pattern;
 		sortTwo.add(sortType);
 		sortPopup.add(sortType);
 
-		sort.addActionListener(e -> sortPopup.show(sort, -1, 26));
+		sort.addActionListener(_ -> sortPopup.show(sort, -1, 26));
 
 		JPopupMenu viewPopup = new JPopupMenu();
 		viewPopup.add(tilesIcons);
@@ -589,7 +549,7 @@ import java.util.regex.Pattern;
 		listIcons.setIcon(UIRES.get("16px.list"));
 		detailsIcons.setIcon(UIRES.get("16px.details"));
 
-		view.addActionListener(e -> viewPopup.show(view, 0, 23));
+		view.addActionListener(_ -> viewPopup.show(view, 0, 23));
 
 		if (mcreator.getWorkspaceUserSettings().workspacePanelSortType == WorkspaceUserSettings.SortType.NAME) {
 			sortName.setSelected(true);
@@ -598,10 +558,6 @@ import java.util.regex.Pattern;
 		} else {
 			sortDateCreated.setSelected(true);
 		}
-
-		se.setOpaque(false);
-
-		add("North", se);
 
 		mainp.setOpaque(false);
 
@@ -727,7 +683,7 @@ import java.util.regex.Pattern;
 		JMenuItem openElement = new JMenuItem(L10N.t("workspace.elements.list.edit.open"));
 		openElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
 		openElement.setFont(openElement.getFont().deriveFont(Font.BOLD));
-		openElement.addActionListener(e -> {
+		openElement.addActionListener(_ -> {
 			IElement selected = list.getSelectedValue();
 			if (selected instanceof FolderElement) {
 				switchFolder((FolderElement) selected);
@@ -737,15 +693,15 @@ import java.util.regex.Pattern;
 
 		deleteElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		deleteElement.setIcon(UIRES.get("16px.clear"));
-		deleteElement.addActionListener(e -> deleteCurrentlySelectedModElement());
+		deleteElement.addActionListener(_ -> deleteCurrentlySelectedModElement());
 
 		duplicateElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
-		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
+		duplicateElement.addActionListener(_ -> duplicateCurrentlySelectedModElement());
 
 		searchElement.setAccelerator(
 				KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 		searchElement.setIcon(UIRES.get("16px.search"));
-		searchElement.addActionListener(e -> searchModElementsUsages());
+		searchElement.addActionListener(_ -> searchModElementsUsages());
 
 		codeElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.ALT_DOWN_MASK));
 		codeElement.addMouseListener(new MouseAdapter() {
@@ -753,7 +709,7 @@ import java.util.regex.Pattern;
 				super.mouseClicked(e);
 			}
 		});
-		codeElement.addActionListener(e -> {
+		codeElement.addActionListener(_ -> {
 			IElement selected = list.getSelectedValue();
 			if (selected instanceof ModElement) {
 				Point clickPos = list.getMousePosition();
@@ -763,16 +719,16 @@ import java.util.regex.Pattern;
 		});
 
 		lockElement.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
-		lockElement.addActionListener(e -> lockCode());
+		lockElement.addActionListener(_ -> lockCode());
 
-		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
+		idElement.addActionListener(_ -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder"));
-		addElementFolder.addActionListener(e -> addNewFolder());
+		addElementFolder.addActionListener(_ -> addNewFolder());
 
 		renameElementFolder.setIcon(UIRES.get("laf.renameFolder"));
-		renameElementFolder.addActionListener(e -> {
+		renameElementFolder.addActionListener(_ -> {
 			if (list.getSelectedValue() instanceof FolderElement) {
 				renameFolder((FolderElement) list.getSelectedValue());
 			}
@@ -839,7 +795,6 @@ import java.util.regex.Pattern;
 
 	@Override protected void afterVerticalTabChanged() {
 		search.repaint();
-		modElementsBar.setVisible(currentTabPanel instanceof WorkspacePanelMods);
 		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_SHOW_CONTENT_SEPARATOR,
 				!(currentTabPanel instanceof WorkspacePanelMods));
 	}
@@ -1036,7 +991,7 @@ import java.util.regex.Pattern;
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
 
 					GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
-							.fromJSONtoGeneratableElement(mcreator.getModElementManager()
+							.fromJSONtoGeneratableElementOrNull(mcreator.getModElementManager()
 									.generatableElementToJSON(generatableElementOriginal), duplicateModElement);
 
 					if (generatableElementDuplicate instanceof NamespacedGeneratableElement) {
@@ -1430,6 +1385,34 @@ import java.util.regex.Pattern;
 			add(contents);
 		}
 
+		@Nullable @Override public JToolBar getToolBarComponent() {
+			JToolBar toolbar = new JToolBar();
+
+			toolbar.add(new JEmptyBox(7, 1));
+
+			JComponent folderactions = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.folder_actions"),
+					12);
+			toolbar.add(folderactions);
+
+			toolbar.add(addFolder);
+			toolbar.add(upFolder);
+			toolbar.add(renameFolder);
+
+			toolbar.add(new JEmptyBox(7, 1));
+
+			JComponent isize = ComponentUtils.deriveFont(L10N.label("workspace.elements.list.icon_size"), 12);
+			isize.setToolTipText(L10N.t("workspace.elements.list.icon_size.tooltip"));
+			toolbar.add(isize);
+			view.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			view.setContentAreaFilled(false);
+			view.setOpaque(false);
+			view.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+			ComponentUtils.deriveFont(view, 12);
+			toolbar.add(view);
+
+			return toolbar;
+		}
+
 		@Override public void reloadElements() {
 			if (mcreator.getWorkspaceSettings() != null) {
 				// first we need to get current folder from the workspace
@@ -1476,18 +1459,18 @@ import java.util.regex.Pattern;
 
 				if (icon != null) {
 					ImageIcon imageIcon = icon.getTextureIcon(mcreator.getWorkspace());
-					modElementsBar.setGradientColor(ColorUtils.applyAlpha(
+					workspaceRightBar.setGradientColor(ColorUtils.applyAlpha(
 							ImageUtils.getAverageColor(ImageUtils.toBufferedImage(imageIcon.getImage())), 90));
 					elementsCount.setIcon(IconUtils.resize(imageIcon, 16));
-					modElementsBar.setFractionPoint(0.88f);
+					workspaceRightBar.setFractionPoint(0.88f);
 				} else if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
-					modElementsBar.setGradientColor(ColorUtils.applyAlpha(new Color(0xe69c32), 100));
+					workspaceRightBar.setGradientColor(ColorUtils.applyAlpha(new Color(0xe69c32), 100));
 					elementsCount.setIcon(UIRES.get("16px.link"));
-					modElementsBar.setFractionPoint(0.88f);
+					workspaceRightBar.setFractionPoint(0.88f);
 				} else {
-					modElementsBar.setGradientColor(
+					workspaceRightBar.setGradientColor(
 							ColorUtils.applyAlpha(Theme.current().getInterfaceAccentColor(), 90));
-					modElementsBar.setFractionPoint(0.91f);
+					workspaceRightBar.setFractionPoint(0.91f);
 					elementsCount.setIcon(new EmptyIcon(0, 0));
 				}
 			}

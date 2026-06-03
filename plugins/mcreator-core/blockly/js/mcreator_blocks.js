@@ -50,35 +50,35 @@ Blockly.Blocks['script_trigger'] = {
 };
 
 Blockly.Blocks["event_number_parameter_set"] = {
-	init: function () {
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.event_number_parameter_set.line1"))
-			.appendField(new FieldDataListSelector('eventparametersnumber'), 'eventparameter');
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.set_to"))
-		this.appendValueInput('value')
-			.setCheck("Number");
-		this.setInputsInline(true);
-		this.setNextStatement(true);
-		this.setPreviousStatement(true);
-		this.setColour(90);
-	}
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.event_number_parameter_set.line1"))
+            .appendField(new FieldDataListSelector('eventparametersnumber'), 'eventparameter');
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.set_to"))
+        this.appendValueInput('value')
+            .setCheck("Number");
+        this.setInputsInline(true);
+        this.setNextStatement(true);
+        this.setPreviousStatement(true);
+        this.setColour(90);
+    }
 }
 
 Blockly.Blocks["event_logic_parameter_set"] = {
-	init: function () {
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.event_logic_parameter_set.line1"))
-			.appendField(new FieldDataListSelector('eventparametersboolean'), 'eventparameter');
-		this.appendDummyInput()
-			.appendField(javabridge.t("blockly.block.set_to"))
-		this.appendValueInput('value')
-			.setCheck("Boolean");
-		this.setInputsInline(true);
-		this.setNextStatement(true);
-		this.setPreviousStatement(true);
-		this.setColour(90);
-	}
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.event_logic_parameter_set.line1"))
+            .appendField(new FieldDataListSelector('eventparametersboolean'), 'eventparameter');
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.set_to"))
+        this.appendValueInput('value')
+            .setCheck("Boolean");
+        this.setInputsInline(true);
+        this.setNextStatement(true);
+        this.setPreviousStatement(true);
+        this.setColour(90);
+    }
 }
 
 Blockly.Blocks['cancel_event'] = {
@@ -168,6 +168,15 @@ Blockly.Blocks['feature_container'] = {
         this.setColour(340);
         this.setInputsInline(false);
         this.setTooltip(javabridge.t("blockly.block.feature_container.tooltip"));
+    }
+};
+
+Blockly.Blocks['enchantment_effects_start'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.enchantment_effects_start"));
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true, 'EnchantmentComponent');
+        this.setColour(150);
     }
 };
 
@@ -700,12 +709,16 @@ registerSimpleMutatorInput(
 
 // Mutator blocks for effect entry advancement trigger mixin
 registerSimpleMutatorContainer(
-	'player_effect_changed_mutator_container', 'blockly.block.player_effect_changed_mutator.container', 250);
+    'player_effect_changed_mutator_container', 'blockly.block.player_effect_changed_mutator.container', 250);
 registerSimpleMutatorInput('player_effect_changed_mutator_input', 'blockly.block.player_effect_changed_mutator.input', 250);
 
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('item_enchanted_mutator_container', 'blockly.block.item_enchanted_mutator.container', 290);
 registerSimpleMutatorInput('item_enchanted_mutator_input', 'blockly.block.item_enchanted_mutator.input', 290);
+
+// Mutator blocks for item condition component advancement trigger mixin
+registerSimpleMutatorContainer('item_predicate_mutator_container', 'blockly.block.item_predicate_mutator.container', 90);
+registerSimpleMutatorInput('item_predicate_mutator_input', 'blockly.block.item_predicate_mutator.input', 90);
 
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('any_item_mutator_container', 'blockly.block.any_item_mutator.container', 350);

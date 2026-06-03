@@ -153,7 +153,7 @@ public class GoogleAnalytics {
 
 	private boolean processRequestURL(String requesturl) throws IOException, URISyntaxException {
 		if (MCreatorApplication.isInternet && ANALYTICS_ENABLED && !Launcher.version.isDevelopment()
-				&& PreferencesManager.PREFERENCES.ui.googleAnalyticsEnable.get()) {
+				&& PreferencesManager.PREFERENCES.integrations.googleAnalyticsEnable.get()) {
 			HttpURLConnection conn = (HttpURLConnection) new URI(requesturl).toURL().openConnection();
 			conn.setInstanceFollowRedirects(true);
 			conn.setUseCaches(false);

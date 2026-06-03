@@ -1,0 +1,1 @@
+Ha be van jelölve, ez a beállítás biztosítja, hogy a részecske megjelenésekor ne legyenek méretbeli eltérések.

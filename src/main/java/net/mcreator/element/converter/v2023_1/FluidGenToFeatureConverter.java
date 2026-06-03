@@ -27,6 +27,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Feature;
@@ -57,7 +58,7 @@ public class FluidGenToFeatureConverter implements IConverter {
 				rarity = fluid.get("frequencyOnChunks").getAsInt();
 			}
 
-			feature.generationStep = "LAKES";
+			feature.generationStep = new GenerationStep(workspace, "LAKES");
 
 			if (fluid.get("restrictionBiomes") != null && !fluid.getAsJsonArray("restrictionBiomes").isEmpty()) {
 				fluid.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
