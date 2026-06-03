@@ -62,92 +62,10 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			if (type.equals("item_enchanted")) {
-				Element mutation = XMLUtil.getFirstChildrenWithName(element, "mutation");
-				List<Element> enchantmentEntries = XMLUtil.getChildrenWithName(element, "value").stream()
-						.filter(e -> e.hasAttribute("name") && e.getAttribute("name").startsWith("enchantment"))
-						.toList();
-
-				if (mutation != null && mutation.hasAttribute("inputs")) {
-					Element item = XMLUtil.getFirstChildrenWithName(element, "value");
-					if (item != null && item.hasAttribute("name")) {
-						Element predicateBlock = createPredicateBlock(doc, item,
-								createEnchantmentComponent(doc, mutation, enchantmentEntries));
-						item.appendChild(predicateBlock);
-					}
-				}
-			} else if (type.equals("item_damaged")) {
-				Element item = null;
-				String min = "1", max = "100";
-
-				for (Element e : XMLUtil.getChildrenWithName(element, "value")) {
-					if (e.hasAttribute("name")) {
-						switch (e.getAttribute("name")) {
-						case "item" -> item = e;
-						case "amount_l" -> {
-							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
-							if (block != null) {
-								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
-								if (field != null) {
-									min = field.getTextContent();
-								}
-							}
-							element.removeChild(e);
-						}
-						case "amount_h" -> {
-							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
-							if (block != null) {
-								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
-								if (field != null) {
-									max = field.getTextContent();
-								}
-							}
-							element.removeChild(e);
-						}
-						}
-					}
-				}
-
-				if (item != null) {
-					Element predicateBlock = createPredicateBlock(doc, item, createDamageComponent(doc, min, max));
-					item.appendChild(predicateBlock);
-				}
-			} else if (type.equals("item_in_inventory")) {
-				Element item = null;
-				String min = "1", max = "99";
-
-				for (Element e : XMLUtil.getChildrenWithName(element, "value")) {
-					if (e.hasAttribute("name")) {
-						switch (e.getAttribute("name")) {
-						case "item" -> item = e;
-						case "amount_l" -> {
-							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
-							if (block != null) {
-								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
-								if (field != null) {
-									min = field.getTextContent();
-								}
-							}
-							element.removeChild(e);
-						}
-						case "amount_h" -> {
-							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
-							if (block != null) {
-								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
-								if (field != null) {
-									max = field.getTextContent();
-								}
-							}
-							element.removeChild(e);
-						}
-						}
-					}
-				}
-
-				if (item != null) {
-					Element predicateBlock = createPredicateBlock(doc, item, null, min, max);
-					item.appendChild(predicateBlock);
-				}
+			switch (type) {
+			case "item_enchanted" -> convertItemEnchantedTrigger(doc, element);
+			case "item_damaged" -> convertItemDamagedAndInventoryTriggers(doc, element, true);
+			case "item_in_inventory" -> convertItemDamagedAndInventoryTriggers(doc, element, false);
 			}
 		}
 
@@ -158,11 +76,71 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 		return writer.getBuffer().toString();
 	}
 
+	private void convertItemEnchantedTrigger(Document doc, Element element) {
+		Element mutation = XMLUtil.getFirstChildrenWithName(element, "mutation");
+		List<Element> enchantmentEntries = XMLUtil.getChildrenWithName(element, "value").stream()
+				.filter(e -> e.hasAttribute("name") && e.getAttribute("name").startsWith("enchantment")).toList();
+
+		if (mutation != null && mutation.hasAttribute("inputs")) {
+			Element item = XMLUtil.getFirstChildrenWithName(element, "value");
+
+			if (item != null && item.hasAttribute("name")) {
+				Element enchantmentComponent = doc.createElement("block");
+				enchantmentComponent.setAttribute("type", "data_component_predicate_enchantments");
+				enchantmentComponent.appendChild(mutation);
+				enchantmentEntries.forEach(enchantmentComponent::appendChild);
+
+				item.appendChild(createPredicateBlock(doc, item, enchantmentComponent));
+			}
+		}
+	}
+
+	private void convertItemDamagedAndInventoryTriggers(Document doc, Element element, boolean isItemDamaged) {
+		Element item = null;
+		String min = "1", max = isItemDamaged ? "100" : "99";
+
+		for (Element e : XMLUtil.getChildrenWithName(element, "value")) {
+			if (e.hasAttribute("name")) {
+				switch (e.getAttribute("name")) {
+				case "item" -> item = e;
+				case "amount_l" -> {
+					Element block = XMLUtil.getFirstChildrenWithName(e, "block");
+					if (block != null) {
+						Element field = XMLUtil.getFirstChildrenWithName(block, "field");
+						if (field != null) {
+							min = field.getTextContent();
+						}
+					}
+					element.removeChild(e);
+				}
+				case "amount_h" -> {
+					Element block = XMLUtil.getFirstChildrenWithName(e, "block");
+					if (block != null) {
+						Element field = XMLUtil.getFirstChildrenWithName(block, "field");
+						if (field != null) {
+							max = field.getTextContent();
+						}
+					}
+					element.removeChild(e);
+				}
+				}
+			}
+		}
+
+		if (item != null) {
+			Element predicateBlock = isItemDamaged ?
+					createPredicateBlock(doc, item, createDamageComponent(doc, min, max)) :
+					createPredicateBlock(doc, item, null, min, max);
+			item.appendChild(predicateBlock);
+		}
+	}
+
 	private Element createPredicateBlock(Document doc, Element item, Element dataComponent) {
 		return createPredicateBlock(doc, item, dataComponent, "1", "99");
 	}
 
-	private Element createPredicateBlock(Document doc, Element item, Element dataComponent, String countMin, String countMax) {
+	private Element createPredicateBlock(Document doc, Element item, Element dataComponent, String countMin,
+			String countMax) {
 		Element predicateBlock = doc.createElement("block");
 		predicateBlock.setAttribute("type", "item_predicate");
 
@@ -193,15 +171,6 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 		}
 
 		return predicateBlock;
-	}
-
-	private Element createEnchantmentComponent(Document doc, Element mutation, List<Element> enchantmentEntries) {
-		Element enchantmentComponent = doc.createElement("block");
-		enchantmentComponent.setAttribute("type", "data_component_predicate_enchantments");
-		enchantmentComponent.appendChild(mutation);
-		enchantmentEntries.forEach(enchantmentComponent::appendChild);
-
-		return enchantmentComponent;
 	}
 
 	private Element createDamageComponent(Document doc, String min, String max) {
