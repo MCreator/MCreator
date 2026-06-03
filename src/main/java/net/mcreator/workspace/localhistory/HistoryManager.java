@@ -19,22 +19,25 @@
 
 package net.mcreator.workspace.localhistory;
 
-import com.google.gson.Gson;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class HistoryManager implements AutoCloseable {
 
-	private static final Gson gson = new Gson();
+	private static final Logger LOG = LogManager.getLogger(HistoryManager.class);
 
 	@Nullable private final GitHistoryBackend backend;
-	private final List<String> pendingEvents = new ArrayList<>();
+	private final List<HistoryEvent> pendingEvents = new ArrayList<>();
 	private long lastCheckpointMillis = System.currentTimeMillis();
 
 	private final File workspaceFolder;
@@ -67,14 +70,11 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	private synchronized void checkpoint(boolean important, String checkpointName, Object... parameters) {
-		if (backend == null) {
-			return;
-		}
-
-		pendingEvents.add(L10N.t("local_history.checkpoint." + checkpointName, parameters));
+		pendingEvents.add(
+				new HistoryEvent(L10N.t("local_history.checkpoint." + checkpointName, parameters), important));
 
 		if (important || isSaveIntervalElapsed()) {
-			flushPendingCheckpoint();
+			flushPendingEventsIntoCheckpoint();
 		}
 	}
 
@@ -83,14 +83,26 @@ public final class HistoryManager implements AutoCloseable {
 		return System.currentTimeMillis() - lastCheckpointMillis >= intervalMillis;
 	}
 
-	private void flushPendingCheckpoint() {
+	private void flushPendingEventsIntoCheckpoint() {
 		if (pendingEvents.isEmpty()) {
 			return;
 		}
 
-		// TODO: we may want to do pagination of multiple events here
-		if (saveCheckpoint(commitMessageFromEvents(pendingEvents))) {
+		String commitMessage;
+		if (pendingEvents.size() == 1) {
+			commitMessage = pendingEvents.getFirst().eventName();
+		} else if (pendingEvents.size() == 2) {
+			commitMessage = L10N.t("local_history.checkpoint.two_events", pendingEvents.getLast().eventName(),
+					StringUtils.lowercaseFirstLetter(pendingEvents.getFirst().eventName()));
+		} else {
+			commitMessage = L10N.t("local_history.checkpoint.and_n_more",
+					pendingEvents.stream().limit(2).map(HistoryEvent::eventName).collect(Collectors.toList()),
+					pendingEvents.size() - 2);
+		}
+		if (saveCheckpoint(commitMessage)) {
 			lastCheckpointMillis = System.currentTimeMillis();
+		} else {
+			LOG.debug("Checkpoint '{}' was not saved as there were no changes to commit", commitMessage);
 		}
 
 		// Clear events in every case, as even if saveCheckpoint returned false,
@@ -119,7 +131,7 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	@Override public synchronized void close() {
-		flushPendingCheckpoint();
+		flushPendingEventsIntoCheckpoint();
 		if (backend != null) {
 			backend.close();
 		}
@@ -135,12 +147,11 @@ public final class HistoryManager implements AutoCloseable {
 		}
 	}
 
-	private static String commitMessageFromEvents(List<String> eventNames) {
-		return gson.toJson(eventNames);
-	}
+	record HistoryEvent(String eventName, boolean important) {
 
-	static String[] eventNamesFromCommitMessage(String commitMessage) {
-		return gson.fromJson(commitMessage, String[].class);
+		@Override public String toString() {
+			return eventName;
+		}
 	}
 
 }

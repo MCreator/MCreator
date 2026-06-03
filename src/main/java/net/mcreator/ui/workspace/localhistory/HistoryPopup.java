@@ -41,12 +41,7 @@ public class HistoryPopup {
 			popupMenu.add(noHistoryItem);
 		} else {
 			for (HistoryCheckpoint checkpoint : checkpoints) {
-				String[] events = checkpoint.getEventNames();
-				String eventName = events[0];
-				if (events.length > 1) {
-					eventName += " and " + (events.length - 1) + " more changes";
-				}
-				JMenuItem item = new JMenuItem("<html>" + eventName + "<br><small color='" + ColorUtils.formatColor(
+				JMenuItem item = new JMenuItem("<html>" + checkpoint.name() + "<br><small color='" + ColorUtils.formatColor(
 						Theme.current().getAltForegroundColor()) + "'>" + checkpoint.getTimestampString());
 				item.addActionListener(_ -> {
 					// TODO: confirm message

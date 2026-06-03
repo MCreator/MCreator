@@ -20,6 +20,7 @@
 package net.mcreator.workspace.localhistory;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -65,7 +66,7 @@ class GitHistoryBackend implements AutoCloseable {
 		File historyDatabaseDir = new File(workspaceRoot, ".mcreator/localHistory");
 
 		try {
-			boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").exists();
+			boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").isFile();
 
 			if (isNewRepo) {
 				try (Repository initRepo = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setBare()
@@ -93,7 +94,7 @@ class GitHistoryBackend implements AutoCloseable {
 
 			GitHistoryBackend backend = new GitHistoryBackend(historyManager, git);
 			if (isNewRepo) {
-				historyManager.checkpoint("initial");
+				backend.saveCheckpoint(L10N.t("local_history.checkpoint.initial"));
 				LOG.debug("Initialized local history repository");
 			} else {
 				LOG.debug("Loaded local history repository");
@@ -124,10 +125,10 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	/**
-	 * @param eventName Name of commit
+	 * @param commitMessage Commit message to use for the checkpoint
 	 * @return true if the commit was successful, false if no changes to commit
 	 */
-	boolean saveCheckpoint(String eventName) {
+	boolean saveCheckpoint(String commitMessage) {
 		lock.lock();
 		try {
 			Status status = git.status().call();
@@ -144,7 +145,9 @@ class GitHistoryBackend implements AutoCloseable {
 				git.add().setUpdate(true).addFilepattern(".").call();
 			}
 
-			git.commit().setMessage(eventName).call();
+			RevCommit commit = git.commit().setMessage(commitMessage).call();
+
+			LOG.debug("Saved local history checkpoint '{}' as {}", commitMessage, commit.getName());
 		} catch (GitAPIException e) {
 			LOG.warn("Failed to save local history checkpoint: {}", e.getMessage());
 		} finally {
@@ -164,7 +167,7 @@ class GitHistoryBackend implements AutoCloseable {
 						() -> getDiffEntries(commit)));
 			}
 		} catch (GitAPIException e) {
-			LOG.warn("Failed to retrieve local history checkpoints: {}", e.getMessage());
+			LOG.warn("Failed to retrieve local history checkpoints", e);
 		} finally {
 			lock.unlock();
 		}
@@ -228,7 +231,7 @@ class GitHistoryBackend implements AutoCloseable {
 			// Immediately save this reverted state as a new event on the timeline
 			HistoryCheckpoint checkpoint = new HistoryCheckpoint(targetCommit.getName(), targetCommit.getFullMessage(),
 					targetCommit.getCommitTime(), List::of);
-			historyManager.checkpoint("revert", checkpoint.getTimestampString());
+			historyManager.importantCheckpoint("revert", checkpoint.getTimestampString());
 		} catch (Exception e) {
 			throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, e);
 		} finally {
