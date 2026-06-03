@@ -40,9 +40,7 @@ class EditTemplatesPanel {
 	private final CardLayout cardLayout = new CardLayout();
 	private final JPanel panel = new JPanel(cardLayout);
 
-	EditTemplatesPanel(PreferencesDialog preferencesDialog, String name, String templatesFolder, String templateExt) {
-		preferencesDialog.model.addElement(name);
-
+	EditTemplatesPanel(JTabbedPane tabbedPane, PreferencesDialog preferencesDialog, String name, String templatesFolder, String templateExt) {
 		JPanel sectionPanel = new JPanel(new BorderLayout(0, 0));
 
 		JComponent titlebar = L10N.label("dialog.preferences.change_language", name.toLowerCase(), templateExt);
@@ -107,7 +105,7 @@ class EditTemplatesPanel {
 
 		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts, panel, 5, 5));
 
-		preferencesDialog.preferences.add(sectionPanel, name);
+		tabbedPane.addTab(name, sectionPanel);
 
 		updateVisibility(tmodel);
 	}

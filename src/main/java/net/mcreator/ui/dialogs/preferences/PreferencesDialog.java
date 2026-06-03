@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.preferences;
 
+import com.formdev.flatlaf.ui.FlatTabbedPaneUI;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
@@ -46,6 +47,8 @@ public class PreferencesDialog extends MCreatorDialog {
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
+
+	private final JTabbedPane templatesTabbedPane = new JTabbedPane();
 
 	private final Map<PreferencesEntry<?>, JComponent> entries = new HashMap<>();
 
@@ -165,6 +168,14 @@ public class PreferencesDialog extends MCreatorDialog {
 		BlocklyLoader.INSTANCE.getAllBlockLoaders().keySet().stream().filter(type -> type.extension() != null)
 				.forEach(this::addEditTemplatesPanel);
 
+		templatesTabbedPane.setUI(new FlatTabbedPaneUI() {
+			@Override protected boolean shouldRotateTabRuns(int tabPlacement) {
+				return false;
+			}
+		});
+		preferences.add(templatesTabbedPane, L10N.t("dialog.preferences.page_templates"));
+		model.addElement(L10N.t("dialog.preferences.page_templates"));
+
 		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
 
 		sections.setSelectedIndex(0);
@@ -175,7 +186,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	public void addEditTemplatesPanel(String translationKey, String folder, String extension) {
-		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey), folder, extension);
+		new EditTemplatesPanel(templatesTabbedPane, this, L10N.t("dialog.preferences.page_" + translationKey), folder, extension);
 	}
 
 	private void createPreferenceSection(String section) {
