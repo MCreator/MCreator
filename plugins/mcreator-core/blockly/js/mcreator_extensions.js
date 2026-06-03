@@ -353,7 +353,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
                 const seenTypes = new Set();
 
                 for (const block of parentsChildren) {
-                    const realType = block.type.split("_")[2]; // We use this format: item_predicate_{typewithoutunderscores}_{optional_extra_data}
+                    const realType = block.type.split("_")[3]; // We use this format: data_component_predicate_{typewithoutunderscores}_{optional_extra_data}
                     if (!realType) continue;
                     if (block === this) {
                         if (seenTypes.has(realType))
