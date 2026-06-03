@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
+import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.plugin.MCREvent;
@@ -26,8 +27,8 @@ import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
+import net.mcreator.ui.action.impl.workspace.WorkspaceSettingsAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
-import net.mcreator.ui.workspace.localhistory.LocalHistoryPanel;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -39,10 +40,14 @@ import net.mcreator.ui.search.GlobalSearchListener;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
+import net.mcreator.ui.workspace.localhistory.LocalHistoryPanel;
+import net.mcreator.util.GSONClone;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.settings.WorkspaceSettings;
+import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,6 +60,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 public abstract class MCreator extends MCreatorFrame {
 
@@ -353,6 +359,36 @@ public abstract class MCreator extends MCreatorFrame {
 							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
 									.toLowerCase(Locale.ENGLISH));
 		}
+	}
+
+	/**
+	 * Reloads the workspace from the file system.
+	 */
+	public void reloadWorkspaceFromFileSystem() {
+		// load settings before reading from file system to check if generator was switched, and to perform necessary actions after reload
+		WorkspaceSettings preResetSettings = GSONClone.clone(workspace.getWorkspaceSettings(),
+				WorkspaceSettings.class);
+
+		this.getTabs().closeAllTabs();
+
+		// read new workspace setup from file system
+		workspace.reloadFromFileSystem();
+
+		// if version changed, switch the generator
+		String currentGenerator = workspace.getWorkspaceSettings().getCurrentGenerator();
+		if (!currentGenerator.equals(preResetSettings.getCurrentGenerator())) {
+			LOG.debug("Switching local workspace generator to {}", currentGenerator);
+			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(workspace,
+					Generator.GENERATOR_CACHE.get(currentGenerator));
+			workspace.switchGenerator(currentGenerator);
+			WorkspaceGeneratorSetupDialog.runSetup(this, false);
+		}
+		WorkspaceSettingsChange workspaceSettingsChange = new WorkspaceSettingsChange(preResetSettings,
+				workspace.getWorkspaceSettings());
+		if (workspaceSettingsChange.refactorNeeded()) // possible refactor after sync end
+			WorkspaceSettingsAction.refactorWorkspace(this, workspaceSettingsChange);
+
+		this.getWorkspacePanel().reloadWorkspaceTab();
 	}
 
 	public void showConsole() {

@@ -269,33 +269,9 @@ public class LocalHistoryPanel extends JPanel {
 		}
 
 		try {
-			Workspace workspace = mcreator.getWorkspace();
-			WorkspaceSettings preResetSettings = GSONClone.clone(workspace.getWorkspaceSettings(),
-					WorkspaceSettings.class);
-
-			mcreator.getTabs().closeAllTabs();
-
-			workspace.getHistoryManager().revertToCheckpoint(selected);
-
-			workspace.reloadFromFileSystem();
-
-			// if version changed, switch the generator
-			String currentGenerator = workspace.getWorkspaceSettings().getCurrentGenerator();
-			if (!currentGenerator.equals(preResetSettings.getCurrentGenerator())) {
-				LOG.debug("Switching local workspace generator to {}", currentGenerator);
-				WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(workspace,
-						Generator.GENERATOR_CACHE.get(currentGenerator));
-				workspace.switchGenerator(currentGenerator);
-				WorkspaceGeneratorSetupDialog.runSetup(mcreator, false);
-			}
-			WorkspaceSettingsChange workspaceSettingsChange = new WorkspaceSettingsChange(preResetSettings,
-					workspace.getWorkspaceSettings());
-			if (workspaceSettingsChange.refactorNeeded()) // possible refactor after sync end
-				WorkspaceSettingsAction.refactorWorkspace(mcreator, workspaceSettingsChange);
-
-			mcreator.getWorkspacePanel().reloadWorkspaceTab();
-
-			reloadContent();
+			mcreator.getWorkspace().getHistoryManager().revertToCheckpoint(selected);
+			mcreator.reloadWorkspaceFromFileSystem();
+			this.reloadContent();
 		} catch (LocalHistoryException e) {
 			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.revert_failed.message"),
 					L10N.t("dialog.local_history.revert"), JOptionPane.ERROR_MESSAGE);
