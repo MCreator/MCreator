@@ -155,7 +155,6 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 		Transformer transformer = transformerFactory.newTransformer();
 		StringWriter writer = new StringWriter();
 		transformer.transform(new DOMSource(doc), new StreamResult(writer));
-		System.out.println(writer.getBuffer());
 		return writer.getBuffer().toString();
 	}
 
