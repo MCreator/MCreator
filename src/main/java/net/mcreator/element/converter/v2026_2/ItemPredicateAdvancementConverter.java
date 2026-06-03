@@ -76,6 +76,42 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 						item.appendChild(predicateBlock);
 					}
 				}
+			} else if (type.equals("item_damaged")) {
+				Element item = null;
+				String min = "1", max = "100";
+
+				for (Element e : XMLUtil.getChildrenWithName(element, "value")) {
+					if (e.hasAttribute("name")) {
+						switch (e.getAttribute("name")) {
+						case "item" -> item = e;
+						case "amount_l" -> {
+							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
+							if (block != null) {
+								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
+								if (field != null) {
+									min = field.getTextContent();
+								}
+							}
+							element.removeChild(e);
+						}
+						case "amount_h" -> {
+							Element block = XMLUtil.getFirstChildrenWithName(e, "block");
+							if (block != null) {
+								Element field = XMLUtil.getFirstChildrenWithName(block, "field");
+								if (field != null) {
+									max = field.getTextContent();
+								}
+							}
+							element.removeChild(e);
+						}
+						}
+					}
+				}
+
+				if (item != null) {
+					Element predicateBlock = createPredicateBlock(doc, item, createDamageComponent(doc, min, max));
+					item.appendChild(predicateBlock);
+				}
 			}
 		}
 
@@ -83,7 +119,7 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 		Transformer transformer = transformerFactory.newTransformer();
 		StringWriter writer = new StringWriter();
 		transformer.transform(new DOMSource(doc), new StreamResult(writer));
-
+		System.out.println(writer.getBuffer());
 		return writer.getBuffer().toString();
 	}
 
@@ -122,6 +158,23 @@ public class ItemPredicateAdvancementConverter implements IConverter {
 		enchantmentEntries.forEach(enchantmentComponent::appendChild);
 
 		return enchantmentComponent;
+	}
+
+	private Element createDamageComponent(Document doc, String min, String max) {
+		Element damageComponent = doc.createElement("block");
+		damageComponent.setAttribute("type", "data_component_predicate_damage");
+
+		Element minField = doc.createElement("field");
+		minField.setAttribute("name", "min");
+		minField.setTextContent(min);
+		damageComponent.appendChild(minField);
+
+		Element maxField = doc.createElement("field");
+		maxField.setAttribute("name", "max");
+		maxField.setTextContent(max);
+		damageComponent.appendChild(maxField);
+
+		return damageComponent;
 	}
 
 	@Override public int getVersionConvertingTo() {
