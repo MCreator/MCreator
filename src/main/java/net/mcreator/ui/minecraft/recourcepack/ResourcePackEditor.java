@@ -45,6 +45,7 @@ import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.metadata.MetadataManager;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
@@ -296,6 +297,10 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	private void editOrOverrideCurrentEntry() {
 		if (selectedEntry != null) {
 			if (!selectedEntry.isFolder()) { // Make sure not a folder
+				// For resource pack editor, this is our source of checkpoint actions
+				if (mcreator instanceof ResourcePackMaker)
+					workspace.getHistoryManager().checkpoint("pack_edit", FilenameUtils.getName(selectedEntry.path()));
+
 				if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
 					File override = selectedEntry.override();
 					if (override.isFile()) {
