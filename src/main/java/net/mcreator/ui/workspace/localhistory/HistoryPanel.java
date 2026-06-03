@@ -19,17 +19,27 @@
 
 package net.mcreator.ui.workspace.localhistory;
 
+import net.mcreator.generator.Generator;
+import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.action.impl.workspace.WorkspaceSettingsAction;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.ColorUtils;
+import net.mcreator.util.GSONClone;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.math.TimeUtils;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.localhistory.HistoryCheckpoint;
 import net.mcreator.workspace.localhistory.LocalHistoryException;
+import net.mcreator.workspace.settings.WorkspaceSettings;
+import net.mcreator.workspace.settings.WorkspaceSettingsChange;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -39,6 +49,8 @@ import java.awt.*;
 import java.util.List;
 
 public class HistoryPanel extends JPanel {
+
+	private static final Logger LOG = LogManager.getLogger(HistoryPanel.class);
 
 	private final MCreator mcreator;
 
@@ -227,6 +239,8 @@ public class HistoryPanel extends JPanel {
 			return;
 		}
 
+		// TODO: do not run revert if Gradle is running
+
 		int checkpointsToRevert = checkpointList.getSelectedIndex() + 1;
 		long timeBackMillis = Math.max(0, System.currentTimeMillis() - selected.timestamp() * 1000L);
 		timeBackMillis = (timeBackMillis / TimeUtils.ONE_MINUTE) * TimeUtils.ONE_MINUTE;
@@ -240,12 +254,32 @@ public class HistoryPanel extends JPanel {
 		}
 
 		try {
-			// TODO: add revert
-			// handling of workspace:
-			// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/vcs/ui/actions/impl/RollbackLocalChangesAction.java
-			// - https://github.com/Defeatomizer/MCreatorVCSPlugin/blob/master/src/main/java/net/mcreator/workspace/TerribleWorkspaceHacks.java
+			Workspace workspace = mcreator.getWorkspace();
+			WorkspaceSettings preResetSettings = GSONClone.clone(workspace.getWorkspaceSettings(),
+					WorkspaceSettings.class);
 
-			mcreator.getWorkspace().getHistoryManager().revertToCheckpoint(selected);
+			mcreator.getTabs().closeAllTabs();
+
+			workspace.getHistoryManager().revertToCheckpoint(selected);
+
+			workspace.reloadFromFileSystem();
+
+			// if version changed, switch the generator
+			String currentGenerator = workspace.getWorkspaceSettings().getCurrentGenerator();
+			if (!currentGenerator.equals(preResetSettings.getCurrentGenerator())) {
+				LOG.debug("Switching local workspace generator to {}", currentGenerator);
+				WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(workspace,
+						Generator.GENERATOR_CACHE.get(currentGenerator));
+				workspace.switchGenerator(currentGenerator);
+				WorkspaceGeneratorSetupDialog.runSetup(mcreator, false);
+			}
+			WorkspaceSettingsChange workspaceSettingsChange = new WorkspaceSettingsChange(preResetSettings,
+					workspace.getWorkspaceSettings());
+			if (workspaceSettingsChange.refactorNeeded()) // possible refactor after sync end
+				WorkspaceSettingsAction.refactorWorkspace(mcreator, workspaceSettingsChange);
+
+			mcreator.getWorkspacePanel().reloadWorkspaceTab();
+
 			reloadContent();
 		} catch (LocalHistoryException e) {
 			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.revert_failed.message"),

@@ -604,13 +604,20 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return regenerateRequired;
 	}
 
-	// Below are methods that may still be used by some plugins
+	public void reloadFromFileSystem() {
+		this.getModElementManager().invalidateCache();
+		loadStoredDataFrom(
+				WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(this.getFileManager().getWorkspaceFile()),
+						Workspace.class));
+		this.reloadModElements();
+		this.reloadFolderStructure();
+		LOG.info("Reloaded current workspace from the workspace file");
+	}
 
 	/**
 	 * @param other The workspace to copy elements and settings from.
-	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
 	 */
-	@SuppressWarnings("unused") public void loadStoredDataFrom(Workspace other) {
+	public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
