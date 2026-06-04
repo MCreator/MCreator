@@ -311,3 +311,66 @@ Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
             }
         }
     });
+
+// Mutator to disable an enchantment component if it already appears in the effects list
+Blockly.Extensions.registerMixin('disable_repeated_enchantment_component',
+    {
+        onchange: function (e) {
+            // Don't change state if it's at the start of a drag and it's not a move or create event
+            if (!this.workspace.isDragging || this.workspace.isDragging()
+                    || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
+                return;
+            }
+            const thisType = this.type;
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
+                return type === thisType;
+            }));
+            this.setWarningText(enabled ? null : javabridge.t('blockly.block.ench_component.warning_repeated'));
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setDisabledReason(!enabled, "repeated_enchantment_component");
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
+Blockly.Extensions.registerMixin('disable_duplicate_input_type',
+    {
+        onchange: function (e) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (e.type !== Blockly.Events.BLOCK_CHANGE &&
+                e.type !== Blockly.Events.BLOCK_MOVE &&
+                e.type !== Blockly.Events.BLOCK_DELETE &&
+                e.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+
+            let isValid = true;
+            const parent = this.getParent();
+            if (parent) {
+                const parentsChildren = parent.getChildren(true); // We get all children of the block we want to check ordered to keep the first one valid
+                const seenTypes = new Set();
+
+                for (const block of parentsChildren) {
+                    const realType = block.type.split("_")[3]; // We use this format: data_component_predicate_{typewithoutunderscores}_{optional_extra_data}
+                    if (!realType) continue;
+                    if (block === this) {
+                        if (seenTypes.has(realType))
+                            isValid = false;
+                        break;
+                    }
+                    seenTypes.add(realType);
+                }
+            }
+
+            if (!this.isInFlyout) {
+                this.setWarningText(!isValid ? javabridge.t("blockly.extension.disable_duplicate_input_type") : null);
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setDisabledReason(!isValid, "duplicate_input_type");
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
