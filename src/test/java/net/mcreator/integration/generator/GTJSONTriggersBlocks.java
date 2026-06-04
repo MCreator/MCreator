@@ -115,12 +115,24 @@ public class GTJSONTriggersBlocks {
 							<value name="enchantment0">%s</value>
 						</block></next></block></xml>
 						""".formatted(testXML);
-				case "MCItem" -> advancement.triggerxml = """
+				case "MCItem", "ItemPredicate" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
 						<block type="item_consumed">
 							<value name="item">%s</value>
 						</block></next></block></xml>
+						""".formatted(testXML);
+				case "DataComponentPredicate" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="item_consumed">
+							<value name="item">
+								<block type="item_predicate">
+									<mutation inputs="1"></mutation>
+									<field name="min">1</field><field name="max">64</field>
+									<value name="item"><block type="mcitem_all"><field name="value">Items.APPLE</field></block></value>
+									<value name="predicateComponent0">%s</value>
+						</block></value></block></next></block></xml>
 						""".formatted(testXML);
 				default -> {
 					LOG.warn("[{}] Skipping JSON trigger block of unrecognized type: {}", generatorName,
