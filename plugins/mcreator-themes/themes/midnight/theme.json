@@ -1,11 +1,11 @@
 {
   "name": "Midnight",
   "colorScheme": {
-    "secondAltBackgroundColor": "0x161b23",
     "backgroundColor": "0x11161d",
     "altBackgroundColor": "0x1a202a",
-    "altForegroundColor": "0xc3c5c9",
+    "secondAltBackgroundColor": "0x161b23",
     "foregroundColor": "0xeaeaea",
+    "altForegroundColor": "0xc3c5c9",
 	"interfaceAccentColor": "0xd48211"
   }
 }

@@ -32,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class BannerPattern extends GeneratableElement {
+@SuppressWarnings("unused") public class BannerPattern extends GeneratableElement {
 
 	private static final Logger LOG = LogManager.getLogger(BannerPattern.class);
 
@@ -40,6 +40,10 @@ public class BannerPattern extends GeneratableElement {
 	@TextureReference(TextureType.OTHER) public TextureHolder shieldTexture;
 	public String name;
 	public boolean requireItem;
+
+	private BannerPattern() {
+		this(null);
+	}
 
 	public BannerPattern(ModElement element) {
 		super(element);

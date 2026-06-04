@@ -22,11 +22,12 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.types.DamageType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.elements.ModElement;
@@ -34,18 +35,17 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
-	private final JSpinner exhaustion = new JSpinner(new SpinnerNumberModel(0.1, 0, 100, 0.01));
-	private final JComboBox<String> scaling = new JComboBox<>(
-			new String[] { "never", "always", "when_caused_by_living_non_player" });
-	private final JComboBox<String> effects = new JComboBox<>(
-			new String[] { "hurt", "thorns", "drowning", "burning", "poking", "freezing" });
+	private final JSpinner exhaustion = ComponentFromAnnotation.spinner(DamageType.class, "exhaustion");
+	private final TranslatedComboBox scaling = ComponentFromAnnotation.translatedOptions(DamageType.class, "scaling",
+			"elementgui.damagetype.scaling.");
+	private final TranslatedComboBox effects = ComponentFromAnnotation.translatedOptions(DamageType.class, "effects",
+			"elementgui.damagetype.effects.");
 	private final VTextField normalDeathMessage = new VTextField(28).requireValue(
 			"elementgui.damagetype.error_empty_death_message").enableRealtimeValidation();
 	private final VTextField itemDeathMessage = new VTextField(28).requireValue(
@@ -66,10 +66,7 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		page.setOpaque(false);
 
 		JPanel damageProperties = new JPanel(new GridLayout(3, 2, 20, 2));
-		damageProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.damagetype.damage_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(damageProperties, L10N.t("elementgui.damagetype.damage_properties"));
 		damageProperties.setOpaque(false);
 
 		exhaustion.setOpaque(false);
@@ -87,10 +84,7 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		damageProperties.add(effects);
 
 		JPanel localizationPanel = new JPanel(new GridLayout(3, 2, 20, 2));
-		localizationPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.damagetype.death_messages"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(localizationPanel, L10N.t("elementgui.damagetype.death_messages"));
 		localizationPanel.setOpaque(false);
 
 		ComponentUtils.deriveFont(normalDeathMessage, 16);
@@ -139,8 +133,8 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 	@Override public DamageType getElementFromGUI() {
 		DamageType damageType = new DamageType(modElement);
 		damageType.exhaustion = (double) exhaustion.getValue();
-		damageType.scaling = (String) scaling.getSelectedItem();
-		damageType.effects = (String) effects.getSelectedItem();
+		damageType.scaling = scaling.getSelectedItem();
+		damageType.effects = effects.getSelectedItem();
 		damageType.normalDeathMessage = normalDeathMessage.getText().replace("<player>", "%1$s")
 				.replace("<attacker>", "%2$s");
 		damageType.itemDeathMessage = itemDeathMessage.getText().replace("<player>", "%1$s")

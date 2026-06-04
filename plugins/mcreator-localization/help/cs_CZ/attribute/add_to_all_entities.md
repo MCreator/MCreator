@@ -1,0 +1,1 @@
+Je-li povoleno, všechny entity ve světě, které mohou mít atributy, budou mít tento atribut přítomen a nastaven na výchozí hodnotu při zrození.

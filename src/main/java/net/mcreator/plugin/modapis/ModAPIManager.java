@@ -68,11 +68,16 @@ public class ModAPIManager {
 						if (resPaths == null)
 							resPaths = Collections.emptyMap();
 
+						String versionRange = null;
+						if (requiredWhenEnabled && impldef.get("version_range") != null) {
+							versionRange = impldef.get("version_range").toString();
+						}
+
 						ModAPIImplementation implementation = new ModAPIImplementation(modAPI, gradle,
 								updateFiles.stream().map(Object::toString).collect(Collectors.toList()),
 								resPaths.entrySet().stream().collect(
 										Collectors.toMap(e -> e.getKey().toString(), e -> e.getValue().toString())),
-								requiredWhenEnabled);
+								requiredWhenEnabled, versionRange);
 						modAPI.implementations().put(key, implementation);
 					}
 				}

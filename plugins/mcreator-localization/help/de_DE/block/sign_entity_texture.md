@@ -1,0 +1,1 @@
+Dies ist die Textur, die von Schildern verwendet wird, um in der Welt gerendert zu werden. Stelle sicher, dass die Textur mit dem Schildmodell kompatibel ist.

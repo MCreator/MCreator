@@ -82,7 +82,7 @@ public final class CustomTexture extends Texture {
 			customTextureFiles = workspace.getFolderManager().getTexturesList(type);
 		}
 
-		return customTextureFiles.parallelStream().map(e -> (Texture) new CustomTexture(type, e)).toList();
+		return customTextureFiles.stream().map(e -> (Texture) new CustomTexture(type, e)).toList();
 	}
 
 }

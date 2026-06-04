@@ -21,6 +21,8 @@ package net.mcreator.ui.workspace;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -48,6 +50,15 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	protected final Map<Class<? extends AbstractWorkspacePanel>, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
 	@Nullable protected AbstractWorkspacePanel currentTabPanel = null;
 
+	protected final TransparentToolBar workspaceRightBar = new TransparentToolBar();
+
+	private final CardLayout rightBarCardLayout = new CardLayout();
+	private final JPanel rightBarCards = new JPanel(rightBarCardLayout);
+
+	private final Map<AbstractWorkspacePanel, JToolBar> sectionToolbars = new HashMap<>();
+
+	protected final JLabel elementsCount = new JLabel();
+
 	public AbstractMainWorkspacePanel(MCreator mcreator, BorderLayout layout) {
 		super(layout);
 		this.mcreator = mcreator;
@@ -58,11 +69,11 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 		search = new JTextField(34) {
 			@Override public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 				if (getText().isEmpty()) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					g.setFont(g.getFont().deriveFont(11f));
-					g.setColor(new Color(120, 120, 120));
+					g.setColor(Theme.current().getAltForegroundColor());
 					g.drawString(getSearchPlaceholderText(), 8, 19);
 				}
 			}
@@ -91,6 +102,31 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 
 		});
 
+		JPanel se = new JPanel(new BorderLayout());
+
+		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		leftPan.setOpaque(false);
+		leftPan.add(search);
+
+		workspaceRightBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 3));
+
+		elementsCount.setHorizontalTextPosition(SwingConstants.LEFT);
+
+		rightBarCards.setOpaque(false);
+		rightBarCards.add(new JEmptyBox(), "none");
+		workspaceRightBar.add(rightBarCards);
+
+		workspaceRightBar.add(new JEmptyBox(7, 1));
+		workspaceRightBar.add(ComponentUtils.deriveFont(elementsCount, 12));
+		workspaceRightBar.add(new JEmptyBox(5, 1));
+
+		se.setOpaque(false);
+
+		se.add("West", leftPan);
+		se.add("East", workspaceRightBar);
+
+		add("North", se);
+
 		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
 
 		ComponentUtils.deriveFont(search, 14);
@@ -100,14 +136,27 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 
 		subTabs = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT) {
 			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getAltBackgroundColor());
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
+				if (mcreator.hasBackgroundImage()) {
+					Graphics2D g2d = (Graphics2D) g.create();
+					g2d.setColor(Theme.current().getAltBackgroundColor());
+					g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+					g2d.fillRect(0, 0, getWidth(), getHeight());
+					g2d.dispose();
+				}
 				super.paintComponent(g);
 			}
 		};
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
+		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
+				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
+
+		if (mcreator.hasBackgroundImage()) {
+			subTabs.setOpaque(false);
+			subTabs.setBackground(ColorUtils.applyAlpha(subTabs.getBackground(), 0));
+		} else {
+			subTabs.setOpaque(true);
+		}
+
 		subTabs.setModel(new DefaultSingleSelectionModel() {
 			@Override public void setSelectedIndex(int index) {
 				if (subTabs.getComponentAt(index) instanceof AbstractWorkspacePanel tabComponent) {
@@ -124,12 +173,19 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 			}
 		});
 
-		subTabs.setOpaque(false);
-		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_HIDE_TAB_AREA_WITH_ONE_TAB, true);
-		subTabs.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
-				FlatClientProperties.TABBED_PANE_TAB_ROTATION_AUTO);
-
 		add("Center", subTabs);
+	}
+
+	private void reloadToolBarComponents() {
+		rightBarCardLayout.show(rightBarCards,
+				(currentTabPanel != null && sectionToolbars.containsKey(currentTabPanel) ?
+						currentTabPanel.getClass().getName() :
+						"none"));
+		for (Component comp : rightBarCards.getComponents()) {
+			if (comp.isVisible()) {
+				rightBarCards.setPreferredSize(comp.getPreferredSize());
+			}
+		}
 	}
 
 	public MCreator getMCreator() {
@@ -163,6 +219,16 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 
 		sectionTabs.put(id, section);
 
+		JToolBar toolbar = section.getToolBarComponent();
+		if (toolbar != null) {
+			toolbar.setOpaque(false);
+			toolbar.setFloatable(false);
+			toolbar.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+			rightBarCards.add(toolbar, id.getName());
+			sectionToolbars.put(section, toolbar);
+		}
+
 		if (section.isSupportedInWorkspace()) {
 			subTabs.addTab(name, section);
 		}
@@ -191,7 +257,9 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	protected void afterVerticalTabChanged() {
 	}
 
-	public synchronized void reloadWorkspaceTab() {
+	public synchronized final void reloadWorkspaceTab() {
+		reloadToolBarComponents();
+
 		if (currentTabPanel != null)
 			currentTabPanel.reloadElements();
 	}

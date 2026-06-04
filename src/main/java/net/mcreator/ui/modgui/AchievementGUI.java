@@ -26,6 +26,7 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.types.Achievement;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -36,6 +37,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
+import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -43,6 +45,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -73,7 +76,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private MCItemHolder achievementIcon;
 
-	private final JComboBox<String> achievementType = new JComboBox<>(new String[] { "task", "goal", "challenge" });
+	private final TranslatedComboBox achievementType = ComponentFromAnnotation.translatedOptions(Achievement.class,
+			"achievementType", "elementgui.advancement.achievement_type.");
 
 	private TextureComboBox background;
 
@@ -88,7 +92,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	private ModElementListField rewardLoot;
 	private ModElementListField rewardRecipes;
 
-	private final JSpinner rewardXP = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
+	private final JSpinner rewardXP = ComponentFromAnnotation.spinner(Achievement.class, "rewardXP");
 
 	private BlocklyPanel blocklyPanel;
 	private Map<String, ToolboxBlock> externalBlocks;
@@ -188,15 +192,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				L10N.label("elementgui.advancement.hide_display")));
 		logicPanel.add(disableDisplay);
 
-		logicPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.advancement.logic"), 0, 0, logicPanel.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(logicPanel, L10N.t("elementgui.advancement.logic"));
 
-		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.advancement.display_paramters"), 0, 0, propertiesPanel.getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(propertiesPanel, L10N.t("elementgui.advancement.display_paramters"));
 
 		propertiesPanel.setOpaque(false);
 		logicPanel.setOpaque(false);
@@ -210,27 +208,16 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.JSON_TRIGGER);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"TriggerRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Achievement.XML_BASE);
-			}
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.JSON_TRIGGER);
+			blocklyPanel.addChangeListener(
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "TriggerRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml"));
+		}
 
-		blocklyPanel.setPreferredSize(new Dimension(450, 240));
-		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER,
-				blocklyPanel, false);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(163);
-
-		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(
-				PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel), compileNotesPanel);
-		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
-		advancementTrigger.setOpaque(false);
+		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
 
 		JComponent wrap = PanelUtils.northAndCenterElement(
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
@@ -296,8 +283,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(achievement.triggerxml));
+		blocklyPanel.setInitialXML(achievement.triggerxml);
 	}
 
 	@Override public Achievement getElementFromGUI() {
@@ -305,7 +291,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.achievementName = achievementName.getText();
 		achievement.achievementDescription = achievementDescription.getText();
 		achievement.achievementIcon = achievementIcon.getBlock();
-		achievement.achievementType = (String) achievementType.getSelectedItem();
+		achievement.achievementType = achievementType.getSelectedItem();
 		achievement.parent = new AchievementEntry(mcreator.getWorkspace(), parentAchievement.getSelectedItem());
 		achievement.showPopup = showPopup.isSelected();
 		achievement.disableDisplay = disableDisplay.isSelected();

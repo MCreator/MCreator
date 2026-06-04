@@ -1,0 +1,1 @@
+L'importo per cui modificare l'attributo. Questo valore viene moltiplicato per il livello dell'effetto della pozione.

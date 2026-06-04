@@ -19,22 +19,27 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings("NotNullFieldNotInitialized") public class GameRule extends GeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class GameRule extends GeneratableElement {
 
-	@Nonnull public String type;
+	@Nonnull @LimitedOptions({ "Number", "Logic" }) public String type;
 
-	public String displayName;
+	@Nonnull public String displayName;
 	public String description;
-	public String category;
-
+	@LimitedOptions({ "PLAYER", "UPDATES", "CHAT", "DROPS", "MISC", "MOBS", "SPAWNING" }) public String category;
 	public boolean defaultValueLogic;
-	public int defaultValueNumber;
+	@Numeric(init = 0, min = Integer.MIN_VALUE, max = Integer.MAX_VALUE, step = 1) public int defaultValueNumber;
+
+	private GameRule() {
+		this(null);
+	}
 
 	public GameRule(ModElement element) {
 		super(element);

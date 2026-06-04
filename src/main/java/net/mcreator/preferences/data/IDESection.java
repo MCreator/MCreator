@@ -28,6 +28,7 @@ public class IDESection extends PreferencesSection {
 
 	public final StringEntry editorTheme;
 	public final IntegerEntry fontSize;
+	public final BooleanEntry useLigatures;
 	public final BooleanEntry autocomplete;
 	public final StringEntry autocompleteMode;
 	public final BooleanEntry autocompleteDocWindow;
@@ -41,6 +42,7 @@ public class IDESection extends PreferencesSection {
 				new StringEntry("editorTheme", "MCreator", "MCreator", "Default", "Default-Alt", "Dark", "Eclipse",
 						"Idea", "Monokai", "VS"));
 		fontSize = addEntry(new IntegerEntry("fontSize", 12, 5, 48));
+		useLigatures = addEntry(new BooleanEntry("useLigatures", false));
 		autocomplete = addEntry(new BooleanEntry("autocomplete", true));
 		autocompleteMode = addEntry(new StringEntry("autocompleteMode", "Smart", "Manual", "Trigger on dot", "Smart"));
 		autocompleteDocWindow = addEntry(new BooleanEntry("autocompleteDocWindow", true));

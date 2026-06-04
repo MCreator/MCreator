@@ -1,0 +1,1 @@
+Wenn dieser Parameter aktiviert wurde, wird das Element ein Merkmal in der Welt generieren.

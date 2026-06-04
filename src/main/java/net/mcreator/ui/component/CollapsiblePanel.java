@@ -20,6 +20,7 @@ package net.mcreator.ui.component;
 
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -41,7 +42,10 @@ public class CollapsiblePanel extends JPanel {
 		setLayout(new BorderLayout());
 		setOpaque(false);
 
-		setBorder(border = BorderFactory.createTitledBorder(title));
+		setBorder(border = BorderFactory.createTitledBorder(
+				BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()), title,
+				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null, Theme.current().getAltForegroundColor()));
+
 		setTitle(text);
 		updateBorderTitle();
 
@@ -52,7 +56,16 @@ public class CollapsiblePanel extends JPanel {
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				toggleVisibility();
+				FontMetrics fm = getFontMetrics(border.getTitleFont() != null ? border.getTitleFont() : getFont());
+
+				// Title height + some offset
+				int titleHeight = fm.getHeight() + 4;
+
+				int y = e.getY();
+				Insets insets = getInsets();
+				if (y >= insets.top - titleHeight && y <= insets.top) {
+					toggleVisibility();
+				}
 			}
 		});
 	}

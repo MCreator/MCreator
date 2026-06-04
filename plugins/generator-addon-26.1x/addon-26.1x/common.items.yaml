@@ -1,0 +1,4 @@
+global_templates:
+  - template: item_texture.json.ftl
+    writer: json
+    name: "@RESROOT/textures/item_texture.json"

@@ -1,0 +1,1 @@
+This parameter controls the texture of your entity item.

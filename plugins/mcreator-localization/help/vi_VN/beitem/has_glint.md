@@ -1,0 +1,1 @@
+Nếu được bật, kết cấu của vật phẩm sẽ có hiệu ứng lấp lánh tương tự như các vật phẩm được phù phép.

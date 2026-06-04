@@ -66,7 +66,7 @@ package ${package}.network;
 		Level world = entity.level();
 
 		// security measure to prevent arbitrary chunk generation
-		if (!world.hasChunkAt(new BlockPos(x, y, z)))
+		if (!world.getChunkSource().hasChunk(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z)))
 			return;
 
 		<#list data.components as component>

@@ -43,7 +43,7 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 	public TooltipDialog(WYSIWYGEditor editor, @Nullable Tooltip tooltip) {
 		super(editor, tooltip);
 		setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
-		setSize(580, 215);
+		setSize(510, 200);
 		setLocationRelativeTo(editor.mcreator);
 
 		JTextField textField = new JTextField();
@@ -58,7 +58,8 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 				editor.mcreator.getWorkspace());
 
 		StringProcedureSelector tooltipText = new StringProcedureSelector(
-				IHelpContext.NONE.withEntry("gui/tooltip_text"), editor.mcreator, textField, 200,
+				IHelpContext.NONE.withEntry("gui/tooltip_text"), editor.mcreator, L10N.t("elementgui.common.value"),
+				AbstractProcedureSelector.Side.CLIENT, false, textField, 200,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		tooltipText.refreshList(context);
 

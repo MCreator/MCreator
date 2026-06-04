@@ -89,7 +89,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	</#if>
 
 	<#if data.sensitiveToVibration>
-	private final DynamicGameEventListener<VibrationSystem.Listener> dynamicGameEventListener = new DynamicGameEventListener(new VibrationSystem.Listener(this));
+	private final DynamicGameEventListener<VibrationSystem.Listener> dynamicGameEventListener = new DynamicGameEventListener<>(new VibrationSystem.Listener(this));
 	private final VibrationSystem.User vibrationUser = new VibrationUser();
 	private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
 	</#if>
@@ -727,7 +727,19 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		}
     </#if>
 
-	<#if data.breedable>
+	<#if ["Pig", "Villager", "Wolf", "Cow", "Chicken", "Ocelot", "Squid", "Horse"]?seq_contains(extendsClass)>
+		@Override public ${extendsClass} getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld);
+			<#if data.aiBase == "Wolf">
+			if (this.isTame()) {
+				retval.setOwnerUUID(this.getOwnerUUID());
+				retval.setTame(true, true);
+			}
+			</#if>
+			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null);
+			return retval;
+		}
+	<#elseif data.breedable>
         @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
 			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld);
 			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null);
@@ -735,7 +747,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
+			<#if data.breedTriggerItems?has_content>
 			return ${mappedMCItemsToIngredient(data.breedTriggerItems)}.test(stack);
+			<#else>
+			return false;
+			</#if>
 		}
     </#if>
 
@@ -882,19 +898,20 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
    	@Override public void setNoGravity(boolean ignored) {
 		super.setNoGravity(true);
 	}
-    </#if>
 
-    <#if data.flyingMob>
-    public void aiStep() {
+    @Override public void aiStep() {
 		super.aiStep();
-
 		this.setNoGravity(true);
+	}
+
+	@Override protected float getFlyingSpeed() {
+		return (float) this.getAttributeValue(Attributes.FLYING_SPEED);
 	}
     </#if>
 
 	public static void init(RegisterSpawnPlacementsEvent event) {
 		<#if data.spawnThisMob>
-			<#if data.mobSpawningType == "creature">
+			<#if data.mobSpawningType.getUnmappedValue() == "creature">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 				<#if hasProcedure(data.spawningCondition)>
@@ -911,7 +928,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 				</#if>,
 				RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
-			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "ambient" || data.mobSpawningType.getUnmappedValue() == "misc">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -926,7 +943,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
-			<#elseif data.mobSpawningType == "waterCreature" || data.mobSpawningType == "waterAmbient">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "waterCreature" || data.mobSpawningType.getUnmappedValue() == "waterAmbient">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -943,7 +960,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
-			<#elseif data.mobSpawningType == "undergroundWaterCreature">
+			<#elseif data.mobSpawningType.getUnmappedValue() == "undergroundWaterCreature">
 			event.register(${JavaModName}Entities.${REGISTRYNAME}.get(),
 					SpawnPlacementTypes.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
 					<#if hasProcedure(data.spawningCondition)>
@@ -1067,7 +1084,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 			</#if>
 		}
 
-		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, @Nullable Entity vibrationSource, @Nullable Entity projectileShooter, float distance) {
+		@Override public void onReceiveVibration(ServerLevel world, BlockPos vibrationPos, Holder<GameEvent> holder, @Nullable Entity vibrationSource, @Nullable Entity immediateSource, float distance) {
 			<#if hasProcedure(data.onReceivedVibration)>
 				<@procedureCode data.onReceivedVibration {
 					"x": "entity.getX()",
@@ -1079,7 +1096,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					"world": "world",
 					"entity": "entity",
 					"sourceentity": "vibrationSource",
-					"immediatesourceentity": "projectileShooter"
+					"immediatesourceentity": "immediateSource",
+					"distance": "distance"
 				}/>
 			</#if>
 		}

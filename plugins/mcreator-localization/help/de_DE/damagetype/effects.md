@@ -1,0 +1,1 @@
+Dieser Parameter bestimmt die Geräusche, die abgespielt werden sollen, wenn Schaden dieses Typs zugefügt wird

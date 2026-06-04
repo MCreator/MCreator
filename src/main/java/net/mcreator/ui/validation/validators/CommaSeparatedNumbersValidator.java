@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
@@ -36,14 +37,13 @@ public class CommaSeparatedNumbersValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (holder.getText().isBlank())
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		try {
 			Stream.of(holder.getText().split(",")).map(Integer::parseInt).collect(Collectors.toList());
 		} catch (Exception e) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validators.only_number_list"));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.only_number_list"));
 		}
-		return Validator.ValidationResult.PASSED;
+		return ValidationResult.PASSED;
 	}
 
 }

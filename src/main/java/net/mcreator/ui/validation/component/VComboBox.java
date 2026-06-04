@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.component;
 
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -56,11 +57,11 @@ public class VComboBox<T> extends JComboBox<T> implements IValidable {
 		return (T) super.getSelectedItem();
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		if (validator != null && validationResult != null) {
-			setBorder(BorderFactory.createLineBorder(validationResult.getValidationResultType().getColor(), 1));
+			setBorder(BorderFactory.createLineBorder(validationResult.type().getColor(), 1));
 		}
 
 		return validationResult;

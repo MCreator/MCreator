@@ -375,7 +375,7 @@ public class ElementUtil {
 			retval.add(NameMapper.MCREATOR_PREFIX + soundElement.getName());
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream()
+		retval.addAll(DataListLoader.loadDataList("sounds").stream().filter(e -> e.isSupportedInWorkspace(workspace))
 				.sorted(Comparator.comparing(DataListEntry::getReadableName)).map(DataListEntry::getName).toList());
 
 		return retval.toArray(new String[0]);
@@ -415,6 +415,10 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadAllGameEvents() {
 		return DataListLoader.loadDataList("gameevents");
+	}
+
+	public static List<DataListEntry> loadAllEquipmentSlots() {
+		return DataListLoader.loadDataList("equipmentslots");
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {

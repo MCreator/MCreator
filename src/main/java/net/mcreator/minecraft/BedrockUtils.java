@@ -35,13 +35,14 @@ import java.io.File;
 
 public class BedrockUtils {
 
-	private static final Logger LOG = LogManager.getLogger("Bedrock Utils");
+	private static final Logger LOG = LogManager.getLogger(BedrockUtils.class);
 
-	private static final String MC_PROCESS = "Minecraft.Windows.exe";
+	public static final String MC_PROCESS = "Minecraft.Windows.exe";
 
 	public static void reinstallAddon(MCreator mcreator, Workspace workspace) {
 		if (OS.getOS() == OS.WINDOWS) {
 			File bedrockDir = MinecraftFolderUtils.getBedrockEditionFolder();
+			LOG.debug("Reinstalling addon to Bedrock Edition folder: {}", bedrockDir);
 
 			File bpdev = new File(bedrockDir, "development_behavior_packs");
 			File rpdev = new File(bedrockDir, "development_resource_packs");
@@ -67,7 +68,8 @@ public class BedrockUtils {
 					if (addonFile.isFile()) {
 						try {
 							// stop running MC if any
-							if (WindowsProcessUtil.isProcessRunning(MC_PROCESS)) {
+							String processCandidate;
+							if ((processCandidate = WindowsProcessUtil.getProcessNameIfExists(MC_PROCESS)) != null) {
 								String[] options = new String[] { L10N.t("dialog.bedrock.options.close_reload"),
 										L10N.t("dialog.bedrock.options.close_reload_always"),
 										L10N.t("dialog.bedrock.options.cancel") };
@@ -83,7 +85,7 @@ public class BedrockUtils {
 										PreferencesManager.savePreferences();
 									}
 
-									WindowsProcessUtil.killProcess(MC_PROCESS);
+									WindowsProcessUtil.killProcess(processCandidate);
 									loadPackAndRun(bpdev, rpdev, workspace);
 								}
 							} else {
@@ -111,8 +113,7 @@ public class BedrockUtils {
 				new File(bpdev, workspace.getWorkspaceSettings().getModID()));
 		FileIO.copyDirectory(workspace.getGenerator().getResourceRoot(),
 				new File(rpdev, workspace.getWorkspaceSettings().getModID()));
-		Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", "start", "",
-				"shell:AppsFolder\\Microsoft.MinecraftUWP_8wekyb3d8bbwe!App" });
+		Runtime.getRuntime().exec(new String[] { "cmd.exe", "/c", "start", "minecraft://" });
 	}
 
 	private static boolean detectAndDeletePack(File bpacksdir, String uuid) {

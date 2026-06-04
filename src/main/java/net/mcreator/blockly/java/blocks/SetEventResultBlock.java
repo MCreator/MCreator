@@ -25,6 +25,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
@@ -47,8 +48,8 @@ public class SetEventResultBlock implements IBlockGenerator {
 			if (blocklyToProcedure.getExternalTrigger() != null) {
 				ExternalTrigger trigger = null;
 
-				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-						.getExternalTriggers();
+				List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+						BlocklyEditorType.PROCEDURE).getExternalTriggers();
 				for (ExternalTrigger externalTrigger : externalTriggers) {
 					if (externalTrigger.getID().equals(blocklyToProcedure.getExternalTrigger())) {
 						trigger = externalTrigger;

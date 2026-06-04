@@ -1,0 +1,1 @@
+Tento parametr ovládá GUI vašeho bloku. Je potřeba kupříkladu pro truhlu nebo pracovní stůl.

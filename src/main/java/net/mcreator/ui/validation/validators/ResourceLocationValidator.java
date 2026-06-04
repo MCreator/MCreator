@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import org.apache.commons.lang3.StringUtils;
@@ -49,11 +50,11 @@ public class ResourceLocationValidator<T> extends RegistryNameValidator {
 
 	@Override public ValidationResult validate() {
 		if (this.getText().endsWith(":"))
-			return new ValidationResult(ValidationResultType.ERROR,
+			return new ValidationResult(ValidationResult.Type.ERROR,
 					L10N.t("validators.registry_name.invalid2", this.name));
 
 		if (StringUtils.countMatches(this.getText(), ':') > 1)
-			return new ValidationResult(ValidationResultType.ERROR,
+			return new ValidationResult(ValidationResult.Type.ERROR,
 					L10N.t("validators.registry_name.invalid3", this.name));
 
 		return super.validate();

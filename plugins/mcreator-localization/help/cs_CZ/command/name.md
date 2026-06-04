@@ -1,0 +1,1 @@
+Slovo, které hráč musí napsat pro definování příkazu, například gamemode, give, setblock, atd.

@@ -1,0 +1,1 @@
+Pokud je tento parametr zaškrtnut, jakákoliv rostlina může být položena a růst na tomto bloku.

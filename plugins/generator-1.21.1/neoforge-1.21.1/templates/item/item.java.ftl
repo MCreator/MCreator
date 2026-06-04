@@ -68,12 +68,19 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					<#if data.isAlwaysEdible>.alwaysEdible()</#if>
 					.build())
 				</#if>
-				<#if data.enableMeleeDamage>
+				<#if data.enableMeleeDamage || (data.attributeModifiers?size gt 0)>
 				.attributes(ItemAttributeModifiers.builder()
+					<#if data.enableMeleeDamage>
 					.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, ${data.damageVsEntity - 1},
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.4,
+					.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, ${data.attackSpeed - 4},
 							AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+					</#if>
+					<#list data.attributeModifiers as modifier>
+					.add(${modifier.attribute}, new AttributeModifier(
+							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${modifier.equipmentSlot})
+					</#list>
 					.build())
 				</#if>
 				<#if data.isMusicDisc>
@@ -185,10 +192,17 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 	}
 	</#if>
 
+	<#if data.damageCount != 0 && data.repairItems?has_content>
+	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
+	}
+	</#if>
+
 	<@addSpecialInformation data.specialInformation, "item." + modid + "." + registryname/>
 
 	<#assign shouldExplicitlyCallStartUsing = !data.isFood && (data.useDuration > 0)> <#-- ranged items handled in if below so no need to check for that here too -->
-	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged || shouldExplicitlyCallStartUsing>
+	<#assign rightClickingOpensGUI = data.openGUIOnRightClick?? && (hasProcedure(data.openGUIOnRightClick) || data.openGUIOnRightClick.getFixedValue())>
+	<#if hasProcedure(data.onRightClickedInAir) || data.enableRanged || shouldExplicitlyCallStartUsing || (data.hasInventory() && rightClickingOpensGUI)>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
 		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.fail(entity.getItemInHand(hand));
@@ -208,15 +222,25 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 			}, false/>)
 			</#if>
 			if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
-				ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+				ar = InteractionResultHolder.consume(entity.getItemInHand(hand));
 				entity.startUsingItem(hand);
 			}
 		<#elseif shouldExplicitlyCallStartUsing>
 			entity.startUsingItem(hand);
 		</#if>
 
-		<#if data.hasInventory()>
+		<#if data.hasInventory() && rightClickingOpensGUI>
 		if (entity instanceof ServerPlayer serverPlayer) {
+			<#if hasProcedure(data.openGUIOnRightClick)>
+			if (<@procedureCode data.openGUIOnRightClick, {
+				"x": "serverPlayer.getX()",
+				"y": "serverPlayer.getY()",
+				"z": "serverPlayer.getZ()",
+				"world": "serverPlayer.level()",
+				"entity": "serverPlayer",
+				"itemstack": "ar.getObject()"
+			}, false/>) {
+			</#if>
 			serverPlayer.openMenu(new MenuProvider() {
 				@Override public Component getDisplayName() {
 					return Component.literal("${data.name}");
@@ -232,6 +256,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 				buf.writeBlockPos(entity.blockPosition());
 				buf.writeByte(hand == InteractionHand.MAIN_HAND ? 0 : 1);
 			});
+			<#if hasProcedure(data.openGUIOnRightClick)>}</#if>
 		}
 		</#if>
 

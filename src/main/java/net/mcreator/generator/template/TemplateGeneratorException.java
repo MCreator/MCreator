@@ -31,4 +31,8 @@ public class TemplateGeneratorException extends Exception {
 		super(s, throwable);
 	}
 
+	public TemplateGeneratorException(Throwable throwable) {
+		super(throwable);
+	}
+
 }

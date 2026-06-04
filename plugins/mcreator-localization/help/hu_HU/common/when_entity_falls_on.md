@@ -1,0 +1,1 @@
+Csak akkor indít el egy eljárást, ha az entitás bármilyen magasságból a blokkra esik.

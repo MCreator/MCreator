@@ -29,7 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
@@ -60,14 +60,13 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 							&& ((Slot) component).id == slot.id) // skip current element if edit mode
 						continue;
 					if (component instanceof Slot slotOther && slotOther.id == slotIDnum)
-						return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						return new ValidationResult(ValidationResult.Type.ERROR,
 								L10N.t("dialog.gui.slot_id_already_used"));
 				}
 			} catch (Exception exc) {
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-						L10N.t("dialog.gui.slot_id_must_be_number"));
+				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("dialog.gui.slot_id_must_be_number"));
 			}
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		});
 		slotID.setText("0");
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.slot_id"), slotID));
@@ -143,7 +142,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 
 		cancel.addActionListener(event -> dispose());
 		ok.addActionListener(event -> {
-			if (slotID.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (slotID.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				int slotIDnum = Integer.parseInt(slotID.getText().trim());
 				if (slot == null) {

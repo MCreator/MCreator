@@ -1,0 +1,1 @@
+La quantité par laquelle modifier l'attribut. Cette valeur est multipliée par le niveau de l'effet de potion.

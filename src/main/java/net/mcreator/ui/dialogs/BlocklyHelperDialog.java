@@ -33,8 +33,7 @@ import java.awt.*;
  */
 public abstract class BlocklyHelperDialog extends MCreatorDialog {
 
-	public BlocklyHelperDialog(BlocklyPanel blocklyPanel, MCreator mcreator, String title, String okMessage, int width,
-			int height) {
+	public BlocklyHelperDialog(BlocklyPanel blocklyPanel, MCreator mcreator, String title, String okMessage) {
 		super(mcreator, title, true);
 		this.setLayout(new BorderLayout(10, 10));
 		this.setIconImage(UIRES.get("18px.add").getImage());
@@ -54,9 +53,7 @@ public abstract class BlocklyHelperDialog extends MCreatorDialog {
 		});
 		this.add("South", PanelUtils.join(ok, cancel));
 
-		this.setSize(width, height);
 		this.getRootPane().setDefaultButton(ok);
-		this.setLocationRelativeTo(mcreator);
 	}
 
 	/**

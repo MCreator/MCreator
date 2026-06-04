@@ -1,0 +1,1 @@
+Se ativada, a textura do item terá um efeito brilhante semelhante ao de itens encantados.

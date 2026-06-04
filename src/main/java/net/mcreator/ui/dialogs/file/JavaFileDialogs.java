@@ -19,11 +19,12 @@
 
 package net.mcreator.ui.dialogs.file;
 
-import javafx.stage.FileChooser;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.JBRHacks;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.WorkspaceFolderManager;
+import org.cef.OS;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -41,7 +42,7 @@ class JavaFileDialogs {
 	private static final Dimension FILEDIALOG_SIZE = new Dimension(720, 420);
 
 	protected static File[] getFileChooserDialog(Window f, FileChooserType type, boolean multiSelect,
-			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
+			@Nullable String suggestedFileName, ExtensionFilter... filters) {
 		JFileChooser fc = new JFileChooser() {
 			@Override public File getSelectedFile() {
 				File selectedFile = super.getSelectedFile();
@@ -86,10 +87,19 @@ class JavaFileDialogs {
 
 				return fileSystemView.getSystemIcon(f);
 			}
+
+			@Override public Boolean isTraversable(File f) {
+				// Workaround for https://youtrack.jetbrains.com/projects/JBR/issues/JBR-8855/
+				// IoOverNio causes crashes with JFileChooser on certain Windows systems
+				if (OS.isWindows()) {
+					JBRHacks.permanentlyDisableIoOverNioInThisThread();
+				}
+				return super.isTraversable(f);
+			}
 		});
 
 		if (filters != null) {
-			for (FileChooser.ExtensionFilter extensionFilter : filters) {
+			for (ExtensionFilter extensionFilter : filters) {
 				if (extensionFilter != null) {
 					fc.addChoosableFileFilter(extensionToFileFilter(extensionFilter));
 				}
@@ -115,8 +125,9 @@ class JavaFileDialogs {
 				File[] files = fc.getSelectedFiles();
 				if (files != null && files.length > 0)
 					return files;
-			} else
+			} else {
 				return new File[] { fc.getSelectedFile() };
+			}
 		}
 
 		return null;
@@ -131,6 +142,17 @@ class JavaFileDialogs {
 				super.approveSelection();
 			}
 		};
+
+		fc.setFileView(new FileView() {
+			@Override public Boolean isTraversable(File f) {
+				// Workaround for https://youtrack.jetbrains.com/projects/JBR/issues/JBR-8855/
+				// IoOverNio causes crashes with JFileChooser on certain Windows systems
+				if (OS.isWindows()) {
+					JBRHacks.permanentlyDisableIoOverNioInThisThread();
+				}
+				return super.isTraversable(f);
+			}
+		});
 
 		fc.setPreferredSize(FILEDIALOG_SIZE);
 
@@ -161,12 +183,12 @@ class JavaFileDialogs {
 		return null;
 	}
 
-	private static FileFilter extensionToFileFilter(FileChooser.ExtensionFilter extensionFilter) {
+	private static FileFilter extensionToFileFilter(ExtensionFilter extensionFilter) {
 		return new FileFilter() {
 			@Override public boolean accept(File f) {
 				if (f.isFile()) {
 					String filename = f.getName().toLowerCase(Locale.ROOT);
-					for (String ext : extensionFilter.getExtensions()) {
+					for (String ext : extensionFilter.extensions()) {
 						if (filename.matches(ext.replace(".", "\\.").replace("*", ".*") + "$"))
 							return true;
 					}
@@ -176,8 +198,8 @@ class JavaFileDialogs {
 			}
 
 			@Override public String getDescription() {
-				return extensionFilter.getDescription() + " " + extensionFilter.getExtensions().toString()
-						.replace('[', '(').replace(']', ')');
+				return extensionFilter.description() + " " + extensionFilter.extensions().toString().replace('[', '(')
+						.replace(']', ')');
 			}
 		};
 	}

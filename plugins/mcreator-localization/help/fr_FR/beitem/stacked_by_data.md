@@ -1,0 +1,1 @@
+Si sélectionné, les objets du même type avec des données différentes sont empilés séparément dans des emplacements de conteneur et sur le sol.

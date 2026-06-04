@@ -31,17 +31,17 @@ public class SocialButtons extends JPanel {
 	public SocialButtons() {
 		setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		add(createButton("yt", "https://www.youtube.com/subscription_center?add_user=PyloGroup"));
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(5, 5));
 		add(createButton("rd", "https://www.reddit.com/r/MCreator/"));
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(5, 5));
 		add(createButton("tw", "https://twitter.com/PyloDEV"));
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(5, 5));
 		add(createButton("gh", "https://github.com/MCreator/MCreator"));
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(5, 5));
 		add(createButton("fb", "https://www.facebook.com/PyloDEV"));
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(5, 5));
 		add(createButton("ds", "https://discord.gg/sBRCQPp5ez"));
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(5, 5));
 		add(createButton("ig", "https://www.instagram.com/pylocompany/"));
 		setOpaque(false);
 	}

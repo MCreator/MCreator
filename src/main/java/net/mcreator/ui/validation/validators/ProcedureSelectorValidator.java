@@ -20,6 +20,7 @@ package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -42,6 +43,6 @@ public class ProcedureSelectorValidator implements Validator {
 		if (selector.getSelectedProcedure() != null || (requirement != null && !requirement.isSelected()))
 			return ValidationResult.PASSED;
 		else
-			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.select_element"));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.select_element"));
 	}
 }

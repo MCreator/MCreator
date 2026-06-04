@@ -1,0 +1,1 @@
+If this parameter is enabled, the item will render with the tool item transform in the player's hand.

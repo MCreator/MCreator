@@ -1,0 +1,1 @@
+Si ce paramètre est activé, l'objet sera affiché avec la transformation des outils dans la main du joueur.

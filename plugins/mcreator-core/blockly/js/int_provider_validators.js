@@ -13,7 +13,8 @@ function getIntProviderMinMax(providerBlock) {
     else if (providerBlock.type === 'int_provider_weighted') {
         // Weighted lists always have at least one input, so the actual returned value won't be [Infinity, -Infinity]
         let retval = [Infinity, -Infinity];
-        for (let i = 0, input; input = providerBlock.inputList[i]; i++) {
+        for (let i = 0; i < providerBlock.inputList.length; i++) {
+            const input = providerBlock.inputList[i];
             if (!input.connection) {
                 continue;
             }
@@ -88,7 +89,7 @@ function validateIntProviderInputs(...inputs) {
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
-                this.setEnabled(isValid);
+                this.setDisabledReason(!isValid, "int_provider_out_of_bounds");
                 Blockly.Events.setGroup(group);
             }
         });

@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.IMultipleNames;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
@@ -43,6 +44,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.DesktopUtils;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -79,9 +81,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private final List<ModElementGUIPage> pages = new ArrayList<>();
 
 	private ModElementCodeViewer<GE> modElementCodeViewer = null;
-	private JSplitPane splitPane;
 
 	private final ModElementGUISearch search = new ModElementGUISearch(this);
+
+	private JButton save, saveOnly;
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
@@ -146,7 +149,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		if (existing == null) {
 			mcreator.getTabs().addTab(this.tabIn);
 
-			this.tabIn.setTabShownListener(tab -> {
+			this.tabIn.setTabShownListener(_ -> {
 				if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
 					listeningEnabled = false;
 					reloadDataLists();
@@ -154,7 +157,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				}
 			});
 
-			this.tabIn.setTabClosingListener(tab -> {
+			this.tabIn.setTabClosingListener(_ -> {
 				if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
 					return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
 							L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
@@ -162,7 +165,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				return true;
 			});
 
-			this.tabIn.setTabClosedListener(tab -> onViewClosed());
+			this.tabIn.setTabClosedListener(_ -> onViewClosed());
 
 			retval = this;
 		} else {
@@ -194,7 +197,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			back.setFocusPainted(false);
 			back.setContentAreaFilled(false);
 			back.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			back.addActionListener(event -> {
+			back.addActionListener(_ -> {
 				AggregatedValidationResult validationResult = pages.get(split.getPage()).getValidationResult();
 				if (validationResult.validateIsErrorFree()) {
 					pagers.get(split.getPage()).setIcon(null);
@@ -210,7 +213,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			forward.setFocusPainted(false);
 			forward.setContentAreaFilled(false);
 			forward.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			forward.addActionListener(event -> {
+			forward.addActionListener(_ -> {
 				AggregatedValidationResult validationResult = pages.get(split.getPage()).getValidationResult();
 				if (validationResult.validateIsErrorFree()) {
 					pagers.get(split.getPage()).setIcon(null);
@@ -237,14 +240,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				page.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				ComponentUtils.deriveFont(page, 13);
 
-				page.addChangeListener(e -> page.setForeground(page.isSelected() ?
+				page.addChangeListener(_ -> page.setForeground(page.isSelected() ?
 						(Theme.current().getInterfaceAccentColor()) :
 						(Theme.current().getForegroundColor())));
 				pager.add(page);
 				buttonGroup.add(page);
 
 				int finalIdx = idx;
-				page.addActionListener(e -> split.setPage(finalIdx));
+				page.addActionListener(_ -> split.setPage(finalIdx));
 
 				pageEntry.setShowThisPageAction(page::doClick);
 
@@ -259,11 +262,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			pager.add(forward);
 
-			JButton save = L10N.button("elementgui.save_mod_element");
+			save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.addActionListener(event -> {
+			save.addActionListener(_ -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				List<ValidationGroup> errors = new ArrayList<>();
 				for (int i = 0; i < pages.size(); i++) {
 					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
@@ -280,13 +286,19 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					finishModCreation(true);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
-			JButton saveOnly = L10N.button("elementgui.save_keep_open");
+			saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.addActionListener(event -> {
+			saveOnly.addActionListener(_ -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				List<ValidationGroup> errors = new ArrayList<>();
 				for (int i = 0; i < pages.size(); i++) {
 					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
@@ -303,6 +315,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					finishModCreation(false);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
@@ -313,32 +328,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 			toolBarLeft.setOpaque(false);
 
-			if (modElementCodeViewer != null) {
-				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setMargin(new Insets(1, 40, 1, 40));
-				codeViewer.addActionListener(e -> {
-					if (codeViewer.isSelected()) {
-						modElementCodeViewer.setVisible(true);
-						splitPane.setDividerSize(10);
-						splitPane.setDividerLocation(0.6);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
-					} else {
-						modElementCodeViewer.setVisible(false);
-						splitPane.setDividerSize(0);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-					}
-				});
-
-				toolBarLeft.add(codeViewer);
-			}
-
 			try {
 				URI helpURI = this.contextURL();
 				if (helpURI != null) {
 					JButton help = L10N.button("common.help");
 					help.setMargin(new Insets(1, 40, 1, 40));
 					toolBarLeft.add(help);
-					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+					help.addActionListener(_ -> DesktopUtils.browseSafe(helpURI.toString()));
 				}
 			} catch (URISyntaxException e) {
 				LOG.warn("Failed to create help context", e);
@@ -352,28 +348,40 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			centerComponent = PanelUtils.centerAndSouthElement(parameters = split, pager);
 		} else {
-			JButton saveOnly = L10N.button("elementgui.save_keep_open");
+			saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.addActionListener(event -> {
+			saveOnly.addActionListener(_ -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
 				if (validationResult.validateIsErrorFree())
 					finishModCreation(false);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
-			JButton save = L10N.button("elementgui.save_mod_element");
+			save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.addActionListener(event -> {
+			save.addActionListener(_ -> {
+				save.setEnabled(false);
+				saveOnly.setEnabled(false);
+
 				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
 				if (validationResult.validateIsErrorFree())
 					finishModCreation(true);
 				else
 					showErrorsMessage(validationResult);
+
+				save.setEnabled(true);
+				saveOnly.setEnabled(true);
 			});
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
@@ -384,32 +392,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JPanel toolBarLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 			toolBarLeft.setOpaque(false);
 
-			if (modElementCodeViewer != null) {
-				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setMargin(new Insets(1, 40, 1, 40));
-				codeViewer.addActionListener(e -> {
-					if (codeViewer.isSelected()) {
-						modElementCodeViewer.setVisible(true);
-						splitPane.setDividerSize(10);
-						splitPane.setDividerLocation(0.6);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(7, 0, 0, 0));
-					} else {
-						modElementCodeViewer.setVisible(false);
-						splitPane.setDividerSize(0);
-						splitPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-					}
-				});
-
-				toolBarLeft.add(codeViewer);
-			}
-
 			try {
 				URI helpURI = this.contextURL();
 				if (helpURI != null) {
 					JButton help = L10N.button("common.help");
 					help.setMargin(new Insets(1, 40, 1, 40));
 					toolBarLeft.add(help);
-					help.addActionListener(e -> DesktopUtils.browse(helpURI));
+					help.addActionListener(_ -> DesktopUtils.browseSafe(helpURI.toString()));
 				}
 			} catch (URISyntaxException e) {
 				LOG.warn("Failed to create help context", e);
@@ -422,19 +411,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			centerComponent = pages.getFirst().getComponent();
 		}
 
-		if (modElementCodeViewer != null) {
-			splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, centerComponent, modElementCodeViewer);
-			splitPane.setOpaque(false);
-			splitPane.setOneTouchExpandable(true);
-			modElementCodeViewer.setVisible(false);
-			splitPane.setDividerSize(0);
-			add("Center", splitPane);
-			modElementCodeViewer.registerUI(centerComponent);
-		} else {
-			add("Center", centerComponent);
-		}
+		add("Center", centerComponent);
 
 		reloadDataLists();
+
+		if (modElementCodeViewer != null) {
+			modElementCodeViewer.registerUI(centerComponent);
+		}
 
 		if (editingMode) {
 			@SuppressWarnings("unchecked") GE generatableElement = (GE) modElement.getGeneratableElement();
@@ -486,7 +469,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 					Component c = hierarchy.pop();
 					if (inclusions != null) // register component to exclude its "neighbors" later
-						includedComponents.computeIfAbsent((Container) hierarchy.peek(), e -> new ArrayList<>()).add(c);
+						includedComponents.computeIfAbsent((Container) hierarchy.peek(), _ -> new ArrayList<>()).add(c);
 					else // exclude the component itself
 						UnsupportedComponent.markUnsupported(c);
 				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
@@ -534,12 +517,43 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				JOptionPane.ERROR_MESSAGE);
 	}
 
+	protected AggregatedValidationResult getAdditionalValidationResult(GE generatableElement) {
+		// Just before saving the ME and GE, we make sure again that the name we are trying to use was
+		// not reserved by some other ME (e.g., ME that has multiple names, if this ME has multiple names,
+		// or if the pack-making tool was used to reserve the same name as we are in the process of reserving)
+		List<String> ourNames = new ArrayList<>();
+		ourNames.add(modElement.getName());
+		if (generatableElement instanceof IMultipleNames multipleNames) {
+			ourNames.addAll(multipleNames.getAdditionalNames());
+		}
+
+		// Get a list of used names without current ME and intersect it with ourNames
+		Collection<String> conflictingNames = ListUtils.intersect(
+				mcreator.getWorkspaceInfo().getUsedElementNames(modElement), ourNames);
+
+		// Check if the list of used names contains any of ourNames
+		if (!conflictingNames.isEmpty()) {
+			return new AggregatedValidationResult.FAIL(
+					L10N.t("elementgui.errors.name_reserved", String.join(", ", conflictingNames)));
+		}
+
+		return new AggregatedValidationResult.PASS();
+	}
+
 	/**
 	 * This method implements the mod element saving and generation
 	 */
 	private void finishModCreation(boolean closeTab) {
 		MCREvent.event(new ModElementGUIEvent.WhenSaving(mcreator, tabIn, this, !closeTab));
+
 		GE element = getElementFromGUI();
+
+		// Perform any potential additional validation the editor specifies
+		AggregatedValidationResult validationResult = getAdditionalValidationResult(element);
+		if (!validationResult.validateIsErrorFree()) {
+			showErrorsMessage(validationResult);
+			return;
+		}
 
 		// if new element, specify the folder of the mod element
 		if (!editingMode && mcreator instanceof ModMaker modMaker)
@@ -552,7 +566,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.getWorkspace().addModElement(modElement);
 		} else {
 			modElement.reloadElementIcon();
-			modElement.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
+			modElement.getMCItems().forEach(mcItem -> mcItem.getIcon().getImage().flush()); // update MCItem icons
 		}
 
 		// make sure workspace will also be saved
@@ -678,5 +692,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	@Override @Nullable public abstract URI contextURL() throws URISyntaxException;
+
+	public ModElementCodeViewer<GE> getModElementCodeViewer() {
+		return modElementCodeViewer;
+	}
 
 }

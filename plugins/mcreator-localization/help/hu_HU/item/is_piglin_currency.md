@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy az elem piglin pénznem-e, például aranyrúd.

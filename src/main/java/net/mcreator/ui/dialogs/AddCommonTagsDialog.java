@@ -80,7 +80,6 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, blockTags, "fences", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "wooden_fences", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "walls", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, blockTags, "small_flowers", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "bee_growables", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "valid_spawn", "minecraft", TagType.BLOCKS, false));
 		callables.add(addTag(mcreator, blockTags, "impermeable", "minecraft", TagType.BLOCKS, false));

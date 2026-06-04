@@ -1,7 +1,7 @@
 let global_variables = [];
 
-Blockly.HSV_SATURATION = MCR_BLOCKLY_PREF['saturation'];
-Blockly.HSV_VALUE = MCR_BLOCKLY_PREF['value'];
+Blockly.utils.colour.setHsvSaturation(MCR_BLOCKLY_PREF['saturation']);
+Blockly.utils.colour.setHsvValue(MCR_BLOCKLY_PREF['value']);
 
 const blockly = document.getElementById('blockly');
 const workspace = Blockly.inject(blockly, {
@@ -13,16 +13,23 @@ const workspace = Blockly.inject(blockly, {
     disable: false,
     trashcan: MCR_BLOCKLY_PREF['trashcan'],
     renderer: MCR_BLOCKLY_PREF['renderer'],
+    maxTrashcanContents: MCR_BLOCKLY_PREF['maxTrashContents'],
     zoom: {
         controls: false,
         wheel: true,
-        startScale: 0.95,
+        startScale: MCR_BLOCKLY_PREF['startScale'],
         maxScale: MCR_BLOCKLY_PREF['maxScale'],
         minScale: MCR_BLOCKLY_PREF['minScale'],
         scaleSpeed: MCR_BLOCKLY_PREF['scaleSpeed']
     },
     toolbox: '<xml id="toolbox"><category name="" colour=""></category></xml>'
 });
+
+const crossTabPlugin = new CrossTabCopyPaste();
+crossTabPlugin.init({
+    contextMenu: true,
+    shortcut: true
+}, null, editorType);
 
 workspace.addChangeListener(function (event) {
     if (workspace.isDragging())
@@ -119,7 +126,7 @@ function workspaceToXML() {
     }
 
     // Add variables child on top of DOM
-    const variablesElement = Blockly.Xml.variablesToDom(workspace.getAllVariables());
+    const variablesElement = Blockly.Xml.variablesToDom(workspace.getVariableMap().getAllVariables());
     if (variablesElement.hasChildNodes()) {
         treeXml.prepend(variablesElement);
     }

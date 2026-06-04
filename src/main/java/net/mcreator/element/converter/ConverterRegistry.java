@@ -58,11 +58,16 @@ import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
 import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
 import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
+import net.mcreator.element.converter.v2025_4.ItemOpenBoundGUIConverter;
+import net.mcreator.element.converter.v2025_4.ItemToBedrockConverter;
+import net.mcreator.element.converter.v2026_1.BedrockBiomeRemover;
+import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
+import net.mcreator.element.converter.v2026_1.BlockToBedrockConverter;
+import net.mcreator.element.converter.v2026_1.ToolToBedrockConverter;
+import net.mcreator.element.converter.v2026_2.VillagerTradeSplitter;
+import net.mcreator.generator.GeneratorFlavor;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConverterRegistry {
 
@@ -86,7 +91,8 @@ public class ConverterRegistry {
 			new BiomeFrozenTopLayerConverter(),
 			new BiomeGenParametersConverter(),
 			new BiomeCustomFeaturesConverter(),
-			new BiomeFogColorConverter()
+			new BiomeFogColorConverter(),
+			new BedrockBiomeRemover()
 		));
 		put(ModElementType.BLOCK, List.of(
 			new BlockLuminanceFixer(),
@@ -100,7 +106,9 @@ public class ConverterRegistry {
 			new BlockHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter(),
 			new NoGUISelectedConverter(),
-			new BlockLegacyMaterialRemover()
+			new BlockLegacyMaterialRemover(),
+			new BlockToBedrockConverter(),
+			new BlockHasCustomOpacityFixer()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
@@ -199,7 +207,9 @@ public class ConverterRegistry {
 			new SpecialInformationConverter(),
 			new ItemHasGlowConverter(),
 			new ItemsCreativeTabsConverter(),
-			new NoGUISelectedConverter()
+			new NoGUISelectedConverter(),
+			new ItemOpenBoundGUIConverter(),
+			new ItemToBedrockConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
@@ -216,10 +226,14 @@ public class ConverterRegistry {
 			new ItemHasGlowConverter(),
 			new ToolHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter(),
-			new EnchantabilityConverter()
+			new EnchantabilityConverter(),
+			new ToolToBedrockConverter()
 		));
 		put(ModElementType.ENCHANTMENT, List.of(
 			new EnchantmentDefinitionConverter()
+		));
+		put(ModElementType.VILLAGERTRADE, List.of(
+			new VillagerTradeSplitter()
 		));
 	}};
 	//@formatter:on
@@ -241,8 +255,20 @@ public class ConverterRegistry {
 		return converters_legacy.get(modElementType);
 	}
 
-	public static Set<String> getConvertibleModElementTypes() {
-		return converters_legacy.keySet();
+	// List of METs that now have specialized variant for Bedrock Edition specifically
+	private static final Set<ModElementType<?>> addon_legacy_met_converters = new HashSet<>() {{
+		add(ModElementType.ITEM); // -> BEITEM
+		add(ModElementType.BIOME); // -> Currently bedrock no longer supports custom biomes
+		add(ModElementType.BLOCK); // -> BEBLOCK
+		add(ModElementType.TOOL); // -> BEITEM
+	}};
+
+	public static Set<String> getConvertibleModElementTypes(GeneratorFlavor generatorFlavor) {
+		Set<String> convertibleMETs = new HashSet<>(converters_legacy.keySet());
+		if (generatorFlavor == GeneratorFlavor.ADDON) {
+			addon_legacy_met_converters.stream().map(ModElementType::getRegistryName).forEach(convertibleMETs::add);
+		}
+		return convertibleMETs;
 	}
 
 }

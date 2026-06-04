@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
@@ -25,13 +26,13 @@ public class TextFieldValidator implements Validator {
 
 	private final VTextField holder;
 	private final String emptyMessage;
-	private final ValidationResultType answer;
+	private final ValidationResult.Type answer;
 
 	public TextFieldValidator(VTextField holder, String emptyMessage) {
-		this(holder, emptyMessage, ValidationResultType.ERROR);
+		this(holder, emptyMessage, ValidationResult.Type.ERROR);
 	}
 
-	public TextFieldValidator(VTextField holder, String emptyMessage, ValidationResultType answer) {
+	public TextFieldValidator(VTextField holder, String emptyMessage, ValidationResult.Type answer) {
 		this.holder = holder;
 		this.emptyMessage = emptyMessage;
 		this.answer = answer;
@@ -39,8 +40,8 @@ public class TextFieldValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (!holder.getText().isBlank())
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		else
-			return new Validator.ValidationResult(answer, emptyMessage);
+			return new ValidationResult(answer, emptyMessage);
 	}
 }

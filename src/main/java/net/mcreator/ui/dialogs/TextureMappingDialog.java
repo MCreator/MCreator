@@ -83,9 +83,9 @@ public class TextureMappingDialog {
 					pane.setSelectedIndex(1);
 					String mapping = VOptionPane.showInputDialog(mcreator,
 							L10N.t("dialog.textures_mapping.enter_name_message"),
-							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidator() {
-								@Override public Validator.ValidationResult validate(JComponent component) {
-									return new JavaMemberNameValidator((VTextField) component, false).validate();
+							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidator.Cached() {
+								@Override public Validator createValidator(JComponent component) {
+									return new JavaMemberNameValidator((VTextField) component, false);
 								}
 							});
 					if (mapping != null) {

@@ -40,7 +40,7 @@ tags:
     condition:
       - sensitiveToVibration
       - "${data.vibrationalEvents?has_content}"
-    entryprovider: data.getVibrationalEvents()
+    entryprovider: getVibrationalEvents()
 
 localizationkeys:
   - key: item.@modid.@registryname_spawn_egg

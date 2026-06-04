@@ -24,25 +24,28 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
-import net.mcreator.blockly.feature.BlocklyToFeature;
+import net.mcreator.blockly.datapack.BlocklyToFeature;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.types.Feature;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.PlacementHelperDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.search.ISearchable;
@@ -54,7 +57,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -68,8 +70,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 	private final JCheckBox skipPlacement = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
-	private final JComboBox<String> generationStep = new JComboBox<>(
-			ElementUtil.getDataListAsStringArray("generationsteps"));
+	private final DataListComboBox generationStep = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("generationsteps"));
 
 	private BlocklyEditorToolbar blocklyEditorToolbar;
 	private BlocklyPanel blocklyPanel;
@@ -119,7 +121,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		properties.setOpaque(false);
 
-		skipPlacement.addActionListener(e -> refreshPlacementSettings(true));
+		skipPlacement.addActionListener(_ -> refreshPlacementSettings(true));
 		refreshPlacementSettings(false);
 
 		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
@@ -132,20 +134,19 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"FeatureRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(Feature.XML_BASE);
-			}
+			blocklyPanel.addChangeListener(
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "FeatureRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Feature.class, "featurexml"));
+		}
 
 		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
 		blocklyAndToolbarPanel.setOpaque(false);
 
 		JButton featureHelperButton = L10N.button("elementgui.feature.generate_placement");
 		featureHelperButton.setIcon(UIRES.get("18px.add"));
-		featureHelperButton.addActionListener(e -> new PlacementHelperDialog(blocklyPanel, mcreator));
+		featureHelperButton.addActionListener(_ -> new PlacementHelperDialog(blocklyPanel, mcreator));
 		BlocklyEditorToolbar.styleButton(featureHelperButton);
 
 		blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE, blocklyPanel, null,
@@ -155,11 +156,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
 
-		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
-		featureProcedure.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.feature.feature_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getForegroundColor()));
+		JComponent featureProcedure = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
+		ComponentUtils.makeSection(featureProcedure, L10N.t("elementgui.feature.feature_builder"));
 
 		featureProcedure.setPreferredSize(new Dimension(0, 460));
 
@@ -234,14 +232,13 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
 		refreshPlacementSettings(false);
-
-		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(feature.featurexml));
+		blocklyPanel.setInitialXML(feature.featurexml);
 	}
 
 	@Override public Feature getElementFromGUI() {
 		Feature feature = new Feature(modElement);
 		feature.skipPlacement = skipPlacement.isSelected();
-		feature.generationStep = (String) generationStep.getSelectedItem();
+		feature.generationStep = new GenerationStep(modElement.getWorkspace(), generationStep.getSelectedItem());
 		feature.restrictionBiomes = restrictionBiomes.getListElements();
 		feature.generateCondition = generateCondition.getSelectedProcedure();
 

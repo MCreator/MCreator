@@ -18,10 +18,13 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -39,32 +42,38 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Particle extends GeneratableElement {
+@SuppressWarnings("unused") public class Particle extends GeneratableElement {
 
 	private static final Logger LOG = LogManager.getLogger(Particle.class);
 
 	@TextureReference(TextureType.PARTICLE) public TextureHolder texture;
 
 	public boolean animate;
-	public int frameDuration;
+	@Numeric(init = 1, min = 1, max = 100000, step = 1) public int frameDuration;
 
-	public double width;
-	public double height;
+	@Numeric(init = 0.2, min = 0, max = 4096, step = 0.1) public double width;
+	@Numeric(init = 0.2, min = 0, max = 4096, step = 0.1) public double height;
 	public NumberProcedure scale;
-	public double speedFactor;
-	public double gravity;
-	public int maxAge;
-	public int maxAgeDiff;
-	public double angularVelocity;
-	public double angularAcceleration;
+	public boolean fixedScale;
+	@Numeric(init = 1, min = -100, max = 100, step = 0.1) public double speedFactor;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.1) public double gravity;
+	@Numeric(init = 7, min = 0, max = 100000, step = 1) public int maxAge;
+	@Numeric(init = 0, min = 0, max = 100000, step = 1) public int maxAgeDiff;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.01) public double angularVelocity;
+	@Numeric(init = 0, min = -100, max = 100, step = 0.01) public double angularAcceleration;
 
 	public boolean canCollide;
 	public boolean alwaysShow;
 	public boolean emissiveRendering;
+	public Procedure rotationProvider;
 
-	public String renderType;
+	@LimitedOptions({ "OPAQUE", "TRANSLUCENT" }) public String renderType;
 
 	public Procedure additionalExpiryCondition;
+
+	private Particle() {
+		this(null);
+	}
 
 	public Particle(ModElement element) {
 		super(element);
@@ -119,6 +128,12 @@ public class Particle extends GeneratableElement {
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(texture.getImage(TextureType.PARTICLE),
 				getTextureTileCount() > 1, getModElement().getName());
+	}
+
+	public boolean hasAngularVelocityOrAcceleration() {
+		return angularVelocity != 0 || angularAcceleration != 0 || (rotationProvider != null
+				&& rotationProvider.getDependencies(this.getModElement().getWorkspace()).stream().map(Dependency::name)
+				.anyMatch(name -> "angularVelocity".equals(name) || "angularAcceleration".equals(name)));
 	}
 
 }

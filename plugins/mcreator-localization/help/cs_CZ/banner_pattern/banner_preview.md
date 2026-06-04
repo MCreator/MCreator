@@ -1,0 +1,1 @@
+Toto je náhled bílého vzoru, když je aplikován na černý prapor s přední stranou vlevo.

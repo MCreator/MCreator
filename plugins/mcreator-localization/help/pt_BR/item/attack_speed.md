@@ -1,0 +1,1 @@
+Este parâmetro determina o quão rápido o tempo de recarga de ataque do item é ao atacar entidades.

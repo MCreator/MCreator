@@ -1,0 +1,1 @@
+Je-li tento parametr zaškrtnut, přiřazené GUI se otevře při pravém kliknutí na blok.

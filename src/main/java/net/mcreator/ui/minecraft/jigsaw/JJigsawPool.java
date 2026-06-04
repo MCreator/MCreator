@@ -32,7 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
@@ -73,8 +73,7 @@ public class JJigsawPool extends JEntriesList {
 			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 				ComboBoxUtil.updateComboBoxContents(fallbackPool,
 						poolList.stream().filter(p -> !p.poolName.getText().isBlank())
-								.filter(p -> p.poolName.getValidationStatus().getValidationResultType()
-										== Validator.ValidationResultType.PASSED)
+								.filter(p -> p.poolName.getValidationStatus().type() == ValidationResult.Type.PASSED)
 								.map(p -> jigsawPools.getMCreator().getWorkspace().getWorkspaceSettings().getModID()
 										+ ":" + jigsawPools.getModElement().getRegistryName() + "_"
 										+ p.poolName.getText()).toList(),
@@ -121,10 +120,7 @@ public class JJigsawPool extends JEntriesList {
 		add("North", PanelUtils.westAndEastElement(poolParams, PanelUtils.join(add, remove)));
 		add("Center", entries);
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.structuregen.jigsaw_pool"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(this, L10N.t("elementgui.structuregen.jigsaw_pool"));
 
 		parent.revalidate();
 		parent.repaint();

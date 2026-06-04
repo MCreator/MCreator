@@ -23,11 +23,13 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.entries.JEntriesList;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +39,10 @@ import java.util.Objects;
 
 public class JLootTablePool extends JEntriesList {
 
-	private final JMinMaxSpinner rolls = new JMinMaxSpinner(1, 1, 0, 64000, 1).allowEqualValues();
-	private final JMinMaxSpinner bonusrolls = new JMinMaxSpinner(1, 1, 0, 64000, 1).allowEqualValues();
+	private final JMinMaxSpinner rolls = ComponentFromAnnotation.minMaxSpinner(LootTable.Pool.class, "minrolls",
+			"maxrolls").allowEqualValues();
+	private final JMinMaxSpinner bonusrolls = ComponentFromAnnotation.minMaxSpinner(LootTable.Pool.class,
+			"minbonusrolls", "maxbonusrolls").allowEqualValues();
 	private final JCheckBox hasbonusrolls = L10N.checkbox("elementgui.loot_table.enable_pool_rolls");
 
 	private final List<JLootTableEntry> entryList = new ArrayList<>();
@@ -106,10 +110,7 @@ public class JLootTablePool extends JEntriesList {
 
 		add("Center", entries);
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.loot_table.pool"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(this, L10N.t("elementgui.loot_table.pool"));
 
 		parent.revalidate();
 		parent.repaint();

@@ -19,12 +19,13 @@
 package net.mcreator.io;
 
 import javax.annotation.Nonnull;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class OutputStreamEventHandler extends OutputStream {
 
-	private final StringBuilder buffer = new StringBuilder();
+	private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 	private final LineReceiver lineReceiver;
 
@@ -33,31 +34,35 @@ public class OutputStreamEventHandler extends OutputStream {
 	}
 
 	@Override public void write(int i) {
+		buffer.write(i);
 		if (i == '\n')
 			event();
-		else
-			buffer.append((char) i);
 	}
 
 	@Override public void write(@Nonnull byte[] b, int off, int len) {
 		int start = off;
-		int finallen = off + len;
-		for (int i = off; i < finallen; i++) {
+		int end = off + len;
+		for (int i = off; i < end; i++) {
 			if (b[i] == '\n') {
-				buffer.append(new String(b, start, i - start + 1, StandardCharsets.UTF_8));
+				buffer.write(b, start, i - start + 1);
 				event();
 				start = i + 1;
 			}
 		}
-
-		if (start < finallen) {
-			buffer.append(new String(b, start, finallen - start, StandardCharsets.UTF_8));
+		if (start < end) {
+			buffer.write(b, start, end - start);
 		}
 	}
 
+	@Override public void close() {
+		if (buffer.size() > 0)
+			event();
+	}
+
 	private void event() {
-		lineReceiver.lineReceived(buffer.toString().replace("\n", "").replace("\r", ""));
-		buffer.setLength(0);
+		String line = buffer.toString(StandardCharsets.UTF_8).replace("\r", "").replace("\n", "");
+		lineReceiver.lineReceived(line);
+		buffer.reset();
 	}
 
 	public interface LineReceiver {

@@ -42,8 +42,13 @@ package ${package}.init;
 
 	<#list keybinds as keybind>
 	public static final KeyMapping ${keybind.getModElement().getRegistryNameUpper()} = new KeyMapping(
-			"key.${modid}.${keybind.getModElement().getRegistryName()}", GLFW.GLFW_KEY_${generator.map(keybind.triggerKey, "keybuttons")},
-			"key.categories.${keybind.keyBindingCategoryKey}")
+			"key.${modid}.${keybind.getModElement().getRegistryName()}",
+			<#if keybind.triggerKey?starts_with("MOUSE")>
+				InputConstants.Type.MOUSE, GLFW.GLFW_${keybind.triggerKey},
+			<#else>
+				GLFW.GLFW_KEY_${keybind.triggerKey},
+			</#if>
+			"key.category.${modid}.${keybind.keyBindingCategoryKey}")
 				<#if hasProcedure(keybind.onKeyReleased) || hasProcedure(keybind.onKeyPressed)>
 				{
 					private boolean isDownOld = false;

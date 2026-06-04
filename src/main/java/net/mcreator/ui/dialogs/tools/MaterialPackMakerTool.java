@@ -27,35 +27,31 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Objects;
 
-public class MaterialPackMakerTool {
+public class MaterialPackMakerTool extends AbstractPackMakerTool {
 
-	private static void open(MCreator mcreator) {
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.tools.material_pack_title"), true);
-		dialog.setLayout(new BorderLayout(10, 10));
+	private final VTextField name = new VTextField(25);
+	private final JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
+	private final JColor color;
+	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 
-		dialog.setIconImage(UIRES.get("16px.materialpack").getImage());
-
-		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.material_pack_info")));
+	private MaterialPackMakerTool(MCreator mcreator) {
+		super(mcreator, "material_pack", UIRES.get("16px.materialpack").getImage());
 
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
-		VTextField name = new VTextField(25);
-		JColor color = new JColor(mcreator, false, false);
-		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
-		JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
+		color = new JColor(mcreator, false, false);
 
 		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
@@ -75,35 +71,26 @@ public class MaterialPackMakerTool {
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.material_pack_name_validator")));
 
-		dialog.add("Center", PanelUtils.centerInPanel(props));
-		JButton ok = L10N.button("dialog.tools.material_pack_create");
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> dialog.dispose());
-		dialog.add("South", PanelUtils.join(ok, cancel));
+		validableElements.addValidationElement(name);
 
-		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-				addMaterialPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
-						(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
-						(Double) power.getValue());
-				mcreator.reloadWorkspaceTabContents();
-				dialog.setCursor(Cursor.getDefaultCursor());
-				dialog.dispose();
-			}
-		});
+		this.add("Center", PanelUtils.centerInPanel(props));
 
-		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 300);
-		dialog.setLocationRelativeTo(mcreator);
-		dialog.setVisible(true);
+		this.setSize(600, 300);
+		this.setLocationRelativeTo(mcreator);
+		this.setVisible(true);
 	}
 
-	public static void addMaterialPackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
-			Color color, double factor) {
-		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(mcreator, workspace, name, type, color, factor);
-		ToolPackMakerTool.addToolPackToWorkspace(mcreator, workspace, name, gem, color, factor);
-		ArmorPackMakerTool.addArmorPackToWorkspace(mcreator, workspace, name, gem, color, factor);
+	@Override protected void generatePack(MCreator mcreator) {
+		addMaterialPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(),
+				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
+	}
+
+	public static void addMaterialPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+			Workspace workspace, String name, String type, Color color, double factor) {
+		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color,
+				factor);
+		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
+		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
@@ -121,7 +108,7 @@ public class MaterialPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.material"),
-				e -> open(actionRegistry.getMCreator())) {
+				e -> new MaterialPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}

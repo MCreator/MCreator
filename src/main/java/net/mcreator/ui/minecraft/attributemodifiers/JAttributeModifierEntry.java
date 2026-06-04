@@ -20,7 +20,8 @@
 package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
-import net.mcreator.element.types.PotionEffect;
+import net.mcreator.element.parts.AttributeModifierEntry;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -29,61 +30,81 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.util.List;
 
-public class JAttributeModifierEntry extends JSimpleListEntry<PotionEffect.AttributeModifierEntry> {
+public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierEntry> {
 
 	private final Workspace workspace;
 
+	private final DataListComboBox equipmentSlot;
 	private final DataListComboBox attribute;
-	private final JSpinner amount = new JSpinner(new SpinnerNumberModel(0, -1024, 1024, 0.01));
-	private final JComboBox<String> operation = new JComboBox<>(
-			new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+	private final JSpinner amount = ComponentFromAnnotation.spinner(AttributeModifierEntry.class, "amount");
+	private final JComboBox<String> operation = ComponentFromAnnotation.options(AttributeModifierEntry.class,
+			"operation");
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JAttributeModifierEntry> entryList) {
+			List<JAttributeModifierEntry> entryList, boolean isPotionEffectEntry) {
 		super(parent, entryList);
 		this.workspace = mcreator.getWorkspace();
+
+		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
+		equipmentSlot.setRenderer(new JComboBox<>().getRenderer());
 
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
 		attribute.setRenderer(new JComboBox<>().getRenderer());
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/attribute"),
-				L10N.label("elementgui.potioneffect.attribute")));
+		if (!isPotionEffectEntry) {
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/equipment_slot"),
+					L10N.label("elementgui.common.attribute_modifier.equipment_slot")));
+			line.add(equipmentSlot);
+		}
+
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/attribute"),
+				L10N.label("elementgui.common.attribute_modifier.attribute")));
 		line.add(attribute);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/amount"),
-				L10N.label("elementgui.potioneffect.amount")));
+		if (isPotionEffectEntry) {
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount_per_level"),
+					L10N.label("elementgui.common.attribute_modifier.amount_per_level")));
+		} else {
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/amount"),
+					L10N.label("elementgui.common.attribute_modifier.amount")));
+		}
 		line.add(amount);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potioneffect/operation"),
-				L10N.label("elementgui.potioneffect.operation")));
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("attribute_modifiers/operation"),
+				L10N.label("elementgui.common.attribute_modifier.operation")));
 		line.add(operation);
 
 	}
 
 	@Override public void reloadDataLists() {
+		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots());
 		ComboBoxUtil.updateComboBoxContents(attribute, ElementUtil.loadAllAttributes(workspace));
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
+		equipmentSlot.setEnabled(enabled);
 		attribute.setEnabled(enabled);
 		amount.setEnabled(enabled);
 		operation.setEnabled(enabled);
 	}
 
-	@Override public PotionEffect.AttributeModifierEntry getEntry() {
-		PotionEffect.AttributeModifierEntry entry = new PotionEffect.AttributeModifierEntry();
+	@Override public AttributeModifierEntry getEntry() {
+		AttributeModifierEntry entry = new AttributeModifierEntry();
+		entry.equipmentSlot = new EquipmentSlotEntry(workspace, equipmentSlot.getSelectedItem());
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();
 		return entry;
 	}
 
-	@Override public void setEntry(PotionEffect.AttributeModifierEntry e) {
+	@Override public void setEntry(AttributeModifierEntry e) {
+		equipmentSlot.setSelectedItem(e.equipmentSlot);
 		attribute.setSelectedItem(e.attribute);
 		amount.setValue(e.amount);
 		operation.setSelectedItem(e.operation);

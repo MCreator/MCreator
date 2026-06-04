@@ -59,7 +59,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -68,12 +67,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public final class WorkspaceSelector extends JFrame implements DropTargetListener, INotificationConsumer {
@@ -133,13 +129,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.import"), UIRES.get("impfile"), e -> {
 			File file = FileDialogs.getOpenDialog(this, new String[] { ".zip" });
 			if (file != null) {
-				File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
-				if (workspaceDir != null) {
-					ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir,
-							this);
-					if (workspaceFile != null)
-						workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
-				}
+				importWorkspaceFromZip(file);
 			}
 		});
 
@@ -176,24 +166,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		southcenter.add(new JEmptyBox(7, 5));
 
-		JLabel prefs = new JLabel(L10N.t("dialog.workspace_selector.preferences")) {
-			@Override protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-
-				try {
-					String flagpath =
-							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
-					BufferedImage image = ImageIO.read(
-							Objects.requireNonNull(getClass().getResourceAsStream(flagpath)));
-					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 4, this);
-				} catch (Exception ignored) { // flag not found, ignore
-				}
-			}
-
-			@Override public Dimension getPreferredSize() {
-				return new Dimension(super.getPreferredSize().width + 21, super.getPreferredSize().height);
-			}
-		};
+		JLabel prefs = new JLabel(L10N.t("dialog.workspace_selector.preferences"));
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);
@@ -290,7 +263,30 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JScrollPane recentsScrollPane = new JScrollPane(recentsList);
 		recentsScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		recentPanel.add("recents", recentsScrollPane);
+		JLabel userTip = L10N.label("dialog.workspace_selector.recent_workspaces");
+		userTip.setOpaque(true);
+		ComponentUtils.deriveFont(userTip, 11);
+		userTip.setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 0));
+		userTip.setForeground(Theme.current().getAltBackgroundColor().brighter());
+		userTip.setBackground(Theme.current().getSecondAltBackgroundColor());
+
+		recentsList.setBorder(BorderFactory.createEmptyBorder(0, 0, 17, 0));
+
+		JLayeredPane layered = new JLayeredPane();
+		layered.setLayout(null);
+		layered.add(recentsScrollPane, JLayeredPane.DEFAULT_LAYER);
+		layered.add(userTip, JLayeredPane.PALETTE_LAYER);
+		layered.addComponentListener(new ComponentAdapter() {
+			@Override public void componentResized(ComponentEvent e) {
+				int w = layered.getWidth();
+				int h = layered.getHeight();
+				int fh = userTip.getPreferredSize().height;
+				recentsScrollPane.setBounds(0, 0, w, h);
+				userTip.setBounds(0, h - fh, w - 10, fh);
+			}
+		});
+
+		recentPanel.add("recents", layered);
 		recentPanel.add("norecentsloaded", PanelUtils.totalCenterInPanel(norecentsloaded));
 		recentPanel.add("norecents", PanelUtils.totalCenterInPanel(norecents));
 
@@ -323,6 +319,15 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
 			recentPanel.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
 			centerComponent.setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
+		}
+	}
+
+	private void importWorkspaceFromZip(File file) {
+		File workspaceDir = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
+		if (workspaceDir != null) {
+			ShareableZIPManager.ImportResult workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
+			if (workspaceFile != null)
+				workspaceOpenListener.workspaceOpened(workspaceFile.file(), workspaceFile.regenerateRequired());
 		}
 	}
 
@@ -420,6 +425,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 					if (transfObj instanceof File workspaceFile) {
 						if (workspaceFile.getName().endsWith(".mcreator")) {
 							workspaceOpenListener.workspaceOpened(workspaceFile);
+						} else if (workspaceFile.getName().endsWith(".zip")) {
+							importWorkspaceFromZip(workspaceFile);
 						} else {
 							Toolkit.getDefaultToolkit().beep();
 						}
@@ -548,7 +555,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				if (news != null) {
 					nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
 							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">"
-							+ StringUtils.abbreviateString(news[0], 43));
+							+ StringUtils.abbreviateString(news[0], 41));
 					nov.addMouseListener(new MouseAdapter() {
 						@Override public void mouseClicked(MouseEvent en) {
 							DesktopUtils.browseSafe(news[1]);
@@ -635,7 +642,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-190);
+			((ImagePanel) soim).setOffsetY(-365);
 		} else {
 			soim = new JPanel();
 			soim.setBackground(Theme.current().getSecondAltBackgroundColor());

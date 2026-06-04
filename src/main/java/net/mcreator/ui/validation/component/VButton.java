@@ -20,6 +20,7 @@ package net.mcreator.ui.validation.component;
 
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -35,9 +36,9 @@ public class VButton extends JButton implements IValidable {
 		super.paintComponent(g);
 
 		if (validator != null && currentValidationResult != null) {
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
 				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 16, getHeight() - 16, 16, 16, null);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
 				g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 16, getHeight() - 16, 16, 16, null);
 			}
 		}
@@ -46,10 +47,10 @@ public class VButton extends JButton implements IValidable {
 
 	//validation code
 	private Validator validator = null;
-	private Validator.ValidationResult currentValidationResult = null;
+	private ValidationResult currentValidationResult = null;
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
+	@Override public ValidationResult getValidationStatus() {
+		ValidationResult validationResult = validator == null ? null : validator.validateIfEnabled(this);
 
 		this.currentValidationResult = validationResult;
 

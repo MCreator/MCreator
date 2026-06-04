@@ -26,6 +26,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -38,20 +39,23 @@ import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.Collections;
 
-public class Projectile extends GeneratableElement implements IEntityWithModel, ICommonType {
+@SuppressWarnings("unused") public class Projectile extends GeneratableElement
+		implements IEntityWithModel, ICommonType {
 
 	public MItemBlock projectileItem;
 	public boolean showParticles;
 	public Sound actionSound;
 	public boolean igniteFire;
 	public boolean disableGravity;
-	public double power;
-	public double damage;
-	public int knockback;
+	public boolean disableDiscarding;
+	@Numeric(init = 1, min = 0, max = 100, step = 0.1) public double power;
+	@Numeric(init = 5, min = 0, max = 10000, step = 0.1) public double damage;
+	@Numeric(init = 5, min = 0, max = 500, step = 1) public int knockback;
 	public String entityModel;
 	@TextureReference(TextureType.ENTITY) public String customModelTexture;
 
-	public double modelWidth, modelHeight;
+	@Numeric(init = 0.5, min = 0, max = 1024, step = 0.1) public double modelWidth;
+	@Numeric(init = 0.5, min = 0, max = 1024, step = 0.1) public double modelHeight;
 
 	public Procedure onHitsBlock;
 	public Procedure onHitsPlayer;

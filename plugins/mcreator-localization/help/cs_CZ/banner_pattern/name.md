@@ -1,0 +1,1 @@
+Toto je název vzoru, který je zobrazen v tkalcovském stavu a v popisu praporů a štítů.

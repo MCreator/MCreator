@@ -36,8 +36,9 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
 import net.mcreator.io.TrackingFileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.io.writer.JSWriter;
+import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -52,8 +53,8 @@ import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -141,17 +142,21 @@ public class Generator implements IGenerator, Closeable {
 	 * @return true if generator generated all files without any errors
 	 */
 	public boolean generateBase() {
-		return this.generateBase(true);
+		try {
+			this.generateBase(true);
+			return true;
+		} catch (TemplateGeneratorException e) {
+			return false;
+		}
 	}
 
 	/**
 	 * Generates the generator mod base files and writes them to disk.
 	 *
 	 * @param formatAndOrganiseImports true if imports should be formatted
-	 * @return true if generator generated all files without any errors
 	 */
-	public boolean generateBase(boolean formatAndOrganiseImports) {
-		AtomicBoolean success = new AtomicBoolean(true);
+	public void generateBase(boolean formatAndOrganiseImports) throws TemplateGeneratorException {
+		AtomicReference<TemplateGeneratorException> exception = new AtomicReference<>(null);
 
 		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
 
@@ -163,10 +168,13 @@ public class Generator implements IGenerator, Closeable {
 						(String) generatorTemplate.getTemplateDefinition().get("variables"));
 				return generatorTemplate.toGeneratorFile(code);
 			} catch (TemplateGeneratorException e) {
-				success.set(false);
+				exception.set(e);
 				return null;
 			}
 		}).filter(Objects::nonNull).collect(Collectors.toList());
+
+		if (exception.get() != null)
+			throw exception.get();
 
 		// remove outdated/stale global/base files from workspace files list
 		// (e.g. is a different generator added a file that is no longer present in the generator definition)
@@ -197,8 +205,6 @@ public class Generator implements IGenerator, Closeable {
 
 		// generate tags files
 		TagsUtils.generateTagsFiles(this, workspace, generatorConfiguration.getTagsSpecification());
-
-		return success.get();
 	}
 
 	/**
@@ -313,28 +319,29 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public void removeElementFilesAndWorkspaceLinks(GeneratableElement generatableElement) {
+		// first, remove files linked with this mod element
+		generatableElement.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
+
+		// then, delete tab sorting info associated with the mod element from the workspace
+		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
+
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
-		if (map == null) {
+		// if mod element type definition exists, also delete workspace links/references
+		if (map == null) { // if not, log a notice if needed
 			if (generatableElement.getModElement().getType()
 					!= ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.warn("Failed to load element definition for mod element type {}",
+				LOG.debug("Definition for {} does not exist in the current generator; some references may persist",
 						generatableElement.getModElement().getType().getRegistryName());
 			return;
 		}
-
-		// remove files linked with this mod element
-		generatableElement.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
 
 		// delete localization keys associated with the mod element from the workspace
 		LocalizationUtils.deleteLocalizationKeys(this, generatableElement, (List<?>) map.get("localizationkeys"));
 
 		// delete managed tag entries/elements associated with the mod element from the workspace
 		TagsUtils.processDefinitionToTags(this, generatableElement, (List<?>) map.get("tags"), true);
-
-		// delete tab sorting info associated with the mod element from the workspace
-		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList() {
@@ -596,6 +603,10 @@ public class Generator implements IGenerator, Closeable {
 								generatorFile.getUsercodeComment()));
 			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
 				JSONWriter.writeJSONToFile(workspace, generatorFile.contents(), generatorFile.getFile());
+			} else if (generatorFile.writer() == GeneratorFile.Writer.JS) {
+				JSWriter.writeJSToFile(workspace,
+						UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
+								generatorFile.getUsercodeComment()), generatorFile.getFile());
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
 				String usercodeComment = generatorFile.getUsercodeComment();
 				if (usercodeComment != null)
@@ -609,7 +620,7 @@ public class Generator implements IGenerator, Closeable {
 
 		// After we have list of Java files, and they are created, we can format and organise imports in them
 		if (!javaFiles.isEmpty())
-			ClassWriter.batchWriteClassToFile(workspace, javaFiles, formatAndOrganiseImports, null);
+			JavaWriter.batchWriteJavaToFile(workspace, javaFiles, formatAndOrganiseImports, null);
 	}
 
 	public void runResourceSetupTasks() {
@@ -643,7 +654,7 @@ public class Generator implements IGenerator, Closeable {
 
 	@Nullable public ProjectJarManager getProjectJarManager() {
 		if (generatorGradleCache != null)
-			return generatorGradleCache.projectJarManager;
+			return generatorGradleCache.getProjectJarManager();
 		else
 			return null;
 	}

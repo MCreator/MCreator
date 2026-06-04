@@ -20,6 +20,7 @@ package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -52,9 +53,9 @@ public class TextureSelectionButtonValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		if (holder.hasTexture() || (requirement != null && !requirement.get()))
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		else
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, emptyMessage);
+			return new ValidationResult(ValidationResult.Type.ERROR, emptyMessage);
 	}
 
 }

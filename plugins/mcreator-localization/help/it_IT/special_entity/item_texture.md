@@ -1,0 +1,1 @@
+Questo parametro controlla la texture del tuo item entità.

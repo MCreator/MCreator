@@ -24,9 +24,12 @@ import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -70,7 +73,15 @@ public class JStateLabel extends JPanel {
 		edit.setToolTipText(L10N.t("components.state_label.edit"));
 		edit.addActionListener(e -> editState());
 
+		label.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				editState();
+			}
+		});
+
 		add("East", edit);
+
+		setOpaque(false);
 
 		refreshState();
 	}
@@ -82,8 +93,11 @@ public class JStateLabel extends JPanel {
 
 	public boolean editState() {
 		List<PropertyData<?>> propertyList = properties.get();
-		if (propertyList == null)
+		if (propertyList == null || propertyList.isEmpty()) {
+			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_no_properties"),
+					L10N.t("components.state_label.error_no_properties.title"), JOptionPane.WARNING_MESSAGE);
 			return false;
+		}
 
 		StateMap stateMap = StateEditorDialog.open(mcreator, propertyList, getStateMap(), numberMatchType);
 		if (stateMap == null)
@@ -119,7 +133,12 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setStateMap(StateMap stateMap) {
-		this.stateMap = stateMap;
+		// Make sure state label holds copy of the original stateMap so changes here
+		// don't apply directly to the original element (e.g., entry in GE cache)
+		StateMap safeCopy = new StateMap();
+		safeCopy.putAll(stateMap);
+
+		this.stateMap = safeCopy;
 		refreshState();
 	}
 
@@ -135,7 +154,8 @@ public class JStateLabel extends JPanel {
 		if (property.getClass() == PropertyData.IntegerType.class
 				|| property.getClass() == PropertyData.NumberType.class)
 			matchSymbol = numberMatchType.getSymbol();
-		return property.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + property.toString(value);
+		return BlockStatePropertyUtils.propertyRegistryName(property) + " " + matchSymbol + " " + property.toString(
+				value);
 	}
 
 	public enum NumberMatchType {

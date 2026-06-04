@@ -144,16 +144,13 @@ public abstract class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.getActionRegistry().imageEditorClearSelection);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorResizeLayer);
 		imageEditor.add(mcreator.getActionRegistry().imageEditorResizeCanvas);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorFlipHorizontal);
+		imageEditor.add(mcreator.getActionRegistry().imageEditorFlipVertical);
 		add(imageEditor);
 
 		assembleMenuBar(mcreator);
 
 		JMenu window = L10N.menu("menubar.window");
-		if (mcreator.hasProjectBrowser()) {
-			window.add(mcreator.getActionRegistry().showWorkspaceBrowser);
-			window.add(mcreator.getActionRegistry().hideWorkspaceBrowser);
-			window.addSeparator();
-		}
 		window.add(mcreator.getActionRegistry().closeCurrentTab);
 		window.add(mcreator.getActionRegistry().closeAllTabs);
 		window.addSeparator();

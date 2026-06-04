@@ -1,0 +1,1 @@
+Jeżeli ten parametr jest zaznaczony albo ma warunek, który zwraca prawdę, ten item otworzy przypisane GUI po tym, jak klikniesz prawy przycisk myszy.

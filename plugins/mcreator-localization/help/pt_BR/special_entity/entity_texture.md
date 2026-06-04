@@ -1,0 +1,1 @@
+Esta é a textura da sua entidade. Certifique-se de que a textura seja compatível com o modelo da entidade.

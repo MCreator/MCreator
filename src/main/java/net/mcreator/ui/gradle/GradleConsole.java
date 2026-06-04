@@ -28,6 +28,8 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.java.monitoring.JMXMonitorClient;
 import net.mcreator.java.monitoring.JMXMonitorEventListener;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.WorkspaceTaskFinishedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
@@ -44,6 +46,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ISearchable;
+import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -55,6 +58,7 @@ import javax.annotation.Nullable;
 import javax.management.remote.JMXConnector;
 import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
@@ -116,12 +120,12 @@ public class GradleConsole extends JPanel implements ISearchable {
 	private int status = READY;
 	private boolean gradleSetupTaskRunning = false;
 
-	private final JScrollPane mainScrollPane;
-
 	private final ConsoleSearchBar searchBar = new ConsoleSearchBar();
 
 	private final SimpleLineChart cpuChart = new SimpleLineChart();
 	private final SimpleLineChart memoryChart = new SimpleLineChart();
+
+	private final JPanel monitorPanel = new JPanel();
 
 	private CancellationTokenSource cancellationSource = GradleConnector.newCancellationTokenSource();
 
@@ -176,11 +180,33 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 		pan.setBorder(BorderFactory.createEmptyBorder(9, 0, 0, 0));
 
-		mainScrollPane = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane mainScrollPane = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainScrollPane.setBorder(
 				BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 		mainScrollPane.setBackground(Theme.current().getSecondAltBackgroundColor());
+
+		JScrollBar vertical = mainScrollPane.getVerticalScrollBar();
+		vertical.addAdjustmentListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int maxValue = vertical.getMaximum() - vertical.getVisibleAmount();
+				int currentValue = vertical.getValue();
+				float fraction = (float) currentValue / (float) maxValue;
+
+				if (slock.isSelected() && fraction > 0.99)
+					slock.setSelected(false);
+					// only turn off scroll lock if scrolled more than 85% above the bottom, and we have at least 2000 scroll entries
+				else if (!slock.isSelected() && fraction < 0.85 && maxValue > 2000)
+					slock.setSelected(true);
+			}
+		});
+
+		slock.addActionListener(e -> {
+			if (pan.getCaret() instanceof DefaultCaret defaultCaret) {
+				defaultCaret.setUpdatePolicy(
+						slock.isSelected() ? DefaultCaret.NEVER_UPDATE : DefaultCaret.ALWAYS_UPDATE);
+			}
+		});
 
 		setLayout(new BorderLayout());
 
@@ -224,16 +250,16 @@ public class GradleConsole extends JPanel implements ISearchable {
 			return new String[] { xLabel, yLabel };
 		});
 
-		JPanel monitorPanel = new JPanel();
 		monitorPanel.setOpaque(false);
-		monitorPanel.setLayout(new GridLayout(1, 2, 15, 15));
-		monitorPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 10));
-		monitorPanel.setPreferredSize(new Dimension(0, 100));
+		monitorPanel.setLayout(new GridLayout(2, 1, 15, 15));
+		monitorPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		monitorPanel.setPreferredSize(new Dimension(400, 0));
 		monitorPanel.add(PanelUtils.centerAndSouthElement(cpuChart, cpuLabel));
 		monitorPanel.add(PanelUtils.centerAndSouthElement(memoryChart, memoryLabel));
-		mainScrollPane.setColumnHeaderView(monitorPanel);
-		mainScrollPane.getColumnHeader().setOpaque(false);
-		mainScrollPane.getColumnHeader().setVisible(false);
+		monitorPanel.setOpaque(false);
+		monitorPanel.setVisible(false);
+
+		outerholder.add("East", monitorPanel);
 
 		add("Center", outerholder);
 
@@ -348,7 +374,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 		final var arguments = Arrays.stream(commandTokens).filter(e -> e.contains("--")).collect(Collectors.toList());
 		final boolean isGradleSync = Arrays.asList(commands).contains(GRADLE_SYNC_TASK);
 
-		ref.consoleTab.repaint();
+		ref.getBottomDockRegion().getDockStrip().repaint();
 		ref.getStatusBar().reloadGradleIndicator();
 
 		stateListeners.forEach(listener -> listener.taskStarted(command));
@@ -423,7 +449,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 			if (optionalDebugClient != null) {
 				this.debugClient = optionalDebugClient;
 				this.debugClient.init(environment, cancellationSource.token());
-				ref.getDebugPanel().startDebug(this.debugClient);
+				if (ref instanceof ModMaker modMaker)
+					modMaker.getDebugPanel().startDebug(this.debugClient);
 			} else {
 				this.debugClient = null;
 			}
@@ -438,11 +465,11 @@ public class GradleConsole extends JPanel implements ISearchable {
 						@Override public void connected(JMXConnector jmxConnector) {
 							cpuChart.clear();
 							memoryChart.clear();
-							mainScrollPane.getColumnHeader().setVisible(true);
+							monitorPanel.setVisible(true);
 						}
 
 						@Override public void disconnected() {
-							mainScrollPane.getColumnHeader().setVisible(false);
+							monitorPanel.setVisible(false);
 						}
 
 						@Override public void dataRefresh(MemoryMXBean memoryMXBean, OperatingSystemMXBean osMXBean) {
@@ -584,6 +611,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 					ref.getWorkspace().checkFailingGradleDependenciesAndClear(); // clear flag without checking
 
 					succeed();
+					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskSuccessful(ref));
 					taskComplete(GradleResultCode.STATUS_OK);
 				});
 			}
@@ -691,20 +719,23 @@ public class GradleConsole extends JPanel implements ISearchable {
 					if (resultcode == GradleResultCode.STATUS_OK)
 						resultcode = GradleResultCode.GRADLE_BUILD_FAILED;
 
+					MCREvent.event(new WorkspaceTaskFinishedEvent.TaskError(ref, resultcode, taskOut.toString(),
+							taskErr.toString()));
+
 					taskComplete(resultcode);
 				});
 			}
 
 			private void fail() {
 				status = ERROR;
-				ref.consoleTab.repaint();
+				ref.getBottomDockRegion().getDockStrip().repaint();
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 			}
 
 			private void succeed() {
 				status = READY;
-				ref.consoleTab.repaint();
+				ref.getBottomDockRegion().getDockStrip().repaint();
 				ref.getStatusBar().reloadGradleIndicator();
 				ref.getStatusBar().setGradleMessage(L10N.t("gradle.idle"));
 
@@ -720,8 +751,11 @@ public class GradleConsole extends JPanel implements ISearchable {
 						Color.gray);
 				append(" ");
 
+				MCREvent.event(new WorkspaceTaskFinishedEvent.TaskCompleted(ref, mcreatorGradleStatus));
+
 				if (debugClient != null) {
-					ref.getDebugPanel().stopDebug();
+					if (ref instanceof ModMaker modMaker)
+						modMaker.getDebugPanel().stopDebug();
 					debugClient.stop();
 					debugClient = null;
 				}

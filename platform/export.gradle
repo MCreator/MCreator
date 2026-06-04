@@ -22,7 +22,7 @@ file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
         task.archiveFileName = it.getName() + '.zip'
         task.destinationDirectory = file('build/plugins/')
         task.from 'plugins/' + it.getName()
-        task.group "mcreatorplugins"
+        task.group = "mcreatorplugins"
         task.mustRunAfter cleanupPlugins
     }
 }
@@ -106,7 +106,7 @@ tasks.register('generateExportReport') {
 }
 
 tasks.register('exportAll') {
-    group 'export'
+    group = 'export'
 
     dependsOn exportWindows
     dependsOn exportMac

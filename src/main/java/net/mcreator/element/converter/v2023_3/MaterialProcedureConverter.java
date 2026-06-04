@@ -53,8 +53,7 @@ public class MaterialProcedureConverter extends ProcedureConverter {
 				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:replaceable_plants</field></block></value></block>");
 		put("OCEAN_PLANT",
 				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:underwater_bonemeals</field></block></value></block>");
-		put("TALL_PLANTS",
-				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:tall_flowers</field></block></value></block>");
+		// TALL_PLANTS
 		// NETHER_PLANTS
 		// SEA_GRASS
 		// WATER

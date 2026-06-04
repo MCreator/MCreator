@@ -1,0 +1,1 @@
+Wenn ausgewählt, werden Elemente desselben Typs mit unterschiedlichen Daten separat in Containerslots und am Boden gestapelt.

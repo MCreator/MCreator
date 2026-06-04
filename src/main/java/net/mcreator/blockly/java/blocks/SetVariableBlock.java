@@ -156,7 +156,4 @@ public class SetVariableBlock implements IBlockGeneratorWithSections {
 		return names;
 	}
 
-	@Override public BlockType getBlockType() {
-		return BlockType.PROCEDURAL;
-	}
 }

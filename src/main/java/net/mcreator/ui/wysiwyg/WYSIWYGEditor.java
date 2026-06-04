@@ -25,11 +25,14 @@ import net.mcreator.element.parts.gui.Checkbox;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
+import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.Overlay;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.wysiwyg.*;
@@ -39,6 +42,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -87,8 +91,8 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
 	private final JButton lockComponent = new JButton(UIRES.get("18px.lock"));
 
-	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
-	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
+	public final JSpinner spa1 = ComponentFromAnnotation.spinner(GUI.class, "width");
+	public final JSpinner spa2 = ComponentFromAnnotation.spinner(GUI.class, "height");
 
 	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
@@ -107,15 +111,8 @@ public class WYSIWYGEditor extends JPanel {
 
 	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
 	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public final TranslatedComboBox priority = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("NORMAL", "elementgui.gui.priority_normal"),
-			Map.entry("HIGH", "elementgui.gui.priority_high"),
-			Map.entry("HIGHEST", "elementgui.gui.priority_highest"),
-			Map.entry("LOW", "elementgui.gui.priority_low"),
-			Map.entry("LOWEST", "elementgui.gui.priority_lowest")
-			//@formatter:on
-	);
+	public final TranslatedComboBox priority = ComponentFromAnnotation.translatedOptions(Overlay.class, "priority",
+			"elementgui.gui.priority_");
 
 	public TextureComboBox overlayBaseTexture;
 
@@ -226,10 +223,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		JPanel comppan = new JPanel(new BorderLayout());
 		comppan.setOpaque(false);
-		comppan.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(comppan, L10N.t("elementgui.gui.component_list"));
 
 		JToolBar bar2 = new JToolBar();
 		bar2.setOpaque(false);
@@ -280,7 +274,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, null);
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-							 InvocationTargetException ex) {
+					         InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 				});
@@ -342,10 +336,7 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentDown.setEnabled(false);
 		lockComponent.setEnabled(false);
 
-		adds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-				(L10N.t("elementgui.gui.editor_options")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(adds, L10N.t("elementgui.gui.editor_options"));
 
 		adds.setOpaque(false);
 
@@ -354,10 +345,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		JPanel adds2 = new JPanel();
 		adds2.setLayout(new BoxLayout(adds2, BoxLayout.PAGE_AXIS));
-		adds2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(adds2, L10N.t("elementgui.gui.gui_properties"));
 
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
@@ -415,10 +403,7 @@ public class WYSIWYGEditor extends JPanel {
 			JPanel ovst2 = new JPanel(new GridLayout(3, 2, 2, 2));
 			ovst2.setOpaque(false);
 
-			ovst.setBorder(BorderFactory.createTitledBorder(
-					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
-					Theme.current().getForegroundColor()));
+			ComponentUtils.makeSection(ovst, L10N.t("elementgui.gui.overlay_properties"));
 
 			overlayBaseTexture.getComboBox().addActionListener(e -> editor.repaint());
 
@@ -480,7 +465,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, component).getEditingComponent();
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-							 InvocationTargetException ex) {
+					         InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 					break;

@@ -1,0 +1,1 @@
+Wenn aktiviert, erhält die Textur des Gegenstands einen Leuchteffekt, ähnlich dem von verzauberten Gegenständen.

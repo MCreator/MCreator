@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
@@ -34,6 +34,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -41,34 +42,36 @@ import java.util.*;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider {
+		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
+		IMultipleNames {
 
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
+	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
-	public String worldGenType;
+	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
 
 	public MItemBlock mainFillerBlock;
 	public MItemBlock fluidBlock;
-	public int seaLevel;
+	@Numeric(init = 63, min = -1024, max = 1024, step = 1) public int seaLevel;
 	public boolean generateOreVeins;
 	public boolean generateAquifers;
 	public int horizontalNoiseSize;
 	public int verticalNoiseSize;
 
-	public String defaultEffects;
+	@LimitedOptions({ "overworld", "the_nether", "the_end" }) public String defaultEffects;
 	public boolean useCustomEffects;
 	public boolean hasClouds;
-	public int cloudHeight;
-	public String skyType;
-	public Color airColor;
+	@Numeric(init = 192, min = -2032, max = 2031, step = 16) public int cloudHeight;
+	@LimitedOptions({ "NONE", "NORMAL", "END" }) public String skyType;
+	@Nullable public Color airColor;
 	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
 	public boolean hasFog;
-	public double ambientLight;
+	@Numeric(init = 0, min = 0, max = 1, step = 0.01) public double ambientLight;
 	public boolean doesWaterVaporize;
 	public boolean hasFixedTime;
-	public int fixedTimeValue;
-	public double coordinateScale;
+	@Numeric(init = 0, min = 0, max = 24000, step = 1) public int fixedTimeValue;
+	@Numeric(init = 1, min = 0.01, max = 1000, step = 0.01) public double coordinateScale;
 	public String infiniburnTag;
 
 	public boolean bedWorks;
@@ -76,20 +79,20 @@ import java.util.List;
 	public boolean imitateOverworldBehaviour;
 	public boolean piglinSafe;
 	public boolean hasRaids;
-	public int minMonsterSpawnLightLimit;
-	public int maxMonsterSpawnLightLimit;
-	public int monsterSpawnBlockLightLimit;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int minMonsterSpawnLightLimit;
+	@Numeric(init = 7, min = 0, max = 15, step = 1) public int maxMonsterSpawnLightLimit;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int monsterSpawnBlockLightLimit;
 
 	public Procedure onPlayerEntersDimension;
 	public Procedure onPlayerLeavesDimension;
 
 	public MItemBlock portalFrame;
-	public Particle portalParticles;
-	public int portalLuminance;
+	public ParticleEntry portalParticles;
+	@Numeric(init = 0, min = 0, max = 15, step = 1) public int portalLuminance;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
-	public String igniterRarity;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String igniterRarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
@@ -123,6 +126,7 @@ import java.util.List;
 		this.skyType = "NONE";
 		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
+		this.biomesInDimensionCaves = new ArrayList<>();
 	}
 
 	public boolean hasIgniter() {
@@ -131,13 +135,17 @@ import java.util.List;
 	}
 
 	public boolean hasEffectsOrDimensionTriggers() {
-		return useCustomEffects || onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
+		return useCustomEffects || hasDimensionTriggers();
+	}
+
+	public boolean hasDimensionTriggers() {
+		return onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
 	}
 
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
 		retval.add(mainFillerBlock.getUnmappedValue());
-		for (BiomeEntry biomeEntry : biomesInDimension) {
+		for (BiomeEntry biomeEntry : getUsedBiomes()) {
 			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
 				ModElement biomeElement = getModElement().getWorkspace()
 						.getModElementByName(biomeEntry.getUnmappedValue().replace(NameMapper.MCREATOR_PREFIX, ""));
@@ -151,6 +159,13 @@ import java.util.List;
 			}
 		}
 		return retval;
+	}
+
+	public List<BiomeEntry> getUsedBiomes() {
+		List<BiomeEntry> usedBiomes = new ArrayList<>();
+		usedBiomes.addAll(biomesInDimension);
+		usedBiomes.addAll(biomesInDimensionCaves);
+		return usedBiomes;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -203,6 +218,13 @@ import java.util.List;
 	@Override public List<MItemBlock> poiBlocks() {
 		return List.of(new MItemBlock(this.getModElement().getWorkspace(),
 				NameMapper.MCREATOR_PREFIX + this.getModElement().getName() + ".portal"));
+	}
+
+	@Override public Collection<String> getAdditionalNames() {
+		if (enablePortal)
+			return List.of(getModElement().getName() + "Portal");
+		else
+			return Collections.emptyList();
 	}
 
 }

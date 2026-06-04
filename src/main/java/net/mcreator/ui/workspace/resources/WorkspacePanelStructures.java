@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace.resources;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
@@ -40,8 +41,12 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open"),
 				e -> workspacePanel.getMCreator().getActionRegistry().importStructure.doAction());
-		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open"),
-				e -> workspacePanel.getMCreator().getActionRegistry().importStructureFromMinecraft.doAction());
+
+		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform()
+				== GeneratorFlavor.GamePlatform.JAVAEDITION)
+			addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open"),
+					e -> workspacePanel.getMCreator().getActionRegistry().importStructureFromMinecraft.doAction());
+
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

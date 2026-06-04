@@ -24,9 +24,10 @@ import net.mcreator.element.types.Tool;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.TranslatedComboBox;
+import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -35,10 +36,11 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.minecraft.attributemodifiers.JAttributeModifierList;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -67,23 +69,22 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private TextureSelectionButton texture;
 	private TextureSelectionButton guiTexture;
 
-	private final JSpinner efficiency = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.5));
-	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 1, 128000, 1));
-	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.1));
-	private final JSpinner attackSpeed = new JSpinner(new SpinnerNumberModel(1, 0, 100, 0.1));
-	private final JSpinner usageCount = new JSpinner(new SpinnerNumberModel(100, 0, 128000, 1));
+	private final JSpinner efficiency = ComponentFromAnnotation.spinner(Tool.class, "efficiency");
+	private final JSpinner enchantability = ComponentFromAnnotation.spinner(Tool.class, "enchantability");
+	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Tool.class, "damageVsEntity");
+	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Tool.class, "attackSpeed");
+	private final JSpinner usageCount = ComponentFromAnnotation.spinner(Tool.class, "usageCount");
 
-	private final JComboBox<String> blockDropsTier = new JComboBox<>(
-			new String[] { "WOOD", "STONE", "IRON", "DIAMOND", "GOLD", "NETHERITE" });
+	private final JComboBox<String> blockDropsTier = ComponentFromAnnotation.options(Tool.class, "blockDropsTier");
 
 	private ProcedureSelector additionalDropCondition;
 
-	private final VTextField name = new VTextField(30).requireValue("elementgui.tool.needs_a_name")
+	private final VTextField name = new VTextField(26).requireValue("elementgui.tool.needs_a_name")
 			.enableRealtimeValidation();
+	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(Tool.class, "rarity",
+			"elementgui.common.rarity_");
 
-	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
-					"MultiTool" });
+	private final JComboBox<String> toolType = ComponentFromAnnotation.options(Tool.class, "toolType");
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
@@ -106,12 +107,23 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private ProcedureSelector onItemInInventoryTick;
 	private ProcedureSelector onItemInUseTick;
 	private ProcedureSelector onEntitySwing;
+	private ProcedureSelector onDroppedByPlayer;
+	private ProcedureSelector onItemEntityDestroyed;
 
 	private MCItemListField blocksAffected;
 
 	private MCItemListField repairItems;
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
+
+	private JComponent dropTierPanel;
+	private JComponent attackDamagePanel;
+	private JComponent attackSpeedPanel;
+	private JComponent efficiencyPanel;
+	private JComponent blockingModelPanel;
+	private JComponent blocksAffectedPanel;
+
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -147,6 +159,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onDroppedByPlayer = new ProcedureSelector(this.withEntry("item/on_dropped"), mcreator,
+				L10N.t("elementgui.item.event_on_dropped"),
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
+				L10N.t("elementgui.item.on_item_entity_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
@@ -170,6 +188,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
+		JPanel attributeModifiersPage = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
@@ -181,7 +200,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
-		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
+		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
@@ -199,103 +218,118 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(rent, L10N.t("elementgui.tool.tool_3d_model"));
 
 		JComponent visualBottom = PanelUtils.centerAndSouthElement(glowCondition, specialInformation, 0, 5);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
-				PanelUtils.westAndCenterElement(
-						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
-				0, 5)));
+				PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture"))), rent),
+				visualBottom, 0, 5)));
 
-		JPanel selp = new JPanel(new GridLayout(16, 2, 0, 2));
-		selp.setOpaque(false);
+		JPanel itemProperties = new JPanel(new GridLayout(-1, 2, 2, 2));
+		itemProperties.setOpaque(false);
+
+		ComponentUtils.makeSection(itemProperties, L10N.t("elementgui.common.properties_general"));
+
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+				L10N.label("elementgui.common.name_in_gui")));
+		itemProperties.add(name);
 
 		ComponentUtils.deriveFont(name, 16);
 
-		blockingModel.setRenderer(new ModelComboBoxRenderer());
-		blockingModel.setEnabled(false);
+		itemProperties.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		itemProperties.add(rarity);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
-				L10N.label("elementgui.common.name_in_gui")));
-		selp.add(name);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")));
-		selp.add(toolType);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.common.creative_tabs")));
-		selp.add(creativeTabs);
+		itemProperties.add(creativeTabs);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
-				L10N.label("elementgui.tool.blocks_drop_tier")));
-		selp.add(blockDropsTier);
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
+				L10N.label("elementgui.common.enchantability")));
+		itemProperties.add(enchantability);
+
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
+				L10N.label("elementgui.tool.usage_count")));
+		itemProperties.add(usageCount);
+
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
+				L10N.label("elementgui.common.repair_items")));
+		itemProperties.add(repairItems);
+
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+				L10N.label("elementgui.tool.is_immune_to_fire")));
+		itemProperties.add(immuneToFire);
+
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
+				L10N.label("elementgui.item.container_item")));
+		itemProperties.add(stayInGridWhenCrafting);
+
+		itemProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
+				L10N.label("elementgui.item.container_item_damage")));
+		itemProperties.add(damageOnCrafting);
+
+		JPanel toolProperties = new JPanel(new AdaptiveGridLayout(-1, 1, 0, 2));
+		toolProperties.setOpaque(false);
+
+		ComponentUtils.makeSection(toolProperties, L10N.t("elementgui.tool.tool_properties"));
+
 		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
-		selp.add(new JEmptyBox());
-		selp.add(additionalDropCondition);
+		blockingModel.setRenderer(new ModelComboBoxRenderer());
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
-				L10N.label("elementgui.tool.efficiency")));
-		selp.add(efficiency);
+		toolProperties.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/type"), L10N.label("elementgui.tool.type")),
+				toolType));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
-				L10N.label("elementgui.common.enchantability")));
-		selp.add(enchantability);
+		toolProperties.add(dropTierPanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_drop_tier"),
+						L10N.label("elementgui.tool.blocks_drop_tier")), blockDropsTier));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
-				L10N.label("elementgui.tool.damage_vs_entity")));
-		selp.add(damageVsEntity);
+		toolProperties.add(additionalDropCondition);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
-				L10N.label("elementgui.tool.attack_speed")));
-		selp.add(attackSpeed);
+		toolProperties.add(efficiencyPanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/efficiency"),
+						L10N.label("elementgui.tool.efficiency")), efficiency));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
-				L10N.label("elementgui.tool.usage_count")));
-		selp.add(usageCount);
+		toolProperties.add(attackDamagePanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
+						L10N.label("elementgui.tool.damage_vs_entity")), damageVsEntity));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
-				L10N.label("elementgui.common.repair_items")));
-		selp.add(repairItems);
+		toolProperties.add(attackSpeedPanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
+						L10N.label("elementgui.tool.attack_speed")), attackSpeed));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
-				L10N.label("elementgui.tool.shield_blocking_model")));
-		selp.add(blockingModel);
+		toolProperties.add(blockingModelPanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
+						L10N.label("elementgui.tool.shield_blocking_model")), blockingModel));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
-				L10N.label("elementgui.tool.blocks_affected")));
-		selp.add(blocksAffected);
+		toolProperties.add(blocksAffectedPanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
+						L10N.label("elementgui.tool.blocks_affected")), blocksAffected));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
-				L10N.label("elementgui.tool.is_immune_to_fire")));
-		selp.add(immuneToFire);
+		usageCount.addChangeListener(_ -> updateCraftingSettings());
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
-				L10N.label("elementgui.item.container_item")));
-		selp.add(stayInGridWhenCrafting);
+		toolType.addActionListener(_ -> updateFields());
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.item.container_item_damage")));
-		selp.add(damageOnCrafting);
+		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),
+						L10N.label("elementgui.common.attribute_modifier.modifiers")), attributeModifiersList);
+		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		usageCount.addChangeListener(e -> updateCraftingSettings());
-
-		blocksAffected.setEnabled(false);
-
-		toolType.addActionListener(event -> updateFields());
+		attributeModifiersPage.add("Center", modifiersEditor);
+		attributeModifiersPage.setOpaque(false);
 
 		pane4.setOpaque(false);
 
-		pane4.add("Center", PanelUtils.totalCenterInPanel(selp));
+		pane4.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(itemProperties, toolProperties)));
 
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
 		events.add(onCrafted);
@@ -304,6 +338,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.add(onItemInInventoryTick);
 		events.add(onItemInUseTick);
 		events.add(onEntitySwing);
+		events.add(onDroppedByPlayer);
+		events.add(onItemEntityDestroyed);
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
@@ -311,6 +347,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(name);
+		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), attributeModifiersPage).lazyValidate(
+				attributeModifiersList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
 
 		if (!isEditingMode()) {
@@ -329,41 +367,32 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	}
 
 	private void updateFields() {
-		if (toolType.getSelectedItem() != null) {
-			blockingModel.setEnabled(true);
-			if (!toolType.getSelectedItem().equals("Shield")) {
-				blockingModel.setEnabled(false);
-				blockingModel.setSelectedItem(normalBlocking);
+		String selectedToolType = (String) toolType.getSelectedItem();
+		if (selectedToolType != null) {
+			blockingModelPanel.setVisible(selectedToolType.equals("Shield"));
+			blocksAffectedPanel.setVisible(selectedToolType.equals("Special"));
+
+			dropTierPanel.setVisible(true);
+			additionalDropCondition.setVisible(true);
+			efficiencyPanel.setVisible(true);
+			attackDamagePanel.setVisible(true);
+			attackSpeedPanel.setVisible(true);
+
+			switch ((String) toolType.getSelectedItem()) {
+			case "Special" -> dropTierPanel.setVisible(false);
+			case "Fishing rod", "Shield" -> {
+				dropTierPanel.setVisible(false);
+				additionalDropCondition.setVisible(false);
+				efficiencyPanel.setVisible(false);
+				attackDamagePanel.setVisible(false);
+				attackSpeedPanel.setVisible(false);
 			}
-
-			blockDropsTier.setEnabled(true);
-			additionalDropCondition.setEnabled(true);
-			efficiency.setEnabled(true);
-			damageVsEntity.setEnabled(true);
-			attackSpeed.setEnabled(true);
-			blocksAffected.setEnabled(true);
-			repairItems.setEnabled(true);
-
-			if (toolType.getSelectedItem().equals("Special")) {
-				blockDropsTier.setEnabled(false);
-				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem()
-					.equals("Shield")) {
-				blockDropsTier.setEnabled(false);
-				additionalDropCondition.setEnabled(false);
-				efficiency.setEnabled(false);
-				damageVsEntity.setEnabled(false);
-				attackSpeed.setEnabled(false);
-				blocksAffected.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Shears")) {
-				blockDropsTier.setEnabled(false);
-				additionalDropCondition.setEnabled(false);
-				damageVsEntity.setEnabled(false);
-				attackSpeed.setEnabled(false);
-				blocksAffected.setEnabled(false);
-				repairItems.setEnabled(false);
-			} else {
-				blocksAffected.setEnabled(false);
+			case "Shears" -> {
+				dropTierPanel.setVisible(false);
+				additionalDropCondition.setVisible(false);
+				attackDamagePanel.setVisible(false);
+				attackSpeedPanel.setVisible(false);
+			}
 			}
 		}
 	}
@@ -382,6 +411,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick.refreshListKeepSelected(context);
 		onItemInUseTick.refreshListKeepSelected(context);
 		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
 		glowCondition.refreshListKeepSelected(context);
 		specialInformation.refreshListKeepSelected(context);
 
@@ -394,11 +425,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal), itemModels));
 		ComboBoxUtil.updateComboBoxContents(blockingModel,
 				ListUtils.merge(Collections.singletonList(normalBlocking), itemModels));
+
+		attributeModifiersList.reloadDataLists();
 	}
 
 	@Override public void openInEditingMode(Tool tool) {
 		creativeTabs.setListElements(tool.creativeTabs);
 		name.setText(tool.name);
+		rarity.setSelectedItem(tool.rarity);
 		texture.setTexture(tool.texture);
 		guiTexture.setTexture(tool.guiTexture);
 		toolType.setSelectedItem(tool.toolType);
@@ -417,35 +451,42 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick.setSelectedProcedure(tool.onItemInInventoryTick);
 		onItemInUseTick.setSelectedProcedure(tool.onItemInUseTick);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
+		onDroppedByPlayer.setSelectedProcedure(tool.onDroppedByPlayer);
+		onItemEntityDestroyed.setSelectedProcedure(tool.onItemEntityDestroyed);
 		glowCondition.setSelectedProcedure(tool.glowCondition);
 		specialInformation.setSelectedProcedure(tool.specialInformation);
 		repairItems.setListElements(tool.repairItems);
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
 		immuneToFire.setSelected(tool.immuneToFire);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
-
-		blocksAffected.setListElements(tool.blocksAffected);
+		attributeModifiersList.setEntries(tool.attributeModifiers);
 
 		updateCraftingSettings();
 		updateFields();
-
-		if (toolType.getSelectedItem() != null)
-			blocksAffected.setEnabled(toolType.getSelectedItem().equals("Special"));
 
 		Model model = tool.getItemModel();
 		if (model != null)
 			renderType.setSelectedItem(model);
 
-		Model modelBlocking = tool.getBlockingModel();
-		if (modelBlocking != null)
-			blockingModel.setSelectedItem(modelBlocking);
+		// Handle some tool type-dependant properties that may contain references
+		if ("Special".equals(tool.toolType)) {
+			blocksAffected.setListElements(tool.blocksAffected);
+		} else if ("Shield".equals(tool.toolType)) {
+			Model modelBlocking = tool.getBlockingModel();
+			if (modelBlocking != null)
+				blockingModel.setSelectedItem(modelBlocking);
+		}
+
 	}
 
 	@Override public Tool getElementFromGUI() {
+		String selectedToolType = (String) Objects.requireNonNull(toolType.getSelectedItem());
+
 		Tool tool = new Tool(modElement);
 		tool.name = name.getText();
+		tool.rarity = rarity.getSelectedItem();
 		tool.creativeTabs = creativeTabs.getListElements();
-		tool.toolType = (String) toolType.getSelectedItem();
+		tool.toolType = selectedToolType;
 		tool.blockDropsTier = (String) blockDropsTier.getSelectedItem();
 		tool.additionalDropCondition = additionalDropCondition.getSelectedProcedure();
 		tool.efficiency = (double) efficiency.getValue();
@@ -453,7 +494,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.attackSpeed = (double) attackSpeed.getValue();
 		tool.damageVsEntity = (double) damageVsEntity.getValue();
 		tool.usageCount = (int) usageCount.getValue();
-		tool.blocksAffected = blocksAffected.getListElements();
 		tool.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		tool.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		tool.onCrafted = onCrafted.getSelectedProcedure();
@@ -462,9 +502,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
 		tool.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
+		tool.onDroppedByPlayer = onDroppedByPlayer.getSelectedProcedure();
+		tool.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();
 		tool.glowCondition = glowCondition.getSelectedProcedure();
 		tool.specialInformation = specialInformation.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();
+		tool.attributeModifiers = attributeModifiersList.getEntries();
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		tool.immuneToFire = immuneToFire.isSelected();
@@ -481,13 +524,18 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			tool.renderType = 2;
 		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
 
-		Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
-		tool.blockingRenderType = 0;
-		if (blockingModelType == Model.Type.JSON)
-			tool.blockingRenderType = 1;
-		else if (blockingModelType == Model.Type.OBJ)
-			tool.blockingRenderType = 2;
-		tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
+		// Handle some tool type-dependant properties that may contain references
+		if ("Special".equals(selectedToolType)) {
+			tool.blocksAffected = blocksAffected.getListElements();
+		} else if ("Shield".equals(selectedToolType)) {
+			Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
+			tool.blockingRenderType = 0;
+			if (blockingModelType == Model.Type.JSON)
+				tool.blockingRenderType = 1;
+			else if (blockingModelType == Model.Type.OBJ)
+				tool.blockingRenderType = 2;
+			tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
+		}
 
 		return tool;
 	}

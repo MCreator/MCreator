@@ -1,0 +1,1 @@
+This parameter determines how quick the attack cooldown of your item is when attacking entities.

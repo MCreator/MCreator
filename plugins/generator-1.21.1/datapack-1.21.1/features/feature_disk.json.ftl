@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 {
   "radius": ${input$radius},
   "half_height": ${field$half_height},

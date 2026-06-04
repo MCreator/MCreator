@@ -1,6 +1,7 @@
 name: Resource Pack for Java Edition @minecraft
 status: stable
-buildfileversion: 21.1.190
+buildfileversion: 21.1.228
+subversion: 1.0 # used to force project base regeneration
 
 # gradle task definitions
 gradle:

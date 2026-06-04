@@ -20,6 +20,7 @@ package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -54,8 +55,8 @@ public class MCItemHolderValidator implements Validator {
 	@Override public ValidationResult validate() {
 		if ((acceptAir ? holder.containsItemOrAir() : holder.containsItem()) || (requirement != null
 				&& !requirement.isSelected()))
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		else
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, emptyMessage);
+			return new ValidationResult(ValidationResult.Type.ERROR, emptyMessage);
 	}
 }

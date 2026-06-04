@@ -28,7 +28,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -142,8 +142,7 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 
 		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			if (sliderMachineName.getValidationStatus().getValidationResultType()
-					!= Validator.ValidationResultType.ERROR) {
+			if (sliderMachineName.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				String sliderName = sliderMachineName.getText();
 				if (!sliderName.isEmpty()) {

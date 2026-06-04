@@ -27,7 +27,7 @@ description="${JavaConventions.escapeStringForJava(settings.getDescription())}"
 <#if settings.isServerSideOnly()>
 displayTest="IGNORE_SERVER_VERSION"
 </#if>
-<#if w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == "Raider")?size != 0>
+<#if (w.hasElementsOfType('specialentity')) || (w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == "Raider")?size != 0)>
 enumExtensions="META-INF/enumextensions.json"
 </#if>
 
@@ -60,7 +60,7 @@ enumExtensions="META-INF/enumextensions.json"
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     type="required"
-    versionRange="[0,)"
+    versionRange="${settings.getVersionRange(e)}"
     ordering="NONE"
     side="BOTH"
 </#list>
@@ -69,7 +69,7 @@ enumExtensions="META-INF/enumextensions.json"
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
     type="optional"
-    versionRange="[0,)"
+    versionRange="${settings.getVersionRange(e)}"
     ordering="NONE"
     side="BOTH"
 </#list>

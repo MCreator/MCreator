@@ -35,6 +35,7 @@ import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
@@ -138,7 +139,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 				Item.decodeModelType(value.renderType)));
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
+	@Override public ValidationResult getValidationStatus() {
 		return texture.getValidationStatus();
 	}
 

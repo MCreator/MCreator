@@ -1,0 +1,113 @@
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2025, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.element.types.bedrock;
+
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.NonNullMappable;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
+
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BEItem extends GeneratableElement implements IItem, IItemWithTexture {
+
+	@TextureReference(TextureType.ITEM) public TextureHolder texture;
+
+	public String name;
+	@Numeric(init = 64, min = 1, max = 64, step = 1) public int stackSize;
+	@Numeric(init = 0, min = 0, max = 128000, step = 0.1) public double useDuration;
+	@Numeric(init = 0, min = 0, max = 128000, step = 1) public int maxDurability;
+	public boolean enableMeleeDamage;
+	@Numeric(init = 0, min = 0, max = 255, step = 1) public int damageVsEntity;
+	public boolean hasGlint;
+	public boolean handEquipped;
+	@LimitedOptions({ "common", "uncommon", "rare", "epic" }) public String rarity;
+	public boolean enableCreativeTab;
+	@NonNullMappable("MATERIALS") public TabEntry creativeTab;
+	public boolean isHiddenInCommands;
+	@Numeric(init = 0, min = 0, max = 1, step = 0.05) public double movementModifier;
+	public boolean allowOffHand;
+	@Numeric(init = 0, min = 0, max = 107374180, step = 0.05) public double fuelDuration;
+	public boolean shouldDespawn;
+	public boolean stackedByData;
+	public MItemBlock blockToPlace;
+	@ModElementReference public List<MItemBlock> blockPlaceableOn;
+	public EntityEntry entityToPlace;
+	@ModElementReference public List<MItemBlock> entityPlaceableOn;
+	@ModElementReference public List<MItemBlock> entityDispensableOn;
+
+	// Food
+	public boolean isFood;
+	@Numeric(init = 4, min = -1000, max = 1000, step = 1) public int foodNutritionalValue;
+	@Numeric(init = 0.3, min = -1000, max = 1000, step = 0.1) public double foodSaturation;
+	public boolean foodCanAlwaysEat;
+	@ModElementReference public MItemBlock usingConvertsTo;
+	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear", "brush", "spyglass", "camera" })
+	public String animation;
+
+	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
+
+	public BEItem() {
+		this(null);
+	}
+
+	public BEItem(ModElement element) {
+		super(element);
+
+		rarity = "common";
+		movementModifier = 1.0;
+		shouldDespawn = true;
+		animation = "eat";
+		enableCreativeTab = true;
+
+		blockPlaceableOn = new ArrayList<>();
+		entityDispensableOn = new ArrayList<>();
+		entityPlaceableOn = new ArrayList<>();
+
+		localScripts = new ArrayList<>();
+	}
+
+	@Override public BufferedImage generateModElementPicture() {
+		return ImageUtils.resizeAndCrop(texture.getImage(TextureType.ITEM), 32);
+	}
+
+	@Override public TextureHolder getTexture() {
+		return texture;
+	}
+
+	@Override public List<MCItem> providedMCItems() {
+		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
+	}
+
+}

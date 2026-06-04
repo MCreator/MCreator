@@ -1,0 +1,1 @@
+If enabled, the item's texture will have a glowing effect similar to what enchanted items have.

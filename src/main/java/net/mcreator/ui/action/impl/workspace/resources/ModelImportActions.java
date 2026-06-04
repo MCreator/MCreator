@@ -27,10 +27,12 @@
 
 package net.mcreator.ui.action.impl.workspace.resources;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import de.javagl.obj.Mtl;
 import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -93,8 +95,7 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_java");
 		}
 	}
 
@@ -232,8 +233,7 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_json");
 		}
 	}
 
@@ -255,6 +255,53 @@ public class ModelImportActions {
 		}
 	}
 
+	public static class BEDROCK extends BasicAction {
+		public BEDROCK(ActionRegistry actionRegistry) {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_bedrock_model"), actionEvent -> {
+				MCreator mcreator = actionRegistry.getMCreator();
+				File json = FileDialogs.getOpenDialog(mcreator, new String[] { ".json" });
+				if (json != null) {
+					if (json.getName().endsWith(".geo.json")) {
+						importBedrockModel(mcreator, json);
+					} else {
+						JOptionPane.showMessageDialog(mcreator,
+								L10N.t("dialog.workspace.resources.import_bedrock_model.wrong_type"),
+								L10N.t("dialog.workspace.resources.import_bedrock_model.title"),
+								JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			});
+			setIcon(UIRES.get("16px.importbedrockmodel"));
+		}
+
+		@Override public boolean isEnabled() {
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_bedrock");
+		}
+	}
+
+	public static void importBedrockModel(MCreator mcreator, File file) {
+		String identifier;
+		try {
+			JsonObject obj = new Gson().fromJson(FileIO.readFileToString(file), JsonObject.class);
+			identifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description")
+					.getAsJsonObject().get("identifier").getAsString();
+		} catch (JsonParseException | NullPointerException e) {
+			LOG.error("Bedrock model {} identifier could not be parsed", file.getName(), e);
+
+			JOptionPane.showMessageDialog(mcreator,
+					L10N.t("dialog.workspace.resources.import_bedrock_model.missing_identifier"),
+					L10N.t("dialog.workspace.resources.import_bedrock_model.title"), JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		FileIO.copyFile(file, new File(mcreator.getFolderManager().getModelsDir(),
+				identifier.replace("geometry.", "") + ".geo.json"));
+
+		mcreator.reloadWorkspaceTabContents();
+		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
+			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
+	}
+
 	public static class OBJ extends BasicAction {
 		public OBJ(ActionRegistry actionRegistry) {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_obj_mtl_model"), actionEvent -> {
@@ -273,8 +320,7 @@ public class ModelImportActions {
 		}
 
 		@Override public boolean isEnabled() {
-			return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
-					!= GeneratorStats.CoverageStatus.NONE;
+			return actionRegistry.getMCreator().getGeneratorStats().hasBaseCoverage("model_obj");
 		}
 	}
 

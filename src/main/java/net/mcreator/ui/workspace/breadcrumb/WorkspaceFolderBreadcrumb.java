@@ -21,7 +21,9 @@ package net.mcreator.ui.workspace.breadcrumb;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.variants.modmaker.ModMaker;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
@@ -58,7 +60,9 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 	}
 
 	@Override public void paintComponent(Graphics g) {
-		g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
+		g.setColor(mcreator.hasBackgroundImage() ?
+				ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100) :
+				Theme.current().getBackgroundColor());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
 	}
@@ -85,7 +89,6 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		Collections.reverse(path);
 
 		int idx = 0;
-		MouseAdapter adapter = null;
 		for (FolderElement filePathPart : path) {
 			JLabel entry = new FolderElementCrumb(filePathPart);
 
@@ -96,14 +99,32 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			add(entry);
 
 			if (idx < path.size() - 1 || canExpandTrailHead) {
-				adapter = new MouseAdapter() {
-					@Override public void mouseClicked(MouseEvent mouseEvent) {
-						if (mouseEvent.getClickCount() == 2) {
-							if (selectionListener != null)
-								selectionListener.elementSelected(filePathPart, entry, mouseEvent);
-							return;
-						}
+				entry.addMouseListener(new MouseAdapter() {
 
+					private long lastClickTime = 0;
+					private Timer timer;
+
+					private static final int DOUBLE_CLICK_THRESHOLD = 250;
+
+					@Override public void mouseClicked(MouseEvent e) {
+						long now = System.currentTimeMillis();
+						if (lastClickTime != 0 && now - lastClickTime < DOUBLE_CLICK_THRESHOLD) {
+							lastClickTime = 0;
+
+							if (timer != null)
+								timer.stop();
+
+							if (selectionListener != null)
+								selectionListener.elementSelected(filePathPart, entry, e);
+						} else {
+							lastClickTime = now;
+							timer = new Timer(DOUBLE_CLICK_THRESHOLD, ev -> showPopup(e));
+							timer.setRepeats(false);
+							timer.start();
+						}
+					}
+
+					private void showPopup(MouseEvent mouseEvent) {
 						JScrollablePopupMenu popupMenu = new JScrollablePopupMenu();
 						List<IElement> files = filePathPart.getDirectFolderChildren().stream().map(e -> (IElement) e)
 								.collect(Collectors.toList());
@@ -137,8 +158,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 							popupMenu.show(WorkspaceFolderBreadcrumb.this, 0, 18);
 						}
 					}
-				};
-				entry.addMouseListener(adapter);
+				});
 			}
 
 			if (idx < path.size() - 1)
@@ -149,12 +169,6 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 		revalidate();
 		repaint();
-
-		MouseAdapter finalAdapter = adapter;
-		SwingUtilities.invokeLater(() -> {
-			if (finalAdapter != null)
-				finalAdapter.mouseReleased(new MouseEvent(this, 0, 0, 0, 0, 0, 0, false, 0));
-		});
 	}
 
 	public FolderElement getCurrentFolder() {

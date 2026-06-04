@@ -61,7 +61,6 @@ public class AIConditionEditor {
 		}
 
 		MCreatorDialog window = new MCreatorDialog(parent, L10N.t("dialog.ai_condition.panel_name"));
-		window.setSize(450, 140);
 		window.setLocationRelativeTo(parent);
 		window.setModal(true);
 
@@ -85,6 +84,7 @@ public class AIConditionEditor {
 		options.add(PanelUtils.join(ok, cancel));
 
 		window.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(conditions, options)));
+		window.pack();
 		window.setVisible(true);
 
 		return retVal;

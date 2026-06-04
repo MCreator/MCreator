@@ -1,0 +1,1 @@
+Questa è la texture della tua entità. Assicurati che la texture sia compatibile con il modello.

@@ -1,0 +1,1 @@
+Tyto modifikace atributů jsou aplikovány na entity, když je mají ve specifikovaných polích.

@@ -19,10 +19,18 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.element.types.VillagerTrade;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.minecraft.villagers.JVillagerTradeProfessionsList;
+import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.HelpUtils;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.minecraft.villagers.JVillagerTradeEntryList;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
@@ -31,10 +39,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 
 public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
-	private JVillagerTradeProfessionsList villagerTradeProfessions;
+	private JVillagerTradeEntryList trades;
+	private final DataListComboBox villagerProfession = new DataListComboBox(mcreator,
+			ElementUtil.loadAllVillagerProfessions(mcreator.getWorkspace()));
 
 	public VillagerTradeGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -43,32 +54,48 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 	}
 
 	@Override protected void initGUI() {
-		JPanel pane = new JPanel(new BorderLayout(0, 0));
+		JPanel pane = new JPanel(new BorderLayout(10, 10));
 		pane.setOpaque(false);
 
-		villagerTradeProfessions = new JVillagerTradeProfessionsList(mcreator, this);
+		JPanel properties = new JPanel(new GridLayout(1, 2, 4, 2));
+		properties.setOpaque(false);
 
-		pane.add(villagerTradeProfessions);
-		addPage(pane, false);
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("villagertrades/profession"),
+				L10N.label("elementgui.villager_trade.profession")));
+		properties.add(villagerProfession);
 
-		// Add first pool
+		villagerProfession.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
+
+		villagerProfession.addActionListener(_ -> trades.setWanderingTrader(
+				"WANDERING_TRADER".equals(villagerProfession.getSelectedItem().getName())));
+
+		trades = new JVillagerTradeEntryList(mcreator, this);
+
+		pane.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, properties), trades));
+		addPage(pane, false).lazyValidate(trades::getValidationResult);
+
+		// Add first trade
 		if (!isEditingMode()) {
-			villagerTradeProfessions.addInitialTrade();
+			trades.setEntries(Collections.singletonList(new VillagerTrade.TradeEntry()));
 		}
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		villagerTradeProfessions.reloadDataLists();
+		ComboBoxUtil.updateComboBoxContents(villagerProfession,
+				ElementUtil.loadAllVillagerProfessions(mcreator.getWorkspace()));
 	}
 
 	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
-		villagerTradeProfessions.setEntries(villagerTrade.tradeEntries);
+		villagerProfession.setSelectedItem(villagerTrade.villagerProfession);
+		trades.setEntries(villagerTrade.trades);
 	}
 
 	@Override public VillagerTrade getElementFromGUI() {
 		VillagerTrade villagerTrade = new VillagerTrade(modElement);
-		villagerTrade.tradeEntries = villagerTradeProfessions.getEntries();
+		villagerTrade.villagerProfession = new ProfessionEntry(mcreator.getWorkspace(),
+				villagerProfession.getSelectedItem());
+		villagerTrade.trades = trades.getEntries();
 		return villagerTrade;
 	}
 

@@ -20,6 +20,7 @@ package net.mcreator.ui.validation.validators;
 
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.StringUtils;
@@ -48,11 +49,10 @@ public class JavaMemberNameValidator implements Validator {
 		String text = textField.getText();
 
 		if (text == null || text.isEmpty())
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validators.java_name.needs_name"));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.needs_name"));
 
 		if (!allowInitialUnderscore && text.charAt(0) == '_')
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+			return new ValidationResult(ValidationResult.Type.ERROR,
 					L10N.t("validators.java_name.cannot_start_with_underscore"));
 
 		if (firstLetterUppercase && Character.isLowerCase(text.charAt(0))) {
@@ -65,23 +65,20 @@ public class JavaMemberNameValidator implements Validator {
 
 		text = textField.getText();
 		if (!JavaConventions.isValidJavaIdentifier(text)) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validators.java_name.invalid_name"));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.invalid_name"));
 		} else if (JavaConventions.isStringReservedJavaWord(text)) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validators.java_name.reserved_keywords"));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.reserved_keywords"));
 		} else if (common_names.contains(text)) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validators.java_name.vanilla_names"));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.vanilla_names"));
 		} else if (JavaConventions.containsInvalidJavaNameCharacters(text)) {
-			return new Validator.ValidationResult(ValidationResultType.ERROR,
+			return new ValidationResult(ValidationResult.Type.ERROR,
 					L10N.t("validators.java_name.characters_not_allowed"));
 		} else if (firstLetterUppercase && !text.isEmpty() && !StringUtils.isUppercaseLetter(
 				textField.getText().charAt(0))) {
-			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
+			return new ValidationResult(ValidationResult.Type.WARNING,
 					L10N.t("validators.java_names.upper_case_first_character"));
 		} else {
-			return Validator.ValidationResult.PASSED;
+			return ValidationResult.PASSED;
 		}
 	}
 
@@ -90,6 +87,7 @@ public class JavaMemberNameValidator implements Validator {
 			"Monster", "Animal", "End", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door",
 			"FenceGate", "Creature", "Item", "Block", "BoneMeal", "Diamond", "Ore", "Gem", "Gold", "Iron", "Stack",
 			"Emerald", "Entity", "Surface", "WoodButton", "StoneButton", "Flower", "Falling", "Furnace", "Bush", "Crop",
-			"Structure", "Blocks", "Items", "Biomes", "Timer", "Direction", "Number", "Tool", "Console");
+			"Structure", "Blocks", "Items", "Biomes", "Timer", "Direction", "Number", "Tool", "Console", "HangingSign",
+			"WanderingTrader");
 
 }

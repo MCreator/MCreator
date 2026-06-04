@@ -77,10 +77,7 @@ public class ArmorImageMakerView extends ViewBase {
 		type1.addActionListener(e -> updateARM());
 
 		JPanel wrap = PanelUtils.centerInPanelPadding(controls, 10, 10);
-		wrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.armor_image_maker.properties"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(wrap, L10N.t("dialog.armor_image_maker.properties"));
 
 		add("Center", wrap);
 
@@ -98,10 +95,7 @@ public class ArmorImageMakerView extends ViewBase {
 		JPanel spom = PanelUtils.totalCenterInPanel(spo);
 		spom.setOpaque(true);
 		spom.setBackground(Theme.current().getAltBackgroundColor());
-		spom.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("dialog.armor_image_maker.preview"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(spom, L10N.t("dialog.armor_image_maker.preview"));
 
 		add("South", spom);
 

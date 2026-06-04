@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
@@ -71,10 +72,9 @@ public class RegistryNameValidator implements Validator {
 	@Override public ValidationResult validate() {
 		String text = holder.getText();
 		if (text.isEmpty() && !allowEmpty)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
-					L10N.t("validators.registry_name.empty", name));
+			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.registry_name.empty", name));
 		if (text.length() > maxLength)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+			return new ValidationResult(ValidationResult.Type.ERROR,
 					L10N.t("validators.registry_name.length", name, maxLength));
 		char[] chars = text.toCharArray();
 		boolean valid = true;
@@ -93,10 +93,10 @@ public class RegistryNameValidator implements Validator {
 			id++;
 		}
 		if (!valid)
-			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+			return new ValidationResult(ValidationResult.Type.ERROR,
 					L10N.t("validators.registry_name.invalid", name, validChars.toString()));
 
-		return Validator.ValidationResult.PASSED;
+		return ValidationResult.PASSED;
 	}
 
 	public static boolean isLCLetterOrDigit(char c) {

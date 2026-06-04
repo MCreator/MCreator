@@ -1,4 +1,4 @@
-<#include "mcitems.ftl">
+<#include "mcitems_json.ftl">
 {
     "replace": false,
     "values": [
@@ -21,6 +21,10 @@
       <#elseif type == "functions">
           <#list w.filterBrokenReferences(elements) as value>
 			<@tagEntry value generator.getResourceLocationForModElement(value)/><#sep>,
+          </#list>
+      <#else>
+          <#list w.filterBrokenReferences(elements) as value>
+            <@tagEntry value generator.getResourceLocationForModElement(value?remove_beginning("CUSTOM:"))/><#sep>,
           </#list>
       </#if>
     ]

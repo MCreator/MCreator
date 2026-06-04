@@ -20,8 +20,14 @@
 package net.mcreator.element;
 
 import net.mcreator.element.types.*;
+import net.mcreator.element.types.bedrock.BEBlock;
+import net.mcreator.element.types.bedrock.BEItem;
+import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.modgui.*;
+import net.mcreator.ui.modgui.bedrock.BEBlockGUI;
+import net.mcreator.ui.modgui.bedrock.BEItemGUI;
+import net.mcreator.ui.modgui.bedrock.BEScriptGUI;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,6 +36,7 @@ import java.util.List;
 
 import static net.mcreator.generator.GeneratorFlavor.BaseLanguage.JAVA;
 import static net.mcreator.generator.GeneratorFlavor.DATAPACK;
+import static net.mcreator.generator.GeneratorFlavor.GamePlatform.BEDROCKEDITION;
 import static net.mcreator.generator.GeneratorFlavor.GamePlatform.JAVAEDITION;
 
 public class ModElementTypeLoader {
@@ -42,7 +49,7 @@ public class ModElementTypeLoader {
 		ModElementType.ARMOR = register(new ModElementType<>("armor", 'a', ArmorGUI::new, Armor.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.ATTRIBUTE = register(new ModElementType<>("attribute", null, AttributeGUI::new, Attribute.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.BANNERPATTERN = register(new ModElementType<>("bannerpattern", null, BannerPatternGUI::new, BannerPattern.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
-		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BiomeGUI::new, Biome.class));
+		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BiomeGUI::new, Biome.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.BLOCK = register(new ModElementType<>("block", 'b', BlockGUI::new, Block.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.COMMAND = register(new ModElementType<>("command", 'c', CommandGUI::new, Command.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.DAMAGETYPE = register(new ModElementType<>("damagetype", null, DamageTypeGUI::new, DamageType.class)).coveredOn(GeneratorFlavor.gamePlatform(JAVAEDITION));
@@ -68,14 +75,20 @@ public class ModElementTypeLoader {
 		ModElementType.PROCEDURE = register(new ModElementType<>("procedure", 'p', ProcedureGUI::new, Procedure.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.PROJECTILE = register(new ModElementType<>("projectile", 'q', ProjectileGUI::new, Projectile.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.RECIPE = register(new ModElementType<>("recipe", 'r', RecipeGUI::new, Recipe.class));
+		ModElementType.SPECIALENTITY = register(new ModElementType<>("specialentity", null, SpecialEntityGUI::new, SpecialEntity.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', StructureGUI::new, Structure.class)).coveredOn(GeneratorFlavor.gamePlatform(JAVAEDITION));
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', TabGUI::new, Tab.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', ToolGUI::new, Tool.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.VILLAGERPROFESSION = register(new ModElementType<>("villagerprofession", null, VillagerProfessionGUI::new, VillagerProfession.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 		ModElementType.VILLAGERTRADE = register(new ModElementType<>("villagertrade", null, VillagerTradeGUI::new, VillagerTrade.class)).coveredOn(GeneratorFlavor.baseLanguage(JAVA));
 
+		// Bedrock-specific METs
+		ModElementType.BEITEM = register(new ModElementType<>("beitem", "item", 'i', BEItemGUI::new, BEItem.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
+		ModElementType.BEBLOCK = register(new ModElementType<>("beblock", "block", 'b', BEBlockGUI::new, BEBlock.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
+		ModElementType.BESCRIPT = register(new ModElementType<>("bescript", "procedure", 's', BEScriptGUI::new, BEScript.class)).coveredOn(GeneratorFlavor.gamePlatform(BEDROCKEDITION));
+
 		// Unregistered type used to mask legacy removed mod element types
-		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, (mc, me, e) -> null, GeneratableElement.Unknown.class);
+		ModElementType.UNKNOWN = new ModElementType<>("unknown", null, (_, _, _) -> null, GeneratableElement.Unknown.class);
 
 		//@formatter:on
 	}
@@ -98,6 +111,17 @@ public class ModElementTypeLoader {
 		}
 
 		throw new IllegalArgumentException("Mod element type " + typeName + " is not a registered type");
+	}
+
+	public static ModElementType<?> getModElementType(Class<? extends GeneratableElement> elementClass)
+			throws IllegalArgumentException {
+		for (ModElementType<?> me : REGISTRY) {
+			if (me.getModElementStorageClass() == elementClass) {
+				return me;
+			}
+		}
+		throw new IllegalArgumentException(
+				"Mod element type for class " + elementClass.getName() + " is not a registered type");
 	}
 
 	public static Collection<ModElementType<?>> getAllModElementTypes() {

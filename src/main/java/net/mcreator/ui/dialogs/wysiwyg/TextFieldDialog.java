@@ -22,7 +22,7 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -81,7 +81,7 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+			if (nameField.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				String text = nameField.getText();
 				if (!text.isEmpty()) {

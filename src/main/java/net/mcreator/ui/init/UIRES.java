@@ -49,8 +49,6 @@ public class UIRES {
 		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.get().equals("default_dark")) {
 			preloadRastersForTheme(FALLBACK_CACHE, "default_dark");
 			preloadVectorsForTheme(FALLBACK_CACHE, "default_dark");
-		} else {
-			FALLBACK_CACHE.putAll(THEME_CACHE);
 		}
 	}
 

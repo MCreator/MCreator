@@ -20,11 +20,14 @@ package net.mcreator.ui.browser;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.tree.FileTree;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.java.JavaReleaseInfo;
+import net.mcreator.java.LibraryInfoIterator;
+import net.mcreator.java.ModulesFileLibraryInfo;
+import net.mcreator.java.ProjectJarManager;
 import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.FileOpener;
 import net.mcreator.ui.MCreator;
@@ -40,6 +43,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
 import javax.swing.*;
@@ -53,6 +58,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -61,6 +67,8 @@ import java.util.List;
  * the workspace and also observe source code of external libraries used by that project.
  */
 public class WorkspaceFileBrowser extends JPanel {
+
+	private static final Logger LOG = LogManager.getLogger(WorkspaceFileBrowser.class);
 
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
@@ -206,24 +214,19 @@ public class WorkspaceFileBrowser extends JPanel {
 		JFileTree.addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 		node.add(currRes);
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds") != GeneratorStats.CoverageStatus.NONE) {
+		if (mcreator.getGeneratorStats().hasBaseCoverage("sounds")) {
 			FilterTreeNode sounds = new FilterTreeNode("Sounds");
 			JFileTree.addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 			node.add(sounds);
 		}
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (mcreator.getGeneratorStats().hasBaseCoverage("structures")) {
 			FilterTreeNode structures = new FilterTreeNode("Structures");
 			JFileTree.addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 			node.add(structures);
 		}
 
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_json") != GeneratorStats.CoverageStatus.NONE
-				|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_java")
-				!= GeneratorStats.CoverageStatus.NONE
-				|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (mcreator.getGeneratorStats().hasBaseCoverageAny("model_json", "model_java", "model_obj", "model_bedrock")) {
 			FilterTreeNode models = new FilterTreeNode("Models");
 			JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 			node.add(models);
@@ -269,11 +272,13 @@ public class WorkspaceFileBrowser extends JPanel {
 				== GeneratorFlavor.BaseLanguage.JAVA)
 			loadExtSources(root);
 
-		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
-				&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
-			FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
-			JFileTree.addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
-			root.add(minecraft);
+		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
+			File folder = MinecraftFolderUtils.getBedrockEditionFolder();
+			if (folder != null) {
+				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
+				JFileTree.addNodes(minecraft, folder, true);
+				root.add(minecraft);
+			}
 		}
 
 		mods.setRoot(root);
@@ -400,14 +405,25 @@ public class WorkspaceFileBrowser extends JPanel {
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
 			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
-				File libraryFile = new File(libraryInfo.getLocationAsString());
-				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
-					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-					if (libName.equals("rt") || libName.equals("java.base"))
-						libName = "Java " + System.getProperty("java.version") + " SDK";
-					else
-						libName = "Gradle: " + libName;
+				try {
+					File libraryFile = new File(libraryInfo.getLocationAsString());
 
+					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
+					if (libName.equals("rt") || libName.equals("java.base")
+							|| libraryInfo instanceof ModulesFileLibraryInfo) {
+						libName = "<" + JavaReleaseInfo.DEFAULT + ">";
+						ProjectJarManager projectJarManager = mcreator.getGenerator().getProjectJarManager();
+						if (projectJarManager != null) {
+							JavaReleaseInfo releaseInfo = projectJarManager.getJavaReleaseInfo();
+							if (releaseInfo != null) {
+								libName = "<Java SDK " + releaseInfo.version() + ">";
+							}
+						}
+					} else {
+						libName = "Gradle: " + libName;
+					}
+
+					// Try to load from sources where possible
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
 						if (sourceFile.isFile() && (ZipIO.checkIfZip(sourceFile) || ZipIO.checkIfJMod(sourceFile))) {
@@ -419,10 +435,12 @@ public class WorkspaceFileBrowser extends JPanel {
 						}
 					}
 
-					// If source file is not found, add the library file itself
+					// If a source file is not found, add the library file itself
 					FileTree<Void> lib = new FileTree<>(new FileNode<>(libName, libraryFile.getAbsolutePath() + ":%:"));
-					ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
+					LibraryInfoIterator.iterateLibraryInfo(libraryInfo, entry -> lib.addElement(entry.path()), true);
 					JFileTree.addFileNodeToFilterTreeNode(extDeps, lib.root());
+				} catch (IOException e) {
+					LOG.warn("Failed to load library sources", e);
 				}
 			}
 		}

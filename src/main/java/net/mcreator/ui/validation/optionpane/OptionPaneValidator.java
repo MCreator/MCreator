@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.validation.optionpane;
 
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
@@ -34,6 +35,21 @@ public abstract class OptionPaneValidator implements Validator {
 
 	@Override public final ValidationResult validate() {
 		return this.validate(validatedComponent);
+	}
+
+	public static abstract class Cached extends OptionPaneValidator {
+
+		private Validator validator = null;
+
+		@Override public ValidationResult validate(JComponent component) {
+			if (validator == null)
+				validator = createValidator(component);
+
+			return validator.validate();
+		}
+
+		public abstract Validator createValidator(JComponent component);
+
 	}
 
 }

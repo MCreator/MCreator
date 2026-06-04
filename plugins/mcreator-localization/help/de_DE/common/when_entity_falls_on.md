@@ -1,0 +1,1 @@
+Führt eine Prozedur _nur_ dann aus, wenn die Kreatur auf den Block von jeder willkürlichen Höhe fällt.

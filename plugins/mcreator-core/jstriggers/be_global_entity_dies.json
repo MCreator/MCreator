@@ -1,0 +1,32 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "entity",
+      "type": "entity"
+    },
+    {
+      "name": "sourceentity",
+      "type": "entity"
+    },
+    {
+      "name": "dimension",
+      "type": "world"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    },
+    {
+      "name": "z",
+      "type": "number"
+    },
+    {
+      "name": "damagesource",
+      "type": "damagesource"
+    }
+  ]
+}

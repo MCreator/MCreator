@@ -1,0 +1,1 @@
+Ce paramètre contrôle le comportement de base et le modèle de votre entité.

@@ -28,6 +28,8 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
@@ -78,23 +80,24 @@ import java.util.stream.Collectors;
 	public StringListProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
-	public String helmetModelPart;
+	@Nullable public String helmetModelPart;
+
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String helmetModelTexture;
 
 	public String bodyModelName;
-	public String bodyModelPart;
-	public String armsModelPartL;
-	public String armsModelPartR;
+	@Nullable public String bodyModelPart;
+	@Nullable public String armsModelPartL;
+	@Nullable public String armsModelPartR;
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bodyModelTexture;
 
 	public String leggingsModelName;
-	public String leggingsModelPartL;
-	public String leggingsModelPartR;
+	@Nullable public String leggingsModelPartL;
+	@Nullable public String leggingsModelPartR;
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String leggingsModelTexture;
 
 	public String bootsModelName;
-	public String bootsModelPartL;
-	public String bootsModelPartR;
+	@Nullable public String bootsModelPartL;
+	@Nullable public String bootsModelPartR;
 	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bootsModelTexture;
 
 	public int helmetItemRenderType;
@@ -105,6 +108,11 @@ import java.util.stream.Collectors;
 	public String leggingsItemCustomModelName;
 	public int bootsItemRenderType;
 	public String bootsItemCustomModelName;
+
+	public boolean helmetTranslucency;
+	public boolean bodyTranslucency;
+	public boolean leggingsTranslucency;
+	public boolean bootsTranslucency;
 
 	public boolean helmetImmuneToFire;
 	public boolean bodyImmuneToFire;
@@ -121,16 +129,17 @@ import java.util.stream.Collectors;
 	public LogicProcedure leggingsPiglinNeutral;
 	public LogicProcedure bootsPiglinNeutral;
 
-	public int maxDamage;
-	public int damageValueHelmet;
-	public int damageValueBody;
-	public int damageValueLeggings;
-	public int damageValueBoots;
-	public int enchantability;
-	public double toughness;
-	public double knockbackResistance;
-	public Sound equipSound;
+	@Numeric(init = 15, min = 0, max = 1024, step = 1) public int maxDamage;
+	@Numeric(init = 2, min = 0, max = 1024, step = 1) public int damageValueHelmet;
+	@Numeric(init = 6, min = 0, max = 1024, step = 1) public int damageValueBody;
+	@Numeric(init = 5, min = 0, max = 1024, step = 1) public int damageValueLeggings;
+	@Numeric(init = 2, min = 0, max = 1024, step = 1) public int damageValueBoots;
+	@Numeric(init = 9, min = 1, max = 128000, step = 1) public int enchantability;
+	@Numeric(init = 0, min = 0, max = 1024, step = 0.1) public double toughness;
+	@Numeric(init = 0, min = 0, max = 5.0, step = 0.1) public double knockbackResistance;
+	@Nullable public Sound equipSound;
 	@ModElementReference public List<MItemBlock> repairItems;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 
 	private Armor() {
 		this(null);
@@ -139,6 +148,7 @@ import java.util.stream.Collectors;
 	public Armor(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
 

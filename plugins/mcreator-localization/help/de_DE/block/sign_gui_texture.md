@@ -1,0 +1,1 @@
+Diese Textur erscheint beim Bearbeiten des Textes eines Hängeschildes. Die Textur sollte 16x16 groß sein.
