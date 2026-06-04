@@ -199,7 +199,7 @@ public class LocalHistoryPanel extends JPanel {
 	}
 
 	private void registerCheckpointListener() {
-		mcreator.getWorkspace().getHistoryManager().addCheckpointListener(() -> reloadContent(true));
+		mcreator.getWorkspace().getHistoryManager().setCheckpointListener(() -> reloadContent(true));
 	}
 
 	public void reloadContent() {

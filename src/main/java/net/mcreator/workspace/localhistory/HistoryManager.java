@@ -39,7 +39,7 @@ public final class HistoryManager implements AutoCloseable {
 
 	@Nullable private final GitHistoryBackend backend;
 	private final List<HistoryEvent> pendingEvents = new ArrayList<>();
-	private final List<Runnable> checkpointListeners = new CopyOnWriteArrayList<>();
+	@Nullable private Runnable checkpointListener = null;
 	private long lastCheckpointMillis = System.currentTimeMillis();
 
 	private final File workspaceFolder;
@@ -119,8 +119,8 @@ public final class HistoryManager implements AutoCloseable {
 		return backend.saveCheckpoint(eventName);
 	}
 
-	public void addCheckpointListener(Runnable listener) {
-		checkpointListeners.add(listener);
+	public void setCheckpointListener(Runnable listener) {
+		checkpointListener = listener;
 	}
 
 	public List<HistoryCheckpoint> getCheckpoints() {
@@ -152,8 +152,8 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	private void notifyCheckpointListeners() {
-		for (Runnable listener : checkpointListeners) {
-			SwingUtilities.invokeLater(listener);
+		if (checkpointListener != null) {
+			SwingUtilities.invokeLater(checkpointListener);
 		}
 	}
 
