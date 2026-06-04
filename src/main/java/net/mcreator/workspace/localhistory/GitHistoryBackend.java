@@ -69,6 +69,11 @@ class GitHistoryBackend implements AutoCloseable {
 			boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").isFile();
 
 			if (isNewRepo) {
+				// Delete any potential stale files
+				if (historyDatabaseDir.isDirectory()) {
+					FileIO.deleteDir(historyDatabaseDir);
+				}
+
 				try (Repository initRepo = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setBare()
 						.build()) {
 
