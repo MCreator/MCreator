@@ -93,8 +93,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	private final JSpinner rewardXP = ComponentFromAnnotation.spinner(Achievement.class, "rewardXP");
 
 	private BlocklyPanel blocklyPanel;
-	private Map<String, ToolboxBlock> externalBlocks;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
+	private Map<String, ToolboxBlock> externalBlocks;
 	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -202,7 +202,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		page1group.addValidationElement(achievementDescription);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER).getDefinedBlocks();
-
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.JSON_TRIGGER);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
@@ -221,8 +220,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(
 				PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel), compileNotesPanel);
-		advancementTrigger.setOpaque(false);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
+		advancementTrigger.setOpaque(false);
 
 		JComponent wrap = PanelUtils.northAndCenterElement(
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
