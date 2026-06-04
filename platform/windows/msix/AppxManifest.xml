@@ -2,8 +2,12 @@
 
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
          xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+         xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2"
+         xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+         xmlns:uap7="http://schemas.microsoft.com/appx/manifest/uap/windows10/7"
+         xmlns:desktop7="http://schemas.microsoft.com/appx/manifest/desktop/windows10/7"
          xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-         IgnorableNamespaces="uap rescap">
+         IgnorableNamespaces="uap uap2 uap3 uap7 desktop7 rescap">
 
     <Identity Name="Pylo.MCreator"
               Publisher="CN=3D5C20AC-5C16-46BE-A32C-8524A0714D07"
@@ -38,6 +42,22 @@
                                 Square150x150Logo="Assets\Square150x150Logo.png"
                                 Square44x44Logo="Assets\Square44x44Logo.png">
             </uap:VisualElements>
+            <Extensions>
+                <uap:Extension Category="windows.fileTypeAssociation">
+                    <uap3:FileTypeAssociation Name="mcreator" Parameters="&quot;%1&quot;">
+                        <uap:DisplayName>MCreator workspace file</uap:DisplayName>
+                        <uap:Logo>Assets\Square44x44Logo.png</uap:Logo>
+                        <uap:SupportedFileTypes>
+                            <uap:FileType>.mcreator</uap:FileType>
+                        </uap:SupportedFileTypes>
+                        <uap2:SupportedVerbs>
+                            <uap3:Verb Id="open" Parameters="&quot;%1&quot;" uap7:Default="true">Open</uap3:Verb>
+                            <uap3:Verb Id="edit" Parameters="&quot;%1&quot;">Edit this MCreator workspace</uap3:Verb>
+                        </uap2:SupportedVerbs>
+                        <desktop7:ProgId>MCreatorWorkspaceFile</desktop7:ProgId>
+                    </uap3:FileTypeAssociation>
+                </uap:Extension>
+            </Extensions>
         </Application>
     </Applications>
 </Package>
