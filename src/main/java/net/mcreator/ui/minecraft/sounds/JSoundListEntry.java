@@ -23,12 +23,14 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -60,33 +62,46 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		this.fileListField = new SingleFileField(mcreator);
 		preload.setOpaque(false);
 
+		JPanel line = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		line.setOpaque(false);
+
+		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		line2.setOpaque(false);
+
+		JPanel line3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		line3.setOpaque(false);
+
 		line.add(L10N.label("dialog.sounds.file"));
 		line.add(fileListField);
 
 		line.add(L10N.label("dialog.sounds.category"));
 		line.add(soundCategory);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/volume"), L10N.label("dialog.sounds.volume")));
-		line.add(volume);
+		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/volume"), L10N.label("dialog.sounds.volume")));
+		line2.add(volume);
 
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/pitch"), L10N.label("dialog.sounds.pitch")));
-		line.add(pitch);
+		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/pitch"), L10N.label("dialog.sounds.pitch")));
+		line2.add(pitch);
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/weight"), L10N.label("dialog.sounds.weight")));
 		line.add(weight);
 
 		if (!isForBedrock) {
-			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/preload"), preload));
+			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/preload"), preload));
 
-			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/attenuation_distance"),
+			line3.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/attenuation_distance"),
 					L10N.label("dialog.sounds.attenuation_distance")));
-			line.add(attenuationDistance);
+			line3.add(attenuationDistance);
 		} else {
-			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/is3D"), is3D));
-			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/interruptible"), interruptible));
+			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/is3D"), is3D));
+			line3.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/interruptible"), interruptible));
 			is3D.setSelected(true);
 			interruptible.setSelected(true);
 		}
+
+		add(line);
+		add(line2);
+		add(line3);
 	}
 
 	@Override public void reloadDataLists() {
