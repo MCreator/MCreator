@@ -46,9 +46,9 @@ public class GradleUtils {
 
 	public static BuildActionExecuter<Void> getGradleSyncLauncher(GeneratorConfiguration generatorConfiguration,
 			ProjectConnection projectConnection, String... additionalTasks) {
-		BuildAction<Void> syncBuildAction = GradleSyncBuildAction.loadFromIsolatedClassLoader();
-		BuildActionExecuter<Void> retval = projectConnection.action().projectsLoaded(syncBuildAction, unused -> {})
-				.build().forTasks(additionalTasks);
+		BuildAction<Void> syncBuildAction = new GradleSyncBuildAction();
+		BuildActionExecuter<Void> retval = projectConnection.action().projectsLoaded(syncBuildAction, _ -> {}).build()
+				.forTasks(additionalTasks);
 		return configureLauncher(generatorConfiguration, retval); // make sure we have proper JVM, environment, ...
 	}
 
