@@ -391,6 +391,9 @@ public abstract class MCreator extends MCreatorFrame {
 		this.getApplication().getWorkspaceSelector().addOrUpdateRecentWorkspace(
 				new RecentWorkspaceEntry(this.getWorkspace(), this.getWorkspace().getFileManager().getWorkspaceFile(),
 						Launcher.version.getFullString()));
+
+		// update title if needed
+		setTitle(WindowTitleHelper.getWindowTitle(this));
 	}
 
 	public void showConsole() {
