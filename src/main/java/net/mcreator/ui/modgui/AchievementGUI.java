@@ -36,10 +36,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -217,7 +214,14 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml"));
 		}
 
-		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		blocklyPanel.setPreferredSize(new Dimension(450, 240));
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER,
+				blocklyPanel, false);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(163);
+
+		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(
+				PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel), compileNotesPanel);
+		advancementTrigger.setOpaque(false);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
 
 		JComponent wrap = PanelUtils.northAndCenterElement(
