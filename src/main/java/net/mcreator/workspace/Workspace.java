@@ -605,12 +605,31 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void reloadFromFileSystem() {
-		this.getModElementManager().invalidateCache();
+		String modIDBeforeReload = this.getWorkspaceSettings().getModID();
+		File workspaceFileToRead = this.getFileManager().getWorkspaceFile();
+		boolean workspaceFileChanged = false;
+		if (!workspaceFileToRead.isFile()) { // Workspace modid may have changed and file name is different
+			workspaceFileToRead = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(this.getWorkspaceFolder());
+			workspaceFileChanged = true;
+		}
+
+		// Read new workspace definition from the file
 		loadStoredDataFrom(
-				WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(this.getFileManager().getWorkspaceFile()),
-						Workspace.class));
+				WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFileToRead), Workspace.class));
+
+		// If the modid or workspace file changed, we need to bind to the new workspace file
+		String modIdAfterReload = this.getWorkspaceSettings().getModID();
+		if (workspaceFileChanged || !modIDBeforeReload.equals(modIdAfterReload)) {
+			File correctWorkspaceFile = new File(getWorkspaceFolder(), modIdAfterReload + ".mcreator");
+			LOG.debug("Workspace file changed during reload, binding to new workspace file {}", correctWorkspaceFile);
+			this.bindToNewWorkspaceFile(correctWorkspaceFile);
+		}
+
+		// Reload structures and caches
+		this.getModElementManager().invalidateCache();
 		this.reloadModElements();
 		this.reloadFolderStructure();
+
 		LOG.info("Reloaded current workspace from the workspace file");
 	}
 

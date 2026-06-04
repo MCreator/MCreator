@@ -27,7 +27,6 @@ import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
-import net.mcreator.ui.action.impl.workspace.WorkspaceSettingsAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
@@ -41,13 +40,13 @@ import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
 import net.mcreator.ui.workspace.localhistory.LocalHistoryPanel;
+import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.util.GSONClone;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,7 +59,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.function.Consumer;
 
 public abstract class MCreator extends MCreatorFrame {
 
@@ -365,11 +363,11 @@ public abstract class MCreator extends MCreatorFrame {
 	 * Reloads the workspace from the file system.
 	 */
 	public void reloadWorkspaceFromFileSystem() {
-		// load settings before reading from file system to check if generator was switched, and to perform necessary actions after reload
-		WorkspaceSettings preResetSettings = GSONClone.clone(workspace.getWorkspaceSettings(),
-				WorkspaceSettings.class);
+		this.getTabs().closeAllTabs(true);
+		this.getTabs().showTabNoNotify(workspaceTab);
 
-		this.getTabs().closeAllTabs();
+		// load settings before reading from file system to check if generator was switched, and to perform necessary actions after reload
+		WorkspaceSettings preResetSettings = GSONClone.clone(workspace.getWorkspaceSettings(), WorkspaceSettings.class);
 
 		// read new workspace setup from file system
 		workspace.reloadFromFileSystem();
@@ -382,13 +380,17 @@ public abstract class MCreator extends MCreatorFrame {
 					Generator.GENERATOR_CACHE.get(currentGenerator));
 			workspace.switchGenerator(currentGenerator);
 			WorkspaceGeneratorSetupDialog.runSetup(this, false);
+			this.workspaceGeneratorSwitched();
 		}
-		WorkspaceSettingsChange workspaceSettingsChange = new WorkspaceSettingsChange(preResetSettings,
-				workspace.getWorkspaceSettings());
-		if (workspaceSettingsChange.refactorNeeded()) // possible refactor after sync end
-			WorkspaceSettingsAction.refactorWorkspace(this, workspaceSettingsChange);
+		// No need to do refactor WorkspaceSettingsChange as if the whole workspace changed on the file system due to e.g. VCS-like system
+		// We expect the files are already in the correct state and thus only Gradle needs to setup for the changed generator
 
 		this.getWorkspacePanel().reloadWorkspaceTab();
+
+		// update recent workspace list in case workspace file name changed
+		this.getApplication().getWorkspaceSelector().addOrUpdateRecentWorkspace(
+				new RecentWorkspaceEntry(this.getWorkspace(), this.getWorkspace().getFileManager().getWorkspaceFile(),
+						Launcher.version.getFullString()));
 	}
 
 	public void showConsole() {
