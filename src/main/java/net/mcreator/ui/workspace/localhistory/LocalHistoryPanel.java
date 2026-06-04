@@ -19,28 +19,20 @@
 
 package net.mcreator.ui.workspace.localhistory;
 
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.gradle.GradleStateListener;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.action.impl.workspace.WorkspaceSettingsAction;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.ColorUtils;
-import net.mcreator.util.GSONClone;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.math.TimeUtils;
-import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.localhistory.HistoryCheckpoint;
 import net.mcreator.workspace.localhistory.LocalHistoryException;
-import net.mcreator.workspace.settings.WorkspaceSettings;
-import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
