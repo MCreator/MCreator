@@ -143,7 +143,7 @@ public class SoundElementDialog {
 			JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
 			JMinMaxSpinner jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
 			soundCategory.addActionListener(
-					e -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
+					_ -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
 
 			ui.add(L10N.label("dialog.sounds.category"));
 			ui.add(soundCategory);
