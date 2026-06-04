@@ -68,7 +68,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
 
-		changeListener = e -> {
+		changeListener = _ -> {
 		};
 
 		pane.addChangeListener(changeListener);
@@ -78,7 +78,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add"), e -> {
+		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add"), _ -> {
 			String key = JOptionPane.showInputDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
 					JOptionPane.QUESTION_MESSAGE);
@@ -189,7 +189,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setMargin(new Insets(0, 0, 0, 0));
-			button.addActionListener(e -> {
+			button.addActionListener(_ -> {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 						L10N.t("workspace.localization.confirm_delete_map"), L10N.t("common.confirmation"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
@@ -205,7 +205,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			use.addActionListener(a -> {
+			use.addActionListener(_ -> {
 				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
 					workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -221,7 +221,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				}
 			});
 
-			del.addActionListener(a -> deleteCurrentlySelected(elements, id));
+			del.addActionListener(_ -> deleteCurrentlySelected(elements, id));
 
 			elements.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
@@ -230,7 +230,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				}
 			});
 
-			exp.addActionListener(e -> {
+			exp.addActionListener(_ -> {
 				if (pane.getSelectedIndex() != id)
 					return;
 
@@ -262,7 +262,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				}
 			});
 
-			imp.addActionListener(e -> {
+			imp.addActionListener(_ -> {
 				if (pane.getSelectedIndex() != id)
 					return;
 
@@ -307,7 +307,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		pane.setTabComponentAt(lastid, new JLabel(UIRES.get("16px.add")));
 
 		pane.removeChangeListener(changeListener);
-		changeListener = e -> {
+		changeListener = _ -> {
 			if (pane.getSelectedIndex() == lastid) {
 				pane.setSelectedIndex(0);
 				newLocalizationDialog();

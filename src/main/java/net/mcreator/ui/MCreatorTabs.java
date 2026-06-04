@@ -55,7 +55,7 @@ public class MCreatorTabs extends JTabbedPane {
 
 		setFocusable(true);
 
-		addChangeListener(e -> {
+		addChangeListener(_ -> {
 			int selectedIndex = getSelectedIndex();
 			if (selectedIndex >= 0) {
 				Tab toNotifyOfShow = getTabForTabIndex(selectedIndex);

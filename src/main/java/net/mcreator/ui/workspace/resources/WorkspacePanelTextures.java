@@ -115,7 +115,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		createMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().createAnimatedTexture));
 
 		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new", UIRES.get("16px.add"));
-		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
+		create.addActionListener(_ -> createMenu.show(create, 5, create.getHeight() + 5));
 		bar.add(create);
 
 		JPopupMenu importMenu = new JPopupMenu();
@@ -131,19 +131,19 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		JButton importt = AbstractWorkspacePanel.createToolBarButton("workspace.textures.import",
 				UIRES.get("16px.open"));
-		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
+		importt.addActionListener(_ -> importMenu.show(importt, 5, importt.getHeight() + 5));
 		bar.add(importt);
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.edit_selected", UIRES.get("16px.edit"),
-				e -> editSelectedFile()));
+				_ -> editSelectedFile()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
-				UIRES.get("16px.duplicate"), e -> duplicateSelectedFile()));
+				UIRES.get("16px.duplicate"), _ -> duplicateSelectedFile()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.replace_selected",
-				UIRES.get("16px.editorder"), e -> replaceSelectedFile()));
+				UIRES.get("16px.editorder"), _ -> replaceSelectedFile()));
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+		bar.add(AbstractWorkspacePanel.createToolBarButton("common.search_usages", UIRES.get("16px.search"), _ -> {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> refs = new HashSet<>();
@@ -163,10 +163,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
-				e -> deleteCurrentlySelected()));
+				_ -> deleteCurrentlySelected()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected", UIRES.get("16px.ext"),
-				e -> exportSelectedImages()));
+				_ -> exportSelectedImages()));
 
 		add("North", bar);
 

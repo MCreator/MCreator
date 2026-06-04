@@ -124,7 +124,7 @@ public abstract class MCreator extends MCreatorFrame {
 				"Workspace", false);
 		mcreatorTabs.addTab(workspaceTab);
 
-		mcreatorTabs.addTabShownListener(tab -> {
+		mcreatorTabs.addTabShownListener(_ -> {
 			reloadWorkspaceTabContents();
 			menuBar.refreshMenuBar();
 			setTitle(WindowTitleHelper.getWindowTitle(this));
