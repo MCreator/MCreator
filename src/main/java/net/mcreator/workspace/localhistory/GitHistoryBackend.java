@@ -122,8 +122,8 @@ class GitHistoryBackend implements AutoCloseable {
 		List<String> ignores = new ArrayList<>();
 		ignores.add(".git/");
 		ignores.add(".gradle/");
-		ignores.add("build/");
 		ignores.add(".mcreator/");
+		ignores.add("build/");
 		ignores.add("run/");
 		ignores.add("runs/");
 		FileIO.writeStringToFile(String.join("\n", ignores), excludeFile);
