@@ -2,7 +2,7 @@
   "trigger": "minecraft:item_durability_changed",
   "conditions": {
     "item": {
-        "items": ${input$item},
+        ${input$item},
         "predicates": {
             "minecraft:damage": {
                 "damage": {
