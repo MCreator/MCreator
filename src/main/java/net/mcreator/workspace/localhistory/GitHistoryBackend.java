@@ -135,6 +135,7 @@ class GitHistoryBackend implements AutoCloseable {
 	 */
 	boolean saveCheckpoint(String commitMessage) {
 		lock.lock();
+		// TODO: this is extremely slow for large workspaces, especially for initial commit
 		try {
 			Status status = git.status().call();
 			if (status.isClean()) {
@@ -213,6 +214,7 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
+		// TODO: test how slow revert is for large workspaces, especially the UI part in MCreator.java
 		lock.lock();
 		try (RevWalk walk = new RevWalk(git.getRepository())) {
 			// Resolve the target commit

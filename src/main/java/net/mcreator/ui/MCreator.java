@@ -71,7 +71,6 @@ public abstract class MCreator extends MCreatorFrame {
 	private final GradleConsole gradleConsole;
 
 	private final WorkspaceFileBrowser workspaceFileBrowser;
-	private final LocalHistoryPanel localHistoryPanel;
 
 	private final ActionRegistry actionRegistry;
 
@@ -105,7 +104,6 @@ public abstract class MCreator extends MCreatorFrame {
 		this.actionRegistry = new ActionRegistry(this);
 
 		this.workspaceFileBrowser = new WorkspaceFileBrowser(this);
-		this.localHistoryPanel = new LocalHistoryPanel(this);
 
 		this.menuBar = createMenuBar();
 		this.toolBar = createToolBar();
@@ -141,9 +139,11 @@ public abstract class MCreator extends MCreatorFrame {
 
 		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);
-		leftDockRegion.addDock(DOCK_LOCAL_HISTORY, 280, L10N.t("dock.local_history"), UIRES.get("16px.dock_history"),
-				localHistoryPanel);
-		leftDockRegion.addDockVisibilityListener(DOCK_LOCAL_HISTORY, _ -> localHistoryPanel.reloadContent());
+
+		if (PreferencesManager.PREFERENCES.backups.enableLocalHistory.get()) {
+			leftDockRegion.addDock(DOCK_LOCAL_HISTORY, 280, L10N.t("dock.local_history"),
+					UIRES.get("16px.dock_history"), new LocalHistoryPanel(this));
+		}
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
