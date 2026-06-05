@@ -32,6 +32,7 @@ import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
@@ -287,7 +288,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.AI_TASK,
-					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			TestUtil.failIfTestingEnvironment();
 			return List.of(); // should not be possible to happen here
