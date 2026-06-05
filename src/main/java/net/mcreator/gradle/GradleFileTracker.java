@@ -25,11 +25,9 @@ import org.gradle.tooling.ProjectConnection;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class GradleFileTracker {
@@ -45,13 +43,8 @@ public class GradleFileTracker {
 	}
 
 	public void trackFile(File file) {
-		Path path = file.toPath();
 		try {
-			if (Files.exists(path)) {
-				changedFiles.add(path.toRealPath());
-			} else { // for deleted files, we need to use getCanonicalFile
-				changedFiles.add(file.getCanonicalFile().toPath());
-			}
+			changedFiles.add(file.getCanonicalFile().toPath());
 		} catch (IOException ignored) {
 		}
 	}

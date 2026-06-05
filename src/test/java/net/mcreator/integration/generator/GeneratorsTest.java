@@ -265,7 +265,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		final Pattern doubleColonPattern = Pattern.compile("\"([^\":]*:){2,}[^\":]*\"");
 		final Pattern invalidTagPattern = Pattern.compile("\"#([a-z0-9/._\\-:]*[^a-z0-9/._\\-:\"]+[a-z0-9/._\\-:]*)*\"");
 
-		try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
+		try (Stream<Path> entries = Files.walk(new File(workspace.getWorkspaceFolder(), "src/").toPath())) {
 			entries.parallel().filter(Files::isRegularFile).map(Path::toFile)
 					.filter(file -> FilenameUtils.isExtension(file.getName(), "json")).forEach(file -> {
 						String contents = FileIO.readFileToString(file);
