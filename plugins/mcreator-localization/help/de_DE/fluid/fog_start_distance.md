@@ -1,0 +1,1 @@
+Dieser Parameter legt den Abstand von der Kamera fest, mit der der Nebel beginnt.

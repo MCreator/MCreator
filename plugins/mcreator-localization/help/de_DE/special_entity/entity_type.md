@@ -1,0 +1,1 @@
+Dieser Parameter steuert das Basis-Verhalten und das Modell deiner Entität.

@@ -1,0 +1,1 @@
+Wenn diese Option aktiviert ist, wird der Flüssigkeit einen Nebel anzeigen, während der Spieler untergeht.
