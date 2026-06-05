@@ -1,0 +1,1 @@
+Diese Prozedur wird ausgeführt, wenn eine Kreatur mit diesem Effekt stirbt.

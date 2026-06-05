@@ -1,0 +1,1 @@
+Dies ist die Textur des Projektil-Modells, wenn ein benutzerdefiniertes Modell verwendet wird.
