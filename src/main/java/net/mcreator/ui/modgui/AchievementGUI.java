@@ -213,22 +213,29 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml"));
 		}
 
-		blocklyPanel.setPreferredSize(new Dimension(450, 240));
+		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
+		blocklyAndToolbarPanel.setOpaque(false);
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER,
 				blocklyPanel, false);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(163);
+		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
-		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(
-				PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel), compileNotesPanel);
+		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
+
+		JComponent advancementTrigger = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
-		advancementTrigger.setOpaque(false);
+		advancementTrigger.setPreferredSize(new Dimension(0, 460));
 
 		JComponent wrap = PanelUtils.northAndCenterElement(
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger)).validate(
-				page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
+		JPanel page1 = new JPanel(new BorderLayout(10, 10));
+		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger));
+
+		page1.setOpaque(false);
+
+		addPage(page1).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
 				compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
 		if (!isEditingMode()) {
