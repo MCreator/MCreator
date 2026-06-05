@@ -27,7 +27,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GradleFileTracker {
 
@@ -35,7 +37,7 @@ public class GradleFileTracker {
 
 	private final ProjectConnection projectConnection;
 
-	private final List<Path> changedFiles = new ArrayList<>();
+	private final Set<Path> changedFiles = new HashSet<>();
 
 	public GradleFileTracker(ProjectConnection projectConnection) {
 		this.projectConnection = projectConnection;
@@ -50,7 +52,7 @@ public class GradleFileTracker {
 
 	public void notifyDaemonsAboutChangedPaths() {
 		try {
-			projectConnection.notifyDaemonsAboutChangedPaths(changedFiles);
+			projectConnection.notifyDaemonsAboutChangedPaths(new ArrayList<>(changedFiles));
 			LOG.debug("Notified Gradle about {} changed paths", changedFiles.size());
 		} catch (Exception e) {
 			LOG.warn("Failed to notify Gradle about changed paths", e);
