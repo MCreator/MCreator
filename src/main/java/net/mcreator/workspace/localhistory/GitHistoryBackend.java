@@ -150,6 +150,8 @@ class GitHistoryBackend implements AutoCloseable {
 				git.add().addFilepattern(".").call();
 			} else {
 				Repository repo = git.getRepository();
+
+				// TODO: for large workspaces, this takes tens of seconds even if only one file is changed
 				IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
 				if (!diff.diff()) {
 					return false;
