@@ -18,6 +18,7 @@
 
 package net.mcreator.integration.generator;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
@@ -259,8 +260,13 @@ import static org.junit.jupiter.api.Assertions.*;
 	}
 
 	private void verifyGeneratedJSON(Workspace workspace) throws IOException {
+		final Gson gson = new GsonBuilder().setStrictness(Strictness.STRICT).create();
+
+		final Pattern doubleColonPattern = Pattern.compile("\"([^\":]*:){2,}[^\":]*\"");
+		final Pattern invalidTagPattern = Pattern.compile("\"#([a-z0-9/._\\-:]*[^a-z0-9/._\\-:\"]+[a-z0-9/._\\-:]*)*\"");
+
 		try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
-			entries.filter(Files::isRegularFile).map(Path::toFile)
+			entries.parallel().filter(Files::isRegularFile).map(Path::toFile)
 					.filter(file -> FilenameUtils.isExtension(file.getName(), "json")).forEach(file -> {
 						String contents = FileIO.readFileToString(file);
 
@@ -268,14 +274,12 @@ import static org.junit.jupiter.api.Assertions.*;
 						assertFalse(contents.contains(".png.png"));
 
 						// If there is any resource path containing more than one colon, it is invalid
-						assertFalse(contents.contains("\"([^\":]*:){2,}[^\":]*\""));
+						assertFalse(doubleColonPattern.matcher(contents).find(), "Invalid colon path in: " + file);
 
 						// If there is any resource path that is tag and contains invalid characters, it is invalid
-						assertFalse(contents.contains("\"#([a-z0-9/._\\-:]*[^a-z0-9/._\\-:\"]+[a-z0-9/._\\-:]*)*\""));
-
+						assertFalse(invalidTagPattern.matcher(contents).find(), "Invalid tag characters in: " + file);
 						try {
-							new GsonBuilder().setStrictness(Strictness.STRICT).create()
-									.fromJson(contents, Object.class); // try to parse JSON
+							gson.fromJson(contents, Object.class); // try to parse JSON
 						} catch (Exception e) {
 							fail("Invalid JSON in file: " + file);
 						}
