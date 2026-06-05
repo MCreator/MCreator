@@ -394,10 +394,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.generator = new Generator(this); // reload generator
 	}
 
-	public void bindToNewWorkspaceFile(File workspaceFile) {
+	public void bindToNewWorkspaceFile(File newWorkspaceFile) {
+		File currentWorkspaceFile = this.getFileManager().getWorkspaceFile();
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
-		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+		currentWorkspaceFile.delete(); // delete old workspace file
+		this.fileManager = new WorkspaceFileManager(newWorkspaceFile, this); // new file manager instance for the new file
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 
