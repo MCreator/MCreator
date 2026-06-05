@@ -1,0 +1,1 @@
+Dieser Parameter bestimmt, ob es sich um eine Piglin-Währung wie Goldbarren handelt.

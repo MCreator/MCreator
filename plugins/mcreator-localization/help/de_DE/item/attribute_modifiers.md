@@ -1,0 +1,1 @@
+Diese Attributmodifikatoren werden auf die Entität angewendet, während der Gegenstand in den angegebenen Slots ausgerüstet ist.
