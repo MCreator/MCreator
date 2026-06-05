@@ -1,0 +1,2 @@
+Durch das Aktivieren dieses Parameters wird verhindert, dass das Projektil nach der Landung auf einem Block verworfen wird.
+Dies kann benutzt werden, um Dreizack ähnliche Projektile zu erstellen, die zum Spieler zurückkehren oder abholen können.

@@ -1,0 +1,1 @@
+Die Modellschildwerkzeuge, die während der Blockierung verwendet werden.
