@@ -1297,7 +1297,8 @@ public class TestWorkspaceDataProvider {
 			item.saturation = getRandomDouble(random, Item.class, "saturation");
 			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
-			item.animation = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Item.class, "animation"));
+			item.animation = new ItemUseAnimation(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadItemUseAnimations(modElement.getWorkspace())));
 			item.eatResultItem = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");

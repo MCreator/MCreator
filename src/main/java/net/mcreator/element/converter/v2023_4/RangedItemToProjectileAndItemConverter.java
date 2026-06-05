@@ -142,9 +142,9 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 		item.specialInformation = new StringListProcedure(infoProcedureName, infoFixedValues);
 
 		if (rangedItem.get("animation") != null)
-			item.animation = rangedItem.get("animation").getAsString();
+			item.animation = new ItemUseAnimation(workspace, rangedItem.get("animation").getAsString());
 		else
-			item.animation = "bow";
+			item.animation = new ItemUseAnimation(workspace, "bow");
 
 		if (rangedItem.has("glowCondition")) {
 			JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
