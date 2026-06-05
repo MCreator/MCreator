@@ -23,20 +23,19 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jgit.api.AddCommand;
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.RawTextComparator;
 import org.eclipse.jgit.dircache.DirCache;
 import org.eclipse.jgit.dircache.DirCacheCheckout;
-import org.eclipse.jgit.lib.ObjectId;
-import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.lib.StoredConfig;
+import org.eclipse.jgit.lib.*;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
 import javax.annotation.Nullable;
@@ -93,13 +92,14 @@ class GitHistoryBackend implements AutoCloseable {
 
 			StoredConfig config = git.getRepository().getConfig();
 			config.setBoolean("core", null, "autocrlf", false);
+			config.setString("core", null, "sha1Implementation", "jdkNative");
 			config.save();
 
 			configureIgnores(historyDatabaseDir);
 
 			GitHistoryBackend backend = new GitHistoryBackend(historyManager, git);
 			if (isNewRepo) {
-				backend.saveCheckpoint(L10N.t("local_history.checkpoint.initial"));
+				backend.saveCheckpoint(L10N.t("local_history.checkpoint.initial"), true);
 				LOG.debug("Initialized local history repository");
 			} else {
 				LOG.debug("Loaded local history repository");
@@ -134,33 +134,60 @@ class GitHistoryBackend implements AutoCloseable {
 	 * @return true if the commit was successful, false if no changes to commit
 	 */
 	boolean saveCheckpoint(String commitMessage) {
+		return saveCheckpoint(commitMessage, false);
+	}
+
+	/**
+	 * @param commitMessage Commit message to use for the checkpoint
+	 * @param initialCommit if true, skip the change-detection scan and stage the entire workspace in one pass
+	 * @return true if the commit was successful, false if no changes to commit
+	 */
+	boolean saveCheckpoint(String commitMessage, boolean initialCommit) {
 		lock.lock();
-		// TODO: this is extremely slow for large workspaces, especially for initial commit
 		try {
-			Status status = git.status().call();
-			if (status.isClean()) {
-				return false;
-			}
-
-			if (!status.getUntracked().isEmpty() || !status.getModified().isEmpty()) {
+			if (initialCommit) {
+				// Empty index: one tree walk to stage everything
 				git.add().addFilepattern(".").call();
-			}
+			} else {
+				Repository repo = git.getRepository();
+				IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
+				if (!diff.diff()) {
+					return false;
+				}
 
-			// Bulk stage all deleted (missing) files
-			if (!status.getMissing().isEmpty()) {
-				git.add().setUpdate(true).addFilepattern(".").call();
+				stageChanges(diff);
 			}
 
 			RevCommit commit = git.commit().setMessage(commitMessage).call();
-
 			LOG.debug("Saved local history checkpoint '{}' as {}", commitMessage, commit.getName());
-		} catch (GitAPIException e) {
+		} catch (GitAPIException | IOException e) {
 			LOG.warn("Failed to save local history checkpoint: {}", e.getMessage());
+			return false;
 		} finally {
 			lock.unlock();
 		}
 
 		return true;
+	}
+
+	private void stageChanges(IndexDiff diff) throws GitAPIException {
+		if (!diff.getUntracked().isEmpty() || !diff.getModified().isEmpty()) {
+			AddCommand add = git.add();
+			for (String path : diff.getUntracked()) {
+				add.addFilepattern(path);
+			}
+			for (String path : diff.getModified()) {
+				add.addFilepattern(path);
+			}
+			add.call();
+		}
+		if (!diff.getMissing().isEmpty()) {
+			AddCommand update = git.add().setUpdate(true);
+			for (String path : diff.getMissing()) {
+				update.addFilepattern(path);
+			}
+			update.call();
+		}
 	}
 
 	List<HistoryCheckpoint> getCheckpoints() {
