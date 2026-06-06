@@ -76,7 +76,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JComboBox<String> particleToSpawn = new JComboBox<>(
 			new String[] { "ash", "blue_spores", "red_spores", "white_ash" });
 
-	private final BEBiomeTagsListField biomeTags = new BEBiomeTagsListField(mcreator, false);
+	private final BEBiomeTagsListField biomeTags = new BEBiomeTagsListField(mcreator);
 	private final BiomeListField biomeReplacements = new BiomeListField(mcreator, false);
 
 	private final SoundSelector ambientSound = new SoundSelector(mcreator);

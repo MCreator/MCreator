@@ -19,35 +19,21 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.ModElementType;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class BEBiomeTagsListField extends JItemListField<String> {
-
-	private final boolean includeAddonTags;
-
-	public BEBiomeTagsListField(MCreator mcreator, boolean includeAddonTags) {
+	public BEBiomeTagsListField(MCreator mcreator) {
 		super(mcreator);
-		this.includeAddonTags = includeAddonTags;
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		List<String> biomeTags = includeAddonTags ?
-				mcreator.getWorkspace().getModElements().stream().filter(me -> me.getType() == ModElementType.BEBIOME)
-						.map(me -> mcreator.getWorkspace().getWorkspaceSettings().getModID() + ":"
-								+ me.getRegistryName()).collect(Collectors.toList()) :
-				new ArrayList<>();
-		biomeTags.addAll(Arrays.stream(ElementUtil.getDataListAsStringArray("be_biometags")).toList());
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> biomeTags.toArray(new String[0]),
+		return StringSelectorDialog.openMultiSelectorDialog(mcreator, w -> ElementUtil.getDataListAsStringArray("be_biometags"),
 				L10N.t("dialog.list_field.bebiome_tags_list_title"),
 				L10N.t("dialog.list_field.bebiome_tags_list_message"));
 	}
