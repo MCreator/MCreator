@@ -100,7 +100,7 @@ public class Launcher {
 		}
 
 		// Proxy settings applied
-		ProxyUtils.applyProxies();
+		ProxyUtils.applyProxiesToMCreator();
 
 		MCreatorApplication.createApplication(Arrays.asList(args));
 	}
