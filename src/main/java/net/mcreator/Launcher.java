@@ -99,22 +99,22 @@ public class Launcher {
 		}
 
 		// Proxy settings applied
-		var gradle = PreferencesManager.PREFERENCES.proxy;
-		String type = gradle.proxyType.get();
+		var proxySection = PreferencesManager.PREFERENCES.proxy;
+		String type = proxySection.proxyType.get();
 
-		if (gradle.useSystemProxy.get()) {
+		if (proxySection.useSystemProxy.get()) {
 			System.setProperty("java.net.useSystemProxies", "true");
 		} else if (type.startsWith("http")) {
 			System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-			System.setProperty(type + ".proxyHost", gradle.proxyHost.get());
-			System.setProperty(type + ".proxyPort", String.valueOf(gradle.proxyPort));
-			if (!gradle.proxyUser.get().isEmpty()) {
-				System.setProperty(type + ".proxyUser", gradle.proxyUser.get());
-				System.setProperty(type + ".proxyPassword", gradle.proxyPassword.get());
+			System.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
+			System.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort));
+			if (!proxySection.proxyUser.get().isEmpty()) {
+				System.setProperty(type + ".proxyUser", proxySection.proxyUser.get());
+				System.setProperty(type + ".proxyPassword", proxySection.proxyPassword.get());
 			}
 		} else if (type.equals("socks")) {
-			System.setProperty("socksProxyHost", gradle.proxyHost.get());
-			System.setProperty("socksProxyPort", gradle.proxyPort.get().toString());
+			System.setProperty("socksProxyHost", proxySection.proxyHost.get());
+			System.setProperty("socksProxyPort", proxySection.proxyPort.get().toString());
 		}
 
 		MCreatorApplication.createApplication(Arrays.asList(args));
