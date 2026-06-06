@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 {
-  "format_version": "1.21.110",
+  "format_version": "1.26.0",
   "minecraft:biome": {
     "description": {
       "identifier": "${modid}:${registryname}"
