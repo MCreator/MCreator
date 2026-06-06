@@ -1833,7 +1833,7 @@ public class TestWorkspaceDataProvider {
 			bebiome.villageType = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "villageType"));
 			bebiome.biomeTags = subset(random, 5, biomeTags,
-					e -> new BiomeTagEntry(modElement.getWorkspace(), e.getName()));
+					e -> new BEBiomeTagEntry(modElement.getWorkspace(), e.getName()));
 			bebiome.biomeReplacements = subset(random, 5, biomes,
 					e -> new BiomeEntry(modElement.getWorkspace(), e.getName()));
 			bebiome.replacementAmount = getRandomInt(random, BEBiome.class, "replacementAmount");

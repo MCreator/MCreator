@@ -26,17 +26,17 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
 
-public class BiomeTagEntry extends MappableElement {
+public class BEBiomeTagEntry extends MappableElement {
 
-	private BiomeTagEntry() {
+	private BEBiomeTagEntry() {
 		super(new NameMapper(null, "be_biometags"));
 	}
 
-	public BiomeTagEntry(@Nonnull Workspace owner, String name) {
+	public BEBiomeTagEntry(@Nonnull Workspace owner, String name) {
 		super(new NameMapper(owner, "be_biometags"), name);
 	}
 
-	public BiomeTagEntry(@Nonnull Workspace owner, DataListEntry name) {
+	public BEBiomeTagEntry(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
 
