@@ -24,7 +24,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.modapis.ModAPIImplementation;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.util.ProxyUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,10 +74,6 @@ public class GradleUtils {
 
 		// make sure Gradle reports in English so our error decoder works properly
 		launcher.addJvmArguments("-Duser.language=en");
-
-		for (Map.Entry<Object, Object> objectObjectEntry : ProxyUtils.getProxyProperties().entrySet()) {
-			launcher.addJvmArguments("-D" + objectObjectEntry.getKey() + "=" + objectObjectEntry.getValue());
-		}
 
 		String java_home = getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null
