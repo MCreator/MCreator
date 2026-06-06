@@ -20,6 +20,7 @@ package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.BiomeTagEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.minecraft.DataListEntry;
@@ -61,7 +62,7 @@ import java.util.List;
 	public String noiseType;
 	public String particleToSpawn;
 
-	public List<DataListEntry> biomeTags;
+	public List<BiomeTagEntry> biomeTags;
 	@ModElementReference public List<BiomeEntry> biomeReplacements;
 
 	public Sound ambientSound;

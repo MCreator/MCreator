@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.element.parts.BiomeTagEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
@@ -28,14 +28,15 @@ import net.mcreator.ui.init.L10N;
 
 import java.util.List;
 
-public class BEBiomeTagsListField extends JItemListField<DataListEntry> {
+public class BEBiomeTagsListField extends JItemListField<BiomeTagEntry> {
 	public BEBiomeTagsListField(MCreator mcreator) {
 		super(mcreator);
 	}
 
-	@Override protected List<DataListEntry> getElementsToAdd() {
+	@Override protected List<BiomeTagEntry> getElementsToAdd() {
 		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllBiomeTags,
 				L10N.t("dialog.list_field.bebiome_tags_list_title"),
-				L10N.t("dialog.list_field.bebiome_tags_list_message"));
+				L10N.t("dialog.list_field.bebiome_tags_list_message")).stream()
+				.map(e -> new BiomeTagEntry(mcreator.getWorkspace(), e)).toList();;
 	}
 }
