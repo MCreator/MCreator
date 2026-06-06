@@ -13,22 +13,22 @@
       <#assign hasColor = hasGrassColor || hasFoliageColor || hasAirColor || hasWaterColor>
       <#if hasGrassColor>
       "minecraft:grass_appearance": {
-        "color": ${"[" + data.grassColor.getRed() + "," + data.grassColor.getGreen() + "," + data.grassColor.getBlue() + "]"}
+        "color": "${thelper.colorToHexString(data.grassColor)}"
       }<#if hasFoliageColor || hasAirColor || hasWaterColor>,</#if>
       </#if>
       <#if hasFoliageColor>
       "minecraft:foliage_appearance": {
-        "color": ${"[" + data.foliageColor.getRed() + "," + data.foliageColor.getGreen() + "," + data.foliageColor.getBlue() + "]"}
+        "color": "${thelper.colorToHexString(data.foliageColor)}"
       }<#if hasAirColor || hasWaterColor>,</#if>
       </#if>
       <#if hasAirColor>
       "minecraft:sky_color": {
-        "sky_color": ${"[" + data.airColor.getRed() + "," + data.airColor.getGreen() + "," + data.airColor.getBlue() + "]"}
+        "sky_color": "${thelper.colorToHexString(data.airColor)}"
       }<#if hasWaterColor>,</#if>
       </#if>
       <#if hasWaterColor>
       "minecraft:water_appearance": {
-        "surface_color": ${"[" + data.waterColor.getRed() + "," + data.waterColor.getGreen() + "," + data.waterColor.getBlue() + "]"}
+        "surface_color": "${thelper.colorToHexString(data.waterColor)}"
       }
       </#if>
       <#if data.hasFog()><#if hasColor>,</#if>
