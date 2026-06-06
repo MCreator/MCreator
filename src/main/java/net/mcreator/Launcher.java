@@ -115,6 +115,10 @@ public class Launcher {
 		} else if (type.equals("socks")) {
 			System.setProperty("socksProxyHost", proxySection.proxyHost.get());
 			System.setProperty("socksProxyPort", proxySection.proxyPort.get().toString());
+			if (!proxySection.proxyUser.get().isEmpty()) {
+				System.setProperty("java.net.socks.username", proxySection.proxyUser.get());
+				System.setProperty("java.net.socks.password", proxySection.proxyPassword.get());
+			}
 		}
 
 		MCreatorApplication.createApplication(Arrays.asList(args));
