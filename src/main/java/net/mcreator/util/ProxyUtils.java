@@ -39,10 +39,10 @@ public class ProxyUtils {
 			if (isHttpTypeProxy(type)) {
 				System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 				System.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
-				System.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort));
+				System.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort.get()));
 			} else if (type.equals("socks")) {
 				System.setProperty("socksProxyHost", proxySection.proxyHost.get());
-				System.setProperty("socksProxyPort", proxySection.proxyPort.get().toString());
+				System.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
 			}
 		}
 
