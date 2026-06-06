@@ -24,6 +24,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.ProxyUtils;
 import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.util.UTF8Forcer;
 import org.apache.logging.log4j.LogManager;
@@ -99,27 +100,7 @@ public class Launcher {
 		}
 
 		// Proxy settings applied
-		var proxySection = PreferencesManager.PREFERENCES.proxy;
-		String type = proxySection.proxyType.get();
-
-		if (proxySection.useSystemProxy.get()) {
-			System.setProperty("java.net.useSystemProxies", "true");
-		} else if (type.startsWith("http")) {
-			System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-			System.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
-			System.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort));
-			if (!proxySection.proxyUser.get().isEmpty()) {
-				System.setProperty(type + ".proxyUser", proxySection.proxyUser.get());
-				System.setProperty(type + ".proxyPassword", proxySection.proxyPassword.get());
-			}
-		} else if (type.equals("socks")) {
-			System.setProperty("socksProxyHost", proxySection.proxyHost.get());
-			System.setProperty("socksProxyPort", proxySection.proxyPort.get().toString());
-			if (!proxySection.proxyUser.get().isEmpty()) {
-				System.setProperty("java.net.socks.username", proxySection.proxyUser.get());
-				System.setProperty("java.net.socks.password", proxySection.proxyPassword.get());
-			}
-		}
+		ProxyUtils.applyProxies();
 
 		MCreatorApplication.createApplication(Arrays.asList(args));
 	}
