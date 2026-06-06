@@ -437,7 +437,6 @@ public class TestWorkspaceDataProvider {
 		var blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		var blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 		var biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
-		var biomeTags = ElementUtil.loadAllBiomeTags(modElement.getWorkspace());
 		var tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		// Also prepare list of blocks that are "worldgen-safe"
@@ -1832,7 +1831,7 @@ public class TestWorkspaceDataProvider {
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "noiseType"));
 			bebiome.villageType = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "villageType"));
-			bebiome.biomeTags = subset(random, 5, biomeTags,
+			bebiome.biomeTags = subset(random, 5, ElementUtil.loadAllBiomeTags(modElement.getWorkspace()),
 					e -> new BEBiomeTagEntry(modElement.getWorkspace(), e.getName()));
 			bebiome.biomeReplacements = subset(random, 5, biomes,
 					e -> new BiomeEntry(modElement.getWorkspace(), e.getName()));
