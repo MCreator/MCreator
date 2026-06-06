@@ -32,6 +32,7 @@ public class PreferencesData {
 	public final CodeStyleSection codeStyle;
 	public final ImageEditorSection imageEditor;
 	public final GradleSection gradle;
+	public final ProxySection proxy;
 	public final BedrockSection bedrock;
 	public final HiddenSection hidden;
 
@@ -45,6 +46,7 @@ public class PreferencesData {
 		codeStyle = new CodeStyleSection(CORE_PREFERENCES_KEY);
 		imageEditor = new ImageEditorSection(CORE_PREFERENCES_KEY);
 		gradle = new GradleSection(CORE_PREFERENCES_KEY);
+		proxy = new ProxySection(CORE_PREFERENCES_KEY);
 		bedrock = new BedrockSection(CORE_PREFERENCES_KEY);
 		hidden = new HiddenSection(CORE_PREFERENCES_KEY);
 	}

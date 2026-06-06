@@ -98,6 +98,25 @@ public class Launcher {
 			System.exit(-2);
 		}
 
+		// Proxy settings applied
+		var gradle = PreferencesManager.PREFERENCES.proxy;
+		String type = gradle.proxyType.get();
+
+		if (gradle.useSystemProxy.get()) {
+			System.setProperty("java.net.useSystemProxies", "true");
+		} else if (type.startsWith("http")) {
+			System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+			System.setProperty(type + ".proxyHost", gradle.proxyHost.get());
+			System.setProperty(type + ".proxyPort", String.valueOf(gradle.proxyPort));
+			if (!gradle.proxyUser.get().isEmpty()) {
+				System.setProperty(type + ".proxyUser", gradle.proxyUser.get());
+				System.setProperty(type + ".proxyPassword", gradle.proxyPassword.get());
+			}
+		} else if (type.equals("socks")) {
+			System.setProperty("socksProxyHost", gradle.proxyHost.get());
+			System.setProperty("socksProxyPort", gradle.proxyPort.get().toString());
+		}
+
 		MCreatorApplication.createApplication(Arrays.asList(args));
 	}
 
