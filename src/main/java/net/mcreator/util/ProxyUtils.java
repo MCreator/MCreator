@@ -28,7 +28,7 @@ public class ProxyUtils {
 	private static final Logger LOGGER = LogManager.getLogger("Proxy utils");
 
 	public static void applyProxies() {
-		var proxySection = PreferencesManager.PREFERENCES.proxy;
+		ProxySection proxySection = PreferencesManager.PREFERENCES.proxy;
 		String type = proxySection.proxyType.get();
 
 		if (proxySection.useSystemProxy.get()) {
