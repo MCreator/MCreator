@@ -37,6 +37,6 @@ public class BEBiomeTagsListField extends JItemListField<BiomeTagEntry> {
 		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllBiomeTags,
 				L10N.t("dialog.list_field.bebiome_tags_list_title"),
 				L10N.t("dialog.list_field.bebiome_tags_list_message")).stream()
-				.map(e -> new BiomeTagEntry(mcreator.getWorkspace(), e)).toList();;
+				.map(e -> new BiomeTagEntry(mcreator.getWorkspace(), e)).toList();
 	}
 }
