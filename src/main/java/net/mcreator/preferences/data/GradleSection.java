@@ -45,7 +45,6 @@ public class GradleSection extends PreferencesSection {
 	public final StringEntry proxyPassword;
 	public final BooleanEntry useSystemProxy;
 
-
 	GradleSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
@@ -54,12 +53,12 @@ public class GradleSection extends PreferencesSection {
 		enablePerformanceMonitor = addEntry(new BooleanEntry("enablePerformanceMonitor", true));
 		xmx = addEntry(new IntegerEntry("Xmx", Math.min(3072, MAX_RAM), 128, MAX_RAM));
 		offline = addEntry(new BooleanEntry("offline", false));
-		proxyType = addEntry(new StringEntry("proxyType","none","none","http","https","socks"));
-		proxyHost = addEntry(new StringEntry("proxyHost","",true));
-		proxyPort = addEntry(new IntegerEntry("proxyPort",0));
-		proxyUser = addEntry(new StringEntry("proxyUser","",true));
-		proxyPassword = addEntry(new StringEntry("proxyPassword","",true));
-		useSystemProxy = addEntry(new BooleanEntry("useSystemProxy",false));
+		proxyType = addEntry(new StringEntry("proxyType", "none", "none", "http", "https", "socks"));
+		proxyHost = addEntry(new StringEntry("proxyHost", "", true));
+		proxyPort = addEntry(new IntegerEntry("proxyPort", 0));
+		proxyUser = addEntry(new StringEntry("proxyUser", "", true));
+		proxyPassword = addEntry(new StringEntry("proxyPassword", "", true));
+		useSystemProxy = addEntry(new BooleanEntry("useSystemProxy", false));
 	}
 
 	@Override public String getSectionKey() {
