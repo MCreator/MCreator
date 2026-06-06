@@ -46,21 +46,21 @@ public class ProxyUtils {
 			}
 		}
 
-		setPasswordAndUser(type, proxySection);
+		setPasswordAndUser(type, proxySection.proxyUser.get(), proxySection.proxyPassword.get());
 	}
 
 	public static boolean isHttpTypeProxy(String proxyType) {
 		return proxyType.startsWith("http");
 	}
 
-	public static void setPasswordAndUser(String type, ProxySection proxySection) {
-		if (!proxySection.proxyUser.get().isEmpty()) {
+	public static void setPasswordAndUser(String type, String proxyUser, String proxyPassword) {
+		if (!proxyUser.isEmpty()) {
 			if (type.equals("socks")) {
-				System.setProperty("java.net.socks.username", proxySection.proxyUser.get());
-				System.setProperty("java.net.socks.password", proxySection.proxyPassword.get());
+				System.setProperty("java.net.socks.username", proxyUser);
+				System.setProperty("java.net.socks.password", proxyPassword);
 			} else if (isHttpTypeProxy(type)) {
-				System.setProperty(type + ".proxyUser", proxySection.proxyUser.get());
-				System.setProperty(type + ".proxyPassword", proxySection.proxyPassword.get());
+				System.setProperty(type + ".proxyUser", proxyUser);
+				System.setProperty(type + ".proxyPassword", proxyPassword);
 			}
 		}
 	}
