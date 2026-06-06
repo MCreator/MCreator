@@ -103,7 +103,7 @@ import java.util.List;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateBiomePreviewPicture(getModElement().getWorkspace(), fogColor,
-				new Color(9421151), waterColor, topMaterial, midMaterial, 0, 0, null, null);
+		return MinecraftImageGenerator.Preview.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor,
+				grassColor, waterColor, topMaterial, foundationMaterial, 0, 0, null, null);
 	}
 }
