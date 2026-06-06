@@ -239,6 +239,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		spawnParticles.setOpaque(false);
 		spawnParticles.addActionListener(event -> updateParticleParameters());
 
+		updateParticleParameters();
+
 		effectsPane.setOpaque(false);
 		effectsPane.add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
