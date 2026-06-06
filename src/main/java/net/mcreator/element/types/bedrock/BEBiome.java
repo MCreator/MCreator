@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -60,7 +61,7 @@ import java.util.List;
 	public String noiseType;
 	public String particleToSpawn;
 
-	public List<String> biomeTags;
+	public List<DataListEntry> biomeTags;
 	@ModElementReference public List<BiomeEntry> biomeReplacements;
 
 	public Sound ambientSound;
