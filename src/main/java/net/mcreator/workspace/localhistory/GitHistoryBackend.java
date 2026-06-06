@@ -92,7 +92,10 @@ class GitHistoryBackend implements AutoCloseable {
 
 			StoredConfig config = git.getRepository().getConfig();
 			config.setBoolean("core", null, "autocrlf", false);
+			config.setBoolean("core", null, "filemode", false);
 			config.setString("core", null, "sha1Implementation", "jdkNative");
+			config.setInt("index", null, "version", 4);
+			config.setInt("pack", null, "threads", 0);
 			config.save();
 
 			configureIgnores(historyDatabaseDir);
