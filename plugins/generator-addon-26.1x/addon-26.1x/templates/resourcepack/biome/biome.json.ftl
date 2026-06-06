@@ -14,17 +14,17 @@
       <#if hasGrassColor>
       "minecraft:grass_appearance": {
         "color": ${"[" + data.grassColor.getRed() + "," + data.grassColor.getGreen() + "," + data.grassColor.getBlue() + "]"}
-      },
+      }<#if hasFoliageColor || hasAirColor || hasWaterColor>,</#if>
       </#if>
       <#if hasFoliageColor>
       "minecraft:foliage_appearance": {
         "color": ${"[" + data.foliageColor.getRed() + "," + data.foliageColor.getGreen() + "," + data.foliageColor.getBlue() + "]"}
-      },
+      }<#if hasAirColor || hasWaterColor>,</#if>
       </#if>
       <#if hasAirColor>
       "minecraft:sky_color": {
         "sky_color": ${"[" + data.airColor.getRed() + "," + data.airColor.getGreen() + "," + data.airColor.getBlue() + "]"}
-      },
+      }<#if hasWaterColor>,</#if>
       </#if>
       <#if hasWaterColor>
       "minecraft:water_appearance": {
