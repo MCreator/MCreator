@@ -23,7 +23,8 @@ import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.BiomeTagEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
-import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
@@ -42,7 +43,7 @@ import java.util.List;
 
 	public boolean spawnParticles;
 
-	public int seaFloorDepth;
+	@Numeric(init = 7, min = 0, max = 256, step = 1) public int seaFloorDepth;
 
 	public Color airColor;
 	public Color fogColor;
@@ -51,15 +52,18 @@ import java.util.List;
 	public Color waterColor;
 	public Color waterFogColor;
 
-	public double temperature;
-	public double downfall;
-	public double minSnow;
-	public double maxSnow;
-	public double replacementAmount;
-	public double replacementNoiseFrequencyScale;
-	public double particleDensity;
+	@Numeric(init = 0.5, min = 0, max = 2.0, step = 0.1) public double temperature;
+	@Numeric(init = 0.5, min = 0, max = 1.0, step = 0.1) public double downfall;
+	@Numeric(init = 0, min = 0, max = 1.0, step = 0.125) public double minSnow;
+	@Numeric(init = 0, min = 0, max = 1.0, step = 0.125) public double maxSnow;
+	@Numeric(init = 0.5, min = 0, max = 1.0, step = 0.1) public double replacementAmount;
+	@Numeric(init = 0.5, min = 0, max = 100, step = 0.1) public double replacementNoiseFrequencyScale;
+	@Numeric(init = 0.1, min = 0, max = 10.0, step = 0.1) public double particleDensity;
 
+	@LimitedOptions({ "default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
+			"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" })
 	public String noiseType;
+	@LimitedOptions({ "ash", "blue_spores", "red_spores", "white_ash" })
 	public String particleToSpawn;
 
 	public List<BiomeTagEntry> biomeTags;
