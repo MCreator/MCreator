@@ -1830,6 +1830,8 @@ public class TestWorkspaceDataProvider {
 			bebiome.seaFloorDepth = getRandomInt(random, BEBiome.class, "seaFloorDepth");
 			bebiome.noiseType = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "noiseType"));
+			bebiome.villageType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "villageType"));
 			bebiome.biomeTags = subset(random, 5, biomeTags,
 					e -> new BiomeTagEntry(modElement.getWorkspace(), e.getName()));
 			bebiome.biomeReplacements = subset(random, 5, biomes,

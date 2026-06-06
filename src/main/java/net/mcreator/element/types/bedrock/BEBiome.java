@@ -63,6 +63,8 @@ import java.util.List;
 	@LimitedOptions({ "default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
 			"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" })
 	public String noiseType;
+	@LimitedOptions({"default", "desert", "ice", "savanna", "taiga"})
+	public String villageType;
 	@LimitedOptions({ "ash", "blue_spores", "red_spores", "white_ash" })
 	public String particleToSpawn;
 

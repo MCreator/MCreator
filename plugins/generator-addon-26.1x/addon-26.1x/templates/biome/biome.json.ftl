@@ -29,6 +29,9 @@
       "minecraft:overworld_height": {
         "noise_type": "${data.noiseType}"
       },
+      "minecraft:village_type": {
+        "type": "${data.villageType}"
+      },
       "minecraft:surface_builder": {
         "builder": {
           "type": "minecraft:overworld",
