@@ -437,6 +437,7 @@ public class TestWorkspaceDataProvider {
 		var blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		var blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 		var biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
+		var biomeTags = ElementUtil.loadAllBiomeTags(modElement.getWorkspace());
 		var tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		// Also prepare list of blocks that are "worldgen-safe"
@@ -1804,10 +1805,10 @@ public class TestWorkspaceDataProvider {
 			return beblock;
 		} else if (ModElementType.BEBIOME.equals(modElement.getType())) {
 			BEBiome bebiome = new BEBiome(modElement);
-			bebiome.downfall = 0.72;
-			bebiome.temperature = 0.45;
-			bebiome.maxSnow = 0.250;
-			bebiome.minSnow = 0;
+			bebiome.downfall = getRandomInt(random, BEBiome.class, "downfall");
+			bebiome.temperature = getRandomInt(random, BEBiome.class, "temperature");
+			bebiome.maxSnow = getRandomInt(random, BEBiome.class, "maxSnow");
+			bebiome.minSnow = getRandomInt(random, BEBiome.class, "minSnow");
 			bebiome.airColor = Color.red;
 			if (!emptyLists) {
 				bebiome.fogColor = Color.yellow;
@@ -1826,18 +1827,15 @@ public class TestWorkspaceDataProvider {
 					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
 			bebiome.seaMaterial = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
-			bebiome.seaFloorDepth = 4;
-			bebiome.noiseType = List.of("default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
-					"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp").get(random.nextInt(14));
-			NameMapper tagMapper = new NameMapper(modElement.getWorkspace(), "be_biometags");
-			List<String> biometags = DataListLoader.loadDataMap("blockstateproperties")
-					.values().stream().map(e -> tagMapper.getMapping(e.getName())).collect(Collectors.toList());
-			Collections.shuffle(biometags);
-			bebiome.biomeTags = _true ? List.of() : biometags.stream().limit(5).toList();
+			bebiome.seaFloorDepth = getRandomInt(random, BEBiome.class, "seaFloorDepth");
+			bebiome.noiseType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "noiseType"));
+			bebiome.biomeTags = subset(random, 5, biomeTags,
+					e -> new BiomeTagEntry(modElement.getWorkspace(), e.getName()));
 			bebiome.biomeReplacements = subset(random, 5, biomes,
 					e -> new BiomeEntry(modElement.getWorkspace(), e.getName()));
-			bebiome.replacementAmount = 0.6;
-			bebiome.replacementNoiseFrequencyScale = 0.4;
+			bebiome.replacementAmount = getRandomInt(random, BEBiome.class, "replacementAmount");
+			bebiome.replacementNoiseFrequencyScale = getRandomInt(random, BEBiome.class, "replacementNoiseFrequencyScale");
 			bebiome.ambientSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			bebiome.moodSound = new Sound(modElement.getWorkspace(),
@@ -1847,8 +1845,9 @@ public class TestWorkspaceDataProvider {
 			bebiome.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			bebiome.spawnParticles = _true;
-			bebiome.particleToSpawn = List.of("ash", "blue_spores", "red_spores", "white_ash").get(random.nextInt(3));
-			bebiome.particleDensity = 2;
+			bebiome.particleToSpawn = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "particleToSpawn"));
+			bebiome.particleDensity = getRandomInt(random, BEBiome.class, "particleDensity");
 		}
 		return null;
 	}
