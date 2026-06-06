@@ -20,7 +20,6 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
 import net.mcreator.ui.component.util.TableUtil;
@@ -43,6 +42,7 @@ import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.references.ReferencesFinder;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
@@ -56,7 +56,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
 
-	private Map<Integer, String> oldNames = new HashMap<>();
+	private final Map<Integer, String> oldNames = new HashMap<>();
+
+	private final JToolBar bar = new JToolBar();
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -198,10 +200,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		add("Center", sp);
 
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
+		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), _ -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidator.Cached() {
 						@Override public Validator createValidator(JComponent component) {
@@ -220,9 +219,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		}));
 
 		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
-				e -> deleteCurrentlySelected()));
+				_ -> deleteCurrentlySelected()));
 
-		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), _ -> {
 			if (elements.getSelectedRow() != -1) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -239,9 +238,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		}));
 
 		bar.add(createToolBarButton("workspace.variables.help", UIRES.get("16px.info"),
-				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables")));
-
-		add("North", bar);
+				_ -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables")));
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
@@ -294,6 +291,10 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			// let workspace know that the element(s) changed
 			workspace.markDirty();
 		});
+	}
+
+	@Nullable @Override public JToolBar getToolBarComponent() {
+		return bar;
 	}
 
 	private void deleteCurrentlySelected() {

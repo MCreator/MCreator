@@ -24,14 +24,11 @@ import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.FlafIcons;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 
@@ -45,7 +42,6 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStreamWriter;
@@ -72,7 +68,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
 
-		changeListener = e -> {
+		changeListener = _ -> {
 		};
 
 		pane.addChangeListener(changeListener);
@@ -82,7 +78,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add"), e -> {
+		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add"), _ -> {
 			String key = JOptionPane.showInputDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
 					JOptionPane.QUESTION_MESSAGE);
@@ -193,7 +189,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setMargin(new Insets(0, 0, 0, 0));
-			button.addActionListener(e -> {
+			button.addActionListener(_ -> {
 				int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 						L10N.t("workspace.localization.confirm_delete_map"), L10N.t("common.confirmation"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
@@ -205,19 +201,11 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			button.setEnabled(!entry.getKey().equals("en_us"));
 
 			JLabel label = new JLabel(" " + entry.getKey() + " ");
-			ComponentUtils.deriveFont(label, 12);
-			try {
-				BufferedImage image = FlafIcons.getFlag(entry.getKey().split("_")[1].toUpperCase(Locale.ENGLISH));
-				label.setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
-			} catch (Exception ignored) { // flag not found, ignore
-			}
-
-			label.setBorder(BorderFactory.createEmptyBorder());
 			tab.add(label);
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			use.addActionListener(a -> {
+			use.addActionListener(_ -> {
 				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
 					workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -233,7 +221,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				}
 			});
 
-			del.addActionListener(a -> deleteCurrentlySelected(elements, id));
+			del.addActionListener(_ -> deleteCurrentlySelected(elements, id));
 
 			elements.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
@@ -242,7 +230,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				}
 			});
 
-			exp.addActionListener(e -> {
+			exp.addActionListener(_ -> {
 				if (pane.getSelectedIndex() != id)
 					return;
 
@@ -274,7 +262,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				}
 			});
 
-			imp.addActionListener(e -> {
+			imp.addActionListener(_ -> {
 				if (pane.getSelectedIndex() != id)
 					return;
 
@@ -319,7 +307,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		pane.setTabComponentAt(lastid, new JLabel(UIRES.get("16px.add")));
 
 		pane.removeChangeListener(changeListener);
-		changeListener = e -> {
+		changeListener = _ -> {
 			if (pane.getSelectedIndex() == lastid) {
 				pane.setSelectedIndex(0);
 				newLocalizationDialog();

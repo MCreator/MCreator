@@ -49,13 +49,13 @@ package ${package}.client.screens;
 	</#list>
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
-	<#if generator.map(data.overlayTarget, "screens") == "Ingame">
+	<#if data.overlayTarget == "Ingame">
         public static void eventHandler(RenderGuiEvent.Pre event) {
             int w = event.getGuiGraphics().guiWidth();
             int h = event.getGuiGraphics().guiHeight();
 	<#else>
         public static void eventHandler(ScreenEvent.Render.Post event) {
-            if (event.getScreen() instanceof ${generator.map(data.overlayTarget, "screens")}) {
+            if (event.getScreen() instanceof ${data.overlayTarget}) {
                 int w = event.getGuiGraphics().guiWidth();
                 int h = event.getGuiGraphics().guiHeight();
 	</#if>
@@ -139,7 +139,7 @@ package ${package}.client.screens;
             RenderSystem.disableBlend();
             RenderSystem.setShaderColor(1, 1, 1, 1);
         </#if>
-    <#if generator.map(data.overlayTarget, "screens") != "Ingame">
+    <#if data.overlayTarget != "Ingame">
         }
     </#if>
 	}

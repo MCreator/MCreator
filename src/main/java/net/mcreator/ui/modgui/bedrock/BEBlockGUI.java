@@ -21,7 +21,9 @@ package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
@@ -134,7 +136,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		page1group.addValidationElement(textures);
 
 		ComponentUtils.deriveFont(renderType, 16);
-		renderType.addActionListener(event -> updateTextureOptions());
+		renderType.addActionListener(_ -> updateTextureOptions());
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -167,7 +169,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
-		enableCreativeTab.addActionListener(e -> updateCreativeTab());
+		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
@@ -237,7 +239,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.block.generation_shape")));
 		genPanel.add(generationShape);
 
-		generateFeature.addActionListener(e -> refreshSpawnProperties());
+		generateFeature.addActionListener(_ -> refreshSpawnProperties());
 		refreshSpawnProperties();
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
@@ -319,7 +321,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			renderType.setSelectedItem(model);
 		name.setText(block.name);
 		enableCreativeTab.setSelected(block.enableCreativeTab);
-		creativeTab.setSelectedItem(block.creativeTab);
+		creativeTab.setSelectedItem(block.creativeTab.getUnmappedValue());
 		isHiddenInCommands.setSelected(block.isHiddenInCommands);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
@@ -373,7 +375,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		block.name = name.getText();
 		block.enableCreativeTab = enableCreativeTab.isSelected();
-		block.creativeTab = creativeTab.getSelectedItem().toString();
+		block.creativeTab = new TabEntry(modElement.getWorkspace(), creativeTab.getSelectedItem());
 		block.isHiddenInCommands = isHiddenInCommands.isSelected();
 		block.hardness = (double) hardness.getValue();
 		block.resistance = (double) resistance.getValue();
@@ -381,7 +383,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.dropAmount = (int) dropAmount.getValue();
 		block.soundOnStep = new StepSound(mcreator.getWorkspace(), soundOnStep.getSelectedItem());
 		block.lightEmission = (int) lightEmission.getValue();
-		block.colorOnMap = colorOnMap.getSelectedItem().toString();
+		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		block.flammability = (int) flammability.getValue();
 		block.flammableDestroyChance = (int) flammableDestroyChance.getValue();
 		block.friction = (double) friction.getValue();

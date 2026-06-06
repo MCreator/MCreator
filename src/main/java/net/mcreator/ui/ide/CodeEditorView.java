@@ -21,9 +21,9 @@ package net.mcreator.ui.ide;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
-import net.mcreator.io.writer.JSONWriter;
-import net.mcreator.io.writer.JSWriter;
+import net.mcreator.generator.io.GradleTrackingFileIO;
+import net.mcreator.generator.io.JSONWriter;
+import net.mcreator.generator.io.JSWriter;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;
@@ -364,7 +364,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				ac = (AutoCompletion) method.invoke(jls, te);
 				ac.setAutoCompleteSingleChoices(false);
 			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
-					 NoSuchMethodException | IllegalAccessException e1) {
+			         NoSuchMethodException | IllegalAccessException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
 
@@ -596,7 +596,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	public void saveCode() {
 		savingMCreatorModElementWarning();
-		TrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
+		GradleTrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));

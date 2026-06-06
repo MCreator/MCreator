@@ -1,0 +1,1 @@
+Wenn diese Liste nicht leer ist, kann dieser Gegenstand in einem Webstuhl verwendet werden, um die ausgewählten Banner Muster zu erstellen.

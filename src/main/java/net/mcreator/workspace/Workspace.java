@@ -25,7 +25,7 @@ import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -59,7 +59,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private LinkedHashSet<ModElement> mod_elements = new LinkedHashSet<>(0);
 	private LinkedHashSet<VariableElement> variable_elements = new LinkedHashSet<>(0);
 	private LinkedHashSet<SoundElement> sound_elements = new LinkedHashSet<>(0);
-	private LinkedHashMap<TagElement, ArrayList<String>> tag_elements = new LinkedHashMap<>();
+	private LinkedHashMap<TagElement, ArrayList<TagElement.Entry>> tag_elements = new LinkedHashMap<>();
 	private CreativeTabsOrder tab_element_order = new CreativeTabsOrder();
 	private LinkedHashMap<String, LinkedHashMap<String, String>> language_map = new LinkedHashMap<>() {{
 		put("en_us", new LinkedHashMap<>());
@@ -125,7 +125,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return tab_element_order;
 	}
 
-	public Map<TagElement, ArrayList<String>> getTagElements() {
+	public Map<TagElement, ArrayList<TagElement.Entry>> getTagElements() {
 		return tag_elements;
 	}
 
@@ -255,14 +255,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		File tagFile = TagsUtils.getTagFileFor(this, element);
 		if (tagFile != null) {
-			TrackingFileIO.deleteFile(this, tagFile);
+			GradleTrackingFileIO.deleteFile(this, tagFile);
 		}
 
 		markDirty();
 	}
 
 	public void removeSoundElement(SoundElement element) {
-		element.getFiles().forEach(file -> TrackingFileIO.deleteFile(this,
+		element.getFiles().forEach(file -> GradleTrackingFileIO.deleteFile(this,
 				new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg")));
 		sound_elements.remove(element);
 		markDirty();
@@ -394,10 +394,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.generator = new Generator(this); // reload generator
 	}
 
-	public void bindToNewWorkspaceFile(File workspaceFile) {
+	public void bindToNewWorkspaceFile(File newWorkspaceFile) {
+		File currentWorkspaceFile = this.getFileManager().getWorkspaceFile();
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
-		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+		currentWorkspaceFile.delete(); // delete old workspace file
+		this.fileManager = new WorkspaceFileManager(newWorkspaceFile, this); // new file manager instance for the new file
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 

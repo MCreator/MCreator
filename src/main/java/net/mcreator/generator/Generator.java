@@ -34,11 +34,11 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.gradle.GradleFileTracker;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
-import net.mcreator.io.TrackingFileIO;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.io.writer.JSONWriter;
-import net.mcreator.io.writer.JSWriter;
-import net.mcreator.io.writer.JavaWriter;
+import net.mcreator.generator.io.JSONWriter;
+import net.mcreator.generator.io.JSWriter;
+import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -53,8 +53,8 @@ import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -142,17 +142,21 @@ public class Generator implements IGenerator, Closeable {
 	 * @return true if generator generated all files without any errors
 	 */
 	public boolean generateBase() {
-		return this.generateBase(true);
+		try {
+			this.generateBase(true);
+			return true;
+		} catch (TemplateGeneratorException e) {
+			return false;
+		}
 	}
 
 	/**
 	 * Generates the generator mod base files and writes them to disk.
 	 *
 	 * @param formatAndOrganiseImports true if imports should be formatted
-	 * @return true if generator generated all files without any errors
 	 */
-	public boolean generateBase(boolean formatAndOrganiseImports) {
-		AtomicBoolean success = new AtomicBoolean(true);
+	public void generateBase(boolean formatAndOrganiseImports) throws TemplateGeneratorException {
+		AtomicReference<TemplateGeneratorException> exception = new AtomicReference<>(null);
 
 		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
 
@@ -164,10 +168,13 @@ public class Generator implements IGenerator, Closeable {
 						(String) generatorTemplate.getTemplateDefinition().get("variables"));
 				return generatorTemplate.toGeneratorFile(code);
 			} catch (TemplateGeneratorException e) {
-				success.set(false);
+				exception.set(e);
 				return null;
 			}
 		}).filter(Objects::nonNull).collect(Collectors.toList());
+
+		if (exception.get() != null)
+			throw exception.get();
 
 		// remove outdated/stale global/base files from workspace files list
 		// (e.g. is a different generator added a file that is no longer present in the generator definition)
@@ -180,7 +187,7 @@ public class Generator implements IGenerator, Closeable {
 							.noneMatch(generatorFile -> FileIO.isSameFile(file, generatorFile.getFile())))
 					.filter(workspace.getFolderManager()::isFileInWorkspace).forEach(file -> {
 						LOG.debug("Deleting stale file no longer tracked by generator: {}", file);
-						TrackingFileIO.deleteFile(this, file);
+						GradleTrackingFileIO.deleteFile(this, file);
 					});
 
 		// generate files as old files were deleted
@@ -198,8 +205,6 @@ public class Generator implements IGenerator, Closeable {
 
 		// generate tags files
 		TagsUtils.generateTagsFiles(this, workspace, generatorConfiguration.getTagsSpecification());
-
-		return success.get();
 	}
 
 	/**
@@ -275,7 +280,7 @@ public class Generator implements IGenerator, Closeable {
 
 		if (performFSTasks) {
 			// remove outdated files from mod element files list
-			element.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
+			element.getModElement().getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(workspace, f));
 
 			// generate files as old files were deleted
 			generateFiles(generatorFiles, formatAndOrganiseImports);
@@ -315,7 +320,7 @@ public class Generator implements IGenerator, Closeable {
 
 	public void removeElementFilesAndWorkspaceLinks(GeneratableElement generatableElement) {
 		// first, remove files linked with this mod element
-		generatableElement.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
+		generatableElement.getModElement().getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(workspace, f));
 
 		// then, delete tab sorting info associated with the mod element from the workspace
 		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
@@ -605,11 +610,11 @@ public class Generator implements IGenerator, Closeable {
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
 				String usercodeComment = generatorFile.getUsercodeComment();
 				if (usercodeComment != null)
-					TrackingFileIO.writeFile(workspace,
+					GradleTrackingFileIO.writeFile(workspace,
 							UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
 									usercodeComment), generatorFile.getFile());
 				else
-					TrackingFileIO.writeFile(workspace, generatorFile.contents(), generatorFile.getFile());
+					GradleTrackingFileIO.writeFile(workspace, generatorFile.contents(), generatorFile.getFile());
 			}
 		}
 

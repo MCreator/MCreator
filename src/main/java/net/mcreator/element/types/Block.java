@@ -21,8 +21,8 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Fluid;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.FluidEntry;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -55,6 +55,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,7 +92,7 @@ import java.util.stream.Collectors;
 			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
 	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
 	public MItemBlock pottedPlant;
-	public Particle leavesParticleType;
+	public ParticleEntry leavesParticleType;
 	@Numeric(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
 	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
 	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
@@ -142,11 +143,11 @@ import java.util.stream.Collectors;
 	public boolean isReplaceable;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
-	public String colorOnMap;
-	public String noteBlockInstrument;
+	public MapColor colorOnMap;
+	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "NONE", "XZ", "XYZ" }) public String offsetType;
-	public String aiPathNodeType;
+	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;
 	public Color beaconColorModifier;
 	public MItemBlock strippingResult;
 
@@ -208,7 +209,7 @@ import java.util.stream.Collectors;
 
 	public boolean isFluidTank;
 	@Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
-	@ModElementReference public List<Fluid> fluidRestrictions;
+	@ModElementReference public List<FluidEntry> fluidRestrictions;
 
 	public Procedure onRightClicked;
 	public Procedure onBlockAdded;
@@ -229,7 +230,7 @@ import java.util.stream.Collectors;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@ModElementReference public List<MItemBlock> blocksToReplace;
-	public String generationShape;
+	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
 	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
 	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
 	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
@@ -259,9 +260,6 @@ import java.util.stream.Collectors;
 		this.speedFactor = 1.0;
 		this.jumpFactor = 1.0;
 		this.hasCustomOpacity = true;
-		this.colorOnMap = "DEFAULT";
-		this.noteBlockInstrument = "harp";
-		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
 		this.destroyTool = "Not specified";
@@ -511,8 +509,11 @@ import java.util.stream.Collectors;
 		if (generateFeature) {
 			baseTypes.add(BaseType.CONFIGUREDFEATURE);
 			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
-				baseTypes.add(BaseType.FEATURE);
+					== GeneratorFlavor.FABRIC ||
+					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
+				baseTypes.add(
+						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
 		if (hasInventory)

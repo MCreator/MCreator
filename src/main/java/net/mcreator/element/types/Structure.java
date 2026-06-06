@@ -20,9 +20,10 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
@@ -43,7 +44,7 @@ import java.util.List;
 
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@LimitedOptions({ "none", "beard_thin", "beard_box", "bury", "encapsulate" }) public String terrainAdaptation;
-	public String generationStep;
+	public GenerationStep generationStep;
 
 	@LimitedOptions({ "WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR", "MOTION_BLOCKING",
 			"MOTION_BLOCKING_NO_LEAVES" }) public String surfaceDetectionType;

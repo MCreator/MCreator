@@ -237,6 +237,11 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("noteblockinstruments");
 	}
 
+	public static List<DataListEntry> loadItemUseAnimations(Workspace workspace) {
+		return DataListLoader.loadDataList("itemuseanimations").stream()
+				.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+	}
+
 	public static List<DataListEntry> loadAnimations(Workspace workspace) {
 		List<DataListEntry> animations = new ArrayList<>();
 		for (Animation animation : Animation.getAnimations(workspace)) {

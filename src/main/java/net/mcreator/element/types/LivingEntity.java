@@ -31,6 +31,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.io.FileIO;
@@ -194,7 +195,7 @@ import java.util.stream.Collectors;
 	public boolean doesDespawnWhenIdle;
 	public Procedure spawningCondition;
 	@Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
-	public String mobSpawningType;
+	public MobSpawnType mobSpawningType;
 	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minNumberOfMobsPerGroup;
 	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
@@ -285,7 +286,8 @@ import java.util.stream.Collectors;
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
 					BlocklyEditorType.AI_TASK, this.aixml, this.getModElement().getGenerator()
 					.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
 					.getGeneratorConfiguration().getDefinitionsProvider()

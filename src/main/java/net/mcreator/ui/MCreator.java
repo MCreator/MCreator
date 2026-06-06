@@ -116,7 +116,7 @@ public abstract class MCreator extends MCreatorFrame {
 				"Workspace", false);
 		mcreatorTabs.addTab(workspaceTab);
 
-		mcreatorTabs.addTabShownListener(tab -> {
+		mcreatorTabs.addTabShownListener(_ -> {
 			reloadWorkspaceTabContents();
 			menuBar.refreshMenuBar();
 			setTitle(WindowTitleHelper.getWindowTitle(this));
@@ -224,7 +224,7 @@ public abstract class MCreator extends MCreatorFrame {
 				&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch.get()) {
 			ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 					new File(workspace.getFolderManager().getWorkspaceCacheDir(),
-							"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
+							"fullBackups/FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
 		}
 
 		// if we need to set up the workspace, we do so

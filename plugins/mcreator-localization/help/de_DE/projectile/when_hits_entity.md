@@ -1,0 +1,1 @@
+Wenn das Projektil eine lebende Entität trifft (Kuh, Creeper, Spieler usw.), wird die ausgewählte Prozedur ausgeführt.

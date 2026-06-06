@@ -409,7 +409,8 @@ public class WorkspaceFileBrowser extends JPanel {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
 
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-					if (libName.equals("rt") || libName.equals("java.base") || libraryInfo instanceof ModulesFileLibraryInfo) {
+					if (libName.equals("rt") || libName.equals("java.base")
+							|| libraryInfo instanceof ModulesFileLibraryInfo) {
 						libName = "<" + JavaReleaseInfo.DEFAULT + ">";
 						ProjectJarManager projectJarManager = mcreator.getGenerator().getProjectJarManager();
 						if (projectJarManager != null) {

@@ -23,6 +23,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -41,7 +42,6 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.lang.module.ModuleDescriptor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,12 +51,16 @@ import java.util.List;
 
 	private static final Logger LOG = LogManager.getLogger(SpecialEntity.class);
 
-	@LimitedOptions({ "Boat", "ChestBoat" }) public String entityType;
+	@LimitedOptions({ "Boat", "ChestBoat", "Raft", "ChestRaft" }) public String entityType;
 	public String name;
+	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	@TextureReference(TextureType.ENTITY) public TextureHolder entityTexture;
 	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+
+	public Procedure onTickUpdate;
+	public Procedure onPlayerCollidesWith;
 
 	private SpecialEntity() {
 		this(null);
@@ -64,13 +68,15 @@ import java.util.List;
 
 	public SpecialEntity(ModElement element) {
 		super(element);
+
+		this.rarity = "COMMON";
 	}
 
 	@Override public void finalizeModElementGeneration() {
 		try {
 			File entityTextureLocation = new File(
 					getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-					"entity/" + ("Boat".equals(entityType) ? "boat/" : "chest_boat/")
+					"entity/" + (isBoatChestVariant() ? "chest_boat/" : "boat/")
 							+ getModElement().getRegistryName() + ".png");
 			FileIO.copyFile(entityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 		} catch (Exception e) {
@@ -86,9 +92,8 @@ import java.util.List;
 		List<BaseType> baseTypes = new ArrayList<>();
 		baseTypes.add(BaseType.ITEM);
 
-		// Since 1.21.2 custom boats are stand-alone entity types, not variants of the vanilla boat entity
-		if (ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
-				.compareTo(ModuleDescriptor.Version.parse("1.21.2")) >= 0)
+		// 1.21-1.21.1 uses enum extensions for custom boats so they do not require the creation of a new entity type
+		if (!getModElement().getGenerator().getGeneratorMinecraftVersion().equals("1.21.1"))
 			baseTypes.add(BaseType.ENTITY);
 
 		return baseTypes;
@@ -110,5 +115,13 @@ import java.util.List;
 
 	@Override public List<MCItem> getCreativeTabItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
+	}
+
+	public boolean isBoatChestVariant() {
+		return "ChestBoat".equals(entityType) || "ChestRaft".equals(entityType);
+	}
+
+	public boolean isAnyRaft() {
+		return "Raft".equals(entityType) || "ChestRaft".equals(entityType);
 	}
 }

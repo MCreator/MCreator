@@ -21,11 +21,11 @@ package net.mcreator.ui.minecraft.attributemodifiers;
 
 import net.mcreator.element.parts.AttributeEntry;
 import net.mcreator.element.parts.AttributeModifierEntry;
+import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -96,7 +96,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 
 	@Override public AttributeModifierEntry getEntry() {
 		AttributeModifierEntry entry = new AttributeModifierEntry();
-		entry.equipmentSlot = equipmentSlot.getSelectedItem().toString();
+		entry.equipmentSlot = new EquipmentSlotEntry(workspace, equipmentSlot.getSelectedItem());
 		entry.attribute = new AttributeEntry(workspace, attribute.getSelectedItem());
 		entry.amount = (double) amount.getValue();
 		entry.operation = (String) operation.getSelectedItem();

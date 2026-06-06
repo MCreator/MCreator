@@ -79,7 +79,7 @@ public abstract class MainMenuBar extends JMenuBar {
 
 				JMenuItem recent = new JMenuItem(recentWorkspaceEntry.getName());
 				recent.addActionListener(
-						e -> mcreator.getApplication().openWorkspaceInMCreator(recentWorkspaceEntry.getPath()));
+						_ -> mcreator.getApplication().openWorkspaceInMCreator(recentWorkspaceEntry.getPath()));
 				recentWorkspacesList.add(recent);
 
 				// limit to max. 10 recent workspaces on the list
