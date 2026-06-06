@@ -75,6 +75,22 @@ public class GradleUtils {
 		// make sure Gradle reports in English so our error decoder works properly
 		launcher.addJvmArguments("-Duser.language=en");
 
+		var gradle = PreferencesManager.PREFERENCES.gradle;
+		String type = gradle.proxyType.get();
+
+		if (gradle.useSystemProxy.get()) {
+			launcher.addJvmArguments("-Djava.net.useSystemProxies=true");
+		} else if (type.startsWith("http")) {
+			launcher.addJvmArguments("-Djdk.http.auth.tunneling.disabledSchemes=\"\"","-D" + type + ".proxyHost=" + gradle.proxyHost.get(),
+					"-D" + type + ".proxyPort=" + gradle.proxyPort.get());
+			if (!gradle.proxyUser.get().isEmpty()) {
+				launcher.addJvmArguments("-D" + type + ".proxyUser=" + gradle.proxyUser.get(),
+						"-D" + type + ".proxyPassword=" + gradle.proxyPassword.get());
+			}
+		} else if (type.equals("socks")) {
+			launcher.addJvmArguments("-DsocksProxyHost=" + gradle.proxyHost.get(), "-DsocksProxyPort=" + gradle.proxyPort.get());
+		}
+
 		String java_home = getJavaHome();
 		if (java_home != null) // make sure detected JAVA_HOME is not null
 			launcher = launcher.setJavaHome(new File(java_home));

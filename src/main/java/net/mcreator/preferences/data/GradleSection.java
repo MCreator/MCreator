@@ -23,6 +23,7 @@ import com.sun.management.OperatingSystemMXBean;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
+import net.mcreator.preferences.entries.StringEntry;
 
 import java.lang.management.ManagementFactory;
 
@@ -37,6 +38,13 @@ public class GradleSection extends PreferencesSection {
 	public final BooleanEntry enablePerformanceMonitor;
 	public final IntegerEntry xmx;
 	public final BooleanEntry offline;
+	public final StringEntry proxyType;
+	public final StringEntry proxyHost;
+	public final IntegerEntry proxyPort;
+	public final StringEntry proxyUser;
+	public final StringEntry proxyPassword;
+	public final BooleanEntry useSystemProxy;
+
 
 	GradleSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -46,6 +54,12 @@ public class GradleSection extends PreferencesSection {
 		enablePerformanceMonitor = addEntry(new BooleanEntry("enablePerformanceMonitor", true));
 		xmx = addEntry(new IntegerEntry("Xmx", Math.min(3072, MAX_RAM), 128, MAX_RAM));
 		offline = addEntry(new BooleanEntry("offline", false));
+		proxyType = addEntry(new StringEntry("proxyType","none","none","http","https","socks"));
+		proxyHost = addEntry(new StringEntry("proxyHost","",true));
+		proxyPort = addEntry(new IntegerEntry("proxyPort",0));
+		proxyUser = addEntry(new StringEntry("proxyUser","",true));
+		proxyPassword = addEntry(new StringEntry("proxyPassword","",true));
+		useSystemProxy = addEntry(new BooleanEntry("useSystemProxy",false));
 	}
 
 	@Override public String getSectionKey() {
