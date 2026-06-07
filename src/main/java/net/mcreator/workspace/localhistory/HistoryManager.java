@@ -81,8 +81,6 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	private void checkpoint(boolean important, String checkpointName, Object... parameters) {
-		important = true; // TODO: for testing
-
 		pendingEvents.add(
 				new HistoryEvent(L10N.t("local_history.checkpoint." + checkpointName, parameters), important));
 
@@ -97,7 +95,7 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	private void flushPendingEventsIntoCheckpoint() {
-		if (pendingEvents.isEmpty()) {
+		if (backend == null || pendingEvents.isEmpty()) {
 			return;
 		}
 
@@ -112,7 +110,10 @@ public final class HistoryManager implements AutoCloseable {
 					eventsToCommit.size() - 1);
 		}
 
-		saveCheckpoint(commitMessage, commitResult -> {
+		// Make sure workspace is written to file before commiting so other files are in-sync with workspace
+		workspace.getFileManager().saveWorkspaceDirectlyAndWait();
+
+		backend.saveCheckpoint(commitMessage, commitResult -> {
 			if (commitResult == GitHistoryBackend.CommitResult.SUCCESS) {
 				lastCheckpointMillis = System.currentTimeMillis();
 				if (checkpointListener != null) {
@@ -128,24 +129,14 @@ public final class HistoryManager implements AutoCloseable {
 		});
 	}
 
-	private void saveCheckpoint(String eventName, Consumer<GitHistoryBackend.CommitResult> didCommitCallback) {
-		if (backend == null) {
-			didCommitCallback.accept(GitHistoryBackend.CommitResult.SKIPPED_EXCEPTION);
-			return;
-		}
-
-		// Make sure workspace is written to file before commiting so other files are in-sync with workspace
-		workspace.getFileManager().saveWorkspaceDirectlyAndWait();
-
-		backend.saveCheckpoint(eventName, didCommitCallback);
-	}
-
 	public void setCheckpointListener(@Nullable Runnable listener) {
 		checkpointListener = listener;
 	}
 
 	public void setBusyListener(@Nullable Consumer<Boolean> listener) {
 		busyListener = listener;
+		if (listener != null)
+			listener.accept(backend != null && backend.isBusy());
 	}
 
 	public void getCheckpoints(Consumer<List<HistoryCheckpoint>> callback) {

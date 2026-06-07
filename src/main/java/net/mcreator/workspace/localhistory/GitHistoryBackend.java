@@ -99,6 +99,7 @@ class GitHistoryBackend implements AutoCloseable {
 		config.save();
 
 		configureIgnores(historyDatabaseDir);
+		removeStaleLockFiles(historyDatabaseDir);
 
 		if (isNewRepo || repository.resolve("HEAD") == null) {
 			runGitTask(() -> {
@@ -117,7 +118,7 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	void saveCheckpoint(String commitMessage, Consumer<CommitResult> didCommitCallback) {
-		if (isBusyFlag) {
+		if (isBusy()) {
 			didCommitCallback.accept(CommitResult.SKIPPED_GIT_BUSY);
 			LOG.debug("Skipped saving local history checkpoint '{}' because Git thread is busy", commitMessage);
 			return;
@@ -126,7 +127,6 @@ class GitHistoryBackend implements AutoCloseable {
 		runGitTask(() -> {
 			try {
 				long startTime = System.currentTimeMillis();
-				LOG.debug("Saving local history checkpoint '{}'", commitMessage);
 
 				Repository repo = git.getRepository();
 				IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
@@ -139,8 +139,8 @@ class GitHistoryBackend implements AutoCloseable {
 
 				stageChanges(diff);
 
-				RevCommit commit = git.commit().setMessage(commitMessage).call();
-				LOG.debug("Saved local history checkpoint '{}' as {} in {} ms", commitMessage, commit.getName(),
+				git.commit().setMessage(commitMessage).call();
+				LOG.debug("Saved local history checkpoint '{}' in {} ms", commitMessage,
 						System.currentTimeMillis() - startTime);
 				didCommitCallback.accept(CommitResult.SUCCESS);
 			} catch (Exception e) {
@@ -172,7 +172,7 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
-		if (isBusyFlag)
+		if (isBusy())
 			throw new LocalHistoryException(L10N.t("local_history.revert_failed_busy"));
 
 		try {
@@ -202,12 +202,6 @@ class GitHistoryBackend implements AutoCloseable {
 				} finally {
 					setBusy(false);
 				}
-
-				// Immediately save this reverted state as a new event on the timeline
-				HistoryCheckpoint checkpoint = new HistoryCheckpoint(targetCommit.getName(),
-						targetCommit.getFullMessage(), targetCommit.getCommitTime(), List::of);
-				historyManager.importantCheckpoint("revert", checkpoint.getTimestampString());
-
 				return null;
 			}).get();
 		} catch (ExecutionException e) {
@@ -250,6 +244,18 @@ class GitHistoryBackend implements AutoCloseable {
 			} catch (InterruptedException e) {
 				executor.shutdownNow();
 			}
+		}
+	}
+
+	private static void removeStaleLockFiles(File gitDir) {
+		File indexLock = new File(gitDir, "index.lock");
+		if (!indexLock.isFile()) {
+			return;
+		}
+
+		LOG.warn("Removing stale local history index lock");
+		if (!indexLock.delete()) {
+			LOG.warn("Could not remove stale local history index lock: {}", indexLock.getAbsolutePath());
 		}
 	}
 
@@ -342,6 +348,10 @@ class GitHistoryBackend implements AutoCloseable {
 				setBusy(false);
 			}
 		});
+	}
+
+	boolean isBusy() {
+		return isBusyFlag;
 	}
 
 	enum CommitResult {

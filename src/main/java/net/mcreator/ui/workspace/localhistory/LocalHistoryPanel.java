@@ -112,7 +112,7 @@ public class LocalHistoryPanel extends JPanel {
 		diffContent.add(PanelUtils.totalCenterInPanel(noChangesLabel), "empty");
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, checkpointScroll, diffContent);
-		splitPane.setDividerLocation((int) (mcreator.getHeight() * 0.55));
+		splitPane.setDividerLocation((int) (mcreator.getHeight() * 0.65));
 		splitPane.setResizeWeight(1);
 		splitPane.setOpaque(false);
 
@@ -274,6 +274,10 @@ public class LocalHistoryPanel extends JPanel {
 		try {
 			mcreator.getWorkspace().getHistoryManager().revertToCheckpoint(selected);
 			mcreator.reloadWorkspaceFromFileSystem();
+
+			// Save this reverted state (after reloadWorkspaceFromFileSystem!) as a new event on the timeline
+			mcreator.getHistoryManager().importantCheckpoint("revert", selected.getTimestampString());
+
 			this.reloadContent();
 		} catch (LocalHistoryException e) {
 			JOptionPane.showMessageDialog(mcreator,
