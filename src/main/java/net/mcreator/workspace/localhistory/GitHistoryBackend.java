@@ -57,13 +57,10 @@ class GitHistoryBackend implements AutoCloseable {
 	});
 
 	private final Git git;
-	private final HistoryManager historyManager;
 
 	private Consumer<Boolean> busyListener = null;
 
 	GitHistoryBackend(HistoryManager historyManager) throws IOException {
-		this.historyManager = historyManager;
-
 		File workspaceRoot = historyManager.getWorkspaceFolder();
 		File historyDatabaseDir = HistoryManager.getLocalHistoryRoot(workspaceRoot);
 
@@ -152,7 +149,7 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	void getCheckpoints(Consumer<List<HistoryCheckpoint>> callback) {
-		runGitTask(() -> {
+		if (runGitTask(() -> {
 			try {
 				if (git.getRepository().resolve("HEAD") == null) {
 					callback.accept(List.of());
@@ -169,7 +166,9 @@ class GitHistoryBackend implements AutoCloseable {
 				LOG.warn("Failed to retrieve local history checkpoints", e);
 				callback.accept(List.of());
 			}
-		});
+		}) == null) {
+			callback.accept(List.of());
+		}
 	}
 
 	void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
@@ -233,11 +232,18 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	@Override public void close() {
+		closed = true;
 		try {
-			runGitTask(git::close).get();
+			executor.submit(() -> {
+				try {
+					git.close();
+				} catch (Exception e) {
+					LOG.warn("Failed to close local history: {}", e.getMessage());
+				}
+			}).get();
 		} catch (InterruptedException _) {
 		} catch (ExecutionException e) {
-			LOG.warn("Failed to close local history: {}", e.getCause().getMessage());
+			LOG.warn("Failed to execute local history close: {}", e.getCause().getMessage());
 		} finally {
 			executor.shutdown();
 			try {
@@ -329,6 +335,7 @@ class GitHistoryBackend implements AutoCloseable {
 		return diffList;
 	}
 
+	private volatile boolean closed = false;
 	private volatile boolean isBusyFlag = false;
 
 	private void setBusy(boolean busy) {
@@ -339,16 +346,24 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	private Future<?> runGitTask(Runnable task) {
-		return executor.submit(() -> {
-			setBusy(true);
-			try {
-				task.run();
-			} catch (Exception e) {
-				LOG.error("Uncaught exception in Git task", e);
-			} finally {
-				setBusy(false);
-			}
-		});
+		if (closed) {
+			return null;
+		}
+
+		try {
+			return executor.submit(() -> {
+				setBusy(true);
+				try {
+					task.run();
+				} catch (Exception e) {
+					LOG.error("Uncaught exception in Git task", e);
+				} finally {
+					setBusy(false);
+				}
+			});
+		} catch (RejectedExecutionException e) {
+			return null;
+		}
 	}
 
 	boolean isBusy() {

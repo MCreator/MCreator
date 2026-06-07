@@ -293,7 +293,8 @@ public class LocalHistoryPanel extends JPanel {
 	private void updateRevertButtonState() {
 		HistoryCheckpoint selected = checkpointList.getSelectedValue();
 		boolean gradleRunning = isGradleRunning();
-		revertCheckpoint.setEnabled(selected != null && !gradleRunning && this.isEnabled());
+		boolean isFirstCheckpoint = checkpointList.getSelectedIndex() == checkpointList.getModel().getSize() - 1;
+		revertCheckpoint.setEnabled(selected != null && !gradleRunning && this.isEnabled() && !isFirstCheckpoint);
 		if (selected != null && gradleRunning) {
 			revertCheckpoint.setToolTipText(L10N.t("action.gradle.disabled"));
 		} else {

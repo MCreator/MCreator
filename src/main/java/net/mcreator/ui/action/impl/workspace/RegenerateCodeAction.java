@@ -243,7 +243,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 			dial.hideDialog();
 
-			mcreator.getWorkspace().getHistoryManager().checkpoint("regenerate_code");
+			mcreator.getWorkspace().getHistoryManager().importantCheckpoint("regenerate_code");
 		}, "RegenerateCode");
 		thread.start();
 		dial.setVisible(true);
