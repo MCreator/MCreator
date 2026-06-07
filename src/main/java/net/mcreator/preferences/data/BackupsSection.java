@@ -38,7 +38,7 @@ public class BackupsSection extends PreferencesSection {
 		super(preferencesIdentifier);
 
 		enableLocalHistory = addEntry(new BooleanEntry("enableLocalHistory", true));
-		localHistorySaveInterval = addEntry(new IntegerEntry("localHistorySaveInterval", 5, 1, 60));
+		localHistorySaveInterval = addEntry(new IntegerEntry("localHistorySaveInterval", 10, 1, 60));
 		workspaceAutosaveInterval = addEntry(new IntegerEntry("workspaceAutosaveInterval", 30, 10, 2000));
 		automatedBackupInterval = addEntry(new IntegerEntry("automatedBackupInterval", 5, 3, 120));
 		numberOfBackupsToStore = addEntry(new IntegerEntry("numberOfBackupsToStore", 10, 2, 20));
