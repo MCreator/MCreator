@@ -471,6 +471,7 @@ public class TestWorkspaceDataProvider {
 				biome.fogColor = Color.yellow;
 				biome.grassColor = Color.green;
 				biome.foliageColor = Color.magenta;
+				biome.dryFoliageColor = Color.orange;
 				biome.waterColor = Color.blue;
 				biome.waterFogColor = Color.cyan;
 			}
