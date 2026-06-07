@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public final class HistoryManager implements AutoCloseable {
 
@@ -42,14 +43,10 @@ public final class HistoryManager implements AutoCloseable {
 	@Nullable private Runnable checkpointListener = null;
 	private long lastCheckpointMillis = System.currentTimeMillis();
 
-	private final File workspaceFolder;
+	private final Workspace workspace;
 
 	public HistoryManager(Workspace workspace) {
-		this(workspace.getWorkspaceFolder());
-	}
-
-	public HistoryManager(File workspaceFolder) {
-		this.workspaceFolder = workspaceFolder;
+		this.workspace = workspace;
 
 		if (PreferencesManager.PREFERENCES.backups.enableLocalHistory.get()) {
 			GitHistoryBackend backendToUse = null;
@@ -77,7 +74,9 @@ public final class HistoryManager implements AutoCloseable {
 		checkpoint(true, checkpointName, parameters);
 	}
 
-	private synchronized void checkpoint(boolean important, String checkpointName, Object... parameters) {
+	private void checkpoint(boolean important, String checkpointName, Object... parameters) {
+		important = true; // TODO: for testing
+
 		pendingEvents.add(
 				new HistoryEvent(L10N.t("local_history.checkpoint." + checkpointName, parameters), important));
 
@@ -96,53 +95,59 @@ public final class HistoryManager implements AutoCloseable {
 			return;
 		}
 
+		List<HistoryEvent> eventsToCommit = new ArrayList<>(pendingEvents);
+
 		String commitMessage;
-		if (pendingEvents.size() == 1) {
-			commitMessage = pendingEvents.getFirst().eventName();
+		if (eventsToCommit.size() == 1) {
+			commitMessage = eventsToCommit.getFirst().eventName();
 		} else {
 			commitMessage = L10N.t("local_history.checkpoint.and_n_more",
-					pendingEvents.stream().limit(1).map(HistoryEvent::eventName).findFirst().orElse(""),
-					pendingEvents.size() - 1);
+					eventsToCommit.stream().limit(1).map(HistoryEvent::eventName).findFirst().orElse(""),
+					eventsToCommit.size() - 1);
 		}
 
-		if (saveCheckpoint(commitMessage)) {
-			lastCheckpointMillis = System.currentTimeMillis();
-			notifyCheckpointListeners();
-		} else {
-			LOG.debug("Checkpoint '{}' was not saved as there were no changes to commit", commitMessage);
-		}
+		saveCheckpoint(commitMessage, commitResult -> {
+			if (commitResult == GitHistoryBackend.CommitResult.SUCCESS) {
+				lastCheckpointMillis = System.currentTimeMillis();
+				notifyCheckpointListeners();
+			}
 
-		// Clear events in every case, as even if saveCheckpoint returned false,
-		// this means no changes were needed to be committed, meaning events did not change any files
-		pendingEvents.clear();
+			// Clear events in every case (except if git was busy), as even if saveCheckpoint returned false,
+			// this means no changes were needed to be committed, meaning events did not change any files
+			if (commitResult != GitHistoryBackend.CommitResult.SKIPPED_GIT_BUSY) {
+				pendingEvents.removeAll(eventsToCommit);
+			}
+		});
 	}
 
-	private boolean saveCheckpoint(String eventName) {
+	private void saveCheckpoint(String eventName, Consumer<GitHistoryBackend.CommitResult> didCommitCallback) {
 		if (backend == null) {
-			return false;
+			didCommitCallback.accept(GitHistoryBackend.CommitResult.SKIPPED_EXCEPTION);
+			return;
 		}
 
-		return backend.saveCheckpoint(eventName);
+		// Make sure workspace is written to file before commiting so other files are in-sync with workspace
+		workspace.getFileManager().saveWorkspaceDirectlyAndWait();
+
+		backend.saveCheckpoint(eventName, didCommitCallback);
 	}
 
 	public void setCheckpointListener(@Nullable Runnable listener) {
 		checkpointListener = listener;
 	}
 
-	public List<HistoryCheckpoint> getCheckpoints() {
+	public void getCheckpoints(Consumer<List<HistoryCheckpoint>> callback) {
 		if (backend == null) {
-			return List.of();
+			callback.accept(List.of());
+			return;
 		}
 
-		return backend.getCheckpoints();
+		backend.getCheckpoints(callback);
 	}
 
-	public boolean optimizeStorage() {
-		if (backend == null) {
-			return false;
-		}
-
-		return backend.optimizeStorage();
+	public void optimizeStorage() {
+		if (backend != null)
+			backend.optimizeStorage();
 	}
 
 	public void revertToCheckpoint(HistoryCheckpoint checkpoint) throws LocalHistoryException {
@@ -153,8 +158,8 @@ public final class HistoryManager implements AutoCloseable {
 		backend.revertToCheckpoint(checkpoint.hash());
 	}
 
-	public File getWorkspaceFolder() {
-		return workspaceFolder;
+	File getWorkspaceFolder() {
+		return workspace.getWorkspaceFolder();
 	}
 
 	private void notifyCheckpointListeners() {

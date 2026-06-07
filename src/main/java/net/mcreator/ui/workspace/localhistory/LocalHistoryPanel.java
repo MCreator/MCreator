@@ -33,8 +33,6 @@ import net.mcreator.util.StringUtils;
 import net.mcreator.util.math.TimeUtils;
 import net.mcreator.workspace.localhistory.HistoryCheckpoint;
 import net.mcreator.workspace.localhistory.LocalHistoryException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -150,14 +148,9 @@ public class LocalHistoryPanel extends JPanel {
 		moreOptionsMenu.add(optimizeStorage);
 
 		optimizeStorage.addActionListener(_ -> {
-			boolean success = mcreator.getWorkspace().getHistoryManager().optimizeStorage();
-			if (success) {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_success.message"),
-						L10N.t("dialog.local_history.optimize.title"), JOptionPane.INFORMATION_MESSAGE);
-			} else {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_failed.message"),
-						L10N.t("dialog.local_history.optimize.title"), JOptionPane.WARNING_MESSAGE);
-			}
+			mcreator.getWorkspace().getHistoryManager().optimizeStorage();
+			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_success.message"),
+					L10N.t("dialog.local_history.optimize.title"), JOptionPane.INFORMATION_MESSAGE);
 		});
 
 		resetHistory.addActionListener(_ -> {
@@ -207,7 +200,12 @@ public class LocalHistoryPanel extends JPanel {
 			}
 		}
 
-		List<HistoryCheckpoint> checkpoints = mcreator.getWorkspace().getHistoryManager().getCheckpoints();
+		@Nullable final String hashToReselect = selectedHash;
+		mcreator.getWorkspace().getHistoryManager().getCheckpoints(
+				checkpoints -> SwingUtilities.invokeLater(() -> applyCheckpoints(checkpoints, hashToReselect)));
+	}
+
+	private void applyCheckpoints(List<HistoryCheckpoint> checkpoints, @Nullable String selectedHash) {
 		checkpointList.setListData(checkpoints.toArray(HistoryCheckpoint[]::new));
 
 		resetHistory.setEnabled(!checkpoints.isEmpty());
@@ -263,7 +261,8 @@ public class LocalHistoryPanel extends JPanel {
 			mcreator.reloadWorkspaceFromFileSystem();
 			this.reloadContent();
 		} catch (LocalHistoryException e) {
-			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.revert_failed.message"),
+			JOptionPane.showMessageDialog(mcreator,
+					L10N.t("dialog.local_history.revert_failed.message", e.getLocalizedMessage()),
 					L10N.t("dialog.local_history.revert"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
