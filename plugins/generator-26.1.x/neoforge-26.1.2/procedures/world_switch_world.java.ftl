@@ -1,11 +1,12 @@
 if (world instanceof ServerLevel _origLevel) {
-	LevelAccessor _worldorig = world;
-
-	world = _origLevel.getServer().getLevel(${generator.map(field$dimension, "dimensions")});
-
-	if (world != null) {
-		${statement$worldstatements}
+	LevelAccessor _switchworld${cbi} = _origLevel.getServer().getLevel(${generator.map(field$dimension, "dimensions")});
+	if (_switchworld${cbi} != null) {
+		worldSwitch${cbi}(@procedureArgs@);
 	}
-
-	world = _worldorig;
 }
+
+<@addAdditionalCode>
+private static void worldSwitch${cbi}(@procedureSignature@) {
+	${statement$worldstatements}
+}
+</@addAdditionalCode>
