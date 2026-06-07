@@ -567,10 +567,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		} else {
 			modElement.reloadElementIcon();
 			modElement.getMCItems().forEach(mcItem -> mcItem.getIcon().getImage().flush()); // update MCItem icons
-
-			if (changed) {
-				mcreator.getWorkspace().getHistoryManager().checkpoint("mod_element_edited", modElement.getName());
-			}
 		}
 
 		// make sure workspace will also be saved
@@ -607,6 +603,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
 				modElement.getType().getRegistryName());
+
+		if (changed && editingMode) {
+			mcreator.getWorkspace().getHistoryManager().checkpoint("mod_element_edited", modElement.getName());
+		}
 
 		changed = false;
 
