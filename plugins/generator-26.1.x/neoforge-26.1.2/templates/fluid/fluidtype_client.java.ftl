@@ -49,7 +49,7 @@ package ${package}.client.fluid;
 						<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 						-12012264
 						<#elseif data.tintType == "Dry foliage">
-						-10732494
+						10710342
 						<#elseif data.tintType == "Birch foliage">
 						-8345771
 						<#elseif data.tintType == "Spruce foliage">
