@@ -103,8 +103,12 @@ class GitHistoryBackend implements AutoCloseable {
 				try {
 					long startTime = System.currentTimeMillis();
 					LOG.debug("Initial local history checkpoint creation started");
-					git.add().addFilepattern(".").call();
+
+					Repository repo = git.getRepository();
+					IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
+					stageChanges(diff);
 					git.commit().setMessage(L10N.t("local_history.checkpoint.initial")).call();
+
 					LOG.debug("Initialized local history repository in {} ms", System.currentTimeMillis() - startTime);
 				} catch (Exception e) {
 					LOG.warn("Failed to save initial checkpoint", e);
