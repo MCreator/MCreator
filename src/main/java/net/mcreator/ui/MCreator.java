@@ -141,8 +141,7 @@ public abstract class MCreator extends MCreatorFrame {
 				workspaceFileBrowser);
 
 		if (workspace.getHistoryManager().isAvailable()) {
-			leftDockRegion.addDock(DOCK_LOCAL_HISTORY, 280, L10N.t("dock.local_history"),
-					UIRES.get("16px.dock_history"), new LocalHistoryPanel(this));
+			leftDockRegion.addDock(DOCK_LOCAL_HISTORY, 280, createLocalHistoryButton(), new LocalHistoryPanel(this));
 		}
 
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
@@ -206,6 +205,30 @@ public abstract class MCreator extends MCreatorFrame {
 			}
 		});
 		return consoleButton;
+	}
+
+	@Nonnull private JToggleButton createLocalHistoryButton() {
+		JToggleButton localHistoryButton = new JToggleButton(UIRES.get("16px.dock_history")) {
+
+			@Override protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+
+				Color dotColor = null;
+				if (workspace.getHistoryManager().isBusy()) {
+					dotColor = new Color(0x739df0);
+				}
+
+				if (dotColor != null) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+					g.setColor(dotColor);
+					g.fillOval(getWidth() - 11, 5, 7, 7);
+				}
+			}
+		};
+		localHistoryButton.setToolTipText(L10N.t("dock.local_history"));
+		return localHistoryButton;
 	}
 
 	protected abstract MainMenuBar createMenuBar();
@@ -305,6 +328,11 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 
 		if (safetoexit) {
+			if (workspace.getHistoryManager().isBusy()) {
+				JOptionPane.showMessageDialog(this, L10N.t("action.workspace.close_while_history_busy_message"),
+						L10N.t("action.workspace.close_while_history_busy_title"), JOptionPane.WARNING_MESSAGE);
+			}
+
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 

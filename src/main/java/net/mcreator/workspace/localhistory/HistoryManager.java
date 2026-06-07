@@ -169,6 +169,10 @@ public final class HistoryManager implements AutoCloseable {
 		return backend != null;
 	}
 
+	public boolean isBusy() {
+		return backend != null && backend.isBusy();
+	}
+
 	@Override public synchronized void close() {
 		// For now, we don't flush on close for faster workspace close
 		//flushPendingEventsIntoCheckpoint();

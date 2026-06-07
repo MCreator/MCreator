@@ -202,6 +202,7 @@ public class LocalHistoryPanel extends JPanel {
 				.setCheckpointListener(() -> SwingUtilities.invokeLater(() -> reloadContent(true)));
 		mcreator.getWorkspace().getHistoryManager().setBusyListener(busy -> SwingUtilities.invokeLater(() -> {
 			setEnabled(!busy);
+			mcreator.getLeftDockRegion().getDockStrip().repaint();
 		}));
 	}
 
