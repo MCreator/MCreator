@@ -43,14 +43,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.*;
 
+// TODO: make this whole backend async in single thread executor, except for indexdiff that will run in another thread
+// TODO: make state enum that will tell UI what to show and what to enable - initial repo creation also async
+// TODO: if any important tasks running, close needs to wait
+// TODO: support staging files with file tracking so we are sure files are not missed?
 class GitHistoryBackend implements AutoCloseable {
 
 	private static final Logger LOG = LogManager.getLogger(GitHistoryBackend.class);
 
 	private final Git git;
-	private final ReentrantLock lock = new ReentrantLock();
+	private final ExecutorService executor = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable);
+		thread.setName("GitHistoryBackend");
+		thread.setUncaughtExceptionHandler((_, e) -> LOG.error(e));
+		return thread;
+	});
 
 	private final HistoryManager historyManager;
 
@@ -146,33 +155,31 @@ class GitHistoryBackend implements AutoCloseable {
 	 * @return true if the commit was successful, false if no changes to commit
 	 */
 	boolean saveCheckpoint(String commitMessage, boolean initialCommit) {
-		lock.lock();
-		try {
-			if (initialCommit) {
-				// Empty index: one tree walk to stage everything
-				git.add().addFilepattern(".").call();
-			} else {
-				Repository repo = git.getRepository();
+		return run(() -> {
+			try {
+				if (initialCommit) {
+					// Empty index: one tree walk to stage everything
+					git.add().addFilepattern(".").call();
+				} else {
+					Repository repo = git.getRepository();
 
-				// TODO: for large workspaces, this takes tens of seconds even if only one file is changed
-				IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
-				if (!diff.diff()) {
-					return false;
+					// TODO: for large workspaces, this takes tens of seconds even if only one file is changed
+					IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
+					if (!diff.diff()) {
+						return false;
+					}
+
+					stageChanges(diff);
 				}
 
-				stageChanges(diff);
+				RevCommit commit = git.commit().setMessage(commitMessage).call();
+				LOG.debug("Saved local history checkpoint '{}' as {}", commitMessage, commit.getName());
+				return true;
+			} catch (GitAPIException | IOException e) {
+				LOG.warn("Failed to save local history checkpoint: {}", e.getMessage());
+				return false;
 			}
-
-			RevCommit commit = git.commit().setMessage(commitMessage).call();
-			LOG.debug("Saved local history checkpoint '{}' as {}", commitMessage, commit.getName());
-		} catch (GitAPIException | IOException e) {
-			LOG.warn("Failed to save local history checkpoint: {}", e.getMessage());
-			return false;
-		} finally {
-			lock.unlock();
-		}
-
-		return true;
+		});
 	}
 
 	private void stageChanges(IndexDiff diff) throws GitAPIException {
@@ -196,21 +203,18 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	List<HistoryCheckpoint> getCheckpoints() {
-		List<HistoryCheckpoint> history = new ArrayList<>();
-
-		lock.lock();
-		try {
-			for (RevCommit commit : git.log().call()) {
-				history.add(new HistoryCheckpoint(commit.getName(), commit.getFullMessage(), commit.getCommitTime(),
-						() -> getDiffEntries(commit)));
+		return run(() -> {
+			List<HistoryCheckpoint> history = new ArrayList<>();
+			try {
+				for (RevCommit commit : git.log().call()) {
+					history.add(new HistoryCheckpoint(commit.getName(), commit.getFullMessage(), commit.getCommitTime(),
+							() -> getDiffEntries(commit)));
+				}
+			} catch (GitAPIException e) {
+				LOG.warn("Failed to retrieve local history checkpoints", e);
 			}
-		} catch (GitAPIException e) {
-			LOG.warn("Failed to retrieve local history checkpoints", e);
-		} finally {
-			lock.unlock();
-		}
-
-		return history;
+			return history;
+		});
 	}
 
 	private List<HistoryCheckpoint.DiffEntry> getDiffEntries(RevCommit commit) {
@@ -246,59 +250,91 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
-		// TODO: test how slow revert is for large workspaces, especially the UI part in MCreator.java
-		lock.lock();
-		try (RevWalk walk = new RevWalk(git.getRepository())) {
-			// Resolve the target commit
-			ObjectId targetId = git.getRepository().resolve(checkpointHash);
-			RevCommit targetCommit = walk.parseCommit(targetId);
+		try {
+			executor.submit((Callable<Void>) () -> {
+				try (RevWalk walk = new RevWalk(git.getRepository())) {
+					// Resolve the target commit
+					ObjectId targetId = git.getRepository().resolve(checkpointHash);
+					RevCommit targetCommit = walk.parseCommit(targetId);
 
-			// Safe, exact snapshot restore. Replaces working tree and index exactly.
-			DirCache dirc = git.getRepository().lockDirCache();
-			try {
-				DirCacheCheckout dco = new DirCacheCheckout(git.getRepository(), dirc, targetCommit.getTree());
-				dco.setFailOnConflict(false);
-				dco.checkout();
-			} finally {
-				dirc.unlock();
+					// Safe, exact snapshot restore. Replaces working tree and index exactly.
+					DirCache dirc = git.getRepository().lockDirCache();
+					try {
+						DirCacheCheckout dco = new DirCacheCheckout(git.getRepository(), dirc, targetCommit.getTree());
+						dco.setFailOnConflict(false);
+						dco.checkout();
+					} finally {
+						dirc.unlock();
+					}
+
+					// Wipe out any untracked files or directories that did not exist in this checkpoint
+					// to guarantee a strict 1:1 workspace reset.
+					git.clean().setCleanDirectories(true).call();
+
+					// Immediately save this reverted state as a new event on the timeline
+					HistoryCheckpoint checkpoint = new HistoryCheckpoint(targetCommit.getName(),
+							targetCommit.getFullMessage(), targetCommit.getCommitTime(), List::of);
+					historyManager.importantCheckpoint("revert", checkpoint.getTimestampString());
+				} catch (Exception e) {
+					throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, e);
+				}
+				return null;
+			}).get();
+		} catch (ExecutionException e) {
+			Throwable cause = e.getCause();
+			if (cause instanceof LocalHistoryException localHistoryException) {
+				throw localHistoryException;
 			}
-
-			// Wipe out any untracked files or directories that did not exist in this checkpoint
-			// to guarantee a strict 1:1 workspace reset.
-			git.clean().setCleanDirectories(true).call();
-
-			// Immediately save this reverted state as a new event on the timeline
-			HistoryCheckpoint checkpoint = new HistoryCheckpoint(targetCommit.getName(), targetCommit.getFullMessage(),
-					targetCommit.getCommitTime(), List::of);
-			historyManager.importantCheckpoint("revert", checkpoint.getTimestampString());
-		} catch (Exception e) {
-			throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, e);
-		} finally {
-			lock.unlock();
+			throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, cause);
+		} catch (InterruptedException _) {
 		}
 	}
 
 	@Override public void close() {
-		lock.lock();
 		try {
-			git.close();
+			executor.submit(git::close).get();
+		} catch (InterruptedException _) {
+		} catch (ExecutionException e) {
+			LOG.warn("Failed to close local history: {}", e.getCause().getMessage());
 		} finally {
-			lock.unlock();
+			executor.shutdown();
+			try {
+				executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+			} catch (InterruptedException e) {
+				executor.shutdownNow();
+			}
 		}
 	}
 
 	public boolean optimizeStorage() {
-		lock.lock();
+		return run(() -> {
+			try {
+				git.gc().call();
+				LOG.debug("Optimized local history storage");
+				return true;
+			} catch (GitAPIException e) {
+				LOG.warn("Failed to optimize local history storage: {}", e.getMessage());
+				return false;
+			}
+		});
+	}
+
+	private <T> T run(Callable<T> task) {
 		try {
-			git.gc().call();
-			LOG.debug("Optimized local history storage");
-			return true;
-		} catch (GitAPIException e) {
-			LOG.warn("Failed to optimize local history storage: {}", e.getMessage());
-		} finally {
-			lock.unlock();
+			return executor.submit(task).get();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IllegalStateException("Interrupted while waiting for git history operation", e);
+		} catch (ExecutionException e) {
+			Throwable cause = e.getCause();
+			if (cause instanceof RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			if (cause instanceof Error error) {
+				throw error;
+			}
+			throw new IllegalStateException(cause);
 		}
-		return false;
 	}
 
 }
