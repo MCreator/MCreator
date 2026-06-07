@@ -44,7 +44,6 @@ public class ProxyUtils {
 			properties.setProperty("java.net.useSystemProxies", "true");
 			return properties;
 		} else {
-			LOGGER.debug("Current proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
 			if ("none".equals(type)) {
 				return properties;
 			} else if (isHttpTypeProxy(type)) {
@@ -55,6 +54,7 @@ public class ProxyUtils {
 				properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
 				properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
 			}
+			LOGGER.debug("Current proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
 		}
 
 		configurePasswordAndUserProperties(properties, type, proxySection.proxyUser.get(),
