@@ -144,11 +144,14 @@ public class LocalHistoryPanel extends JPanel {
 		topBar.add(Box.createHorizontalGlue());
 
 		JPopupMenu moreOptionsMenu = new JPopupMenu();
+		JMenuItem manualCheckpoint = new JMenuItem(L10N.t("dialog.local_history.manual_checkpoint"));
 		resetHistory = new JMenuItem(L10N.t("dialog.local_history.reset"));
 		JMenuItem optimizeStorage = new JMenuItem(L10N.t("dialog.local_history.optimize"));
 
-		// TODO: add option for manual checkpoint
+		manualCheckpoint.addActionListener(_ -> mcreator.getWorkspace().getHistoryManager().importantCheckpoint("manual"));
 
+		moreOptionsMenu.add(manualCheckpoint);
+		moreOptionsMenu.addSeparator();
 		moreOptionsMenu.add(resetHistory);
 		moreOptionsMenu.add(optimizeStorage);
 
