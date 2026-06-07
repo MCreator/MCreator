@@ -90,13 +90,13 @@ public class PreferencesDialog extends MCreatorDialog {
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
 		JButton reset = L10N.button("dialog.preferences.restore_defaults");
-		reset.addActionListener(actionEvent -> {
+		reset.addActionListener(_ -> {
 			int option = JOptionPane.showConfirmDialog(null, L10N.t("dialog.preferences.restore_defaults_confirmation"),
 					L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null);
 			if (option == JOptionPane.YES_OPTION) {
 				PreferencesManager.getPreferencesRegistry()
-						.forEach((identifier, entries) -> PreferencesManager.resetFromList(entries));
+						.forEach((_, entries) -> PreferencesManager.resetFromList(entries));
 
 				dispose();
 				new PreferencesDialog(parent, sections.getSelectedValue());
@@ -115,7 +115,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		add("South", PanelUtils.westAndEastElement(buttonsleft, buttons));
 
 		sections.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		sections.addListSelectionListener(e -> preferencesLayout.show(preferences, sections.getSelectedValue()));
+		sections.addListSelectionListener(_ -> preferencesLayout.show(preferences, sections.getSelectedValue()));
 
 		loadSections();
 
@@ -126,17 +126,17 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		}
 
-		ok.addActionListener(event -> {
+		ok.addActionListener(_ -> {
 			savePreferences();
 			dispose();
 		});
 
-		apply.addActionListener(event -> {
+		apply.addActionListener(_ -> {
 			savePreferences();
 			apply.setEnabled(false);
 		});
 
-		cancel.addActionListener(event -> dispose());
+		cancel.addActionListener(_ -> dispose());
 
 		pack();
 		setSize(Math.max(960, getBounds().width), 570);
@@ -147,7 +147,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	private void loadSections() {
 		// Add preference entries
 		PreferencesManager.getPreferencesRegistry().forEach(
-				(identifier, preferences) -> preferences.stream().filter(e -> e.getSection().isVisible()).toList()
+				(_, preferences) -> preferences.stream().filter(e -> e.getSection().isVisible()).toList()
 						.forEach(entry -> {
 							if (!sectionPanels.containsKey(entry.getSectionKey()))
 								createPreferenceSection(entry.getSectionKey());
@@ -197,7 +197,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void savePreferences() {
-		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> preferences.forEach(entry -> {
+		PreferencesManager.getPreferencesRegistry().forEach((_, preferences) -> preferences.forEach(entry -> {
 			if (entries.containsKey(entry))
 				entry.setValueFromComponent(entries.get(entry));
 		}));
@@ -211,12 +211,21 @@ public class PreferencesDialog extends MCreatorDialog {
 			description = "";
 
 		JComponent label = L10N.label("dialog.preferences.entry_description", name, description);
-		JComponent component = entry.getComponent(parent, e -> markChanged());
-		if (component != null)
-			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.pullElementUp(component)),
+		JComponent component = entry.getComponent(parent, _ -> markChanged());
+		if (component != null) {
+			JPanel wrap = new JPanel(new BorderLayout()) {
+				@Override public Dimension getPreferredSize() {
+					Dimension retval = super.getPreferredSize();
+					retval.height = 32;
+					return retval;
+				}
+			};
+			wrap.add("Center", component);
+			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.pullElementUp(wrap)),
 					getConstraints());
-		else
+		} else {
 			placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), getConstraints());
+		}
 		return component;
 	}
 
