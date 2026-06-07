@@ -38,7 +38,6 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,14 +45,11 @@ import java.util.List;
 import java.util.concurrent.*;
 
 // TODO: make this whole backend async in single thread executor, except for indexdiff that will run in another thread
-// TODO: make state enum that will tell UI what to show and what to enable - initial repo creation also async
-// TODO: if any important tasks running, close needs to wait
 // TODO: support staging files with file tracking so we are sure files are not missed?
 class GitHistoryBackend implements AutoCloseable {
 
 	private static final Logger LOG = LogManager.getLogger(GitHistoryBackend.class);
 
-	private final Git git;
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("GitHistoryBackend");
@@ -61,66 +57,55 @@ class GitHistoryBackend implements AutoCloseable {
 		return thread;
 	});
 
+	private final Git git;
+
 	private final HistoryManager historyManager;
 
-	private GitHistoryBackend(HistoryManager historyManager, Git git) {
-		this.git = git;
+	GitHistoryBackend(HistoryManager historyManager) throws IOException {
 		this.historyManager = historyManager;
-	}
 
-	@Nullable static GitHistoryBackend tryCreate(HistoryManager historyManager) {
 		File workspaceRoot = historyManager.getWorkspaceFolder();
-
 		File historyDatabaseDir = HistoryManager.getLocalHistoryRoot(workspaceRoot);
 
-		try {
-			boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").isFile();
+		boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").isFile();
 
-			if (isNewRepo) {
-				// Delete any potential stale files
-				if (historyDatabaseDir.isDirectory()) {
-					FileIO.deleteDir(historyDatabaseDir);
-				}
-
-				try (Repository initRepo = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setBare()
-						.build()) {
-
-					initRepo.create(true);
-
-					StoredConfig initConfig = initRepo.getConfig();
-					initConfig.setBoolean("core", null, "bare", false);
-					initConfig.setString("core", null, "worktree", workspaceRoot.getAbsolutePath());
-					initConfig.save();
-				}
+		if (isNewRepo) {
+			// Delete any potential stale files
+			if (historyDatabaseDir.isDirectory()) {
+				FileIO.deleteDir(historyDatabaseDir);
 			}
 
-			Repository repository = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setWorkTree(workspaceRoot)
-					.build();
+			try (Repository initRepo = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setBare()
+					.build()) {
+				initRepo.create(true);
 
-			Git git = new Git(repository);
-
-			StoredConfig config = git.getRepository().getConfig();
-			config.setBoolean("core", null, "autocrlf", false);
-			config.setBoolean("core", null, "filemode", false);
-			config.setString("core", null, "sha1Implementation", "jdkNative");
-			config.setInt("index", null, "version", 4);
-			config.setInt("pack", null, "threads", 0);
-			config.save();
-
-			configureIgnores(historyDatabaseDir);
-
-			GitHistoryBackend backend = new GitHistoryBackend(historyManager, git);
-			if (isNewRepo) {
-				backend.saveCheckpoint(L10N.t("local_history.checkpoint.initial"), true);
-				LOG.debug("Initialized local history repository");
-			} else {
-				LOG.debug("Loaded local history repository");
+				StoredConfig initConfig = initRepo.getConfig();
+				initConfig.setBoolean("core", null, "bare", false);
+				initConfig.setString("core", null, "worktree", workspaceRoot.getAbsolutePath());
+				initConfig.save();
 			}
-			return backend;
+		}
 
-		} catch (IOException e) {
-			LOG.warn("Failed to initialize local history: {}", e.getMessage());
-			return null;
+		Repository repository = new FileRepositoryBuilder().setGitDir(historyDatabaseDir).setWorkTree(workspaceRoot)
+				.build();
+
+		this.git = new Git(repository);
+
+		StoredConfig config = git.getRepository().getConfig();
+		config.setBoolean("core", null, "autocrlf", false);
+		config.setBoolean("core", null, "filemode", false);
+		config.setString("core", null, "sha1Implementation", "jdkNative");
+		config.setInt("index", null, "version", 4);
+		config.setInt("pack", null, "threads", 0);
+		config.save();
+
+		configureIgnores(historyDatabaseDir);
+
+		if (isNewRepo) {
+			saveCheckpoint(L10N.t("local_history.checkpoint.initial"), true);
+			LOG.debug("Initialized local history repository");
+		} else {
+			LOG.debug("Loaded local history repository");
 		}
 	}
 
@@ -306,7 +291,7 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 	}
 
-	public boolean optimizeStorage() {
+	boolean optimizeStorage() {
 		return run(() -> {
 			try {
 				git.gc().call();

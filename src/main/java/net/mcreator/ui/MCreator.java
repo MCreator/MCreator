@@ -140,7 +140,7 @@ public abstract class MCreator extends MCreatorFrame {
 		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);
 
-		if (PreferencesManager.PREFERENCES.backups.enableLocalHistory.get()) {
+		if (workspace.getHistoryManager().isAvailable()) {
 			leftDockRegion.addDock(DOCK_LOCAL_HISTORY, 280, L10N.t("dock.local_history"),
 					UIRES.get("16px.dock_history"), new LocalHistoryPanel(this));
 		}

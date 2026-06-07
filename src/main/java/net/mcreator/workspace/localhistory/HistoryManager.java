@@ -29,9 +29,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class HistoryManager implements AutoCloseable {
 
@@ -52,7 +52,13 @@ public final class HistoryManager implements AutoCloseable {
 		this.workspaceFolder = workspaceFolder;
 
 		if (PreferencesManager.PREFERENCES.backups.enableLocalHistory.get()) {
-			backend = GitHistoryBackend.tryCreate(this);
+			GitHistoryBackend backendToUse = null;
+			try {
+				backendToUse = new GitHistoryBackend(this);
+			} catch (IOException e) {
+				LOG.warn("Failed to initialize local history backend, local history will be disabled", e);
+			}
+			backend = backendToUse;
 		} else {
 			backend = null;
 		}
@@ -119,7 +125,7 @@ public final class HistoryManager implements AutoCloseable {
 		return backend.saveCheckpoint(eventName);
 	}
 
-	public void setCheckpointListener(Runnable listener) {
+	public void setCheckpointListener(@Nullable Runnable listener) {
 		checkpointListener = listener;
 	}
 
@@ -155,6 +161,10 @@ public final class HistoryManager implements AutoCloseable {
 		if (checkpointListener != null) {
 			SwingUtilities.invokeLater(checkpointListener);
 		}
+	}
+
+	public boolean isAvailable() {
+		return backend != null;
 	}
 
 	@Override public synchronized void close() {

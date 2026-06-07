@@ -45,8 +45,6 @@ import java.util.List;
 
 public class LocalHistoryPanel extends JPanel {
 
-	private static final Logger LOG = LogManager.getLogger(LocalHistoryPanel.class);
-
 	private final MCreator mcreator;
 
 	private final JList<HistoryCheckpoint> checkpointList;
@@ -200,8 +198,6 @@ public class LocalHistoryPanel extends JPanel {
 
 	private void reloadContent(boolean selectNewestCheckpoint) {
 		cancelDiffWorker();
-		diffModel.setRowCount(0);
-		diffCardLayout.show(diffContent, "empty");
 
 		@Nullable String selectedHash = null;
 		if (!selectNewestCheckpoint) {
@@ -219,6 +215,8 @@ public class LocalHistoryPanel extends JPanel {
 		revertCheckpoint.setEnabled(false);
 
 		if (checkpoints.isEmpty()) {
+			diffModel.setRowCount(0);
+			diffCardLayout.show(diffContent, "empty");
 			mainCardLayout.show(mainContent, "empty");
 			checkpointList.clearSelection();
 			return;
@@ -297,7 +295,6 @@ public class LocalHistoryPanel extends JPanel {
 			return;
 		}
 
-		diffModel.setRowCount(0);
 		diffCardLayout.show(diffContent, "table");
 
 		diffWorker = new SwingWorker<>() {
