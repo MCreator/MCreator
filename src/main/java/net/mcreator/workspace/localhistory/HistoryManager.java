@@ -158,7 +158,8 @@ public final class HistoryManager implements AutoCloseable {
 			throw new LocalHistoryException("");
 		}
 
-		backend.revertToCheckpoint(checkpoint.hash());
+		backend.revertToCheckpoint(checkpoint.hash(), changedPaths -> changedPaths.forEach(
+				path -> workspace.getGenerator().trackFile(new File(workspace.getWorkspaceFolder(), path))));
 	}
 
 	File getWorkspaceFolder() {
