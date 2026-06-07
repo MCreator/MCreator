@@ -41,7 +41,9 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
 
@@ -175,10 +177,7 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 	}
 
-	void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
-		if (isBusy())
-			throw new LocalHistoryException(L10N.t("local_history.revert_failed_busy"));
-
+	void revertToCheckpoint(String checkpointHash, Consumer<Set<String>> changedPathsCallback) throws LocalHistoryException {
 		try {
 			executor.submit(() -> {
 				setBusy(true);
@@ -188,19 +187,34 @@ class GitHistoryBackend implements AutoCloseable {
 					ObjectId targetId = git.getRepository().resolve(checkpointHash);
 					targetCommit = walk.parseCommit(targetId);
 
+					Set<String> changedPaths = new LinkedHashSet<>();
+
 					// Safe, exact snapshot restore. Replaces working tree and index exactly.
 					DirCache dirc = git.getRepository().lockDirCache();
 					try {
 						DirCacheCheckout dco = new DirCacheCheckout(git.getRepository(), dirc, targetCommit.getTree());
 						dco.setFailOnConflict(false);
-						dco.checkout();
+						if (!dco.checkout()) {
+							dco.getToBeDeleted().forEach(path -> {
+								changedPaths.add(path);
+								new File(git.getRepository().getWorkTree(), path).delete();
+							});
+						}
+
+						changedPaths.addAll(dco.getUpdated().keySet());
+						changedPaths.addAll(dco.getRemoved());
+
+						if (!changedPaths.isEmpty()) {
+							changedPathsCallback.accept(changedPaths);
+						}
 					} finally {
 						dirc.unlock();
 					}
 
 					// Wipe out any untracked files or directories that did not exist in this checkpoint
 					// to guarantee a strict 1:1 workspace reset.
-					git.clean().setCleanDirectories(true).call();
+					Set<String> cleaned = git.clean().setCleanDirectories(true).call();
+					changedPaths.addAll(cleaned);
 				} catch (Exception e) {
 					throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, e);
 				} finally {
