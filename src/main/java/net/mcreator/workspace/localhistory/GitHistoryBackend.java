@@ -356,6 +356,10 @@ class GitHistoryBackend implements AutoCloseable {
 
 		try {
 			return executor.submit(() -> {
+				if (closed) {
+					return;
+				}
+
 				setBusy(true);
 				try {
 					task.run();
