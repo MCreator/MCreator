@@ -2316,9 +2316,7 @@ public class TestWorkspaceDataProvider {
 		block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 		block.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-		block.tintType = getRandomString(random,
-				Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-						"Water", "Sky", "Fog", "Water fog"));
+		block.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "tintType"));
 		block.isItemTinted = _true;
 		block.renderType = emptyLists ?
 				new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12, 14 }[valueIndex] :
