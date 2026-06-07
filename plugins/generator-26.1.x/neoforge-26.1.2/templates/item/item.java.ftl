@@ -73,18 +73,18 @@ public class ${name}Item extends Item {
 					<#if data.isAlwaysEdible>.alwaysEdible()</#if>
 					.build()
 					<#if data.hasCustomFoodConsumable()>,
-						<#if data.animation == "eat">
+						<#if data.animation.getUnmappedValue() == "eat">
 						Consumables.defaultFood()
-						<#elseif data.animation == "drink">
+						<#elseif data.animation.getUnmappedValue() == "drink">
 						Consumables.defaultDrink()
 						<#else>
-						Consumables.defaultFood().animation(ItemUseAnimation.${data.animation?upper_case})
+						Consumables.defaultFood().animation(${data.animation})
 						</#if>
 						<#if data.useDuration != 32>
 						.consumeSeconds(${[data.useDuration, 0]?max / 20}F)
 						</#if>
 						.build()
-					<#elseif data.animation == "drink">,
+					<#elseif data.animation.getUnmappedValue() == "drink">,
 						Consumables.DEFAULT_DRINK
 					</#if>
 				)
@@ -103,7 +103,7 @@ public class ${name}Item extends Item {
 					<#list data.attributeModifiers as modifier>
 					.add(${modifier.attribute}, new AttributeModifier(
 							Identifier.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
-							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${modifier.equipmentSlot})
 					</#list>
 					.build())
 				</#if>
@@ -132,9 +132,9 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if !data.isFood && data.animation != "none"> <#-- If item is food, this is handled by the consumable component -->
+	<#if !data.isFood && data.animation.getUnmappedValue() != "none"> <#-- If item is food, this is handled by the consumable component -->
 	@Override public ItemUseAnimation getUseAnimation(ItemStack itemstack) {
-		return ItemUseAnimation.${data.animation?upper_case};
+		return ${data.animation};
 	}
 	</#if>
 

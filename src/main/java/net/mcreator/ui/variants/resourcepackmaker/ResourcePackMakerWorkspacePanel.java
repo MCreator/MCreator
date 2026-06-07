@@ -31,6 +31,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
+import net.mcreator.util.image.EmptyIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,12 +51,6 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 	ResourcePackMakerWorkspacePanel(MCreator mcreator) {
 		super(mcreator, new BorderLayout(3, 3));
 
-		JPanel topPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		topPan.setOpaque(false);
-		topPan.add(search);
-
-		add("North", topPan);
-
 		vanillaResourcePackEditor = new ResourcePackEditor(mcreator,
 				new ResourcePackInfo.Vanilla(mcreator.getWorkspace()), () -> search.getText().trim());
 
@@ -66,7 +61,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 
 		tabbedPane.addTab("", new JLabel());
 		tabbedPane.setTabComponentAt(0, new JLabel(UIRES.get("16px.add")));
-		tabbedPane.addChangeListener(e -> {
+		tabbedPane.addChangeListener(_ -> {
 			if (tabbedPane.getSelectedIndex() == 0) { // new texture mapping
 				tabbedPane.setSelectedIndex(1);
 				File[] files = FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".jar", ".zip" });
@@ -121,7 +116,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 					button.setContentAreaFilled(false);
 					button.setBorder(BorderFactory.createEmptyBorder());
 					button.setMargin(new Insets(0, 0, 0, 0));
-					button.addActionListener(e -> {
+					button.addActionListener(_ -> {
 						int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("mcreator.resourcepack.delete_pack"),
 								L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 								null);
@@ -154,6 +149,11 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 			for (ResourcePackEditor editor : modResourcePackEditors.values()) {
 				editor.reloadElements();
 			}
+
+			elementsCount.setText(
+					L10N.t("workspace.stats.current_workspace_rp", mcreator.getWorkspaceSettings().getModName(),
+							mcreator.getGenerator().getGeneratorName()));
+			elementsCount.setIcon(new EmptyIcon(0, 0));
 		}
 
 		@Override public void refilterElements() {

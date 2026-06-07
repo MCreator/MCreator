@@ -30,7 +30,7 @@
   },
   "anvil_cost": ${data.anvilCost},
   "slots": [
-    ${generator.map(data.supportedSlots, "equipmentslots", 1)}
+    ${data.supportedSlots.getMappedValue(1)}
   ],
   <#if incompatibleEnchantments?size == 1>
   "exclusive_set": "${generator.map(incompatibleEnchantments?first.getUnmappedValue(), "enchantments", 1)}"
@@ -39,8 +39,9 @@
     <#list incompatibleEnchantments as incompatibleEnchantment>"${generator.map(incompatibleEnchantment.getUnmappedValue(), "enchantments", 1)}"<#sep>,</#list>
   ]
   </#if>
-  <#if data.damageModifier != 0>,
+  <#if (data.damageModifier != 0) || (effectblocks?size != 0)>,
   "effects": {
+    <#if data.damageModifier != 0>
     "minecraft:damage_protection": [
       {
         "effect": {
@@ -52,7 +53,9 @@
           }
         }
       }
-    ]
+    ]<#if effectblocks?size != 0>,</#if>
+    </#if>
+    ${effectcode?remove_ending(",")}
   }
   </#if>
 }

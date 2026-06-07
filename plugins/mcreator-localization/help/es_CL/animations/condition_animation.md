@@ -1,11 +1,9 @@
-Cuando este procedimiento devuelva true, se iniciará la reproducción de la animación,
+Cuando el procedimiento regresa true, la reproducción de la animación comenzara, a menos que la animación ya se esté reproduciendo.
 
-Cuando este procedimiento devuelva false, la reproducción de la animación se detendrá.
+Cuando el procedimiento regrese false, la reproducción de la animación se detendrá.
 
-Si la conmutación se produce demasiado rápido, puede que no haya tiempo suficiente para que la animación empiece a reproducirse
-o para que se reinicie la reproducción.
+Si el interruptor ocurre muy rápido, puede que no haya suficiente tiempo para que la animación comience a reproducirse o la reproducción se reinicie.
 
-Si la animación no está configurada en bucle, se detendrá cuando llegue al final de la animación
-y la condición debe cambiar de verdadero a falso y de nuevo a verdadero para reiniciar la animación.
+Si la animación no está configurada para estar en bucle, se detendrá cuando llegue al final de la animación y la condición necesita ser colocada en true, después false y de vuelta a true para reiniciar la animación.
 
-Para las animaciones de caminar, este parámetro controla cuándo se reproduce la animación.
+Para animaciones de caminata, este parámetro controla cuando la animación está siendo reproducida.

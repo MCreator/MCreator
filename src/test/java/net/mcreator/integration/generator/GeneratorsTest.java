@@ -18,6 +18,7 @@
 
 package net.mcreator.integration.generator;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
@@ -25,12 +26,12 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorUtils;
+import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
@@ -209,6 +210,11 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace.get())));
 
 					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
+							.get(ModElementType.ENCHANTMENT) != GeneratorStats.CoverageStatus.NONE)
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing enchantment effect blocks",
+								() -> GTEnchantmentEffectBlocks.runTest(LOG, generator, random, workspace.get())));
+
+					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
 							.get(ModElementType.LIVINGENTITY) != GeneratorStats.CoverageStatus.NONE)
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
 								() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace.get())));
@@ -260,8 +266,15 @@ import static org.junit.jupiter.api.Assertions.*;
 	}
 
 	private void verifyGeneratedJSON(Workspace workspace) throws IOException {
-		try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
-			entries.filter(Files::isRegularFile).map(Path::toFile)
+		final Gson gson = new GsonBuilder().setStrictness(Strictness.STRICT).create();
+
+		final Pattern doubleColonPattern = Pattern.compile("\"([^\":]*:){2,}[^\":]*\"");
+		// catches invalid tags, but not hex colors
+		final Pattern invalidTagPattern = Pattern.compile(
+				"\"#(?![0-9A-Fa-f]{6}(?:[0-9A-Fa-f]{2})?\")([a-z0-9/._\\-:]*[^a-z0-9/._\\-:\"]+[a-z0-9/._\\-:]*)*\"");
+
+		try (Stream<Path> entries = Files.walk(new File(workspace.getWorkspaceFolder(), "src/").toPath())) {
+			entries.parallel().filter(Files::isRegularFile).map(Path::toFile)
 					.filter(file -> FilenameUtils.isExtension(file.getName(), "json")).forEach(file -> {
 						String contents = FileIO.readFileToString(file);
 
@@ -269,14 +282,14 @@ import static org.junit.jupiter.api.Assertions.*;
 						assertFalse(contents.contains(".png.png"));
 
 						// If there is any resource path containing more than one colon, it is invalid
-						assertFalse(contents.contains("\"([^\":]*:){2,}[^\":]*\""));
+						if (workspace.getGeneratorConfiguration().getGeneratorFlavor()
+								!= GeneratorFlavor.ADDON) // addons can use molang in the JSON which breaks this validator
+							assertFalse(doubleColonPattern.matcher(contents).find(), "Invalid colon path in: " + file);
 
 						// If there is any resource path that is tag and contains invalid characters, it is invalid
-						assertFalse(contents.contains("\"#([a-z0-9/._\\-:]*[^a-z0-9/._\\-:\"]+[a-z0-9/._\\-:]*)*\""));
-
+						assertFalse(invalidTagPattern.matcher(contents).find(), "Invalid tag characters in: " + file);
 						try {
-							new GsonBuilder().setStrictness(Strictness.STRICT).create()
-									.fromJson(contents, Object.class); // try to parse JSON
+							gson.fromJson(contents, Object.class); // try to parse JSON
 						} catch (Exception e) {
 							fail("Invalid JSON in file: " + file);
 						}

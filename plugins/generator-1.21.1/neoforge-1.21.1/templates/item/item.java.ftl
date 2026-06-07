@@ -79,7 +79,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					<#list data.attributeModifiers as modifier>
 					.add(${modifier.attribute}, new AttributeModifier(
 							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
-							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${generator.map(modifier.equipmentSlot, "equipmentslots")})
+							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}), ${modifier.equipmentSlot})
 					</#list>
 					.build())
 				</#if>
@@ -117,15 +117,15 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
-		return UseAnim.${data.animation?upper_case};
+		return ${data.animation};
 	}
 	</#if>
 
-	<#if !data.isFood && data.animation == "eat">
+	<#if !data.isFood && data.animation.getUnmappedValue() == "eat">
 	@Override public SoundEvent getEatingSound() {
 		return SoundEvents.EMPTY;
 	}
-	<#elseif !data.isFood && data.animation == "drink">
+	<#elseif !data.isFood && data.animation.getUnmappedValue() == "drink">
 	@Override public SoundEvent getDrinkingSound() {
 		return SoundEvents.EMPTY;
 	}

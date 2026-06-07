@@ -1,1 +1,0 @@
-CurrentDevice.disableDigitalInputEvents((int)${input$pin});
