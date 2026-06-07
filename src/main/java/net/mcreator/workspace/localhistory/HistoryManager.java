@@ -27,7 +27,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,10 +39,12 @@ public final class HistoryManager implements AutoCloseable {
 
 	@Nullable private final GitHistoryBackend backend;
 	private final List<HistoryEvent> pendingEvents = new ArrayList<>();
-	@Nullable private Runnable checkpointListener = null;
 	private long lastCheckpointMillis = System.currentTimeMillis();
 
 	private final Workspace workspace;
+
+	@Nullable private Runnable checkpointListener = null;
+	@Nullable private Consumer<Boolean> busyListener = null;
 
 	public HistoryManager(Workspace workspace) {
 		this.workspace = workspace;
@@ -52,6 +53,11 @@ public final class HistoryManager implements AutoCloseable {
 			GitHistoryBackend backendToUse = null;
 			try {
 				backendToUse = new GitHistoryBackend(this);
+				backendToUse.setBusyListener(busy -> {
+					if (busyListener != null) {
+						busyListener.accept(busy);
+					}
+				});
 			} catch (IOException e) {
 				LOG.warn("Failed to initialize local history backend, local history will be disabled", e);
 			}
@@ -109,7 +115,9 @@ public final class HistoryManager implements AutoCloseable {
 		saveCheckpoint(commitMessage, commitResult -> {
 			if (commitResult == GitHistoryBackend.CommitResult.SUCCESS) {
 				lastCheckpointMillis = System.currentTimeMillis();
-				notifyCheckpointListeners();
+				if (checkpointListener != null) {
+					checkpointListener.run();
+				}
 			}
 
 			// Clear events in every case (except if git was busy), as even if saveCheckpoint returned false,
@@ -136,6 +144,10 @@ public final class HistoryManager implements AutoCloseable {
 		checkpointListener = listener;
 	}
 
+	public void setBusyListener(@Nullable Consumer<Boolean> listener) {
+		busyListener = listener;
+	}
+
 	public void getCheckpoints(Consumer<List<HistoryCheckpoint>> callback) {
 		if (backend == null) {
 			callback.accept(List.of());
@@ -160,12 +172,6 @@ public final class HistoryManager implements AutoCloseable {
 
 	File getWorkspaceFolder() {
 		return workspace.getWorkspaceFolder();
-	}
-
-	private void notifyCheckpointListeners() {
-		if (checkpointListener != null) {
-			SwingUtilities.invokeLater(checkpointListener);
-		}
 	}
 
 	public boolean isAvailable() {

@@ -53,6 +53,8 @@ public class LocalHistoryPanel extends JPanel {
 	private final JPanel mainContent;
 
 	private final JButton revertCheckpoint;
+	private final JButton moreOptions;
+
 	private final JMenuItem resetHistory;
 
 	@Nullable private SwingWorker<List<HistoryCheckpoint.DiffEntry>, Void> diffWorker;
@@ -148,6 +150,7 @@ public class LocalHistoryPanel extends JPanel {
 		moreOptionsMenu.add(optimizeStorage);
 
 		optimizeStorage.addActionListener(_ -> {
+			// TODO: show confirmation dialog and warn that the process may take some time and that workspace wont be possible to be closed until complete
 			mcreator.getWorkspace().getHistoryManager().optimizeStorage();
 			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_success.message"),
 					L10N.t("dialog.local_history.optimize.title"), JOptionPane.INFORMATION_MESSAGE);
@@ -157,13 +160,14 @@ public class LocalHistoryPanel extends JPanel {
 			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.local_history.reset_confirm"),
 					L10N.t("dialog.local_history.reset"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (option == JOptionPane.YES_OPTION) {
+				// TODO: empty the UI lists at this point
 				mcreator.getWorkspace().resetLocalHistory();
-				registerCheckpointListener();
+				registerListeners();
 				reloadContent();
 			}
 		});
 
-		JButton moreOptions = new JButton(UIRES.get("more"));
+		moreOptions = new JButton(UIRES.get("more"));
 		moreOptions.addActionListener(_ -> moreOptionsMenu.show(moreOptions, 0, moreOptions.getHeight()));
 		topBar.add(moreOptions);
 
@@ -177,12 +181,23 @@ public class LocalHistoryPanel extends JPanel {
 		add("Center", mainContent);
 		add("North", topBar);
 
-		registerCheckpointListener();
+		registerListeners();
 		reloadContent();
 	}
 
-	private void registerCheckpointListener() {
-		mcreator.getWorkspace().getHistoryManager().setCheckpointListener(() -> reloadContent(true));
+	private void registerListeners() {
+		mcreator.getWorkspace().getHistoryManager()
+				.setCheckpointListener(() -> SwingUtilities.invokeLater(() -> reloadContent(true)));
+		mcreator.getWorkspace().getHistoryManager().setBusyListener(busy -> SwingUtilities.invokeLater(() -> {
+			setEnabled(!busy);
+		}));
+	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		updateRevertButtonState();
+		moreOptions.setEnabled(enabled);
 	}
 
 	public void reloadContent() {
@@ -210,7 +225,6 @@ public class LocalHistoryPanel extends JPanel {
 
 		resetHistory.setEnabled(!checkpoints.isEmpty());
 		checkpointList.setEnabled(!checkpoints.isEmpty());
-		revertCheckpoint.setEnabled(false);
 
 		if (checkpoints.isEmpty()) {
 			diffModel.setRowCount(0);
@@ -274,7 +288,7 @@ public class LocalHistoryPanel extends JPanel {
 	private void updateRevertButtonState() {
 		HistoryCheckpoint selected = checkpointList.getSelectedValue();
 		boolean gradleRunning = isGradleRunning();
-		revertCheckpoint.setEnabled(selected != null && !gradleRunning);
+		revertCheckpoint.setEnabled(selected != null && !gradleRunning && this.isEnabled());
 		if (selected != null && gradleRunning) {
 			revertCheckpoint.setToolTipText(L10N.t("action.gradle.disabled"));
 		} else {

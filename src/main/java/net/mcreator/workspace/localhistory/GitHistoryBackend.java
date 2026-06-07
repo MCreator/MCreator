@@ -59,6 +59,8 @@ class GitHistoryBackend implements AutoCloseable {
 	private final Git git;
 	private final HistoryManager historyManager;
 
+	private Consumer<Boolean> busyListener = null;
+
 	GitHistoryBackend(HistoryManager historyManager) throws IOException {
 		this.historyManager = historyManager;
 
@@ -115,7 +117,7 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	void saveCheckpoint(String commitMessage, Consumer<CommitResult> didCommitCallback) {
-		if (isBusy) {
+		if (isBusyFlag) {
 			didCommitCallback.accept(CommitResult.SKIPPED_GIT_BUSY);
 			LOG.debug("Skipped saving local history checkpoint '{}' because Git thread is busy", commitMessage);
 			return;
@@ -165,12 +167,12 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	void revertToCheckpoint(String checkpointHash) throws LocalHistoryException {
-		if (isBusy)
+		if (isBusyFlag)
 			throw new LocalHistoryException(L10N.t("local_history.revert_failed_busy"));
 
 		try {
 			executor.submit(() -> {
-				isBusy = true;
+				setBusy(true);
 				RevCommit targetCommit;
 				try (RevWalk walk = new RevWalk(git.getRepository())) {
 					// Resolve the target commit
@@ -193,7 +195,7 @@ class GitHistoryBackend implements AutoCloseable {
 				} catch (Exception e) {
 					throw new LocalHistoryException("Failed to revert to checkpoint " + checkpointHash, e);
 				} finally {
-					isBusy = false;
+					setBusy(false);
 				}
 
 				// Immediately save this reverted state as a new event on the timeline
@@ -216,12 +218,18 @@ class GitHistoryBackend implements AutoCloseable {
 	void optimizeStorage() {
 		runGitTask(() -> {
 			try {
+				long startTime = System.currentTimeMillis();
+				LOG.debug("Optimizing local history storage");
 				git.gc().call();
-				LOG.debug("Optimized local history storage");
+				LOG.debug("Optimized local history storage in {} ms", System.currentTimeMillis() - startTime);
 			} catch (GitAPIException e) {
 				LOG.warn("Failed to optimize local history storage: {}", e.getMessage());
 			}
 		});
+	}
+
+	void setBusyListener(Consumer<Boolean> busyListener) {
+		this.busyListener = busyListener;
 	}
 
 	@Override public void close() {
@@ -309,15 +317,22 @@ class GitHistoryBackend implements AutoCloseable {
 		return diffList;
 	}
 
-	private volatile boolean isBusy = false;
+	private volatile boolean isBusyFlag = false;
+
+	private void setBusy(boolean busy) {
+		this.isBusyFlag = busy;
+		if (busyListener != null) {
+			busyListener.accept(busy);
+		}
+	}
 
 	private Future<?> runGitTask(Runnable task) {
 		return executor.submit(() -> {
-			isBusy = true;
+			setBusy(true);
 			try {
 				task.run();
 			} finally {
-				isBusy = false;
+				setBusy(false);
 			}
 		});
 	}
