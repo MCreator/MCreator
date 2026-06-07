@@ -107,8 +107,8 @@ class GitHistoryBackend implements AutoCloseable {
 					git.add().addFilepattern(".").call();
 					git.commit().setMessage(L10N.t("local_history.checkpoint.initial")).call();
 					LOG.debug("Initialized local history repository");
-				} catch (GitAPIException e) {
-					LOG.warn("Failed to save initial checkpoint: {}", e.getMessage());
+				} catch (Exception e) {
+					LOG.warn("Failed to save initial checkpoint", e);
 				}
 			});
 		} else {
@@ -143,7 +143,7 @@ class GitHistoryBackend implements AutoCloseable {
 				LOG.debug("Saved local history checkpoint '{}' as {} in {} ms", commitMessage, commit.getName(),
 						System.currentTimeMillis() - startTime);
 				didCommitCallback.accept(CommitResult.SUCCESS);
-			} catch (GitAPIException | IOException e) {
+			} catch (Exception e) {
 				LOG.warn("Failed to save local history checkpoint: {}", e.getMessage());
 				didCommitCallback.accept(CommitResult.SKIPPED_EXCEPTION);
 			}
@@ -153,13 +153,18 @@ class GitHistoryBackend implements AutoCloseable {
 	void getCheckpoints(Consumer<List<HistoryCheckpoint>> callback) {
 		runGitTask(() -> {
 			try {
+				if (git.getRepository().resolve("HEAD") == null) {
+					callback.accept(List.of());
+					return;
+				}
+
 				List<HistoryCheckpoint> history = new ArrayList<>();
 				for (RevCommit commit : git.log().call()) {
 					history.add(new HistoryCheckpoint(commit.getName(), commit.getFullMessage(), commit.getCommitTime(),
 							() -> getDiffEntries(commit)));
 				}
 				callback.accept(history);
-			} catch (GitAPIException e) {
+			} catch (Exception e) {
 				LOG.warn("Failed to retrieve local history checkpoints", e);
 				callback.accept(List.of());
 			}
@@ -222,7 +227,7 @@ class GitHistoryBackend implements AutoCloseable {
 				LOG.debug("Optimizing local history storage");
 				git.gc().call();
 				LOG.debug("Optimized local history storage in {} ms", System.currentTimeMillis() - startTime);
-			} catch (GitAPIException e) {
+			} catch (Exception e) {
 				LOG.warn("Failed to optimize local history storage: {}", e.getMessage());
 			}
 		});
@@ -320,6 +325,7 @@ class GitHistoryBackend implements AutoCloseable {
 	private volatile boolean isBusyFlag = false;
 
 	private void setBusy(boolean busy) {
+		System.out.println("GitHistoryBackend is now " + (busy ? "busy" : "idle"));
 		this.isBusyFlag = busy;
 		if (busyListener != null) {
 			busyListener.accept(busy);
@@ -331,6 +337,8 @@ class GitHistoryBackend implements AutoCloseable {
 			setBusy(true);
 			try {
 				task.run();
+			} catch (Exception e) {
+				LOG.error("Uncaught exception in Git task", e);
 			} finally {
 				setBusy(false);
 			}
