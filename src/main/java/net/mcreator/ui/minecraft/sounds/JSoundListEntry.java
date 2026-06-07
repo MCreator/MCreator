@@ -46,7 +46,6 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	private final JSpinner volume = new JSpinner(new SpinnerNumberModel(1.0, 0.1, 128000.0, 0.1));
 	private final JSpinner pitch = new JSpinner(new SpinnerNumberModel(1.0, 0.1, 128000.0, 0.1));
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(1, 1, 128000, 1));
-	private final JCheckBox preload = L10N.checkbox("dialog.sounds.preload");
 	private final JSpinner attenuationDistance = new JSpinner(new SpinnerNumberModel(16, 1, 128000, 1));
 	private final SingleFileField fileListField;
 
@@ -60,16 +59,12 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		this.mcreator = mcreator;
 		this.isForBedrock = isForBedrock;
 		this.fileListField = new SingleFileField(mcreator);
-		preload.setOpaque(false);
 
 		JPanel line = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line.setOpaque(false);
 
 		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line2.setOpaque(false);
-
-		JPanel line3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		line3.setOpaque(false);
 
 		line.add(L10N.label("dialog.sounds.file"));
 		line.add(fileListField);
@@ -87,21 +82,18 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		line.add(weight);
 
 		if (!isForBedrock) {
-			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/preload"), preload));
-
-			line3.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/attenuation_distance"),
+			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/attenuation_distance"),
 					L10N.label("dialog.sounds.attenuation_distance")));
-			line3.add(attenuationDistance);
+			line2.add(attenuationDistance);
 		} else {
 			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/is3D"), is3D));
-			line3.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/interruptible"), interruptible));
+			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/interruptible"), interruptible));
 			is3D.setSelected(true);
 			interruptible.setSelected(true);
 		}
 
 		add(line);
 		add(line2);
-		add(line3);
 	}
 
 	@Override public void reloadDataLists() {
@@ -119,7 +111,6 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		pitch.setEnabled(enabled);
 		weight.setEnabled(enabled);
 		if (!isForBedrock) {
-			preload.setEnabled(enabled);
 			attenuationDistance.setEnabled(enabled);
 		} else {
 			is3D.setEnabled(enabled);
@@ -134,7 +125,6 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		entry.setPitch((double) pitch.getValue());
 		entry.setWeight((int) weight.getValue());
 		if (!isForBedrock) {
-			entry.setPreload(preload.isSelected());
 			entry.setAttenuationDistance((int) attenuationDistance.getValue());
 		} else {
 			entry.setBEIs3D(is3D.isSelected());
@@ -151,7 +141,6 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		pitch.setValue((double) e.getPitch());
 		weight.setValue(e.getWeight());
 		if (!isForBedrock) {
-			preload.setSelected(e.isPreload());
 			attenuationDistance.setValue(e.getAttenuationDistance());
 		} else {
 			is3D.setSelected(e.isBEIs3D());

@@ -24,11 +24,7 @@ public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement
 		add.setText(L10N.t("dialog.sounds.add_entry"));
 
 		ComponentUtils.makeSection(this, L10N.t("dialog.sounds.spawn_entries"));
-		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.2)));
-	}
-
-	public JSoundList(MCreator mcreator, IHelpContext gui) {
-		this(mcreator, gui, false);
+		setPreferredSize(new Dimension((int) (getPreferredSize().width * 4.1), (int) (mcreator.getSize().height * 0.3)));
 	}
 
 	@Override protected JSoundListEntry newEntry(JPanel parent, List<JSoundListEntry> entryList, boolean userAction) {

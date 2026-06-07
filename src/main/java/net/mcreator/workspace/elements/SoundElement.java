@@ -110,31 +110,25 @@ public class SoundElement implements IElement {
 		private float volume;
 		private float pitch;
 		private int weight;
-		private boolean preload;
 		private int attenuationDistance;
 
 		private boolean beIs3D;
 		private boolean beInterruptible;
 
 		public Sound(String name) {
-			this(name, 1f, 1f, 1, false, 16, "neutral", true, true);
+			this(name, 1f, 1f, 1, 16, "neutral", true, true);
 		}
 
-		public Sound(String name, float volume, float pitch, int weight, boolean preload, int attenuationDistance,
-				String category, boolean beIs3D, boolean beInterruptible) {
+		public Sound(String name, float volume, float pitch, int weight, int attenuationDistance, String category,
+				boolean beIs3D, boolean beInterruptible) {
 			this.name = name;
 			this.volume = volume;
 			this.pitch = pitch;
 			this.weight = weight;
-			this.preload = preload;
 			this.attenuationDistance = attenuationDistance;
 			this.category = category;
 			this.beIs3D = beIs3D;
 			this.beInterruptible = beInterruptible;
-		}
-
-		public Sound(String name, float volume, float pitch, int weight, String category) {
-			this(name, volume, pitch, weight, false, 16, category, true, true);
 		}
 
 		public String getName() {
@@ -185,14 +179,6 @@ public class SoundElement implements IElement {
 			this.attenuationDistance = attenuationDistance;
 		}
 
-		public boolean isPreload() {
-			return preload;
-		}
-
-		public void setPreload(boolean preload) {
-			this.preload = preload;
-		}
-
 		public boolean isBEIs3D() {
 			return beIs3D;
 		}
@@ -210,8 +196,8 @@ public class SoundElement implements IElement {
 		}
 
 		public boolean isInline() {
-			return volume == 1 && pitch == 1 && !preload && attenuationDistance == 16 && weight == 1
-					&& !category.equals("record") && !category.equals("music") && beIs3D && beInterruptible;
+			return volume == 1 && pitch == 1 && attenuationDistance == 16 && weight == 1 && !category.equals("record")
+					&& !category.equals("music") && beIs3D && beInterruptible;
 		}
 
 		@Override public String toString() {

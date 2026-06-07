@@ -19,8 +19,6 @@
       "weight": ${file.getWeight()}</#if>
       <#if file.getAttenuationDistance() != 16>,
       "attenuation_distance": ${file.getAttenuationDistance()}</#if>
-      <#if file.isPreload()>,
-      "preload": true</#if>
     }</#if><#sep>,
     </#list>
   ]

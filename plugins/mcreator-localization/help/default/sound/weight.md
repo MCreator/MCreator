@@ -1,1 +1,1 @@
-This parameter defines the probability that this sound will be chosen to be played among the written sound entries.
+This parameter defines the chance that this sound will be chosen to be played among the written sound entries.
