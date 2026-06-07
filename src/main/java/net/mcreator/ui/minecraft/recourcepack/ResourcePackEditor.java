@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.recourcepack;
 
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
 import net.mcreator.io.tree.FileNode;
@@ -129,7 +130,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				String fileName = JOptionPane.showInputDialog(mcreator, L10N.t("workspace_file_browser.new_json"));
 				if (fileName != null) {
 					fileName = RegistryNameFixer.fix(fileName);
-					FileIO.writeStringToFile("",
+					GradleTrackingFileIO.writeFile(mcreator, "",
 							new File(currentFolder, fileName + (fileName.contains(".") ? "" : ".json")));
 					reloadElements();
 				}
@@ -331,7 +332,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							new NewImageDialog(mcreator, imageMakerView).setVisible(true);
 							imageMakerView.setSaveLocation(selectedEntry.override());
 						} else if (textExtensions.contains(selectedEntry.extension())) {
-							FileIO.writeStringToFile("", selectedEntry.override());
+							GradleTrackingFileIO.writeFile(mcreator, "", selectedEntry.override());
 							FileOpener.openFile(mcreator, selectedEntry.override());
 							reloadElements();
 						} else {
