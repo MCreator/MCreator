@@ -12,6 +12,9 @@
 	    <#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 		"type": "minecraft:constant",
 		"value": -12012264
+        <#elseif data.tintType == "Dry foliage">
+        "type": "minecraft:constant",
+        "value": -10732494
 	    <#elseif data.tintType == "Birch foliage">
 		"type": "minecraft:constant",
 		"value": -8345771

@@ -48,6 +48,8 @@ package ${package}.client.fluid;
 						-6506636
 						<#elseif data.tintType == "Foliage" || data.tintType == "Default foliage">
 						-12012264
+						<#elseif data.tintType == "Dry foliage">
+						-10732494
 						<#elseif data.tintType == "Birch foliage">
 						-8345771
 						<#elseif data.tintType == "Spruce foliage">
@@ -68,6 +70,8 @@ package ${package}.client.fluid;
 							BiomeColors.getAverageGrassColor(world, pos)
 						<#elseif data.tintType == "Foliage">
 							BiomeColors.getAverageFoliageColor(world, pos)
+						<#elseif data.tintType == "Dry foliage">
+							BiomeColors.getAverageDryFoliageColor(world, pos)
 						<#elseif data.tintType == "Default foliage">
 							FoliageColor.FOLIAGE_DEFAULT
 						<#elseif data.tintType == "Birch foliage">

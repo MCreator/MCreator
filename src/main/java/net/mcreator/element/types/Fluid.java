@@ -58,8 +58,8 @@ import java.util.List;
 	public NumberProcedure fogStartDistance;
 	public NumberProcedure fogEndDistance;
 
-	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-			"Sky", "Fog", "Water fog" }) public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Dry foliage", "Birch foliage", "Spruce foliage",
+			"Default foliage", "Water", "Sky", "Fog", "Water fog" }) public String tintType;
 
 	public boolean canMultiply;
 	@Numeric(init = 5, min = 1, max = 100000, step = 1) public int flowRate;
