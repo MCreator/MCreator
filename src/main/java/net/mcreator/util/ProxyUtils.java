@@ -42,9 +42,12 @@ public class ProxyUtils {
 		if (proxySection.useSystemProxy.get()) {
 			LOGGER.debug("Current proxy: System proxy settings");
 			properties.setProperty("java.net.useSystemProxies", "true");
+			return properties;
 		} else {
 			LOGGER.debug("Current proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
-			if (isHttpTypeProxy(type)) {
+			if ("none".equals(type)) {
+				return properties;
+			} else if (isHttpTypeProxy(type)) {
 				properties.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 				properties.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
 				properties.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort.get()));
@@ -54,7 +57,8 @@ public class ProxyUtils {
 			}
 		}
 
-		getPasswordAndUserProperties(properties, type, proxySection.proxyUser.get(), proxySection.proxyPassword.get());
+		configurePasswordAndUserProperties(properties, type, proxySection.proxyUser.get(),
+				proxySection.proxyPassword.get());
 		return properties;
 	}
 
@@ -62,7 +66,7 @@ public class ProxyUtils {
 		return proxyType.startsWith("http");
 	}
 
-	private static void getPasswordAndUserProperties(Properties properties, String type, String proxyUser,
+	private static void configurePasswordAndUserProperties(Properties properties, String type, String proxyUser,
 			String proxyPassword) {
 		if (!proxyUser.isEmpty()) {
 			if (type.equals("socks")) {
