@@ -325,7 +325,6 @@ class GitHistoryBackend implements AutoCloseable {
 	private volatile boolean isBusyFlag = false;
 
 	private void setBusy(boolean busy) {
-		System.out.println("GitHistoryBackend is now " + (busy ? "busy" : "idle"));
 		this.isBusyFlag = busy;
 		if (busyListener != null) {
 			busyListener.accept(busy);

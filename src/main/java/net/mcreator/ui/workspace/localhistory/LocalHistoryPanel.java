@@ -150,7 +150,13 @@ public class LocalHistoryPanel extends JPanel {
 		moreOptionsMenu.add(optimizeStorage);
 
 		optimizeStorage.addActionListener(_ -> {
-			// TODO: show confirmation dialog and warn that the process may take some time and that workspace wont be possible to be closed until complete
+			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.local_history.optimize_confirm"),
+					L10N.t("dialog.local_history.optimize.title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (option != JOptionPane.YES_OPTION) {
+				return;
+			}
+
 			mcreator.getWorkspace().getHistoryManager().optimizeStorage();
 			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_success.message"),
 					L10N.t("dialog.local_history.optimize.title"), JOptionPane.INFORMATION_MESSAGE);
@@ -160,7 +166,7 @@ public class LocalHistoryPanel extends JPanel {
 			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.local_history.reset_confirm"),
 					L10N.t("dialog.local_history.reset"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (option == JOptionPane.YES_OPTION) {
-				// TODO: empty the UI lists at this point
+				showEmptyHistoryState();
 				mcreator.getWorkspace().resetLocalHistory();
 				registerListeners();
 				reloadContent();
@@ -221,19 +227,14 @@ public class LocalHistoryPanel extends JPanel {
 	}
 
 	private void applyCheckpoints(List<HistoryCheckpoint> checkpoints, @Nullable String selectedHash) {
-		checkpointList.setListData(checkpoints.toArray(HistoryCheckpoint[]::new));
-
-		resetHistory.setEnabled(!checkpoints.isEmpty());
-		checkpointList.setEnabled(!checkpoints.isEmpty());
-
 		if (checkpoints.isEmpty()) {
-			diffModel.setRowCount(0);
-			diffCardLayout.show(diffContent, "empty");
-			mainCardLayout.show(mainContent, "empty");
-			checkpointList.clearSelection();
+			showEmptyHistoryState();
 			return;
 		}
 
+		checkpointList.setListData(checkpoints.toArray(HistoryCheckpoint[]::new));
+		resetHistory.setEnabled(true);
+		checkpointList.setEnabled(true);
 		mainCardLayout.show(mainContent, "history");
 
 		if (selectedHash != null) {
@@ -338,6 +339,18 @@ public class LocalHistoryPanel extends JPanel {
 			diffWorker.cancel(true);
 			diffWorker = null;
 		}
+	}
+
+	private void showEmptyHistoryState() {
+		cancelDiffWorker();
+		checkpointList.setListData(new HistoryCheckpoint[0]);
+		checkpointList.clearSelection();
+		diffModel.setRowCount(0);
+		diffCardLayout.show(diffContent, "empty");
+		mainCardLayout.show(mainContent, "empty");
+		resetHistory.setEnabled(false);
+		checkpointList.setEnabled(false);
+		updateRevertButtonState();
 	}
 
 	private static void populateDiffTable(DefaultTableModel diffModel, List<HistoryCheckpoint.DiffEntry> entries) {
