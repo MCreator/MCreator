@@ -99,7 +99,7 @@ public final class HistoryManager implements AutoCloseable {
 			return;
 		}
 
-		List<HistoryEvent> eventsToCommit = new ArrayList<>(pendingEvents);
+		List<HistoryEvent> eventsToCommit = new ArrayList<>(pendingEvents.reversed());
 
 		String commitMessage;
 		if (eventsToCommit.size() == 1) {

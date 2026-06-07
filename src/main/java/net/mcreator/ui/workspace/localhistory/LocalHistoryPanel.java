@@ -279,6 +279,9 @@ public class LocalHistoryPanel extends JPanel {
 		}
 
 		try {
+			// Create pre-revert checkpoint
+			mcreator.getWorkspace().getHistoryManager().importantCheckpoint("pre_revert");
+
 			mcreator.getWorkspace().getHistoryManager().revertToCheckpoint(selected);
 			mcreator.reloadWorkspaceFromFileSystem();
 
