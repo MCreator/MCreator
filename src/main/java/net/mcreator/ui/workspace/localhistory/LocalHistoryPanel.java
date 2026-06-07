@@ -146,6 +146,9 @@ public class LocalHistoryPanel extends JPanel {
 		JPopupMenu moreOptionsMenu = new JPopupMenu();
 		resetHistory = new JMenuItem(L10N.t("dialog.local_history.reset"));
 		JMenuItem optimizeStorage = new JMenuItem(L10N.t("dialog.local_history.optimize"));
+
+		// TODO: add option for manual checkpoint
+
 		moreOptionsMenu.add(resetHistory);
 		moreOptionsMenu.add(optimizeStorage);
 
