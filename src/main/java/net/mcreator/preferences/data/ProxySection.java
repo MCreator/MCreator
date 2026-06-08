@@ -20,7 +20,6 @@
 package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
-import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
@@ -31,17 +30,15 @@ public class ProxySection extends PreferencesSection {
 	public final IntegerEntry proxyPort;
 	public final StringEntry proxyUser;
 	public final StringEntry proxyPassword;
-	public final BooleanEntry useSystemProxy;
 
 	ProxySection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		proxyType = addEntry(new StringEntry("proxyType", "none", "none", "http", "https", "socks"));
+		proxyType = addEntry(new StringEntry("proxyType", "none", "none", "http", "https", "socks", "systemproxy"));
 		proxyHost = addEntry(new StringEntry("proxyHost", "", true));
-		proxyPort = addEntry(new IntegerEntry("proxyPort", 0));
+		proxyPort = addEntry(new IntegerEntry("proxyPort", 0, 0, 65536));
 		proxyUser = addEntry(new StringEntry("proxyUser", "", true));
 		proxyPassword = addEntry(new StringEntry("proxyPassword", "", true));
-		useSystemProxy = addEntry(new BooleanEntry("useSystemProxy", false));
 	}
 
 	@Override public String getSectionKey() {

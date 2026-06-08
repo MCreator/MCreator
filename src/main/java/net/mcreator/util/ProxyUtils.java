@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Properties;
 
 public class ProxyUtils {
-	private static final Logger LOGGER = LogManager.getLogger("Proxy utils");
+	private static final Logger LOG = LogManager.getLogger(ProxyUtils.class);
 
 	public static void applyProxiesToMCreator() {
 		System.getProperties().putAll(getProxyProperties());
@@ -39,23 +39,21 @@ public class ProxyUtils {
 		ProxySection proxySection = PreferencesManager.PREFERENCES.proxy;
 		String type = proxySection.proxyType.get();
 
-		if (proxySection.useSystemProxy.get()) {
-			LOGGER.debug("Current proxy: System proxy settings");
+		if ("none".equals(type)) {
+			return properties;
+		} else if (type.equals("systemproxy")){
+			LOG.debug("Current proxy: System proxy settings");
 			properties.setProperty("java.net.useSystemProxies", "true");
 			return properties;
-		} else {
-			if ("none".equals(type)) {
-				return properties;
-			} else if (isHttpTypeProxy(type)) {
-				properties.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-				properties.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
-				properties.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort.get()));
-			} else if (type.equals("socks")) {
-				properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
-				properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
-			}
-			LOGGER.debug("Current proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
+		} else if (isHttpTypeProxy(type)) {
+			properties.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+			properties.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
+			properties.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort.get()));
+		} else if (type.equals("socks")) {
+			properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
+			properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
 		}
+		LOG.debug("Current proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
 
 		configurePasswordAndUserProperties(properties, type, proxySection.proxyUser.get(),
 				proxySection.proxyPassword.get());
