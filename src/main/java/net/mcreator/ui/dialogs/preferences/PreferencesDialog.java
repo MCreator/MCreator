@@ -33,18 +33,21 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
 
-	final DefaultListModel<String> model = new DefaultListModel<>();
 	final JPanel preferences = new JPanel();
 
 	private final Map<String, JPanel> sectionPanels = new HashMap<>();
 
-	private final JList<String> sections = new JList<>(model);
+	private final DefaultMutableTreeNode sectionsRoot = new DefaultMutableTreeNode();
+	private DefaultMutableTreeNode templatesNode;
+	private final DefaultTreeModel sectionsModel = new DefaultTreeModel(sectionsRoot);
+	private final JTree sections = new JTree(sectionsModel);
 	private final CardLayout preferencesLayout = new CardLayout();
 
 	private final Map<PreferencesEntry<?>, JComponent> entries = new HashMap<>();
@@ -52,6 +55,10 @@ public class PreferencesDialog extends MCreatorDialog {
 	private final JButton apply = L10N.button("action.common.apply");
 
 	private final Window parent;
+
+	public PreferencesDialog(Window parent) {
+		this(parent, null);
+	}
 
 	public PreferencesDialog(Window parent, @Nullable String selectedTab) {
 		super(parent);
@@ -62,14 +69,17 @@ public class PreferencesDialog extends MCreatorDialog {
 		setTitle(L10N.t("dialog.preferences.title_mcreator"));
 
 		sections.setBackground(getBackground());
-		sections.setCellRenderer(new DefaultListCellRenderer() {
+		sections.setRootVisible(false);
+		sections.setShowsRootHandles(true);
+		sections.setExpandsSelectedPaths(false);
+		sections.setToggleClickCount(1);
+		sections.setCellRenderer(new DefaultTreeCellRenderer() {
 			@Override
-			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-					boolean cellHasFocus) {
-				JLabel retval = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
-						cellHasFocus);
-				retval.setBorder(new EmptyBorder(4, 10, 4, 10));
-				return retval;
+			public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
+					boolean leaf, int row, boolean hasFocus) {
+				super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+				setBorder(new EmptyBorder(4, 8, 4, 10));
+				return this;
 			}
 		});
 
@@ -79,8 +89,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setRightComponent(preferences);
 		spne.setLeftComponent(new JScrollPane(sections));
 		spne.setContinuousLayout(true);
-		spne.setContinuousLayout(true);
-		spne.setDividerLocation(165);
+		spne.setDividerLocation(185);
 		add("Center", spne);
 
 		sections.setBackground(Theme.current().getBackgroundColor());
@@ -99,7 +108,7 @@ public class PreferencesDialog extends MCreatorDialog {
 						.forEach((_, entries) -> PreferencesManager.resetFromList(entries));
 
 				dispose();
-				new PreferencesDialog(parent, sections.getSelectedValue());
+				new PreferencesDialog(parent, getSelectedSection());
 			}
 		});
 
@@ -114,17 +123,16 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		add("South", PanelUtils.westAndEastElement(buttonsleft, buttons));
 
-		sections.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		sections.addListSelectionListener(_ -> preferencesLayout.show(preferences, sections.getSelectedValue()));
+		sections.addTreeSelectionListener(_ -> {
+			String section = getSelectedSection();
+			if (section != null)
+				preferencesLayout.show(preferences, section);
+		});
 
 		loadSections();
 
-		if (selectedTab != null) {
-			for (int i = 0; i < sections.getModel().getSize(); i++) {
-				if (sections.getModel().getElementAt(i).equals(selectedTab))
-					sections.setSelectedIndex(i);
-			}
-		}
+		if (selectedTab != null)
+			selectSection(selectedTab);
 
 		ok.addActionListener(_ -> {
 			savePreferences();
@@ -158,6 +166,9 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		new ThemesPanel(this);
 
+		templatesNode = new DefaultMutableTreeNode(L10N.t("dialog.preferences.templates"));
+		sectionsRoot.add(templatesNode);
+
 		addEditTemplatesPanel("ui_backgrounds", "backgrounds", "png");
 		addEditTemplatesPanel("texture_templates", "templates/textures/texturemaker", "png");
 		addEditTemplatesPanel("armor_templates", "templates/textures/armormaker", "png");
@@ -167,7 +178,50 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
 
-		sections.setSelectedIndex(0);
+		sections.collapsePath(new TreePath(templatesNode.getPath()));
+
+		if (sectionsRoot.getChildCount() > 0) {
+			DefaultMutableTreeNode first = (DefaultMutableTreeNode) sectionsRoot.getChildAt(0);
+			sections.setSelectionPath(new TreePath(first.getPath()));
+		}
+	}
+
+	void addSection(String name) {
+		sectionsRoot.add(new DefaultMutableTreeNode(name));
+		sectionsModel.reload();
+	}
+
+	void addTemplateSection(String name) {
+		templatesNode.add(new DefaultMutableTreeNode(name));
+		sectionsModel.reload();
+	}
+
+	@Nullable private String getSelectedSection() {
+		TreePath path = sections.getSelectionPath();
+		if (path == null)
+			return null;
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+		if (!node.isLeaf())
+			return null;
+		return (String) node.getUserObject();
+	}
+
+	private void selectSection(String name) {
+		for (int i = 0; i < sectionsRoot.getChildCount(); i++) {
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode) sectionsRoot.getChildAt(i);
+			if (node.isLeaf() && name.equals(node.getUserObject())) {
+				sections.setSelectionPath(new TreePath(node.getPath()));
+				return;
+			}
+			for (int j = 0; j < node.getChildCount(); j++) {
+				DefaultMutableTreeNode child = (DefaultMutableTreeNode) node.getChildAt(j);
+				if (name.equals(child.getUserObject())) {
+					sections.expandPath(new TreePath(node.getPath()));
+					sections.setSelectionPath(new TreePath(child.getPath()));
+					return;
+				}
+			}
+		}
 	}
 
 	public void addEditTemplatesPanel(BlocklyEditorType type) {
@@ -181,7 +235,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	private void createPreferenceSection(String section) {
 		String name = L10N.t("preferences.section." + section);
 		String description = L10N.t("preferences.section." + section + ".description");
-		model.addElement(name);
+		addSection(name);
 
 		JPanel sectionPanel = new JPanel(new GridBagLayout());
 		sectionPanel.setOpaque(false);
@@ -217,12 +271,14 @@ public class PreferencesDialog extends MCreatorDialog {
 				@Override public Dimension getPreferredSize() {
 					Dimension retval = super.getPreferredSize();
 					retval.height = 32;
+					if (!(component instanceof JCheckBox)) {
+						retval.width = Math.max(retval.width, 128);
+					}
 					return retval;
 				}
 			};
 			wrap.add("Center", component);
-			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.pullElementUp(wrap)),
-					getConstraints());
+			placeInside.add(PanelUtils.westAndEastElement(label, PanelUtils.pullElementUp(wrap)), getConstraints());
 		} else {
 			placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), getConstraints());
 		}
