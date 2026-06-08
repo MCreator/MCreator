@@ -1,5 +1,24 @@
 /*
  * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/*
+ * MCreator (https://mcreator.net/)
  * Copyright (C) 2020 Pylo and contributors
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +35,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.writer;
+package net.mcreator.generator.io;
 
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
@@ -41,9 +59,9 @@ public class JavaWriter {
 	public static void writeJavaToFile(@Nullable Workspace workspace, String code, File file,
 			boolean formatAndOrganiseImports) {
 		if (formatAndOrganiseImports) {
-			TrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
+			GradleTrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
 		} else {
-			TrackingFileIO.writeFile(workspace, code, file);
+			GradleTrackingFileIO.writeFile(workspace, code, file);
 		}
 	}
 
@@ -61,9 +79,9 @@ public class JavaWriter {
 			}).filter(codes::containsKey).collect(Collectors.toMap(file -> file,
 					file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true)));
 
-			formattedCodes.forEach((file, code) -> TrackingFileIO.writeFile(workspace, code, file));
+			formattedCodes.forEach((file, code) -> GradleTrackingFileIO.writeFile(workspace, code, file));
 		} else {
-			codes.forEach((key, value) -> TrackingFileIO.writeFile(workspace, value, key));
+			codes.forEach((key, value) -> GradleTrackingFileIO.writeFile(workspace, value, key));
 		}
 	}
 

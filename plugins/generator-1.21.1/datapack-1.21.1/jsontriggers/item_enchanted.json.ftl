@@ -2,14 +2,7 @@
   "trigger": "minecraft:enchanted_item",
   "conditions": {
 	"item": {
-		${input$item},
-		"predicates": {
-			"enchantments": [
-				<#list input_list$enchantment as enchantment>
-					${enchantment}<#sep>,
-				</#list>
-			]
-		}
+		${input$item}
 	},
 	"levels": {
 		"min": ${input$levelsSpent}

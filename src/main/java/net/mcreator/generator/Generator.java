@@ -34,11 +34,11 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.gradle.GradleFileTracker;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
-import net.mcreator.io.TrackingFileIO;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.io.writer.JSONWriter;
-import net.mcreator.io.writer.JSWriter;
-import net.mcreator.io.writer.JavaWriter;
+import net.mcreator.generator.io.JSONWriter;
+import net.mcreator.generator.io.JSWriter;
+import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -187,7 +187,7 @@ public class Generator implements IGenerator, Closeable {
 							.noneMatch(generatorFile -> FileIO.isSameFile(file, generatorFile.getFile())))
 					.filter(workspace.getFolderManager()::isFileInWorkspace).forEach(file -> {
 						LOG.debug("Deleting stale file no longer tracked by generator: {}", file);
-						TrackingFileIO.deleteFile(this, file);
+						GradleTrackingFileIO.deleteFile(this, file);
 					});
 
 		// generate files as old files were deleted
@@ -280,7 +280,7 @@ public class Generator implements IGenerator, Closeable {
 
 		if (performFSTasks) {
 			// remove outdated files from mod element files list
-			element.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
+			element.getModElement().getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(workspace, f));
 
 			// generate files as old files were deleted
 			generateFiles(generatorFiles, formatAndOrganiseImports);
@@ -320,7 +320,7 @@ public class Generator implements IGenerator, Closeable {
 
 	public void removeElementFilesAndWorkspaceLinks(GeneratableElement generatableElement) {
 		// first, remove files linked with this mod element
-		generatableElement.getModElement().getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(workspace, f));
+		generatableElement.getModElement().getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(workspace, f));
 
 		// then, delete tab sorting info associated with the mod element from the workspace
 		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
@@ -610,11 +610,11 @@ public class Generator implements IGenerator, Closeable {
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
 				String usercodeComment = generatorFile.getUsercodeComment();
 				if (usercodeComment != null)
-					TrackingFileIO.writeFile(workspace,
+					GradleTrackingFileIO.writeFile(workspace,
 							UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
 									usercodeComment), generatorFile.getFile());
 				else
-					TrackingFileIO.writeFile(workspace, generatorFile.contents(), generatorFile.getFile());
+					GradleTrackingFileIO.writeFile(workspace, generatorFile.contents(), generatorFile.getFile());
 			}
 		}
 
