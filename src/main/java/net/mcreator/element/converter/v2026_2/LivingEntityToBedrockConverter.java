@@ -78,7 +78,7 @@ public class LivingEntityToBedrockConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 87;
+		return 88;
 	}
 
 	private String convertModelName(String old) {
