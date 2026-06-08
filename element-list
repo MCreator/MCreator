@@ -43,6 +43,7 @@ net.mcreator.element.types.interfaces
 net.mcreator.element.util
 net.mcreator.generator
 net.mcreator.generator.blockly
+net.mcreator.generator.io
 net.mcreator.generator.mapping
 net.mcreator.generator.setup
 net.mcreator.generator.setup.folders
@@ -56,7 +57,6 @@ net.mcreator.io.net.analytics
 net.mcreator.io.net.api
 net.mcreator.io.net.api.update
 net.mcreator.io.tree
-net.mcreator.io.writer
 net.mcreator.io.zip
 net.mcreator.java
 net.mcreator.java.debug
