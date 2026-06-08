@@ -30,10 +30,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.*;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 public class GradleUtils {
 
@@ -76,8 +78,11 @@ public class GradleUtils {
 		// make sure Gradle reports in English so our error decoder works properly
 		launcher.addJvmArguments("-Duser.language=en");
 
-		for (Map.Entry<Object, Object> objectObjectEntry : ProxyUtils.getProxyProperties().entrySet()) {
-			launcher.addJvmArguments("-D" + objectObjectEntry.getKey() + "=" + objectObjectEntry.getValue());
+		@Nullable Properties proxyProperties = ProxyUtils.getProxyProperties();
+		if (proxyProperties != null) {
+			for (Map.Entry<Object, Object> objectObjectEntry : proxyProperties.entrySet()) {
+				launcher.addJvmArguments("-D" + objectObjectEntry.getKey() + "=" + objectObjectEntry.getValue());
+			}
 		}
 
 		String java_home = getJavaHome();

@@ -99,8 +99,7 @@ public class Launcher {
 			System.exit(-2);
 		}
 
-		// Proxy settings applied
-		ProxyUtils.applyProxiesToMCreator();
+		ProxyUtils.installProxyIfEnabled();
 
 		MCreatorApplication.createApplication(Arrays.asList(args));
 	}

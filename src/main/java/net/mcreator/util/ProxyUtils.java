@@ -24,28 +24,45 @@ import net.mcreator.preferences.data.ProxySection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.util.Properties;
 
 public class ProxyUtils {
+
 	private static final Logger LOG = LogManager.getLogger(ProxyUtils.class);
 
-	public static void applyProxiesToMCreator() {
-		System.getProperties().putAll(getProxyProperties());
+	@Nullable private static Properties cachedProxyProperties = null;
+
+	public static void installProxyIfEnabled() {
+		Properties proxyProperties = getProxyProperties();
+		if (proxyProperties != null) {
+			System.getProperties().putAll(proxyProperties);
+		}
 	}
 
-	public static Properties getProxyProperties() {
-		Properties properties = new Properties();
+	@Nullable public static Properties getProxyProperties() {
+		if (cachedProxyProperties == null)
+			cachedProxyProperties = buildProxyProperties();
+		return cachedProxyProperties;
+	}
 
+	@Nullable private static Properties buildProxyProperties() {
 		ProxySection proxySection = PreferencesManager.PREFERENCES.proxy;
 		String type = proxySection.proxyType.get();
 
 		if ("none".equals(type)) {
-			return properties;
-		} else if (type.equals("systemproxy")){
-			LOG.debug("Current proxy: System proxy settings");
+			return null;
+		}
+
+		Properties properties = new Properties();
+
+		if (type.equals("systemproxy")) {
+			LOG.debug("Using system proxy");
 			properties.setProperty("java.net.useSystemProxies", "true");
 			return properties;
-		} else if (isHttpTypeProxy(type)) {
+		}
+
+		if (isHttpTypeProxy(type)) {
 			properties.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 			properties.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
 			properties.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort.get()));
@@ -53,15 +70,13 @@ public class ProxyUtils {
 			properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
 			properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
 		}
-		LOG.debug("Current proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
+
+		LOG.debug("Using proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
 
 		configurePasswordAndUserProperties(properties, type, proxySection.proxyUser.get(),
 				proxySection.proxyPassword.get());
-		return properties;
-	}
 
-	private static boolean isHttpTypeProxy(String proxyType) {
-		return proxyType.startsWith("http");
+		return properties;
 	}
 
 	private static void configurePasswordAndUserProperties(Properties properties, String type, String proxyUser,
@@ -76,4 +91,9 @@ public class ProxyUtils {
 			}
 		}
 	}
+
+	private static boolean isHttpTypeProxy(String proxyType) {
+		return proxyType.startsWith("http");
+	}
+
 }
