@@ -117,15 +117,15 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 
 	<#if data.hasNonDefaultAnimation()>
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
-		return UseAnim.${data.animation?upper_case};
+		return ${data.animation};
 	}
 	</#if>
 
-	<#if !data.isFood && data.animation == "eat">
+	<#if !data.isFood && data.animation.getUnmappedValue() == "eat">
 	@Override public SoundEvent getEatingSound() {
 		return SoundEvents.EMPTY;
 	}
-	<#elseif !data.isFood && data.animation == "drink">
+	<#elseif !data.isFood && data.animation.getUnmappedValue() == "drink">
 	@Override public SoundEvent getDrinkingSound() {
 		return SoundEvents.EMPTY;
 	}

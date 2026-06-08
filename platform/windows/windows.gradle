@@ -94,6 +94,36 @@ tasks.register('buildInstallerWin64', Exec.class) {
     }
 }
 
+tasks.register('buildMsixWin64') {
+    dependsOn exportWin64
+
+    doLast {
+        def workingDir = file('build/export/win64msix')
+
+        def fullVersion = (String) project.mcreatorconf.getProperty('mcreator')
+        if (!project.snapshot) {
+            fullVersion = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+        }
+
+        def outFile = file('build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 64bit.msix')
+
+        copy { from 'build/export/win64' into workingDir }
+        copy { from 'platform/windows/msix' into new File(workingDir, 'Assets') }
+
+        copy {
+            from 'platform/windows/msix/AppxManifest.xml' into workingDir
+            filter { line -> line.replace('%version%', fullVersion) }
+        }
+
+        def toolSearchPath = (System.getenv('ProgramFiles(x86)') ?: 'C:\\Program Files (x86)') + "\\Windows Kits\\10\\bin\\*\\x64\\makeappx.exe"
+        def toolArgs = "pack /d '${workingDir.absolutePath}' /p '${outFile.absolutePath}'"
+        def psCommand = "& (Get-ChildItem '${toolSearchPath}' | Sort-Object FullName | Select-Object -Last 1).FullName $toolArgs"
+        execCtx.execOps.exec { commandLine 'powershell', '-NoProfile', '-Command', psCommand }
+
+        delete workingDir
+    }
+}
+
 tasks.register('exportWindows') {
     group = 'export'
 
@@ -102,6 +132,9 @@ tasks.register('exportWindows') {
     // Add installer only if this is not a snapshot build (and not MacOS that does not support makensis)
     if (!project.snapshot && !Os.isFamily(Os.FAMILY_MAC)) {
         dependsOn buildInstallerWin64
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            dependsOn buildMsixWin64
+        }
     }
 
     doLast {

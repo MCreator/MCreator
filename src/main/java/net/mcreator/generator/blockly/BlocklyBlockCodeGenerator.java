@@ -448,6 +448,7 @@ public class BlocklyBlockCodeGenerator {
 		if (templateGenerator != null) {
 			dataModel.put("cbi", customBlockIndex);
 			dataModel.put("addTemplate", new ExtraTemplatesLinker(master));
+			dataModel.put("addAdditionalCode", new AdditionalCodeLinker(master));
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);

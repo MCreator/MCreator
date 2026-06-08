@@ -1,0 +1,1 @@
+Dies sind die Bäume, die wachsen können, wenn die Setzlinge in einer 2x2-Konfiguration sind. Wird von Riesen-Bäumen verwendet.

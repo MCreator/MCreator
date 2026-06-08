@@ -25,7 +25,7 @@ import de.javagl.obj.MtlReader;
 import de.javagl.obj.MtlWriter;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;

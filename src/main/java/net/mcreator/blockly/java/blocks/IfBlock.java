@@ -73,7 +73,7 @@ public class IfBlock implements IBlockGenerator {
 
 		if (!hasMainIf) {
 			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.warnings.if_no_main_body")));
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.if_no_main_body")));
 		}
 	}
 

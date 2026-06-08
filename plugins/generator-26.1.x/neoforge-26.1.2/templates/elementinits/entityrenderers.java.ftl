@@ -53,7 +53,7 @@ package ${package}.init;
 				</#if>
 			<#elseif entity.getModElement().getTypeString() == "specialentity">
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(),
-						context -> new BoatRenderer(context, ${JavaModName}Models.${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION));
+						context -> new <#if entity.isAnyRaft()>Raft<#else>Boat</#if>Renderer(context, ${JavaModName}Models.${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION));
 			</#if>
 		</#list>
 	}
