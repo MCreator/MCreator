@@ -68,12 +68,37 @@ public class ProxyUtils {
 			properties.setProperty("http.proxyPort", String.valueOf(proxySection.proxyPort.get()));
 			properties.setProperty("https.proxyHost", proxySection.proxyHost.get());
 			properties.setProperty("https.proxyPort", String.valueOf(proxySection.proxyPort.get()));
-			properties.setProperty("http.proxyUser", proxySection.proxyUser.get());
-			properties.setProperty("http.proxyPassword", proxySection.proxyPassword.get());
+			// note that these properties is not supported by JDK itself, but is used quite broadly in libraries
+			if (!proxySection.proxyUser.get().isEmpty() && !proxySection.proxyPassword.get().isEmpty()) {
+				properties.setProperty("http.proxyUser", proxySection.proxyUser.get());
+				properties.setProperty("http.proxyPassword", proxySection.proxyPassword.get());
+				properties.setProperty("https.proxyUser", proxySection.proxyUser.get());
+				properties.setProperty("https.proxyPassword", proxySection.proxyPassword.get());
+			}
+			if (!proxySection.nonProxyHosts.get().isEmpty()) {
+				properties.setProperty("http.nonProxyHosts", proxySection.nonProxyHosts.get());
+			}
 		}
-		case "socks" -> {
+		case "socks5" -> {
 			properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
 			properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
+			// note that these properties is not supported by JDK itself, but is used quite broadly in libraries
+			// these properties can't effect gradle download task, but ensure that some libraries can get.
+			if (!proxySection.proxyUser.get().isEmpty() && !proxySection.proxyPassword.get().isEmpty()) {
+				properties.setProperty("java.net.socks.username", proxySection.proxyUser.get());
+				properties.setProperty("java.net.socks.password", proxySection.proxyPassword.get());
+			}
+		}
+		case "socks4" -> {
+			properties.setProperty("socksProxyVersion", "4");
+			properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
+			properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
+			// note that these properties is not supported by JDK itself, but is used quite broadly in libraries
+			// these properties can't effect gradle download task, but ensure that some libraries can get.
+			if (!proxySection.proxyUser.get().isEmpty() && !proxySection.proxyPassword.get().isEmpty()) {
+				properties.setProperty("java.net.socks.username", proxySection.proxyUser.get());
+				properties.setProperty("java.net.socks.password", proxySection.proxyPassword.get());
+			}
 		}
 		}
 

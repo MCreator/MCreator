@@ -26,6 +26,7 @@ import net.mcreator.preferences.entries.StringEntry;
 public class ProxySection extends PreferencesSection {
 
 	public final StringEntry proxyType;
+	public final StringEntry nonProxyHosts;
 	public final StringEntry proxyHost;
 	public final IntegerEntry proxyPort;
 	public final StringEntry proxyUser;
@@ -34,7 +35,8 @@ public class ProxySection extends PreferencesSection {
 	ProxySection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		proxyType = addEntry(new StringEntry("proxyType", "none", "none", "http", "socks", "systemproxy"));
+		proxyType = addEntry(new StringEntry("proxyType", "none", "none", "http", "socks5", "socks4", "systemproxy"));
+		nonProxyHosts = addEntry(new StringEntry("nonProxyHosts", "127.0.0.1|*.example.com", true));
 		proxyHost = addEntry(new StringEntry("proxyHost", "", true));
 		proxyPort = addEntry(new IntegerEntry("proxyPort", 80, 1, 65535));
 		proxyUser = addEntry(new StringEntry("proxyUser", "", true));
