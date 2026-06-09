@@ -63,6 +63,7 @@ public class ProxyUtils {
 			return properties;
 		}
 		case "http" -> {
+			// this must be empty, or the http proxy user and http proxy password will be ignored
 			properties.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 			properties.setProperty("http.proxyHost", proxySection.proxyHost.get());
 			properties.setProperty("http.proxyPort", String.valueOf(proxySection.proxyPort.get()));
