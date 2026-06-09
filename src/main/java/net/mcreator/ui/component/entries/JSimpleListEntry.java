@@ -44,10 +44,6 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	private final JComponent container;
 
 	public JSimpleListEntry(JPanel parent, List<? extends JSimpleListEntry<T>> entryList) {
-		this(parent, entryList, true);
-	}
-
-	public JSimpleListEntry(JPanel parent, List<? extends JSimpleListEntry<T>> entryList, boolean canEntryMove) {
 		this.parent = parent;
 		this.entryList = entryList;
 
@@ -77,44 +73,39 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 			entryRemovedByUserHandler();
 		});
 
-		if (canEntryMove) {
-			moveUp.setToolTipText(L10N.t("simple_list_entry.move_up"));
-			moveUp.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
-			if (entryList.isEmpty()) { // At this point, this entry isn't in the entry list yet
-				moveUp.setEnabled(false);
-			}
-
-			moveUp.addActionListener(e -> {
-				int i = entryList.indexOf(this);
-				if (i > 0) {
-					swapEntries(parent, entryList, i - 1, i);
-					parent.revalidate();
-					parent.repaint();
-				}
-			});
-
-			moveDown.setToolTipText(L10N.t("simple_list_entry.move_down"));
-			moveDown.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
-			moveDown.setEnabled(false); // The new entry is always the last one
-			if (!entryList.isEmpty()) { // Enable the "move down" button of the second-to-last entry
-				entryList.getLast().enableMoveDownButton();
-			}
-
-			moveDown.addActionListener(e -> {
-				int i = entryList.indexOf(this);
-				if (i >= 0 && i < entryList.size() - 1) {
-					swapEntries(parent, entryList, i, i + 1);
-					parent.revalidate();
-					parent.repaint();
-				}
-			});
-
-			add(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(PanelUtils.join(moveUp, moveDown)),
-					PanelUtils.centerAndEastElement(line, PanelUtils.totalCenterInPanel(PanelUtils.join(remove))), 5,
-					0));
-		} else {
-			add(PanelUtils.centerAndEastElement(line, PanelUtils.totalCenterInPanel(PanelUtils.join(remove))), 5, 0);
+		moveUp.setToolTipText(L10N.t("simple_list_entry.move_up"));
+		moveUp.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		if (entryList.isEmpty()) { // At this point, this entry isn't in the entry list yet
+			moveUp.setEnabled(false);
 		}
+
+		moveUp.addActionListener(e -> {
+			int i = entryList.indexOf(this);
+			if (i > 0) {
+				swapEntries(parent, entryList, i - 1, i);
+				parent.revalidate();
+				parent.repaint();
+			}
+		});
+
+		moveDown.setToolTipText(L10N.t("simple_list_entry.move_down"));
+		moveDown.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		moveDown.setEnabled(false); // The new entry is always the last one
+		if (!entryList.isEmpty()) { // Enable the "move down" button of the second-to-last entry
+			entryList.getLast().enableMoveDownButton();
+		}
+
+		moveDown.addActionListener(e -> {
+			int i = entryList.indexOf(this);
+			if (i >= 0 && i < entryList.size() - 1) {
+				swapEntries(parent, entryList, i, i + 1);
+				parent.revalidate();
+				parent.repaint();
+			}
+		});
+
+		add(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(PanelUtils.join(moveUp, moveDown)),
+				PanelUtils.centerAndEastElement(line, PanelUtils.totalCenterInPanel(PanelUtils.join(remove))), 5, 0));
 
 		parent.revalidate();
 		parent.repaint();

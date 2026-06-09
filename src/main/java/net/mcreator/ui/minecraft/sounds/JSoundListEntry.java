@@ -54,7 +54,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 
 	public JSoundListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JSoundListEntry> entryList,
 			boolean isForBedrock) {
-		super(parent, entryList, false);
+		super(parent, entryList);
 
 		this.mcreator = mcreator;
 		this.isForBedrock = isForBedrock;
