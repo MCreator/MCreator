@@ -147,17 +147,25 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public ModElement getModElementByName(String elementName) {
-		return mod_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
-				.orElse(null);
+		for (ModElement element : mod_elements) {
+			if (element.getName().equals(elementName))
+				return element;
+		}
+		return null;
 	}
 
 	public VariableElement getVariableElementByName(String elementName) {
-		return variable_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
-				.orElse(null);
+		for (VariableElement element : variable_elements) {
+			if (element.getName().equals(elementName))
+				return element;
+		}
+		return null;
 	}
 
 	public void resetModElementCompilesStatus() {
-		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
+		for (ModElement el : mod_elements) {
+			el.setCompiles(true);
+		}
 		markDirty();
 	}
 
@@ -361,7 +369,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 */
 	public void reloadModElements() {
 		// While reiniting, list may change due to converters, so we need to copy it
-		for (ModElement modElement : Set.copyOf(mod_elements)) {
+		for (ModElement modElement : this.getModElements()) {
 			modElement.reinit(this);
 		}
 	}

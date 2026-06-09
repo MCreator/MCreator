@@ -23,6 +23,10 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.generator.io.GradleTrackingFileIO;
+import net.mcreator.generator.io.JSONWriter;
+import net.mcreator.generator.io.JSWriter;
+import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateExpressionParser;
@@ -34,11 +38,7 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.gradle.GradleFileTracker;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
-import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.generator.io.JSONWriter;
-import net.mcreator.generator.io.JSWriter;
-import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -320,7 +320,8 @@ public class Generator implements IGenerator, Closeable {
 
 	public void removeElementFilesAndWorkspaceLinks(GeneratableElement generatableElement) {
 		// first, remove files linked with this mod element
-		generatableElement.getModElement().getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(workspace, f));
+		generatableElement.getModElement().getAssociatedFiles()
+				.forEach(f -> GradleTrackingFileIO.deleteFile(workspace, f));
 
 		// then, delete tab sorting info associated with the mod element from the workspace
 		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
@@ -359,7 +360,7 @@ public class Generator implements IGenerator, Closeable {
 		for (ModElementType<?> type : generatorConfiguration.getGeneratorStats().getSupportedModElementTypes()) {
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, templateID);
 
-			List<GeneratableElement> filteredGeneratableElements = generatableElements.parallelStream()
+			List<GeneratableElement> filteredGeneratableElements = generatableElements.stream()
 					.filter(e -> e.getModElement().getType() == type).toList();
 
 			if (!filteredGeneratableElements.isEmpty()) {
