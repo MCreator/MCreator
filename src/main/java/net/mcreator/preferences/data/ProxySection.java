@@ -34,7 +34,7 @@ public class ProxySection extends PreferencesSection {
 	ProxySection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		proxyType = addEntry(new StringEntry("proxyType", "none", "none", "http", "https", "socks", "systemproxy"));
+		proxyType = addEntry(new StringEntry("proxyType", "none", "none", "http", "socks", "systemproxy"));
 		proxyHost = addEntry(new StringEntry("proxyHost", "", true));
 		proxyPort = addEntry(new IntegerEntry("proxyPort", 80, 1, 65535));
 		proxyUser = addEntry(new StringEntry("proxyUser", "", true));

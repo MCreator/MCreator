@@ -56,44 +56,31 @@ public class ProxyUtils {
 
 		Properties properties = new Properties();
 
-		if (type.equals("systemproxy")) {
+		switch (type) {
+		case "systemproxy" -> {
 			LOG.debug("Using system proxy");
 			properties.setProperty("java.net.useSystemProxies", "true");
 			return properties;
 		}
-
-		if (isHttpTypeProxy(type)) {
+		case "http" -> {
 			properties.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-			properties.setProperty(type + ".proxyHost", proxySection.proxyHost.get());
-			properties.setProperty(type + ".proxyPort", String.valueOf(proxySection.proxyPort.get()));
-		} else if (type.equals("socks")) {
+			properties.setProperty("http.proxyHost", proxySection.proxyHost.get());
+			properties.setProperty("http.proxyPort", String.valueOf(proxySection.proxyPort.get()));
+			properties.setProperty("https.proxyHost", proxySection.proxyHost.get());
+			properties.setProperty("https.proxyPort", String.valueOf(proxySection.proxyPort.get()));
+			properties.setProperty("http.proxyUser", proxySection.proxyUser.get());
+			properties.setProperty("http.proxyPassword", proxySection.proxyPassword.get());
+		}
+		case "socks" -> {
 			properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
 			properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
+			properties.setProperty("java.net.socks.username", proxySection.proxyUser.get());
+			properties.setProperty("java.net.socks.password", proxySection.proxyPassword.get());
+		}
 		}
 
 		LOG.debug("Using proxy: {}:{}:{}", type, proxySection.proxyHost.get(), proxySection.proxyPort.get());
 
-		configurePasswordAndUserProperties(properties, type, proxySection.proxyUser.get(),
-				proxySection.proxyPassword.get());
-
 		return properties;
 	}
-
-	private static void configurePasswordAndUserProperties(Properties properties, String type, String proxyUser,
-			String proxyPassword) {
-		if (!proxyUser.isEmpty()) {
-			if (type.equals("socks")) {
-				properties.setProperty("java.net.socks.username", proxyUser);
-				properties.setProperty("java.net.socks.password", proxyPassword);
-			} else if (isHttpTypeProxy(type)) {
-				properties.setProperty(type + ".proxyUser", proxyUser);
-				properties.setProperty(type + ".proxyPassword", proxyPassword);
-			}
-		}
-	}
-
-	private static boolean isHttpTypeProxy(String proxyType) {
-		return proxyType.startsWith("http");
-	}
-
 }
