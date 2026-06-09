@@ -68,8 +68,7 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		name.setValidator(new UniqueNameValidator(
 			L10N.t("modelement.function"),
 			() -> namespace.getSelectedItem() + ":" + name.getText(),
-			() -> mcreator.getWorkspace().getModElements().stream()
-				.filter(me -> me.getType() == ModElementType.FUNCTION)
+			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.FUNCTION).stream()
 				.map(ModElement::getGeneratableElement)
 				.filter(Objects::nonNull)
 				.map(ge -> ((Function) ge).namespace + ":" + ((Function) ge).name),

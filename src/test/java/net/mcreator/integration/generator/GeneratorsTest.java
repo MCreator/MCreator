@@ -64,7 +64,8 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(IntegrationTestSetup.class) public class GeneratorsTest {
+@ExtendWith(IntegrationTestSetup.class) public class
+GeneratorsTest {
 
 	private static final Logger LOG = LogManager.getLogger("Generator Test");
 

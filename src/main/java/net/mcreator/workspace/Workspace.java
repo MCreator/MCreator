@@ -56,7 +56,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private LinkedHashSet<ModElement> mod_elements = new LinkedHashSet<>(0);
+	private ModElementList mod_elements = new ModElementList();
 	private LinkedHashSet<VariableElement> variable_elements = new LinkedHashSet<>(0);
 	private LinkedHashSet<SoundElement> sound_elements = new LinkedHashSet<>(0);
 	private LinkedHashMap<TagElement, ArrayList<TagElement.Entry>> tag_elements = new LinkedHashMap<>();
@@ -104,7 +104,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @return UNMODIFIABLE! collection of mod elements
 	 */
 	public Collection<ModElement> getModElements() {
-		return Collections.unmodifiableSet(new LinkedHashSet<>(mod_elements));
+		return List.copyOf(mod_elements);
 	}
 
 	/**
@@ -142,19 +142,22 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public boolean containsModElement(String elementName) {
-		// We create "dummy" mod element for contains check since hashcode of ME is only based on its name
-		return mod_elements.contains(new ModElement(this, elementName, ModElementType.UNKNOWN));
+		return mod_elements.containsName(elementName);
 	}
 
-	public ModElement getModElementByName(String elementName) {
-		for (ModElement element : mod_elements) {
-			if (element.getName().equals(elementName))
-				return element;
-		}
-		return null;
+	public boolean containsType(ModElementType<?> type) {
+		return mod_elements.containsType(type);
 	}
 
-	public VariableElement getVariableElementByName(String elementName) {
+	@Nullable public ModElement getModElementByName(String elementName) {
+		return mod_elements.getByName(elementName);
+	}
+
+	public Collection<ModElement> getModElementsByType(ModElementType<?> type) {
+		return mod_elements.getByType(type);
+	}
+
+	@Nullable public VariableElement getVariableElementByName(String elementName) {
 		for (VariableElement element : variable_elements) {
 			if (element.getName().equals(elementName))
 				return element;
