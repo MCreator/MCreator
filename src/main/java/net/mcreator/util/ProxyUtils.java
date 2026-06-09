@@ -72,7 +72,6 @@ public class ProxyUtils {
 			properties.setProperty("http.proxyPassword", proxySection.proxyPassword.get());
 		}
 		case "socks" -> {
-			properties.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 			properties.setProperty("socksProxyHost", proxySection.proxyHost.get());
 			properties.setProperty("socksProxyPort", String.valueOf(proxySection.proxyPort.get()));
 		}
