@@ -47,6 +47,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -315,6 +316,35 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	}
 
+	@Nullable public File getCurrentSelectedDirectory() {
+		if (tree.getLastSelectedPathComponent() != null) {
+			Object selection = ((DefaultMutableTreeNode) tree.getLastSelectedPathComponent()).getUserObject();
+			if (selection instanceof File filesel) {
+				if (filesel.isDirectory()) {
+					return filesel;
+				} else if (filesel.isFile()) {
+					return filesel.getParentFile();
+				}
+			} else if (selection instanceof String label) {
+				return getSpecialFolderDirectory(label);
+			}
+		}
+		return null;
+	}
+
+	@Nullable private File getSpecialFolderDirectory(String label) {
+		return switch (label) {
+			case "Source (Gradle)" -> mcreator.getGenerator().getSourceRoot();
+			case "Resources (Gradle)" -> mcreator.getGenerator().getResourceRoot();
+			case "Sounds" -> mcreator.getFolderManager().getSoundsDir();
+			case "Structures" -> mcreator.getFolderManager().getStructuresDir();
+			case "Models" -> mcreator.getFolderManager().getModelsDir();
+			case "Minecraft run folder", "MC client run folder" -> mcreator.getFolderManager().getClientRunDir();
+			case "MC server run folder" -> mcreator.getFolderManager().getServerRunDir();
+			default -> null;
+		};
+	}
+
 	/**
 	 * If a file is selected, opens this file in the built-in code editor if its type is supported, otherwise calls the
 	 * program assigned to that file type.
@@ -350,10 +380,9 @@ public class WorkspaceFileBrowser extends JPanel {
 				else
 					Toolkit.getDefaultToolkit().beep();
 			} else if (selection.getUserObject() instanceof String selectedObject) {
-				if (selectedObject.equals("Source (Gradle)"))
-					DesktopUtils.openSafe(mcreator.getGenerator().getSourceRoot());
-				else if (selectedObject.equals("Resources (Gradle)"))
-					DesktopUtils.openSafe(mcreator.getGenerator().getResourceRoot());
+				File specialFolder = getSpecialFolderDirectory(selectedObject);
+				if (specialFolder != null)
+					DesktopUtils.openSafe(specialFolder);
 				else
 					Toolkit.getDefaultToolkit().beep();
 			} else {
