@@ -22,6 +22,7 @@ package net.mcreator.preferences.entries;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.ui.component.JEmptyBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,15 +45,25 @@ public class StringEntry extends PreferencesEntry<String> {
 	}
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		JComboBox<String> box = new JComboBox<>(choices);
-		box.setEditable(editable);
-		box.setSelectedItem(value);
-		box.addActionListener(fct::accept);
-		return box;
+		if (choices.length > 0) {
+			JComboBox<String> box = new JComboBox<>(choices);
+			box.setEditable(editable);
+			box.setSelectedItem(value);
+			box.addActionListener(fct::accept);
+			return box;
+		} else {
+			JTextField field = new JTextField(value, 24);
+			field.addActionListener(fct::accept);
+			return field;
+		}
 	}
 
 	@Override public void setValueFromComponent(JComponent component) {
-		value = (String) ((JComboBox<?>) component).getSelectedItem();
+		if (choices.length > 0) {
+			value = (String) ((JComboBox<?>) component).getSelectedItem();
+		} else {
+			value = ((JTextField) component).getText();
+		}
 	}
 
 	@Override public void setValueFromJsonElement(JsonElement object) {

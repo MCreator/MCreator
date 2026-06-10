@@ -23,7 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.io.writer.JSONWriter;
+import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;

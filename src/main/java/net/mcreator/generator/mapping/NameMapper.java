@@ -19,6 +19,7 @@
 package net.mcreator.generator.mapping;
 
 import net.mcreator.generator.GeneratorTokens;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -72,8 +73,12 @@ public class NameMapper {
 
 		Map<?, ?> mapping = workspace.getGenerator().getMappings().getMapping(mappingSource);
 
-		if (mapping == null)
+		if (mapping == null) {
+			LOG.warn("({}) Mapping source {} not found, returning original name: {}", TraceUtil.tryToFindMCreatorInvoker(),
+					mappingSource, origName);
+			TestUtil.failIfTestingEnvironment();
 			return origName;
+		}
 
 		if (origName.startsWith(EXTERNAL_PREFIX)) {
 			return origName.replace(EXTERNAL_PREFIX, "");

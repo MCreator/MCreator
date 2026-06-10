@@ -173,10 +173,14 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
 		} else if (type == ModElementType.SPECIALENTITY) {
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), "Boat", false));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), "Boat", true));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), random, "Boat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), random, "Boat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), random, "ChestBoat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), random, "ChestBoat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "5"), random, "Raft", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "6"), random, "Raft", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "7"), random, "ChestRaft", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "8"), random, "ChestRaft", true));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
@@ -1064,6 +1068,12 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 			return armor;
+		} else if (ModElementType.ARMORTRIM.equals(modElement.getType())) {
+			ArmorTrim armortrim = new ArmorTrim(modElement);
+			armortrim.name = modElement.getName();
+			armortrim.item = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
+			armortrim.armorTextureFile = "armor_texture";
+			return armortrim;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
@@ -1310,7 +1320,8 @@ public class TestWorkspaceDataProvider {
 			item.saturation = getRandomDouble(random, Item.class, "saturation");
 			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
-			item.animation = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Item.class, "animation"));
+			item.animation = new ItemUseAnimation(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadItemUseAnimations(modElement.getWorkspace())));
 			item.eatResultItem = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
@@ -1553,6 +1564,7 @@ public class TestWorkspaceDataProvider {
 							new EnchantmentEntry(modElement.getWorkspace(), "#minecraft:non_treasure"));
 				}
 			}
+			enchantment.effectsxml = Enchantment.XML_BASE;
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
@@ -2320,9 +2332,7 @@ public class TestWorkspaceDataProvider {
 		block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 		block.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-		block.tintType = getRandomString(random,
-				Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-						"Water", "Sky", "Fog", "Water fog"));
+		block.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "tintType"));
 		block.isItemTinted = _true;
 		block.renderType = emptyLists ?
 				new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12, 14 }[valueIndex] :
@@ -2628,16 +2638,22 @@ public class TestWorkspaceDataProvider {
 		return achievement;
 	}
 
-	public static SpecialEntity getSpecialEntityExample(ModElement modElement, String entityType, boolean emptyLists) {
+	public static SpecialEntity getSpecialEntityExample(ModElement modElement, Random random, String entityType,
+			boolean emptyLists) {
 		SpecialEntity specialEntity = new SpecialEntity(modElement);
 		specialEntity.name = modElement.getName();
 		specialEntity.entityType = entityType;
 		specialEntity.entityTexture = new TextureHolder(modElement.getWorkspace(), "entity_texture_0");
 		specialEntity.itemTexture = new TextureHolder(modElement.getWorkspace(), "itest");
+		specialEntity.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(SpecialEntity.class, "rarity"));
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+		if (!emptyLists) {
+			specialEntity.onTickUpdate = new Procedure("procedure1");
+			specialEntity.onPlayerCollidesWith = new Procedure("procedure2");
+		}
 
 		return specialEntity;
 	}

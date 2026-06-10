@@ -314,12 +314,12 @@ public class ImportFormat {
 	}
 
 	private Set<String> getUsedWildcardImports(Set<String> memberList, Map<String, List<String>> loadFrom) {
-		return memberList.parallelStream().filter(loadFrom::containsKey)
+		return memberList.stream().filter(loadFrom::containsKey)
 				.flatMap(member -> loadFrom.get(member).stream()).collect(Collectors.toSet());
 	}
 
 	private Set<String> getUsedImports(Set<String> memberList, Set<String> normalImports) {
-		return normalImports.parallelStream().filter(normalImport -> {
+		return normalImports.stream().filter(normalImport -> {
 			String[] stringArray = normalImport.split("\\.");
 			return memberList.contains(stringArray[stringArray.length - 1]);
 		}).collect(Collectors.toSet());

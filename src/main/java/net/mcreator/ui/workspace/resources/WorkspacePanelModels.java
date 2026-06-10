@@ -67,29 +67,29 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_java"))
 			addToolBarButton("action.workspace.resources.import_java_model", UIRES.get("16px.importjavamodel"),
-					e -> workspacePanel.getMCreator().getActionRegistry().importJavaModel.doAction());
+					_ -> workspacePanel.getMCreator().getActionRegistry().importJavaModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_json"))
 			addToolBarButton("action.workspace.resources.import_json_model", UIRES.get("16px.importjsonmodel"),
-					e -> workspacePanel.getMCreator().getActionRegistry().importJSONModel.doAction());
+					_ -> workspacePanel.getMCreator().getActionRegistry().importJSONModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_obj"))
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),
-					e -> workspacePanel.getMCreator().getActionRegistry().importOBJModel.doAction());
+					_ -> workspacePanel.getMCreator().getActionRegistry().importOBJModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_bedrock"))
 			addToolBarButton("action.workspace.resources.import_bedrock_model", UIRES.get("16px.importbedrockmodel"),
-					e -> workspacePanel.getMCreator().getActionRegistry().importBedrockModel.doAction());
+					_ -> workspacePanel.getMCreator().getActionRegistry().importBedrockModel.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverageAny("model_json", "model_obj"))
 			addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit"),
-					e -> editSelectedModelTextureMappings());
+					_ -> editSelectedModelTextureMappings());
 
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_java"))
 			addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit"),
-					e -> editSelectedModelAnimations());
+					_ -> editSelectedModelAnimations());
 
-		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+		addToolBarButton("common.search_usages", UIRES.get("16px.search"), _ -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -102,30 +102,30 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 						L10N.t("dialog.search_usages.type.resource.model"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), _ -> deleteCurrentlySelected());
 
 		JPopupMenu helpMenu = new JPopupMenu();
 
 		JMenuItem javaModels = new JMenuItem(L10N.t("workspace.3dmodels.help.java_models"));
 		javaModels.setIcon(UIRES.get("16px.importjavamodel"));
-		javaModels.addActionListener(e -> DesktopUtils.browseSafe(
+		javaModels.addActionListener(_ -> DesktopUtils.browseSafe(
 				MCreatorApplication.SERVER_DOMAIN + "/wiki/common-blockbench-issues-mcreator"));
 		helpMenu.add(javaModels);
 
 		JMenuItem jsonModels = new JMenuItem(L10N.t("workspace.3dmodels.help.json_models"));
 		jsonModels.setIcon(UIRES.get("16px.importjsonmodel"));
-		jsonModels.addActionListener(e -> DesktopUtils.browseSafe(
+		jsonModels.addActionListener(_ -> DesktopUtils.browseSafe(
 				MCreatorApplication.SERVER_DOMAIN + "/wiki/my-json-model-renders-broken-texture"));
 		helpMenu.add(jsonModels);
 
 		JMenuItem objModels = new JMenuItem(L10N.t("workspace.3dmodels.help.obj_models"));
 		objModels.setIcon(UIRES.get("16px.importobjmodel"));
-		objModels.addActionListener(e -> DesktopUtils.browseSafe(
+		objModels.addActionListener(_ -> DesktopUtils.browseSafe(
 				MCreatorApplication.SERVER_DOMAIN + "/wiki/custom-obj-models-blocks-and-items"));
 		helpMenu.add(objModels);
 
 		JButton help = AbstractWorkspacePanel.createToolBarButton("workspace.3dmodels.help", UIRES.get("16px.info"));
-		help.addActionListener(e -> helpMenu.show(help, 5, help.getHeight() + 5));
+		help.addActionListener(_ -> helpMenu.show(help, 5, help.getHeight() + 5));
 		bar.add(help);
 	}
 

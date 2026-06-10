@@ -24,24 +24,24 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
-import java.util.Objects;
 
 public final class FileIO {
 
 	private static final Logger LOG = LogManager.getLogger("File System");
 
 	public static String readFileToString(File f) {
-		try (FileInputStream fis = new FileInputStream(f)) {
-			return IOUtils.toString(fis, StandardCharsets.UTF_8);
+		try {
+			return Files.readString(f.toPath(), StandardCharsets.UTF_8);
 		} catch (Exception e) {
 			LOG.error("Error reading: {}", e.getMessage(), e);
 			return "";
@@ -71,7 +71,7 @@ public final class FileIO {
 		if (resource == null)
 			return null;
 
-		try (InputStream dis = resource.openConnection().getInputStream()) {
+		try (InputStream dis = resource.openStream()) {
 			return dis != null ? IOUtils.toString(dis, StandardCharsets.UTF_8) : "";
 		} catch (Exception e) {
 			LOG.error("Error resource reading: {}", e.getMessage(), e);
@@ -147,24 +147,33 @@ public final class FileIO {
 		if (!sourceLocation.exists())
 			return;
 
-		// prevent recursive copy in case if directory is copied in a subdirectory
-		try {
-			if (targetLocation.getAbsoluteFile().getParentFile().getCanonicalPath()
-					.equals(sourceLocation.getCanonicalPath()))
-				return;
-		} catch (IOException e) {
-			return;
-		}
+		Path source = sourceLocation.toPath();
+		Path target = targetLocation.toPath();
 
-		if (sourceLocation.isDirectory()) {
-			if (!targetLocation.exists())
-				targetLocation.mkdir();
-			String[] children = sourceLocation.list();
-			for (String element : children != null ? children : new String[0]) {
-				copyDirectory(new File(sourceLocation, element), new File(targetLocation, element));
-			}
-		} else {
-			copyFile(sourceLocation, targetLocation);
+		if (target.toAbsolutePath().normalize().startsWith(source.toAbsolutePath().normalize()))
+			return;
+
+		try {
+			Files.walkFileTree(source, new SimpleFileVisitor<>() {
+				@Nonnull @Override
+				public FileVisitResult preVisitDirectory(@Nonnull Path dir, @Nonnull BasicFileAttributes attrs)
+						throws IOException {
+					Path targetDir = target.resolve(source.relativize(dir));
+					if (!Files.isDirectory(targetDir)) {
+						Files.copy(dir, targetDir);
+					}
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Nonnull @Override
+				public FileVisitResult visitFile(@Nonnull Path file, @Nonnull BasicFileAttributes attrs)
+						throws IOException {
+					Files.copy(file, target.resolve(source.relativize(file)), StandardCopyOption.REPLACE_EXISTING);
+					return FileVisitResult.CONTINUE;
+				}
+			});
+		} catch (IOException e) {
+			LOG.warn("Error copying directory: {}", e.getMessage(), e);
 		}
 	}
 
@@ -210,13 +219,20 @@ public final class FileIO {
 		if (!file.exists())
 			return false;
 
+		String targetName = file.getName();
+		Path targetPath = file.toPath();
 		for (File fileFromList : fileList) {
-			if (fileFromList.getName().equals(file.getName())) {
-				try {
-					if (Files.isSameFile(file.toPath(), fileFromList.toPath()))
-						return true;
-				} catch (IOException ignored) {
+			if (file.equals(fileFromList))
+				return true;
+
+			if (!targetName.equals(fileFromList.getName()))
+				continue;
+
+			try {
+				if (Files.isSameFile(targetPath, fileFromList.toPath())) {
+					return true;
 				}
+			} catch (IOException ignored) {
 			}
 		}
 
@@ -224,14 +240,18 @@ public final class FileIO {
 	}
 
 	public static boolean isFileSomewhereInDirectory(File file, File directory) {
-		try {
-			return file.getCanonicalPath().startsWith(directory.getCanonicalPath());
-		} catch (Exception ignored) {
-			return file.getAbsolutePath().startsWith(directory.getAbsolutePath());
-		}
+		Path filePath = file.toPath().toAbsolutePath().normalize();
+		Path dirPath = directory.toPath().toAbsolutePath().normalize();
+		return filePath.startsWith(dirPath);
 	}
 
 	public static boolean isSameFile(File file1, File file2) {
+		if (file1 == file2 || file1.equals(file2))
+			return true;
+
+		if (!file1.getName().equals(file2.getName()))
+			return false;
+
 		try {
 			return Files.isSameFile(file1.toPath(), file2.toPath());
 		} catch (IOException e) {
@@ -244,15 +264,27 @@ public final class FileIO {
 	}
 
 	public static boolean removeEmptyDirs(File root) {
-		File[] files = root.listFiles();
-		for (File file : files != null ? files : new File[0]) {
-			if (file.isDirectory()) {
-				boolean isEmpty = removeEmptyDirs(file);
-				if (isEmpty)
-					file.delete();
+		if (!root.isDirectory())
+			return false;
+
+		boolean isEmpty = true;
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(root.toPath())) {
+			for (Path entry : stream) {
+				if (Files.isDirectory(entry)) {
+					if (removeEmptyDirs(entry.toFile())) {
+						Files.deleteIfExists(entry);
+					} else {
+						isEmpty = false;
+					}
+				} else {
+					isEmpty = false;
+				}
 			}
+		} catch (IOException e) {
+			LOG.warn("Error while removing empty directories: {}", e.getMessage(), e);
+			return false;
 		}
-		return Objects.requireNonNull(root.listFiles()).length == 0;
+		return isEmpty;
 	}
 
 	public static File[] listFilesRecursively(File root) {
