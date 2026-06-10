@@ -23,13 +23,7 @@ import net.mcreator.element.ModElementType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -146,7 +140,7 @@ public class ModElementList extends LinkedHashSet<ModElement> {
 
 	private void addToIndexes(ModElement element) {
 		byName.put(element.getName(), element);
-		byType.computeIfAbsent(element.getType(), ignored -> new LinkedHashSet<>()).add(element);
+		byType.computeIfAbsent(element.getType(), _ -> new HashSet<>()).add(element);
 	}
 
 	private void removeFromIndexes(ModElement element) {
