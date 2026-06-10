@@ -77,21 +77,21 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 	@Override protected void initGUI() {
 		ComponentUtils.deriveFont(commandName, 16);
 
-		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 2));
+		JPanel properties = new JPanel(new GridLayout(3, 2, 4, 2));
 
-		enderpanel.add(
+		properties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("command/name"), L10N.label("elementgui.command.name")));
-		enderpanel.add(commandName);
+		properties.add(commandName);
 
-		enderpanel.add(
+		properties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("command/type"), L10N.label("elementgui.command.type")));
-		enderpanel.add(type);
+		properties.add(type);
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
 				L10N.label("elementgui.command.permission_level")));
-		enderpanel.add(permissionLevel);
+		properties.add(permissionLevel);
 
-		enderpanel.setOpaque(false);
+		properties.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks();
 
@@ -106,18 +106,25 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Command.class, "argsxml"));
 		}
 
-		blocklyPanel.setPreferredSize(new Dimension(450, 440));
+		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
+		blocklyAndToolbarPanel.setOpaque(false);
+		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(
+				new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel, false), blocklyPanel));
 
-		JPanel args = PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(
-						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel, false), blocklyPanel),
-				compileNotesPanel);
+		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
+
+		JComponent args = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		ComponentUtils.makeSection(args, L10N.t("elementgui.command.arguments"));
-		args.setOpaque(false);
+		args.setPreferredSize(new Dimension(0, 460));
 
 		page1group.addValidationElement(commandName);
 
-		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel), args)).validate(
-				page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
+		JPanel page1 = new JPanel(new BorderLayout(10, 10));
+		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, properties), args));
+
+		page1.setOpaque(false);
+
+		addPage(page1).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
 				message -> message.replace("Command", "Command arguments")));
 
 		if (!isEditingMode()) {

@@ -37,7 +37,7 @@ public class ThemesPanel {
 	private final DefaultListModel<Theme> tmodel = new DefaultListModel<>();
 
 	public ThemesPanel(PreferencesDialog dialog) {
-		dialog.model.addElement(L10N.t("dialog.preferences.page_themes"));
+		dialog.addSection(L10N.t("dialog.preferences.page_themes"));
 		JList<Theme> themes = new JList<>(tmodel);
 		themes.setCellRenderer(new ThemesListCellRenderer());
 

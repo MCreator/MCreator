@@ -25,7 +25,7 @@ import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -147,17 +147,25 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public ModElement getModElementByName(String elementName) {
-		return mod_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
-				.orElse(null);
+		for (ModElement element : mod_elements) {
+			if (element.getName().equals(elementName))
+				return element;
+		}
+		return null;
 	}
 
 	public VariableElement getVariableElementByName(String elementName) {
-		return variable_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
-				.orElse(null);
+		for (VariableElement element : variable_elements) {
+			if (element.getName().equals(elementName))
+				return element;
+		}
+		return null;
 	}
 
 	public void resetModElementCompilesStatus() {
-		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
+		for (ModElement el : mod_elements) {
+			el.setCompiles(true);
+		}
 		markDirty();
 	}
 
@@ -255,14 +263,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		File tagFile = TagsUtils.getTagFileFor(this, element);
 		if (tagFile != null) {
-			TrackingFileIO.deleteFile(this, tagFile);
+			GradleTrackingFileIO.deleteFile(this, tagFile);
 		}
 
 		markDirty();
 	}
 
 	public void removeSoundElement(SoundElement element) {
-		element.getFiles().forEach(file -> TrackingFileIO.deleteFile(this,
+		element.getFiles().forEach(file -> GradleTrackingFileIO.deleteFile(this,
 				new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg")));
 		sound_elements.remove(element);
 		markDirty();
@@ -361,7 +369,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 */
 	public void reloadModElements() {
 		// While reiniting, list may change due to converters, so we need to copy it
-		for (ModElement modElement : Set.copyOf(mod_elements)) {
+		for (ModElement modElement : this.getModElements()) {
 			modElement.reinit(this);
 		}
 	}
@@ -394,10 +402,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.generator = new Generator(this); // reload generator
 	}
 
-	public void bindToNewWorkspaceFile(File workspaceFile) {
+	public void bindToNewWorkspaceFile(File newWorkspaceFile) {
+		File currentWorkspaceFile = this.getFileManager().getWorkspaceFile();
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
-		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+		currentWorkspaceFile.delete(); // delete old workspace file
+		this.fileManager = new WorkspaceFileManager(newWorkspaceFile, this); // new file manager instance for the new file
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 

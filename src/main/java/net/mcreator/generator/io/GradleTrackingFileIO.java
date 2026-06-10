@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2024, Pylo, opensource contributors
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io;
+package net.mcreator.generator.io;
 
 import net.mcreator.generator.IGeneratorProvider;
+import net.mcreator.io.FileIO;
 
 import javax.annotation.Nullable;
 import java.io.File;
 
-public class TrackingFileIO {
+public class GradleTrackingFileIO {
 
 	public static void writeFile(@Nullable IGeneratorProvider generatorProvider, String code, File path) {
 		if (generatorProvider != null)

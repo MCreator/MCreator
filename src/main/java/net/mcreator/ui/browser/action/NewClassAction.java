@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.browser.action;
 
-import net.mcreator.io.writer.JavaWriter;
+import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;

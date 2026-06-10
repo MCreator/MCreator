@@ -83,6 +83,7 @@ public class PalettePanel extends JTabbedPane {
 			palettes.add(ColorPalette.generate("Christmas", "#169f48", "#c6e2ff", "#9d1b18", "#871010", "#4a522e", "#3d7435", "#3e6838", "#b29146", "#bcc6cc", "#f8f8ff"));
 			palettes.add(ColorPalette.generate("Halloween", "#fc6716", "#ff8948", "#9bd21d", "#ad89ff", "#6a329f", "#993131", "#b02b2b", "#4b1c1c", "#6e0808", "#a48d0b"));
 			palettes.add(ColorPalette.generate("Desert", "#f6d7b0", "#f2d2a9", "#eccca2", "#e7c496", "#e1bf92", "#d6cecc", "#ccb9b4", "#ddbdb0", "#ba8778", "#454549"));
+			palettes.add(ColorPalette.generate("Armor trim", "#e0e0e0", "#c0c0c0", "#a0a0a0", "#808080", "#606060", "#404040", "#202020", "#000000"));
 			//@formatter:on
 		}
 	}

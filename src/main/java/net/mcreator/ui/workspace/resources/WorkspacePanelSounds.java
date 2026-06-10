@@ -42,10 +42,10 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, SoundElement::getName), new Render());
 
 		addToolBarButton("action.workspace.resources.import_sound", UIRES.get("16px.open"),
-				e -> workspacePanel.getMCreator().getActionRegistry().importSound.doAction());
+				_ -> workspacePanel.getMCreator().getActionRegistry().importSound.doAction());
 		addToolBarButton("workspace.sounds.edit_selected", UIRES.get("16px.edit"),
-				e -> editSelectedSound(elementList.getSelectedValue()));
-		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+				_ -> editSelectedSound(elementList.getSelectedValue()));
+		addToolBarButton("common.search_usages", UIRES.get("16px.search"), _ -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -58,7 +58,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 						L10N.t("dialog.search_usages.type.resource.sound"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), _ -> deleteCurrentlySelected());
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {

@@ -23,6 +23,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorUtils;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.setup.folders.AbstractFolderStructure;
 import net.mcreator.generator.template.InlineTemplatesHandler;
 import net.mcreator.io.FileIO;
@@ -148,7 +149,7 @@ public class WorkspaceGeneratorSetup {
 						StringWriter stringWriter = new StringWriter();
 						freemarkerTemplate.process(workspace.getGenerator().getBaseDataModelProvider().provide(),
 								stringWriter, InlineTemplatesHandler.getConfiguration().getObjectWrapper());
-						FileIO.writeStringToFile(stringWriter.getBuffer().toString(), outFile);
+						GradleTrackingFileIO.writeFile(workspace, stringWriter.getBuffer().toString(), outFile);
 					} else {
 						FileUtils.copyInputStreamToFile(stream, outFile);
 					}
