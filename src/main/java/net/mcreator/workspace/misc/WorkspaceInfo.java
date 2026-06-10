@@ -54,7 +54,7 @@ import java.util.*;
 	public List<ModElement> getElementsOfType(String typeString) {
 		try {
 			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
-			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type).toList();
+			return workspace.getModElements().stream().filter(e -> e.getType() == type).toList();
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
@@ -86,14 +86,14 @@ import java.util.*;
 	public boolean hasElementsOfType(String typeString) {
 		try {
 			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
-			return workspace.getModElements().parallelStream().anyMatch(e -> e.getType() == type);
+			return workspace.getModElements().stream().anyMatch(e -> e.getType() == type);
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
 	}
 
 	public boolean hasVariablesOfScope(String type) {
-		return workspace.getVariableElements().parallelStream()
+		return workspace.getVariableElements().stream()
 				.anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
@@ -106,7 +106,7 @@ import java.util.*;
 	}
 
 	public boolean hasJavaModels() {
-		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
+		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public List<String> getUsedElementNames(ModElement... exclusions) {
