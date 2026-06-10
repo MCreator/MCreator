@@ -33,7 +33,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 import java.io.IOException;
 
@@ -42,7 +41,7 @@ public class NewClassAction extends BasicAction {
 	private static final Logger LOG = LogManager.getLogger(NewClassAction.class);
 
 	public NewClassAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.browser.new_class"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_class"), _ -> {
 			String classname = VOptionPane.showInputDialog(actionRegistry.getMCreator(),
 					L10N.t("workspace_file_browser.new_class.class_name"),
 					L10N.t("workspace_file_browser.new_class.class_name.title"), null,
@@ -55,45 +54,37 @@ public class NewClassAction extends BasicAction {
 			if (classname != null) {
 				classname = JavaConventions.convertToValidClassName(classname);
 
-				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
-							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
-					if (selection instanceof File filesel) {
-						if (filesel.isFile())
-							filesel = filesel.getParentFile();
+				File workingDir = actionRegistry.getMCreator().getProjectBrowser().getCurrentSelectedDirectory();
+				if (workingDir != null) {
+					File classFile = new File(workingDir, classname + ".java");
 
-						if (filesel.isDirectory()) {
-							String path = filesel.getPath() + "/" + classname + ".java";
+					String packagenm = "";
 
-							String packagenm = "";
-
-							try {
-								String root = actionRegistry.getMCreator().getGenerator().getSourceRoot()
-										.getCanonicalPath();
-								String pathCan = new File(path).getCanonicalPath();
-								String packagetm = pathCan.replace(root, "").replaceFirst("\\\\", "")
-										.replaceFirst("/", "").replace(classname + ".java", "").replace("/", ".")
-										.replace("\\", ".").trim();
-								if (packagetm.endsWith("."))
-									packagetm = packagetm.substring(0, packagetm.length() - 1);
-								packagenm = packagetm;
-							} catch (IOException e) {
-								LOG.error(e.getMessage(), e);
-							}
-
-							String code = "";
-
-							if (!packagenm.isEmpty())
-								code += "package " + packagenm + ";\n\n";
-
-							code += "public class " + classname + " {\n\n\n}";
-
-							JavaWriter.writeJavaToFile(actionRegistry.getMCreator().getWorkspace(), code,
-									new File(path), true);
-
-							actionRegistry.getMCreator().getProjectBrowser().reloadTree();
-						}
+					try {
+						String root = actionRegistry.getMCreator().getGenerator().getSourceRoot()
+								.getCanonicalPath();
+						String pathCan = classFile.getCanonicalPath();
+						String packagetm = pathCan.replace(root, "").replaceFirst("\\\\", "")
+								.replaceFirst("/", "").replace(classname + ".java", "").replace("/", ".")
+								.replace("\\", ".").trim();
+						if (packagetm.endsWith("."))
+							packagetm = packagetm.substring(0, packagetm.length() - 1);
+						packagenm = packagetm;
+					} catch (IOException e) {
+						LOG.error(e.getMessage(), e);
 					}
+
+					String code = "";
+
+					if (!packagenm.isEmpty())
+						code += "package " + packagenm + ";\n\n";
+
+					code += "public class " + classname + " {\n\n\n}";
+
+					JavaWriter.writeJavaToFile(actionRegistry.getMCreator().getWorkspace(), code,
+							classFile, true);
+
+					actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 				}
 			}
 		});

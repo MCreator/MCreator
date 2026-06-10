@@ -137,7 +137,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
-		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
+		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab, 5, 5));
 		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
@@ -147,7 +147,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.item.damage_vs_entity")));
-		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
+		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity, 5, 5));
 		enableMeleeDamage.addActionListener(_ -> updateMeleeDamage());
 		enableMeleeDamage.setOpaque(false);
 
