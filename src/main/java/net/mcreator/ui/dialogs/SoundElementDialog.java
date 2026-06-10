@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.sounds.JSoundList;
@@ -48,10 +49,10 @@ import java.util.Objects;
 public class SoundElementDialog {
 
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
-		boolean isJava = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-				.getGamePlatform() == GeneratorFlavor.GamePlatform.JAVAEDITION;
+		boolean isBedrock = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+				== GeneratorFlavor.ADDON;
 
-		JPanel ui = new JPanel(new GridLayout(isJava ? 2 : 4, 2, 10, 2));
+		JPanel ui = new JPanel(new GridLayout(isBedrock ? 4 : 2, 2, 10, 2));
 		VTextField soundName = new VTextField(26);
 		soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
 		soundName.enableRealtimeValidation();
@@ -61,7 +62,7 @@ public class SoundElementDialog {
 
 		JTextField subtitle = new JTextField();
 
-		JSoundList soundsEntries = new JSoundList(mcreator, IHelpContext.NONE, !isJava);
+		JSoundList soundsEntries = new JSoundList(mcreator, IHelpContext.NONE);
 
 		JComponent component = PanelUtils.northAndCenterElement(L10N.label("dialog.sounds.declarations"),
 				soundsEntries);
@@ -79,145 +80,98 @@ public class SoundElementDialog {
 			soundsEntries.setEntries(sounds);
 		}
 
-		if (isJava) {
-			ui.add(L10N.label("dialog.sounds.subtitle"));
-			ui.add(subtitle);
-
-			if (element != null) {
-				soundName.setText(element.getName());
-				soundName.setEnabled(false);
-				subtitle.setText(element.getSubtitle());
-				soundsEntries.setEntries(element.getFiles());
-			}
-
-			int option = JOptionPane.showOptionDialog(mcreator, PanelUtils.northAndCenterElement(ui, pane1),
-					L10N.t("dialog.sounds.edit"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-					element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
-					element != null ? "Save changes" : "Add sound");
-
-			if (option == 0) {
-				if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
-					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
-							L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
-					return element;
-				} else {
-					if (!soundsEntries.areFilesValid()) {
-						JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_select_valid_file"),
-								L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
-						return element;
-					} else {
-						List<SoundElement.Sound> sounds = soundsEntries.getEntries();
-						List<SingleFileField> entriesFiles = soundsEntries.getFiles();
-
-						for (int i = 0; i < entriesFiles.size(); i++) {
-							SingleFileField field = entriesFiles.get(i);
-
-							if (!field.isEnabled())
-								continue;
-
-							File file = field.getEntry();
-							FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(),
-									RegistryNameFixer.fix(file.getName())));
-
-							sounds.get(i).setName(FilenameUtilsPatched.removeExtension(
-									RegistryNameFixer.fix(sounds.get(i).getName())));
-						}
-
-						String registryname = RegistryNameFixer.fix(soundName.getText());
-
-						mcreator.getWorkspace().setLocalization("subtitles." + registryname, subtitle.getText());
-
-						if (element != null) {
-							element.setSubtitle(subtitle.getText());
-							element.setFiles(sounds);
-							return element;
-						}
-
-						return new SoundElement(registryname, sounds, subtitle.getText());
-					}
-				}
-			} else {
-				return element;
-			}
-		} else {
-			JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
-			JMinMaxSpinner jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
+		JComboBox<String> soundCategory;
+		JMinMaxSpinner jMinMaxSpinner;
+		if (isBedrock) {
+			soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
+			jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
 			soundCategory.addActionListener(
 					_ -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
 
 			ui.add(L10N.label("dialog.sounds.category"));
 			ui.add(soundCategory);
 
-			ui.add(L10N.label("dialog.sounds.attenuation_distance"));
+			ui.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("sound/attenuation_distance"),
+					L10N.label("dialog.sounds.attenuation_distance")));
 			ui.add(jMinMaxSpinner);
+		} else {
+			soundCategory = null;
+			jMinMaxSpinner = null;
+		}
 
-			ui.add(L10N.label("dialog.sounds.subtitle"));
-			ui.add(subtitle);
+		ui.add(L10N.label("dialog.sounds.subtitle"));
+		ui.add(subtitle);
 
-			if (element != null) {
-				soundName.setText(element.getName());
-				soundName.setEnabled(false);
+		if (element != null) {
+			soundName.setText(element.getName());
+			soundName.setEnabled(false);
+			subtitle.setText(element.getSubtitle());
+			soundsEntries.setEntries(element.getFiles());
+			if (isBedrock) {
 				soundCategory.setSelectedItem(element.getBECategory());
 				jMinMaxSpinner.setMinValue(element.getBEAttenuationDistance().min);
 				jMinMaxSpinner.setMaxValue(element.getBEAttenuationDistance().max);
-				subtitle.setText(element.getSubtitle());
-				soundsEntries.setEntries(element.getFiles());
 			}
+		}
 
-			int option = JOptionPane.showOptionDialog(mcreator, PanelUtils.northAndCenterElement(ui, pane1),
-					L10N.t("dialog.sounds.edit"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-					element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
-					element != null ? "Save changes" : "Add sound");
+		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils.northAndCenterElement(ui, pane1),
+				L10N.t("dialog.sounds.edit"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+				element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
+				element != null ? "Save changes" : "Add sound");
 
-			if (option == 0) {
-				if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
-					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
-							L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
+		if (option == 0) {
+			if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
+				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
+						L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
+				return element;
+			} else {
+				if (!soundsEntries.areFilesValid()) {
+					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_select_valid_file"),
+							L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
 					return element;
 				} else {
-					if (!soundsEntries.areFilesValid()) {
-						JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_select_valid_file"),
-								L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
-						return element;
-					} else {
-						List<SoundElement.Sound> sounds = soundsEntries.getEntries();
-						List<SingleFileField> entriesFiles = soundsEntries.getFiles();
+					List<SoundElement.Sound> sounds = soundsEntries.getEntries();
+					List<SingleFileField> entriesFiles = soundsEntries.getFiles();
 
-						for (int i = 0; i < entriesFiles.size(); i++) {
-							SingleFileField field = entriesFiles.get(i);
+					for (int i = 0; i < entriesFiles.size(); i++) {
+						SingleFileField field = entriesFiles.get(i);
 
-							if (!field.isEnabled())
-								continue;
+						if (!field.isEnabled())
+							continue;
 
-							File file = field.getEntry();
-							FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(),
-									RegistryNameFixer.fix(file.getName())));
+						File file = field.getEntry();
+						FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(),
+								RegistryNameFixer.fix(file.getName())));
 
-							sounds.get(i).setName(FilenameUtilsPatched.removeExtension(
-									RegistryNameFixer.fix(sounds.get(i).getName())));
-						}
+						sounds.get(i).setName(
+								FilenameUtilsPatched.removeExtension(RegistryNameFixer.fix(sounds.get(i).getName())));
+					}
 
-						String registryname = RegistryNameFixer.fix(soundName.getText());
+					String registryname = RegistryNameFixer.fix(soundName.getText());
 
-						mcreator.getWorkspace().setLocalization("subtitles." + registryname, subtitle.getText());
+					mcreator.getWorkspace().setLocalization("subtitles." + registryname, subtitle.getText());
 
-						if (element != null) {
+					if (element != null) {
+						element.setSubtitle(subtitle.getText());
+						element.setFiles(sounds);
+						if (isBedrock) {
 							element.setBECategory((String) soundCategory.getSelectedItem());
 							element.setBEAttenuationDistance(
 									new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()));
-							element.setSubtitle(subtitle.getText());
-							element.setFiles(sounds);
-							return element;
 						}
 
-						return new SoundElement(registryname, (String) soundCategory.getSelectedItem(),
-								new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()),
-								sounds, subtitle.getText());
+						return element;
 					}
+
+					return isBedrock ?
+							new SoundElement(registryname, (String) soundCategory.getSelectedItem(),
+									new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()),
+									sounds, subtitle.getText()) :
+							new SoundElement(registryname, sounds, subtitle.getText());
 				}
-			} else {
-				return element;
 			}
+		} else {
+			return element;
 		}
 	}
 

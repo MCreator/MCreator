@@ -58,7 +58,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 
 		this.mcreator = mcreator;
 		this.isForBedrock = isForBedrock;
-		this.fileListField = new SingleFileField(mcreator);
+		this.fileListField = new SingleFileField(mcreator, ".ogg");
 
 		JPanel line = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line.setOpaque(false);

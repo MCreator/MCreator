@@ -1,5 +1,6 @@
 package net.mcreator.ui.minecraft.sounds;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
@@ -14,21 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement.Sound> {
-	private final boolean isForBedrock;
 
-	public JSoundList(MCreator mcreator, IHelpContext gui, boolean isForBedrock) {
+	public JSoundList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui, false);
-
-		this.isForBedrock = isForBedrock;
 
 		add.setText(L10N.t("dialog.sounds.add_entry"));
 
 		ComponentUtils.makeSection(this, L10N.t("dialog.sounds.spawn_entries"));
-		setPreferredSize(new Dimension((int) (getPreferredSize().width * 4.1), (int) (mcreator.getSize().height * 0.3)));
+		setPreferredSize(
+				new Dimension((int) (getPreferredSize().width * 4.1), (int) (mcreator.getSize().height * 0.3)));
 	}
 
 	@Override protected JSoundListEntry newEntry(JPanel parent, List<JSoundListEntry> entryList, boolean userAction) {
-		return new JSoundListEntry(mcreator, gui, parent, entryList, isForBedrock);
+		return new JSoundListEntry(mcreator, gui, parent, entryList,
+				mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+						== GeneratorFlavor.ADDON);
 	}
 
 	public boolean areFilesValid() {

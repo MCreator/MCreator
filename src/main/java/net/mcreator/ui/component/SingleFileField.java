@@ -26,13 +26,15 @@ import java.awt.*;
 import java.io.File;
 
 public class SingleFileField extends JSingleEntrySelector<File> {
+	private final String[] extensions;
 
-	public SingleFileField(MCreator window) {
+	public SingleFileField(MCreator window, String... extensions) {
 		super(window);
+		this.extensions = extensions;
 		setPreferredSize(new Dimension((int) (mcreator.getSize().width * 0.07), getPreferredSize().height));
 	}
 
 	@Override protected File openEntrySelector() {
-		return FileDialogs.getOpenDialog(mcreator, new String[] { ".ogg" });
+		return FileDialogs.getOpenDialog(mcreator, extensions);
 	}
 }
