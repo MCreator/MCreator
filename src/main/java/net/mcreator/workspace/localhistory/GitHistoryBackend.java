@@ -93,8 +93,12 @@ class GitHistoryBackend implements AutoCloseable {
 		config.setBoolean("core", null, "autocrlf", false);
 		config.setBoolean("core", null, "filemode", false);
 		config.setString("core", null, "sha1Implementation", "jdkNative");
+		config.setString("core", null, "eol", "native");
+		config.setBoolean("commit", null, "gpgsign", false);
 		config.setInt("index", null, "version", 4);
 		config.setInt("pack", null, "threads", 0);
+		config.setString("user", null, "name", "MCreator");
+		config.setString("user", null, "email", "localhistory@mcreator");
 		config.save();
 
 		configureIgnores(historyDatabaseDir);
@@ -109,7 +113,7 @@ class GitHistoryBackend implements AutoCloseable {
 					Repository repo = git.getRepository();
 					IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
 					stageChanges(diff);
-					git.commit().setMessage(L10N.t("local_history.checkpoint.initial")).call();
+					git.commit().setMessage(L10N.t("local_history.checkpoint.initial")).setSign(false).call();
 
 					LOG.debug("Initialized local history repository in {} ms", System.currentTimeMillis() - startTime);
 				} catch (Exception e) {
@@ -143,7 +147,7 @@ class GitHistoryBackend implements AutoCloseable {
 
 				stageChanges(diff);
 
-				git.commit().setMessage(commitMessage).call();
+				git.commit().setMessage(commitMessage).setSign(false).call();
 				LOG.debug("Saved local history checkpoint '{}' in {} ms", commitMessage,
 						System.currentTimeMillis() - startTime);
 				didCommitCallback.accept(CommitResult.SUCCESS);
