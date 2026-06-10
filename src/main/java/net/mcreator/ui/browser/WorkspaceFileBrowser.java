@@ -71,6 +71,19 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger(WorkspaceFileBrowser.class);
 
+	public static final String NODE_SOURCE_GRADLE = "Source (Gradle)";
+	public static final String NODE_RESOURCES_GRADLE = "Resources (Gradle)";
+	public static final String NODE_SOUNDS = "Sounds";
+	public static final String NODE_STRUCTURES = "Structures";
+	public static final String NODE_MODELS = "Models";
+	public static final String NODE_DEBUG_PROFILER_RESULTS = "Debug profiler results";
+	public static final String NODE_MINECRAFT_RUN_FOLDER = "Minecraft run folder";
+	public static final String NODE_MC_CLIENT_RUN_FOLDER = "MC client run folder";
+	public static final String NODE_MC_SERVER_RUN_FOLDER = "MC server run folder";
+	public static final String NODE_BEDROCK_EDITION = "Bedrock Edition";
+	public static final String NODE_EXTERNAL_LIBRARIES = "External libraries";
+	public static final String NODE_TEXTURES = "Textures";
+
 	private final FilteredTreeModel mods = new FilteredTreeModel(null);
 
 	FilterTreeNode sourceCode = null;
@@ -207,34 +220,34 @@ public class WorkspaceFileBrowser extends JPanel {
 		FilterTreeNode root = new FilterTreeNode("");
 		FilterTreeNode node = new FilterTreeNode(mcreator.getWorkspaceSettings().getModName());
 
-		sourceCode = new FilterTreeNode("Source (Gradle)");
+		sourceCode = new FilterTreeNode(NODE_SOURCE_GRADLE);
 		JFileTree.addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 		node.add(sourceCode);
 
-		currRes = new FilterTreeNode("Resources (Gradle)");
+		currRes = new FilterTreeNode(NODE_RESOURCES_GRADLE);
 		JFileTree.addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 		node.add(currRes);
 
 		if (mcreator.getGeneratorStats().hasBaseCoverage("sounds")) {
-			FilterTreeNode sounds = new FilterTreeNode("Sounds");
+			FilterTreeNode sounds = new FilterTreeNode(NODE_SOUNDS);
 			JFileTree.addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 			node.add(sounds);
 		}
 
 		if (mcreator.getGeneratorStats().hasBaseCoverage("structures")) {
-			FilterTreeNode structures = new FilterTreeNode("Structures");
+			FilterTreeNode structures = new FilterTreeNode(NODE_STRUCTURES);
 			JFileTree.addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 			node.add(structures);
 		}
 
 		if (mcreator.getGeneratorStats().hasBaseCoverageAny("model_json", "model_java", "model_obj", "model_bedrock")) {
-			FilterTreeNode models = new FilterTreeNode("Models");
+			FilterTreeNode models = new FilterTreeNode(NODE_MODELS);
 			JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 			node.add(models);
 		}
 
 		if (new File(mcreator.getFolderManager().getClientRunDir(), "debug").isDirectory()) {
-			FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
+			FilterTreeNode debugFolder = new FilterTreeNode(NODE_DEBUG_PROFILER_RESULTS);
 			JFileTree.addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
 			node.add(debugFolder);
 		}
@@ -252,18 +265,18 @@ public class WorkspaceFileBrowser extends JPanel {
 		File serverRunDir = mcreator.getFolderManager().getServerRunDir();
 		if (clientRunDir.equals(serverRunDir)) {
 			if (clientRunDir.isDirectory()) {
-				FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
+				FilterTreeNode minecraft = new FilterTreeNode(NODE_MINECRAFT_RUN_FOLDER);
 				JFileTree.addNodes(minecraft, clientRunDir, true);
 				root.add(minecraft);
 			}
 		} else {
 			if (clientRunDir.isDirectory()) {
-				FilterTreeNode minecraft = new FilterTreeNode("MC client run folder");
+				FilterTreeNode minecraft = new FilterTreeNode(NODE_MC_CLIENT_RUN_FOLDER);
 				JFileTree.addNodes(minecraft, clientRunDir, true);
 				root.add(minecraft);
 			}
 			if (serverRunDir.isDirectory()) {
-				FilterTreeNode minecraft = new FilterTreeNode("MC server run folder");
+				FilterTreeNode minecraft = new FilterTreeNode(NODE_MC_SERVER_RUN_FOLDER);
 				JFileTree.addNodes(minecraft, serverRunDir, true);
 				root.add(minecraft);
 			}
@@ -276,7 +289,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
 			File folder = MinecraftFolderUtils.getBedrockEditionFolder();
 			if (folder != null) {
-				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
+				FilterTreeNode minecraft = new FilterTreeNode(NODE_BEDROCK_EDITION);
 				JFileTree.addNodes(minecraft, folder, true);
 				root.add(minecraft);
 			}
@@ -334,13 +347,13 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	@Nullable private File getSpecialFolderDirectory(String label) {
 		return switch (label) {
-			case "Source (Gradle)" -> mcreator.getGenerator().getSourceRoot();
-			case "Resources (Gradle)" -> mcreator.getGenerator().getResourceRoot();
-			case "Sounds" -> mcreator.getFolderManager().getSoundsDir();
-			case "Structures" -> mcreator.getFolderManager().getStructuresDir();
-			case "Models" -> mcreator.getFolderManager().getModelsDir();
-			case "Minecraft run folder", "MC client run folder" -> mcreator.getFolderManager().getClientRunDir();
-			case "MC server run folder" -> mcreator.getFolderManager().getServerRunDir();
+			case NODE_SOURCE_GRADLE -> mcreator.getGenerator().getSourceRoot();
+			case NODE_RESOURCES_GRADLE -> mcreator.getGenerator().getResourceRoot();
+			case NODE_SOUNDS -> mcreator.getFolderManager().getSoundsDir();
+			case NODE_STRUCTURES -> mcreator.getFolderManager().getStructuresDir();
+			case NODE_MODELS -> mcreator.getFolderManager().getModelsDir();
+			case NODE_MINECRAFT_RUN_FOLDER, NODE_MC_CLIENT_RUN_FOLDER -> mcreator.getFolderManager().getClientRunDir();
+			case NODE_MC_SERVER_RUN_FOLDER -> mcreator.getFolderManager().getServerRunDir();
 			default -> null;
 		};
 	}
@@ -429,7 +442,7 @@ public class WorkspaceFileBrowser extends JPanel {
 	}
 
 	private void loadExtSources(FilterTreeNode node) {
-		FilterTreeNode extDeps = new FilterTreeNode("External libraries");
+		FilterTreeNode extDeps = new FilterTreeNode(NODE_EXTERNAL_LIBRARIES);
 
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
 			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
