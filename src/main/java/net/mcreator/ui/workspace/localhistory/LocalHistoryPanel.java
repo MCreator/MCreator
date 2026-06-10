@@ -56,6 +56,7 @@ public class LocalHistoryPanel extends JPanel {
 	private final JButton moreOptions;
 
 	private final JMenuItem resetHistory;
+	private final JMenuItem optimizeStorage;
 
 	@Nullable private SwingWorker<List<HistoryCheckpoint.DiffEntry>, Void> diffWorker;
 
@@ -146,7 +147,7 @@ public class LocalHistoryPanel extends JPanel {
 		JPopupMenu moreOptionsMenu = new JPopupMenu();
 		JMenuItem manualCheckpoint = new JMenuItem(L10N.t("dialog.local_history.manual_checkpoint"));
 		resetHistory = new JMenuItem(L10N.t("dialog.local_history.reset"));
-		JMenuItem optimizeStorage = new JMenuItem(L10N.t("dialog.local_history.optimize"));
+		optimizeStorage = new JMenuItem(L10N.t("dialog.local_history.optimize"));
 
 		manualCheckpoint.addActionListener(_ -> mcreator.getWorkspace().getHistoryManager().importantCheckpoint("manual"));
 
@@ -241,6 +242,7 @@ public class LocalHistoryPanel extends JPanel {
 
 		checkpointList.setListData(checkpoints.toArray(HistoryCheckpoint[]::new));
 		resetHistory.setEnabled(true);
+		optimizeStorage.setEnabled(true);
 		checkpointList.setEnabled(true);
 		mainCardLayout.show(mainContent, "history");
 
@@ -365,6 +367,7 @@ public class LocalHistoryPanel extends JPanel {
 		mainCardLayout.show(mainContent, "empty");
 		resetHistory.setEnabled(false);
 		checkpointList.setEnabled(false);
+		optimizeStorage.setEnabled(false);
 		updateRevertButtonState();
 	}
 
