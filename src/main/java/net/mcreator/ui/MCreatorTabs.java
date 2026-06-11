@@ -93,13 +93,18 @@ public class MCreatorTabs extends JTabbedPane {
 		return null;
 	}
 
-	public void addTab(final Tab tab) {
+	public void addTab(Tab tab) {
+		addTab(tab, true);
+	}
+
+	public void addTab(final Tab tab, boolean showTab) {
 		tabs.add(tab);
 		tab.addImpl(this);
 
 		MCREvent.event(new TabEvent.Added(tab));
 
-		showTab(tab);
+		if (showTab)
+			showTab(tab);
 	}
 
 	/**
@@ -129,6 +134,10 @@ public class MCreatorTabs extends JTabbedPane {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
+				if (tab.equals(this.current)) {
+					return tab; // Tab is already shown, no need to do anything
+				}
+
 				SwingUtilities.invokeLater(() -> {
 					if (performUIAction) {
 						setSelectedIndex(tab.getIndex());

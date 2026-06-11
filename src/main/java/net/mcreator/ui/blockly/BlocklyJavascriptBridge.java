@@ -194,11 +194,11 @@ public final class BlocklyJavascriptBridge {
 						w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 						"biome");
 				case "dimensionCustom" -> openStringEntrySelector( // For legacy reason
-						w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+						w -> w.getModElementsByType(ModElementType.DIMENSION).stream()
 								.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new),
 						"dimensions");
 				case "dimensionCustomWithPortal" -> openStringEntrySelector(
-						w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+						w -> w.getModElementsByType(ModElementType.DIMENSION).stream()
 								.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
 								.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
 								.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName())
@@ -225,8 +225,8 @@ public final class BlocklyJavascriptBridge {
 						openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
 								"structures");
 				case "procedure" -> openStringEntrySelector(
-						w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-								.map(ModElement::getName).toArray(String[]::new), "procedure");
+						w -> w.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
+								.toArray(String[]::new), "procedure");
 				case "arrowProjectile" -> openDataListEntrySelector(
 						w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 								.toList(), "projectiles");
@@ -294,8 +294,8 @@ public final class BlocklyJavascriptBridge {
 		//We check for general cases
 		switch (type) {
 		case "procedure":
-			retval = workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-					.map(ModElement::getName).collect(Collectors.toList());
+			retval = workspace.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
+					.collect(Collectors.toList());
 			break;
 		case "entity":
 			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
@@ -336,7 +336,7 @@ public final class BlocklyJavascriptBridge {
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "dimension_custom":
-			retval = workspace.getModElements().stream().filter(mu -> mu.getType() == ModElementType.DIMENSION)
+			retval = workspace.getModElementsByType(ModElementType.DIMENSION).stream()
 					.map(mu -> NameMapper.MCREATOR_PREFIX + mu.getName()).collect(Collectors.toList());
 			break;
 		case "villagerprofessions":
@@ -352,15 +352,12 @@ public final class BlocklyJavascriptBridge {
 
 		// check if type is "call procedure with return value"
 		if (type.contains("procedure_retval_")) {
-			retval = workspace.getModElements().stream().filter(mod -> {
-				if (mod.getType() == ModElementType.PROCEDURE) {
-					VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
-							null;
-					return returnTypeCurrent == VariableTypeLoader.INSTANCE.fromName(
-							Strings.CS.removeStart(type, "procedure_retval_"));
-				}
-				return false;
+			retval = workspace.getModElementsByType(ModElementType.PROCEDURE).stream().filter(mod -> {
+				VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+						VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
+						null;
+				return returnTypeCurrent == VariableTypeLoader.INSTANCE.fromName(
+						Strings.CS.removeStart(type, "procedure_retval_"));
 			}).map(ModElement::getName).collect(Collectors.toList());
 		}
 
