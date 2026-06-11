@@ -182,7 +182,11 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 	}
 
-	void revertToCheckpoint(String checkpointHash, Consumer<Set<String>> changedPathsCallback) throws LocalHistoryException {
+	void revertToCheckpoint(String checkpointHash, Consumer<Set<String>> changedPathsCallback)
+			throws LocalHistoryException {
+		if (closed)
+			return;
+
 		try {
 			executor.submit(() -> {
 				setBusy(true);
@@ -255,25 +259,25 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	@Override public void close() {
+		if (closed)
+			return;
+
 		closed = true;
+
+		// stop executor
+		executor.shutdown();
 		try {
-			executor.submit(() -> {
-				try {
-					git.close();
-				} catch (Exception e) {
-					LOG.warn("Failed to close local history: {}", e.getMessage());
-				}
-			}).get();
-		} catch (InterruptedException _) {
-		} catch (ExecutionException e) {
-			LOG.warn("Failed to execute local history close: {}", e.getCause().getMessage());
-		} finally {
-			executor.shutdown();
-			try {
-				executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-			} catch (InterruptedException e) {
+			if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+				LOG.warn("Failed to stop Git task executor");
 				executor.shutdownNow();
 			}
+		} catch (InterruptedException _) {
+		}
+
+		try {
+			git.close();
+		} catch (Exception e) {
+			LOG.warn("Failed to close local history: {}", e.getMessage());
 		}
 	}
 
@@ -309,6 +313,9 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	private void stageChanges(IndexDiff diff) throws GitAPIException {
+		if (closed)
+			return;
+
 		if (!diff.getUntracked().isEmpty() || !diff.getModified().isEmpty()) {
 			AddCommand add = git.add();
 			for (String path : diff.getUntracked()) {
@@ -329,6 +336,9 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	private List<HistoryCheckpoint.DiffEntry> getDiffEntries(RevCommit commit) {
+		if (closed)
+			return List.of();
+
 		List<HistoryCheckpoint.DiffEntry> diffList = new ArrayList<>();
 		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
 			df.setRepository(git.getRepository());
@@ -371,9 +381,8 @@ class GitHistoryBackend implements AutoCloseable {
 	}
 
 	private Future<?> runGitTask(Runnable task) {
-		if (closed) {
+		if (closed)
 			return null;
-		}
 
 		try {
 			return executor.submit(() -> {
