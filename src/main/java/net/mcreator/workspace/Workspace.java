@@ -48,6 +48,7 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -428,7 +429,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void resetLocalHistory() {
 		this.historyManager.close();
-		FileIO.deleteDir(HistoryManager.getLocalHistoryRoot(this.getWorkspaceFolder()));
+		HistoryManager.deleteLocalHistoryRoot(this.getWorkspaceFolder());
 		this.historyManager = new HistoryManager(this);
 	}
 
