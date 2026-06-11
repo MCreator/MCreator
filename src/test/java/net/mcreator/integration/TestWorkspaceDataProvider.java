@@ -1841,7 +1841,7 @@ public class TestWorkspaceDataProvider {
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "noiseType"));
 			bebiome.villageType = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "villageType"));
-			bebiome.biomeTags = subset(random, 5, DataListLoader.loadDataList("be_biomes"),
+			bebiome.biomeTags = subset(random, 5, DataListLoader.loadDataList("be_biometags"),
 					e -> new BEBiomeTagEntry(modElement.getWorkspace(), e.getName()));
 			bebiome.biomeReplacements = subset(random, 5, DataListLoader.loadDataList("be_biomes"),
 					e -> new BEBiomeEntry(modElement.getWorkspace(), e.getName()));
