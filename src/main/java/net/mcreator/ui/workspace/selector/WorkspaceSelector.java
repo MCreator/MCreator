@@ -175,7 +175,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		prefs.setHorizontalTextPosition(JLabel.LEFT);
 		prefs.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
-				new PreferencesDialog(WorkspaceSelector.this, null);
+				new PreferencesDialog(WorkspaceSelector.this);
 			}
 		});
 		southcenter.add(prefs);

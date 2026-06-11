@@ -1058,9 +1058,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(rangedItemType, ListUtils.merge(Collections.singleton("Default item"),
-				mcreator.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.PROJECTILE).map(ModElement::getName)
-						.collect(Collectors.toList())), "Default item");
+				mcreator.getWorkspace().getModElementsByType(ModElementType.PROJECTILE).stream()
+						.map(ModElement::getName).collect(Collectors.toList())), "Default item");
 
 		disableMobModelCheckBoxListener = false;
 	}
