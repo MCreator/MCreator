@@ -19,7 +19,7 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.BEBiomeEntry;
 import net.mcreator.element.parts.BEBiomeTagEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
@@ -29,6 +29,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -38,8 +39,8 @@ import java.util.List;
 	public MItemBlock topMaterial;
 	public MItemBlock midMaterial;
 	public MItemBlock foundationMaterial;
-	public MItemBlock seaFloorMaterial;
-	public MItemBlock seaMaterial;
+	@Nullable public MItemBlock seaFloorMaterial;
+	@Nullable public MItemBlock seaMaterial;
 
 	public boolean spawnParticles;
 
@@ -60,16 +61,14 @@ import java.util.List;
 	@Numeric(init = 0.5, min = 0, max = 100, step = 0.1) public double replacementNoiseFrequencyScale;
 	@Numeric(init = 0.1, min = 0, max = 10.0, step = 0.1) public double particleDensity;
 
-	@LimitedOptions({ "default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
-			"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" })
+	@LimitedOptions({ "default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean", "taiga",
+			"mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" })
 	public String noiseType;
-	@LimitedOptions({"default", "desert", "ice", "savanna", "taiga"})
-	public String villageType;
-	@LimitedOptions({ "ash", "blue_spores", "red_spores", "white_ash" })
-	public String particleToSpawn;
+	@LimitedOptions({ "default", "desert", "ice", "savanna", "taiga" }) public String villageType;
+	@LimitedOptions({ "ash", "blue_spores", "red_spores", "white_ash" }) public String particleToSpawn;
 
 	public List<BEBiomeTagEntry> biomeTags;
-	@ModElementReference public List<BiomeEntry> biomeReplacements;
+	@ModElementReference public List<BEBiomeEntry> biomeReplacements;
 
 	public Sound ambientSound;
 	public Sound additionsSound;

@@ -221,10 +221,6 @@ public class ElementUtil {
 		return biomes;
 	}
 
-	public static List<DataListEntry> loadAllBiomeTags(Workspace workspace) {
-		return DataListLoader.loadDataList("be_biometags");
-	}
-
 	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
 		return loadDataListAndElements(workspace, "enchantments", null, "enchantment");
 	}

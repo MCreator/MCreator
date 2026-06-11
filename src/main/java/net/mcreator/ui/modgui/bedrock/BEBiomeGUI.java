@@ -28,10 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.BEBiomeTagsListField;
-import net.mcreator.ui.minecraft.BiomeListField;
-import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
@@ -78,7 +75,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 			new String[] { "ash", "blue_spores", "red_spores", "white_ash" });
 
 	private final BEBiomeTagsListField biomeTags = new BEBiomeTagsListField(mcreator);
-	private final BiomeListField biomeReplacements = new BiomeListField(mcreator, false);
+	private final BEBiomeListField biomeReplacements = new BEBiomeListField(mcreator, false);
 
 	private final SoundSelector ambientSound = new SoundSelector(mcreator);
 	private final SoundSelector moodSound = new SoundSelector(mcreator);
@@ -237,7 +234,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		ComponentUtils.makeSection(particles, L10N.t("elementgui.biome.particles"));
 
 		spawnParticles.setOpaque(false);
-		spawnParticles.addActionListener(event -> updateParticleParameters());
+		spawnParticles.addActionListener(_ -> updateParticleParameters());
 
 		updateParticleParameters();
 

@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2026, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,24 +19,37 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.parts.BEBiomeTagEntry;
+import net.mcreator.element.parts.BEBiomeEntry;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class BEBiomeTagsListField extends JItemListField<BEBiomeTagEntry> {
-	public BEBiomeTagsListField(MCreator mcreator) {
-		super(mcreator);
+public class BEBiomeListField extends JItemListField<BEBiomeEntry> {
+
+	public BEBiomeListField(MCreator mcreator) {
+		super(mcreator, false);
 	}
 
-	@Override protected List<BEBiomeTagEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, _ -> DataListLoader.loadDataList("be_biomes"),
-						L10N.t("dialog.list_field.bebiome_tags_list_title"),
-						L10N.t("dialog.list_field.bebiome_tags_list_message")).stream()
-				.map(e -> new BEBiomeTagEntry(mcreator.getWorkspace(), e)).toList();
+	public BEBiomeListField(MCreator mcreator, boolean allowTags) {
+		this(mcreator);
+		if (allowTags)
+			allowTags();
 	}
+
+	@Override protected List<BEBiomeEntry> getElementsToAdd() {
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, _ -> DataListLoader.loadDataList("be_biomes"),
+						L10N.t("dialog.list_field.biome_list_title"), L10N.t("dialog.list_field.biome_list_message")).stream()
+				.map(e -> new BEBiomeEntry(mcreator.getWorkspace(), e)).toList();
+	}
+
+	@Nullable @Override protected BEBiomeEntry fromExternalToElement(String external) {
+		return new BEBiomeEntry(mcreator.getWorkspace(), NameMapper.EXTERNAL_PREFIX + external);
+	}
+
 }
