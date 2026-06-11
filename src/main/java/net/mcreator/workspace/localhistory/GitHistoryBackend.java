@@ -299,6 +299,8 @@ class GitHistoryBackend implements AutoCloseable {
 		ignores.add(".git/");
 		ignores.add(".gradle/");
 		ignores.add(".mcreator/");
+		ignores.add(".idea/");
+		ignores.add(".eclipse/");
 		ignores.add("build/");
 		ignores.add("run/");
 		ignores.add("runs/");
