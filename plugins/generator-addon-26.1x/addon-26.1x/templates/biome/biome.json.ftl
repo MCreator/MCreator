@@ -13,7 +13,7 @@
             "dimension": "minecraft:overworld",
             "targets": [
               <#list w.filterBrokenReferences(data.biomeReplacements) as biome>
-                "${generator.map(biome, "be_biomes")?replace("CUSTOM:", "")}"<#sep>,
+                "${biome}"<#sep>,
               </#list>
             ],
             "amount": ${data.replacementAmount},
@@ -46,9 +46,9 @@
       "minecraft:tags": {
         "tags": [
           "${modid}:${registryname}"
-          <#if data.biomeTags?? && data.biomeTags?has_content>,
+          <#if data.biomeTags?has_content>,
             <#list data.biomeTags as tag>
-              "${generator.map(tag, "be_biometags")}"<#sep>,
+              "${tag}"<#sep>,
             </#list>
           </#if>
         ]
