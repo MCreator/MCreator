@@ -48,24 +48,24 @@ class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
 			a.setText(tsi);
 			if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
 				a.setIcon(UIRES.get("16px.package"));
-			else if (tsi.equals("Source (Gradle)"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_SOURCE_GRADLE))
 				a.setIcon(UIRES.get("16px.mod"));
-			else if (tsi.equals("Textures"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_TEXTURES))
 				a.setIcon(UIRES.get("16px.textures"));
-			else if (tsi.equals("Resources (Gradle)"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_RESOURCES_GRADLE))
 				a.setIcon(UIRES.get("16px.resources"));
-			else if (tsi.equals("Models"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_MODELS))
 				a.setIcon(UIRES.get("16px.models"));
-			else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition") || tsi.equals(
-					"MC client run folder"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_MINECRAFT_RUN_FOLDER) || tsi.equals(
+					WorkspaceFileBrowser.NODE_BEDROCK_EDITION) || tsi.equals(WorkspaceFileBrowser.NODE_MC_CLIENT_RUN_FOLDER))
 				a.setIcon(UIRES.get("16px.minecraft"));
-			else if (tsi.equals("MC server run folder"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_MC_SERVER_RUN_FOLDER))
 				a.setIcon(UIRES.get("16px.runserver"));
-			else if (tsi.equals("Sounds"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_SOUNDS))
 				a.setIcon(UIRES.get("16px.music"));
-			else if (tsi.equals("External libraries"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_EXTERNAL_LIBRARIES))
 				a.setIcon(UIRES.get("16px.directory"));
-			else if (tsi.equals("Structures"))
+			else if (tsi.equals(WorkspaceFileBrowser.NODE_STRUCTURES))
 				a.setIcon(UIRES.get("16px.structures"));
 		} else if (node.getUserObject() instanceof FileNode<?> fileNode) {
 			a.setText(fileNode.data);

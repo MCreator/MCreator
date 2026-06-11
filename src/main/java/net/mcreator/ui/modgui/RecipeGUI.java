@@ -139,8 +139,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		name.setValidator(new UniqueNameValidator(
 			L10N.t("modelement.recipe"),
 			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
-			() -> mcreator.getWorkspace().getModElements().stream()
-				.filter(me -> me.getType() == ModElementType.RECIPE)
+			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.RECIPE).stream()
 				.map(ModElement::getGeneratableElement)
 				.filter(Objects::nonNull)
 				.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name),

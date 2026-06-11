@@ -87,9 +87,11 @@ public interface ModElementChangedListener
 				});
 			}
 
-			for (Component subComponent : component.getComponents()) {
-				if (subComponent instanceof JComponent jcomponent)
-					registerUI(jcomponent);
+			if (!(component instanceof JLabel)) {
+				for (Component subComponent : component.getComponents()) {
+					if (subComponent instanceof JComponent jcomponent)
+						registerUI(jcomponent);
+				}
 			}
 		}
 		}

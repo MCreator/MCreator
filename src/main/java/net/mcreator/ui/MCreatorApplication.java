@@ -221,13 +221,13 @@ public final class MCreatorApplication {
 
 			try {
 				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_ABOUT))
-					Desktop.getDesktop().setAboutHandler(aboutEvent -> AboutAction.showDialog(null));
+					Desktop.getDesktop().setAboutHandler(_ -> AboutAction.showDialog(null));
 
 				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_PREFERENCES))
-					Desktop.getDesktop().setPreferencesHandler(preferencesEvent -> new PreferencesDialog(null, null));
+					Desktop.getDesktop().setPreferencesHandler(_ -> new PreferencesDialog(null));
 
 				if (Desktop.getDesktop().isSupported(Desktop.Action.APP_QUIT_HANDLER))
-					Desktop.getDesktop().setQuitHandler((e, response) -> MCreatorApplication.this.closeApplication());
+					Desktop.getDesktop().setQuitHandler((_, _) -> MCreatorApplication.this.closeApplication());
 			} catch (Exception e) {
 				LOG.warn("Failed to register desktop handlers", e);
 			}

@@ -276,10 +276,10 @@ public class BlocklyTestUtil {
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "dimensionCustom": // For legacy reason
-			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
-					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
+			return workspace.getModElementsByType(ModElementType.DIMENSION).stream().map(m -> "CUSTOM:" + m.getName())
+					.toArray(String[]::new);
 		case "dimensionCustomWithPortal":
-			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+			return workspace.getModElementsByType(ModElementType.DIMENSION).stream()
 					.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
 					.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
 					.map(m -> "CUSTOM:" + m.getModElement().getName()).toArray(String[]::new);
@@ -304,8 +304,8 @@ public class BlocklyTestUtil {
 		case "structure":
 			return workspace.getFolderManager().getStructureList().toArray(String[]::new);
 		case "procedure":
-			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-					.map(ModElement::getName).toArray(String[]::new);
+			return workspace.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
+					.toArray(String[]::new);
 		case "arrowProjectile":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);

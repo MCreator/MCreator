@@ -25,7 +25,7 @@ import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -56,7 +56,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace");
 
-	private LinkedHashSet<ModElement> mod_elements = new LinkedHashSet<>(0);
+	private ModElementList mod_elements = new ModElementList();
 	private LinkedHashSet<VariableElement> variable_elements = new LinkedHashSet<>(0);
 	private LinkedHashSet<SoundElement> sound_elements = new LinkedHashSet<>(0);
 	private LinkedHashMap<TagElement, ArrayList<TagElement.Entry>> tag_elements = new LinkedHashMap<>();
@@ -104,7 +104,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @return UNMODIFIABLE! collection of mod elements
 	 */
 	public Collection<ModElement> getModElements() {
-		return Collections.unmodifiableSet(new LinkedHashSet<>(mod_elements));
+		return List.copyOf(mod_elements);
 	}
 
 	/**
@@ -142,22 +142,33 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public boolean containsModElement(String elementName) {
-		// We create "dummy" mod element for contains check since hashcode of ME is only based on its name
-		return mod_elements.contains(new ModElement(this, elementName, ModElementType.UNKNOWN));
+		return mod_elements.containsName(elementName);
 	}
 
-	public ModElement getModElementByName(String elementName) {
-		return mod_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
-				.orElse(null);
+	public boolean containsType(ModElementType<?> type) {
+		return mod_elements.containsType(type);
 	}
 
-	public VariableElement getVariableElementByName(String elementName) {
-		return variable_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
-				.orElse(null);
+	@Nullable public ModElement getModElementByName(String elementName) {
+		return mod_elements.getByName(elementName);
+	}
+
+	public Collection<ModElement> getModElementsByType(ModElementType<?> type) {
+		return mod_elements.getByType(type);
+	}
+
+	@Nullable public VariableElement getVariableElementByName(String elementName) {
+		for (VariableElement element : variable_elements) {
+			if (element.getName().equals(elementName))
+				return element;
+		}
+		return null;
 	}
 
 	public void resetModElementCompilesStatus() {
-		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
+		for (ModElement el : mod_elements) {
+			el.setCompiles(true);
+		}
 		markDirty();
 	}
 
@@ -255,14 +266,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		File tagFile = TagsUtils.getTagFileFor(this, element);
 		if (tagFile != null) {
-			TrackingFileIO.deleteFile(this, tagFile);
+			GradleTrackingFileIO.deleteFile(this, tagFile);
 		}
 
 		markDirty();
 	}
 
 	public void removeSoundElement(SoundElement element) {
-		element.getFiles().forEach(file -> TrackingFileIO.deleteFile(this,
+		element.getFiles().forEach(file -> GradleTrackingFileIO.deleteFile(this,
 				new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg")));
 		sound_elements.remove(element);
 		markDirty();
@@ -361,7 +372,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 */
 	public void reloadModElements() {
 		// While reiniting, list may change due to converters, so we need to copy it
-		for (ModElement modElement : Set.copyOf(mod_elements)) {
+		for (ModElement modElement : this.getModElements()) {
 			modElement.reinit(this);
 		}
 	}
@@ -394,10 +405,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.generator = new Generator(this); // reload generator
 	}
 
-	public void bindToNewWorkspaceFile(File workspaceFile) {
+	public void bindToNewWorkspaceFile(File newWorkspaceFile) {
+		File currentWorkspaceFile = this.getFileManager().getWorkspaceFile();
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
-		this.fileManager = new WorkspaceFileManager(workspaceFile, this); // new file manager instance for the new file
+		currentWorkspaceFile.delete(); // delete old workspace file
+		this.fileManager = new WorkspaceFileManager(newWorkspaceFile, this); // new file manager instance for the new file
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 

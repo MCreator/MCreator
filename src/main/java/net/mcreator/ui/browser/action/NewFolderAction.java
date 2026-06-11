@@ -31,25 +31,18 @@ import net.mcreator.ui.validation.validators.RegistryNameValidator;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 
 public class NewFolderAction extends BasicAction {
 
 	public NewFolderAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.browser.new_folder"), actionEvent -> {
-			if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-				Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
-						.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
-				if (selection instanceof File filesel) {
-					if (filesel.isFile())
-						filesel = filesel.getParentFile();
-
-					File folderToMake = openCreateFolderDialog(actionRegistry.getMCreator(), filesel);
-					if (folderToMake != null) {
-						folderToMake.mkdirs();
-						actionRegistry.getMCreator().getProjectBrowser().reloadTree();
-					}
+		super(actionRegistry, L10N.t("action.browser.new_folder"), _ -> {
+			File workingDir = actionRegistry.getMCreator().getProjectBrowser().getCurrentSelectedDirectory();
+			if (workingDir != null) {
+				File folderToMake = openCreateFolderDialog(actionRegistry.getMCreator(), workingDir);
+				if (folderToMake != null) {
+					folderToMake.mkdirs();
+					actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 				}
 			}
 		});

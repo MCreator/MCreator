@@ -33,24 +33,18 @@ import java.io.File;
 public class NewImageFileAction extends BasicAction {
 
 	public NewImageFileAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.browser.new_image_file"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_image_file"), _ -> {
 			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(),
 					L10N.t("workspace_file_browser.new_image"));
 
 			if (fileName != null) {
 				fileName = RegistryNameFixer.fix(fileName);
-				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
-							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
-					if (selection instanceof File filesel) {
-						if (filesel.isDirectory()) {
-							String path = filesel.getPath() + "/" + fileName + (fileName.contains(".") ? "" : ".png");
-							ImageMakerView imageMakerView = new ImageMakerView(actionRegistry.getMCreator());
-							new NewImageDialog(actionRegistry.getMCreator(), imageMakerView).setVisible(true);
-							imageMakerView.setSaveLocation(new File(path));
-							actionRegistry.getMCreator().getProjectBrowser().reloadTree();
-						}
-					}
+				File workingDir = actionRegistry.getMCreator().getProjectBrowser().getCurrentSelectedDirectory();
+				if (workingDir != null) {
+					ImageMakerView imageMakerView = new ImageMakerView(actionRegistry.getMCreator());
+					new NewImageDialog(actionRegistry.getMCreator(), imageMakerView).setVisible(true);
+					imageMakerView.setSaveLocation(new File(workingDir, fileName + (fileName.contains(".") ? "" : ".png")));
+					actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 				}
 			}
 		});

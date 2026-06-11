@@ -17,12 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.io.writer;
+package net.mcreator.generator.io;
 
 import io.beautifier.core.Options;
 import io.beautifier.javascript.JavaScriptBeautifier;
 import io.beautifier.javascript.JavaScriptOptions;
-import net.mcreator.io.TrackingFileIO;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +36,7 @@ public class JSWriter {
 	private static final Logger LOG = LogManager.getLogger("JS Writer");
 
 	public static void writeJSToFile(@Nullable Workspace workspace, String srcjson, File file) {
-		TrackingFileIO.writeFile(workspace, formatJS(srcjson), file);
+		GradleTrackingFileIO.writeFile(workspace, formatJS(srcjson), file);
 	}
 
 	public static String formatJS(String srcjs) {

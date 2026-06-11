@@ -117,7 +117,7 @@ import java.util.stream.Collectors;
 	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
-	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear" }) public String animation;
+	@NonNullMappable("eat") public ItemUseAnimation animation;
 
 	// Music disc
 	public boolean isMusicDisc;
@@ -147,7 +147,6 @@ import java.util.stream.Collectors;
 		this.inventorySize = 9;
 		this.inventoryStackSize = 99;
 		this.saturation = 0.3f;
-		this.animation = "eat";
 
 		this.providedBannerPatterns = new ArrayList<>();
 
@@ -230,11 +229,12 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasNonDefaultAnimation() {
-		return isFood ? !animation.equals("eat") : !animation.equals("none");
+		return isFood ? !animation.getUnmappedValue().equals("eat") : !animation.getUnmappedValue().equals("none");
 	}
 
 	public boolean hasCustomFoodConsumable() {
-		return isFood && !(useDuration == 32 && (animation.equals("eat") || animation.equals("drink")));
+		return isFood && !(useDuration == 32 && (animation.getUnmappedValue().equals("eat")
+				|| animation.getUnmappedValue().equals("drink")));
 	}
 
 	public boolean hasEatResultItem() {
