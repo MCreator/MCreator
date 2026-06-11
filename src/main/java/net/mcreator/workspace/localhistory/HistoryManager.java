@@ -22,7 +22,6 @@ package net.mcreator.workspace.localhistory;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -193,30 +192,6 @@ public final class HistoryManager implements AutoCloseable {
 
 	public static File getLocalHistoryRoot(File workspaceFolder) {
 		return new File(workspaceFolder, ".mcreator/localHistory");
-	}
-
-	public static void deleteLocalHistoryRoot(File workspaceFolder) {
-		File historyRoot = getLocalHistoryRoot(workspaceFolder);
-		if (!historyRoot.exists())
-			return;
-
-		IOException lastException = null;
-		for (int attempt = 0; attempt < 5; attempt++) {
-			try {
-				FileUtils.deleteDirectory(historyRoot);
-				if (!historyRoot.exists())
-					return;
-			} catch (IOException e) {
-				lastException = e;
-			}
-
-			try {
-				Thread.sleep(50 * (attempt + 1));
-			} catch (InterruptedException _) {
-			}
-		}
-
-		LOG.warn("Failed to delete local history directory after multiple attempts: {}", historyRoot, lastException);
 	}
 
 }
