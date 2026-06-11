@@ -26,9 +26,11 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public record HistoryCheckpoint(String hash, String name, int timestamp, Supplier<List<DiffEntry>> diffSupplier) {
+public record HistoryCheckpoint(String hash, String name, int timestamp, Supplier<Future<List<DiffEntry>>> diffFutureSupplier) {
 
 	public String getTimestampString() {
 		return Instant.ofEpochSecond(timestamp).atZone(ZoneId.systemDefault())

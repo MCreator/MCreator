@@ -40,6 +40,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class LocalHistoryPanel extends JPanel {
 
@@ -330,7 +333,11 @@ public class LocalHistoryPanel extends JPanel {
 
 		diffWorker = new SwingWorker<>() {
 			@Override protected List<HistoryCheckpoint.DiffEntry> doInBackground() {
-				return selected.diffSupplier().get();
+				try {
+					return selected.diffFutureSupplier().get().get(5, TimeUnit.SECONDS);
+				} catch (InterruptedException | ExecutionException | TimeoutException e) {
+					return List.of();
+				}
 			}
 
 			@Override protected void done() {

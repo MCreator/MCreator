@@ -335,39 +335,45 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 	}
 
-	private List<HistoryCheckpoint.DiffEntry> getDiffEntries(RevCommit commit) {
-		if (closed)
-			return List.of();
+	private Future<List<HistoryCheckpoint.DiffEntry>> getDiffEntries(RevCommit commit) {
+		CompletableFuture<List<HistoryCheckpoint.DiffEntry>> future = new CompletableFuture<>();
+		if (closed) {
+			future.complete(List.of());
+			return future;
+		}
 
-		List<HistoryCheckpoint.DiffEntry> diffList = new ArrayList<>();
-		try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
-			df.setRepository(git.getRepository());
-			df.setDiffComparator(RawTextComparator.DEFAULT);
-			df.setDetectRenames(true);
-			try {
-				RevCommit parent = commit.getParentCount() > 0 ? commit.getParent(0) : null;
-				if (parent != null) {
-					for (DiffEntry diff : df.scan(parent.getTree(), commit.getTree())) {
-						switch (diff.getChangeType()) {
-						case ADD -> diffList.add(
-								new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.ADD, diff.getNewPath()));
-						case MODIFY -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.MODIFY,
-								diff.getNewPath()));
-						case DELETE -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.REMOVE,
-								diff.getOldPath()));
-						case RENAME -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.RENAME,
-								diff.getNewPath()));
-						case COPY -> diffList.add(
-								new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.COPY, diff.getNewPath()));
-						default -> throw new IllegalStateException("Unexpected value: " + diff.getChangeType());
+		runGitTask(() -> {
+			List<HistoryCheckpoint.DiffEntry> diffList = new ArrayList<>();
+			try (DiffFormatter df = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
+				df.setRepository(git.getRepository());
+				df.setDiffComparator(RawTextComparator.DEFAULT);
+				df.setDetectRenames(true);
+				try {
+					RevCommit parent = commit.getParentCount() > 0 ? commit.getParent(0) : null;
+					if (parent != null) {
+						for (DiffEntry diff : df.scan(parent.getTree(), commit.getTree())) {
+							switch (diff.getChangeType()) {
+							case ADD -> diffList.add(
+									new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.ADD, diff.getNewPath()));
+							case MODIFY -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.MODIFY,
+									diff.getNewPath()));
+							case DELETE -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.REMOVE,
+									diff.getOldPath()));
+							case RENAME -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.RENAME,
+									diff.getNewPath()));
+							case COPY -> diffList.add(
+									new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.COPY, diff.getNewPath()));
+							default -> throw new IllegalStateException("Unexpected value: " + diff.getChangeType());
+							}
 						}
 					}
+				} catch (IOException e) {
+					LOG.warn("Failed to calculate diff for commit {}: {}", commit.getName(), e.getMessage());
 				}
-			} catch (IOException e) {
-				LOG.warn("Failed to calculate diff for commit {}: {}", commit.getName(), e.getMessage());
 			}
-		}
-		return diffList;
+			future.complete(diffList);
+		});
+		return future;
 	}
 
 	private volatile boolean closed = false;
