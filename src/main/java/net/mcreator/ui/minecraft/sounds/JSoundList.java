@@ -34,7 +34,7 @@ public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement
 
 	public boolean areFilesValid() {
 		for (JSoundListEntry entry : entryList) {
-			if (entry.getFileListField().isEmpty())
+			if (entry.getSingleFileField().isEmpty())
 				return false;
 		}
 
@@ -43,7 +43,7 @@ public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement
 
 	public List<SingleFileField> getFiles() {
 		List<SingleFileField> files = new ArrayList<>();
-		entryList.forEach(entry -> files.add(entry.getFileListField()));
+		entryList.forEach(entry -> files.add(entry.getSingleFileField()));
 		return files;
 	}
 }

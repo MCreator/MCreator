@@ -23,7 +23,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -47,7 +46,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	private final JSpinner pitch = new JSpinner(new SpinnerNumberModel(1.0, 0.1, 128000.0, 0.1));
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(1, 1, 128000, 1));
 	private final JSpinner attenuationDistance = new JSpinner(new SpinnerNumberModel(16, 1, 128000, 1));
-	private final SingleFileField fileListField;
+	private final SingleFileField singleFileField;
 
 	private final JCheckBox is3D = L10N.checkbox("dialog.sounds.is3D");
 	private final JCheckBox interruptible = L10N.checkbox("dialog.sounds.interruptible");
@@ -58,7 +57,9 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 
 		this.mcreator = mcreator;
 		this.isForBedrock = isForBedrock;
-		this.fileListField = new SingleFileField(mcreator, ".ogg");
+		this.singleFileField = new SingleFileField(mcreator, ".ogg");
+		singleFileField.setPreferredSize(
+				new Dimension((int) (mcreator.getSize().width * 0.07), getPreferredSize().height));
 
 		JPanel line = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line.setOpaque(false);
@@ -67,7 +68,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		line2.setOpaque(false);
 
 		line.add(L10N.label("dialog.sounds.file"));
-		line.add(fileListField);
+		line.add(singleFileField);
 
 		line.add(L10N.label("dialog.sounds.category"));
 		line.add(soundCategory);
@@ -105,7 +106,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
-		fileListField.setEnabled(enabled);
+		singleFileField.setEnabled(enabled);
 		soundCategory.setEnabled(enabled);
 		volume.setEnabled(enabled);
 		pitch.setEnabled(enabled);
@@ -119,7 +120,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	}
 
 	@Override public SoundElement.Sound getEntry() {
-		SoundElement.Sound entry = new SoundElement.Sound(fileListField.getEntry().getName());
+		SoundElement.Sound entry = new SoundElement.Sound(singleFileField.getEntry().getName());
 		entry.setCategory((String) soundCategory.getSelectedItem());
 		entry.setVolume((double) volume.getValue());
 		entry.setPitch((double) pitch.getValue());
@@ -134,8 +135,8 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	}
 
 	@Override public void setEntry(SoundElement.Sound e) {
-		fileListField.setEntry(new File(mcreator.getFolderManager().getSoundsDir(), e.toString()));
-		fileListField.setEnabled(false);
+		singleFileField.setEntry(new File(mcreator.getFolderManager().getSoundsDir(), e.toString()));
+		singleFileField.setEnabled(false);
 		soundCategory.setSelectedItem(e.getCategory());
 		volume.setValue((double) e.getVolume());
 		pitch.setValue((double) e.getPitch());
@@ -148,7 +149,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		}
 	}
 
-	public SingleFileField getFileListField() {
-		return fileListField;
+	public SingleFileField getSingleFileField() {
+		return singleFileField;
 	}
 }

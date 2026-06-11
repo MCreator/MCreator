@@ -22,7 +22,6 @@ package net.mcreator.ui.component;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 
-import java.awt.*;
 import java.io.File;
 
 public class SingleFileField extends JSingleEntrySelector<File> {
@@ -31,7 +30,6 @@ public class SingleFileField extends JSingleEntrySelector<File> {
 	public SingleFileField(MCreator window, String... extensions) {
 		super(window);
 		this.extensions = extensions;
-		setPreferredSize(new Dimension((int) (mcreator.getSize().width * 0.07), getPreferredSize().height));
 	}
 
 	@Override protected File openEntrySelector() {
