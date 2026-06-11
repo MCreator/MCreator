@@ -43,7 +43,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractProcedureSelector extends JPanel implements IValidable {
 
@@ -243,9 +242,8 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		public static ReloadContext create(Workspace workspace) {
 			ReloadContext context = new ReloadContext();
 
-			//noinspection FuseStreamOperations
-			List<ModElement> procedureElements = workspace.getModElements().stream()
-					.filter(mod -> mod.getType() == ModElementType.PROCEDURE).collect(Collectors.toList());
+			List<ModElement> procedureElements = new ArrayList<>(
+					workspace.getModElementsByType(ModElementType.PROCEDURE));
 			procedureElements.sort(ModElement.getComparator(workspace, procedureElements));
 			for (ModElement mod : procedureElements) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
