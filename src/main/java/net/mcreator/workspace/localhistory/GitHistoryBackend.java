@@ -112,6 +112,7 @@ class GitHistoryBackend implements AutoCloseable {
 
 					Repository repo = git.getRepository();
 					IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
+					diff.diff();
 					stageChanges(diff);
 					git.commit().setMessage(L10N.t("local_history.checkpoint.initial")).setSign(false).call();
 
