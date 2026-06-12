@@ -49,7 +49,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock(BlockBehaviour.Properties properties) {
 		super(properties.noCollision().randomTicks().pushReaction(PushReaction.BLOCK)
-				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noLootTable());
+				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(state -> ${data.portalLuminance}).noLootTable());
 	}
 
 	private ${name}Teleporter getTeleporter(ServerLevel level) {

@@ -135,6 +135,10 @@ Blockly.Extensions.register('min_max_fields_validator',
 
         // If min > max, we set its value to that of max
         minField.setValidator(function (newValue) {
+            if (!Blockly.Events.isEnabled()) {
+                return newValue;
+            }
+
             if (newValue > maxField.getValue()) {
                 return maxField.getValue();
             }
@@ -143,6 +147,10 @@ Blockly.Extensions.register('min_max_fields_validator',
 
         // If max < min, we set its value to that of min
         maxField.setValidator(function (newValue) {
+            if (!Blockly.Events.isEnabled()) {
+                return newValue;
+            }
+
             if (newValue < minField.getValue()) {
                 return minField.getValue();
             }

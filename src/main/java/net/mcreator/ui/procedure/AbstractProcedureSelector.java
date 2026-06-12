@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.procedure;
 
+import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
@@ -42,7 +43,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractProcedureSelector extends JPanel implements IValidable {
 
@@ -50,8 +50,8 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	final SearchableComboBox<ProcedureEntry> procedures = new SearchableComboBox<>();
 
-	protected final Dependency[] providedDependencies;
-	protected final Map<String, List<Dependency>> depsMap = new HashMap<>();
+	protected final Set<Dependency> providedDependencies;
+	protected final Map<String, Set<Dependency>> depsMap = new HashMap<>();
 	protected final JLabel depslab = new JLabel();
 
 	protected final JButton edit = new JButton(UIRES.get("18px.edit"));
@@ -72,7 +72,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		this.mcreator = mcreator;
 		this.returnType = returnType;
 
-		this.providedDependencies = providedDependencies;
+		this.providedDependencies = Sets.newHashSet(providedDependencies);
 
 		setEnabled(isEnabled());
 	}
@@ -94,13 +94,11 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 		procedures.addItem(new ProcedureEntry(defaultName, null));
 
-		Set<Dependency> providedSet = new HashSet<>(Arrays.asList(providedDependencies));
-
 		for (Map.Entry<ModElement, ReloadContext.ContexData> entry : context.data.entrySet()) {
 			ModElement mod = entry.getKey();
 			ReloadContext.ContexData data = entry.getValue();
 
-			boolean missing = data.dependencies().stream().anyMatch(d -> !providedSet.contains(d));
+			boolean missing = data.dependencies().stream().anyMatch(d -> !providedDependencies.contains(d));
 
 			VariableType returnTypeCurrent = data.returnType();
 
@@ -124,7 +122,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	ProcedureEntry updateDepsList(boolean smallIcons) {
 		ProcedureEntry selected = procedures.getSelectedItem();
 
-		List<Dependency> dependencies = null;
+		Collection<Dependency> dependencies = null;
 		if (selected != null) {
 			dependencies = depsMap.get(selected.string);
 		}
@@ -140,14 +138,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 		int idx = 0;
 		for (Dependency dependency : providedDependencies) {
-			if (idx == 6 && providedDependencies.length > 6)
+			if (idx == 6 && providedDependencies.size() > 6)
 				deps.append("<p style='margin-top: 3'>");
 
 			String bg = "999999";
-			String optcss;
+			String optcss = "color: #ffffff;";
 
 			if (dependencies != null && dependencies.contains(dependency)) {
-				optcss = "color: #ffffff;";
 				bg = Integer.toHexString(dependency.getColor().getRGB()).substring(2);
 			} else {
 				optcss = "color: #" + Integer.toHexString(dependency.getColor().darker().getRGB()).substring(2) + ";";
@@ -245,14 +242,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		public static ReloadContext create(Workspace workspace) {
 			ReloadContext context = new ReloadContext();
 
-			//noinspection FuseStreamOperations
-			List<ModElement> procedureElements = workspace.getModElements().stream()
-					.filter(mod -> mod.getType() == ModElementType.PROCEDURE).collect(Collectors.toList());
+			List<ModElement> procedureElements = new ArrayList<>(
+					workspace.getModElementsByType(ModElementType.PROCEDURE));
 			procedureElements.sort(ModElement.getComparator(workspace, procedureElements));
 			for (ModElement mod : procedureElements) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
 				if (dependenciesList != null) {
-					List<Dependency> realdepsList = new ArrayList<>();
+					Set<Dependency> realdepsList = new HashSet<>();
 					for (Object depobj : dependenciesList) {
 						// skip null dependencies that may have been added due to plugins supporting certain types being removed
 						if (depobj == null)
@@ -273,7 +269,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 			return context;
 		}
 
-		record ContexData(List<Dependency> dependencies, @Nullable VariableType returnType) {}
+		record ContexData(Set<Dependency> dependencies, @Nullable VariableType returnType) {}
 
 	}
 
