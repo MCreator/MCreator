@@ -137,11 +137,6 @@ class GitHistoryBackend implements AutoCloseable {
 			try {
 				long startTime = System.currentTimeMillis();
 
-				if (!synchronous) {
-					// small delay to increase chances of all files being written in case of async checkpoint
-					Thread.sleep(100);
-				}
-
 				Repository repo = git.getRepository();
 				IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
 				if (!diff.diff()) {
