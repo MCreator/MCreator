@@ -126,14 +126,14 @@ class GitHistoryBackend implements AutoCloseable {
 		}
 	}
 
-	void saveCheckpoint(String commitMessage, Consumer<CommitResult> didCommitCallback) {
+	void saveCheckpoint(String commitMessage, Consumer<CommitResult> didCommitCallback, boolean synchronous) {
 		if (isBusy()) {
 			didCommitCallback.accept(CommitResult.SKIPPED_GIT_BUSY);
 			LOG.debug("Skipped saving local history checkpoint '{}' because Git thread is busy", commitMessage);
 			return;
 		}
 
-		runGitTask(() -> {
+		Future<?> future = runGitTask(() -> {
 			try {
 				long startTime = System.currentTimeMillis();
 
@@ -157,6 +157,13 @@ class GitHistoryBackend implements AutoCloseable {
 				didCommitCallback.accept(CommitResult.SKIPPED_EXCEPTION);
 			}
 		});
+		if (synchronous && future != null) {
+			try {
+				future.get();
+			} catch (InterruptedException | ExecutionException e) {
+				LOG.warn("Failed to save local history checkpoint synchronously", e);
+			}
+		}
 	}
 
 	void getCheckpoints(Consumer<List<HistoryCheckpoint>> callback) {

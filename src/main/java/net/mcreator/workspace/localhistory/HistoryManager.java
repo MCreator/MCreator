@@ -89,7 +89,7 @@ public final class HistoryManager implements AutoCloseable {
 				new HistoryEvent(L10N.t("local_history.checkpoint." + checkpointName, parameters), important));
 
 		if (important || isSaveIntervalElapsed()) {
-			flushPendingEventsIntoCheckpoint();
+			flushPendingEventsIntoCheckpoint(important);
 		}
 	}
 
@@ -98,7 +98,7 @@ public final class HistoryManager implements AutoCloseable {
 		return System.currentTimeMillis() - lastCheckpointMillis >= intervalMillis;
 	}
 
-	private void flushPendingEventsIntoCheckpoint() {
+	private void flushPendingEventsIntoCheckpoint(boolean triggeredByImportantEvent) {
 		if (backend == null || pendingEvents.isEmpty()) {
 			return;
 		}
@@ -130,7 +130,7 @@ public final class HistoryManager implements AutoCloseable {
 			if (commitResult != GitHistoryBackend.CommitResult.SKIPPED_GIT_BUSY) {
 				pendingEvents.removeAll(eventsToCommit);
 			}
-		});
+		}, triggeredByImportantEvent);
 	}
 
 	public void setCheckpointListener(@Nullable Runnable listener) {
