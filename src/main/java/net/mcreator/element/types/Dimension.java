@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
@@ -37,8 +36,8 @@ import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.imageio.ImageIO;
 import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -188,61 +187,51 @@ import java.util.List;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		if (!this.enableSkybox) return;
+		if (this.enableSkybox) {
+			generateSkyboxTexture();
+		}
+	}
 
+	private void generateSkyboxTexture() {
 		try {
-			int[][] positions = {
-					{1, 0}, // Up
-					{0, 1}, // West
-					{1, 1}, // North
-					{2, 1}, // East
-					{3, 1}, // South
-					{1, 2}  // Down
+			int[][] positions = { { 1, 0 }, // Up
+					{ 0, 1 }, // West
+					{ 1, 1 }, // North
+					{ 2, 1 }, // East
+					{ 3, 1 }, // South
+					{ 1, 2 }  // Down
 			};
 
-			Image[] images = {
-					this.skyboxTextureUp.getImage(TextureType.OTHER),
+			Image[] images = { this.skyboxTextureUp.getImage(TextureType.OTHER),
 					this.skyboxTextureWest.getImage(TextureType.OTHER),
 					this.skyboxTextureNorth.getImage(TextureType.OTHER),
 					this.skyboxTextureEast.getImage(TextureType.OTHER),
 					this.skyboxTextureSouth.getImage(TextureType.OTHER),
-					this.skyboxTextureDown.getImage(TextureType.OTHER)
-			};
-			int maxSize = 0;
+					this.skyboxTextureDown.getImage(TextureType.OTHER) };
 
+			int maxSize = 0;
 			for (int i = 0; i < 6; i++) {
 				if (images[i] != null) {
 					maxSize = Math.max(maxSize, Math.max(images[i].getWidth(null), images[i].getHeight(null)));
 				}
 			}
-
-			if (maxSize % 2 != 0) {
-				maxSize++;
+			if (maxSize == 0) {
+				return;
 			}
 
-			if (maxSize == 0) return;
+			if (maxSize % 2 != 0)
+				maxSize++;
 
-			BufferedImage stitchedImage = new BufferedImage(
-					4 * maxSize, 3 * maxSize, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage stitchedImage = new BufferedImage(4 * maxSize, 3 * maxSize, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = stitchedImage.createGraphics();
-
 			for (int i = 0; i < 6; i++) {
 				if (images[i] != null) {
-					BufferedImage toDraw;
-
-					// If an image's dimensions don't match the maxSize, forcefully resize it to a square
-					if (images[i].getWidth(null) != maxSize || images[i].getHeight(null) != maxSize) {
-						toDraw = ImageUtils.toBufferedImage(ImageUtils.resize(images[i], maxSize, maxSize));
-					} else {
-						toDraw = ImageUtils.toBufferedImage(images[i]);
-					}
-
+					BufferedImage toDraw = ImageUtils.toBufferedImage(ImageUtils.resize(images[i], maxSize));
 					int col = positions[i][0];
 					int row = positions[i][1];
 					g2d.drawImage(toDraw, col * maxSize, row * maxSize, null);
 				}
 			}
-
 			g2d.dispose();
 
 			File texturesDirectory = getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER);
@@ -252,7 +241,7 @@ import java.util.List;
 			}
 
 			File outputFile = new File(skyboxDir, getModElement().getRegistryName() + ".png");
-			ImageIO.write(stitchedImage, "PNG", outputFile);
+			ImageIO.write(stitchedImage, "png", outputFile);
 		} catch (Exception e) {
 			LOG.error("Failed to stitch dimension skybox textures", e);
 		}
