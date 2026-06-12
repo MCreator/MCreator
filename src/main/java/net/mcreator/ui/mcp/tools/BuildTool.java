@@ -20,45 +20,43 @@
 package net.mcreator.ui.mcp.tools;
 
 import net.mcreator.io.mcp.tool.ToolResult;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.WorkspaceBuildStartedEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 
+import javax.swing.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class ListTool extends MCreatorMcpTool<ListTool.ListArgs> {
+public class BuildTool extends MCreatorMcpTool<Void> {
 
-	public static class ListArgs {
-		public ListType type;
-
-		public enum ListType {
-			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES
-		}
-	}
-
-	public ListTool(Supplier<MCreator> currentMCreator) {
-		super(currentMCreator, ListTool.ListArgs.class);
+	public BuildTool(Supplier<MCreator> currentMCreator) {
+		super(currentMCreator, Void.class);
 	}
 
 	@Override public String getName() {
-		return "list";
+		return "build";
 	}
 
 	@Override public String getDescription() {
 		return "Provides list of specified workspace elements or data list entries";
 	}
 
-	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ListTool.ListArgs input) {
-		return switch (input.type) {
-			case ListArgs.ListType.MOD_ELEMENTS ->
-					CompletableFuture.completedFuture(ToolResult.collection(mcreator.getWorkspace().getModElements()));
-			case ListArgs.ListType.MOD_VARIABLES -> CompletableFuture.completedFuture(
-					ToolResult.collection(mcreator.getWorkspace().getVariableElements()));
-			case ListArgs.ListType.MOD_TAGS -> CompletableFuture.completedFuture(
-					ToolResult.collection(mcreator.getWorkspace().getTagElements().entrySet()));
-			case ListArgs.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(
-					ToolResult.collection(mcreator.getGeneratorStats().getSupportedModElementTypes()));
-		};
+	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Void input) {
+		CompletableFuture<ToolResult> future = new CompletableFuture<>();
+		mcreator.getGenerator().generateBase();
+		MCREvent.event(new WorkspaceBuildStartedEvent(mcreator));
+
+		mcreator.getGradleConsole().exec("build", result -> {
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("result", result);
+			resultMap.put("gradleOutput", mcreator.getGradleConsole().getConsoleText());
+			future.complete(ToolResult.object(resultMap));
+		});
+		return future;
 	}
 
 }

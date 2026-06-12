@@ -25,7 +25,9 @@ import net.mcreator.io.mcp.transport.HttpMcpTransport;
 import net.mcreator.io.mcp.transport.McpTransport;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.mcp.tools.BuildTool;
 import net.mcreator.ui.mcp.tools.ListTool;
+import net.mcreator.ui.mcp.tools.ModElementTool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,6 +61,8 @@ public final class MCreatorMcp implements Closeable {
 
 	private void registerTools() {
 		server.registerTool(new ListTool(currentMCreator));
+		server.registerTool(new BuildTool(currentMCreator));
+		server.registerTool(new ModElementTool(currentMCreator));
 	}
 
 	public McpServer getServer() {
