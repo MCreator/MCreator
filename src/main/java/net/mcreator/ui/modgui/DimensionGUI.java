@@ -384,14 +384,17 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		skyboxGrid.setOpaque(false);
 		skyboxGrid.add(new JEmptyBox());
 		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureUp, L10N.t("elementgui.dimension.sky_up")));
-		skyboxGrid.add(new JEmptyBox()); skyboxGrid.add(new JEmptyBox());
+		skyboxGrid.add(new JEmptyBox());
+		skyboxGrid.add(new JEmptyBox());
 		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureWest, L10N.t("elementgui.dimension.sky_west")));
 		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureNorth, L10N.t("elementgui.dimension.sky_north")));
 		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureEast, L10N.t("elementgui.dimension.sky_east")));
 		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureSouth, L10N.t("elementgui.dimension.sky_south")));
 		skyboxGrid.add(new JEmptyBox());
 		skyboxGrid.add(ComponentUtils.squareAndBorder(skyboxTextureDown, L10N.t("elementgui.dimension.sky_down")));
-		skyboxGrid.add(new JEmptyBox()); skyboxGrid.add(new JEmptyBox());
+		skyboxGrid.add(new JEmptyBox());
+		skyboxGrid.add(new JEmptyBox());
+		skyboxGrid.setBorder(BorderFactory.createEmptyBorder(0, 30, 20, 30));
 
 		JPanel skyboxPanel = new JPanel(new BorderLayout(0, 10));
 		skyboxPanel.setOpaque(false);
@@ -416,14 +419,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComponentUtils.makeSection(sunMoonPanel, L10N.t("elementgui.dimension.sun_moon_group"));
 
-		JPanel skyboxPage = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
-		skyboxPage.setOpaque(false);
+		JPanel skyboxPage = PanelUtils.centerAndEastElement(skyboxPanel, PanelUtils.pullElementUp(sunMoonPanel), 10,
+				10);
 
-		skyboxPage.add(PanelUtils.totalCenterInPanel(skyboxPanel));
-		skyboxPage.add(PanelUtils.totalCenterInPanel(sunMoonPanel));
-
-		enableSkybox.addActionListener(e -> updateSkyboxElements());
-		enableSunMoon.addActionListener(e -> updateSkyboxElements());
+		enableSkybox.addActionListener(_ -> updateSkyboxElements());
+		enableSunMoon.addActionListener(_ -> updateSkyboxElements());
 		updateSkyboxElements();
 
 		// Dimension generation settings
@@ -633,7 +633,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		addPage(L10N.t("elementgui.dimension.page_generation"), generationPage).validate(generationPageGroup);
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPage).validate(infiniburnTag);
-		addPage(L10N.t("elementgui.dimension.page_skybox"), PanelUtils.totalCenterInPanel(skyboxPage)).validate(skyboxPageGroup);
+		addPage(L10N.t("elementgui.dimension.page_skybox"), PanelUtils.totalCenterInPanel(skyboxPage)).validate(
+				skyboxPageGroup);
 		addPage(L10N.t("elementgui.dimension.page_portal"), pane2).validate(portalPageGroup);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane5);
 
