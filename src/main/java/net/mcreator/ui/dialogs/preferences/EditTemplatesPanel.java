@@ -41,7 +41,15 @@ class EditTemplatesPanel {
 	private final JPanel panel = new JPanel(cardLayout);
 
 	EditTemplatesPanel(PreferencesDialog preferencesDialog, String name, String templatesFolder, String templateExt) {
-		preferencesDialog.addTemplateSection(name);
+		this(preferencesDialog, name, templatesFolder, templateExt, false);
+	}
+
+	EditTemplatesPanel(PreferencesDialog preferencesDialog, String name, String templatesFolder, String templateExt,
+			boolean mainSection) {
+		if (mainSection)
+			preferencesDialog.addSection(name);
+		else
+			preferencesDialog.addTemplateSection(name);
 
 		JPanel sectionPanel = new JPanel(new BorderLayout(0, 0));
 
