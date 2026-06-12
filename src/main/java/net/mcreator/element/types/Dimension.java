@@ -25,6 +25,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -236,12 +237,7 @@ import java.util.List;
 
 			File texturesDirectory = getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER);
 			File skyboxDir = new File(texturesDirectory, "skybox");
-			if (!skyboxDir.exists()) {
-				skyboxDir.mkdirs();
-			}
-
-			File outputFile = new File(skyboxDir, getModElement().getRegistryName() + ".png");
-			ImageIO.write(stitchedImage, "png", outputFile);
+			FileIO.writeImageToPNGFile(stitchedImage, new File(skyboxDir, getModElement().getRegistryName() + ".png"));
 		} catch (Exception e) {
 			LOG.error("Failed to stitch dimension skybox textures", e);
 		}
