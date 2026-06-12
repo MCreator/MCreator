@@ -128,6 +128,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 			loaded = true;
 			runAfterLoaded.forEach(Runnable::run);
+			runAfterLoaded.clear();
 		});
 	}
 

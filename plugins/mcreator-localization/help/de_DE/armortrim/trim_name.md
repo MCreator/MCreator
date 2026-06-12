@@ -1,0 +1,1 @@
+Dies ist der Name, der auf dem Tooltip von jedem Rüstungsteil angezeigt wird, auf den die Rüstungsverzierung angewendet wird.
