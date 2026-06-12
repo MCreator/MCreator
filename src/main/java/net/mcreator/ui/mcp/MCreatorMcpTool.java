@@ -23,12 +23,16 @@ import net.mcreator.io.mcp.tool.McpTool;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 
 	private final Supplier<MCreator> currentMCreator;
+
+	private static final Set<Integer> REPORTED_SESSIONS_MAP = new HashSet<>();
 
 	protected MCreatorMcpTool(Supplier<MCreator> currentMCreator, Class<T> inputType) {
 		super(inputType);
@@ -40,6 +44,11 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 		if (mcreator == null) {
 			return CompletableFuture.completedFuture(
 					ToolResult.error("No active MCreator instance. Open a workspace first."));
+		}
+
+		if (!REPORTED_SESSIONS_MAP.contains(mcreator.getWorkspace().hashCode())) {
+			REPORTED_SESSIONS_MAP.add(mcreator.getWorkspace().hashCode());
+			mcreator.getHistoryManager().importantCheckpoint("mcp_new_session");
 		}
 
 		try {

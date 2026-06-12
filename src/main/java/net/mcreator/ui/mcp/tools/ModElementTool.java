@@ -19,17 +19,24 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import com.google.gson.*;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
+
+	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	public static class Args {
 		public Action actionType;
@@ -38,7 +45,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		@Nullable public String elementJSONDefinition;
 
 		public enum Action {
-			READ, ADD, MODIFY
+			READ, ADD, MODIFY, REMOVE
 		}
 	}
 
@@ -56,15 +63,94 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementTool.Args input) {
 		if (input.actionType == Args.Action.READ) {
-			ModElement element = mcreator.getWorkspace().getModElementByName(input.elementName);
-			if (element == null) {
+			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
+			if (modElement == null) {
 				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
 			}
-			String geJSON = mcreator.getModElementManager().generatableElementToJSON(element.getGeneratableElement());
-			return CompletableFuture.completedFuture(ToolResult.text(geJSON));
+			String geJSON = safeGeneratableElementToJSON(mcreator, modElement.getGeneratableElement());
+			return CompletableFuture.completedFuture(ToolResult.object(JsonParser.parseString(geJSON)));
+		} else if (input.actionType == Args.Action.MODIFY) {
+			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
+			if (modElement == null) {
+				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
+			}
+			try {
+				GeneratableElement element = safeJSONtoGeneratableElement(mcreator, modElement,
+						input.elementJSONDefinition);
+				String json = safeGeneratableElementToJSON(mcreator, element);
+				if (!json.equals(input.elementJSONDefinition)) {
+					Map<String, Object> response = new HashMap<>();
+					response.put("result", "Element modified, but JSON definition was changed during processing");
+					response.put("actualJSONDefinition", JsonParser.parseString(json));
+					return CompletableFuture.completedFuture(ToolResult.object(response));
+				} else {
+					return CompletableFuture.completedFuture(ToolResult.text("Element modified"));
+				}
+			} catch (Exception e) {
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Failed to modify element: " + e.getMessage()));
+			}
+		} else if (input.actionType == Args.Action.ADD) {
+			if (input.elementType == null || input.elementJSONDefinition == null) {
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Element type and JSON definition must be provided for adding"));
+			}
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(input.elementType);
+			ModElement modElement = new ModElement(mcreator.getWorkspace(), input.elementName, type);
+			mcreator.getWorkspace().addModElement(modElement);
+			try {
+				GeneratableElement element = safeJSONtoGeneratableElement(mcreator, modElement,
+						input.elementJSONDefinition);
+				String json = safeGeneratableElementToJSON(mcreator, element);
+				if (!json.equals(input.elementJSONDefinition)) {
+					Map<String, Object> response = new HashMap<>();
+					response.put("result", "Element added, but JSON definition was changed during processing");
+					response.put("actualJSONDefinition", JsonParser.parseString(json));
+					return CompletableFuture.completedFuture(ToolResult.object(response));
+				} else {
+					return CompletableFuture.completedFuture(ToolResult.text("Element added"));
+				}
+			} catch (Exception e) {
+				mcreator.getWorkspace().removeModElement(modElement);
+				return CompletableFuture.completedFuture(ToolResult.error("Failed to add element: " + e.getMessage()));
+			}
+		} else if (input.actionType == Args.Action.REMOVE) {
+			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
+			if (modElement == null) {
+				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
+			}
+			mcreator.getWorkspace().removeModElement(modElement);
+			return CompletableFuture.completedFuture(ToolResult.text("Element removed"));
 		} else {
 			return CompletableFuture.completedFuture(ToolResult.error("Invalid action type"));
 		}
+	}
+
+	private static GeneratableElement safeJSONtoGeneratableElement(MCreator mcreator, ModElement modElement,
+			String json) throws Exception {
+		JsonObject root = new JsonObject();
+		root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
+		root.add("_type", gson.toJsonTree(modElement.getType().getRegistryName()));
+		root.add("definition", JsonParser.parseString(json));
+		json = gson.toJson(root);
+
+		GeneratableElement element = mcreator.getModElementManager().fromJSONtoGeneratableElement(json, modElement);
+
+		// TODO: validation through UI
+
+		mcreator.getWorkspace().markDirty();
+		mcreator.getModElementManager().storeModElement(element);
+		mcreator.getGenerator().generateBase(true); // use variant that throws TemplateGeneratorException
+		mcreator.getGenerator().generateElement(element, true); // use variant that throws TemplateGeneratorException
+		mcreator.getModElementManager().storeModElementPicture(element);
+		modElement.reinit(mcreator.getWorkspace());
+		return element;
+	}
+
+	private static String safeGeneratableElementToJSON(MCreator mcreator, GeneratableElement element) {
+		String json = mcreator.getModElementManager().generatableElementToJSON(element);
+		JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+		return gson.toJson(jsonObject.get("definition"));
 	}
 
 }

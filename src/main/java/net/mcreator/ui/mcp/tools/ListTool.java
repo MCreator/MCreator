@@ -26,18 +26,18 @@ import net.mcreator.ui.mcp.MCreatorMcpTool;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class ListTool extends MCreatorMcpTool<ListTool.ListArgs> {
+public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 
-	public static class ListArgs {
+	public static class Args {
 		public ListType type;
 
 		public enum ListType {
-			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES
+			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS
 		}
 	}
 
 	public ListTool(Supplier<MCreator> currentMCreator) {
-		super(currentMCreator, ListTool.ListArgs.class);
+		super(currentMCreator, Args.class);
 	}
 
 	@Override public String getName() {
@@ -45,21 +45,22 @@ public class ListTool extends MCreatorMcpTool<ListTool.ListArgs> {
 	}
 
 	@Override public String getDescription() {
-		return "Provides list of specified workspace elements or data list entries";
+		return "Provides list of specified workspace elements or data list entries or info";
 	}
 
-	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ListTool.ListArgs input) {
+	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
-			case ListArgs.ListType.MOD_ELEMENTS ->
+			case Args.ListType.MOD_ELEMENTS ->
 					CompletableFuture.completedFuture(ToolResult.collection(mcreator.getWorkspace().getModElements()));
-			case ListArgs.ListType.MOD_VARIABLES -> CompletableFuture.completedFuture(
+			case Args.ListType.MOD_VARIABLES -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getWorkspace().getVariableElements()));
-			case ListArgs.ListType.MOD_TAGS -> CompletableFuture.completedFuture(
+			case Args.ListType.MOD_TAGS -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getWorkspace().getTagElements().entrySet()));
-			case ListArgs.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(
+			case Args.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getGeneratorStats().getSupportedModElementTypes()));
+			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
+					ToolResult.object(mcreator.getWorkspace().getWorkspaceSettings()));
 		};
 	}
 
 }
-
