@@ -34,6 +34,7 @@ package ${package}.client;
 
 @EventBusSubscriber(Dist.CLIENT)
 public class ${JavaModName}SkyboxRenderer {
+
 	private static GpuBuffer sunBuffer;
 	private static GpuBuffer moonBuffer;
 	private static GpuBuffer skyboxBuffer;
@@ -61,8 +62,7 @@ public class ${JavaModName}SkyboxRenderer {
 		if (skyboxBuffer == null) skyboxBuffer = buildSkyboxBuffer();
 	}
 
-	@SubscribeEvent
-	public static void renderSky(RenderLevelStageEvent.AfterSky event) {
+	@SubscribeEvent public static void renderSky(RenderLevelStageEvent.AfterSky event) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
 		<#list dimensions as dimension>
@@ -106,7 +106,7 @@ public class ${JavaModName}SkyboxRenderer {
 
 		try (RenderPass renderPass = RenderSystem.getDevice()
 				.createCommandEncoder()
-				.createRenderPass(() -> "Custom Sun", color, OptionalInt.empty(), depth, OptionalDouble.empty())) {
+				.createRenderPass(() -> "${modid} Sun", color, OptionalInt.empty(), depth, OptionalDouble.empty())) {
 			renderPass.setPipeline(RenderPipelines.CELESTIAL);
 			RenderSystem.bindDefaultUniforms(renderPass);
 			renderPass.setUniform("DynamicTransforms", dynamicTransforms);
@@ -148,7 +148,7 @@ public class ${JavaModName}SkyboxRenderer {
 
 		try (RenderPass renderPass = RenderSystem.getDevice()
 				.createCommandEncoder()
-				.createRenderPass(() -> "Custom Moon", color, OptionalInt.empty(), depth, OptionalDouble.empty())) {
+				.createRenderPass(() -> "${modid} Moon", color, OptionalInt.empty(), depth, OptionalDouble.empty())) {
 			renderPass.setPipeline(RenderPipelines.CELESTIAL);
 			RenderSystem.bindDefaultUniforms(renderPass);
 			renderPass.setUniform("DynamicTransforms", dynamicTransforms);
@@ -181,7 +181,7 @@ public class ${JavaModName}SkyboxRenderer {
 
 		try (RenderPass renderPass = RenderSystem.getDevice()
 				.createCommandEncoder()
-				.createRenderPass(() -> "Custom Skybox", color, OptionalInt.empty(), depth, OptionalDouble.empty())) {
+				.createRenderPass(() -> "${modid} Skybox", color, OptionalInt.empty(), depth, OptionalDouble.empty())) {
 			renderPass.setPipeline(RenderPipelines.END_SKY);
 			RenderSystem.bindDefaultUniforms(renderPass);
 			renderPass.setUniform("DynamicTransforms", dynamicTransforms);
@@ -203,7 +203,7 @@ public class ${JavaModName}SkyboxRenderer {
 			bufferBuilder.addVertex(1.0F, 0.0F, 1.0F).setUv(1.0F, 1.0F);
 			bufferBuilder.addVertex(-1.0F, 0.0F, 1.0F).setUv(0.0F, 1.0F);
 			try (MeshData mesh = bufferBuilder.buildOrThrow()) {
-				return RenderSystem.getDevice().createBuffer(() -> "Custom Sun", 32, mesh.vertexBuffer());
+				return RenderSystem.getDevice().createBuffer(() -> "${modid} Sun", 32, mesh.vertexBuffer());
 			}
 		}
 	}
@@ -215,8 +215,8 @@ public class ${JavaModName}SkyboxRenderer {
 			for (int k = 0; k < 8; k++) {
 				int l = k % 4;
 				int i1 = k / 4 % 2;
-				float f13 = (float)(l + 0) / 4.0F;
-				float f14 = (float)(i1 + 0) / 2.0F;
+				float f13 = (float)(l) / 4.0F;
+				float f14 = (float)(i1) / 2.0F;
 				float f15 = (float)(l + 1) / 4.0F;
 				float f16 = (float)(i1 + 1) / 2.0F;
 
@@ -226,7 +226,7 @@ public class ${JavaModName}SkyboxRenderer {
 				bufferBuilder.addVertex(-1.0F, 0.0F, 1.0F).setUv(f15, f14);
 			}
 			try (MeshData mesh = bufferBuilder.buildOrThrow()) {
-				return RenderSystem.getDevice().createBuffer(() -> "Custom Moon", 32, mesh.vertexBuffer());
+				return RenderSystem.getDevice().createBuffer(() -> "${modid} Moon", 32, mesh.vertexBuffer());
 			}
 		}
 	}
@@ -247,7 +247,7 @@ public class ${JavaModName}SkyboxRenderer {
 			addSkyboxFace(bufferBuilder, size, -size, distance, 3.0F / 4.0F, 2.0F / 3.0F, -size, -size, distance, 4.0F / 4.0F, 2.0F / 3.0F, -size, size, distance, 4.0F / 4.0F, 1.0F / 3.0F, size, size, distance, 3.0F / 4.0F, 1.0F / 3.0F, color);
 
 			try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-				return RenderSystem.getDevice().createBuffer(() -> "Custom Skybox", 40, meshData.vertexBuffer());
+				return RenderSystem.getDevice().createBuffer(() -> "${modid} Skybox", 40, meshData.vertexBuffer());
 			}
 		}
 	}
@@ -258,6 +258,7 @@ public class ${JavaModName}SkyboxRenderer {
 		bufferBuilder.addVertex(x3, y3, z3).setUv(u3, v3).setColor(color);
 		bufferBuilder.addVertex(x4, y4, z4).setUv(u4, v4).setColor(color);
 	}
+
 }
 
 <#-- @formatter:on -->

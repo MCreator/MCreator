@@ -34,6 +34,7 @@ package ${package}.client;
 
 @EventBusSubscriber(Dist.CLIENT)
 public class ${JavaModName}SkyboxRenderer {
+
 	<#list dimensions as dimension>
 		<#if dimension.enableSkybox || dimension.enableSunMoon>
 			private static final ResourceKey ${dimension.getModElement().getRegistryNameUpper()}
@@ -51,8 +52,7 @@ public class ${JavaModName}SkyboxRenderer {
 		</#if>
 	</#list>
 
-	@SubscribeEvent
-	public static void renderSky(RenderLevelStageEvent event) {
+	@SubscribeEvent public static void renderSky(RenderLevelStageEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
 		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_SKY) return;
@@ -63,16 +63,15 @@ public class ${JavaModName}SkyboxRenderer {
 						renderCustomSkybox(event, ${dimension.getModElement().getRegistryNameUpper()}_SKYBOX);
 					</#if>
 					<#if dimension.enableSunMoon>
-						renderCustomSun(event, ${dimension.getModElement().getRegistryNameUpper()}_SUN);
-						renderCustomMoon(event, ${dimension.getModElement().getRegistryNameUpper()}_MOON);
+						renderCustomSun(event, mc.player.level(), ${dimension.getModElement().getRegistryNameUpper()}_SUN);
+						renderCustomMoon(event, mc.player.level(), ${dimension.getModElement().getRegistryNameUpper()}_MOON);
 					</#if>
 				}
 			</#if>
 		</#list>
 	}
 
-	public static void renderCustomSun(RenderLevelStageEvent event, ResourceLocation texture) {
-		Minecraft mc = Minecraft.getInstance();
+	public static void renderCustomSun(RenderLevelStageEvent event, Level level, ResourceLocation texture) {
 		PoseStack posestack = event.getPoseStack();
 		posestack.pushPose();
 		posestack.mulPose(event.getModelViewMatrix());
@@ -80,10 +79,10 @@ public class ${JavaModName}SkyboxRenderer {
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager._depthMask(false);
 		float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
-		float f11 = 1.0F - mc.player.level().getRainLevel(partialTick);
+		float f11 = 1.0F - level.getRainLevel(partialTick);
 		RenderSystem.setShaderColor(1, 1, 1, f11);
 		posestack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-		posestack.mulPose(Axis.XP.rotationDegrees(mc.player.level().getTimeOfDay(partialTick) * 360.0F));
+		posestack.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTick) * 360.0F));
 		Matrix4f matrix4f1 = posestack.last().pose();
 		float f12 = 30.0F;
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -101,8 +100,7 @@ public class ${JavaModName}SkyboxRenderer {
 		posestack.popPose();
 	}
 
-	public static void renderCustomMoon(RenderLevelStageEvent event, ResourceLocation texture) {
-		Minecraft mc = Minecraft.getInstance();
+	public static void renderCustomMoon(RenderLevelStageEvent event, Level level, ResourceLocation texture) {
 		PoseStack posestack = event.getPoseStack();
 		posestack.pushPose();
 		posestack.mulPose(event.getModelViewMatrix());
@@ -110,19 +108,19 @@ public class ${JavaModName}SkyboxRenderer {
 		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		GlStateManager._depthMask(false);
 		float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
-		float f11 = 1.0F - mc.player.level().getRainLevel(partialTick);
+		float f11 = 1.0F - level.getRainLevel(partialTick);
 		RenderSystem.setShaderColor(1, 1, 1, f11);
 		posestack.mulPose(Axis.YP.rotationDegrees(-90.0F));
-		posestack.mulPose(Axis.XP.rotationDegrees(mc.player.level().getTimeOfDay(partialTick) * 360.0F));
+		posestack.mulPose(Axis.XP.rotationDegrees(level.getTimeOfDay(partialTick) * 360.0F));
 		Matrix4f matrix4f1 = posestack.last().pose();
 		float f12 = 20.0F;
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderTexture(0, texture);
-		int k = mc.player.level().getMoonPhase();
+		int k = level.getMoonPhase();
 		int l = k % 4;
 		int i1 = k / 4 % 2;
-		float f13 = (float)(l + 0) / 4.0F;
-		float f14 = (float)(i1 + 0) / 2.0F;
+		float f13 = (float)(l) / 4.0F;
+		float f14 = (float)(i1) / 2.0F;
 		float f15 = (float)(l + 1) / 4.0F;
 		float f16 = (float)(i1 + 1) / 2.0F;
 		BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -173,6 +171,7 @@ public class ${JavaModName}SkyboxRenderer {
 		buffer.addVertex(matrix, x4, y4, z4).setUv(u4, v4);
 		BufferUploader.drawWithShader(buffer.buildOrThrow());
 	}
+
 }
 
 <#-- @formatter:on -->
