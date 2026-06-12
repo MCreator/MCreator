@@ -19,22 +19,22 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JSingleEntrySelector;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
-public class SingleParticleEntryField extends JSingleEntrySelector<Particle> {
+public class SingleParticleEntryField extends JSingleEntrySelector<ParticleEntry> {
 
 	public SingleParticleEntryField(MCreator mcreator) {
 		super(mcreator);
 	}
 
-	@Override protected Particle openEntrySelector() {
+	@Override protected ParticleEntry openEntrySelector() {
 		var entry = DataListSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadAllParticles,
 				L10N.t("dialog.selector.title"), L10N.t("dialog.selector.particles.message"));
-		return entry == null ? null : new Particle(mcreator.getWorkspace(), entry);
+		return entry == null ? null : new ParticleEntry(mcreator.getWorkspace(), entry);
 	}
 }

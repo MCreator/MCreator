@@ -106,7 +106,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 	}
 
 	@Test public void testPreferencesDialog() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new PreferencesDialog(mcreator));
 	}
 
 	@Test public void testMCItemSelector() throws Throwable {

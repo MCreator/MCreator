@@ -51,10 +51,10 @@ import java.util.*;
 
 	private static final Logger LOG = LogManager.getLogger("Workspace info");
 
-	public List<ModElement> getElementsOfType(String typeString) {
+	public Collection<ModElement> getElementsOfType(String typeString) {
 		try {
 			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
-			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type).toList();
+			return workspace.getModElementsByType(type);
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
@@ -65,8 +65,8 @@ import java.util.*;
 		try {
 			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
 			// getGeneratableElement is not thread safe, so we can't use parallelStream here
-			return workspace.getModElements().stream().filter(e -> e.getType() == type)
-					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
+			return workspace.getModElementsByType(type).stream().map(ModElement::getGeneratableElement)
+					.filter(Objects::nonNull).toList();
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
@@ -86,15 +86,14 @@ import java.util.*;
 	public boolean hasElementsOfType(String typeString) {
 		try {
 			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
-			return workspace.getModElements().parallelStream().anyMatch(e -> e.getType() == type);
+			return workspace.containsType(type);
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
 	}
 
 	public boolean hasVariablesOfScope(String type) {
-		return workspace.getVariableElements().parallelStream()
-				.anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
+		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
 	public boolean hasVariables() {
@@ -106,7 +105,7 @@ import java.util.*;
 	}
 
 	public boolean hasJavaModels() {
-		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
+		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public List<String> getUsedElementNames(ModElement... exclusions) {

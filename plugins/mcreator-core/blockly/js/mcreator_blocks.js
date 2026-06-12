@@ -171,6 +171,15 @@ Blockly.Blocks['feature_container'] = {
     }
 };
 
+Blockly.Blocks['enchantment_effects_start'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.enchantment_effects_start"));
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true, 'EnchantmentComponent');
+        this.setColour(150);
+    }
+};
+
 Blockly.Blocks['mcitem_allblocks'] = {
     init: function () {
         this.appendDummyInput()
@@ -314,7 +323,7 @@ Blockly.Blocks['logic_null_comparison'] = {
         this.appendValueInput('value');
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown([["\u2260", "!="], ["=", "=="]]), 'operation')
-            .appendField(javabridge.t("blockly.block.logic_null_comparison"));
+            .appendField("" + javabridge.t("blockly.block.logic_null_comparison"));
         this.setColour('%{BKY_LOGIC_HUE}');
         this.setOutput(true, 'Boolean');
         Blockly.Extensions.apply('null_comparison_exclude_primitive_types', this, false);
@@ -706,6 +715,10 @@ registerSimpleMutatorInput('player_effect_changed_mutator_input', 'blockly.block
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('item_enchanted_mutator_container', 'blockly.block.item_enchanted_mutator.container', 290);
 registerSimpleMutatorInput('item_enchanted_mutator_input', 'blockly.block.item_enchanted_mutator.input', 290);
+
+// Mutator blocks for item condition component advancement trigger mixin
+registerSimpleMutatorContainer('item_predicate_mutator_container', 'blockly.block.item_predicate_mutator.container', 90);
+registerSimpleMutatorInput('item_predicate_mutator_input', 'blockly.block.item_predicate_mutator.input', 90);
 
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('any_item_mutator_container', 'blockly.block.any_item_mutator.container', 350);

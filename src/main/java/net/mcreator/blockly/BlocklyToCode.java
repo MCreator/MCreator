@@ -74,6 +74,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	private String headSection = "";
 	private String tailSection = "";
 
+	private final StringBuilder additionalCode = new StringBuilder();
+
 	private int blockCount = 0;
 
 	/**
@@ -175,6 +177,14 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public final String getGeneratedCode() {
 		return code.toString();
+	}
+
+	public final void addAdditionalCode(String code) {
+		additionalCode.append(code);
+	}
+
+	public final String getAdditionalCode() {
+		return additionalCode.toString();
 	}
 
 	public final String getExtraTemplatesCode() throws TemplateGeneratorException {

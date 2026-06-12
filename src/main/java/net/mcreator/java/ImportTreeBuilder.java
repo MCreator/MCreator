@@ -19,7 +19,6 @@
 package net.mcreator.java;
 
 import javassist.bytecode.AccessFlag;
-import javassist.bytecode.ConstPool;
 import net.mcreator.generator.Generator;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
@@ -71,7 +70,7 @@ public class ImportTreeBuilder {
 						return;
 
 					// skip some libraries
-					if (entryPath.startsWith("org/antlr"))
+					if (entryPath.startsWith("org/antlr") || entryPath.startsWith("org/checkerframework"))
 						return;
 
 					// skip all meta-info paths
@@ -79,14 +78,13 @@ public class ImportTreeBuilder {
 						return;
 
 					// check if class is public or protected
-					try {
-						DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream());
+					try (DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream())) {
 						int magic = dis.readInt(); // check magic number
 						if (magic != 0xCAFEBABE)
 							throw new Exception();
 						dis.readUnsignedShort();// class minor
 						dis.readUnsignedShort();// class major
-						new ConstPool(dis);// read const pool
+						skipConstantPool(dis);
 						int accessFlags = dis.readUnsignedShort(); //accessFlags
 						if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
 							return;
@@ -133,8 +131,50 @@ public class ImportTreeBuilder {
 	}
 
 	private static void addClassToTree(String packageName, String className, Map<String, List<String>> store) {
-		store.computeIfAbsent(className, key -> Collections.synchronizedList(new ArrayList<>()))
+		// Initial list capacity at 1, as most classes only exist in one package
+		store.computeIfAbsent(className, _ -> Collections.synchronizedList(new ArrayList<>(1)))
 				.add(packageName + '.' + className);
+	}
+
+	public static void skipConstantPool(DataInputStream dis) throws IOException {
+		int poolCount = dis.readUnsignedShort();
+
+		for (int i = 1; i < poolCount; i++) {
+			int tag = dis.readUnsignedByte();
+			switch (tag) {
+			case 1: // Utf8
+				int length = dis.readUnsignedShort();
+				dis.skipBytes(length);
+				break;
+			case 3: // Integer
+			case 4: // Float
+			case 9: // Fieldref
+			case 10: // Methodref
+			case 11: // InterfaceMethodref
+			case 12: // NameAndType
+			case 17: // Dynamic
+			case 18: // InvokeDynamic
+				dis.skipBytes(4);
+				break;
+			case 5: // Long
+			case 6: // Double
+				dis.skipBytes(8);
+				i++; // Long and Double take up two slots in the constant pool!
+				break;
+			case 7: // Class
+			case 8: // String
+			case 16: // MethodType
+			case 19: // Module
+			case 20: // Package
+				dis.skipBytes(2);
+				break;
+			case 15: // MethodHandle
+				dis.skipBytes(3);
+				break;
+			default:
+				throw new IOException("Unknown constant pool tag: " + tag + " at index " + i);
+			}
+		}
 	}
 
 }

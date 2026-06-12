@@ -22,7 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.MobSpawnType;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
@@ -61,7 +61,7 @@ import java.util.List;
 	@Numeric(init = 6000, min = 1, max = 30000, step = 1) public int moodSoundDelay;
 
 	public boolean spawnParticles;
-	public Particle particleToSpawn;
+	public ParticleEntry particleToSpawn;
 	@Numeric(init = 0.5, min = 0, max = 100, step = 0.1) public double particlesProbability;
 
 	@Numeric(init = 0.5, min = 0, max = 1, step = 0.1) public double rainingPossibility;

@@ -99,6 +99,7 @@ public final class WorkspaceFileManager implements Closeable {
 
 	@Override public void close() {
 		lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
+		dataSaveExecutor.shutdown(); // prevent new tasks from being scheduled
 		saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
 	}
 
@@ -204,9 +205,9 @@ public final class WorkspaceFileManager implements Closeable {
 		@Override public void run() {
 			fileManager.saveWorkspaceIfChanged();
 
-			// after we call save, we schedule a new call
-			fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
-					PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.get(), TimeUnit.SECONDS);
+			if (!fileManager.dataSaveExecutor.isShutdown())
+				fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
+						PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.get(), TimeUnit.SECONDS);
 		}
 
 	}

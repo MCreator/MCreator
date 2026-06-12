@@ -62,10 +62,13 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
-	private static final Pattern cleanExcessCharactersPattern = Pattern.compile("[^0-9.]+");
-	private static final Pattern cleanMultiDotsPattern = Pattern.compile("(?:\\.[.]+)+");
-	private static final Pattern cleanLeadingTrailingDotsPattern = Pattern.compile("(\\.$)|(^\\.)");
-
+	private static final Pattern cleanExcessMmpCharactersPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanExcessSemVerCharactersPattern = Pattern.compile("[^0-9a-zA-Z.+-]+");
+	private static final Pattern cleanMultiDotsPattern = Pattern.compile("\\.{2,}");
+	private static final Pattern cleanMultiHyphensPattern = Pattern.compile("-{2,}");
+	private static final Pattern cleanMultiPlusesPattern = Pattern.compile("\\+{2,}");
+	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile(
+			"(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
@@ -223,16 +226,27 @@ import java.util.stream.Stream;
 	}
 
 	private String getSemVerCompliantVersion() {
-		Matcher compliantVersionMatcher = semVerPattern.matcher(version);
+		String trimmedVersion = getTrimmedSemVerVersion();
+		Matcher compliantVersionMatcher = semVerPattern.matcher(trimmedVersion);
 		if (compliantVersionMatcher.matches())
 			return compliantVersionMatcher.group();
 		return "";
 	}
 
+	private String getTrimmedSemVerVersion() {
+		String trimmedVersion = cleanExcessSemVerCharactersPattern.matcher(version).replaceAll(".");
+
+		trimmedVersion = cleanMultiHyphensPattern.matcher(trimmedVersion).replaceAll("-");
+		trimmedVersion = cleanMultiPlusesPattern.matcher(trimmedVersion).replaceAll("+");
+
+		trimmedVersion = cleanMultiDotsPattern.matcher(trimmedVersion).replaceAll(".");
+		return cleanEdgeCharactersPattern.matcher(trimmedVersion).replaceAll("");
+	}
+
 	private String getCleanMmpVersion() {
-		String cleanVersion = cleanExcessCharactersPattern.matcher(version).replaceAll("");
+		String cleanVersion = cleanExcessMmpCharactersPattern.matcher(version).replaceAll(".");
 		cleanVersion = cleanMultiDotsPattern.matcher(cleanVersion).replaceAll(".");
-		return cleanLeadingTrailingDotsPattern.matcher(cleanVersion).replaceAll("");
+		return cleanEdgeCharactersPattern.matcher(cleanVersion).replaceAll("");
 	}
 
 	public String getCleanVersion() {
@@ -306,12 +320,12 @@ import java.util.stream.Stream;
 	}
 
 	public int[] get3DigitVersion() {
+		String trimmedVersion = getCleanMmpVersion();
 		int[] ver3 = { 0, 0, 0 };
 		try {
-			String[] parts = version.split("\\.");
+			String[] parts = trimmedVersion.split("\\.");
 			for (int i = 0; i < Math.min(parts.length, ver3.length); i++) {
-				String digit = parts[i].replaceAll("[^\\d]", "");
-				ver3[i] = Integer.parseInt(digit);
+				ver3[i] = Integer.parseInt(parts[i]);
 			}
 		} catch (Exception ignored) {
 		}

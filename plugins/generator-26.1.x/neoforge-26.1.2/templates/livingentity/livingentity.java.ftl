@@ -731,14 +731,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 				retval.setTame(true, true);
 			}
 			</#if>
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
 			return retval;
 		}
 	<#elseif data.breedable>
 		@Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld, EntitySpawnReason.BREEDING);
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
-			return retval;
+			return ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld, EntitySpawnReason.BREEDING);
 		}
 
 		@Override public boolean isFood(ItemStack stack) {

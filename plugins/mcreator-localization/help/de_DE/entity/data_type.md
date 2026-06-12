@@ -1,0 +1,1 @@
+Diese Option steuert den Typ dieser Entitätvariable. Unterstützte Typen sind Logik, Zahl und String-Variablen.

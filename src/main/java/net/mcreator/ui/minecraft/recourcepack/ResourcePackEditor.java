@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.recourcepack;
 
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.FileWatcher;
 import net.mcreator.io.tree.FileNode;
@@ -45,6 +46,7 @@ import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.metadata.MetadataManager;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
@@ -128,7 +130,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 				String fileName = JOptionPane.showInputDialog(mcreator, L10N.t("workspace_file_browser.new_json"));
 				if (fileName != null) {
 					fileName = RegistryNameFixer.fix(fileName);
-					FileIO.writeStringToFile("",
+					GradleTrackingFileIO.writeFile(mcreator, "",
 							new File(currentFolder, fileName + (fileName.contains(".") ? "" : ".json")));
 					reloadElements();
 				}
@@ -296,6 +298,10 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	private void editOrOverrideCurrentEntry() {
 		if (selectedEntry != null) {
 			if (!selectedEntry.isFolder()) { // Make sure not a folder
+				// For resource pack editor, this is our source of checkpoint actions
+				if (mcreator instanceof ResourcePackMaker)
+					workspace.getHistoryManager().checkpoint("pack_edit", FilenameUtils.getName(selectedEntry.path()));
+
 				if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
 					File override = selectedEntry.override();
 					if (override.isFile()) {
@@ -326,7 +332,7 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 							new NewImageDialog(mcreator, imageMakerView).setVisible(true);
 							imageMakerView.setSaveLocation(selectedEntry.override());
 						} else if (textExtensions.contains(selectedEntry.extension())) {
-							FileIO.writeStringToFile("", selectedEntry.override());
+							GradleTrackingFileIO.writeFile(mcreator, "", selectedEntry.override());
 							FileOpener.openFile(mcreator, selectedEntry.override());
 							reloadElements();
 						} else {

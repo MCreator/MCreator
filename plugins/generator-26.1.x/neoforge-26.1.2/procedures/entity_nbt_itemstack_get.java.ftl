@@ -1,1 +1,2 @@
-/*@ItemStack*/(ItemStack.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, ${input$entity}.getPersistentData().getCompoundOrEmpty(${input$tagName})).result().orElse(ItemStack.EMPTY))
+<@addTemplate file="utils/entity/entity_get_itemstack_nbt.java.ftl"/>
+/*@ItemStack*/(getItemStackNbtFromEntity(${input$entity}, ${input$tagName}))

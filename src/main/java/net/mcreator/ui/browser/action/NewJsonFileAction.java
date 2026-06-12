@@ -26,28 +26,21 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 
 public class NewJsonFileAction extends BasicAction {
 
 	public NewJsonFileAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.browser.new_json_file"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.browser.new_json_file"), _ -> {
 			String fileName = JOptionPane.showInputDialog(actionRegistry.getMCreator(),
 					L10N.t("workspace_file_browser.new_json"));
 
 			if (fileName != null) {
 				fileName = RegistryNameFixer.fix(fileName);
-				if (actionRegistry.getMCreator().getProjectBrowser().tree.getLastSelectedPathComponent() != null) {
-					Object selection = ((DefaultMutableTreeNode) actionRegistry.getMCreator()
-							.getProjectBrowser().tree.getLastSelectedPathComponent()).getUserObject();
-					if (selection instanceof File filesel) {
-						if (filesel.isDirectory()) {
-							String path = filesel.getPath() + "/" + fileName + (fileName.contains(".") ? "" : ".json");
-							FileIO.writeStringToFile("", new File(path));
-							actionRegistry.getMCreator().getProjectBrowser().reloadTree();
-						}
-					}
+				File workingDir = actionRegistry.getMCreator().getProjectBrowser().getCurrentSelectedDirectory();
+				if (workingDir != null) {
+					FileIO.writeStringToFile("", new File(workingDir, fileName + (fileName.contains(".") ? "" : ".json")));
+					actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 				}
 			}
 		});

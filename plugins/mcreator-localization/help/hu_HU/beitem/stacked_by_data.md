@@ -1,0 +1,1 @@
+Ha ezt a beállítást választja, az azonos típusú, de eltérő adatokkal rendelkező tételeket külön-külön rakják egymásra a konténer rekeszeiben és a földön.

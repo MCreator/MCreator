@@ -1,0 +1,1 @@
+Dieser Parameter definiert den Autor des Gemäldes.

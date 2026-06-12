@@ -26,6 +26,7 @@ import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -235,6 +236,11 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("noteblockinstruments");
 	}
 
+	public static List<DataListEntry> loadItemUseAnimations(Workspace workspace) {
+		return DataListLoader.loadDataList("itemuseanimations").stream()
+				.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+	}
+
 	public static List<DataListEntry> loadAnimations(Workspace workspace) {
 		List<DataListEntry> animations = new ArrayList<>();
 		for (Animation animation : Animation.getAnimations(workspace)) {
@@ -356,11 +362,9 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllFluids(Workspace workspace) {
 		List<DataListEntry> retval = new ArrayList<>();
 
-		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.getType() == ModElementType.FLUID) {
-				retval.add(new DataListEntry.Custom(modElement));
-				retval.add(new DataListEntry.Custom(modElement, ":Flowing"));
-			}
+		for (ModElement modElement : workspace.getModElementsByType(ModElementType.FLUID)) {
+			retval.add(new DataListEntry.Custom(modElement));
+			retval.add(new DataListEntry.Custom(modElement, ":Flowing"));
 		}
 
 		retval.addAll(DataListLoader.loadDataList("fluids"));
@@ -406,9 +410,8 @@ public class ElementUtil {
 
 	public static ArrayList<String> loadBasicGUIs(Workspace workspace) {
 		ArrayList<String> blocks = new ArrayList<>();
-		for (ModElement mu : workspace.getModElements()) {
-			if (mu.getType() == ModElementType.GUI)
-				blocks.add(mu.getName());
+		for (ModElement mu : workspace.getModElementsByType(ModElementType.GUI)) {
+			blocks.add(mu.getName());
 		}
 		return blocks;
 	}
@@ -418,7 +421,14 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEquipmentSlots() {
-		return DataListLoader.loadDataList("equipmentslots");
+		return loadAllEquipmentSlots(false);
+	}
+
+	public static List<DataListEntry> loadAllEquipmentSlots(boolean addDefault) {
+		return addDefault ?
+				ListUtils.merge(List.of(new DataListEntry.Dummy("default")),
+						DataListLoader.loadDataList("equipmentslots")) :
+				DataListLoader.loadDataList("equipmentslots");
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {
@@ -432,7 +442,8 @@ public class ElementUtil {
 	}
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
-		return getCustomElements(workspace, modelement -> modelement.getType() == type);
+		return workspace.getModElementsByType(type).stream().map(DataListEntry.Custom::new)
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -443,14 +454,11 @@ public class ElementUtil {
 	 * @return <p>An array of strings containing the names of the procedures</p>
 	 */
 	public static String[] getProceduresOfType(Workspace workspace, VariableType type) {
-		return workspace.getModElements().stream().filter(mod -> {
-			if (mod.getType() == ModElementType.PROCEDURE) {
-				VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
-						null;
-				return returnTypeCurrent == type;
-			}
-			return false;
+		return workspace.getModElementsByType(ModElementType.PROCEDURE).stream().filter(mod -> {
+			VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
+					VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
+					null;
+			return returnTypeCurrent == type;
 		}).map(ModElement::getName).toArray(String[]::new);
 	}
 }

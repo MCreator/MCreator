@@ -8,7 +8,10 @@
     {
       "type": "input_value",
       "name": "item",
-      "check": "MCItem"
+      "check": [
+        "MCItem",
+        "ItemPredicate"
+      ]
     },
     {
       "type": "field_checkbox",

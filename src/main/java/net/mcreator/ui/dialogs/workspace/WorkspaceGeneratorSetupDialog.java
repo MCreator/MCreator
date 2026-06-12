@@ -116,6 +116,9 @@ public class WorkspaceGeneratorSetupDialog {
 
 				WorkspaceGeneratorSetup.completeSetup(m.getGenerator());
 
+				m.getWorkspace().getHistoryManager().importantCheckpoint("generator_setup_complete",
+						m.getGeneratorConfiguration().getGeneratorName());
+
 				dial.hideDialog();
 
 				SwingUtilities.invokeLater(() -> {
@@ -146,7 +149,7 @@ public class WorkspaceGeneratorSetupDialog {
 		if (action == 0) {
 			runSetup(m, false);
 		} else if (action == 1) {
-			new PreferencesDialog(m, null);
+			new PreferencesDialog(m);
 			runSetup(m, false);
 		} else if (action == 2) {
 			StringSelection stringSelection = new StringSelection(m.getGradleConsole().getConsoleText());

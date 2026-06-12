@@ -146,6 +146,7 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	public static ModElementType<?> ADVANCEMENT;
 	public static ModElementType<?> ARMOR;
+	public static ModElementType<?> ARMORTRIM;
 	public static ModElementType<?> ATTRIBUTE;
 	public static ModElementType<?> BANNERPATTERN;
 	public static ModElementType<?> BIOME;

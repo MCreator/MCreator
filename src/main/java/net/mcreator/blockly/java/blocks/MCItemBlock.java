@@ -21,15 +21,20 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MCItemBlock implements IBlockGenerator {
 
-	@Override public void generateBlock(BlocklyToCode master, Element block) {
+	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()
 				&& !element.getTextContent().equals("null")) {
@@ -39,7 +44,16 @@ public class MCItemBlock implements IBlockGenerator {
 						L10N.t("blockly.errors.mcitem_broken_reference",
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
-			master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
+
+			if (master.getTemplateGenerator() != null && master.getTemplateGenerator()
+					.hasTemplate("_mcitem.java.ftl") && block.getAttribute("type").equals("mcitem_all")) {
+				Map<String, Object> dataModel = new HashMap<>();
+				dataModel.put("item", new MItemBlock(master.getWorkspace(), textContent));
+				String code = master.getTemplateGenerator().generateFromTemplate("_mcitem.java.ftl", dataModel);
+				master.append(code);
+			} else {
+				master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
+			}
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));

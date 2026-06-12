@@ -74,6 +74,7 @@ public class GeneratorSelector {
 			"generationsteps",
 			"itemproperties",
 			"itemtypes",
+			"itemuseanimations",
 			"keybuttons",
 			"mapcolors",
 			"mobspawntypes",

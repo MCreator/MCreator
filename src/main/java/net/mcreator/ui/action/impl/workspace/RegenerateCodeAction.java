@@ -22,7 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.writer.JavaWriter;
+import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
@@ -242,6 +242,8 @@ public class RegenerateCodeAction extends GradleAction {
 			p3.markStateOk();
 
 			dial.hideDialog();
+
+			mcreator.getWorkspace().getHistoryManager().checkpoint("regenerate_code");
 		}, "RegenerateCode");
 		thread.start();
 		dial.setVisible(true);

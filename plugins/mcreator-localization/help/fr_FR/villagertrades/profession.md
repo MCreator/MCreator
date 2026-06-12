@@ -1,0 +1,1 @@
+Ce paramètre détermine quelle profession de villageois peut proposer les échanges

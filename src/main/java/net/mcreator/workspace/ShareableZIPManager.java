@@ -173,6 +173,8 @@ public class ShareableZIPManager {
 
 			p1.markStateOk();
 			dial.hideDialog();
+
+			mcreator.getWorkspace().getHistoryManager().importantCheckpoint("export_workspace");
 		}, "ZIPExporter");
 		t.start();
 		dial.setVisible(true);

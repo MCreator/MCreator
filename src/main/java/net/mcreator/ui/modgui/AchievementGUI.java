@@ -36,10 +36,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -216,14 +213,29 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			blocklyPanel.setInitialXML(AnnotationUtils.getBlocklyXMLDefaultValue(Achievement.class, "triggerxml"));
 		}
 
-		JPanel advancementTrigger = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
+		blocklyAndToolbarPanel.setOpaque(false);
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.JSON_TRIGGER,
+				blocklyPanel, false);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(163);
+		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
+
+		compileNotesPanel.setPreferredSize(new Dimension(0, 70));
+
+		JComponent advancementTrigger = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
+		advancementTrigger.setPreferredSize(new Dimension(0, 460));
 
 		JComponent wrap = PanelUtils.northAndCenterElement(
 				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-		addPage(wrap, false).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
+		JPanel page1 = new JPanel(new BorderLayout(10, 10));
+		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger));
+
+		page1.setOpaque(false);
+
+		addPage(page1).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
 				compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
 		if (!isEditingMode()) {

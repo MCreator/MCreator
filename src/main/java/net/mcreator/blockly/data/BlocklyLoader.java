@@ -73,6 +73,7 @@ public class BlocklyLoader {
 		registerBlockLoader(BlocklyEditorType.COMMAND_ARG);
 		registerBlockLoader(BlocklyEditorType.FEATURE);
 		registerBlockLoader(BlocklyEditorType.SCRIPT);
+		registerBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS);
 	}
 
 	/**

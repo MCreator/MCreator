@@ -21,7 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -66,7 +66,7 @@ import java.util.List;
 	@Numeric(init = 1, min = 1, max = 8, step = 1) public int levelDecrease;
 	@Numeric(init = 4, min = 1, max = 16, step = 1) public int slopeFindDistance;
 	public boolean spawnParticles;
-	public Particle dripParticle;
+	public ParticleEntry dripParticle;
 	@Numeric(init = 1, min = -25, max = 25, step = 0.1) public double flowStrength;
 
 	@Numeric(init = 0, min = 0, max = 100, step = 1) public int luminosity;

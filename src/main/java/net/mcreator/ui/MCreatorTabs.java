@@ -55,7 +55,7 @@ public class MCreatorTabs extends JTabbedPane {
 
 		setFocusable(true);
 
-		addChangeListener(e -> {
+		addChangeListener(_ -> {
 			int selectedIndex = getSelectedIndex();
 			if (selectedIndex >= 0) {
 				Tab toNotifyOfShow = getTabForTabIndex(selectedIndex);
@@ -93,13 +93,18 @@ public class MCreatorTabs extends JTabbedPane {
 		return null;
 	}
 
-	public void addTab(final Tab tab) {
+	public void addTab(Tab tab) {
+		addTab(tab, true);
+	}
+
+	public void addTab(final Tab tab, boolean showTab) {
 		tabs.add(tab);
 		tab.addImpl(this);
 
 		MCREvent.event(new TabEvent.Added(tab));
 
-		showTab(tab);
+		if (showTab)
+			showTab(tab);
 	}
 
 	/**
@@ -129,6 +134,10 @@ public class MCreatorTabs extends JTabbedPane {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
+				if (tab.equals(this.current)) {
+					return tab; // Tab is already shown, no need to do anything
+				}
+
 				SwingUtilities.invokeLater(() -> {
 					if (performUIAction) {
 						setSelectedIndex(tab.getIndex());
@@ -159,10 +168,14 @@ public class MCreatorTabs extends JTabbedPane {
 	}
 
 	public void closeTab(Tab tab) {
+		closeTab(tab, false);
+	}
+
+	public void closeTab(Tab tab, boolean force) {
 		if (!tab.closeable)
 			return;
 
-		if (tab.tabClosingListener == null || tab.tabClosingListener.tabClosing(tab)) {
+		if (force || tab.tabClosingListener == null || tab.tabClosingListener.tabClosing(tab)) {
 			MCREvent.event(new TabEvent.Closed(tab));
 
 			SwingUtilities.invokeLater(() -> {
@@ -178,10 +191,10 @@ public class MCreatorTabs extends JTabbedPane {
 		}
 	}
 
-	public void closeAllTabs() {
+	public void closeAllTabs(boolean force) {
 		// make copy so we don't foreach the original which is changed during iterations
 		List<Tab> toClose = new ArrayList<>(tabs);
-		toClose.forEach(this::closeTab);
+		toClose.forEach(tab -> closeTab(tab, force));
 	}
 
 	public List<Tab> getTabs() {

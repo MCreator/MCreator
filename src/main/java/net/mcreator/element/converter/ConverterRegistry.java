@@ -64,6 +64,7 @@ import net.mcreator.element.converter.v2026_1.BedrockBiomeRemover;
 import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2026_1.BlockToBedrockConverter;
 import net.mcreator.element.converter.v2026_1.ToolToBedrockConverter;
+import net.mcreator.element.converter.v2026_2.ItemPredicateAdvancementConverter;
 import net.mcreator.element.converter.v2026_2.VillagerTradeSplitter;
 import net.mcreator.generator.GeneratorFlavor;
 
@@ -77,7 +78,8 @@ public class ConverterRegistry {
 			new AchievementFixer(),
 			new AdvancementTextureConverter(),
 			new AdvancementTriggerInverter(),
-			new AdvancementFunctionConverter()
+			new AdvancementFunctionConverter(),
+			new ItemPredicateAdvancementConverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),

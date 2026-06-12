@@ -1,0 +1,1 @@
+Wenn diese Option definiert ist, wird die Dimension benutzerdefinierte Effekte anstelle einer Standardeinstellung haben.

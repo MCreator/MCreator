@@ -147,7 +147,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		ViewBase retval;
 		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(this.tabIn);
 		if (existing == null) {
-			mcreator.getTabs().addTab(this.tabIn);
+			mcreator.getTabs().addTab(this.tabIn, false);
+			mcreator.getTabs().showTabNoNotify(this.tabIn); // without notification to not trigger unnecessary reloadDataLists
 
 			this.tabIn.setTabShownListener(_ -> {
 				if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
@@ -603,6 +604,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
 				modElement.getType().getRegistryName());
+
+		if (changed && editingMode) {
+			mcreator.getWorkspace().getHistoryManager().checkpoint("mod_element_edited", modElement.getName());
+		}
 
 		changed = false;
 

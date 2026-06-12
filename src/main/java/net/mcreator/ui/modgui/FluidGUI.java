@@ -20,7 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MapColor;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -561,7 +561,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.levelDecrease = (int) levelDecrease.getValue();
 		fluid.slopeFindDistance = (int) slopeFindDistance.getValue();
 		fluid.spawnParticles = spawnParticles.isSelected();
-		fluid.dripParticle = new Particle(mcreator.getWorkspace(), dripParticle.getSelectedItem());
+		fluid.dripParticle = new ParticleEntry(mcreator.getWorkspace(), dripParticle.getSelectedItem());
 		fluid.tintType = (String) tintType.getSelectedItem();
 		fluid.flowStrength = (double) flowStrength.getValue();
 		fluid.luminosity = (int) luminosity.getValue();

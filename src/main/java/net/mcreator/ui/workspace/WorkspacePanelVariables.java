@@ -20,7 +20,6 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
 import net.mcreator.ui.component.util.TableUtil;
@@ -201,7 +200,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		add("Center", sp);
 
-		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
+		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), _ -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidator.Cached() {
 						@Override public Validator createValidator(JComponent component) {
@@ -220,9 +219,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		}));
 
 		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
-				e -> deleteCurrentlySelected()));
+				_ -> deleteCurrentlySelected()));
 
-		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), _ -> {
 			if (elements.getSelectedRow() != -1) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -239,7 +238,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		}));
 
 		bar.add(createToolBarButton("workspace.variables.help", UIRES.get("16px.info"),
-				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables")));
+				_ -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables")));
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {

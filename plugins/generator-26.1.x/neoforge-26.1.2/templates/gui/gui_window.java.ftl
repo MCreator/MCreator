@@ -174,6 +174,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	}
 
 	@Override public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractBackground(guiGraphics, mouseX, mouseY, partialTicks);
+
 		<#if data.renderBgLayer>
 			guiGraphics.blit(RenderPipelines.GUI_TEXTURED, BACKGROUND, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight, this.imageWidth, this.imageHeight);
 		</#if>

@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.parts.Enchantment;
+import net.mcreator.element.parts.EnchantmentEntry;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnchantmentListField extends JItemListField<Enchantment> {
+public class EnchantmentListField extends JItemListField<EnchantmentEntry> {
 
 	public EnchantmentListField(MCreator mcreator) {
 		super(mcreator, false);
@@ -44,26 +44,26 @@ public class EnchantmentListField extends JItemListField<Enchantment> {
 			allowTags();
 	}
 
-	@Override protected List<Enchantment> getElementsToAdd() {
+	@Override protected List<EnchantmentEntry> getElementsToAdd() {
 		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllEnchantments,
 						L10N.t("dialog.list_field.enchantment_title"), L10N.t("dialog.list_field.enchantment_message")).stream()
-				.map(e -> new Enchantment(mcreator.getWorkspace(), e)).toList();
+				.map(e -> new EnchantmentEntry(mcreator.getWorkspace(), e)).toList();
 	}
 
-	@Override protected List<Enchantment> getTagsToAdd() {
-		List<Enchantment> tags = new ArrayList<>();
+	@Override protected List<EnchantmentEntry> getTagsToAdd() {
+		List<EnchantmentEntry> tags = new ArrayList<>();
 
 		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.ENCHANTMENTS, "treasure", "non_treasure",
 				"curse", "tradeable", "in_enchanting_table", "on_random_loot", "exclusive_set/mining",
 				"exclusive_set/damage", "exclusive_set/armor");
 		if (tag != null)
-			tags.add(new Enchantment(mcreator.getWorkspace(), "#" + tag));
+			tags.add(new EnchantmentEntry(mcreator.getWorkspace(), "#" + tag));
 
 		return tags;
 	}
 
-	@Nullable @Override protected Enchantment fromExternalToElement(String external) {
-		return new Enchantment(mcreator.getWorkspace(), NameMapper.EXTERNAL_PREFIX + external);
+	@Nullable @Override protected EnchantmentEntry fromExternalToElement(String external) {
+		return new EnchantmentEntry(mcreator.getWorkspace(), NameMapper.EXTERNAL_PREFIX + external);
 	}
 
 }

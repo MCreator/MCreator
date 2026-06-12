@@ -21,6 +21,7 @@ package net.mcreator.blockly.datapack.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
@@ -47,8 +48,16 @@ public class MCItemBlock implements IBlockGenerator {
 
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
-				dataModel.put("block", new MItemBlock(master.getWorkspace(), textContent));
-				String code = master.getTemplateGenerator().generateFromTemplate("_mcitemblock.json.ftl", dataModel);
+
+				String templateFileName = "_mcitemblock.json.ftl";
+				if (master instanceof BlocklyToJSONTrigger && block.getAttribute("type").equals("mcitem_all")) {
+					dataModel.put("item", new MItemBlock(master.getWorkspace(), textContent));
+					templateFileName = "_mcitem.json.ftl";
+				} else {
+					dataModel.put("block", new MItemBlock(master.getWorkspace(), textContent));
+				}
+
+				String code = master.getTemplateGenerator().generateFromTemplate(templateFileName, dataModel);
 				master.append(code);
 			}
 		} else {

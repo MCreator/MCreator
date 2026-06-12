@@ -65,6 +65,8 @@ public class WebView extends JPanel implements Closeable {
 	private final CefMessageRouter router;
 	private final CefBrowser browser;
 
+	@Nullable JBCefOsrComponent osrComponent; // only used if OSR rendering is enabled, otherwise null
+
 	private final Component cefComponent;
 
 	// Helper for page load listeners
@@ -110,7 +112,7 @@ public class WebView extends JPanel implements Closeable {
 		this.client.addMessageRouter(this.router);
 
 		if (CefUtils.useOSR()) {
-			JBCefOsrComponent osrComponent = new JBCefOsrComponent();
+			osrComponent = new JBCefOsrComponent();
 			JBCefOsrHandler handler = new JBCefOsrHandler(osrComponent);
 			osrComponent.setRenderHandler(handler);
 			this.browser = new CefBrowserOsrCustom(this.client, url,
@@ -232,7 +234,7 @@ public class WebView extends JPanel implements Closeable {
 			}
 		});
 
-		this.client.addJSDialogHandler(new CefJSDialogHandlerAdapter() {
+		this.client.addJSDialogHandler(new SwingJSDialogHandler(this) {
 			@Override
 			public boolean onJSDialog(CefBrowser browser, String origin_url, JSDialogType dialog_type,
 					String message_text, String default_prompt_text, CefJSDialogCallback callback,
@@ -243,7 +245,8 @@ public class WebView extends JPanel implements Closeable {
 						return true;
 					}
 				}
-				return false;
+				return super.onJSDialog(browser, origin_url, dialog_type, message_text, default_prompt_text, callback,
+						suppress_message);
 			}
 		});
 
@@ -469,6 +472,10 @@ public class WebView extends JPanel implements Closeable {
 		router.dispose();
 
 		client.dispose();
+
+		if (osrComponent != null) {
+			osrComponent.dispose();
+		}
 
 		callbackExecutor.shutdownNow();
 		edtJSWaitThread.shutdownNow();
