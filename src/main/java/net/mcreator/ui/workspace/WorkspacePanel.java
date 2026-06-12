@@ -1103,6 +1103,12 @@ import java.util.regex.Pattern;
 				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
 						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
+					if (selectedElements.size() == 1 && selectedElements.getFirst() instanceof ModElement mu) {
+						mcreator.getWorkspace().getHistoryManager().importantCheckpoint("before_delete", mu.getName());
+					} else {
+						mcreator.getWorkspace().getHistoryManager()
+								.importantCheckpoint("before_delete_many", selectedElements.size());
+					}
 					selectedElements.forEach(re -> {
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
@@ -1427,8 +1433,7 @@ import java.util.regex.Pattern;
 
 				Collection<ModElement> modElements = mcreator.getWorkspace().getModElements();
 
-				if (modElements.stream()
-						.anyMatch(el -> currentFolder.equals(el.getFolderPath()))
+				if (modElements.stream().anyMatch(el -> currentFolder.equals(el.getFolderPath()))
 						|| !currentFolder.getDirectFolderChildren().isEmpty()) {
 					mainpcl.show(mainp, "sp");
 
@@ -1452,8 +1457,7 @@ import java.util.regex.Pattern;
 				} else {
 					elementsCount.setText(
 							L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
-									mcreator.getGenerator().getGeneratorName(),
-									modElements.size()));
+									mcreator.getGenerator().getGeneratorName(), modElements.size()));
 				}
 
 				Texture icon = CustomTexture.fromName(mcreator.getWorkspace(), TextureType.OTHER,

@@ -258,8 +258,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		// finally remove element form the list
 		mod_elements.remove(element);
 
-		historyManager.checkpoint("mod_element_removed", element.getType().getReadableName(), element.getName());
-
 		markDirty();
 	}
 

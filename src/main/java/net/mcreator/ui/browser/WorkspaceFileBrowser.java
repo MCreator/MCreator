@@ -117,11 +117,8 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		tree.setCellRenderer(new ProjectBrowserCellRenderer(mcreator));
 
-		jtf1.setMaximumSize(jtf1.getPreferredSize());
 		jtf1.setBorder(BorderFactory.createLineBorder((Theme.current().getBackgroundColor()).brighter()));
 		jtf1.setBackground(Theme.current().getBackgroundColor());
-		jtf1.setForeground(new Color(0xCBCBCB));
-		jtf1.setOpaque(true);
 		ComponentUtils.deriveFont(jtf1, 12);
 
 		jtf1.getDocument().addDocumentListener(new DocumentListener() {
@@ -146,16 +143,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		bar.add(jtf1);
 		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, Theme.current().getBackgroundColor()));
 
-		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		topBar.setBackground(Theme.current().getAltBackgroundColor());
-		topBar.add(
-				ComponentUtils.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
-						Theme.current().getAltForegroundColor()));
-
-		topBar.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getBackgroundColor()),
-				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
-
 		JLabel sil = new JLabel(UIRES.get("16px.search"));
 		sil.setPreferredSize(new Dimension(sil.getIcon().getIconWidth(), sil.getIcon().getIconHeight()));
 
@@ -164,13 +151,13 @@ public class WorkspaceFileBrowser extends JPanel {
 		search.setOpaque(true);
 		search.setBorder(BorderFactory.createEmptyBorder(3, 4, 0, 3));
 
-		add("North", topBar);
+		add("North", search);
 
 		JScrollPane jsp = new JScrollPane(tree);
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
-		add("Center", PanelUtils.northAndCenterElement(search, jsp));
+		add("Center", jsp);
 
 		tree.addMouseListener(new MouseAdapter() {
 
