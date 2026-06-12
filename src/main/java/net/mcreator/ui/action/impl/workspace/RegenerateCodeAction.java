@@ -239,11 +239,11 @@ public class RegenerateCodeAction extends GradleAction {
 			// Make sure to store any potential changes to the workspace
 			mcreator.getWorkspace().markDirty();
 
+			mcreator.getWorkspace().getHistoryManager().importantCheckpoint("regenerate_code");
+
 			p3.markStateOk();
 
 			dial.hideDialog();
-
-			mcreator.getWorkspace().getHistoryManager().checkpoint("regenerate_code");
 		}, "RegenerateCode");
 		thread.start();
 		dial.setVisible(true);
