@@ -27,15 +27,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public record HistoryCheckpoint(String hash, String name, int timestamp, Supplier<Future<List<DiffEntry>>> diffFutureSupplier) {
+public record HistoryCheckpoint(String hash, String name, int timestamp,
+                                Supplier<Future<List<DiffEntry>>> diffFutureSupplier) {
 
 	public String getTimestampString() {
 		return Instant.ofEpochSecond(timestamp).atZone(ZoneId.systemDefault())
 				.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
-						.withLocale(L10N.getLocale()));
+						.withLocale(L10N.getOSLocale()));
 	}
 
 	public record DiffEntry(ChangeType changeType, String affectedPath) {}

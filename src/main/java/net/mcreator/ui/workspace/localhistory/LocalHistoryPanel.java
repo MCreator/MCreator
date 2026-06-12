@@ -36,6 +36,7 @@ import net.mcreator.workspace.localhistory.LocalHistoryException;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
@@ -101,11 +102,11 @@ public class LocalHistoryPanel extends JPanel {
 		JScrollPane diffScroll = new JScrollPane(diffTable);
 		diffScroll.setBorder(BorderFactory.createEmptyBorder(5, 2, 5, 3));
 
-		JLabel emptyHistoryLabel = new JLabel(L10N.t("dialog.local_history.no_history"), SwingConstants.CENTER);
+		JLabel emptyHistoryLabel = new JLabel(L10N.t("dock.local_history.no_history"), SwingConstants.CENTER);
 		emptyHistoryLabel.setForeground(Theme.current().getAltForegroundColor());
 		ComponentUtils.deriveFont(emptyHistoryLabel, 13);
 
-		JLabel noChangesLabel = new JLabel(L10N.t("dialog.local_history.no_changes"), SwingConstants.CENTER);
+		JLabel noChangesLabel = new JLabel(L10N.t("dock.local_history.no_changes"), SwingConstants.CENTER);
 		noChangesLabel.setForeground(Theme.current().getAltForegroundColor());
 		ComponentUtils.deriveFont(noChangesLabel, 13);
 
@@ -114,6 +115,11 @@ public class LocalHistoryPanel extends JPanel {
 		diffContent.setOpaque(false);
 		diffContent.add(diffScroll, "table");
 		diffContent.add(PanelUtils.totalCenterInPanel(noChangesLabel), "empty");
+
+		diffContent.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createMatteBorder(2, 0, 0, 0, Theme.current().getAltBackgroundColor()), L10N.t("dock.local_history.changes"),
+				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null,
+				Theme.current().getAltForegroundColor()));
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, checkpointScroll, diffContent);
 		splitPane.setDividerLocation((int) (mcreator.getHeight() * 0.65));
@@ -130,7 +136,7 @@ public class LocalHistoryPanel extends JPanel {
 		topBar.setOpaque(false);
 		topBar.setFloatable(false);
 
-		revertCheckpoint = L10N.button("dialog.local_history.revert");
+		revertCheckpoint = L10N.button("dock.local_history.revert");
 		revertCheckpoint.setIcon(UIRES.get("16px.rwd"));
 		revertCheckpoint.addActionListener(_ -> revertToSelectedCheckpoint());
 
@@ -148,9 +154,9 @@ public class LocalHistoryPanel extends JPanel {
 		topBar.add(Box.createHorizontalGlue());
 
 		JPopupMenu moreOptionsMenu = new JPopupMenu();
-		JMenuItem manualCheckpoint = new JMenuItem(L10N.t("dialog.local_history.manual_checkpoint"));
-		resetHistory = new JMenuItem(L10N.t("dialog.local_history.reset"));
-		optimizeStorage = new JMenuItem(L10N.t("dialog.local_history.optimize"));
+		JMenuItem manualCheckpoint = new JMenuItem(L10N.t("dock.local_history.manual_checkpoint"));
+		resetHistory = new JMenuItem(L10N.t("dock.local_history.reset"));
+		optimizeStorage = new JMenuItem(L10N.t("dock.local_history.optimize"));
 
 		manualCheckpoint.addActionListener(_ -> mcreator.getWorkspace().getHistoryManager().importantCheckpoint("manual"));
 
@@ -160,21 +166,21 @@ public class LocalHistoryPanel extends JPanel {
 		moreOptionsMenu.add(optimizeStorage);
 
 		optimizeStorage.addActionListener(_ -> {
-			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.local_history.optimize_confirm"),
-					L10N.t("dialog.local_history.optimize.title"), JOptionPane.YES_NO_OPTION,
+			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dock.local_history.optimize_confirm"),
+					L10N.t("dock.local_history.optimize.title"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE);
 			if (option != JOptionPane.YES_OPTION) {
 				return;
 			}
 
 			mcreator.getWorkspace().getHistoryManager().optimizeStorage();
-			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.local_history.optimize_success.message"),
-					L10N.t("dialog.local_history.optimize.title"), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(mcreator, L10N.t("dock.local_history.optimize_success.message"),
+					L10N.t("dock.local_history.optimize.title"), JOptionPane.INFORMATION_MESSAGE);
 		});
 
 		resetHistory.addActionListener(_ -> {
-			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.local_history.reset_confirm"),
-					L10N.t("dialog.local_history.reset"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dock.local_history.reset_confirm"),
+					L10N.t("dock.local_history.reset"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (option == JOptionPane.YES_OPTION) {
 				showEmptyHistoryState();
 				mcreator.getWorkspace().resetLocalHistory();
@@ -276,8 +282,8 @@ public class LocalHistoryPanel extends JPanel {
 		timeBackMillis = (timeBackMillis / TimeUtils.ONE_MINUTE) * TimeUtils.ONE_MINUTE;
 
 		int option = JOptionPane.showConfirmDialog(mcreator,
-				L10N.t("dialog.local_history.revert_confirm", checkpointsToRevert,
-						TimeUtils.millisToLongDHMS(timeBackMillis)), L10N.t("dialog.local_history.revert"),
+				L10N.t("dock.local_history.revert_confirm", checkpointsToRevert,
+						TimeUtils.millisToLongDHMS(timeBackMillis)), L10N.t("dock.local_history.revert"),
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		if (option != JOptionPane.YES_OPTION) {
 			return;
@@ -296,8 +302,8 @@ public class LocalHistoryPanel extends JPanel {
 			this.reloadContent();
 		} catch (LocalHistoryException e) {
 			JOptionPane.showMessageDialog(mcreator,
-					L10N.t("dialog.local_history.revert_failed.message", e.getLocalizedMessage()),
-					L10N.t("dialog.local_history.revert"), JOptionPane.ERROR_MESSAGE);
+					L10N.t("dock.local_history.revert_failed.message", e.getLocalizedMessage()),
+					L10N.t("dock.local_history.revert"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -411,7 +417,7 @@ public class LocalHistoryPanel extends JPanel {
 				HistoryCheckpoint checkpoint, int index, boolean isSelected, boolean cellHasFocus) {
 			JLabel label = new JLabel();
 			label.setOpaque(true);
-			label.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
+			label.setBorder(BorderFactory.createEmptyBorder(2, 7, 2, 7));
 
 			Color titleColor;
 			Color subtitleColor;
@@ -426,8 +432,8 @@ public class LocalHistoryPanel extends JPanel {
 			}
 
 			label.setText(
-					"<html><b><font color='" + ColorUtils.formatColor(titleColor) + "'>" + StringUtils.abbreviateString(
-							checkpoint.name(), 40) + "</font></b><br><font size='-1' color='" + ColorUtils.formatColor(
+					"<html><font color='" + ColorUtils.formatColor(titleColor) + "'>" + StringUtils.abbreviateString(
+							checkpoint.name(), 40) + "</font><br><font size='-1' color='" + ColorUtils.formatColor(
 							subtitleColor) + "'>" + checkpoint.getTimestampString() + "</font>");
 			label.setToolTipText(checkpoint.name());
 			return label;
