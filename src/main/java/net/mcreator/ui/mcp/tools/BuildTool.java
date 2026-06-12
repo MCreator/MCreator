@@ -42,7 +42,7 @@ public class BuildTool extends MCreatorMcpTool<Void> {
 	}
 
 	@Override public String getDescription() {
-		return "Provides list of specified workspace elements or data list entries";
+		return "Builds the project and gets the resulting console output";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Void input) {

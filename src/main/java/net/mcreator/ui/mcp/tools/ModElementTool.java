@@ -35,7 +35,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		public Action actionType;
 		public String elementName;
 		@Nullable public String elementType;
-		@Nullable public String elementJSON;
+		@Nullable public String elementJSONDefinition;
 
 		public enum Action {
 			READ, ADD, MODIFY
@@ -51,7 +51,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "Provides list of specified workspace elements or data list entries";
+		return "A tool to read JSON definition, modify, or add mod elements to the workspace. Type and JSON used only for adding.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementTool.Args input) {
@@ -60,11 +60,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			if (element == null) {
 				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
 			}
-			GeneratableElement generatableElement = element.getGeneratableElement();
-			if (generatableElement == null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element is not a generatable element"));
-			}
-			String geJSON = mcreator.getModElementManager().generatableElementToJSON(generatableElement);
+			String geJSON = mcreator.getModElementManager().generatableElementToJSON(element.getGeneratableElement());
 			return CompletableFuture.completedFuture(ToolResult.text(geJSON));
 		} else {
 			return CompletableFuture.completedFuture(ToolResult.error("Invalid action type"));
