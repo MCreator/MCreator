@@ -81,6 +81,10 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	private void checkpoint(boolean important, String checkpointName, Object... parameters) {
+		if (backend == null) {
+			return;
+		}
+
 		pendingEvents.add(
 				new HistoryEvent(L10N.t("local_history.checkpoint." + checkpointName, parameters), important));
 
