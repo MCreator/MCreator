@@ -117,8 +117,8 @@ public class LocalHistoryPanel extends JPanel {
 		diffContent.add(PanelUtils.totalCenterInPanel(noChangesLabel), "empty");
 
 		diffContent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createMatteBorder(2, 0, 0, 0, Theme.current().getAltBackgroundColor()), L10N.t("dock.local_history.changes"),
-				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null,
+				BorderFactory.createMatteBorder(2, 0, 0, 0, Theme.current().getAltBackgroundColor()),
+				L10N.t("dock.local_history.changes"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null,
 				Theme.current().getAltForegroundColor()));
 
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, checkpointScroll, diffContent);
@@ -158,7 +158,14 @@ public class LocalHistoryPanel extends JPanel {
 		resetHistory = new JMenuItem(L10N.t("dock.local_history.reset"));
 		optimizeStorage = new JMenuItem(L10N.t("dock.local_history.optimize"));
 
-		manualCheckpoint.addActionListener(_ -> mcreator.getWorkspace().getHistoryManager().importantCheckpoint("manual"));
+		manualCheckpoint.addActionListener(_ -> {
+			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			try {
+				mcreator.getWorkspace().getHistoryManager().importantCheckpoint("manual");
+			} finally {
+				mcreator.setCursor(Cursor.getDefaultCursor());
+			}
+		});
 
 		moreOptionsMenu.add(manualCheckpoint);
 		moreOptionsMenu.addSeparator();
