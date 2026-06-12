@@ -36,11 +36,9 @@ import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 @SuppressWarnings("unused") public class Particle extends GeneratableElement {
 
@@ -112,11 +110,11 @@ import java.io.IOException;
 								original.getIconWidth(), original.getIconWidth());
 						int tiles = getTextureTileCount();
 						for (int i = 1; i <= tiles; i++) {
-							ImageIO.write(ImageUtils.toBufferedImage(tiu.getIcon(1, i).getImage()), "png",
+							FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(tiu.getIcon(1, i).getImage()),
 									new File(getModElement().getFolderManager().getTexturesFolder(TextureType.PARTICLE),
 											getModElement().getRegistryName() + "_" + i + ".png"));
 						}
-					} catch (InvalidTileSizeException | IOException ignored) {
+					} catch (InvalidTileSizeException ignored) {
 					}
 				}
 			}
