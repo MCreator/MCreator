@@ -605,6 +605,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
 				modElement.getType().getRegistryName());
 
+		if (changed && editingMode) {
+			mcreator.getWorkspace().getHistoryManager().checkpoint("mod_element_edited", modElement.getName());
+		}
+
 		changed = false;
 
 		if (!editingMode && modElementCreatedListener
