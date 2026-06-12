@@ -167,14 +167,14 @@ public class ShareableZIPManager {
 
 				ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(),
 						excludes.toArray(new String[0]));
+
+				mcreator.getWorkspace().getHistoryManager().importantCheckpoint(() -> false, "export_workspace");
 			} catch (IOException e) {
 				LOG.error("Failed to export workspace", e);
 			}
 
 			p1.markStateOk();
 			dial.hideDialog();
-
-			mcreator.getWorkspace().getHistoryManager().importantCheckpoint("export_workspace");
 		}, "ZIPExporter");
 		t.start();
 		dial.setVisible(true);

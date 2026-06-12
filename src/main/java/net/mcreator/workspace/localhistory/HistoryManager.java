@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class HistoryManager implements AutoCloseable {
 
@@ -73,23 +74,54 @@ public final class HistoryManager implements AutoCloseable {
 	 * @param checkpointName Checkpoint name should reflect the current state of the workspace at the time of the checkpoint.
 	 */
 	public void checkpoint(String checkpointName, Object... parameters) {
-		checkpoint(false, checkpointName, parameters);
+		checkpoint(null, checkpointName, parameters);
 	}
 
+	/**
+	 * Creates an important checkpoint in the history with the specified name.
+	 * This method will block if the local history backend is busy until the checkpoint is written.
+	 *
+	 * @param checkpointName The name of the checkpoint. This name should represent the current
+	 *                       state of the workspace when the checkpoint is created.
+	 * @param parameters     Additional parameters related to the checkpoint that can provide
+	 *                       further context or metadata for the checkpoint event.
+	 */
 	public void importantCheckpoint(String checkpointName, Object... parameters) {
-		checkpoint(true, checkpointName, parameters);
+		importantCheckpoint(null, checkpointName, parameters);
 	}
 
-	private void checkpoint(boolean important, String checkpointName, Object... parameters) {
+	/**
+	 * Creates an important checkpoint in the history with the specified name.
+	 * This method allows specifying additional parameters and an optional synchronization mechanism.
+	 *
+	 * @param ifImportantBusySyncWriteConfirm A supplier that provides a boolean indicating whether the checkpoint
+	 *                                        should be written synchronously during a busy state. If null,
+	 *                                        the checkpoint is always written synchronously by default.
+	 * @param checkpointName                  The name of the checkpoint. This name should represent the current
+	 *                                        state of the workspace when the checkpoint is created.
+	 * @param parameters                      Additional parameters related to the checkpoint that can provide
+	 *                                        further context or metadata for the checkpoint event.
+	 */
+	public void importantCheckpoint(@Nullable Supplier<Boolean> ifImportantBusySyncWriteConfirm, String checkpointName,
+			Object... parameters) {
+		if (ifImportantBusySyncWriteConfirm == null)
+			ifImportantBusySyncWriteConfirm = () -> true;
+		checkpoint(ifImportantBusySyncWriteConfirm, checkpointName, parameters);
+	}
+
+	private void checkpoint(@Nullable Supplier<Boolean> ifImportantBusySyncWriteConfirm, String checkpointName,
+			Object... parameters) {
 		if (backend == null) {
 			return;
 		}
 
-		pendingEvents.add(
-				new HistoryEvent(L10N.t("local_history.checkpoint." + checkpointName, parameters), important));
+		pendingEvents.add(new HistoryEvent(L10N.t("local_history.checkpoint." + checkpointName, parameters),
+				ifImportantBusySyncWriteConfirm != null));
 
-		if (important || isSaveIntervalElapsed()) {
-			flushPendingEventsIntoCheckpoint(important);
+		if (ifImportantBusySyncWriteConfirm != null || isSaveIntervalElapsed()) {
+			boolean writeSynchronously =
+					ifImportantBusySyncWriteConfirm != null && ifImportantBusySyncWriteConfirm.get();
+			flushPendingEventsIntoCheckpoint(writeSynchronously);
 		}
 	}
 
@@ -98,7 +130,7 @@ public final class HistoryManager implements AutoCloseable {
 		return System.currentTimeMillis() - lastCheckpointMillis >= intervalMillis;
 	}
 
-	private void flushPendingEventsIntoCheckpoint(boolean triggeredByImportantEvent) {
+	private void flushPendingEventsIntoCheckpoint(boolean writeSynchronously) {
 		if (backend == null || pendingEvents.isEmpty()) {
 			return;
 		}
@@ -130,7 +162,7 @@ public final class HistoryManager implements AutoCloseable {
 			if (commitResult != GitHistoryBackend.CommitResult.SKIPPED_GIT_BUSY) {
 				pendingEvents.removeAll(eventsToCommit);
 			}
-		}, triggeredByImportantEvent);
+		}, writeSynchronously);
 	}
 
 	public void setCheckpointListener(@Nullable Runnable listener) {

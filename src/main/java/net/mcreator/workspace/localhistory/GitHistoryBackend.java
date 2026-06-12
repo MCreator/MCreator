@@ -104,26 +104,26 @@ class GitHistoryBackend implements AutoCloseable {
 		configureIgnores(historyDatabaseDir);
 		removeStaleLockFiles(historyDatabaseDir);
 
-		if (isNewRepo || repository.resolve("HEAD") == null) {
-			runGitTask(() -> {
-				try {
-					long startTime = System.currentTimeMillis();
-					LOG.debug("Initial local history checkpoint creation started");
+		LOG.debug("Loading local history repository");
+		runGitTask(() -> {
+			try {
+				long startTime = System.currentTimeMillis();
 
-					Repository repo = git.getRepository();
-					IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
-					diff.diff();
+				Repository repo = git.getRepository();
+				IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
+				diff.diff();
+
+				// If new repository or no HEAD commit, stage changes and commit
+				if (isNewRepo || repository.resolve("HEAD") == null) {
 					stageChanges(diff);
 					git.commit().setMessage(L10N.t("local_history.checkpoint.initial")).setSign(false).call();
-
-					LOG.debug("Initialized local history repository in {} ms", System.currentTimeMillis() - startTime);
-				} catch (Exception e) {
-					LOG.warn("Failed to save initial checkpoint", e);
 				}
-			});
-		} else {
-			LOG.debug("Loaded local history repository");
-		}
+
+				LOG.debug("Initialized local history repository in {} ms", System.currentTimeMillis() - startTime);
+			} catch (Exception e) {
+				LOG.warn("Failed to save initial checkpoint", e);
+			}
+		});
 	}
 
 	void saveCheckpoint(String commitMessage, Consumer<CommitResult> didCommitCallback, boolean synchronous) {
@@ -136,6 +136,11 @@ class GitHistoryBackend implements AutoCloseable {
 		Future<?> future = runGitTask(() -> {
 			try {
 				long startTime = System.currentTimeMillis();
+
+				if (!synchronous) {
+					// small delay to increase chances of all files being written in case of async checkpoint
+					Thread.sleep(100);
+				}
 
 				Repository repo = git.getRepository();
 				IndexDiff diff = new IndexDiff(repo, Constants.HEAD, new FileTreeIterator(repo));
@@ -360,16 +365,19 @@ class GitHistoryBackend implements AutoCloseable {
 					if (parent != null) {
 						for (DiffEntry diff : df.scan(parent.getTree(), commit.getTree())) {
 							switch (diff.getChangeType()) {
-							case ADD -> diffList.add(
-									new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.ADD, diff.getNewPath()));
-							case MODIFY -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.MODIFY,
+							case ADD -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.ADD,
 									diff.getNewPath()));
-							case DELETE -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.REMOVE,
-									diff.getOldPath()));
-							case RENAME -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.RENAME,
+							case MODIFY -> diffList.add(
+									new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.MODIFY,
+											diff.getNewPath()));
+							case DELETE -> diffList.add(
+									new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.REMOVE,
+											diff.getOldPath()));
+							case RENAME -> diffList.add(
+									new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.RENAME,
+											diff.getNewPath()));
+							case COPY -> diffList.add(new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.COPY,
 									diff.getNewPath()));
-							case COPY -> diffList.add(
-									new HistoryCheckpoint.DiffEntry(HistoryCheckpoint.ChangeType.COPY, diff.getNewPath()));
 							default -> throw new IllegalStateException("Unexpected value: " + diff.getChangeType());
 							}
 						}

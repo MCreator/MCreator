@@ -182,10 +182,15 @@ public class LocalHistoryPanel extends JPanel {
 			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dock.local_history.reset_confirm"),
 					L10N.t("dock.local_history.reset"), JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 			if (option == JOptionPane.YES_OPTION) {
-				showEmptyHistoryState();
-				mcreator.getWorkspace().resetLocalHistory();
-				registerListeners();
-				reloadContent();
+				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				try {
+					showEmptyHistoryState();
+					mcreator.getWorkspace().resetLocalHistory();
+					registerListeners();
+					reloadContent();
+				} finally {
+					mcreator.setCursor(Cursor.getDefaultCursor());
+				}
 			}
 		});
 
