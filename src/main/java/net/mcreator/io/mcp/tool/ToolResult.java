@@ -51,15 +51,15 @@ public final class ToolResult {
 		}
 		// Most MCP clients surface content.text only, not structuredContent.
 		// Keep the payload in text and omit structuredContent to avoid duplicating large results.
-		return new ToolResult(new McpSchema.CallToolResponse(
-				List.of(McpSchema.Content.text(gson.toJson(structuredContent))), false));
+		return new ToolResult(
+				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(gson.toJson(structuredContent))), false));
 	}
 
 	public static ToolResult collection(Collection<?> items) {
 		JsonElement arrayContent = gson.toJsonTree(items);
 		// Same as object(): full payload in text only for client visibility without duplication.
-		return new ToolResult(new McpSchema.CallToolResponse(
-				List.of(McpSchema.Content.text(gson.toJson(arrayContent))), false));
+		return new ToolResult(
+				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(gson.toJson(arrayContent))), false));
 	}
 
 	public static ToolResult collection(Object[] items) {
@@ -68,6 +68,11 @@ public final class ToolResult {
 
 	public static ToolResult error(String message) {
 		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(message)), true));
+	}
+
+	public static ToolResult error(String message, Throwable cause) {
+		return new ToolResult(new McpSchema.CallToolResponse(
+				List.of(McpSchema.Content.text(cause.getClass().getSimpleName() + ": " + message)), true));
 	}
 
 	McpSchema.CallToolResponse toResponse() {

@@ -137,9 +137,9 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 			response.put("name", fixedName);
 			return ToolResult.object(response);
 		} catch (IllegalArgumentException e) {
-			return ToolResult.error(e.getMessage());
+			return ToolResult.error(e.getMessage(), e);
 		} catch (Exception e) {
-			return ToolResult.error("Failed to create texture: " + e.getMessage());
+			return ToolResult.error("Failed to create texture: " + e.getMessage(), e);
 		}
 	}
 

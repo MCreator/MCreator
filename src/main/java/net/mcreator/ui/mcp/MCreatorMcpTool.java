@@ -55,7 +55,7 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 			return call(mcreator, input);
 		} catch (Exception e) {
 			return CompletableFuture.completedFuture(
-					ToolResult.error("An error occurred while executing the tool: " + e.getMessage()));
+					ToolResult.error("An error occurred while executing the tool: " + e.getMessage(), e));
 		}
 	}
 

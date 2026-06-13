@@ -87,6 +87,11 @@ public abstract class McpTool<I> implements IMcpTool {
 		return completed(ToolResult.error(message));
 	}
 
+	protected static CompletableFuture<ToolResult> completedError(String message, Throwable cause) {
+		LOG.warn("Tool reported error: {}", message, cause);
+		return completed(ToolResult.error(message, cause));
+	}
+
 	protected static CompletableFuture<ToolResult> completedObject(Object structured) {
 		return completed(ToolResult.object(structured));
 	}

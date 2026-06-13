@@ -102,7 +102,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				}
 			} catch (Exception e) {
 				return CompletableFuture.completedFuture(
-						ToolResult.error("Failed to modify element: " + e.getMessage()));
+						ToolResult.error("Failed to modify element: " + e.getMessage(), e));
 			}
 		} else if (input.actionType == Args.Action.ADD) {
 			if (input.elementType == null || input.elementJSONDefinition == null) {
@@ -131,7 +131,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				}
 			} catch (Exception e) {
 				mcreator.getWorkspace().removeModElement(modElement);
-				return CompletableFuture.completedFuture(ToolResult.error("Failed to add element: " + e.getMessage()));
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Failed to add element: " + e.getMessage(), e));
 			}
 		} else if (input.actionType == Args.Action.REMOVE) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);

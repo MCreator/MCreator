@@ -98,7 +98,7 @@ public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.A
 							BlocklyTemplateIO.importBlocklyXML((File) template.identifier);
 					yield completedText(templateXml);
 				} catch (Exception e) {
-					yield completedError("Failed to load template: " + e.getMessage());
+					yield completedError("Failed to load template: " + e.getMessage(), e);
 				}
 			}
 		};
