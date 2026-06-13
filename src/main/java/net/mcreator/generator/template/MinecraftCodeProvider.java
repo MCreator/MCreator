@@ -61,7 +61,7 @@ import java.util.Map;
 		this.workspace = workspace;
 	}
 
-	private String readCode(@Nonnull String template) {
+	public String readCode(@Nonnull String template) {
 		return CACHE.computeIfAbsent(template, key -> {
 			try {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();

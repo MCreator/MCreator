@@ -69,7 +69,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new CreateArmorTextureTool(currentMCreator));
 		server.registerTool(new DataListTool(currentMCreator));
 		server.registerTool(new TagTool(currentMCreator));
-		// TODO: read MC source code tool
+		server.registerTool(new ReadClassSourceTool(currentMCreator));
 	}
 
 	public McpServer getServer() {
