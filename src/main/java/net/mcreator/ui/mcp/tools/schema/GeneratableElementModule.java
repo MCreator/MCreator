@@ -289,6 +289,7 @@ public class GeneratableElementModule implements Module {
 		BlocklyXML blocklyXML = this.getAnnotationFromFieldOrGetter(member, BlocklyXML.class);
 		if (blocklyXML != null) {
 			node.put("blocklyXML", "This field requires valid Blockly XML");
+			node.put("blocklyEditorType", blocklyXML.name());
 		}
 	}
 
