@@ -68,7 +68,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new CreateTextureTool(currentMCreator));
 		server.registerTool(new CreateArmorTextureTool(currentMCreator));
 		server.registerTool(new DataListTool(currentMCreator));
-		// TODO: add tag or add tag entries tool
+		server.registerTool(new TagTool(currentMCreator));
 		// TODO: read MC source code tool
 	}
 
