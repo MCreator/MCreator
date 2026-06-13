@@ -44,7 +44,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			// workspace elements
 			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS, NBT_STRUCTURE_FILES,
 			// data lists
-			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, CREATIVE_TABS,
+			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, TABS,
 			ADVANCEMENTS, ENCHANTMENTS, VILLAGER_PROFESSIONS, PARTICLES, POTION_EFFECTS, POTIONS, ATTRIBUTES,
 			// textures
 			BLOCK_TEXTURES, ITEM_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
@@ -94,7 +94,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					ToolResult.collection(dataListNames(ElementUtil.loadAllBiomes(mcreator.getWorkspace()))));
 			case Args.ListType.SOUNDS -> CompletableFuture.completedFuture(
 					ToolResult.collection(Arrays.asList(ElementUtil.getAllSounds(mcreator.getWorkspace()))));
-			case Args.ListType.CREATIVE_TABS -> CompletableFuture.completedFuture(
+			case Args.ListType.TABS -> CompletableFuture.completedFuture(
 					ToolResult.collection(dataListNames(ElementUtil.loadAllTabs(mcreator.getWorkspace()))));
 			case Args.ListType.ADVANCEMENTS -> CompletableFuture.completedFuture(
 					ToolResult.collection(dataListNames(ElementUtil.loadAllAchievements(mcreator.getWorkspace()))));
