@@ -38,9 +38,9 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 		public enum ListType {
 			//@formatter:off
 			// workspace elements
-			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS,
+			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS, NBT_STRUCTURE_FILES,
 			// data lists
-			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, CREATIVE_TABS,
+			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, CREATIVE_TABS, ADVANCEMENTS, ENCHANTMENTS, STEPSOUNDS,
 			// textures
 			BLOCK_TEXTURES, ITEM_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
 			//@formatter:on
@@ -70,6 +70,8 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			case Args.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
 					mcreator.getGeneratorStats().getSupportedModElementTypes().stream()
 							.map(ModElementType::getRegistryName).toList()));
+			case Args.ListType.NBT_STRUCTURE_FILES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getStructureList()));
 			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
 					ToolResult.object(mcreator.getWorkspace().getWorkspaceSettings()));
 			case Args.ListType.BLOCKS_AND_ITEMS -> CompletableFuture.completedFuture(
@@ -85,10 +87,16 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 							.map(ModElement::getName).toList()));
 			case Args.ListType.BIOMES -> CompletableFuture.completedFuture(
 					ToolResult.collection(ElementUtil.loadAllBiomes(mcreator.getWorkspace())));
-			case Args.ListType.SOUNDS -> CompletableFuture.completedFuture(ToolResult.collection(
-					ElementUtil.getAllSounds(mcreator.getWorkspace())));
+			case Args.ListType.SOUNDS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.getAllSounds(mcreator.getWorkspace())));
 			case Args.ListType.CREATIVE_TABS -> CompletableFuture.completedFuture(
 					ToolResult.collection(ElementUtil.loadAllTabs(mcreator.getWorkspace())));
+			case Args.ListType.ADVANCEMENTS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllAchievements(mcreator.getWorkspace())));
+			case Args.ListType.ENCHANTMENTS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllEnchantments(mcreator.getWorkspace())));
+			case Args.ListType.STEPSOUNDS ->
+					CompletableFuture.completedFuture(ToolResult.collection(ElementUtil.loadStepSounds()));
 			case Args.ListType.BLOCK_TEXTURES -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.BLOCK)));
 			case Args.ListType.ITEM_TEXTURES -> CompletableFuture.completedFuture(
