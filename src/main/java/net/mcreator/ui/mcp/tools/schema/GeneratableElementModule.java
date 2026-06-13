@@ -26,6 +26,7 @@ import com.github.victools.jsonschema.generator.Module;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.types.Biome;
 import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
@@ -249,6 +250,10 @@ public class GeneratableElementModule implements Module {
 			return modElementReference.defaultValues()[0];
 		}
 
+		if (this.isBiomeDefaultFeaturesField(member) && !member.isFakeContainerItemScope()) {
+			return List.of("Caves", "Ores", "FrozenTopLayer");
+		}
+
 		return null;
 	}
 
@@ -291,6 +296,15 @@ public class GeneratableElementModule implements Module {
 			node.put("blocklyXML", "This field requires valid Blockly XML");
 			node.put("blocklyEditorType", blocklyXML.name());
 		}
+
+		if (this.isBiomeDefaultFeaturesField(member) && member.isFakeContainerItemScope()) {
+			node.put("datalist", "defaultfeatures");
+		}
+	}
+
+	private boolean isBiomeDefaultFeaturesField(MemberScope<?, ?> member) {
+		return member.getDeclaringType().getErasedType() == Biome.class
+				&& "defaultFeatures".equals(member.getDeclaredName());
 	}
 
 	private Object castNumericDefault(Class<?> type, double value) {
