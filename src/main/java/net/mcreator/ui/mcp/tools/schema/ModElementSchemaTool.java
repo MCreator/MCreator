@@ -31,6 +31,7 @@ import net.mcreator.ui.mcp.MCreatorMcpTool;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -72,7 +73,7 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 		if (input.elementType == null) {
 			return CompletableFuture.completedFuture(ToolResult.error("Element type must be provided"));
 		}
-		ModElementType<?> type = ModElementTypeLoader.getModElementType(input.elementType);
+		ModElementType<?> type = ModElementTypeLoader.getModElementType(input.elementType.toLowerCase(Locale.ROOT));
 		Map<String, Object> result = new HashMap<>();
 		result.put("canSchemaBeTrusted", SUPPORTED_TYPES.contains(type));
 		result.put("jsonSchema", generateSchema(type));

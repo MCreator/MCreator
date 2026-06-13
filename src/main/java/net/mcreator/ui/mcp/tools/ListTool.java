@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
@@ -45,7 +46,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "Provides list of specified workspace elements or data list entries or info";
+		return "Provides list of specified workspace elements or types or data list entries or info.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
@@ -56,8 +57,9 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					ToolResult.collection(mcreator.getWorkspace().getVariableElements()));
 			case Args.ListType.MOD_TAGS -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getWorkspace().getTagElements().entrySet()));
-			case Args.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(
-					ToolResult.collection(mcreator.getGeneratorStats().getSupportedModElementTypes()));
+			case Args.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
+					mcreator.getGeneratorStats().getSupportedModElementTypes().stream()
+							.map(ModElementType::getRegistryName).toList()));
 			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
 					ToolResult.object(mcreator.getWorkspace().getWorkspaceSettings()));
 		};

@@ -34,10 +34,7 @@ import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -77,7 +74,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
 			}
 			String geJSON = safeGeneratableElementToJSON(mcreator, modElement.getGeneratableElement());
-			return CompletableFuture.completedFuture(ToolResult.object(JsonParser.parseString(geJSON)));
+			return CompletableFuture.completedFuture(ToolResult.text(geJSON));
 		} else if (input.actionType == Args.Action.MODIFY) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
@@ -87,10 +84,11 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				GeneratableElement element = safeJSONtoGeneratableElement(mcreator, modElement,
 						input.elementJSONDefinition);
 				String json = safeGeneratableElementToJSON(mcreator, element);
+				mcreator.reloadWorkspaceTabContents();
 				if (!json.equals(input.elementJSONDefinition)) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("result", "Element modified, but JSON definition was changed during processing");
-					response.put("actualJSONDefinition", JsonParser.parseString(json));
+					response.put("actualJSONDefinition", json);
 					return CompletableFuture.completedFuture(ToolResult.object(response));
 				} else {
 					return CompletableFuture.completedFuture(ToolResult.text("Element modified"));
@@ -104,13 +102,18 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				return CompletableFuture.completedFuture(
 						ToolResult.error("Element type and JSON definition must be provided for adding"));
 			}
-			ModElementType<?> type = ModElementTypeLoader.getModElementType(input.elementType);
+			if (mcreator.getWorkspace().getModElementByName(input.elementName) != null) {
+				return CompletableFuture.completedFuture(ToolResult.error("Element with this name already exists"));
+			}
+
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(input.elementType.toLowerCase(Locale.ROOT));
 			ModElement modElement = new ModElement(mcreator.getWorkspace(), input.elementName, type);
 			mcreator.getWorkspace().addModElement(modElement);
 			try {
 				GeneratableElement element = safeJSONtoGeneratableElement(mcreator, modElement,
 						input.elementJSONDefinition);
 				String json = safeGeneratableElementToJSON(mcreator, element);
+				mcreator.reloadWorkspaceTabContents();
 				if (!json.equals(input.elementJSONDefinition)) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("result", "Element added, but JSON definition was changed during processing");
@@ -145,14 +148,17 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 		GeneratableElement element = mcreator.getModElementManager().fromJSONtoGeneratableElement(json, modElement);
 
-		// TODO: validation through UI
-
-		mcreator.getWorkspace().markDirty();
 		mcreator.getModElementManager().storeModElement(element);
+
+		element = validateThroughUI(mcreator, element);
+
 		mcreator.getGenerator().generateBase(true); // use variant that throws TemplateGeneratorException
 		mcreator.getGenerator().generateElement(element, true); // use variant that throws TemplateGeneratorException
 		mcreator.getModElementManager().storeModElementPicture(element);
 		modElement.reinit(mcreator.getWorkspace());
+
+		mcreator.getWorkspace().markDirty();
+
 		return element;
 	}
 
@@ -162,7 +168,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		return gson.toJson(jsonObject.get("definition"));
 	}
 
-	private static void validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
+	private static GeneratableElement validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
 		ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
 				.getModElementGUI(mcreator, generatableElement.getModElement(), true);
 
@@ -186,23 +192,19 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 		AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
 
-		boolean hasErrors = false;
+		List<String> errors = new ArrayList<>();
 		for (ValidationResult result : validationResult.getGroupedValidationResults()) {
 			if (result.type() == ValidationResult.Type.ERROR) {
-				// TODO: implement this part
-				if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
-					if (result.isBlocklyResult()) {
-						// skip Blockly validation in case it is marked that initial XML in the editor is not valid
-						// and skipInitialXMLValidationIfAllowed flag is set to true
-						if (skipInitialXMLValidationIfAllowed && !panelHolder.isInitialXMLValid())
-							continue;
-					}
-				}
-
-				hasErrors = true;
+				errors.add(result.message());
 				break;
 			}
 		}
+
+		if (!errors.isEmpty()) {
+			throw new Exception("Validation failed: " + String.join(", ", errors));
+		}
+
+		return modElementGUI.getElementFromGUI();
 	}
 
 }

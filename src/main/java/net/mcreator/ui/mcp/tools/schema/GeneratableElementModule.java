@@ -24,11 +24,16 @@ import com.fasterxml.classmate.ResolvedType;
 import com.github.victools.jsonschema.generator.*;
 import com.github.victools.jsonschema.generator.Module;
 import net.mcreator.blockly.data.BlocklyXML;
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
 
@@ -83,6 +88,8 @@ public class GeneratableElementModule implements Module {
 		} else if (Procedure.class.isAssignableFrom(erasedType)) {
 			return this.createDataListDefinition(context, Procedure.class);
 		} else if (MappableElement.class.isAssignableFrom(erasedType)) {
+			return this.createDataListDefinition(context, erasedType);
+		} else if (TextureHolder.class.isAssignableFrom(erasedType)) {
 			return this.createDataListDefinition(context, erasedType);
 		}
 		return null;
@@ -215,6 +222,19 @@ public class GeneratableElementModule implements Module {
 			return blocklyXML.defaultXML();
 		}
 
+		TextureReference textureReference = this.getAnnotationFromFieldOrGetter(member, TextureReference.class);
+		if (textureReference != null && textureReference.defaultValues() != null
+				&& textureReference.defaultValues().length > 0) {
+			return textureReference.defaultValues()[0];
+		}
+
+		ModElementReference modElementReference = this.getAnnotationFromFieldOrGetter(member,
+				ModElementReference.class);
+		if (modElementReference != null && modElementReference.defaultValues() != null
+				&& modElementReference.defaultValues().length > 0) {
+			return modElementReference.defaultValues()[0];
+		}
+
 		return null;
 	}
 
@@ -233,6 +253,24 @@ public class GeneratableElementModule implements Module {
 				node.put("allowMinMaxEqual", true);
 			}
 		}
+
+		TextureReference textureReference = this.getAnnotationFromFieldOrGetter(member, TextureReference.class);
+		if (textureReference != null) {
+			node.put("textureType", textureReference.value().getID());
+		}
+
+		ModElementReference modElementReference = this.getAnnotationFromFieldOrGetter(member, ModElementReference.class);
+		if (modElementReference != null) {
+			List<String > acceptedTypes = new ArrayList<>();
+			for (Class<? extends GeneratableElement> type : modElementReference.acceptedTypes()) {
+				acceptedTypes.add(type.getSimpleName());
+			}
+			ArrayNode arrayNode = node.putArray("acceptedElementTypes");
+			for (String acceptedType : acceptedTypes) {
+				arrayNode.add(acceptedType);
+			}
+		}
+
 	}
 
 	private Object castNumericDefault(Class<?> type, double value) {
