@@ -1488,6 +1488,7 @@ public class TestWorkspaceDataProvider {
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
+			lootTable.lootTableToModify = _true ? "minecraft:chests/spawn_bonus_chest" : "";
 			lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type"));
 
 			lootTable.pools = new ArrayList<>();
