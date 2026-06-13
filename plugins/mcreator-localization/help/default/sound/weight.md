@@ -1,0 +1,1 @@
+This parameter defines the chance that this sound will be chosen to be played among the written sound entries.
