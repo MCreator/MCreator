@@ -38,6 +38,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class HelpLoader {
 
@@ -72,8 +73,36 @@ public class HelpLoader {
 		return Math.min(100, (int) Math.ceil(langcount * 100d / (double) DEFAULT_CACHE.size()));
 	}
 
-	@Nullable private static String getFromCache(String key) {
-		return LOCALIZED_CACHE.computeIfAbsent(key, DEFAULT_CACHE::get);
+	@Nullable public static String getFromCache(String key) {
+		return LOCALIZED_CACHE.computeIfAbsent(key, HelpLoader::getFromEnglishCache);
+	}
+
+	@Nullable public static String getFromEnglishCache(String key) {
+		return DEFAULT_CACHE.get(key);
+	}
+
+	public static List<String> getCategories() {
+		return DEFAULT_CACHE.keySet().stream().map(s -> s.split("/")[0]).distinct().collect(Collectors.toList());
+	}
+
+	public static List<String> getEntriesForCategory(String category) {
+		return DEFAULT_CACHE.keySet().stream().filter(s -> s.startsWith(category + "/")).collect(Collectors.toList());
+	}
+
+	public static List<String> getEntriesMatching(String query) {
+		if (query == null || query.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		String lowerQuery = query.toLowerCase();
+		return DEFAULT_CACHE.keySet().stream().filter(s -> {
+			if (s.contains(lowerQuery)) {
+				return true;
+			}
+
+			String content = DEFAULT_CACHE.get(s);
+			return content != null && content.toLowerCase().contains(lowerQuery);
+		}).collect(Collectors.toList());
 	}
 
 	public static boolean hasFullHelp(IHelpContext helpContext) {
