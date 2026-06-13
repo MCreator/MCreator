@@ -54,8 +54,8 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Lists supported custom Blockly blocks for blocklyEditorType %s or returns block JSON definition for blockRegistryName.
-				Good to get list of all supported blocks for a given editor type before using blockRegistryName.
+				Lists supported custom Blockly blocks for blocklyEditorType %s or returns block JSON definition for blockRegistryName.\
+				Good to get list of all supported blocks for a given editor type before using blockRegistryName.\
 				Other standard blocks (if, while, etc.) of default Blockly editor are not listed but may be supported.""".formatted(
 				BlocklyEditorType.getTypes());
 	}

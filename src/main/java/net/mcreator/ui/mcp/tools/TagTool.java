@@ -174,7 +174,7 @@ public class TagTool extends MCreatorMcpTool<TagTool.Args> {
 
 	private static boolean isValidEntry(Workspace workspace, TagType tagType, String entry) {
 		if (entry.startsWith(NameMapper.MCREATOR_PREFIX)) {
-			return MappableElement.validateReference(entry, workspace);
+			return MappableElement.validateReference(entry, workspace, null);
 		}
 		if (entry.startsWith(NameMapper.EXTERNAL_PREFIX)) {
 			return !entry.substring(NameMapper.EXTERNAL_PREFIX.length()).isBlank();

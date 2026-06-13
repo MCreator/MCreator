@@ -30,4 +30,6 @@ import java.lang.annotation.Target;
 
 	String defaultXML();
 
+	String suggestedXML() default "";
+
 }

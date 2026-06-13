@@ -73,7 +73,7 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Creates a workspace texture by compositing image maker template layers, or lists available template names.
+				Creates a workspace texture by compositing image maker template layers, or lists available template names.\
 				Use actionType CREATE with name, type (block/item/entity/effect/particle/screen/other), and at least one layer.""";
 	}
 

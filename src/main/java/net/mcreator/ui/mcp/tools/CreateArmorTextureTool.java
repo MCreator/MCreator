@@ -58,7 +58,7 @@ public class CreateArmorTextureTool extends MCreatorMcpTool<CreateArmorTextureTo
 
 	@Override public String getDescription() {
 		return """
-				Creates a full armor texture set (layer textures and item icons) using armor image maker templates, or lists available template names.
+				Creates a full armor texture set (layer textures and item icons) using armor image maker templates, or lists available template names.\
 				Use actionType CREATE with name, template, and color. Optional lockSaturationBrightness.""";
 	}
 
