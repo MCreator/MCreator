@@ -161,6 +161,13 @@ public class GEValidator {
 
 			// Validations for cases where fieldValue is not null below
 
+			// If field is String and notNullable and string is blank, fail valiation
+			if (fieldValue instanceof String string && field.notNullable() && string.isBlank()) {
+				throw new ValidationException(
+						"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
+								+ " is blank, but should not be.");
+			}
+
 			if (field.numeric() != null) {
 				if (fieldValue instanceof Number number) {
 					Numeric annotation = field.numeric();
