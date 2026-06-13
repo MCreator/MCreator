@@ -724,6 +724,15 @@ registerSimpleMutatorInput('item_predicate_mutator_input', 'blockly.block.item_p
 registerSimpleMutatorContainer('any_item_mutator_container', 'blockly.block.any_item_mutator.container', 350);
 registerSimpleMutatorInput('any_item_mutator_input', 'blockly.block.any_item_mutator.input', 350);
 
+// Mutator blocks for "Lookup level-based value" mixin
+registerSimpleMutatorContainer(
+    'level_based_value_lookup_mutator_container', 'blockly.block.level_based_value_lookup.container', 230);
+registerSimpleMutatorInput('level_based_value_lookup_mutator_input', 'blockly.block.level_based_value_lookup.input', 230, true);
+
+// Mutator blocks for "All of" enchantment value effect mixin
+registerSimpleMutatorContainer('value_effect_all_of_mutator_container', 'blockly.block.value_effect_all_of.container', 300);
+registerSimpleMutatorInput('value_effect_all_of_mutator_input', 'blockly.block.value_effect_all_of.input', 300);
+
 // Unregister blocks that we will register again below
 delete Blockly.Blocks['controls_flow_statements'];
 

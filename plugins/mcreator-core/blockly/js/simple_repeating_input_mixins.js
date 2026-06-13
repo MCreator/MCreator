@@ -321,3 +321,23 @@ Blockly.Extensions.registerMutator('item_predicate_mutator', simpleRepeatingInpu
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['item_predicate_mutator_input']);
+
+// Mutator for lookup level-based value
+Blockly.Extensions.registerMutator('level_based_value_lookup_mutator', simpleRepeatingInputMixin(
+        'level_based_value_lookup_mutator_container', 'level_based_value_lookup_mutator_input', 'value',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.entry').replace('%1', index + 1))
+                .appendField(new Blockly.FieldNumber(index + 1), 'value' + index)
+        }, false, ['value']),
+    undefined, ['level_based_value_lookup_mutator_input']);
+
+// Mutator for "All of" enchantment value effect
+Blockly.Extensions.registerMutator('value_effect_all_of_mutator', simpleRepeatingInputMixin(
+        'value_effect_all_of_mutator_container', 'value_effect_all_of_mutator_input', 'effect',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('ValueEffect').setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(javabridge.t(
+                    index === 0 ? 'blockly.block.value_effect_all_of.first' : 'blockly.block.value_effect_all_of.then'));
+        }),
+    undefined, ['value_effect_all_of_mutator_input']);
