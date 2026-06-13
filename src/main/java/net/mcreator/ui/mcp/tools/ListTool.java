@@ -66,9 +66,8 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
-			// TODO: mod elements should return name and type only
-			case Args.ListType.MOD_ELEMENTS ->
-					CompletableFuture.completedFuture(ToolResult.collection(mcreator.getWorkspace().getModElements()));
+			case Args.ListType.MOD_ELEMENTS -> CompletableFuture.completedFuture(ToolResult.collection(
+					mcreator.getWorkspace().getModElements().stream().map(ModElementInfo::new).toList()));
 			case Args.ListType.MOD_VARIABLES -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getWorkspace().getVariableElements()));
 			case Args.ListType.MOD_TAGS ->
@@ -134,6 +133,12 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 
 	private static List<String> textureFileNames(List<File> textureFiles) {
 		return textureFiles.stream().map(File::getName).toList();
+	}
+
+	private record ModElementInfo(String registryName, String type) {
+		ModElementInfo(ModElement element) {
+			this(element.getRegistryName(), element.getType().getRegistryName());
+		}
 	}
 
 }
