@@ -68,9 +68,6 @@ public class UITestUtil {
 			assertTrue(latch.await(10, TimeUnit.SECONDS));
 		}
 
-		// Reload data lists to test this functionality
-		modElementGUI.reloadDataLists();
-
 		return modElementGUI;
 	}
 
