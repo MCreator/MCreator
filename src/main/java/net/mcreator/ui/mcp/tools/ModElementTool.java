@@ -66,7 +66,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 	@Override public String getDescription() {
 		return """
 				A tool to read mod element (JSON definition and mod element metadata), modify, or add mod elements to the workspace.\
-				Type and JSON used only for adding. Names of mod elements are always CamelCaseNames""";
+				Type and JSON used only for adding. Names of mod elements are always CamelCaseNames\
+				Modify action requires full element JSON definition, not just changes.""";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementTool.Args input) {
