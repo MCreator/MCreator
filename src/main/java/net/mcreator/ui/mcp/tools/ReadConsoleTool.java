@@ -46,7 +46,8 @@ public class ReadConsoleTool extends MCreatorMcpTool<ReadConsoleTool.Args> {
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ReadConsoleTool.Args input) {
 		String consoleContent = mcreator.getGradleConsole().getConsoleText();
-		consoleContent = consoleContent.substring(consoleContent.length() - input.lastNCharsToRead);
+		int startIndex = Math.max(0, consoleContent.length() - input.lastNCharsToRead);
+		consoleContent = consoleContent.substring(startIndex);
 		return CompletableFuture.completedFuture(ToolResult.text(consoleContent));
 	}
 
