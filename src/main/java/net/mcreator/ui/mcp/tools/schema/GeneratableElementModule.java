@@ -110,7 +110,7 @@ public class GeneratableElementModule implements Module {
 	private CustomDefinition createDataListDefinition(SchemaGenerationContext context, @Nullable String dataListHint) {
 		ObjectNode schema = context.createDefinitionReference(context.getTypeContext().resolve(String.class));
 		if (dataListHint != null) {
-			schema.put("datalistWithValidValues", dataListHint);
+			schema.put("datalist", dataListHint);
 		}
 		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
 				CustomDefinition.AttributeInclusion.YES);

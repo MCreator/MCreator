@@ -61,7 +61,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "Provides list of specified workspace elements or types or data list entries or info.";
+		return "Provides list of specified workspace elements or resources. Use those lists as hard source of truth.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {

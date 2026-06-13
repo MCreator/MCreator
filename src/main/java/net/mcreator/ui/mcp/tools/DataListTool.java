@@ -51,7 +51,7 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "Lists available vanilla data lists or lists entry names from a selected data list.";
+		return "Lists available vanilla data lists or lists entry names from a selected data list. Use list tool to also get custom entries.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
