@@ -40,7 +40,8 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			// workspace elements
 			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS, NBT_STRUCTURE_FILES,
 			// data lists
-			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, CREATIVE_TABS, ADVANCEMENTS, ENCHANTMENTS, STEPSOUNDS,
+			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, CREATIVE_TABS,
+			ADVANCEMENTS, ENCHANTMENTS, VILLAGER_PROFESSIONS, PARTICLES, POTION_EFFECTS, POTIONS, ATTRIBUTES,
 			// textures
 			BLOCK_TEXTURES, ITEM_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
 			//@formatter:on
@@ -95,8 +96,16 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					ToolResult.collection(ElementUtil.loadAllAchievements(mcreator.getWorkspace())));
 			case Args.ListType.ENCHANTMENTS -> CompletableFuture.completedFuture(
 					ToolResult.collection(ElementUtil.loadAllEnchantments(mcreator.getWorkspace())));
-			case Args.ListType.STEPSOUNDS ->
-					CompletableFuture.completedFuture(ToolResult.collection(ElementUtil.loadStepSounds()));
+			case Args.ListType.VILLAGER_PROFESSIONS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllVillagerProfessions(mcreator.getWorkspace())));
+			case Args.ListType.PARTICLES -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllParticles(mcreator.getWorkspace())));
+			case Args.ListType.POTION_EFFECTS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllPotionEffects(mcreator.getWorkspace())));
+			case Args.ListType.POTIONS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllPotions(mcreator.getWorkspace())));
+			case Args.ListType.ATTRIBUTES -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllAttributes(mcreator.getWorkspace())));
 			case Args.ListType.BLOCK_TEXTURES -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.BLOCK)));
 			case Args.ListType.ITEM_TEXTURES -> CompletableFuture.completedFuture(
