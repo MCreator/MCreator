@@ -21,7 +21,10 @@ package net.mcreator.io.mcp.tool;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import net.mcreator.gradle.GradleUtils;
 import net.mcreator.io.mcp.protocol.McpSchema;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,6 +35,8 @@ import java.util.concurrent.CompletableFuture;
  * @param <I> input type used for JSON Schema generation and argument deserialization
  */
 public abstract class McpTool<I> implements IMcpTool {
+
+	private static final Logger LOG = LogManager.getLogger(McpTool.class);
 
 	private static final Gson gson = new Gson();
 
@@ -78,6 +83,7 @@ public abstract class McpTool<I> implements IMcpTool {
 	}
 
 	protected static CompletableFuture<ToolResult> completedError(String message) {
+		LOG.warn("Tool reported error: {}", message);
 		return completed(ToolResult.error(message));
 	}
 
