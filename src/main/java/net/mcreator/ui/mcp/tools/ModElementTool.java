@@ -93,7 +93,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				mcreator.reloadWorkspaceTabContents();
 				if (!json.equals(input.elementJSONDefinition)) {
 					Map<String, Object> response = new HashMap<>();
-					response.put("result", "Element modified, but JSON definition was changed during processing");
+					response.put("result", "Element modified, but JSON definition was changed during processing. "
+							+ "Verify modified JSON if any unintended changes or removals happened.");
 					response.put("actualJSONDefinition", json);
 					return CompletableFuture.completedFuture(ToolResult.object(response));
 				} else {
