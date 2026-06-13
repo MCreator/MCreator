@@ -27,10 +27,13 @@ import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
+import tools.jackson.databind.node.ObjectNode;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
@@ -70,7 +73,88 @@ public class GeneratableElementModule implements Module {
 	private void applyToConfigPart(SchemaGeneratorConfigPart<?> configPart) {
 		configPart.withNullableCheck(this::isNullable);
 
-		// TODO: Numeric and LimitedOptions and NonNullMappable
+		configPart.withEnumResolver(this::resolveEnum);
+		configPart.withNumberInclusiveMinimumResolver(this::resolveMinimum);
+		configPart.withNumberInclusiveMaximumResolver(this::resolveMaximum);
+		configPart.withDefaultResolver(this::resolveDefault);
+		configPart.withInstanceAttributeOverride(this::applyCustomAttributes);
+	}
+
+	@Nullable private List<String> resolveEnum(MemberScope<?, ?> member) {
+		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
+		if (limitedOptions == null) {
+			return null;
+		}
+
+		if (member.getType().getErasedType() == String.class) {
+			return List.of(limitedOptions.value());
+		}
+
+		return null;
+	}
+
+	@Nullable private BigDecimal resolveMinimum(MemberScope<?, ?> member) {
+		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
+		return numeric != null ? BigDecimal.valueOf(numeric.min()) : null;
+	}
+
+	@Nullable private BigDecimal resolveMaximum(MemberScope<?, ?> member) {
+		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
+		return numeric != null ? BigDecimal.valueOf(numeric.max()) : null;
+	}
+
+	@Nullable private Object resolveDefault(MemberScope<?, ?> member) {
+		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
+		if (numeric != null) {
+			return this.castNumericDefault(member.getType().getErasedType(), numeric.init());
+		}
+
+		NonNullMappable nonNullMappable = this.getAnnotationFromFieldOrGetter(member, NonNullMappable.class);
+		if (nonNullMappable != null) {
+			return nonNullMappable.value();
+		}
+
+		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
+		if (limitedOptions != null && member.getType().getErasedType() == String.class) {
+			return limitedOptions.value().length > 0 ? limitedOptions.value()[0] : null;
+		}
+
+		return null;
+	}
+
+	private void applyCustomAttributes(ObjectNode node, MemberScope<?, ?> member, SchemaGenerationContext context) {
+		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
+		if (limitedOptions != null) {
+			if (this.isNumericType(member.getType().getErasedType())) {
+				node.put("minimum", 0);
+				node.put("maximum", limitedOptions.value().length - 1);
+			}
+		}
+
+		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
+		if (numeric != null) {
+			if (numeric.allowMinMaxEqual()) {
+				node.put("x-mcreator-allowMinMaxEqual", true);
+			}
+		}
+	}
+
+	private Object castNumericDefault(Class<?> type, double value) {
+		if (type == int.class || type == Integer.class) {
+			return (int) value;
+		}
+		if (type == long.class || type == Long.class) {
+			return (long) value;
+		}
+		if (type == float.class || type == Float.class) {
+			return (float) value;
+		}
+		return value;
+	}
+
+	private boolean isNumericType(Class<?> type) {
+		return Number.class.isAssignableFrom(type) || type == int.class || type == long.class || type == float.class
+				|| type == double.class || type == short.class || type == byte.class;
 	}
 
 	protected Boolean isNullable(MemberScope<?, ?> member) {
