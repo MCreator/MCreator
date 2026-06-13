@@ -77,6 +77,26 @@ public class DynamicBlockLoader {
 			for (VariableType varType : List.of(VariableTypeLoader.BuiltInTypes.LOGIC,
 					VariableTypeLoader.BuiltInTypes.NUMBER, VariableTypeLoader.BuiltInTypes.STRING,
 					VariableTypeLoader.BuiltInTypes.ITEMSTACK, VariableTypeLoader.BuiltInTypes.BLOCKSTATE)) {
+				ToolboxBlock getBlock = new DynamicToolboxBlock() {
+					@Override public boolean shouldLoad(GeneratorConfiguration configuration) {
+						return varType.canBeLocal(configuration) || varType.canBeGlobal(configuration);
+					}
+				};
+				getBlock.machine_name = "variables_get_" + varType.getName();
+				getBlock.toolbox_id = "customvariables";
+				getBlock.type = IBlockGenerator.BlockType.OUTPUT;
+				list.add(getBlock);
+
+				ToolboxBlock setBlock = new DynamicToolboxBlock() {
+					@Override public boolean shouldLoad(GeneratorConfiguration configuration) {
+						return varType.canBeLocal(configuration) || varType.canBeGlobal(configuration);
+					}
+				};
+				setBlock.machine_name = "variables_set_" + varType.getName();
+				setBlock.toolbox_id = "customvariables";
+				setBlock.type = IBlockGenerator.BlockType.PROCEDURAL;
+				list.add(setBlock);
+
 				ToolboxBlock customDependencyBlock = new DynamicToolboxBlock();
 				customDependencyBlock.machine_name = "custom_dependency_" + varType.getName();
 				customDependencyBlock.toolbox_id = "advanced";

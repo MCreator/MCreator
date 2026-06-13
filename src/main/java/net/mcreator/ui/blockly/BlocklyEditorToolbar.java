@@ -24,7 +24,7 @@ import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
-import net.mcreator.blockly.java.BlocklyVariables;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -36,7 +36,7 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.modgui.ProcedureGUI;
+import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.VariableElement;
@@ -76,23 +76,25 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	}
 
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI, JComponent... extraComponents) {
-		this(mcreator, blocklyEditorType, blocklyPanel, procedureGUI, true, extraComponents);
+			IBlocklyPanelHolder.IBlocklyPanelVariablesHolder blocklyPanelVariablesHolder,
+			JComponent... extraComponents) {
+		this(mcreator, blocklyEditorType, blocklyPanel, blocklyPanelVariablesHolder, true, extraComponents);
 	}
 
 	/**
 	 * <p>A {@link BlocklyEditorToolbar} is the top panel added on every Java {@link BlocklyPanel}.
 	 * It contains buttons like templates, an export and an import template buttons.</p>
 	 *
-	 * @param mcreator          <p>The {@link MCreator} instance used</p>
-	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
-	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
-	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
-	 * @param hasSearchBar      <p>If this toolbar will have a search bar.</p>
-	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
+	 * @param mcreator                    <p>The {@link MCreator} instance used</p>
+	 * @param blocklyEditorType           <p>Type of the Blockly editor this toolbar will be used on.</p>
+	 * @param blocklyPanel                <p>The {@link BlocklyPanel} to use for some features</p>
+	 * @param blocklyPanelVariablesHolder <p>When a {@link IBlocklyPanelHolder.IBlocklyPanelVariablesHolder} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param hasSearchBar                <p>If this toolbar will have a search bar.</p>
+	 * @param extraComponents             <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI, boolean hasSearchBar, JComponent... extraComponents) {
+			IBlocklyPanelHolder.IBlocklyPanelVariablesHolder blocklyPanelVariablesHolder, boolean hasSearchBar,
+			JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
 
 		setBorder(null);
@@ -100,7 +102,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		List<ResourcePointer> templates = TemplatesLoader.loadTemplates(blocklyEditorType.extension(),
 				blocklyEditorType.extension());
 
-		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates, procedureGUI);
+		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates,
+				blocklyPanelVariablesHolder);
 
 		templateLib = L10N.button("blockly.templates." + blocklyEditorType.registryName());
 		templateLib.setPreferredSize(new Dimension(155, 16));
@@ -201,7 +204,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				new Thread(() -> {
 					try {
 						String procedureXml = BlocklyTemplateIO.importBlocklyXML(imp);
-						if (procedureGUI != null) {
+						if (blocklyPanelVariablesHolder != null) {
 							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
 							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
@@ -211,7 +214,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 								blocklyPanel.addLocalVariable(localVariable.getName(),
 										localVariable.getType().getBlocklyVariableType());
-								procedureGUI.localVars.addElement(localVariable);
+								blocklyPanelVariablesHolder.getLocalVariablesListModel().addElement(localVariable);
 							}
 						}
 						blocklyPanel.addBlocksFromXML(procedureXml);

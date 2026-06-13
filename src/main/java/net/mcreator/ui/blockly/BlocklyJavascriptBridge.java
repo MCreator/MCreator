@@ -21,7 +21,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
-import net.mcreator.blockly.java.BlocklyVariables;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Procedure;

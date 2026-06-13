@@ -39,7 +39,7 @@ public class MCItemBlock implements IBlockGenerator {
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()
 				&& !element.getTextContent().equals("null")) {
 			String textContent = element.getTextContent();
-			if (!MappableElement.validateReference(textContent, master.getWorkspace())) {
+			if (!MappableElement.validateReference(textContent, master.getWorkspace(), "blocksitems")) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.mcitem_broken_reference",
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));

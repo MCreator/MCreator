@@ -101,14 +101,15 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		if (workspace == null) {
 			return false;
 		}
-		return validateReference(value, workspace);
+		return validateReference(value, workspace, mapper.getMappingSource());
 	}
 
 	/**
 	 * @return true if the value exists in the workspace. Always returns true for vanilla elements,
 	 * even if they are not supported in the selected Minecraft version.
 	 */
-	public static boolean validateReference(@Nonnull String value, @Nonnull Workspace workspace) {
+	public static boolean validateReference(@Nonnull String value, @Nonnull Workspace workspace,
+			@Nullable String mappingSource) {
 		if (value.startsWith(NameMapper.MCREATOR_PREFIX)) {
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
 			if (!retval) {
@@ -116,6 +117,16 @@ public abstract class MappableElement implements IWorkspaceDependent {
 				TestUtil.failIfTestingEnvironment();
 			}
 			return retval;
+		} else if (mappingSource != null && !value.startsWith(NameMapper.EXTERNAL_PREFIX) && !value.startsWith("#")
+				&& !value.startsWith("TAG:") && !TestUtil.isTestingEnvironment()) {
+			Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mappingSource);
+			if (dataListEntryMap != null) {
+				if (!dataListEntryMap.containsKey(value)) {
+					LOG.warn("Broken vanilla reference found. Referencing non-existent element: {} from {}", value,
+							mappingSource);
+					return false;
+				}
+			}
 		}
 		return true;
 	}

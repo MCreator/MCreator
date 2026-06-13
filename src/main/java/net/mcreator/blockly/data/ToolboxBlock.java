@@ -231,6 +231,11 @@ import java.util.Objects;
 	 * @return Field data list in JSON format. Null if the field does not exist, or the type of field does not specify a data list.
 	 */
 	@Nullable public String getFieldDataList(String fieldName) {
+		String fieldType = getFieldType(fieldName);
+		if (fieldType != null && fieldType.equals("field_mcitem_selector")) {
+			return "blocksitems";
+		}
+
 		if (blocklyJSON.getAsJsonObject().has("args0")) {
 			JsonArray args0 = blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 			for (int i = 0; i < args0.size(); i++) {
