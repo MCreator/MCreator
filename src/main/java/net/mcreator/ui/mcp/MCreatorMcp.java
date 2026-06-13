@@ -71,7 +71,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new TagTool(currentMCreator));
 		server.registerTool(new ReadClassSourceTool(currentMCreator));
 		server.registerTool(new BlocklyBlocksTool(currentMCreator));
-		// TODO: tool to list external trigger types and list entries
+		server.registerTool(new BlocklyTriggersTool(currentMCreator));
 	}
 
 	public McpServer getServer() {
