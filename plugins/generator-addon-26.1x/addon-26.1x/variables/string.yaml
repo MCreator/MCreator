@@ -1,0 +1,14 @@
+defaultvalue: '""'
+scopes:
+  local:
+    init: var ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
+    get: ${name}
+    set: ${name} = ${opt.removeParentheses(value)};
+  global_map:
+    init: initVariable(world, "${var.getName()}", ${var.getValue()});
+    get: world.getDynamicProperty("${name}")
+    set: world.setDynamicProperty("${name}", ${opt.removeParentheses(value)});
+  player_persistent:
+    init: initVariable(world, "${var.getName()}", ${var.getValue()});
+    get: entity.getDynamicProperty("${name}")
+    set: entity.setDynamicProperty("${name}", ${opt.removeParentheses(value)});
