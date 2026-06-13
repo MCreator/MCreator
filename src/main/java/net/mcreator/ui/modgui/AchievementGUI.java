@@ -329,8 +329,4 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		return Set.of(blocklyPanel);
 	}
 
-	@Override public boolean isInitialXMLValid() {
-		return false;
-	}
-
 }
