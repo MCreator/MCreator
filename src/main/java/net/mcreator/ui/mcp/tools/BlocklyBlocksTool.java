@@ -1,0 +1,116 @@
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.ui.mcp.tools;
+
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.io.mcp.tool.ToolResult;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.mcp.MCreatorMcpTool;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+
+public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
+
+	public static class Args {
+		public QueryType type;
+		@Nullable public String blocklyEditorType;
+		@Nullable public String blockRegistryName;
+
+		public enum QueryType {
+			LIST_BLOCKS, GET_BLOCK
+		}
+	}
+
+	public BlocklyBlocksTool(Supplier<MCreator> currentMCreator) {
+		super(currentMCreator, Args.class);
+	}
+
+	@Override public String getName() {
+		return "blockly_blocks";
+	}
+
+	@Override public String getDescription() {
+		return "Lists supported custom Blockly blocks for blocklyEditorType " + BlocklyEditorType.getTypes()
+				+ " or returns block JSON definition for blockRegistryName.";
+	}
+
+	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
+		return switch (input.type) {
+			case LIST_BLOCKS -> {
+				BlocklyEditorType editorType = parseEditorType(input.blocklyEditorType);
+				if (editorType == null) {
+					yield CompletableFuture.completedFuture(ToolResult.error("Invalid or missing blocklyEditorType"));
+				}
+				yield CompletableFuture.completedFuture(ToolResult.collection(
+						getSupportedBlockRegistryNames(mcreator, editorType).stream().sorted(Comparator.naturalOrder())
+								.toList()));
+			}
+			case GET_BLOCK -> {
+				if (input.blockRegistryName == null || input.blockRegistryName.isBlank()) {
+					yield CompletableFuture.completedFuture(ToolResult.error("blockRegistryName is required"));
+				}
+				BlocklyEditorType editorType = parseEditorType(input.blocklyEditorType);
+				if (editorType == null) {
+					yield CompletableFuture.completedFuture(ToolResult.error("Invalid or missing blocklyEditorType"));
+				}
+				ToolboxBlock block = BlocklyLoader.INSTANCE.getBlockLoader(editorType).getDefinedBlocks()
+						.get(input.blockRegistryName.trim());
+				if (block == null) {
+					yield CompletableFuture.completedFuture(
+							ToolResult.error("Unknown block: " + input.blockRegistryName));
+				}
+				if (!isBlockSupported(mcreator, block)) {
+					yield CompletableFuture.completedFuture(
+							ToolResult.error("Block is not supported by the current workspace generator"));
+				}
+				yield CompletableFuture.completedFuture(ToolResult.object(block.getBlocklyJSON()));
+			}
+		};
+	}
+
+	@Nullable private static BlocklyEditorType parseEditorType(@Nullable String raw) {
+		if (raw == null || raw.isBlank()) {
+			return null;
+		}
+		return BlocklyEditorType.fromName(raw.trim());
+	}
+
+	private static Collection<String> getSupportedBlockRegistryNames(MCreator mcreator, BlocklyEditorType editorType) {
+		return mcreator.getGeneratorStats().getBlocklyBlocks(editorType);
+	}
+
+	private static boolean isBlockSupported(MCreator mcreator, ToolboxBlock block) {
+		if (block.getRequiredAPIs() != null) {
+			for (String requiredApi : block.getRequiredAPIs()) {
+				if (!mcreator.getWorkspace().getWorkspaceSettings().getMCreatorDependencies().contains(requiredApi)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+}

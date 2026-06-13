@@ -70,6 +70,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new DataListTool(currentMCreator));
 		server.registerTool(new TagTool(currentMCreator));
 		server.registerTool(new ReadClassSourceTool(currentMCreator));
+		server.registerTool(new BlocklyBlocksTool(currentMCreator));
 	}
 
 	public McpServer getServer() {
