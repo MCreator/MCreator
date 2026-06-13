@@ -23,6 +23,7 @@ import com.fasterxml.classmate.AnnotationInclusion;
 import com.fasterxml.classmate.ResolvedType;
 import com.github.victools.jsonschema.generator.*;
 import com.github.victools.jsonschema.generator.Module;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
@@ -54,7 +55,7 @@ public class GeneratableElementModule implements Module {
 		SchemaGeneratorConfigPart<MethodScope> methodConfigPart = builder.forMethods();
 		methodConfigPart.withIgnoreCheck(_ -> true); // do not include methods
 
-		Stream.of(Nullable.class, Nonnull.class, LimitedOptions.class, Numeric.class, NonNullMappable.class).forEach(
+		Stream.of(Nullable.class, Nonnull.class, LimitedOptions.class, Numeric.class, NonNullMappable.class, BlocklyXML.class).forEach(
 				annotationType -> builder.withAnnotationInclusionOverride(annotationType,
 						AnnotationInclusion.INCLUDE_AND_INHERIT));
 
@@ -135,6 +136,10 @@ public class GeneratableElementModule implements Module {
 			return true; // Nonnull fields are required
 		}
 
+		if (this.getAnnotationFromFieldOrGetter(fieldScope, BlocklyXML.class) != null) {
+			return true; // BlocklyXML fields are required
+		}
+
 		if (RetvalProcedure.class.isAssignableFrom(fieldScope.getType().getErasedType())) {
 			return true; // Retval procedure requires at least fixed value
 		} else if (Procedure.class.isAssignableFrom(fieldScope.getType().getErasedType())) {
@@ -189,6 +194,11 @@ public class GeneratableElementModule implements Module {
 		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
 		if (limitedOptions != null && member.getType().getErasedType() == String.class) {
 			return limitedOptions.value().length > 0 ? limitedOptions.value()[0] : null;
+		}
+
+		BlocklyXML blocklyXML = this.getAnnotationFromFieldOrGetter(member, BlocklyXML.class);
+		if (blocklyXML != null) {
+			return blocklyXML.defaultXML();
 		}
 
 		return null;
