@@ -20,19 +20,22 @@
 package net.mcreator.ui.mcp.tools.schema;
 
 import com.fasterxml.classmate.AnnotationInclusion;
+import com.fasterxml.classmate.ResolvedType;
 import com.github.victools.jsonschema.generator.*;
 import com.github.victools.jsonschema.generator.Module;
-import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.RetvalProcedure;
+import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.generator.mapping.MappableElement;
+import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -40,7 +43,12 @@ public class GeneratableElementModule implements Module {
 
 	@Override public void applyToConfigBuilder(SchemaGeneratorConfigBuilder builder) {
 		SchemaGeneratorConfigPart<FieldScope> fieldConfigPart = builder.forFields();
-		this.applyToConfigPart(fieldConfigPart);
+		fieldConfigPart.withNullableCheck(this::isNullable);
+		fieldConfigPart.withEnumResolver(this::resolveEnum);
+		fieldConfigPart.withNumberInclusiveMinimumResolver(this::resolveMinimum);
+		fieldConfigPart.withNumberInclusiveMaximumResolver(this::resolveMaximum);
+		fieldConfigPart.withDefaultResolver(this::resolveDefault);
+		fieldConfigPart.withInstanceAttributeOverride(this::applyCustomAttributes);
 		fieldConfigPart.withRequiredCheck(this::isRequired);
 
 		SchemaGeneratorConfigPart<MethodScope> methodConfigPart = builder.forMethods();
@@ -50,15 +58,81 @@ public class GeneratableElementModule implements Module {
 				annotationType -> builder.withAnnotationInclusionOverride(annotationType,
 						AnnotationInclusion.INCLUDE_AND_INHERIT));
 
-		builder.forTypesInGeneral().withCustomDefinitionProvider((type, context) -> {
-			// TODO: Procedure (simple string), RetvalProcedure (name is optional), MappableElement (simple string) custom schema
+		builder.forTypesInGeneral().withCustomDefinitionProvider(this::provideCustomDefinition);
+	}
+
+	@Nullable private CustomDefinition provideCustomDefinition(ResolvedType type, SchemaGenerationContext context) {
+		Class<?> erasedType = type.getErasedType();
+		if (RetvalProcedure.class.isAssignableFrom(erasedType)) {
+			return this.createRetvalProcedureDefinition(type, context);
+		} else if (Procedure.class.isAssignableFrom(erasedType)) {
+			return this.createDataListDefinition(context, Procedure.class);
+		} else if (MappableElement.class.isAssignableFrom(erasedType)) {
+			return this.createDataListDefinition(context, erasedType);
+		}
+		return null;
+	}
+
+	private CustomDefinition createDataListDefinition(SchemaGenerationContext context, Class<?> itemType) {
+		ObjectNode schema = context.createDefinitionReference(context.getTypeContext().resolve(String.class));
+		schema.put("datalist-hint", itemType.getSimpleName());
+		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
+				CustomDefinition.AttributeInclusion.YES);
+	}
+
+	private CustomDefinition createRetvalProcedureDefinition(ResolvedType type, SchemaGenerationContext context) {
+		ResolvedType fixedValueType = this.resolveRetvalFixedValueType(type, context);
+		if (fixedValueType == null) {
 			return null;
-		});
+		}
+
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		ArrayNode oneOf = config.createArrayNode();
+		oneOf.add(context.createDefinition(fixedValueType));
+		oneOf.add(this.createRetvalProcedureObjectForm(context, fixedValueType));
+
+		ObjectNode schema = config.createObjectNode().set(context.getKeyword(SchemaKeyword.TAG_ONEOF), oneOf);
+		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
+				CustomDefinition.AttributeInclusion.YES);
+	}
+
+	private ObjectNode createRetvalProcedureObjectForm(SchemaGenerationContext context, ResolvedType fixedValueType) {
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		ObjectNode properties = config.createObjectNode();
+		properties.set("name", context.createDefinitionReference(context.getTypeContext().resolve(String.class)));
+		properties.set("fixedValue", context.createDefinition(fixedValueType));
+
+		ArrayNode required = config.createArrayNode();
+		required.add("fixedValue");
+
+		return config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE), "object")
+				.set(context.getKeyword(SchemaKeyword.TAG_PROPERTIES), properties)
+				.set(context.getKeyword(SchemaKeyword.TAG_REQUIRED), required);
+	}
+
+	@Nullable private ResolvedType resolveRetvalFixedValueType(ResolvedType type, SchemaGenerationContext context) {
+		Class<?> erasedType = type.getErasedType();
+		TypeContext typeContext = context.getTypeContext();
+
+		if (LogicProcedure.class.isAssignableFrom(erasedType)) {
+			return typeContext.resolve(Boolean.class);
+		}
+		if (NumberProcedure.class.isAssignableFrom(erasedType)) {
+			return typeContext.resolve(Double.class);
+		}
+		if (StringProcedure.class.isAssignableFrom(erasedType)) {
+			return typeContext.resolve(String.class);
+		}
+		if (StringListProcedure.class.isAssignableFrom(erasedType)) {
+			return typeContext.resolve(ArrayList.class, String.class);
+		}
+
+		return null;
 	}
 
 	@SuppressWarnings("RedundantIfStatement") private boolean isRequired(FieldScope fieldScope) {
-		if (this.isNullable(fieldScope) == Boolean.TRUE) {
-			return false;
+		if (this.getAnnotationFromFieldOrGetter(fieldScope, Nonnull.class) != null) {
+			return true; // Nonnull fields are required
 		}
 
 		if (RetvalProcedure.class.isAssignableFrom(fieldScope.getType().getErasedType())) {
@@ -67,17 +141,15 @@ public class GeneratableElementModule implements Module {
 			return false; // Procedure fields are always optional
 		}
 
-		return true;
-	}
+		if (this.getAnnotationFromFieldOrGetter(fieldScope, NonNullMappable.class) != null) {
+			return true; // NonNullMappable fields are required
+		} else if (this.getAnnotationFromFieldOrGetter(fieldScope, LimitedOptions.class) != null) {
+			return true; // LimitedOptions fields are required
+		} else if (this.getAnnotationFromFieldOrGetter(fieldScope, Numeric.class) != null) {
+			return true; // Numeric fields are required
+		}
 
-	private void applyToConfigPart(SchemaGeneratorConfigPart<?> configPart) {
-		configPart.withNullableCheck(this::isNullable);
-
-		configPart.withEnumResolver(this::resolveEnum);
-		configPart.withNumberInclusiveMinimumResolver(this::resolveMinimum);
-		configPart.withNumberInclusiveMaximumResolver(this::resolveMaximum);
-		configPart.withDefaultResolver(this::resolveDefault);
-		configPart.withInstanceAttributeOverride(this::applyCustomAttributes);
+		return false;
 	}
 
 	@Nullable private List<String> resolveEnum(MemberScope<?, ?> member) {
@@ -126,15 +198,15 @@ public class GeneratableElementModule implements Module {
 		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
 		if (limitedOptions != null) {
 			if (this.isNumericType(member.getType().getErasedType())) {
-				node.put("minimum", 0);
-				node.put("maximum", limitedOptions.value().length - 1);
+				node.put("min", 0);
+				node.put("max", limitedOptions.value().length - 1);
 			}
 		}
 
 		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
 		if (numeric != null) {
 			if (numeric.allowMinMaxEqual()) {
-				node.put("x-mcreator-allowMinMaxEqual", true);
+				node.put("allowMinMaxEqual", true);
 			}
 		}
 	}
