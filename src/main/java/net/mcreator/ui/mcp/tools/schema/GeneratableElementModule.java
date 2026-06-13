@@ -33,7 +33,6 @@ import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
-import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
 
@@ -81,23 +80,38 @@ public class GeneratableElementModule implements Module {
 		return null;
 	}
 
-	@Nullable private CustomDefinition provideCustomDefinition(ResolvedType type, SchemaGenerationContext context) {
+	@SuppressWarnings("unchecked") @Nullable
+	private CustomDefinition provideCustomDefinition(ResolvedType type, SchemaGenerationContext context) {
 		Class<?> erasedType = type.getErasedType();
 		if (RetvalProcedure.class.isAssignableFrom(erasedType)) {
 			return this.createRetvalProcedureDefinition(type, context);
 		} else if (Procedure.class.isAssignableFrom(erasedType)) {
-			return this.createDataListDefinition(context, Procedure.class);
+			return this.createDataListDefinition(context, "procedure");
 		} else if (MappableElement.class.isAssignableFrom(erasedType)) {
-			return this.createDataListDefinition(context, erasedType);
+			return this.createDataListDefinition(context,
+					guessDataListName((Class<? extends MappableElement>) erasedType));
 		} else if (TextureHolder.class.isAssignableFrom(erasedType)) {
-			return this.createDataListDefinition(context, erasedType);
+			return this.createDataListDefinition(context, null);
 		}
 		return null;
 	}
 
-	private CustomDefinition createDataListDefinition(SchemaGenerationContext context, Class<?> itemType) {
+	private String guessDataListName(Class<? extends MappableElement> mappableElementClass) {
+		try {
+			var constructor = mappableElementClass.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			var instance = constructor.newInstance();
+			return instance.getMappingSource();
+		} catch (Exception e) {
+			return mappableElementClass.getSimpleName().toLowerCase().replace("entry", "");
+		}
+	}
+
+	private CustomDefinition createDataListDefinition(SchemaGenerationContext context, @Nullable String dataListHint) {
 		ObjectNode schema = context.createDefinitionReference(context.getTypeContext().resolve(String.class));
-		schema.put("datalist-hint", itemType.getSimpleName());
+		if (dataListHint != null) {
+			schema.put("datalist", dataListHint);
+		}
 		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
 				CustomDefinition.AttributeInclusion.YES);
 	}
@@ -259,9 +273,10 @@ public class GeneratableElementModule implements Module {
 			node.put("textureType", textureReference.value().getID());
 		}
 
-		ModElementReference modElementReference = this.getAnnotationFromFieldOrGetter(member, ModElementReference.class);
+		ModElementReference modElementReference = this.getAnnotationFromFieldOrGetter(member,
+				ModElementReference.class);
 		if (modElementReference != null) {
-			List<String > acceptedTypes = new ArrayList<>();
+			List<String> acceptedTypes = new ArrayList<>();
 			for (Class<? extends GeneratableElement> type : modElementReference.acceptedTypes()) {
 				acceptedTypes.add(type.getSimpleName());
 			}
@@ -271,6 +286,10 @@ public class GeneratableElementModule implements Module {
 			}
 		}
 
+		BlocklyXML blocklyXML = this.getAnnotationFromFieldOrGetter(member, BlocklyXML.class);
+		if (blocklyXML != null) {
+			node.put("blocklyXML", "This field requires valid Blockly XML");
+		}
 	}
 
 	private Object castNumericDefault(Class<?> type, double value) {
