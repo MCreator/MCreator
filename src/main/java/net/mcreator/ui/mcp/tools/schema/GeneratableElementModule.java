@@ -26,8 +26,8 @@ import com.github.victools.jsonschema.generator.Module;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
-import net.mcreator.element.types.Biome;
 import net.mcreator.element.parts.procedure.*;
+import net.mcreator.element.types.Biome;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
@@ -58,7 +58,6 @@ public class GeneratableElementModule implements Module {
 		fieldConfigPart.withDefaultResolver(this::resolveDefault);
 		fieldConfigPart.withInstanceAttributeOverride(this::applyCustomAttributes);
 		fieldConfigPart.withRequiredCheck(this::isRequired);
-
 		fieldConfigPart.withTargetTypeOverridesResolver(this::resolveMapOverrides);
 
 		SchemaGeneratorConfigPart<MethodScope> methodConfigPart = builder.forMethods();
@@ -307,8 +306,8 @@ public class GeneratableElementModule implements Module {
 	}
 
 	private boolean isBiomeDefaultFeaturesField(MemberScope<?, ?> member) {
-		return member.getDeclaringType().getErasedType() == Biome.class
-				&& "defaultFeatures".equals(member.getDeclaredName());
+		return member.getDeclaringType().getErasedType() == Biome.class && "defaultFeatures".equals(
+				member.getDeclaredName());
 	}
 
 	private Object castNumericDefault(Class<?> type, double value) {
@@ -333,7 +332,8 @@ public class GeneratableElementModule implements Module {
 		Boolean result;
 		if (member.isFakeContainerItemScope()) {
 			result = null;
-		} else if (this.getAnnotationFromFieldOrGetter(member, Nonnull.class) != null) {
+		} else if (this.getAnnotationFromFieldOrGetter(member, Nonnull.class) != null
+				|| this.getAnnotationFromFieldOrGetter(member, BlocklyXML.class) != null) {
 			result = Boolean.FALSE;
 		} else if (this.getAnnotationFromFieldOrGetter(member, Nullable.class) != null) {
 			result = Boolean.TRUE;
