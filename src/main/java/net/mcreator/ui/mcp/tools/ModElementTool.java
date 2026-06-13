@@ -86,8 +86,9 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
 			}
+			GeneratableElement original = modElement.getGeneratableElement();
 			try {
-				GeneratableElement element = safeJSONtoGeneratableElement(mcreator, modElement,
+				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
 						input.elementJSONDefinition);
 				String json = safeGeneratableElementToJSON(mcreator, element);
 				mcreator.reloadWorkspaceTabContents();
@@ -101,6 +102,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 					return CompletableFuture.completedFuture(ToolResult.text("Element modified"));
 				}
 			} catch (Exception e) {
+				safeGeneratableElementToJSON(mcreator, original); // try to revert to original state
 				return CompletableFuture.completedFuture(
 						ToolResult.error("Failed to modify element: " + e.getMessage(), e));
 			}
@@ -117,7 +119,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			ModElement modElement = new ModElement(mcreator.getWorkspace(), input.elementName, type);
 			mcreator.getWorkspace().addModElement(modElement);
 			try {
-				GeneratableElement element = safeJSONtoGeneratableElement(mcreator, modElement,
+				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
 						input.elementJSONDefinition);
 				String json = safeGeneratableElementToJSON(mcreator, element);
 				mcreator.reloadWorkspaceTabContents();
@@ -146,7 +148,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		}
 	}
 
-	private static GeneratableElement safeJSONtoGeneratableElement(MCreator mcreator, ModElement modElement,
+	private static GeneratableElement safeJSONtoGeneratableElementAndStoreIt(MCreator mcreator, ModElement modElement,
 			String json) throws Exception {
 		JsonObject root = new JsonObject();
 		root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
