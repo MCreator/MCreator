@@ -46,8 +46,6 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 	private final SchemaGenerator generator;
 	private final Gson gson = new Gson();
 
-	private static final Set<ModElementType<?>> SUPPORTED_TYPES = Set.of(ModElementType.RECIPE);
-
 	private static final Map<ModElementType<?>, JsonObject> SCHEMA_CACHE = new HashMap<>();
 
 	public ModElementSchemaTool(Supplier<MCreator> currentMCreator) {
@@ -74,10 +72,7 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 			return CompletableFuture.completedFuture(ToolResult.error("Element type must be provided"));
 		}
 		ModElementType<?> type = ModElementTypeLoader.getModElementType(input.elementType.toLowerCase(Locale.ROOT));
-		Map<String, Object> result = new HashMap<>();
-		result.put("canSchemaBeTrusted", SUPPORTED_TYPES.contains(type));
-		result.put("jsonSchema", generateSchema(type));
-		return CompletableFuture.completedFuture(ToolResult.object(result));
+		return CompletableFuture.completedFuture(ToolResult.object(generateSchema(type)));
 	}
 
 	public JsonObject generateSchema(ModElementType<?> type) {
