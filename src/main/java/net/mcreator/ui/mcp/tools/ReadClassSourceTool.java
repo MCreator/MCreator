@@ -19,10 +19,12 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.io.FileIO;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 
+import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -41,7 +43,7 @@ public class ReadClassSourceTool extends MCreatorMcpTool<ReadClassSourceTool.Arg
 	}
 
 	@Override public String getDescription() {
-		return "Reads Java source code for a class from the workspace classpath using its fully qualified class name.";
+		return "Reads Java source code for a class by its fully qualified name from the project source folder or workspace classpath.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
@@ -49,13 +51,25 @@ public class ReadClassSourceTool extends MCreatorMcpTool<ReadClassSourceTool.Arg
 			return CompletableFuture.completedFuture(ToolResult.error("className is required"));
 		}
 
-		String code = mcreator.getGenerator().getMinecraftCodeProvider().readCode(input.className.trim());
+		String className = input.className.trim();
+		String code = readFromProjectSourceRoot(mcreator, className);
+		if (code == null) {
+			code = mcreator.getGenerator().getMinecraftCodeProvider().readCode(className);
+		}
 		if (code == null) {
 			return CompletableFuture.completedFuture(
 					ToolResult.error("Could not read source for class: " + input.className));
 		}
 
 		return CompletableFuture.completedFuture(ToolResult.text(code));
+	}
+
+	private static String readFromProjectSourceRoot(MCreator mcreator, String className) {
+		File sourceFile = new File(mcreator.getGenerator().getSourceRoot(), className.replace(".", "/") + ".java");
+		if (!sourceFile.isFile()) {
+			return null;
+		}
+		return FileIO.readFileToString(sourceFile);
 	}
 
 }

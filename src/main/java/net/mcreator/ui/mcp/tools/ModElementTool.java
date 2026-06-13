@@ -64,7 +64,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "A tool to read JSON definition, modify, or add mod elements to the workspace. Type and JSON used only for adding.";
+		return "A tool to read mod element (JSON definition and mod element metadata), modify, or add mod elements to the workspace. Type and JSON used only for adding.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementTool.Args input) {
@@ -74,7 +74,10 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
 			}
 			String geJSON = safeGeneratableElementToJSON(mcreator, modElement.getGeneratableElement());
-			return CompletableFuture.completedFuture(ToolResult.text(geJSON));
+			Map<String, Object> response = new HashMap<>();
+			response.put("_metadata", modElement);
+			response.put("elementJSONDefinition", geJSON);
+			return CompletableFuture.completedFuture(ToolResult.object(response));
 		} else if (input.actionType == Args.Action.MODIFY) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
@@ -168,7 +171,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		return gson.toJson(jsonObject.get("definition"));
 	}
 
-	private static GeneratableElement validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
+	private static GeneratableElement validateThroughUI(MCreator mcreator, GeneratableElement generatableElement)
+			throws Exception {
 		ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
 				.getModElementGUI(mcreator, generatableElement.getModElement(), true);
 
