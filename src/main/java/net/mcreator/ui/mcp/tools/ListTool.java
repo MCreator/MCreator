@@ -40,7 +40,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			// workspace elements
 			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS,
 			// data lists
-			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS,
+			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, CREATIVE_TABS,
 			// textures
 			BLOCK_TEXTURES, ITEM_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
 			//@formatter:on
@@ -87,6 +87,8 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					ToolResult.collection(ElementUtil.loadAllBiomes(mcreator.getWorkspace())));
 			case Args.ListType.SOUNDS -> CompletableFuture.completedFuture(ToolResult.collection(
 					ElementUtil.getAllSounds(mcreator.getWorkspace())));
+			case Args.ListType.CREATIVE_TABS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllTabs(mcreator.getWorkspace())));
 			case Args.ListType.BLOCK_TEXTURES -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.BLOCK)));
 			case Args.ListType.ITEM_TEXTURES -> CompletableFuture.completedFuture(

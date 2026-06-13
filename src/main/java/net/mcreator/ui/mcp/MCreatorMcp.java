@@ -65,6 +65,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new ModElementTool(currentMCreator));
 		server.registerTool(new HelpTipsTool(currentMCreator));
 		server.registerTool(new ModElementSchemaTool(currentMCreator));
+		server.registerTool(new CreateTextureTool(currentMCreator));
 	}
 
 	public McpServer getServer() {
