@@ -64,6 +64,10 @@ public final class ToolResult {
 				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(json)), false, structuredContent));
 	}
 
+	public static ToolResult collection(Object[] items) {
+		return collection(List.of(items));
+	}
+
 	public static ToolResult error(String message) {
 		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(message)), true));
 	}

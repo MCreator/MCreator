@@ -21,8 +21,11 @@ package net.mcreator.ui.mcp.tools;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.io.mcp.tool.ToolResult;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.workspace.elements.ModElement;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -33,7 +36,14 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 		public ListType type;
 
 		public enum ListType {
-			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS
+			//@formatter:off
+			// workspace elements
+			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS,
+			// data lists
+			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS,
+			// textures
+			BLOCK_TEXTURES, ITEM_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
+			//@formatter:on
 		}
 	}
 
@@ -62,6 +72,35 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 							.map(ModElementType::getRegistryName).toList()));
 			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
 					ToolResult.object(mcreator.getWorkspace().getWorkspaceSettings()));
+			case Args.ListType.BLOCKS_AND_ITEMS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadBlocksAndItems(mcreator.getWorkspace())));
+			case Args.ListType.BLOCKS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadBlocks(mcreator.getWorkspace())));
+			case Args.ListType.BLOCKS_AND_ITEMS_AND_TAGS -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadBlocksAndItemsAndTags(mcreator.getWorkspace())));
+			case Args.ListType.ENTITIES -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllSpawnableEntities(mcreator.getWorkspace())));
+			case Args.ListType.PROCEDURES -> CompletableFuture.completedFuture(ToolResult.collection(
+					mcreator.getWorkspace().getModElementsByType(ModElementType.PROCEDURE).stream()
+							.map(ModElement::getName).toList()));
+			case Args.ListType.BIOMES -> CompletableFuture.completedFuture(
+					ToolResult.collection(ElementUtil.loadAllBiomes(mcreator.getWorkspace())));
+			case Args.ListType.SOUNDS -> CompletableFuture.completedFuture(ToolResult.collection(
+					ElementUtil.getAllSounds(mcreator.getWorkspace())));
+			case Args.ListType.BLOCK_TEXTURES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.BLOCK)));
+			case Args.ListType.ITEM_TEXTURES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.ITEM)));
+			case Args.ListType.EFFECT_TEXTURES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.EFFECT)));
+			case Args.ListType.PARTICLE_TEXTURES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.PARTICLE)));
+			case Args.ListType.SCREEN_TEXTURES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.SCREEN)));
+			case Args.ListType.ARMOR_TEXTURES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.ARMOR)));
+			case Args.ListType.OTHER_TEXTURES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getFolderManager().getTexturesList(TextureType.OTHER)));
 		};
 	}
 
