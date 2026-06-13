@@ -50,18 +50,14 @@ public final class ToolResult {
 		if (!structuredContent.isJsonObject()) {
 			throw new IllegalArgumentException("structuredContent must be a JSON object");
 		}
-		String json = gson.toJson(structured);
-		return new ToolResult(
-				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(json)), false, structuredContent));
+		return structured(structuredContent.getAsJsonObject(), "Object result (see structuredContent).");
 	}
 
 	public static ToolResult collection(Collection<?> items) {
 		JsonElement arrayContent = gson.toJsonTree(items);
 		JsonObject structuredContent = new JsonObject();
 		structuredContent.add("items", arrayContent);
-		String json = gson.toJson(items);
-		return new ToolResult(
-				new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(json)), false, structuredContent));
+		return structured(structuredContent, "Collection of " + items.size() + " item(s) (see structuredContent).");
 	}
 
 	public static ToolResult collection(Object[] items) {
@@ -70,6 +66,11 @@ public final class ToolResult {
 
 	public static ToolResult error(String message) {
 		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(message)), true));
+	}
+
+	private static ToolResult structured(JsonObject structuredContent, String summary) {
+		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(summary)), false,
+				structuredContent));
 	}
 
 	McpSchema.CallToolResponse toResponse() {
