@@ -19,6 +19,7 @@
 
 package net.mcreator.element.util;
 
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
@@ -239,8 +240,8 @@ public class GEValidator {
 	                           @Nullable LimitedOptionsCache limitedOptions) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
-			this(field, field.isAnnotationPresent(Nonnull.class), field.getAnnotation(Numeric.class),
-					field.getAnnotation(NonNullMappable.class),
+			this(field, field.isAnnotationPresent(Nonnull.class) || field.isAnnotationPresent(BlocklyXML.class),
+					field.getAnnotation(Numeric.class), field.getAnnotation(NonNullMappable.class),
 					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null);
 		}
 	}
