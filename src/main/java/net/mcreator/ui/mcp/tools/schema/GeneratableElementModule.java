@@ -111,7 +111,7 @@ public class GeneratableElementModule implements Module {
 	private CustomDefinition createDataListDefinition(SchemaGenerationContext context, @Nullable String dataListHint) {
 		ObjectNode schema = context.createDefinitionReference(context.getTypeContext().resolve(String.class));
 		if (dataListHint != null) {
-			schema.put("datalist", dataListHint);
+			schema.put("datalistWithValidValues", dataListHint);
 		}
 		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
 				CustomDefinition.AttributeInclusion.YES);
@@ -298,7 +298,7 @@ public class GeneratableElementModule implements Module {
 		}
 
 		if (this.isBiomeDefaultFeaturesField(member) && member.isFakeContainerItemScope()) {
-			node.put("datalist", "defaultfeatures");
+			node.put("datalistWithValidValues", "defaultfeatures");
 		}
 	}
 

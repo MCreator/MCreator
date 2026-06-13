@@ -77,7 +77,7 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 
 	public JsonObject generateSchema(ModElementType<?> type) {
 		return SCHEMA_CACHE.computeIfAbsent(type, t -> {
-			Class<? extends GeneratableElement> elementClass = type.getModElementStorageClass();
+			Class<? extends GeneratableElement> elementClass = t.getModElementStorageClass();
 			ObjectNode jsonNode = generator.generateSchema(elementClass);
 			return gson.fromJson(jsonNode.toString(), JsonObject.class);
 		});

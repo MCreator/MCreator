@@ -21,7 +21,6 @@ package net.mcreator.io.mcp.tool;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.mcreator.io.mcp.protocol.McpSchema;
 
 import java.util.Collection;
@@ -50,14 +49,17 @@ public final class ToolResult {
 		if (!structuredContent.isJsonObject()) {
 			throw new IllegalArgumentException("structuredContent must be a JSON object");
 		}
-		return structured(structuredContent.getAsJsonObject(), "Object result (see structuredContent).");
+		// Most MCP clients surface content.text only, not structuredContent.
+		// Keep the payload in text and omit structuredContent to avoid duplicating large results.
+		return new ToolResult(new McpSchema.CallToolResponse(
+				List.of(McpSchema.Content.text(gson.toJson(structuredContent))), false));
 	}
 
 	public static ToolResult collection(Collection<?> items) {
 		JsonElement arrayContent = gson.toJsonTree(items);
-		JsonObject structuredContent = new JsonObject();
-		structuredContent.add("items", arrayContent);
-		return structured(structuredContent, "Collection of " + items.size() + " item(s) (see structuredContent).");
+		// Same as object(): full payload in text only for client visibility without duplication.
+		return new ToolResult(new McpSchema.CallToolResponse(
+				List.of(McpSchema.Content.text(gson.toJson(arrayContent))), false));
 	}
 
 	public static ToolResult collection(Object[] items) {
@@ -66,11 +68,6 @@ public final class ToolResult {
 
 	public static ToolResult error(String message) {
 		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(message)), true));
-	}
-
-	private static ToolResult structured(JsonObject structuredContent, String summary) {
-		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(summary)), false,
-				structuredContent));
 	}
 
 	McpSchema.CallToolResponse toResponse() {
