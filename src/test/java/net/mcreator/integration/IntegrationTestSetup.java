@@ -130,6 +130,9 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 		// Disable native file choosers for tests due to threading issues
 		PreferencesManager.PREFERENCES.ui.nativeFileChooser.set(false);
 
+		// Disable local history for tests
+		PreferencesManager.PREFERENCES.backups.enableLocalHistory.set(false);
+
 		// Do not track unit tests
 		GoogleAnalytics.ANALYTICS_ENABLED = false;
 
