@@ -25,13 +25,22 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.modgui.IBlocklyPanelHolder;
+import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
@@ -151,6 +160,49 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		String json = mcreator.getModElementManager().generatableElementToJSON(element);
 		JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 		return gson.toJson(jsonObject.get("definition"));
+	}
+
+	private static void validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
+		ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
+				.getModElementGUI(mcreator, generatableElement.getModElement(), true);
+
+		// Verify that BlocklyPanels are fully loaded
+		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
+			CountDownLatch latch = new CountDownLatch(1);
+
+			// Prepare a listener to detect if BlocklyPanel(s) are responding
+			Set<BlocklyPanel> blocklyPanels = new HashSet<>();
+			panelHolder.addBlocklyChangedListener((blocklyPanel, jsEventTriggeredChange) -> {
+				if (jsEventTriggeredChange) {
+					blocklyPanels.add(blocklyPanel);
+					if (blocklyPanels.equals(panelHolder.getBlocklyPanels()))
+						latch.countDown();
+				}
+			});
+
+			// Give it time for BlocklyPanel(s) to load and propagate the event
+			latch.await(10, TimeUnit.SECONDS);
+		}
+
+		AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
+
+		boolean hasErrors = false;
+		for (ValidationResult result : validationResult.getGroupedValidationResults()) {
+			if (result.type() == ValidationResult.Type.ERROR) {
+				// TODO: implement this part
+				if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
+					if (result.isBlocklyResult()) {
+						// skip Blockly validation in case it is marked that initial XML in the editor is not valid
+						// and skipInitialXMLValidationIfAllowed flag is set to true
+						if (skipInitialXMLValidationIfAllowed && !panelHolder.isInitialXMLValid())
+							continue;
+					}
+				}
+
+				hasErrors = true;
+				break;
+			}
+		}
 	}
 
 }
