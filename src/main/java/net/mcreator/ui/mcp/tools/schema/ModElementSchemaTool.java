@@ -47,6 +47,8 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 
 	private static final Set<ModElementType<?>> SUPPORTED_TYPES = Set.of(ModElementType.RECIPE);
 
+	private static final Map<ModElementType<?>, JsonObject> SCHEMA_CACHE = new HashMap<>();
+
 	public ModElementSchemaTool(Supplier<MCreator> currentMCreator) {
 		super(currentMCreator, ModElementSchemaTool.Args.class);
 
@@ -56,9 +58,6 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 		configBuilder.with(new GeneratableElementModule());
 		SchemaGeneratorConfig config = configBuilder.build();
 		this.generator = new SchemaGenerator(config);
-
-		// TODO: tmp
-		generateSchema(ModElementType.RECIPE);
 	}
 
 	@Override public String getName() {
@@ -81,11 +80,11 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 	}
 
 	public JsonObject generateSchema(ModElementType<?> type) {
-		Class<? extends GeneratableElement> elementClass = type.getModElementStorageClass();
-		ObjectNode jsonNode = generator.generateSchema(elementClass);
-		JsonObject retval = gson.fromJson(jsonNode.toString(), JsonObject.class);
-		System.out.println("Schema: " + retval.toString()); // TODO: tmp
-		return retval;
+		return SCHEMA_CACHE.computeIfAbsent(type, t -> {
+			Class<? extends GeneratableElement> elementClass = type.getModElementStorageClass();
+			ObjectNode jsonNode = generator.generateSchema(elementClass);
+			return gson.fromJson(jsonNode.toString(), JsonObject.class);
+		});
 	}
 
 }

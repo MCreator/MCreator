@@ -37,7 +37,9 @@ import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
@@ -52,14 +54,26 @@ public class GeneratableElementModule implements Module {
 		fieldConfigPart.withInstanceAttributeOverride(this::applyCustomAttributes);
 		fieldConfigPart.withRequiredCheck(this::isRequired);
 
+		fieldConfigPart.withTargetTypeOverridesResolver(this::resolveMapOverrides);
+
 		SchemaGeneratorConfigPart<MethodScope> methodConfigPart = builder.forMethods();
 		methodConfigPart.withIgnoreCheck(_ -> true); // do not include methods
 
-		Stream.of(Nullable.class, Nonnull.class, LimitedOptions.class, Numeric.class, NonNullMappable.class, BlocklyXML.class).forEach(
-				annotationType -> builder.withAnnotationInclusionOverride(annotationType,
-						AnnotationInclusion.INCLUDE_AND_INHERIT));
+		Stream.of(Nullable.class, Nonnull.class, LimitedOptions.class, Numeric.class, NonNullMappable.class,
+				BlocklyXML.class).forEach(annotationType -> builder.withAnnotationInclusionOverride(annotationType,
+				AnnotationInclusion.INCLUDE_AND_INHERIT));
 
 		builder.forTypesInGeneral().withCustomDefinitionProvider(this::provideCustomDefinition);
+	}
+
+	@Nullable private List<ResolvedType> resolveMapOverrides(FieldScope field) {
+		ResolvedType type = field.getType();
+		if (type.isInstanceOf(Map.class) && type.getErasedType() != Map.class) {
+			List<ResolvedType> mapParams = type.typeParametersFor(Map.class);
+			ResolvedType genericMapType = field.getContext().resolve(Map.class, mapParams.toArray(new ResolvedType[0]));
+			return Collections.singletonList(genericMapType);
+		}
+		return null;
 	}
 
 	@Nullable private CustomDefinition provideCustomDefinition(ResolvedType type, SchemaGenerationContext context) {
