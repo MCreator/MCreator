@@ -26,6 +26,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
@@ -94,7 +95,6 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
 						suggestedJSON);
 				String json = safeGeneratableElementToJSON(mcreator, element);
-				mcreator.reloadWorkspaceTabContents();
 				if (!json.equals(suggestedJSON)) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("result", "Element modified, but JSON definition was changed during processing. "
@@ -126,7 +126,6 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
 						suggestedJSON);
 				String json = safeGeneratableElementToJSON(mcreator, element);
-				mcreator.reloadWorkspaceTabContents();
 				if (!json.equals(suggestedJSON)) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("result", "Element added, but JSON definition was changed during processing");
@@ -152,7 +151,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		}
 	}
 
-	private static GeneratableElement safeJSONtoGeneratableElementAndStoreIt(MCreator mcreator, ModElement modElement,
+	private GeneratableElement safeJSONtoGeneratableElementAndStoreIt(MCreator mcreator, ModElement modElement,
 			String json) throws Exception {
 		JsonObject root = new JsonObject();
 		root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
@@ -173,16 +172,18 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 		mcreator.getWorkspace().markDirty();
 
+		reloadUI(mcreator, modElement);
+
 		return element;
 	}
 
-	private static String safeGeneratableElementToJSON(MCreator mcreator, GeneratableElement element) {
+	private String safeGeneratableElementToJSON(MCreator mcreator, GeneratableElement element) {
 		String json = mcreator.getModElementManager().generatableElementToJSON(element);
 		JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 		return gson.toJson(jsonObject.get("definition"));
 	}
 
-	private static GeneratableElement validateThroughUI(MCreator mcreator, GeneratableElement generatableElement)
+	private GeneratableElement validateThroughUI(MCreator mcreator, GeneratableElement generatableElement)
 			throws Exception {
 		ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
 				.getModElementGUI(mcreator, generatableElement.getModElement(), true);
@@ -220,6 +221,20 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		}
 
 		return modElementGUI.getElementFromGUI();
+	}
+
+	private synchronized void reloadUI(MCreator mcreator, ModElement element) {
+		mcreator.reloadWorkspaceTabContents();
+		MCreatorTabs.Tab currentTab = mcreator.getTabs().getCurrentTab();
+		if (currentTab != null && currentTab.getContent() instanceof ModElementGUI<?> modElementGUI) {
+			if (modElementGUI.getModElement().equals(element)) {
+				mcreator.getTabs().closeTab(currentTab);
+				modElementGUI = element.getType().getModElementGUI(mcreator, element, true);
+				if (modElementGUI != null) {
+					modElementGUI.showView();
+				}
+			}
+		}
 	}
 
 }
