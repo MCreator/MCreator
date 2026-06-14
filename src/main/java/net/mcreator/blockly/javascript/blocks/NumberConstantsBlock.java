@@ -27,6 +27,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class NumberConstantsBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
@@ -46,5 +48,33 @@ public class NumberConstantsBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "math_java_constants",
+          "args0": [
+              {
+                  "type": "field_dropdown",
+                  "name": "CONSTANT",
+                  "options": [
+                      ["Random [0,1)", "RANDOM"],
+                      ["Random with std. normal distribution", "NORMAL"],
+                      ["\\u03c0", "PI"],
+                      ["e", "E"],
+                      ["\\u221e", "INFINITY"],
+                      ["-\\u221e", "NINFINITY"],
+                      ["NaN", "NAN"]
+                  ]
+              }
+          ],
+          "output": "Number",
+          "colour": "%{BKY_MATH_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "math";
 	}
 }

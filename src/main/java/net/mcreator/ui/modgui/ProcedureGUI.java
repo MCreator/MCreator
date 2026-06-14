@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.ModElementType;
@@ -588,6 +589,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.PROCEDURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 

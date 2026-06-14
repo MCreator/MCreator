@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.javascript.BlocklyToJavaScript;
 import net.mcreator.element.ModElementType;
@@ -461,6 +462,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPane
 
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.SCRIPT);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.SCRIPT)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.SCRIPT);
 

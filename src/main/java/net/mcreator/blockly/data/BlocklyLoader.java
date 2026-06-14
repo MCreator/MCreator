@@ -19,6 +19,7 @@
 package net.mcreator.blockly.data;
 
 import net.mcreator.blockly.InternalBlocksLoader;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 
 import java.util.ArrayList;
@@ -65,10 +66,12 @@ public class BlocklyLoader {
 	private final Map<BlocklyEditorType, ExternalTriggerLoader> externalTriggerLoaders = new HashMap<>();
 
 	private BlocklyLoader() {
-		InternalBlocksLoader.preload();
-
 		registerExternalTriggerLoader(BlocklyEditorType.PROCEDURE, "triggers");
 		registerExternalTriggerLoader(BlocklyEditorType.SCRIPT, "jstriggers");
+
+		// preload blocks before registering loaders below, so toolbox is assembled correctly
+		InternalBlocksLoader.preload();
+		DynamicBlockLoader.preload();
 
 		registerBlockLoader(BlocklyEditorType.PROCEDURE);
 		registerBlockLoader(BlocklyEditorType.AI_TASK);
@@ -90,6 +93,16 @@ public class BlocklyLoader {
 
 	public void registerExternalTriggerLoader(BlocklyEditorType type, String resourceFolder) {
 		externalTriggerLoaders.put(type, new ExternalTriggerLoader(resourceFolder));
+	}
+
+	public List<ToolboxBlock> getAllToolboxBlocksFor(GeneratorConfiguration generatorConfiguration,
+			BlocklyEditorType blocklyEditorType) {
+		List<ToolboxBlock> retval = new ArrayList<>();
+		retval.addAll(this.getBlockLoader(blocklyEditorType).getDefinedBlocks().values());
+		retval.addAll(InternalBlocksLoader.getInternalToolboxBlocks(blocklyEditorType));
+		retval.addAll(DynamicBlockLoader.getDynamicBlocks(blocklyEditorType).stream()
+				.filter(block -> block.shouldLoad(generatorConfiguration)).toList());
+		return retval;
 	}
 
 	/**

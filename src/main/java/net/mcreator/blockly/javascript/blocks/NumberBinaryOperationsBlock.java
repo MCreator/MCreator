@@ -29,6 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class NumberBinaryOperationsBlock implements IBlockGenerator {
@@ -85,6 +86,52 @@ public class NumberBinaryOperationsBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "math_dual_ops",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "A",
+                  "check": "Number"
+              },
+              {
+                  "type": "field_dropdown",
+                  "name": "OP",
+                  "options": [
+                      ["+", "ADD"],
+                      ["-", "MINUS"],
+                      ["*", "MULTIPLY"],
+                      ["/", "DIVIDE_DOUBLE"],
+                      ["/ (programmer)", "DIVIDE"],
+                      ["^", "POWER"],
+                      ["MOD", "MOD"],
+                      ["Bitwise AND", "BAND"],
+                      ["Bitwise OR", "BOR"],
+                      ["Bitwise XOR", "BXOR"],
+                      ["Min", "MIN"],
+                      ["Max", "MAX"],
+                      ["hypot", "HYPOT"],
+                      ["atan2", "ATAN2"]
+                  ]
+              },
+              {
+                  "type": "input_value",
+                  "name": "B",
+                  "check": "Number"
+              }
+          ],
+          "inputsInline": true,
+          "output": "Number",
+          "colour": "%{BKY_MATH_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "math";
 	}
 
 	private static String withoutParentheses(String code, String operator) {

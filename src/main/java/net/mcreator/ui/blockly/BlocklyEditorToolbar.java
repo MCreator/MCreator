@@ -21,10 +21,10 @@ package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.BlocklyTemplateIO;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
-import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -54,6 +54,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class BlocklyEditorToolbar extends TransparentToolBar {
 
@@ -65,6 +66,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	private final BlocklyPanel blocklyPanel;
 
 	private final JTextField search;
+
+	private final MCreator mcreator;
 
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
 		this(mcreator, blocklyEditorType, blocklyPanel, null, true);
@@ -96,6 +99,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			IBlocklyPanelHolder.IBlocklyPanelVariablesHolder blocklyPanelVariablesHolder, boolean hasSearchBar,
 			JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
+		this.mcreator = mcreator;
 
 		setBorder(null);
 
@@ -174,7 +178,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
 		export.setIcon(UIRES.get("18px.export"));
 		add(export);
-		export.addActionListener(event -> {
+		export.addActionListener(_ -> {
 			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.extension() });
 			if (exp != null) {
 				new Thread(() -> {
@@ -197,7 +201,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
 		add(import_);
-		import_.addActionListener(event -> {
+		import_.addActionListener(_ -> {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.extension() });
 			if (imp != null) {
 				// Run import in a separate thread to avoid blocking the UI and to avoid deadlocks on macOS
@@ -240,15 +244,22 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private final Map<ToolboxBlock, JMenuItem> blockMenuItemCache = new HashMap<>();
 
+	private List<ToolboxBlock> allBlocks = null;
+
 	private void updateSearch(BlocklyEditorType blocklyEditorType) {
+		if (allBlocks == null) {
+			allBlocks = BlocklyLoader.INSTANCE.getAllToolboxBlocksFor(mcreator.getGeneratorConfiguration(),
+					blocklyEditorType);
+		}
+
 		if (!search.getText().isBlank()) {
 			String lowerCaseSearch = search.getText().toLowerCase(Locale.ROOT);
 			String[] keyWords = lowerCaseSearch.replaceAll("[^ \\p{L}\\p{Nd}/._-]+", "").split(" ");
 
 			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
-					.values()) {
-				if (block.getName().toLowerCase(Locale.ROOT).contains(lowerCaseSearch)) {
+			for (ToolboxBlock block : allBlocks) {
+				if (block.getName().toLowerCase(Locale.ROOT).contains(lowerCaseSearch) || block.getMachineName()
+						.contains(lowerCaseSearch)) {
 					filtered.add(block);
 					continue;
 				}
@@ -304,6 +315,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		templateLib.setPreferredSize(new Dimension(w, 16));
 	}
 
+	private static final Pattern anyLetter = Pattern.compile(".*\\p{L}.*");
+
 	private String getHTMLForBlock(ToolboxBlock block) {
 		StringBuilder builder = new StringBuilder("<html>");
 
@@ -327,9 +340,13 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		}
 
 		String name = block.getName();
-		name = StringUtils.abbreviateString(name, 130); // make sure we don't display too long texts
-		name = name.replaceAll("[0-9%]+(?:\\\\.\\\\.\\\\.)?$",
-				""); // make sure to strip away potential reminders of %N parameters
+		if (anyLetter.matcher(name).matches()) {
+			name = StringUtils.abbreviateString(name, 130); // make sure we don't display too long texts
+			name = name.replaceAll("[0-9%]+(?:\\\\.\\\\.\\\\.)?$",
+					""); // make sure to strip away potential reminders of %N parameters
+		} else {
+			name = StringUtils.uppercaseFirstLetter(block.getMachineName().replace("_", " "));
+		}
 
 		builder.append("&nbsp;&nbsp;");
 		builder.append(name.replaceAll("%\\d+?",

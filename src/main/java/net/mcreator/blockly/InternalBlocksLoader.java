@@ -19,20 +19,19 @@
 
 package net.mcreator.blockly;
 
-import net.mcreator.blockly.data.ToolboxType;
+import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.java.blocks.*;
-import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class InternalBlocksLoader {
 
 	private static final Map<BlocklyEditorType, List<IBlockGenerator>> internalBlocks = new HashMap<>();
+
+	private static final Map<BlocklyEditorType, List<ToolboxBlock>> internalToolboxBlocks = new HashMap<>();
 
 	public static void preload() {
 		internalBlocks.put(BlocklyEditorType.PROCEDURE, getAllForJava());
@@ -46,10 +45,38 @@ public class InternalBlocksLoader {
 		internalBlocks.put(BlocklyEditorType.ENCHANTMENT_EFFECTS,
 				List.of(new net.mcreator.blockly.datapack.blocks.NumberBlock(),
 						new net.mcreator.blockly.datapack.blocks.MCItemBlock()));
+
+		for (Map.Entry<BlocklyEditorType, List<IBlockGenerator>> entry : internalBlocks.entrySet()) {
+			internalToolboxBlocks.computeIfAbsent(entry.getKey(), _ -> new ArrayList<>())
+					.addAll(entry.getValue().stream().map(ToolboxBlock::getToolboxBlocksFor).flatMap(Collection::stream)
+							.toList());
+		}
 	}
 
 	public static List<IBlockGenerator> getInternalBlocks(BlocklyEditorType blocklyEditorType) {
 		return internalBlocks.get(blocklyEditorType);
+	}
+
+	public static List<ToolboxBlock> getInternalToolboxBlocks(BlocklyEditorType blocklyEditorType) {
+		return internalToolboxBlocks.get(blocklyEditorType);
+	}
+
+	public static Set<String> getAllInternalBlockTypeIDs() {
+		return internalBlocks.values().stream().flatMap(Collection::stream)
+				.flatMap(generator -> Arrays.stream(generator.getSupportedBlocks())).collect(Collectors.toSet());
+	}
+
+	public static void loadBlocksAndCategoriesInPanel(BlocklyPanel pane) {
+		List<ToolboxBlock> blockGenerators = getInternalToolboxBlocks(pane.getType());
+		if (blockGenerators == null)
+			return;
+
+		List<String> definitions = new ArrayList<>();
+		for (ToolboxBlock toolboxBlock : blockGenerators) {
+			definitions.add(toolboxBlock.getBlocklyJSON().toString());
+		}
+
+		pane.executeLocalScript("Blockly.defineBlocksWithJsonArray([" + String.join(",", definitions) + "])");
 	}
 
 	private static List<IBlockGenerator> getAllForJava() {
