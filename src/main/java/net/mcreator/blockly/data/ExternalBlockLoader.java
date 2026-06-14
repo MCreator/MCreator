@@ -76,28 +76,7 @@ public class ExternalBlockLoader {
 				if (toolboxBlock != null) {
 					toolboxBlock.machine_name = FilenameUtilsPatched.getBaseName(procedureBlock);
 
-					String localized_message = L10N.t("blockly.block." + toolboxBlock.getMachineName());
-					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.getMachineName());
-
-					if (localized_message != null) {
-						try {
-							validateTranslation(localized_message, localized_message_en);
-							jsonresult.add("message0", new JsonPrimitive(localized_message));
-						} catch (ParseException e) {
-							LOG.warn("Block {} translation \"{}\" for the selected language is not valid. Reason: {}",
-									toolboxBlock.getMachineName(), localized_message, e.getMessage());
-							if (localized_message_en != null) {
-								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
-							}
-						}
-					} else if (localized_message_en != null) {
-						jsonresult.add("message0", new JsonPrimitive(localized_message_en));
-					}
-
-					String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.getMachineName() + ".tooltip");
-					if (localized_tooltip != null) {
-						jsonresult.add("tooltip", new JsonPrimitive(localized_tooltip));
-					}
+					ToolboxBlock.handleTranslations(toolboxBlock, jsonresult);
 
 					jsonresult.add("type", new JsonPrimitive(toolboxBlock.getMachineName()));
 
@@ -261,33 +240,6 @@ public class ExternalBlockLoader {
 			return null;
 
 		return translation.replace("'", "\\'").replace("\"", "&quot;");
-	}
-
-	private final static Pattern N_PLACEHOLDER_MATCHER = Pattern.compile("%\\d+"); // Matches %1, %2, etc.
-
-	private static void validateTranslation(@Nullable String localized_message, @Nullable String localized_message_en)
-			throws ParseException {
-		if (localized_message == null)
-			return; // Nothing to validate
-
-		// Make sure original string and translation have the same number of parameters
-		if (localized_message_en != null) {
-			int parameters_count = net.mcreator.util.StringUtils.countRegexMatches(localized_message, "%[0-9]+");
-			int parameters_count_en = net.mcreator.util.StringUtils.countRegexMatches(localized_message_en, "%[0-9]+");
-			if (parameters_count != parameters_count_en) {
-				throw new ParseException("%N placeholder count mismatch", 0);
-			}
-		}
-
-		// Make sure all parameters are only used once
-		Matcher matcher = N_PLACEHOLDER_MATCHER.matcher(localized_message);
-		Set<String> seen = new HashSet<>();
-		while (matcher.find()) {
-			String placeholder = matcher.group();
-			if (!seen.add(placeholder)) {
-				throw new ParseException("Duplicate %N placeholder", 0);
-			}
-		}
 	}
 
 }

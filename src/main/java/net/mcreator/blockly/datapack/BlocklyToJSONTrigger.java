@@ -53,9 +53,6 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 			throws TemplateGeneratorException {
 		super(workspace, parent, BlocklyEditorType.JSON_TRIGGER, templateGenerator, externalGenerators);
 
-		blockGenerators.add(new NumberBlock());
-		blockGenerators.add(new MCItemBlock());
-
 		if (sourceXML != null && !sourceXML.isBlank()) {
 			try {
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

@@ -59,7 +59,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	@Nullable private final TemplateGenerator templateGenerator;
 	private final Workspace workspace;
 
-	protected final List<IBlockGenerator> blockGenerators;
+	private final List<IBlockGenerator> blockGenerators;
 
 	protected final BlocklyEditorType editorType;
 
@@ -99,6 +99,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		// add external generators provided by user
 		blockGenerators.addAll(Arrays.asList(externalGenerators));
+
+		// load internally defined blocks
+		blockGenerators.addAll(InternalBlocksLoader.getInternalBlocks(editorType));
 	}
 
 	/**

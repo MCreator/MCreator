@@ -21,6 +21,9 @@ package net.mcreator.blockly;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public interface IBlockGenerator {
 
 	void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException;
@@ -31,6 +34,24 @@ public interface IBlockGenerator {
 
 	enum BlockType {
 		PROCEDURAL, OUTPUT
+	}
+
+	/**
+	 * @return Blockly JSON definitions for each block returned by {@link #getSupportedBlocks()}, in the same order.
+	 */
+	default @Nullable String[] getBlockJSONDefinitions() {
+		return null;
+	}
+
+	default @Nullable String getToolboxCategory() {
+		return null;
+	}
+
+	/**
+	 * Retrieves the initialization XML for the toolbox for each block returned by {@link #getSupportedBlocks()}, in the same order.
+	 */
+	default @Nullable List<String>[] getToolboxInit() {
+		return null;
 	}
 
 }
