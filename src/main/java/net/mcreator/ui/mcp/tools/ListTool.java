@@ -27,7 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.io.File;
 import java.util.Arrays;
@@ -43,7 +43,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 		public enum ListType {
 			//@formatter:off
 			// workspace elements
-			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS, NBT_STRUCTURE_FILES,
+			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS, NBT_STRUCTURE_FILES, VARIABLE_TYPES,
 			// data lists
 			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, TABS,
 			ADVANCEMENTS, ENCHANTMENTS, VILLAGER_PROFESSIONS, PARTICLES, POTION_EFFECTS, POTIONS, ATTRIBUTES,
@@ -70,7 +70,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			case Args.ListType.MOD_ELEMENTS -> CompletableFuture.completedFuture(ToolResult.collection(
 					mcreator.getWorkspace().getModElements().stream().map(NameAndType::new).toList()));
 			case Args.ListType.MOD_VARIABLES -> CompletableFuture.completedFuture(
-					ToolResult.collection(mcreator.getWorkspace().getVariableElements().stream().map(NameAndType::new).toList()));
+					ToolResult.collection(mcreator.getWorkspace().getVariableElements()));
 			case Args.ListType.MOD_TAGS ->
 					CompletableFuture.completedFuture(ToolResult.object(mcreator.getWorkspace().getTagElements()));
 			case Args.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
@@ -78,6 +78,8 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 							.map(ModElementType::getRegistryName).toList()));
 			case Args.ListType.NBT_STRUCTURE_FILES -> CompletableFuture.completedFuture(
 					ToolResult.collection(mcreator.getFolderManager().getStructureList()));
+			case Args.ListType.VARIABLE_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
+					VariableTypeLoader.INSTANCE.getGlobalVariableTypes(mcreator.getGeneratorConfiguration())));
 			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
 					ToolResult.object(mcreator.getWorkspace().getWorkspaceSettings()));
 			case Args.ListType.BLOCKS_AND_ITEMS -> CompletableFuture.completedFuture(
@@ -139,10 +141,6 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 	private record NameAndType(String registryName, String type) {
 		NameAndType(ModElement element) {
 			this(element.getRegistryName(), element.getType().getRegistryName());
-		}
-
-		NameAndType(VariableElement element) {
-			this(element.getName(), element.getTypeString());
 		}
 	}
 
