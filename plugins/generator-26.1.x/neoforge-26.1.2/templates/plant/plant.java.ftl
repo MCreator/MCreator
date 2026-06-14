@@ -383,6 +383,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 					List.of(BlockTintSources.grass())
 				<#elseif data.tintType == "Foliage">
 					List.of(BlockTintSources.foliage())
+				<#elseif data.tintType == "Dry foliage">
+					List.of(BlockTintSources.dryFoliage())
 				<#elseif data.tintType == "Water">
 					List.of(BlockTintSources.water())
 				<#elseif data.tintType == "Sky">

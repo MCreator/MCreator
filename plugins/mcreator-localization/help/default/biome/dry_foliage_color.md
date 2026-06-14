@@ -1,0 +1,1 @@
+This parameter controls the color of dry foliage (such as leaf litter) in this biome.
