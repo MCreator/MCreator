@@ -23,9 +23,9 @@ import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceBuildStartedEvent;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -46,6 +46,11 @@ public class BuildTool extends MCreatorMcpTool<Void> {
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Void input) {
+		if (mcreator.getGradleConsole().getStatus() == GradleConsole.RUNNING) {
+			return CompletableFuture.completedFuture(
+					ToolResult.error("Gradle is already running some task. Try later."));
+		}
+
 		CompletableFuture<ToolResult> future = new CompletableFuture<>();
 		mcreator.getGenerator().generateBase();
 		MCREvent.event(new WorkspaceBuildStartedEvent(mcreator));

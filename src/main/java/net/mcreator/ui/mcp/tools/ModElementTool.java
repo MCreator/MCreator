@@ -23,6 +23,7 @@ import com.google.gson.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
@@ -42,13 +43,14 @@ import java.util.function.Supplier;
 
 public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private static final Gson gson = new GsonBuilder().create();
 
 	public static class Args {
 		public Action actionType;
 		public String elementName;
 		@Nullable public String elementType;
-		@Nullable public String elementJSONDefinition;
+		@SchemaDescription("Valid mod element JSON definition. Use get_mod_element_schema or read existing elements for format hints.")
+		@Nullable public Map<String, Object> elementJSONDefinition;
 
 		public enum Action {
 			READ, ADD, MODIFY, REMOVE
@@ -74,7 +76,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		if (input.actionType == Args.Action.READ) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
+				return CompletableFuture.completedFuture(ToolResult.error("Element not found. Names usually SnakeCase"));
 			}
 			String geJSON = safeGeneratableElementToJSON(mcreator, modElement.getGeneratableElement());
 			Map<String, Object> response = new HashMap<>();
@@ -84,19 +86,20 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		} else if (input.actionType == Args.Action.MODIFY) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
+				return CompletableFuture.completedFuture(ToolResult.error("Element not found. Names usually SnakeCase"));
 			}
+			String suggestedJSON = gson.toJson(input.elementJSONDefinition);
 			GeneratableElement original = modElement.getGeneratableElement();
 			try {
 				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
-						input.elementJSONDefinition);
+						suggestedJSON);
 				String json = safeGeneratableElementToJSON(mcreator, element);
 				mcreator.reloadWorkspaceTabContents();
-				if (!json.equals(input.elementJSONDefinition)) {
+				if (!json.equals(suggestedJSON)) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("result", "Element modified, but JSON definition was changed during processing. "
 							+ "Verify modified JSON if any unintended changes or removals happened.");
-					response.put("actualJSONDefinition", json);
+					response.put("actualJSONDefinition", JsonParser.parseString(json));
 					return CompletableFuture.completedFuture(ToolResult.object(response));
 				} else {
 					return CompletableFuture.completedFuture(ToolResult.text("Element modified"));
@@ -119,11 +122,12 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			ModElement modElement = new ModElement(mcreator.getWorkspace(), input.elementName, type);
 			mcreator.getWorkspace().addModElement(modElement);
 			try {
+				String suggestedJSON = gson.toJson(input.elementJSONDefinition);
 				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
-						input.elementJSONDefinition);
+						suggestedJSON);
 				String json = safeGeneratableElementToJSON(mcreator, element);
 				mcreator.reloadWorkspaceTabContents();
-				if (!json.equals(input.elementJSONDefinition)) {
+				if (!json.equals(suggestedJSON)) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("result", "Element added, but JSON definition was changed during processing");
 					response.put("actualJSONDefinition", JsonParser.parseString(json));
@@ -139,7 +143,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		} else if (input.actionType == Args.Action.REMOVE) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element not found"));
+				return CompletableFuture.completedFuture(ToolResult.error("Element not found. Names usually SnakeCase"));
 			}
 			mcreator.getWorkspace().removeModElement(modElement);
 			return CompletableFuture.completedFuture(ToolResult.text("Element removed"));

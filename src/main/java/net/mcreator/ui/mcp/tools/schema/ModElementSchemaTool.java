@@ -64,7 +64,7 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 	}
 
 	@Override public String getDescription() {
-		return "Obtains JSON schema for selected mod element type.";
+		return "Provides JSON schema for selected mod element type JSON definition.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementSchemaTool.Args input) {
