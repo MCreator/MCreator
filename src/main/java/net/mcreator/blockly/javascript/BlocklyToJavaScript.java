@@ -85,35 +85,6 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 		super.beforeGenerate();
 
 		variableGenerator = new BlocklyVariables(this);
-
-		// add standard procedural blocks
-		blockGenerators.add(new PrintTextBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.IfBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeProceduralBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.FlowControlBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.LoopBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.TernaryOperatorBlock());
-		blockGenerators.add(new SetVariableBlock());
-
-		// add standard output blocks
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.BooleanBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.LogicNegateBlock());
-		blockGenerators.add(new NumberBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextJoinBlock());
-		blockGenerators.add(new NumberConstantsBlock());
-		blockGenerators.add(new NumberBinaryOperationsBlock());
-		blockGenerators.add(new SingularMathOperationsBlock());
-		blockGenerators.add(new LogicBinaryOperationsBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeOutputBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.CustomDependencyBlock());
-		blockGenerators.add(new GetVariableBlock());
-
-		// add Minecraft-related blocks
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.CoordinateBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.EventOrTargetEntityDependencyBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.SourceEntityDependencyBlock());
-		blockGenerators.add(new MCItemBlock());
 	}
 
 	public List<VariableElement> getLocalVariables() {

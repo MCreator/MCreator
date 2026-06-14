@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly.data;
 
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ public class BlocklyLoader {
 	private final Map<BlocklyEditorType, ExternalTriggerLoader> externalTriggerLoaders = new HashMap<>();
 
 	private BlocklyLoader() {
+		InternalBlocksLoader.preload();
+
 		registerExternalTriggerLoader(BlocklyEditorType.PROCEDURE, "triggers");
 		registerExternalTriggerLoader(BlocklyEditorType.SCRIPT, "jstriggers");
 
