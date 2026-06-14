@@ -19,7 +19,9 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.DynamicBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
@@ -27,8 +29,7 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Comparator;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -56,8 +57,7 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 		return """
 				Lists supported custom Blockly blocks for blocklyEditorType %s or returns block JSON definition for blockRegistryName.\
 				Good to get list of all supported blocks for a given editor type before using blockRegistryName.\
-				This list is non-exhaustive. Some blocks are hardcoded and not listed here.\
-				Other standard blocks (if, while, etc.) of default Blockly editor are not listed but may be supported.""".formatted(
+				Other standard blocks (if, while, etc.) of default Blockly editor may not be listed but may be supported.""".formatted(
 				BlocklyEditorType.getTypes());
 	}
 
@@ -80,8 +80,11 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 				if (editorType == null) {
 					yield CompletableFuture.completedFuture(ToolResult.error("Invalid or missing blocklyEditorType"));
 				}
-				ToolboxBlock block = BlocklyLoader.INSTANCE.getBlockLoader(editorType).getDefinedBlocks()
-						.get(input.blockRegistryName.trim());
+				List<ToolboxBlock> allBlocks = BlocklyLoader.INSTANCE.getAllToolboxBlocksFor(
+						mcreator.getGeneratorConfiguration(), editorType);
+				ToolboxBlock block = allBlocks.stream()
+						.filter(b -> b.getMachineName().equals(input.blockRegistryName.trim())).findFirst()
+						.orElse(null);
 				if (block == null) {
 					yield CompletableFuture.completedFuture(
 							ToolResult.error("Unknown block: " + input.blockRegistryName));
@@ -103,7 +106,13 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 	}
 
 	private static Collection<String> getSupportedBlockRegistryNames(MCreator mcreator, BlocklyEditorType editorType) {
-		return mcreator.getGeneratorStats().getBlocklyBlocks(editorType);
+		Set<String> supportedBlocks = new HashSet<>();
+		supportedBlocks.addAll(mcreator.getGeneratorStats().getBlocklyBlocks(editorType));
+		supportedBlocks.addAll(InternalBlocksLoader.getAllInternalBlockTypeIDs());
+		supportedBlocks.addAll(DynamicBlockLoader.getDynamicBlocks(editorType).stream()
+				.filter(block -> block.shouldLoad(mcreator.getGeneratorConfiguration()))
+				.map(ToolboxBlock::getMachineName).toList());
+		return supportedBlocks;
 	}
 
 	private static boolean isBlockSupported(MCreator mcreator, ToolboxBlock block) {
