@@ -49,33 +49,6 @@ Blockly.Blocks['script_trigger'] = {
     }
 };
 
-Blockly.Blocks['old_command'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.old_command"))
-            .appendField(new FieldDataListSelector('procedure'), 'procedure');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour('%{BKY_TEXTS_HUE}');
-    }
-};
-
-Blockly.Blocks['call_procedure'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.call_procedure"))
-            .appendField(new FieldDataListSelector('procedure'), 'procedure');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(250);
-        if (editorType === "procedures") {
-            Blockly.Extensions.apply('procedure_dependencies_tooltip', this, false);
-            Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
-            Blockly.Extensions.apply('procedure_dependencies_onchange_mixin', this, false);
-        }
-    }
-};
-
 Blockly.Blocks['aitasks_container'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.aitasks_container"));
@@ -124,6 +97,35 @@ Blockly.Blocks['enchantment_effects_start'] = {
         this.setStyle('hat_blocks');
         this.setNextStatement(true, 'EnchantmentComponent');
         this.setColour(150);
+    }
+};
+
+// Blocks that can't be moved to JSON / internal blocks system fully (yet)
+
+Blockly.Blocks['old_command'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.old_command"))
+            .appendField(new FieldDataListSelector('procedure'), 'procedure');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
+Blockly.Blocks['call_procedure'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.call_procedure"))
+            .appendField(new FieldDataListSelector('procedure'), 'procedure');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour(250);
+        if (editorType === "procedures") {
+            Blockly.Extensions.apply('procedure_dependencies_tooltip', this, false);
+            Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
+            Blockly.Extensions.apply('procedure_dependencies_onchange_mixin', this, false);
+        }
     }
 };
 
