@@ -55,6 +55,7 @@ public class ShareableZIPManager {
 		add("#.project");
 		add(".idea/");
 		add(".settings/");
+		add(".git/");
 	}};
 
 	/**
