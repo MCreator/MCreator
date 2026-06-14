@@ -24,6 +24,8 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class DamageSourceDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
@@ -37,6 +39,19 @@ public class DamageSourceDependencyBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "damagesource_from_deps",
+          "output": "DamageSource",
+          "colour": 320
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "mcelements";
 	}
 
 }

@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TextReplaceRegex implements IBlockGenerator {
@@ -62,5 +63,36 @@ public class TextReplaceRegex implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "text_replace_regex",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "what",
+                  "check": "String"
+              },
+              {
+                  "type": "input_value",
+                  "name": "with",
+                  "check": "String"
+              },
+              {
+                  "type": "input_value",
+                  "name": "text",
+                  "check": "String"
+              }
+          ],
+          "inputsInline": true,
+          "output": "String",
+          "colour": "%{BKY_TEXTS_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "text";
 	}
 }

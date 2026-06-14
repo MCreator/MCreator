@@ -35,6 +35,8 @@ import org.w3c.dom.Element;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -133,6 +135,58 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "event_number_parameter_set",
+          "args0": [
+              {
+                  "type": "field_data_list_selector",
+                  "name": "eventparameter",
+                  "datalist": "eventparametersnumber"
+              },
+              {
+                  "type": "input_value",
+                  "name": "value",
+                  "check": "Number"
+              }
+          ],
+          "inputsInline": true,
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 90
+        }""", """
+        {
+          "type": "event_logic_parameter_set",
+          "args0": [
+              {
+                  "type": "field_data_list_selector",
+                  "name": "eventparameter",
+                  "datalist": "eventparametersboolean"
+              },
+              {
+                  "type": "input_value",
+                  "name": "value",
+                  "check": "Boolean"
+              }
+          ],
+          "inputsInline": true,
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 90
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
+	}
+
+	@Nullable @Override public List<String>[] getToolboxInit() {
+		return new List[] { List.of(
+				"<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"),
+				List.of("<value name=\"value\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>") };
 	}
 
 }

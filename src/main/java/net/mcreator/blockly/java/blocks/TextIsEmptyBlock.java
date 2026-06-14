@@ -27,6 +27,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class TextIsEmptyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -48,5 +50,26 @@ public class TextIsEmptyBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "text_is_empty",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "text",
+                  "check": "String"
+              }
+          ],
+          "inputsInline": true,
+          "output": "Boolean",
+          "colour": "%{BKY_LOGIC_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "text";
 	}
 }
