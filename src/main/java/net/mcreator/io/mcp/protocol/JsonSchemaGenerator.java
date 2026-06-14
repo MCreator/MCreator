@@ -28,13 +28,15 @@ import java.lang.reflect.Type;
 
 public class JsonSchemaGenerator {
 
+	private static final Gson gson = new Gson();
+
 	private final SchemaGenerator generator;
-	private final Gson gson = new Gson();
 
 	public JsonSchemaGenerator() {
 		SchemaGeneratorConfigBuilder configBuilder = new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12,
 				OptionPreset.PLAIN_JSON);
 		configBuilder.with(Option.EXTRA_OPEN_API_FORMAT_VALUES);
+		configBuilder.with(new JsonSchemaModule());
 		SchemaGeneratorConfig config = configBuilder.build();
 		this.generator = new SchemaGenerator(config);
 	}
