@@ -102,54 +102,6 @@ Blockly.Blocks['enchantment_effects_start'] = {
 
 // Blocks that can't be moved to JSON / internal blocks system fully (yet)
 
-Blockly.Blocks['old_command'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.old_command"))
-            .appendField(new FieldDataListSelector('procedure'), 'procedure');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour('%{BKY_TEXTS_HUE}');
-    }
-};
-
-Blockly.Blocks['call_procedure'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.call_procedure"))
-            .appendField(new FieldDataListSelector('procedure'), 'procedure');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(250);
-        if (editorType === "procedures") {
-            Blockly.Extensions.apply('procedure_dependencies_tooltip', this, false);
-            Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
-            Blockly.Extensions.apply('procedure_dependencies_onchange_mixin', this, false);
-        }
-    }
-};
-
-Blockly.Blocks['java_code'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.java_code"))
-            .appendField(new FieldMultilineInput("/*code*/"), 'CODE');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(250);
-    }
-};
-
-Blockly.Blocks['java_code_get'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.java_code"))
-            .appendField(new FieldMultilineInput("(null)"), 'CODE');
-        this.setColour(250);
-        this.setOutput(true);
-    }
-};
-
 Blockly.Blocks['controls_while'] = {
     init: function () {
         this.appendValueInput('BOOL').setCheck('Boolean')
@@ -250,3 +202,6 @@ registerSimpleMutatorInput('any_item_mutator_input', 'blockly.block.any_item_mut
 delete Blockly.Blocks['controls_flow_statements'];
 delete Blockly.Blocks['text_replace'];
 delete Blockly.Blocks['text_trim'];
+
+// Register multiline input for JSON use
+Blockly.fieldRegistry.register('field_multilinetext', FieldMultilineInput);
