@@ -81,7 +81,9 @@ loadScripts(document, 'script');</script>
 <li><a href="#getFoldersRoot()" tabindex="0">getFoldersRoot()</a></li>
 <li><a href="#getWorkspaceInfo()" tabindex="0">getWorkspaceInfo()</a></li>
 <li><a href="#containsModElement(java.lang.String)" tabindex="0">containsModElement(String)</a></li>
+<li><a href="#containsType(net.mcreator.element.ModElementType)" tabindex="0">containsType(ModElementType)</a></li>
 <li><a href="#getModElementByName(java.lang.String)" tabindex="0">getModElementByName(String)</a></li>
+<li><a href="#getModElementsByType(net.mcreator.element.ModElementType)" tabindex="0">getModElementsByType(ModElementType)</a></li>
 <li><a href="#getVariableElementByName(java.lang.String)" tabindex="0">getVariableElementByName(String)</a></li>
 <li><a href="#resetModElementCompilesStatus()" tabindex="0">resetModElementCompilesStatus()</a></li>
 <li><a href="#addLanguage(java.lang.String,java.util.LinkedHashMap)" tabindex="0">addLanguage(String, LinkedHashMap)</a></li>
@@ -103,6 +105,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#getMCreatorVersion()" tabindex="0">getMCreatorVersion()</a></li>
 <li><a href="#getFileManager()" tabindex="0">getFileManager()</a></li>
 <li><a href="#getFolderManager()" tabindex="0">getFolderManager()</a></li>
+<li><a href="#getHistoryManager()" tabindex="0">getHistoryManager()</a></li>
 <li><a href="#getWorkspaceUserSettings()" tabindex="0">getWorkspaceUserSettings()</a></li>
 <li><a href="#getGenerator()" tabindex="0">getGenerator()</a></li>
 <li><a href="#getModElementManager()" tabindex="0">getModElementManager()</a></li>
@@ -115,6 +118,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#reloadFolderStructure()" tabindex="0">reloadFolderStructure()</a></li>
 <li><a href="#switchGenerator(java.lang.String)" tabindex="0">switchGenerator(String)</a></li>
 <li><a href="#bindToNewWorkspaceFile(java.io.File)" tabindex="0">bindToNewWorkspaceFile(File)</a></li>
+<li><a href="#resetLocalHistory()" tabindex="0">resetLocalHistory()</a></li>
 <li><a href="#markFailingGradleDependencies()" tabindex="0">markFailingGradleDependencies()</a></li>
 <li><a href="#checkFailingGradleDependenciesAndClear()" tabindex="0">checkFailingGradleDependenciesAndClear()</a></li>
 <li><a href="#getWorkspace()" tabindex="0">getWorkspace()</a></li>
@@ -123,6 +127,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#createWorkspace(java.io.File,net.mcreator.workspace.settings.WorkspaceSettings)" tabindex="0">createWorkspace(File, WorkspaceSettings)</a></li>
 <li><a href="#requireRegenerate()" tabindex="0">requireRegenerate()</a></li>
 <li><a href="#isRegenerateRequired()" tabindex="0">isRegenerateRequired()</a></li>
+<li><a href="#reloadFromFileSystem()" tabindex="0">reloadFromFileSystem()</a></li>
 <li><a href="#loadStoredDataFrom(net.mcreator.workspace.Workspace)" tabindex="0">loadStoredDataFrom(Workspace)</a></li>
 </ol>
 </li>
@@ -225,27 +230,33 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsModElement(java.lang.String)" class="member-name-link">containsModElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createWorkspace(java.io.File,net.mcreator.workspace.settings.WorkspaceSettings)" class="member-name-link">createWorkspace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#containsType(net.mcreator.element.ModElementType)" class="member-name-link">containsType</a><wbr>(<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;&nbsp;type)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createWorkspace(java.io.File,net.mcreator.workspace.settings.WorkspaceSettings)" class="member-name-link">createWorkspace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
  <a href="settings/WorkspaceSettings.html" title="class in net.mcreator.workspace.settings">WorkspaceSettings</a>&nbsp;workspaceSettings)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="misc/CreativeTabsOrder.html" title="class in net.mcreator.workspace.misc">CreativeTabsOrder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTabsOrder()" class="member-name-link">getCreativeTabsOrder</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;o)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="WorkspaceFileManager.html" title="class in net.mcreator.workspace">WorkspaceFileManager</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileManager()" class="member-name-link">getFileManager</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="misc/CreativeTabsOrder.html" title="class in net.mcreator.workspace.misc">CreativeTabsOrder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTabsOrder()" class="member-name-link">getCreativeTabsOrder</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="WorkspaceFolderManager.html" title="class in net.mcreator.workspace">WorkspaceFolderManager</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolderManager()" class="member-name-link">getFolderManager</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="WorkspaceFileManager.html" title="class in net.mcreator.workspace">WorkspaceFileManager</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFileManager()" class="member-name-link">getFileManager</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFoldersRoot()" class="member-name-link">getFoldersRoot</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="WorkspaceFolderManager.html" title="class in net.mcreator.workspace">WorkspaceFolderManager</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolderManager()" class="member-name-link">getFolderManager</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../generator/Generator.html" title="class in net.mcreator.generator">Generator</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGenerator()" class="member-name-link">getGenerator</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFoldersRoot()" class="member-name-link">getFoldersRoot</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../generator/Generator.html" title="class in net.mcreator.generator">Generator</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGenerator()" class="member-name-link">getGenerator</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="localhistory/HistoryManager.html" title="class in net.mcreator.workspace.localhistory">HistoryManager</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHistoryManager()" class="member-name-link">getHistoryManager</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/LinkedHashMap.html" title="class or interface in java.util" class="external-link">LinkedHashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLanguageMap()" class="member-name-link">getLanguageMap</a>()</code></div>
@@ -265,61 +276,67 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getModElements()" class="member-name-link">getModElements</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoundElements()" class="member-name-link">getSoundElements</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getModElementsByType(net.mcreator.element.ModElementType)" class="member-name-link">getModElementsByType</a><wbr>(<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;&nbsp;type)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="elements/TagElement.html" title="class in net.mcreator.workspace.elements">TagElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a>&lt;<a href="elements/TagElement.Entry.html" title="class in net.mcreator.workspace.elements">TagElement.Entry</a>&gt;&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTagElements()" class="member-name-link">getTagElements</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoundElements()" class="member-name-link">getSoundElements</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVariableElementByName(java.lang.String)" class="member-name-link">getVariableElementByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="elements/TagElement.html" title="class in net.mcreator.workspace.elements">TagElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a>&lt;<a href="elements/TagElement.Entry.html" title="class in net.mcreator.workspace.elements">TagElement.Entry</a>&gt;&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTagElements()" class="member-name-link">getTagElements</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVariableElements()" class="member-name-link">getVariableElements</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVariableElementByName(java.lang.String)" class="member-name-link">getVariableElementByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspace()" class="member-name-link">getWorkspace</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVariableElements()" class="member-name-link">getVariableElements</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="misc/WorkspaceInfo.html" title="class in net.mcreator.workspace.misc">WorkspaceInfo</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspaceInfo()" class="member-name-link">getWorkspaceInfo</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspace()" class="member-name-link">getWorkspace</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="settings/WorkspaceSettings.html" title="class in net.mcreator.workspace.settings">WorkspaceSettings</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspaceSettings()" class="member-name-link">getWorkspaceSettings</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="misc/WorkspaceInfo.html" title="class in net.mcreator.workspace.misc">WorkspaceInfo</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspaceInfo()" class="member-name-link">getWorkspaceInfo</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="settings/user/WorkspaceUserSettings.html" title="class in net.mcreator.workspace.settings.user">WorkspaceUserSettings</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspaceUserSettings()" class="member-name-link">getWorkspaceUserSettings</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="settings/WorkspaceSettings.html" title="class in net.mcreator.workspace.settings">WorkspaceSettings</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspaceSettings()" class="member-name-link">getWorkspaceSettings</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="settings/user/WorkspaceUserSettings.html" title="class in net.mcreator.workspace.settings.user">WorkspaceUserSettings</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspaceUserSettings()" class="member-name-link">getWorkspaceUserSettings</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isRegenerateRequired()" class="member-name-link">isRegenerateRequired</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#loadStoredDataFrom(net.mcreator.workspace.Workspace)" class="member-name-link">loadStoredDataFrom</a><wbr>(<a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;other)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isRegenerateRequired()" class="member-name-link">isRegenerateRequired</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#markDirty()" class="member-name-link">markDirty</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#loadStoredDataFrom(net.mcreator.workspace.Workspace)" class="member-name-link">loadStoredDataFrom</a><wbr>(<a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;other)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#markFailingGradleDependencies()" class="member-name-link">markFailingGradleDependencies</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#markDirty()" class="member-name-link">markDirty</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#putMetadata(java.lang.String,java.lang.Object)" class="member-name-link">putMetadata</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#markFailingGradleDependencies()" class="member-name-link">markFailingGradleDependencies</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#putMetadata(java.lang.String,java.lang.Object)" class="member-name-link">putMetadata</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;data)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readFromFS(java.io.File,java.awt.Window)" class="member-name-link">readFromFS</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;ui)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readFromFSUnsafe(java.io.File,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">readFromFSUnsafe</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readFromFS(java.io.File,java.awt.Window)" class="member-name-link">readFromFS</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;ui)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#readFromFSUnsafe(java.io.File,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">readFromFSUnsafe</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
  <a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Unsafe version of readFromFS with supported generator type checks omitted.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadFolderStructure()" class="member-name-link">reloadFolderStructure</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadFolderStructure()" class="member-name-link">reloadFolderStructure</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadFromFileSystem()" class="member-name-link">reloadFromFileSystem</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadModElements()" class="member-name-link">reloadModElements</a>()</code></div>
@@ -346,28 +363,31 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#requireRegenerate()" class="member-name-link">requireRegenerate</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetModElementCompilesStatus()" class="member-name-link">resetModElementCompilesStatus</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetLocalHistory()" class="member-name-link">resetLocalHistory</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalization(java.lang.String,java.lang.String)" class="member-name-link">setLocalization</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#resetModElementCompilesStatus()" class="member-name-link">resetModElementCompilesStatus</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setLocalization(java.lang.String,java.lang.String)" class="member-name-link">setLocalization</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;value)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMCreatorVersion(long)" class="member-name-link">setMCreatorVersion</a><wbr>(long&nbsp;mcreatorVersion)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWorkspaceSettings(net.mcreator.workspace.settings.WorkspaceSettings)" class="member-name-link">setWorkspaceSettings</a><wbr>(<a href="settings/WorkspaceSettings.html" title="class in net.mcreator.workspace.settings">WorkspaceSettings</a>&nbsp;workspaceSettings)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMCreatorVersion(long)" class="member-name-link">setMCreatorVersion</a><wbr>(long&nbsp;mcreatorVersion)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#switchGenerator(java.lang.String)" class="member-name-link">switchGenerator</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;generatorName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWorkspaceSettings(net.mcreator.workspace.settings.WorkspaceSettings)" class="member-name-link">setWorkspaceSettings</a><wbr>(<a href="settings/WorkspaceSettings.html" title="class in net.mcreator.workspace.settings">WorkspaceSettings</a>&nbsp;workspaceSettings)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#switchGenerator(java.lang.String)" class="member-name-link">switchGenerator</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;generatorName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateLanguage(java.lang.String,java.util.LinkedHashMap)" class="member-name-link">updateLanguage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;language,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateLanguage(java.lang.String,java.util.LinkedHashMap)" class="member-name-link">updateLanguage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;language,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/LinkedHashMap.html" title="class or interface in java.util" class="external-link">LinkedHashMap</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;data)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -549,10 +569,27 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 </section>
 </li>
 <li>
+<section class="detail" id="containsType(net.mcreator.element.ModElementType)">
+<h3>containsType</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">containsType</span><wbr><span class="parameters">(<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;&nbsp;type)</span></div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getModElementByName(java.lang.String)">
 <h3>getModElementByName</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a></span>&nbsp;<span class="element-name">getModElementByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName)</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a></span>&nbsp;<span class="element-name">getModElementByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getModElementsByType(net.mcreator.element.ModElementType)">
+<h3>getModElementsByType</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">getModElementsByType</span><wbr><span class="parameters">(<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;&nbsp;type)</span></div>
 </div>
 </section>
 </li>
@@ -560,7 +597,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 <section class="detail" id="getVariableElementByName(java.lang.String)">
 <h3>getVariableElementByName</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a></span>&nbsp;<span class="element-name">getVariableElementByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName)</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a></span>&nbsp;<span class="element-name">getVariableElementByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementName)</span></div>
 </div>
 </section>
 </li>
@@ -739,6 +777,18 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 </section>
 </li>
 <li>
+<section class="detail" id="getHistoryManager()">
+<h3>getHistoryManager</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="localhistory/HistoryManager.html" title="class in net.mcreator.workspace.localhistory">HistoryManager</a></span>&nbsp;<span class="element-name">getHistoryManager</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="IWorkspaceProvider.html#getHistoryManager()">getHistoryManager</a></code>&nbsp;in interface&nbsp;<code><a href="IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getWorkspaceUserSettings()">
 <h3>getWorkspaceUserSettings</h3>
 <div class="horizontal-scroll">
@@ -865,6 +915,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 </section>
 </li>
 <li>
+<section class="detail" id="resetLocalHistory()">
+<h3>resetLocalHistory</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">resetLocalHistory</span>()</div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="markFailingGradleDependencies()">
 <h3>markFailingGradleDependencies</h3>
 <div class="horizontal-scroll">
@@ -957,6 +1015,14 @@ Instead of checking for supported generator, it will force the generator specifi
 <h3>isRegenerateRequired</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isRegenerateRequired</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="reloadFromFileSystem()">
+<h3>reloadFromFileSystem</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadFromFileSystem</span>()</div>
 </div>
 </section>
 </li>

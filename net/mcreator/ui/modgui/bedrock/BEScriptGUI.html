@@ -66,6 +66,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#addBlocklyChangedListener(net.mcreator.ui.modgui.IBlocklyPanelHolder.BlocklyChangedListener)" tabindex="0">addBlocklyChangedListener(IBlocklyPanelHolder.BlocklyChangedListener)</a></li>
 <li><a href="#regenerateBlockAssemblies(boolean)" tabindex="0">regenerateBlockAssemblies(boolean)</a></li>
+<li><a href="#getLocalVariablesListModel()" tabindex="0">getLocalVariablesListModel()</a></li>
 <li><a href="#initGUI()" tabindex="0">initGUI()</a></li>
 <li><a href="#afterGeneratableElementGenerated()" tabindex="0">afterGeneratableElementGenerated()</a></li>
 <li><a href="#openInEditingMode(net.mcreator.element.types.bedrock.BEScript)" tabindex="0">openInEditingMode(BEScript)</a></li>
@@ -100,13 +101,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a>, <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>, <a href="../IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a>, <a href="../../search/ISearchable.html" title="interface in net.mcreator.ui.search">ISearchable</a>, <a href="../../search/ITextFieldSearchable.html" title="interface in net.mcreator.ui.search">ITextFieldSearchable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a>, <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>, <a href="../IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a>, <a href="../IBlocklyPanelHolder.IBlocklyPanelVariablesHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.IBlocklyPanelVariablesHolder</a>, <a href="../../search/ISearchable.html" title="interface in net.mcreator.ui.search">ISearchable</a>, <a href="../../search/ITextFieldSearchable.html" title="interface in net.mcreator.ui.search">ITextFieldSearchable</a></code></dd>
 </dl>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">BEScriptGUI</span>
 <span class="extends-implements">extends <a href="../ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../../element/types/bedrock/BEScript.html" title="class in net.mcreator.element.types.bedrock">BEScript</a>&gt;
-implements <a href="../IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a>, <a href="../../search/ISearchable.html" title="interface in net.mcreator.ui.search">ISearchable</a></span></div>
+implements <a href="../IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a>, <a href="../../search/ISearchable.html" title="interface in net.mcreator.ui.search">ISearchable</a>, <a href="../IBlocklyPanelHolder.IBlocklyPanelVariablesHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.IBlocklyPanelVariablesHolder</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -140,7 +141,7 @@ implements <a href="../IBlocklyPanelHolder.html" title="interface in net.mcreato
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Component.AccessibleAWTComponent.html" title="class or interface in java.awt" class="external-link">Component.AccessibleAWTComponent</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Component.BaselineResizeBehavior.html" title="class or interface in java.awt" class="external-link">Component.BaselineResizeBehavior</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Component.BltBufferStrategy.html" title="class or interface in java.awt" class="external-link">Component.BltBufferStrategy</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Component.FlipBufferStrategy.html" title="class or interface in java.awt" class="external-link">Component.FlipBufferStrategy</a></code></div>
 <div class="inherited-list">
 <h3 id="nested-classes-inherited-from-class-net.mcreator.ui.modgui.IBlocklyPanelHolder">Nested classes/interfaces inherited from interface&nbsp;<a href="../IBlocklyPanelHolder.html#nested-class-summary" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a></h3>
-<code><a href="../IBlocklyPanelHolder.BlocklyChangedListener.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.BlocklyChangedListener</a></code></div>
+<code><a href="../IBlocklyPanelHolder.BlocklyChangedListener.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.BlocklyChangedListener</a>, <a href="../IBlocklyPanelHolder.IBlocklyPanelVariablesHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.IBlocklyPanelVariablesHolder</a></code></div>
 </section>
 </li>
 <!-- =========== FIELD SUMMARY =========== -->
@@ -208,20 +209,23 @@ implements <a href="../IBlocklyPanelHolder.html" title="interface in net.mcreato
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../element/types/bedrock/BEScript.html" title="class in net.mcreator.element.types.bedrock">BEScript</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementFromGUI()" class="member-name-link">getElementFromGUI</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initGUI()" class="member-name-link">initGUI</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/DefaultListModel.html" title="class or interface in javax.swing" class="external-link">DefaultListModel</a><wbr>&lt;<a href="../../../workspace/elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalVariablesListModel()" class="member-name-link">getLocalVariablesListModel</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openInEditingMode(net.mcreator.element.types.bedrock.BEScript)" class="member-name-link">openInEditingMode</a><wbr>(<a href="../../../element/types/bedrock/BEScript.html" title="class in net.mcreator.element.types.bedrock">BEScript</a>&nbsp;script)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initGUI()" class="member-name-link">initGUI</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openInEditingMode(net.mcreator.element.types.bedrock.BEScript)" class="member-name-link">openInEditingMode</a><wbr>(<a href="../../../element/types/bedrock/BEScript.html" title="class in net.mcreator.element.types.bedrock">BEScript</a>&nbsp;script)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method is called to open a mod element in the GUI</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../blockly/BlocklyCompileNote.html" title="class in net.mcreator.blockly">BlocklyCompileNote</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#regenerateBlockAssemblies(boolean)" class="member-name-link">regenerateBlockAssemblies</a><wbr>(boolean&nbsp;jsEventTriggeredChange)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#search(java.lang.String)" class="member-name-link">search</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchTerm)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../blockly/BlocklyCompileNote.html" title="class in net.mcreator.blockly">BlocklyCompileNote</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#regenerateBlockAssemblies(boolean)" class="member-name-link">regenerateBlockAssemblies</a><wbr>(boolean&nbsp;jsEventTriggeredChange)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#search(java.lang.String)" class="member-name-link">search</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchTerm)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -301,6 +305,18 @@ implements <a href="../IBlocklyPanelHolder.html" title="interface in net.mcreato
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../IBlocklyPanelHolder.html#regenerateBlockAssemblies(boolean)">regenerateBlockAssemblies</a></code>&nbsp;in interface&nbsp;<code><a href="../IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getLocalVariablesListModel()">
+<h3>getLocalVariablesListModel</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/DefaultListModel.html" title="class or interface in javax.swing" class="external-link">DefaultListModel</a>&lt;<a href="../../../workspace/elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</span>&nbsp;<span class="element-name">getLocalVariablesListModel</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../IBlocklyPanelHolder.IBlocklyPanelVariablesHolder.html#getLocalVariablesListModel()">getLocalVariablesListModel</a></code>&nbsp;in interface&nbsp;<code><a href="../IBlocklyPanelHolder.IBlocklyPanelVariablesHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.IBlocklyPanelVariablesHolder</a></code></dd>
 </dl>
 </div>
 </section>

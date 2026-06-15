@@ -58,7 +58,6 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
-<li><a href="#blockGenerators" tabindex="0">blockGenerators</a></li>
 <li><a href="#editorType" tabindex="0">editorType</a></li>
 <li><a href="#lastProceduralBlockType" tabindex="0">lastProceduralBlockType</a></li>
 </ol>
@@ -148,15 +147,12 @@ implements <a href="../generator/IGeneratorProvider.html" title="interface in ne
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#blockGenerators" class="member-name-link">blockGenerators</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a></code></div>
+<div class="col-second even-row-color"><code><a href="#editorType" class="member-name-link">editorType</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#editorType" class="member-name-link">editorType</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#lastProceduralBlockType" class="member-name-link">lastProceduralBlockType</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#lastProceduralBlockType" class="member-name-link">lastProceduralBlockType</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -347,7 +343,7 @@ and handles an edge case of custom MCItem objects that are not mapped correctly<
 <code><a href="../generator/IGeneratorProvider.html#getGenerator()" title="getGenerator()">getGenerator</a>, <a href="../generator/IGeneratorProvider.html#getGeneratorConfiguration()" title="getGeneratorConfiguration()">getGeneratorConfiguration</a>, <a href="../generator/IGeneratorProvider.html#getGeneratorStats()" title="getGeneratorStats()">getGeneratorStats</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.workspace.IWorkspaceProvider">Methods inherited from interface&nbsp;<a href="../workspace/IWorkspaceProvider.html#method-summary" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></h3>
-<code><a href="../workspace/IWorkspaceProvider.html#getFileManager()" title="getFileManager()">getFileManager</a>, <a href="../workspace/IWorkspaceProvider.html#getFolderManager()" title="getFolderManager()">getFolderManager</a>, <a href="../workspace/IWorkspaceProvider.html#getModElementManager()" title="getModElementManager()">getModElementManager</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceFolder()" title="getWorkspaceFolder()">getWorkspaceFolder</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceInfo()" title="getWorkspaceInfo()">getWorkspaceInfo</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceSettings()" title="getWorkspaceSettings()">getWorkspaceSettings</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceUserSettings()" title="getWorkspaceUserSettings()">getWorkspaceUserSettings</a></code></div>
+<code><a href="../workspace/IWorkspaceProvider.html#getFileManager()" title="getFileManager()">getFileManager</a>, <a href="../workspace/IWorkspaceProvider.html#getFolderManager()" title="getFolderManager()">getFolderManager</a>, <a href="../workspace/IWorkspaceProvider.html#getHistoryManager()" title="getHistoryManager()">getHistoryManager</a>, <a href="../workspace/IWorkspaceProvider.html#getModElementManager()" title="getModElementManager()">getModElementManager</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceFolder()" title="getWorkspaceFolder()">getWorkspaceFolder</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceInfo()" title="getWorkspaceInfo()">getWorkspaceInfo</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceSettings()" title="getWorkspaceSettings()">getWorkspaceSettings</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceUserSettings()" title="getWorkspaceUserSettings()">getWorkspaceUserSettings</a></code></div>
 </section>
 </li>
 </ul>
@@ -359,14 +355,6 @@ and handles an edge case of custom MCItem objects that are not mapped correctly<
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
-<li>
-<section class="detail" id="blockGenerators">
-<h3>blockGenerators</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a>&gt;</span>&nbsp;<span class="element-name">blockGenerators</span></div>
-</div>
-</section>
-</li>
 <li>
 <section class="detail" id="editorType">
 <h3>editorType</h3>

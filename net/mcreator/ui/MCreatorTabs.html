@@ -59,12 +59,14 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#addTab(net.mcreator.ui.MCreatorTabs.Tab)" tabindex="0">addTab(MCreatorTabs.Tab)</a></li>
+<li><a href="#addTab(net.mcreator.ui.MCreatorTabs.Tab,boolean)" tabindex="0">addTab(MCreatorTabs.Tab, boolean)</a></li>
 <li><a href="#showTab(net.mcreator.ui.MCreatorTabs.Tab)" tabindex="0">showTab(MCreatorTabs.Tab)</a></li>
 <li><a href="#showTabNoNotify(net.mcreator.ui.MCreatorTabs.Tab)" tabindex="0">showTabNoNotify(MCreatorTabs.Tab)</a></li>
 <li><a href="#showTabOrGetExisting(net.mcreator.ui.MCreatorTabs.Tab)" tabindex="0">showTabOrGetExisting(MCreatorTabs.Tab)</a></li>
 <li><a href="#showTabOrGetExisting(java.lang.Object)" tabindex="0">showTabOrGetExisting(Object)</a></li>
 <li><a href="#closeTab(net.mcreator.ui.MCreatorTabs.Tab)" tabindex="0">closeTab(MCreatorTabs.Tab)</a></li>
-<li><a href="#closeAllTabs()" tabindex="0">closeAllTabs()</a></li>
+<li><a href="#closeTab(net.mcreator.ui.MCreatorTabs.Tab,boolean)" tabindex="0">closeTab(MCreatorTabs.Tab, boolean)</a></li>
+<li><a href="#closeAllTabs(boolean)" tabindex="0">closeAllTabs(boolean)</a></li>
 <li><a href="#getTabs()" tabindex="0">getTabs()</a></li>
 <li><a href="#getCurrentTab()" tabindex="0">getCurrentTab()</a></li>
 <li><a href="#addTabShownListener(net.mcreator.ui.MCreatorTabs.TabShownListener)" tabindex="0">addTabShownListener(MCreatorTabs.TabShownListener)</a></li>
@@ -184,13 +186,21 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addTab(net.mcreator.ui.MCreatorTabs.Tab)" class="member-name-link">addTab</a><wbr>(<a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addTabShownListener(net.mcreator.ui.MCreatorTabs.TabShownListener)" class="member-name-link">addTabShownListener</a><wbr>(<a href="MCreatorTabs.TabShownListener.html" title="interface in net.mcreator.ui">MCreatorTabs.TabShownListener</a>&nbsp;tabShownListener)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addTab(net.mcreator.ui.MCreatorTabs.Tab,boolean)" class="member-name-link">addTab</a><wbr>(<a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
+ boolean&nbsp;showTab)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#closeAllTabs()" class="member-name-link">closeAllTabs</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addTabShownListener(net.mcreator.ui.MCreatorTabs.TabShownListener)" class="member-name-link">addTabShownListener</a><wbr>(<a href="MCreatorTabs.TabShownListener.html" title="interface in net.mcreator.ui">MCreatorTabs.TabShownListener</a>&nbsp;tabShownListener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#closeTab(net.mcreator.ui.MCreatorTabs.Tab)" class="member-name-link">closeTab</a><wbr>(<a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#closeAllTabs(boolean)" class="member-name-link">closeAllTabs</a><wbr>(boolean&nbsp;force)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#closeTab(net.mcreator.ui.MCreatorTabs.Tab)" class="member-name-link">closeTab</a><wbr>(<a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#closeTab(net.mcreator.ui.MCreatorTabs.Tab,boolean)" class="member-name-link">closeTab</a><wbr>(<a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
+ boolean&nbsp;force)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentTab()" class="member-name-link">getCurrentTab</a>()</code></div>
@@ -248,6 +258,15 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="addTab(net.mcreator.ui.MCreatorTabs.Tab,boolean)">
+<h3>addTab</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addTab</span><wbr><span class="parameters">(<a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
+ boolean&nbsp;showTab)</span></div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="showTab(net.mcreator.ui.MCreatorTabs.Tab)">
 <h3>showTab</h3>
 <div class="horizontal-scroll">
@@ -294,10 +313,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="closeAllTabs()">
+<section class="detail" id="closeTab(net.mcreator.ui.MCreatorTabs.Tab,boolean)">
+<h3>closeTab</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">closeTab</span><wbr><span class="parameters">(<a href="MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a>&nbsp;tab,
+ boolean&nbsp;force)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="closeAllTabs(boolean)">
 <h3>closeAllTabs</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">closeAllTabs</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">closeAllTabs</span><wbr><span class="parameters">(boolean&nbsp;force)</span></div>
 </div>
 </section>
 </li>

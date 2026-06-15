@@ -59,6 +59,18 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
+<li><a href="#NODE_SOURCE_GRADLE" tabindex="0">NODE_SOURCE_GRADLE</a></li>
+<li><a href="#NODE_RESOURCES_GRADLE" tabindex="0">NODE_RESOURCES_GRADLE</a></li>
+<li><a href="#NODE_SOUNDS" tabindex="0">NODE_SOUNDS</a></li>
+<li><a href="#NODE_STRUCTURES" tabindex="0">NODE_STRUCTURES</a></li>
+<li><a href="#NODE_MODELS" tabindex="0">NODE_MODELS</a></li>
+<li><a href="#NODE_DEBUG_PROFILER_RESULTS" tabindex="0">NODE_DEBUG_PROFILER_RESULTS</a></li>
+<li><a href="#NODE_MINECRAFT_RUN_FOLDER" tabindex="0">NODE_MINECRAFT_RUN_FOLDER</a></li>
+<li><a href="#NODE_MC_CLIENT_RUN_FOLDER" tabindex="0">NODE_MC_CLIENT_RUN_FOLDER</a></li>
+<li><a href="#NODE_MC_SERVER_RUN_FOLDER" tabindex="0">NODE_MC_SERVER_RUN_FOLDER</a></li>
+<li><a href="#NODE_BEDROCK_EDITION" tabindex="0">NODE_BEDROCK_EDITION</a></li>
+<li><a href="#NODE_EXTERNAL_LIBRARIES" tabindex="0">NODE_EXTERNAL_LIBRARIES</a></li>
+<li><a href="#NODE_TEXTURES" tabindex="0">NODE_TEXTURES</a></li>
 <li><a href="#tree" tabindex="0">tree</a></li>
 </ol>
 </li>
@@ -70,6 +82,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#reloadTree()" tabindex="0">reloadTree()</a></li>
+<li><a href="#getCurrentSelectedDirectory()" tabindex="0">getCurrentSelectedDirectory()</a></li>
 <li><a href="#openSelectedFile(boolean)" tabindex="0">openSelectedFile(boolean)</a></li>
 <li><a href="#openSelectedFileInDesktop()" tabindex="0">openSelectedFileInDesktop()</a></li>
 <li><a href="#showSelectedFileInDesktop()" tabindex="0">showSelectedFileInDesktop()</a></li>
@@ -144,6 +157,42 @@ the workspace and also observe source code of external libraries used by that pr
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#NODE_BEDROCK_EDITION" class="member-name-link">NODE_BEDROCK_EDITION</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#NODE_DEBUG_PROFILER_RESULTS" class="member-name-link">NODE_DEBUG_PROFILER_RESULTS</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#NODE_EXTERNAL_LIBRARIES" class="member-name-link">NODE_EXTERNAL_LIBRARIES</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#NODE_MC_CLIENT_RUN_FOLDER" class="member-name-link">NODE_MC_CLIENT_RUN_FOLDER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#NODE_MC_SERVER_RUN_FOLDER" class="member-name-link">NODE_MC_SERVER_RUN_FOLDER</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#NODE_MINECRAFT_RUN_FOLDER" class="member-name-link">NODE_MINECRAFT_RUN_FOLDER</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#NODE_MODELS" class="member-name-link">NODE_MODELS</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#NODE_RESOURCES_GRADLE" class="member-name-link">NODE_RESOURCES_GRADLE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#NODE_SOUNDS" class="member-name-link">NODE_SOUNDS</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#NODE_SOURCE_GRADLE" class="member-name-link">NODE_SOURCE_GRADLE</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#NODE_STRUCTURES" class="member-name-link">NODE_STRUCTURES</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>static final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#NODE_TEXTURES" class="member-name-link">NODE_TEXTURES</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>final <a href="../component/tree/JFileTree.html" title="class in net.mcreator.ui.component.tree">JFileTree</a></code></div>
 <div class="col-second even-row-color"><code><a href="#tree" class="member-name-link">tree</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -190,25 +239,28 @@ the workspace and also observe source code of external libraries used by that pr
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">If a file is selected, attempts to remove it from the file system.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openSelectedFile(boolean)" class="member-name-link">openSelectedFile</a><wbr>(boolean&nbsp;forceExpansion)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCurrentSelectedDirectory()" class="member-name-link">getCurrentSelectedDirectory</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openSelectedFile(boolean)" class="member-name-link">openSelectedFile</a><wbr>(boolean&nbsp;forceExpansion)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">If a file is selected, opens this file in the built-in code editor if its type is supported, otherwise calls the
 program assigned to that file type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openSelectedFileInDesktop()" class="member-name-link">openSelectedFileInDesktop</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openSelectedFileInDesktop()" class="member-name-link">openSelectedFileInDesktop</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">If a file is selected, opens this file using the program assigned to that file type.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadTree()" class="member-name-link">reloadTree</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadTree()" class="member-name-link">reloadTree</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Reloads all the project files.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showSelectedFileInDesktop()" class="member-name-link">showSelectedFileInDesktop</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showSelectedFileInDesktop()" class="member-name-link">showSelectedFileInDesktop</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">If a file is selected, opens that file's parent folder via OS native file explorer and highlights the file.</div>
 </div>
 </div>
@@ -240,6 +292,198 @@ program assigned to that file type.</div>
 <section class="field-details" id="field-detail">
 <h2>Field Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="NODE_SOURCE_GRADLE">
+<h3>NODE_SOURCE_GRADLE</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_SOURCE_GRADLE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_SOURCE_GRADLE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_RESOURCES_GRADLE">
+<h3>NODE_RESOURCES_GRADLE</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_RESOURCES_GRADLE</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_RESOURCES_GRADLE">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_SOUNDS">
+<h3>NODE_SOUNDS</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_SOUNDS</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_SOUNDS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_STRUCTURES">
+<h3>NODE_STRUCTURES</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_STRUCTURES</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_STRUCTURES">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_MODELS">
+<h3>NODE_MODELS</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_MODELS</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_MODELS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_DEBUG_PROFILER_RESULTS">
+<h3>NODE_DEBUG_PROFILER_RESULTS</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_DEBUG_PROFILER_RESULTS</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_DEBUG_PROFILER_RESULTS">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_MINECRAFT_RUN_FOLDER">
+<h3>NODE_MINECRAFT_RUN_FOLDER</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_MINECRAFT_RUN_FOLDER</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_MINECRAFT_RUN_FOLDER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_MC_CLIENT_RUN_FOLDER">
+<h3>NODE_MC_CLIENT_RUN_FOLDER</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_MC_CLIENT_RUN_FOLDER</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_MC_CLIENT_RUN_FOLDER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_MC_SERVER_RUN_FOLDER">
+<h3>NODE_MC_SERVER_RUN_FOLDER</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_MC_SERVER_RUN_FOLDER</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_MC_SERVER_RUN_FOLDER">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_BEDROCK_EDITION">
+<h3>NODE_BEDROCK_EDITION</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_BEDROCK_EDITION</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_BEDROCK_EDITION">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_EXTERNAL_LIBRARIES">
+<h3>NODE_EXTERNAL_LIBRARIES</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_EXTERNAL_LIBRARIES</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_EXTERNAL_LIBRARIES">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NODE_TEXTURES">
+<h3>NODE_TEXTURES</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">NODE_TEXTURES</span></div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="tag-list">
+<li><a href="../../../../constant-values.html#net.mcreator.ui.browser.WorkspaceFileBrowser.NODE_TEXTURES">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</div>
+</section>
+</li>
 <li>
 <section class="detail" id="tree">
 <h3>tree</h3>
@@ -283,6 +527,15 @@ program assigned to that file type.</div>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadTree</span>()</div>
 <div class="block">Reloads all the project files.</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getCurrentSelectedDirectory()">
+<h3>getCurrentSelectedDirectory</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getCurrentSelectedDirectory</span>()</div>
 </div>
 </section>
 </li>

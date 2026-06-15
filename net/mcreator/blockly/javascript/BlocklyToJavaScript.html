@@ -56,6 +56,11 @@ loadScripts(document, 'script');</script>
 <li><a href="#field-summary" tabindex="0">Field Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
+<li><a href="#field-detail" tabindex="0">Field Details</a>
+<ol class="toc-list">
+<li><a href="#variableGenerator" tabindex="0">variableGenerator</a></li>
+</ol>
+</li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
 <li><a href="#%3Cinit%3E(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement,java.lang.String,net.mcreator.generator.template.TemplateGenerator,net.mcreator.blockly.IBlockGenerator...)" tabindex="0">BlocklyToJavaScript(Workspace, ModElement, String, TemplateGenerator, IBlockGenerator...)</a></li>
@@ -66,6 +71,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#preBlocksPlacement(org.w3c.dom.Document,org.w3c.dom.Element)" tabindex="0">preBlocksPlacement(Document, Element)</a></li>
 <li><a href="#getExternalTrigger()" tabindex="0">getExternalTrigger()</a></li>
 <li><a href="#beforeGenerate()" tabindex="0">beforeGenerate()</a></li>
+<li><a href="#getLocalVariables()" tabindex="0">getLocalVariables()</a></li>
 </ol>
 </li>
 </ol>
@@ -97,9 +103,18 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected <a href="../BlocklyVariables.html" title="class in net.mcreator.blockly">BlocklyVariables</a></code></div>
+<div class="col-second even-row-color"><code><a href="#variableGenerator" class="member-name-link">variableGenerator</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.blockly.BlocklyToCode">Fields inherited from class&nbsp;<a href="../BlocklyToCode.html#field-summary" title="class in net.mcreator.blockly">BlocklyToCode</a></h3>
-<code><a href="../BlocklyToCode.html#blockGenerators">blockGenerators</a>, <a href="../BlocklyToCode.html#editorType">editorType</a>, <a href="../BlocklyToCode.html#lastProceduralBlockType">lastProceduralBlockType</a></code></div>
+<code><a href="../BlocklyToCode.html#editorType">editorType</a>, <a href="../BlocklyToCode.html#lastProceduralBlockType">lastProceduralBlockType</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -138,10 +153,13 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalTrigger()" class="member-name-link">getExternalTrigger</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preBlocksPlacement(org.w3c.dom.Document,org.w3c.dom.Element)" class="member-name-link">preBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../workspace/elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLocalVariables()" class="member-name-link">getLocalVariables</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preBlocksPlacement(org.w3c.dom.Document,org.w3c.dom.Element)" class="member-name-link">preBlocksPlacement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.xml/org/w3c/dom/Document.html" title="class or interface in org.w3c.dom" class="external-link">Document</a>&nbsp;doc,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;startBlock)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method contains the code needing to be executed before blocks are placed.</div>
 </div>
 </div>
@@ -158,13 +176,29 @@ loadScripts(document, 'script');</script>
 <code><a href="../../generator/IGeneratorProvider.html#getGenerator()" title="getGenerator()">getGenerator</a>, <a href="../../generator/IGeneratorProvider.html#getGeneratorConfiguration()" title="getGeneratorConfiguration()">getGeneratorConfiguration</a>, <a href="../../generator/IGeneratorProvider.html#getGeneratorStats()" title="getGeneratorStats()">getGeneratorStats</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.workspace.IWorkspaceProvider">Methods inherited from interface&nbsp;<a href="../../workspace/IWorkspaceProvider.html#method-summary" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></h3>
-<code><a href="../../workspace/IWorkspaceProvider.html#getFileManager()" title="getFileManager()">getFileManager</a>, <a href="../../workspace/IWorkspaceProvider.html#getFolderManager()" title="getFolderManager()">getFolderManager</a>, <a href="../../workspace/IWorkspaceProvider.html#getModElementManager()" title="getModElementManager()">getModElementManager</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceFolder()" title="getWorkspaceFolder()">getWorkspaceFolder</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceInfo()" title="getWorkspaceInfo()">getWorkspaceInfo</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceSettings()" title="getWorkspaceSettings()">getWorkspaceSettings</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceUserSettings()" title="getWorkspaceUserSettings()">getWorkspaceUserSettings</a></code></div>
+<code><a href="../../workspace/IWorkspaceProvider.html#getFileManager()" title="getFileManager()">getFileManager</a>, <a href="../../workspace/IWorkspaceProvider.html#getFolderManager()" title="getFolderManager()">getFolderManager</a>, <a href="../../workspace/IWorkspaceProvider.html#getHistoryManager()" title="getHistoryManager()">getHistoryManager</a>, <a href="../../workspace/IWorkspaceProvider.html#getModElementManager()" title="getModElementManager()">getModElementManager</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceFolder()" title="getWorkspaceFolder()">getWorkspaceFolder</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceInfo()" title="getWorkspaceInfo()">getWorkspaceInfo</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceSettings()" title="getWorkspaceSettings()">getWorkspaceSettings</a>, <a href="../../workspace/IWorkspaceProvider.html#getWorkspaceUserSettings()" title="getWorkspaceUserSettings()">getWorkspaceUserSettings</a></code></div>
 </section>
 </li>
 </ul>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="variableGenerator">
+<h3>variableGenerator</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../BlocklyVariables.html" title="class in net.mcreator.blockly">BlocklyVariables</a></span>&nbsp;<span class="element-name">variableGenerator</span></div>
+</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -235,6 +269,14 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../BlocklyToCode.html#beforeGenerate()">beforeGenerate</a></code>&nbsp;in class&nbsp;<code><a href="../BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a></code></dd>
 </dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getLocalVariables()">
+<h3>getLocalVariables</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../workspace/elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</span>&nbsp;<span class="element-name">getLocalVariables</span>()</div>
 </div>
 </section>
 </li>

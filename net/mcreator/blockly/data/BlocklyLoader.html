@@ -65,6 +65,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#init()" tabindex="0">init()</a></li>
 <li><a href="#registerBlockLoader(net.mcreator.ui.blockly.BlocklyEditorType)" tabindex="0">registerBlockLoader(BlocklyEditorType)</a></li>
 <li><a href="#registerExternalTriggerLoader(net.mcreator.ui.blockly.BlocklyEditorType,java.lang.String)" tabindex="0">registerExternalTriggerLoader(BlocklyEditorType, String)</a></li>
+<li><a href="#getAllToolboxBlocksFor(net.mcreator.generator.GeneratorConfiguration,net.mcreator.ui.blockly.BlocklyEditorType)" tabindex="0">getAllToolboxBlocksFor(GeneratorConfiguration, BlocklyEditorType)</a></li>
 <li><a href="#addBuiltinCategory(java.lang.String)" tabindex="0">addBuiltinCategory(String)</a></li>
 <li><a href="#getAllBlockLoaders()" tabindex="0">getAllBlockLoaders()</a></li>
 <li><a href="#getBuiltinCategories()" tabindex="0">getBuiltinCategories()</a></li>
@@ -129,27 +130,31 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>, <a href="ExternalTriggerLoader.html" title="class in net.mcreator.blockly.data">ExternalTriggerLoader</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllExternalTriggerLoaders()" class="member-name-link">getAllExternalTriggerLoaders</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalBlockLoader.html" title="class in net.mcreator.blockly.data">ExternalBlockLoader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlockLoader(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getBlockLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="ToolboxBlock.html" title="class in net.mcreator.blockly.data">ToolboxBlock</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAllToolboxBlocksFor(net.mcreator.generator.GeneratorConfiguration,net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getAllToolboxBlocksFor</a><wbr>(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ <a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getBuiltinCategories()" class="member-name-link">getBuiltinCategories</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalTriggerLoader.html" title="class in net.mcreator.blockly.data">ExternalTriggerLoader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalTriggerLoader(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getExternalTriggerLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#init()" class="member-name-link">init</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerBlockLoader(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">registerBlockLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalBlockLoader.html" title="class in net.mcreator.blockly.data">ExternalBlockLoader</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlockLoader(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getBlockLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getBuiltinCategories()" class="member-name-link">getBuiltinCategories</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ExternalTriggerLoader.html" title="class in net.mcreator.blockly.data">ExternalTriggerLoader</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExternalTriggerLoader(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getExternalTriggerLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#init()" class="member-name-link">init</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerBlockLoader(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">registerBlockLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new <a href="ExternalBlockLoader.html" title="class in net.mcreator.blockly.data"><code>ExternalBlockLoader</code></a> to load blocks for a specific Blockly panel.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerExternalTriggerLoader(net.mcreator.ui.blockly.BlocklyEditorType,java.lang.String)" class="member-name-link">registerExternalTriggerLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerExternalTriggerLoader(net.mcreator.ui.blockly.BlocklyEditorType,java.lang.String)" class="member-name-link">registerExternalTriggerLoader</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceFolder)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -210,6 +215,15 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerExternalTriggerLoader</span><wbr><span class="parameters">(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceFolder)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getAllToolboxBlocksFor(net.mcreator.generator.GeneratorConfiguration,net.mcreator.ui.blockly.BlocklyEditorType)">
+<h3>getAllToolboxBlocksFor</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ToolboxBlock.html" title="class in net.mcreator.blockly.data">ToolboxBlock</a>&gt;</span>&nbsp;<span class="element-name">getAllToolboxBlocksFor</span><wbr><span class="parameters">(<a href="../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
+ <a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType)</span></div>
 </div>
 </section>
 </li>

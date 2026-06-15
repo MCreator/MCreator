@@ -63,7 +63,9 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
+<li><a href="#preload()" tabindex="0">preload()</a></li>
 <li><a href="#getDynamicBlocks(net.mcreator.ui.blockly.BlocklyEditorType)" tabindex="0">getDynamicBlocks(BlocklyEditorType)</a></li>
+<li><a href="#loadBlocksAndCategoriesInPanel(net.mcreator.ui.blockly.BlocklyPanel)" tabindex="0">loadBlocksAndCategoriesInPanel(BlocklyPanel)</a></li>
 </ol>
 </li>
 </ol>
@@ -124,8 +126,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="ToolboxBlock.html" title="class in net.mcreator.blockly.data">ToolboxBlock</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDynamicBlocks(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getDynamicBlocks</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="DynamicBlockLoader.DynamicToolboxBlock.html" title="class in net.mcreator.blockly.data">DynamicBlockLoader.DynamicToolboxBlock</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDynamicBlocks(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getDynamicBlocks</a><wbr>(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadBlocksAndCategoriesInPanel(net.mcreator.ui.blockly.BlocklyPanel)" class="member-name-link">loadBlocksAndCategoriesInPanel</a><wbr>(<a href="../../ui/blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&nbsp;pane)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#preload()" class="member-name-link">preload</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -161,10 +169,26 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="preload()">
+<h3>preload</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">preload</span>()</div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getDynamicBlocks(net.mcreator.ui.blockly.BlocklyEditorType)">
 <h3>getDynamicBlocks</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ToolboxBlock.html" title="class in net.mcreator.blockly.data">ToolboxBlock</a>&gt;</span>&nbsp;<span class="element-name">getDynamicBlocks</span><wbr><span class="parameters">(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DynamicBlockLoader.DynamicToolboxBlock.html" title="class in net.mcreator.blockly.data">DynamicBlockLoader.DynamicToolboxBlock</a>&gt;</span>&nbsp;<span class="element-name">getDynamicBlocks</span><wbr><span class="parameters">(<a href="../../ui/blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;blocklyEditorType)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="loadBlocksAndCategoriesInPanel(net.mcreator.ui.blockly.BlocklyPanel)">
+<h3>loadBlocksAndCategoriesInPanel</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">loadBlocksAndCategoriesInPanel</span><wbr><span class="parameters">(<a href="../../ui/blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&nbsp;pane)</span></div>
 </div>
 </section>
 </li>

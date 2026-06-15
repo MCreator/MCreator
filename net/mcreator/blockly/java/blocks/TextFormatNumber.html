@@ -66,6 +66,9 @@ loadScripts(document, 'script');</script>
 <li><a href="#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" tabindex="0">generateBlock(BlocklyToCode, Element)</a></li>
 <li><a href="#getSupportedBlocks()" tabindex="0">getSupportedBlocks()</a></li>
 <li><a href="#getBlockType()" tabindex="0">getBlockType()</a></li>
+<li><a href="#getBlockJSONDefinitions()" tabindex="0">getBlockJSONDefinitions()</a></li>
+<li><a href="#getToolboxCategory()" tabindex="0">getToolboxCategory()</a></li>
+<li><a href="#getToolboxInit()" tabindex="0">getToolboxInit()</a></li>
 </ol>
 </li>
 </ol>
@@ -129,12 +132,23 @@ implements <a href="../../IBlockGenerator.html" title="interface in net.mcreator
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateBlock(net.mcreator.blockly.BlocklyToCode,org.w3c.dom.Element)" class="member-name-link">generateBlock</a><wbr>(<a href="../../BlocklyToCode.html" title="class in net.mcreator.blockly">BlocklyToCode</a>&nbsp;master,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;block)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../IBlockGenerator.BlockType.html" title="enum class in net.mcreator.blockly">IBlockGenerator.BlockType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlockType()" class="member-name-link">getBlockType</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlockJSONDefinitions()" class="member-name-link">getBlockJSONDefinitions</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedBlocks()" class="member-name-link">getSupportedBlocks</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../IBlockGenerator.BlockType.html" title="enum class in net.mcreator.blockly">IBlockGenerator.BlockType</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlockType()" class="member-name-link">getBlockType</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSupportedBlocks()" class="member-name-link">getSupportedBlocks</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolboxCategory()" class="member-name-link">getToolboxCategory</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolboxInit()" class="member-name-link">getToolboxInit</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the initialization XML for the toolbox for each block returned by <a href="../../IBlockGenerator.html#getSupportedBlocks()"><code>IBlockGenerator.getSupportedBlocks()</code></a>, in the same order.</div>
+</div>
 </div>
 </div>
 </div>
@@ -204,6 +218,49 @@ implements <a href="../../IBlockGenerator.html" title="interface in net.mcreator
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../IBlockGenerator.html#getBlockType()">getBlockType</a></code>&nbsp;in interface&nbsp;<code><a href="../../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getBlockJSONDefinitions()">
+<h3>getBlockJSONDefinitions</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">getBlockJSONDefinitions</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../IBlockGenerator.html#getBlockJSONDefinitions()">getBlockJSONDefinitions</a></code>&nbsp;in interface&nbsp;<code><a href="../../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a></code></dd>
+<dt>Returns:</dt>
+<dd>Blockly JSON definitions for each block returned by <a href="../../IBlockGenerator.html#getSupportedBlocks()"><code>IBlockGenerator.getSupportedBlocks()</code></a>, in the same order.</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getToolboxCategory()">
+<h3>getToolboxCategory</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getToolboxCategory</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../IBlockGenerator.html#getToolboxCategory()">getToolboxCategory</a></code>&nbsp;in interface&nbsp;<code><a href="../../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getToolboxInit()">
+<h3>getToolboxInit</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;[]</span>&nbsp;<span class="element-name">getToolboxInit</span>()</div>
+<div class="block"><span class="description-from-type-label">Description copied from interface:&nbsp;<code><a href="../../IBlockGenerator.html#getToolboxInit()">IBlockGenerator</a></code></span></div>
+<div class="block">Retrieves the initialization XML for the toolbox for each block returned by <a href="../../IBlockGenerator.html#getSupportedBlocks()"><code>IBlockGenerator.getSupportedBlocks()</code></a>, in the same order.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../IBlockGenerator.html#getToolboxInit()">getToolboxInit</a></code>&nbsp;in interface&nbsp;<code><a href="../../IBlockGenerator.html" title="interface in net.mcreator.blockly">IBlockGenerator</a></code></dd>
 </dl>
 </div>
 </section>

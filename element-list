@@ -160,6 +160,7 @@ net.mcreator.ui.views.editor.image.versioning
 net.mcreator.ui.views.editor.image.versioning.change
 net.mcreator.ui.workspace
 net.mcreator.ui.workspace.breadcrumb
+net.mcreator.ui.workspace.localhistory
 net.mcreator.ui.workspace.resources
 net.mcreator.ui.workspace.selector
 net.mcreator.ui.wysiwyg
@@ -171,6 +172,7 @@ net.mcreator.util.math
 net.mcreator.util.yaml
 net.mcreator.workspace
 net.mcreator.workspace.elements
+net.mcreator.workspace.localhistory
 net.mcreator.workspace.misc
 net.mcreator.workspace.references
 net.mcreator.workspace.resources
