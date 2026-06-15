@@ -44,6 +44,7 @@ public class BlocklyLoader {
 		add("logicloops");
 		add("logicoperations");
 		add("math");
+		add("vector");
 		add("text");
 		add("time");
 		add("advanced");
