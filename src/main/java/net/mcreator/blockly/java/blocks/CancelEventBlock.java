@@ -32,6 +32,8 @@ import org.w3c.dom.Element;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class CancelEventBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -76,5 +78,19 @@ public class CancelEventBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "cancel_event",
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 90
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
 	}
 }

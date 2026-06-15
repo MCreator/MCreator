@@ -27,6 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TextIndexOfBlock implements IBlockGenerator {
@@ -63,5 +64,41 @@ public class TextIndexOfBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "text_index_of",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "check",
+                  "check": "String"
+              },
+              {
+                  "type": "input_value",
+                  "name": "text",
+                  "check": "String"
+              },
+              {
+                  "type": "input_value",
+                  "name": "from",
+                  "check": "Number"
+              }
+          ],
+          "inputsInline": true,
+          "output": "Number",
+          "colour": "%{BKY_MATH_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "text";
+	}
+
+	@Nullable @Override public List<String>[] getToolboxInit() {
+		return new List[] { List.of(
+				"<value name=\"from\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>") };
 	}
 }

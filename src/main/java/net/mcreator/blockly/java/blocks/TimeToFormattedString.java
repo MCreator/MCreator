@@ -27,6 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TimeToFormattedString implements IBlockGenerator {
@@ -53,5 +54,31 @@ public class TimeToFormattedString implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "time_to_formatted_string",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "format",
+                  "check": "String"
+              }
+          ],
+          "inputsInline": true,
+          "output": "String",
+          "colour": "%{BKY_TEXTS_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "time";
+	}
+
+	@Nullable @Override public List<String>[] getToolboxInit() {
+		return new List[] { List.of(
+				"<value name=\"format\"><block type=\"text\"><field name=\"TEXT\">yyyy-MM-dd</field></block></value>") };
 	}
 }

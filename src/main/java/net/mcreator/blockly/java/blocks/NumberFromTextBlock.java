@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class NumberFromTextBlock implements IBlockGenerator {
@@ -62,6 +63,26 @@ public class NumberFromTextBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "math_from_text",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "NUMTEXT",
+                  "check": "String"
+              }
+          ],
+          "output": "Number",
+          "colour": "%{BKY_MATH_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "math";
 	}
 
 }

@@ -34,9 +34,9 @@ public class InternalBlocksLoader {
 	private static final Map<BlocklyEditorType, List<ToolboxBlock>> internalToolboxBlocks = new HashMap<>();
 
 	public static void preload() {
-		internalBlocks.put(BlocklyEditorType.PROCEDURE, getAllForJava());
-		internalBlocks.put(BlocklyEditorType.AI_TASK, getAllForJava());
-		internalBlocks.put(BlocklyEditorType.COMMAND_ARG, getAllForJava());
+		internalBlocks.put(BlocklyEditorType.PROCEDURE, getAllForJava(BlocklyEditorType.PROCEDURE));
+		internalBlocks.put(BlocklyEditorType.AI_TASK, getAllForJava(BlocklyEditorType.AI_TASK));
+		internalBlocks.put(BlocklyEditorType.COMMAND_ARG, getAllForJava(BlocklyEditorType.COMMAND_ARG));
 		internalBlocks.put(BlocklyEditorType.FEATURE, List.of(new net.mcreator.blockly.datapack.blocks.MCItemBlock()));
 		internalBlocks.put(BlocklyEditorType.JSON_TRIGGER,
 				List.of(new net.mcreator.blockly.datapack.blocks.NumberBlock(),
@@ -79,7 +79,7 @@ public class InternalBlocksLoader {
 		pane.executeLocalScript("Blockly.defineBlocksWithJsonArray([" + String.join(",", definitions) + "])");
 	}
 
-	private static List<IBlockGenerator> getAllForJava() {
+	private static List<IBlockGenerator> getAllForJava(BlocklyEditorType editorType) {
 		List<IBlockGenerator> blockGenerators = new ArrayList<>();
 
 		// add standard procedural blocks
@@ -90,7 +90,7 @@ public class InternalBlocksLoader {
 		blockGenerators.add(new SingularMathOperationsBlock());
 		blockGenerators.add(new NumberFromTextBlock());
 		blockGenerators.add(new JavaCodeProceduralBlock());
-		blockGenerators.add(new ProcedureCallBlock());
+		blockGenerators.add(new ProcedureCallBlock(editorType));
 		blockGenerators.add(new ProcedureRetvalBlock());
 
 		// add standard output blocks
