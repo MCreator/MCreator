@@ -10,7 +10,7 @@
                 "target": {
                 	<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
 						"predicate_type": "tag_match",
-						"tag": "${replacementBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}"
+						"tag": "${replacementBlock.asTagEntry()}"
                 	<#elseif replacementBlock.getMappedValue(1).startsWith("#")>
 						"predicate_type": "tag_match",
 						"tag": "${replacementBlock.getMappedValue(1).replace("#", "")}"
