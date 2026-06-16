@@ -1,4 +1,4 @@
-private static boolean isPointInsideBlockBoundingBox(LevelAccessor world, Vec3 point) {
+private static boolean isPointInsideBlockCollisionShape(LevelAccessor world, Vec3 point) {
     BlockPos pos = BlockPos.containing(point);
     VoxelShape shape = world.getBlockState(pos).getCollisionShape(world, pos);
     if (shape.isEmpty())
