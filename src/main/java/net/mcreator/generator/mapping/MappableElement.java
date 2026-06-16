@@ -95,7 +95,7 @@ public abstract class MappableElement implements IWorkspaceDependent {
 			retval = retval.substring(4); // Remove the "TAG:" prefix
 			if (retval.startsWith("mod:")) {
 				retval = Objects.requireNonNull(this.getWorkspace()).getWorkspaceSettings().getModID()
-						+ retval.substring(4); // Replace the "mod:" prefix with the actual mod ID
+						+ retval.substring(3); // Replace the "mod" prefix with the actual mod ID
 			}
 		}
 
