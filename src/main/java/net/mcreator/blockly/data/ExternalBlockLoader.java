@@ -98,7 +98,10 @@ public class ExternalBlockLoader {
 			toolboxCategory.id = FilenameUtilsPatched.getBaseName(toolboxCategoryName).replace("$", "");
 			toolboxCategories.add(toolboxCategory);
 		}
-		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
+		toolboxCategories.sort(
+				Comparator.comparing(ToolboxCategory::getName,
+						Comparator.nullsLast(String::compareTo))
+		);
 
 		for (ToolboxCategory toolboxCategory : toolboxCategories) {
 			if (toolboxCategory.parent_category != null) {
@@ -128,9 +131,16 @@ public class ExternalBlockLoader {
 		// and then sort them for toolbox display
 		if (PreferencesManager.PREFERENCES.blockly.useSmartSort.get()) {
 			toolboxBlocksList.sort(
-					Comparator.comparing(ToolboxBlock::getGroupEstimate).thenComparing(ToolboxBlock::getName));
+					Comparator.comparing(ToolboxBlock::getGroupEstimate,
+									Comparator.nullsLast(String::compareTo))
+							.thenComparing(ToolboxBlock::getName,
+									Comparator.nullsLast(String::compareTo))
+			);
 		} else {
-			toolboxBlocksList.sort(Comparator.comparing(ToolboxBlock::getName));
+			toolboxCategories.sort(
+					Comparator.comparing(ToolboxCategory::getName,
+							Comparator.nullsLast(String::compareTo))
+			);
 		}
 
 		// setup toolbox

@@ -52,8 +52,10 @@ public class ExternalTriggerLoader {
 		}
 
 		externalTriggers.sort(
-				Comparator.comparing(ExternalTrigger::getType).thenComparing(ExternalTrigger::getGroupEstimate)
-						.thenComparing(ExternalTrigger::getName));
+				Comparator.comparing(ExternalTrigger::getType, Comparator.nullsLast(String::compareTo))
+						.thenComparing(ExternalTrigger::getGroupEstimate, Comparator.nullsLast(String::compareTo))
+						.thenComparing(ExternalTrigger::getName, Comparator.nullsLast(String::compareTo))
+		);
 	}
 
 	public String getResourceFolder() {
