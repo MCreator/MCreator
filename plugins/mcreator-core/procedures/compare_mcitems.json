@@ -30,7 +30,7 @@
     "toolbox_id": "logicoperations",
     "toolbox_init": [
       "~<value name=\"a\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
-      "~<value name=\"b\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>"
+      "<value name=\"b\"><shadow type=\"mcitem_all\"><field name=\"value\"></field></shadow></value>"
     ],
     "inputs": [
       "a",
