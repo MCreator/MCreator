@@ -1,0 +1,1 @@
+/*@BlockState*/(world.getBlockState(BlockPos.containing(${input$vector})))
