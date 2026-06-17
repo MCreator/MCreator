@@ -66,7 +66,7 @@ public class ExternalTrigger {
 	public String getName() {
 		String key = "trigger." + id;
 		String translated = L10N.t(key);
-		if (translated == null || translated.equals(key)) {
+		if (translated == null) {
 			LOG.warn("Missing translation for trigger: {}", key);
 			return key;
 		}
