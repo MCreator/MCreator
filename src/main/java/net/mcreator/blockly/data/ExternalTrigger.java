@@ -20,14 +20,16 @@ package net.mcreator.blockly.data;
 
 import net.mcreator.ui.init.L10N;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ExternalTrigger {
+	private static final Logger LOG = LogManager.getLogger("External Trigger");
 
 	String id;
-	String name;
 
 	@Nullable public List<String> required_apis;
 
@@ -62,11 +64,14 @@ public class ExternalTrigger {
 	}
 
 	public String getName() {
-		String l10nname = L10N.t("trigger." + id);
-		if (l10nname != null)
-			return l10nname;
+		String key = "trigger." + id;
+		String translated = L10N.t(key);
+		if (translated == null || translated.equals(key)) {
+			LOG.warn("Missing translation for trigger: {}", key);
+			return key;
+		}
 
-		return name;
+		return translated;
 	}
 
 }
