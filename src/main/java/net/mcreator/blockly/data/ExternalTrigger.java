@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ExternalTrigger {
-	private static final Logger LOG = LogManager.getLogger("External Trigger");
+	private static final Logger LOG = LogManager.getLogger(ExternalTrigger.class);
 
 	String id;
 
