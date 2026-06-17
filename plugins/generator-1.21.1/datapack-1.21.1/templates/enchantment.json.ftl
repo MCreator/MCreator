@@ -51,6 +51,17 @@
             "base": ${data.damageModifier},
             "per_level_above_first": ${data.damageModifier}
           }
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              }
+            ]
+          }
         }
       }
     ]<#if effectblocks?size != 0>,</#if>
