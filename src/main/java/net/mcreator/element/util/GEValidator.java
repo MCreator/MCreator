@@ -121,7 +121,7 @@ public class GEValidator {
 			for (int i = 0; i < length; i++) {
 				unpackAndValidate(element, Array.get(value, i));
 			}
-		} else if (GeneratableElement.isDataModelObject(value)) {
+		} else if (GeneratableElement.isDataModelObject(value.getClass())) {
 			// Data model object. Pass it back to the reflection scanner.
 			performValidation(element, value);
 		}
