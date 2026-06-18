@@ -96,7 +96,7 @@ public class BlocklyBlockUtil {
 			if (next == null)
 				break;
 
-			List<Element> nextblock = XMLUtil.getChildrenWithName(next, "block");
+			List<Element> nextblock = XMLUtil.getChildrenWithName(next, "block", "shadow");
 			if (nextblock.isEmpty())
 				break;
 			Element block = nextblock.getFirst();

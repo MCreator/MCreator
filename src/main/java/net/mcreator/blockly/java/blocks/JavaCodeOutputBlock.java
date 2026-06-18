@@ -25,6 +25,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class JavaCodeOutputBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
@@ -43,6 +45,26 @@ public class JavaCodeOutputBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "java_code_get",
+          "args0": [
+              {
+                  "type": "field_multilinetext",
+                  "name": "CODE",
+                  "text": "(null)"
+              }
+          ],
+          "output": null,
+          "colour": 250
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
 	}
 
 }

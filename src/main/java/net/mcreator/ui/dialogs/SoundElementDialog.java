@@ -42,12 +42,16 @@ import java.util.stream.Collectors;
 
 public class SoundElementDialog {
 
+	@Nullable
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
 		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 2));
 
 		VTextField soundName = new VTextField(26);
 
-		soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
+		soundName.setValidator(new net.mcreator.ui.validation.validators.UniqueNameValidator(
+				L10N.t("dialog.sounds.name"), () -> RegistryNameFixer.fix(soundName.getText()),
+				() -> mcreator.getWorkspace().getSoundElements().stream().map(SoundElement::getName),
+				new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name"))).setIsPresentOnList(element != null));
 		soundName.enableRealtimeValidation();
 
 		JTextField subtitle = new JTextField();
@@ -93,8 +97,9 @@ public class SoundElementDialog {
 
 		if (option == 0) {
 			if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
-						L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.sounds.error_validation", soundName.getValidationStatus().message()),
+						L10N.t("dialog.sounds.error_validation_title"), JOptionPane.ERROR_MESSAGE);
 				return element;
 			} else {
 				if (element == null) { // new sound element
@@ -105,11 +110,26 @@ public class SoundElementDialog {
 					} else {
 						List<String> fileNames = new ArrayList<>();
 
-						fileListField.getListElements().forEach(file -> {
-							String fileName = RegistryNameFixer.fix(file.getName());
-							FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(), fileName));
-							fileNames.add(FilenameUtilsPatched.removeExtension(fileName));
-						});
+						List<File> listElements = fileListField.getListElements();
+						List<File> targetFiles = fileListField.getListElements().stream()
+								.map(file -> new File(mcreator.getFolderManager().getSoundsDir(),
+										RegistryNameFixer.fix(file.getName()))).toList();
+
+						List<String> existingTargetFiles = targetFiles.stream().filter(File::exists)
+								.map(f -> FilenameUtilsPatched.removeExtension(f.getName())).toList();
+						if (!existingTargetFiles.isEmpty()) {
+							JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_file_already_exists",
+											String.join(", ", existingTargetFiles)),
+									L10N.t("dialog.sounds.error_file_already_exists_title"), JOptionPane.ERROR_MESSAGE);
+							return null;
+						}
+
+						for (int i = 0; i < listElements.size(); i++) {
+							File sourceFile = listElements.get(i);
+							File targetFile = targetFiles.get(i);
+							FileIO.copyFile(sourceFile, targetFile);
+							fileNames.add(FilenameUtilsPatched.removeExtension(targetFile.getName()));
+						}
 
 						String registryname = RegistryNameFixer.fix(soundName.getText());
 

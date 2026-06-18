@@ -589,7 +589,7 @@ public class Generator implements IGenerator, Closeable {
 				.filter(element -> FileIO.isFileOnFileList(element.getAssociatedFiles(), file)).findAny().orElse(null);
 	}
 
-	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
+	public void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
 		Map<File, String> javaFiles = new HashMap<>();
 
 		for (GeneratorFile generatorFile : generatorFiles) {

@@ -33,6 +33,11 @@ public record RepeatingField(String name, @Nullable JsonObject field_definition)
 	}
 
 	public String getDataList() {
+		String fieldType = getFieldType();
+		if (fieldType != null && fieldType.equals("field_mcitem_selector")) {
+			return "blocksitems";
+		}
+
 		if (field_definition != null && field_definition.has("datalist")) {
 			return field_definition.get("datalist").getAsString();
 		}

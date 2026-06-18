@@ -405,7 +405,7 @@ public class ElementUtil {
 	}
 
 	public static String[] loadDirections() {
-		return new String[] { "DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST" };
+		return getDataListAsStringArray("directions");
 	}
 
 	public static ArrayList<String> loadBasicGUIs(Workspace workspace) {

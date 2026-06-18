@@ -22,7 +22,6 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -30,10 +29,17 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProcedureCallBlock implements IBlockGenerator {
+
+	private final BlocklyEditorType editorType;
+
+	public ProcedureCallBlock(BlocklyEditorType editorType) {
+		this.editorType = editorType;
+	}
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element procedureField = XMLUtil.getFirstChildrenWithName(block, "field");
@@ -62,8 +68,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			}
 
 			// Handle dependencies in the command editor
-			if (master instanceof BlocklyToJava blocklyToJava
-					&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
+			if (master.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
 				List<Dependency> dependenciesProvided;
 				if (type.equals("old_command")) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
@@ -175,6 +180,45 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Override public String[] getSupportedBlocks() {
 		return new String[] { "call_procedure", "old_command" };
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		String procedureDependencies = editorType == BlocklyEditorType.PROCEDURE ? """
+          ,
+          "extensions": [
+              "procedure_dependencies_tooltip",
+              "procedure_dependencies_onchange_mixin"
+          ],
+          "mutator": "procedure_dependencies_mutator"
+          """ : "";
+
+		return new String[] { """
+        {
+          "type": "call_procedure",
+          "args0": [
+              {
+                  "type": "field_data_list_selector",
+                  "name": "procedure",
+                  "datalist": "procedure"
+              }
+          ],
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 250%s
+        }""".formatted(procedureDependencies), """
+        {
+          "type": "old_command",
+          "args0": [
+              {
+                  "type": "field_data_list_selector",
+                  "name": "procedure",
+                  "datalist": "procedure"
+              }
+          ],
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": "%{BKY_TEXTS_HUE}"
+        }""" };
 	}
 
 	@Override public BlockType getBlockType() {

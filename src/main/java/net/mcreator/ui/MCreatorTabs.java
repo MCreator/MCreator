@@ -148,6 +148,8 @@ public class MCreatorTabs extends JTabbedPane {
 						if (tab.tabShownListener != null)
 							tab.tabShownListener.tabShown(tab);
 					}
+
+					tab.wasPreviouslyShown = true;
 				});
 
 				this.current = tab;
@@ -168,10 +170,14 @@ public class MCreatorTabs extends JTabbedPane {
 	}
 
 	public void closeTab(Tab tab) {
+		closeTab(tab, false);
+	}
+
+	public void closeTab(Tab tab, boolean force) {
 		if (!tab.closeable)
 			return;
 
-		if (tab.tabClosingListener == null || tab.tabClosingListener.tabClosing(tab)) {
+		if (force || tab.tabClosingListener == null || tab.tabClosingListener.tabClosing(tab)) {
 			MCREvent.event(new TabEvent.Closed(tab));
 
 			SwingUtilities.invokeLater(() -> {
@@ -187,10 +193,10 @@ public class MCreatorTabs extends JTabbedPane {
 		}
 	}
 
-	public void closeAllTabs() {
+	public void closeAllTabs(boolean force) {
 		// make copy so we don't foreach the original which is changed during iterations
 		List<Tab> toClose = new ArrayList<>(tabs);
-		toClose.forEach(this::closeTab);
+		toClose.forEach(tab -> closeTab(tab, force));
 	}
 
 	public List<Tab> getTabs() {
@@ -223,6 +229,8 @@ public class MCreatorTabs extends JTabbedPane {
 
 		private String text;
 		@Nullable private ImageIcon icon;
+
+		private boolean wasPreviouslyShown = false;
 
 		public Tab(ViewBase content) {
 			this(content.getViewName(), content.getViewIcon(), content,
@@ -315,6 +323,10 @@ public class MCreatorTabs extends JTabbedPane {
 
 		public TabClosedListener getTabClosedListener() {
 			return tabClosedListener;
+		}
+
+		public boolean wasPreviouslyShown() {
+			return wasPreviouslyShown;
 		}
 
 		@Override public boolean equals(Object o) {

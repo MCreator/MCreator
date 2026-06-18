@@ -26,6 +26,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class DirectionConstantBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
@@ -45,6 +47,26 @@ public class DirectionConstantBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "direction_constant",
+          "args0": [
+              {
+                  "type": "field_data_list_dropdown",
+                  "name": "direction",
+                  "datalist": "direction"
+              }
+          ],
+          "output": "Direction",
+          "colour": 20
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "mcelements";
 	}
 
 }

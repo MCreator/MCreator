@@ -180,7 +180,7 @@ public class ZipIO {
 			return;
 
 		if (isDirFile) {
-			zip.putNextEntry(new ZipEntry(path + "/" + file.getName() + "/"));
+			zip.putNextEntry(createZipEntry(path + "/" + file.getName() + "/", file));
 			zip.closeEntry();
 		} else {
 			if (file.isDirectory()) {
@@ -189,10 +189,8 @@ public class ZipIO {
 				byte[] buf = new byte[8192];
 				int len;
 				FileInputStream in = new FileInputStream(srcFile);
-				if (!path.isEmpty())
-					zip.putNextEntry(new ZipEntry(path + "/" + file.getName()));
-				else
-					zip.putNextEntry(new ZipEntry(file.getName()));
+				String entryName = path.isEmpty() ? file.getName() : path + "/" + file.getName();
+				zip.putNextEntry(createZipEntry(entryName, file));
 				while ((len = in.read(buf)) > 0) {
 					zip.write(buf, 0, len);
 				}
@@ -216,6 +214,17 @@ public class ZipIO {
 		} catch (IOException e) {
 			return false;
 		}
+	}
+
+	private static ZipEntry createZipEntry(String name, File source) {
+		ZipEntry entry = new ZipEntry(name);
+		entry.setTime(source.lastModified());
+		if (name.endsWith("/")) {
+			entry.setSize(0);
+			entry.setCrc(0);
+			entry.setMethod(ZipEntry.STORED);
+		}
+		return entry;
 	}
 
 	private static void reportError(String action, String path, Throwable exception) {

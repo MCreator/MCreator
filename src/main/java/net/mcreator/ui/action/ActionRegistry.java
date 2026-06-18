@@ -278,7 +278,7 @@ public class ActionRegistry {
 		this.showWorkspaceTab = new BasicAction(this, L10N.t("action.show_workspace"),
 				e -> mcreator.getTabs().showTab(mcreator.workspaceTab));
 		this.closeAllTabs = new BasicAction(this, L10N.t("action.close_all_tabs"),
-				e -> mcreator.getTabs().closeAllTabs());
+				e -> mcreator.getTabs().closeAllTabs(false));
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
 				e -> mcreator.getTabs().closeTab(mcreator.getTabs().getCurrentTab()));
 		this.openWorkspace = new OpenWorkspaceAction(this);

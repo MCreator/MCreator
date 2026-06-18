@@ -32,6 +32,7 @@ import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.*;
+import net.mcreator.workspace.localhistory.HistoryManager;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -76,6 +77,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private transient boolean changed = false;
 	protected transient WorkspaceFileManager fileManager;
 	private transient WorkspaceUserSettingsManager userSettingsManager;
+	private transient HistoryManager historyManager;
 	protected transient Generator generator;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
@@ -174,6 +176,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void addLanguage(String language, LinkedHashMap<String, String> data) {
 		language_map.putIfAbsent(language, new LinkedHashMap<>(data)); // deep copy
+		historyManager.checkpoint("language_added", language);
 		markDirty();
 	}
 
@@ -211,6 +214,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
 
+			historyManager.checkpoint("mod_element_added", element.getType().getReadableName(), element.getName());
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing mod element: {} of type {}", element.getName(), element.getTypeString());
@@ -220,6 +224,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	public void addVariableElement(VariableElement element) {
 		if (!variable_elements.contains(element)) {
 			variable_elements.add(element);
+
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing variable element: {}", element.getName());
@@ -308,6 +313,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getFolderManager();
 	}
 
+	@Override public HistoryManager getHistoryManager() {
+		return historyManager;
+	}
+
 	@Override public WorkspaceUserSettings getWorkspaceUserSettings() {
 		return userSettingsManager.getUserSettings();
 	}
@@ -326,6 +335,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		generator.close();
 		fileManager.close();
 		userSettingsManager.close();
+		historyManager.close();
 	}
 
 	@Override public boolean equals(Object o) {
@@ -414,6 +424,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 
+	public void resetLocalHistory() {
+		this.historyManager.close();
+		FileIO.deleteDir(HistoryManager.getLocalHistoryRoot(this.getWorkspaceFolder()));
+		this.historyManager = new HistoryManager(this);
+	}
+
 	public void markFailingGradleDependencies() {
 		this.failingGradleDependencies = true;
 		LOG.error("Detected failing Gradle dependencies. Will try to recover on next build.");
@@ -442,6 +458,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 				retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 				retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
+				retval.historyManager = new HistoryManager(retval);
 			} catch (Exception e) {
 				throw new CorruptedWorkspaceFileException(e);
 			}
@@ -548,6 +565,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
+		retval.historyManager = new HistoryManager(retval);
 
 		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
 				!= generatorConfiguration) {
@@ -580,6 +598,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		retval.setMCreatorVersion(Launcher.version.versionlong);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
+		retval.historyManager = new HistoryManager(retval);
 		retval.generator = new Generator(retval);
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);
@@ -596,13 +615,39 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return regenerateRequired;
 	}
 
-	// Below are methods that may still be used by some plugins
+	public void reloadFromFileSystem() {
+		String modIDBeforeReload = this.getWorkspaceSettings().getModID();
+		File workspaceFileToRead = this.getFileManager().getWorkspaceFile();
+		boolean workspaceFileChanged = false;
+		if (!workspaceFileToRead.isFile()) { // Workspace modid may have changed and file name is different
+			workspaceFileToRead = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(this.getWorkspaceFolder());
+			workspaceFileChanged = true;
+		}
+
+		// Read new workspace definition from the file
+		loadStoredDataFrom(
+				WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFileToRead), Workspace.class));
+
+		// If the modid or workspace file changed, we need to bind to the new workspace file
+		String modIdAfterReload = this.getWorkspaceSettings().getModID();
+		if (workspaceFileChanged || !modIDBeforeReload.equals(modIdAfterReload)) {
+			File correctWorkspaceFile = new File(getWorkspaceFolder(), modIdAfterReload + ".mcreator");
+			LOG.debug("Workspace file changed during reload, binding to new workspace file {}", correctWorkspaceFile);
+			this.bindToNewWorkspaceFile(correctWorkspaceFile);
+		}
+
+		// Reload structures and caches
+		this.getModElementManager().invalidateCache();
+		this.reloadModElements();
+		this.reloadFolderStructure();
+
+		LOG.info("Reloaded current workspace from the workspace file");
+	}
 
 	/**
 	 * @param other The workspace to copy elements and settings from.
-	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
 	 */
-	@SuppressWarnings("unused") public void loadStoredDataFrom(Workspace other) {
+	public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;

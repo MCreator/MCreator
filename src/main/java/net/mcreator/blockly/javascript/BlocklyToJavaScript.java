@@ -23,6 +23,7 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.javascript.blocks.*;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -31,12 +32,18 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import java.util.List;
+
 public class BlocklyToJavaScript extends BlocklyToCode {
 
+	protected BlocklyVariables variableGenerator;
+
 	private String externalTrigger;
+	private List<VariableElement> variables;
 
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
@@ -60,6 +67,10 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.scripts.missing_trigger")));
 			}
+
+			// then we add custom local variables
+			Element variables = XMLUtil.getFirstChildrenWithName(doc.getDocumentElement(), "variables");
+			this.variables = variableGenerator.processLocalVariables(variables);
 		}
 	}
 
@@ -71,32 +82,13 @@ public class BlocklyToJavaScript extends BlocklyToCode {
 	 * <p>This method is executed after the constructor is called, before the code is generated</p>
 	 */
 	@Override protected void beforeGenerate() {
-		// add standard procedural blocks
-		blockGenerators.add(new PrintTextBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.IfBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeProceduralBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.FlowControlBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.LoopBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.TernaryOperatorBlock());
+		super.beforeGenerate();
 
-		// add standard output blocks
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.BooleanBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.LogicNegateBlock());
-		blockGenerators.add(new NumberBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.TextJoinBlock());
-		blockGenerators.add(new NumberConstantsBlock());
-		blockGenerators.add(new NumberBinaryOperationsBlock());
-		blockGenerators.add(new SingularMathOperationsBlock());
-		blockGenerators.add(new LogicBinaryOperationsBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeOutputBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.CustomDependencyBlock());
+		variableGenerator = new BlocklyVariables(this);
+	}
 
-		// add Minecraft-related blocks
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.CoordinateBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.EventOrTargetEntityDependencyBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.SourceEntityDependencyBlock());
-		blockGenerators.add(new MCItemBlock());
+	public List<VariableElement> getLocalVariables() {
+		return variables;
 	}
 
 }

@@ -46,6 +46,8 @@ public class L10N {
 
 	private static Map<Locale, LocaleRegistration> supportedLocales;
 
+	private static Locale osLocale = Locale.getDefault();
+
 	private static Locale selectedLocale = null;
 
 	public static void initTranslations() {
@@ -62,7 +64,8 @@ public class L10N {
 			rb = supportedLocales.get(DEFAULT_LOCALE).resourceBundle();
 		}
 
-		LOG.info("Setting default locale to: {}", getLocale());
+		osLocale = Locale.getDefault();
+		LOG.info("Setting default locale to: {}; OS locale: {}", getLocale(), osLocale);
 		Locale.setDefault(getLocale());
 		JComponent.setDefaultLocale(getLocale());
 	}
@@ -115,6 +118,10 @@ public class L10N {
 		return selectedLocale;
 	}
 
+	public static Locale getOSLocale() {
+		return osLocale;
+	}
+
 	public static String getLocaleString() {
 		return getLocale().toString();
 	}
@@ -142,17 +149,20 @@ public class L10N {
 		if (key == null)
 			return null;
 
-		if (resourceBundle.containsKey(key))
+		if (resourceBundle.containsKey(key)) {
 			return MessageFormat.format(resourceBundle.getString(key), parameters);
-		else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
-				".description")))
+		} else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
+				".description"))) {
 			return null;
-		else if (TestUtil.isTestingEnvironment())
-			throw new RuntimeException("Failed to load any translation for key: " + key);
-		else if (key.startsWith("blockly.") || key.startsWith("trigger.") || key.startsWith(GeneratorSelector.covpfx))
+		} else if (TestUtil.isTestingEnvironment()) {
+			TestUtil.failIfTestingEnvironment();
 			return null;
-		else
+		} else if (key.startsWith("blockly.") || key.startsWith("trigger.") || key.startsWith(
+				GeneratorSelector.covpfx)) {
+			return null;
+		} else {
 			return key;
+		}
 	}
 
 	public static JLabel label(String key, Object... parameter) {

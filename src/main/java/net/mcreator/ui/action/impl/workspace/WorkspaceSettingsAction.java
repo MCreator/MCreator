@@ -54,6 +54,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 		super(actionRegistry, L10N.t("action.workspace.settings"), e -> {
 			WorkspaceSettingsChange change = WorkspaceDialogs.workspaceSettings(actionRegistry.getMCreator(),
 					actionRegistry.getMCreator().getWorkspace());
+			actionRegistry.getMCreator().getWorkspace().getHistoryManager().checkpoint("settings_changed");
 			if (change != null) {
 				actionRegistry.getMCreator().getWorkspace().setWorkspaceSettings(change.workspaceSettings);
 
@@ -68,12 +69,15 @@ public class WorkspaceSettingsAction extends GradleAction {
 		if (change.refactorNeeded() && change.oldSettings != null) {
 			MCREvent.event(new WorkspaceRefactoringEvent(mcreator, change));
 
+			mcreator.getWorkspace().getHistoryManager().importantCheckpoint("refactor_started");
+
 			File originalWorkspaceFile = new File(mcreator.getFileManager().getWorkspaceFile().getPath());
 
 			if (change.generatorFlavorChanged) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(mcreator.getWorkspace().getFolderManager().getWorkspaceCacheDir(),
-								"fullBackups/FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"), mcreator, true);
+								"fullBackups/FullBackup" + mcreator.getWorkspace().getMCreatorVersion() + ".zip"),
+						mcreator, true);
 			}
 
 			if (change.packagechanged) { // we need to copy all source files to new package and remove the old one
@@ -228,6 +232,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 				// delete the original workspace file
 				originalWorkspaceFile.delete();
 			}
+
+			mcreator.getWorkspace().getHistoryManager().checkpoint("refactor_completed");
 		}
 	}
 

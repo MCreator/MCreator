@@ -18,18 +18,24 @@
 
 package net.mcreator.blockly.data;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.util.TestUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.text.ParseException;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings({ "unused", "MismatchedQueryAndUpdateOfCollection" }) public class ToolboxBlock {
+
+	private static final Logger LOG = LogManager.getLogger(ToolboxBlock.class);
+
 	String machine_name;
 	String toolbox_id;
 	IBlockGenerator.BlockType type;
@@ -46,12 +52,12 @@ import java.util.Objects;
 	@Nullable private List<String> required_apis;
 	@Nullable private String group;
 
-	@Nullable private List<String> toolbox_init;
+	@Nullable protected List<String> toolbox_init;
 
 	public boolean error_in_statement_blocks = false;
 
 	/* Fields below are not included in block JSON but loaded dynamically */
-	transient JsonElement blocklyJSON;
+	transient JsonObject blocklyJSON;
 	@Nullable private transient String toolboxXML;
 	@Nullable private transient String toolboxTestXML; // XML setup used in tests
 	@Nullable transient ToolboxCategory toolboxCategory;
@@ -167,11 +173,11 @@ import java.util.Objects;
 	}
 
 	public JsonObject getBlocklyJSON() {
-		return blocklyJSON.getAsJsonObject();
+		return blocklyJSON;
 	}
 
 	public String getName() {
-		return blocklyJSON.getAsJsonObject().get("message0").getAsString();
+		return blocklyJSON.get("message0").getAsString();
 	}
 
 	/**
@@ -231,6 +237,11 @@ import java.util.Objects;
 	 * @return Field data list in JSON format. Null if the field does not exist, or the type of field does not specify a data list.
 	 */
 	@Nullable public String getFieldDataList(String fieldName) {
+		String fieldType = getFieldType(fieldName);
+		if (fieldType != null && fieldType.equals("field_mcitem_selector")) {
+			return "blocksitems";
+		}
+
 		if (blocklyJSON.getAsJsonObject().has("args0")) {
 			JsonArray args0 = blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 			for (int i = 0; i < args0.size(); i++) {
@@ -267,6 +278,99 @@ import java.util.Objects;
 
 	@Override public int hashCode() {
 		return machine_name.hashCode();
+	}
+
+	public static List<ToolboxBlock> getToolboxBlocksFor(IBlockGenerator blockGenerator) {
+		String[] supportedBlocks = blockGenerator.getSupportedBlocks();
+		String[] blockDefinitions = blockGenerator.getBlockJSONDefinitions();
+
+		List<String>[] toolboxInits = blockGenerator.getToolboxInit();
+		if (blockDefinitions == null)
+			return Collections.emptyList();
+
+		if (blockDefinitions.length != supportedBlocks.length) {
+			LOG.warn("Mismatch between supported blocks and block definitions for generator: {}",
+					blockGenerator.getClass().getName());
+			TestUtil.failIfTestingEnvironment();
+		}
+
+		String toolboxCategoryId = blockGenerator.getToolboxCategory();
+		@Nullable ToolboxCategory toolboxCategory =
+				toolboxCategoryId != null ? ToolboxCategory.tryGetBuiltin(toolboxCategoryId) : null;
+
+		List<ToolboxBlock> blocks = new ArrayList<>(supportedBlocks.length);
+		for (int i = 0; i < supportedBlocks.length; i++) {
+			ToolboxBlock toolboxBlock = new ToolboxBlock();
+			toolboxBlock.machine_name = supportedBlocks[i];
+			toolboxBlock.type = blockGenerator.getBlockType();
+
+			JsonObject blocklyJSON = JsonParser.parseString(blockDefinitions[i]).getAsJsonObject();
+			handleTranslations(toolboxBlock, blocklyJSON);
+
+			toolboxBlock.blocklyJSON = blocklyJSON;
+			if (toolboxCategoryId != null) {
+				toolboxBlock.toolbox_id = toolboxCategoryId;
+				toolboxBlock.toolboxCategory = toolboxCategory;
+			}
+			if (toolboxInits != null) {
+				toolboxBlock.toolbox_init = toolboxInits[i];
+			}
+			blocks.add(toolboxBlock);
+		}
+		return blocks;
+	}
+
+	static void handleTranslations(ToolboxBlock toolboxBlock, JsonObject blocklyJSON) {
+		String localized_message = L10N.t("blockly.block." + toolboxBlock.getMachineName());
+		String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.getMachineName());
+
+		if (localized_message != null) {
+			try {
+				validateTranslation(localized_message, localized_message_en);
+				blocklyJSON.add("message0", new JsonPrimitive(localized_message));
+			} catch (ParseException e) {
+				LOG.warn("Block {} translation \"{}\" for the selected language is not valid. Reason: {}",
+						toolboxBlock.getMachineName(), localized_message, e.getMessage());
+				TestUtil.failIfTestingEnvironment();
+				if (localized_message_en != null) {
+					blocklyJSON.add("message0", new JsonPrimitive(localized_message_en));
+				}
+			}
+		} else if (localized_message_en != null) {
+			blocklyJSON.add("message0", new JsonPrimitive(localized_message_en));
+		}
+
+		String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.getMachineName() + ".tooltip");
+		if (localized_tooltip != null) {
+			blocklyJSON.add("tooltip", new JsonPrimitive(localized_tooltip));
+		}
+	}
+
+	private final static Pattern N_PLACEHOLDER_MATCHER = Pattern.compile("%\\d+"); // Matches %1, %2, etc.
+
+	private static void validateTranslation(@Nullable String localized_message, @Nullable String localized_message_en)
+			throws ParseException {
+		if (localized_message == null)
+			return; // Nothing to validate
+
+		// Make sure original string and translation have the same number of parameters
+		if (localized_message_en != null) {
+			int parameters_count = net.mcreator.util.StringUtils.countRegexMatches(localized_message, "%[0-9]+");
+			int parameters_count_en = net.mcreator.util.StringUtils.countRegexMatches(localized_message_en, "%[0-9]+");
+			if (parameters_count != parameters_count_en) {
+				throw new ParseException("%N placeholder count mismatch", 0);
+			}
+		}
+
+		// Make sure all parameters are only used once
+		Matcher matcher = N_PLACEHOLDER_MATCHER.matcher(localized_message);
+		Set<String> seen = new HashSet<>();
+		while (matcher.find()) {
+			String placeholder = matcher.group();
+			if (!seen.add(placeholder)) {
+				throw new ParseException("Duplicate %N placeholder", 0);
+			}
+		}
 	}
 
 }
