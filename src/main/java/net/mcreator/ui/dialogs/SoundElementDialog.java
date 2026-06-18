@@ -146,7 +146,7 @@ public class SoundElementDialog {
 					for (int i = 0; i < listElements.size(); i++) {
 						SingleFileField field = soundsEntries.getFiles().get(i);
 
-						if (!field.isEnabled())
+						if (!field.isEnabled()) // skip files already imported into the workspace
 							continue;
 
 						File sourceFile = listElements.get(i);
