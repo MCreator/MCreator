@@ -19,9 +19,9 @@
 
 package net.mcreator.ui.blockly;
 
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
-import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Procedure;
@@ -162,6 +162,72 @@ public final class BlocklyJavascriptBridge {
 	}
 
 	/**
+	 * Loads data list entries for Blockly entry selectors that use {@link DataListEntry} lists.
+	 *
+	 * @return The list of entries, or {@code null} if the selector type uses plain strings instead
+	 */
+	@Nullable public static List<DataListEntry> getDataListEntriesForEntrySelector(Workspace workspace,
+			@Nonnull String type, @Nullable String typeFilter, @Nullable String customEntryProviders) {
+		return switch (type) {
+			case "entity" ->
+					ElementUtil.loadAllEntities(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
+							.toList();
+			case "spawnableEntity" -> ElementUtil.loadAllSpawnableEntities(workspace).stream()
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "customEntity" -> ElementUtil.loadCustomEntities(workspace);
+			case "biome" ->
+					ElementUtil.loadAllBiomes(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
+							.toList();
+			case "fluid" ->
+					ElementUtil.loadAllFluids(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
+							.toList();
+			case "gamerulesboolean" -> ElementUtil.getAllBooleanGameRules(workspace).stream()
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "gamerulesnumber" -> ElementUtil.getAllNumberGameRules(workspace).stream()
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "eventparametersnumber" -> DataListLoader.loadDataList("eventparameters").stream()
+					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "eventparametersboolean" -> DataListLoader.loadDataList("eventparameters").stream()
+					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "arrowProjectile" -> ElementUtil.loadArrowProjectiles(workspace).stream()
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "configuredfeature" -> ElementUtil.loadAllConfiguredFeatures(workspace).stream()
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			default -> {
+				if (!DataListLoader.loadDataList(type).isEmpty()) {
+					yield ElementUtil.loadDataListAndElements(workspace, type, typeFilter,
+							StringUtils.split(customEntryProviders, ','));
+				}
+				yield null;
+			}
+		};
+	}
+
+	private static boolean isDataListEntrySelectorType(String type) {
+		return switch (type) {
+			case "entity", "spawnableEntity", "customEntity", "biome", "fluid", "gamerulesboolean", "gamerulesnumber",
+			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature" ->
+					true;
+			default -> !DataListLoader.loadDataList(type).isEmpty();
+		};
+	}
+
+	private static String getEntrySelectorDialogType(String type) {
+		return switch (type) {
+			case "entity", "spawnableEntity", "customEntity" -> "entity";
+			case "biome" -> "biome";
+			case "fluid" -> "fluids";
+			case "gamerulesboolean", "gamerulesnumber" -> "gamerules";
+			case "eventparametersnumber", "eventparametersboolean" -> "eventparameters";
+			case "arrowProjectile" -> "projectiles";
+			case "configuredfeature" -> "configured_features";
+			default -> type;
+		};
+	}
+
+	/**
 	 * Common method to open an entry selector of either data list entries or strings
 	 *
 	 * @param type                 The type of selector to open
@@ -173,13 +239,6 @@ public final class BlocklyJavascriptBridge {
 			@Nullable String customEntryProviders, Consumer<String[]> callback) {
 		SwingUtilities.invokeLater(() -> {
 			String[] retval = switch (type) {
-				case "entity" -> openDataListEntrySelector(
-						w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-						"entity");
-				case "spawnableEntity" -> openDataListEntrySelector(
-						w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-								.toList(), "entity");
-				case "customEntity" -> openDataListEntrySelector(ElementUtil::loadCustomEntities, "entity");
 				case "entitydata_logic" -> openStringEntrySelector(
 						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
 								PropertyData.LogicType.class).toArray(String[]::new), "entity_data");
@@ -190,9 +249,7 @@ public final class BlocklyJavascriptBridge {
 						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
 								PropertyData.StringType.class).toArray(String[]::new), "entity_data");
 				case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
-				case "biome" -> openDataListEntrySelector(
-						w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-						"biome");
+				case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 				case "dimensionCustom" -> openStringEntrySelector( // For legacy reason
 						w -> w.getModElementsByType(ModElementType.DIMENSION).stream()
 								.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new),
@@ -203,36 +260,12 @@ public final class BlocklyJavascriptBridge {
 								.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
 								.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName())
 								.toArray(String[]::new), "dimensions");
-				case "fluid" -> openDataListEntrySelector(
-						w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
-						"fluids");
-				case "gamerulesboolean" -> openDataListEntrySelector(
-						w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-								.toList(), "gamerules");
-				case "gamerulesnumber" -> openDataListEntrySelector(
-						w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-								.toList(), "gamerules");
-				case "eventparametersnumber" -> openDataListEntrySelector(
-						w -> DataListLoader.loadDataList("eventparameters").stream()
-								.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
-								.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
-				case "eventparametersboolean" -> openDataListEntrySelector(
-						w -> DataListLoader.loadDataList("eventparameters").stream()
-								.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
-								.filter(e -> e.isSupportedInWorkspace(w)).toList(), "eventparameters");
-				case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 				case "structure" ->
 						openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
 								"structures");
 				case "procedure" -> openStringEntrySelector(
 						w -> w.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
 								.toArray(String[]::new), "procedure");
-				case "arrowProjectile" -> openDataListEntrySelector(
-						w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-								.toList(), "projectiles");
-				case "configuredfeature" -> openDataListEntrySelector(
-						w -> ElementUtil.loadAllConfiguredFeatures(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-								.toList(), "configured_features");
 				case "global_triggers" -> {
 					String[] selectedEntry = openDataListEntrySelector(w -> ext_triggers.entrySet().stream()
 							.map(entry -> (DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{
@@ -252,9 +285,10 @@ public final class BlocklyJavascriptBridge {
 								"procedure");
 					}
 
-					if (!DataListLoader.loadDataList(type).isEmpty()) {
-						yield openDataListEntrySelector(w -> ElementUtil.loadDataListAndElements(w, type, typeFilter,
-								StringUtils.split(customEntryProviders, ',')), type);
+					if (isDataListEntrySelectorType(type)) {
+						yield openDataListEntrySelector(
+								w -> getDataListEntriesForEntrySelector(w, type, typeFilter, customEntryProviders),
+								getEntrySelectorDialogType(type));
 					}
 
 					yield new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
