@@ -20,11 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.InternalBlocksLoader;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.DynamicBlockLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.data.ToolboxType;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;

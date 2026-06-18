@@ -74,8 +74,8 @@ public class NameMapper {
 		Map<?, ?> mapping = workspace.getGenerator().getMappings().getMapping(mappingSource);
 
 		if (mapping == null) {
-			LOG.warn("({}) Mapping source {} not found, returning original name: {}", TraceUtil.tryToFindMCreatorInvoker(),
-					mappingSource, origName);
+			LOG.warn("({}) Mapping source {} not found, returning original name: {}",
+					TraceUtil.tryToFindMCreatorInvoker(), mappingSource, origName);
 			TestUtil.failIfTestingEnvironment();
 			return origName;
 		}

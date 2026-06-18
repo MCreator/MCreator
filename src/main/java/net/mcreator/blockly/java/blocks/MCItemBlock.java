@@ -29,10 +29,9 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Nullable;
 
 public class MCItemBlock implements IBlockGenerator {
 
@@ -47,8 +46,8 @@ public class MCItemBlock implements IBlockGenerator {
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 
-			if (master.getTemplateGenerator() != null && master.getTemplateGenerator()
-					.hasTemplate("_mcitem.java.ftl") && block.getAttribute("type").equals("mcitem_all")) {
+			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("_mcitem.java.ftl")
+					&& block.getAttribute("type").equals("mcitem_all")) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("item", new MItemBlock(master.getWorkspace(), textContent));
 				String code = master.getTemplateGenerator().generateFromTemplate("_mcitem.java.ftl", dataModel);

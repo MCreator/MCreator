@@ -145,8 +145,8 @@ public class ZipIO {
 		fw.close();
 	}
 
-	private static void addFolderToZip(String path, String srcFolder, ZipOutputStream zip, File targetZipFile, String... excludes)
-			throws IOException {
+	private static void addFolderToZip(String path, String srcFolder, ZipOutputStream zip, File targetZipFile,
+			String... excludes) throws IOException {
 
 		if (Arrays.asList(excludes).contains(path + "/"))
 			return;
@@ -163,7 +163,8 @@ public class ZipIO {
 				if (path.isEmpty()) {
 					addFileToZip(folder.getName(), srcFolder + "/" + fileName, zip, false, targetZipFile, excludes);
 				} else {
-					addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip, false, targetZipFile, excludes);
+					addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip, false, targetZipFile,
+							excludes);
 				}
 			}
 		}
