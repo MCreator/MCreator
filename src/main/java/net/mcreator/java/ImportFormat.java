@@ -314,8 +314,8 @@ public class ImportFormat {
 	}
 
 	private Set<String> getUsedWildcardImports(Set<String> memberList, Map<String, List<String>> loadFrom) {
-		return memberList.stream().filter(loadFrom::containsKey)
-				.flatMap(member -> loadFrom.get(member).stream()).collect(Collectors.toSet());
+		return memberList.stream().filter(loadFrom::containsKey).flatMap(member -> loadFrom.get(member).stream())
+				.collect(Collectors.toSet());
 	}
 
 	private Set<String> getUsedImports(Set<String> memberList, Set<String> normalImports) {

@@ -208,8 +208,7 @@ public final class BlocklyJavascriptBridge {
 	private static boolean isDataListEntrySelectorType(String type) {
 		return switch (type) {
 			case "entity", "spawnableEntity", "customEntity", "biome", "fluid", "gamerulesboolean", "gamerulesnumber",
-			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature" ->
-					true;
+			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature" -> true;
 			default -> !DataListLoader.loadDataList(type).isEmpty();
 		};
 	}

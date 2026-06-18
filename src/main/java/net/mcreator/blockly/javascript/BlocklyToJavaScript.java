@@ -19,12 +19,7 @@
 
 package net.mcreator.blockly.javascript;
 
-import net.mcreator.blockly.BlocklyBlockUtil;
-import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.BlocklyToCode;
-import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.BlocklyVariables;
-import net.mcreator.blockly.javascript.blocks.*;
+import net.mcreator.blockly.*;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;

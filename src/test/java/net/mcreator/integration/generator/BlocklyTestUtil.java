@@ -289,8 +289,9 @@ public class BlocklyTestUtil {
 					.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
 					.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new);
 			case "structure" -> workspace.getFolderManager().getStructureList().toArray(String[]::new);
-			case "procedure" -> workspace.getModElementsByType(ModElementType.PROCEDURE).stream()
-					.map(ModElement::getName).toArray(String[]::new);
+			case "procedure" ->
+					workspace.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
+							.toArray(String[]::new);
 			case "global_triggers" -> new String[] { "no_ext_trigger" };
 			default -> {
 				if (datalist.startsWith("procedure_retval_")) {

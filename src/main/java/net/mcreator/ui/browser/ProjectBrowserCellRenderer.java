@@ -57,7 +57,8 @@ class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
 			else if (tsi.equals(WorkspaceFileBrowser.NODE_MODELS))
 				a.setIcon(UIRES.get("16px.models"));
 			else if (tsi.equals(WorkspaceFileBrowser.NODE_MINECRAFT_RUN_FOLDER) || tsi.equals(
-					WorkspaceFileBrowser.NODE_BEDROCK_EDITION) || tsi.equals(WorkspaceFileBrowser.NODE_MC_CLIENT_RUN_FOLDER))
+					WorkspaceFileBrowser.NODE_BEDROCK_EDITION) || tsi.equals(
+					WorkspaceFileBrowser.NODE_MC_CLIENT_RUN_FOLDER))
 				a.setIcon(UIRES.get("16px.minecraft"));
 			else if (tsi.equals(WorkspaceFileBrowser.NODE_MC_SERVER_RUN_FOLDER))
 				a.setIcon(UIRES.get("16px.runserver"));

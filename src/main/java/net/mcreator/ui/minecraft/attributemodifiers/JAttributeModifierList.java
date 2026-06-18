@@ -68,9 +68,7 @@ public class JAttributeModifierList extends JSimpleEntriesList<JAttributeModifie
 	}
 
 	public enum EntryType {
-		POTION,
-		ITEM,
-		ARMOR
+		POTION, ITEM, ARMOR
 	}
 
 }

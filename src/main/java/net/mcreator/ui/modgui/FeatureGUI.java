@@ -21,11 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.InternalBlocksLoader;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.DynamicBlockLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.data.ToolboxType;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.datapack.BlocklyToFeature;
 import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.types.Feature;
