@@ -32,10 +32,9 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 public class EventParameterSetBlock implements IBlockGenerator {
 
@@ -184,8 +183,8 @@ public class EventParameterSetBlock implements IBlockGenerator {
 	}
 
 	@Nullable @Override public List<String>[] getToolboxInit() {
-		return new List[] { List.of(
-				"<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"),
+		return new List[] {
+				List.of("<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"),
 				List.of("<value name=\"value\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>") };
 	}
 

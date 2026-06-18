@@ -19,7 +19,10 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.AttributeModifierEntry;
+import net.mcreator.element.parts.ParticleEntry;
+import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.io.FileIO;

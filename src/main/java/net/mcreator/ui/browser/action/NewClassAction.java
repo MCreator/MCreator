@@ -61,12 +61,10 @@ public class NewClassAction extends BasicAction {
 					String packagenm = "";
 
 					try {
-						String root = actionRegistry.getMCreator().getGenerator().getSourceRoot()
-								.getCanonicalPath();
+						String root = actionRegistry.getMCreator().getGenerator().getSourceRoot().getCanonicalPath();
 						String pathCan = classFile.getCanonicalPath();
-						String packagetm = pathCan.replace(root, "").replaceFirst("\\\\", "")
-								.replaceFirst("/", "").replace(classname + ".java", "").replace("/", ".")
-								.replace("\\", ".").trim();
+						String packagetm = pathCan.replace(root, "").replaceFirst("\\\\", "").replaceFirst("/", "")
+								.replace(classname + ".java", "").replace("/", ".").replace("\\", ".").trim();
 						if (packagetm.endsWith("."))
 							packagetm = packagetm.substring(0, packagetm.length() - 1);
 						packagenm = packagetm;
@@ -81,8 +79,7 @@ public class NewClassAction extends BasicAction {
 
 					code += "public class " + classname + " {\n\n\n}";
 
-					JavaWriter.writeJavaToFile(actionRegistry.getMCreator().getWorkspace(), code,
-							classFile, true);
+					JavaWriter.writeJavaToFile(actionRegistry.getMCreator().getWorkspace(), code, classFile, true);
 
 					actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 				}

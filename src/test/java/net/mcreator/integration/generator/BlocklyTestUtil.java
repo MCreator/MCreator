@@ -264,6 +264,11 @@ public class BlocklyTestUtil {
 
 	private static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
 			String customEntryProviders) {
+		// customEntity is filled by toolbox_init test values
+		if ("customEntity".equals(datalist)) {
+			return new String[] { "" };
+		}
+
 		List<DataListEntry> entries = BlocklyJavascriptBridge.getDataListEntriesForEntrySelector(workspace, datalist,
 				typeFilter, customEntryProviders);
 		if (entries != null) {
@@ -289,8 +294,9 @@ public class BlocklyTestUtil {
 					.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
 					.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new);
 			case "structure" -> workspace.getFolderManager().getStructureList().toArray(String[]::new);
-			case "procedure" -> workspace.getModElementsByType(ModElementType.PROCEDURE).stream()
-					.map(ModElement::getName).toArray(String[]::new);
+			case "procedure" ->
+					workspace.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
+							.toArray(String[]::new);
 			case "global_triggers" -> new String[] { "no_ext_trigger" };
 			default -> {
 				if (datalist.startsWith("procedure_retval_")) {
