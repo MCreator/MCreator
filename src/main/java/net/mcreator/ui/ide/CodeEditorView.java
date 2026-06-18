@@ -82,10 +82,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger("Code Editor");
 
-	/**
-	 * Add file extensions to this list to allow opening them directly from MCreator
-	 */
-	public static final List<String> SUPPORTED_FILE_EXTENSIONS = List.of("java", "info", "txt", "json", "mcmeta",
+	private static final List<String> SUPPORTED_FILE_EXTENSIONS = List.of("java", "info", "txt", "json", "mcmeta",
 			"lang", "gradle", "ini", "conf", "xml", "properties", "mcfunction", "toml", "js", "yaml", "yml", "md",
 			"cfg", "fsh", "vsh", "csv",
 			"classtweaker"); // classtweaker is Fabric's access transformer format (formerly known as accesswidener)
