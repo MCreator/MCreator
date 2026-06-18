@@ -504,6 +504,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
+		} else if (fileName.endsWith(".csv")) {
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_CSV));
 		}
 
 		SwingUtilities.invokeLater(this::loadSourceTree);
