@@ -63,7 +63,8 @@ public class LocalizationUtils {
 
 			String fileName = GeneratorTokens.replaceTokens(workspace,
 					rawName.replace("@langname", entry.getKey()).replace("@lang_NAME", uppercaseLangName));
-			GradleTrackingFileIO.writeFile(generator, langFileContent.toString(), new File(generator.getLangFilesRoot(), fileName));
+			GradleTrackingFileIO.writeFile(generator, langFileContent.toString(),
+					new File(generator.getLangFilesRoot(), fileName));
 		}
 	}
 

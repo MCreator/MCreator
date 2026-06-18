@@ -21,11 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.MapColor;
-import net.mcreator.element.parts.AIPathNodeType;
-import net.mcreator.element.parts.NoteBlockInstrument;
-import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
@@ -2008,7 +2004,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
 		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
-		block.noteBlockInstrument = new NoteBlockInstrument(modElement.getWorkspace(), noteBlockInstrument.getSelectedItem());
+		block.noteBlockInstrument = new NoteBlockInstrument(modElement.getWorkspace(),
+				noteBlockInstrument.getSelectedItem());
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(), aiPathNodeType.getSelectedItem());
 		block.creativePickItem = creativePickItem.getBlock();

@@ -20,17 +20,17 @@
 package net.mcreator.element;
 
 import net.mcreator.element.types.*;
+import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEEntity;
 import net.mcreator.element.types.bedrock.BEItem;
-import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.modgui.*;
+import net.mcreator.ui.modgui.bedrock.BEBiomeGUI;
 import net.mcreator.ui.modgui.bedrock.BEBlockGUI;
 import net.mcreator.ui.modgui.bedrock.BEEntityGUI;
 import net.mcreator.ui.modgui.bedrock.BEItemGUI;
-import net.mcreator.ui.modgui.bedrock.BEBiomeGUI;
 import net.mcreator.ui.modgui.bedrock.BEScriptGUI;
 
 import java.util.ArrayList;

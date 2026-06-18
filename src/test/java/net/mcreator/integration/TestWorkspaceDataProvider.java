@@ -33,8 +33,6 @@ import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
-import net.mcreator.element.types.Enchantment;
-import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.element.types.bedrock.BEEntity;
@@ -1068,8 +1066,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
-					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(), getRandomItem(random,
-							ElementUtil.loadAllEquipmentSlots(true)));
+					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
+							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
@@ -1873,7 +1871,8 @@ public class TestWorkspaceDataProvider {
 			bebiome.biomeReplacements = subset(random, 5, DataListLoader.loadDataList("be_biomes"),
 					e -> new BEBiomeEntry(modElement.getWorkspace(), e.getName()));
 			bebiome.replacementAmount = getRandomInt(random, BEBiome.class, "replacementAmount");
-			bebiome.replacementNoiseFrequencyScale = getRandomInt(random, BEBiome.class, "replacementNoiseFrequencyScale");
+			bebiome.replacementNoiseFrequencyScale = getRandomInt(random, BEBiome.class,
+					"replacementNoiseFrequencyScale");
 			bebiome.ambientSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			bebiome.moodSound = new Sound(modElement.getWorkspace(),

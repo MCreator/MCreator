@@ -67,8 +67,7 @@ import java.util.stream.Stream;
 	private static final Pattern cleanMultiDotsPattern = Pattern.compile("\\.{2,}");
 	private static final Pattern cleanMultiHyphensPattern = Pattern.compile("-{2,}");
 	private static final Pattern cleanMultiPlusesPattern = Pattern.compile("\\+{2,}");
-	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile(
-			"(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
+	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile("(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 

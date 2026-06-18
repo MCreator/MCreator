@@ -20,12 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.AIPathNodeType;
-import net.mcreator.element.parts.EffectEntry;
-import net.mcreator.element.parts.GrowapableSpawnType;
-import net.mcreator.element.parts.MapColor;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.Plant;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.minecraft.DataListEntry;
