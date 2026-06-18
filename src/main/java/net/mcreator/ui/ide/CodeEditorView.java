@@ -20,10 +20,10 @@ package net.mcreator.ui.ide;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.mcreator.io.FileIO;
 import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.generator.io.JSWriter;
+import net.mcreator.io.FileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;
@@ -76,11 +76,19 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.List;
 
 public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger("Code Editor");
+
+	/**
+	 * Add file extensions to this list to allow opening them directly from MCreator
+	 */
+	public static final List<String> SUPPORTED_FILE_EXTENSIONS = List.of("java", "info", "txt", "json", "mcmeta",
+			"lang", "gradle", "ini", "conf", "xml", "properties", "mcfunction", "toml", "js", "yaml", "yml", "md",
+			"cfg", "fsh", "vsh", "csv",
+			"classtweaker"); // classtweaker is Fabric's access transformer format (formerly known as accesswidener)
 
 	public final SearchBar sed;
 	public final ReplaceBar rep;
@@ -691,9 +699,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	public static boolean isFileSupported(String fileName) {
-		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg", "fsh", "vsh")
-				.contains(FilenameUtilsPatched.getExtension(fileName));
+		return SUPPORTED_FILE_EXTENSIONS.contains(FilenameUtilsPatched.getExtension(fileName).toLowerCase());
 	}
 
 	public void jumpToLine(int linenum) {
