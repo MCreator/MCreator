@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 87;
+	public static final int formatVersion = 88;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
