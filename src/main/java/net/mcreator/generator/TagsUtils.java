@@ -23,7 +23,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -56,7 +55,9 @@ public class TagsUtils {
 							.map(e -> tag.getKey().type().getMappableElementProvider().apply(workspace, e)).toList());
 					String json = generator.getTemplateGeneratorFromName("templates")
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
-					JSONWriter.writeJSONToFile(workspace, json, tagFile);
+
+					GeneratorTemplate template = GeneratorTemplate.fromFile(tagFile, tagsSpecification);
+					generator.generateFiles(List.of(template.toGeneratorFile(json)), true);
 				} catch (TemplateGeneratorException e) {
 					generator.getLogger().error("Failed to generate code for tag: {}", tag.getKey(), e);
 				}
