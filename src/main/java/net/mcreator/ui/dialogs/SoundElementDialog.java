@@ -88,23 +88,12 @@ public class SoundElementDialog {
 			soundsEntries.setEntries(sounds);
 		}
 
-		JComboBox<String> soundCategory;
-		JMinMaxSpinner jMinMaxSpinner;
+		JComboBox<String> soundCategory = null;
+		JMinMaxSpinner jMinMaxSpinner = null;
 		if (isBedrock) {
-			soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
-			jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
-			soundCategory.addActionListener(
-					_ -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
-
-			ui.add(L10N.label("dialog.sounds.category"));
-			ui.add(soundCategory);
-
-			ui.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("sound/attenuation_distance"),
-					L10N.label("dialog.sounds.attenuation_distance")));
-			ui.add(jMinMaxSpinner);
-		} else {
-			soundCategory = null;
-			jMinMaxSpinner = null;
+			JComponent[] jComponents = addBedrockUI(ui);
+			soundCategory = (JComboBox<String>) jComponents[0];
+			jMinMaxSpinner = (JMinMaxSpinner) jComponents[1];
 		}
 
 		ui.add(L10N.label("dialog.sounds.subtitle"));
@@ -115,11 +104,9 @@ public class SoundElementDialog {
 			soundName.setEnabled(false);
 			subtitle.setText(element.getSubtitle());
 			soundsEntries.setEntries(element.getFiles());
-			if (isBedrock) {
-				soundCategory.setSelectedItem(element.getBECategory());
-				jMinMaxSpinner.setMinValue(element.getBEAttenuationDistance().min);
-				jMinMaxSpinner.setMaxValue(element.getBEAttenuationDistance().max);
-			}
+
+			if (isBedrock)
+				setBedrockUI(element, soundCategory, jMinMaxSpinner);
 		}
 
 		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils.northAndCenterElement(ui, pane1),
@@ -176,11 +163,9 @@ public class SoundElementDialog {
 					if (element != null) {
 						element.setSubtitle(subtitle.getText());
 						element.setFiles(sounds);
-						if (isBedrock) {
-							element.setBECategory((String) soundCategory.getSelectedItem());
-							element.setBEAttenuationDistance(
-									new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()));
-						}
+
+						if (isBedrock)
+							setBedrockSoundProperties(element, soundCategory, jMinMaxSpinner);
 
 						return element;
 					}
@@ -195,6 +180,35 @@ public class SoundElementDialog {
 		} else {
 			return element;
 		}
+	}
+
+	private static JComponent[] addBedrockUI(JPanel ui) {
+		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
+		JMinMaxSpinner jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
+		soundCategory.addActionListener(_ -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
+
+		ui.add(L10N.label("dialog.sounds.category"));
+		ui.add(soundCategory);
+
+		ui.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("sound/attenuation_distance"),
+				L10N.label("dialog.sounds.attenuation_distance")));
+		ui.add(jMinMaxSpinner);
+
+		return new JComponent[] { soundCategory, jMinMaxSpinner };
+	}
+
+	private static void setBedrockUI(SoundElement element, JComboBox<String> soundCategory,
+			JMinMaxSpinner jMinMaxSpinner) {
+		soundCategory.setSelectedItem(element.getBECategory());
+		jMinMaxSpinner.setMinValue(element.getBEAttenuationDistance().min);
+		jMinMaxSpinner.setMaxValue(element.getBEAttenuationDistance().max);
+	}
+
+	private static void setBedrockSoundProperties(SoundElement element, JComboBox<String> soundCategory,
+			JMinMaxSpinner jMinMaxSpinner) {
+		element.setBECategory((String) soundCategory.getSelectedItem());
+		element.setBEAttenuationDistance(
+				new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()));
 	}
 
 	public static void importSound(MCreator mcreator) {

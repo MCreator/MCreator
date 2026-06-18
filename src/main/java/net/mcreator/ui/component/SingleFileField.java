@@ -22,12 +22,13 @@ package net.mcreator.ui.component;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 
 public class SingleFileField extends JSingleEntrySelector<File> {
 	private final String[] extensions;
 
-	public SingleFileField(MCreator window, String... extensions) {
+	public SingleFileField(MCreator window, @Nonnull String... extensions) {
 		super(window);
 		this.extensions = extensions;
 	}
