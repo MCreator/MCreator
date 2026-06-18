@@ -29,6 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class LogicBinaryOperationsBlock implements IBlockGenerator {
@@ -72,6 +73,73 @@ public class LogicBinaryOperationsBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "logic_binary_ops",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "A",
+                  "check": "Boolean"
+              },
+              {
+                  "type": "field_dropdown",
+                  "name": "OP",
+                  "options": [
+                      ["=", "EQ"],
+                      ["\\u2260", "NEQ"],
+                      ["AND", "AND"],
+                      ["OR", "OR"],
+                      ["XOR", "XOR"]
+                  ]
+              },
+              {
+                  "type": "input_value",
+                  "name": "B",
+                  "check": "Boolean"
+              }
+          ],
+          "inputsInline": true,
+          "output": "Boolean",
+          "colour": "%{BKY_LOGIC_HUE}"
+        }""", """
+        {
+          "type": "math_binary_ops",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "A",
+                  "check": "Number"
+              },
+              {
+                  "type": "field_dropdown",
+                  "name": "OP",
+                  "options": [
+                      ["=", "EQ"],
+                      ["\\u2260", "NEQ"],
+                      ["<", "LT"],
+                      ["\\u2264", "LTE"],
+                      [">", "GT"],
+                      ["\\u2265", "GTE"]
+                  ]
+              },
+              {
+                  "type": "input_value",
+                  "name": "B",
+                  "check": "Number"
+              }
+          ],
+          "inputsInline": true,
+          "output": "Boolean",
+          "colour": "%{BKY_MATH_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "logicoperations";
 	}
 
 	private static String withoutParentheses(String code, String blockType, String operator) {

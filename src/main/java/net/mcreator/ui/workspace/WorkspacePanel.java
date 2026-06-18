@@ -1103,6 +1103,12 @@ import java.util.regex.Pattern;
 				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
 						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
+					if (selectedElements.size() == 1 && selectedElements.getFirst() instanceof ModElement mu) {
+						mcreator.getWorkspace().getHistoryManager().importantCheckpoint("before_delete", mu.getName());
+					} else {
+						mcreator.getWorkspace().getHistoryManager()
+								.importantCheckpoint("before_delete_many", selectedElements.size());
+					}
 					selectedElements.forEach(re -> {
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
@@ -1425,8 +1431,9 @@ import java.util.regex.Pattern;
 					currentFolder = folders.get(folderIdx);
 				}
 
-				if (mcreator.getWorkspace().getModElements().stream()
-						.anyMatch(el -> currentFolder.equals(el.getFolderPath()))
+				Collection<ModElement> modElements = mcreator.getWorkspace().getModElements();
+
+				if (modElements.stream().anyMatch(el -> currentFolder.equals(el.getFolderPath()))
 						|| !currentFolder.getDirectFolderChildren().isEmpty()) {
 					mainpcl.show(mainp, "sp");
 
@@ -1434,7 +1441,7 @@ import java.util.regex.Pattern;
 					ArrayList<IElement> newDataModel = new ArrayList<>(currentFolder.getRecursiveFolderChildren());
 
 					// add mod elements
-					newDataModel.addAll(mcreator.getWorkspace().getModElements());
+					newDataModel.addAll(modElements);
 
 					List<IElement> selected = list.getSelectedValuesList();
 					dml.removeAllElements();
@@ -1444,14 +1451,13 @@ import java.util.regex.Pattern;
 					mainpcl.show(mainp, "ep");
 				}
 
-				if (mcreator.getWorkspace().getModElements().isEmpty()) {
+				if (modElements.isEmpty()) {
 					elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
 							mcreator.getGenerator().getGeneratorName()));
 				} else {
 					elementsCount.setText(
 							L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
-									mcreator.getGenerator().getGeneratorName(),
-									mcreator.getWorkspace().getModElements().size()));
+									mcreator.getGenerator().getGeneratorName(), modElements.size()));
 				}
 
 				Texture icon = CustomTexture.fromName(mcreator.getWorkspace(), TextureType.OTHER,

@@ -23,6 +23,8 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class TimeMonthBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		master.append("/*@int*/Calendar.getInstance().get(Calendar.MONTH)");
@@ -34,5 +36,18 @@ public class TimeMonthBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "time_month",
+          "output": "Number",
+          "colour": "%{BKY_MATH_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "time";
 	}
 }

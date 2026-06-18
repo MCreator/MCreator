@@ -65,6 +65,8 @@ public class WebView extends JPanel implements Closeable {
 	private final CefMessageRouter router;
 	private final CefBrowser browser;
 
+	@Nullable JBCefOsrComponent osrComponent; // only used if OSR rendering is enabled, otherwise null
+
 	private final Component cefComponent;
 
 	// Helper for page load listeners
@@ -110,7 +112,7 @@ public class WebView extends JPanel implements Closeable {
 		this.client.addMessageRouter(this.router);
 
 		if (CefUtils.useOSR()) {
-			JBCefOsrComponent osrComponent = new JBCefOsrComponent();
+			osrComponent = new JBCefOsrComponent();
 			JBCefOsrHandler handler = new JBCefOsrHandler(osrComponent);
 			osrComponent.setRenderHandler(handler);
 			this.browser = new CefBrowserOsrCustom(this.client, url,
@@ -470,6 +472,10 @@ public class WebView extends JPanel implements Closeable {
 		router.dispose();
 
 		client.dispose();
+
+		if (osrComponent != null) {
+			osrComponent.dispose();
+		}
 
 		callbackExecutor.shutdownNow();
 		edtJSWaitThread.shutdownNow();

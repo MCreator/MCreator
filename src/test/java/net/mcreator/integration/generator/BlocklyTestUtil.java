@@ -26,15 +26,16 @@ import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Dimension;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -203,7 +204,7 @@ public class BlocklyTestUtil {
 			additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 			processed++;
 		}
-		case "field_input", "field_javaname", "field_resourcelocation" -> {
+		case "field_input", "field_javaname", "field_resourcelocation", "field_multilinetext" -> {
 			String value = "test";
 			if (arg.has("text")) {
 				value = arg.get("text").getAsString();
@@ -263,68 +264,43 @@ public class BlocklyTestUtil {
 
 	private static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
 			String customEntryProviders) {
-		switch (datalist) {
-		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "spawnableEntity":
-			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "gui":
-			return ElementUtil.loadBasicGUIs(workspace).toArray(String[]::new);
-		case "direction":
-			return ElementUtil.loadDirections();
-		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "dimensionCustom": // For legacy reason
-			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
-					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
-		case "dimensionCustomWithPortal":
-			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+		List<DataListEntry> entries = BlocklyJavascriptBridge.getDataListEntriesForEntrySelector(workspace, datalist,
+				typeFilter, customEntryProviders);
+		if (entries != null) {
+			return entries.isEmpty() ?
+					new String[] { "" } :
+					entries.stream().map(DataListEntry::getName).toArray(String[]::new);
+		}
+
+		return switch (datalist) {
+			case "entitydata_logic" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
+					PropertyData.LogicType.class).toArray(String[]::new);
+			case "entitydata_integer" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
+					PropertyData.IntegerType.class).toArray(String[]::new);
+			case "entitydata_string" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
+					PropertyData.StringType.class).toArray(String[]::new);
+			case "gui" -> ElementUtil.loadBasicGUIs(workspace).toArray(String[]::new);
+			case "sound" -> ElementUtil.getAllSounds(workspace);
+			case "direction" -> ElementUtil.loadDirections();
+			case "dimensionCustom" -> workspace.getModElementsByType(ModElementType.DIMENSION).stream()
+					.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new);
+			case "dimensionCustomWithPortal" -> workspace.getModElementsByType(ModElementType.DIMENSION).stream()
 					.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
 					.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
-					.map(m -> "CUSTOM:" + m.getModElement().getName()).toArray(String[]::new);
-		case "fluid":
-			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "gamerulesboolean":
-			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "gamerulesnumber":
-			return ElementUtil.getAllNumberGameRules(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "eventparametersnumber":
-			return DataListLoader.loadDataList("eventparameters").stream()
-					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
-					.map(DataListEntry::getName).toArray(String[]::new);
-		case "eventparametersboolean":
-			return DataListLoader.loadDataList("eventparameters").stream()
-					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
-					.map(DataListEntry::getName).toArray(String[]::new);
-		case "sound":
-			return ElementUtil.getAllSounds(workspace);
-		case "structure":
-			return workspace.getFolderManager().getStructureList().toArray(String[]::new);
-		case "procedure":
-			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
+					.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new);
+			case "structure" -> workspace.getFolderManager().getStructureList().toArray(String[]::new);
+			case "procedure" -> workspace.getModElementsByType(ModElementType.PROCEDURE).stream()
 					.map(ModElement::getName).toArray(String[]::new);
-		case "arrowProjectile":
-			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "configuredfeature":
-			return ElementUtil.loadAllConfiguredFeatures(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		default: {
-			if (datalist.startsWith("procedure_retval_")) {
-				var variableType = VariableTypeLoader.INSTANCE.fromName(
-						Strings.CS.removeStart(datalist, "procedure_retval_"));
-				return ElementUtil.getProceduresOfType(workspace, variableType);
-			} else if (!DataListLoader.loadDataList(datalist).isEmpty()) {
-				return ElementUtil.loadDataListAndElements(workspace, datalist, typeFilter,
-								StringUtils.split(customEntryProviders, ',')).stream().map(DataListEntry::getName)
-						.toArray(String[]::new);
+			case "global_triggers" -> new String[] { "no_ext_trigger" };
+			default -> {
+				if (datalist.startsWith("procedure_retval_")) {
+					var variableType = VariableTypeLoader.INSTANCE.fromName(
+							Strings.CS.removeStart(datalist, "procedure_retval_"));
+					yield ElementUtil.getProceduresOfType(workspace, variableType);
+				}
+				yield new String[] { "" };
 			}
-		}
-		}
-		return new String[] { "" };
+		};
 	}
 
 }

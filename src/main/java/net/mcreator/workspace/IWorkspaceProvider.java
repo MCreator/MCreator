@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.workspace.elements.ModElementManager;
+import net.mcreator.workspace.localhistory.HistoryManager;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
@@ -40,6 +41,10 @@ public interface IWorkspaceProvider {
 
 	default WorkspaceFolderManager getFolderManager() {
 		return getWorkspace().getFolderManager();
+	}
+
+	default HistoryManager getHistoryManager() {
+		return getWorkspace().getHistoryManager();
 	}
 
 	default ModElementManager getModElementManager() {

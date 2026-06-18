@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.ModElementType;
@@ -66,7 +67,7 @@ import java.util.*;
 import java.util.List;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure>
-		implements IBlocklyPanelHolder, ISearchable {
+		implements IBlocklyPanelHolder, ISearchable, IBlocklyPanelHolder.IBlocklyPanelVariablesHolder {
 
 	private static final Logger LOG = LogManager.getLogger(ProcedureGUI.class);
 
@@ -76,7 +77,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private BlocklyPanel blocklyPanel;
 
-	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
+	private final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasDependencyErrors = false;
@@ -588,6 +589,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.PROCEDURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
@@ -693,6 +696,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		if (searchTerm != null)
 			blocklyEditorToolbar.getSearchField().setText(searchTerm);
+	}
+
+	@Override public DefaultListModel<VariableElement> getLocalVariablesListModel() {
+		return localVars;
 	}
 
 }

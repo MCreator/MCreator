@@ -21,10 +21,10 @@ package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.BlocklyTemplateIO;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
-import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.MCreator;
@@ -36,7 +36,7 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.modgui.ProcedureGUI;
+import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.VariableElement;
@@ -54,6 +54,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class BlocklyEditorToolbar extends TransparentToolBar {
 
@@ -66,6 +67,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private final JTextField search;
 
+	private final MCreator mcreator;
+
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
 		this(mcreator, blocklyEditorType, blocklyPanel, null, true);
 	}
@@ -76,31 +79,35 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	}
 
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI, JComponent... extraComponents) {
-		this(mcreator, blocklyEditorType, blocklyPanel, procedureGUI, true, extraComponents);
+			IBlocklyPanelHolder.IBlocklyPanelVariablesHolder blocklyPanelVariablesHolder,
+			JComponent... extraComponents) {
+		this(mcreator, blocklyEditorType, blocklyPanel, blocklyPanelVariablesHolder, true, extraComponents);
 	}
 
 	/**
 	 * <p>A {@link BlocklyEditorToolbar} is the top panel added on every Java {@link BlocklyPanel}.
 	 * It contains buttons like templates, an export and an import template buttons.</p>
 	 *
-	 * @param mcreator          <p>The {@link MCreator} instance used</p>
-	 * @param blocklyEditorType <p>Type of the Blockly editor this toolbar will be used on.</p>
-	 * @param blocklyPanel      <p>The {@link BlocklyPanel} to use for some features</p>
-	 * @param procedureGUI      <p>When a {@link ProcedureGUI} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
-	 * @param hasSearchBar      <p>If this toolbar will have a search bar.</p>
-	 * @param extraComponents   <p>List of additional {@link JComponent} to show inside the toolbar.</p>
+	 * @param mcreator                    <p>The {@link MCreator} instance used</p>
+	 * @param blocklyEditorType           <p>Type of the Blockly editor this toolbar will be used on.</p>
+	 * @param blocklyPanel                <p>The {@link BlocklyPanel} to use for some features</p>
+	 * @param blocklyPanelVariablesHolder <p>When a {@link IBlocklyPanelHolder.IBlocklyPanelVariablesHolder} is passed, features specific to {@link net.mcreator.element.types.Procedure} such as variables are enabled.</p>
+	 * @param hasSearchBar                <p>If this toolbar will have a search bar.</p>
+	 * @param extraComponents             <p>List of additional {@link JComponent} to show inside the toolbar.</p>
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
-			ProcedureGUI procedureGUI, boolean hasSearchBar, JComponent... extraComponents) {
+			IBlocklyPanelHolder.IBlocklyPanelVariablesHolder blocklyPanelVariablesHolder, boolean hasSearchBar,
+			JComponent... extraComponents) {
 		this.blocklyPanel = blocklyPanel;
+		this.mcreator = mcreator;
 
 		setBorder(null);
 
 		List<ResourcePointer> templates = TemplatesLoader.loadTemplates(blocklyEditorType.extension(),
 				blocklyEditorType.extension());
 
-		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates, procedureGUI);
+		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates,
+				blocklyPanelVariablesHolder);
 
 		templateLib = L10N.button("blockly.templates." + blocklyEditorType.registryName());
 		templateLib.setPreferredSize(new Dimension(155, 16));
@@ -171,7 +178,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
 		export.setIcon(UIRES.get("18px.export"));
 		add(export);
-		export.addActionListener(event -> {
+		export.addActionListener(_ -> {
 			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.extension() });
 			if (exp != null) {
 				new Thread(() -> {
@@ -194,14 +201,14 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
 		add(import_);
-		import_.addActionListener(event -> {
+		import_.addActionListener(_ -> {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.extension() });
 			if (imp != null) {
 				// Run import in a separate thread to avoid blocking the UI and to avoid deadlocks on macOS
 				new Thread(() -> {
 					try {
 						String procedureXml = BlocklyTemplateIO.importBlocklyXML(imp);
-						if (procedureGUI != null) {
+						if (blocklyPanelVariablesHolder != null) {
 							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
 							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
@@ -211,7 +218,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 								blocklyPanel.addLocalVariable(localVariable.getName(),
 										localVariable.getType().getBlocklyVariableType());
-								procedureGUI.localVars.addElement(localVariable);
+								blocklyPanelVariablesHolder.getLocalVariablesListModel().addElement(localVariable);
 							}
 						}
 						blocklyPanel.addBlocksFromXML(procedureXml);
@@ -237,15 +244,22 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private final Map<ToolboxBlock, JMenuItem> blockMenuItemCache = new HashMap<>();
 
+	private List<ToolboxBlock> allBlocks = null;
+
 	private void updateSearch(BlocklyEditorType blocklyEditorType) {
+		if (allBlocks == null) {
+			allBlocks = BlocklyLoader.INSTANCE.getAllToolboxBlocksFor(mcreator.getGeneratorConfiguration(),
+					blocklyEditorType);
+		}
+
 		if (!search.getText().isBlank()) {
 			String lowerCaseSearch = search.getText().toLowerCase(Locale.ROOT);
 			String[] keyWords = lowerCaseSearch.replaceAll("[^ \\p{L}\\p{Nd}/._-]+", "").split(" ");
 
 			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
-			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(blocklyEditorType).getDefinedBlocks()
-					.values()) {
-				if (block.getName().toLowerCase(Locale.ROOT).contains(lowerCaseSearch)) {
+			for (ToolboxBlock block : allBlocks) {
+				if (block.getName().toLowerCase(Locale.ROOT).contains(lowerCaseSearch) || block.getMachineName()
+						.contains(lowerCaseSearch)) {
 					filtered.add(block);
 					continue;
 				}
@@ -301,6 +315,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		templateLib.setPreferredSize(new Dimension(w, 16));
 	}
 
+	private static final Pattern anyLetter = Pattern.compile(".*\\p{L}.*");
+
 	private String getHTMLForBlock(ToolboxBlock block) {
 		StringBuilder builder = new StringBuilder("<html>");
 
@@ -324,9 +340,13 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		}
 
 		String name = block.getName();
-		name = StringUtils.abbreviateString(name, 130); // make sure we don't display too long texts
-		name = name.replaceAll("[0-9%]+(?:\\\\.\\\\.\\\\.)?$",
-				""); // make sure to strip away potential reminders of %N parameters
+		if (anyLetter.matcher(name).matches()) {
+			name = StringUtils.abbreviateString(name, 130); // make sure we don't display too long texts
+			name = name.replaceAll("[0-9%]+(?:\\\\.\\\\.\\\\.)?$",
+					""); // make sure to strip away potential reminders of %N parameters
+		} else {
+			name = StringUtils.uppercaseFirstLetter(block.getMachineName().replace("_", " "));
+		}
 
 		builder.append("&nbsp;&nbsp;");
 		builder.append(name.replaceAll("%\\d+?",

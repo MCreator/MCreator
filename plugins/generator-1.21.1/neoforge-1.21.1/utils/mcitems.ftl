@@ -64,7 +64,7 @@
 
 <#function mappedMCItemToIngredient mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "Ingredient.of(ItemTags.create(ResourceLocation.parse(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\")))">
+        <#return "Ingredient.of(ItemTags.create(ResourceLocation.parse(\"" + mappedBlock.asTagEntry() + "\")))">
     <#elseif mappedBlock.getMappedValue(1).startsWith("#")>
         <#return "Ingredient.of(ItemTags.create(ResourceLocation.parse(\"" + mappedBlock.getMappedValue(1).replace("#", "") + "\")))">
     <#else>
@@ -118,7 +118,7 @@
 
     <#list elements as block>
         <#if block.getUnmappedValue().startsWith("TAG:")>
-            <#assign tags += [block.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")]>
+            <#assign tags += [block.asTagEntry()]>
         <#elseif block.getMappedValue(1).startsWith("#")>
             <#assign tags += [block.getMappedValue(1).replace("#", "")]>
         <#else>

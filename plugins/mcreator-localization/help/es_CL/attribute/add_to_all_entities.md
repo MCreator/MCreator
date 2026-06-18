@@ -1,1 +1,1 @@
-Si está activado, todas las entidades del mundo que pueden tener atributos tendrán este atributo presente y se establecerán en su valor predeterminado cuando aparezcan.
+Si está habilitado, todas las entidades en el mundo que tengan atributos van a tener este atributo presente y configurado en su valor por defecto cuando sea spawneado.

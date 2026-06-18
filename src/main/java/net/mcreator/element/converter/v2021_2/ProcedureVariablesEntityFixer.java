@@ -19,7 +19,7 @@
 
 package net.mcreator.element.converter.v2021_2;
 
-import net.mcreator.blockly.java.BlocklyVariables;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.util.XMLUtil;

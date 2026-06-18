@@ -48,13 +48,18 @@ import java.util.Objects;
 
 public class SoundElementDialog {
 
+	@Nullable
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
 		boolean isBedrock = mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
 				== GeneratorFlavor.ADDON;
 
 		JPanel ui = new JPanel(new GridLayout(isBedrock ? 4 : 2, 2, 10, 2));
 		VTextField soundName = new VTextField(26);
-		soundName.setValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")));
+
+		soundName.setValidator(new net.mcreator.ui.validation.validators.UniqueNameValidator(
+				L10N.t("dialog.sounds.name"), () -> RegistryNameFixer.fix(soundName.getText()),
+				() -> mcreator.getWorkspace().getSoundElements().stream().map(SoundElement::getName),
+				new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name"))).setIsPresentOnList(element != null));
 		soundName.enableRealtimeValidation();
 
 		ui.add(L10N.label("dialog.sounds.registry_name"));
@@ -121,8 +126,9 @@ public class SoundElementDialog {
 
 		if (option == 0) {
 			if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_name_not_valid"),
-						L10N.t("dialog.sounds.error_name_not_valid_title"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.sounds.error_validation", soundName.getValidationStatus().message()),
+						L10N.t("dialog.sounds.error_validation_title"), JOptionPane.ERROR_MESSAGE);
 				return element;
 			} else {
 				if (!soundsEntries.areFilesValid()) {

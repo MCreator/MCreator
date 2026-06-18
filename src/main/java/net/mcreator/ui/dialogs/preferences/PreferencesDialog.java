@@ -33,7 +33,10 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.tree.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -166,10 +169,11 @@ public class PreferencesDialog extends MCreatorDialog {
 
 		new ThemesPanel(this);
 
+		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_ui_backgrounds"), "backgrounds", "png", true);
+
 		templatesNode = new DefaultMutableTreeNode(L10N.t("dialog.preferences.templates"));
 		sectionsRoot.add(templatesNode);
 
-		addEditTemplatesPanel("ui_backgrounds", "backgrounds", "png");
 		addEditTemplatesPanel("texture_templates", "templates/textures/texturemaker", "png");
 		addEditTemplatesPanel("armor_templates", "templates/textures/armormaker", "png");
 

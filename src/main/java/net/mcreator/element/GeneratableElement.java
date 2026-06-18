@@ -100,17 +100,15 @@ public abstract class GeneratableElement {
 	}
 
 	/**
-	 * Checks if the type of the passed value is likely part of the data model and not related to the technical part of the application.
-	 * Scanning values that do not pass this condition will most probably lead to a {@link StackOverflowError}.
-	 * <br>NOTE: If the checked values are instances of a class not contained in this module, they will still be checked.
+	 * Checks if the passed type is likely part of the data model and not related to the technical part of the application.
+	 * Scanning types that do not pass this condition will most probably lead to a {@link StackOverflowError}.
 	 *
-	 * @param value The value that should be checked.
-	 * @return Whether it is safe to scan the {@code value} object deeper.
+	 * @param clazz The type that should be checked.
+	 * @return Whether it is safe to scan instances of the {@code clazz} deeper.
 	 */
-	public static boolean isDataModelObject(Object value) {
-		return (value.getClass().getModule() == MCreator.class.getModule() || PluginLoader.INSTANCE.getPluginModules()
-				.contains(value.getClass().getModule()))
-				&& !(value instanceof IWorkspaceProvider); // prevent from being stuck in the app structure
+	public static boolean isDataModelObject(Class<?> clazz) {
+		return (clazz.getModule() == MCreator.class.getModule() || PluginLoader.INSTANCE.getPluginModules()
+				.contains(clazz.getModule())) && !IWorkspaceProvider.class.isAssignableFrom(clazz);
 	}
 
 	public static class GSONAdapter

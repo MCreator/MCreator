@@ -48,8 +48,6 @@ public class BlocklyToFeature extends BlocklyToCode {
 	}
 
 	@Override protected void beforeGenerate() {
-		blockGenerators.add(new MCItemBlock());
-
 		featureConfigurationCode = new StringBuilder();
 		featureType = "";
 	}

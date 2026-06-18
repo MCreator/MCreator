@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 public class SetEventResultBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -87,5 +89,30 @@ public class SetEventResultBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "set_event_result",
+          "args0": [
+              {
+                  "type": "field_dropdown",
+                  "name": "result",
+                  "options": [
+                      ["DEFAULT", "DEFAULT"],
+                      ["ALLOW", "ALLOW"],
+                      ["DENY", "DENY"]
+                  ]
+              }
+          ],
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 90
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
 	}
 }

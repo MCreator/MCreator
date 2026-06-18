@@ -19,6 +19,7 @@
 
 package net.mcreator.element.util;
 
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
@@ -120,7 +121,7 @@ public class GEValidator {
 			for (int i = 0; i < length; i++) {
 				unpackAndValidate(element, Array.get(value, i));
 			}
-		} else if (GeneratableElement.isDataModelObject(value)) {
+		} else if (GeneratableElement.isDataModelObject(value.getClass())) {
 			// Data model object. Pass it back to the reflection scanner.
 			performValidation(element, value);
 		}
@@ -159,6 +160,13 @@ public class GEValidator {
 			}
 
 			// Validations for cases where fieldValue is not null below
+
+			// If field is String and notNullable and string is blank, fail valiation
+			if (fieldValue instanceof String string && field.notNullable() && string.isBlank()) {
+				throw new ValidationException(
+						"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
+								+ " is blank, but should not be.");
+			}
 
 			if (field.numeric() != null) {
 				if (fieldValue instanceof Number number) {
@@ -239,8 +247,8 @@ public class GEValidator {
 	                           @Nullable LimitedOptionsCache limitedOptions) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
-			this(field, field.isAnnotationPresent(Nonnull.class), field.getAnnotation(Numeric.class),
-					field.getAnnotation(NonNullMappable.class),
+			this(field, field.isAnnotationPresent(Nonnull.class) || field.isAnnotationPresent(BlocklyXML.class),
+					field.getAnnotation(Numeric.class), field.getAnnotation(NonNullMappable.class),
 					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null);
 		}
 	}

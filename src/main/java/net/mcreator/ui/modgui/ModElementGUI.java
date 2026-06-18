@@ -147,15 +147,23 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		ViewBase retval;
 		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(this.tabIn);
 		if (existing == null) {
-			mcreator.getTabs().addTab(this.tabIn);
-
 			this.tabIn.setTabShownListener(_ -> {
-				if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
-					listeningEnabled = false;
-					reloadDataLists();
-					listeningEnabled = true;
+				if (this.tabIn.wasPreviouslyShown()) {
+					if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
+						listeningEnabled = false;
+						reloadDataLists();
+						listeningEnabled = true;
+					}
+				} else {
+					// if first show, reload modElementCodeViewer if it exits
+					// reload method itself will also make sure to only reload if visible
+					if (modElementCodeViewer != null) {
+						SwingUtilities.invokeLater(modElementCodeViewer::reload);
+					}
 				}
 			});
+
+			mcreator.getTabs().addTab(this.tabIn);
 
 			this.tabIn.setTabClosingListener(_ -> {
 				if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
@@ -603,6 +611,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
 				modElement.getType().getRegistryName());
+
+		if (changed && editingMode) {
+			mcreator.getWorkspace().getHistoryManager().checkpoint("mod_element_edited", modElement.getName());
+		}
 
 		changed = false;
 

@@ -104,7 +104,7 @@ public class BlocklyBlockCodeGenerator {
 									fieldType) || "field_mcitem_selector".equals(fieldType)) {
 								boolean shouldValidate = !("sound".equals(toolboxBlock.getFieldDataList(fieldName)));
 								if (shouldValidate && !MappableElement.validateReference(fieldValue,
-										master.getWorkspace())) {
+										master.getWorkspace(), toolboxBlock.getFieldDataList(fieldName))) {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 											L10N.t("blockly.errors.invalid_reference", fieldName, type,
 													fieldValue.replaceFirst("CUSTOM:", ""))));
@@ -247,7 +247,7 @@ public class BlocklyBlockCodeGenerator {
 										fieldType) || "field_mcitem_selector".equals(fieldType)) {
 									boolean shouldValidate = !("sound".equals(fieldEntry.getDataList()));
 									if (shouldValidate && !MappableElement.validateReference(fieldValue,
-											master.getWorkspace())) {
+											master.getWorkspace(), fieldEntry.getDataList())) {
 										master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 												L10N.t("blockly.errors.invalid_reference", fieldName + i, type,
 														fieldValue.replaceFirst("CUSTOM:", ""))));
