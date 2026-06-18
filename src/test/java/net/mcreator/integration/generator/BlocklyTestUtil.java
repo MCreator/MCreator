@@ -264,6 +264,11 @@ public class BlocklyTestUtil {
 
 	private static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
 			String customEntryProviders) {
+		// customEntity is filled by toolbox_init test values
+		if ("customEntity".equals(datalist)) {
+			return new String[] { "" };
+		}
+
 		List<DataListEntry> entries = BlocklyJavascriptBridge.getDataListEntriesForEntrySelector(workspace, datalist,
 				typeFilter, customEntryProviders);
 		if (entries != null) {
