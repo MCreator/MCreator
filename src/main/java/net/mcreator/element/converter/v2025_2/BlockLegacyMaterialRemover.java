@@ -39,8 +39,7 @@ public class BlockLegacyMaterialRemover implements IConverter {
 		switch (material) {
 		case "CARPET", "TALL_PLANTS", "BAMBOO_SAPLING", "BAMBOO", "CLOTH", "TNT", "LEAVES" ->
 				block.ignitedByLava = true;
-		case "OCEAN_PLANT", "ROCK" ->
-				block.noteBlockInstrument = new NoteBlockInstrument(workspace, "basedrum");
+		case "OCEAN_PLANT", "ROCK" -> block.noteBlockInstrument = new NoteBlockInstrument(workspace, "basedrum");
 		case "SAND" -> block.noteBlockInstrument = new NoteBlockInstrument(workspace, "snare");
 		case "WOOD" -> {
 			block.noteBlockInstrument = new NoteBlockInstrument(workspace, "bass");

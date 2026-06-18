@@ -28,7 +28,10 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.BEBiomeListField;
+import net.mcreator.ui.minecraft.BEBiomeTagsListField;
+import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
@@ -70,7 +73,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JComboBox<String> noiseType = new JComboBox<>(
 			new String[] { "default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
 					"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" });
-	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
+	private final JComboBox<String> villageType = new JComboBox<>(
+			new String[] { "default", "desert", "ice", "savanna", "taiga" });
 	private final JComboBox<String> particleToSpawn = new JComboBox<>(
 			new String[] { "ash", "blue_spores", "red_spores", "white_ash" });
 

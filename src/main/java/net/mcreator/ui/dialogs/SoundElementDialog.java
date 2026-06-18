@@ -48,10 +48,12 @@ public class SoundElementDialog {
 
 		VTextField soundName = new VTextField(26);
 
-		soundName.setValidator(new net.mcreator.ui.validation.validators.UniqueNameValidator(
-				L10N.t("dialog.sounds.name"), () -> RegistryNameFixer.fix(soundName.getText()),
-				() -> mcreator.getWorkspace().getSoundElements().stream().map(SoundElement::getName),
-				new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name"))).setIsPresentOnList(element != null));
+		soundName.setValidator(
+				new net.mcreator.ui.validation.validators.UniqueNameValidator(L10N.t("dialog.sounds.name"),
+						() -> RegistryNameFixer.fix(soundName.getText()),
+						() -> mcreator.getWorkspace().getSoundElements().stream().map(SoundElement::getName),
+						new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name"))).setIsPresentOnList(
+						element != null));
 		soundName.enableRealtimeValidation();
 
 		JTextField subtitle = new JTextField();
