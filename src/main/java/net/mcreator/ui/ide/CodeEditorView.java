@@ -491,7 +491,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			});
 		} else if (fileName.endsWith(".xml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
-		} else if (fileName.endsWith(".lang")) {
+		} else if (fileName.endsWith(".lang") || fileName.endsWith(".properties")) {
 			ThreadUtil.runOnSwingThreadAndWait(
 					() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
 		} else if (fileName.endsWith(".gradle")) {
