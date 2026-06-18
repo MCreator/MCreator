@@ -25,6 +25,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.JSingleEntrySelector;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -34,6 +35,7 @@ import net.mcreator.ui.minecraft.sounds.JSoundList;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.SoundElement;
 
@@ -56,10 +58,11 @@ public class SoundElementDialog {
 		JPanel ui = new JPanel(new GridLayout(isBedrock ? 4 : 2, 2, 10, 2));
 		VTextField soundName = new VTextField(26);
 
-		soundName.setValidator(new net.mcreator.ui.validation.validators.UniqueNameValidator(
-				L10N.t("dialog.sounds.name"), () -> RegistryNameFixer.fix(soundName.getText()),
-				() -> mcreator.getWorkspace().getSoundElements().stream().map(SoundElement::getName),
-				new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name"))).setIsPresentOnList(element != null));
+		soundName.setValidator(
+				new UniqueNameValidator(L10N.t("dialog.sounds.name"), () -> RegistryNameFixer.fix(soundName.getText()),
+						() -> mcreator.getWorkspace().getSoundElements().stream().map(SoundElement::getName),
+						new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name"))).setIsPresentOnList(
+						element != null));
 		soundName.enableRealtimeValidation();
 
 		ui.add(L10N.label("dialog.sounds.registry_name"));
@@ -137,20 +140,33 @@ public class SoundElementDialog {
 					return element;
 				} else {
 					List<SoundElement.Sound> sounds = soundsEntries.getEntries();
-					List<SingleFileField> entriesFiles = soundsEntries.getFiles();
 
-					for (int i = 0; i < entriesFiles.size(); i++) {
-						SingleFileField field = entriesFiles.get(i);
+					List<File> listElements = soundsEntries.getFiles().stream().map(JSingleEntrySelector::getEntry)
+							.toList();
+					List<File> targetFiles = soundsEntries.getFiles().stream().map(JSingleEntrySelector::getEntry)
+							.map(file -> new File(mcreator.getFolderManager().getSoundsDir(),
+									RegistryNameFixer.fix(file.getName()))).toList();
+
+					List<String> existingTargetFiles = targetFiles.stream().filter(File::exists)
+							.map(f -> FilenameUtilsPatched.removeExtension(f.getName())).toList();
+					if (!existingTargetFiles.isEmpty()) {
+						JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_file_already_exists",
+										String.join(", ", existingTargetFiles)),
+								L10N.t("dialog.sounds.error_file_already_exists_title"), JOptionPane.ERROR_MESSAGE);
+						return null;
+					}
+
+					for (int i = 0; i < listElements.size(); i++) {
+						SingleFileField field = soundsEntries.getFiles().get(i);
 
 						if (!field.isEnabled())
 							continue;
 
-						File file = field.getEntry();
-						FileIO.copyFile(file, new File(mcreator.getFolderManager().getSoundsDir(),
-								RegistryNameFixer.fix(file.getName())));
+						File sourceFile = listElements.get(i);
+						File targetFile = targetFiles.get(i);
 
-						sounds.get(i).setName(
-								FilenameUtilsPatched.removeExtension(RegistryNameFixer.fix(sounds.get(i).getName())));
+						FileIO.copyFile(sourceFile, targetFile);
+						sounds.get(i).setName(FilenameUtilsPatched.removeExtension(targetFile.getName()));
 					}
 
 					String registryname = RegistryNameFixer.fix(soundName.getText());
