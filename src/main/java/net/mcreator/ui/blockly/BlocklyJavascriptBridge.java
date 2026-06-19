@@ -22,8 +22,6 @@ package net.mcreator.ui.blockly;
 import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.*;
@@ -34,7 +32,6 @@ import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -160,72 +157,17 @@ public final class BlocklyJavascriptBridge {
 		return retval;
 	}
 
-	/**
-	 * Loads data list entries for Blockly entry selectors that use {@link DataListEntry} lists.
-	 *
-	 * @return The list of entries, or {@code null} if the selector type uses plain strings instead
-	 */
-	@Nullable public static List<DataListEntry> getDataListEntriesForEntrySelector(Workspace workspace,
-			@Nonnull String type, @Nullable String typeFilter, @Nullable String customEntryProviders) {
-		return switch (type) {
-			case "entity" ->
-					ElementUtil.loadAllEntities(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
-							.toList();
-			case "spawnableEntity" -> ElementUtil.loadAllSpawnableEntities(workspace).stream()
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "customEntity" -> ElementUtil.loadCustomEntities(workspace);
-			case "biome" ->
-					ElementUtil.loadAllBiomes(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
-							.toList();
-			case "fluid" ->
-					ElementUtil.loadAllFluids(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
-							.toList();
-			case "gamerulesboolean" -> ElementUtil.getAllBooleanGameRules(workspace).stream()
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "gamerulesnumber" -> ElementUtil.getAllNumberGameRules(workspace).stream()
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "eventparametersnumber" -> DataListLoader.loadDataList("eventparameters").stream()
-					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "eventparametersboolean" -> DataListLoader.loadDataList("eventparameters").stream()
-					.filter(ElementUtil.typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "arrowProjectile" -> ElementUtil.loadArrowProjectiles(workspace).stream()
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "configuredfeature" -> ElementUtil.loadAllConfiguredFeatures(workspace).stream()
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "sound" ->
-					ElementUtil.loadAllSounds(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
-							.toList();
-			case "direction" -> List.copyOf(DataListLoader.loadDataList("directions"));
-			default -> {
-				if (!DataListLoader.loadDataList(type).isEmpty()) {
-					yield ElementUtil.loadDataListAndElements(workspace, type, typeFilter,
-							StringUtils.split(customEntryProviders, ','));
-				}
-				yield null;
-			}
-		};
-	}
-
-	private boolean isDataListEntrySelectorType(String type) {
-		return switch (type) {
-			case "entity", "spawnableEntity", "customEntity", "biome", "fluid", "gamerulesboolean", "gamerulesnumber",
-			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature", "sound",
-			     "direction" -> true;
-			default -> !DataListLoader.loadDataList(type).isEmpty();
-		};
-	}
-
-	private String getEntrySelectorDialogType(String type) {
+	private String getEntrySelectorDialogLangKeyType(String type) {
 		return switch (type) {
 			case "entity", "spawnableEntity", "customEntity" -> "entity";
-			case "biome" -> "biome";
 			case "fluid" -> "fluids";
+			case "structure" -> "structures";
 			case "gamerulesboolean", "gamerulesnumber" -> "gamerules";
 			case "eventparametersnumber", "eventparametersboolean" -> "eventparameters";
 			case "arrowProjectile" -> "projectiles";
 			case "configuredfeature" -> "configured_features";
+			case "entitydata_logic", "entitydata_integer", "entitydata_string" -> "entity_data";
+			case "dimensionCustomWithPortal", "dimensionCustom" -> "dimension";
 			default -> type;
 		};
 	}
@@ -241,62 +183,33 @@ public final class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, @Nullable String typeFilter,
 			@Nullable String customEntryProviders, Consumer<String[]> callback) {
 		SwingUtilities.invokeLater(() -> {
-			String[] retval = switch (type) {
-				case "entitydata_logic" -> openStringEntrySelector(
-						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-								PropertyData.LogicType.class).toArray(String[]::new), "entity_data");
-				case "entitydata_integer" -> openStringEntrySelector(
-						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-								PropertyData.IntegerType.class).toArray(String[]::new), "entity_data");
-				case "entitydata_string" -> openStringEntrySelector(
-						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-								PropertyData.StringType.class).toArray(String[]::new), "entity_data");
-				case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
-				case "dimensionCustom" -> openStringEntrySelector( // For legacy reason
-						w -> w.getModElementsByType(ModElementType.DIMENSION).stream()
-								.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new),
-						"dimensions");
-				case "dimensionCustomWithPortal" -> openStringEntrySelector(
-						w -> w.getModElementsByType(ModElementType.DIMENSION).stream()
-								.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
-								.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
-								.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName())
-								.toArray(String[]::new), "dimensions");
-				case "structure" ->
-						openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
-								"structures");
-				case "procedure" -> openStringEntrySelector(
-						w -> w.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
-								.toArray(String[]::new), "procedure");
-				case "global_triggers" -> {
-					String[] selectedEntry = openDataListEntrySelector(w -> ext_triggers.entrySet().stream()
-							.map(entry -> (DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{
-								setReadableName(entry.getValue());
-							}}).toList(), "global_trigger");
-					// Legacy: for global triggers, "no_ext_trigger" is used to indicate no selected value, whereas normally it is ""
-					if (selectedEntry[0].isEmpty()) {
-						selectedEntry = new String[] { "no_ext_trigger", L10N.t("trigger.no_ext_trigger") };
-					}
-					yield selectedEntry;
+			String[] retval;
+			if ("global_triggers".equals(type)) {
+				String[] selectedEntry = openDataListEntrySelector(w -> ext_triggers.entrySet().stream()
+						.map(entry -> (DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{
+							setReadableName(entry.getValue());
+						}}).toList(), "global_trigger");
+
+				// Legacy: for global triggers, "no_ext_trigger" is used to indicate no selected value, whereas normally it is ""
+				if (selectedEntry[0].isEmpty()) {
+					selectedEntry = new String[] { "no_ext_trigger", L10N.t("trigger.no_ext_trigger") };
 				}
-				default -> {
-					if (type.startsWith("procedure_retval_")) {
-						var variableType = VariableTypeLoader.INSTANCE.fromName(
-								Strings.CS.removeStart(type, "procedure_retval_"));
-						yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType),
-								"procedure");
-					}
-
-					if (isDataListEntrySelectorType(type)) {
-						yield openDataListEntrySelector(
-								w -> getDataListEntriesForEntrySelector(w, type, typeFilter, customEntryProviders),
-								getEntrySelectorDialogType(type));
-					}
-
-					yield new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+				retval = selectedEntry;
+			} else if (type.startsWith("procedure_retval_")) {
+				var variableType = VariableTypeLoader.INSTANCE.fromName(
+						Strings.CS.removeStart(type, "procedure_retval_"));
+				retval = openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType), "procedure");
+			} else {
+				String[] arrayList = BlocklyElementUtil.getStringArrayForEntrySelector(mcreator.getWorkspace(), type,
+						customEntryProviders);
+				if (arrayList != null) {
+					retval = openStringEntrySelector(w -> arrayList, getEntrySelectorDialogLangKeyType(type));
+				} else {
+					retval = openDataListEntrySelector(
+							w -> BlocklyElementUtil.getDataListEntriesForEntrySelector(w, type, typeFilter,
+									customEntryProviders), getEntrySelectorDialogLangKeyType(type));
 				}
-			};
-
+			}
 			callback.accept(retval);
 		});
 	}
@@ -363,9 +276,10 @@ public final class BlocklyJavascriptBridge {
 		}
 		default -> datalist = type;
 		}
-		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
-				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :
-				"";
+
+		var map = DataListLoader.loadDataMap(datalist);
+		var entry = map.get(value);
+		return entry != null ? entry.getReadableName() : "";
 	}
 
 }

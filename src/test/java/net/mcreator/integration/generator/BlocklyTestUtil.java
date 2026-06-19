@@ -24,17 +24,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.Dimension;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
-import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.blockly.BlocklyElementUtil;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
@@ -269,7 +264,21 @@ public class BlocklyTestUtil {
 			return new String[] { "" };
 		}
 
-		List<DataListEntry> entries = BlocklyJavascriptBridge.getDataListEntriesForEntrySelector(workspace, datalist,
+		if (datalist.startsWith("procedure_retval_")) {
+			var variableType = VariableTypeLoader.INSTANCE.fromName(
+					Strings.CS.removeStart(datalist, "procedure_retval_"));
+			return ElementUtil.getProceduresOfType(workspace, variableType);
+		} else if ("global_triggers".equals(datalist)) {
+			return new String[] { "no_ext_trigger" };
+		}
+
+		String[] arrayList = BlocklyElementUtil.getStringArrayForEntrySelector(workspace, datalist,
+				customEntryProviders);
+		if (arrayList != null) {
+			return arrayList;
+		}
+
+		List<DataListEntry> entries = BlocklyElementUtil.getDataListEntriesForEntrySelector(workspace, datalist,
 				typeFilter, customEntryProviders);
 		if (entries != null) {
 			return entries.isEmpty() ?
@@ -277,34 +286,7 @@ public class BlocklyTestUtil {
 					entries.stream().map(DataListEntry::getName).toArray(String[]::new);
 		}
 
-		return switch (datalist) {
-			case "entitydata_logic" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
-					PropertyData.LogicType.class).toArray(String[]::new);
-			case "entitydata_integer" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
-					PropertyData.IntegerType.class).toArray(String[]::new);
-			case "entitydata_string" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
-					PropertyData.StringType.class).toArray(String[]::new);
-			case "gui" -> ElementUtil.loadBasicGUIs(workspace).toArray(String[]::new);
-			case "dimensionCustom" -> workspace.getModElementsByType(ModElementType.DIMENSION).stream()
-					.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new);
-			case "dimensionCustomWithPortal" -> workspace.getModElementsByType(ModElementType.DIMENSION).stream()
-					.map(ModElement::getGeneratableElement).filter(ge -> ge instanceof Dimension)
-					.map(ge -> (Dimension) ge).filter(dimension -> dimension.enablePortal)
-					.map(m -> NameMapper.MCREATOR_PREFIX + m.getModElement().getName()).toArray(String[]::new);
-			case "structure" -> workspace.getFolderManager().getStructureList().toArray(String[]::new);
-			case "procedure" ->
-					workspace.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
-							.toArray(String[]::new);
-			case "global_triggers" -> new String[] { "no_ext_trigger" };
-			default -> {
-				if (datalist.startsWith("procedure_retval_")) {
-					var variableType = VariableTypeLoader.INSTANCE.fromName(
-							Strings.CS.removeStart(datalist, "procedure_retval_"));
-					yield ElementUtil.getProceduresOfType(workspace, variableType);
-				}
-				yield new String[] { "" };
-			}
-		};
+		return new String[0];
 	}
 
 }

@@ -35,13 +35,10 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.resources.Animation;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class ElementUtil {
 
@@ -57,38 +54,6 @@ public class ElementUtil {
 		} else {
 			return e -> Arrays.asList(type).contains(e.getType());
 		}
-	}
-
-	/**
-	 * Loads a list of entries, with optional custom entries from the given mod element types,
-	 * and with an optional filter for the entry type.
-	 *
-	 * <p>NOTE: custom entries cannot specify a type yet, so the type filter will remove any custom entry</p>
-	 *
-	 * @param workspace            The current workspace
-	 * @param dataList             The datalist from which to load the entries
-	 * @param typeFilter           If present, only entries whose type matches this parameter are loaded
-	 * @param customEntryProviders The string id of the mod element types that provide custom entries
-	 * @return All entries from the given data list and the given mod element types, matching the optional filter
-	 */
-	public static List<DataListEntry> loadDataListAndElements(Workspace workspace, String dataList,
-			@Nullable String typeFilter, @Nullable String... customEntryProviders) {
-		List<DataListEntry> retval = new ArrayList<>();
-
-		// We add custom entries before normal ones, so that they are on top even if the list isn't sorted
-		if (customEntryProviders != null) {
-			retval.addAll(getCustomElements(workspace,
-					me -> Arrays.asList(customEntryProviders).contains(me.getTypeString())));
-		}
-		retval.addAll(DataListLoader.loadDataList(dataList));
-
-		Stream<DataListEntry> retvalStream = retval.stream();
-		if (typeFilter != null) {
-			retvalStream = retvalStream.filter(typeMatches(typeFilter));
-		}
-		retval = retvalStream.filter(e -> e.isSupportedInWorkspace(workspace)).collect(Collectors.toList());
-		retval.sort(DataListEntry.getComparator(workspace, retval));
-		return retval;
 	}
 
 	/**
@@ -185,7 +150,7 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocksAndItemsAndTagsAndPotions(Workspace workspace) {
 		List<MCItem> elements = loadBlocksAndItemsAndTags(workspace);
-		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
+		getAllEntriesFor(workspace, "potions").forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
 		return elements;
 	}
 
@@ -200,112 +165,22 @@ public class ElementUtil {
 	 */
 	public static List<MCItem> loadBlocksAndItemsAndPotions(Workspace workspace) {
 		List<MCItem> elements = loadBlocksAndItems(workspace);
-		loadAllPotions(workspace).forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
+		getAllEntriesFor(workspace, "potions").forEach(potion -> elements.add(new MCItem.Potion(workspace, potion)));
 		return elements;
-	}
-
-	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
-		return loadDataListAndElements(workspace, "achievements", null, "achievement");
-	}
-
-	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
-		return loadDataListAndElements(workspace, "tabs", null, "tab");
-	}
-
-	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
-		List<DataListEntry> biomes = getCustomElementsOfType(workspace, ModElementType.BIOME);
-		biomes.addAll(DataListLoader.loadDataList("biomes"));
-		biomes.sort(DataListEntry.getComparator(workspace, biomes));
-		return biomes;
-	}
-
-	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
-		return loadDataListAndElements(workspace, "enchantments", null, "enchantment");
-	}
-
-	public static List<DataListEntry> loadAllStructures(Workspace workspace) {
-		return loadDataListAndElements(workspace, "structures", null, "structure");
-	}
-
-	public static List<DataListEntry> loadItemUseAnimations(Workspace workspace) {
-		return DataListLoader.loadDataList("itemuseanimations").stream()
-				.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-	}
-
-	public static List<DataListEntry> loadAnimations(Workspace workspace) {
-		List<DataListEntry> animations = new ArrayList<>();
-		for (Animation animation : Animation.getAnimations(workspace)) {
-			for (String subanimation : animation.getSubanimations()) {
-				animations.add(
-						new DataListEntry.Dummy(NameMapper.MCREATOR_PREFIX + animation.getName() + "." + subanimation));
-			}
-		}
-		animations.addAll(DataListLoader.loadDataList("animations"));
-		animations.sort(DataListEntry.getComparator(workspace, animations));
-		return animations;
-	}
-
-	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace,
-				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
-		retval.addAll(DataListLoader.loadDataList("entities"));
-		retval.sort(DataListEntry.getComparator(workspace, retval));
-		return retval;
-	}
-
-	/**
-	 * Returns all the spawnable entities, which include custom living entities and entities marked as "spawnable"
-	 * in the data lists
-	 *
-	 * @param workspace The workspace from which to gather the entities
-	 * @return All entities that can be spawned
-	 */
-	public static List<DataListEntry> loadAllSpawnableEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace,
-				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
-		retval.addAll(DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable")).toList());
-		retval.sort(DataListEntry.getComparator(workspace, retval));
-		return retval;
-	}
-
-	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace,
-				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
-		retval.sort(DataListEntry.getComparator(workspace, retval));
-		return retval;
 	}
 
 	public static List<String> loadEntityDataListFromCustomEntity(Workspace workspace, String entityName,
 			Class<? extends PropertyData<?>> type) {
 		if (entityName != null) {
-			LivingEntity entity = (LivingEntity) workspace.getModElementByName(
-					entityName.replace(NameMapper.MCREATOR_PREFIX, "")).getGeneratableElement();
-			if (entity != null) {
-				return entity.entityDataEntries.stream().filter(e -> e.property().getClass().equals(type))
-						.map(e -> e.property().getName()).toList();
+			ModElement modElement = workspace.getModElementByName(entityName.replace(NameMapper.MCREATOR_PREFIX, ""));
+			if (modElement != null) {
+				if (modElement.getGeneratableElement() instanceof LivingEntity entity) {
+					return entity.entityDataEntries.stream().filter(e -> e.property().getClass().equals(type))
+							.map(e -> e.property().getName()).toList();
+				}
 			}
 		}
 		return new ArrayList<>();
-	}
-
-	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
-		return loadDataListAndElements(workspace, "particles", null, "particle");
-	}
-
-	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
-		return loadDataListAndElements(workspace, "effects", null, "potioneffect");
-	}
-
-	public static List<DataListEntry> loadAllPotions(Workspace workspace) {
-		return loadDataListAndElements(workspace, "potions", null, "potion");
-	}
-
-	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
-		return loadDataListAndElements(workspace, "villagerprofessions", null, "villagerprofession");
-	}
-
-	public static List<DataListEntry> loadAllAttributes(Workspace workspace) {
-		return loadDataListAndElements(workspace, "attributes", null, "attribute");
 	}
 
 	/**
@@ -324,71 +199,6 @@ public class ElementUtil {
 		}
 
 		return elements;
-	}
-
-	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-			if (modelement.getType() == ModElementType.GAMERULE)
-				return VariableTypeLoader.BuiltInTypes.LOGIC.getName().equals(modelement.getMetadata("type"));
-			return false;
-		});
-
-		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName())).toList());
-		return retval;
-	}
-
-	public static List<DataListEntry> getAllNumberGameRules(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace, modelement -> {
-			if (modelement.getType() == ModElementType.GAMERULE)
-				return VariableTypeLoader.BuiltInTypes.NUMBER.getName().equals(modelement.getMetadata("type"));
-			return false;
-		});
-
-		retval.addAll(DataListLoader.loadDataList("gamerules").stream()
-				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName())).toList());
-		return retval;
-	}
-
-	public static List<DataListEntry> loadAllFluids(Workspace workspace) {
-		List<DataListEntry> retval = new ArrayList<>();
-
-		for (ModElement modElement : workspace.getModElementsByType(ModElementType.FLUID)) {
-			retval.add(new DataListEntry.Custom(modElement));
-			retval.add(new DataListEntry.Custom(modElement, ":Flowing"));
-		}
-
-		retval.addAll(DataListLoader.loadDataList("fluids"));
-
-		return retval.stream().filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-	}
-
-	public static List<DataListEntry> loadAllSounds(Workspace workspace) {
-		List<DataListEntry> retval = new ArrayList<>();
-
-		for (SoundElement soundElement : workspace.getSoundElements()) {
-			retval.add(new DataListEntry.Dummy(NameMapper.MCREATOR_PREFIX + soundElement.getName()));
-		}
-
-		retval.addAll(DataListLoader.loadDataList("sounds"));
-
-		retval = retval.stream().filter(e -> e.isSupportedInWorkspace(workspace)).collect(Collectors.toList());
-		retval.sort(DataListEntry.getComparator(workspace, retval));
-		return retval;
-	}
-
-	public static List<DataListEntry> loadAllConfiguredFeatures(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace,
-				mu -> mu.getBaseTypesProvided().contains(BaseType.CONFIGUREDFEATURE));
-		retval.addAll(DataListLoader.loadDataList("configuredfeatures").stream()
-				.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
-		return retval;
-	}
-
-	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PROJECTILE);
-		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
-		return retval;
 	}
 
 	public static ArrayList<String> loadBasicGUIs(Workspace workspace) {
@@ -440,4 +250,184 @@ public class ElementUtil {
 			return returnTypeCurrent == type;
 		}).map(ModElement::getName).toArray(String[]::new);
 	}
+
+	private static final Map<String, Function<Workspace, Collection<DataListEntry>>> vanillaEntryProviders = new HashMap<>() {{
+		put("entities_spawnable",
+				workspace -> DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable"))
+						.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
+		put("entities_custom", _ -> List.of());
+		put("gamerules_boolean", workspace -> DataListLoader.loadDataList("gamerules").stream()
+				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.LOGIC.getName()))
+				.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
+		put("gamerules_number", workspace -> DataListLoader.loadDataList("gamerules").stream()
+				.filter(typeMatches(VariableTypeLoader.BuiltInTypes.NUMBER.getName()))
+				.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
+		put("projectiles_arrow",
+				workspace -> DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow"))
+						.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
+	}};
+
+	private static final Map<String, Function<Workspace, Collection<DataListEntry>>> customEntryProviders = new HashMap<>() {{
+		put("achievements", workspace -> getCustomElementsOfType(workspace, ModElementType.ADVANCEMENT));
+		put("tabs", workspace -> getCustomElementsOfType(workspace, ModElementType.TAB));
+		put("biomes", workspace -> getCustomElementsOfType(workspace, ModElementType.BIOME));
+		put("enchantments", workspace -> getCustomElementsOfType(workspace, ModElementType.ENCHANTMENT));
+		put("structures", workspace -> getCustomElementsOfType(workspace, ModElementType.STRUCTURE));
+		put("animations", workspace -> {
+			List<DataListEntry> animations = new ArrayList<>();
+			for (Animation animation : Animation.getAnimations(workspace)) {
+				for (String subanimation : animation.getSubanimations()) {
+					animations.add(new DataListEntry.Dummy(
+							NameMapper.MCREATOR_PREFIX + animation.getName() + "." + subanimation));
+				}
+			}
+			return animations;
+		});
+		put("entities",
+				workspace -> getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY)));
+		put("entities_spawnable",
+				workspace -> getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY)));
+		put("entities_custom",
+				workspace -> getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY)));
+		put("particles", workspace -> getCustomElementsOfType(workspace, ModElementType.PARTICLE));
+		put("effects", workspace -> getCustomElementsOfType(workspace, ModElementType.POTIONEFFECT));
+		put("potions", workspace -> getCustomElementsOfType(workspace, ModElementType.POTION));
+		put("villagerprofessions", workspace -> getCustomElementsOfType(workspace, ModElementType.VILLAGERPROFESSION));
+		put("attributes", workspace -> getCustomElementsOfType(workspace, ModElementType.ATTRIBUTE));
+		put("damagesources", workspace -> getCustomElementsOfType(workspace, ModElementType.DAMAGETYPE));
+		put("gamerules_boolean", workspace -> getCustomElements(workspace, modelement -> {
+			if (modelement.getType() == ModElementType.GAMERULE)
+				return VariableTypeLoader.BuiltInTypes.LOGIC.getName().equals(modelement.getMetadata("type"));
+			return false;
+		}));
+		put("gamerules_number", workspace -> getCustomElements(workspace, modelement -> {
+			if (modelement.getType() == ModElementType.GAMERULE)
+				return VariableTypeLoader.BuiltInTypes.NUMBER.getName().equals(modelement.getMetadata("type"));
+			return false;
+		}));
+		put("fluids", workspace -> {
+			List<DataListEntry> retval = new ArrayList<>();
+			for (ModElement modElement : workspace.getModElementsByType(ModElementType.FLUID)) {
+				retval.add(new DataListEntry.Custom(modElement));
+				retval.add(new DataListEntry.Custom(modElement, ":Flowing"));
+			}
+			return retval;
+		});
+		put("sounds", workspace -> {
+			List<DataListEntry> retval = new ArrayList<>();
+			for (SoundElement soundElement : workspace.getSoundElements()) {
+				retval.add(new DataListEntry.Dummy(NameMapper.MCREATOR_PREFIX + soundElement.getName()));
+			}
+			return retval;
+		});
+		put("configuredfeatures", workspace -> getCustomElements(workspace,
+				mu -> mu.getBaseTypesProvided().contains(BaseType.CONFIGUREDFEATURE)));
+		put("projectiles_arrow", workspace -> getCustomElementsOfType(workspace, ModElementType.PROJECTILE));
+	}};
+
+	public static List<DataListEntry> getAllEntriesFor(Workspace workspace, String datalist) {
+		List<DataListEntry> result = new ArrayList<>();
+
+		var provider = customEntryProviders.get(datalist);
+		if (provider != null) {
+			result.addAll(provider.apply(workspace));
+		}
+
+		provider = vanillaEntryProviders.get(datalist);
+		if (provider != null) {
+			result.addAll(provider.apply(workspace));
+		} else {
+			for (DataListEntry entry : DataListLoader.loadDataList(datalist)) {
+				if (entry.isSupportedInWorkspace(workspace)) {
+					result.add(entry);
+				}
+			}
+		}
+
+		result.sort(DataListEntry.getComparator(workspace, result));
+		return result;
+	}
+
+	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
+		return getAllEntriesFor(workspace, "achievements");
+	}
+
+	public static List<DataListEntry> loadAllTabs(Workspace workspace) {
+		return getAllEntriesFor(workspace, "tabs");
+	}
+
+	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
+		return getAllEntriesFor(workspace, "biomes");
+	}
+
+	public static List<DataListEntry> loadAllEnchantments(Workspace workspace) {
+		return getAllEntriesFor(workspace, "enchantments");
+	}
+
+	public static List<DataListEntry> loadAllStructures(Workspace workspace) {
+		return getAllEntriesFor(workspace, "structures");
+	}
+
+	public static List<DataListEntry> loadItemUseAnimations(Workspace workspace) {
+		return getAllEntriesFor(workspace, "itemuseanimations");
+	}
+
+	public static List<DataListEntry> loadAnimations(Workspace workspace) {
+		return getAllEntriesFor(workspace, "animations");
+	}
+
+	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
+		return getAllEntriesFor(workspace, "entities");
+	}
+
+	public static List<DataListEntry> loadAllSpawnableEntities(Workspace workspace) {
+		return getAllEntriesFor(workspace, "entities_spawnable");
+	}
+
+	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
+		return getAllEntriesFor(workspace, "entities_custom");
+	}
+
+	public static List<DataListEntry> loadAllParticles(Workspace workspace) {
+		return getAllEntriesFor(workspace, "particles");
+	}
+
+	public static List<DataListEntry> loadAllPotionEffects(Workspace workspace) {
+		return getAllEntriesFor(workspace, "effects");
+	}
+
+	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
+		return getAllEntriesFor(workspace, "villagerprofessions");
+	}
+
+	public static List<DataListEntry> loadAllAttributes(Workspace workspace) {
+		return getAllEntriesFor(workspace, "attributes");
+	}
+
+	public static List<DataListEntry> loadAllFluids(Workspace workspace) {
+		return getAllEntriesFor(workspace, "fluids");
+	}
+
+	public static List<DataListEntry> loadAllSounds(Workspace workspace) {
+		return getAllEntriesFor(workspace, "sounds");
+	}
+
+	public static List<DataListEntry> loadAllConfiguredFeatures(Workspace workspace) {
+		return getAllEntriesFor(workspace, "configuredfeatures");
+	}
+
+	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
+		return getAllEntriesFor(workspace, "projectiles_arrow");
+	}
+
+	// Allow plugins to alter providers
+
+	public static Map<String, Function<Workspace, Collection<DataListEntry>>> getVanillaEntryProviders() {
+		return vanillaEntryProviders;
+	}
+
+	public static Map<String, Function<Workspace, Collection<DataListEntry>>> getCustomEntryProviders() {
+		return customEntryProviders;
+	}
+
 }
