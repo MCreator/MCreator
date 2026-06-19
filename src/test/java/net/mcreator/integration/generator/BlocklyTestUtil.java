@@ -285,7 +285,6 @@ public class BlocklyTestUtil {
 			case "entitydata_string" -> ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
 					PropertyData.StringType.class).toArray(String[]::new);
 			case "gui" -> ElementUtil.loadBasicGUIs(workspace).toArray(String[]::new);
-			case "sound" -> ElementUtil.getAllSounds(workspace);
 			case "direction" -> ElementUtil.loadDirections();
 			case "dimensionCustom" -> workspace.getModElementsByType(ModElementType.DIMENSION).stream()
 					.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new);

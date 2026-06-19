@@ -24,6 +24,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.types.Plant;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -114,7 +115,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			"elementgui.block.error_block_needs_fall_sound");
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, DataListLoader.loadDataList("mapcolors"));
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -936,7 +937,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isBonemealTargetCondition.refreshListKeepSelected(context);
 		bonemealSuccessCondition.refreshListKeepSelected(context);
 
-		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
+		ComboBoxUtil.updateComboBoxContents(soundOnStep, DataListLoader.loadDataList("stepsounds"),
 				new DataListEntry.Dummy("PLANT"));
 
 		ComboBoxUtil.updateComboBoxContents(growapableSpawnType,

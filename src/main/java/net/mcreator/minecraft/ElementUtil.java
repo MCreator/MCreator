@@ -38,7 +38,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -228,14 +227,6 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "structures", null, "structure");
 	}
 
-	public static List<DataListEntry> loadMapColors() {
-		return DataListLoader.loadDataList("mapcolors");
-	}
-
-	public static List<DataListEntry> loadNoteBlockInstruments() {
-		return DataListLoader.loadDataList("noteblockinstruments");
-	}
-
 	public static List<DataListEntry> loadItemUseAnimations(Workspace workspace) {
 		return DataListLoader.loadDataList("itemuseanimations").stream()
 				.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
@@ -372,17 +363,18 @@ public class ElementUtil {
 		return retval.stream().filter(e -> e.isSupportedInWorkspace(workspace)).toList();
 	}
 
-	public static String[] getAllSounds(Workspace workspace) {
-		ArrayList<String> retval = new ArrayList<>();
+	public static List<DataListEntry> loadAllSounds(Workspace workspace) {
+		List<DataListEntry> retval = new ArrayList<>();
 
 		for (SoundElement soundElement : workspace.getSoundElements()) {
-			retval.add(NameMapper.MCREATOR_PREFIX + soundElement.getName());
+			retval.add(new DataListEntry.Dummy(NameMapper.MCREATOR_PREFIX + soundElement.getName()));
 		}
 
-		retval.addAll(DataListLoader.loadDataList("sounds").stream().filter(e -> e.isSupportedInWorkspace(workspace))
-				.sorted(Comparator.comparing(DataListEntry::getReadableName)).map(DataListEntry::getName).toList());
+		retval.addAll(DataListLoader.loadDataList("sounds"));
 
-		return retval.toArray(new String[0]);
+		retval = retval.stream().filter(e -> e.isSupportedInWorkspace(workspace)).collect(Collectors.toList());
+		retval.sort(DataListEntry.getComparator(workspace, retval));
+		return retval;
 	}
 
 	public static List<DataListEntry> loadAllConfiguredFeatures(Workspace workspace) {
@@ -393,13 +385,8 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static List<DataListEntry> loadStepSounds() {
-		return DataListLoader.loadDataList("stepsounds");
-	}
-
 	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PROJECTILE);
-
 		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
 		return retval;
 	}
@@ -416,10 +403,6 @@ public class ElementUtil {
 		return blocks;
 	}
 
-	public static List<DataListEntry> loadAllGameEvents() {
-		return DataListLoader.loadDataList("gameevents");
-	}
-
 	public static List<DataListEntry> loadAllEquipmentSlots() {
 		return loadAllEquipmentSlots(false);
 	}
@@ -428,7 +411,7 @@ public class ElementUtil {
 		return addDefault ?
 				ListUtils.merge(List.of(new DataListEntry.Dummy("default")),
 						DataListLoader.loadDataList("equipmentslots")) :
-				DataListLoader.loadDataList("equipmentslots");
+				List.copyOf(DataListLoader.loadDataList("equipmentslots"));
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {

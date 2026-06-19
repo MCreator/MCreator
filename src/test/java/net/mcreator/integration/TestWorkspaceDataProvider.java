@@ -19,6 +19,7 @@
 
 package net.mcreator.integration;
 
+import com.google.common.collect.Iterables;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -483,14 +484,14 @@ public class TestWorkspaceDataProvider {
 				biome.waterFogColor = Color.cyan;
 			}
 			biome.ambientSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.moodSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.moodSoundDelay = getRandomInt(random, Biome.class, "moodSoundDelay");
 			biome.additionsSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.music = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.spawnParticles = _true;
 			biome.particleToSpawn = new ParticleEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
@@ -626,9 +627,9 @@ public class TestWorkspaceDataProvider {
 			fluid.textureBucket = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 			fluid.creativeTabs = emptyLists ? List.of() : tabs;
 			fluid.emptySound = !emptyLists ?
-					new Sound(modElement.getWorkspace(), "") :
+					new Sound(modElement.getWorkspace(), new DataListEntry.Null()) :
 					new Sound(modElement.getWorkspace(),
-							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+							getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Fluid.class, "rarity"));
 			fluid.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
@@ -819,7 +820,7 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			dimension.creativeTabs = emptyLists ? List.of() : tabs;
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
 			dimension.biomesInDimensionCaves = new ArrayList<>();
 			if (!emptyLists) {
@@ -1036,7 +1037,7 @@ public class TestWorkspaceDataProvider {
 			armor.leggingsPiglinNeutral = new LogicProcedure(_true ? "condition3" : null, _true);
 			armor.bootsPiglinNeutral = new LogicProcedure(_true ? "condition4" : null, _true);
 			armor.equipSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");
 			armor.onBodyTick = new Procedure("procedure2");
 			armor.onLeggingsTick = new Procedure("procedure3");
@@ -1172,17 +1173,17 @@ public class TestWorkspaceDataProvider {
 			plant.unbreakable = _true;
 			plant.isCustomSoundType = !_true;
 			plant.soundOnStep = new StepSound(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+					getRandomDataListEntry(random, DataListLoader.loadDataList("stepsounds")));
 			plant.breakSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.stepSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.placeSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.hitSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.fallSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			Range<Integer> xpAmount = getRandomIntRange(random, Plant.class, "xpAmountMin", "xpAmountMax");
@@ -1351,7 +1352,7 @@ public class TestWorkspaceDataProvider {
 			item.musicDiscLengthInTicks = getRandomInt(random, Item.class, "musicDiscLengthInTicks");
 			item.musicDiscAnalogOutput = getRandomInt(random, Item.class, "musicDiscAnalogOutput");
 			item.musicDiscMusic = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {
 				item.providedBannerPatterns.add("Examplebannerpattern1");
 				item.providedBannerPatterns.add("Examplebannerpattern2");
@@ -1396,7 +1397,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PROJECTILE.equals(modElement.getType())) {
 			Projectile projectile = new Projectile(modElement);
 			projectile.actionSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			projectile.power = getRandomDouble(random, Projectile.class, "power");
 			projectile.damage = getRandomDouble(random, Projectile.class, "damage");
 			projectile.knockback = getRandomInt(random, Projectile.class, "knockback");
@@ -1465,7 +1466,8 @@ public class TestWorkspaceDataProvider {
 					new ParticleEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
-					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					emptyLists ? new DataListEntry.Null() :
+							getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			List<AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
@@ -1639,7 +1641,7 @@ public class TestWorkspaceDataProvider {
 									.toLowerCase(Locale.ENGLISH).contains("water")))
 							.collect(Collectors.toList())).getName());
 			profession.actionSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			profession.hat = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(VillagerProfession.class, "hat"));
 			profession.professionTextureFile = "entity_texture_0.png";
@@ -1808,7 +1810,7 @@ public class TestWorkspaceDataProvider {
 			beblock.flammableDestroyChance = getRandomInt(random, BEBlock.class, "flammableDestroyChance");
 			beblock.friction = getRandomDouble(random, BEBlock.class, "friction");
 			beblock.soundOnStep = new StepSound(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+					getRandomDataListEntry(random, DataListLoader.loadDataList("stepsounds")));
 			beblock.lightEmission = getRandomInt(random, BEBlock.class, "lightEmission");
 			beblock.colorOnMap = new MapColor(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
@@ -1874,13 +1876,13 @@ public class TestWorkspaceDataProvider {
 			bebiome.replacementNoiseFrequencyScale = getRandomInt(random, BEBiome.class,
 					"replacementNoiseFrequencyScale");
 			bebiome.ambientSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			bebiome.moodSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			bebiome.additionsSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			bebiome.music = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			bebiome.spawnParticles = _true;
 			bebiome.particleToSpawn = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "particleToSpawn"));
@@ -2016,15 +2018,17 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.livingSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.hurtSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.deathSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
-				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				emptyLists ? new DataListEntry.Null() :
+						getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(),
-				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				emptyLists ? new DataListEntry.Null() :
+						getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.rangedItemType = "Default item";
 		if (!emptyLists) {
 			livingEntity.spawningCondition = new Procedure("condition3");
@@ -2128,7 +2132,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.sensitiveToVibration = _true;
 		livingEntity.vibrationalEvents = new ArrayList<>();
 		if (!emptyLists) {
-			livingEntity.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+			livingEntity.vibrationalEvents.addAll(DataListLoader.loadDataList("gameevents").stream()
 					.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
 			livingEntity.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
 		}
@@ -2278,17 +2282,17 @@ public class TestWorkspaceDataProvider {
 		block.tickRate = _true ? 0 : getRandomInt(random, Block.class, "tickRate");
 		block.isCustomSoundType = !_true;
 		block.soundOnStep = new StepSound(modElement.getWorkspace(),
-				getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+				getRandomDataListEntry(random, DataListLoader.loadDataList("stepsounds")));
 		block.breakSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.stepSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.placeSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.hitSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.fallSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.luminance = new NumberProcedure(emptyLists ? null : "number3", 3);
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
@@ -2333,7 +2337,7 @@ public class TestWorkspaceDataProvider {
 		block.sensitiveToVibration = _true;
 		block.vibrationalEvents = new ArrayList<>();
 		if (!emptyLists) {
-			block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+			block.vibrationalEvents.addAll(DataListLoader.loadDataList("gameevents").stream()
 					.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
 			block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
 		}
@@ -2761,19 +2765,15 @@ public class TestWorkspaceDataProvider {
 		return list[randomIndex];
 	}
 
-	public static <T> T getRandomItem(Random random, List<T> list) {
-		int listSize = list.size();
-		int randomIndex = random.nextInt(listSize);
-		return list.get(randomIndex);
+	public static <T> T getRandomItem(Random random, Collection<T> collection) {
+		return Iterables.get(collection, random.nextInt(collection.size()));
 	}
 
-	public static DataListEntry getRandomDataListEntry(Random random, List<DataListEntry> list) {
-		if (list.isEmpty())
+	public static DataListEntry getRandomDataListEntry(Random random, Collection<DataListEntry> collection) {
+		if (collection.isEmpty())
 			return new DataListEntry.Null();
 
-		int listSize = list.size();
-		int randomIndex = random.nextInt(listSize);
-		return list.get(randomIndex);
+		return Iterables.get(collection, random.nextInt(collection.size()));
 	}
 
 	public static MCItem getRandomMCItem(Random random, List<MCItem> list) {

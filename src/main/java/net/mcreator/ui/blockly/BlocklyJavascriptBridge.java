@@ -132,7 +132,7 @@ public final class BlocklyJavascriptBridge {
 	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
-	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
+	private String[] openDataListEntrySelector(Function<Workspace, Collection<DataListEntry>> entryProvider, String type) {
 		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 		DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider,
 				L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
@@ -195,6 +195,8 @@ public final class BlocklyJavascriptBridge {
 					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
 			case "configuredfeature" -> ElementUtil.loadAllConfiguredFeatures(workspace).stream()
 					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "sound" -> ElementUtil.loadAllSounds(workspace).stream()
+					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
 			default -> {
 				if (!DataListLoader.loadDataList(type).isEmpty()) {
 					yield ElementUtil.loadDataListAndElements(workspace, type, typeFilter,
@@ -208,7 +210,7 @@ public final class BlocklyJavascriptBridge {
 	private static boolean isDataListEntrySelectorType(String type) {
 		return switch (type) {
 			case "entity", "spawnableEntity", "customEntity", "biome", "fluid", "gamerulesboolean", "gamerulesnumber",
-			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature" -> true;
+			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature", "sound" -> true;
 			default -> !DataListLoader.loadDataList(type).isEmpty();
 		};
 	}
@@ -248,7 +250,6 @@ public final class BlocklyJavascriptBridge {
 						w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
 								PropertyData.StringType.class).toArray(String[]::new), "entity_data");
 				case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
-				case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 				case "dimensionCustom" -> openStringEntrySelector( // For legacy reason
 						w -> w.getModElementsByType(ModElementType.DIMENSION).stream()
 								.map(m -> NameMapper.MCREATOR_PREFIX + m.getName()).toArray(String[]::new),
@@ -355,7 +356,7 @@ public final class BlocklyJavascriptBridge {
 		case "fluid":
 			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "sound":
-			return ElementUtil.getAllSounds(workspace);
+			return ElementUtil.loadAllSounds(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "particle":
 			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "direction":
@@ -421,6 +422,7 @@ public final class BlocklyJavascriptBridge {
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
 		case "eventparametersnumber", "eventparametersboolean" -> datalist = "eventparameters";
+		case "sound" -> datalist = "sounds";
 		case "global_triggers" -> {
 			return ext_triggers.get(value);
 		}

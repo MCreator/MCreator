@@ -81,9 +81,13 @@ public class DataListEntry {
 	public String getReadableName() {
 		if (readableName == null) {
 			if (name.startsWith(NameMapper.MCREATOR_PREFIX)) {
-				return WordUtils.capitalizeFully(
-						StringUtils.machineToReadableName(name.replace(NameMapper.MCREATOR_PREFIX, "")));
-			} else if (name.startsWith("TAG:")) {
+				if (this instanceof Custom) {
+					return WordUtils.capitalizeFully(
+							StringUtils.machineToReadableName(name.substring(NameMapper.MCREATOR_PREFIX.length())));
+				} else {
+					return name.substring(NameMapper.MCREATOR_PREFIX.length());
+				}
+			} else if (name.startsWith("TAG:") || name.indexOf('.') != -1) {
 				return name;
 			} else {
 				return WordUtils.capitalizeFully(StringUtils.machineToReadableName(name));

@@ -22,11 +22,12 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.component.SearchableComboBox;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.List;
 
 public class ComboBoxUtil {
 
-	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, List<T> data) {
+	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, Collection<T> data) {
 		Object selected = comboBox.getSelectedItem();
 		setComboBoxValues(comboBox, data);
 		if (selected != null && !(selected instanceof DataListEntry.Null))
@@ -35,7 +36,7 @@ public class ComboBoxUtil {
 			comboBox.setSelectedIndex(0);
 	}
 
-	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, List<T> data, T defaultValue) {
+	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, Collection<T> data, T defaultValue) {
 		Object selected = comboBox.getSelectedItem();
 		setComboBoxValues(comboBox, data);
 		if (selected != null && !(selected instanceof DataListEntry.Null))
@@ -44,7 +45,7 @@ public class ComboBoxUtil {
 			comboBox.setSelectedItem(defaultValue);
 	}
 
-	private static <T> void setComboBoxValues(JComboBox<T> comboBox, List<T> data) {
+	private static <T> void setComboBoxValues(JComboBox<T> comboBox, Collection<T> data) {
 		if (comboBox instanceof SearchableComboBox<T> searchableComboBox) {
 			searchableComboBox.setItems(data);
 		} else if (comboBox.getModel() instanceof DefaultComboBoxModel<T> model) {
