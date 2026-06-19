@@ -42,11 +42,11 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 
 		public enum ListType {
 			//@formatter:off
+			WORKSPACE_SETTINGS,
 			// workspace elements
-			MOD_ELEMENTS, MOD_VARIABLES, MOD_TAGS, SUPPORTED_MOD_ELEMENT_TYPES, WORKSPACE_SETTINGS, NBT_STRUCTURE_FILES, VARIABLE_TYPES,
+			MOD_ELEMENTS, SUPPORTED_MOD_ELEMENT_TYPES,  MOD_VARIABLES, VARIABLE_TYPES, MOD_TAGS,
 			// data lists
-			BLOCKS_AND_ITEMS, BLOCKS, BLOCKS_AND_ITEMS_AND_TAGS, ENTITIES, PROCEDURES, BIOMES, SOUNDS, TABS,
-			ADVANCEMENTS, ENCHANTMENTS, VILLAGER_PROFESSIONS, PARTICLES, POTION_EFFECTS, POTIONS, ATTRIBUTES,
+			BLOCKS, BLOCKS_AND_ITEMS, BLOCKS_AND_ITEMS_AND_TAGS, PROCEDURES,
 			// textures
 			BLOCK_TEXTURES, ITEM_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
 			//@formatter:on
@@ -58,7 +58,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 	}
 
 	@Override public String getName() {
-		return "list";
+		return "list_workspace";
 	}
 
 	@Override public String getDescription() {
@@ -76,8 +76,6 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			case Args.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
 					mcreator.getGeneratorStats().getSupportedModElementTypes().stream()
 							.map(ModElementType::getRegistryName).toList()));
-			case Args.ListType.NBT_STRUCTURE_FILES -> CompletableFuture.completedFuture(
-					ToolResult.collection(mcreator.getFolderManager().getStructureList()));
 			case Args.ListType.VARIABLE_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
 					VariableTypeLoader.INSTANCE.getGlobalVariableTypes(mcreator.getGeneratorConfiguration())));
 			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
@@ -88,31 +86,9 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					ToolResult.collection(dataListNames(ElementUtil.loadBlocks(mcreator.getWorkspace()))));
 			case Args.ListType.BLOCKS_AND_ITEMS_AND_TAGS -> CompletableFuture.completedFuture(ToolResult.collection(
 					dataListNames(ElementUtil.loadBlocksAndItemsAndTags(mcreator.getWorkspace()))));
-			case Args.ListType.ENTITIES -> CompletableFuture.completedFuture(ToolResult.collection(
-					dataListNames(ElementUtil.loadAllSpawnableEntities(mcreator.getWorkspace()))));
 			case Args.ListType.PROCEDURES -> CompletableFuture.completedFuture(ToolResult.collection(
 					mcreator.getWorkspace().getModElementsByType(ModElementType.PROCEDURE).stream()
 							.map(ModElement::getRegistryName).toList()));
-			case Args.ListType.BIOMES -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllBiomes(mcreator.getWorkspace()))));
-			case Args.ListType.SOUNDS -> CompletableFuture.completedFuture(
-					ToolResult.collection(Arrays.asList(ElementUtil.getAllSounds(mcreator.getWorkspace()))));
-			case Args.ListType.TABS -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllTabs(mcreator.getWorkspace()))));
-			case Args.ListType.ADVANCEMENTS -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllAchievements(mcreator.getWorkspace()))));
-			case Args.ListType.ENCHANTMENTS -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllEnchantments(mcreator.getWorkspace()))));
-			case Args.ListType.VILLAGER_PROFESSIONS -> CompletableFuture.completedFuture(ToolResult.collection(
-					dataListNames(ElementUtil.loadAllVillagerProfessions(mcreator.getWorkspace()))));
-			case Args.ListType.PARTICLES -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllParticles(mcreator.getWorkspace()))));
-			case Args.ListType.POTION_EFFECTS -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllPotionEffects(mcreator.getWorkspace()))));
-			case Args.ListType.POTIONS -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllPotions(mcreator.getWorkspace()))));
-			case Args.ListType.ATTRIBUTES -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadAllAttributes(mcreator.getWorkspace()))));
 			case Args.ListType.BLOCK_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.BLOCK))));
 			case Args.ListType.ITEM_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(

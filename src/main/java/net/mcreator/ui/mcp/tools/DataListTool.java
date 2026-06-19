@@ -22,12 +22,16 @@ package net.mcreator.ui.mcp.tools;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyElementUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -38,7 +42,7 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 		@Nullable public String listName;
 
 		public enum QueryType {
-			LIST_ALL, GET_ENTRIES
+			GET_LIST_TYPES, GET_LIST_ENTRIES
 		}
 	}
 
@@ -47,33 +51,54 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 	}
 
 	@Override public String getName() {
-		return "data_list";
+		return "datalist_entries";
 	}
 
 	@Override public String getDescription() {
-		return "Lists available vanilla data lists or lists entry names from a selected data list. Use list tool to also get custom entries.";
+		return """
+				Lists available datalists or lists entries of selected datalist (vanilla and/or custom).\
+				The entries listed by this tool are the only entries you can use for given datalist.
+				For blocks and items, use list_workspace tool.""";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
-			case Args.QueryType.LIST_ALL ->
+			case Args.QueryType.GET_LIST_TYPES ->
 					CompletableFuture.completedFuture(ToolResult.collection(getAvailableDataListNames()));
-			case GET_ENTRIES -> {
+			case GET_LIST_ENTRIES -> {
 				if (input.listName == null || input.listName.isBlank()) {
 					yield CompletableFuture.completedFuture(ToolResult.error("listName is required"));
 				}
+
 				if (!getAvailableDataListNames().contains(input.listName)) {
 					yield CompletableFuture.completedFuture(ToolResult.error("Unknown data list: " + input.listName));
 				}
-				yield CompletableFuture.completedFuture(ToolResult.collection(
-						DataListLoader.loadDataList(input.listName).stream().map(DataListEntry::getName)
-								.sorted(Comparator.naturalOrder()).toList()));
+
+				// If list is handled by BlocklyElementUtil.getStringArrayForEntrySelector, return it
+				String[] retval = BlocklyElementUtil.getStringArrayForEntrySelector(mcreator.getWorkspace(),
+						input.listName, null);
+				if (retval != null && retval.length > 0) {
+					yield CompletableFuture.completedFuture(ToolResult.collection(retval));
+				}
+
+				Collection<String> entries = ElementUtil.getAllEntriesFor(mcreator.getWorkspace(), input.listName)
+						.stream().map(DataListEntry::getName).sorted(Comparator.naturalOrder()).toList();
+				if (!entries.isEmpty()) {
+					yield CompletableFuture.completedFuture(ToolResult.collection(entries));
+				}
+
+				yield CompletableFuture.completedFuture(
+						ToolResult.error("No entries found for data list: " + input.listName));
 			}
 		};
 	}
 
-	private static List<String> getAvailableDataListNames() {
-		return DataListLoader.getCache().keySet().stream().sorted(Comparator.naturalOrder()).toList();
+	private static Set<String> getAvailableDataListNames() {
+		Set<String> retval = new HashSet<>(DataListLoader.getCache().keySet());
+		retval.addAll(ElementUtil.getVanillaEntryProviders().keySet());
+		retval.addAll(ElementUtil.getCustomEntryProviders().keySet());
+		retval.addAll(BlocklyElementUtil.getStringArrayEntryProviders().keySet());
+		return retval;
 	}
 
 }
