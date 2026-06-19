@@ -38,7 +38,6 @@ import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
@@ -56,7 +55,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public final class BlocklyJavascriptBridge {
 
@@ -132,7 +130,8 @@ public final class BlocklyJavascriptBridge {
 	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
-	private String[] openDataListEntrySelector(Function<Workspace, Collection<DataListEntry>> entryProvider, String type) {
+	private String[] openDataListEntrySelector(Function<Workspace, Collection<DataListEntry>> entryProvider,
+			String type) {
 		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 		DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider,
 				L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
@@ -195,8 +194,10 @@ public final class BlocklyJavascriptBridge {
 					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
 			case "configuredfeature" -> ElementUtil.loadAllConfiguredFeatures(workspace).stream()
 					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
-			case "sound" -> ElementUtil.loadAllSounds(workspace).stream()
-					.filter(e -> e.isSupportedInWorkspace(workspace)).toList();
+			case "sound" ->
+					ElementUtil.loadAllSounds(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
+							.toList();
+			case "direction" -> List.copyOf(DataListLoader.loadDataList("directions"));
 			default -> {
 				if (!DataListLoader.loadDataList(type).isEmpty()) {
 					yield ElementUtil.loadDataListAndElements(workspace, type, typeFilter,
@@ -207,15 +208,16 @@ public final class BlocklyJavascriptBridge {
 		};
 	}
 
-	private static boolean isDataListEntrySelectorType(String type) {
+	private boolean isDataListEntrySelectorType(String type) {
 		return switch (type) {
 			case "entity", "spawnableEntity", "customEntity", "biome", "fluid", "gamerulesboolean", "gamerulesnumber",
-			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature", "sound" -> true;
+			     "eventparametersnumber", "eventparametersboolean", "arrowProjectile", "configuredfeature", "sound",
+			     "direction" -> true;
 			default -> !DataListLoader.loadDataList(type).isEmpty();
 		};
 	}
 
-	private static String getEntrySelectorDialogType(String type) {
+	private String getEntrySelectorDialogType(String type) {
 		return switch (type) {
 			case "entity", "spawnableEntity", "customEntity" -> "entity";
 			case "biome" -> "biome";
@@ -320,85 +322,17 @@ public final class BlocklyJavascriptBridge {
 	}
 
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
-		return getListOfForWorkspace(mcreator.getWorkspace(), type);
-	}
+		Workspace workspace = mcreator.getWorkspace();
 
-	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type) {
-		List<String> retval;
-		//We check for general cases
-		switch (type) {
-		case "procedure":
-			retval = workspace.getModElementsByType(ModElementType.PROCEDURE).stream().map(ModElement::getName)
-					.collect(Collectors.toList());
-			break;
-		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "spawnableEntity":
-			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "gui":
-			retval = ElementUtil.loadBasicGUIs(workspace);
-			break;
-		case "achievement":
-			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "effect":
-			return ElementUtil.loadAllPotionEffects(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "potion":
-			return ElementUtil.loadAllPotions(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "gamerulesboolean":
-			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "gamerulesnumber":
-			return ElementUtil.getAllNumberGameRules(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "fluid":
-			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "sound":
-			return ElementUtil.loadAllSounds(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "particle":
-			return ElementUtil.loadAllParticles(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "direction":
-			return ElementUtil.loadDirections();
-		case "schematic":
-			retval = workspace.getFolderManager().getStructureList();
-			break;
-		case "enhancement":
-			return ElementUtil.loadAllEnchantments(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "dimension_custom":
-			retval = workspace.getModElementsByType(ModElementType.DIMENSION).stream()
-					.map(mu -> NameMapper.MCREATOR_PREFIX + mu.getName()).collect(Collectors.toList());
-			break;
-		case "villagerprofessions":
-			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		default:
-			retval = new ArrayList<>();
-		}
+		// Legacy mapping
+		if (type.equals("direction"))
+			type = "directions";
 
 		// check if the data list exists and returns it if true
 		if (!DataListLoader.loadDataList(type).isEmpty())
 			return ElementUtil.getDataListAsStringArray(type);
 
-		// check if type is "call procedure with return value"
-		if (type.contains("procedure_retval_")) {
-			retval = workspace.getModElementsByType(ModElementType.PROCEDURE).stream().filter(mod -> {
-				VariableType returnTypeCurrent = mod.getMetadata("return_type") != null ?
-						VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
-						null;
-				return returnTypeCurrent == VariableTypeLoader.INSTANCE.fromName(
-						Strings.CS.removeStart(type, "procedure_retval_"));
-			}).map(ModElement::getName).collect(Collectors.toList());
-		}
-
-		if (retval.isEmpty())
-			return new String[] { "" };
-
-		return retval.toArray(new String[0]);
+		return new String[] { "" };
 	}
 
 	@SuppressWarnings("unused") public boolean isPlayerVariable(String field) {
@@ -423,6 +357,7 @@ public final class BlocklyJavascriptBridge {
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
 		case "eventparametersnumber", "eventparametersboolean" -> datalist = "eventparameters";
 		case "sound" -> datalist = "sounds";
+		case "direction" -> datalist = "directions";
 		case "global_triggers" -> {
 			return ext_triggers.get(value);
 		}

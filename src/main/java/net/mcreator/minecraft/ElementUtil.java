@@ -391,10 +391,6 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] loadDirections() {
-		return getDataListAsStringArray("directions");
-	}
-
 	public static ArrayList<String> loadBasicGUIs(Workspace workspace) {
 		ArrayList<String> blocks = new ArrayList<>();
 		for (ModElement mu : workspace.getModElementsByType(ModElementType.GUI)) {

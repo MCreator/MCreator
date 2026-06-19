@@ -18,7 +18,8 @@
 
 package net.mcreator.ui.workspace;
 
-import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
@@ -154,7 +155,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					} else if (variableType == VariableTypeLoader.BuiltInTypes.LOGIC) {
 						return new DefaultCellEditor(new JComboBox<>(new String[] { "true", "false" }));
 					} else if (variableType == VariableTypeLoader.BuiltInTypes.DIRECTION) {
-						return new DefaultCellEditor(new JComboBox<>(ElementUtil.loadDirections()));
+						return new DefaultCellEditor(new JComboBox<>(
+								DataListLoader.loadDataList("directions").stream().map(DataListEntry::getName)
+										.toArray(String[]::new)));
 					}
 				}
 
