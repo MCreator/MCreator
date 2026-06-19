@@ -19,11 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.MobSpawnType;
-import net.mcreator.element.parts.ParticleEntry;
-import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;

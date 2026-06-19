@@ -4,7 +4,7 @@ templates:
     name: "@SRCROOT/entities/@registryname.json"
   - template: entity/entity_spawn_rule.json.ftl
     writer: json
-    condition: spawnThisMob
+    condition: spawnNaturally
     name: "@SRCROOT/spawn_rules/@registryname.json"
   - template: entity/entity_custom_loot.json.ftl
     writer: json
@@ -14,51 +14,46 @@ templates:
 # entity models
   - template: resourcepack/entity/biped.json.ftl
     writer: json
-    condition: "mobModelName %= Biped"
+    condition: "modelName %= Biped"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/chicken.json.ftl
     writer: json
-    condition: "mobModelName %= Chicken"
+    condition: "modelName %= Chicken"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/cow.json.ftl
     writer: json
-    condition: "mobModelName %= Cow"
+    condition: "modelName %= Cow"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/creeper.json.ftl
     writer: json
-    condition: "mobModelName %= Creeper"
+    condition: "modelName %= Creeper"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/ghast.json.ftl
     writer: json
-    condition: "mobModelName %= Ghast"
+    condition: "modelName %= Ghast"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/pig.json.ftl
     writer: json
-    condition: "mobModelName %= Pig"
+    condition: "modelName %= Pig"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/slime.json.ftl
     writer: json
-    condition: "mobModelName %= Slime"
+    condition: "modelName %= Slime"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/spider.json.ftl
     writer: json
-    condition: "mobModelName %= Spider"
+    condition: "modelName %= Spider"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/villager.json.ftl
     writer: json
-    condition: "mobModelName %= Villager"
+    condition: "modelName %= Villager"
     name: "@RESROOT/entity/@registryname.entity.json"
   - template: resourcepack/entity/silverfish.json.ftl
     writer: json
-    condition: "mobModelName %= Silverfish"
+    condition: "modelName %= Silverfish"
     name: "@RESROOT/entity/@registryname.entity.json"
 
 localizationkeys:
   - key: item.spawn_egg.entity.@modid:@registryname.name
-    mapto: mobName
+    mapto: entityName
     suffix: " Spawn Egg"
-
-field_inclusions: [mobModelTexture, mobName, modelWidth, modelHeight, attackStrength, health, movementSpeed, hasSpawnEgg, trackingRange,
-                   spawnEggBaseColor, spawnEggDotColor, spawnThisMob, waterMob, flyingMob, disableCollisions, mobBehaviourType, mobSpawningType,
-                   spawningProbability, numberOfMobsPerGroup, mobDrop, immuneToDrowning, immuneToFire, immuneToFallDamage, compileNotesPanel,
-                   xpAmount, mobModel, blocklyPanel]

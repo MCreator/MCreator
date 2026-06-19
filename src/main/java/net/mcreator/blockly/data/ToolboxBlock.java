@@ -331,6 +331,7 @@ import java.util.regex.Pattern;
 			} catch (ParseException e) {
 				LOG.warn("Block {} translation \"{}\" for the selected language is not valid. Reason: {}",
 						toolboxBlock.getMachineName(), localized_message, e.getMessage());
+				TestUtil.failIfTestingEnvironment();
 				if (localized_message_en != null) {
 					blocklyJSON.add("message0", new JsonPrimitive(localized_message_en));
 				}

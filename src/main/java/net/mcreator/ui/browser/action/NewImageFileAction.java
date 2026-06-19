@@ -27,7 +27,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.File;
 
 public class NewImageFileAction extends BasicAction {
@@ -43,7 +42,8 @@ public class NewImageFileAction extends BasicAction {
 				if (workingDir != null) {
 					ImageMakerView imageMakerView = new ImageMakerView(actionRegistry.getMCreator());
 					new NewImageDialog(actionRegistry.getMCreator(), imageMakerView).setVisible(true);
-					imageMakerView.setSaveLocation(new File(workingDir, fileName + (fileName.contains(".") ? "" : ".png")));
+					imageMakerView.setSaveLocation(
+							new File(workingDir, fileName + (fileName.contains(".") ? "" : ".png")));
 					actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 				}
 			}

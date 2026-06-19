@@ -78,7 +78,7 @@ public class TimeToFormattedString implements IBlockGenerator {
 	}
 
 	@Nullable @Override public List<String>[] getToolboxInit() {
-		return new List[] { List.of(
-				"<value name=\"format\"><block type=\"text\"><field name=\"TEXT\">yyyy-MM-dd</field></block></value>") };
+		return new List[] {
+				List.of("<value name=\"format\"><block type=\"text\"><field name=\"TEXT\">yyyy-MM-dd</field></block></value>") };
 	}
 }

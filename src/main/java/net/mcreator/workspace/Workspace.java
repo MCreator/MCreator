@@ -22,10 +22,10 @@ import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.*;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
-import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -420,7 +420,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
 		currentWorkspaceFile.delete(); // delete old workspace file
-		this.fileManager = new WorkspaceFileManager(newWorkspaceFile, this); // new file manager instance for the new file
+		this.fileManager = new WorkspaceFileManager(newWorkspaceFile,
+				this); // new file manager instance for the new file
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 

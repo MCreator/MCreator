@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.GameEventEntry;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -46,7 +47,7 @@ public class GameEventListField extends JItemListField<GameEventEntry> {
 	}
 
 	@Override protected List<GameEventEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, w -> ElementUtil.loadAllGameEvents(),
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, _ -> DataListLoader.loadDataList("gameevents"),
 						L10N.t("dialog.list_field.game_event_list_title"), L10N.t("dialog.list_field.game_event_list_message"))
 				.stream().map(e -> new GameEventEntry(mcreator.getWorkspace(), e)).toList();
 	}

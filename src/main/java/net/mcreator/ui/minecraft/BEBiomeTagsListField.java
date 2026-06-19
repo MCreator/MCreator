@@ -34,8 +34,8 @@ public class BEBiomeTagsListField extends JItemListField<BEBiomeTagEntry> {
 	}
 
 	@Override protected List<BEBiomeTagEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, _ -> DataListLoader.loadDataList("be_biometags"),
-						L10N.t("dialog.list_field.bebiome_tags_list_title"),
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator,
+						_ -> DataListLoader.loadDataList("be_biometags"), L10N.t("dialog.list_field.bebiome_tags_list_title"),
 						L10N.t("dialog.list_field.bebiome_tags_list_message")).stream()
 				.map(e -> new BEBiomeTagEntry(mcreator.getWorkspace(), e)).toList();
 	}

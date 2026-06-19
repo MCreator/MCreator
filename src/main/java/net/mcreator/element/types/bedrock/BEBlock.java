@@ -20,14 +20,10 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.MapColor;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;

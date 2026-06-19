@@ -39,7 +39,8 @@ public class NewJsonFileAction extends BasicAction {
 				fileName = RegistryNameFixer.fix(fileName);
 				File workingDir = actionRegistry.getMCreator().getProjectBrowser().getCurrentSelectedDirectory();
 				if (workingDir != null) {
-					FileIO.writeStringToFile("", new File(workingDir, fileName + (fileName.contains(".") ? "" : ".json")));
+					FileIO.writeStringToFile("",
+							new File(workingDir, fileName + (fileName.contains(".") ? "" : ".json")));
 					actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 				}
 			}

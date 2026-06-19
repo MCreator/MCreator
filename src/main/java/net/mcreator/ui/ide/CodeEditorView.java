@@ -20,10 +20,10 @@ package net.mcreator.ui.ide;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.mcreator.io.FileIO;
 import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.generator.io.JSWriter;
+import net.mcreator.io.FileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;

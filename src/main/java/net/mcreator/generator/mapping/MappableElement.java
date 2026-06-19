@@ -33,6 +33,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class MappableElement implements IWorkspaceDependent {
@@ -79,6 +80,26 @@ public abstract class MappableElement implements IWorkspaceDependent {
 
 	public String getUnmappedValue() {
 		return value;
+	}
+
+	/**
+	 * @return A string representing this entry as a tag (if it starts with "TAG:"), after replacing the "mod:" prefix
+	 * with the actual mod ID
+	 */
+	@SuppressWarnings("unused") public String asTagEntry() {
+		String retval = getUnmappedValue();
+		if (!retval.startsWith("TAG:")) {
+			LOG.warn("Tried to convert non-tag mappable element to tag: {}", value);
+			TestUtil.failIfTestingEnvironment();
+		} else {
+			retval = retval.substring(4); // Remove the "TAG:" prefix
+			if (retval.startsWith("mod:")) {
+				retval = Objects.requireNonNull(this.getWorkspace()).getWorkspaceSettings().getModID()
+						+ retval.substring(3); // Replace the "mod" prefix with the actual mod ID
+			}
+		}
+
+		return retval;
 	}
 
 	public NameMapper getNameMapper() {

@@ -136,7 +136,8 @@ import java.util.Map;
 
 			additionalData.put("dependencies", reloadDependencies());
 			additionalData.put("procedurecode", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getGeneratedCode()));
-			additionalData.put("additional_code", ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getAdditionalCode()));
+			additionalData.put("additional_code",
+					ProcedureCodeOptimizer.removeMarkers(blocklyToJava.getAdditionalCode()));
 			additionalData.put("return_type", blocklyToJava.getReturnType());
 			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
 			additionalData.put("procedureblocks", blocklyToJava.getUsedBlocks());

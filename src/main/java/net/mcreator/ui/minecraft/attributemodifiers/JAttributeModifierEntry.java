@@ -47,12 +47,11 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	private final JSpinner amount = ComponentFromAnnotation.spinner(AttributeModifierEntry.class, "amount");
 	private final JComboBox<String> operation = ComponentFromAnnotation.options(AttributeModifierEntry.class,
 			"operation");
-	private final JCheckBox[] armorPieces = new JCheckBox[]{
-		L10N.checkbox("elementgui.common.attribute_modifier.helmet"),
-		L10N.checkbox("elementgui.common.attribute_modifier.chestplate"),
-		L10N.checkbox("elementgui.common.attribute_modifier.leggings"),
-		L10N.checkbox("elementgui.common.attribute_modifier.boots")
-	};
+	private final JCheckBox[] armorPieces = new JCheckBox[] {
+			L10N.checkbox("elementgui.common.attribute_modifier.helmet"),
+			L10N.checkbox("elementgui.common.attribute_modifier.chestplate"),
+			L10N.checkbox("elementgui.common.attribute_modifier.leggings"),
+			L10N.checkbox("elementgui.common.attribute_modifier.boots") };
 
 	public JAttributeModifierEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JAttributeModifierEntry> entryList, JAttributeModifierList.EntryType entryType) {

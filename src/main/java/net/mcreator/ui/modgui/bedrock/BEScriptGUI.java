@@ -69,8 +69,8 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
-public class BEScriptGUI extends ModElementGUI<BEScript> implements IBlocklyPanelHolder, ISearchable,
-		IBlocklyPanelHolder.IBlocklyPanelVariablesHolder {
+public class BEScriptGUI extends ModElementGUI<BEScript>
+		implements IBlocklyPanelHolder, ISearchable, IBlocklyPanelHolder.IBlocklyPanelVariablesHolder {
 
 	private static final Logger LOG = LogManager.getLogger(BEScriptGUI.class);
 
