@@ -71,6 +71,8 @@ public class SoundElementDialog {
 		JTextField subtitle = new JTextField();
 
 		JSoundList soundsEntries = new JSoundList(mcreator, IHelpContext.NONE);
+		soundsEntries.setPreferredSize(new Dimension((int) (soundsEntries.getPreferredSize().width * 4.1),
+				soundsEntries.getPreferredSize().height * 9));
 
 		JComponent component = PanelUtils.northAndCenterElement(L10N.label("dialog.sounds.declarations"),
 				soundsEntries);
