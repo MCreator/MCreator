@@ -1,0 +1,1 @@
+If enabled, the entity will not take any damage from fall damages.

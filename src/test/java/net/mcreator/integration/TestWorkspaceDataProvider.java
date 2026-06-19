@@ -35,6 +35,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.element.types.bedrock.BEBlock;
+import net.mcreator.element.types.bedrock.BEEntity;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.element.types.bedrock.BEScript;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
@@ -186,7 +187,7 @@ public class TestWorkspaceDataProvider {
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
 				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM || type == ModElementType.BEBLOCK
-				|| type == ModElementType.BESCRIPT || type == ModElementType.BEBIOME) {
+				|| type == ModElementType.BESCRIPT || type == ModElementType.BEBIOME || type == ModElementType.BEENTITY) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -1884,6 +1885,42 @@ public class TestWorkspaceDataProvider {
 			bebiome.particleToSpawn = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "particleToSpawn"));
 			bebiome.particleDensity = getRandomInt(random, BEBiome.class, "particleDensity");
+		} else if (ModElementType.BEENTITY.equals(modElement.getType())) {
+			BEEntity beentity = new BEEntity(modElement);
+			beentity.entityName = modElement.getName();
+			beentity.modelName = getRandomString(random, List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider", "Villager"));
+			beentity.modelTexture = "entity_texture_1.png";
+			beentity.collisionBoxHeight = getRandomDouble(random, BEEntity.class, "collisionBoxHeight");
+			beentity.collisionBoxWidth = getRandomDouble(random, BEEntity.class, "collisionBoxWidth");
+			beentity.isSummonable = _true;
+			beentity.xpAmountOnDeath = getRandomInt(random, BEEntity.class, "xpAmountOnDeath");
+			beentity.entityDrop = new MItemBlock(modElement.getWorkspace(), getRandomItem(random, blocksAndItems).getName());
+			beentity.healthValue = getRandomInt(random, BEEntity.class, "healthValue");
+			beentity.attackDamage = getRandomInt(random, BEEntity.class, "attackDamage");
+			beentity.speedValue = getRandomDouble(random, BEEntity.class, "speedValue");
+			beentity.canFly = _true;
+			beentity.flyingSpeedValue = getRandomDouble(random, BEEntity.class, "flyingSpeedValue");
+			beentity.followRangeValue = getRandomInt(random, BEEntity.class, "followRangeValue");
+			beentity.isImmuneToFire = _true;
+			beentity.isPushable = _true;
+			beentity.isPushableByPiston = _true;
+			beentity.spawnNaturally = !_true;
+			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
+			beentity.spawningProbability = getRandomInt(random, BEEntity.class, "spawningProbability");
+			var numberOfMobsPerGroup = getRandomIntRange(random, BEEntity.class, "minHerdSize",
+					"maxHerdSize");
+			beentity.minHerdSize = numberOfMobsPerGroup.getMinimum();
+			beentity.maxHerdSize = numberOfMobsPerGroup.getMaximum();
+			beentity.hasSpawnEgg = !_true;
+			beentity.spawnEggBaseColor = new Color(10, 20, 34);
+			beentity.spawnEggDotColor = new Color(182, 172, 122);
+			beentity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+			beentity.entityBehaviourType =  getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEEntity.class, "entityBehaviourType"));
+			beentity.waterEntity = _true;
+			beentity.isImmuneToDrowning = _true;
+			beentity.isImmuneToFallDamage = _true;
+			return beentity;
 		}
 		return null;
 	}
