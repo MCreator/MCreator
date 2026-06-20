@@ -27,12 +27,7 @@ import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DataListEntry {
@@ -149,8 +144,8 @@ public class DataListEntry {
 			else if (!a_.startsWith(NameMapper.MCREATOR_PREFIX) && b_.startsWith(NameMapper.MCREATOR_PREFIX))
 				return 1;
 
-			if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.NAME
-					|| !a_.startsWith(NameMapper.MCREATOR_PREFIX) || !b_.startsWith(NameMapper.MCREATOR_PREFIX)) {
+			if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.NAME || !a_.startsWith(
+					NameMapper.MCREATOR_PREFIX) || !b_.startsWith(NameMapper.MCREATOR_PREFIX)) {
 				if (settings.workspacePanelSortAscending)
 					return a.compareToIgnoreCase(b);
 				else

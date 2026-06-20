@@ -156,7 +156,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner fluidCapacity = ComponentFromAnnotation.spinner(Block.class, "fluidCapacity");
 	private FluidListField fluidRestrictions;
 
-	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, DataListLoader.loadDataList("stepsounds"));
+	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("stepsounds"));
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
 	private final SoundSelector breakSound = new SoundSelector(mcreator).requireValue(
@@ -172,7 +173,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, DataListLoader.loadDataList("mapcolors"));
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("mapcolors"));
 	private final DataListComboBox noteBlockInstrument = new DataListComboBox(mcreator,
 			DataListLoader.loadDataList("noteblockinstruments"));
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);

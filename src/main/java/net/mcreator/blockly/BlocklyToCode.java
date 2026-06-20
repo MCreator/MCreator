@@ -359,8 +359,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 					throw e;
 				} catch (Exception e) {
 					// Any other exception that can occur during block generation
-					throw new TemplateGeneratorException(
-							"Uncaught exception while generating block of type: " + type, e);
+					throw new TemplateGeneratorException("Uncaught exception while generating block of type: " + type,
+							e);
 				}
 
 				usedBlocks.add(type);

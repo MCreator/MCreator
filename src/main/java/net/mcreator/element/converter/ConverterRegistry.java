@@ -65,8 +65,8 @@ import net.mcreator.element.converter.v2026_1.BlockHasCustomOpacityFixer;
 import net.mcreator.element.converter.v2026_1.BlockToBedrockConverter;
 import net.mcreator.element.converter.v2026_1.ToolToBedrockConverter;
 import net.mcreator.element.converter.v2026_2.ItemPredicateAdvancementConverter;
-import net.mcreator.element.converter.v2026_2.VillagerTradeSplitter;
 import net.mcreator.element.converter.v2026_2.LivingEntityToBedrockConverter;
+import net.mcreator.element.converter.v2026_2.VillagerTradeSplitter;
 import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.*;

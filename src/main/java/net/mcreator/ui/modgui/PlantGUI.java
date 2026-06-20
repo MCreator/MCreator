@@ -115,7 +115,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			"elementgui.block.error_block_needs_fall_sound");
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, DataListLoader.loadDataList("mapcolors"));
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("mapcolors"));
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);

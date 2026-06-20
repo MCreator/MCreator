@@ -20,18 +20,10 @@
 package net.mcreator.element;
 
 import net.mcreator.element.types.*;
-import net.mcreator.element.types.bedrock.BEBiome;
-import net.mcreator.element.types.bedrock.BEBlock;
-import net.mcreator.element.types.bedrock.BEEntity;
-import net.mcreator.element.types.bedrock.BEItem;
-import net.mcreator.element.types.bedrock.BEScript;
+import net.mcreator.element.types.bedrock.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.modgui.*;
-import net.mcreator.ui.modgui.bedrock.BEBiomeGUI;
-import net.mcreator.ui.modgui.bedrock.BEBlockGUI;
-import net.mcreator.ui.modgui.bedrock.BEEntityGUI;
-import net.mcreator.ui.modgui.bedrock.BEItemGUI;
-import net.mcreator.ui.modgui.bedrock.BEScriptGUI;
+import net.mcreator.ui.modgui.bedrock.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static net.mcreator.generator.GeneratorFlavor.BaseLanguage.JAVA;
-import static net.mcreator.generator.GeneratorFlavor.DATAPACK;
 import static net.mcreator.generator.GeneratorFlavor.GamePlatform.BEDROCKEDITION;
 import static net.mcreator.generator.GeneratorFlavor.GamePlatform.JAVAEDITION;
 
