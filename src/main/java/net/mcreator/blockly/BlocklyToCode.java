@@ -59,7 +59,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	@Nullable private final TemplateGenerator templateGenerator;
 	private final Workspace workspace;
 
-	private final List<IBlockGenerator> blockGenerators;
+	private final Map<String, IBlockGenerator> typeToBlockGenerator;
 
 	protected final BlocklyEditorType editorType;
 
@@ -95,13 +95,21 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		compileNotes = new ArrayList<>();
 		dependencies = new HashSet<>();
 
-		blockGenerators = new ArrayList<>();
+		Map<String, IBlockGenerator> typeToBlockGenerator = new HashMap<>();
 
-		// add external generators provided by user
-		blockGenerators.addAll(Arrays.asList(externalGenerators));
+		// load internally defined blocks first (external generators take precedence)
+		for (IBlockGenerator generator : InternalBlocksLoader.getInternalBlocks(editorType)) {
+			for (String blockType : generator.getSupportedBlocks())
+				typeToBlockGenerator.put(blockType, generator);
+		}
 
-		// load internally defined blocks
-		blockGenerators.addAll(InternalBlocksLoader.getInternalBlocks(editorType));
+		// add external generators second
+		for (IBlockGenerator generator : externalGenerators) {
+			for (String blockType : generator.getSupportedBlocks())
+				typeToBlockGenerator.put(blockType, generator);
+		}
+
+		this.typeToBlockGenerator = Collections.unmodifiableMap(typeToBlockGenerator);
 	}
 
 	/**
@@ -298,35 +306,27 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.disabled_block_type.skip", type)));
 			} else {
-				boolean generated = false;
-				for (IBlockGenerator generator : blockGenerators) {
-					if (generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL && Arrays.asList(
-							generator.getSupportedBlocks()).contains(type)) {
-						try {
-							// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
-							// because the following block cannot be part of the current head/tail sections
-							if (!(generator instanceof IBlockGeneratorWithSections)) {
-								IBlockGeneratorWithSections.terminateSections(this);
-							}
-							generator.generateBlock(this, block);
-						} catch (TemplateGeneratorException e) {
-							throw e;
-						} catch (Exception e) {
-							// Any other exception that can occur during block generation
-							throw new TemplateGeneratorException(
-									"Uncaught exception while generating block of type: " + type, e);
+				IBlockGenerator generator = typeToBlockGenerator.get(type);
+				if (generator != null && generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL) {
+					try {
+						// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
+						// because the following block cannot be part of the current head/tail sections
+						if (!(generator instanceof IBlockGeneratorWithSections)) {
+							IBlockGeneratorWithSections.terminateSections(this);
 						}
-
-						usedBlocks.add(type);
-
-						lastProceduralBlockType = type; // update last block type generated
-
-						generated = true;
-						break;
+						generator.generateBlock(this, block);
+					} catch (TemplateGeneratorException e) {
+						throw e;
+					} catch (Exception e) {
+						// Any other exception that can occur during block generation
+						throw new TemplateGeneratorException(
+								"Uncaught exception while generating block of type: " + type, e);
 					}
-				}
 
-				if (!generated) {
+					usedBlocks.add(type);
+
+					lastProceduralBlockType = type; // update last block type generated
+				} else {
 					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("blockly.warnings.unknown_block_type.skip", type)));
 				}
@@ -351,28 +351,20 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.disabled_block_type.remove", type)));
 		} else {
-			boolean generated = false;
-			for (IBlockGenerator generator : blockGenerators) {
-				if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
-						generator.getSupportedBlocks()).contains(type)) {
-					try {
-						generator.generateBlock(this, block);
-					} catch (TemplateGeneratorException e) {
-						throw e;
-					} catch (Exception e) {
-						// Any other exception that can occur during block generation
-						throw new TemplateGeneratorException(
-								"Uncaught exception while generating block of type: " + type, e);
-					}
-
-					usedBlocks.add(type);
-
-					generated = true;
-					break;
+			IBlockGenerator generator = typeToBlockGenerator.get(type);
+			if (generator != null && generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT) {
+				try {
+					generator.generateBlock(this, block);
+				} catch (TemplateGeneratorException e) {
+					throw e;
+				} catch (Exception e) {
+					// Any other exception that can occur during block generation
+					throw new TemplateGeneratorException(
+							"Uncaught exception while generating block of type: " + type, e);
 				}
-			}
 
-			if (!generated) {
+				usedBlocks.add(type);
+			} else {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.unknown_block_type.remove", type)));
 			}
