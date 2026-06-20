@@ -127,7 +127,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		if (sourceXML != null && !sourceXML.isBlank()) {
 			try {
-				final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
+				final Document doc = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder()
 						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 

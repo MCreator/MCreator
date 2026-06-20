@@ -41,7 +41,7 @@ public class BlocklyTemplateIO {
 
 	public static void exportBlocklySetup(String blocklyXML, File file, BlocklyEditorType blocklyEditorType)
 			throws ParseException, ParserConfigurationException, IOException, SAXException {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(blocklyXML)));
 		doc.getDocumentElement().normalize();
