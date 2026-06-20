@@ -33,7 +33,6 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
-import java.util.List;
 
 public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 

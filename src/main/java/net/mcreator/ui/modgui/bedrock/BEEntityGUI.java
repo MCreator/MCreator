@@ -53,7 +53,6 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,15 +60,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPanelHolder {
 
 	private final VTextField entityName = new VTextField().requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
-	private final SearchableComboBox<String> entityModel = ComponentFromAnnotation.searchableOptions(BEEntity.class, "modelName");
+	private final SearchableComboBox<String> entityModel = ComponentFromAnnotation.searchableOptions(BEEntity.class,
+			"modelName");
 	private TextureComboBox modelTexture;
 	private final JSpinner collisionBoxWidth = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxWidth");
 	private final JSpinner collisionBoxHeight = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxHeight");
@@ -418,7 +420,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		entity.isPushable = isPushable.isSelected();
 		entity.isPushableByPiston = isPushableByPiston.isSelected();
 		entity.spawnNaturally = spawnNaturally.isSelected();
-		entity.populationControl =  new MobSpawnType(modElement.getWorkspace(),
+		entity.populationControl = new MobSpawnType(modElement.getWorkspace(),
 				(String) populationControl.getSelectedItem());
 		entity.spawningProbability = (int) spawningProbability.getValue();
 		entity.minHerdSize = entityHerd.getIntMinValue();

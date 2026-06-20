@@ -81,7 +81,7 @@ public class MCreatorNetWebAPI implements IWebAPI {
 		String motwXML = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/app/motw");
 
 		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			if (!newsXML.isEmpty()) {
 				news = new String[5];
@@ -106,7 +106,7 @@ public class MCreatorNetWebAPI implements IWebAPI {
 				}
 			}
 
-			dbFactory = DocumentBuilderFactory.newInstance();
+			dbFactory = DocumentBuilderFactory.newDefaultInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
 			if (!motwXML.isEmpty()) {
 				motw = new String[5];

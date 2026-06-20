@@ -34,11 +34,7 @@ import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
-import net.mcreator.element.types.bedrock.BEBiome;
-import net.mcreator.element.types.bedrock.BEBlock;
-import net.mcreator.element.types.bedrock.BEEntity;
-import net.mcreator.element.types.bedrock.BEItem;
-import net.mcreator.element.types.bedrock.BEScript;
+import net.mcreator.element.types.bedrock.*;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
@@ -188,7 +184,8 @@ public class TestWorkspaceDataProvider {
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
 				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM || type == ModElementType.BEBLOCK
-				|| type == ModElementType.BESCRIPT || type == ModElementType.BEBIOME || type == ModElementType.BEENTITY) {
+				|| type == ModElementType.BESCRIPT || type == ModElementType.BEBIOME
+				|| type == ModElementType.BEENTITY) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -347,80 +344,96 @@ public class TestWorkspaceDataProvider {
 		if (workspace.getGeneratorStats().hasBaseCoverage("tags")) {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:item"));
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleitem1"));
-				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleitem2"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("blocksitems", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:item"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleitem1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleitem2"));
+				}
 			}
 
 			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:block"));
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleblock1"));
-				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleblock2"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("blocksitems", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:block"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleblock1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleblock2"));
+				}
 			}
 
 			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:creeper"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:zombie"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:entity"));
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplelivingentity1"));
-				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplelivingentity2"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("entities", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:creeper"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:zombie"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:entity"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplelivingentity1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplelivingentity2"));
+				}
 			}
 
 			tag = new TagElement(TagType.BIOMES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:plains"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:biome"));
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplebiome1"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("biomes", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:plains"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:biome"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplebiome1"));
+				}
 			}
 
 			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stronghold"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:mineshaft"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:structure"));
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplestructure1"));
-				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplestructure2"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("structures", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stronghold"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:mineshaft"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:structure"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplestructure1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplestructure2"));
+				}
 			}
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:damage_type"));
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampledamagetype1"));
-				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampledamagetype2"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("damagesources", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:damage_type"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampledamagetype1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampledamagetype2"));
+				}
 			}
 
 			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:enchantment"));
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleenchantment1"));
-				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleenchantment2"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("enchantments", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:enchantment"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleenchantment1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleenchantment2"));
+				}
 			}
 
 			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:game_event"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:block_attach"));
-			workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:container_open"));
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("gameevents", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:game_event"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:block_attach"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:container_open"));
+			}
 
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
@@ -1475,9 +1488,9 @@ public class TestWorkspaceDataProvider {
 					null :
 					new ParticleEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
-					emptyLists ? new DataListEntry.Null() :
-							getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(), emptyLists ?
+					new DataListEntry.Null() :
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			List<AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
@@ -1900,13 +1913,16 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BEENTITY.equals(modElement.getType())) {
 			BEEntity beentity = new BEEntity(modElement);
 			beentity.entityName = modElement.getName();
-			beentity.modelName = getRandomString(random, List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider", "Villager"));
+			beentity.modelName = getRandomString(random,
+					List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
+							"Villager"));
 			beentity.modelTexture = "entity_texture_1.png";
 			beentity.collisionBoxHeight = getRandomDouble(random, BEEntity.class, "collisionBoxHeight");
 			beentity.collisionBoxWidth = getRandomDouble(random, BEEntity.class, "collisionBoxWidth");
 			beentity.isSummonable = _true;
 			beentity.xpAmountOnDeath = getRandomInt(random, BEEntity.class, "xpAmountOnDeath");
-			beentity.entityDrop = new MItemBlock(modElement.getWorkspace(), getRandomItem(random, blocksAndItems).getName());
+			beentity.entityDrop = new MItemBlock(modElement.getWorkspace(),
+					getRandomItem(random, blocksAndItems).getName());
 			beentity.healthValue = getRandomInt(random, BEEntity.class, "healthValue");
 			beentity.attackDamage = getRandomInt(random, BEEntity.class, "attackDamage");
 			beentity.speedValue = getRandomDouble(random, BEEntity.class, "speedValue");
@@ -1917,17 +1933,17 @@ public class TestWorkspaceDataProvider {
 			beentity.isPushable = _true;
 			beentity.isPushableByPiston = _true;
 			beentity.spawnNaturally = !_true;
-			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(), getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
+			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 			beentity.spawningProbability = getRandomInt(random, BEEntity.class, "spawningProbability");
-			var numberOfMobsPerGroup = getRandomIntRange(random, BEEntity.class, "minHerdSize",
-					"maxHerdSize");
+			var numberOfMobsPerGroup = getRandomIntRange(random, BEEntity.class, "minHerdSize", "maxHerdSize");
 			beentity.minHerdSize = numberOfMobsPerGroup.getMinimum();
 			beentity.maxHerdSize = numberOfMobsPerGroup.getMaximum();
 			beentity.hasSpawnEgg = !_true;
 			beentity.spawnEggBaseColor = new Color(10, 20, 34);
 			beentity.spawnEggDotColor = new Color(182, 172, 122);
 			beentity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
-			beentity.entityBehaviourType =  getRandomString(random,
+			beentity.entityBehaviourType = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEEntity.class, "entityBehaviourType"));
 			beentity.waterEntity = _true;
 			beentity.isImmuneToDrowning = _true;
@@ -2033,12 +2049,12 @@ public class TestWorkspaceDataProvider {
 				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.deathSound = new Sound(modElement.getWorkspace(),
 				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
-		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
-				emptyLists ? new DataListEntry.Null() :
-						getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
-		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(),
-				emptyLists ? new DataListEntry.Null() :
-						getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+		livingEntity.stepSound = new Sound(modElement.getWorkspace(), emptyLists ?
+				new DataListEntry.Null() :
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(), emptyLists ?
+				new DataListEntry.Null() :
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.rangedItemType = "Default item";
 		if (!emptyLists) {
 			livingEntity.spawningCondition = new Procedure("condition3");
