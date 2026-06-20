@@ -75,6 +75,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new BlocklyTemplatesTool(currentMCreator));
 		server.registerTool(new CurrentTabTool(currentMCreator));
 		server.registerTool(new VariableTool(currentMCreator));
+		server.registerTool(new FindReferencesTool(currentMCreator));
 	}
 
 	public McpServer getServer() {
