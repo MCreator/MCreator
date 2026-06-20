@@ -201,8 +201,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final Model spider = new Model.BuiltInModel("Spider");
 	private static final Model villager = new Model.BuiltInModel("Villager");
 	private static final Model witch = new Model.BuiltInModel("Witch");
-	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cod, cow, creeper, ghast, ocelot, pig,
-			piglin, salmon, silverfish, slime, spider, villager, witch };
+	public static final Model[] builtinmobmodels = AnnotationUtils.getLimitedOptionsList(
+			LivingEntity.class, "mobModelName", Model.BuiltInModel::new).toArray(new Model[0]);
 	private final SearchableComboBox<Model> mobModel = new SearchableComboBox<>(builtinmobmodels);
 
 	private TextureComboBox mobModelTexture;
