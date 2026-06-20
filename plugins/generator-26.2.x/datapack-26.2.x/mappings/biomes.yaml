@@ -56,6 +56,7 @@ mushroom_fields: mushroom_fields
 dripstone_caves: dripstone_caves
 lush_caves: lush_caves
 deep_dark: deep_dark
+sulfur_caves: sulfur_caves
 nether: nether_wastes
 warped_forest: warped_forest
 crimson_forest: crimson_forest

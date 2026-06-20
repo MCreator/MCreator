@@ -1,3 +1,4 @@
+# Collected from files at: https://github.com/ZtechNetwork/MCBVanillaBehaviorPack/tree/master/biomes
 animal: animal
 bamboo: bamboo
 basalt_deltas: basalt_deltas
@@ -84,6 +85,7 @@ spawns_warm_variant_frogs: spawns_warm_variant_frogs
 spawns_white_rabbits: spawns_white_rabbits
 spawns_without_patrols: spawns_without_patrols
 stone: stone
+sulfur_caves: sulfur_caves
 surface_mineshaft: surface_mineshaft
 swamp: swamp
 swamp_water_huge_mushroom: swamp_water_huge_mushroom

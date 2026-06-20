@@ -23,6 +23,9 @@ LAVA:
 HOT_FLOOR:
   - DamageTypes.HOT_FLOOR
   - hot_floor
+SULFUR_CUBE_HOT:
+  - DamageTypes.SULFUR_CUBE_HOT
+  - sulfur_cube_hot
 IN_WALL:
   - DamageTypes.IN_WALL
   - in_wall

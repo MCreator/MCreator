@@ -168,6 +168,7 @@ pointed_dripstone: pointed_dripstone
 patch_pumpkin: pumpkin
 patch_red_mushroom: red_mushroom
 rooted_azalea_tree: rooted_azalea_tree
+rooted_sulfur_spring: rooted_sulfur_spring
 sculk_patch_ancient_city: sculk_patch_ancient_city
 sculk_patch_deep_dark: sculk_patch_deep_dark
 sculk_vein: sculk_vein
@@ -186,6 +187,10 @@ spring_nether_open: spring_nether_open
 spring_water: spring_water
 spruce: spruce
 patch_sugar_cane: sugar_cane
+sulfur_pool: sulfur_pool
+sulfur_spike: sulfur_spike
+sulfur_spike_cluster: sulfur_spike_cluster
+sulfur_spring: sulfur_spring
 patch_sunflower: sunflower
 super_birch_bees: super_birch_bees
 super_birch_bees_0002: super_birch_bees_0002

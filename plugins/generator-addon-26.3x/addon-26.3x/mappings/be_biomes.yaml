@@ -1,3 +1,4 @@
+# Source: https://github.com/ZtechNetwork/MCBVanillaBehaviorPack/tree/master/biomes
 _default: minecraft:plains
 _mcreator_map_template: "@modid:@registryname"
 _bypass_prefix: "#"
@@ -18,6 +19,7 @@ cold_taiga_mutated: minecraft:cold_taiga_mutated
 crimson_forest: minecraft:crimson_forest
 deep_cold_ocean: minecraft:deep_cold_ocean
 deep_dark: minecraft:deep_dark
+sulfur_caves: minecraft:sulfur_caves
 deep_frozen_ocean: minecraft:deep_frozen_ocean
 deep_lukewarm_ocean: minecraft:deep_lukewarm_ocean
 deep_ocean: minecraft:deep_ocean

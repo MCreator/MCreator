@@ -159,6 +159,10 @@
 - patch_red_mushroom
 - patch_soul_fire
 - patch_sugar_cane
+- sulfur_pool
+- sulfur_spike
+- sulfur_spike_cluster
+- sulfur_spring
 - patch_sunflower
 - patch_taiga_grass
 - patch_tall_grass
@@ -171,6 +175,7 @@
 - pine
 - pointed_dripstone
 - rooted_azalea_tree
+- rooted_sulfur_spring
 - sculk_patch_ancient_city
 - sculk_patch_deep_dark
 - sculk_vein
