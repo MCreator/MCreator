@@ -124,6 +124,8 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 		File exportFile = mcreator.getFolderManager().getTextureFile(fixedName, textureType);
 		if (exportFile.isFile()) {
 			return ToolResult.error("Texture with this name already exists");
+		} else if (!mcreator.getWorkspace().getFolderManager().isFileInWorkspace(exportFile)) {
+			return ToolResult.error("Texture file is not in the workspace");
 		}
 
 		try {
