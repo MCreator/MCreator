@@ -263,8 +263,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		super.init();
 
 		<#list textFields as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			${component.getName()}.setMaxLength(8192);
 			${component.getName()}.setResponder(content -> {
 				if (!menuStateUpdateActive)

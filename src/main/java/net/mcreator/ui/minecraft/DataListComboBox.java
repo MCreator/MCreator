@@ -32,15 +32,16 @@ import net.mcreator.util.image.ImageUtils;
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.List;
 
 public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
-	public DataListComboBox(MCreator mcreator, List<DataListEntry> list) {
+	public DataListComboBox(MCreator mcreator, Collection<DataListEntry> list) {
 		this(mcreator, list, false);
 	}
 
-	public DataListComboBox(MCreator mcreator, List<DataListEntry> list, boolean rawNames) {
+	public DataListComboBox(MCreator mcreator, Collection<DataListEntry> list, boolean rawNames) {
 		super(list.toArray(new DataListEntry[0]));
 		init(mcreator, rawNames);
 	}

@@ -51,8 +51,8 @@ public class DataListLoader {
 		return cache;
 	}
 
-	public static List<DataListEntry> loadDataList(String listName) {
-		return new ArrayList<>(loadDataMap(listName).values());
+	public static Collection<DataListEntry> loadDataList(String listName) {
+		return Collections.unmodifiableCollection(loadDataMap(listName).values());
 	}
 
 	public static Map<String, DataListEntry> loadDataMap(String listName) {

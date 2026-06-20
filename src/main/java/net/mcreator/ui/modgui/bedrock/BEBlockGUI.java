@@ -26,6 +26,7 @@ import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.generator.mapping.NonMappableElement;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -83,8 +84,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(BEBlock.class, "dropAmount");
 
-	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
+	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, DataListLoader.loadDataList("stepsounds"));
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, DataListLoader.loadDataList("mapcolors"));
 	private final JSpinner friction = ComponentFromAnnotation.spinner(BEBlock.class, "friction");
 	private final JSpinner flammability = ComponentFromAnnotation.spinner(BEBlock.class, "flammability");
 	private final JSpinner flammableDestroyChance = ComponentFromAnnotation.spinner(BEBlock.class,

@@ -20,7 +20,10 @@ package net.mcreator.element.parts;
 
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
+
+import javax.annotation.Nonnull;
 
 public class Sound extends MappableElement {
 
@@ -28,8 +31,12 @@ public class Sound extends MappableElement {
 		super(new NameMapper(null, "sounds"));
 	}
 
-	public Sound(Workspace owner, String name) {
+	public Sound(@Nonnull Workspace owner, String name) {
 		super(new NameMapper(owner, "sounds"), name);
+	}
+
+	public Sound(@Nonnull Workspace owner, DataListEntry name) {
+		this(owner, name.getName());
 	}
 
 	@Override public String getMappedValue() {
