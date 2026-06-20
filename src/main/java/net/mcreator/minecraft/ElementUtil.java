@@ -50,9 +50,11 @@ public class ElementUtil {
 	 */
 	public static Predicate<DataListEntry> typeMatches(String... type) {
 		if (type.length == 1) {
-			return e -> type[0].equals(e.getType());
+			String singleType = type[0];
+			return e -> singleType.equals(e.getType());
 		} else {
-			return e -> Arrays.asList(type).contains(e.getType());
+			List<String> typeList = Arrays.asList(type);
+			return e -> typeList.contains(e.getType());
 		}
 	}
 
