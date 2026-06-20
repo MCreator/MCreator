@@ -314,6 +314,8 @@ public class GeneratableElementModule implements Module {
 		if (this.isBiomeDefaultFeaturesField(member) && member.isFakeContainerItemScope()) {
 			node.put("datalistWithValidValues", "defaultfeatures");
 		}
+
+		RenderModelSchemaHelper.applyFieldAttributes(node, member, context);
 	}
 
 	private boolean isBiomeDefaultFeaturesField(MemberScope<?, ?> member) {

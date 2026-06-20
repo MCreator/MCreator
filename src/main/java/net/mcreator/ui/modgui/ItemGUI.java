@@ -107,9 +107,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final TabListField creativeTabs = new TabListField(mcreator);
 
-	private static final Model normal = new Model.BuiltInModel("Normal");
-	private static final Model tool = new Model.BuiltInModel("Tool");
-	private static final Model rangedItem = new Model.BuiltInModel("Ranged item");
+	public static final Model normal = new Model.BuiltInModel("Normal");
+	public static final Model tool = new Model.BuiltInModel("Tool");
+	public static final Model rangedItem = new Model.BuiltInModel("Ranged item");
 	public static final Model[] builtinitemmodels = new Model[] { normal, tool, rangedItem };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 	private JItemPropertiesStatesList customProperties;
