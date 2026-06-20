@@ -190,7 +190,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		testProps.add(new PropertyData.NumberType("number"));
 		testProps.add(new PropertyData.NumberType("number2", -0.0001, 1000000));
 		testProps.add(new PropertyData.StringType("text"));
-		testProps.add(new PropertyData.StringType("text2", new String[] {"value1", "value2", "value3"}));
+		testProps.add(new PropertyData.StringType("text2", new String[] { "value1", "value2", "value3" }));
 		Random rng = new Random();
 		StateMap testState = new StateMap();
 		if (rng.nextBoolean())
@@ -206,7 +206,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		if (rng.nextBoolean())
 			testState.put(testProps.get(5), "sample value");
 		if (rng.nextBoolean())
-			testState.put(testProps.get(6), TestWorkspaceDataProvider.getRandomItem(rng, new String[] {"value1", "value2", "value3"}));
+			testState.put(testProps.get(6),
+					TestWorkspaceDataProvider.getRandomItem(rng, new String[] { "value1", "value2", "value3" }));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
 	}

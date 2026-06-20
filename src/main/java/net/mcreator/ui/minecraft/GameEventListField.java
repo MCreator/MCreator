@@ -22,7 +22,6 @@ package net.mcreator.ui.minecraft;
 import net.mcreator.element.parts.GameEventEntry;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListLoader;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;

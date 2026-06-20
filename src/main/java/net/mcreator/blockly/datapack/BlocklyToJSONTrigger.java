@@ -53,7 +53,7 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 		if (sourceXML != null && !sourceXML.isBlank()) {
 			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();

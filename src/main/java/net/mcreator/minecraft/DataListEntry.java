@@ -27,10 +27,8 @@ import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DataListEntry {
 
@@ -131,6 +129,9 @@ public class DataListEntry {
 	}
 
 	public static <T extends DataListEntry> Comparator<T> getComparator(Workspace workspace, List<T> originalOrder) {
+		WorkspaceUserSettings settings = workspace.getWorkspaceUserSettings();
+		final AtomicReference<Map<Object, Integer>> indexMap = new AtomicReference<>();
+
 		return (o1, o2) -> {
 			String a = o1.getReadableName();
 			String b = o2.getReadableName();
@@ -143,18 +144,27 @@ public class DataListEntry {
 			else if (!a_.startsWith(NameMapper.MCREATOR_PREFIX) && b_.startsWith(NameMapper.MCREATOR_PREFIX))
 				return 1;
 
-			if (workspace.getWorkspaceUserSettings().workspacePanelSortType == WorkspaceUserSettings.SortType.NAME
-					|| !a_.startsWith(NameMapper.MCREATOR_PREFIX) || !b_.startsWith(NameMapper.MCREATOR_PREFIX)) {
-				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
+			if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.NAME || !a_.startsWith(
+					NameMapper.MCREATOR_PREFIX) || !b_.startsWith(NameMapper.MCREATOR_PREFIX)) {
+				if (settings.workspacePanelSortAscending)
 					return a.compareToIgnoreCase(b);
 				else
 					return b.compareToIgnoreCase(a);
-			} else {
-				if (workspace.getWorkspaceUserSettings().workspacePanelSortAscending)
-					return originalOrder.indexOf(o1) - originalOrder.indexOf(o2);
-				else
-					return originalOrder.indexOf(o2) - originalOrder.indexOf(o1);
 			}
+
+			Map<Object, Integer> map = indexMap.updateAndGet(existing -> {
+				if (existing != null)
+					return existing;
+				Map<Object, Integer> newMap = new HashMap<>();
+				for (int i = 0; i < originalOrder.size(); i++)
+					newMap.put(originalOrder.get(i), i);
+				return newMap;
+			});
+
+			if (settings.workspacePanelSortAscending)
+				return map.get(o1) - map.get(o2);
+			else
+				return map.get(o2) - map.get(o1);
 		};
 	}
 

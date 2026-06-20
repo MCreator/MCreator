@@ -107,7 +107,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = ComponentFromAnnotation.spinner(Fluid.class, "flammability");
 	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Fluid.class, "fireSpreadSpeed");
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, DataListLoader.loadDataList("mapcolors"));
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("mapcolors"));
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourChanges;

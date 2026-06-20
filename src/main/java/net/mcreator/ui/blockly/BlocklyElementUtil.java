@@ -130,9 +130,10 @@ public class BlocklyElementUtil {
 
 		// We add custom entries before normal ones, so that they are on top even if the list isn't sorted
 		if (customEntryProviders != null) {
+			List<String> customEntryProvidersList = Arrays.asList(customEntryProviders);
 			retval.addAll(workspace.getModElements().stream()
-					.filter(me -> Arrays.asList(customEntryProviders).contains(me.getTypeString()))
-					.map(DataListEntry.Custom::new).toList());
+					.filter(me -> customEntryProvidersList.contains(me.getTypeString())).map(DataListEntry.Custom::new)
+					.toList());
 		}
 		retval.addAll(DataListLoader.loadDataList(dataList));
 

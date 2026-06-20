@@ -22,7 +22,6 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public interface IBlockGenerator {
 
