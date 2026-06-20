@@ -51,7 +51,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			// textures
 			BLOCK_TEXTURES, ITEM_TEXTURES, ENTITY_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES,
 			// models
-			MODELS_JSON, MODELS_JAVA, MODELS_OBJ
+			MODELS_JSON, MODELS_JAVA, MODELS_OBJ, MODELS_BEDROCK
 			//@formatter:on
 		}
 	}
@@ -116,6 +116,9 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			case Args.ListType.MODELS_OBJ -> CompletableFuture.completedFuture(ToolResult.collection(
 					Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 							.filter(el -> el.getType() == Model.Type.OBJ).collect(Collectors.toList())));
+			case Args.ListType.MODELS_BEDROCK -> CompletableFuture.completedFuture(ToolResult.collection(
+					Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+							.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 		};
 	}
 
