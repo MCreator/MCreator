@@ -26,11 +26,13 @@ import com.github.victools.jsonschema.generator.Module;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.Biome;
 import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.util.GEValidator;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
@@ -92,6 +94,8 @@ public class GeneratableElementModule implements Module {
 					guessDataListName((Class<? extends MappableElement>) erasedType));
 		} else if (TextureHolder.class.isAssignableFrom(erasedType)) {
 			return this.createDataListDefinition(context, null);
+		} else if (erasedType == GUIComponent.class) {
+			return this.createGUIComponentDefinition(context);
 		}
 		return null;
 	}
@@ -140,6 +144,35 @@ public class GeneratableElementModule implements Module {
 
 		ArrayNode required = config.createArrayNode();
 		required.add("fixedValue");
+
+		return config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE), "object")
+				.set(context.getKeyword(SchemaKeyword.TAG_PROPERTIES), properties)
+				.set(context.getKeyword(SchemaKeyword.TAG_REQUIRED), required);
+	}
+
+	private CustomDefinition createGUIComponentDefinition(SchemaGenerationContext context) {
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		ArrayNode oneOf = config.createArrayNode();
+		for (Map.Entry<String, Class<? extends GUIComponent>> entry : GUIComponent.getTypeMappings().entrySet()) {
+			oneOf.add(this.createGUIComponentVariant(context, entry.getKey(), entry.getValue()));
+		}
+
+		ObjectNode schema = config.createObjectNode().set(context.getKeyword(SchemaKeyword.TAG_ONEOF), oneOf);
+		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
+				CustomDefinition.AttributeInclusion.YES);
+	}
+
+	private ObjectNode createGUIComponentVariant(SchemaGenerationContext context, String typeId,
+			Class<? extends GUIComponent> componentClass) {
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		ObjectNode properties = config.createObjectNode();
+		properties.set("type", config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_CONST), typeId));
+		properties.set("data",
+				context.createDefinition(context.getTypeContext().resolve(componentClass)));
+
+		ArrayNode required = config.createArrayNode();
+		required.add("type");
+		required.add("data");
 
 		return config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE), "object")
 				.set(context.getKeyword(SchemaKeyword.TAG_PROPERTIES), properties)
@@ -218,7 +251,7 @@ public class GeneratableElementModule implements Module {
 	@Nullable private Object resolveDefault(MemberScope<?, ?> member) {
 		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
 		if (numeric != null) {
-			return this.castNumericDefault(member.getType().getErasedType(), numeric.init());
+			return GEValidator.castNumber(member.getType().getErasedType(), numeric.init());
 		}
 
 		NonNullMappable nonNullMappable = this.getAnnotationFromFieldOrGetter(member, NonNullMappable.class);
@@ -308,19 +341,6 @@ public class GeneratableElementModule implements Module {
 	private boolean isBiomeDefaultFeaturesField(MemberScope<?, ?> member) {
 		return member.getDeclaringType().getErasedType() == Biome.class && "defaultFeatures".equals(
 				member.getDeclaredName());
-	}
-
-	private Object castNumericDefault(Class<?> type, double value) {
-		if (type == int.class || type == Integer.class) {
-			return (int) value;
-		}
-		if (type == long.class || type == Long.class) {
-			return (long) value;
-		}
-		if (type == float.class || type == Float.class) {
-			return (float) value;
-		}
-		return value;
 	}
 
 	private boolean isNumericType(Class<?> type) {
