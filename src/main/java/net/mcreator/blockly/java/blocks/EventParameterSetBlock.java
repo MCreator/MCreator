@@ -182,10 +182,10 @@ public class EventParameterSetBlock implements IBlockGenerator {
 		return "advanced";
 	}
 
-	@Nullable @Override public List<String>[] getToolboxInit() {
-		return new List[] {
-				List.of("<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"),
-				List.of("<value name=\"value\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>") };
+	@Nullable @Override public String[][] getToolboxInit() {
+		return new String[][] {
+				{ "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>" },
+				{ "<value name=\"value\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>" } };
 	}
 
 }

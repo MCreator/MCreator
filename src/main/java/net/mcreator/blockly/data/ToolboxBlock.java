@@ -284,7 +284,7 @@ import java.util.regex.Pattern;
 		String[] supportedBlocks = blockGenerator.getSupportedBlocks();
 		String[] blockDefinitions = blockGenerator.getBlockJSONDefinitions();
 
-		List<String>[] toolboxInits = blockGenerator.getToolboxInit();
+		String[][] toolboxInits = blockGenerator.getToolboxInit();
 		if (blockDefinitions == null)
 			return Collections.emptyList();
 
@@ -313,7 +313,7 @@ import java.util.regex.Pattern;
 				toolboxBlock.toolboxCategory = toolboxCategory;
 			}
 			if (toolboxInits != null) {
-				toolboxBlock.toolbox_init = toolboxInits[i];
+				toolboxBlock.toolbox_init = Arrays.asList(toolboxInits[i]);
 			}
 			blocks.add(toolboxBlock);
 		}

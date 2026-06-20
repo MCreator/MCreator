@@ -50,7 +50,7 @@ public interface IBlockGenerator {
 	/**
 	 * Retrieves the initialization XML for the toolbox for each block returned by {@link #getSupportedBlocks()}, in the same order.
 	 */
-	default @Nullable List<String>[] getToolboxInit() {
+	default @Nullable String[][] getToolboxInit() {
 		return null;
 	}
 

@@ -97,8 +97,8 @@ public class TextIndexOfBlock implements IBlockGenerator {
 		return "text";
 	}
 
-	@Nullable @Override public List<String>[] getToolboxInit() {
-		return new List[] {
-				List.of("<value name=\"from\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>") };
+	@Nullable @Override public String[][] getToolboxInit() {
+		return new String[][] {
+				{ "<value name=\"from\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>" } };
 	}
 }

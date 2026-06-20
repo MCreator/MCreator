@@ -87,8 +87,8 @@ public class TextFormatNumber implements IBlockGenerator {
 		return "text";
 	}
 
-	@Nullable @Override public List<String>[] getToolboxInit() {
-		return new List[] {
-				List.of("<value name=\"format\"><block type=\"text\"><field name=\"TEXT\">##.##</field></block></value>") };
+	@Nullable @Override public String[][] getToolboxInit() {
+		return new String[][] {
+				{ "<value name=\"format\"><block type=\"text\"><field name=\"TEXT\">##.##</field></block></value>" } };
 	}
 }

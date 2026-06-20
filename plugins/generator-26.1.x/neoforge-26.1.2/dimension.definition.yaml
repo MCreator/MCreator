@@ -52,6 +52,11 @@ templates:
     name: "@MODASSETSROOT/items/@registryname.json"
     condition: hasIgniter()
 
+global_templates:
+  - template: dimension/skybox.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/@JavaModNameSkyboxRenderer.java"
+    condition: "${w.getGElementsOfType('dimension')?filter(e -> e.enableSkybox || e.enableSunMoon)?size != 0}"
+
 tags:
   - tag: BLOCKS:minecraft:overworld_carver_replaceables
     entryprovider: getWorldgenBlocks()
