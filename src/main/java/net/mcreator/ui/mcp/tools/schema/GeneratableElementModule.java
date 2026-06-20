@@ -274,6 +274,10 @@ public class GeneratableElementModule implements Module {
 				node.put("min", 0);
 				node.put("max", limitedOptions.value().length - 1);
 			}
+
+			if (limitedOptions.allowCustom()) {
+				node.put("allowCustomValues", true);
+			}
 		}
 
 		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
