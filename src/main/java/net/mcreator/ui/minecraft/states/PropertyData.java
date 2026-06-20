@@ -31,6 +31,7 @@ import java.awt.*;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -139,6 +140,10 @@ import java.util.stream.Collectors;
 
 	@Override public final String toString() {
 		return getName();
+	}
+
+	public static Map<String, Class<? extends PropertyData<?>>> getTypeMappings() {
+		return Collections.unmodifiableMap(typeMappings);
 	}
 
 	/**

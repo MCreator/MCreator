@@ -34,6 +34,7 @@ import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.GEValidator;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import tools.jackson.databind.node.ArrayNode;
@@ -96,6 +97,8 @@ public class GeneratableElementModule implements Module {
 			return this.createDataListDefinition(context, null);
 		} else if (erasedType == GUIComponent.class) {
 			return this.createGUIComponentDefinition(context);
+		} else if (erasedType == PropertyData.class) {
+			return this.createPropertyDataDefinition(context);
 		}
 		return null;
 	}
@@ -173,6 +176,40 @@ public class GeneratableElementModule implements Module {
 		ArrayNode required = config.createArrayNode();
 		required.add("type");
 		required.add("data");
+
+		return config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE), "object")
+				.set(context.getKeyword(SchemaKeyword.TAG_PROPERTIES), properties)
+				.set(context.getKeyword(SchemaKeyword.TAG_REQUIRED), required);
+	}
+
+	private CustomDefinition createPropertyDataDefinition(SchemaGenerationContext context) {
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		ArrayNode oneOf = config.createArrayNode();
+		for (Map.Entry<String, Class<? extends PropertyData<?>>> entry : PropertyData.getTypeMappings().entrySet()) {
+			oneOf.add(this.createPropertyDataVariant(context, entry.getKey(), entry.getValue()));
+		}
+
+		ObjectNode schema = config.createObjectNode().set(context.getKeyword(SchemaKeyword.TAG_ONEOF), oneOf);
+		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
+				CustomDefinition.AttributeInclusion.YES);
+	}
+
+	private ObjectNode createPropertyDataVariant(SchemaGenerationContext context, String typeId,
+			Class<? extends PropertyData<?>> propertyClass) {
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		ArrayNode allOf = config.createArrayNode();
+		allOf.add(this.createTypeConstConstraint(context, typeId));
+		allOf.add(context.createDefinition(context.getTypeContext().resolve(propertyClass)));
+		return config.createObjectNode().set(context.getKeyword(SchemaKeyword.TAG_ALLOF), allOf);
+	}
+
+	private ObjectNode createTypeConstConstraint(SchemaGenerationContext context, String typeId) {
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		ObjectNode properties = config.createObjectNode();
+		properties.set("type", config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_CONST), typeId));
+
+		ArrayNode required = config.createArrayNode();
+		required.add("type");
 
 		return config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE), "object")
 				.set(context.getKeyword(SchemaKeyword.TAG_PROPERTIES), properties)
