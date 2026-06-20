@@ -28,12 +28,13 @@ import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.resources.Model;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 
@@ -48,7 +49,9 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			// data lists
 			BLOCKS, BLOCKS_AND_ITEMS, BLOCKS_AND_ITEMS_AND_TAGS, PROCEDURES,
 			// textures
-			BLOCK_TEXTURES, ITEM_TEXTURES, ENTITY_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
+			BLOCK_TEXTURES, ITEM_TEXTURES, ENTITY_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES,
+			// models
+			MODELS_JSON, MODELS_JAVA, MODELS_OBJ
 			//@formatter:on
 		}
 	}
@@ -105,6 +108,14 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.ARMOR))));
 			case Args.ListType.OTHER_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.OTHER))));
+			case Args.ListType.MODELS_JSON -> CompletableFuture.completedFuture(ToolResult.collection(
+					Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+							.filter(el -> el.getType() == Model.Type.JSON).collect(Collectors.toList())));
+			case Args.ListType.MODELS_JAVA -> CompletableFuture.completedFuture(
+					ToolResult.collection(Model.getJavaModels(mcreator.getWorkspace())));
+			case Args.ListType.MODELS_OBJ -> CompletableFuture.completedFuture(ToolResult.collection(
+					Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+							.filter(el -> el.getType() == Model.Type.OBJ).collect(Collectors.toList())));
 		};
 	}
 
