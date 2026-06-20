@@ -156,10 +156,10 @@ public class MCItem extends DataListEntry {
 					retval = new ImageIcon(MinecraftImageGenerator.Preview.generatePotionIcon(Color.BLACK));
 				}
 			} else {
-				DataListEntry entry = DataListLoader.loadDataMap("blocksitems").get(name);
+				Map<String, DataListEntry> blocksitems = DataListLoader.loadDataMap("blocksitems");
+				DataListEntry entry = blocksitems.get(name);
 				if (entry != null) {
-					retval = BlockItemIcons.getIconForItem(
-							DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
+					retval = BlockItemIcons.getIconForItem(entry.getTexture());
 				} else {
 					retval = DEFAULT_ICON;
 				}
