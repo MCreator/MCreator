@@ -48,7 +48,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 			// data lists
 			BLOCKS, BLOCKS_AND_ITEMS, BLOCKS_AND_ITEMS_AND_TAGS, PROCEDURES,
 			// textures
-			BLOCK_TEXTURES, ITEM_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
+			BLOCK_TEXTURES, ITEM_TEXTURES, ENTITY_TEXTURES, EFFECT_TEXTURES, PARTICLE_TEXTURES, SCREEN_TEXTURES, ARMOR_TEXTURES, OTHER_TEXTURES
 			//@formatter:on
 		}
 	}
@@ -93,6 +93,8 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.BLOCK))));
 			case Args.ListType.ITEM_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.ITEM))));
+			case Args.ListType.ENTITY_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
+					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.ENTITY))));
 			case Args.ListType.EFFECT_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.EFFECT))));
 			case Args.ListType.PARTICLE_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
