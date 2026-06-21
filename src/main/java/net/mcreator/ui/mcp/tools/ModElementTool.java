@@ -217,7 +217,6 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		for (ValidationResult result : validationResult.getGroupedValidationResults()) {
 			if (result.type() == ValidationResult.Type.ERROR) {
 				errors.add(result.message());
-				break;
 			}
 		}
 
