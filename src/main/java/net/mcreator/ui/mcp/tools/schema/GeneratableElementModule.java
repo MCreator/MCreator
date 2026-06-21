@@ -45,9 +45,7 @@ import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
@@ -61,7 +59,6 @@ public class GeneratableElementModule implements Module {
 		fieldConfigPart.withDefaultResolver(this::resolveDefault);
 		fieldConfigPart.withInstanceAttributeOverride(this::applyCustomAttributes);
 		fieldConfigPart.withRequiredCheck(this::isRequired);
-		fieldConfigPart.withTargetTypeOverridesResolver(this::resolveMapOverrides);
 
 		SchemaGeneratorConfigPart<MethodScope> methodConfigPart = builder.forMethods();
 		methodConfigPart.withIgnoreCheck(_ -> true); // do not include methods
@@ -71,16 +68,6 @@ public class GeneratableElementModule implements Module {
 				AnnotationInclusion.INCLUDE_AND_INHERIT));
 
 		builder.forTypesInGeneral().withCustomDefinitionProvider(this::provideCustomDefinition);
-	}
-
-	@Nullable private List<ResolvedType> resolveMapOverrides(FieldScope field) {
-		ResolvedType type = field.getType();
-		if (type.isInstanceOf(Map.class) && type.getErasedType() != Map.class) {
-			List<ResolvedType> mapParams = type.typeParametersFor(Map.class);
-			ResolvedType genericMapType = field.getContext().resolve(Map.class, mapParams.toArray(new ResolvedType[0]));
-			return Collections.singletonList(genericMapType);
-		}
-		return null;
 	}
 
 	@SuppressWarnings("unchecked") @Nullable
@@ -271,8 +258,8 @@ public class GeneratableElementModule implements Module {
 		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
 		if (limitedOptions != null) {
 			if (this.isNumericType(member.getType().getErasedType())) {
-				node.put("min", 0);
-				node.put("max", limitedOptions.value().length - 1);
+				node.put("minimum", 0);
+				node.put("maximum", limitedOptions.value().length - 1);
 			}
 
 			if (limitedOptions.allowCustom()) {
@@ -307,8 +294,11 @@ public class GeneratableElementModule implements Module {
 
 		BlocklyXML blocklyXML = this.getAnnotationFromFieldOrGetter(member, BlocklyXML.class);
 		if (blocklyXML != null) {
-			node.put("blocklyXML", "This field requires valid Blockly XML");
 			node.put("blocklyEditorType", blocklyXML.name());
+			appendDescription(node, """
+					Valid Blockly XML string. Use blockly_templates for reference XML and blockly_blocks for available blocks.\
+					For trigger-based editors, use blockly_triggers with blocklyEditorType=%s.""".formatted(
+					blocklyXML.name()));
 		}
 
 		if (this.isBiomeDefaultFeaturesField(member) && member.isFakeContainerItemScope()) {
@@ -326,6 +316,14 @@ public class GeneratableElementModule implements Module {
 	private boolean isNumericType(Class<?> type) {
 		return Number.class.isAssignableFrom(type) || type == int.class || type == long.class || type == float.class
 				|| type == double.class || type == short.class || type == byte.class;
+	}
+
+	private static void appendDescription(ObjectNode node, String addition) {
+		if (node.has("description")) {
+			node.put("description", node.get("description").asString() + " " + addition);
+		} else {
+			node.put("description", addition);
+		}
 	}
 
 	protected Boolean isNullable(MemberScope<?, ?> member) {

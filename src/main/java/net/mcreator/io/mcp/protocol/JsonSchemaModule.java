@@ -54,10 +54,6 @@ public class JsonSchemaModule implements Module {
 		String fieldName = member.getName().toLowerCase();
 		String jsonHint = null;
 		if (member.getType().isInstanceOf(Map.class) && fieldName.contains("json")) {
-			node.put("type", "object");
-			if (!node.has("additionalProperties")) {
-				node.put("additionalProperties", true);
-			}
 			jsonHint = "Must be a JSON object, not a JSON string.";
 		}
 

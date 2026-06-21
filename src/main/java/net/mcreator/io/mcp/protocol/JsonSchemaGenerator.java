@@ -36,6 +36,7 @@ public class JsonSchemaGenerator {
 		SchemaGeneratorConfigBuilder configBuilder = new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12,
 				OptionPreset.PLAIN_JSON);
 		configBuilder.with(Option.EXTRA_OPEN_API_FORMAT_VALUES);
+		configBuilder.with(Option.MAP_VALUES_AS_ADDITIONAL_PROPERTIES);
 		configBuilder.with(new JsonSchemaModule());
 		SchemaGeneratorConfig config = configBuilder.build();
 		this.generator = new SchemaGenerator(config);
