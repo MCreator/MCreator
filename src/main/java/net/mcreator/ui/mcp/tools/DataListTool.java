@@ -58,7 +58,7 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 		return """
 				Lists available datalists or lists entries of selected datalist (vanilla and/or custom).\
 				The entries listed by this tool are the only entries you can use for given datalist.
-				For blocks and items, use list_workspace tool.""";
+				For blocks and items, use query_workspace tool.""";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {

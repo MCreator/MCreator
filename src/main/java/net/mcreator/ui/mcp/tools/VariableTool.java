@@ -56,7 +56,7 @@ public class VariableTool extends MCreatorMcpTool<VariableTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "Adds or removes a workspace variable. Use list list_workspace MOD_VARIABLES to see existing variables. When adding, fill out all fields.";
+		return "Adds or removes a workspace variable. Use list query_workspace MOD_VARIABLES to see existing variables. When adding, fill out all fields.";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {

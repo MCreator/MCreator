@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.resources.Model;
 
@@ -34,9 +35,8 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
-public class ListTool extends MCreatorMcpTool<ListTool.Args> {
+public class QueryWorkspaceTool extends MCreatorMcpTool<QueryWorkspaceTool.Args> {
 
 	public static class Args {
 		public ListType type;
@@ -56,12 +56,12 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 		}
 	}
 
-	public ListTool(Supplier<MCreator> currentMCreator) {
+	public QueryWorkspaceTool(Supplier<MCreator> currentMCreator) {
 		super(currentMCreator, Args.class);
 	}
 
 	@Override public String getName() {
-		return "list_workspace";
+		return "query_workspace";
 	}
 
 	@Override public String getDescription() {
@@ -70,28 +70,30 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
+			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
+					ToolResult.object(mcreator.getWorkspace().getWorkspaceSettings()));
 			case Args.ListType.MOD_ELEMENTS -> CompletableFuture.completedFuture(ToolResult.collection(
 					mcreator.getWorkspace().getModElements().stream().map(NameAndType::new).toList()));
-			case Args.ListType.MOD_VARIABLES -> CompletableFuture.completedFuture(
-					ToolResult.collection(mcreator.getWorkspace().getVariableElements()));
-			case Args.ListType.MOD_TAGS ->
-					CompletableFuture.completedFuture(ToolResult.object(mcreator.getWorkspace().getTagElements()));
 			case Args.ListType.SUPPORTED_MOD_ELEMENT_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
 					mcreator.getGeneratorStats().getSupportedModElementTypes().stream()
 							.map(ModElementType::getRegistryName).toList()));
+			case Args.ListType.MOD_VARIABLES -> CompletableFuture.completedFuture(
+					ToolResult.collection(mcreator.getWorkspace().getVariableElements()));
 			case Args.ListType.VARIABLE_TYPES -> CompletableFuture.completedFuture(ToolResult.collection(
-					VariableTypeLoader.INSTANCE.getGlobalVariableTypes(mcreator.getGeneratorConfiguration())));
-			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(
-					ToolResult.object(mcreator.getWorkspace().getWorkspaceSettings()));
-			case Args.ListType.BLOCKS_AND_ITEMS -> CompletableFuture.completedFuture(
-					ToolResult.collection(dataListNames(ElementUtil.loadBlocksAndItems(mcreator.getWorkspace()))));
+					VariableTypeLoader.INSTANCE.getGlobalVariableTypes(mcreator.getGeneratorConfiguration()).stream()
+							.filter(t -> t.isSupportedInWorkspace(mcreator.getWorkspace())).map(VariableType::getName)
+							.toList()));
+			case Args.ListType.MOD_TAGS ->
+					CompletableFuture.completedFuture(ToolResult.object(mcreator.getWorkspace().getTagElements()));
 			case Args.ListType.BLOCKS -> CompletableFuture.completedFuture(
 					ToolResult.collection(dataListNames(ElementUtil.loadBlocks(mcreator.getWorkspace()))));
+			case Args.ListType.BLOCKS_AND_ITEMS -> CompletableFuture.completedFuture(
+					ToolResult.collection(dataListNames(ElementUtil.loadBlocksAndItems(mcreator.getWorkspace()))));
 			case Args.ListType.BLOCKS_AND_ITEMS_AND_TAGS -> CompletableFuture.completedFuture(ToolResult.collection(
 					dataListNames(ElementUtil.loadBlocksAndItemsAndTags(mcreator.getWorkspace()))));
 			case Args.ListType.PROCEDURES -> CompletableFuture.completedFuture(ToolResult.collection(
 					mcreator.getWorkspace().getModElementsByType(ModElementType.PROCEDURE).stream()
-							.map(ModElement::getRegistryName).toList()));
+							.map(ModElement::getName).toList()));
 			case Args.ListType.BLOCK_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.BLOCK))));
 			case Args.ListType.ITEM_TEXTURES -> CompletableFuture.completedFuture(ToolResult.collection(
@@ -110,15 +112,15 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 					textureFileNames(mcreator.getFolderManager().getTexturesList(TextureType.OTHER))));
 			case Args.ListType.MODELS_JSON -> CompletableFuture.completedFuture(ToolResult.collection(
 					Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-							.filter(el -> el.getType() == Model.Type.JSON).collect(Collectors.toList())));
-			case Args.ListType.MODELS_JAVA -> CompletableFuture.completedFuture(
-					ToolResult.collection(Model.getJavaModels(mcreator.getWorkspace())));
+							.filter(el -> el.getType() == Model.Type.JSON).map(Model::getReadableName).toList()));
+			case Args.ListType.MODELS_JAVA -> CompletableFuture.completedFuture(ToolResult.collection(
+					Model.getJavaModels(mcreator.getWorkspace()).stream().map(Model::getReadableName).toList()));
 			case Args.ListType.MODELS_OBJ -> CompletableFuture.completedFuture(ToolResult.collection(
 					Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-							.filter(el -> el.getType() == Model.Type.OBJ).collect(Collectors.toList())));
+							.filter(el -> el.getType() == Model.Type.OBJ).map(Model::getReadableName).toList()));
 			case Args.ListType.MODELS_BEDROCK -> CompletableFuture.completedFuture(ToolResult.collection(
 					Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-							.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
+							.filter(el -> el.getType() == Model.Type.BEDROCK).map(Model::getReadableName).toList()));
 		};
 	}
 
@@ -132,7 +134,7 @@ public class ListTool extends MCreatorMcpTool<ListTool.Args> {
 
 	private record NameAndType(String registryName, String type) {
 		NameAndType(ModElement element) {
-			this(element.getRegistryName(), element.getType().getRegistryName());
+			this(element.getName(), element.getType().getRegistryName());
 		}
 	}
 

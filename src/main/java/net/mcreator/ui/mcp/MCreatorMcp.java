@@ -63,7 +63,7 @@ public final class MCreatorMcp implements Closeable {
 	}
 
 	private void registerTools() {
-		server.registerTool(new ListTool(currentMCreator));
+		server.registerTool(new QueryWorkspaceTool(currentMCreator));
 		server.registerTool(new BuildTool(currentMCreator));
 		server.registerTool(new ReadConsoleTool(currentMCreator));
 		server.registerTool(new ModElementTool(currentMCreator));
