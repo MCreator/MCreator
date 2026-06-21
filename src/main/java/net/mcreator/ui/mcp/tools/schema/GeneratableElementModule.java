@@ -161,6 +161,10 @@ public class GeneratableElementModule implements Module {
 	}
 
 	@SuppressWarnings("RedundantIfStatement") private boolean isRequired(FieldScope fieldScope) {
+		if (this.getAnnotationFromFieldOrGetter(fieldScope, Nullable.class) != null) {
+			return false; // Nullable fields are not required
+		}
+
 		if (this.getAnnotationFromFieldOrGetter(fieldScope, Nonnull.class) != null) {
 			return true; // Nonnull fields are required
 		}
@@ -210,6 +214,10 @@ public class GeneratableElementModule implements Module {
 	}
 
 	@Nullable private Object resolveDefault(MemberScope<?, ?> member) {
+		if (this.getAnnotationFromFieldOrGetter(member, Nullable.class) != null) {
+			return null; // Nullable fields are not required, so we assume no default value
+		}
+
 		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
 		if (numeric != null) {
 			return GEValidator.castNumber(member.getType().getErasedType(), numeric.init());
