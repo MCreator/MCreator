@@ -43,19 +43,23 @@ public final class MCreatorMcp implements Closeable {
 	private final Supplier<MCreator> currentMCreator;
 
 	public MCreatorMcp(Supplier<MCreator> currentMCreator) {
-		this.currentMCreator = currentMCreator;
+		this(new HttpMcpTransport(PreferencesManager.PREFERENCES.integrations.mcpPort.get()), currentMCreator);
 
-		McpTransport transport = new HttpMcpTransport(PreferencesManager.PREFERENCES.integrations.mcpPort.get());
-		this.server = new McpServer("MCreator", Launcher.version.full, transport);
 		if (PreferencesManager.PREFERENCES.integrations.mcpEnable.get()) {
 			try {
-				registerTools();
 				this.server.start();
 				LOG.debug("MCP server started at port {}", PreferencesManager.PREFERENCES.integrations.mcpPort.get());
 			} catch (IOException e) {
 				LOG.warn("Failed to start MCP server", e);
 			}
 		}
+	}
+
+	public MCreatorMcp(McpTransport transport, Supplier<MCreator> currentMCreator) {
+		this.currentMCreator = currentMCreator;
+		this.server = new McpServer("MCreator", Launcher.version.full, transport);
+
+		registerTools();
 	}
 
 	private void registerTools() {
