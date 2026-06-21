@@ -52,13 +52,22 @@ public class JsonSchemaModule implements Module {
 
 	private void applyCustomAttributes(ObjectNode node, MemberScope<?, ?> member, SchemaGenerationContext context) {
 		String fieldName = member.getName().toLowerCase();
+		String jsonHint = null;
 		if (member.getType().isInstanceOf(Map.class) && fieldName.contains("json")) {
-			node.put("type", "Valid JSON object");
+			node.put("type", "object");
+			if (!node.has("additionalProperties")) {
+				node.put("additionalProperties", true);
+			}
+			jsonHint = "Must be a JSON object, not a JSON string.";
 		}
 
 		SchemaDescription schemaDescription = member.getAnnotation(SchemaDescription.class);
-		if (schemaDescription != null) {
-			node.put("description", schemaDescription.value());
+		if (schemaDescription != null || jsonHint != null) {
+			String description = schemaDescription != null ? schemaDescription.value() : "";
+			if (jsonHint != null) {
+				description = description.isEmpty() ? jsonHint : description + " " + jsonHint;
+			}
+			node.put("description", description);
 		}
 	}
 

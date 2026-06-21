@@ -23,6 +23,7 @@ import com.google.gson.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.io.mcp.McpJson;
 import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
@@ -44,7 +45,7 @@ import java.util.function.Supplier;
 
 public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
-	private static final Gson gson = new GsonBuilder().create();
+	private static final Gson gson = McpJson.lenientGson();
 
 	public static class Args {
 		public Action actionType;
@@ -79,10 +80,10 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(ToolResult.error("Element not found. Names usually SnakeCase"));
 			}
-			String geJSON = safeGeneratableElementToJSON(mcreator, modElement.getGeneratableElement());
+			JsonElement definition = safeGeneratableElementToJsonElement(mcreator, modElement.getGeneratableElement());
 			Map<String, Object> response = new HashMap<>();
 			response.put("_metadata", modElement);
-			response.put("elementJSONDefinition", geJSON);
+			response.put("elementJSONDefinition", definition);
 			return CompletableFuture.completedFuture(ToolResult.object(response));
 		} else if (input.actionType == Args.Action.MODIFY) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
@@ -178,9 +179,13 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 	}
 
 	private String safeGeneratableElementToJSON(MCreator mcreator, GeneratableElement element) {
+		return gson.toJson(safeGeneratableElementToJsonElement(mcreator, element));
+	}
+
+	private JsonElement safeGeneratableElementToJsonElement(MCreator mcreator, GeneratableElement element) {
 		String json = mcreator.getModElementManager().generatableElementToJSON(element);
 		JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
-		return gson.toJson(jsonObject.get("definition"));
+		return jsonObject.get("definition");
 	}
 
 	private GeneratableElement validateThroughUI(MCreator mcreator, GeneratableElement generatableElement)
