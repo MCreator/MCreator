@@ -68,7 +68,7 @@ public class MCreatorTabs extends JTabbedPane {
 		});
 
 		addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
+			@Override public void mouseReleased(MouseEvent e) {
 				int tabIndex = indexAtLocation(e.getX(), e.getY());
 				if (tabIndex >= 0) {
 					Tab clickedTab = getTabForTabIndex(tabIndex);

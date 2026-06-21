@@ -79,7 +79,9 @@ import java.util.stream.Collectors;
 	public String mobName;
 	public String mobLabel;
 
-	@Nonnull public String mobModelName;
+	@Nonnull
+	@LimitedOptions(value = { "Biped", "Chicken", "Cod", "Cow", "Creeper", "Ghast", "Ocelot", "Pig", "Piglin", "Salmon",
+			"Silverfish", "Slime", "Spider", "Villager", "Witch" }, allowCustom = true) public String mobModelName;
 	@TextureReference(TextureType.ENTITY) public String mobModelTexture;
 	public LogicProcedure transparentModelCondition;
 	public LogicProcedure isShakingCondition;
