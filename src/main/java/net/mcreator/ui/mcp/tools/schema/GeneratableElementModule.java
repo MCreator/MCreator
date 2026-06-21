@@ -42,6 +42,7 @@ import tools.jackson.databind.node.ObjectNode;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -177,6 +178,10 @@ public class GeneratableElementModule implements Module {
 			return true; // Retval procedure requires at least fixed value
 		} else if (Procedure.class.isAssignableFrom(fieldScope.getType().getErasedType())) {
 			return false; // Procedure fields are always optional
+		}
+
+		if (Color.class.isAssignableFrom(fieldScope.getType().getErasedType())) {
+			return true; // Color fields are always required unless marked with Nullable
 		}
 
 		if (this.getAnnotationFromFieldOrGetter(fieldScope, NonNullMappable.class) != null) {
