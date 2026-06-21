@@ -52,7 +52,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 			// If the procedure doesn't actually exist, add a warning and skip this block
 			if (!procedure.exists) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.warnings.call_procedure.nonexistent", procedure.getName())));
 				return;
 			}
