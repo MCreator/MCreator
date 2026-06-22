@@ -125,7 +125,7 @@ dependencies {
     implementation "de.javagl:obj:0.4.0"
     implementation "com.univocity:univocity-parsers:2.9.1"
     implementation "org.slf4j:slf4j-nop:2.0.18"
-    implementation ("org.gradle:gradle-tooling-api:9.5.1") {
+    implementation ("org.gradle:gradle-tooling-api:9.6.0") {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }
     implementation "net.java.balloontip:balloontip:1.2.4.1"
