@@ -272,7 +272,12 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;clazz,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/reflect/AccessibleObject.html" title="class or interface in java.lang.reflect" class="external-link">AccessibleObject</a>&gt;&nbsp;validIf,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/BiPredicate.html" title="class or interface in java.util.function" class="external-link">BiPredicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/reflect/AccessibleObject.html" title="class or interface in java.lang.reflect" class="external-link">AccessibleObject</a>, T&gt;&nbsp;condition)</span></div>
-<div class="block">Checks if values acquired from any valid fields or methods meet the specified condition.</div>
+<div class="block">Checks if values acquired from any valid fields or methods meet the specified condition.
+<p/>
+Additionally, the following conditions are applied to determine whether a field/method is valid and whether its value should be checked:
+- method/field is not static
+- method has no parameters
+- method type/field type is part of the data model or validIf passes</div>
 <dl class="notes">
 <dt>Type Parameters:</dt>
 <dd><span id="anyValueMatches(java.lang.Object,java.lang.Class,java.util.function.Predicate,java.util.function.BiPredicate)-type-param-T"><code>T</code> - The type of values to be checked.</span></dd>
