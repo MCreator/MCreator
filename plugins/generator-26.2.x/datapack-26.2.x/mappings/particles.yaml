@@ -301,3 +301,6 @@ TRIAL_OMEN:
 FIREFLY:
   - ParticleTypes.FIREFLY
   - "firefly"
+SULFUR_CUBE_GOO:
+  - ParticleTypes.SULFUR_CUBE_GOO
+  - "sulfur_cube_goo"

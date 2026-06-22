@@ -135,6 +135,7 @@ EntityGlowSquid: glow_squid
 EntityPiglin: piglin
 EntityPiglinBrute: piglin_brute
 EntityStrider: strider
+EntitySulfurCube: sulfur_cube
 EntityZoglin: zoglin
 EntityAxolotl: axolotl
 EntityGoat: goat
