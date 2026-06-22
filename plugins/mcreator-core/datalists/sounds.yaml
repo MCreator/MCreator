@@ -1900,7 +1900,6 @@
 - entity.baby_nautilus.swim
 - item.nautilus_saddle_underwater_equip
 - item.nautilus_saddle_equip
-
 - block.sulfur.break
 - block.sulfur.hit
 - block.sulfur.place
@@ -1912,11 +1911,23 @@
 - block.potent_sulfur.step
 - block.potent_sulfur.fall
 - block.potent_sulfur.noxious_gas
+- block.potent_sulfur.geyser_eruption
+- block.potent_sulfur.geyser_eruption_active
+- block.potent_sulfur.geyser_continuous_eruption
+- block.potent_sulfur.geyser_continuous_eruption_active
 - block.cinnabar.break
 - block.cinnabar.hit
 - block.cinnabar.place
 - block.cinnabar.step
 - block.cinnabar.fall
+- block.sulfur_spike.break
+- block.sulfur_spike.step
+- block.sulfur_spike.place
+- block.sulfur_spike.hit
+- block.sulfur_spike.fall
+- block.sulfur_spike.land
+- item.bucket.empty_sulfur_cube
+- item.bucket.fill_sulfur_cube
 - entity.sulfur_cube.jump
 - entity.sulfur_cube.squish
 - entity.sulfur_cube.hurt
@@ -1948,8 +1959,5 @@
 - entity.small_sulfur_cube.squish
 - entity.small_sulfur_cube.hurt
 - entity.small_sulfur_cube.death
-- block.potent_sulfur.geyser_eruption
-- block.potent_sulfur.geyser_eruption_active
-- block.potent_sulfur.geyser_continuous_eruption
-- block.potent_sulfur.geyser_continuous_eruption_active
 - music.overworld.sulfur_caves
+- music_disc.bounce

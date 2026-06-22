@@ -87,7 +87,7 @@ husbandry/tame_an_animal: minecraft:husbandry/tame_an_animal
 husbandry/wax_off: minecraft:husbandry/wax_off
 husbandry/wax_on: minecraft:husbandry/wax_on
 husbandry/whole_pack: minecraft:husbandry/whole_pack
-husbandry/uh_oh: husbandry/uh_oh
+husbandry/uh_oh: minecraft:husbandry/uh_oh
 nether/all_effects: minecraft:nether/all_effects
 nether/all_potions: minecraft:nether/all_potions
 nether/brew_potion: minecraft:nether/brew_potion

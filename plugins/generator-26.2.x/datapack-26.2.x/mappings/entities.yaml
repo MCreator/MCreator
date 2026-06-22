@@ -543,6 +543,10 @@ EntityStrider:
   - Strider
   - EntityType.STRIDER
   - strider
+EntitySulfurCube:
+  - SulfurCube
+  - EntityType.SULFUR_CUBE
+  - sulfur_cube
 EntityTadpole:
   - Tadpole
   - EntityType.TADPOLE
@@ -655,7 +659,3 @@ EntityFishHook:
   - FishingHook
   - EntityType.FISHING_BOBBER
   - fishing_bobber
-EntitySulfurCube:
-  - SulfurCube
-  - EntityType.SULFUR_CUBE
-  - sulfur_cube
