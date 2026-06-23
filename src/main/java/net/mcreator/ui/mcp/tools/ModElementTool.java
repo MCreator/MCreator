@@ -23,6 +23,7 @@ import com.google.gson.*;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.mcp.McpJson;
 import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
@@ -78,7 +79,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		if (input.actionType == Args.Action.READ) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element not found. Names usually SnakeCase"));
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Element not found. Names usually SnakeCase"));
 			}
 			JsonElement definition = safeGeneratableElementToJsonElement(mcreator, modElement.getGeneratableElement());
 			Map<String, Object> response = new HashMap<>();
@@ -88,27 +90,34 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		} else if (input.actionType == Args.Action.MODIFY) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element not found. Names usually SnakeCase"));
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Element not found. Names usually SnakeCase"));
 			}
 			String suggestedJSON = gson.toJson(input.elementJSONDefinition);
 			GeneratableElement original = modElement.getGeneratableElement();
 			try {
-				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
-						suggestedJSON);
-				String json = safeGeneratableElementToJSON(mcreator, element);
-				if (!json.equals(suggestedJSON)) {
-					Map<String, Object> response = new HashMap<>();
-					response.put("result", "Element modified, but JSON definition was changed during processing. "
-							+ "Verify modified JSON if any unintended changes or removals happened.");
-					response.put("actualJSONDefinition", JsonParser.parseString(json));
-					return CompletableFuture.completedFuture(ToolResult.object(response));
-				} else {
-					return CompletableFuture.completedFuture(ToolResult.text("Element modified"));
+				GEResult result = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement, suggestedJSON);
+				JsonElement jsonElement = safeGeneratableElementToJsonElement(mcreator, result.generatableElement());
+				Map<String, Object> response = new HashMap<>();
+				response.put("result", "Element modified");
+				if (!result.validationResults().isEmpty()) {
+					response.put("validationResults", result.validationResults());
 				}
+				if (!gson.toJson(jsonElement).equals(suggestedJSON)) {
+					response.put("warning", "JSON definition was changed during processing");
+					response.put("actualJSONDefinition", jsonElement);
+				}
+				return CompletableFuture.completedFuture(ToolResult.object(response));
 			} catch (Exception e) {
-				safeGeneratableElementToJSON(mcreator, original); // try to revert to original state
-				return CompletableFuture.completedFuture(
-						ToolResult.error("Failed to modify element: " + e.getMessage(), e));
+				try {
+					revertGeneratableElement(mcreator, original);
+					return CompletableFuture.completedFuture(ToolResult.error(
+							"Failed to modify element: " + e.getMessage() + ". Reverted to original definition.", e));
+				} catch (Exception e2) {
+					return CompletableFuture.completedFuture(ToolResult.error(
+							"Failed to modify element: " + e.getMessage() + ". Reverted to original definition. "
+									+ "Failed to revert to original definition: " + e2.getMessage(), e));
+				}
 			}
 		} else if (input.actionType == Args.Action.ADD) {
 			if (input.elementType == null || input.elementJSONDefinition == null) {
@@ -124,13 +133,12 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			mcreator.getWorkspace().addModElement(modElement);
 			try {
 				String suggestedJSON = gson.toJson(input.elementJSONDefinition);
-				GeneratableElement element = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement,
-						suggestedJSON);
-				String json = safeGeneratableElementToJSON(mcreator, element);
-				if (!json.equals(suggestedJSON)) {
+				GEResult result = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement, suggestedJSON);
+				JsonElement jsonElement = safeGeneratableElementToJsonElement(mcreator, result.generatableElement());
+				if (!gson.toJson(jsonElement).equals(suggestedJSON)) {
 					Map<String, Object> response = new HashMap<>();
 					response.put("result", "Element added, but JSON definition was changed during processing");
-					response.put("actualJSONDefinition", JsonParser.parseString(json));
+					response.put("actualJSONDefinition", jsonElement);
 					return CompletableFuture.completedFuture(ToolResult.object(response));
 				} else {
 					return CompletableFuture.completedFuture(ToolResult.text("Element added"));
@@ -143,7 +151,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		} else if (input.actionType == Args.Action.REMOVE) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element not found. Names usually SnakeCase"));
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Element not found. Names usually SnakeCase"));
 			}
 			mcreator.getWorkspace().removeModElement(modElement);
 			return CompletableFuture.completedFuture(ToolResult.text("Element removed"));
@@ -152,8 +161,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		}
 	}
 
-	private GeneratableElement safeJSONtoGeneratableElementAndStoreIt(MCreator mcreator, ModElement modElement,
-			String json) throws Exception {
+	private GEResult safeJSONtoGeneratableElementAndStoreIt(MCreator mcreator, ModElement modElement, String json)
+			throws Exception {
 		JsonObject root = new JsonObject();
 		root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
 		root.add("_type", gson.toJsonTree(modElement.getType().getRegistryName()));
@@ -164,7 +173,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 		mcreator.getModElementManager().storeModElement(element);
 
-		element = validateThroughUI(mcreator, element);
+		GEResult result = validateThroughUI(mcreator, element);
+		element = result.generatableElement();
 
 		mcreator.getGenerator().generateBase(true); // use variant that throws TemplateGeneratorException
 		mcreator.getGenerator().generateElement(element, true); // use variant that throws TemplateGeneratorException
@@ -175,11 +185,19 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 		reloadUI(mcreator, modElement);
 
-		return element;
+		return result;
 	}
 
-	private String safeGeneratableElementToJSON(MCreator mcreator, GeneratableElement element) {
-		return gson.toJson(safeGeneratableElementToJsonElement(mcreator, element));
+	private void revertGeneratableElement(MCreator mcreator, GeneratableElement element)
+			throws TemplateGeneratorException {
+		mcreator.getModElementManager().storeModElement(element);
+
+		mcreator.getGenerator().generateBase(true); // use variant that throws TemplateGeneratorException
+		mcreator.getGenerator().generateElement(element, true); // use variant that throws TemplateGeneratorException
+		mcreator.getModElementManager().storeModElementPicture(element);
+		element.getModElement().reinit(mcreator.getWorkspace());
+
+		mcreator.getWorkspace().markDirty();
 	}
 
 	private JsonElement safeGeneratableElementToJsonElement(MCreator mcreator, GeneratableElement element) {
@@ -188,8 +206,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		return jsonObject.get("definition");
 	}
 
-	private GeneratableElement validateThroughUI(MCreator mcreator, GeneratableElement generatableElement)
-			throws Exception {
+	private GEResult validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
 		ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
 				.getModElementGUI(mcreator, generatableElement.getModElement(), true);
 
@@ -214,7 +231,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
 
 		List<String> errors = new ArrayList<>();
-		for (ValidationResult result : validationResult.getGroupedValidationResults()) {
+		List<ValidationResult> validationResults = validationResult.getGroupedValidationResults();
+		for (ValidationResult result : validationResults) {
 			if (result.type() == ValidationResult.Type.ERROR) {
 				errors.add(result.message());
 			}
@@ -224,7 +242,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			throw new Exception("Validation failed: " + String.join(", ", errors));
 		}
 
-		return modElementGUI.getElementFromGUI();
+		return new GEResult(modElementGUI.getElementFromGUI(), validationResults);
 	}
 
 	private synchronized void reloadUI(MCreator mcreator, ModElement element) {
@@ -240,6 +258,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			}
 		}
 	}
+
+	record GEResult(GeneratableElement generatableElement, List<ValidationResult> validationResults) {}
 
 }
 
