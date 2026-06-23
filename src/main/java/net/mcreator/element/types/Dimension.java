@@ -56,8 +56,8 @@ import java.util.List;
 
 	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
 
-	public MItemBlock mainFillerBlock;
-	public MItemBlock fluidBlock;
+	@NonNullMappable("Blocks.STONE#0") public MItemBlock mainFillerBlock;
+	@NonNullMappable("Blocks.WATER") public MItemBlock fluidBlock;
 	@Numeric(init = 63, min = -1024, max = 1024, step = 1) public int seaLevel;
 	public boolean generateOreVeins;
 	public boolean generateAquifers;
