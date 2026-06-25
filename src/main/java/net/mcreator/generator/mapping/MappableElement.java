@@ -139,7 +139,7 @@ public abstract class MappableElement implements IWorkspaceDependent {
 			}
 			return retval;
 		} else if (mappingSource != null && !value.startsWith(NameMapper.EXTERNAL_PREFIX) && !value.startsWith("#")
-				&& !value.startsWith("TAG:") && !TestUtil.isTestingEnvironment()) {
+				&& !value.startsWith("TAG:") && !value.startsWith("POTION:") && !TestUtil.isTestingEnvironment()) {
 			Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mappingSource);
 			if (dataListEntryMap != null) {
 				if (!dataListEntryMap.containsKey(value)) {
