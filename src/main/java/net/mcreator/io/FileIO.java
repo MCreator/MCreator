@@ -40,8 +40,9 @@ public final class FileIO {
 	private static final Logger LOG = LogManager.getLogger("File System");
 
 	public static String readFileToString(File f) {
-		try {
-			return Files.readString(f.toPath(), StandardCharsets.UTF_8);
+		try (FileInputStream fis = new FileInputStream(f)) {
+			// Use IOUtils for lenient UTF-8 parsing for older workspace compatibility
+			return IOUtils.toString(fis, StandardCharsets.UTF_8);
 		} catch (Exception e) {
 			LOG.error("Error reading: {}", e.getMessage(), e);
 			return "";
