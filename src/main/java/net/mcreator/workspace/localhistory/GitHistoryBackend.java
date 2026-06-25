@@ -65,6 +65,9 @@ class GitHistoryBackend implements AutoCloseable {
 	GitHistoryBackend(HistoryManager historyManager) throws IOException {
 		File workspaceRoot = historyManager.getWorkspaceFolder();
 		File historyDatabaseDir = HistoryManager.getLocalHistoryRoot(workspaceRoot);
+		if (!historyDatabaseDir.isDirectory()) {
+			historyDatabaseDir.mkdirs();
+		}
 
 		boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").isFile();
 
