@@ -54,13 +54,12 @@ public class MCreatorNetWebAPI implements IWebAPI {
 	@Override public boolean initAPI() {
 		CookieHandler.setDefault(null);
 
-		String appData = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/repository");
-		if (appData.isEmpty()) {
-			LOG.warn("Failed to fetch repository data from server");
-			return false;
-		}
-
 		try {
+			String appData = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/repository");
+			if (appData.isEmpty()) {
+				LOG.warn("Failed to fetch repository data from server");
+				return false;
+			}
 			updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
 		} catch (Exception e) {
 			updateInfo = UpdateInfo.empty();
