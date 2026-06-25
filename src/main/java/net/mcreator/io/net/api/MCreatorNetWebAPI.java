@@ -38,10 +38,19 @@ import java.net.CookieHandler;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MCreatorNetWebAPI implements IWebAPI {
 
 	private static final Logger LOG = LogManager.getLogger("Website API");
+
+	public static final ExecutorService NETWORKING_EXECUTOR = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable);
+		thread.setName("WebAPI-Executor");
+		thread.setUncaughtExceptionHandler((_, e) -> LOG.error(e));
+		return thread;
+	});
 
 	private UpdateInfo updateInfo;
 
@@ -66,11 +75,11 @@ public class MCreatorNetWebAPI implements IWebAPI {
 			LOG.warn("Failed to parse update info", e);
 		}
 
-		new Thread(() -> {
+		NETWORKING_EXECUTOR.submit(() -> {
 			initAPIPrivate();
 			newsFutures.forEach(future -> future.complete(news));
 			motwFutures.forEach(future -> future.complete(motw));
-		}, "WebAPI-Loader").start();
+		});
 
 		return true;
 	}
@@ -144,10 +153,11 @@ public class MCreatorNetWebAPI implements IWebAPI {
 	}
 
 	@Override public void getWebsiteNews(CompletableFuture<String[]> data) {
-		if (news != null)
-			data.complete(news);
-		else
+		if (news != null) {
+			NETWORKING_EXECUTOR.submit(() -> data.complete(news));
+		} else {
 			newsFutures.add(data);
+		}
 	}
 
 	/**
@@ -163,10 +173,11 @@ public class MCreatorNetWebAPI implements IWebAPI {
 	 * </ul>
 	 */
 	@Override public void getModOfTheWeekData(CompletableFuture<String[]> data) {
-		if (motw != null)
-			data.complete(motw);
-		else
+		if (motw != null) {
+			NETWORKING_EXECUTOR.submit(() -> data.complete(motw));
+		} else {
 			motwFutures.add(data);
+		}
 	}
 
 }
