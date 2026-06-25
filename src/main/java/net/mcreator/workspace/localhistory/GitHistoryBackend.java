@@ -277,7 +277,7 @@ class GitHistoryBackend implements AutoCloseable {
 		// stop executor
 		executor.shutdown();
 		try {
-			if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+			if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
 				LOG.warn("Failed to stop Git task executor");
 				executor.shutdownNow();
 			}
