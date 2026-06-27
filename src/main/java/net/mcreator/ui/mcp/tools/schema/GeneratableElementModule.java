@@ -107,6 +107,8 @@ public class GeneratableElementModule implements Module {
 			return PropertyDataWithValueSchemaHelper.createDefinition(context);
 		} else if (erasedType == StateMap.class) {
 			return StateMapSchemaHelper.createDefinition(context);
+		} else if (erasedType == Color.class) {
+			return ColorSchemaHelper.createDefinition(context);
 		}
 		return null;
 	}
