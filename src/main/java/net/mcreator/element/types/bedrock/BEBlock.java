@@ -62,7 +62,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@Numeric(init = 0, min = 0, max = 15, step = 1) public int lightEmission;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammableDestroyChance;
-	public MapColor colorOnMap;
+	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 
 	public boolean generateFeature;
 	@LimitedOptions({ "uniform", "triangle" }) public String generationShape;

@@ -97,7 +97,7 @@ import java.util.stream.Collectors;
 	}
 
 	public String getRegistryNameForModElement(String modElement) {
-		ModElement element = generator.getWorkspace().getModElementByName(modElement);
+		ModElement element = generator.getWorkspace().getModElementByName(getElementPlainName(modElement));
 		if (element != null)
 			return element.getRegistryName();
 
@@ -108,7 +108,7 @@ import java.util.stream.Collectors;
 	}
 
 	public String getResourceLocationForModElement(String modElement) {
-		ModElement element = generator.getWorkspace().getModElementByName(modElement);
+		ModElement element = generator.getWorkspace().getModElementByName(getElementPlainName(modElement));
 		if (element != null) {
 			return getResourceLocationForModElement(element);
 		}
