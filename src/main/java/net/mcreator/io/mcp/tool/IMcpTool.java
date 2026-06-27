@@ -39,5 +39,5 @@ public interface IMcpTool {
 
 	McpSchema.ToolAnnotations getAnnotations();
 
-	CompletableFuture<McpSchema.CallToolResponse> invoke(JsonObject arguments);
+	CompletableFuture<ToolInvocation> invoke(JsonObject arguments);
 }

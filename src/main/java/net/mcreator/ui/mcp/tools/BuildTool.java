@@ -19,19 +19,20 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.io.mcp.tool.ToolInvocation;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceBuildStartedEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.gradle.GradleConsole;
-import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.mcp.MCreatorAsyncMcpTool;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class BuildTool extends MCreatorMcpTool<Void> {
+public class BuildTool extends MCreatorAsyncMcpTool<Void> {
 
 	public BuildTool(Supplier<MCreator> currentMCreator) {
 		super(currentMCreator, Void.class);
@@ -42,16 +43,17 @@ public class BuildTool extends MCreatorMcpTool<Void> {
 	}
 
 	@Override public String getDescription() {
-		return "Builds the project and gets the resulting console output";
+		return "Starts a Gradle build. Returns immediately; build output is sent as a notification when the build finishes. "
+				+ "Use read_console to inspect Gradle output while a build is running.";
 	}
 
-	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Void input) {
+	@Override protected CompletableFuture<ToolInvocation> invokeAsync(MCreator mcreator, Void input) {
 		if (mcreator.getGradleConsole().getStatus() == GradleConsole.RUNNING) {
-			return CompletableFuture.completedFuture(
-					ToolResult.error("Gradle is already running some task. Try later."));
+			return CompletableFuture.completedFuture(ToolInvocation.immediate(
+					ToolResult.error("Gradle is already running some task. Try later.")));
 		}
 
-		CompletableFuture<ToolResult> future = new CompletableFuture<>();
+		CompletableFuture<ToolResult> buildResult = new CompletableFuture<>();
 		mcreator.getGenerator().generateBase();
 		MCREvent.event(new WorkspaceBuildStartedEvent(mcreator));
 
@@ -59,10 +61,11 @@ public class BuildTool extends MCreatorMcpTool<Void> {
 			Map<String, Object> resultMap = new HashMap<>();
 			resultMap.put("result", result);
 			resultMap.put("gradleOutput", mcreator.getGradleConsole().getConsoleText());
-			future.complete(ToolResult.object(resultMap));
+			buildResult.complete(ToolResult.object(resultMap));
 		});
-		return future;
+
+		return CompletableFuture.completedFuture(
+				ToolInvocation.deferred(ToolResult.text("Build started."), buildResult));
 	}
 
 }
-

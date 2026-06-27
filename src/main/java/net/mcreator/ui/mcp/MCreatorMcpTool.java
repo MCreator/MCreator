@@ -20,6 +20,7 @@
 package net.mcreator.ui.mcp;
 
 import net.mcreator.io.mcp.tool.McpTool;
+import net.mcreator.io.mcp.tool.ToolInvocation;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 
@@ -39,11 +40,11 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 		this.currentMCreator = currentMCreator;
 	}
 
-	@Override protected CompletableFuture<ToolResult> call(T input) {
+	@Override protected CompletableFuture<ToolInvocation> createInvocation(T input) {
 		MCreator mcreator = currentMCreator.get();
 		if (mcreator == null) {
 			return CompletableFuture.completedFuture(
-					ToolResult.error("No active MCreator instance. Open a workspace first."));
+					ToolInvocation.immediate(ToolResult.error("No active MCreator instance. Open a workspace first.")));
 		}
 
 		if (!REPORTED_SESSIONS_MAP.contains(mcreator.getWorkspace().hashCode())) {
@@ -52,11 +53,15 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 		}
 
 		try {
-			return call(mcreator, input);
+			return invoke(mcreator, input);
 		} catch (Exception e) {
-			return CompletableFuture.completedFuture(
-					ToolResult.error("An error occurred while executing the tool: " + e.getMessage(), e));
+			return CompletableFuture.completedFuture(ToolInvocation.immediate(
+					ToolResult.error("An error occurred while executing the tool: " + e.getMessage(), e)));
 		}
+	}
+
+	protected CompletableFuture<ToolInvocation> invoke(MCreator mcreator, T input) {
+		return call(mcreator, input).thenApply(ToolInvocation::immediate);
 	}
 
 	protected abstract CompletableFuture<ToolResult> call(MCreator mcreator, T input);
