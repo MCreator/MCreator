@@ -75,21 +75,23 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	@Numeric(init = 3, min = -10000, max = 10000, step = 1) public int attackDamage;
 	@Numeric(init = 0.3, min = 0, max = 50, step = 0.1) public double speedValue;
 	public boolean canFly;
-	@Numeric(init = 0.3, min = 0, max = 50, step = 0.1) public double flyingSpeedValue;
+	@NonNullIf("canFly") @Numeric(init = 0.3, min = 0, max = 50, step = 0.1) public double flyingSpeedValue;
 	@Numeric(init = 64, min = 0, max = 10000, step = 1) public int followRangeValue;
 	public boolean isImmuneToFire;
 	public boolean isPushable;
 	public boolean isPushableByPiston;
 
 	public boolean spawnNaturally;
-	public MobSpawnType populationControl;
-	@Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
-	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minHerdSize;
-	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxHerdSize;
+	@NonNullIf("spawnNaturally") public MobSpawnType populationControl;
+	@NonNullIf("spawnNaturally") @Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
+	@NonNullIf("spawnNaturally") @Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true)
+	public int minHerdSize;
+	@NonNullIf("spawnNaturally") @Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true)
+	public int maxHerdSize;
 
 	public boolean hasSpawnEgg;
-	public Color spawnEggBaseColor;
-	public Color spawnEggDotColor;
+	@NonNullIf("hasSpawnEgg") public Color spawnEggBaseColor;
+	@NonNullIf("hasSpawnEgg") public Color spawnEggDotColor;
 
 	@BlocklyXML(name = "aitasks", defaultXML = XML_BASE) public String aixml;
 

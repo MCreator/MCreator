@@ -21,10 +21,7 @@ package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.LimitedOptions;
-import net.mcreator.element.types.interfaces.NonNullMappable;
-import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -69,11 +66,13 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public boolean generateFeature;
 	@LimitedOptions({ "uniform", "triangle" }) public String generationShape;
-	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
-	@Numeric(init = 16, min = 1, max = 64, step = 1) public int oreCount;
-	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
-	@Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
-	@ModElementReference public List<MItemBlock> blocksToReplace;
+	@NonNullIf("generateFeature") @Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@NonNullIf("generateFeature") @Numeric(init = 16, min = 1, max = 64, step = 1) public int oreCount;
+	@NonNullIf("generateFeature") @Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true)
+	public int minGenerateHeight;
+	@NonNullIf("generateFeature") @Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true)
+	public int maxGenerateHeight;
+	@NonNullIf("generateFeature") @ModElementReference public List<MItemBlock> blocksToReplace;
 
 	public int rotationMode;
 	@LimitedOptions({ "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
