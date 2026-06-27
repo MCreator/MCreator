@@ -113,7 +113,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 			world.addParticle(${data.portalParticles}, px, py, pz, vx, vy, vz);
 		}
 
-		<#if data.portalSound.toString()?has_content>
+		<#if data.portalSound?? && data.portalSound.toString()?has_content>
 		if (random.nextInt(110) == 0)
 			world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
 					BuiltInRegistries.SOUND_EVENT.get(ResourceLocation.parse("${data.portalSound}")), SoundSource.BLOCKS, 0.5f,
