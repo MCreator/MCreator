@@ -31,6 +31,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.mcp.tools.utils.JsonDefinitionMergePatch;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -54,11 +55,14 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		public Action actionType;
 		public String elementName;
 		@Nullable public String elementType;
-		@SchemaDescription("Valid mod element JSON definition. Use get_mod_element_schema or read existing elements for format hints.")
+		@SchemaDescription("""
+				Mod element JSON definition. Use get_mod_element_schema or read existing elements for format hints.\
+				Pass full JSON definition for ADD and REPLACE. Partial definition for PATCH (merged into current definition;\
+				null values in the patch remove keys; objects are merged recursively; arrays/scalars are replaced).""")
 		@Nullable public Map<String, Object> elementJSONDefinition;
 
 		public enum Action {
-			READ, ADD, MODIFY, REMOVE
+			READ, ADD, REPLACE, PATCH, REMOVE
 		}
 	}
 
@@ -72,9 +76,11 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				A tool to read mod element (JSON definition and mod element metadata), modify, or add mod elements to the workspace.\
+				A tool to read mod element (JSON definition and mod element metadata), replace, patch, or add mod elements to the workspace.\
 				Type and JSON used only for adding. Names of mod elements are always CamelCaseNames\
-				Modify action requires full element JSON definition, not just changes.""";
+				REPLACE action edits element by swapping whole JSON definition.\
+				REPLACE and ADD action require full element JSON definition, not just changes.\
+				Patch action merges elementJSONDefinition into the current definition (partial JSON, null removes keys).""";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementTool.Args input) {
@@ -89,7 +95,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			response.put("_metadata", modElement);
 			response.put("elementJSONDefinition", definition);
 			return CompletableFuture.completedFuture(ToolResult.object(response));
-		} else if (input.actionType == Args.Action.MODIFY) {
+		} else if (input.actionType == Args.Action.REPLACE) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(
@@ -104,16 +110,54 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				JsonElement jsonElement = safeGeneratableElementToJsonElement(mcreator, result.generatableElement());
 
 				Map<String, Object> response = new HashMap<>();
-				response.put("result", "Element modified");
+				response.put("result", "Element replaced");
 				return getResultCompletableFuture(suggestedJSON, jsonValidationNotes, result, jsonElement, response);
 			} catch (Exception e) {
 				try {
 					revertGeneratableElement(mcreator, original);
 					return CompletableFuture.completedFuture(ToolResult.error(
-							"Failed to modify element: " + e.getMessage() + ". Reverted to original definition.", e));
+							"Failed to replace element: " + e.getMessage() + ". Reverted to original definition.", e));
 				} catch (Exception e2) {
 					return CompletableFuture.completedFuture(ToolResult.error(
-							"Failed to modify element: " + e.getMessage() + ". Reverted to original definition. "
+							"Failed to replace element: " + e.getMessage() + ". Reverted to original definition. "
+									+ "Failed to revert to original definition: " + e2.getMessage(), e));
+				}
+			}
+		} else if (input.actionType == Args.Action.PATCH) {
+			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
+			if (modElement == null) {
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Element not found. Names usually SnakeCase"));
+			}
+			if (input.elementJSONDefinition == null || input.elementJSONDefinition.isEmpty()) {
+				return CompletableFuture.completedFuture(
+						ToolResult.error("Partial JSON definition must be provided for PATCH action"));
+			}
+			GeneratableElement original = modElement.getGeneratableElement();
+			try {
+				JsonElement currentDefinition = safeGeneratableElementToJsonElement(mcreator,
+						modElement.getGeneratableElement());
+				JsonElement patchedDefinition = JsonDefinitionMergePatch.apply(currentDefinition,
+						input.elementJSONDefinition);
+				String suggestedJSON = gson.toJson(patchedDefinition);
+				List<String> jsonValidationNotes = new ArrayList<>();
+				GEResult result = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement, suggestedJSON,
+						jsonValidationNotes::add);
+				JsonElement jsonElement = safeGeneratableElementToJsonElement(mcreator, result.generatableElement());
+
+				Map<String, Object> response = new HashMap<>();
+				response.put("result", "Element patched");
+				return getResultCompletableFuture(suggestedJSON, jsonValidationNotes, result, jsonElement, response);
+			} catch (JsonDefinitionMergePatch.MergePatchException e) {
+				return CompletableFuture.completedFuture(ToolResult.error("Failed to apply patch: " + e.getMessage()));
+			} catch (Exception e) {
+				try {
+					revertGeneratableElement(mcreator, original);
+					return CompletableFuture.completedFuture(ToolResult.error(
+							"Failed to patch element: " + e.getMessage() + ". Reverted to original definition.", e));
+				} catch (Exception e2) {
+					return CompletableFuture.completedFuture(ToolResult.error(
+							"Failed to patch element: " + e.getMessage() + ". Reverted to original definition. "
 									+ "Failed to revert to original definition: " + e2.getMessage(), e));
 				}
 			}
