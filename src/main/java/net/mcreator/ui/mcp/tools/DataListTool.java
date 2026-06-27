@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
@@ -26,12 +27,10 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyElementUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.mcp.tools.utils.CollectionFilter;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -40,6 +39,8 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 	public static class Args {
 		public QueryType type;
 		@Nullable public String listName;
+		@SchemaDescription("Optional Java regex filter to limit returned list entries size.") @Nullable
+		public String filter;
 
 		public enum QueryType {
 			GET_LIST_TYPES, GET_LIST_ENTRIES
@@ -78,13 +79,13 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 				String[] retval = BlocklyElementUtil.getStringArrayForEntrySelector(mcreator.getWorkspace(),
 						input.listName, null);
 				if (retval != null && retval.length > 0) {
-					yield CompletableFuture.completedFuture(ToolResult.collection(retval));
+					yield completed(CollectionFilter.applyStrings(List.of(retval), input.filter));
 				}
 
 				Collection<String> entries = ElementUtil.getAllEntriesFor(mcreator.getWorkspace(), input.listName)
 						.stream().map(DataListEntry::getName).sorted(Comparator.naturalOrder()).toList();
 				if (!entries.isEmpty()) {
-					yield CompletableFuture.completedFuture(ToolResult.collection(entries));
+					yield completed(CollectionFilter.applyStrings(entries, input.filter));
 				}
 
 				yield CompletableFuture.completedFuture(

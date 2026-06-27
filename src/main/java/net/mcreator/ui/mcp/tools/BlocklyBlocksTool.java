@@ -23,10 +23,12 @@ import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.DynamicBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.mcp.tools.utils.CollectionFilter;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -39,6 +41,8 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 		public QueryType type;
 		@Nullable public String blocklyEditorType;
 		@Nullable public String blockRegistryName;
+		@SchemaDescription("Optional Java regex filter to limit returned list size.")
+		@Nullable public String filter;
 
 		public enum QueryType {
 			LIST_BLOCKS, GET_BLOCK
@@ -68,9 +72,9 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 				if (editorType == null) {
 					yield CompletableFuture.completedFuture(ToolResult.error("Invalid or missing blocklyEditorType"));
 				}
-				yield CompletableFuture.completedFuture(ToolResult.collection(
+				yield completed(CollectionFilter.applyStrings(
 						getSupportedBlockRegistryNames(mcreator, editorType).stream().sorted(Comparator.naturalOrder())
-								.toList()));
+								.toList(), input.filter));
 			}
 			case GET_BLOCK -> {
 				if (input.blockRegistryName == null || input.blockRegistryName.isBlank()) {
