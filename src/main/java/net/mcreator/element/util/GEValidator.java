@@ -132,6 +132,16 @@ public class GEValidator {
 		Field javaField = field.field();
 		try {
 			if (fieldValue == null) {
+				if (field.nullable() && field.notNullable()) {
+					throw new RuntimeException(
+							"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
+									+ " is annotated with both @Nullable and @Nonnull.");
+				}
+
+				if (field.nullable()) {
+					return; // field is nullable, no further validation needed
+				}
+
 				if (field.notNullable()) {
 					throw new ValidationException(
 							"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
@@ -155,7 +165,17 @@ public class GEValidator {
 					}
 				}
 
-				// no further validations can be done since this field is null
+				if (field.limitedOptions() != null && field.field().getType() == String.class) {
+					LimitedOptionsCache limited = field.limitedOptions();
+					String firstOption = limited.allowed().getFirst();
+					LOG.debug(
+							"Field {} of mod element {} is null but needs to have a value. Setting it to the first option '{}'.",
+							javaField.getName(), element.getModElement().getName(), firstOption);
+					javaField.set(fieldHolder, firstOption);
+					TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+				}
+
+				// no further validations can be done since this field is/was null
 				return;
 			}
 
@@ -242,13 +262,14 @@ public class GEValidator {
 		}
 	}
 
-	private record CachedField(Field field, boolean notNullable, @Nullable Numeric numeric,
+	private record CachedField(Field field, boolean notNullable, boolean nullable, @Nullable Numeric numeric,
 	                           @Nullable NonNullMappable nonNullMappable,
 	                           @Nullable LimitedOptionsCache limitedOptions) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
 			this(field, field.isAnnotationPresent(Nonnull.class) || field.isAnnotationPresent(BlocklyXML.class),
-					field.getAnnotation(Numeric.class), field.getAnnotation(NonNullMappable.class),
+					field.isAnnotationPresent(Nullable.class), field.getAnnotation(Numeric.class),
+					field.getAnnotation(NonNullMappable.class),
 					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null);
 		}
 	}
