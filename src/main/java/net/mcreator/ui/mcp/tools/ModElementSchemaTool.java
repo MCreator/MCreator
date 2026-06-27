@@ -31,10 +31,10 @@ import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.mcp.tools.schema.GeneratableElementModule;
 import tools.jackson.databind.node.ObjectNode;
 
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.Args> {
@@ -46,7 +46,7 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 	private final SchemaGenerator generator;
 	private final Gson gson = new Gson();
 
-	private static final Map<ModElementType<?>, JsonObject> SCHEMA_CACHE = new HashMap<>();
+	private static final Map<ModElementType<?>, JsonObject> SCHEMA_CACHE = new ConcurrentHashMap<>();
 
 	public ModElementSchemaTool(Supplier<MCreator> currentMCreator) {
 		super(currentMCreator, ModElementSchemaTool.Args.class);
@@ -78,7 +78,7 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 		return CompletableFuture.completedFuture(ToolResult.object(generateSchema(type)));
 	}
 
-	public JsonObject generateSchema(ModElementType<?> type) {
+	public synchronized JsonObject generateSchema(ModElementType<?> type) {
 		return SCHEMA_CACHE.computeIfAbsent(type, t -> {
 			Class<? extends GeneratableElement> elementClass = t.getModElementStorageClass();
 			ObjectNode jsonNode = generator.generateSchema(elementClass);
