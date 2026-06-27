@@ -52,10 +52,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
@@ -211,7 +209,7 @@ public class GeneratableElementModule implements Module {
 		}
 
 		if (this.getAnnotationFromFieldOrGetter(fieldScope, LimitedOptions.class) != null) {
-			return true; // LimitedOptions fields are required
+			return false; // LimitedOptions fields are optional since GEValidator will set default value if missing
 		} else if (this.getAnnotationFromFieldOrGetter(fieldScope, Numeric.class) != null) {
 			return true; // Numeric fields are required
 		}
@@ -313,10 +311,9 @@ public class GeneratableElementModule implements Module {
 					if (member.getRawMember() instanceof Field rawField) {
 						rawField.setAccessible(true);
 						Object fieldValue = rawField.get(instance);
-						if (fieldValue == null) {
-							return null;
+						if (fieldValue != null) {
+							return DEFAULT_VALUE_GSON.fromJson(DEFAULT_VALUE_GSON.toJson(fieldValue), Object.class);
 						}
-						return DEFAULT_VALUE_GSON.fromJson(DEFAULT_VALUE_GSON.toJson(fieldValue), Object.class);
 					}
 				}
 			} catch (Exception _) {
