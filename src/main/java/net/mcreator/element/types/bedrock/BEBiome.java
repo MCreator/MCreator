@@ -24,6 +24,7 @@ import net.mcreator.element.parts.BEBiomeTagEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
@@ -36,9 +37,9 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class BEBiome extends GeneratableElement {
 
-	public MItemBlock topMaterial;
-	public MItemBlock midMaterial;
-	public MItemBlock foundationMaterial;
+	@NonNullMappable("Blocks.GRASS") public MItemBlock topMaterial;
+	@NonNullMappable("Blocks.DIRT#0") public MItemBlock midMaterial;
+	@NonNullMappable("Blocks.STONE#0") public MItemBlock foundationMaterial;
 	@Nullable public MItemBlock seaFloorMaterial;
 	@Nullable public MItemBlock seaMaterial;
 
@@ -46,12 +47,12 @@ import java.util.List;
 
 	@Numeric(init = 7, min = 0, max = 256, step = 1) public int seaFloorDepth;
 
-	public Color airColor;
-	public Color fogColor;
-	public Color grassColor;
-	public Color foliageColor;
-	public Color waterColor;
-	public Color waterFogColor;
+	@Nullable public Color airColor;
+	@Nullable public Color fogColor;
+	@Nullable public Color grassColor;
+	@Nullable public Color foliageColor;
+	@Nullable public Color waterColor;
+	@Nullable public Color waterFogColor;
 
 	@Numeric(init = 0.5, min = 0, max = 2.0, step = 0.1) public double temperature;
 	@Numeric(init = 0.5, min = 0, max = 1.0, step = 0.1) public double downfall;

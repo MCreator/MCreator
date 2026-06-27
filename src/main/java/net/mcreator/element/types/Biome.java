@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
@@ -39,9 +40,9 @@ import java.util.List;
 
 	public String name;
 
-	public MItemBlock groundBlock;
-	public MItemBlock undergroundBlock;
-	public MItemBlock underwaterBlock;
+	@NonNullMappable("Blocks.GRASS") public MItemBlock groundBlock;
+	@NonNullMappable("Blocks.DIRT#0") public MItemBlock undergroundBlock;
+	@Nullable public MItemBlock underwaterBlock;
 
 	@Nullable public Color airColor;
 	@Nullable public Color fogColor;

@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -253,6 +254,12 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		page2group.addValidationElement(midMaterial);
 		page2group.addValidationElement(foundationMaterial);
 		page2group.addValidationElement(biomeReplacements);
+
+		if (!isEditingMode()) {
+			topMaterial.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRASS"));
+			midMaterial.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.DIRT#0"));
+			foundationMaterial.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"));
+		}
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
 		addPage(L10N.t("elementgui.biome.biome_generation"), PanelUtils.totalCenterInPanel(materialsPanel)).validate(
