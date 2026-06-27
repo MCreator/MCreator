@@ -186,9 +186,10 @@ public class GEValidator {
 						boolean isNonNull = TemplateExpressionParser.parseCondition(
 								element.getModElement().getWorkspace().getGenerator(), condition, fieldHolder);
 						if (isNonNull) {
-							LOG.debug(
-									"Field {} of mod element {} is null but should not be according to @NonNullIf condition '{}'.",
-									javaField.getName(), element.getModElement().getName(), condition);
+							validationLog.accept(
+									"Field %s of mod element %s is null but should not be due to @NonNullIf condition '%s'.".formatted(
+											javaField.getName(), element.getModElement().getName(), condition));
+							// Fail this one even for converters tests as converters should make sure this can't happen
 							TestUtil.failIfTestingEnvironment();
 						}
 					}
