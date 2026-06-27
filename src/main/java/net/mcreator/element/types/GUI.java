@@ -39,6 +39,7 @@ import java.awt.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class GUI extends GeneratableElement implements IGUI {
@@ -74,6 +75,7 @@ import java.util.List;
 		this.H = WYSIWYG.H;
 		this.renderBgLayer = true;
 		this.gridSettings = new GridSettings();
+		this.components = new ArrayList<>();
 	}
 
 	public int getMaxSlotID() {

@@ -239,6 +239,9 @@ import java.util.stream.Collectors;
 		this.animations = new ArrayList<>();
 
 		this.vibrationalEvents = new ArrayList<>();
+
+		this.breedTriggerItems = new ArrayList<>();
+		this.restrictionBiomes = new ArrayList<>();
 	}
 
 	@Override @Nullable public Model getEntityModel() {

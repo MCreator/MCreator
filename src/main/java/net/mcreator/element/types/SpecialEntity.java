@@ -70,6 +70,7 @@ import java.util.List;
 		super(element);
 
 		this.rarity = "COMMON";
+		this.creativeTabs = new ArrayList<>();
 	}
 
 	@Override public void finalizeModElementGeneration() {

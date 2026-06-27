@@ -82,8 +82,8 @@ import java.util.stream.Collectors;
 
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
-	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
-	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder itemTexture;
+	@TextureReference(TextureType.BLOCK) @Nullable public TextureHolder particleTexture;
 
 	@Nullable
 	@LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
@@ -253,6 +253,7 @@ import java.util.stream.Collectors;
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
+		this.blocksToReplace = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
 		this.speedFactor = 1.0;
@@ -269,6 +270,7 @@ import java.util.stream.Collectors;
 		this.energyMaxReceive = 200;
 		this.energyMaxExtract = 200;
 		this.fluidCapacity = 8000;
+		this.fluidRestrictions = new ArrayList<>();
 
 		this.vibrationalEvents = new ArrayList<>();
 
@@ -670,6 +672,10 @@ import java.util.stream.Collectors;
 		public StateMap stateMap;
 
 		@Nullable transient Workspace workspace;
+
+		public StateEntry() {
+			this.boundingBoxes = new ArrayList<>();
+		}
 
 		@Override public void setWorkspace(@Nullable Workspace workspace) {
 			this.workspace = workspace;

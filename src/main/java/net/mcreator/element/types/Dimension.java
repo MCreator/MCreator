@@ -144,6 +144,7 @@ import java.util.List;
 		this.skyType = "NONE";
 		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
+		this.biomesInDimension = new ArrayList<>();
 		this.biomesInDimensionCaves = new ArrayList<>();
 	}
 
