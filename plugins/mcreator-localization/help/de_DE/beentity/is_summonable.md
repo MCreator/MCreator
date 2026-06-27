@@ -1,0 +1,1 @@
+Falls aktiviert, kann deine Entität mit dem `/summon`-Befehl arbeiten.

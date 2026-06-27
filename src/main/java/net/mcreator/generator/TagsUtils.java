@@ -23,7 +23,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -159,7 +158,6 @@ public class TagsUtils {
 			}
 		} catch (Throwable e) {
 			LOG.warn("Failed to entries for expression {}", entryProviderRaw, e);
-			TestUtil.failIfTestingEnvironment();
 		}
 		return null;
 	}

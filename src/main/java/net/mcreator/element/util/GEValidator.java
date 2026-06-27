@@ -27,8 +27,6 @@ import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,6 +36,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -46,8 +45,6 @@ import java.util.stream.Collectors;
  * correct invalid values when possible based on attached annotations.
  */
 public class GEValidator {
-
-	private static final Logger LOG = LogManager.getLogger(GEValidator.class);
 
 	/**
 	 * Validates the given generatable element and recursively checks all nested
@@ -59,11 +56,17 @@ public class GEValidator {
 	 * - {@link LimitedOptions}: value must match one of the allowed options (tries to correct)
 	 * <p/>
 	 *
-	 * @param element the element to validate
-	 * @throws ValidationException if validation fails or reflective access fails
+	 * @param element       the element to validate
+	 * @param validationLog optional consumer to log validation messages; if {@code null}, no logging is performed
+	 * @throws ValidationException if validation fails in non-recoverable way or reflective access fails
 	 */
-	public static void validateAndTryToCorrect(GeneratableElement element) throws ValidationException {
-		performValidation(element, element);
+	public static void validateAndTryToCorrect(GeneratableElement element, @Nullable Consumer<String> validationLog)
+			throws ValidationException {
+		if (validationLog == null) {
+			validationLog = _ -> {};
+		}
+
+		performValidation(element, element, validationLog);
 	}
 
 	private static final Map<Class<?>, List<CachedField>> FIELD_CACHE = new ConcurrentHashMap<>();
@@ -77,8 +80,8 @@ public class GEValidator {
 		});
 	}
 
-	private static void performValidation(GeneratableElement element, @Nullable Object input)
-			throws ValidationException {
+	private static void performValidation(GeneratableElement element, @Nullable Object input,
+			Consumer<String> validationLog) throws ValidationException {
 		if (input == null) {
 			return; // nothing to validate
 		}
@@ -89,61 +92,71 @@ public class GEValidator {
 			try {
 				fieldValue = field.get(input);
 			} catch (IllegalAccessException e) {
-				throw new ValidationException(
-						"Failed to access field " + field.getName() + " of mod element " + element.getModElement()
-								.getName(), e);
+				throw new ValidationException("Failed to access field %s of mod element %s".formatted(field.getName(),
+						element.getModElement().getName()), e);
 			}
 
-			validateFieldAndTryToCorrect(element, cachedField, fieldValue, input);
+			validateFieldAndTryToCorrect(element, cachedField, fieldValue, input, validationLog);
 
 			// Further unpack and validate if applicable
-			unpackAndValidate(element, fieldValue);
+			unpackAndValidate(element, fieldValue, validationLog);
 		}
 	}
 
-	private static void unpackAndValidate(GeneratableElement element, @Nullable Object value)
-			throws ValidationException {
+	private static void unpackAndValidate(GeneratableElement element, @Nullable Object value,
+			Consumer<String> validationLog) throws ValidationException {
 		if (value == null) {
 			return;
 		}
 
 		if (value instanceof Iterable<?> list) { // list of values
 			for (Object item : list) {
-				unpackAndValidate(element, item);
+				unpackAndValidate(element, item, validationLog);
 			}
 		} else if (value instanceof Map<?, ?> map) { // map with values
 			for (Map.Entry<?, ?> entry : map.entrySet()) {
-				unpackAndValidate(element, entry.getKey());
-				unpackAndValidate(element, entry.getValue());
+				unpackAndValidate(element, entry.getKey(), validationLog);
+				unpackAndValidate(element, entry.getValue(), validationLog);
 			}
 		} else if (value.getClass().isArray()) { // array of values
 			int length = Array.getLength(value);
 			for (int i = 0; i < length; i++) {
-				unpackAndValidate(element, Array.get(value, i));
+				unpackAndValidate(element, Array.get(value, i), validationLog);
 			}
 		} else if (GeneratableElement.isDataModelObject(value.getClass())) {
 			// Data model object. Pass it back to the reflection scanner.
-			performValidation(element, value);
+			performValidation(element, value, validationLog);
 		}
 	}
 
 	private static void validateFieldAndTryToCorrect(GeneratableElement element, CachedField field,
-			@Nullable Object fieldValue, Object fieldHolder) throws ValidationException {
+			@Nullable Object fieldValue, Object fieldHolder, Consumer<String> validationLog)
+			throws ValidationException {
 		Field javaField = field.field();
 		try {
 			if (fieldValue == null) {
+				if (field.nullable() && field.notNullable()) {
+					throw new ValidationException(
+							"Field %s of mod element %s is annotated with both @Nullable and @Nonnull.".formatted(
+									javaField.getName(), element.getModElement().getName()));
+				}
+
+				if (field.nullable()) {
+					return; // field is nullable, no further validation needed
+				}
+
 				if (field.notNullable()) {
 					throw new ValidationException(
-							"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
-									+ " is null, but should not be.");
+							"Field %s of mod element %s is null, but should not be.".formatted(javaField.getName(),
+									element.getModElement().getName()));
 				}
 
 				if (field.nonNullMappable() != null) {
 					NonNullMappable annotation = field.nonNullMappable();
 					if (MappableElement.class.isAssignableFrom(javaField.getType())) {
-						LOG.debug(
-								"Field {} of mod element {} is null but needs to have a value. Setting it to default value '{}'.",
-								javaField.getName(), element.getModElement().getName(), annotation.value());
+						validationLog.accept(
+								"Field %s of mod element %s is null but needs to have a value. Setting it to default value '%s'.".formatted(
+										javaField.getName(), element.getModElement().getName(), annotation.value()));
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 
 						// Construct field object instance and set its value
@@ -155,7 +168,17 @@ public class GEValidator {
 					}
 				}
 
-				// no further validations can be done since this field is null
+				if (field.limitedOptions() != null && field.field().getType() == String.class) {
+					LimitedOptionsCache limited = field.limitedOptions();
+					String firstOption = limited.allowed().getFirst();
+					validationLog.accept(
+							"Field %s of mod element %s is null but needs to have a value. Setting it to the first option '%s'.".formatted(
+									javaField.getName(), element.getModElement().getName(), firstOption));
+					javaField.set(fieldHolder, firstOption);
+					TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+				}
+
+				// no further validations can be done since this field is/was null
 				return;
 			}
 
@@ -164,8 +187,8 @@ public class GEValidator {
 			// If field is String and notNullable and string is blank, fail valiation
 			if (fieldValue instanceof String string && field.notNullable() && string.isBlank()) {
 				throw new ValidationException(
-						"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
-								+ " is blank, but should not be.");
+						"Field %s of mod element %s is blank, but should not be.".formatted(javaField.getName(),
+								element.getModElement().getName()));
 			}
 
 			if (field.numeric() != null) {
@@ -175,23 +198,42 @@ public class GEValidator {
 						return; // skip validation for optional numeric fields if value is 0 (default)
 					}
 
+					// If 0 and out of range, set to default value, otherwise clamp to range
 					if (number.doubleValue() < annotation.min()) {
-						LOG.debug(
-								"Field {} of mod element {} has value {} which is less than minimum {}. Setting it to minimum.",
-								javaField.getName(), element.getModElement().getName(), number, annotation.min());
-						javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.min()));
+						if (number.doubleValue() == 0) {
+							validationLog.accept(
+									"Field %s of mod element %s has value %s which is less than minimum %s. Setting it to default value.".formatted(
+											javaField.getName(), element.getModElement().getName(), number,
+											annotation.min()));
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.init()));
+						} else {
+							validationLog.accept(
+									"Field %s of mod element %s has value %s which is less than minimum %s. Setting it to minimum.".formatted(
+											javaField.getName(), element.getModElement().getName(), number,
+											annotation.min()));
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.min()));
+						}
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 					} else if (number.doubleValue() > annotation.max()) {
-						LOG.debug(
-								"Field {} of mod element {} has value {} which is greater than maximum {}. Setting it to maximum.",
-								javaField.getName(), element.getModElement().getName(), number, annotation.max());
-						javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.max()));
+						if (number.doubleValue() == 0) {
+							validationLog.accept(
+									"Field %s of mod element %s has value %s which is greater than maximum %s. Setting it to default value.".formatted(
+											javaField.getName(), element.getModElement().getName(), number,
+											annotation.max()));
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.init()));
+						} else {
+							validationLog.accept(
+									"Field %s of mod element %s has value %s which is greater than maximum %s. Setting it to maximum.".formatted(
+											javaField.getName(), element.getModElement().getName(), number,
+											annotation.max()));
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.max()));
+						}
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 					}
 				} else {
 					throw new ValidationException(
-							"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
-									+ " is annotated with @Numeric but is not a number.");
+							"Field %s of mod element %s is annotated with @Numeric but is not a number.".formatted(
+									javaField.getName(), element.getModElement().getName()));
 				}
 			}
 
@@ -204,34 +246,33 @@ public class GEValidator {
 				if (fieldValue instanceof String string) {
 					if (!limited.allowed().contains(string)) {
 						String firstOption = limited.allowed().getFirst();
-						LOG.debug(
-								"Field {} of mod element {} has value '{}' which is not allowed. Setting it to the first option '{}'.",
-								javaField.getName(), element.getModElement().getName(), string, firstOption);
+						validationLog.accept(
+								"Field %s of mod element %s has value '%s' which is not allowed. Setting it to the first option '%s'.".formatted(
+										javaField.getName(), element.getModElement().getName(), string, firstOption));
 						javaField.set(fieldHolder, firstOption);
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 					}
 				} else if (fieldValue instanceof Integer index) {
 					int optionsLength = limited.allowed().size();
 					if (index < 0 || index >= optionsLength) {
-						LOG.debug(
-								"Field {} of mod element {} has index value {} which is out of bounds for options. Setting it to 0.",
-								javaField.getName(), element.getModElement().getName(), index);
+						validationLog.accept(
+								"Field %s of mod element %s has index value %d which is out of bounds for options. Setting it to 0.".formatted(
+										javaField.getName(), element.getModElement().getName(), index));
 						javaField.set(fieldHolder, 0);
 					}
 				} else {
 					throw new ValidationException(
-							"Field " + javaField.getName() + " of mod element " + element.getModElement().getName()
-									+ " is annotated with @LimitedOptions but is not a string or number.");
+							"Field %s of mod element %s is annotated with @LimitedOptions but is not a string or number.".formatted(
+									javaField.getName(), element.getModElement().getName()));
 				}
 			}
 		} catch (IllegalAccessException e) {
-			throw new ValidationException(
-					"Failed to access field " + javaField.getName() + " of mod element " + element.getModElement()
-							.getName(), e);
+			throw new ValidationException("Failed to access field %s of mod element %s".formatted(javaField.getName(),
+					element.getModElement().getName()), e);
 		} catch (InvocationTargetException | NoSuchMethodException | InstantiationException | ClassCastException e) {
 			throw new ValidationException(
-					"Failed to construct default value for field " + javaField.getName() + " of mod element "
-							+ element.getModElement().getName(), e);
+					"Failed to construct default value for field %s of mod element %s".formatted(javaField.getName(),
+							element.getModElement().getName()), e);
 		}
 	}
 
@@ -242,13 +283,14 @@ public class GEValidator {
 		}
 	}
 
-	private record CachedField(Field field, boolean notNullable, @Nullable Numeric numeric,
+	private record CachedField(Field field, boolean notNullable, boolean nullable, @Nullable Numeric numeric,
 	                           @Nullable NonNullMappable nonNullMappable,
 	                           @Nullable LimitedOptionsCache limitedOptions) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
 			this(field, field.isAnnotationPresent(Nonnull.class) || field.isAnnotationPresent(BlocklyXML.class),
-					field.getAnnotation(Numeric.class), field.getAnnotation(NonNullMappable.class),
+					field.isAnnotationPresent(Nullable.class), field.getAnnotation(Numeric.class),
+					field.getAnnotation(NonNullMappable.class),
 					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null);
 		}
 	}

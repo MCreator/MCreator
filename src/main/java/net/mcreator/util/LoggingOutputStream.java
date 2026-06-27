@@ -35,8 +35,6 @@ public class LoggingOutputStream extends OutputStream {
 	private final Logger log;
 	private final Level level;
 
-	@Nullable private Consumer<String> logAction = null;
-
 	/**
 	 * Creates the Logging instance to flush to the given logger.
 	 *
@@ -87,21 +85,8 @@ public class LoggingOutputStream extends OutputStream {
 		str = str.trim();
 		if (!str.isEmpty()) {
 			log.log(level, str);
-			if (logAction != null) {
-				logAction.accept(str);
-			}
 		}
 		count = 0;
-	}
-
-	/**
-	 * Sets a custom action to be performed when the stream is flushed.
-	 *
-	 * @param logAction the action to perform
-	 */
-	public LoggingOutputStream withCustomLogAction(@Nullable Consumer<String> logAction) {
-		this.logAction = logAction;
-		return this;
 	}
 
 	@Override public void close() {

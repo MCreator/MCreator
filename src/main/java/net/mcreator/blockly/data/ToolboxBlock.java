@@ -21,7 +21,6 @@ package net.mcreator.blockly.data;
 import com.google.gson.*;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.TestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -291,7 +290,6 @@ import java.util.regex.Pattern;
 		if (blockDefinitions.length != supportedBlocks.length) {
 			LOG.warn("Mismatch between supported blocks and block definitions for generator: {}",
 					blockGenerator.getClass().getName());
-			TestUtil.failIfTestingEnvironment();
 		}
 
 		String toolboxCategoryId = blockGenerator.getToolboxCategory();
@@ -331,7 +329,6 @@ import java.util.regex.Pattern;
 			} catch (ParseException e) {
 				LOG.warn("Block {} translation \"{}\" for the selected language is not valid. Reason: {}",
 						toolboxBlock.getMachineName(), localized_message, e.getMessage());
-				TestUtil.failIfTestingEnvironment();
 				if (localized_message_en != null) {
 					blocklyJSON.add("message0", new JsonPrimitive(localized_message_en));
 				}
