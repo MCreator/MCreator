@@ -192,8 +192,9 @@ public class GEValidator {
 					}
 					if (isNonNull) {
 						validationLog.accept(
-								"Field %s of mod element %s is null but should not be due to @NonNullIf conditions '%s'.".formatted(
-										javaField.getName(), element.getModElement().getName(), nonNullIf.value()));
+								"Field %s of mod element %s is null but should be if any of these conditions matches: '%s'.".formatted(
+										javaField.getName(), element.getModElement().getName(),
+										Arrays.toString(nonNullIf.value())));
 						// Fail this one even for converters tests as converters should make sure this can't happen
 						TestUtil.failIfTestingEnvironment();
 					}
