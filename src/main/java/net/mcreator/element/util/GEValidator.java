@@ -195,17 +195,32 @@ public class GEValidator {
 						return; // skip validation for optional numeric fields if value is 0 (default)
 					}
 
+					// If 0 and out of range, set to default value, otherwise clamp to range
 					if (number.doubleValue() < annotation.min()) {
-						LOG.debug(
-								"Field {} of mod element {} has value {} which is less than minimum {}. Setting it to minimum.",
-								javaField.getName(), element.getModElement().getName(), number, annotation.min());
-						javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.min()));
+						if (number.doubleValue() == 0) {
+							LOG.debug(
+									"Field {} of mod element {} has value {} which is less than minimum {}. Setting it to default value.",
+									javaField.getName(), element.getModElement().getName(), number, annotation.min());
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.init()));
+						} else {
+							LOG.debug(
+									"Field {} of mod element {} has value {} which is less than minimum {}. Setting it to minimum.",
+									javaField.getName(), element.getModElement().getName(), number, annotation.min());
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.min()));
+						}
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 					} else if (number.doubleValue() > annotation.max()) {
-						LOG.debug(
-								"Field {} of mod element {} has value {} which is greater than maximum {}. Setting it to maximum.",
-								javaField.getName(), element.getModElement().getName(), number, annotation.max());
-						javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.max()));
+						if (number.doubleValue() == 0) {
+							LOG.debug(
+									"Field {} of mod element {} has value {} which is greater than maximum {}. Setting it to default value.",
+									javaField.getName(), element.getModElement().getName(), number, annotation.max());
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.init()));
+						} else {
+							LOG.debug(
+									"Field {} of mod element {} has value {} which is greater than maximum {}. Setting it to maximum.",
+									javaField.getName(), element.getModElement().getName(), number, annotation.max());
+							javaField.set(fieldHolder, castNumber(javaField.getType(), annotation.max()));
+						}
 						TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 					}
 				} else {
