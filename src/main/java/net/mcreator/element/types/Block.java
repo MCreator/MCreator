@@ -144,7 +144,7 @@ import java.util.stream.Collectors;
 	public boolean isReplaceable;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
-	public MapColor colorOnMap;
+	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "NONE", "XZ", "XYZ" }) public String offsetType;

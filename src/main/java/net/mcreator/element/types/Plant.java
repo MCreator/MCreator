@@ -110,7 +110,7 @@ import java.util.stream.Collectors;
 	public boolean hasTileEntity;
 
 	public boolean isReplaceable;
-	public MapColor colorOnMap;
+	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "XZ", "XYZ", "NONE" }) public String offsetType;
 	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;

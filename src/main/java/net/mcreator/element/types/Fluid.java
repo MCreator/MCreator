@@ -90,7 +90,7 @@ import java.util.List;
 	public boolean ignitedByLava;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
-	public MapColor colorOnMap;
+	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourChanges;
