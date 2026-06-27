@@ -225,11 +225,6 @@ public class GeneratableElementModule implements Module {
 			return null; // Nullable fields are not required, so we assume no default value
 		}
 
-		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
-		if (numeric != null) {
-			return GEValidator.castNumber(member.getType().getErasedType(), numeric.init());
-		}
-
 		if (MappableElement.class.isAssignableFrom(member.getType().getErasedType())) {
 			NonNullMappable nonNullMappable = this.getAnnotationFromFieldOrGetter(member, NonNullMappable.class);
 			if (nonNullMappable != null) {
@@ -237,6 +232,11 @@ public class GeneratableElementModule implements Module {
 			} else {
 				return "";
 			}
+		}
+
+		Numeric numeric = this.getAnnotationFromFieldOrGetter(member, Numeric.class);
+		if (numeric != null) {
+			return GEValidator.castNumber(member.getType().getErasedType(), numeric.init());
 		}
 
 		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
