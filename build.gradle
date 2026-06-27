@@ -23,7 +23,6 @@ version = project.mcreatorconf.getProperty('mcreator')
 project.ext.builddate = project.hasProperty('builddate') ? project.getProperty('builddate') : new SimpleDateFormat("wwuHH", Locale.GERMANY).format(new Date())
 project.ext.snapshot = project.hasProperty('snapshot') ? Boolean.parseBoolean((String) project.getProperty('snapshot')) : false
 
-javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
@@ -189,8 +188,11 @@ javadoc {
     classpath = configurations.runtimeClasspath
 
     options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('tag', 'apiNote:a:API note:')
-    options.addStringOption('tag', 'implNote:a:Implementation note:')
+
+    options.tags = [
+        'apiNote:a:API note:',
+        'implNote:a:Implementation note:'
+    ]
 }
 
 tasks.register('runMCreator', JavaExec.class) {
