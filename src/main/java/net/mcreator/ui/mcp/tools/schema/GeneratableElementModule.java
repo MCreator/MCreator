@@ -184,9 +184,11 @@ public class GeneratableElementModule implements Module {
 			return true; // Color fields are always required unless marked with Nullable
 		}
 
-		if (this.getAnnotationFromFieldOrGetter(fieldScope, NonNullMappable.class) != null) {
-			return true; // NonNullMappable fields are required
-		} else if (this.getAnnotationFromFieldOrGetter(fieldScope, LimitedOptions.class) != null) {
+		if (MappableElement.class.isAssignableFrom(fieldScope.getType().getErasedType())) {
+			return true; // MappableElement fields are required unless marked with Nullable
+		}
+
+		if (this.getAnnotationFromFieldOrGetter(fieldScope, LimitedOptions.class) != null) {
 			return true; // LimitedOptions fields are required
 		} else if (this.getAnnotationFromFieldOrGetter(fieldScope, Numeric.class) != null) {
 			return true; // Numeric fields are required
@@ -228,9 +230,13 @@ public class GeneratableElementModule implements Module {
 			return GEValidator.castNumber(member.getType().getErasedType(), numeric.init());
 		}
 
-		NonNullMappable nonNullMappable = this.getAnnotationFromFieldOrGetter(member, NonNullMappable.class);
-		if (nonNullMappable != null) {
-			return nonNullMappable.value();
+		if (MappableElement.class.isAssignableFrom(member.getType().getErasedType())) {
+			NonNullMappable nonNullMappable = this.getAnnotationFromFieldOrGetter(member, NonNullMappable.class);
+			if (nonNullMappable != null) {
+				return nonNullMappable.value();
+			} else {
+				return "";
+			}
 		}
 
 		LimitedOptions limitedOptions = this.getAnnotationFromFieldOrGetter(member, LimitedOptions.class);
