@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 
 	public int renderType;
 	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
-	@TextureReference(TextureType.BLOCK) public TextureHolder textureBottom;
+	@TextureReference(TextureType.BLOCK) @NonNullIf("plantType %= double") public TextureHolder textureBottom;
 	@Nonnull public String customModelName;
 
 	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder itemTexture;
@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
 
 	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
 
-	public EffectEntry suspiciousStewEffect;
+	@NonNullIf("plantType %= normal") public EffectEntry suspiciousStewEffect;
 	@Numeric(init = 100, min = 0, max = 100000, step = 1) public int suspiciousStewDuration;
 
 	@Numeric(init = 0.1, min = 0, max = 1, step = 0.01) public double secondaryTreeChance;

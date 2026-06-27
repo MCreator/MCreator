@@ -88,12 +88,15 @@ import java.util.stream.Collectors;
 	@Nullable
 	@LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
 			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
-	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
-	public MItemBlock pottedPlant;
-	public ParticleEntry leavesParticleType;
+	@LimitedOptions({ "OAK", "STONE", "IRON" })
+	@NonNullIf({ "blockBase %= Door", "blockBase %= TrapDoor", "blockBase %= PressurePlate", "blockBase %= Button" })
+	public String blockSetType;
+	@NonNullIf("blockBase %= FlowerPot") public MItemBlock pottedPlant;
+	@NonNullIf("blockBase %= Leaves") public ParticleEntry leavesParticleType;
 	@Numeric(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
-	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
-	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
+	@NonNullIf({ "blockBase %= Sign", "blockBase %= HangingSign" }) @TextureReference(TextureType.ENTITY)
+	public TextureHolder signEntityTexture;
+	@NonNullIf("blockBase %= HangingSign") @TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
 	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
 			"Sky", "Fog", "Water fog" }) public String tintType;
@@ -231,7 +234,7 @@ import java.util.stream.Collectors;
 	public Procedure onEntityFallsOn;
 
 	public boolean generateFeature;
-	@NonNullIf("generateFeature") @ModElementReference public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@NonNullIf("generateFeature") @ModElementReference public List<MItemBlock> blocksToReplace;
 	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
 	@NonNullIf("generateFeature") @Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
