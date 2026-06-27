@@ -229,8 +229,7 @@ public abstract class GeneratableElement {
 
 				return null;
 			} catch (Exception e) {
-				LOG.warn("Failed to deserialize mod element {}", lastModElement.getName(), e);
-				return null;
+				throw new JsonParseException("Failed to deserialize mod element " + lastModElement.getName(), e);
 			}
 		}
 
