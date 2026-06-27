@@ -22,9 +22,11 @@ package net.mcreator.element.util;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullIf;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -148,8 +150,8 @@ public class GEValidator {
 									+ " is null, but should not be.");
 				}
 
-				if (field.nonNullMappable() != null) {
-					NonNullMappable annotation = field.nonNullMappable();
+				NonNullMappable annotation = field.nonNullMappable();
+				if (annotation != null) {
 					if (MappableElement.class.isAssignableFrom(javaField.getType())) {
 						LOG.debug(
 								"Field {} of mod element {} is null but needs to have a value. Setting it to default value '{}'.",
@@ -173,6 +175,20 @@ public class GEValidator {
 							javaField.getName(), element.getModElement().getName(), firstOption);
 					javaField.set(fieldHolder, firstOption);
 					TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+				}
+
+				NonNullIf nonNullIf = field.nonNullIf();
+				if (nonNullIf != null) {
+					for (String condition : nonNullIf.value()) {
+						boolean isNonNull = TemplateExpressionParser.parseCondition(
+								element.getModElement().getWorkspace().getGenerator(), condition, fieldHolder);
+						if (isNonNull) {
+							LOG.debug(
+									"Field {} of mod element {} is null but should not be according to @NonNullIf condition '{}'.",
+									javaField.getName(), element.getModElement().getName(), condition);
+							TestUtil.failIfTestingEnvironment();
+						}
+					}
 				}
 
 				// no further validations can be done since this field is/was null
@@ -263,14 +279,15 @@ public class GEValidator {
 	}
 
 	private record CachedField(Field field, boolean notNullable, boolean nullable, @Nullable Numeric numeric,
-	                           @Nullable NonNullMappable nonNullMappable,
-	                           @Nullable LimitedOptionsCache limitedOptions) {
+	                           @Nullable NonNullMappable nonNullMappable, @Nullable LimitedOptionsCache limitedOptions,
+	                           @Nullable NonNullIf nonNullIf) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
 			this(field, field.isAnnotationPresent(Nonnull.class) || field.isAnnotationPresent(BlocklyXML.class),
 					field.isAnnotationPresent(Nullable.class), field.getAnnotation(Numeric.class),
 					field.getAnnotation(NonNullMappable.class),
-					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null);
+					limitedOptions != null ? new LimitedOptionsCache(limitedOptions) : null,
+					field.getAnnotation(NonNullIf.class));
 		}
 	}
 

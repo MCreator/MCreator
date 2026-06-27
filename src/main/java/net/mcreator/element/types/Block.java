@@ -161,13 +161,13 @@ import java.util.stream.Collectors;
 
 	public boolean isNotColidable;
 
-	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
-	public Sound breakSound;
-	public Sound fallSound;
-	public Sound hitSound;
-	public Sound placeSound;
-	public Sound stepSound;
+	public boolean isCustomSoundType;
+	@NonNullIf("isCustomSoundType") public Sound breakSound;
+	@NonNullIf("isCustomSoundType") public Sound fallSound;
+	@NonNullIf("isCustomSoundType") public Sound hitSound;
+	@NonNullIf("isCustomSoundType") public Sound placeSound;
+	@NonNullIf("isCustomSoundType") public Sound stepSound;
 
 	public NumberProcedure luminance;
 	public boolean unbreakable;
@@ -182,8 +182,8 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean sensitiveToVibration;
-	public List<GameEventEntry> vibrationalEvents;
-	public NumberProcedure vibrationSensitivityRadius;
+	@NonNullIf("sensitiveToVibration") public List<GameEventEntry> vibrationalEvents;
+	@NonNullIf("sensitiveToVibration") public NumberProcedure vibrationSensitivityRadius;
 	public Procedure canReceiveVibrationCondition;
 	public Procedure onReceivedVibration;
 
@@ -200,14 +200,19 @@ import java.util.stream.Collectors;
 	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
-	@Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyInitial;
-	@Numeric(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyCapacity;
-	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxReceive;
-	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxExtract;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyInitial;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyCapacity;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyMaxReceive;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyMaxExtract;
 
 	public boolean isFluidTank;
-	@Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
-	@ModElementReference public List<FluidEntry> fluidRestrictions;
+	@NonNullIf("isFluidTank") @Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int fluidCapacity;
+	@NonNullIf("isFluidTank") @ModElementReference public List<FluidEntry> fluidRestrictions;
 
 	public Procedure onRightClicked;
 	public Procedure onBlockAdded;
@@ -226,13 +231,15 @@ import java.util.stream.Collectors;
 	public Procedure onEntityFallsOn;
 
 	public boolean generateFeature;
-	@ModElementReference public List<BiomeEntry> restrictionBiomes;
-	@ModElementReference public List<MItemBlock> blocksToReplace;
+	@NonNullIf("generateFeature") @ModElementReference public List<BiomeEntry> restrictionBiomes;
+	@NonNullIf("generateFeature") @ModElementReference public List<MItemBlock> blocksToReplace;
 	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
-	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
-	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
-	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
-	@Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
+	@NonNullIf("generateFeature") @Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@NonNullIf("generateFeature") @Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
+	@NonNullIf("generateFeature") @Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true)
+	public int minGenerateHeight;
+	@NonNullIf("generateFeature") @Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true)
+	public int maxGenerateHeight;
 
 	private Block() {
 		this(null);

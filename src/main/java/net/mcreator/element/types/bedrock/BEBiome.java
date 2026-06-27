@@ -44,8 +44,6 @@ import java.util.List;
 	@Nullable public MItemBlock seaFloorMaterial;
 	@Nullable public MItemBlock seaMaterial;
 
-	public boolean spawnParticles;
-
 	@Numeric(init = 7, min = 0, max = 256, step = 1) public int seaFloorDepth;
 
 	@Nullable public Color airColor;
@@ -67,6 +65,8 @@ import java.util.List;
 			"mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" })
 	public String noiseType;
 	@LimitedOptions({ "default", "desert", "ice", "savanna", "taiga" }) public String villageType;
+
+	public boolean spawnParticles;
 	@LimitedOptions({ "ash", "blue_spores", "red_spores", "white_ash" }) public String particleToSpawn;
 
 	public List<BEBiomeTagEntry> biomeTags;
