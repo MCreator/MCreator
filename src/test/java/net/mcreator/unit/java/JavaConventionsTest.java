@@ -19,7 +19,6 @@
 package net.mcreator.unit.java;
 
 import net.mcreator.java.JavaConventions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,10 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JavaConventionsTest {
 
 	@Test public void convertToValidClassName() {
-		Assertions.assertEquals(JavaConventions.convertToValidClassName("className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("3className3"), "ClassName3");
-		assertEquals(JavaConventions.convertToValidClassName("_className"), "ClassName");
-		assertEquals(JavaConventions.convertToValidClassName("ČlassName"), "ClassName");
+		assertEquals("ClassName", JavaConventions.convertToValidClassName("className"));
+		assertEquals("ClassName3", JavaConventions.convertToValidClassName("3className3"));
+		assertEquals("ClassName", JavaConventions.convertToValidClassName("_className"));
+		assertEquals("ClassName", JavaConventions.convertToValidClassName("ČlassName"));
 	}
 
 }

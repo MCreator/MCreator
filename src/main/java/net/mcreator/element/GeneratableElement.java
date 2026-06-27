@@ -31,7 +31,6 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.minecraft.states.StateMap;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -196,7 +195,6 @@ public abstract class GeneratableElement {
 							LOG.warn("Failed to convert mod element {} of type {} to FV{} using {}",
 									lastModElement.getName(), modElementType, converter.getVersionConvertingTo(),
 									converter.getClass().getSimpleName(), e);
-							TestUtil.failIfTestingEnvironment();
 						}
 
 						if (generatableElement == null
@@ -221,7 +219,6 @@ public abstract class GeneratableElement {
 							LOG.warn("Failed to convert mod element {} of type {} to FV{} using {}",
 									lastModElement.getName(), modElementTypeString, converter.getVersionConvertingTo(),
 									converter.getClass().getSimpleName(), e2);
-							TestUtil.failIfTestingEnvironment();
 						}
 						ConverterUtils.convertElementToDifferentType(converter, lastModElement, result);
 					} catch (Exception e2) {

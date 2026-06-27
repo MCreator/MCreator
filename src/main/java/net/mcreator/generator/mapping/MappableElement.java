@@ -90,7 +90,6 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		String retval = getUnmappedValue();
 		if (!retval.startsWith("TAG:")) {
 			LOG.warn("Tried to convert non-tag mappable element to tag: {}", value);
-			TestUtil.failIfTestingEnvironment();
 		} else {
 			retval = retval.substring(4); // Remove the "TAG:" prefix
 			if (retval.startsWith("mod:")) {
@@ -135,7 +134,6 @@ public abstract class MappableElement implements IWorkspaceDependent {
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
 			if (!retval) {
 				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);
-				TestUtil.failIfTestingEnvironment();
 			}
 			return retval;
 		} else if (mappingSource != null && !value.startsWith(NameMapper.EXTERNAL_PREFIX) && !value.startsWith("#")

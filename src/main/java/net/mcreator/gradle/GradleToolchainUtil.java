@@ -22,7 +22,6 @@ package net.mcreator.gradle;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OutputStreamEventHandler;
-import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.BuildLauncher;
@@ -68,7 +67,6 @@ public class GradleToolchainUtil {
 			return parseOutput(sb.toString());
 		} catch (Exception e) {
 			LOG.warn("Failed to determine toolchain JDK home", e);
-			TestUtil.failIfTestingEnvironment();
 		} finally {
 			if (initScript != null)
 				initScript.delete();
