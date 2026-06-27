@@ -43,8 +43,6 @@ import java.util.function.Supplier;
 
 public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 
-	// TODO: armor handling
-
 	public static class Args {
 		public Action actionType;
 		@Nullable public String name;
