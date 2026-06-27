@@ -30,6 +30,7 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.Biome;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullIf;
 import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.GEValidator;
@@ -49,8 +50,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
@@ -71,8 +74,9 @@ public class GeneratableElementModule implements Module {
 		methodConfigPart.withIgnoreCheck(_ -> true); // do not include methods
 
 		Stream.of(Nullable.class, Nonnull.class, LimitedOptions.class, Numeric.class, NonNullMappable.class,
-				BlocklyXML.class).forEach(annotationType -> builder.withAnnotationInclusionOverride(annotationType,
-				AnnotationInclusion.INCLUDE_AND_INHERIT));
+				NonNullIf.class, BlocklyXML.class).forEach(
+				annotationType -> builder.withAnnotationInclusionOverride(annotationType,
+						AnnotationInclusion.INCLUDE_AND_INHERIT));
 
 		builder.forTypesInGeneral().withCustomDefinitionProvider(this::provideCustomDefinition);
 	}
@@ -176,6 +180,10 @@ public class GeneratableElementModule implements Module {
 	@SuppressWarnings("RedundantIfStatement") private boolean isRequired(FieldScope fieldScope) {
 		if (this.getAnnotationFromFieldOrGetter(fieldScope, Nullable.class) != null) {
 			return false; // Nullable fields are not required
+		}
+
+		if (this.getAnnotationFromFieldOrGetter(fieldScope, NonNullIf.class) != null) {
+			return false; // Conditionally required; see requiredIfAny in schema
 		}
 
 		if (this.getAnnotationFromFieldOrGetter(fieldScope, Nonnull.class) != null) {
@@ -362,6 +370,17 @@ public class GeneratableElementModule implements Module {
 					blocklyXML.name()));
 		}
 
+		NonNullIf nonNullIf = this.getAnnotationFromFieldOrGetter(member, NonNullIf.class);
+		if (nonNullIf != null) {
+			SchemaGeneratorConfig config = context.getGeneratorConfig();
+			ArrayNode conditions = config.createArrayNode();
+			for (String condition : nonNullIf.value()) {
+				conditions.add(this.createRequiredIfCondition(config, condition));
+			}
+			node.set("requiredIfAny", conditions);
+			appendDescription(node, "Required when any condition in requiredIfAny is satisfied. Optional otherwise.");
+		}
+
 		if (member.getDeclaringType().getErasedType() == Biome.class && "defaultFeatures".equals(
 				member.getDeclaredName())) {
 			node.put("datalist", "defaultfeatures");
@@ -381,6 +400,21 @@ public class GeneratableElementModule implements Module {
 		} else {
 			node.put("description", addition);
 		}
+	}
+
+	private ObjectNode createRequiredIfCondition(SchemaGeneratorConfig config, String condition) {
+		ObjectNode node = config.createObjectNode();
+
+		int indexOf = condition.indexOf("%=");
+		if (indexOf >= 0) {
+			node.put("field", condition.substring(0, indexOf).trim());
+			node.put("equals", condition.substring(indexOf + 2).trim());
+		} else {
+			node.put("field", condition.trim());
+			node.put("equals", "true");
+		}
+
+		return node;
 	}
 
 	protected Boolean isNullable(MemberScope<?, ?> member) {
