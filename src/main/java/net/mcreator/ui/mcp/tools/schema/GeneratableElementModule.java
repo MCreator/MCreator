@@ -23,6 +23,9 @@ import com.fasterxml.classmate.AnnotationInclusion;
 import com.fasterxml.classmate.ResolvedType;
 import com.github.victools.jsonschema.generator.*;
 import com.github.victools.jsonschema.generator.Module;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
@@ -35,6 +38,7 @@ import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.GEValidator;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import tools.jackson.databind.node.ArrayNode;
@@ -54,6 +58,13 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
+
+	private static final Gson DEFAULT_VALUE_GSON = new GsonBuilder()
+			.disableHtmlEscaping()
+			.setStrictness(Strictness.LENIENT)
+			.registerTypeHierarchyAdapter(MappableElement.class, new MappableElement.GSONAdapter())
+			.registerTypeAdapter(StateMap.class, new StateMap.GSONAdapter())
+			.create();
 
 	private final Map<Class<?>, Object> defaultInstanceCache = new HashMap<>();
 
@@ -295,7 +306,11 @@ public class GeneratableElementModule implements Module {
 			if (instance != null) {
 				if (member.getRawMember() instanceof Field rawField) {
 					rawField.setAccessible(true);
-					return rawField.get(instance);
+					Object fieldValue = rawField.get(instance);
+					if (fieldValue == null) {
+						return null;
+					}
+					return DEFAULT_VALUE_GSON.fromJson(DEFAULT_VALUE_GSON.toJson(fieldValue), Object.class);
 				}
 			}
 		} catch (Exception _) {
