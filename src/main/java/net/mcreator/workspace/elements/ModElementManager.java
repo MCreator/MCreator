@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * ModElementManager is not thread safe
@@ -174,7 +175,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	@Nullable public GeneratableElement fromJSONtoGeneratableElementOrNull(String json, ModElement modElement) {
 		try {
-			return fromJSONtoGeneratableElement(json, modElement);
+			return fromJSONtoGeneratableElement(json, modElement,
+					message -> LOG.warn("GE validation notice: {}", message));
 		} catch (Exception e) {
 			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
 					modElement.getName(), e);
@@ -182,13 +184,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 	}
 
-	@Nonnull public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement)
-			throws IOException, GEValidator.ValidationException {
+	@Nonnull
+	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement,
+			@Nullable Consumer<String> validationLog) throws IOException, GEValidator.ValidationException {
 		this.modElementsInConversion.push(modElement);
 
 		try {
 			GeneratableElement retval = gson.fromJson(json, GeneratableElement.class);
-			GEValidator.validateAndTryToCorrect(retval);
+			GEValidator.validateAndTryToCorrect(retval, validationLog);
 			return retval;
 		} catch (GEValidator.ValidationException e) {
 			throw e;

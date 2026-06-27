@@ -155,7 +155,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 				// back to GeneratableElement
 				GeneratableElement generatableElement = mcreator.getWorkspace().getModElementManager()
-						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to GeneratableElement
+						.fromJSONtoGeneratableElement(exportedJSON, modElement,
+								message -> LOG.debug("GE validation notice: {}",
+										message));// from JSON to GeneratableElement
 
 				// Check if all workspace fields are not null after re-import
 				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
