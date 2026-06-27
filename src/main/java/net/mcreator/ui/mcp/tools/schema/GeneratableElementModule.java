@@ -44,12 +44,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
+
+	private final Map<Class<?>, Object> defaultInstanceCache = new HashMap<>();
 
 	@Override public void applyToConfigBuilder(SchemaGeneratorConfigBuilder builder) {
 		SchemaGeneratorConfigPart<FieldScope> fieldConfigPart = builder.forFields();
@@ -225,6 +231,13 @@ public class GeneratableElementModule implements Module {
 			return null; // Nullable fields are not required, so we assume no default value
 		}
 
+		// Procedure fields are always null by default
+		if (RetvalProcedure.class.isAssignableFrom(member.getType().getErasedType())) {
+			return null;
+		} else if (Procedure.class.isAssignableFrom(member.getType().getErasedType())) {
+			return null;
+		}
+
 		if (MappableElement.class.isAssignableFrom(member.getType().getErasedType())) {
 			NonNullMappable nonNullMappable = this.getAnnotationFromFieldOrGetter(member, NonNullMappable.class);
 			if (nonNullMappable != null) {
@@ -266,8 +279,26 @@ public class GeneratableElementModule implements Module {
 			return modElementReference.defaultValues()[0];
 		}
 
-		if (this.isBiomeDefaultFeaturesField(member) && !member.isFakeContainerItemScope()) {
-			return List.of("Caves", "Ores", "FrozenTopLayer");
+		// If no other method of detecting default values is available, we attempt to instantiate the class and retrieve the default value from the field
+		try {
+			Class<?> clazz = member.getDeclaringType().getErasedType();
+			if (!defaultInstanceCache.containsKey(clazz)) {
+				try {
+					Constructor<?> constructor = clazz.getDeclaredConstructor();
+					constructor.setAccessible(true);
+					defaultInstanceCache.put(clazz, constructor.newInstance());
+				} catch (Exception e) {
+					defaultInstanceCache.put(clazz, null);
+				}
+			}
+			Object instance = defaultInstanceCache.get(clazz);
+			if (instance != null) {
+				if (member.getRawMember() instanceof Field rawField) {
+					rawField.setAccessible(true);
+					return rawField.get(instance);
+				}
+			}
+		} catch (Exception _) {
 		}
 
 		return null;
@@ -320,16 +351,12 @@ public class GeneratableElementModule implements Module {
 					blocklyXML.name()));
 		}
 
-		if (this.isBiomeDefaultFeaturesField(member) && member.isFakeContainerItemScope()) {
-			node.put("datalistWithValidValues", "defaultfeatures");
+		if (member.getDeclaringType().getErasedType() == Biome.class && "defaultFeatures".equals(
+				member.getDeclaredName())) {
+			node.put("datalist", "defaultfeatures");
 		}
 
 		RenderModelSchemaHelper.applyFieldAttributes(node, member, context);
-	}
-
-	private boolean isBiomeDefaultFeaturesField(MemberScope<?, ?> member) {
-		return member.getDeclaringType().getErasedType() == Biome.class && "defaultFeatures".equals(
-				member.getDeclaredName());
 	}
 
 	private boolean isNumericType(Class<?> type) {

@@ -136,7 +136,7 @@ import java.util.List;
 		oceanRuinType = "NONE";
 		spawnRuinedPortal = "NONE";
 		spawnEntries = new ArrayList<>();
-		defaultFeatures = new ArrayList<>();
+		defaultFeatures = new ArrayList<>(List.of("Caves", "Ores", "FrozenTopLayer"));
 		genDepth = new ClimatePoint(0.2, 0.9);
 		moodSoundDelay = 6000;
 	}
