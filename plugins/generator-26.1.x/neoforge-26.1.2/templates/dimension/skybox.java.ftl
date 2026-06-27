@@ -40,15 +40,15 @@ public class ${JavaModName}SkyboxRenderer {
 	private static GpuBuffer skyboxBuffer;
 
 	<#list dimensions as dimension>
-		<#if dimension.enableSkybox || dimension.enableSunMoon>
+		<#if dimension.enableCustomSkyboxTextures || dimension.enableCustomSunMoonTextures>
 			private static final ResourceKey ${dimension.getModElement().getRegistryNameUpper()}
 				= ResourceKey.create(Registries.DIMENSION, Identifier.parse("${modid}:${dimension.getModElement().getRegistryName()}"));
 		</#if>
-		<#if dimension.enableSkybox>
+		<#if dimension.enableCustomSkyboxTextures>
 			private static final Identifier ${dimension.getModElement().getRegistryNameUpper()}_SKYBOX
 				= Identifier.parse("${modid}:textures/skybox/${dimension.getModElement().getRegistryName()}.png");
 		</#if>
-		<#if dimension.enableSunMoon>
+		<#if dimension.enableCustomSunMoonTextures>
 			private static final Identifier ${dimension.getModElement().getRegistryNameUpper()}_SUN
 				= Identifier.parse("${modid}:textures/${dimension.sunTexture}.png");
 			private static final Identifier ${dimension.getModElement().getRegistryNameUpper()}_MOON
@@ -66,12 +66,12 @@ public class ${JavaModName}SkyboxRenderer {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
 		<#list dimensions as dimension>
-			<#if dimension.enableSkybox || dimension.enableSunMoon>
+			<#if dimension.enableCustomSkyboxTextures || dimension.enableCustomSunMoonTextures>
 				if (mc.player.level().dimension() == ${dimension.getModElement().getRegistryNameUpper()}) {
-					<#if dimension.enableSkybox>
+					<#if dimension.enableCustomSkyboxTextures>
 						renderCustomSkybox(event, ${dimension.getModElement().getRegistryNameUpper()}_SKYBOX);
 					</#if>
-					<#if dimension.enableSunMoon>
+					<#if dimension.enableCustomSunMoonTextures>
 						renderCustomSun(event, ${dimension.getModElement().getRegistryNameUpper()}_SUN);
 						renderCustomMoon(event, ${dimension.getModElement().getRegistryNameUpper()}_MOON);
 					</#if>

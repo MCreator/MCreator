@@ -80,7 +80,7 @@ import java.util.List;
 	@Numeric(init = 1, min = 0.01, max = 1000, step = 0.01) public double coordinateScale;
 	public String infiniburnTag;
 
-	public boolean enableSkybox;
+	public boolean enableCustomSkyboxTextures;
 	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureUp;
 	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureDown;
 	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureNorth;
@@ -88,7 +88,7 @@ import java.util.List;
 	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureWest;
 	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureEast;
 
-	public boolean enableSunMoon;
+	public boolean enableCustomSunMoonTextures;
 	@TextureReference(TextureType.OTHER) public TextureHolder sunTexture;
 	@TextureReference(TextureType.OTHER) public TextureHolder moonTexture;
 
@@ -188,7 +188,7 @@ import java.util.List;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		if (this.enableSkybox) {
+		if (this.enableCustomSkyboxTextures) {
 			generateSkyboxTexture();
 		}
 	}
