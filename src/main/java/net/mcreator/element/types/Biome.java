@@ -21,6 +21,8 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullIf;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
@@ -39,9 +41,9 @@ import java.util.List;
 
 	public String name;
 
-	public MItemBlock groundBlock;
-	public MItemBlock undergroundBlock;
-	public MItemBlock underwaterBlock;
+	@NonNullMappable("Blocks.GRASS") public MItemBlock groundBlock;
+	@NonNullMappable("Blocks.DIRT#0") public MItemBlock undergroundBlock;
+	@Nullable public MItemBlock underwaterBlock;
 
 	@Nullable public Color airColor;
 	@Nullable public Color fogColor;
@@ -57,7 +59,7 @@ import java.util.List;
 	@Numeric(init = 6000, min = 1, max = 30000, step = 1) public int moodSoundDelay;
 
 	public boolean spawnParticles;
-	public ParticleEntry particleToSpawn;
+	@NonNullIf("spawnParticles") public ParticleEntry particleToSpawn;
 	@Numeric(init = 0.5, min = 0, max = 100, step = 0.1) public double particlesProbability;
 
 	@Numeric(init = 0.5, min = 0, max = 1, step = 0.1) public double rainingPossibility;

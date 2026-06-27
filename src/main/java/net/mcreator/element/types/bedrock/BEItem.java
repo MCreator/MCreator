@@ -68,7 +68,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@Numeric(init = 4, min = -1000, max = 1000, step = 1) public int foodNutritionalValue;
 	@Numeric(init = 0.3, min = -1000, max = 1000, step = 0.1) public double foodSaturation;
 	public boolean foodCanAlwaysEat;
-	@ModElementReference public MItemBlock usingConvertsTo;
+	public MItemBlock usingConvertsTo;
 	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear", "brush", "spyglass", "camera" })
 	public String animation;
 
