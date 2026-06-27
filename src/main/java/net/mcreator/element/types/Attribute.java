@@ -26,6 +26,7 @@ import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Attribute extends GeneratableElement {
@@ -50,5 +51,6 @@ import java.util.List;
 		super(element);
 
 		this.sentiment = "POSITIVE";
+		this.entities = new ArrayList<>();
 	}
 }

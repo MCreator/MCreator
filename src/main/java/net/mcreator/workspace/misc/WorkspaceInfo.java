@@ -216,6 +216,16 @@ import java.util.*;
 		// Add tabs without order to the end of the main list
 		tabMap.putAll(customTabsWithoutOrder);
 
+		tabMap.entrySet().removeIf(entry -> {
+			if (entry.getKey().startsWith(NameMapper.MCREATOR_PREFIX) && !workspace.containsModElement(
+					GeneratorWrapper.getElementPlainName(entry.getKey()))) {
+				LOG.warn("Broken reference found. Referencing non-existent custom tab: {}",
+						entry.getKey().replaceFirst(NameMapper.MCREATOR_PREFIX, ""));
+				return true;
+			}
+			return false;
+		});
+
 		return tabMap;
 	}
 

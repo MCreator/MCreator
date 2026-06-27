@@ -138,6 +138,11 @@ import java.util.List;
 		spawnRuinedPortal = "NONE";
 		spawnEntries = new ArrayList<>();
 		defaultFeatures = new ArrayList<>();
+		genTemperature = new ClimatePoint(-0.5, 0.5);
+		genHumidity = new ClimatePoint(-0.5, 0.5);
+		genContinentalness = new ClimatePoint(0.3, 1.0);
+		genErosion = new ClimatePoint(-0.5, 0.5);
+		genWeirdness = new ClimatePoint(-1.0, 1.0);
 		genDepth = new ClimatePoint(0.2, 0.9);
 		moodSoundDelay = 6000;
 	}

@@ -33,6 +33,7 @@ import net.mcreator.workspace.references.ModElementReference;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class BEBiome extends GeneratableElement {
@@ -82,6 +83,9 @@ import java.util.List;
 
 	public BEBiome(ModElement element) {
 		super(element);
+
+		this.biomeTags = new ArrayList<>();
+		this.biomeReplacements = new ArrayList<>();
 	}
 
 	public MItemBlock getUnderwaterBlock() {

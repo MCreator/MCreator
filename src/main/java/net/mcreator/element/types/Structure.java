@@ -68,6 +68,8 @@ import java.util.List;
 		this.size = 1;
 		this.maxDistanceFromCenter = 64;
 		this.jigsawPools = new ArrayList<>();
+		this.ignoredBlocks = new ArrayList<>();
+		this.restrictionBiomes = new ArrayList<>();
 
 		this.useStartHeight = false;
 		this.startHeightProviderType = "UNIFORM";
@@ -94,12 +96,20 @@ import java.util.List;
 			return poolParts;
 		}
 
+		public JigsawPool() {
+			this.poolParts = new ArrayList<>();
+		}
+
 		public static class JigsawPart {
 
 			@Numeric(init = 1, min = 1, max = 150, step = 1) public int weight;
 			@ResourceReference("structure") public String structure;
 			@LimitedOptions({ "rigid", "terrain_matching" }) public String projection;
 			@ModElementReference public List<MItemBlock> ignoredBlocks;
+
+			public JigsawPart() {
+				this.ignoredBlocks = new ArrayList<>();
+			}
 
 		}
 
