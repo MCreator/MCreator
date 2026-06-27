@@ -37,11 +37,13 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
@@ -96,18 +98,14 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			String suggestedJSON = gson.toJson(input.elementJSONDefinition);
 			GeneratableElement original = modElement.getGeneratableElement();
 			try {
-				GEResult result = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement, suggestedJSON);
+				List<String> jsonValidationNotes = new ArrayList<>();
+				GEResult result = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement, suggestedJSON,
+						jsonValidationNotes::add);
 				JsonElement jsonElement = safeGeneratableElementToJsonElement(mcreator, result.generatableElement());
+
 				Map<String, Object> response = new HashMap<>();
 				response.put("result", "Element modified");
-				if (!result.validationResults().isEmpty()) {
-					response.put("validationResults", result.validationResults());
-				}
-				if (!gson.toJson(jsonElement).equals(suggestedJSON)) {
-					response.put("warning", "JSON definition was changed during processing");
-					response.put("actualJSONDefinition", jsonElement);
-				}
-				return CompletableFuture.completedFuture(ToolResult.object(response));
+				return getResultCompletableFuture(suggestedJSON, jsonValidationNotes, result, jsonElement, response);
 			} catch (Exception e) {
 				try {
 					revertGeneratableElement(mcreator, original);
@@ -133,16 +131,14 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			mcreator.getWorkspace().addModElement(modElement);
 			try {
 				String suggestedJSON = gson.toJson(input.elementJSONDefinition);
-				GEResult result = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement, suggestedJSON);
+				List<String> jsonValidationNotes = new ArrayList<>();
+				GEResult result = safeJSONtoGeneratableElementAndStoreIt(mcreator, modElement, suggestedJSON,
+						jsonValidationNotes::add);
 				JsonElement jsonElement = safeGeneratableElementToJsonElement(mcreator, result.generatableElement());
-				if (!gson.toJson(jsonElement).equals(suggestedJSON)) {
-					Map<String, Object> response = new HashMap<>();
-					response.put("result", "Element added, but JSON definition was changed during processing");
-					response.put("actualJSONDefinition", jsonElement);
-					return CompletableFuture.completedFuture(ToolResult.object(response));
-				} else {
-					return CompletableFuture.completedFuture(ToolResult.text("Element added"));
-				}
+
+				Map<String, Object> response = new HashMap<>();
+				response.put("result", "Element added");
+				return getResultCompletableFuture(suggestedJSON, jsonValidationNotes, result, jsonElement, response);
 			} catch (Exception e) {
 				mcreator.getWorkspace().removeModElement(modElement);
 				return CompletableFuture.completedFuture(
@@ -161,15 +157,32 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		}
 	}
 
-	private GEResult safeJSONtoGeneratableElementAndStoreIt(MCreator mcreator, ModElement modElement, String json)
-			throws Exception {
+	@Nonnull
+	private CompletableFuture<ToolResult> getResultCompletableFuture(String suggestedJSON,
+			List<String> jsonValidationNotes, GEResult result, JsonElement jsonElement, Map<String, Object> response) {
+		if (!result.validationResults().isEmpty()) {
+			response.put("validationResults", result.validationResults());
+		}
+		if (!gson.toJson(jsonElement).equals(suggestedJSON)) {
+			response.put("warning", "JSON definition was changed during processing");
+			response.put("actualJSONDefinition", jsonElement);
+		}
+		if (!jsonValidationNotes.isEmpty()) {
+			response.put("jsonValidationNotes", jsonValidationNotes);
+		}
+		return CompletableFuture.completedFuture(ToolResult.object(response));
+	}
+
+	private GEResult safeJSONtoGeneratableElementAndStoreIt(MCreator mcreator, ModElement modElement, String json,
+			@Nullable Consumer<String> validationLog) throws Exception {
 		JsonObject root = new JsonObject();
 		root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
 		root.add("_type", gson.toJsonTree(modElement.getType().getRegistryName()));
 		root.add("definition", JsonParser.parseString(json));
 		json = gson.toJson(root);
 
-		GeneratableElement element = mcreator.getModElementManager().fromJSONtoGeneratableElement(json, modElement);
+		GeneratableElement element = mcreator.getModElementManager()
+				.fromJSONtoGeneratableElement(json, modElement, validationLog);
 
 		mcreator.getModElementManager().storeModElement(element);
 
