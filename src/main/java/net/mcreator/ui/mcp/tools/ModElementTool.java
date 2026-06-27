@@ -233,6 +233,9 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		GEResult result = validateThroughUI(mcreator, element);
 		element = result.generatableElement();
 
+		// Persist GUI-normalized definition (dropdown defaults, computed fields, etc.)
+		mcreator.getModElementManager().storeModElement(element);
+
 		mcreator.getGenerator().generateBase(true); // use variant that throws TemplateGeneratorException
 		mcreator.getGenerator().generateElement(element, true); // use variant that throws TemplateGeneratorException
 		mcreator.getModElementManager().storeModElementPicture(element);
