@@ -38,6 +38,7 @@ import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.GEValidator;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
@@ -59,12 +60,10 @@ import java.util.stream.Stream;
 
 public class GeneratableElementModule implements Module {
 
-	private static final Gson DEFAULT_VALUE_GSON = new GsonBuilder()
-			.disableHtmlEscaping()
+	private static final Gson DEFAULT_VALUE_GSON = new GsonBuilder().disableHtmlEscaping()
 			.setStrictness(Strictness.LENIENT)
 			.registerTypeHierarchyAdapter(MappableElement.class, new MappableElement.GSONAdapter())
-			.registerTypeAdapter(StateMap.class, new StateMap.GSONAdapter())
-			.create();
+			.registerTypeAdapter(StateMap.class, new StateMap.GSONAdapter()).create();
 
 	private final Map<Class<?>, Object> defaultInstanceCache = new HashMap<>();
 
@@ -104,6 +103,8 @@ public class GeneratableElementModule implements Module {
 			return GUIComponentSchemaHelper.createDefinition(context);
 		} else if (erasedType == PropertyData.class) {
 			return PropertyDataSchemaHelper.createDefinition(context);
+		} else if (erasedType == PropertyDataWithValue.class) {
+			return PropertyDataWithValueSchemaHelper.createDefinition(context);
 		} else if (erasedType == StateMap.class) {
 			return StateMapSchemaHelper.createDefinition(context);
 		}
@@ -293,29 +294,31 @@ public class GeneratableElementModule implements Module {
 		}
 
 		// If no other method of detecting default values is available, we attempt to instantiate the class and retrieve the default value from the field
-		try {
-			Class<?> clazz = member.getDeclaringType().getErasedType();
-			if (!defaultInstanceCache.containsKey(clazz)) {
-				try {
-					Constructor<?> constructor = clazz.getDeclaredConstructor();
-					constructor.setAccessible(true);
-					defaultInstanceCache.put(clazz, constructor.newInstance());
-				} catch (Exception e) {
-					defaultInstanceCache.put(clazz, null);
-				}
-			}
-			Object instance = defaultInstanceCache.get(clazz);
-			if (instance != null) {
-				if (member.getRawMember() instanceof Field rawField) {
-					rawField.setAccessible(true);
-					Object fieldValue = rawField.get(instance);
-					if (fieldValue == null) {
-						return null;
+		if (!member.isFakeContainerItemScope()) {
+			try {
+				Class<?> clazz = member.getDeclaringType().getErasedType();
+				if (!defaultInstanceCache.containsKey(clazz)) {
+					try {
+						Constructor<?> constructor = clazz.getDeclaredConstructor();
+						constructor.setAccessible(true);
+						defaultInstanceCache.put(clazz, constructor.newInstance());
+					} catch (Exception e) {
+						defaultInstanceCache.put(clazz, null);
 					}
-					return DEFAULT_VALUE_GSON.fromJson(DEFAULT_VALUE_GSON.toJson(fieldValue), Object.class);
 				}
+				Object instance = defaultInstanceCache.get(clazz);
+				if (instance != null) {
+					if (member.getRawMember() instanceof Field rawField) {
+						rawField.setAccessible(true);
+						Object fieldValue = rawField.get(instance);
+						if (fieldValue == null) {
+							return null;
+						}
+						return DEFAULT_VALUE_GSON.fromJson(DEFAULT_VALUE_GSON.toJson(fieldValue), Object.class);
+					}
+				}
+			} catch (Exception _) {
 			}
-		} catch (Exception _) {
 		}
 
 		return null;
