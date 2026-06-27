@@ -176,7 +176,7 @@ import java.util.function.Consumer;
 	@Nullable public GeneratableElement fromJSONtoGeneratableElementOrNull(String json, ModElement modElement) {
 		try {
 			return fromJSONtoGeneratableElement(json, modElement,
-					message -> LOG.warn("GE validation notice: {}", message));
+					message -> LOG.debug("GE validation notice: {}", message));
 		} catch (Exception e) {
 			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
 					modElement.getName(), e);
