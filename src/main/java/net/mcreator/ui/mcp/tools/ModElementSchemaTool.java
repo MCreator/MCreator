@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.mcp.tools.schema;
+package net.mcreator.ui.mcp.tools;
 
 import com.github.victools.jsonschema.generator.*;
 import com.google.gson.Gson;
@@ -28,12 +28,12 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.mcp.tools.schema.GeneratableElementModule;
 import tools.jackson.databind.node.ObjectNode;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
