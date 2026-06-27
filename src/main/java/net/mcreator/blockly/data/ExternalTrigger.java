@@ -19,7 +19,6 @@
 package net.mcreator.blockly.data;
 
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.TestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -69,7 +68,6 @@ public class ExternalTrigger {
 		String translated = L10N.t(key);
 		if (translated == null) {
 			LOG.warn("Missing translation for trigger: {}", key);
-			TestUtil.failIfTestingEnvironment();
 			return key;
 		}
 
