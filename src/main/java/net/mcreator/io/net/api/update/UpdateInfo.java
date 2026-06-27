@@ -21,12 +21,13 @@ package net.mcreator.io.net.api.update;
 import net.mcreator.Launcher;
 import net.mcreator.util.MCreatorVersionNumber;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class UpdateInfo {
 
-	private String latestMajor;
-	private Map<String, Release> releases;
+	private String latestMajor = "0.0.0";
+	private Map<String, Release> releases = new HashMap<>();
 
 	public static UpdateInfo empty() {
 		UpdateInfo info = new UpdateInfo();

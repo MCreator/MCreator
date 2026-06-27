@@ -250,10 +250,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	/**
 	 * Invalidates the generatable element cache
-	 *
-	 * @apiNote This method performs sensitive operations on the host workspace. Avoid using it!
 	 */
-	@SuppressWarnings("unused") public void invalidateCache() {
+	public void invalidateCache() {
 		cache.clear();
 	}
 

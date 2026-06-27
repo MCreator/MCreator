@@ -36,15 +36,15 @@ package ${package}.client;
 public class ${JavaModName}SkyboxRenderer {
 
 	<#list dimensions as dimension>
-		<#if dimension.enableSkybox || dimension.enableSunMoon>
+		<#if dimension.enableCustomSkyboxTextures || dimension.enableCustomSunMoonTextures>
 			private static final ResourceKey ${dimension.getModElement().getRegistryNameUpper()}
 				= ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("${modid}:${dimension.getModElement().getRegistryName()}"));
 		</#if>
-		<#if dimension.enableSkybox>
+		<#if dimension.enableCustomSkyboxTextures>
 			private static final ResourceLocation ${dimension.getModElement().getRegistryNameUpper()}_SKYBOX
 				= ResourceLocation.parse("${modid}:textures/skybox/${dimension.getModElement().getRegistryName()}.png");
 		</#if>
-		<#if dimension.enableSunMoon>
+		<#if dimension.enableCustomSunMoonTextures>
 			private static final ResourceLocation ${dimension.getModElement().getRegistryNameUpper()}_SUN
 				= ResourceLocation.parse("${modid}:textures/${dimension.sunTexture}.png");
 			private static final ResourceLocation ${dimension.getModElement().getRegistryNameUpper()}_MOON
@@ -57,12 +57,12 @@ public class ${JavaModName}SkyboxRenderer {
 		if (mc.player == null) return;
 		if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_SKY) return;
 		<#list dimensions as dimension>
-			<#if dimension.enableSkybox || dimension.enableSunMoon>
+			<#if dimension.enableCustomSkyboxTextures || dimension.enableCustomSunMoonTextures>
 				if (mc.player.level().dimension() == ${dimension.getModElement().getRegistryNameUpper()}) {
-					<#if dimension.enableSkybox>
+					<#if dimension.enableCustomSkyboxTextures>
 						renderCustomSkybox(event, ${dimension.getModElement().getRegistryNameUpper()}_SKYBOX);
 					</#if>
-					<#if dimension.enableSunMoon>
+					<#if dimension.enableCustomSunMoonTextures>
 						renderCustomSun(event, mc.player.level(), ${dimension.getModElement().getRegistryNameUpper()}_SUN);
 						renderCustomMoon(event, mc.player.level(), ${dimension.getModElement().getRegistryNameUpper()}_MOON);
 					</#if>

@@ -117,8 +117,8 @@ dependencies {
         dep -> dep.exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
     }
     implementation "com.github.sps.junidecode:junidecode:0.3"
-    implementation "org.jboss.forge.roaster:roaster-api:2.31.0.Final"
-    implementation "org.jboss.forge.roaster:roaster-jdt:2.31.0.Final"
+    implementation "org.jboss.forge.roaster:roaster-api:2.31.1.Final"
+    implementation "org.jboss.forge.roaster:roaster-jdt:2.31.1.Final"
     implementation "org.snakeyaml:snakeyaml-engine:3.0.1"
     implementation "org.reflections:reflections:0.10.2"
     implementation "com.google.guava:guava:33.6.0-jre"

@@ -101,6 +101,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		generationShape = "uniform";
 
+		blocksToReplace = new ArrayList<>();
 		localScripts = new ArrayList<>();
 	}
 

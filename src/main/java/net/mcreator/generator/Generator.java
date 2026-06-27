@@ -173,9 +173,6 @@ public class Generator implements IGenerator, Closeable {
 			}
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 
-		if (exception.get() != null)
-			throw exception.get();
-
 		// remove outdated/stale global/base files from workspace files list
 		// (e.g. is a different generator added a file that is no longer present in the generator definition)
 		if (workspace.getMetadata("files") instanceof List<?> fileList)
@@ -205,6 +202,9 @@ public class Generator implements IGenerator, Closeable {
 
 		// generate tags files
 		TagsUtils.generateTagsFiles(this, workspace, generatorConfiguration.getTagsSpecification());
+
+		if (exception.get() != null)
+			throw exception.get();
 	}
 
 	/**
