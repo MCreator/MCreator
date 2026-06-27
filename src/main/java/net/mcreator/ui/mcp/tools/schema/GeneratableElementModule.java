@@ -104,6 +104,8 @@ public class GeneratableElementModule implements Module {
 			return GUIComponentSchemaHelper.createDefinition(context);
 		} else if (erasedType == PropertyData.class) {
 			return PropertyDataSchemaHelper.createDefinition(context);
+		} else if (erasedType == StateMap.class) {
+			return StateMapSchemaHelper.createDefinition(context);
 		}
 		return null;
 	}
