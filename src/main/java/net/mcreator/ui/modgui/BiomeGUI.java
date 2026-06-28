@@ -622,8 +622,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		}
 	}
 
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
+	@Override public void afterGeneratableElementGenerated(boolean forceActions) {
+		super.afterGeneratableElementGenerated(forceActions);
 
 		// if we are in editing mode, changes affecting dimensions using biome may be made
 		if (isEditingMode()) {

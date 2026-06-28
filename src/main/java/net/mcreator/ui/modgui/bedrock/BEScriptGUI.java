@@ -498,13 +498,13 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
+	@Override public void afterGeneratableElementGenerated(boolean forceActions) {
+		super.afterGeneratableElementGenerated(forceActions);
 
 		boolean triggerTypeChanged = triggerTypeBeforeEdit != null && !triggerTypeBeforeEdit.equals(triggerType);
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && triggerTypeChanged)
+		if (isEditingMode() && (triggerTypeChanged || forceActions))
 			fixScriptReferences(modElement, triggerTypeBeforeEdit);
 
 		triggerTypeBeforeEdit = triggerType;

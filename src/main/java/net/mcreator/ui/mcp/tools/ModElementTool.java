@@ -270,8 +270,6 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		return jsonObject.get("definition");
 	}
 
-	// TODO: run tasks after GUI is done to e.g. update references, also add this to tests
-
 	private GEResult validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
 		AtomicReference<ModElementGUI<?>> modElementGUIRef = new AtomicReference<>();
 
@@ -322,6 +320,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		if (!errors.isEmpty()) {
 			throw new Exception("Validation failed: " + String.join(", ", errors));
 		}
+
+		modElementGUI.afterGeneratableElementGenerated(true);
 
 		return new GEResult(modElementGUI.getElementFromGUI(), validationResults);
 	}
