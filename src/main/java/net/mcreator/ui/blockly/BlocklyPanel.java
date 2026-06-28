@@ -132,6 +132,10 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		});
 	}
 
+	public void forceLoad() {
+		webView.forceLoad();
+	}
+
 	private boolean isTransparent() {
 		return mcreator.hasBackgroundImage() && CefUtils.useOSR()
 				&& PreferencesManager.PREFERENCES.blockly.translucentBackground.get();

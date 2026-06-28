@@ -20,6 +20,7 @@
 package net.mcreator.ui.blockly;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ public record BlocklyEditorType(String registryName, String extension, String st
 	}
 
 	public static Collection<String> getTypes() {
-		return TYPES.keySet();
+		return Collections.unmodifiableSet(TYPES.keySet());
 	}
 
 	public static final BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "ptpl", "event_trigger");

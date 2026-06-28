@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -150,8 +151,13 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				throw e;
 			} catch (Exception e) {
 				LOG.error("Failed to parse Blockly XML", e);
-				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
+				if (e instanceof SAXException saxException) {
+					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.exception_compiling", saxException.toString())));
+				} else {
+					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.exception_compiling", e.getMessage())));
+				}
 			}
 		} else {
 			addCompileNote(
