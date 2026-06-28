@@ -59,6 +59,6 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 		}
 	}
 
-	protected abstract CompletableFuture<ToolResult> call(MCreator mcreator, T input);
+	protected abstract CompletableFuture<ToolResult> call(MCreator mcreator, T input) throws Exception;
 
 }
