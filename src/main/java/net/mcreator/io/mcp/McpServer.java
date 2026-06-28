@@ -28,7 +28,6 @@ import net.mcreator.io.mcp.protocol.JsonRpcResponse;
 import net.mcreator.io.mcp.protocol.JsonSchemaGenerator;
 import net.mcreator.io.mcp.protocol.McpSchema;
 import net.mcreator.io.mcp.tool.IMcpTool;
-import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.io.mcp.transport.McpTransport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -113,7 +112,7 @@ public class McpServer {
 						resultFuture = CompletableFuture.completedFuture(handleListTools());
 						break;
 					case "tools/call":
-						resultFuture = handleCallTool(sessionId, request.params());
+						resultFuture = handleCallTool(request.params());
 						break;
 					case "resources/list":
 						resultFuture = CompletableFuture.completedFuture(new McpSchema.ResourceListResponse(List.of()));
@@ -183,50 +182,6 @@ public class McpServer {
 		transport.sendMessage(sessionId, gson.toJson(response));
 	}
 
-	private void sendNotification(String sessionId, JsonObject params) {
-		JsonObject notification = new JsonObject();
-		notification.addProperty("jsonrpc", "2.0");
-		notification.addProperty("method", "notifications/message");
-		notification.add("params", params);
-		transport.sendMessage(sessionId, gson.toJson(notification));
-	}
-
-	private CompletableFuture<McpSchema.CallToolResponse> handleCallTool(String sessionId, JsonElement params) {
-		McpSchema.CallToolRequest req = gson.fromJson(params, McpSchema.CallToolRequest.class);
-		IMcpTool tool = tools.get(req.name());
-		if (tool == null) {
-			return CompletableFuture.failedFuture(new RuntimeException("Tool not found: " + req.name()));
-		}
-
-		JsonObject arguments = req.arguments() != null && req.arguments().isJsonObject() ?
-				req.arguments().getAsJsonObject() :
-				new JsonObject();
-
-		return tool.invoke(arguments).thenApply(invocation -> {
-			if (invocation.hasDeferredResult()) {
-				invocation.deferred().whenComplete((deferredResult, error) -> {
-					ToolResult result = error != null ?
-							ToolResult.error("Tool execution failed: " + error.getMessage(), error) :
-							deferredResult;
-					sendDeferredToolResult(sessionId, req.name(), result);
-				});
-			}
-			return invocation.immediate().toResponse();
-		});
-	}
-
-	private void sendDeferredToolResult(String sessionId, String toolName, ToolResult result) {
-		JsonObject data = new JsonObject();
-		data.addProperty("tool", toolName);
-		data.add("result", gson.toJsonTree(result.toResponse()));
-
-		JsonObject notificationParams = new JsonObject();
-		notificationParams.addProperty("level", result.toResponse().isError() ? "error" : "info");
-		notificationParams.addProperty("logger", "mcreator.tool." + toolName);
-		notificationParams.add("data", data);
-		sendNotification(sessionId, notificationParams);
-	}
-
 	private McpSchema.InitializeResponse handleInitialize() {
 		McpSchema.ServerCapabilities caps = new McpSchema.ServerCapabilities(Map.of(),
 				new McpSchema.ResourceCapability(false, false));
@@ -242,6 +197,18 @@ public class McpServer {
 					schemaGenerator.generateSchema(tool.getInputType()), tool.getAnnotations(), outputSchema));
 		}
 		return new McpSchema.ToolListResponse(toolList);
+	}
+
+	private CompletableFuture<McpSchema.CallToolResponse> handleCallTool(JsonElement params) {
+		McpSchema.CallToolRequest req = gson.fromJson(params, McpSchema.CallToolRequest.class);
+		IMcpTool tool = tools.get(req.name());
+		if (tool != null) {
+			JsonObject arguments = req.arguments() != null && req.arguments().isJsonObject() ?
+					req.arguments().getAsJsonObject() :
+					new JsonObject();
+			return tool.invoke(arguments);
+		}
+		return CompletableFuture.failedFuture(new RuntimeException("Tool not found: " + req.name()));
 	}
 
 }

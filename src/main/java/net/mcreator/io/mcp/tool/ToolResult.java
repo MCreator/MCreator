@@ -75,7 +75,7 @@ public final class ToolResult {
 				List.of(McpSchema.Content.text(cause.getClass().getSimpleName() + ": " + message)), true));
 	}
 
-	public McpSchema.CallToolResponse toResponse() {
+	McpSchema.CallToolResponse toResponse() {
 		return response;
 	}
 }

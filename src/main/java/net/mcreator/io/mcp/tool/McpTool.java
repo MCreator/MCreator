@@ -29,7 +29,7 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * Base class for MCP tools with a typed input model.
- * Subclass {@link #createInvocation} to handle tool calls.
+ * Subclass to add tool-specific APIs (e.g. actionable interfaces) alongside {@link #call}.
  *
  * @param <I> input type used for JSON Schema generation and argument deserialization
  */
@@ -61,12 +61,15 @@ public abstract class McpTool<I> implements IMcpTool {
 		return null;
 	}
 
-	@Override public final CompletableFuture<ToolInvocation> invoke(JsonObject arguments) {
+	@Override public final CompletableFuture<McpSchema.CallToolResponse> invoke(JsonObject arguments) {
 		I input = McpJson.fromJson(arguments, inputType);
-		return createInvocation(input);
+		return call(input).thenApply(ToolResult::toResponse);
 	}
 
-	protected abstract CompletableFuture<ToolInvocation> createInvocation(I input);
+	/**
+	 * Handles a tool invocation with deserialized, typed arguments.
+	 */
+	protected abstract CompletableFuture<ToolResult> call(I input);
 
 	protected static CompletableFuture<ToolResult> completed(ToolResult result) {
 		return CompletableFuture.completedFuture(result);
