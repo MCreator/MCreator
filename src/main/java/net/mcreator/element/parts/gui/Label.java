@@ -25,11 +25,12 @@ import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class Label extends GUIComponent {
 
-	public String name;
+	@Nonnull public String name;
 
 	public StringProcedure text;
 	public Color color;
@@ -37,7 +38,7 @@ public class Label extends GUIComponent {
 
 	public Procedure displayCondition;
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, boolean hasShadow,
+	public Label(@Nonnull String name, int x, int y, StringProcedure text, Color color, boolean hasShadow,
 			Procedure displayCondition) {
 		super(x, y);
 		this.text = text;
@@ -53,7 +54,7 @@ public class Label extends GUIComponent {
 		this.anchorPoint = anchorPoint;
 	}
 
-	@Override public String getName() {
+	@Nonnull @Override public String getName() {
 		return name;
 	}
 

@@ -218,7 +218,7 @@ import java.util.*;
 		tabMap.entrySet().removeIf(entry -> {
 			if (entry.getKey().startsWith(NameMapper.MCREATOR_PREFIX) && !workspace.containsModElement(
 					GeneratorWrapper.getElementPlainName(entry.getKey()))) {
-				LOG.warn("Broken reference found. Referencing non-existent custom tab: {}",
+				LOG.warn("Broken creative tab reference found. Referencing non-existent custom tab: {}",
 						entry.getKey().replaceFirst(NameMapper.MCREATOR_PREFIX, ""));
 				return true;
 			}

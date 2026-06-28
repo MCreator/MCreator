@@ -73,6 +73,7 @@ import java.util.List;
 
 			public boolean affectedByFortune, explosionDecay;
 
+			@LimitedOptions({ "Ignore silk touch", "Only with silk touch", "Only without silk touch" })
 			public int silkTouchMode;
 
 			// initiate default values

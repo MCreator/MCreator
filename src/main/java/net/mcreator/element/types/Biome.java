@@ -84,7 +84,7 @@ import java.util.List;
 	@Numeric(init = 1, min = 0, max = 64, step = 1) public int treesPerChunk;
 	@LimitedOptions({ "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees", "Mega spruce trees" })
 	public String vanillaTreeType;
-	public int treeType;
+	@LimitedOptions({ "Vanilla trees", "Custom trees" }) public int treeType;
 	@Numeric(init = 7, min = 0, max = 32, step = 1) public int minHeight;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
