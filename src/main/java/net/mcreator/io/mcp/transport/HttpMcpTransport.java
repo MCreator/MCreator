@@ -38,6 +38,8 @@ public class HttpMcpTransport implements McpTransport {
 
 	private static final Logger LOG = LogManager.getLogger(HttpMcpTransport.class);
 
+	private static final int maxToolDurationSeconds = 120;
+
 	private final int port;
 	private HttpServer server;
 	private final Map<String, StreamSession> sessions = new ConcurrentHashMap<>();
@@ -107,7 +109,7 @@ public class HttpMcpTransport implements McpTransport {
 				// For non-session requests or if session was just established but not yet in our map (though unlikely)
 				// wait for response and return directly
 				try {
-					String response = responseFuture.get(31, TimeUnit.SECONDS);
+					String response = responseFuture.get(maxToolDurationSeconds, TimeUnit.SECONDS);
 					if (response != null) {
 						byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
 						exchange.getResponseHeaders().add("Content-Type", "application/json");
