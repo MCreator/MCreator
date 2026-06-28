@@ -30,6 +30,7 @@ import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.mcp.tools.utils.JsonDefinitionMergePatch;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
@@ -40,10 +41,12 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -228,6 +231,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		GeneratableElement element = mcreator.getModElementManager()
 				.fromJSONtoGeneratableElement(json, modElement, validationLog);
 
+		// store GE so ModElementGUI reads the GE correctly
 		mcreator.getModElementManager().storeModElement(element);
 
 		GEResult result = validateThroughUI(mcreator, element);
@@ -266,9 +270,21 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		return jsonObject.get("definition");
 	}
 
+	// TODO: Blockly does not really load as UI is never shown
 	private GEResult validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
-		ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
-				.getModElementGUI(mcreator, generatableElement.getModElement(), true);
+		AtomicReference<ModElementGUI<?>> modElementGUIRef = new AtomicReference<>();
+
+		ThreadUtil.runOnSwingThreadAndWait(() -> {
+			ModElementGUI<?> modElementGUI = generatableElement.getModElement().getType()
+					.getModElementGUI(mcreator, generatableElement.getModElement(), true);
+
+			// Ensure data lists are definitely holding the latest options
+			modElementGUI.reloadDataLists();
+
+			modElementGUIRef.set(modElementGUI);
+		});
+
+		ModElementGUI<?> modElementGUI = modElementGUIRef.get();
 
 		// Verify that BlocklyPanels are fully loaded
 		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
@@ -284,8 +300,12 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				}
 			});
 
+			panelHolder.regenerateBlockAssemblies(false);
+
 			// Give it time for BlocklyPanel(s) to load and propagate the event
-			latch.await(10, TimeUnit.SECONDS);
+			if (!latch.await(10, TimeUnit.SECONDS)) {
+				throw new Exception("BlocklyPanel(s) did not respond within 10 seconds");
+			}
 		}
 
 		AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
