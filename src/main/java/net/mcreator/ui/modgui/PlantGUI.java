@@ -126,8 +126,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
 	private final JLabel plantTypeIndicator = new JLabel();
 
-	private final Model cross = new Model.BuiltInModel("Cross model");
-	private final Model crop = new Model.BuiltInModel("Crop model");
+	private static final Model cross = new Model.BuiltInModel("Cross model");
+	private static final Model crop = new Model.BuiltInModel("Crop model");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = ComponentFromAnnotation.spinner(Plant.class, "growapableMaxHeight");
 
