@@ -42,6 +42,10 @@ public interface IBlocklyPanelHolder {
 		return null;
 	}
 
+	default void forceLoadPanels() {
+		getBlocklyPanels().forEach(BlocklyPanel::forceLoad);
+	}
+
 	default boolean isInitialXMLValid() {
 		return true;
 	}
