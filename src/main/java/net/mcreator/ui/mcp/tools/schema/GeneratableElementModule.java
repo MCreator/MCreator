@@ -329,6 +329,10 @@ public class GeneratableElementModule implements Module {
 			if (this.isNumericType(member.getType().getErasedType())) {
 				node.put("minimum", 0);
 				node.put("maximum", limitedOptions.value().length - 1);
+				ObjectNode options = node.putObject("limitedOptions");
+				for (int i = 0; i < limitedOptions.value().length; i++) {
+					options.put(String.valueOf(i), limitedOptions.value()[i]);
+				}
 			}
 
 			if (limitedOptions.allowCustom()) {
