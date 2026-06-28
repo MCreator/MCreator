@@ -270,7 +270,8 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		return jsonObject.get("definition");
 	}
 
-	// TODO: Blockly does not really load as UI is never shown
+	// TODO: run tasks after GUI is done to e.g. update references, also add this to tests
+
 	private GEResult validateThroughUI(MCreator mcreator, GeneratableElement generatableElement) throws Exception {
 		AtomicReference<ModElementGUI<?>> modElementGUIRef = new AtomicReference<>();
 
@@ -300,7 +301,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				}
 			});
 
-			panelHolder.regenerateBlockAssemblies(false);
+			panelHolder.forceLoadPanels();
 
 			// Give it time for BlocklyPanel(s) to load and propagate the event
 			if (!latch.await(10, TimeUnit.SECONDS)) {
