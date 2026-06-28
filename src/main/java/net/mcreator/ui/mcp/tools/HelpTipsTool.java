@@ -57,12 +57,31 @@ public class HelpTipsTool extends MCreatorMcpTool<HelpTipsTool.Args> {
 		return switch (input.type) {
 			case Args.QueryType.LIST_CATEGORIES ->
 					CompletableFuture.completedFuture(ToolResult.collection(HelpLoader.getCategories()));
-			case LIST_ENTRIES_IN_CATEGORY ->
-					CompletableFuture.completedFuture(ToolResult.collection(HelpLoader.getEntriesForCategory(input.query)));
-			case READ_ENTRY ->
-					CompletableFuture.completedFuture(ToolResult.text(HelpLoader.getFromEnglishCache(input.query)));
-			case SEARCH_ENTRIES_CONTAINING ->
-					CompletableFuture.completedFuture(ToolResult.collection(HelpLoader.getEntriesMatching(input.query)));
+			case LIST_ENTRIES_IN_CATEGORY -> {
+				if (input.query == null || input.query.isBlank()) {
+					yield CompletableFuture.completedFuture(ToolResult.error("query (category name) is required"));
+				}
+				yield CompletableFuture.completedFuture(
+						ToolResult.collection(HelpLoader.getEntriesForCategory(input.query)));
+			}
+			case READ_ENTRY -> {
+				if (input.query == null || input.query.isBlank()) {
+					yield CompletableFuture.completedFuture(ToolResult.error("query (entry path) is required"));
+				}
+				String entry = HelpLoader.getFromEnglishCache(input.query);
+				if (entry == null) {
+					yield CompletableFuture.completedFuture(
+							ToolResult.error("Help entry not found: " + input.query));
+				}
+				yield CompletableFuture.completedFuture(ToolResult.text(entry));
+			}
+			case SEARCH_ENTRIES_CONTAINING -> {
+				if (input.query == null || input.query.isBlank()) {
+					yield CompletableFuture.completedFuture(ToolResult.error("query is required"));
+				}
+				yield CompletableFuture.completedFuture(
+						ToolResult.collection(HelpLoader.getEntriesMatching(input.query)));
+			}
 		};
 	}
 

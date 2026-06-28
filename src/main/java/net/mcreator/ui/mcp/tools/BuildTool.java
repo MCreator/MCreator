@@ -19,22 +19,41 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceBuildStartedEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
-public class BuildTool extends MCreatorMcpTool<Void> {
+public class BuildTool extends MCreatorMcpTool<BuildTool.Args> {
+
+	private static final Logger LOG = LogManager.getLogger(BuildTool.class);
+
+	public static class Args {
+		@SchemaDescription("""
+				BUILD_AND_WAIT: generate base code, run Gradle build, and wait for completion with console output.\
+				START_BUILD: start the same build flow without waiting (poll with is_gradle_running and read_console).\
+				IS_GRADLE_RUNNING: check whether Gradle or another workspace task is currently running.""")
+		public Action actionType;
+
+		public enum Action {
+			BUILD_AND_WAIT, START_BUILD, IS_GRADLE_RUNNING
+		}
+	}
 
 	public BuildTool(Supplier<MCreator> currentMCreator) {
-		super(currentMCreator, Void.class);
+		super(currentMCreator, Args.class);
 	}
 
 	@Override public String getName() {
@@ -42,27 +61,87 @@ public class BuildTool extends MCreatorMcpTool<Void> {
 	}
 
 	@Override public String getDescription() {
-		return "Builds the project and gets the resulting console output";
+		return """
+				Build workspace or inspect Gradle task state. Use build_and_wait to block until the build finishes,\
+				start_build to kick off a build asynchronously, and is_gradle_running to poll task status.""";
 	}
 
-	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Void input) {
-		if (mcreator.getGradleConsole().getStatus() == GradleConsole.RUNNING) {
+	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input)
+			throws TemplateGeneratorException {
+		if (input.actionType == null) {
+			return CompletableFuture.completedFuture(ToolResult.error("actionType must be provided"));
+		}
+
+		return switch (input.actionType) {
+			case BUILD_AND_WAIT -> buildAndWait(mcreator);
+			case START_BUILD -> startBuild(mcreator);
+			case IS_GRADLE_RUNNING -> CompletableFuture.completedFuture(isGradleRunning(mcreator));
+		};
+	}
+
+	private CompletableFuture<ToolResult> buildAndWait(MCreator mcreator) throws TemplateGeneratorException {
+		if (isGradleBusy(mcreator)) {
 			return CompletableFuture.completedFuture(
 					ToolResult.error("Gradle is already running some task. Try later."));
 		}
 
 		CompletableFuture<ToolResult> future = new CompletableFuture<>();
-		mcreator.getGenerator().generateBase();
-		MCREvent.event(new WorkspaceBuildStartedEvent(mcreator));
+		GradleConsole gradleConsole = mcreator.getGradleConsole();
+		gradleConsole.markRunning();
+		try {
+			mcreator.getGenerator().generateBase(true);
+			MCREvent.event(new WorkspaceBuildStartedEvent(mcreator));
 
-		mcreator.getGradleConsole().exec("build", result -> {
-			Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("result", result);
-			resultMap.put("gradleOutput", mcreator.getGradleConsole().getConsoleText());
-			future.complete(ToolResult.object(resultMap));
-		});
+			gradleConsole.exec("build", result -> {
+				Map<String, Object> resultMap = new HashMap<>();
+				resultMap.put("result", result);
+				resultMap.put("gradleOutput", gradleConsole.getConsoleText());
+				future.complete(ToolResult.object(resultMap));
+			});
+		} catch (Exception e) {
+			gradleConsole.markReady();
+			throw e;
+		}
 		return future;
 	}
 
-}
+	private CompletableFuture<ToolResult> startBuild(MCreator mcreator) {
+		if (isGradleBusy(mcreator)) {
+			return CompletableFuture.completedFuture(
+					ToolResult.error("Gradle is already running some task. Try later."));
+		}
 
+		new Thread(() -> {
+			GradleConsole gradleConsole = mcreator.getGradleConsole();
+			gradleConsole.markRunning();
+			try {
+				mcreator.getGenerator().generateBase(true);
+				MCREvent.event(new WorkspaceBuildStartedEvent(mcreator));
+				SwingUtilities.invokeLater(() -> gradleConsole.exec("build"));
+			} catch (Exception e) {
+				LOG.error("Failed to start build", e);
+				gradleConsole.markReady();
+			}
+		}, "MCP-Build").start();
+
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("started", true);
+		return CompletableFuture.completedFuture(ToolResult.object(resultMap));
+	}
+
+	private ToolResult isGradleRunning(MCreator mcreator) {
+		GradleConsole gradleConsole = mcreator.getGradleConsole();
+		boolean running = isGradleBusy(mcreator);
+
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("running", running);
+		resultMap.put("gradleSetupTaskRunning", gradleConsole.isGradleSetupTaskRunning());
+		return ToolResult.object(resultMap);
+	}
+
+	private static boolean isGradleBusy(MCreator mcreator) {
+		GradleConsole gradleConsole = mcreator.getGradleConsole();
+		return gradleConsole.getStatus() == GradleConsole.RUNNING || gradleConsole.isGradleSetupTaskRunning();
+	}
+
+}
