@@ -25,17 +25,18 @@ import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.references.TextureReference;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
 public class Image extends GUIComponent {
 
-	@TextureReference(TextureType.SCREEN) public String image;
+	@Nonnull @TextureReference(TextureType.SCREEN) public String image;
 	public boolean use1Xscale;
 
 	public Procedure displayCondition;
 
-	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition) {
+	public Image(int x, int y, @Nonnull String image, boolean use1Xscale, Procedure displayCondition) {
 		super(x, y);
 		this.image = image;
 		this.use1Xscale = use1Xscale;

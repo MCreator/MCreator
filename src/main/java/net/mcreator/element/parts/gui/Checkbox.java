@@ -23,15 +23,16 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class Checkbox extends GUIComponent {
 
-	public final String name;
+	@Nonnull public final String name;
 	public final String text;
 	public final Procedure isCheckedProcedure;
 
-	public Checkbox(String name, int x, int y, String text, Procedure isCheckedProcedure) {
+	public Checkbox(@Nonnull String name, int x, int y, String text, Procedure isCheckedProcedure) {
 		super(x, y);
 		this.text = text;
 		this.isCheckedProcedure = isCheckedProcedure;
@@ -39,7 +40,7 @@ public class Checkbox extends GUIComponent {
 		this.name = name;
 	}
 
-	@Override public String getName() {
+	@Nonnull @Override public String getName() {
 		return name;
 	}
 

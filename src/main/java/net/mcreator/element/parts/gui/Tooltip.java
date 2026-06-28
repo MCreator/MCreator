@@ -26,23 +26,24 @@ import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class Tooltip extends SizedComponent {
 
-	public final String name;
+	@Nonnull public final String name;
 
 	public final StringProcedure text;
 	public final Procedure displayCondition;
 
-	public Tooltip(String name, int x, int y, int width, int height, StringProcedure text, Procedure displayCondition) {
+	public Tooltip(@Nonnull String name, int x, int y, int width, int height, StringProcedure text, Procedure displayCondition) {
 		super(x, y, width, height);
 		this.text = text;
 		this.displayCondition = displayCondition;
 		this.name = name;
 	}
 
-	@Override public String getName() {
+	@Nonnull @Override public String getName() {
 		return name;
 	}
 

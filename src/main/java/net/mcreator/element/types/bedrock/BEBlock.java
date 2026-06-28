@@ -74,7 +74,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public int maxGenerateHeight;
 	@NonNullIf("generateFeature") @ModElementReference public List<MItemBlock> blocksToReplace;
 
-	public int rotationMode;
+	@LimitedOptions({ "none", "player_y_axis", "player_all_axis", "block_all_axis", "log" }) public int rotationMode;
 	@LimitedOptions({ "opaque", "double_sided", "blend", "alpha_test_single_sided", "alpha_test",
 			"alpha_test_to_opaque", "alpha_test_single_sided_to_opaque", "blend_to_opaque" })
 	public String renderMethod;
