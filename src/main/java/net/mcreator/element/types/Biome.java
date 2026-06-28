@@ -138,7 +138,7 @@ import java.util.List;
 		oceanRuinType = "NONE";
 		spawnRuinedPortal = "NONE";
 		spawnEntries = new ArrayList<>();
-		defaultFeatures = new ArrayList<>();
+		defaultFeatures = new ArrayList<>(List.of("Caves", "Ores", "FrozenTopLayer"));
 		genTemperature = new ClimatePoint(-0.5, 0.5);
 		genHumidity = new ClimatePoint(-0.5, 0.5);
 		genContinentalness = new ClimatePoint(0.3, 1.0);

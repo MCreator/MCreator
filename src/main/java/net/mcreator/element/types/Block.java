@@ -261,7 +261,7 @@ import java.util.stream.Collectors;
 		this.blockSetType = "OAK";
 		this.leavesParticleChance = 0;
 		this.tintType = "No tint";
-		this.boundingBoxes = new ArrayList<>();
+		this.boundingBoxes = new ArrayList<>(List.of(new IBlockWithBoundingBox.BoxEntry()));
 		this.restrictionBiomes = new ArrayList<>();
 		this.blocksToReplace = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
@@ -684,7 +684,7 @@ import java.util.stream.Collectors;
 		@Nullable transient Workspace workspace;
 
 		public StateEntry() {
-			this.boundingBoxes = new ArrayList<>();
+			this.boundingBoxes = new ArrayList<>(List.of(new IBlockWithBoundingBox.BoxEntry()));
 		}
 
 		@Override public void setWorkspace(@Nullable Workspace workspace) {
