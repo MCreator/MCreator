@@ -63,6 +63,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#shouldSkipTemplateBasedOnCondition(net.mcreator.generator.Generator,java.util.Map,java.lang.Object)" tabindex="0">shouldSkipTemplateBasedOnCondition(Generator, Map, Object)</a></li>
+<li><a href="#parseCondition(net.mcreator.generator.Generator,java.lang.String,java.lang.Object)" tabindex="0">parseCondition(Generator, String, Object)</a></li>
 <li><a href="#getValueFrom(java.lang.String,java.lang.Object)" tabindex="0">getValueFrom(String, Object)</a></li>
 <li><a href="#processFTLExpression(net.mcreator.generator.Generator,java.lang.String,java.lang.Object)" tabindex="0">processFTLExpression(Generator, String, Object)</a></li>
 </ol>
@@ -114,16 +115,21 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getValueFrom(java.lang.String,java.lang.Object)" class="member-name-link">getValueFrom</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;memberNameRaw,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;conditionDataProvider)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#processFTLExpression(net.mcreator.generator.Generator,java.lang.String,java.lang.Object)" class="member-name-link">processFTLExpression</a><wbr>(<a href="../Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#parseCondition(net.mcreator.generator.Generator,java.lang.String,java.lang.Object)" class="member-name-link">parseCondition</a><wbr>(<a href="../Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;condition,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;conditionDataProvider)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#processFTLExpression(net.mcreator.generator.Generator,java.lang.String,java.lang.Object)" class="member-name-link">processFTLExpression</a><wbr>(<a href="../Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expression,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;dataHolder)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#shouldSkipTemplateBasedOnCondition(net.mcreator.generator.Generator,java.util.Map,java.lang.Object)" class="member-name-link">shouldSkipTemplateBasedOnCondition</a><wbr>(<a href="../Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#shouldSkipTemplateBasedOnCondition(net.mcreator.generator.Generator,java.util.Map,java.lang.Object)" class="member-name-link">shouldSkipTemplateBasedOnCondition</a><wbr>(<a href="../Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;template,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;conditionDataProvider)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -166,6 +172,19 @@ loadScripts(document, 'script');</script>
  @Nonnull
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;?,<wbr>?&gt;&nbsp;template,
  @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;conditionDataProvider)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="parseCondition(net.mcreator.generator.Generator,java.lang.String,java.lang.Object)">
+<h3>parseCondition</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">parseCondition</span><wbr><span class="parameters">(@Nonnull
+ <a href="../Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
+ @Nonnull
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;condition,
+ @Nonnull
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;conditionDataProvider)</span></div>
 </div>
 </section>

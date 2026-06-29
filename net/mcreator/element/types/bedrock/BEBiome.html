@@ -64,7 +64,6 @@ loadScripts(document, 'script');</script>
 <li><a href="#foundationMaterial" tabindex="0">foundationMaterial</a></li>
 <li><a href="#seaFloorMaterial" tabindex="0">seaFloorMaterial</a></li>
 <li><a href="#seaMaterial" tabindex="0">seaMaterial</a></li>
-<li><a href="#spawnParticles" tabindex="0">spawnParticles</a></li>
 <li><a href="#seaFloorDepth" tabindex="0">seaFloorDepth</a></li>
 <li><a href="#airColor" tabindex="0">airColor</a></li>
 <li><a href="#fogColor" tabindex="0">fogColor</a></li>
@@ -81,6 +80,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#particleDensity" tabindex="0">particleDensity</a></li>
 <li><a href="#noiseType" tabindex="0">noiseType</a></li>
 <li><a href="#villageType" tabindex="0">villageType</a></li>
+<li><a href="#spawnParticles" tabindex="0">spawnParticles</a></li>
 <li><a href="#particleToSpawn" tabindex="0">particleToSpawn</a></li>
 <li><a href="#biomeTags" tabindex="0">biomeTags</a></li>
 <li><a href="#biomeReplacements" tabindex="0">biomeReplacements</a></li>
@@ -334,14 +334,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="spawnParticles">
-<h3>spawnParticles</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">spawnParticles</span></div>
-</div>
-</section>
-</li>
-<li>
 <section class="detail" id="seaFloorDepth">
 <h3>seaFloorDepth</h3>
 <div class="horizontal-scroll">
@@ -353,7 +345,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="airColor">
 <h3>airColor</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">airColor</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">airColor</span></div>
 </div>
 </section>
 </li>
@@ -361,7 +354,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="fogColor">
 <h3>fogColor</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">fogColor</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">fogColor</span></div>
 </div>
 </section>
 </li>
@@ -369,7 +363,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="grassColor">
 <h3>grassColor</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">grassColor</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">grassColor</span></div>
 </div>
 </section>
 </li>
@@ -377,7 +372,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="foliageColor">
 <h3>foliageColor</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">foliageColor</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">foliageColor</span></div>
 </div>
 </section>
 </li>
@@ -385,7 +381,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="waterColor">
 <h3>waterColor</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">waterColor</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">waterColor</span></div>
 </div>
 </section>
 </li>
@@ -393,7 +390,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="waterFogColor">
 <h3>waterFogColor</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">waterFogColor</span></div>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a></span>&nbsp;<span class="element-name">waterFogColor</span></div>
 </div>
 </section>
 </li>
@@ -466,6 +464,14 @@ loadScripts(document, 'script');</script>
 <h3>villageType</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">villageType</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="spawnParticles">
+<h3>spawnParticles</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">spawnParticles</span></div>
 </div>
 </section>
 </li>

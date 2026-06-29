@@ -211,7 +211,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.parts.gui.GUIComponent">Methods inherited from class&nbsp;<a href="GUIComponent.html#method-summary" title="class in net.mcreator.element.parts.gui">GUIComponent</a></h3>
-<code><a href="GUIComponent.html#compareTo(net.mcreator.element.parts.gui.GUIComponent)" title="compareTo(GUIComponent)">compareTo</a>, <a href="GUIComponent.html#equals(java.lang.Object)" title="equals(Object)">equals</a>, <a href="GUIComponent.html#getAnchorPoint()" title="getAnchorPoint()">getAnchorPoint</a>, <a href="GUIComponent.html#getX()" title="getX()">getX</a>, <a href="GUIComponent.html#getY()" title="getY()">getY</a>, <a href="GUIComponent.html#gx(int)" title="gx(int)">gx</a>, <a href="GUIComponent.html#gy(int)" title="gy(int)">gy</a>, <a href="GUIComponent.html#hashCode()" title="hashCode()">hashCode</a>, <a href="GUIComponent.html#isSizeKnown()" title="isSizeKnown()">isSizeKnown</a>, <a href="GUIComponent.html#registerCustomComponent(java.lang.Class)" title="registerCustomComponent(Class)">registerCustomComponent</a>, <a href="GUIComponent.html#toString()" title="toString()">toString</a></code></div>
+<code><a href="GUIComponent.html#compareTo(net.mcreator.element.parts.gui.GUIComponent)" title="compareTo(GUIComponent)">compareTo</a>, <a href="GUIComponent.html#equals(java.lang.Object)" title="equals(Object)">equals</a>, <a href="GUIComponent.html#getAnchorPoint()" title="getAnchorPoint()">getAnchorPoint</a>, <a href="GUIComponent.html#getTypeMappings()" title="getTypeMappings()">getTypeMappings</a>, <a href="GUIComponent.html#getX()" title="getX()">getX</a>, <a href="GUIComponent.html#getY()" title="getY()">getY</a>, <a href="GUIComponent.html#gx(int)" title="gx(int)">gx</a>, <a href="GUIComponent.html#gy(int)" title="gy(int)">gy</a>, <a href="GUIComponent.html#hashCode()" title="hashCode()">hashCode</a>, <a href="GUIComponent.html#isSizeKnown()" title="isSizeKnown()">isSizeKnown</a>, <a href="GUIComponent.html#registerCustomComponent(java.lang.Class)" title="registerCustomComponent(Class)">registerCustomComponent</a>, <a href="GUIComponent.html#toString()" title="toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#method-summary" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -230,7 +230,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="entityModel">
 <h3>entityModel</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">entityModel</span></div>
+<div class="member-signature"><span class="annotations">@Nonnull
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">entityModel</span></div>
 </div>
 </section>
 </li>
@@ -280,6 +281,7 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">EntityModel</span><wbr><span class="parameters">(int&nbsp;x,
  int&nbsp;y,
+ @Nonnull
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;entityModel,
  <a href="../procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;displayCondition,
  int&nbsp;scale,

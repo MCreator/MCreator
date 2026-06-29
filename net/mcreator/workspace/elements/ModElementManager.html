@@ -67,7 +67,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#removeModElement(net.mcreator.workspace.elements.ModElement)" tabindex="0">removeModElement(ModElement)</a></li>
 <li><a href="#generatableElementToJSON(net.mcreator.element.GeneratableElement)" tabindex="0">generatableElementToJSON(GeneratableElement)</a></li>
 <li><a href="#fromJSONtoGeneratableElementOrNull(java.lang.String,net.mcreator.workspace.elements.ModElement)" tabindex="0">fromJSONtoGeneratableElementOrNull(String, ModElement)</a></li>
-<li><a href="#fromJSONtoGeneratableElement(java.lang.String,net.mcreator.workspace.elements.ModElement)" tabindex="0">fromJSONtoGeneratableElement(String, ModElement)</a></li>
+<li><a href="#fromJSONtoGeneratableElement(java.lang.String,net.mcreator.workspace.elements.ModElement,java.util.function.Consumer)" tabindex="0">fromJSONtoGeneratableElement(String, ModElement, Consumer)</a></li>
 <li><a href="#requiresElementGradleBuild(net.mcreator.element.GeneratableElement)" tabindex="0">requiresElementGradleBuild(GeneratableElement)</a></li>
 <li><a href="#storeModElementPicture(net.mcreator.element.GeneratableElement)" tabindex="0">storeModElementPicture(GeneratableElement)</a></li>
 <li><a href="#getModElementIcon(net.mcreator.workspace.elements.ModElement)" tabindex="0">getModElementIcon(ModElement)</a></li>
@@ -120,8 +120,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fromJSONtoGeneratableElement(java.lang.String,net.mcreator.workspace.elements.ModElement)" class="member-name-link">fromJSONtoGeneratableElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
- <a href="ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;modElement)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fromJSONtoGeneratableElement(java.lang.String,net.mcreator.workspace.elements.ModElement,java.util.function.Consumer)" class="member-name-link">fromJSONtoGeneratableElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
+ <a href="ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;modElement,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validationLog)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#fromJSONtoGeneratableElementOrNull(java.lang.String,net.mcreator.workspace.elements.ModElement)" class="member-name-link">fromJSONtoGeneratableElementOrNull</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
@@ -240,12 +241,14 @@ So potential metadata fields of ModElement are properly loaded.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="fromJSONtoGeneratableElement(java.lang.String,net.mcreator.workspace.elements.ModElement)">
+<section class="detail" id="fromJSONtoGeneratableElement(java.lang.String,net.mcreator.workspace.elements.ModElement,java.util.function.Consumer)">
 <h3>fromJSONtoGeneratableElement</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="annotations">@Nonnull
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></span>&nbsp;<span class="element-name">fromJSONtoGeneratableElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;json,
- <a href="ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;modElement)</span>
+ <a href="ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;modElement,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validationLog)</span>
                                                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a>,
 <a href="../../element/util/GEValidator.ValidationException.html" title="class in net.mcreator.element.util">GEValidator.ValidationException</a></span></div>
 <dl class="notes">

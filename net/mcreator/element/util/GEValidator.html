@@ -63,7 +63,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#validateAndTryToCorrect(net.mcreator.element.GeneratableElement)" tabindex="0">validateAndTryToCorrect(GeneratableElement)</a></li>
+<li><a href="#validateAndTryToCorrect(net.mcreator.element.GeneratableElement,java.util.function.Consumer)" tabindex="0">validateAndTryToCorrect(GeneratableElement, Consumer)</a></li>
 </ol>
 </li>
 </ol>
@@ -128,7 +128,8 @@ correct invalid values when possible based on attached annotations.</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateAndTryToCorrect(net.mcreator.element.GeneratableElement)" class="member-name-link">validateAndTryToCorrect</a><wbr>(<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateAndTryToCorrect(net.mcreator.element.GeneratableElement,java.util.function.Consumer)" class="member-name-link">validateAndTryToCorrect</a><wbr>(<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validationLog)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Validates the given generatable element and recursively checks all nested
 custom objects, collections, maps, and arrays using reflection.</div>
@@ -167,10 +168,12 @@ custom objects, collections, maps, and arrays using reflection.</div>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="validateAndTryToCorrect(net.mcreator.element.GeneratableElement)">
+<section class="detail" id="validateAndTryToCorrect(net.mcreator.element.GeneratableElement,java.util.function.Consumer)">
 <h3>validateAndTryToCorrect</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateAndTryToCorrect</span><wbr><span class="parameters">(<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</span>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateAndTryToCorrect</span><wbr><span class="parameters">(<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validationLog)</span>
                                     throws <span class="exceptions"><a href="GEValidator.ValidationException.html" title="class in net.mcreator.element.util">GEValidator.ValidationException</a></span></div>
 <div class="block">Validates the given generatable element and recursively checks all nested
 custom objects, collections, maps, and arrays using reflection.
@@ -183,8 +186,9 @@ Supported validation annotations:
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>element</code> - the element to validate</dd>
+<dd><code>validationLog</code> - optional consumer to log validation messages; if <code>null</code>, no logging is performed</dd>
 <dt>Throws:</dt>
-<dd><code><a href="GEValidator.ValidationException.html" title="class in net.mcreator.element.util">GEValidator.ValidationException</a></code> - if validation fails or reflective access fails</dd>
+<dd><code><a href="GEValidator.ValidationException.html" title="class in net.mcreator.element.util">GEValidator.ValidationException</a></code> - if validation fails in non-recoverable way or reflective access fails</dd>
 </dl>
 </div>
 </section>

@@ -76,6 +76,11 @@ loadScripts(document, 'script');</script>
 <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/Retention.html" title="class or interface in java.lang.annotation" class="external-link">@Retention</a>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/annotation/RetentionPolicy.html#RUNTIME" title="class or interface in java.lang.annotation" class="external-link">RUNTIME</a>)
 </span><span class="modifiers">public @interface </span><span class="element-name type-name-label">TextureReference</span></div>
 <div class="block">Used to mark fields storing names of textures used by mod element instance.</div>
+<dl class="notes">
+<dt>API note:</dt>
+<dd>This annotation can also be added to fields of type <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link"><code>Collection</code></a>, custom object, etc.
+with their values known to match or have fields/methods with matching values.</dd>
+</dl>
 </div>
 </section>
 <section class="summary">
@@ -159,7 +164,7 @@ An empty string means the value itself will be considered (effectively same as <
 <div class="block">Special values indicating the texture is not assigned.</div>
 <dl class="notes">
 <dt>Default:</dt>
-<dd><code>{""}</code></dd>
+<dd><code>{}</code></dd>
 </dl>
 </div>
 </section>

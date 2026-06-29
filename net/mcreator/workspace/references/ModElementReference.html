@@ -77,6 +77,11 @@ loadScripts(document, 'script');</script>
 and NOT already included as names of objects like <a href="../../generator/mapping/MappableElement.html" title="class in net.mcreator.generator.mapping"><code>MappableElement</code></a> or <a href="../../element/parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure"><code>Procedure</code></a>.
 <br>Format of strings: with <code>CUSTOM:</code> prefix for entries created from other mod elements
 or unmapped name for data list entries.</div>
+<dl class="notes">
+<dt>API note:</dt>
+<dd>This annotation can also be added to fields of type <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link"><code>Collection</code></a>, custom object, etc.
+with their values known to have fields/methods with matching values.</dd>
+</dl>
 </div>
 </section>
 <section class="summary">
@@ -118,7 +123,7 @@ or unmapped name for data list entries.</div>
 <div class="block">Special values indicating the element is not assigned.</div>
 <dl class="notes">
 <dt>Default:</dt>
-<dd><code>{""}</code></dd>
+<dd><code>{}</code></dd>
 </dl>
 </div>
 </section>
