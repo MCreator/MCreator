@@ -24,6 +24,7 @@ import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.util.TestUtil;
+import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.TagElement;
 import org.apache.logging.log4j.LogManager;
@@ -133,7 +134,8 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		if (value.startsWith(NameMapper.MCREATOR_PREFIX)) {
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
 			if (!retval) {
-				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);
+				LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
+						TraceUtil.tryToFindMCreatorInvoker(), value);
 			}
 			return retval;
 		} else if (mappingSource != null && !value.startsWith(NameMapper.EXTERNAL_PREFIX) && !value.startsWith("#")
@@ -141,8 +143,8 @@ public abstract class MappableElement implements IWorkspaceDependent {
 			Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mappingSource);
 			if (dataListEntryMap != null) {
 				if (!dataListEntryMap.containsKey(value)) {
-					LOG.warn("Broken vanilla reference found. Referencing non-existent element: {} from {}", value,
-							mappingSource);
+					LOG.warn("({}) Broken vanilla reference found. Referencing non-existent element: {} from {}",
+							TraceUtil.tryToFindMCreatorInvoker(), value, mappingSource);
 					return false;
 				}
 			}

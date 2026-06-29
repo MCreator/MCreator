@@ -56,8 +56,8 @@ import java.util.List;
 
 	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
 
-	public MItemBlock mainFillerBlock;
-	public MItemBlock fluidBlock;
+	@NonNullMappable("Blocks.STONE#0") public MItemBlock mainFillerBlock;
+	@NonNullMappable("Blocks.WATER") public MItemBlock fluidBlock;
 	@Numeric(init = 63, min = -1024, max = 1024, step = 1) public int seaLevel;
 	public boolean generateOreVeins;
 	public boolean generateAquifers;
@@ -76,21 +76,26 @@ import java.util.List;
 	@Numeric(init = 0, min = 0, max = 1, step = 0.01) public double ambientLight;
 	public boolean doesWaterVaporize;
 	public boolean hasFixedTime;
-	@Numeric(init = 0, min = 0, max = 24000, step = 1) public int fixedTimeValue;
+	@NonNullIf("hasFixedTime") @Numeric(init = 0, min = 0, max = 24000, step = 1) public int fixedTimeValue;
 	@Numeric(init = 1, min = 0.01, max = 1000, step = 0.01) public double coordinateScale;
 	public String infiniburnTag;
 
 	public boolean enableCustomSkyboxTextures;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureUp;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureDown;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureNorth;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureSouth;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureWest;
-	@TextureReference(TextureType.OTHER) public TextureHolder skyboxTextureEast;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures") public TextureHolder skyboxTextureUp;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureDown;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureNorth;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureSouth;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureWest;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureEast;
 
 	public boolean enableCustomSunMoonTextures;
-	@TextureReference(TextureType.OTHER) public TextureHolder sunTexture;
-	@TextureReference(TextureType.OTHER) public TextureHolder moonTexture;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSunMoonTextures") public TextureHolder sunTexture;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSunMoonTextures") public TextureHolder moonTexture;
 
 	public boolean bedWorks;
 	public boolean hasSkyLight;
@@ -104,17 +109,17 @@ import java.util.List;
 	public Procedure onPlayerEntersDimension;
 	public Procedure onPlayerLeavesDimension;
 
-	public MItemBlock portalFrame;
-	public ParticleEntry portalParticles;
+	@NonNullIf("enablePortal") public MItemBlock portalFrame;
+	@NonNullIf("enablePortal") public ParticleEntry portalParticles;
 	@Numeric(init = 0, min = 0, max = 15, step = 1) public int portalLuminance;
-	public Sound portalSound;
+	@NonNullIf("enablePortal") public Sound portalSound;
 	public boolean enableIgniter;
-	public String igniterName;
+	@NonNullIf("enableIgniter") public String igniterName;
 	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String igniterRarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
-	@TextureReference(TextureType.ITEM) public TextureHolder texture;
-	@TextureReference(TextureType.BLOCK) public TextureHolder portalTexture;
+	@TextureReference(TextureType.ITEM) @NonNullIf("enableIgniter") public TextureHolder texture;
+	@TextureReference(TextureType.BLOCK) @NonNullIf("enablePortal") public TextureHolder portalTexture;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
 	public Procedure portalUseCondition;

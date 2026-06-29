@@ -23,7 +23,6 @@ version = project.mcreatorconf.getProperty('mcreator')
 project.ext.builddate = project.hasProperty('builddate') ? project.getProperty('builddate') : new SimpleDateFormat("wwuHH", Locale.GERMANY).format(new Date())
 project.ext.snapshot = project.hasProperty('snapshot') ? Boolean.parseBoolean((String) project.getProperty('snapshot')) : false
 
-javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
@@ -125,7 +124,7 @@ dependencies {
     implementation "de.javagl:obj:0.4.0"
     implementation "com.univocity:univocity-parsers:2.9.1"
     implementation "org.slf4j:slf4j-nop:2.0.18"
-    implementation "org.gradle:gradle-tooling-api:9.6.0"
+    implementation "org.gradle:gradle-tooling-api:9.6.1"
     implementation "net.java.balloontip:balloontip:1.2.4.1"
     implementation "com.atlassian.commonmark:commonmark:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:0.17.0"
@@ -152,7 +151,7 @@ dependencies {
     linux64 "com.formdev:flatlaf:3.7.1:linux-x86_64@so"
 
     // test dependencies
-    testImplementation platform("org.junit:junit-bom:6.1.0")
+    testImplementation platform("org.junit:junit-bom:6.1.1")
     testImplementation "org.junit.jupiter:junit-jupiter"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
@@ -189,8 +188,11 @@ javadoc {
     classpath = configurations.runtimeClasspath
 
     options.addStringOption('Xdoclint:none', '-quiet')
-    options.addStringOption('tag', 'apiNote:a:API note:')
-    options.addStringOption('tag', 'implNote:a:Implementation note:')
+
+    options.tags = [
+        'apiNote:a:API note:',
+        'implNote:a:Implementation note:'
+    ]
 }
 
 tasks.register('runMCreator', JavaExec.class) {

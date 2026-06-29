@@ -37,6 +37,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.lang.module.ModuleDescriptor;
 import java.util.*;
@@ -48,10 +49,10 @@ import java.util.stream.Collectors;
 
 	public int renderType;
 	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
-	@TextureReference(TextureType.BLOCK) public TextureHolder textureBottom;
+	@TextureReference(TextureType.BLOCK) @NonNullIf("plantType %= double") public TextureHolder textureBottom;
 	@Nonnull public String customModelName;
 
-	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
 	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
@@ -60,7 +61,7 @@ import java.util.stream.Collectors;
 
 	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
 
-	public EffectEntry suspiciousStewEffect;
+	@NonNullIf("plantType %= normal") public EffectEntry suspiciousStewEffect;
 	@Numeric(init = 100, min = 0, max = 100000, step = 1) public int suspiciousStewDuration;
 
 	@Numeric(init = 0.1, min = 0, max = 1, step = 0.01) public double secondaryTreeChance;
@@ -90,13 +91,13 @@ import java.util.stream.Collectors;
 	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
 	public boolean immuneToFire;
 
-	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
-	public Sound breakSound;
-	public Sound stepSound;
-	public Sound placeSound;
-	public Sound hitSound;
-	public Sound fallSound;
+	public boolean isCustomSoundType;
+	@NonNullIf("isCustomSoundType") public Sound breakSound;
+	@NonNullIf("isCustomSoundType") public Sound stepSound;
+	@NonNullIf("isCustomSoundType") public Sound placeSound;
+	@NonNullIf("isCustomSoundType") public Sound hitSound;
+	@NonNullIf("isCustomSoundType") public Sound fallSound;
 
 	public boolean useLootTableForDrops;
 	public MItemBlock customDrop;
@@ -109,7 +110,7 @@ import java.util.stream.Collectors;
 	public boolean hasTileEntity;
 
 	public boolean isReplaceable;
-	public MapColor colorOnMap;
+	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "XZ", "XYZ", "NONE" }) public String offsetType;
 	@NonNullMappable("DEFAULT") public AIPathNodeType aiPathNodeType;
@@ -129,11 +130,11 @@ import java.util.stream.Collectors;
 	public Procedure bonemealSuccessCondition;
 	public Procedure onBonemealSuccess;
 
-	@Numeric(init = 5, min = 0, max = 40, step = 1) public int frequencyOnChunks;
+	@NonNullIf("generateFeature") @Numeric(init = 5, min = 0, max = 40, step = 1) public int frequencyOnChunks;
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	@LimitedOptions({ "Flower", "Grass" }) public String generationType;
-	@Numeric(init = 64, min = 1, max = 1024, step = 1) public int patchSize;
+	@NonNullIf("generateFeature") @Numeric(init = 64, min = 1, max = 1024, step = 1) public int patchSize;
 	public boolean generateAtAnyHeight;
 
 	public Procedure onBlockAdded;

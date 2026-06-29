@@ -79,7 +79,7 @@ public class TemplateExpressionParser {
 		}
 	}
 
-	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
+	public static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
 			@Nonnull Object conditionDataProvider) {
 		// Negate conditions that start with a !
 		boolean negate = condition.startsWith("!");
