@@ -94,9 +94,17 @@ public class DataListEntry {
 		return readableName;
 	}
 
+	@Nullable public String getRawReadableName() {
+		return readableName;
+	}
+
 	public String getDescription() {
 		if (description == null)
 			return "";
+		return description;
+	}
+
+	@Nullable public String getRawDescription() {
 		return description;
 	}
 

@@ -29,6 +29,7 @@ import net.mcreator.ui.blockly.BlocklyElementUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.mcp.tools.utils.CollectionFilter;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -82,11 +83,11 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 					yield completed(CollectionFilter.applyStrings(List.of(retval), input.filter));
 				}
 
-				// TODO: also return readable names when available
-				Collection<String> entries = ElementUtil.getAllEntriesFor(mcreator.getWorkspace(), input.listName)
-						.stream().map(DataListEntry::getName).sorted(Comparator.naturalOrder()).toList();
+				Collection<DataListEntryInfo> entries = ElementUtil.getAllEntriesFor(mcreator.getWorkspace(),
+								input.listName).stream().map(DataListEntryInfo::new)
+						.sorted(Comparator.comparing(DataListEntryInfo::name)).toList();
 				if (!entries.isEmpty()) {
-					yield completed(CollectionFilter.applyStrings(entries, input.filter));
+					yield completed(CollectionFilter.apply(entries, input.filter, DataListEntryInfo::toString));
 				}
 
 				yield CompletableFuture.completedFuture(
@@ -101,6 +102,21 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 		retval.addAll(ElementUtil.getCustomEntryProviders().keySet());
 		retval.addAll(BlocklyElementUtil.getStringArrayEntryProviders().keySet());
 		return retval;
+	}
+
+	private record DataListEntryInfo(String name, @Nullable String readableName, @Nullable String description) {
+		DataListEntryInfo(DataListEntry entry) {
+			this(entry.getName(), entry.getRawReadableName(), entry.getRawDescription());
+		}
+
+		@Nonnull @Override public String toString() {
+			String retval = name;
+			if (readableName != null)
+				retval += " " + readableName;
+			if (description != null)
+				retval += " " + description;
+			return retval;
+		}
 	}
 
 }
