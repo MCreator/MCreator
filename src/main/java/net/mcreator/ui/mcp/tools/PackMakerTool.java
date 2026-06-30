@@ -23,10 +23,10 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
-import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.mcp.tools.utils.ModElementNameValidation;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
@@ -116,11 +116,12 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 			return ToolResult.error("Pack type is not supported by the current generator: " + input.packType);
 		}
 
-		String nameError = validateName(mcreator.getWorkspace(), input.name);
-		if (nameError != null) {
-			return ToolResult.error(nameError);
+		String name;
+		try {
+			name = ModElementNameValidation.normalizeAndValidateName(mcreator.getWorkspace(), input.name);
+		} catch (IllegalArgumentException e) {
+			return ToolResult.error(e.getMessage());
 		}
-		String name = JavaConventions.convertToValidClassName(Objects.requireNonNull(input.name));
 
 		Color parsedColor = parseColor(input.color);
 		if (parsedColor == null && input.color != null && !input.color.isBlank()) {
@@ -184,25 +185,6 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 		response.put("packType", input.packType.name());
 		response.put("name", name);
 		return ToolResult.object(response);
-	}
-
-	@Nullable private static String validateName(Workspace workspace, @Nullable String name) {
-		if (name == null || name.isBlank()) {
-			return "name must be provided";
-		}
-
-		String fixed = JavaConventions.convertToValidClassName(name);
-		if (fixed == null || fixed.isEmpty()) {
-			return "Invalid mod element name";
-		}
-
-		for (String usedName : workspace.getWorkspaceInfo().getUsedElementNames()) {
-			if (usedName.equalsIgnoreCase(fixed)) {
-				return "Mod element with this name already exists";
-			}
-		}
-
-		return null;
 	}
 
 	@Nullable private static Color parseColor(String color) {

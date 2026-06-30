@@ -33,6 +33,7 @@ import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.mcp.tools.utils.JsonDefinitionMergePatch;
+import net.mcreator.ui.mcp.tools.utils.ModElementNameValidation;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -168,12 +169,17 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				return CompletableFuture.completedFuture(
 						ToolResult.error("Element type and JSON definition must be provided for adding"));
 			}
-			if (mcreator.getWorkspace().getModElementByName(input.elementName) != null) {
-				return CompletableFuture.completedFuture(ToolResult.error("Element with this name already exists"));
+
+			String elementName;
+			try {
+				elementName = ModElementNameValidation.normalizeAndValidateName(mcreator.getWorkspace(),
+						input.elementName);
+			} catch (IllegalArgumentException e) {
+				return CompletableFuture.completedFuture(ToolResult.error(e.getMessage()));
 			}
 
 			ModElementType<?> type = ModElementTypeLoader.getModElementType(input.elementType.toLowerCase(Locale.ROOT));
-			ModElement modElement = new ModElement(mcreator.getWorkspace(), input.elementName, type);
+			ModElement modElement = new ModElement(mcreator.getWorkspace(), elementName, type);
 			mcreator.getWorkspace().addModElement(modElement);
 			try {
 				String suggestedJSON = gson.toJson(input.elementJSONDefinition);
