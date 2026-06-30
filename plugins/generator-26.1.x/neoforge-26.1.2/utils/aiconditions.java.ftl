@@ -2,7 +2,7 @@
 <#-- @formatter:off -->
 <#macro conditionCode condition="" includeBraces=true>
 	<#if condition?has_content>
-		<#assign conditions = generator.procedureNamesToObjects(condition)>
+		<#local conditions = generator.procedureNamesToObjects(condition)>
 		<#if hasProcedure(conditions[0]) || hasProcedure(conditions[1])>
 			<#if includeBraces>{</#if>
 				<#if hasProcedure(conditions[0])>

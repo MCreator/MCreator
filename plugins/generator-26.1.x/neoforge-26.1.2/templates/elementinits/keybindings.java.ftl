@@ -32,7 +32,7 @@
 
 <#include "../procedures.java.ftl">
 
-<#assign customCategories = []>
+<#local customCategories = []>
 
 <#function categoryToObject category>
 	<#if category == "movement">
@@ -53,7 +53,7 @@
 		<#return "KeyMapping.Category.DEBUG">
 	<#else>
 		<#if !(customCategories?seq_contains(category))>
-			<#assign customCategories += [category]>
+			<#local customCategories += [category]>
 		</#if>
 		<#return "CATEGORY_" + category?upper_case>
 	</#if>
