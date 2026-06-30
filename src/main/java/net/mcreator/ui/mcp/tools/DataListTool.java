@@ -72,6 +72,11 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 					yield CompletableFuture.completedFuture(ToolResult.error("listName is required"));
 				}
 
+				if (input.listName.equals("blocksitems")) {
+					yield CompletableFuture.completedFuture(
+							ToolResult.error("Use query_workspace tool for blocks and items"));
+				}
+
 				if (!getAvailableDataListNames().contains(input.listName)) {
 					yield CompletableFuture.completedFuture(ToolResult.error("Unknown data list: " + input.listName));
 				}
@@ -101,11 +106,12 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 		retval.addAll(ElementUtil.getVanillaEntryProviders().keySet());
 		retval.addAll(ElementUtil.getCustomEntryProviders().keySet());
 		retval.addAll(BlocklyElementUtil.getStringArrayEntryProviders().keySet());
+		retval.remove("blocksitems"); // This is handled by query_workspace tool
 		return retval;
 	}
 
-	private record DataListEntryInfo(String name, @Nullable String readableName, @Nullable String description) {
-		DataListEntryInfo(DataListEntry entry) {
+	public record DataListEntryInfo(String name, @Nullable String readableName, @Nullable String description) {
+		public DataListEntryInfo(DataListEntry entry) {
 			this(entry.getName(), entry.getRawReadableName(), entry.getRawDescription());
 		}
 

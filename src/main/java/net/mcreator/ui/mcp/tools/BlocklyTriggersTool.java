@@ -47,7 +47,7 @@ public class BlocklyTriggersTool extends MCreatorMcpTool<BlocklyTriggersTool.Arg
 	}
 
 	@Override public String getDescription() {
-		return "Lists trigger registry names for blocklyEditorType (procedures or scripts).";
+		return "Lists trigger info (ID, dependencies, ...) for blocklyEditorType (procedures or scripts).";
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
@@ -56,8 +56,8 @@ public class BlocklyTriggersTool extends MCreatorMcpTool<BlocklyTriggersTool.Arg
 			return completedError("Invalid or missing blocklyEditorType (use procedures or scripts)");
 		}
 
-		List<ExternalTrigger> externalTriggersAll = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
-				BlocklyEditorType.SCRIPT).getExternalTriggers();
+		List<ExternalTrigger> externalTriggersAll = BlocklyLoader.INSTANCE.getExternalTriggerLoader(editorType)
+				.getExternalTriggers();
 		Set<String> supportedTriggers = mcreator.getGeneratorStats().getBlocklyTriggers(editorType);
 
 		return CompletableFuture.completedFuture(ToolResult.collection(

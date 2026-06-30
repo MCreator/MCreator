@@ -94,12 +94,14 @@ public class QueryWorkspaceTool extends MCreatorMcpTool<QueryWorkspaceTool.Args>
 			case Args.ListType.MOD_TAGS ->
 					CompletableFuture.completedFuture(ToolResult.object(mcreator.getWorkspace().getTagElements()));
 			case Args.ListType.BLOCKS -> completed(
-					CollectionFilter.applyStrings(dataListNames(ElementUtil.loadBlocks(mcreator.getWorkspace())),
-							input.filter));
-			case Args.ListType.BLOCKS_AND_ITEMS -> completed(CollectionFilter.applyStrings(
-					dataListNames(ElementUtil.loadBlocksAndItems(mcreator.getWorkspace())), input.filter));
-			case Args.ListType.BLOCKS_AND_ITEMS_AND_TAGS -> completed(CollectionFilter.applyStrings(
-					dataListNames(ElementUtil.loadBlocksAndItemsAndTags(mcreator.getWorkspace())), input.filter));
+					CollectionFilter.apply(dataListEntries(ElementUtil.loadBlocks(mcreator.getWorkspace())),
+							input.filter, DataListTool.DataListEntryInfo::toString));
+			case Args.ListType.BLOCKS_AND_ITEMS -> completed(
+					CollectionFilter.apply(dataListEntries(ElementUtil.loadBlocksAndItems(mcreator.getWorkspace())),
+							input.filter, DataListTool.DataListEntryInfo::toString));
+			case Args.ListType.BLOCKS_AND_ITEMS_AND_TAGS -> completed(CollectionFilter.apply(
+					dataListEntries(ElementUtil.loadBlocksAndItemsAndTags(mcreator.getWorkspace())), input.filter,
+					DataListTool.DataListEntryInfo::toString));
 			case Args.ListType.PROCEDURES -> completed(CollectionFilter.applyStrings(
 					mcreator.getWorkspace().getModElementsByType(ModElementType.PROCEDURE).stream()
 							.map(ModElement::getName).toList(), input.filter));
@@ -141,8 +143,8 @@ public class QueryWorkspaceTool extends MCreatorMcpTool<QueryWorkspaceTool.Args>
 		return variable.getName() + " " + variable.getTypeString() + " " + variable.getScope();
 	}
 
-	private static List<String> dataListNames(List<? extends DataListEntry> entries) {
-		return entries.stream().map(DataListEntry::getName).toList();
+	private static List<DataListTool.DataListEntryInfo> dataListEntries(List<? extends DataListEntry> entries) {
+		return entries.stream().map(DataListTool.DataListEntryInfo::new).toList();
 	}
 
 	private static List<String> textureFileNames(List<File> textureFiles) {

@@ -84,6 +84,16 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 					yield CompletableFuture.completedFuture(ToolResult.error("Invalid or missing blocklyEditorType"));
 				}
 
+				for (BlocklyEditorType type : BlocklyEditorType.getTypes().stream().map(BlocklyEditorType::fromName)
+						.toList()) {
+					if (type != null && type.startBlockName() != null && type.startBlockName()
+							.equals(input.blockRegistryName)) {
+						yield CompletableFuture.completedFuture(ToolResult.error(
+								"blockRegistryName is a start block and cannot be queried: "
+										+ input.blockRegistryName));
+					}
+				}
+
 				String blockRegistryName = input.blockRegistryName.trim();
 				String standardBlockXml = getSupportedStandardBlocklyBlockXml(editorType, blockRegistryName);
 				if (standardBlockXml != null) {
