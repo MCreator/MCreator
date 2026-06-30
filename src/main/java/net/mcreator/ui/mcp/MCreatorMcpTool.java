@@ -46,6 +46,11 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 					ToolResult.error("No active MCreator instance. Open a workspace first."));
 		}
 
+		if (mcreator.getGradleConsole().isGradleSetupTaskRunning()) {
+			return CompletableFuture.completedFuture(
+					ToolResult.error("Workspace Gradle setup is running. Try again later."));
+		}
+
 		if (!REPORTED_SESSIONS_MAP.contains(mcreator.getWorkspace().hashCode())) {
 			REPORTED_SESSIONS_MAP.add(mcreator.getWorkspace().hashCode());
 			mcreator.getHistoryManager().importantCheckpoint("mcp_new_session");
