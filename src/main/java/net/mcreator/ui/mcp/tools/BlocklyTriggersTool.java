@@ -19,12 +19,16 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -52,8 +56,12 @@ public class BlocklyTriggersTool extends MCreatorMcpTool<BlocklyTriggersTool.Arg
 			return completedError("Invalid or missing blocklyEditorType (use procedures or scripts)");
 		}
 
-		return CompletableFuture.completedFuture(
-				ToolResult.collection(mcreator.getGeneratorStats().getBlocklyTriggers(editorType)));
+		List<ExternalTrigger> externalTriggersAll = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+				BlocklyEditorType.SCRIPT).getExternalTriggers();
+		Set<String> supportedTriggers = mcreator.getGeneratorStats().getBlocklyTriggers(editorType);
+
+		return CompletableFuture.completedFuture(ToolResult.collection(
+				externalTriggersAll.stream().filter(trigger -> supportedTriggers.contains(trigger.getID())).toList()));
 	}
 
 	@Nullable private static BlocklyEditorType parseEditorType(@Nullable String raw) {
