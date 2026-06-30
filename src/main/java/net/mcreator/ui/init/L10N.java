@@ -24,7 +24,6 @@ import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.TestUtil;
 import net.mcreator.util.locale.LocaleRegistration;
 import net.mcreator.util.locale.UTF8Control;
 import org.apache.logging.log4j.LogManager;
