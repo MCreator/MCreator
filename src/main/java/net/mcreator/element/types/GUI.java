@@ -45,7 +45,7 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class GUI extends GeneratableElement implements IGUI {
 
-	@LimitedOptions({"Without slots", "With slots"}) public int type;
+	@LimitedOptions({ "Without slots", "With slots" }) public int type;
 	@Numeric(init = 176, min = 0, max = 512, step = 1) public int width;
 	@Numeric(init = 166, min = 0, max = 512, step = 1) public int height;
 

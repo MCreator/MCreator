@@ -43,8 +43,8 @@ public class ImageButton extends GUIComponent {
 
 	private transient Image imageIcon, hoveredImageIcon;
 
-	public ImageButton(@Nonnull String name, int x, int y, @Nonnull String image, String hoveredImage, Procedure onClick,
-			Procedure displayCondition) {
+	public ImageButton(@Nonnull String name, int x, int y, @Nonnull String image, String hoveredImage,
+			Procedure onClick, Procedure displayCondition) {
 		super(x, y);
 		this.name = name;
 		this.image = image;
