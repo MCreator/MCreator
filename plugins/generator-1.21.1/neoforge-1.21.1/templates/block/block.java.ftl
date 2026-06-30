@@ -417,7 +417,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro initCustomBlockStateProperties>
 		<#list filteredCustomProperties as prop>
-			<#assign propName = prop.property().getName()>
+			<#local propName = prop.property().getName()>
 			.setValue(${propName.replace("CUSTOM:", "")?upper_case},
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
 					<#if propName.startsWith("CUSTOM:")>
