@@ -91,7 +91,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(
-						ToolResult.error("Element not found. Names usually SnakeCase"));
+						ToolResult.error("Element not found. Names usually CamelCase"));
 			}
 			JsonElement definition = safeGeneratableElementToJsonElement(mcreator, modElement.getGeneratableElement());
 			Map<String, Object> response = new HashMap<>();
@@ -102,7 +102,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(
-						ToolResult.error("Element not found. Names usually SnakeCase"));
+						ToolResult.error("Element not found. Names usually CamelCase"));
 			}
 			String suggestedJSON = gson.toJson(input.elementJSONDefinition);
 			GeneratableElement original = modElement.getGeneratableElement();
@@ -130,7 +130,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(
-						ToolResult.error("Element not found. Names usually SnakeCase"));
+						ToolResult.error("Element not found. Names usually CamelCase"));
 			}
 			if (input.elementJSONDefinition == null || input.elementJSONDefinition.isEmpty()) {
 				return CompletableFuture.completedFuture(
@@ -195,7 +195,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(
-						ToolResult.error("Element not found. Names usually SnakeCase"));
+						ToolResult.error("Element not found. Names usually CamelCase"));
 			}
 			mcreator.getWorkspace().removeModElement(modElement);
 			return CompletableFuture.completedFuture(ToolResult.text("Element removed"));
