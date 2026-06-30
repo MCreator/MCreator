@@ -70,8 +70,7 @@ public class HelpTipsTool extends MCreatorMcpTool<HelpTipsTool.Args> {
 				}
 				String entry = HelpLoader.getFromEnglishCache(input.query);
 				if (entry == null) {
-					yield CompletableFuture.completedFuture(
-							ToolResult.error("Help entry not found: " + input.query));
+					yield CompletableFuture.completedFuture(ToolResult.error("Help entry not found: " + input.query));
 				}
 				yield CompletableFuture.completedFuture(ToolResult.text(entry));
 			}

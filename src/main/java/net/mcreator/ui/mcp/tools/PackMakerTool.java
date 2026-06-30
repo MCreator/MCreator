@@ -31,7 +31,10 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -40,20 +43,18 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 	public static class Args {
 		@SchemaDescription("CREATE: generate a pack. LIST_SUPPORTED: list pack types supported by the current generator.")
 		public Action actionType;
-		@SchemaDescription("Pack type to create. MATERIAL creates ore, tools, and armor together.")
-		@Nullable public PackType packType;
-		@SchemaDescription("CamelCase base name for generated mod elements, e.g. Ruby or MyWood.")
-		@Nullable public String name;
-		@SchemaDescription("Accent color as hex string, e.g. #FF8800.")
-		@Nullable public String color;
-		@SchemaDescription("Power factor from 0.1 to 10. Defaults to 1.")
-		@Nullable public Double powerFactor;
-		@SchemaDescription("Material subtype for ORE and MATERIAL packs. Defaults to GEM_BASED.")
-		@Nullable public MaterialSubtype materialSubtype;
-		@SchemaDescription("Optional bark color hex for WOOD packs. Uses color when omitted.")
-		@Nullable public String barkColor;
-		@SchemaDescription("Base item for TOOL and ARMOR packs, e.g. CUSTOM:Ruby or Items.IRON_INGOT.")
-		@Nullable public String baseItem;
+		@SchemaDescription("Pack type to create. MATERIAL creates ore, tools, and armor together.") @Nullable
+		public PackType packType;
+		@SchemaDescription("CamelCase base name for generated mod elements, e.g. Ruby or MyWood.") @Nullable
+		public String name;
+		@SchemaDescription("Accent color as hex string, e.g. #FF8800.") @Nullable public String color;
+		@SchemaDescription("Power factor from 0.1 to 10. Defaults to 1.") @Nullable public Double powerFactor;
+		@SchemaDescription("Material subtype for ORE and MATERIAL packs. Defaults to GEM_BASED.") @Nullable
+		public MaterialSubtype materialSubtype;
+		@SchemaDescription("Optional bark color hex for WOOD packs. Uses color when omitted.") @Nullable
+		public String barkColor;
+		@SchemaDescription("Base item for TOOL and ARMOR packs, e.g. CUSTOM:Ruby or Items.IRON_INGOT.") @Nullable
+		public String baseItem;
 
 		public enum Action {
 			CREATE, LIST_SUPPORTED
@@ -135,8 +136,8 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 		String materialType = toMaterialTypeString(
 				input.materialSubtype != null ? input.materialSubtype : Args.MaterialSubtype.GEM_BASED);
 
-		if ((input.packType == Args.PackType.TOOL || input.packType == Args.PackType.ARMOR)
-				&& (input.baseItem == null || input.baseItem.isBlank())) {
+		if ((input.packType == Args.PackType.TOOL || input.packType == Args.PackType.ARMOR) && (input.baseItem == null
+				|| input.baseItem.isBlank())) {
 			return ToolResult.error("baseItem must be provided for TOOL and ARMOR packs");
 		}
 
@@ -151,8 +152,9 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 
 		try {
 			boolean created = switch (input.packType) {
-				case MATERIAL -> MaterialPackMakerTool.addMaterialPackToWorkspace(null, mcreator,
-						mcreator.getWorkspace(), name, materialType, color, powerFactor);
+				case MATERIAL ->
+						MaterialPackMakerTool.addMaterialPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
+								materialType, color, powerFactor);
 				case ORE -> OrePackMakerTool.addOrePackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
 						materialType, color, powerFactor);
 				case TOOL -> ToolPackMakerTool.addToolPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
@@ -161,8 +163,9 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 				case ARMOR -> ArmorPackMakerTool.addArmorPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
 						Objects.requireNonNull(parseBaseItem(mcreator.getWorkspace(), input.baseItem)), color,
 						powerFactor);
-				case WOOD -> WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
-						color, barkColor, powerFactor);
+				case WOOD ->
+						WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name, color,
+								barkColor, powerFactor);
 			};
 
 			if (!created) {

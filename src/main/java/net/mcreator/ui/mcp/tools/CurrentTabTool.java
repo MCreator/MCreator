@@ -28,11 +28,9 @@ import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.io.File;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;

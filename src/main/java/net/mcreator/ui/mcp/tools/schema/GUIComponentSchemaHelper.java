@@ -48,8 +48,7 @@ final class GUIComponentSchemaHelper {
 		SchemaGeneratorConfig config = context.getGeneratorConfig();
 		ObjectNode properties = config.createObjectNode();
 		properties.set("type", config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_CONST), typeId));
-		properties.set("data",
-				context.createDefinition(context.getTypeContext().resolve(componentClass)));
+		properties.set("data", context.createDefinition(context.getTypeContext().resolve(componentClass)));
 
 		ArrayNode required = config.createArrayNode();
 		required.add("type");

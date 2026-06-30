@@ -168,8 +168,8 @@ public class TagTool extends MCreatorMcpTool<TagTool.Args> {
 
 	private static boolean isRegistryName(String value) {
 		String fixed = RegistryNameFixer.fix(value);
-		return !fixed.isEmpty() && Character.isLetter(fixed.charAt(0))
-				&& fixed.equals(RegistryNameFixer.fix(value.trim()));
+		return !fixed.isEmpty() && Character.isLetter(fixed.charAt(0)) && fixed.equals(
+				RegistryNameFixer.fix(value.trim()));
 	}
 
 	private static boolean isValidEntry(Workspace workspace, TagType tagType, String entry) {

@@ -48,22 +48,21 @@ final class PropertyDataWithValueSchemaHelper {
 		properties.set("name", context.createDefinitionReference(context.getTypeContext().resolve(String.class)));
 
 		switch (typeId) {
-			case "integer", "number" -> {
-				Class<?> boundType = typeId.equals("integer") ? Integer.class : Double.class;
-				properties.set("min", context.createDefinition(context.getTypeContext().resolve(boundType)));
-				properties.set("max", context.createDefinition(context.getTypeContext().resolve(boundType)));
-			}
-			case "string" -> {
-				ObjectNode arrayDataSchema = config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE),
-						"array");
-				arrayDataSchema.set(context.getKeyword(SchemaKeyword.TAG_ITEMS),
-						context.createDefinitionReference(context.getTypeContext().resolve(String.class)));
-				properties.set("arrayData", arrayDataSchema);
-			}
+		case "integer", "number" -> {
+			Class<?> boundType = typeId.equals("integer") ? Integer.class : Double.class;
+			properties.set("min", context.createDefinition(context.getTypeContext().resolve(boundType)));
+			properties.set("max", context.createDefinition(context.getTypeContext().resolve(boundType)));
+		}
+		case "string" -> {
+			ObjectNode arrayDataSchema = config.createObjectNode()
+					.put(context.getKeyword(SchemaKeyword.TAG_TYPE), "array");
+			arrayDataSchema.set(context.getKeyword(SchemaKeyword.TAG_ITEMS),
+					context.createDefinitionReference(context.getTypeContext().resolve(String.class)));
+			properties.set("arrayData", arrayDataSchema);
+		}
 		}
 
-		properties.set("value",
-				context.createDefinition(context.getTypeContext().resolve(resolveValueType(typeId))));
+		properties.set("value", context.createDefinition(context.getTypeContext().resolve(resolveValueType(typeId))));
 
 		ArrayNode required = config.createArrayNode();
 		required.add("type");

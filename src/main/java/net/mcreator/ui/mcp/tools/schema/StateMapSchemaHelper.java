@@ -19,11 +19,7 @@
 
 package net.mcreator.ui.mcp.tools.schema;
 
-import com.github.victools.jsonschema.generator.CustomDefinition;
-import com.github.victools.jsonschema.generator.SchemaGenerationContext;
-import com.github.victools.jsonschema.generator.SchemaGeneratorConfig;
-import com.github.victools.jsonschema.generator.SchemaKeyword;
-import com.github.victools.jsonschema.generator.TypeContext;
+import com.github.victools.jsonschema.generator.*;
 import tools.jackson.databind.node.ArrayNode;
 import tools.jackson.databind.node.ObjectNode;
 

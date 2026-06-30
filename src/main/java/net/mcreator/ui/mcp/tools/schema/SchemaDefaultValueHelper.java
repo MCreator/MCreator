@@ -49,7 +49,8 @@ final class SchemaDefaultValueHelper {
 				runtimeType);
 	}
 
-	@Nullable private static Object normalize(@Nullable Object value, Class<?> type, @Nullable Class<?> listItemType,
+	@Nullable
+	private static Object normalize(@Nullable Object value, Class<?> type, @Nullable Class<?> listItemType,
 			Class<?> beanType) {
 		switch (value) {
 		case null -> {

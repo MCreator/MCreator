@@ -26,7 +26,6 @@ import net.mcreator.io.mcp.transport.McpTransport;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.tools.*;
-import net.mcreator.ui.mcp.tools.ModElementSchemaTool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

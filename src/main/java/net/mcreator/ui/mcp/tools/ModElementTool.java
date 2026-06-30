@@ -41,7 +41,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
