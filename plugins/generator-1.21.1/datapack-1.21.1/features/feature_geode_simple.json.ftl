@@ -14,7 +14,7 @@
   },
   "layers": {
     <#if field$size != "1">
-    <#local scale = field$size?number>
+    <#assign scale = field$size?number>
     "filling": ${1.7 * scale},
     "inner_layer": ${2.2 * scale},
     "middle_layer": ${3.2 * scale},
