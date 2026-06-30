@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.DynamicBlockLoader;
@@ -41,8 +42,7 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 		public QueryType type;
 		@Nullable public String blocklyEditorType;
 		@Nullable public String blockRegistryName;
-		@SchemaDescription("Optional Java regex filter to limit returned list size.")
-		@Nullable public String filter;
+		@SchemaDescription("Optional Java regex filter to limit returned list size.") @Nullable public String filter;
 
 		public enum QueryType {
 			LIST_BLOCKS, GET_BLOCK
@@ -59,9 +59,8 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Lists supported custom Blockly blocks for blocklyEditorType %s or returns block info and JSON definition for blockRegistryName.\
-				Good to get list of all supported blocks for a given editor type before using blockRegistryName.\
-				Other standard blocks (if, while, etc.) of default Blockly editor may not be listed but may be supported.""".formatted(//TODO: remove last line
+				Lists supported Blockly blocks for blocklyEditorType %s or returns block info and JSON definition for blockRegistryName.\
+				Good to get list of all supported blocks for a given editor type (except for start blocks) before using blockRegistryName.""".formatted(
 				BlocklyEditorType.getTypes());
 	}
 
@@ -85,13 +84,18 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 					yield CompletableFuture.completedFuture(ToolResult.error("Invalid or missing blocklyEditorType"));
 				}
 
-				// TODO: return some note for standard bloxkly blocks that don't have definition in MCreator (if, while, etc.)
+				String blockRegistryName = input.blockRegistryName.trim();
+				String standardBlockXml = getSupportedStandardBlocklyBlockXml(editorType, blockRegistryName);
+				if (standardBlockXml != null) {
+					Map<String, Object> blockData = new HashMap<>();
+					blockData.put("blockExampleXML", standardBlockXml);
+					yield CompletableFuture.completedFuture(ToolResult.object(blockData));
+				}
 
 				List<ToolboxBlock> allBlocks = BlocklyLoader.INSTANCE.getAllToolboxBlocksFor(
 						mcreator.getGeneratorConfiguration(), editorType);
-				ToolboxBlock block = allBlocks.stream()
-						.filter(b -> b.getMachineName().equals(input.blockRegistryName.trim())).findFirst()
-						.orElse(null);
+				ToolboxBlock block = allBlocks.stream().filter(b -> b.getMachineName().equals(blockRegistryName))
+						.findFirst().orElse(null);
 				if (block == null) {
 					yield CompletableFuture.completedFuture(
 							ToolResult.error("Unknown block: " + input.blockRegistryName));
@@ -136,5 +140,81 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 		}
 		return true;
 	}
+
+	@Nullable
+	private static String getSupportedStandardBlocklyBlockXml(BlocklyEditorType editorType, String blockRegistryName) {
+		String exampleXml = STANDARD_BLOCKLY_BLOCKS.get(blockRegistryName);
+		if (exampleXml == null) {
+			return null;
+		}
+		List<IBlockGenerator> generators = InternalBlocksLoader.getInternalBlocks(editorType);
+		if (generators == null) {
+			return null;
+		}
+		for (IBlockGenerator generator : generators) {
+			if (generator.getBlockJSONDefinitions() != null) {
+				continue;
+			}
+			for (String supportedBlock : generator.getSupportedBlocks()) {
+				if (supportedBlock.equals(blockRegistryName)) {
+					return exampleXml;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Standard Blockly blocks registered in {@link InternalBlocksLoader} without MCreator JSON definitions.
+	 */
+	private static final Map<String, String> STANDARD_BLOCKLY_BLOCKS = Map.ofEntries(
+			//@formatter:off
+			Map.entry("controls_if", """
+					<block type="controls_if">
+					  <value name="IF0"></value>
+					  <statement name="DO0"></statement>
+					</block>"""),
+			Map.entry("controls_while", """
+					<block type="controls_while">
+					  <value name="BOOL"></value>
+					  <statement name="DO"></statement>
+					</block>"""),
+			Map.entry("controls_repeat_ext", """
+					<block type="controls_repeat_ext">
+					  <value name="TIMES"></value>
+					  <statement name="DO"></statement>
+					</block>"""),
+			Map.entry("text_print", """
+					<block type="text_print">
+					  <value name="TEXT"></value>
+					</block>"""),
+			Map.entry("logic_boolean", """
+					<block type="logic_boolean">
+					  <field name="BOOL"></field>
+					</block>"""),
+			Map.entry("logic_negate", """
+					<block type="logic_negate">
+					  <value name="BOOL"></value>
+					</block>"""),
+			Map.entry("math_number", """
+					<block type="math_number">
+					  <field name="NUM"></field>
+					</block>"""),
+			Map.entry("text", """
+					<block type="text">
+					  <field name="TEXT"></field>
+					</block>"""),
+			Map.entry("text_join", """
+					<block type="text_join">
+					  <mutation items="2"></mutation>
+					  <value name="ADD0"></value>
+					  <value name="ADD1"></value>
+					</block>"""),
+			Map.entry("text_length", """
+					<block type="text_length">
+					  <value name="VALUE"></value>
+					</block>""")
+			//@formatter:on
+	);
 
 }

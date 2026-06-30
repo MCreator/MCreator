@@ -81,6 +81,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new VariableTool(currentMCreator));
 		server.registerTool(new FindReferencesTool(currentMCreator));
 		// TODO: add blockly_validate tool that validates blockly xml?
+		// TODO: add pack maker tool
 	}
 
 	public McpServer getServer() {
