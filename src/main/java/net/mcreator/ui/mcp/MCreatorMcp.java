@@ -80,7 +80,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new CurrentTabTool(currentMCreator));
 		server.registerTool(new VariableTool(currentMCreator));
 		server.registerTool(new FindReferencesTool(currentMCreator));
-		// TODO: add pack maker tool
+		server.registerTool(new PackMakerTool(currentMCreator));
 	}
 
 	public McpServer getServer() {

@@ -85,12 +85,16 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
-	public static void addMaterialPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+	public static boolean addMaterialPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
 			Workspace workspace, String name, String type, Color color, double factor) {
-		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color,
-				factor);
-		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
-		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
+		if (!OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color, factor))
+			return false;
+
+		MItemBlock gem = new MItemBlock(workspace, "CUSTOM:" + OrePackMakerTool.getOreItemName(name, type));
+		if (!ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor))
+			return false;
+
+		return ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {

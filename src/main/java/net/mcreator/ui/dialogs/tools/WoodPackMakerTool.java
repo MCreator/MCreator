@@ -97,7 +97,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				barkColor.getColor(), (Double) power.getValue());
 	}
 
-	public static void addWoodPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+	public static boolean addWoodPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
 			Workspace workspace, String name, Color color, Color barkColor, double factor) {
 		String registryName = RegistryNameFixer.fromCamelCase(name);
 		String readableName = StringUtils.machineToReadableName(name);
@@ -119,7 +119,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				name + "DoorRecipe", name + "TrapdoorRecipe", name + "PressurePlateRecipe", name + "ButtonRecipe",
 				name + "SignRecipe", name + "HangingSignRecipe", name + "BoatRecipe", name + "ChestBoatRecipe",
 				name + "LeavesComposting"))
-			return;
+			return false;
 
 		// select folder the mod pack should be in
 		FolderElement folder = mcreator instanceof ModMaker modMaker ?
@@ -821,6 +821,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		chestBoatRecipe.recipeRetstackSize = 1;
 		chestBoatRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Boat"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, chestBoatRecipe);
+
+		return true;
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {

@@ -118,12 +118,12 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 				color.getColor(), (Double) power.getValue());
 	}
 
-	static void addToolPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+	public static boolean addToolPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
 			Workspace workspace, String name, MItemBlock base, Color color, double factor) {
 		if (!checkIfNamesAvailable(workspace, name + "Pickaxe", name + "Axe", name + "Sword", name + "Shovel",
 				name + "Hoe", name + "PickaxeRecipe", name + "AxeRecipe", name + "SwordRecipe", name + "ShovelRecipe",
 				name + "HoeRecipe"))
-			return;
+			return false;
 
 		String registryName = RegistryNameFixer.fromCamelCase(name);
 		String readableName = StringUtils.machineToReadableName(name);
@@ -277,6 +277,8 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		hoeRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Hoe");
 		hoeRecipe.unlockingItems.add(base);
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, hoeRecipe);
+
+		return true;
 	}
 
 	private static void setParametersBasedOnFactorAndAddElement(@Nullable AbstractPackMakerTool packMaker,
@@ -298,15 +300,18 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		addGeneratableElementToWorkspace(packMaker, mcreator.getWorkspace(), folder, tool);
 	}
 
+	public static boolean isSupported(GeneratorConfiguration gc) {
+		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+				!= GeneratorStats.CoverageStatus.NONE
+				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
+				!= GeneratorStats.CoverageStatus.NONE;
+	}
+
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tool"),
 				e -> new ToolPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
-				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
-						!= GeneratorStats.CoverageStatus.NONE;
+				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}
 		}.setIcon(UIRES.get("16px.toolpack"));
 	}

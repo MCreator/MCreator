@@ -116,11 +116,11 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 				color.getColor(), (Double) power.getValue());
 	}
 
-	static void addArmorPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+	public static boolean addArmorPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
 			Workspace workspace, String name, MItemBlock base, Color color, double factor) {
 		if (!checkIfNamesAvailable(workspace, name + "Armor", name + "ArmorHelmetRecipe",
 				name + "ArmorChestplateRecipe", name + "ArmorLeggingsRecipe", name + "ArmorBootsRecipe"))
-			return;
+			return false;
 
 		String registryName = RegistryNameFixer.fromCamelCase(name);
 		String readableName = StringUtils.machineToReadableName(name);
@@ -212,17 +212,22 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armorBootsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".boots");
 		armorBootsRecipe.unlockingItems.add(base);
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, armorBootsRecipe);
+
+		return true;
+	}
+
+	public static boolean isSupported(GeneratorConfiguration gc) {
+		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+				!= GeneratorStats.CoverageStatus.NONE
+				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
+				!= GeneratorStats.CoverageStatus.NONE;
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.armor"),
 				e -> new ArmorPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
-				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
-						!= GeneratorStats.CoverageStatus.NONE;
+				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}
 		}.setIcon(UIRES.get("16px.armorpack"));
 	}

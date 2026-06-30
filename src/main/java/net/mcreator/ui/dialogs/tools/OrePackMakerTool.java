@@ -96,17 +96,21 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
-	static MItemBlock addOrePackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
-			Workspace workspace, String name, String type, Color color, double factor) {
-		String oreItemName = switch (type) {
+	public static String getOreItemName(String name, String type) {
+		return switch (type) {
 			case "Dust based" -> name + "Dust";
 			case "Gem based" -> name;
 			default -> name + "Ingot";
 		};
+	}
+
+	public static boolean addOrePackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+			Workspace workspace, String name, String type, Color color, double factor) {
+		String oreItemName = getOreItemName(name, type);
 
 		if (!checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block", name + "OreBlockRecipe",
 				name + "BlockOreRecipe", name + "OreSmelting"))
-			return null;
+			return false;
 
 		String registryName = RegistryNameFixer.fromCamelCase(name);
 		String readableName = StringUtils.machineToReadableName(name);
@@ -244,20 +248,23 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreSmeltingRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Ore"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, oreSmeltingRecipe);
 
-		return new MItemBlock(workspace, "CUSTOM:" + oreItemName);
+		return true;
+	}
+
+	public static boolean isSupported(GeneratorConfiguration gc) {
+		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
+				!= GeneratorStats.CoverageStatus.NONE
+				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+				!= GeneratorStats.CoverageStatus.NONE
+				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+				!= GeneratorStats.CoverageStatus.NONE;
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.ore"),
 				e -> new OrePackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
-				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-						!= GeneratorStats.CoverageStatus.NONE
-						&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-						!= GeneratorStats.CoverageStatus.NONE;
+				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}
 		}.setIcon(UIRES.get("16px.orepack"));
 	}
