@@ -128,8 +128,8 @@ public class NameMapper {
 				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
 						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));
-				if (toMapTemplate.contains("@SnakeCaseName")) {
-					retval = retval.replace("@SnakeCaseName", net.mcreator.util.StringUtils.snakeToCamel(origName));
+				if (toMapTemplate.contains("@CamelCaseName")) {
+					retval = retval.replace("@CamelCaseName", net.mcreator.util.StringUtils.snakeToCamel(origName));
 				}
 				if (toMapTemplate.contains("@registryname") || toMapTemplate.contains("@REGISTRYNAME")) {
 					ModElement element = workspace.getModElementByName(origName);
