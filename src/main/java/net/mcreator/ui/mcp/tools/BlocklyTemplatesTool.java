@@ -36,6 +36,9 @@ import java.util.function.Supplier;
 
 public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.Args> {
 
+	// TODO: return full template with start block xml
+	// TODO: figure out how to handle this with features - we get either placement, feature, or both
+
 	public static class Args {
 		public QueryType type;
 		@Nullable public String blocklyEditorType;

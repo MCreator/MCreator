@@ -82,6 +82,7 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 					yield completed(CollectionFilter.applyStrings(List.of(retval), input.filter));
 				}
 
+				// TODO: also return readable names when available
 				Collection<String> entries = ElementUtil.getAllEntriesFor(mcreator.getWorkspace(), input.listName)
 						.stream().map(DataListEntry::getName).sorted(Comparator.naturalOrder()).toList();
 				if (!entries.isEmpty()) {

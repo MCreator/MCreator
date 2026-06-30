@@ -84,6 +84,9 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 				if (editorType == null) {
 					yield CompletableFuture.completedFuture(ToolResult.error("Invalid or missing blocklyEditorType"));
 				}
+
+				// TODO: return some note for standard bloxkly blocks that don't have definition in MCreator (if, while, etc.)
+
 				List<ToolboxBlock> allBlocks = BlocklyLoader.INSTANCE.getAllToolboxBlocksFor(
 						mcreator.getGeneratorConfiguration(), editorType);
 				ToolboxBlock block = allBlocks.stream()
@@ -97,6 +100,7 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 					yield CompletableFuture.completedFuture(
 							ToolResult.error("Block is not supported by the current workspace generator"));
 				}
+				// TODO: return more than just blockly JSON?
 				yield CompletableFuture.completedFuture(ToolResult.object(block.getBlocklyJSON()));
 			}
 		};
