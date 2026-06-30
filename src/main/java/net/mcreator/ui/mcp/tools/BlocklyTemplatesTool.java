@@ -26,18 +26,27 @@ import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.util.XMLUtil;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import javax.annotation.Nullable;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.Args> {
-
-	// TODO: return full template with start block xml
-	// TODO: figure out how to handle this with features - we get either placement, feature, or both
 
 	public static class Args {
 		public QueryType type;
@@ -59,11 +68,10 @@ public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.A
 
 	@Override public String getDescription() {
 		return """
-				Lists Blockly template/example names for blocklyEditorType %s or returns template XML for templateName.\
-				Good to discover example block assemblies before building custom Blockly setups.\
-				Templates represent block assemblies, but not whole Blockly XML setup with start blocks.
-				""".formatted(
-				getTemplateSupportedEditorTypes());
+				Lists Blockly template/example names for blocklyEditorType %s or returns full Blockly XML for templateName.\
+				Good to discover example block assemblies before building custom Blockly setups. Some fields and inputs may not be filled out.\
+				GET_TEMPLATE returns Blockly XML of the template; feature templates may contain a feature block, placement blocks, or both.
+				""".formatted(getTemplateSupportedEditorTypes());
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
@@ -76,9 +84,8 @@ public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.A
 				if (editorType.extension() == null) {
 					yield completedError("blocklyEditorType does not support templates: " + editorType.registryName());
 				}
-				yield completed(ToolResult.collection(
-						loadTemplates(editorType).stream().map(ResourcePointer::toString).sorted(Comparator.naturalOrder())
-								.toList()));
+				yield completed(ToolResult.collection(loadTemplates(editorType).stream().map(ResourcePointer::toString)
+						.sorted(Comparator.naturalOrder()).toList()));
 			}
 			case GET_TEMPLATE -> {
 				if (input.templateName == null || input.templateName.isBlank()) {
@@ -99,7 +106,7 @@ public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.A
 					String templateXml = template.identifier instanceof String resourcePath ?
 							BlocklyTemplateIO.importBlocklyXML("/" + resourcePath) :
 							BlocklyTemplateIO.importBlocklyXML((File) template.identifier);
-					yield completedText(templateXml);
+					yield completedText(wrapTemplateWithStartBlock(templateXml, editorType));
 				} catch (Exception e) {
 					yield completedError("Failed to load template: " + e.getMessage(), e);
 				}
@@ -128,8 +135,99 @@ public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.A
 	}
 
 	private static List<String> getTemplateSupportedEditorTypes() {
-		return BlocklyEditorType.getTypes().stream().map(BlocklyEditorType::fromName).filter(type -> type.extension() != null)
-				.map(BlocklyEditorType::registryName).sorted().toList();
+		return BlocklyEditorType.getTypes().stream().map(BlocklyEditorType::fromName)
+				.filter(type -> type.extension() != null).map(BlocklyEditorType::registryName).sorted().toList();
+	}
+
+	private static String wrapTemplateWithStartBlock(String templateXml, BlocklyEditorType editorType)
+			throws ParserConfigurationException, IOException, SAXException {
+		String trimmed = templateXml.trim();
+		if (trimmed.contains("type=\"" + editorType.startBlockName() + "\"")) {
+			return trimmed;
+		}
+
+		String blocksXml = trimmed.startsWith("<xml") ? stripXmlWrapper(trimmed) : trimmed;
+
+		if (editorType == BlocklyEditorType.FEATURE) {
+			return wrapFeatureTemplate(trimmed);
+		}
+
+		return wrapWithStartBlock(editorType, null, blocksXml);
+	}
+
+	private static String stripXmlWrapper(String templateXml) {
+		int xmlStart = templateXml.indexOf('>');
+		if (xmlStart < 0) {
+			return templateXml;
+		}
+		int xmlEnd = templateXml.lastIndexOf("</xml>");
+		if (xmlEnd < 0) {
+			return templateXml.substring(xmlStart + 1).trim();
+		}
+		return templateXml.substring(xmlStart + 1, xmlEnd).trim();
+	}
+
+	private static String wrapFeatureTemplate(String blocksXml)
+			throws ParserConfigurationException, IOException, SAXException {
+		Document doc = parseDocument(blocksXml.startsWith("<xml") ? blocksXml : "<xml>" + blocksXml + "</xml>");
+		@Nullable String featureBlockXml = null;
+		@Nullable String proceduralXml = null;
+		for (Element block : XMLUtil.getDirectChildren(doc.getDocumentElement())) {
+			if (!"block".equals(block.getNodeName())) {
+				continue;
+			}
+			String blockXml = serializeElement(block);
+			if (isFeatureBlockType(block.getAttribute("type"))) {
+				featureBlockXml = blockXml;
+			} else {
+				proceduralXml = blockXml;
+			}
+		}
+		return wrapWithStartBlock(BlocklyEditorType.FEATURE, featureBlockXml, proceduralXml);
+	}
+
+	private static Document parseDocument(String xml) throws ParserConfigurationException, IOException, SAXException {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
+		doc.getDocumentElement().normalize();
+		return doc;
+	}
+
+	private static String serializeElement(Element element) {
+		DOMImplementationLS lsImpl = (DOMImplementationLS) element.getOwnerDocument().getImplementation()
+				.getFeature("LS", "3.0");
+		LSSerializer serializer = lsImpl.createLSSerializer();
+		serializer.getDomConfig().setParameter("xml-declaration", false);
+		return serializer.writeToString(element).replaceAll("[\n\r\t]", "");
+	}
+
+	private static boolean isFeatureBlockType(String blockType) {
+		return blockType.startsWith("feature_");
+	}
+
+	private static String wrapWithStartBlock(BlocklyEditorType editorType, @Nullable String featureBlockXml,
+			@Nullable String proceduralXml) {
+		StringBuilder setupXml = new StringBuilder("<xml xmlns=\"https://developers.google.com/blockly/xml\">");
+		setupXml.append(getStartBlockOpenTag(editorType));
+		if (featureBlockXml != null) {
+			setupXml.append("<value name=\"feature\">").append(featureBlockXml).append("</value>");
+		}
+		if (proceduralXml != null) {
+			setupXml.append("<next>").append(proceduralXml).append("</next>");
+		}
+		setupXml.append("</block></xml>");
+		return setupXml.toString();
+	}
+
+	private static String getStartBlockOpenTag(BlocklyEditorType editorType) {
+		if (editorType == BlocklyEditorType.PROCEDURE) {
+			return "<block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field>";
+		} else if (editorType == BlocklyEditorType.SCRIPT) {
+			return "<block type=\"script_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field>";
+		} else {
+			return "<block type=\"" + editorType.startBlockName() + "\" deletable=\"false\" x=\"40\" y=\"40\">";
+		}
 	}
 
 }
