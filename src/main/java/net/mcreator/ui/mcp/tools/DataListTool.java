@@ -63,6 +63,10 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 				For blocks and items, use query_workspace tool.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
 			case Args.QueryType.GET_LIST_TYPES ->

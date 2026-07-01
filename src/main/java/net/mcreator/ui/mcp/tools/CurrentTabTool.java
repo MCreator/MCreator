@@ -52,6 +52,10 @@ public class CurrentTabTool extends MCreatorMcpTool<Void> {
 				Reports mod element, code file, or texture being edited when applicable.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Void input) {
 		Map<String, Object> response = new HashMap<>();
 

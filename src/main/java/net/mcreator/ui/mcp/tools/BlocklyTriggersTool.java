@@ -50,6 +50,10 @@ public class BlocklyTriggersTool extends MCreatorMcpTool<BlocklyTriggersTool.Arg
 		return "Lists trigger info (ID, dependencies, ...) for blocklyEditorType (procedures or scripts).";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		BlocklyEditorType editorType = parseEditorType(input.blocklyEditorType);
 		if (editorType == null) {

@@ -84,6 +84,10 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 				Names must be valid CamelCase mod element names.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return false;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		if (input.actionType == null) {
 			return CompletableFuture.completedFuture(ToolResult.error("actionType must be provided"));

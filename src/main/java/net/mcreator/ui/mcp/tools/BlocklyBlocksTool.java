@@ -64,6 +64,10 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 				BlocklyEditorType.getTypes());
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
 			case LIST_BLOCKS -> {

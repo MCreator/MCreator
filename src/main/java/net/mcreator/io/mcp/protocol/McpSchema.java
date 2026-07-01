@@ -42,7 +42,7 @@ public class McpSchema {
 
 	public record Annotations(List<String> audience, Double priority, String lastModified) {}
 
-	public record ToolAnnotations(Double priorityHint) {}
+	public record ToolAnnotations(Double priorityHint, Boolean readOnlyHint, Boolean destructiveHint) {}
 
 	public record Tool(String name, String description, Object inputSchema, ToolAnnotations annotations,
 	                   Object outputSchema) {

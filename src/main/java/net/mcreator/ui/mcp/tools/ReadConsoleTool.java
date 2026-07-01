@@ -44,6 +44,10 @@ public class ReadConsoleTool extends MCreatorMcpTool<ReadConsoleTool.Args> {
 		return "Reads current contents of the Gradle console for given workspace";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ReadConsoleTool.Args input) {
 		String consoleContent = mcreator.getGradleConsole().getConsoleText();
 		int startIndex = Math.max(0, consoleContent.length() - input.lastNCharsToRead);

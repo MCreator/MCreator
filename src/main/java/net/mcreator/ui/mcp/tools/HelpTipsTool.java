@@ -53,6 +53,10 @@ public class HelpTipsTool extends MCreatorMcpTool<HelpTipsTool.Args> {
 				Help tips are written for human use and don't contain technical details.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
 			case Args.QueryType.LIST_CATEGORIES ->

@@ -59,6 +59,10 @@ public class TagTool extends MCreatorMcpTool<TagTool.Args> {
 		return "Creates or updates a workspace tag (tagType + tagResourcePath). Adds entries if provided.";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return false;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		if (!mcreator.getGeneratorStats().hasBaseCoverage("tags")) {
 			return completedError("Generator does not support tags");

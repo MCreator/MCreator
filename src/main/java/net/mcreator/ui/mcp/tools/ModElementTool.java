@@ -86,6 +86,14 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				Patch action merges elementJSONDefinition into the current definition (partial JSON, null removes keys).""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return false;
+	}
+
+	@Override protected Boolean getDestructiveHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementTool.Args input) {
 		if (input.actionType == Args.Action.READ) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);

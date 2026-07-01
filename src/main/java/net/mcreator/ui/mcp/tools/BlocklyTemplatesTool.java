@@ -74,6 +74,10 @@ public class BlocklyTemplatesTool extends MCreatorMcpTool<BlocklyTemplatesTool.A
 				""".formatted(getTemplateSupportedEditorTypes());
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
 			case LIST_TEMPLATES -> {

@@ -75,6 +75,10 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 				Use actionType CREATE with name, type (block/item/entity/effect/particle/screen/other), and at least one layer.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return false;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		if (input.actionType == null) {
 			return CompletableFuture.completedFuture(ToolResult.error("actionType must be provided"));

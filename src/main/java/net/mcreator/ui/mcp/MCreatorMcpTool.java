@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.mcp;
 
+import net.mcreator.io.mcp.protocol.McpSchema;
 import net.mcreator.io.mcp.tool.McpTool;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
@@ -37,6 +38,15 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 	protected MCreatorMcpTool(Supplier<MCreator> currentMCreator, Class<T> inputType) {
 		super(inputType);
 		this.currentMCreator = currentMCreator;
+	}
+
+	@Override public McpSchema.ToolAnnotations getAnnotations() {
+		Boolean readOnlyHint = getReadOnlyHint();
+		Boolean destructiveHint = getDestructiveHint();
+		if (readOnlyHint == null && destructiveHint == null) {
+			return null;
+		}
+		return new McpSchema.ToolAnnotations(null, readOnlyHint, destructiveHint);
 	}
 
 	@Override protected CompletableFuture<ToolResult> call(T input) {
@@ -65,5 +75,13 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 	}
 
 	protected abstract CompletableFuture<ToolResult> call(MCreator mcreator, T input) throws Exception;
+
+	protected Boolean getReadOnlyHint() {
+		return null;
+	}
+
+	protected Boolean getDestructiveHint() {
+		return null;
+	}
 
 }

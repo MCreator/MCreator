@@ -62,6 +62,10 @@ public class FindReferencesTool extends MCreatorMcpTool<FindReferencesTool.Args>
 				Name should be exact and is case sentivie. For textures, also provide textureType.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		if (input.referenceType == null) {
 			return completedError("referenceType is required");

@@ -74,6 +74,10 @@ public class QueryWorkspaceTool extends MCreatorMcpTool<QueryWorkspaceTool.Args>
 		return "Provides list of specified workspace elements or resources. Use those lists as hard source of truth.";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		return switch (input.type) {
 			case Args.ListType.WORKSPACE_SETTINGS -> CompletableFuture.completedFuture(

@@ -59,6 +59,14 @@ public class VariableTool extends MCreatorMcpTool<VariableTool.Args> {
 		return "Adds or removes a workspace variable. Use list query_workspace MOD_VARIABLES to see existing variables. When adding, fill out all fields.";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return false;
+	}
+
+	@Override protected Boolean getDestructiveHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		if (!mcreator.getGeneratorStats().hasBaseCoverage("variables")) {
 			return completedError("Generator does not support variables");

@@ -70,6 +70,10 @@ public class ModElementSchemaTool extends MCreatorMcpTool<ModElementSchemaTool.A
 				JSON structure is very strict, so make sure to adhere to the schema structurally.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, ModElementSchemaTool.Args input) {
 		if (input.elementType == null) {
 			return CompletableFuture.completedFuture(ToolResult.error("Element type must be provided"));

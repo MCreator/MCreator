@@ -62,6 +62,10 @@ public class CreateArmorTextureTool extends MCreatorMcpTool<CreateArmorTextureTo
 				Use actionType CREATE with name, template, and color. Optional lockSaturationBrightness.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return false;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		if (input.actionType == null) {
 			return CompletableFuture.completedFuture(ToolResult.error("actionType must be provided"));

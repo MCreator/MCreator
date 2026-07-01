@@ -46,6 +46,10 @@ public class ReadClassSourceTool extends MCreatorMcpTool<ReadClassSourceTool.Arg
 		return "Reads Java source code for a class by its FQDN (package.Name) from the workspace classpath.";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return true;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input) {
 		if (input.className == null || input.className.isBlank()) {
 			return CompletableFuture.completedFuture(ToolResult.error("className is required"));

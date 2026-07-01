@@ -66,6 +66,10 @@ public class BuildTool extends MCreatorMcpTool<BuildTool.Args> {
 				start_build to kick off a build asynchronously, and is_gradle_running to poll task status.""";
 	}
 
+	@Override protected Boolean getReadOnlyHint() {
+		return false;
+	}
+
 	@Override protected CompletableFuture<ToolResult> call(MCreator mcreator, Args input)
 			throws TemplateGeneratorException {
 		if (input.actionType == null) {
