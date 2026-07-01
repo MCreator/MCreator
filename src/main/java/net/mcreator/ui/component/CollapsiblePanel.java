@@ -79,6 +79,7 @@ public class CollapsiblePanel extends JPanel {
 
 	public void setTitle(String title) {
 		firePropertyChange("title", this.title, this.title = title);
+		updateBorderTitle();
 	}
 
 	@Override protected void addImpl(Component comp, Object constraints, int index) {
