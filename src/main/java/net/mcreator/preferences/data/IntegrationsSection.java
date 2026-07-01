@@ -30,6 +30,7 @@ public class IntegrationsSection extends PreferencesSection {
 
 	public final BooleanEntry mcpEnable;
 	public final IntegerEntry mcpPort;
+	public final BooleanEntry mcpAutoInstall;
 
 	public IntegrationsSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -38,6 +39,7 @@ public class IntegrationsSection extends PreferencesSection {
 		googleAnalyticsEnable = addEntry(new BooleanEntry("googleAnalyticsEnable", true));
 		mcpEnable = addEntry(new BooleanEntry("mcpEnable", false));
 		mcpPort = addEntry(new IntegerEntry("mcpPort", 3025, 1024, 60000));
+		mcpAutoInstall = addEntry(new BooleanEntry("mcpAutoInstall", true));
 	}
 
 	@Override public String getSectionKey() {
