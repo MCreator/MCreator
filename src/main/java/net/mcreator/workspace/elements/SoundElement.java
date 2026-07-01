@@ -222,7 +222,7 @@ public class SoundElement implements IElement {
 			String category;
 			if (jsonObject.has("category") && jsonObject.get("category").getAsString() instanceof String str) {
 				List<String> oldFiles;
-				if (jsonObject.get("file") != null) {
+				if (jsonObject.has("file")) {
 					oldFiles = Collections.singletonList(jsonObject.get("file").getAsString());
 				} else {
 					try {
