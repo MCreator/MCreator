@@ -111,6 +111,7 @@ public class ToolboxCategory {
 
 		// toolbox_advancement.xml
 		put("components", builtin("components", "300"));
+		put("playerconditions", builtin("playerconditions", "175"));
 
 		// toolbox_ai_builder.xml
 		put("aiadvanced", builtin("advanced", "250"));

@@ -18,6 +18,11 @@
     {
       "type": "field_checkbox",
       "name": "blocked"
+    },
+    {
+      "type": "input_value",
+      "name": "player",
+      "check": "PlayerCondition"
     }
   ],
   "inputsInline": true,
@@ -28,11 +33,13 @@
     "toolbox_id": "entities",
     "toolbox_init": [
       "<value name=\"minDamage\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
-      "<value name=\"maxDamage\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>"
+      "<value name=\"maxDamage\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>",
+      "<value name=\"player\"><block type=\"player_condition_none\"></block></value>"
     ],
     "inputs": [
       "minDamage",
-      "maxDamage"
+      "maxDamage",
+      "player"
     ],
     "fields": [
       "sourceentity",

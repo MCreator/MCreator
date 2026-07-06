@@ -1,10 +1,22 @@
 {
-  "args0": [],
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "player",
+      "check": "PlayerCondition"
+    }
+  ],
   "inputsInline": true,
   "previousStatement": null,
   "colour": 150,
   "mcreator": {
     "toolbox_id": "utility",
+    "toolbox_init": [
+      "<value name=\"player\"><block type=\"player_condition_none\"></block></value>"
+    ],
+    "inputs": [
+      "player"
+    ],
     "warnings": [
       "utility_adv_trigger"
     ]

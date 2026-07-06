@@ -4,6 +4,11 @@
       "type": "input_value",
       "name": "block",
       "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "player",
+      "check": "PlayerCondition"
     }
   ],
   "inputsInline": true,
@@ -13,10 +18,12 @@
   "mcreator": {
     "toolbox_id": "blocks",
     "toolbox_init": [
-      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"player\"><block type=\"player_condition_none\"></block></value>"
     ],
     "inputs": [
-      "block"
+      "block",
+      "player"
     ]
   }
 }
