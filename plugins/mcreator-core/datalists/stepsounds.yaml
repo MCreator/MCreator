@@ -244,3 +244,11 @@
   texture: IRON_BLOCK
 - DRIED_GHAST:
   texture: DRIED_GHAST
+- SULFUR:
+  texture: SULFUR
+- POTENT_SULFUR:
+  texture: POTENT_SULFUR
+- SULFUR_SPIKE:
+  texture: SULFUR_SPIKE
+- CINNABAR:
+  texture: CINNABAR

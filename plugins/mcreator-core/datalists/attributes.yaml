@@ -1,3 +1,5 @@
+- AIR_DRAG_MODIFIER:
+  readable_name: "Air drag modifier"
 - ARMOR:
   readable_name: "Armor"
 - ARMOR_TOUGHNESS:
@@ -8,10 +10,14 @@
   readable_name: "Attack knockback"
 - ATTACK_SPEED:
   readable_name: "Attack speed"
+- BELOW_NAME_DISTANCE:
+  readable_name: "Below name distance"
 - FLYING_SPEED:
   readable_name: "Flying speed"
 - FOLLOW_RANGE:
   readable_name: "Follow range"
+- FRICTION_MODIFIER:
+  readable_name: "Friction modifier"
 - JUMP_STRENGTH:
   readable_name: "Jump strength"
 - KNOCKBACK_RESISTANCE:
@@ -34,6 +40,8 @@
   readable_name: "Nametag render distance"
 - BLOCK_REACH:
   readable_name: "Block reach"
+- BOUNCINESS:
+  readable_name: "Bounciness"
 - ENTITY_REACH:
   readable_name: "Entity reach"
 - BURNING_TIME:
