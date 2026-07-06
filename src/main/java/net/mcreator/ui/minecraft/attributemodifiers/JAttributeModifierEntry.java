@@ -105,7 +105,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	}
 
 	@Override public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace(), true));
+		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots(workspace, true));
 		ComboBoxUtil.updateComboBoxContents(attribute, ElementUtil.loadAllAttributes(workspace));
 	}
 

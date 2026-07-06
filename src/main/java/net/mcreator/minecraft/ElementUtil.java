@@ -219,7 +219,7 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadAllEquipmentSlots(@Nonnull Workspace workspace, boolean addDefault) {
 		if (workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON)
-			return DataListLoader.loadDataList("be_equipmentslots");
+			return List.copyOf(DataListLoader.loadDataList("be_equipmentslots"));
 		else
 			return addDefault ?
 				ListUtils.merge(List.of(new DataListEntry.Dummy("default")),

@@ -1092,7 +1092,7 @@ public class TestWorkspaceDataProvider {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
 					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
-							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
+							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace(), true)));
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
