@@ -134,6 +134,13 @@ public class GTJSONTriggersBlocks {
 									<value name="predicateComponent0">%s</value>
 						</block></value></block></next></block></xml>
 						""".formatted(testXML);
+				case "PlayerCondition" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="tick">
+							<value name="player"><block type="player_condition_none"></block></value>
+						</block></next></block></xml>
+						""".formatted(testXML);
 				default -> {
 					LOG.warn("[{}] Skipping JSON trigger block of unrecognized type: {}", generatorName,
 							triggerBlock.getMachineName());
