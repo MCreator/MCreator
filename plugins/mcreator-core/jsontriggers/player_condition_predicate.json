@@ -1,0 +1,17 @@
+{
+  "mutator": "player_predicate_mutator",
+  "inputsInline": false,
+  "output": "PlayerCondition",
+  "colour": 175,
+  "mcreator": {
+    "group": "playerconditions",
+    "toolbox_id": "playerconditions",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"predicateComponent0\"><block type=\"player_predicate_component_location\"><mutation inputs=\"1\"></mutation><value name=\"locationComponent0\"><block type=\"location_component_predicate_biomes_single\"><field name=\"biome\"></field></block></value></block></value>"
+    ],
+    "repeating_inputs": [
+      "predicateComponent"
+    ]
+  }
+}

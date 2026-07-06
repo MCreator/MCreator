@@ -6,12 +6,12 @@
       "datalist": "biome"
     }
   ],
-  "inputsInline": true,
-  "previousStatement": null,
-  "nextStatement": null,
-  "colour": 35,
+  "inputsInline": false,
+  "output": "LocationParameter",
+  "colour": 330,
   "mcreator": {
-    "toolbox_id": "world",
+    "group": "location",
+    "toolbox_id": "playerconditions",
     "fields": [
       "biome"
     ]

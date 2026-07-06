@@ -194,9 +194,17 @@ registerSimpleMutatorInput('item_enchanted_mutator_input', 'blockly.block.item_e
 registerSimpleMutatorContainer('item_predicate_mutator_container', 'blockly.block.item_predicate_mutator.container', 90);
 registerSimpleMutatorInput('item_predicate_mutator_input', 'blockly.block.item_predicate_mutator.input', 90);
 
+// Mutator blocks for player condition component advancement trigger mixin
+registerSimpleMutatorContainer('player_predicate_mutator_container', 'blockly.block.player_predicate_mutator.container', 175);
+registerSimpleMutatorInput('player_predicate_mutator_input', 'blockly.block.player_predicate_mutator.input', 175);
+
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('any_item_mutator_container', 'blockly.block.any_item_mutator.container', 350);
 registerSimpleMutatorInput('any_item_mutator_input', 'blockly.block.any_item_mutator.input', 350);
+
+// Mutator blocks for player condition location component advancement trigger mixin
+registerSimpleMutatorContainer('location_component_mutator_container', 'blockly.block.location_component_mutator.container', 175);
+registerSimpleMutatorInput('location_component_mutator_input', 'blockly.block.location_component_mutator.input', 175);
 
 // Unregister blocks that we will register again later
 delete Blockly.Blocks['controls_flow_statements'];

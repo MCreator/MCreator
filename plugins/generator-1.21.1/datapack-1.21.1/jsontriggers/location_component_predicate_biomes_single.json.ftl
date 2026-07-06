@@ -1,0 +1,1 @@
+"biomes": "${generator.map(field$biome, "biomes")}"

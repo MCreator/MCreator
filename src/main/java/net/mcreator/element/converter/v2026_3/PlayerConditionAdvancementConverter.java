@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Achievement;
+import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -66,9 +67,21 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 			if (supportedBlocks.contains(type)) {
 				Element value = doc.createElement("value");
 				value.setAttribute("name", "player");
-				Element deps_block = doc.createElement("block");
-				deps_block.setAttribute("type", "player_condition_none");
-				value.appendChild(deps_block);
+				Element playerCondition = doc.createElement("block");
+				playerCondition.setAttribute("type", "player_condition_none");
+				value.appendChild(playerCondition);
+				element.appendChild(value);
+			} else if (type.equals("biome_entered")) {
+				element.setAttribute("type", "second");
+
+				Element fieldBiome = XMLUtil.getFirstChildrenWithName(element, "field");
+				String biome = fieldBiome != null ? fieldBiome.getTextContent() : "plains";
+				element.removeChild(fieldBiome);
+
+				Element value = doc.createElement("value");
+				value.setAttribute("name", "player");
+				value.appendChild(createPredicateBlock(doc, biome));
+
 				element.appendChild(value);
 			}
 		}
@@ -78,6 +91,50 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 		StringWriter writer = new StringWriter();
 		transformer.transform(new DOMSource(doc), new StreamResult(writer));
 		return writer.getBuffer().toString();
+	}
+
+	private Element createPredicateBlock(Document doc, String biome) {
+		Element predicateBlock = doc.createElement("block");
+		predicateBlock.setAttribute("type", "player_condition_predicate");
+
+		Element predicateMutation = doc.createElement("mutation");
+		predicateMutation.setAttribute("inputs", "1");
+		predicateBlock.appendChild(predicateMutation);
+
+		Element locationComponent = doc.createElement("value");
+		locationComponent.setAttribute("name", "predicateComponent0");
+		locationComponent.appendChild(createLocationComponent(doc, biome));
+		predicateBlock.appendChild(locationComponent);
+
+		return predicateBlock;
+	}
+
+	private Element createLocationComponent(Document doc, String biome) {
+		Element locationComponent = doc.createElement("block");
+		locationComponent.setAttribute("type", "player_predicate_component_location");
+
+		Element predicateMutation = doc.createElement("mutation");
+		predicateMutation.setAttribute("inputs", "1");
+		locationComponent.appendChild(predicateMutation);
+
+		Element paramField = doc.createElement("value");
+		paramField.setAttribute("name", "locationComponent0");
+		paramField.appendChild(createBiomeLocationParameter(doc, biome));
+		locationComponent.appendChild(paramField);
+
+		return locationComponent;
+	}
+
+	private Element createBiomeLocationParameter(Document doc, String biome) {
+		Element biomeParam = doc.createElement("block");
+		biomeParam.setAttribute("type", "location_component_predicate_biomes_single");
+
+		Element biomeField = doc.createElement("field");
+		biomeField.setAttribute("name", "biome");
+		biomeField.setTextContent(biome);
+		biomeParam.appendChild(biomeField);
+
+		return biomeParam;
 	}
 
 	@Override public int getVersionConvertingTo() {
