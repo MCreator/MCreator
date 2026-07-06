@@ -25,7 +25,6 @@ import net.mcreator.ui.chromium.osr.JBCefOsrComponent;
 import net.mcreator.ui.chromium.osr.JBCefOsrHandler;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.laf.themes.ThemeCSS;
-import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefClient;

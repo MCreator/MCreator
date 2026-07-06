@@ -222,8 +222,7 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 			super("FailOnWarn", null, null, false, Property.EMPTY_ARRAY);
 		}
 
-		@Override
-		public void append(LogEvent event) {
+		@Override public void append(LogEvent event) {
 			if (event.getLevel().isMoreSpecificThan(Level.WARN)) {
 				failTests();
 			}

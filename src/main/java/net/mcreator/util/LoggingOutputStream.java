@@ -21,10 +21,8 @@ package net.mcreator.util;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.function.Consumer;
 
 public class LoggingOutputStream extends OutputStream {
 
