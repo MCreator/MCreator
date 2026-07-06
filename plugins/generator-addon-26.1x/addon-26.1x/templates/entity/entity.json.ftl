@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 {
-  "format_version": "1.13.0",
+  "format_version": "1.26.10",
   "minecraft:entity": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -30,8 +30,8 @@
       </#if>
       <#if !data.waterEntity && !data.isImmuneToDrowning>
       "minecraft:breathable": {
-        "totalSupply": 15,
-        "suffocateTime": 0
+        "total_supply": 15,
+        "suffocate_time": 0
       },
       </#if>
       <#if data.entityBehaviourType == "Mob">
