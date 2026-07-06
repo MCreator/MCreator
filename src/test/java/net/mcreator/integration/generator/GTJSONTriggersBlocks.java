@@ -81,6 +81,10 @@ public class GTJSONTriggersBlocks {
 					"<field name=\"enchantment\">" + TestWorkspaceDataProvider.getRandomItem(random,
 							ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName() + "</field>");
 
+			testXML = testXML.replace("<field name=\"biome\"></field>",
+					"<field name=\"enchantment\">" + TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.loadAllBiomes(modElement.getWorkspace())).getName() + "</field>");
+
 			testXML = testXML.replace("<block type=\"" + triggerBlock.getMachineName() + "\">",
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
 
@@ -137,8 +141,28 @@ public class GTJSONTriggersBlocks {
 				case "PlayerCondition" -> advancement.triggerxml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
-						<block type="tick">
-							<value name="player"><block type="player_condition_none"></block></value>
+						<block type="second">
+							<value name="player">%s</value>
+						</block></next></block></xml>
+						""".formatted(testXML);
+				case "PlayerPredicateComponent" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="second">
+							<value name="player"<block type="player_condition_predicate">
+							<mutation inputs=1></mutation>
+							<value name="predicateComponent0">%s</value>
+							</block></value>"
+						</block></next></block></xml>
+						""".formatted(testXML);
+				case "LocationParameter" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="second">
+							<value name="player"<block type="player_condition_predicate">
+							<mutation inputs=1></mutation>
+							<value name="predicateComponent0"><block type="player_predicate_component_location"><mutation inputs="1"></mutation><value name="locationComponent0">%s</value></block></value>
+							</block></value>"
 						</block></next></block></xml>
 						""".formatted(testXML);
 				default -> {
