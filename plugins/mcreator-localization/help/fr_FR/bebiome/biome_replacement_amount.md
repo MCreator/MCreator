@@ -1,0 +1,1 @@
+Ce paramètre est utilisé pour déterminer si le remplacement est tenté, similaire à un pourcentage.

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 public class AnnotationUtils {
 
@@ -42,6 +43,10 @@ public class AnnotationUtils {
 
 	public static List<String> getLimitedOptionsList(Class<?> type, String field) {
 		return List.of(getAnnotation(type, field, LimitedOptions.class).value());
+	}
+
+	public static <T> List<T> getLimitedOptionsList(Class<?> type, String field, Function<String, T> parser) {
+		return getLimitedOptionsList(type, field).stream().map(parser).toList();
 	}
 
 	private static final Map<FieldKey, Annotation> CACHE = new ConcurrentHashMap<>();

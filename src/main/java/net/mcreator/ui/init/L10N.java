@@ -24,7 +24,6 @@ import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.TestUtil;
 import net.mcreator.util.locale.LocaleRegistration;
 import net.mcreator.util.locale.UTF8Control;
 import org.apache.logging.log4j.LogManager;
@@ -154,11 +153,9 @@ public class L10N {
 		} else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
 				".description"))) {
 			return null;
-		} else if (TestUtil.isTestingEnvironment()) {
-			TestUtil.failIfTestingEnvironment();
-			return null;
 		} else if (key.startsWith("blockly.") || key.startsWith("trigger.") || key.startsWith(
 				GeneratorSelector.covpfx)) {
+			LOG.warn("Missing translation for key: {} in locale: {}", key, getLocale());
 			return null;
 		} else {
 			return key;

@@ -42,8 +42,14 @@ import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.util.TestUtil;
 import net.mcreator.util.UTF8Forcer;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.Property;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -91,6 +97,14 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 		 * START: Launcher.java emulation
 		 * ******************************/
 		LoggingSystem.init();
+
+		// Fail if any warning or higher log level is logged
+		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		Configuration config = ctx.getConfiguration();
+		FailOnWarnAppender appender = new FailOnWarnAppender();
+		appender.start();
+		config.getRootLogger().addAppender(appender, Level.ALL, null);
+		ctx.updateLoggers();
 
 		junitThread = Thread.currentThread();
 		TestUtil.enterTestingMode(IntegrationTestSetup::failTests);
@@ -200,6 +214,19 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 		/* ***************************************
 		 * END: MCreatorApplication.java emulation
 		 * ***************************************/
+	}
+
+	private static class FailOnWarnAppender extends AbstractAppender {
+
+		public FailOnWarnAppender() {
+			super("FailOnWarn", null, null, false, Property.EMPTY_ARRAY);
+		}
+
+		@Override public void append(LogEvent event) {
+			if (event.getLevel().isMoreSpecificThan(Level.WARN)) {
+				failTests();
+			}
+		}
 	}
 
 }

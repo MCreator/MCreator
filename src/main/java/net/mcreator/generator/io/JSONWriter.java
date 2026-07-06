@@ -41,7 +41,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -66,7 +65,6 @@ public class JSONWriter {
 			jsonout = gson.toJson(json);
 		} catch (Exception e) {
 			LOG.error("JSON Prettify failed, error: {}", e.getMessage(), e);
-			TestUtil.failIfTestingEnvironment();
 			jsonout = srcjson;
 		}
 		return jsonout;

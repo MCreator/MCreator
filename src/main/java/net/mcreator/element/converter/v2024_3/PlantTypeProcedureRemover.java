@@ -52,7 +52,7 @@ public class PlantTypeProcedureRemover extends ProcedureConverter {
 	}
 
 	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();
@@ -61,7 +61,7 @@ public class PlantTypeProcedureRemover extends ProcedureConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			if ("blockat_plant_type".equals(element.getAttribute("type"))) {
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				Document newElementDoc = builder.parse(new InputSource(new StringReader(PLACEHOLDER_BLOCK)));
 				Element newElement = newElementDoc.getDocumentElement();

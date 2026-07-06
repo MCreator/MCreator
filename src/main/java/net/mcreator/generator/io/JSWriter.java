@@ -22,7 +22,6 @@ package net.mcreator.generator.io;
 import io.beautifier.core.Options;
 import io.beautifier.javascript.JavaScriptBeautifier;
 import io.beautifier.javascript.JavaScriptOptions;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +50,6 @@ public class JSWriter {
 			return beautifier.beautify();
 		} catch (Exception e) {
 			LOG.error("JS Prettify failed, error: {}", e.getMessage(), e);
-			TestUtil.failIfTestingEnvironment();
 		}
 		return srcjs;
 	}

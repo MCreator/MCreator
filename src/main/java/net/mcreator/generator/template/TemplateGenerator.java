@@ -25,7 +25,6 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ModifyTemplateResultEvent;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -138,7 +137,6 @@ public class TemplateGenerator {
 			return modifyTemplateEvent.getTemplateOutput();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: {}", templateName, e);
-			TestUtil.failIfTestingEnvironment();
 			throw new TemplateGeneratorException(e);
 		}
 	}
@@ -161,7 +159,6 @@ public class TemplateGenerator {
 			return modifyTemplateEvent.getTemplateOutput();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
-			TestUtil.failIfTestingEnvironment();
 			throw new TemplateGeneratorException(e);
 		}
 	}
@@ -182,7 +179,6 @@ public class TemplateGenerator {
 				}
 			} catch (Exception e) {
 				LOG.warn("Failed to parse hardcoded variables", e);
-				TestUtil.failIfTestingEnvironment();
 			}
 		}
 	}

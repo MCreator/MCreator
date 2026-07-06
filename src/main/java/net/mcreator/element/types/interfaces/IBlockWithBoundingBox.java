@@ -45,12 +45,12 @@ import java.util.stream.Collectors;
 	}
 
 	class BoxEntry {
-		public double mx;
-		public double my;
-		public double mz;
-		public double Mx;
-		public double My;
-		public double Mz;
+		@Numeric(init = 0, min = -100, max = 100, step = 0.1) public double mx;
+		@Numeric(init = 0, min = -100, max = 100, step = 0.1) public double my;
+		@Numeric(init = 0, min = -100, max = 100, step = 0.1) public double mz;
+		@Numeric(init = 16, min = -100, max = 100, step = 0.1) public double Mx;
+		@Numeric(init = 16, min = -100, max = 100, step = 0.1) public double My;
+		@Numeric(init = 16, min = -100, max = 100, step = 0.1) public double Mz;
 		public boolean subtract;
 
 		public BoxEntry() {

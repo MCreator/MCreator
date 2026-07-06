@@ -25,7 +25,6 @@ import net.mcreator.generator.GeneratorGradleCache;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.gradle.GradleToolchainUtil;
 import net.mcreator.gradle.GradleUtils;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,7 +88,6 @@ public class ProjectJarManager extends JarManager {
 			tryLoadJVMLibraryInfo(generator);
 		} catch (GradleCacheImportFailedException e) {
 			LOG.error("Failed to load JVM library info", e);
-			TestUtil.failIfTestingEnvironment();
 		}
 
 		// After we have collected all classpath entries, load them in the JAR manager

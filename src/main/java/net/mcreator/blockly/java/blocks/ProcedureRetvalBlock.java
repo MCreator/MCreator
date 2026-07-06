@@ -53,7 +53,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 			Procedure procedure = new Procedure(procedureField.getTextContent());
 			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
 
-			// If the procedure doesn't actually exist, add a compile error
+			// If the procedure doesn't actually exist, add compile error
 			if (!procedure.exists) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.procedure_retval.nonexistent", procedure.getName())));

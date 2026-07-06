@@ -24,6 +24,7 @@ import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -39,11 +40,12 @@ import java.awt.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class GUI extends GeneratableElement implements IGUI {
 
-	public int type;
+	@LimitedOptions({ "Without slots", "With slots" }) public int type;
 	@Numeric(init = 176, min = 0, max = 512, step = 1) public int width;
 	@Numeric(init = 166, min = 0, max = 512, step = 1) public int height;
 
@@ -74,6 +76,7 @@ import java.util.List;
 		this.H = WYSIWYG.H;
 		this.renderBgLayer = true;
 		this.gridSettings = new GridSettings();
+		this.components = new ArrayList<>();
 	}
 
 	public int getMaxSlotID() {

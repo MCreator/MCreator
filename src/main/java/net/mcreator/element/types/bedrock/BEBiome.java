@@ -24,6 +24,7 @@ import net.mcreator.element.parts.BEBiomeTagEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
@@ -32,26 +33,25 @@ import net.mcreator.workspace.references.ModElementReference;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class BEBiome extends GeneratableElement {
 
-	public MItemBlock topMaterial;
-	public MItemBlock midMaterial;
-	public MItemBlock foundationMaterial;
+	@NonNullMappable("Blocks.GRASS") public MItemBlock topMaterial;
+	@NonNullMappable("Blocks.DIRT#0") public MItemBlock midMaterial;
+	@NonNullMappable("Blocks.STONE#0") public MItemBlock foundationMaterial;
 	@Nullable public MItemBlock seaFloorMaterial;
 	@Nullable public MItemBlock seaMaterial;
 
-	public boolean spawnParticles;
-
 	@Numeric(init = 7, min = 0, max = 256, step = 1) public int seaFloorDepth;
 
-	public Color airColor;
-	public Color fogColor;
-	public Color grassColor;
-	public Color foliageColor;
-	public Color waterColor;
-	public Color waterFogColor;
+	@Nullable public Color airColor;
+	@Nullable public Color fogColor;
+	@Nullable public Color grassColor;
+	@Nullable public Color foliageColor;
+	@Nullable public Color waterColor;
+	@Nullable public Color waterFogColor;
 
 	@Numeric(init = 0.5, min = 0, max = 2.0, step = 0.1) public double temperature;
 	@Numeric(init = 0.5, min = 0, max = 1.0, step = 0.1) public double downfall;
@@ -65,6 +65,8 @@ import java.util.List;
 			"mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" })
 	public String noiseType;
 	@LimitedOptions({ "default", "desert", "ice", "savanna", "taiga" }) public String villageType;
+
+	public boolean spawnParticles;
 	@LimitedOptions({ "ash", "blue_spores", "red_spores", "white_ash" }) public String particleToSpawn;
 
 	public List<BEBiomeTagEntry> biomeTags;
@@ -81,6 +83,9 @@ import java.util.List;
 
 	public BEBiome(ModElement element) {
 		super(element);
+
+		this.biomeTags = new ArrayList<>();
+		this.biomeReplacements = new ArrayList<>();
 	}
 
 	public MItemBlock getUnderwaterBlock() {

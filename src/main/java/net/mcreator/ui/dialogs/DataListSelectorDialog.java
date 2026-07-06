@@ -28,13 +28,14 @@ import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
-	public DataListSelectorDialog(MCreator mcreator, Function<Workspace, List<DataListEntry>> entryProvider) {
+	public DataListSelectorDialog(MCreator mcreator, Function<Workspace, Collection<DataListEntry>> entryProvider) {
 		super(mcreator,
 				workspace -> entryProvider.apply(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
 						.toList());
@@ -46,7 +47,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 	}
 
 	public static DataListEntry openSelectorDialog(MCreator mcreator,
-			Function<Workspace, List<DataListEntry>> entryProvider, String title, String message) {
+			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
 		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
 		dataListSelector.setMessage(message);
 		dataListSelector.setTitle(title);
@@ -55,7 +56,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 	}
 
 	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
-			Function<Workspace, List<DataListEntry>> entryProvider, String title, String message) {
+			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
 		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
 		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

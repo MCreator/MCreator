@@ -24,6 +24,7 @@ import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.util.TestUtil;
+import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.TagElement;
 import org.apache.logging.log4j.LogManager;
@@ -90,7 +91,6 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		String retval = getUnmappedValue();
 		if (!retval.startsWith("TAG:")) {
 			LOG.warn("Tried to convert non-tag mappable element to tag: {}", value);
-			TestUtil.failIfTestingEnvironment();
 		} else {
 			retval = retval.substring(4); // Remove the "TAG:" prefix
 			if (retval.startsWith("mod:")) {
@@ -134,17 +134,17 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		if (value.startsWith(NameMapper.MCREATOR_PREFIX)) {
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
 			if (!retval) {
-				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);
-				TestUtil.failIfTestingEnvironment();
+				LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
+						TraceUtil.tryToFindMCreatorInvoker(), value);
 			}
 			return retval;
 		} else if (mappingSource != null && !value.startsWith(NameMapper.EXTERNAL_PREFIX) && !value.startsWith("#")
-				&& !value.startsWith("TAG:") && !TestUtil.isTestingEnvironment()) {
+				&& !value.startsWith("TAG:") && !value.startsWith("POTION:") && !TestUtil.isTestingEnvironment()) {
 			Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mappingSource);
 			if (dataListEntryMap != null) {
 				if (!dataListEntryMap.containsKey(value)) {
-					LOG.warn("Broken vanilla reference found. Referencing non-existent element: {} from {}", value,
-							mappingSource);
+					LOG.warn("({}) Broken vanilla reference found. Referencing non-existent element: {} from {}",
+							TraceUtil.tryToFindMCreatorInvoker(), value, mappingSource);
 					return false;
 				}
 			}

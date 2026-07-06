@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullIf;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -48,39 +49,39 @@ import java.util.*;
 	// Crafting recipe
 	@LimitedOptions({ "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" }) public String craftingBookCategory;
 	public boolean recipeShapeless;
-	@ModElementReference public MItemBlock[] recipeSlots;
-	public MItemBlock recipeReturnStack;
+	@NonNullIf("recipeType %= Crafting") @ModElementReference public MItemBlock[] recipeSlots;
+	@NonNullIf("recipeType %= Crafting") public MItemBlock recipeReturnStack;
 
 	// Smelting recipe
-	public MItemBlock smeltingInputStack;
-	public MItemBlock smeltingReturnStack;
+	@NonNullIf("recipeType %= Smelting") public MItemBlock smeltingInputStack;
+	@NonNullIf("recipeType %= Smelting") public MItemBlock smeltingReturnStack;
 
 	// Blasting recipe
-	public MItemBlock blastingInputStack;
-	public MItemBlock blastingReturnStack;
+	@NonNullIf("recipeType %= Blasting") public MItemBlock blastingInputStack;
+	@NonNullIf("recipeType %= Blasting") public MItemBlock blastingReturnStack;
 
 	// Smoking recipe
-	public MItemBlock smokingInputStack;
-	public MItemBlock smokingReturnStack;
+	@NonNullIf("recipeType %= Smoking") public MItemBlock smokingInputStack;
+	@NonNullIf("recipeType %= Smoking") public MItemBlock smokingReturnStack;
 
 	// Stone cutting recipe
-	public MItemBlock stoneCuttingInputStack;
-	public MItemBlock stoneCuttingReturnStack;
+	@NonNullIf("recipeType %= Stone cutting") public MItemBlock stoneCuttingInputStack;
+	@NonNullIf("recipeType %= Stone cutting") public MItemBlock stoneCuttingReturnStack;
 
 	// Campfire cooking recipe
-	public MItemBlock campfireCookingInputStack;
-	public MItemBlock campfireCookingReturnStack;
+	@NonNullIf("recipeType %= Campfire cooking") public MItemBlock campfireCookingInputStack;
+	@NonNullIf("recipeType %= Campfire cooking") public MItemBlock campfireCookingReturnStack;
 
 	// Smithing recipe
-	public MItemBlock smithingInputStack;
-	public MItemBlock smithingInputAdditionStack;
+	@NonNullIf("recipeType %= Smithing") public MItemBlock smithingInputStack;
+	@NonNullIf("recipeType %= Smithing") public MItemBlock smithingInputAdditionStack;
 	public MItemBlock smithingInputTemplateStack;
-	public MItemBlock smithingReturnStack;
+	@NonNullIf("recipeType %= Smithing") public MItemBlock smithingReturnStack;
 
 	// Brewing recipe
-	public MItemBlock brewingInputStack;
-	public MItemBlock brewingIngredientStack;
-	public MItemBlock brewingReturnStack;
+	@NonNullIf("recipeType %= Brewing") public MItemBlock brewingInputStack;
+	@NonNullIf("recipeType %= Brewing") public MItemBlock brewingIngredientStack;
+	@NonNullIf("recipeType %= Brewing") public MItemBlock brewingReturnStack;
 
 	private Recipe() {
 		this(null);
