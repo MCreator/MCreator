@@ -32,6 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -133,6 +134,58 @@ public class EventParameterSetBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "event_number_parameter_set",
+          "args0": [
+              {
+                  "type": "field_data_list_selector",
+                  "name": "eventparameter",
+                  "datalist": "eventparametersnumber"
+              },
+              {
+                  "type": "input_value",
+                  "name": "value",
+                  "check": "Number"
+              }
+          ],
+          "inputsInline": true,
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 90
+        }""", """
+        {
+          "type": "event_logic_parameter_set",
+          "args0": [
+              {
+                  "type": "field_data_list_selector",
+                  "name": "eventparameter",
+                  "datalist": "eventparametersboolean"
+              },
+              {
+                  "type": "input_value",
+                  "name": "value",
+                  "check": "Boolean"
+              }
+          ],
+          "inputsInline": true,
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 90
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
+	}
+
+	@Nullable @Override public String[][] getToolboxInit() {
+		return new String[][] {
+				{ "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>" },
+				{ "<value name=\"value\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>" } };
 	}
 
 }

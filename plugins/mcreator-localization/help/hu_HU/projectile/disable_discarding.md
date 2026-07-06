@@ -1,0 +1,2 @@
+A paraméter engedélyezésével megakadályozható, hogy a lövedék egy blokkra érkezés után eltűnjön.
+Ezzel olyan, háromágú szigonyhoz hasonló lövedékeket lehet létrehozni, amelyek visszatérhetnek a játékoshoz, vagy felvehetők.

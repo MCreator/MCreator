@@ -1,0 +1,1 @@
+Wenn diese Option aktiviert ist, werden Schweine innerhalb dieser Dimension nicht zombifiziert.

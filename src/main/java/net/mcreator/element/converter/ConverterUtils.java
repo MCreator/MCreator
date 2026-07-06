@@ -20,7 +20,7 @@
 package net.mcreator.element.converter;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.io.TrackingFileIO;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -37,7 +37,7 @@ public class ConverterUtils {
 			@Nullable GeneratableElement result) {
 		if (result != null) {
 			// Delete old files of the source ME as it will be converted to a different ME that will have different/own files
-			source.getAssociatedFiles().forEach(f -> TrackingFileIO.deleteFile(source.getWorkspace(), f));
+			source.getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(source.getWorkspace(), f));
 			source.getWorkspace().removeModElement(source);
 
 			result.getModElement()

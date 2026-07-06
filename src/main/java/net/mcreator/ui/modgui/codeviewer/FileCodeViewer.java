@@ -21,8 +21,8 @@ package net.mcreator.ui.modgui.codeviewer;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
-import net.mcreator.io.writer.JSONWriter;
-import net.mcreator.io.writer.JSWriter;
+import net.mcreator.generator.io.JSONWriter;
+import net.mcreator.generator.io.JSWriter;
 import net.mcreator.java.ImportFormat;
 import net.mcreator.ui.ide.CodeEditorView;
 import org.apache.commons.lang3.StringUtils;

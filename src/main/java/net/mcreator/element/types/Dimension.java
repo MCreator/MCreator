@@ -21,23 +21,27 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 
@@ -45,13 +49,15 @@ import java.util.List;
 		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
 		IMultipleNames {
 
+	private static final Logger LOG = LogManager.getLogger(Dimension.class);
+
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
 	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
 
-	public MItemBlock mainFillerBlock;
-	public MItemBlock fluidBlock;
+	@NonNullMappable("Blocks.STONE#0") public MItemBlock mainFillerBlock;
+	@NonNullMappable("Blocks.WATER") public MItemBlock fluidBlock;
 	@Numeric(init = 63, min = -1024, max = 1024, step = 1) public int seaLevel;
 	public boolean generateOreVeins;
 	public boolean generateAquifers;
@@ -70,9 +76,26 @@ import java.util.List;
 	@Numeric(init = 0, min = 0, max = 1, step = 0.01) public double ambientLight;
 	public boolean doesWaterVaporize;
 	public boolean hasFixedTime;
-	@Numeric(init = 0, min = 0, max = 24000, step = 1) public int fixedTimeValue;
+	@NonNullIf("hasFixedTime") @Numeric(init = 0, min = 0, max = 24000, step = 1) public int fixedTimeValue;
 	@Numeric(init = 1, min = 0.01, max = 1000, step = 0.01) public double coordinateScale;
 	public String infiniburnTag;
+
+	public boolean enableCustomSkyboxTextures;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures") public TextureHolder skyboxTextureUp;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureDown;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureNorth;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureSouth;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureWest;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSkyboxTextures")
+	public TextureHolder skyboxTextureEast;
+
+	public boolean enableCustomSunMoonTextures;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSunMoonTextures") public TextureHolder sunTexture;
+	@TextureReference(TextureType.OTHER) @NonNullIf("enableCustomSunMoonTextures") public TextureHolder moonTexture;
 
 	public boolean bedWorks;
 	public boolean hasSkyLight;
@@ -86,17 +109,17 @@ import java.util.List;
 	public Procedure onPlayerEntersDimension;
 	public Procedure onPlayerLeavesDimension;
 
-	public MItemBlock portalFrame;
-	public Particle portalParticles;
+	@NonNullIf("enablePortal") public MItemBlock portalFrame;
+	@NonNullIf("enablePortal") public ParticleEntry portalParticles;
 	@Numeric(init = 0, min = 0, max = 15, step = 1) public int portalLuminance;
-	public Sound portalSound;
+	@NonNullIf("enablePortal") public Sound portalSound;
 	public boolean enableIgniter;
-	public String igniterName;
+	@NonNullIf("enableIgniter") public String igniterName;
 	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String igniterRarity;
 	public StringListProcedure specialInformation;
 	@ModElementReference public List<TabEntry> creativeTabs;
-	@TextureReference(TextureType.ITEM) public TextureHolder texture;
-	@TextureReference(TextureType.BLOCK) public TextureHolder portalTexture;
+	@TextureReference(TextureType.ITEM) @NonNullIf("enableIgniter") public TextureHolder texture;
+	@TextureReference(TextureType.BLOCK) @NonNullIf("enablePortal") public TextureHolder portalTexture;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
 	public Procedure portalUseCondition;
@@ -126,6 +149,7 @@ import java.util.List;
 		this.skyType = "NONE";
 		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
+		this.biomesInDimension = new ArrayList<>();
 		this.biomesInDimensionCaves = new ArrayList<>();
 	}
 
@@ -166,6 +190,62 @@ import java.util.List;
 		usedBiomes.addAll(biomesInDimension);
 		usedBiomes.addAll(biomesInDimensionCaves);
 		return usedBiomes;
+	}
+
+	@Override public void finalizeModElementGeneration() {
+		if (this.enableCustomSkyboxTextures) {
+			generateSkyboxTexture();
+		}
+	}
+
+	private void generateSkyboxTexture() {
+		try {
+			int[][] positions = { { 1, 0 }, // Up
+					{ 0, 1 }, // West
+					{ 1, 1 }, // North
+					{ 2, 1 }, // East
+					{ 3, 1 }, // South
+					{ 1, 2 }  // Down
+			};
+
+			Image[] images = { this.skyboxTextureUp.getImage(TextureType.OTHER),
+					this.skyboxTextureWest.getImage(TextureType.OTHER),
+					this.skyboxTextureNorth.getImage(TextureType.OTHER),
+					this.skyboxTextureEast.getImage(TextureType.OTHER),
+					this.skyboxTextureSouth.getImage(TextureType.OTHER),
+					this.skyboxTextureDown.getImage(TextureType.OTHER) };
+
+			int maxSize = 0;
+			for (int i = 0; i < 6; i++) {
+				if (images[i] != null) {
+					maxSize = Math.max(maxSize, Math.max(images[i].getWidth(null), images[i].getHeight(null)));
+				}
+			}
+			if (maxSize == 0) {
+				return;
+			}
+
+			if (maxSize % 2 != 0)
+				maxSize++;
+
+			BufferedImage stitchedImage = new BufferedImage(4 * maxSize, 3 * maxSize, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = stitchedImage.createGraphics();
+			for (int i = 0; i < 6; i++) {
+				if (images[i] != null) {
+					BufferedImage toDraw = ImageUtils.toBufferedImage(ImageUtils.resize(images[i], maxSize));
+					int col = positions[i][0];
+					int row = positions[i][1];
+					g2d.drawImage(toDraw, col * maxSize, row * maxSize, null);
+				}
+			}
+			g2d.dispose();
+
+			File texturesDirectory = getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER);
+			File skyboxDir = new File(texturesDirectory, "skybox");
+			FileIO.writeImageToPNGFile(stitchedImage, new File(skyboxDir, getModElement().getRegistryName() + ".png"));
+		} catch (Exception e) {
+			LOG.error("Failed to stitch dimension skybox textures", e);
+		}
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

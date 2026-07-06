@@ -318,27 +318,33 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	public static Comparator<ModElement> getComparator(Workspace workspace, List<?> originalOrder) {
 		WorkspaceUserSettings settings = workspace.getWorkspaceUserSettings();
 
-		final Map<Object, Integer> indexMap = new HashMap<>();
-		for (int i = 0; i < originalOrder.size(); i++)
-			indexMap.put(originalOrder.get(i), i);
+		if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.CREATED) {
+			final Map<Object, Integer> indexMap = new HashMap<>();
+			for (int i = 0; i < originalOrder.size(); i++)
+				indexMap.put(originalOrder.get(i), i);
 
-		return (a, b) -> {
-			if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.NAME) {
-				if (settings.workspacePanelSortAscending)
-					return a.getName().compareToIgnoreCase(b.getName());
-				else
-					return b.getName().compareToIgnoreCase(a.getName());
-			} else if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.TYPE) {
-				if (settings.workspacePanelSortAscending)
-					return a.getType().getReadableName().compareTo(b.getType().getReadableName());
-				else
-					return b.getType().getReadableName().compareTo(a.getType().getReadableName());
-			} else {
+			return (a, b) -> {
 				if (settings.workspacePanelSortAscending)
 					return indexMap.get(a) - indexMap.get(b);
 				else
 					return indexMap.get(b) - indexMap.get(a);
-			}
+			};
+		}
+
+		if (settings.workspacePanelSortType == WorkspaceUserSettings.SortType.NAME) {
+			return (a, b) -> {
+				if (settings.workspacePanelSortAscending)
+					return a.getName().compareToIgnoreCase(b.getName());
+				else
+					return b.getName().compareToIgnoreCase(a.getName());
+			};
+		}
+
+		return (a, b) -> {
+			if (settings.workspacePanelSortAscending)
+				return a.getType().getReadableName().compareTo(b.getType().getReadableName());
+			else
+				return b.getType().getReadableName().compareTo(a.getType().getReadableName());
 		};
 	}
 

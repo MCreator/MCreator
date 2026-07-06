@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
+    }
+  ],
+  "output": "ValueEffect",
+  "colour": 300,
+  "mcreator": {
+    "toolbox_id": "valueeffects",
+    "toolbox_init": [
+      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
+    ],
+    "inputs": [
+      "value"
+    ]
+  }
+}

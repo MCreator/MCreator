@@ -44,7 +44,7 @@ public class FileOpener {
 			else
 				return;
 			imageMakerView.showView();
-		} else if (file instanceof File nbt && nbt.getName().endsWith(".nbt")) {
+		} else if (file instanceof File nbt && nbt.getName().toLowerCase().endsWith(".nbt")) {
 			NBTEditorView nbtEditorView = new NBTEditorView(mcreator, nbt);
 			nbtEditorView.showView();
 		} else if (file instanceof File text && text.isFile()) {

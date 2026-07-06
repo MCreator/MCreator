@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -36,6 +35,7 @@ import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -55,8 +55,8 @@ import java.util.List;
 	@TextureReference(TextureType.OTHER) public TextureHolder textureRenderOverlay;
 	public boolean hasFog;
 	public Color fogColor;
-	public NumberProcedure fogStartDistance;
-	public NumberProcedure fogEndDistance;
+	@NonNullIf("hasFog") public NumberProcedure fogStartDistance;
+	@NonNullIf("hasFog") public NumberProcedure fogEndDistance;
 
 	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
 			"Sky", "Fog", "Water fog" }) public String tintType;
@@ -66,7 +66,7 @@ import java.util.List;
 	@Numeric(init = 1, min = 1, max = 8, step = 1) public int levelDecrease;
 	@Numeric(init = 4, min = 1, max = 16, step = 1) public int slopeFindDistance;
 	public boolean spawnParticles;
-	public Particle dripParticle;
+	@NonNullIf("spawnParticles") public ParticleEntry dripParticle;
 	@Numeric(init = 1, min = -25, max = 25, step = 0.1) public double flowStrength;
 
 	@Numeric(init = 0, min = 0, max = 100, step = 1) public int luminosity;
@@ -76,7 +76,7 @@ import java.util.List;
 	@Nonnull public String type;
 
 	public boolean generateBucket;
-	@TextureReference(TextureType.ITEM) public TextureHolder textureBucket;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder textureBucket;
 	@ModElementReference public List<TabEntry> creativeTabs;
 	public Sound emptySound;
 	@LimitedOptions({ "COMMON", "UNCOMMON", "RARE", "EPIC" }) public String rarity;
@@ -90,7 +90,7 @@ import java.util.List;
 	public boolean ignitedByLava;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int fireSpreadSpeed;
-	public MapColor colorOnMap;
+	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 
 	public Procedure onBlockAdded;
 	public Procedure onNeighbourChanges;

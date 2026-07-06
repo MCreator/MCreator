@@ -1,0 +1,1 @@
+Dieser Parameter kontrolliert welcher Dorfbewohner-Beruf die Handelsangebote anbieten kann

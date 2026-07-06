@@ -1,0 +1,1 @@
+Ce paramètre détermine la densité des particules apparues dans le biome.

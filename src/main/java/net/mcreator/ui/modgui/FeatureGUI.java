@@ -20,10 +20,8 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.data.ToolboxType;
+import net.mcreator.blockly.InternalBlocksLoader;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.datapack.BlocklyToFeature;
 import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.types.Feature;
@@ -132,6 +130,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.FEATURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
 			blocklyPanel.addChangeListener(

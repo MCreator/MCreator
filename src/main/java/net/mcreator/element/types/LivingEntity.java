@@ -31,6 +31,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.io.FileIO;
@@ -78,7 +79,9 @@ import java.util.stream.Collectors;
 	public String mobName;
 	public String mobLabel;
 
-	@Nonnull public String mobModelName;
+	@Nonnull
+	@LimitedOptions(value = { "Biped", "Chicken", "Cod", "Cow", "Creeper", "Ghast", "Ocelot", "Pig", "Piglin", "Salmon",
+			"Silverfish", "Slime", "Spider", "Villager", "Witch" }, allowCustom = true) public String mobModelName;
 	@TextureReference(TextureType.ENTITY) public String mobModelTexture;
 	public LogicProcedure transparentModelCondition;
 	public LogicProcedure isShakingCondition;
@@ -97,9 +100,9 @@ import java.util.stream.Collectors;
 	@Numeric(init = 0, min = -1024, max = 1024, step = 0.1) public double mountedYOffset;
 
 	public boolean hasSpawnEgg;
-	public Color spawnEggBaseColor;
-	public Color spawnEggDotColor;
-	@TextureReference(TextureType.ITEM) public TextureHolder spawnEggTexture;
+	@NonNullIf("hasSpawnEgg") public Color spawnEggBaseColor;
+	@NonNullIf("hasSpawnEgg") public Color spawnEggDotColor;
+	@Nullable @TextureReference(TextureType.ITEM) public TextureHolder spawnEggTexture;
 	@ModElementReference public List<TabEntry> creativeTabs;
 
 	public boolean isBoss;
@@ -185,25 +188,27 @@ import java.util.stream.Collectors;
 	@ModElementReference public List<MItemBlock> breedTriggerItems;
 
 	public boolean ranged;
-	public MItemBlock rangedAttackItem;
+	@NonNullIf("ranged") public MItemBlock rangedAttackItem;
 	@ModElementReference(defaultValues = "Default item", acceptedTypes = Projectile.class) public String rangedItemType;
-	@Numeric(init = 20, min = 0, max = 1024, step = 1) public int rangedAttackInterval;
-	@Numeric(init = 10, min = 0, max = 1024, step = 0.1) public double rangedAttackRadius;
+	@NonNullIf("ranged") @Numeric(init = 20, min = 0, max = 1024, step = 1) public int rangedAttackInterval;
+	@NonNullIf("ranged") @Numeric(init = 10, min = 0, max = 1024, step = 0.1) public double rangedAttackRadius;
 
 	public boolean spawnThisMob;
 	public boolean doesDespawnWhenIdle;
 	public Procedure spawningCondition;
-	@Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
-	public MobSpawnType mobSpawningType;
-	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int minNumberOfMobsPerGroup;
-	@Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true) public int maxNumberOfMobsPerGroup;
+	@NonNullIf("spawnThisMob") @Numeric(init = 20, min = 1, max = 1000, step = 1) public int spawningProbability;
+	@NonNullIf("spawnThisMob") public MobSpawnType mobSpawningType;
+	@NonNullIf("spawnThisMob") @Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true)
+	public int minNumberOfMobsPerGroup;
+	@NonNullIf("spawnThisMob") @Numeric(init = 4, min = 1, max = 128, step = 1, allowMinMaxEqual = true)
+	public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
 	public int[] raidSpawnsCount;
 
 	public boolean sensitiveToVibration;
-	public List<GameEventEntry> vibrationalEvents;
-	public NumberProcedure vibrationSensitivityRadius;
+	@NonNullIf("sensitiveToVibration") public List<GameEventEntry> vibrationalEvents;
+	@NonNullIf("sensitiveToVibration") public NumberProcedure vibrationSensitivityRadius;
 	public Procedure canReceiveVibrationCondition;
 	public Procedure onReceivedVibration;
 
@@ -236,6 +241,9 @@ import java.util.stream.Collectors;
 		this.animations = new ArrayList<>();
 
 		this.vibrationalEvents = new ArrayList<>();
+
+		this.breedTriggerItems = new ArrayList<>();
+		this.restrictionBiomes = new ArrayList<>();
 	}
 
 	@Override @Nullable public Model getEntityModel() {
@@ -285,7 +293,8 @@ import java.util.stream.Collectors;
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
 					BlocklyEditorType.AI_TASK, this.aixml, this.getModElement().getGenerator()
 					.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
-					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
 					.getGeneratorConfiguration().getDefinitionsProvider()

@@ -1,0 +1,32 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "min",
+      "value": 1,
+      "precision": 1,
+      "min": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max",
+      "value": 100,
+      "precision": 1
+    }
+  ],
+  "inputsInline": false,
+  "output": "DataComponentPredicate",
+  "colour": 130,
+  "extensions": [
+    "min_max_fields_validator",
+    "disable_duplicate_input_type"
+  ],
+  "mcreator": {
+    "group": "damage",
+    "toolbox_id": "components",
+    "fields": [
+      "min",
+      "max"
+    ]
+  }
+}

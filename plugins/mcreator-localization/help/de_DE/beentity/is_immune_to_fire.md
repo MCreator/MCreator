@@ -1,0 +1,1 @@
+Wenn aktiviert, wird die Entität keinen Feuerschaden erleiden.

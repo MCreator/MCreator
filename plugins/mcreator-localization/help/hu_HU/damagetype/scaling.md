@@ -1,6 +1,6 @@
 Ez a paraméter határozza meg, hogy a okozott kár a nehézségi szinttel együtt növekedjen-e.
 
-- `soha`: a nehézség nem befolyásolja az okozott kárt
-- `always`: a nehézség mindig növeli az okozott kárt, függetlenül a forrásától
-- `when_caused_by_living_non_player`: a nehézség csak akkor növeli a okozott kárt, ha azt élő lény okozza
+- `Soha`: a nehézség nem befolyásolja az okozott kárt
+- `Mindig`: a nehézség mindig növeli az okozott kárt, függetlenül a forrásától
+- `Ha élő lény (nem játékos) okozza`: a nehézségi fokozat csak akkor növeli az okozott sebzést, ha azt élő lény okozza
   (például zombik vagy pókok)

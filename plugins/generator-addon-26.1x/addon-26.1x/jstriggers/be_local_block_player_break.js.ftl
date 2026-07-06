@@ -2,6 +2,8 @@
 
 const ${name} = {
     onPlayerBreak(event) {
+        <#list localvariables as var><@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/></#list>
+
     	<@optionalDependencies dependencies, {
 			"block": "event.brokenBlockPermutation",
 			"dimension": "event.dimension",

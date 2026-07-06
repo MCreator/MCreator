@@ -1,3 +1,3 @@
-Mit diesem Parameter kann der Spieler diese Einheit einbinden.
+Dieser Parameter ermöglicht es dem Spieler, an dieser Einheit zu mounten.
 
-Sie können auch optionale Controller aktivieren.
+Du kannst auch optionale Steuerelemente aktivieren.

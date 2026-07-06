@@ -1,0 +1,1 @@
+Wenn die Bedingung angegeben ist, kann dieser Sprite nur dann angezeigt werden, wenn er übergeht.

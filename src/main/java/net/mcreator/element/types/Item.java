@@ -105,7 +105,7 @@ import java.util.stream.Collectors;
 	public boolean enableRanged;
 	public boolean shootConstantly;
 	public boolean rangedItemChargesPower;
-	public ProjectileEntry projectile;
+	@NonNullIf("enableRanged") public ProjectileEntry projectile;
 	public boolean projectileDisableAmmoCheck;
 	public Procedure onRangedItemUsed;
 	public Procedure rangedUseCondition;
@@ -117,13 +117,14 @@ import java.util.stream.Collectors;
 	public MItemBlock eatResultItem;
 	public boolean isMeat;
 	public boolean isAlwaysEdible;
-	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear" }) public String animation;
+	@NonNullMappable("eat") public ItemUseAnimation animation;
 
 	// Music disc
 	public boolean isMusicDisc;
-	public Sound musicDiscMusic;
-	public String musicDiscDescription;
-	@Numeric(init = 100, min = 1, max = 20 * 3600, step = 1) public int musicDiscLengthInTicks;
+	@NonNullIf("isMusicDisc") public Sound musicDiscMusic;
+	@NonNullIf("isMusicDisc") public String musicDiscDescription;
+	@NonNullIf("isMusicDisc") @Numeric(init = 100, min = 1, max = 20 * 3600, step = 1)
+	public int musicDiscLengthInTicks;
 	@Numeric(init = 0, min = 0, max = 15, step = 1) public int musicDiscAnalogOutput;
 
 	@ModElementReference(acceptedTypes = { BannerPattern.class }) public List<String> providedBannerPatterns;
@@ -147,7 +148,6 @@ import java.util.stream.Collectors;
 		this.inventorySize = 9;
 		this.inventoryStackSize = 99;
 		this.saturation = 0.3f;
-		this.animation = "eat";
 
 		this.providedBannerPatterns = new ArrayList<>();
 
@@ -230,11 +230,12 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean hasNonDefaultAnimation() {
-		return isFood ? !animation.equals("eat") : !animation.equals("none");
+		return isFood ? !animation.getUnmappedValue().equals("eat") : !animation.getUnmappedValue().equals("none");
 	}
 
 	public boolean hasCustomFoodConsumable() {
-		return isFood && !(useDuration == 32 && (animation.equals("eat") || animation.equals("drink")));
+		return isFood && !(useDuration == 32 && (animation.getUnmappedValue().equals("eat")
+				|| animation.getUnmappedValue().equals("drink")));
 	}
 
 	public boolean hasEatResultItem() {

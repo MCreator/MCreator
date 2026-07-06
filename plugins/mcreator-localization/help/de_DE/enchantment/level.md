@@ -1,0 +1,1 @@
+Die maximale Stufe, die deine Verzauberung unterstützt.

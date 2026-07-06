@@ -28,14 +28,22 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> extends JSingleEntriesList<T, U> {
+	private final boolean canMoveEntries;
 
 	public JSimpleEntriesList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, gui);
+		this(mcreator, gui, true);
+	}
 
-		add.addActionListener(e -> {
+	public JSimpleEntriesList(MCreator mcreator, IHelpContext gui, boolean canMoveEntries) {
+		super(mcreator, gui);
+		this.canMoveEntries = canMoveEntries;
+
+		add.addActionListener(_ -> {
 			T entry = newEntry(entries, entryList, true);
 			if (entry != null) {
 				entry.reloadDataLists();
+				if (!canMoveEntries)
+					entry.showArrows(false);
 				entryList.add(entry);
 				entry.setEnabled(this.isEnabled());
 				registerEntryUI(entry);
@@ -70,6 +78,8 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 				T entry = newEntry(entries, entryList, false);
 				if (entry != null) {
 					entry.reloadDataLists();
+					if (!canMoveEntries)
+						entry.showArrows(false);
 					entryList.add(entry);
 					entry.setEnabled(isEnabled());
 					entry.setEntry(e);

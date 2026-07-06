@@ -1,0 +1,1 @@
+Während das Projektil fliegt, wird die ausgewählte Prozedur jeden Tick ausgeführt.

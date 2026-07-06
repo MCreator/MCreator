@@ -3,6 +3,7 @@
   "output": "MCItem",
   "colour": "350",
   "mcreator": {
+    "group": "items",
     "toolbox_id": "components",
     "toolbox_init": [
       "<mutation inputs=\"2\"></mutation>"

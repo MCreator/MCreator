@@ -22,7 +22,9 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.workspace.elements.VariableElement;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +42,10 @@ public interface IBlocklyPanelHolder {
 		return null;
 	}
 
+	default void forceLoadPanels() {
+		getBlocklyPanels().forEach(BlocklyPanel::forceLoad);
+	}
+
 	default boolean isInitialXMLValid() {
 		return true;
 	}
@@ -54,6 +60,12 @@ public interface IBlocklyPanelHolder {
 
 	default void closeBlocklyPanels() {
 		getBlocklyPanels().forEach(BlocklyPanel::close);
+	}
+
+	interface IBlocklyPanelVariablesHolder {
+
+		DefaultListModel<VariableElement> getLocalVariablesListModel();
+
 	}
 
 }

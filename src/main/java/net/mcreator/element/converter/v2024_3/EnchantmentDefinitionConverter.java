@@ -25,6 +25,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.EnchantmentEntry;
 import net.mcreator.element.parts.EquipmentSlotEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Enchantment;
@@ -71,16 +72,15 @@ public class EnchantmentDefinitionConverter implements IConverter {
 			default -> 1;
 		};
 
-		List<net.mcreator.element.parts.Enchantment> compatibleEnchantments = definition.has("compatibleEnchantments") ?
-				Arrays.asList(gson.fromJson(definition.get("compatibleEnchantments"),
-						net.mcreator.element.parts.Enchantment[].class)) :
+		List<EnchantmentEntry> compatibleEnchantments = definition.has("compatibleEnchantments") ?
+				Arrays.asList(gson.fromJson(definition.get("compatibleEnchantments"), EnchantmentEntry[].class)) :
 				new ArrayList<>();
 		boolean excludeEnchantments =
 				definition.has("excludeEnchantments") && definition.get("excludeEnchantments").getAsBoolean();
 		enchantment.incompatibleEnchantments = new ArrayList<>();
 		if (!compatibleEnchantments.isEmpty()) { // if empty, it is compatible with all enchantments thus we leave enchantment.incompatibleEnchantments empty
 			if (excludeEnchantments) { // incompatibleEnchantments works in exclude mode - directly convert
-				for (net.mcreator.element.parts.Enchantment compatibleEnchantment : compatibleEnchantments) {
+				for (EnchantmentEntry compatibleEnchantment : compatibleEnchantments) {
 					// should not be possible to have tags here in FV<69, but just in case
 					if (!compatibleEnchantment.getUnmappedValue().startsWith("#")) {
 						compatibleEnchantment.setWorkspace(workspace);
@@ -90,8 +90,7 @@ public class EnchantmentDefinitionConverter implements IConverter {
 			} else { // if list was in include mode, we need to exclude all but those listed here as a workaround
 				List<DataListEntry> allEnchantments = ElementUtil.loadAllEnchantments(workspace);
 				for (DataListEntry entry : allEnchantments) {
-					net.mcreator.element.parts.Enchantment enchantmentEntry = new net.mcreator.element.parts.Enchantment(
-							workspace, entry);
+					EnchantmentEntry enchantmentEntry = new EnchantmentEntry(workspace, entry);
 					// If in include mode and compatibleEnchantments does not contain the entry, add it to incompatibleEnchantments
 					// Also make sure to not add this enchantment itself to incompatibleEnchantments
 					if (!compatibleEnchantments.contains(enchantmentEntry) && !enchantmentEntry.getUnmappedValue()

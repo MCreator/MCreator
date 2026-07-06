@@ -21,14 +21,36 @@ package net.mcreator.util;
 
 public class TraceUtil {
 
+	private static final int MAX_TRACE_ENTRIES = 3;
+
+	private static final String TRACE_SEPARATOR = " > ";
+
 	public static String tryToFindMCreatorInvoker() {
-		String invoker = "unknown";
-		for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
-			if (stackTraceElement.getClassName().startsWith("net.mcreator")) {
-				invoker = stackTraceElement.getFileName() + ":" + stackTraceElement.getLineNumber();
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		StringBuilder trace = new StringBuilder();
+		String lastSimpleClassName = null;
+		int entries = 0;
+		for (int i = 0; i < stackTrace.length && entries < MAX_TRACE_ENTRIES; i++) {
+			StackTraceElement element = stackTrace[i];
+			String className = element.getClassName();
+			if (!className.startsWith("net.mcreator") || className.equals(TraceUtil.class.getName())) {
+				continue;
+			}
+			int lastDot = className.lastIndexOf('.');
+			String simpleClassName = lastDot >= 0 ? className.substring(lastDot + 1) : className;
+			int lineNumber = element.getLineNumber();
+			if (simpleClassName.equals(lastSimpleClassName)) {
+				trace.append(':').append(lineNumber);
+			} else {
+				if (!trace.isEmpty()) {
+					trace.insert(0, TRACE_SEPARATOR);
+				}
+				trace.insert(0, simpleClassName + ":" + lineNumber);
+				lastSimpleClassName = simpleClassName;
+				entries++;
 			}
 		}
-		return invoker;
+		return trace.isEmpty() ? "unknown" : trace.toString();
 	}
 
 }

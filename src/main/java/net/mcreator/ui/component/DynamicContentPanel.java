@@ -37,16 +37,14 @@ public class DynamicContentPanel extends JPanel {
 	}
 
 	public void setCurrentComponent(@Nullable JComponent component) {
-		SwingUtilities.invokeLater(() -> {
-			removeAll();
-			if (component != null) {
-				add(component, BorderLayout.CENTER);
-			} else if (defaultComponent != null) {
-				add(defaultComponent, BorderLayout.CENTER);
-			}
-			revalidate();
-			repaint();
-		});
+		removeAll();
+		if (component != null) {
+			add(component, BorderLayout.CENTER);
+		} else if (defaultComponent != null) {
+			add(defaultComponent, BorderLayout.CENTER);
+		}
+		revalidate();
+		repaint();
 	}
 
 	public void clear() {

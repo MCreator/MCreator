@@ -19,10 +19,8 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.data.ToolboxType;
+import net.mcreator.blockly.InternalBlocksLoader;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -32,6 +30,7 @@ import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
@@ -202,8 +201,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final Model spider = new Model.BuiltInModel("Spider");
 	private static final Model villager = new Model.BuiltInModel("Villager");
 	private static final Model witch = new Model.BuiltInModel("Witch");
-	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cod, cow, creeper, ghast, ocelot, pig,
-			piglin, salmon, silverfish, slime, spider, villager, witch };
+	public static final Model[] builtinmobmodels = AnnotationUtils.getLimitedOptionsList(LivingEntity.class,
+			"mobModelName", Model.BuiltInModel::new).toArray(new Model[0]);
 	private final SearchableComboBox<Model> mobModel = new SearchableComboBox<>(builtinmobmodels);
 
 	private TextureComboBox mobModelTexture;
@@ -287,7 +286,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.AI_TASK,
-					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			TestUtil.failIfTestingEnvironment();
 			return List.of(); // should not be possible to happen here
@@ -790,6 +790,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.AI_TASK);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.addChangeListener(
@@ -1056,9 +1058,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(rangedItemType, ListUtils.merge(Collections.singleton("Default item"),
-				mcreator.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.PROJECTILE).map(ModElement::getName)
-						.collect(Collectors.toList())), "Default item");
+				mcreator.getWorkspace().getModElementsByType(ModElementType.PROJECTILE).stream()
+						.map(ModElement::getName).collect(Collectors.toList())), "Default item");
 
 		disableMobModelCheckBoxListener = false;
 	}
