@@ -10,10 +10,9 @@
   "inputsInline": true,
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "be_itemstack",
+    "toolbox_id": "be_item",
     "toolbox_init": [
-      "<value name=\"itemstack\"><block type=\"be_itemstack_dep\"></block></value>",
-      "<value name=\"tagName\"><block type=\"text\"><field name=\"TEXT\">minecraft:tag</field></block></value>"
+      "<value name=\"itemstack\"><block type=\"be_itemstack_dep\"></block></value>"
     ],
     "inputs": [
       "itemstack"

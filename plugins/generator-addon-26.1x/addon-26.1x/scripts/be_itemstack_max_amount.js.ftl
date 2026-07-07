@@ -1,1 +1,1 @@
-/*@int*/(${input$itemstack}.maxAmount)
+(${input$itemstack}.maxAmount)
