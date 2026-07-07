@@ -28,6 +28,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class MCItemBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
@@ -35,7 +37,7 @@ public class MCItemBlock implements IBlockGenerator {
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()
 				&& !element.getTextContent().equals("null")) {
 			String textContent = element.getTextContent();
-			if (!MappableElement.validateReference(textContent, master.getWorkspace())) {
+			if (!MappableElement.validateReference(textContent, master.getWorkspace(), "blocksitems")) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.mcitem_broken_reference",
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
@@ -53,5 +55,49 @@ public class MCItemBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "mcitem_allblocks",
+          "args0": [
+              {
+                  "type": "field_mcitem_selector",
+                  "name": "value",
+                  "supported_mcitems": "allblocks"
+              },
+              {
+                  "type": "field_image",
+                  "src": "./res/b.png",
+                  "width": 8,
+                  "height": 36
+              }
+          ],
+          "output": ["MCItemBlock", "BlockStateProvider"],
+          "colour": 60
+        }""", """
+        {
+          "type": "mcitem_all",
+          "args0": [
+              {
+                  "type": "field_mcitem_selector",
+                  "name": "value",
+                  "supported_mcitems": "all"
+              },
+              {
+                  "type": "field_image",
+                  "src": "./res/bi.png",
+                  "width": 8,
+                  "height": 36
+              }
+          ],
+          "output": "MCItem",
+          "colour": 350
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "mcelements";
 	}
 }

@@ -23,12 +23,7 @@
     "statements": [
       {
         "name": "worldstatements",
-        "provides": [
-          {
-            "name": "_worldorig",
-            "type": "world"
-          }
-        ]
+        "disable_local_variables": true
       }
     ],
     "dependencies": [

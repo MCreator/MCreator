@@ -1,0 +1,1 @@
+Aktiviere diesen Parameter, wenn Partikel in midair emittiert werden sollen.

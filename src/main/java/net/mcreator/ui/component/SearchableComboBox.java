@@ -111,13 +111,18 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 		this.entries = new ArrayList<>();
 	}
 
+	public void setItems(Collection<T> items) {
+		((DefaultComboBoxModel<T>) getModel()).removeAllElements();
+		((DefaultComboBoxModel<T>) getModel()).addAll(items);
+		this.entries = new ArrayList<>(items);
+	}
+
 	private void comboFilter() {
 		Object selected = super.getSelectedItem();
 
-		super.removeAllItems();
-		entries.forEach(super::addItem);
-
 		if (searchTerm.isEmpty() || !canSearch()) {
+			((DefaultComboBoxModel<T>) getModel()).removeAllElements();
+			((DefaultComboBoxModel<T>) getModel()).addAll(entries);
 			super.setSelectedItem(selected);
 		} else {
 			List<T> entriesFiltered = new ArrayList<>();
@@ -137,8 +142,8 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 			}
 
 			if (!entriesFiltered.isEmpty()) {
-				super.removeAllItems();
-				entriesFiltered.forEach(super::addItem);
+				((DefaultComboBoxModel<T>) getModel()).removeAllElements();
+				((DefaultComboBoxModel<T>) getModel()).addAll(entriesFiltered);
 			}
 		}
 	}

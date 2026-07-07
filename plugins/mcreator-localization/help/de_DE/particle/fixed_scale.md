@@ -1,0 +1,1 @@
+Wenn aktiviert, stellt dieser Parameter sicher, dass das Partikel keine Größenvariation anzeigt, wenn es erzeugt wird.

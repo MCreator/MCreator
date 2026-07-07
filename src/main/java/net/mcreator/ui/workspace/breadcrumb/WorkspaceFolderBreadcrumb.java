@@ -118,7 +118,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 								selectionListener.elementSelected(filePathPart, entry, e);
 						} else {
 							lastClickTime = now;
-							timer = new Timer(DOUBLE_CLICK_THRESHOLD, ev -> showPopup(e));
+							timer = new Timer(DOUBLE_CLICK_THRESHOLD, _ -> showPopup(e));
 							timer.setRepeats(false);
 							timer.start();
 						}
@@ -146,7 +146,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 							else if (file instanceof FolderElement)
 								menuItem.setIcon(UIRES.get("laf.directory"));
 
-							menuItem.addActionListener(e -> {
+							menuItem.addActionListener(_ -> {
 								if (selectionListener != null)
 									selectionListener.elementSelected(file, entry, mouseEvent);
 							});
@@ -190,7 +190,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			if (mcreator instanceof ModMaker modMaker) {
 				reloadPath(modMaker.getWorkspacePanel().currentFolder, FolderElement.class);
 			}
-			setSelectionListener((element, component, event) -> {
+			setSelectionListener((element, _, _) -> {
 				if (element instanceof FolderElement fe)
 					reloadPath(fe, FolderElement.class);
 			});

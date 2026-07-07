@@ -21,25 +21,40 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MCItemBlock implements IBlockGenerator {
 
-	@Override public void generateBlock(BlocklyToCode master, Element block) {
+	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()
 				&& !element.getTextContent().equals("null")) {
 			String textContent = element.getTextContent();
-			if (!MappableElement.validateReference(textContent, master.getWorkspace())) {
+			if (!MappableElement.validateReference(textContent, master.getWorkspace(), "blocksitems")) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.mcitem_broken_reference",
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
-			master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
+
+			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("_mcitem.java.ftl")
+					&& block.getAttribute("type").equals("mcitem_all")) {
+				Map<String, Object> dataModel = new HashMap<>();
+				dataModel.put("item", new MItemBlock(master.getWorkspace(), textContent));
+				String code = master.getTemplateGenerator().generateFromTemplate("_mcitem.java.ftl", dataModel);
+				master.append(code);
+			} else {
+				master.append(new NameMapper(master.getWorkspace(), "blocksitems").getMapping(textContent));
+			}
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.empty_mcitem")));
@@ -52,5 +67,49 @@ public class MCItemBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "mcitem_allblocks",
+          "args0": [
+              {
+                  "type": "field_mcitem_selector",
+                  "name": "value",
+                  "supported_mcitems": "allblocks"
+              },
+              {
+                  "type": "field_image",
+                  "src": "./res/b.png",
+                  "width": 8,
+                  "height": 36
+              }
+          ],
+          "output": ["MCItemBlock", "BlockStateProvider"],
+          "colour": 60
+        }""", """
+        {
+          "type": "mcitem_all",
+          "args0": [
+              {
+                  "type": "field_mcitem_selector",
+                  "name": "value",
+                  "supported_mcitems": "all"
+              },
+              {
+                  "type": "field_image",
+                  "src": "./res/bi.png",
+                  "width": 8,
+                  "height": 36
+              }
+          ],
+          "output": "MCItem",
+          "colour": 350
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "mcelements";
 	}
 }

@@ -42,8 +42,7 @@ public class FuelToItemExtensionConverter implements IConverter {
 
 		ItemExtension itemExtension;
 
-		for (ModElement me : workspace.getModElements().stream()
-				.filter(me -> me.getType() == ModElementType.ITEMEXTENSION).toList()) {
+		for (ModElement me : workspace.getModElementsByType(ModElementType.ITEMEXTENSION)) {
 			itemExtension = (ItemExtension) me.getGeneratableElement();
 			if (itemExtension != null && itemExtension.item.equals(
 					new MItemBlock(workspace, fuel.get("block").getAsJsonObject().get("value").getAsString()))) {

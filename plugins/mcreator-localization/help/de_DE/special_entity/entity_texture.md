@@ -1,0 +1,1 @@
+Dies ist die Textur deiner Entität. Stelle sicher, dass die Textur mit dem Entitäts-Modell kompatibel ist.

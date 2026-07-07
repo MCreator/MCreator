@@ -2,6 +2,8 @@
 
 const ${name} = {
     onHitEntity(event) {
+        <#list localvariables as var><@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/></#list>
+
     	<@optionalDependencies dependencies, {
 			"itemstack": "event.itemStack",
 			"dimension": "event.hitEntity.dimension",

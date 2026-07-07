@@ -1,0 +1,1 @@
+Wenn eine Textur ausgewählt ist, wird sie als Overlay angezeigt, während der Spieler untergeht.

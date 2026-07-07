@@ -31,10 +31,7 @@ import java.awt.*;
 import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +51,15 @@ import java.util.stream.Collectors;
 
 	private static final Map<Class<? extends PropertyData<?>>, String> typeMappingsReverse = typeMappings.entrySet()
 			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+
+	public static void registerType(String id, Class<? extends PropertyData<?>> type) {
+		typeMappings.put(id, type);
+		typeMappingsReverse.put(type, id);
+	}
+
+	public static Map<String, Class<? extends PropertyData<?>>> getTypeMappings() {
+		return Collections.unmodifiableMap(typeMappings);
+	}
 
 	private final String name;
 

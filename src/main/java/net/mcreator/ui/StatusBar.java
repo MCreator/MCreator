@@ -84,7 +84,7 @@ public class StatusBar extends JPanel {
 		preferences.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		preferences.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				new PreferencesDialog(mcreatorFrame, null);
+				new PreferencesDialog(mcreatorFrame);
 			}
 		});
 		preferences.setCursor(new Cursor(Cursor.HAND_CURSOR));

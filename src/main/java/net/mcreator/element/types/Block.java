@@ -21,8 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.FluidEntry;
-import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
@@ -84,18 +82,21 @@ import java.util.stream.Collectors;
 
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
 
-	@TextureReference(TextureType.ITEM) public TextureHolder itemTexture;
-	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
+	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder itemTexture;
+	@TextureReference(TextureType.BLOCK) @Nullable public TextureHolder particleTexture;
 
 	@Nullable
 	@LimitedOptions({ "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "EndRod",
 			"PressurePlate", "Button", "FlowerPot", "Sign", "HangingSign" }) public String blockBase;
-	@LimitedOptions({ "OAK", "STONE", "IRON" }) public String blockSetType;
-	public MItemBlock pottedPlant;
-	public ParticleEntry leavesParticleType;
+	@LimitedOptions({ "OAK", "STONE", "IRON" })
+	@NonNullIf({ "blockBase %= Door", "blockBase %= TrapDoor", "blockBase %= PressurePlate", "blockBase %= Button" })
+	public String blockSetType;
+	@NonNullIf("blockBase %= FlowerPot") public MItemBlock pottedPlant;
+	@NonNullIf("blockBase %= Leaves") public ParticleEntry leavesParticleType;
 	@Numeric(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
-	@TextureReference(TextureType.ENTITY) public TextureHolder signEntityTexture;
-	@TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
+	@NonNullIf({ "blockBase %= Sign", "blockBase %= HangingSign" }) @TextureReference(TextureType.ENTITY)
+	public TextureHolder signEntityTexture;
+	@NonNullIf("blockBase %= HangingSign") @TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
 	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
 			"Sky", "Fog", "Water fog" }) public String tintType;
@@ -143,7 +144,7 @@ import java.util.stream.Collectors;
 	public boolean isReplaceable;
 	public boolean canProvidePower;
 	public NumberProcedure emittedRedstonePower;
-	public MapColor colorOnMap;
+	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;
 	public MItemBlock creativePickItem;
 	@LimitedOptions({ "NONE", "XZ", "XYZ" }) public String offsetType;
@@ -163,13 +164,13 @@ import java.util.stream.Collectors;
 
 	public boolean isNotColidable;
 
-	public boolean isCustomSoundType;
 	public StepSound soundOnStep;
-	public Sound breakSound;
-	public Sound fallSound;
-	public Sound hitSound;
-	public Sound placeSound;
-	public Sound stepSound;
+	public boolean isCustomSoundType;
+	@NonNullIf("isCustomSoundType") public Sound breakSound;
+	@NonNullIf("isCustomSoundType") public Sound fallSound;
+	@NonNullIf("isCustomSoundType") public Sound hitSound;
+	@NonNullIf("isCustomSoundType") public Sound placeSound;
+	@NonNullIf("isCustomSoundType") public Sound stepSound;
 
 	public NumberProcedure luminance;
 	public boolean unbreakable;
@@ -184,8 +185,8 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean sensitiveToVibration;
-	public List<GameEventEntry> vibrationalEvents;
-	public NumberProcedure vibrationSensitivityRadius;
+	@NonNullIf("sensitiveToVibration") public List<GameEventEntry> vibrationalEvents;
+	@NonNullIf("sensitiveToVibration") public NumberProcedure vibrationSensitivityRadius;
 	public Procedure canReceiveVibrationCondition;
 	public Procedure onReceivedVibration;
 
@@ -202,14 +203,19 @@ import java.util.stream.Collectors;
 	public Procedure inventoryAutomationPlaceCondition;
 
 	public boolean hasEnergyStorage;
-	@Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyInitial;
-	@Numeric(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyCapacity;
-	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxReceive;
-	@Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1) public int energyMaxExtract;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 0, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyInitial;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 400000, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyCapacity;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyMaxReceive;
+	@NonNullIf("hasEnergyStorage") @Numeric(init = 200, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int energyMaxExtract;
 
 	public boolean isFluidTank;
-	@Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1) public int fluidCapacity;
-	@ModElementReference public List<FluidEntry> fluidRestrictions;
+	@NonNullIf("isFluidTank") @Numeric(init = 8000, min = 0, max = Integer.MAX_VALUE, step = 1)
+	public int fluidCapacity;
+	@NonNullIf("isFluidTank") @ModElementReference public List<FluidEntry> fluidRestrictions;
 
 	public Procedure onRightClicked;
 	public Procedure onBlockAdded;
@@ -229,12 +235,14 @@ import java.util.stream.Collectors;
 
 	public boolean generateFeature;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
-	@ModElementReference public List<MItemBlock> blocksToReplace;
+	@NonNullIf("generateFeature") @ModElementReference public List<MItemBlock> blocksToReplace;
 	@LimitedOptions({ "UNIFORM", "TRIANGLE" }) public String generationShape;
-	@Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
-	@Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
-	@Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int minGenerateHeight;
-	@Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true) public int maxGenerateHeight;
+	@NonNullIf("generateFeature") @Numeric(init = 10, min = 1, max = 64, step = 1) public int frequencyPerChunks;
+	@NonNullIf("generateFeature") @Numeric(init = 16, min = 1, max = 64, step = 1) public int frequencyOnChunk;
+	@NonNullIf("generateFeature") @Numeric(init = 0, min = -64, max = 320, step = 1, allowMinMaxEqual = true)
+	public int minGenerateHeight;
+	@NonNullIf("generateFeature") @Numeric(init = 64, min = -64, max = 320, step = 1, allowMinMaxEqual = true)
+	public int maxGenerateHeight;
 
 	private Block() {
 		this(null);
@@ -253,8 +261,9 @@ import java.util.stream.Collectors;
 		this.blockSetType = "OAK";
 		this.leavesParticleChance = 0;
 		this.tintType = "No tint";
-		this.boundingBoxes = new ArrayList<>();
+		this.boundingBoxes = new ArrayList<>(List.of(new IBlockWithBoundingBox.BoxEntry()));
 		this.restrictionBiomes = new ArrayList<>();
+		this.blocksToReplace = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
 		this.speedFactor = 1.0;
@@ -271,6 +280,7 @@ import java.util.stream.Collectors;
 		this.energyMaxReceive = 200;
 		this.energyMaxExtract = 200;
 		this.fluidCapacity = 8000;
+		this.fluidRestrictions = new ArrayList<>();
 
 		this.vibrationalEvents = new ArrayList<>();
 
@@ -672,6 +682,10 @@ import java.util.stream.Collectors;
 		public StateMap stateMap;
 
 		@Nullable transient Workspace workspace;
+
+		public StateEntry() {
+			this.boundingBoxes = new ArrayList<>(List.of(new IBlockWithBoundingBox.BoxEntry()));
+		}
 
 		@Override public void setWorkspace(@Nullable Workspace workspace) {
 			this.workspace = workspace;

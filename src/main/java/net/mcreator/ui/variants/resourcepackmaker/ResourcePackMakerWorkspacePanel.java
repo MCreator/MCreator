@@ -28,11 +28,9 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recourcepack.ResourcePackEditor;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
-import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.EmptyIcon;
 
 import javax.swing.*;
@@ -63,7 +61,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 
 		tabbedPane.addTab("", new JLabel());
 		tabbedPane.setTabComponentAt(0, new JLabel(UIRES.get("16px.add")));
-		tabbedPane.addChangeListener(e -> {
+		tabbedPane.addChangeListener(_ -> {
 			if (tabbedPane.getSelectedIndex() == 0) { // new texture mapping
 				tabbedPane.setSelectedIndex(1);
 				File[] files = FileDialogs.getMultiOpenDialog(mcreator, new String[] { ".jar", ".zip" });
@@ -118,7 +116,7 @@ public class ResourcePackMakerWorkspacePanel extends AbstractMainWorkspacePanel 
 					button.setContentAreaFilled(false);
 					button.setBorder(BorderFactory.createEmptyBorder());
 					button.setMargin(new Insets(0, 0, 0, 0));
-					button.addActionListener(e -> {
+					button.addActionListener(_ -> {
 						int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("mcreator.resourcepack.delete_pack"),
 								L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 								null);

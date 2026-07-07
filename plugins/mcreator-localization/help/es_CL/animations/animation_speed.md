@@ -1,7 +1,7 @@
-Este parámetro controla la velocidad de reproducción de la animación.
+Este parámetro controla que tan rápido la animación se reproduce.
 
-Si se ajusta a 1, la animación se reproducirá a la velocidad a la que se reprodujo.
+Configurar esto en 1 hará que la animación se reproduzca a la velocidad diseñada para reproducirse en la línea de tiempo.
 
-Valores superiores a 1 harán que la animación se reproduzca más rápidamente, mientras que valores inferiores a 1 harán que la animación se reproduzca más lentamente.
+Valores más allá de 1 harán que la animación se reproduzca más rápido, mientras que los valores bajo 1 harán que la animación se reproduzca más lento.
 
-El valor 0 hará que la animación no se reproduzca en absoluto.
+Un valor de 0 hará que no se reproduzca la animación.

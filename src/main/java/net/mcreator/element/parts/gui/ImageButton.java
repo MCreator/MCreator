@@ -27,22 +27,24 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.references.TextureReference;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.Image;
 
 public class ImageButton extends GUIComponent {
 
-	public String name;
+	@Nonnull public String name;
 
-	@TextureReference(TextureType.SCREEN) public String image, hoveredImage;
+	@Nonnull @TextureReference(TextureType.SCREEN) public String image;
+	@TextureReference(TextureType.SCREEN) public String hoveredImage;
 
 	public Procedure onClick, displayCondition;
 
 	private transient Image imageIcon, hoveredImageIcon;
 
-	public ImageButton(String name, int x, int y, String image, String hoveredImage, Procedure onClick,
-			Procedure displayCondition) {
+	public ImageButton(@Nonnull String name, int x, int y, @Nonnull String image, String hoveredImage,
+			Procedure onClick, Procedure displayCondition) {
 		super(x, y);
 		this.name = name;
 		this.image = image;
@@ -51,7 +53,7 @@ public class ImageButton extends GUIComponent {
 		this.displayCondition = displayCondition;
 	}
 
-	@Override public String getName() {
+	@Nonnull @Override public String getName() {
 		return name;
 	}
 

@@ -23,8 +23,6 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.datapack.blocks.MCItemBlock;
-import net.mcreator.blockly.datapack.blocks.NumberBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -52,12 +50,9 @@ public class BlocklyToEnchantmentEffects extends BlocklyToCode {
 			throws TemplateGeneratorException {
 		super(workspace, parent, BlocklyEditorType.ENCHANTMENT_EFFECTS, templateGenerator, externalGenerators);
 
-		blockGenerators.add(new NumberBlock());
-		blockGenerators.add(new MCItemBlock());
-
 		if (sourceXML != null && !sourceXML.isBlank()) {
 			try {
-				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 				Document doc = dBuilder.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();

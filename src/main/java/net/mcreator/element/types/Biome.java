@@ -19,12 +19,10 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.MobSpawnType;
-import net.mcreator.element.parts.ParticleEntry;
-import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.interfaces.LimitedOptions;
+import net.mcreator.element.types.interfaces.NonNullIf;
+import net.mcreator.element.types.interfaces.NonNullMappable;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
@@ -43,9 +41,9 @@ import java.util.List;
 
 	public String name;
 
-	public MItemBlock groundBlock;
-	public MItemBlock undergroundBlock;
-	public MItemBlock underwaterBlock;
+	@NonNullMappable("Blocks.GRASS") public MItemBlock groundBlock;
+	@NonNullMappable("Blocks.DIRT#0") public MItemBlock undergroundBlock;
+	@Nullable public MItemBlock underwaterBlock;
 
 	@Nullable public Color airColor;
 	@Nullable public Color fogColor;
@@ -61,7 +59,7 @@ import java.util.List;
 	@Numeric(init = 6000, min = 1, max = 30000, step = 1) public int moodSoundDelay;
 
 	public boolean spawnParticles;
-	public ParticleEntry particleToSpawn;
+	@NonNullIf("spawnParticles") public ParticleEntry particleToSpawn;
 	@Numeric(init = 0.5, min = 0, max = 100, step = 0.1) public double particlesProbability;
 
 	@Numeric(init = 0.5, min = 0, max = 1, step = 0.1) public double rainingPossibility;
@@ -86,7 +84,7 @@ import java.util.List;
 	@Numeric(init = 1, min = 0, max = 64, step = 1) public int treesPerChunk;
 	@LimitedOptions({ "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees", "Mega spruce trees" })
 	public String vanillaTreeType;
-	public int treeType;
+	@LimitedOptions({ "Vanilla trees", "Custom trees" }) public int treeType;
 	@Numeric(init = 7, min = 0, max = 32, step = 1) public int minHeight;
 	public MItemBlock treeStem;
 	public MItemBlock treeBranch;
@@ -140,7 +138,12 @@ import java.util.List;
 		oceanRuinType = "NONE";
 		spawnRuinedPortal = "NONE";
 		spawnEntries = new ArrayList<>();
-		defaultFeatures = new ArrayList<>();
+		defaultFeatures = new ArrayList<>(List.of("Caves", "Ores", "FrozenTopLayer"));
+		genTemperature = new ClimatePoint(-0.5, 0.5);
+		genHumidity = new ClimatePoint(-0.5, 0.5);
+		genContinentalness = new ClimatePoint(0.3, 1.0);
+		genErosion = new ClimatePoint(-0.5, 0.5);
+		genWeirdness = new ClimatePoint(-1.0, 1.0);
 		genDepth = new ClimatePoint(0.2, 0.9);
 		moodSoundDelay = 6000;
 	}

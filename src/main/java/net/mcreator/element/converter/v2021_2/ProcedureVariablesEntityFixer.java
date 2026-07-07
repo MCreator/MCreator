@@ -19,7 +19,7 @@
 
 package net.mcreator.element.converter.v2021_2;
 
-import net.mcreator.blockly.java.BlocklyVariables;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.util.XMLUtil;
@@ -44,7 +44,7 @@ public class ProcedureVariablesEntityFixer extends ProcedureConverter {
 	}
 
 	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();

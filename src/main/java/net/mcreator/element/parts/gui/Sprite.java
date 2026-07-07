@@ -28,19 +28,20 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.references.TextureReference;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 
 public class Sprite extends GUIComponent {
 
-	@TextureReference(TextureType.SCREEN) public String sprite;
+	@Nonnull @TextureReference(TextureType.SCREEN) public String sprite;
 
 	public int spritesCount;
 
 	public Procedure displayCondition;
 	public NumberProcedure spriteIndex;
 
-	public Sprite(int x, int y, String sprite, int spritesCount, Procedure displayCondition,
+	public Sprite(int x, int y, @Nonnull String sprite, int spritesCount, Procedure displayCondition,
 			NumberProcedure spriteIndex) {
 		super(x, y);
 		this.sprite = sprite;

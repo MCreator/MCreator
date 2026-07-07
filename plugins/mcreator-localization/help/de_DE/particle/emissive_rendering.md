@@ -1,0 +1,1 @@
+Aktiviere diese Eigenschaft, um einen glühenden Effekt (wie beim Flammenteilchen) auf deinen Partikeln anzuwenden.

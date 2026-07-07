@@ -1,0 +1,13 @@
+_default: ItemUseAnimation.NONE
+none: ItemUseAnimation.NONE
+eat: ItemUseAnimation.EAT
+drink: ItemUseAnimation.DRINK
+block: ItemUseAnimation.BLOCK
+bow: ItemUseAnimation.BOW
+trident: ItemUseAnimation.TRIDENT
+crossbow: ItemUseAnimation.CROSSBOW
+spyglass: ItemUseAnimation.SPYGLASS
+toot_horn: ItemUseAnimation.TOOT_HORN
+brush: ItemUseAnimation.BRUSH
+bundle: ItemUseAnimation.BUNDLE
+spear: ItemUseAnimation.SPEAR

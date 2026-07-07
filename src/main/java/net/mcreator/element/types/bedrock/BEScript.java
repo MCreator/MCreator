@@ -72,6 +72,7 @@ public class BEScript extends GeneratableElement {
 			}
 
 			additionalData.put("scriptcode", blocklyToJavaScript.getGeneratedCode());
+			additionalData.put("localvariables", blocklyToJavaScript.getLocalVariables());
 			additionalData.put("scriptblocks", blocklyToJavaScript.getUsedBlocks());
 			additionalData.put("extra_templates_code", blocklyToJavaScript.getExtraTemplatesCode());
 			additionalData.put("dependencies", blocklyToJavaScript.getDependencies());

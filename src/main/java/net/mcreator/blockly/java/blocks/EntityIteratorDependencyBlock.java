@@ -25,6 +25,8 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.ui.init.L10N;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class EntityIteratorDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
@@ -43,6 +45,19 @@ public class EntityIteratorDependencyBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "entity_iterator",
+          "output": "Entity",
+          "colour": 195
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "mcelements";
 	}
 
 }

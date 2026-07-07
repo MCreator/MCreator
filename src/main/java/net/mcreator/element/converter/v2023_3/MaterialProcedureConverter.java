@@ -119,7 +119,7 @@ public class MaterialProcedureConverter extends ProcedureConverter {
 	}
 
 	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();
@@ -152,7 +152,7 @@ public class MaterialProcedureConverter extends ProcedureConverter {
 					}
 				}
 
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				Document newElementDoc = builder.parse(new InputSource(new StringReader(newBlockCode)));
 				Element newElement = newElementDoc.getDocumentElement();

@@ -135,10 +135,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			@Override public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, ${renderState} state, float headYaw, float headPitch) {
 				<#if hasProcedure(layer.condition)>
 				<#assign needsEntityInState = true>
-				Level world = state.getRenderData(ENTITY_KEY).level();
-				double x = state.getRenderData(ENTITY_KEY).getX();
-				double y = state.getRenderData(ENTITY_KEY).getY();
-				double z = state.getRenderData(ENTITY_KEY).getZ();
+				Entity entity = state.getRenderData(ENTITY_KEY);
+				Level world = entity.level();
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
 				if (<@procedureOBJToConditionCode layer.condition/>) {
 				</#if>
 
@@ -180,10 +181,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	@Override protected void scale(${renderState} state, PoseStack poseStack) {
 		<#if hasProcedure(data.visualScale)>
 			<#assign needsEntityInState = true>
-			Level world = state.getRenderData(ENTITY_KEY).level();
-			double x = state.getRenderData(ENTITY_KEY).getX();
-			double y = state.getRenderData(ENTITY_KEY).getY();
-			double z = state.getRenderData(ENTITY_KEY).getZ();
+			Entity entity = state.getRenderData(ENTITY_KEY);
+			Level world = entity.level();
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
 			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
 			poseStack.scale(scale, scale, scale);
 		<#elseif data.visualScale?? && data.visualScale.getFixedValue() != 1>
@@ -202,10 +204,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	@Override protected boolean isBodyVisible(${renderState} state) {
 		<#if hasProcedure(data.transparentModelCondition)>
 		<#assign needsEntityInState = true>
-		Level world = state.getRenderData(ENTITY_KEY).level();
-		double x = state.getRenderData(ENTITY_KEY).getX();
-		double y = state.getRenderData(ENTITY_KEY).getY();
-		double z = state.getRenderData(ENTITY_KEY).getZ();
+		Entity entity = state.getRenderData(ENTITY_KEY);
+		Level world = entity.level();
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
 		</#if>
 		return <@procedureOBJToConditionCode data.transparentModelCondition false true/>;
 	}
@@ -215,10 +218,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	@Override protected boolean isShaking(${renderState} state) {
 		<#if hasProcedure(data.isShakingCondition)>
 		<#assign needsEntityInState = true>
-		Level world = state.getRenderData(ENTITY_KEY).level();
-		double x = state.getRenderData(ENTITY_KEY).getX();
-		double y = state.getRenderData(ENTITY_KEY).getY();
-		double z = state.getRenderData(ENTITY_KEY).getZ();
+		Entity entity = state.getRenderData(ENTITY_KEY);
+		Level world = entity.level();
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
 		</#if>
 		return <@procedureOBJToConditionCode data.isShakingCondition/>;
 	}
@@ -288,19 +292,22 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->
 	this.root().getAllParts().forEach(ModelPart::resetPose);
 	</#if>
+	<#if data.animations?has_content>
+	${name}Entity entity = state.getRenderData(ENTITY_KEY);
+	</#if>
 	<#list data.animations as animation>
 		<#if !animation.walking>
 			<#assign needsEntityInState = true>
-			this.keyframeAnimation${animation?index}.apply(state.getRenderData(ENTITY_KEY).animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
+			this.keyframeAnimation${animation?index}.apply(entity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 		<#else>
 			<#if hasProcedure(animation.condition)>
 			<#assign needsEntityInState = true>
 			if (<@procedureCode animation.condition, {
-				"x": "state.getRenderData(ENTITY_KEY).getX()",
-				"y": "state.getRenderData(ENTITY_KEY).getY()",
-				"z": "state.getRenderData(ENTITY_KEY).getZ()",
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
 				"entity": "entity",
-				"world": "state.getRenderData(ENTITY_KEY).level()"
+				"world": "entity.level()"
 			}, false/>)
 			</#if>
 			this.keyframeAnimation${animation?index}.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, ${animation.speed}f, ${animation.amplitude}f);

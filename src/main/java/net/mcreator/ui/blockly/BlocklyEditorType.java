@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.blockly;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,11 +32,15 @@ public record BlocklyEditorType(String registryName, String extension, String st
 		return TYPES.get(registryName);
 	}
 
+	public static Collection<String> getTypes() {
+		return Collections.unmodifiableSet(TYPES.keySet());
+	}
+
 	public static final BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "ptpl", "event_trigger");
 	public static final BlocklyEditorType AI_TASK = new BlocklyEditorType("aitasks", "aitpl", "aitasks_container");
 	public static final BlocklyEditorType COMMAND_ARG = new BlocklyEditorType("cmdargs", "cmdtpl", "args_start");
 	public static final BlocklyEditorType FEATURE = new BlocklyEditorType("features", "ftpl", "feature_container");
-	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", null,
+	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", "atpl",
 			"advancement_trigger");
 	public static final BlocklyEditorType SCRIPT = new BlocklyEditorType("scripts", "stpl", "script_trigger");
 	public static final BlocklyEditorType ENCHANTMENT_EFFECTS = new BlocklyEditorType("enchantmenteffects", null,

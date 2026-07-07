@@ -1,0 +1,1 @@
+Diese Option legt fest, in welchem Stadium der Weltgenerierung die Struktur hinzugefügt werden soll.
