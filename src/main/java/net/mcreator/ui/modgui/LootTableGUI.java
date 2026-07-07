@@ -177,9 +177,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 		namespace.setSelectedItem(loottable.namespace);
 		name.getEditor().setItem(loottable.name);
-
-		if (loottable.lootTableToModify != null)
-			lootTableToModify.setText(loottable.lootTableToModify);
+		lootTableToModify.setText(loottable.lootTableToModify);
 
 		lootTablePools.setEntries(loottable.pools);
 	}
