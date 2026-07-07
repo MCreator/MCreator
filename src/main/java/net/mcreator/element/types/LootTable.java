@@ -91,7 +91,7 @@ import java.util.List;
 	}
 
 	public boolean hasLootModifier() {
-		return !lootTableToModify.isEmpty();
+		return lootTableToModify != null && !lootTableToModify.isEmpty();
 	}
 
 }
