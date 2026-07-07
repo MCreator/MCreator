@@ -2,7 +2,7 @@
   "trigger": "minecraft:placed_block",
   "conditions": {
     <#if input$player?has_content>
-    "player": ${input$player}
+    "player": ${input$player},
     </#if>
     "location": [
       {
