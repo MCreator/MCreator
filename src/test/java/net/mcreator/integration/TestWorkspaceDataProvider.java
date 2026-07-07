@@ -1827,7 +1827,7 @@ public class TestWorkspaceDataProvider {
 			if (_true)
 				beblock.destructionParticles = new TextureHolder(modElement.getWorkspace(), "test2");
 			else
-				beblock.destructionParticles = null;
+				beblock.destructionParticles = new TextureHolder(modElement.getWorkspace(), "");
 			beblock.particleTintMethod = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "particleTintMethod"));
 			beblock.particleCount = getRandomInt(random, BEBlock.class, "particleCount");
