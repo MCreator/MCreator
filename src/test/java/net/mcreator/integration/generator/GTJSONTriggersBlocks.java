@@ -82,7 +82,7 @@ public class GTJSONTriggersBlocks {
 							ElementUtil.loadAllEnchantments(modElement.getWorkspace())).getName() + "</field>");
 
 			testXML = testXML.replace("<field name=\"biome\"></field>",
-					"<field name=\"enchantment\">" + TestWorkspaceDataProvider.getRandomItem(random,
+					"<field name=\"biome\">" + TestWorkspaceDataProvider.getRandomItem(random,
 							ElementUtil.loadAllBiomes(modElement.getWorkspace())).getName() + "</field>");
 
 			testXML = testXML.replace("<block type=\"" + triggerBlock.getMachineName() + "\">",
@@ -149,8 +149,8 @@ public class GTJSONTriggersBlocks {
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
 						<block type="second">
-							<value name="player"<block type="player_condition_predicate">
-							<mutation inputs=1></mutation>
+							<value name="player"><block type="player_condition_predicate">
+							<mutation inputs="1"></mutation>
 							<value name="predicateComponent0">%s</value>
 							</block></value>"
 						</block></next></block></xml>
@@ -159,8 +159,8 @@ public class GTJSONTriggersBlocks {
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
 						<block type="second">
-							<value name="player"<block type="player_condition_predicate">
-							<mutation inputs=1></mutation>
+							<value name="player"><block type="player_condition_predicate">
+							<mutation inputs="1"></mutation>
 							<value name="predicateComponent0"><block type="player_predicate_component_location"><mutation inputs="1"></mutation><value name="locationComponent0">%s</value></block></value>
 							</block></value>"
 						</block></next></block></xml>
