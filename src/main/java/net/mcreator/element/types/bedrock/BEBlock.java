@@ -48,6 +48,14 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public int renderType;
 	@Nonnull public String customModelName;
+	@TextureReference(TextureType.BLOCK) public TextureHolder destructionParticles;
+	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+			"water" }) public String particleTintMethod;
+	@Numeric(init= 100, min = 0, max = 255, step = 1) public int particleCount;
+	public boolean flowerPottable;
+	@TextureReference(TextureType.BLOCK) public TextureHolder textureEmbeddedVisual;
+	public int embeddedVisualRenderType;
+	public String embeddedVisualModelName;
 
 	public String name;
 	public boolean enableCreativeTab;
@@ -97,6 +105,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";
+		embeddedVisualModelName = "Normal";
+		embeddedVisualRenderType = 10;
+		particleTintMethod = "(none)";
+		particleCount = 100;
 
 		generationShape = "uniform";
 
@@ -106,6 +118,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public int renderType() {
 		return renderType;
+	}
+
+	public int embeddedVisualRenderType() {
+		return embeddedVisualRenderType;
 	}
 
 	public boolean hasCustomDrop() {
@@ -145,8 +161,19 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
+	public Model getEmbeddedModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (embeddedVisualRenderType == 2)
+			modelType = Model.Type.BEDROCK;
+		return Model.getModelByParams(getModElement().getWorkspace(), embeddedVisualModelName, modelType);
+	}
+
 	public boolean hasCustomModel() {
 		return renderType == 2;
+	}
+
+	public boolean hasCustomEmbeddedVisualModel() {
+		return embeddedVisualRenderType == 2;
 	}
 
 	public boolean hasOneTexture() {
@@ -175,5 +202,17 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public TextureHolder textureBack() {
 		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
+	}
+
+	public TextureHolder textureEmbeddedVisual() {
+		return textureEmbeddedVisual == null || textureEmbeddedVisual.isEmpty() ? texture : textureEmbeddedVisual;
+	}
+
+	public boolean hasEmbeddedTexture() {
+		return textureEmbeddedVisual != null && !textureEmbeddedVisual.isEmpty();
+	}
+
+	public boolean hasParticleTexture() {
+		return destructionParticles != null && !destructionParticles.isEmpty();
 	}
 }

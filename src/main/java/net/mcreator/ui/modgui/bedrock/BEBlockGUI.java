@@ -36,6 +36,7 @@ import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -45,6 +46,7 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -70,6 +72,17 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
 	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
+
+	private final TextureSelectionButton destructionParticles = new TextureSelectionButton(
+			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+	private final JComboBox<String> particleTintMethod = ComponentFromAnnotation.options(BEBlock.class,
+			"particleTintMethod");
+	private final JSpinner particleCount = ComponentFromAnnotation.spinner(BEBlock.class, "particleCount");
+	private final JCheckBox flowerPottable = L10N.checkbox("elementgui.common.enable");
+	private final TextureSelectionButton textureEmbeddedVisual = new TextureSelectionButton(
+			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+	private final SearchableComboBox<Model> embeddedVisualModel = new SearchableComboBox<>(
+			new Model[] { normal, cross });
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
@@ -143,7 +156,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		JPanel renderSettings = new JPanel(new GridLayout(3, 2, 0, 2));
+		JPanel renderSettings = new JPanel(new GridLayout(9, 2, 0, 2));
 		renderSettings.setOpaque(false);
 
 		renderSettings.add(
@@ -152,13 +165,47 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/render_method"),
 				L10N.label("elementgui.beblock.render_method")));
+		renderMethod.setPreferredSize(new Dimension(260, 42));
 		renderSettings.add(renderMethod);
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/tint_method"),
 				L10N.label("elementgui.beblock.tint_method")));
 		renderSettings.add(tintMethod);
 
-		renderMethod.setPreferredSize(new Dimension(260, 42));
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/flower_pottable"),
+				L10N.label("elementgui.beblock.flower_pottable")));
+		flowerPottable.addActionListener(_ -> updateFlowerPottableOptions());
+		renderSettings.add(flowerPottable);
+
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/embedded_visual_model"),
+				L10N.label("elementgui.beblock.embedded_visual_model")));
+		ComponentUtils.deriveFont(embeddedVisualModel, 16);
+		embeddedVisualModel.setPreferredSize(new Dimension(280, 42));
+		embeddedVisualModel.setRenderer(new ModelComboBoxRenderer());
+		renderSettings.add(embeddedVisualModel);
+
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/texture_embedded_visual"),
+				L10N.label("elementgui.beblock.texture_embedded_visual")));
+		textureEmbeddedVisual.setOpaque(true);
+		renderSettings.add(PanelUtils.centerInPanel(textureEmbeddedVisual));
+
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
+				L10N.label("elementgui.block.particle_texture")));
+		destructionParticles.addTextureSelectedListener(_ -> updateParticleOptions());
+		destructionParticles.setOpaque(true);
+		renderSettings.add(PanelUtils.centerInPanel(destructionParticles));
+
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/tint_method"),
+				L10N.label("elementgui.beblock.particle_tint_method")));
+		renderSettings.add(particleTintMethod);
+
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/particle_count"),
+				L10N.label("elementgui.beblock.particle_count")));
+		renderSettings.add(particleCount);
+
+		visualPanel.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(textures),
+						PanelUtils.totalCenterInPanel(renderSettings), 55, 55)));
 
 		JPanel basicProperties = new JPanel(new GridLayout(14, 2, 2, 2));
 		basicProperties.setOpaque(false);
@@ -226,9 +273,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.common.fire_spread_speed")));
 		basicProperties.add(flammableDestroyChance);
 
-		visualPanel.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndCenterElement(textures, PanelUtils.totalCenterInPanel(renderSettings), 55, 55)));
-
 		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(basicProperties));
 
 		JPanel genPanel = new JPanel(new GridLayout(6, 2, 65, 2));
@@ -282,6 +326,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			enableCreativeTab.setSelected(true);
 		}
 		updateTextureOptions();
+		updateParticleOptions();
+		updateFlowerPottableOptions();
 		updateCreativeTab();
 		refreshSpawnProperties();
 	}
@@ -291,6 +337,26 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.ALL);
 		} else {
 			textures.setTextureFormat(BlockTexturesSelector.TextureFormat.SINGLE_TEXTURE);
+		}
+	}
+
+	private void updateParticleOptions() {
+		if (destructionParticles.hasTexture()) {
+			particleTintMethod.setEnabled(true);
+			particleCount.setEnabled(true);
+		} else {
+			particleTintMethod.setEnabled(false);
+			particleCount.setEnabled(false);
+		}
+	}
+
+	private void updateFlowerPottableOptions() {
+		if (flowerPottable.isSelected()) {
+			embeddedVisualModel.setEnabled(true);
+			textureEmbeddedVisual.setEnabled(true);
+		} else {
+			embeddedVisualModel.setEnabled(false);
+			textureEmbeddedVisual.setEnabled(false);
 		}
 	}
 
@@ -313,6 +379,11 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, cross, singleTexture),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
+
+		ComboBoxUtil.updateComboBoxContents(embeddedVisualModel,
+				ListUtils.merge(Arrays.asList(normal, cross),
+						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+								.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 	}
 
 	@Override protected void openInEditingMode(BEBlock block) {
@@ -322,6 +393,16 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		Model model = block.getModel();
 		if (model != null)
 			renderType.setSelectedItem(model);
+
+		destructionParticles.setTexture(block.destructionParticles);
+		particleTintMethod.setSelectedItem(block.particleTintMethod);
+		particleCount.setValue(block.particleCount);
+		flowerPottable.setSelected(block.flowerPottable);
+		Model embeddedModel = block.getEmbeddedModel();
+		if (embeddedModel != null)
+			embeddedVisualModel.setSelectedItem(embeddedModel);
+		textureEmbeddedVisual.setTexture(block.textureEmbeddedVisual);
+
 		name.setText(block.name);
 		enableCreativeTab.setSelected(block.enableCreativeTab);
 		creativeTab.setSelectedItem(block.creativeTab.getUnmappedValue());
@@ -352,6 +433,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		localScripts.setListElements(block.localScripts.stream().map(NonMappableElement::new).toList());
 
 		updateTextureOptions();
+		updateParticleOptions();
+		updateFlowerPottableOptions();
 		updateCreativeTab();
 		refreshSpawnProperties();
 	}
@@ -364,7 +447,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.textureLeft = textures.getTextureLeft();
 		block.textureFront = textures.getTextureFront();
 		block.textureRight = textures.getTextureRight();
-
 		block.textureBack = textures.getTextureBack();
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;
@@ -375,6 +457,19 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		else if (model.equals(singleTexture))
 			block.renderType = 12;
 		block.customModelName = model.getReadableName();
+		block.textureEmbeddedVisual = textureEmbeddedVisual.getTextureHolder();
+
+		block.destructionParticles = destructionParticles.getTextureHolder();
+		block.particleTintMethod = (String) particleTintMethod.getSelectedItem();
+		block.particleCount = (int) particleCount.getValue();
+		block.flowerPottable = flowerPottable.isSelected();
+		Model embeddedModel = Objects.requireNonNull(embeddedVisualModel.getSelectedItem());
+		block.embeddedVisualRenderType = 10;
+		if (embeddedModel.getType() == Model.Type.BEDROCK)
+			block.embeddedVisualRenderType = 2;
+		else if (embeddedModel.equals(cross))
+			block.embeddedVisualRenderType = 11;
+		block.embeddedVisualModelName = embeddedModel.getReadableName();
 
 		block.name = name.getText();
 		block.enableCreativeTab = enableCreativeTab.isSelected();

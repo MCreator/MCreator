@@ -1820,6 +1820,17 @@ public class TestWorkspaceDataProvider {
 			beblock.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 			beblock.renderType = new int[] { 10, 11, 12, 10 }[valueIndex];
 			beblock.customModelName = new String[] { "Normal", "Cross model", "Single texture", "Normal" }[valueIndex];
+			beblock.flowerPottable = _true;
+			beblock.embeddedVisualRenderType = new int[] { 10, 11, 11, 10 }[valueIndex];
+			beblock.embeddedVisualModelName = new String[] { "Normal", "Cross model", "Cross model", "Normal" }[valueIndex];
+			beblock.textureEmbeddedVisual = new TextureHolder(modElement.getWorkspace(), "test");
+			if (_true)
+				beblock.destructionParticles = new TextureHolder(modElement.getWorkspace(), "test2");
+			else
+				beblock.destructionParticles = null;
+			beblock.particleTintMethod = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "particleTintMethod"));
+			beblock.particleCount = getRandomInt(random, BEBlock.class, "particleCount");
 			beblock.enableCreativeTab = !_true;
 			beblock.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));

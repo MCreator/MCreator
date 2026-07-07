@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 {
-  "format_version": "1.21.40",
+  "format_version": "1.21.120",
   "minecraft:block": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -48,6 +48,37 @@
         "west": <@material_face "west"/>
 		</#if>
       },
+      <#if data.hasParticleTexture()>
+      "minecraft:destruction_particles": {
+        "texture": "${modid}_${registryname}_destruction_particles"
+        <#if data.particleTintMethod != "(none)">
+        , "tint_method": "${data.particleTintMethod}"
+        </#if>
+        <#if data.particleCount gt 100 || data.particleCount lt 100>
+        , "particle_count": ${data.particleCount}
+        </#if>
+      },
+      </#if>
+      <#if data.flowerPottable>
+      "minecraft:flower_pottable": {},
+       <#if data.hasCustomEmbeddedVisualModel() || data.embeddedVisualRenderType() == 11 || data.hasEmbeddedTexture()>
+		  "minecraft:embedded_visual": {
+		    "geometry":
+		      <#if data.hasCustomEmbeddedVisualModel()>
+		        "geometry.${data.getEmbeddedModel().getReadableName()}"
+		      <#elseif data.embeddedVisualRenderType() == 11>
+		        "minecraft:geometry.cross"
+		      <#elseif data.hasCustomModel()>
+		        "geometry.${data.getModel().getReadableName()}"
+		      <#else>
+		        "minecraft:geometry.full_block"
+		      </#if>,
+	    	  "material_instances": {
+	  	       "*": <@material_face "embedded" data.embeddedVisualRenderType() == 11 data.embeddedVisualRenderType() == 11/>
+		      }
+	      },
+       </#if>
+      </#if>
       <#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
       "minecraft:map_color": "${data.colorOnMap}",
       </#if>

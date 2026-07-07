@@ -1,0 +1,1 @@
+This is the texture for the block inside the flower pot.
