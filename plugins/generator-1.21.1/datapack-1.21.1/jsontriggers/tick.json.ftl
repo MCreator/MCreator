@@ -2,7 +2,9 @@
     "trigger": "minecraft:tick"
     <#if input$player?has_content>,
     "conditions": [
-    	"player": ${input$player}
+    	"player": {
+    	  ${input$player}
+    	}
     ]
     </#if>
 },

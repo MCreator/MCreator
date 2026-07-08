@@ -328,7 +328,7 @@ Blockly.Extensions.registerMutator('player_predicate_mutator', simpleRepeatingIn
             thisBlock.appendValueInput(inputName + index).setCheck('PlayerPredicateComponent').setAlign(Blockly.ALIGN_RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
-    undefined, ['player_predicate_mutator_input']);
+    undefined, ['player_predicate_mutator_input'], false);
 
 Blockly.Extensions.registerMutator('location_component_mutator', simpleRepeatingInputMixin(
         'location_component_mutator_container', 'location_component_mutator_input', 'locationComponent',

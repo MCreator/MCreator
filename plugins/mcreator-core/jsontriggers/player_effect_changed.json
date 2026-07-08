@@ -16,7 +16,7 @@
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
       "<value name=\"effect0\"><block type=\"effect_entry\"><field name=\"effect\"></field><value name=\"minAmplifier\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value><value name=\"minDuration\"><block type=\"math_number\"><field name=\"NUM\">20</field></block></value></block></value>",
-      "<value name=\"player\"><block type=\"player_condition_none\"></block></value>"
+      "<value name=\"player\"><block type=\"player_condition_predicate\"><mutation inputs=\"0\"></mutation></block></value>"
     ],
     "repeating_inputs": [
       "effect"

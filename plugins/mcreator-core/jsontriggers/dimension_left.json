@@ -19,7 +19,7 @@
   "mcreator": {
     "toolbox_id": "world",
     "toolbox_init": [
-      "<value name=\"player\"><block type=\"player_condition_none\"></block></value>"
+      "<value name=\"player\"><block type=\"player_condition_predicate\"><mutation inputs=\"0\"></mutation></block></value>"
     ],
     "fields": [
       "dimension"

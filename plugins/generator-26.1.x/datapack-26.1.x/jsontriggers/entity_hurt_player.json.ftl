@@ -2,7 +2,9 @@
   "trigger": "minecraft:entity_hurt_player",
   "conditions": {
     <#if input$player?has_content>
-    "player": ${input$player},
+    "player": {
+      ${input$player}
+    },
     </#if>
     "damage": {
       "taken": {

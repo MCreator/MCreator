@@ -68,7 +68,12 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 				Element value = doc.createElement("value");
 				value.setAttribute("name", "player");
 				Element playerCondition = doc.createElement("block");
-				playerCondition.setAttribute("type", "player_condition_none");
+				playerCondition.setAttribute("type", "player_condition_predicate");
+
+				Element predicateMutation = doc.createElement("mutation");
+				predicateMutation.setAttribute("inputs", "0");
+				playerCondition.appendChild(predicateMutation);
+
 				value.appendChild(playerCondition);
 				element.appendChild(value);
 			} else if (type.equals("biome_entered")) {
