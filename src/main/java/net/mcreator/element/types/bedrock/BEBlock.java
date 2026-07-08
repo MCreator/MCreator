@@ -32,6 +32,7 @@ import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -53,9 +54,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 			"water" }) public String particleTintMethod;
 	@Numeric(init= 100, min = 0, max = 255, step = 1) public int particleCount;
 	public boolean flowerPottable;
-	@TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
+	@Nullable @TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
 	public int pottedRenderType;
-	public String pottedModelName;
+	@Nullable public String pottedModelName;
 
 	public String name;
 	public boolean enableCreativeTab;
