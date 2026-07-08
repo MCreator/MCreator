@@ -53,9 +53,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 			"water" }) public String particleTintMethod;
 	@Numeric(init= 100, min = 0, max = 255, step = 1) public int particleCount;
 	public boolean flowerPottable;
-	@TextureReference(TextureType.BLOCK) public TextureHolder textureEmbeddedVisual;
-	public int embeddedVisualRenderType;
-	public String embeddedVisualModelName;
+	@TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
+	public int pottedRenderType;
+	public String pottedModelName;
 
 	public String name;
 	public boolean enableCreativeTab;
@@ -105,8 +105,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";
-		embeddedVisualModelName = "Normal";
-		embeddedVisualRenderType = 10;
+		pottedModelName = "Normal";
+		pottedRenderType = 10;
 		particleTintMethod = "(none)";
 		particleCount = 100;
 
@@ -120,8 +120,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		return renderType;
 	}
 
-	public int embeddedVisualRenderType() {
-		return embeddedVisualRenderType;
+	public int pottedRenderType() {
+		return pottedRenderType;
 	}
 
 	public boolean hasCustomDrop() {
@@ -161,19 +161,19 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
-	public Model getEmbeddedModel() {
+	public Model getPottedModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
-		if (embeddedVisualRenderType == 2)
+		if (pottedRenderType == 2)
 			modelType = Model.Type.BEDROCK;
-		return Model.getModelByParams(getModElement().getWorkspace(), embeddedVisualModelName, modelType);
+		return Model.getModelByParams(getModElement().getWorkspace(), pottedModelName, modelType);
 	}
 
 	public boolean hasCustomModel() {
 		return renderType == 2;
 	}
 
-	public boolean hasCustomEmbeddedVisualModel() {
-		return embeddedVisualRenderType == 2;
+	public boolean hasCustomPottedModel() {
+		return pottedRenderType == 2;
 	}
 
 	public boolean hasOneTexture() {
@@ -204,12 +204,12 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
 	}
 
-	public TextureHolder textureEmbeddedVisual() {
-		return textureEmbeddedVisual == null || textureEmbeddedVisual.isEmpty() ? texture : textureEmbeddedVisual;
+	public TextureHolder pottedTexture() {
+		return pottedTexture == null || pottedTexture.isEmpty() ? texture : pottedTexture;
 	}
 
-	public boolean hasEmbeddedTexture() {
-		return textureEmbeddedVisual != null && !textureEmbeddedVisual.isEmpty();
+	public boolean hasPottedTexture() {
+		return pottedTexture != null && !pottedTexture.isEmpty();
 	}
 
 	public boolean hasParticleTexture() {

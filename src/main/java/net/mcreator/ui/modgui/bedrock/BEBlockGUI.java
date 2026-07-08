@@ -79,7 +79,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			"particleTintMethod");
 	private final JSpinner particleCount = ComponentFromAnnotation.spinner(BEBlock.class, "particleCount");
 	private final JCheckBox flowerPottable = L10N.checkbox("elementgui.common.enable");
-	private final TextureSelectionButton textureEmbeddedVisual = new TextureSelectionButton(
+	private final TextureSelectionButton pottedTexture = new TextureSelectionButton(
 			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 	private final SearchableComboBox<Model> embeddedVisualModel = new SearchableComboBox<>(
 			new Model[] { normal, cross });
@@ -177,17 +177,17 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		flowerPottable.addActionListener(_ -> updateFlowerPottableOptions());
 		renderSettings.add(flowerPottable);
 
-		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/embedded_visual_model"),
-				L10N.label("elementgui.beblock.embedded_visual_model")));
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/potted_model"),
+				L10N.label("elementgui.beblock.potted_model")));
 		ComponentUtils.deriveFont(embeddedVisualModel, 16);
 		embeddedVisualModel.setPreferredSize(new Dimension(280, 42));
 		embeddedVisualModel.setRenderer(new ModelComboBoxRenderer());
 		renderSettings.add(embeddedVisualModel);
 
-		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/texture_embedded_visual"),
-				L10N.label("elementgui.beblock.texture_embedded_visual")));
-		textureEmbeddedVisual.setOpaque(true);
-		renderSettings.add(PanelUtils.centerInPanel(textureEmbeddedVisual));
+		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/potted_texture"),
+				L10N.label("elementgui.beblock.potted_texture")));
+		pottedTexture.setOpaque(true);
+		renderSettings.add(PanelUtils.centerInPanel(pottedTexture));
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 				L10N.label("elementgui.block.particle_texture")));
@@ -353,10 +353,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private void updateFlowerPottableOptions() {
 		if (flowerPottable.isSelected()) {
 			embeddedVisualModel.setEnabled(true);
-			textureEmbeddedVisual.setEnabled(true);
+			pottedTexture.setEnabled(true);
 		} else {
 			embeddedVisualModel.setEnabled(false);
-			textureEmbeddedVisual.setEnabled(false);
+			pottedTexture.setEnabled(false);
 		}
 	}
 
@@ -398,10 +398,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		particleTintMethod.setSelectedItem(block.particleTintMethod);
 		particleCount.setValue(block.particleCount);
 		flowerPottable.setSelected(block.flowerPottable);
-		Model embeddedModel = block.getEmbeddedModel();
+		Model embeddedModel = block.getPottedModel();
 		if (embeddedModel != null)
 			embeddedVisualModel.setSelectedItem(embeddedModel);
-		textureEmbeddedVisual.setTexture(block.textureEmbeddedVisual);
+		pottedTexture.setTexture(block.pottedTexture);
 
 		name.setText(block.name);
 		enableCreativeTab.setSelected(block.enableCreativeTab);
@@ -457,19 +457,19 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		else if (model.equals(singleTexture))
 			block.renderType = 12;
 		block.customModelName = model.getReadableName();
-		block.textureEmbeddedVisual = textureEmbeddedVisual.getTextureHolder();
+		block.pottedTexture = pottedTexture.getTextureHolder();
 
 		block.destructionParticles = destructionParticles.getTextureHolder();
 		block.particleTintMethod = (String) particleTintMethod.getSelectedItem();
 		block.particleCount = (int) particleCount.getValue();
 		block.flowerPottable = flowerPottable.isSelected();
 		Model embeddedModel = Objects.requireNonNull(embeddedVisualModel.getSelectedItem());
-		block.embeddedVisualRenderType = 10;
+		block.pottedRenderType = 10;
 		if (embeddedModel.getType() == Model.Type.BEDROCK)
-			block.embeddedVisualRenderType = 2;
+			block.pottedRenderType = 2;
 		else if (embeddedModel.equals(cross))
-			block.embeddedVisualRenderType = 11;
-		block.embeddedVisualModelName = embeddedModel.getReadableName();
+			block.pottedRenderType = 11;
+		block.pottedModelName = embeddedModel.getReadableName();
 
 		block.name = name.getText();
 		block.enableCreativeTab = enableCreativeTab.isSelected();
