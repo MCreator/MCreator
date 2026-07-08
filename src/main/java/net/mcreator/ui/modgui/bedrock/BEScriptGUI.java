@@ -244,7 +244,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 			setForeground(isSelected ? Theme.current().getForegroundColor() : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.name());
-			if (value.canBeNull()) {
+			if (value.can_be_null()) {
 				setToolTipText(L10N.t("elementgui.common.provided_dependency_can_be_null"));
 				setIcon(UIRES.get("18px.warning"));
 			} else {

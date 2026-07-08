@@ -31,7 +31,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Dependency(String name, String type, boolean canBeNull) implements Comparable<Dependency> {
+public record Dependency(String name, String type, boolean can_be_null) implements Comparable<Dependency> {
 
 	public Dependency(String name, String type) {
 		this(name, type, false);

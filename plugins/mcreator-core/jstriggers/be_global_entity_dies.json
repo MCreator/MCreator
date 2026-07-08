@@ -6,7 +6,8 @@
     },
     {
       "name": "sourceentity",
-      "type": "entity"
+      "type": "entity",
+      "can_be_null": true
     },
     {
       "name": "dimension",
