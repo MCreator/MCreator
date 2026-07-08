@@ -61,20 +61,28 @@
       </#if>
       <#if data.flowerPottable>
       "minecraft:flower_pottable": {},
-       <#if data.hasCustomPottedModel() || data.pottedRenderType() == 11 || data.hasPottedTexture()>
+       <#if data.hasCustomPottedModel() || data.pottedRenderType() == 11 || data.pottedRenderType() == 12 || data.hasPottedTexture()>
 		  "minecraft:embedded_visual": {
 		    "geometry":
 		      <#if data.hasCustomPottedModel()>
 		        "geometry.${data.getPottedModel().getReadableName()}"
 		      <#elseif data.pottedRenderType() == 11>
 		        "minecraft:geometry.cross"
+		      <#elseif data.pottedRenderType() == 12>
+		        "minecraft:geometry.full_block"
 		      <#elseif data.hasCustomModel()>
 		        "geometry.${data.getModel().getReadableName()}"
 		      <#else>
-		        "minecraft:geometry.full_block"
+		        <#if data.hasCustomModel()>
+                  "geometry.${data.getModel().getReadableName()}"
+                <#elseif data.renderType() == 11>
+                  "minecraft:geometry.cross"
+                <#else>
+                  "minecraft:geometry.full_block"
+                </#if>
 		      </#if>,
 	    	  "material_instances": {
-	  	       "*": <@material_face "embedded" data.pottedRenderType() == 11 data.pottedRenderType() == 11/>
+	  	       "*": <@material_face "potted" data.pottedRenderType() == 11 data.pottedRenderType() == 11/>
 		      }
 	      },
        </#if>

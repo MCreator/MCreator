@@ -69,6 +69,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	public static final Model normal = new Model.BuiltInModel("Normal");
 	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model cube = new Model.BuiltInModel("Full cube");
 	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
 	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
@@ -81,8 +82,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JCheckBox flowerPottable = L10N.checkbox("elementgui.common.enable");
 	private final TextureSelectionButton pottedTexture = new TextureSelectionButton(
 			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
-	private final SearchableComboBox<Model> embeddedVisualModel = new SearchableComboBox<>(
-			new Model[] { normal, cross });
+	private final SearchableComboBox<Model> pottedModel = new SearchableComboBox<>(
+			new Model[] { normal, cross, cube });
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
@@ -179,10 +180,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/potted_model"),
 				L10N.label("elementgui.beblock.potted_model")));
-		ComponentUtils.deriveFont(embeddedVisualModel, 16);
-		embeddedVisualModel.setPreferredSize(new Dimension(280, 42));
-		embeddedVisualModel.setRenderer(new ModelComboBoxRenderer());
-		renderSettings.add(embeddedVisualModel);
+		ComponentUtils.deriveFont(pottedModel, 16);
+		pottedModel.setPreferredSize(new Dimension(280, 42));
+		pottedModel.setRenderer(new ModelComboBoxRenderer());
+		renderSettings.add(pottedModel);
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/potted_texture"),
 				L10N.label("elementgui.beblock.potted_texture")));
@@ -352,10 +353,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	private void updateFlowerPottableOptions() {
 		if (flowerPottable.isSelected()) {
-			embeddedVisualModel.setEnabled(true);
+			pottedModel.setEnabled(true);
 			pottedTexture.setEnabled(true);
 		} else {
-			embeddedVisualModel.setEnabled(false);
+			pottedModel.setEnabled(false);
 			pottedTexture.setEnabled(false);
 		}
 	}
@@ -380,8 +381,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 
-		ComboBoxUtil.updateComboBoxContents(embeddedVisualModel,
-				ListUtils.merge(Arrays.asList(normal, cross),
+		ComboBoxUtil.updateComboBoxContents(pottedModel,
+				ListUtils.merge(Arrays.asList(normal, cross, cube),
 						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 								.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 	}
@@ -400,7 +401,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		flowerPottable.setSelected(block.flowerPottable);
 		Model embeddedModel = block.getPottedModel();
 		if (embeddedModel != null)
-			embeddedVisualModel.setSelectedItem(embeddedModel);
+			pottedModel.setSelectedItem(embeddedModel);
 		pottedTexture.setTexture(block.pottedTexture);
 
 		name.setText(block.name);
@@ -463,12 +464,14 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.particleTintMethod = (String) particleTintMethod.getSelectedItem();
 		block.particleCount = (int) particleCount.getValue();
 		block.flowerPottable = flowerPottable.isSelected();
-		Model embeddedModel = Objects.requireNonNull(embeddedVisualModel.getSelectedItem());
+		Model embeddedModel = Objects.requireNonNull(pottedModel.getSelectedItem());
 		block.pottedRenderType = 10;
 		if (embeddedModel.getType() == Model.Type.BEDROCK)
 			block.pottedRenderType = 2;
 		else if (embeddedModel.equals(cross))
 			block.pottedRenderType = 11;
+		else if (embeddedModel.equals(cube))
+			block.pottedRenderType = 12;
 		block.pottedModelName = embeddedModel.getReadableName();
 
 		block.name = name.getText();

@@ -1821,8 +1821,8 @@ public class TestWorkspaceDataProvider {
 			beblock.renderType = new int[] { 10, 11, 12, 10 }[valueIndex];
 			beblock.customModelName = new String[] { "Normal", "Cross model", "Single texture", "Normal" }[valueIndex];
 			beblock.flowerPottable = _true;
-			beblock.pottedRenderType = new int[] { 10, 11, 11, 10 }[valueIndex];
-			beblock.pottedModelName = new String[] { "Normal", "Cross model", "Cross model", "Normal" }[valueIndex];
+			beblock.pottedRenderType = new int[] { 10, 11, 12, 10 }[valueIndex];
+			beblock.pottedModelName = new String[] { "Normal", "Cross model", "Full cube", "Normal" }[valueIndex];
 			beblock.pottedTexture = new TextureHolder(modElement.getWorkspace(), "test");
 			if (_true)
 				beblock.destructionParticles = new TextureHolder(modElement.getWorkspace(), "test2");

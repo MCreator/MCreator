@@ -16,8 +16,8 @@
   	"${modid}_${mod.getRegistryName()}_west": { "textures": [ "textures/blocks/${ge.textureLeft()}" ] },
   	"${modid}_${mod.getRegistryName()}_east": { "textures": [ "textures/blocks/${ge.textureRight()}" ] }
   	</#if>
-  	<#if ge.flowerPottable && (ge.hasCustomPottedModel() || ge.pottedRenderType() == 11 || ge.hasPottedTexture())>,
-    "${modid}_${mod.getRegistryName()}_embedded": { "textures": [ "textures/blocks/${ge.pottedTexture()}" ] }
+  	<#if ge.flowerPottable && (ge.hasCustomPottedModel() || ge.pottedRenderType() == 11 || ge.pottedRenderType() == 12 || ge.hasPottedTexture())>,
+    "${modid}_${mod.getRegistryName()}_potted": { "textures": [ "textures/blocks/${ge.pottedTexture()}" ] }
     </#if>
     <#if ge.hasParticleTexture()>,
     "${modid}_${mod.getRegistryName()}_destruction_particles": { "textures": [ "textures/blocks/${ge.destructionParticles}" ] }
