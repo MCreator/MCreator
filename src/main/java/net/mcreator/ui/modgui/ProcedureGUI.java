@@ -308,7 +308,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setForeground(isSelected ? Theme.current().getForegroundColor() : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.name());
-			setToolTipText(value.toString());
+			if (value.canBeNull()) {
+				setToolTipText(L10N.t("elementgui.common.provided_dependency_can_be_null"));
+				setIcon(UIRES.get("18px.warning"));
+			} else {
+				setToolTipText(value.toString());
+				setIcon(null);
+			}
 			return this;
 		}
 	}

@@ -31,7 +31,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Dependency(String name, String type) implements Comparable<Dependency> {
+public record Dependency(String name, String type, boolean canBeNull) implements Comparable<Dependency> {
+
+	public Dependency(String name, String type) {
+		this(name, type, false);
+	}
 
 	@Override public int compareTo(Dependency o) {
 		return (type + ":" + name).compareTo(o.type + ":" + o.name);
