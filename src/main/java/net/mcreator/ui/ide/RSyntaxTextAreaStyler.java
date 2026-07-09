@@ -61,8 +61,12 @@ public class RSyntaxTextAreaStyler {
 			} else {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/default_dark/styles/code_editor.xml");
-				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
-						(net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2));
+				themeXML = themeXML
+						//@formatter:off
+						.replace("${backgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getBackgroundColor()).getRGB()).substring(2))
+						.replace("${mainTint}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2))
+				//@formatter:on
+				;
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			}
 
