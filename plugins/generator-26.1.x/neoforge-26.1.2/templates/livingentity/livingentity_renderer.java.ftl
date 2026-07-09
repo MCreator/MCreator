@@ -300,8 +300,8 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			<#assign needsEntityInState = true>
 			this.keyframeAnimation${animation?index}.apply(entity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 		<#else>
-			<#if hasProcedure(animation.condition)>
 			<#assign needsEntityInState = true>
+			<#if hasProcedure(animation.condition)>
 			if (<@procedureCode animation.condition, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
