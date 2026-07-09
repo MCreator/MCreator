@@ -7,11 +7,11 @@ const ${name} = {
     	<@optionalDependencies dependencies, {
 			"itemstack": "event.itemStack",
 			"dimension": "event.source.dimension",
-			"x": "event.source.location.x",
-			"y": "event.source.location.y",
-			"z": "event.source.location.z",
+			"x": "event.block.location.x",
+			"y": "event.block.location.y",
+			"z": "event.block.location.z",
 			"entity": "event.source",
-			"block": "event.block"
+			"block": "event.block.permutation"
 		}/>
 		${scriptcode}
     }
