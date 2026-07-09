@@ -56,7 +56,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public boolean flowerPottable;
 	@Nullable @TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
 	public int pottedRenderType;
-	@Nullable public String pottedModelName;
+	public String pottedModelName;
 
 	public String name;
 	public boolean enableCreativeTab;
