@@ -10,7 +10,7 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
         "x": "event.damagingEntity.location.x",
         "y": "event.damagingEntity.location.y",
         "z": "event.damagingEntity.location.z",
-        "block": "event.hitBlock"
+        "block": "event.hitBlockPermutation"
     }/>
 	${scriptcode}
 });
