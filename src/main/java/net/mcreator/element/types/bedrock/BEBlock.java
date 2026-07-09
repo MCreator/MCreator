@@ -99,7 +99,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public BEBlock(ModElement element) {
 		super(element);
 
-		customModelName = "Normal";
+		customModelName = "Same as original";
 		renderType = 10;
 
 		enableCreativeTab = true;

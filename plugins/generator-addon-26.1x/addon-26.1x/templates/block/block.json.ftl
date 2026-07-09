@@ -28,14 +28,7 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry":
-        <#if data.hasCustomModel()>
-          "geometry.${data.getModel().getReadableName()}"
-        <#elseif data.renderType() == 11>
-          "minecraft:geometry.cross"
-        <#else>
-          "minecraft:geometry.full_block"
-        </#if>,
+      "minecraft:geometry": <@regular_model/>,
       "minecraft:material_instances": {
         <#if data.hasOneTexture()>
 		"*": <@material_face "" data.renderType() == 11 data.renderType() == 11/>
@@ -73,13 +66,7 @@
 		      <#elseif data.hasCustomModel()>
 		        "geometry.${data.getModel().getReadableName()}"
 		      <#else>
-		        <#if data.hasCustomModel()>
-                  "geometry.${data.getModel().getReadableName()}"
-                <#elseif data.renderType() == 11>
-                  "minecraft:geometry.cross"
-                <#else>
-                  "minecraft:geometry.full_block"
-                </#if>
+		        <@regular_model/>
 		      </#if>,
 	    	  "material_instances": {
 	  	       "*": <@material_face "potted" data.pottedRenderType() == 11 data.pottedRenderType() == 11/>
@@ -193,6 +180,16 @@
     <#return "q.block_state('minecraft:block_face')">
   </#if>
 </#function>
+
+<#macro regular_model>
+  <#if data.hasCustomModel()>
+    "geometry.${data.getModel().getReadableName()}"
+  <#elseif data.renderType() == 11>
+    "minecraft:geometry.cross"
+  <#else>
+    "minecraft:geometry.full_block"
+  </#if>
+</#macro>
 
 <#macro material_face suffix="" disableAmbientOcclusion=false disableFaceDimming=false>
 {

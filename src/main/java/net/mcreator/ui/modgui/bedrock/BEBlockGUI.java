@@ -69,7 +69,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	public static final Model normal = new Model.BuiltInModel("Normal");
 	public static final Model cross = new Model.BuiltInModel("Cross model");
-	public static final Model cube = new Model.BuiltInModel("Full cube");
+	public static final Model original = new Model.BuiltInModel("Same as original");
 	public static final Model singleTexture = new Model.BuiltInModel("Single texture");
 	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
@@ -82,7 +82,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JCheckBox flowerPottable = L10N.checkbox("elementgui.common.enable");
 	private final TextureSelectionButton pottedTexture = new TextureSelectionButton(
 			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
-	private final SearchableComboBox<Model> pottedModel = new SearchableComboBox<>(new Model[] { normal, cross, cube });
+	private final SearchableComboBox<Model> pottedModel = new SearchableComboBox<>(new Model[] { original, normal, cross });
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
@@ -380,7 +380,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 
-		ComboBoxUtil.updateComboBoxContents(pottedModel, ListUtils.merge(Arrays.asList(normal, cross, cube),
+		ComboBoxUtil.updateComboBoxContents(pottedModel, ListUtils.merge(Arrays.asList(original, normal, cross),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 	}
@@ -470,7 +470,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 			block.pottedRenderType = 2;
 		else if (embeddedModel.equals(cross))
 			block.pottedRenderType = 11;
-		else if (embeddedModel.equals(cube))
+		else if (embeddedModel.equals(normal))
 			block.pottedRenderType = 12;
 		block.pottedModelName = embeddedModel.getReadableName();
 
