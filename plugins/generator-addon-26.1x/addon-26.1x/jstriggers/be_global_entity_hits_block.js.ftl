@@ -7,9 +7,9 @@ world.afterEvents.entityHitBlock.subscribe((event) => {
         "direction": "event.blockFace",
         "entity": "event.damagingEntity",
         "dimension": "event.damagingEntity.dimension",
-        "x": "event.damagingEntity.location.x",
-        "y": "event.damagingEntity.location.y",
-        "z": "event.damagingEntity.location.z",
+        "x": "event.hitBlock.location.x",
+        "y": "event.hitBlock.location.y",
+        "z": "event.hitBlock.location.z",
         "block": "event.hitBlockPermutation"
     }/>
 	${scriptcode}
