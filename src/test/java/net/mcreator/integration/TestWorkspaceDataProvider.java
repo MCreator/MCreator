@@ -1824,10 +1824,7 @@ public class TestWorkspaceDataProvider {
 			beblock.pottedRenderType = new int[] { 10, 11, 12, 10 }[valueIndex];
 			beblock.pottedModelName = new String[] { "Normal", "Cross model", "Full cube", "Normal" }[valueIndex];
 			beblock.pottedTexture = new TextureHolder(modElement.getWorkspace(), "test");
-			if (_true)
-				beblock.destructionParticles = new TextureHolder(modElement.getWorkspace(), "test2");
-			else
-				beblock.destructionParticles = new TextureHolder(modElement.getWorkspace(), "");
+			beblock.destructionParticles = new TextureHolder(modElement.getWorkspace(), _true ? "test2" : "");
 			beblock.particleTintMethod = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "particleTintMethod"));
 			beblock.particleCount = getRandomInt(random, BEBlock.class, "particleCount");
