@@ -38,6 +38,18 @@ public class RSyntaxTextAreaStyler {
 
 	private static final Logger LOG = LogManager.getLogger(RSyntaxTextAreaStyler.class);
 
+	private static String replaceXMLTokens(String themeXML) {
+		return themeXML
+				//@formatter:off
+				.replace("${backgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getBackgroundColor()).getRGB()).substring(2))
+				.replace("${altBackgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getAltBackgroundColor()).getRGB()).substring(2))
+				.replace("${secondAltBackgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getSecondAltBackgroundColor()).getRGB()).substring(2))
+				.replace("${foregroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getForegroundColor()).getRGB()).substring(2))
+				.replace("${mainTint}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2))
+				.replace("${altForegroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getAltForegroundColor()).getRGB()).substring(2));
+		//@formatter:on
+	}
+
 	public static void style(RSyntaxTextArea te, RTextScrollPane sp, int initialFontSize) {
 		try {
 			Theme theme;
@@ -47,22 +59,12 @@ public class RSyntaxTextAreaStyler {
 					!= null) {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml");
-				themeXML = themeXML
-						//@formatter:off
-				.replace("${backgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getBackgroundColor()).getRGB()).substring(2))
-				.replace("${altBackgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getAltBackgroundColor()).getRGB()).substring(2))
-				.replace("${secondAltBackgroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getSecondAltBackgroundColor()).getRGB()).substring(2))
-				.replace("${foregroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getForegroundColor()).getRGB()).substring(2))
-				.replace("${mainTint}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2))
-				.replace("${altForegroundColor}", Integer.toHexString((net.mcreator.ui.laf.themes.Theme.current().getAltForegroundColor()).getRGB()).substring(2))
-				//@formatter:on
-				;
+				themeXML = replaceXMLTokens(themeXML);
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			} else {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/default_dark/styles/code_editor.xml");
-				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
-						(net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2));
+				themeXML = replaceXMLTokens(themeXML);
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			}
 
