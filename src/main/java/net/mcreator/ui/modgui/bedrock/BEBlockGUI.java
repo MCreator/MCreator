@@ -82,8 +82,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JCheckBox flowerPottable = L10N.checkbox("elementgui.common.enable");
 	private final TextureSelectionButton pottedTexture = new TextureSelectionButton(
 			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
-	private final SearchableComboBox<Model> pottedModel = new SearchableComboBox<>(
-			new Model[] { normal, cross, cube });
+	private final SearchableComboBox<Model> pottedModel = new SearchableComboBox<>(new Model[] { normal, cross, cube });
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
@@ -381,10 +380,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 
-		ComboBoxUtil.updateComboBoxContents(pottedModel,
-				ListUtils.merge(Arrays.asList(normal, cross, cube),
-						Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-								.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
+		ComboBoxUtil.updateComboBoxContents(pottedModel, ListUtils.merge(Arrays.asList(normal, cross, cube),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.BEDROCK).collect(Collectors.toList())));
 	}
 
 	@Override protected void openInEditingMode(BEBlock block) {
@@ -399,10 +397,11 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		particleTintMethod.setSelectedItem(block.particleTintMethod);
 		particleCount.setValue(block.particleCount);
 		flowerPottable.setSelected(block.flowerPottable);
+		pottedTexture.setTexture(block.pottedTexture);
+
 		Model embeddedModel = block.getPottedModel();
 		if (embeddedModel != null)
 			pottedModel.setSelectedItem(embeddedModel);
-		pottedTexture.setTexture(block.pottedTexture);
 
 		name.setText(block.name);
 		enableCreativeTab.setSelected(block.enableCreativeTab);
@@ -464,6 +463,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.particleTintMethod = (String) particleTintMethod.getSelectedItem();
 		block.particleCount = (int) particleCount.getValue();
 		block.flowerPottable = flowerPottable.isSelected();
+
 		Model embeddedModel = Objects.requireNonNull(pottedModel.getSelectedItem());
 		block.pottedRenderType = 10;
 		if (embeddedModel.getType() == Model.Type.BEDROCK)
