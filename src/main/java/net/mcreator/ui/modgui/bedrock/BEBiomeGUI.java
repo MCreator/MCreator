@@ -60,7 +60,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JSpinner replacementNoiseFrequencyScale = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 100, 0.1));
 	private final JSpinner particleDensity = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 10.0, 0.1));
 
-	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125);
+	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125).allowEqualValues();
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 

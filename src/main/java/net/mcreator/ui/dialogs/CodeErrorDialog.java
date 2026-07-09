@@ -55,9 +55,11 @@ public class CodeErrorDialog {
 		mcreator.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 		stderroutput.lines().forEach(line -> {
+			line = line.strip();
 			if (line.contains(".java:") && line.contains(": error:")) {
 				File fileWithError = new File(line.split(":\\d+: error:")[0].replaceAll("build[/|\\\\]sources", "src"));
-				problematicFiles.add(fileWithError);
+				if (fileWithError.isFile())
+					problematicFiles.add(fileWithError);
 			}
 		});
 
@@ -76,7 +78,7 @@ public class CodeErrorDialog {
 			} else if (FileIO.isFileOnFileList(moddefinitionfiles, problematicFile)) {
 				moddefinitionfileerrors = true;
 			} else {
-				LOG.warn("Error from non MCreator generated class!");
+				LOG.warn("Error from non MCreator generated file: {}", problematicFile.getAbsolutePath());
 			}
 		}
 
@@ -95,7 +97,8 @@ public class CodeErrorDialog {
 		}
 
 		if (problematicMods.isEmpty()) { // if list is empty, there are no mod elements to show
-			if (stderroutput.contains("see the compiler error output for details")) {
+			if (stderroutput.contains("see the compiler error output for details") || stderroutput.contains(
+					"see the compiler output below")) {
 				mcreator.showConsole();
 				return true;
 			}
