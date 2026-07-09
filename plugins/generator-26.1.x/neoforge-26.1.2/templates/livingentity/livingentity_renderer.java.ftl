@@ -288,20 +288,25 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 }
 </@javacompress>
 
+<#macro ensureEntityReference>
+	<#if !(entityReferenceCreated!false)>
+		<#assign needsEntityInState = true>
+		${name}Entity entity = state.getRenderData(ENTITY_KEY);
+		<#assign entityReferenceCreated = true>
+	</#if>
+</#macro>
+
 <#macro setupAnim>
 	<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->
 	this.root().getAllParts().forEach(ModelPart::resetPose);
 	</#if>
-	<#if data.animations?has_content>
-	${name}Entity entity = state.getRenderData(ENTITY_KEY);
-	</#if>
 	<#list data.animations as animation>
 		<#if !animation.walking>
-			<#assign needsEntityInState = true>
+			<@ensureEntityReference/>
 			this.keyframeAnimation${animation?index}.apply(entity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 		<#else>
 			<#if hasProcedure(animation.condition)>
-			<#assign needsEntityInState = true>
+			<@ensureEntityReference/>
 			if (<@procedureCode animation.condition, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
