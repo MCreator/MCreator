@@ -32,7 +32,6 @@ public class AnimationSettings extends JPanel {
 
 	public AnimationSettings() {
 		setLayout(new GridLayout(2, 2, 15, 20));
-		setOpaque(false);
 		add(L10N.label("dialog.animation_maker.frame_duration"));
 		add(frameDuration);
 		add(L10N.label("dialog.animation_maker.interpolate_frame"));

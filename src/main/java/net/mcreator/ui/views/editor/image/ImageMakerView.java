@@ -82,6 +82,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	private final CanvasRenderer canvasRenderer;
 	private final JSplitPane leftSplitPane;
 	private final JSplitPane rightSplitPane;
+	private final JSplitPane southSplitPane;
 	private final JSplitPane paletteLayerSplitPane;
 	private final ToolPanel toolPanel;
 	private final PalettePanel palettePanel;
@@ -152,6 +153,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				super.paintComponent(g);
 			}
 		};
+		southSplitPane = new JSplitPane();
 		paletteLayerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
 		canvasRenderer = new CanvasRenderer(this);
@@ -184,6 +186,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		paletteLayerSplitPane.setBottomComponent(layerPanel);
 		paletteLayerSplitPane.setOneTouchExpandable(true);
 
+		southSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		southSplitPane.setTopComponent(leftSplitPane);
+		southSplitPane.setBottomComponent(animationTimeline);
+		southSplitPane.setResizeWeight(1);
+		southSplitPane.setOneTouchExpandable(true);
+
 		leftControls.add(template);
 
 		if (TextureType.getSupportedTypes(mcreator.getWorkspace(), false).length > 0)
@@ -197,8 +205,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		controls.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		add(controls, BorderLayout.NORTH);
-		add(leftSplitPane, BorderLayout.CENTER);
-		add(animationTimeline, BorderLayout.SOUTH);
+		add(southSplitPane, BorderLayout.CENTER);
 
 		Thread animator = new Thread(() -> {
 			active = true;
