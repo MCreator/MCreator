@@ -153,7 +153,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				super.paintComponent(g);
 			}
 		};
-		southSplitPane = new JSplitPane();
 		paletteLayerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
 		canvasRenderer = new CanvasRenderer(this);
@@ -186,9 +185,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		paletteLayerSplitPane.setBottomComponent(layerPanel);
 		paletteLayerSplitPane.setOneTouchExpandable(true);
 
-		southSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		southSplitPane.setTopComponent(leftSplitPane);
-		southSplitPane.setBottomComponent(animationTimeline);
+		southSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, leftSplitPane, animationTimeline);
 		southSplitPane.setResizeWeight(1);
 		southSplitPane.setOneTouchExpandable(true);
 

@@ -23,6 +23,7 @@ import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -55,6 +56,8 @@ public class AnimationMakerView extends JPanel {
 	private final JList<Canvas> timeline = new JList<>(timelinevector);
 
 	private int animindex = 0;
+	private int[] framesToPlay;
+	private boolean playAllFrames = true;
 	private boolean playanim = true;
 
 	private final Thread animator;
@@ -73,8 +76,14 @@ public class AnimationMakerView extends JPanel {
 			while (active) {
 				if (timelinevector.getSize() > 0 && playanim) {
 					animindex++;
-					if (animindex >= timelinevector.getSize())
+
+					if (!playAllFrames && framesToPlay != null && framesToPlay.length > 0) {
+						if (animindex >= framesToPlay.length)
+							animindex = framesToPlay[0];
+					} else if (animindex >= timelinevector.getSize()) {
 						animindex = 0;
+					}
+
 					SwingUtilities.invokeLater(() -> {
 						changeFrame(timelinevector.getElementAt(animindex));
 						timeline.setSelectedIndex(animindex);
@@ -93,22 +102,34 @@ public class AnimationMakerView extends JPanel {
 		JButton play = new JButton("");
 		play.setIcon(UIRES.get("16px.play"));
 		play.addActionListener(_ -> {
-			if (!animator.isAlive())
+			if (timeline.getSelectedIndices().length > 1) {
+				framesToPlay = timeline.getSelectedIndices();
+				playAllFrames = false;
+			} else {
+				playAllFrames = true;
+			}
+
+			if (!animator.isAlive()) {
 				animator.start();
-			else
 				playanim = true;
+				play.setIcon(UIRES.get("16px.pause"));
+			} else if (!playanim) {
+				playanim = true;
+				play.setIcon(UIRES.get("16px.pause"));
+			} else {
+				playanim = false;
+				play.setIcon(UIRES.get("16px.play"));
+			}
 		});
 		controls.add(play);
-
-		JButton pause = new JButton("");
-		pause.addActionListener(_ -> playanim = false);
-		pause.setIcon(UIRES.get("16px.pause"));
-		controls.add(pause);
 
 		JButton stop = new JButton("");
 		stop.addActionListener(_ -> {
 			animindex = 0;
 			playanim = false;
+			play.setIcon(UIRES.get("16px.play"));
+			timeline.setSelectedValue(timelinevector.getElementAt(0), false);
+			changeFrame(timelinevector.getElementAt(0));
 			timeline.repaint();
 		});
 		stop.setIcon(UIRES.get("16px.stopanimation"));
@@ -144,27 +165,24 @@ public class AnimationMakerView extends JPanel {
 
 		JPanel timelinePanel = new JPanel(new BorderLayout());
 		timelinePanel.setOpaque(false);
-		ComponentUtils.makeSection(timelinePanel, L10N.t("dialog.animation_maker.animation_timeline"));
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
 		JButton add = L10N.button("dialog.animation_maker.add_new_frame");
-		add.addActionListener(_ -> {
-			addFrameFromEmptyLayer();
-		});
-//		add.addActionListener(_ -> {
-//			File[] frames = FileDialogs.getMultiOpenDialog(imv.getMCreator(), new String[] { ".png" });
-//			if (frames != null) {
-//				Arrays.stream(frames).forEach(frame -> {
-//					try {
-//						timelinevector.addElement(createCanvasFromBufferedImage(ImageIO.read(frame),
-//								FilenameUtilsPatched.removeExtension(frame.getName())));
-//					} catch (IOException e) {
-//						LOG.error(e.getMessage(), e);
-//					}
-//				});
-//			}
-//		});
+		add.addActionListener(_ -> addFrameFromEmptyLayer());
+		//		add.addActionListener(_ -> {
+		//			File[] frames = FileDialogs.getMultiOpenDialog(imv.getMCreator(), new String[] { ".png" });
+		//			if (frames != null) {
+		//				Arrays.stream(frames).forEach(frame -> {
+		//					try {
+		//						timelinevector.addElement(createCanvasFromBufferedImage(ImageIO.read(frame),
+		//								FilenameUtilsPatched.removeExtension(frame.getName())));
+		//					} catch (IOException e) {
+		//						LOG.error(e.getMessage(), e);
+		//					}
+		//				});
+		//			}
+		//		});
 		add.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add);
 
@@ -192,11 +210,9 @@ public class AnimationMakerView extends JPanel {
 		remove.setIcon(UIRES.get("18px.remove"));
 		timelinebar.add(remove);
 
-		timelinePanel.add("North", timelinebar);
-
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		timeline.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		timeline.setVisibleRowCount(1);
+		timeline.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		timeline.setVisibleRowCount(2);
 		timeline.setCellRenderer(new TimelineRenderer(this));
 		timeline.setOpaque(false);
 		JScrollPane pan = new JScrollPane(timeline);
@@ -216,8 +232,10 @@ public class AnimationMakerView extends JPanel {
 		save.setFocusPainted(false);
 		save.addActionListener(_ -> use());
 
-		add("North", controls);
+		add("North", PanelUtils.westAndCenterElement(controls, timelinebar));
 		add("Center", timelinePanel);
+
+		ComponentUtils.makeSection(this, L10N.t("dialog.animation_maker.animation_timeline"));
 	}
 
 	protected void use() {
@@ -271,10 +289,10 @@ public class AnimationMakerView extends JPanel {
 	 * Then, each individual frame is added to the timeline. It can also colorize the original picture before adding frames to the timeline.</p>
 	 *
 	 * @param bufferedImage The tiled {@link BufferedImage} containing all frames
-	 * @param name This is the name that will be used for each {@link Layer}
-	 * @param colorize If true, it will colorize the image with the provided {@link Color}
+	 * @param name          This is the name that will be used for each {@link Layer}
+	 * @param colorize      If true, it will colorize the image with the provided {@link Color}
 	 * @param colorizerType If false, it will lock the saturation and lightness
-	 * @param color This is the color used by the recolorization process
+	 * @param color         This is the color used by the recolorization process
 	 */
 	public void generateTimelineFromTiledBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
 			boolean colorizerType, Color color) {
@@ -321,7 +339,7 @@ public class AnimationMakerView extends JPanel {
 	 * <p>This takes a {@link BufferedImage} and transforms into a {@link Canvas} with a single {@link Layer}.</p>
 	 *
 	 * @param bufferedImage The image to convert into a {@link Canvas}
-	 * @param name The name to give to the {@link Layer}
+	 * @param name          The name to give to the {@link Layer}
 	 * @return A {@link Canvas} containing the {@link BufferedImage} as one {@link Layer}
 	 */
 	public Canvas createCanvasFromBufferedImage(BufferedImage bufferedImage, String name) {

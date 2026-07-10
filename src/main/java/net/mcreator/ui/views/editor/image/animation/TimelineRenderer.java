@@ -28,27 +28,23 @@ import java.awt.*;
 
 public class TimelineRenderer extends JPanel implements ListCellRenderer<Canvas> {
 
-	private final AnimationMakerView animationTimeline;
+	private final AnimationMakerView timeline;
 
-	public TimelineRenderer(AnimationMakerView animationTimeline) {
-		this.animationTimeline = animationTimeline;
-		setOpaque(true);
+	public TimelineRenderer(AnimationMakerView timeline) {
+		this.timeline = timeline;
 	}
+
+
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Canvas> list,
 			Canvas value, int index, boolean isSelected, boolean cellHasFocus) {
 		removeAll();
-		if (isSelected && index == animationTimeline.getAnimationIndex()) {
-			setBackground(new Color(255, 0, 255));
-			animationTimeline.changeFrame(value);
+		if (cellHasFocus) {
+			setBackground(new Color(0, 200, 200));
+			timeline.changeFrame(value);
 		} else if (isSelected) {
-			setBackground(Color.red);
-			animationTimeline.changeFrame(value);
-			//animationTimeline.setAnimationIndex(index);
-		} else if (index == animationTimeline.getAnimationIndex()) {
-			setBackground(Color.blue);
-			animationTimeline.changeFrame(value);
+			setBackground(new Color(200, 0, 200));
 		} else {
 			setBackground(Color.gray);
 		}
