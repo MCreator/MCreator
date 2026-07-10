@@ -32,7 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.views.editor.image.animation.AnimationTimeline;
+import net.mcreator.ui.views.editor.image.animation.AnimationMakerView;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.animation.AnimationSettings;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
@@ -90,7 +90,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	private final ClipboardManager clipboardManager;
 	private final JLabel imageInfo = new JLabel("");
 	private final AnimationSettings animationSettings;
-	private final AnimationTimeline animationTimeline;
+	private final AnimationMakerView animationTimeline;
 
 	public final JButton save;
 
@@ -159,7 +159,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		toolPanel = new ToolPanel(f, canvas, zoomPane, canvasRenderer, versionManager);
 
 		animationSettings = new  AnimationSettings();
-		animationTimeline = new AnimationTimeline(this);
+		animationTimeline = new AnimationMakerView(this);
 
 		palettePanel = new PalettePanel(f, toolPanel);
 		layerPanel = new LayerPanel(f, toolPanel, versionManager);
@@ -528,7 +528,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		return animationSettings;
 	}
 
-	public AnimationTimeline getAnimationTimeline() {
+	public AnimationMakerView getAnimationTimeline() {
 		return animationTimeline;
 	}
 

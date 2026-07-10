@@ -41,7 +41,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class AnimationTimeline extends JPanel {
+public class AnimationMakerView extends JPanel {
 
 	protected static final Logger LOG = LogManager.getLogger("Animation Timeline");
 
@@ -59,7 +59,7 @@ public class AnimationTimeline extends JPanel {
 
 	private boolean active;
 
-	public AnimationTimeline(ImageMakerView imv) {
+	public AnimationMakerView(ImageMakerView imv) {
 		this.imv = imv;
 		setLayout(new BorderLayout());
 

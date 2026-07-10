@@ -46,7 +46,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AnimationImportUtils {
 
-	public static void addFramesFromTemplate(AnimationTimeline timeline) {
+	public static void addFramesFromTemplate(AnimationMakerView timeline) {
 		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.animations", "png");
 
 		JPanel panel = new JPanel(new BorderLayout());
@@ -73,7 +73,7 @@ public class AnimationImportUtils {
 						new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width,
 								width).getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(), 128)));
 			} catch (InvalidTileSizeException | IOException e) {
-				AnimationTimeline.LOG.error(e.getMessage(), e);
+				AnimationMakerView.LOG.error(e.getMessage(), e);
 			}
 		};
 
@@ -105,12 +105,12 @@ public class AnimationImportUtils {
 						TiledImageUtils.convert(ImageIO.read(rp.getStream()), BufferedImage.TYPE_INT_ARGB),
 						rp.toString(), true, !cbox.isSelected(), colors.getColor());
 			} catch (IOException e) {
-				AnimationTimeline.LOG.error(e.getMessage(), e);
+				AnimationMakerView.LOG.error(e.getMessage(), e);
 			}
 		}
 	}
 
-	public static void addFramesFromStrip(AnimationTimeline timeline) {
+	public static void addFramesFromStrip(AnimationMakerView timeline) {
 		AtomicReference<File> f = new AtomicReference<>();
 
 		JPanel od = new JPanel(new BorderLayout());
@@ -151,7 +151,7 @@ public class AnimationImportUtils {
 								new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
 				}
 			} catch (InvalidTileSizeException | IOException e) {
-				AnimationTimeline.LOG.error(e.getMessage(), e);
+				AnimationMakerView.LOG.error(e.getMessage(), e);
 			}
 		});
 
@@ -191,12 +191,12 @@ public class AnimationImportUtils {
 						FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(), !cbox.isSelected(),
 						colors.getColor());
 			} catch (IOException e) {
-				AnimationTimeline.LOG.error(e.getMessage(), e);
+				AnimationMakerView.LOG.error(e.getMessage(), e);
 			}
 		}
 	}
 
-	public static void addFramesFromGif(AnimationTimeline timeline) {
+	public static void addFramesFromGif(AnimationMakerView timeline) {
 		File frame = FileDialogs.getOpenDialog(timeline.getImageMakerView().getMCreator(), new String[] { ".gif" });
 		if (frame != null) {
 			ProgressDialog dial = new ProgressDialog(timeline.getImageMakerView().getMCreator(),
@@ -233,7 +233,7 @@ public class AnimationImportUtils {
 					dial.hideDialog();
 				} catch (Exception e) {
 					dial.hideDialog();
-					AnimationTimeline.LOG.error(e.getMessage(), e);
+					AnimationMakerView.LOG.error(e.getMessage(), e);
 				}
 
 			}, "GIFFramesLoader");

@@ -27,9 +27,9 @@ import java.awt.*;
 
 public class TimelineRenderer extends JPanel implements ListCellRenderer<Canvas> {
 
-	private final AnimationTimeline animationTimeline;
+	private final AnimationMakerView animationTimeline;
 
-	public TimelineRenderer(AnimationTimeline animationTimeline) {
+	public TimelineRenderer(AnimationMakerView animationTimeline) {
 		this.animationTimeline = animationTimeline;
 		setOpaque(true);
 	}
