@@ -60,7 +60,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AnimationTimeline extends JPanel {
 
-	private static final Logger LOG = LogManager.getLogger("Animation Timeline");
+	protected static final Logger LOG = LogManager.getLogger("Animation Timeline");
 
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -183,18 +183,18 @@ public class AnimationTimeline extends JPanel {
 		add.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add);
 
-		JButton add3 = L10N.button("dialog.animation_maker.add_frames_from_template");
-		add3.addActionListener(_ -> addFramesFromTemplate());
-		add3.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(add3);
+		JButton addFromTemplates = L10N.button("dialog.animation_maker.add_frames_from_template");
+		addFromTemplates.addActionListener(_ -> AnimationImportDialogs.addFramesFromTemplate(this));
+		addFromTemplates.setIcon(UIRES.get("18px.add"));
+		timelinebar.add(addFromTemplates);
 
-		JButton add4 = L10N.button("dialog.animation_maker.add_frames_from_strip");
-		add4.addActionListener(_ -> addFramesFromStrip());
-		add4.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(add4);
+		JButton addFromStrip = L10N.button("dialog.animation_maker.add_frames_from_strip");
+		addFromStrip.addActionListener(_ -> AnimationImportDialogs.addFramesFromStrip(this));
+		addFromStrip.setIcon(UIRES.get("18px.add"));
+		timelinebar.add(addFromStrip);
 
-		JButton add2 = L10N.button("dialog.animation_maker.add_frames_from_gif");
-		add2.addActionListener(_ -> {
+		JButton addFromGif = L10N.button("dialog.animation_maker.add_frames_from_gif");
+		addFromGif.addActionListener(_ -> {
 			File frame = FileDialogs.getOpenDialog(imv.getMCreator(), new String[] { ".gif" });
 			if (frame != null) {
 				ProgressDialog dial = new ProgressDialog(imv.getMCreator(), L10N.t("dialog.animation_maker.gif_importing"));
@@ -237,8 +237,8 @@ public class AnimationTimeline extends JPanel {
 				dial.setVisible(true);
 			}
 		});
-		add2.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(add2);
+		addFromGif.setIcon(UIRES.get("18px.add"));
+		timelinebar.add(addFromGif);
 
 		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 		remove.addActionListener(_ -> {
@@ -322,154 +322,7 @@ public class AnimationTimeline extends JPanel {
 		}
 	}
 
-	private void addFramesFromTemplate() {
-		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.animations", "png");
-
-		JPanel od = new JPanel(new BorderLayout());
-		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
-
-		JLabel lab1 = L10N.label("dialog.animation_maker.template_color_choice");
-		JLabel lab2 = L10N.label("dialog.animation_maker.template");
-		JLabel lab3 = L10N.label("dialog.animation_maker.color");
-		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
-
-		JLabel preview = new JLabel();
-		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
-				L10N.t("dialog.animation_maker.preview"), 0, 0, getFont().deriveFont(12.0f), Color.gray));
-
-		JComboBox<ResourcePointer> types = new JComboBox<>();
-		templatesSorted.forEach(types::addItem);
-
-		JColor colors = new JColor(imv.getMCreator(), false, true);
-		JCheckBox cbox = new JCheckBox();
-		ActionListener al = _ -> {
-			try {
-				int width = ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()).getWidth();
-				preview.setIcon(new ImageIcon(ImageUtils.resize(ImageUtils.colorize(
-						new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width,
-								width).getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(), 128)));
-			} catch (InvalidTileSizeException | IOException e) {
-				LOG.error(e.getMessage(), e);
-			}
-		};
-
-		al.actionPerformed(new ActionEvent("", 0, null));
-
-		types.addActionListener(al);
-		cbox.addActionListener(al);
-		colors.addColorSelectedListener(al);
-
-		od.add("North", lab1);
-		od.add("Center", centerPanel);
-		od.add("South", PanelUtils.centerInPanel(preview));
-
-		centerPanel.add(lab2);
-		centerPanel.add(types);
-		centerPanel.add(lab3);
-		centerPanel.add(colors);
-		centerPanel.add(lab4);
-		centerPanel.add(cbox);
-
-		if (JOptionPane.showOptionDialog(imv, od, L10N.t("dialog.animation_maker.add_frames_from_template"),
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-				new String[] { L10N.t("common.add"), UIManager.getString("OptionPane.cancelButtonText") },
-				L10N.t("common.add")) == 0) {
-			try {
-				ResourcePointer rp = templatesSorted.get(types.getSelectedIndex());
-				BufferedImage imge = TiledImageUtils.convert(ImageIO.read(rp.getStream()), BufferedImage.TYPE_INT_ARGB);
-				generateTimelineFromBufferedImage(imge, rp.toString(), true, !cbox.isSelected(), colors.getColor());
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
-			}
-		}
-	}
-
-	private void addFramesFromStrip() {
-		AtomicReference<File> f = new AtomicReference<>();
-
-		JPanel od = new JPanel(new BorderLayout());
-		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
-
-		JLabel lab1 = L10N.label("dialog.animation_maker.strip_color_choice");
-		JLabel lab2 = L10N.label("dialog.animation_maker.strip");
-		JLabel lab3 = L10N.label("dialog.animation_maker.color");
-		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
-		JLabel lab5 = L10N.label("dialog.animation_maker.colorize");
-
-		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
-		preview.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
-						getFont().deriveFont(12.0f), Color.gray));
-
-		JButton selectFile = new JButton("...");
-		JColor colors = new JColor(imv.getMCreator(), false, true);
-		JCheckBox cbox = new JCheckBox();
-		JCheckBox cbox2 = new JCheckBox();
-
-		AtomicReference<TiledImageUtils> tilImgUtl = new AtomicReference<>();
-
-		selectFile.addActionListener(_ -> {
-			f.set(FileDialogs.getOpenDialog(imv.getMCreator(), new String[] { ".png" }));
-			try {
-				if (f.get() != null) {
-					BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
-					int x = Math.min(imge.getHeight(), imge.getWidth());
-					selectFile.setText(StringUtils.abbreviateString(f.get().getName(), 25));
-					tilImgUtl.set(new TiledImageUtils(imge, x, x));
-					if (cbox2.isSelected())
-						preview.setIcon(new ImageIcon(ImageUtils.resize(
-								ImageUtils.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(),
-										!cbox.isSelected()).getImage(), 128)));
-					else
-						preview.setIcon(
-								new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
-				}
-			} catch (InvalidTileSizeException | IOException e) {
-				LOG.error(e.getMessage(), e);
-			}
-		});
-
-		ActionListener al = _ -> {
-			if (f.get() != null && tilImgUtl.get() != null)
-				if (cbox2.isSelected())
-					preview.setIcon(new ImageIcon(ImageUtils.resize(
-							ImageUtils.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(), !cbox.isSelected())
-									.getImage(), 128)));
-				else
-					preview.setIcon(new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
-		};
-
-		colors.addColorSelectedListener(al);
-		cbox.addActionListener(al);
-		cbox2.addActionListener(al);
-
-		od.add("North", lab1);
-		od.add("Center", centerPanel);
-		od.add("South", preview);
-
-		centerPanel.add(lab2);
-		centerPanel.add(selectFile);
-		centerPanel.add(lab3);
-		centerPanel.add(colors);
-		centerPanel.add(lab4);
-		centerPanel.add(cbox);
-		centerPanel.add(lab5);
-		centerPanel.add(cbox2);
-
-		if (JOptionPane.showOptionDialog(imv, od, L10N.t("dialog.animation_maker.add_frames_from_file"),
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
-				"Add") == 0) {
-			try {
-				BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
-				generateTimelineFromBufferedImage(imge, FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(),
-						!cbox.isSelected(), colors.getColor());
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
-			}
-		}
-	}
-
-	private void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
+	protected void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
 			boolean colorizerType, Color color) {
 		BufferedImage b;
 		if (colorize)
