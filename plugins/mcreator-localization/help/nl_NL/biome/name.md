@@ -1,0 +1,1 @@
+De naam van de biologie is de naam die door sommige mods of door Minecraft zelf gebruikt wordt met de Buffet (enkelvoudige bioom). Het verandert de naam echter niet in het F3-menu.
