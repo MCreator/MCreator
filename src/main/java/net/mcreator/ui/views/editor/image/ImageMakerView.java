@@ -22,6 +22,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.RegistryNameFixer;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -411,6 +412,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				if (firstTime) {
 					leftSplitPane.setDividerLocation(0.16);
 					rightSplitPane.setDividerLocation(0.79);
+					southSplitPane.setDividerLocation(PreferencesManager.PREFERENCES.imageEditor.defaultPercentageTimeline.get() / 100d);
 					paletteLayerSplitPane.setDividerLocation(0.5);
 					zoomPane.getZoomport().fitZoom();
 					firstTime = false;

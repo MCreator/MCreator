@@ -69,7 +69,6 @@ public class AnimationMakerView extends JPanel {
 		setLayout(new BorderLayout());
 
 		JToolBar controls = new JToolBar();
-		controls.setFloatable(false);
 
 		animator = new Thread(() -> {
 			active = true;
@@ -214,7 +213,7 @@ public class AnimationMakerView extends JPanel {
 		timeline.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		timeline.setVisibleRowCount(1);
 		timeline.setCellRenderer(new TimelineRenderer(this));
-		timeline.setOpaque(false);
+
 		JScrollPane pan = new JScrollPane(timeline);
 		pan.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pan.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -225,12 +224,12 @@ public class AnimationMakerView extends JPanel {
 
 		timelinePanel.setPreferredSize(new Dimension(9000, 260));
 
-		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
-		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground(Theme.current().getInterfaceAccentColor());
-		save.setForeground(Theme.current().getSecondAltBackgroundColor());
-		save.setFocusPainted(false);
-		save.addActionListener(_ -> use());
+//		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
+//		save.setMargin(new Insets(1, 40, 1, 40));
+//		save.setBackground(Theme.current().getInterfaceAccentColor());
+//		save.setForeground(Theme.current().getSecondAltBackgroundColor());
+//		save.setFocusPainted(false);
+//		save.addActionListener(_ -> use());
 
 		add("North", PanelUtils.westAndCenterElement(controls, timelinebar));
 		add("Center", timelinePanel);
