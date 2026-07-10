@@ -32,7 +32,6 @@ import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.ide.action.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.ui.views.ArmorImageMakerView;
 import net.mcreator.ui.views.editor.image.action.*;
 import net.mcreator.ui.views.editor.image.tool.action.*;
@@ -240,8 +239,9 @@ public class ActionRegistry {
 		this.createArmorTexture = new TextureAction(this, L10N.t("action.create_armor_texture"),
 				actionEvent -> new ArmorImageMakerView(mcreator).showView(), TextureType.ARMOR).setIcon(
 				UIRES.get("16px.newarmor"));
-		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
-				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
+//		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
+//				actionEvent -> new AnimationTimeline(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
+		this.createAnimatedTexture = new BasicAction(this, "", e -> {});
 		this.importBlockTexture = new TextureImportAction(this, L10N.t("action.import_block_texture"),
 				TextureType.BLOCK).setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureImportAction(this, L10N.t("action.import_item_texture"),

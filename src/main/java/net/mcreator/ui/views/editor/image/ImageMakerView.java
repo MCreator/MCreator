@@ -32,7 +32,9 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.views.editor.image.animation.AnimationTimeline;
 import net.mcreator.ui.views.ViewBase;
+import net.mcreator.ui.views.editor.image.animation.AnimationSettings;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
 import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
@@ -87,6 +89,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	private final VersionManager versionManager;
 	private final ClipboardManager clipboardManager;
 	private final JLabel imageInfo = new JLabel("");
+	private final AnimationSettings animationSettings;
+	private final AnimationTimeline animationTimeline;
 
 	public final JButton save;
 
@@ -154,6 +158,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		zoomPane = new JZoomPane(canvasRenderer);
 		toolPanel = new ToolPanel(f, canvas, zoomPane, canvasRenderer, versionManager);
 
+		animationSettings = new  AnimationSettings();
+		animationTimeline = new AnimationTimeline(this);
+
 		palettePanel = new PalettePanel(f, toolPanel);
 		layerPanel = new LayerPanel(f, toolPanel, versionManager);
 
@@ -164,7 +171,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		rightSplitPane.setOpaque(false);
 		paletteLayerSplitPane.setOpaque(false);
 
-		leftSplitPane.setLeftComponent(toolPanel);
+		leftSplitPane.setLeftComponent(PanelUtils.centerAndSouthElement(toolPanel, animationSettings));
 		leftSplitPane.setRightComponent(rightSplitPane);
 		leftSplitPane.setOneTouchExpandable(true);
 
@@ -191,6 +198,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		add(controls, BorderLayout.NORTH);
 		add(leftSplitPane, BorderLayout.CENTER);
+		add(animationTimeline, BorderLayout.SOUTH);
 
 		Thread animator = new Thread(() -> {
 			active = true;
@@ -375,6 +383,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		this.name = L10N.t("tab.image_maker");
 		toolPanel.initTools();
 		updateInfoBar(0, 0);
+		animationTimeline.addFrameToTimeline(canvas);
 	}
 
 	@Override public ViewBase showView() {
@@ -513,6 +522,14 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public LayerPanel getLayerPanel() {
 		return layerPanel;
+	}
+
+	public AnimationSettings getAnimationSettings() {
+		return animationSettings;
+	}
+
+	public AnimationTimeline getAnimationTimeline() {
+		return animationTimeline;
 	}
 
 	public File getImageFile() {

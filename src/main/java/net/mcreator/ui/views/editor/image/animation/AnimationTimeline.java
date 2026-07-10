@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.views;
+package net.mcreator.ui.views.editor.image.animation;
 
 import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.minecraft.RegistryNameFixer;
-import net.mcreator.ui.MCreator;
-import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
@@ -34,10 +32,13 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
-import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -46,6 +47,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,92 +58,30 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AnimationMakerView extends ViewBase {
+public class AnimationTimeline extends JPanel {
 
-	private static final Logger LOG = LogManager.getLogger("Animation Maker View");
+	private static final Logger LOG = LogManager.getLogger("Animation Timeline");
 
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-	private final DefaultListModel<AnimationMakerView.AnimationFrame> timelinevector = new DefaultListModel<>();
-	private final JList<AnimationMakerView.AnimationFrame> timeline = new JList<>(timelinevector);
-	private final JSpinner bd1 = new JSpinner(new SpinnerNumberModel(2, 1, 10000, 1));
+	private final ImageMakerView imv;
+
+	private final DefaultListModel<Canvas> timelinevector = new DefaultListModel<>();
+	private final JList<Canvas> timeline = new JList<>(timelinevector);
 
 	private int animindex = 0;
 	private boolean playanim = true;
 
 	private final Thread animator;
 
-	private int width = 16;
 	private boolean active;
 
-	private final JCheckBox interpolate = new JCheckBox();
-
-	private int zoom = 400;
-
-	public AnimationMakerView(final MCreator fra) {
-		super(fra);
-
-		JPanel editor = new JPanel(new BorderLayout());
-		editor.setOpaque(false);
-
-		JLabel prv = new JLabel(new EmptyIcon.ColorIcon(zoom, zoom, new Color(0x6B6B6B)));
-
-		JPanel prvmg = new JPanel(new BorderLayout());
-		prvmg.setOpaque(false);
-
-		JScrollPane sp = new JScrollPane(ComponentUtils.applyPadding(prv, 0, false, false, false, false));
-		sp.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-		sp.getViewport().setOpaque(false);
-		sp.setOpaque(false);
-		sp.setBorder(null);
-		sp.getViewport().setBorder(null);
-
-		sp.addMouseWheelListener(event -> {
-			int x = zoom + (event.getWheelRotation() * 48);
-			if (x <= 16)
-				x = 16;
-			if (x > 1024)
-				x = 1024;
-
-			zoom = x;
-			try {
-				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
-			} catch (Exception ignored) {
-			}
-		});
-
-		prvmg.add("Center", sp);
+	public AnimationTimeline(ImageMakerView imv) {
+		this.imv = imv;
+		setLayout(new BorderLayout());
 
 		JToolBar controls = new JToolBar();
 		controls.setFloatable(false);
-		prvmg.add("South", controls);
-
-		JPanel preview2 = new JPanel(new GridLayout()) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getAltBackgroundColor());
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		preview2.setOpaque(false);
-		preview2.add(prvmg);
-
-		interpolate.setOpaque(false);
-
-		JPanel settings = new JPanel(new GridLayout(2, 2, 15, 20));
-		settings.setOpaque(false);
-		settings.add(L10N.label("dialog.animation_maker.frame_duration"));
-		settings.add(bd1);
-		settings.add(L10N.label("dialog.animation_maker.interpolate_frame"));
-		settings.add(interpolate);
-
-		JComponent stp = PanelUtils.centerInPanel(settings);
-		ComponentUtils.makeSection(stp, L10N.t("dialog.animation_maker.settings"));
-
-		editor.add("Center", PanelUtils.centerAndEastElement(preview2, stp));
 
 		animator = new Thread(() -> {
 			active = true;
@@ -151,15 +91,15 @@ public class AnimationMakerView extends ViewBase {
 					if (animindex >= timelinevector.getSize())
 						animindex = 0;
 					SwingUtilities.invokeLater(() -> {
-						prv.setIcon(
-								new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+						changeFrame(timelinevector.getElementAt(animindex));
+						timeline.setSelectedIndex(animindex);
 						timeline.repaint();
 					});
 				}
 
 				try {
 					//noinspection BusyWait
-					Thread.sleep(((Integer) bd1.getValue()) * (50));
+					Thread.sleep(imv.getAnimationSettings().getFrameDuration() * 50L);
 				} catch (InterruptedException ignored) {
 				}
 			}
@@ -167,7 +107,7 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton play = new JButton("");
 		play.setIcon(UIRES.get("16px.play"));
-		play.addActionListener(event -> {
+		play.addActionListener(_ -> {
 			if (!animator.isAlive())
 				animator.start();
 			else
@@ -176,12 +116,12 @@ public class AnimationMakerView extends ViewBase {
 		controls.add(play);
 
 		JButton pause = new JButton("");
-		pause.addActionListener(event -> playanim = false);
+		pause.addActionListener(_ -> playanim = false);
 		pause.setIcon(UIRES.get("16px.pause"));
 		controls.add(pause);
 
 		JButton stop = new JButton("");
-		stop.addActionListener(event -> {
+		stop.addActionListener(_ -> {
 			animindex = 0;
 			playanim = false;
 			timeline.repaint();
@@ -192,12 +132,12 @@ public class AnimationMakerView extends ViewBase {
 		controls.addSeparator();
 
 		JButton next = L10N.button("dialog.animation_maker.next_frame");
-		next.addActionListener(event -> {
+		next.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex++;
 				if (animindex >= timelinevector.getSize())
 					animindex--;
-				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+				changeFrame(timelinevector.getElementAt(animindex));
 				timeline.repaint();
 			}
 		});
@@ -205,55 +145,59 @@ public class AnimationMakerView extends ViewBase {
 		controls.add(next);
 
 		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
-		prev.addActionListener(event -> {
+		prev.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex--;
 				if (animindex < 0)
 					animindex = 0;
-				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+				changeFrame(timelinevector.getElementAt(animindex));
 				timeline.repaint();
 			}
 		});
 		prev.setIcon(UIRES.get("16px.rwd"));
 		controls.add(prev);
 
-		JPanel timelinee = new JPanel(new BorderLayout());
-		timelinee.setOpaque(false);
-		ComponentUtils.makeSection(timelinee, L10N.t("dialog.animation_maker.animation_timeline"));
+		JPanel timelinePanel = new JPanel(new BorderLayout());
+		timelinePanel.setOpaque(false);
+		ComponentUtils.makeSection(timelinePanel, L10N.t("dialog.animation_maker.animation_timeline"));
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
-		JButton add = L10N.button("dialog.animation_maker.add_frames");
-		add.addActionListener(event -> {
-			File[] frames = FileDialogs.getMultiOpenDialog(fra, new String[] { ".png" });
-			if (frames != null) {
-				Arrays.stream(frames).forEach(frame -> {
-					try {
-						timelinevector.addElement(new AnimationFrame(ImageIO.read(frame)));
-					} catch (IOException e) {
-						LOG.error(e.getMessage(), e);
-					}
-				});
-			}
+		JButton add = L10N.button("dialog.animation_maker.add_new_frame");
+		add.addActionListener(_ -> {
+			addFrameFromEmptyLayer();
 		});
+//		add.addActionListener(_ -> {
+//			File[] frames = FileDialogs.getMultiOpenDialog(imv.getMCreator(), new String[] { ".png" });
+//			if (frames != null) {
+//				Arrays.stream(frames).forEach(frame -> {
+//					try {
+//						timelinevector.addElement(createCanvasFromBufferedImage(ImageIO.read(frame),
+//								FilenameUtilsPatched.removeExtension(frame.getName())));
+//					} catch (IOException e) {
+//						LOG.error(e.getMessage(), e);
+//					}
+//				});
+//			}
+//		});
 		add.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add);
 
 		JButton add3 = L10N.button("dialog.animation_maker.add_frames_from_template");
-		add3.addActionListener(event -> addFramesFromTemplate());
+		add3.addActionListener(_ -> addFramesFromTemplate());
 		add3.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add3);
 
 		JButton add4 = L10N.button("dialog.animation_maker.add_frames_from_strip");
-		add4.addActionListener(event -> addFramesFromStrip());
+		add4.addActionListener(_ -> addFramesFromStrip());
 		add4.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add4);
 
 		JButton add2 = L10N.button("dialog.animation_maker.add_frames_from_gif");
-		add2.addActionListener(event -> {
-			File frame = FileDialogs.getOpenDialog(fra, new String[] { ".gif" });
+		add2.addActionListener(_ -> {
+			File frame = FileDialogs.getOpenDialog(imv.getMCreator(), new String[] { ".gif" });
 			if (frame != null) {
-				ProgressDialog dial = new ProgressDialog(fra, L10N.t("dialog.animation_maker.gif_importing"));
+				ProgressDialog dial = new ProgressDialog(imv.getMCreator(), L10N.t("dialog.animation_maker.gif_importing"));
 				Thread t = new Thread(() -> {
 					try {
 						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
@@ -266,7 +210,7 @@ public class AnimationMakerView extends ViewBase {
 							p1.markStateError();
 							dial.hideDialog();
 
-							JOptionPane.showMessageDialog(fra, L10N.t("dialog.animation_maker.gif_format_unsupported"),
+							JOptionPane.showMessageDialog(imv, L10N.t("dialog.animation_maker.gif_format_unsupported"),
 									L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
 
 							return;
@@ -276,8 +220,9 @@ public class AnimationMakerView extends ViewBase {
 						dial.addProgressUnit(p2);
 						for (int i = 0; i < frames.length; i++) {
 							int finalI = i;
-							SwingUtilities.invokeLater(
-									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
+							SwingUtilities.invokeLater(() -> timelinevector.addElement(
+									createCanvasFromBufferedImage(ImageUtils.toBufferedImage(frames[finalI]),
+											FilenameUtilsPatched.removeExtension(frame.getName()) + finalI)));
 							p2.setPercent((int) (i / (float) frames.length * 100));
 						}
 						p2.markStateOk();
@@ -296,19 +241,19 @@ public class AnimationMakerView extends ViewBase {
 		timelinebar.add(add2);
 
 		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
-		remove.addActionListener(event -> {
+		remove.addActionListener(_ -> {
 			if (timeline.getSelectedValue() != null)
 				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
 		});
 		remove.setIcon(UIRES.get("18px.remove"));
 		timelinebar.add(remove);
 
-		timelinee.add("North", timelinebar);
+		timelinePanel.add("North", timelinebar);
 
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		timeline.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		timeline.setVisibleRowCount(1);
-		timeline.setCellRenderer(new ComboBoxRenderer());
+		timeline.setCellRenderer(new TimelineRenderer(this));
 		timeline.setOpaque(false);
 		JScrollPane pan = new JScrollPane(timeline);
 		pan.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -316,30 +261,26 @@ public class AnimationMakerView extends ViewBase {
 		pan.setOpaque(false);
 		pan.getViewport().setOpaque(false);
 
-		timelinee.add("Center", pan);
+		timelinePanel.add("Center", pan);
 
-		timelinee.setPreferredSize(new Dimension(9000, 260));
-
-		editor.add("South", timelinee);
+		timelinePanel.setPreferredSize(new Dimension(9000, 260));
 
 		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground(Theme.current().getInterfaceAccentColor());
 		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
-		add("North", ComponentUtils.applyPadding(
-				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
-				true, true, false, true));
-		save.addActionListener(event -> use());
+		save.addActionListener(_ -> use());
 
-		add("Center", editor);
+		add("North", controls);
+		add("Center", timelinePanel);
 	}
 
 	protected void use() {
 		if (timelinevector.isEmpty())
 			return;
-		TextureType[] options = TextureType.getSupportedTypes(mcreator.getWorkspace(), false);
-		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.animation_maker.kind_of_texture"),
+		TextureType[] options = TextureType.getSupportedTypes(imv.getMCreator().getWorkspace(), false);
+		int n = JOptionPane.showOptionDialog(imv, L10N.t("dialog.animation_maker.kind_of_texture"),
 				L10N.t("dialog.animation_maker.type_of_texture"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (n < 0)
@@ -348,17 +289,15 @@ public class AnimationMakerView extends ViewBase {
 		String namec = JOptionPane.showInputDialog(L10N.t("dialog.animation_maker.enter_texture_name"));
 		if (namec != null) {
 			namec = RegistryNameFixer.fix(namec);
-			File exportFile = mcreator.getFolderManager().getTextureFile(namec, options[n]);
+			File exportFile = imv.getMCreator().getFolderManager().getTextureFile(namec, options[n]);
 
 			if (exportFile.isFile()) {
-				JOptionPane.showMessageDialog(mcreator,
-						L10N.t("dialog.animation_maker.texture_already_exists", options[n]),
+				JOptionPane.showMessageDialog(imv, L10N.t("dialog.animation_maker.texture_already_exists", options[n]),
 						L10N.t("dialog.animation_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 			} else {
 				Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
 						"512 x 512" };
-				String s = (String) JOptionPane.showInputDialog(mcreator,
-						L10N.t("dialog.animation_maker.animation_size"),
+				String s = (String) JOptionPane.showInputDialog(imv, L10N.t("dialog.animation_maker.animation_size"),
 						L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null, possibilities,
 						"16 x 16");
 				int sizetwocubes = 16;
@@ -375,8 +314,8 @@ public class AnimationMakerView extends ViewBase {
 					};
 				}
 				Image image = makeAnimationIcon(timelinevector.getSize(), timelinevector, sizetwocubes).getImage();
-				String mcmetacode = generateAnimationMcmeta((Integer) bd1.getValue(), timelinevector.size(),
-						interpolate.isSelected());
+				String mcmetacode = generateAnimationMcmeta(imv.getAnimationSettings().getFrameDuration(),
+						timelinevector.size(), imv.getAnimationSettings().doesInterpolate());
 				FileIO.writeStringToFile(mcmetacode, new File(exportFile.getAbsolutePath() + ".mcmeta"));
 				FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
 			}
@@ -401,11 +340,11 @@ public class AnimationMakerView extends ViewBase {
 		JComboBox<ResourcePointer> types = new JComboBox<>();
 		templatesSorted.forEach(types::addItem);
 
-		JColor colors = new JColor(mcreator, false, true);
+		JColor colors = new JColor(imv.getMCreator(), false, true);
 		JCheckBox cbox = new JCheckBox();
-		ActionListener al = event -> {
+		ActionListener al = _ -> {
 			try {
-				width = ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()).getWidth();
+				int width = ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()).getWidth();
 				preview.setIcon(new ImageIcon(ImageUtils.resize(ImageUtils.colorize(
 						new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width,
 								width).getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(), 128)));
@@ -431,15 +370,14 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab4);
 		centerPanel.add(cbox);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_template"),
+		if (JOptionPane.showOptionDialog(imv, od, L10N.t("dialog.animation_maker.add_frames_from_template"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
 				new String[] { L10N.t("common.add"), UIManager.getString("OptionPane.cancelButtonText") },
 				L10N.t("common.add")) == 0) {
 			try {
-				BufferedImage imge = TiledImageUtils.convert(
-						ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()),
-						BufferedImage.TYPE_INT_ARGB);
-				addFramesFromBufferedImage(imge, true, !cbox.isSelected(), colors.getColor());
+				ResourcePointer rp = templatesSorted.get(types.getSelectedIndex());
+				BufferedImage imge = TiledImageUtils.convert(ImageIO.read(rp.getStream()), BufferedImage.TYPE_INT_ARGB);
+				generateTimelineFromBufferedImage(imge, rp.toString(), true, !cbox.isSelected(), colors.getColor());
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
 			}
@@ -464,14 +402,14 @@ public class AnimationMakerView extends ViewBase {
 						getFont().deriveFont(12.0f), Color.gray));
 
 		JButton selectFile = new JButton("...");
-		JColor colors = new JColor(mcreator, false, true);
+		JColor colors = new JColor(imv.getMCreator(), false, true);
 		JCheckBox cbox = new JCheckBox();
 		JCheckBox cbox2 = new JCheckBox();
 
 		AtomicReference<TiledImageUtils> tilImgUtl = new AtomicReference<>();
 
-		selectFile.addActionListener(event -> {
-			f.set(FileDialogs.getOpenDialog(mcreator, new String[] { ".png" }));
+		selectFile.addActionListener(_ -> {
+			f.set(FileDialogs.getOpenDialog(imv.getMCreator(), new String[] { ".png" }));
 			try {
 				if (f.get() != null) {
 					BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
@@ -491,7 +429,7 @@ public class AnimationMakerView extends ViewBase {
 			}
 		});
 
-		ActionListener al = e -> {
+		ActionListener al = _ -> {
 			if (f.get() != null && tilImgUtl.get() != null)
 				if (cbox2.isSelected())
 					preview.setIcon(new ImageIcon(ImageUtils.resize(
@@ -518,20 +456,21 @@ public class AnimationMakerView extends ViewBase {
 		centerPanel.add(lab5);
 		centerPanel.add(cbox2);
 
-		if (JOptionPane.showOptionDialog(mcreator, od, L10N.t("dialog.animation_maker.add_frames_from_file"),
+		if (JOptionPane.showOptionDialog(imv, od, L10N.t("dialog.animation_maker.add_frames_from_file"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
 				"Add") == 0) {
 			try {
 				BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
-				addFramesFromBufferedImage(imge, cbox2.isSelected(), !cbox.isSelected(), colors.getColor());
+				generateTimelineFromBufferedImage(imge, FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(),
+						!cbox.isSelected(), colors.getColor());
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
 			}
 		}
 	}
 
-	private void addFramesFromBufferedImage(BufferedImage bufferedImage, boolean colorize, boolean colorizerType,
-			Color color) {
+	private void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
+			boolean colorizerType, Color color) {
 		BufferedImage b;
 		if (colorize)
 			b = ImageUtils.toBufferedImage(
@@ -543,9 +482,8 @@ public class AnimationMakerView extends ViewBase {
 			TiledImageUtils tiledImageUtils = new TiledImageUtils(b, x, x);
 			for (int i = 1; i <= tiledImageUtils.getWidthInTiles(); i++) {
 				for (int j = 1; j <= tiledImageUtils.getHeightInTiles(); j++) {
-					BufferedImage buf;
-					buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());
-					timelinevector.addElement(new AnimationFrame(buf));
+					BufferedImage buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());
+					addFrameToTimeline(createCanvasFromBufferedImage(buf, name));
 				}
 			}
 		} catch (InvalidTileSizeException e) {
@@ -553,48 +491,40 @@ public class AnimationMakerView extends ViewBase {
 		}
 	}
 
-	private class ComboBoxRenderer extends JPanel implements ListCellRenderer<AnimationFrame> {
-
-		ComboBoxRenderer() {
-			setOpaque(true);
-		}
-
-		@Override
-		public Component getListCellRendererComponent(JList<? extends AnimationFrame> list, AnimationFrame value,
-				int index, boolean isSelected, boolean cellHasFocus) {
-			removeAll();
-			if (isSelected && index == animindex) {
-				setBackground(new Color(255, 0, 255));
-			} else if (isSelected) {
-				setBackground(Color.red);
-			} else if (index == animindex) {
-				setBackground(Color.blue);
-			} else {
-				setBackground(Color.gray);
-			}
-			setPreferredSize(new Dimension(170, 170));
-			add(new JLabel(new ImageIcon(ImageUtils.resize(value.image, 170))));
-
-			return this;
-		}
-
+	public void addFrameToTimeline(Canvas canvas) {
+		timelinevector.addElement(canvas);
 	}
 
-	private static ImageIcon makeAnimationIcon(int stevilo, DefaultListModel<AnimationFrame> timelinevector, int size) {
+	private void addFrameFromEmptyLayer() {
+		Layer layer = new Layer(16, 16, 0, 0, "Layer");
+		Canvas canvas = new Canvas(imv, 16, 16);
+		canvas.add(layer);
+		addFrameToTimeline(canvas);
+	}
+
+	public Canvas createCanvasFromBufferedImage(BufferedImage bufferedImage, String name) {
+		Layer layer = Layer.toLayer(bufferedImage, name);
+		Canvas canvas = new Canvas(imv, layer.getWidth(), layer.getHeight());
+		canvas.add(layer);
+		return canvas;
+	}
+
+	public void changeFrame(Canvas newCanvas) {
+		imv.getCanvasRenderer().setCanvas(newCanvas);
+		imv.getCanvasRenderer().repaint();
+		imv.getToolPanel().setCanvas(newCanvas);
+		imv.getLayerPanel().setCanvas(newCanvas);
+		imv.getLayerPanel().updateSelection();
+		imv.repaint();
+	}
+
+	private ImageIcon makeAnimationIcon(int stevilo, DefaultListModel<Canvas> timelinevector, int size) {
 		BufferedImage resizedImage = new BufferedImage(size, size * stevilo, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
 		for (int i = 0; i < timelinevector.getSize(); i++)
-			g.drawImage(timelinevector.get(i).image, 0, i * size, size, size, new JLabel());
+			g.drawImage(timelinevector.get(i).render(), 0, i * size, size, size, new JLabel());
 		g.dispose();
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(resizedImage.getSource()));
-	}
-
-	static class AnimationFrame {
-		final Image image;
-
-		AnimationFrame(Image s) {
-			image = s;
-		}
 	}
 
 	private String generateAnimationMcmeta(int frametime_tick, int framenum_num, boolean interpolate) {
@@ -610,15 +540,15 @@ public class AnimationMakerView extends ViewBase {
 		return gson.toJson(mcmeta);
 	}
 
-	@Override public ViewBase showView() {
-		MCreatorTabs.Tab tab = new MCreatorTabs.Tab(this);
-		tab.setTabClosedListener(tab1 -> this.active = false);
-		mcreator.getTabs().addTab(tab);
-		return this;
+	public int getAnimationIndex() {
+		return animindex;
 	}
 
-	@Override public String getViewName() {
-		return L10N.t("tab.animation_maker");
+	public void setAnimationIndex(int animindex) {
+		this.animindex = animindex;
 	}
 
+	public ImageMakerView getImageMakerView() {
+		return imv;
+	}
 }
