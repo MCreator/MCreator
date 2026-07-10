@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.views.editor.image.animation;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.util.image.ImageUtils;
@@ -41,10 +42,10 @@ public class TimelineRenderer extends JPanel implements ListCellRenderer<Canvas>
 			Canvas value, int index, boolean isSelected, boolean cellHasFocus) {
 		removeAll();
 		if (cellHasFocus) {
-			setBackground(new Color(0, 200, 200));
+			setBackground(PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get());
 			timeline.changeFrame(value);
 		} else if (isSelected) {
-			setBackground(new Color(200, 0, 200));
+			setBackground(PreferencesManager.PREFERENCES.imageEditor.selectedFramesColor.get());
 		} else {
 			setBackground(Color.gray);
 		}
