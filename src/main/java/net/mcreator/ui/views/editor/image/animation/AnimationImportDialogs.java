@@ -108,7 +108,7 @@ public class AnimationImportDialogs {
 		}
 	}
 
-	public void addFramesFromStrip(AnimationTimeline timeline) {
+	public static void addFramesFromStrip(AnimationTimeline timeline) {
 		AtomicReference<File> f = new AtomicReference<>();
 
 		JPanel od = new JPanel(new BorderLayout());
