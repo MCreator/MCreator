@@ -33,9 +33,8 @@ public class TimelineRenderer extends JPanel implements ListCellRenderer<Canvas>
 
 	public TimelineRenderer(AnimationMakerView timeline) {
 		this.timeline = timeline;
+		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
 	}
-
-
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Canvas> list,
