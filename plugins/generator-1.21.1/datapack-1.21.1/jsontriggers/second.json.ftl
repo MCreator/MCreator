@@ -1,10 +1,10 @@
 "${registryname}_${cbi}": {
-  "trigger": "minecraft:location",
+  "trigger": "minecraft:location"
+    <#if input$player?has_content>,
   "conditions": {
-    <#if input$player?has_content>
     "player": {
       ${input$player}
     }
-    </#if>
   }
+  </#if>
 },
