@@ -212,11 +212,11 @@ public class AnimationMakerView extends JPanel {
 
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		timeline.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		timeline.setVisibleRowCount(2);
+		timeline.setVisibleRowCount(1);
 		timeline.setCellRenderer(new TimelineRenderer(this));
 		timeline.setOpaque(false);
 		JScrollPane pan = new JScrollPane(timeline);
-		pan.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		pan.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		pan.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		pan.setOpaque(false);
 		pan.getViewport().setOpaque(false);
