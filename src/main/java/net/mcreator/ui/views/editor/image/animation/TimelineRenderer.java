@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.views.editor.image.animation;
 
+import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.util.image.ImageUtils;
 

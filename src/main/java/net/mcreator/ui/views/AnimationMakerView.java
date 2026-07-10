@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.views.editor.image.animation;
+package net.mcreator.ui.views;
 
 import com.google.gson.*;
 import net.mcreator.io.FileIO;
@@ -27,6 +27,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.views.editor.image.animation.AnimationImportUtils;
+import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -43,7 +45,7 @@ import java.io.File;
 
 public class AnimationMakerView extends JPanel {
 
-	protected static final Logger LOG = LogManager.getLogger("Animation Timeline");
+	private static final Logger LOG = LogManager.getLogger("Animation Timeline");
 
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -274,7 +276,7 @@ public class AnimationMakerView extends JPanel {
 	 * @param colorizerType If false, it will lock the saturation and lightness
 	 * @param color This is the color used by the recolorization process
 	 */
-	protected void generateTimelineFromTiledBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
+	public void generateTimelineFromTiledBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
 			boolean colorizerType, Color color) {
 		BufferedImage b;
 		if (colorize)

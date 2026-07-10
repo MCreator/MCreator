@@ -26,12 +26,15 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -45,6 +48,8 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AnimationImportUtils {
+
+	private static final Logger LOG = LogManager.getLogger("Animation Import Utils");
 
 	public static void addFramesFromTemplate(AnimationMakerView timeline) {
 		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.animations", "png");
@@ -73,7 +78,7 @@ public class AnimationImportUtils {
 						new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width,
 								width).getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(), 128)));
 			} catch (InvalidTileSizeException | IOException e) {
-				AnimationMakerView.LOG.error(e.getMessage(), e);
+				LOG.error(e.getMessage(), e);
 			}
 		};
 
@@ -105,7 +110,7 @@ public class AnimationImportUtils {
 						TiledImageUtils.convert(ImageIO.read(rp.getStream()), BufferedImage.TYPE_INT_ARGB),
 						rp.toString(), true, !cbox.isSelected(), colors.getColor());
 			} catch (IOException e) {
-				AnimationMakerView.LOG.error(e.getMessage(), e);
+				LOG.error(e.getMessage(), e);
 			}
 		}
 	}
@@ -151,7 +156,7 @@ public class AnimationImportUtils {
 								new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
 				}
 			} catch (InvalidTileSizeException | IOException e) {
-				AnimationMakerView.LOG.error(e.getMessage(), e);
+				LOG.error(e.getMessage(), e);
 			}
 		});
 
@@ -191,7 +196,7 @@ public class AnimationImportUtils {
 						FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(), !cbox.isSelected(),
 						colors.getColor());
 			} catch (IOException e) {
-				AnimationMakerView.LOG.error(e.getMessage(), e);
+				LOG.error(e.getMessage(), e);
 			}
 		}
 	}
@@ -233,7 +238,7 @@ public class AnimationImportUtils {
 					dial.hideDialog();
 				} catch (Exception e) {
 					dial.hideDialog();
-					AnimationMakerView.LOG.error(e.getMessage(), e);
+					LOG.error(e.getMessage(), e);
 				}
 
 			}, "GIFFramesLoader");

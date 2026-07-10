@@ -32,7 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.views.editor.image.animation.AnimationMakerView;
+import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.animation.AnimationSettings;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
