@@ -21,12 +21,8 @@ package net.mcreator.ui.views.editor.image.animation;
 
 import com.google.gson.*;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.ResourcePointer;
-import net.mcreator.io.TemplatesLoader;
 import net.mcreator.minecraft.RegistryNameFixer;
-import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
@@ -38,25 +34,16 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.GifUtil;
-import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class AnimationTimeline extends JPanel {
 
@@ -184,58 +171,17 @@ public class AnimationTimeline extends JPanel {
 		timelinebar.add(add);
 
 		JButton addFromTemplates = L10N.button("dialog.animation_maker.add_frames_from_template");
-		addFromTemplates.addActionListener(_ -> AnimationImportDialogs.addFramesFromTemplate(this));
+		addFromTemplates.addActionListener(_ -> AnimationImportUtils.addFramesFromTemplate(this));
 		addFromTemplates.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(addFromTemplates);
 
 		JButton addFromStrip = L10N.button("dialog.animation_maker.add_frames_from_strip");
-		addFromStrip.addActionListener(_ -> AnimationImportDialogs.addFramesFromStrip(this));
+		addFromStrip.addActionListener(_ -> AnimationImportUtils.addFramesFromStrip(this));
 		addFromStrip.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(addFromStrip);
 
 		JButton addFromGif = L10N.button("dialog.animation_maker.add_frames_from_gif");
 		addFromGif.addActionListener(_ -> {
-			File frame = FileDialogs.getOpenDialog(imv.getMCreator(), new String[] { ".gif" });
-			if (frame != null) {
-				ProgressDialog dial = new ProgressDialog(imv.getMCreator(), L10N.t("dialog.animation_maker.gif_importing"));
-				Thread t = new Thread(() -> {
-					try {
-						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-								L10N.t("dialog.animation_maker.gif_reading"));
-						dial.addProgressUnit(p1);
-						Image[] frames = GifUtil.readAnimatedGif(frame);
-						if (frames.length > 0)
-							p1.markStateOk();
-						else {
-							p1.markStateError();
-							dial.hideDialog();
-
-							JOptionPane.showMessageDialog(imv, L10N.t("dialog.animation_maker.gif_format_unsupported"),
-									L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
-
-							return;
-						}
-						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
-								L10N.t("dialog.animation_maker.gif_processing"));
-						dial.addProgressUnit(p2);
-						for (int i = 0; i < frames.length; i++) {
-							int finalI = i;
-							SwingUtilities.invokeLater(() -> timelinevector.addElement(
-									createCanvasFromBufferedImage(ImageUtils.toBufferedImage(frames[finalI]),
-											FilenameUtilsPatched.removeExtension(frame.getName()) + finalI)));
-							p2.setPercent((int) (i / (float) frames.length * 100));
-						}
-						p2.markStateOk();
-						dial.hideDialog();
-					} catch (Exception e) {
-						dial.hideDialog();
-						LOG.error(e.getMessage(), e);
-					}
-
-				}, "GIFFramesLoader");
-				t.start();
-				dial.setVisible(true);
-			}
 		});
 		addFromGif.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(addFromGif);

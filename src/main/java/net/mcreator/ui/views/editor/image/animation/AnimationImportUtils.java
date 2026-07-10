@@ -23,9 +23,11 @@ import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
@@ -42,7 +44,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AnimationImportDialogs {
+public class AnimationImportUtils {
 
 	public static void addFramesFromTemplate(AnimationTimeline timeline) {
 		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.animations", "png");
@@ -180,15 +182,63 @@ public class AnimationImportDialogs {
 		centerPanel.add(lab5);
 		centerPanel.add(cbox2);
 
-		if (JOptionPane.showOptionDialog(timeline.getImageMakerView(), od, L10N.t("dialog.animation_maker.add_frames_from_file"),
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" },
-				"Add") == 0) {
+		if (JOptionPane.showOptionDialog(timeline.getImageMakerView(), od,
+				L10N.t("dialog.animation_maker.add_frames_from_file"), JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
 			try {
-				timeline.generateTimelineFromBufferedImage(TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB), FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(),
-						!cbox.isSelected(), colors.getColor());
+				timeline.generateTimelineFromBufferedImage(
+						TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB),
+						FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(), !cbox.isSelected(),
+						colors.getColor());
 			} catch (IOException e) {
 				AnimationTimeline.LOG.error(e.getMessage(), e);
 			}
+		}
+	}
+
+	public static void addFramesFromGif(AnimationTimeline timeline) {
+		File frame = FileDialogs.getOpenDialog(timeline.getImageMakerView().getMCreator(), new String[] { ".gif" });
+		if (frame != null) {
+			ProgressDialog dial = new ProgressDialog(timeline.getImageMakerView().getMCreator(),
+					L10N.t("dialog.animation_maker.gif_importing"));
+			Thread t = new Thread(() -> {
+				try {
+					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+							L10N.t("dialog.animation_maker.gif_reading"));
+					dial.addProgressUnit(p1);
+					Image[] frames = GifUtil.readAnimatedGif(frame);
+					if (frames.length > 0)
+						p1.markStateOk();
+					else {
+						p1.markStateError();
+						dial.hideDialog();
+
+						JOptionPane.showMessageDialog(timeline.getImageMakerView(),
+								L10N.t("dialog.animation_maker.gif_format_unsupported"), L10N.t("common.warning"),
+								JOptionPane.ERROR_MESSAGE);
+
+						return;
+					}
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
+							L10N.t("dialog.animation_maker.gif_processing"));
+					dial.addProgressUnit(p2);
+					for (int i = 0; i < frames.length; i++) {
+						int finalI = i;
+						SwingUtilities.invokeLater(() -> timeline.addFrameToTimeline(
+								timeline.createCanvasFromBufferedImage(ImageUtils.toBufferedImage(frames[finalI]),
+										FilenameUtilsPatched.removeExtension(frame.getName()) + finalI)));
+						p2.setPercent((int) (i / (float) frames.length * 100));
+					}
+					p2.markStateOk();
+					dial.hideDialog();
+				} catch (Exception e) {
+					dial.hideDialog();
+					AnimationTimeline.LOG.error(e.getMessage(), e);
+				}
+
+			}, "GIFFramesLoader");
+			t.start();
+			dial.setVisible(true);
 		}
 	}
 }
