@@ -101,7 +101,7 @@ public class AnimationImportUtils {
 				L10N.t("common.add")) == 0) {
 			try {
 				ResourcePointer rp = templatesSorted.get(types.getSelectedIndex());
-				timeline.generateTimelineFromBufferedImage(
+				timeline.generateTimelineFromTiledBufferedImage(
 						TiledImageUtils.convert(ImageIO.read(rp.getStream()), BufferedImage.TYPE_INT_ARGB),
 						rp.toString(), true, !cbox.isSelected(), colors.getColor());
 			} catch (IOException e) {
@@ -186,7 +186,7 @@ public class AnimationImportUtils {
 				L10N.t("dialog.animation_maker.add_frames_from_file"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
 			try {
-				timeline.generateTimelineFromBufferedImage(
+				timeline.generateTimelineFromTiledBufferedImage(
 						TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB),
 						FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(), !cbox.isSelected(),
 						colors.getColor());

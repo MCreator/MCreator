@@ -23,8 +23,6 @@ import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.ProgressDialog;
-import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -32,8 +30,6 @@ import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.GifUtil;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -268,7 +264,17 @@ public class AnimationTimeline extends JPanel {
 		}
 	}
 
-	protected void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
+	/**
+	 * <p>This method takes a {@link BufferedImage} that contains multiple frames (a tiled image) and divide each image into their own frame.
+	 * Then, each individual frame is added to the timeline. It can also colorize the original picture before adding frames to the timeline.</p>
+	 *
+	 * @param bufferedImage The tiled {@link BufferedImage} containing all frames
+	 * @param name This is the name that will be used for each {@link Layer}
+	 * @param colorize If true, it will colorize the image with the provided {@link Color}
+	 * @param colorizerType If false, it will lock the saturation and lightness
+	 * @param color This is the color used by the recolorization process
+	 */
+	protected void generateTimelineFromTiledBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
 			boolean colorizerType, Color color) {
 		BufferedImage b;
 		if (colorize)
@@ -290,10 +296,18 @@ public class AnimationTimeline extends JPanel {
 		}
 	}
 
+	/**
+	 * <p>This will add the provided {@link Canvas} at the end of the timeline.</p>
+	 *
+	 * @param canvas The {@link Canvas} to add at the timeline
+	 */
 	public void addFrameToTimeline(Canvas canvas) {
 		timelinevector.addElement(canvas);
 	}
 
+	/**
+	 * <p>This adds an empty {@link Canvas} at the end of the timeline</p>
+	 */
 	private void addFrameFromEmptyLayer() {
 		Layer layer = new Layer(16, 16, 0, 0, "Layer");
 		Canvas canvas = new Canvas(imv, 16, 16);
@@ -301,6 +315,13 @@ public class AnimationTimeline extends JPanel {
 		addFrameToTimeline(canvas);
 	}
 
+	/**
+	 * <p>This takes a {@link BufferedImage} and transforms into a {@link Canvas} with a single {@link Layer}.</p>
+	 *
+	 * @param bufferedImage The image to convert into a {@link Canvas}
+	 * @param name The name to give to the {@link Layer}
+	 * @return A {@link Canvas} containing the {@link BufferedImage} as one {@link Layer}
+	 */
 	public Canvas createCanvasFromBufferedImage(BufferedImage bufferedImage, String name) {
 		Layer layer = Layer.toLayer(bufferedImage, name);
 		Canvas canvas = new Canvas(imv, layer.getWidth(), layer.getHeight());
@@ -308,6 +329,11 @@ public class AnimationTimeline extends JPanel {
 		return canvas;
 	}
 
+	/**
+	 * <p>This changes the displayed {@link Canvas} of the {@link ImageMakerView} to the provided {@link Canvas}.</p>
+	 *
+	 * @param newCanvas The canvas to display on the {@link ImageMakerView}
+	 */
 	public void changeFrame(Canvas newCanvas) {
 		imv.getCanvasRenderer().setCanvas(newCanvas);
 		imv.getCanvasRenderer().repaint();
