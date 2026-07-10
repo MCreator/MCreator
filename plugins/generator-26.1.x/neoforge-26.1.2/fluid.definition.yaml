@@ -30,6 +30,16 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFluids.java"
   - template: elementinits/fluidtypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFluidTypes.java"
+  - template: json/fluidtag.json.ftl
+    writer: json
+    variables: "type=water"
+    condition: "${w.getGElementsOfType('fluid')?filter(e -> e.type.equals('WATER'))?size != 0}"
+    name: "@RESROOT/data/minecraft/tags/fluid/water.json"
+  - template: json/fluidtag.json.ftl
+    writer: json
+    variables: "type=lava"
+    condition: "${w.getGElementsOfType('fluid')?filter(e -> e.type.equals('LAVA'))?size != 0}"
+    name: "@RESROOT/data/minecraft/tags/fluid/lava.json"
 
 localizationkeys:
   - key: fluid.@modid.@registryname
