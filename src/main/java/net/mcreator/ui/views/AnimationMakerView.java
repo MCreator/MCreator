@@ -26,7 +26,6 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.animation.AnimationImportUtils;
 import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
@@ -41,6 +40,8 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -59,6 +60,7 @@ public class AnimationMakerView extends JPanel {
 	private int[] framesToPlay;
 	private boolean playAllFrames = true;
 	private boolean playanim = true;
+	private boolean playBackward = false;
 
 	private final Thread animator;
 
@@ -74,13 +76,23 @@ public class AnimationMakerView extends JPanel {
 			active = true;
 			while (active) {
 				if (timelinevector.getSize() > 0 && playanim) {
-					animindex++;
+					if (playBackward)
+						animindex--;
+					else
+						animindex++;
 
+					// The following code handle when we arrive at the last frame (when forward) or the first frame (when backward)
+					// Only frames selected by the user are animated
 					if (!playAllFrames && framesToPlay != null && framesToPlay.length > 0) {
-						if (animindex >= framesToPlay.length)
-							animindex = framesToPlay[0];
-					} else if (animindex >= timelinevector.getSize()) {
-						animindex = 0;
+						if (!playBackward && animindex >= framesToPlay.length) // If we are at the last frame and go forward
+							animindex = framesToPlay[0]; // We go back to the first frame
+						else if (playBackward && animindex < 0) // If we play backward and are at the first frame
+							animindex = framesToPlay[framesToPlay.length - 1]; // We go back to the last frame
+					// All frames are animated
+					} else if (!playBackward && animindex > timelinevector.getSize() - 1) { // If we play forward, and we are at the last frame
+						animindex = 0; // We go back to the first frame
+					} else if (playBackward && animindex < 0) { // If we play backward and are at the first frame
+						animindex = timelinevector.getSize() - 1; // We go back to the last frame
 					}
 
 					SwingUtilities.invokeLater(() -> {
@@ -136,31 +148,61 @@ public class AnimationMakerView extends JPanel {
 
 		controls.addSeparator();
 
-		JButton next = L10N.button("dialog.animation_maker.next_frame");
-		next.addActionListener(_ -> {
-			if (!timelinevector.isEmpty()) {
-				animindex++;
-				if (animindex >= timelinevector.getSize())
-					animindex--;
-				changeFrame(timelinevector.getElementAt(animindex));
-				timeline.repaint();
-			}
-		});
-		next.setIcon(UIRES.get("16px.fwd"));
-		controls.add(next);
-
-		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
+		JButton prev = new JButton(UIRES.get("16px.previous"));
 		prev.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex--;
 				if (animindex < 0)
-					animindex = 0;
+					animindex = timelinevector.getSize() - 1;
 				changeFrame(timelinevector.getElementAt(animindex));
+				timeline.setSelectedIndex(animindex);
 				timeline.repaint();
 			}
 		});
-		prev.setIcon(UIRES.get("16px.rwd"));
 		controls.add(prev);
+
+		JButton backward = new JButton(UIRES.get("16px.rwd"));
+		backward.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				if (!animator.isAlive())
+					animator.start();
+				playanim = true;
+				playBackward = true;
+			}
+
+			@Override public void mouseReleased(MouseEvent e) {
+				playanim = false;
+				playBackward = false;
+			}
+		});
+		controls.add(backward);
+
+		JButton forward = new JButton(UIRES.get("16px.fwd"));
+		forward.addMouseListener(new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				if (!animator.isAlive())
+					animator.start();
+				playanim = true;
+			}
+
+			@Override public void mouseReleased(MouseEvent e) {
+				playanim = false;
+			}
+		});
+		controls.add(forward);
+
+		JButton next = new JButton(UIRES.get("16px.next"));
+		next.addActionListener(_ -> {
+			if (!timelinevector.isEmpty()) {
+				animindex++;
+				if (animindex >= timelinevector.getSize())
+					animindex = 0;
+				changeFrame(timelinevector.getElementAt(animindex));
+				timeline.setSelectedIndex(animindex);
+				timeline.repaint();
+			}
+		});
+		controls.add(next);
 
 		JPanel timelinePanel = new JPanel(new BorderLayout());
 		timelinePanel.setOpaque(false);
