@@ -10,7 +10,7 @@
       ${input$item}
     },
     "levels": {
-    "min": ${input$levelsSpent}
+      "min": ${input$levelsSpent}
     }
   }
 },

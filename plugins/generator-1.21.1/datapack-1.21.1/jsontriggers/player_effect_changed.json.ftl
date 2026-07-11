@@ -7,9 +7,9 @@
     },
     </#if>
     "effects": {
-    <#list input_list$effect as effect>
+      <#list input_list$effect as effect>
       ${effect}<#sep>,
-    </#list>
+      </#list>
     }
   }
 },
