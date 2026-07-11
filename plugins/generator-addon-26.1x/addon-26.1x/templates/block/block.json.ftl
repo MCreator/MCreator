@@ -45,10 +45,10 @@
       "minecraft:destruction_particles": {
         "texture": "${modid}_${registryname}_destruction_particles"
         <#if data.particleTintMethod != "(none)">,
-          "tint_method": "${data.particleTintMethod}"
+        "tint_method": "${data.particleTintMethod}"
         </#if>
         <#if data.particleCount != 100>,
-          "particle_count": ${data.particleCount}
+        "particle_count": ${data.particleCount}
         </#if>
       },
       </#if>
@@ -58,15 +58,15 @@
 		  "minecraft:embedded_visual": {
 		    "geometry":
 		      <#if data.hasCustomPottedModel()>
-		        "geometry.${data.getPottedModel().getReadableName()}"
+		      "geometry.${data.getPottedModel().getReadableName()}"
 		      <#elseif data.pottedRenderType() == 11>
-		        "minecraft:geometry.cross"
+		      "minecraft:geometry.cross"
 		      <#elseif data.pottedRenderType() == 12>
-		        "minecraft:geometry.full_block"
+		      "minecraft:geometry.full_block"
 		      <#elseif data.hasCustomModel()>
-		        "geometry.${data.getModel().getReadableName()}"
+		      "geometry.${data.getModel().getReadableName()}"
 		      <#else>
-		        <@regular_model/>
+		      <@regular_model/>
 		      </#if>,
 	    	  "material_instances": {
 	  	       "*": <@material_face "potted" data.pottedRenderType() == 11 data.pottedRenderType() == 11/>
@@ -183,11 +183,11 @@
 
 <#macro regular_model>
   <#if data.hasCustomModel()>
-    "geometry.${data.getModel().getReadableName()}"
+  "geometry.${data.getModel().getReadableName()}"
   <#elseif data.renderType() == 11>
-    "minecraft:geometry.cross"
+  "minecraft:geometry.cross"
   <#else>
-    "minecraft:geometry.full_block"
+  "minecraft:geometry.full_block"
   </#if>
 </#macro>
 
