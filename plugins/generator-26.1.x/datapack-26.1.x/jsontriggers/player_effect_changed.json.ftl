@@ -6,10 +6,10 @@
       ${input$player}
     },
     </#if>
-  	"effects": {
+    "effects": {
     <#list input_list$effect as effect>
-    	${effect}<#sep>,
+      ${effect}<#sep>,
     </#list>
-  	}
+    }
   }
 },

@@ -6,11 +6,11 @@
       ${input$player}
     },
     </#if>
-	"item": {
-		${input$item}
-	},
-	"levels": {
-		"min": ${input$levelsSpent}
-	}
+    "item": {
+      ${input$item}
+    },
+    "levels": {
+    "min": ${input$levelsSpent}
+    }
   }
 },
