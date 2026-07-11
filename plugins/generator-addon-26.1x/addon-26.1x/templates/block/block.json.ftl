@@ -47,7 +47,7 @@
         <#if data.particleTintMethod != "(none)">,
           "tint_method": "${data.particleTintMethod}"
         </#if>
-        <#if data.particleCount gt 100 || data.particleCount lt 100>,
+        <#if data.particleCount != 100>,
           "particle_count": ${data.particleCount}
         </#if>
       },
