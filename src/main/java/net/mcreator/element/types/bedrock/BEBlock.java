@@ -99,14 +99,14 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	public BEBlock(ModElement element) {
 		super(element);
 
-		customModelName = "Same as original";
+		customModelName = "Normal";
 		renderType = 10;
 
 		enableCreativeTab = true;
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";
-		pottedModelName = "Normal";
+		pottedModelName = "Same as original";
 		pottedRenderType = 10;
 		particleTintMethod = "(none)";
 		particleCount = 100;
