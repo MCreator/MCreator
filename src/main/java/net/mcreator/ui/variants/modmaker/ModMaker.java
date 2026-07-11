@@ -72,13 +72,12 @@ public final class ModMaker extends MCreator {
 		getTabs().addTabShownListener(tab -> {
 			if (tab.getContent() instanceof ModElementGUI<?> elementGUI) {
 				codeViewer.setCurrentComponent(elementGUI.getModElementCodeViewer());
-				SwingUtilities.invokeLater(elementGUI.getModElementCodeViewer()::reload);
 			} else {
 				codeViewer.clear();
 			}
 		});
 
-		getBottomDockRegion().addDockVisibilityListener(DOCK_CODE_VIEWER, dockID -> {
+		getBottomDockRegion().addDockVisibilityListener(DOCK_CODE_VIEWER, _ -> {
 			if (getTabs().getCurrentTab() != null && getTabs().getCurrentTab()
 					.getContent() instanceof ModElementGUI<?> elementGUI) {
 				SwingUtilities.invokeLater(elementGUI.getModElementCodeViewer()::reload);

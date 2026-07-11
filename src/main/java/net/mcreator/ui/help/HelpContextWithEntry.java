@@ -23,4 +23,4 @@ import javax.swing.*;
 import java.net.URI;
 
 public record HelpContextWithEntry(@Nullable String contextName, @Nullable URI contextURL, @Nullable JComponent owner,
-								   @Nullable String entry) implements IHelpContext {}
+                                   @Nullable String entry) implements IHelpContext {}

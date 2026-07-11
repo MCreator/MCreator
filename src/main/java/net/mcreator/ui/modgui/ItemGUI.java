@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.ItemUseAnimation;
 import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
@@ -133,7 +134,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Item.class, "damageVsEntity");
 	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Item.class, "attackSpeed");
 
-	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this, false);
+	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this,
+			JAttributeModifierList.EntryType.ITEM);
 
 	private SingleModElementSelector guiBoundTo;
 	private LogicProcedureSelector openGUIOnRightClick;
@@ -146,8 +148,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner saturation = ComponentFromAnnotation.spinner(Item.class, "saturation");
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
-	private final TranslatedComboBox animation = ComponentFromAnnotation.translatedOptions(Item.class, "animation",
-			"elementgui.item.item_animation_");
+	private final DataListComboBox animation = new DataListComboBox(mcreator,
+			ElementUtil.loadItemUseAnimations(mcreator.getWorkspace()));
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	// Music disc parameters
@@ -158,8 +160,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
 	private final JSpinner musicDiscLengthInTicks = ComponentFromAnnotation.spinner(Item.class,
 			"musicDiscLengthInTicks");
-	private final JSpinner musicDiscAnalogOutput = ComponentFromAnnotation.spinner(Item.class,
-			"musicDiscAnalogOutput");
+	private final JSpinner musicDiscAnalogOutput = ComponentFromAnnotation.spinner(Item.class, "musicDiscAnalogOutput");
 
 	private ModElementListField providedBannerPatterns;
 
@@ -897,7 +898,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.saturation = (double) saturation.getValue();
 		item.isMeat = isMeat.isSelected();
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
-		item.animation = animation.getSelectedItem();
+		item.animation = new ItemUseAnimation(mcreator.getWorkspace(), animation.getSelectedItem());
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
 		item.everyTickWhileUsing = everyTickWhileUsing.getSelectedProcedure();
 		item.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();

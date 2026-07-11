@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.ScreenEntry;
 import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -81,7 +82,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		editor.priority.setSelectedItem(overlay.priority);
 		editor.setComponentList(overlay.components);
 		editor.overlayBaseTexture.setTextureFromTextureName(overlay.baseTexture);
-		editor.overlayTarget.setSelectedItem(overlay.overlayTarget);
+		editor.overlayTarget.setSelectedItem(overlay.overlayTarget.getUnmappedValue());
 		displayCondition.setSelectedProcedure(overlay.displayCondition);
 
 		editor.sx.setValue(overlay.gridSettings.sx);
@@ -100,7 +101,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		overlay.priority = editor.priority.getSelectedItem();
 		overlay.components = editor.getComponentList();
 		overlay.baseTexture = editor.overlayBaseTexture.getTextureName();
-		overlay.overlayTarget = editor.overlayTarget.getSelectedItem();
+		overlay.overlayTarget = new ScreenEntry(modElement.getWorkspace(), editor.overlayTarget.getSelectedItem());
 		overlay.displayCondition = displayCondition.getSelectedProcedure();
 
 		overlay.gridSettings.sx = (int) editor.sx.getValue();

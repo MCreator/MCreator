@@ -50,8 +50,8 @@ class NativeFileDialogs {
 
 		if (filters != null) {
 			fileChooser.setAcceptAllFileFilterUsed(false);
+			fileChooser.resetChoosableFileFilters();
 			for (ExtensionFilter filter : filters) {
-				fileChooser.resetChoosableFileFilters();
 				fileChooser.addChoosableFileFilter(new SystemFileChooser.FileNameExtensionFilter(filter.description(),
 						filter.extensions().stream().map(e -> e.replace("*.", "")).toArray(String[]::new)));
 			}

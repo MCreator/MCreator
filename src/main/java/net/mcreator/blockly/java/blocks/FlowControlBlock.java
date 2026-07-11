@@ -25,6 +25,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.Locale;
 
 public class FlowControlBlock implements IBlockGenerator {
@@ -46,4 +47,31 @@ public class FlowControlBlock implements IBlockGenerator {
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
 	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "controls_flow_statements",
+          "args0": [
+              {
+                  "type": "field_dropdown",
+                  "name": "FLOW",
+                  "options": [
+                      ["%{BKY_CONTROLS_FLOW_STATEMENTS_OPERATOR_BREAK}", "BREAK"],
+                      ["%{BKY_CONTROLS_FLOW_STATEMENTS_OPERATOR_CONTINUE}", "CONTINUE"]
+                  ]
+              }
+          ],
+          "previousStatement": null,
+          "style": "loop_blocks",
+          "helpUrl": "%{BKY_CONTROLS_FLOW_STATEMENTS_HELPURL}",
+          "suppressPrefixSuffix": true,
+          "extensions": ["controls_flow_tooltip", "controls_flow_in_loop_check_exclude_wait"]
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "logicloops";
+	}
+
 }

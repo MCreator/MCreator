@@ -1,0 +1,1 @@
+Dieser Parameter definiert Slot Typen, die mit diesem Verzauberungstyp übereinstimmen.

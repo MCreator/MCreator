@@ -1,0 +1,1 @@
+Якщо галочка стоїть, предмет не буде видано роздавачем з усталеною дією, а замість цього будуть викликатися процедури «${l10n.t("elementgui.item_extension.dispense_success_condition")}» та «${l10n.t("elementgui.item_extension.dispense_result_itemstack")}».

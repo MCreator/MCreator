@@ -21,8 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
@@ -30,8 +29,9 @@ import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.element.util.AnnotationUtils;
+import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.*;
@@ -59,12 +59,8 @@ import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -160,7 +156,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner fluidCapacity = ComponentFromAnnotation.spinner(Block.class, "fluidCapacity");
 	private FluidListField fluidRestrictions;
 
-	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator, ElementUtil.loadStepSounds());
+	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("stepsounds"));
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
 	private final JRadioButton customSoundType = L10N.radiobutton("elementgui.common.custom_sound_type");
 	private final SoundSelector breakSound = new SoundSelector(mcreator).requireValue(
@@ -176,9 +173,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("mapcolors"));
 	private final DataListComboBox noteBlockInstrument = new DataListComboBox(mcreator,
-			ElementUtil.loadNoteBlockInstruments());
+			DataListLoader.loadDataList("noteblockinstruments"));
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -248,8 +246,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private JBlockStatesList blockStatesList;
 
-	private final JComboBox<String> transparencyType = ComponentFromAnnotation.options(Block.class,
-			"transparencyType");
+	private final JComboBox<String> transparencyType = ComponentFromAnnotation.options(Block.class, "transparencyType");
 
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 
@@ -1426,13 +1423,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		signGUITexture.requireValue("elementgui.block.error_sign_needs_gui_texture",
 				() -> "HangingSign".equals(blockBase.getSelectedItem()));
 
-		pottedPlant.setValidator(new MCItemHolderValidator(pottedPlant) {
-			@Override public ValidationResult validate() {
-				if (!"FlowerPot".equals(blockBase.getSelectedItem()))
-					return ValidationResult.PASSED;
-				return super.validate();
-			}
-		}.setEmptyMessage(L10N.t("elementgui.block.error_flower_pot_needs_plant")));
+		pottedPlant.setValidator(new ConditionalValidator(() -> "FlowerPot".equals(blockBase.getSelectedItem()),
+				new MCItemHolderValidator(pottedPlant).setEmptyMessage(
+						L10N.t("elementgui.block.error_flower_pot_needs_plant"))));
 
 		page3group.addValidationElement(name);
 		page3group.addValidationElement(breakSound.getVTextField());
@@ -1842,7 +1835,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		colorOnMap.setSelectedItem(block.colorOnMap);
 		noteBlockInstrument.setSelectedItem(block.noteBlockInstrument);
 		offsetType.setSelectedItem(block.offsetType);
-		aiPathNodeType.setSelectedItem(block.aiPathNodeType);
+		aiPathNodeType.setSelectedItem(block.aiPathNodeType.getUnmappedValue());
 		creativePickItem.setBlock(block.creativePickItem);
 		placingCondition.setSelectedProcedure(block.placingCondition);
 
@@ -2013,10 +2006,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
-		block.colorOnMap = colorOnMap.getSelectedItem().toString();
-		block.noteBlockInstrument = noteBlockInstrument.getSelectedItem().toString();
+		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
+		block.noteBlockInstrument = new NoteBlockInstrument(modElement.getWorkspace(),
+				noteBlockInstrument.getSelectedItem());
 		block.offsetType = (String) offsetType.getSelectedItem();
-		block.aiPathNodeType = aiPathNodeType.getSelectedItem();
+		block.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(), aiPathNodeType.getSelectedItem());
 		block.creativePickItem = creativePickItem.getBlock();
 		block.placingCondition = placingCondition.getSelectedProcedure();
 

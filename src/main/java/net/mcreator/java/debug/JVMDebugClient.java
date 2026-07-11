@@ -57,7 +57,8 @@ public class JVMDebugClient {
 			return;
 		}
 
-		String mcreatorJvmOptions = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:" + vmDebugPort;
+		String mcreatorJvmOptions =
+				"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=127.0.0.1:" + vmDebugPort;
 		if (environment.containsKey("MCREATOR_JVM_OPTIONS")) {
 			environment.put("MCREATOR_JVM_OPTIONS",
 					environment.get("MCREATOR_JVM_OPTIONS").trim() + " " + mcreatorJvmOptions);

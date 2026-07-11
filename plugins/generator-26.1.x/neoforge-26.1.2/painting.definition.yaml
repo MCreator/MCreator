@@ -1,0 +1,13 @@
+templates:
+  - template: painting/painting.json.ftl
+    writer: json
+    name: "@MODDATAROOT/painting_variant/@registryname.json"
+
+tags:
+  - tag: PAINTING_VARIANTS:minecraft:placeable
+
+localizationkeys:
+  - key: painting.@modid.@registryname.title
+    mapto: title
+  - key: painting.@modid.@registryname.author
+    mapto: author

@@ -66,8 +66,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		name.setValidator(new UniqueNameValidator(
 			L10N.t("modelement.loottable"),
 			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
-			() -> mcreator.getWorkspace().getModElements().stream()
-				.filter(me -> me.getType() == ModElementType.LOOTTABLE)
+			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.LOOTTABLE).stream()
 				.map(ModElement::getGeneratableElement)
 				.filter(Objects::nonNull)
 				.map(ge -> ((LootTable) ge).namespace + ":" + ((LootTable) ge).name),

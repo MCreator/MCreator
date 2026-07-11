@@ -1,0 +1,1 @@
+Dieser Parameter gibt die Anzahl der Sprites in der ausgewählten Textur an.

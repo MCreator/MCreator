@@ -28,6 +28,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class SingularMathOperationsBlock implements IBlockGenerator {
@@ -59,5 +60,48 @@ public class SingularMathOperationsBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "math_singular_ops",
+          "args0": [
+              {
+                  "type": "field_dropdown",
+                  "name": "OP",
+                  "options": [
+                      ["%{BKY_MATH_ROUND_OPERATOR_ROUND}", "ROUND"],
+                      ["%{BKY_MATH_ROUND_OPERATOR_ROUNDUP}", "ROUNDUP"],
+                      ["%{BKY_MATH_ROUND_OPERATOR_ROUNDDOWN}", "ROUNDDOWN"],
+                      ["%{BKY_MATH_SINGLE_OP_ROOT}", "ROOT"],
+                      ["cube root", "CUBEROOT"],
+                      ["%{BKY_MATH_SINGLE_OP_ABSOLUTE}", "ABS"],
+                      ["signum", "SIGNUM"],
+                      ["ln", "LN"],
+                      ["log10", "LOG10"],
+                      ["%{BKY_MATH_TRIG_SIN}", "SIN"],
+                      ["%{BKY_MATH_TRIG_COS}", "COS"],
+                      ["%{BKY_MATH_TRIG_TAN}", "TAN"],
+                      ["%{BKY_MATH_TRIG_ASIN}", "ASIN"],
+                      ["%{BKY_MATH_TRIG_ACOS}", "ACOS"],
+                      ["%{BKY_MATH_TRIG_ATAN}", "ATAN"],
+                      ["RAD to DEG", "RAD2DEG"],
+                      ["DEG to RAD", "DEG2RAD"]
+                  ]
+              },
+              {
+                  "type": "input_value",
+                  "name": "NUM",
+                  "check": "Number"
+              }
+          ],
+          "output": "Number",
+          "colour": "%{BKY_MATH_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "math";
 	}
 }

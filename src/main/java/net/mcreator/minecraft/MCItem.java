@@ -132,8 +132,8 @@ public class MCItem extends DataListEntry {
 
 				// Otherwise, try using the mod element icon
 				File elementIconFile = new File(
-						workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/" + elementName
-								+ ".png");
+						workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
+								+ elementName + ".png");
 				if (!hasGeneratableIcon && elementIconFile.isFile()) {
 					retval = new ImageIcon(elementIconFile.getAbsolutePath());
 				}
@@ -156,10 +156,10 @@ public class MCItem extends DataListEntry {
 					retval = new ImageIcon(MinecraftImageGenerator.Preview.generatePotionIcon(Color.BLACK));
 				}
 			} else {
-				DataListEntry entry = DataListLoader.loadDataMap("blocksitems").get(name);
+				Map<String, DataListEntry> blocksitems = DataListLoader.loadDataMap("blocksitems");
+				DataListEntry entry = blocksitems.get(name);
 				if (entry != null) {
-					retval = BlockItemIcons.getIconForItem(
-							DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
+					retval = BlockItemIcons.getIconForItem(entry.getTexture());
 				} else {
 					retval = DEFAULT_ICON;
 				}

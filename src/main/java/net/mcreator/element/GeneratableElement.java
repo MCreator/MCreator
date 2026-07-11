@@ -31,7 +31,6 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.minecraft.states.StateMap;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -47,7 +46,7 @@ import java.util.stream.Collectors;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 86;
+	public static final int formatVersion = 89;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -100,17 +99,15 @@ public abstract class GeneratableElement {
 	}
 
 	/**
-	 * Checks if the type of the passed value is likely part of the data model and not related to the technical part of the application.
-	 * Scanning values that do not pass this condition will most probably lead to a {@link StackOverflowError}.
-	 * <br>NOTE: If the checked values are instances of a class not contained in this module, they will still be checked.
+	 * Checks if the passed type is likely part of the data model and not related to the technical part of the application.
+	 * Scanning types that do not pass this condition will most probably lead to a {@link StackOverflowError}.
 	 *
-	 * @param value The value that should be checked.
-	 * @return Whether it is safe to scan the {@code value} object deeper.
+	 * @param clazz The type that should be checked.
+	 * @return Whether it is safe to scan instances of the {@code clazz} deeper.
 	 */
-	public static boolean isDataModelObject(Object value) {
-		return (value.getClass().getModule() == MCreator.class.getModule() || PluginLoader.INSTANCE.getPluginModules()
-				.contains(value.getClass().getModule()))
-				&& !(value instanceof IWorkspaceProvider); // prevent from being stuck in the app structure
+	public static boolean isDataModelObject(Class<?> clazz) {
+		return (clazz.getModule() == MCreator.class.getModule() || PluginLoader.INSTANCE.getPluginModules()
+				.contains(clazz.getModule())) && !IWorkspaceProvider.class.isAssignableFrom(clazz);
 	}
 
 	public static class GSONAdapter
@@ -198,7 +195,6 @@ public abstract class GeneratableElement {
 							LOG.warn("Failed to convert mod element {} of type {} to FV{} using {}",
 									lastModElement.getName(), modElementType, converter.getVersionConvertingTo(),
 									converter.getClass().getSimpleName(), e);
-							TestUtil.failIfTestingEnvironment();
 						}
 
 						if (generatableElement == null
@@ -223,7 +219,6 @@ public abstract class GeneratableElement {
 							LOG.warn("Failed to convert mod element {} of type {} to FV{} using {}",
 									lastModElement.getName(), modElementTypeString, converter.getVersionConvertingTo(),
 									converter.getClass().getSimpleName(), e2);
-							TestUtil.failIfTestingEnvironment();
 						}
 						ConverterUtils.convertElementToDifferentType(converter, lastModElement, result);
 					} catch (Exception e2) {
@@ -234,8 +229,7 @@ public abstract class GeneratableElement {
 
 				return null;
 			} catch (Exception e) {
-				LOG.warn("Failed to deserialize mod element {}", lastModElement.getName(), e);
-				return null;
+				throw new JsonParseException("Failed to deserialize mod element " + lastModElement.getName(), e);
 			}
 		}
 

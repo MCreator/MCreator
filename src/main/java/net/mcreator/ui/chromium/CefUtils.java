@@ -220,8 +220,9 @@ public class CefUtils {
 
 				@Override public void stateHasChanged(CefApp.CefAppState state) {
 					if (state == CefApp.CefAppState.INITIALIZED) {
-						LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})", cefApp.getVersion().getJcefVersion(),
-								cefApp.getVersion().getCefVersion(), cefApp.getVersion().getChromeVersion());
+						LOG.debug("CefApp initialized (JCEF: {}, CEF: {}, Chromium: {})",
+								cefApp.getVersion().getJcefVersion(), cefApp.getVersion().getCefVersion(),
+								cefApp.getVersion().getChromeVersion());
 						latch.countDown();
 					}
 				}

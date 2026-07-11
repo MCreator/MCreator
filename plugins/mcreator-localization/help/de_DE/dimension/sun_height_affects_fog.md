@@ -1,0 +1,1 @@
+Wenn diese Option aktiviert ist, ändert sich die Nebelfarbe je nach Tageszeit.

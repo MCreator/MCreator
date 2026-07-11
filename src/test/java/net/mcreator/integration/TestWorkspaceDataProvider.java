@@ -19,11 +19,11 @@
 
 package net.mcreator.integration;
 
+import com.google.common.collect.Iterables;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
-import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.Checkbox;
@@ -34,11 +34,7 @@ import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.*;
 import net.mcreator.element.types.Dimension;
-import net.mcreator.element.types.Enchantment;
-import net.mcreator.element.types.Fluid;
-import net.mcreator.element.types.bedrock.BEBlock;
-import net.mcreator.element.types.bedrock.BEItem;
-import net.mcreator.element.types.bedrock.BEScript;
+import net.mcreator.element.types.bedrock.*;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
@@ -173,18 +169,23 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
 		} else if (type == ModElementType.SPECIALENTITY) {
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), "Boat", false));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), "Boat", true));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), "ChestBoat", false));
-			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), "ChestBoat", true));
-		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "1"), random, "Boat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "2"), random, "Boat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "3"), random, "ChestBoat", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "4"), random, "ChestBoat", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "5"), random, "Raft", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "6"), random, "Raft", true));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "7"), random, "ChestRaft", false));
+			generatableElements.add(getSpecialEntityExample(me(workspace, type, "8"), random, "ChestRaft", true));
+		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
 		} else if (type == ModElementType.ADVANCEMENT || type == ModElementType.ITEMEXTENSION
 				|| type == ModElementType.STRUCTURE || type == ModElementType.BEITEM || type == ModElementType.BEBLOCK
-				|| type == ModElementType.BESCRIPT) {
+				|| type == ModElementType.BESCRIPT || type == ModElementType.BEBIOME
+				|| type == ModElementType.BEENTITY) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -218,6 +219,8 @@ public class TestWorkspaceDataProvider {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test1", TextureType.BLOCK));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test2", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test3", TextureType.BLOCK));
@@ -227,17 +230,25 @@ public class TestWorkspaceDataProvider {
 					workspace.getFolderManager().getTextureFile("test5", TextureType.BLOCK));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test6", TextureType.BLOCK));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test7", TextureType.BLOCK));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ITEM) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test1", TextureType.ITEM));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test2", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test3", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test4", TextureType.ITEM));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test5", TextureType.ITEM));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("test6", TextureType.ITEM));
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("itest", TextureType.ITEM));
 
@@ -333,87 +344,103 @@ public class TestWorkspaceDataProvider {
 		if (workspace.getGeneratorStats().hasBaseCoverage("tags")) {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:dirt");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:item");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampleitem1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleitem2");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("blocksitems", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:item"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleitem1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleitem2"));
+				}
 			}
 
 			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:dirt");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:block");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampleblock1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleblock2");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("blocksitems", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:block"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleblock1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleblock2"));
+				}
 			}
 
 			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:creeper");
-			workspace.getTagElements().get(tag).add("~minecraft:zombie");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:entity");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Examplelivingentity1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplelivingentity2");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("entities", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:creeper"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:zombie"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:entity"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplelivingentity1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplelivingentity2"));
+				}
 			}
 
 			tag = new TagElement(TagType.BIOMES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:plains");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:biome");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplebiome1");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("biomes", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:plains"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:biome"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplebiome1"));
+				}
 			}
 
 			tag = new TagElement(TagType.STRUCTURES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("minecraft:stronghold");
-			workspace.getTagElements().get(tag).add("~minecraft:mineshaft");
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:structure");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Examplestructure1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Examplestructure2");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("structures", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stronghold"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:mineshaft"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:structure"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplestructure1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplestructure2"));
+				}
 			}
 
 			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:damage_type");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampledamagetype1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampledamagetype2");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("damagesources", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:damage_type"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampledamagetype1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampledamagetype2"));
+				}
 			}
 
 			tag = new TagElement(TagType.ENCHANTMENTS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:enchantment");
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("CUSTOM:Exampleenchantment1");
-				workspace.getTagElements().get(tag).add("~CUSTOM:Exampleenchantment2");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("enchantments", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:enchantment"));
+				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
+						== GeneratorStats.CoverageStatus.FULL) {
+					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleenchantment1"));
+					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleenchantment2"));
+				}
 			}
 
 			tag = new TagElement(TagType.GAME_EVENTS, "minecraft:test");
 			workspace.addTagElement(tag);
-			workspace.getTagElements().get(tag).add("EXTERNAL:externalmod:game_event");
-			workspace.getTagElements().get(tag).add("minecraft:block_attach");
-			workspace.getTagElements().get(tag).add("~minecraft:container_open");
+			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("gameevents", 0d) != 0) {
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:game_event"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:block_attach"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:container_open"));
+			}
 
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
 					== GeneratorStats.CoverageStatus.FULL) {
-				workspace.getTagElements().get(tag).add("ExampleFunction1");
-				workspace.getTagElements().get(tag).add("~ExampleFunction2");
+				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("ExampleFunction1"));
+				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("ExampleFunction2"));
 			}
 		}
 	}
@@ -438,8 +465,7 @@ public class TestWorkspaceDataProvider {
 		var worldgenBlocks = Stream.of("Blocks.STONE#0", "Blocks.DIRT#0", "Blocks.DIAMOND_BLOCK",
 						"Blocks.EMERALD_BLOCK", "Blocks.SANDSTONE#0", "Blocks.WOOL#0", "Blocks.LEAVES#1")
 				.map(n -> new MCItem(new DataListEntry.Dummy(n))).toList();
-		var guis = modElement.getWorkspace().getModElements().stream()
-				.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
+		var guis = modElement.getWorkspace().getModElementsByType(ModElementType.GUI).stream().map(ModElement::getName)
 				.collect(Collectors.toList());
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
@@ -471,16 +497,16 @@ public class TestWorkspaceDataProvider {
 				biome.waterFogColor = Color.cyan;
 			}
 			biome.ambientSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.moodSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.moodSoundDelay = getRandomInt(random, Biome.class, "moodSoundDelay");
 			biome.additionsSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.music = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			biome.spawnParticles = _true;
-			biome.particleToSpawn = new Particle(modElement.getWorkspace(),
+			biome.particleToSpawn = new ParticleEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			biome.particlesProbability = getRandomDouble(random, Biome.class, "particlesProbability");
 			biome.treesPerChunk = getRandomInt(random, Biome.class, "treesPerChunk");
@@ -526,7 +552,8 @@ public class TestWorkspaceDataProvider {
 				entry1.minGroup = groupSize1.getMinimum();
 				entry1.maxGroup = groupSize1.getMaximum();
 				entry1.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry1.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry1.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry1);
 
 				Biome.SpawnEntry entry2 = new Biome.SpawnEntry();
@@ -536,7 +563,8 @@ public class TestWorkspaceDataProvider {
 				entry2.minGroup = groupSize2.getMinimum();
 				entry2.maxGroup = groupSize2.getMaximum();
 				entry2.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry2.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry2.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry2);
 
 				Biome.SpawnEntry entry3 = new Biome.SpawnEntry();
@@ -546,7 +574,8 @@ public class TestWorkspaceDataProvider {
 				entry3.minGroup = groupSize3.getMinimum();
 				entry3.maxGroup = groupSize3.getMaximum();
 				entry3.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry3.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry3.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry3);
 
 				Biome.SpawnEntry entry4 = new Biome.SpawnEntry();
@@ -556,7 +585,8 @@ public class TestWorkspaceDataProvider {
 				entry4.minGroup = groupSize4.getMinimum();
 				entry4.maxGroup = groupSize4.getMaximum();
 				entry4.weight = getRandomInt(random, Biome.SpawnEntry.class, "weight");
-				entry4.spawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+				entry4.spawnType = new MobSpawnType(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 				entities.add(entry4);
 			}
 			biome.spawnEntries = entities;
@@ -597,7 +627,7 @@ public class TestWorkspaceDataProvider {
 			fluid.levelDecrease = getRandomInt(random, Fluid.class, "levelDecrease");
 			fluid.slopeFindDistance = getRandomInt(random, Fluid.class, "slopeFindDistance");
 			fluid.spawnParticles = !_true;
-			fluid.dripParticle = new Particle(modElement.getWorkspace(),
+			fluid.dripParticle = new ParticleEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			fluid.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Fluid.class, "tintType"));
 			fluid.flowStrength = getRandomDouble(random, Fluid.class, "flowStrength");
@@ -610,9 +640,9 @@ public class TestWorkspaceDataProvider {
 			fluid.textureBucket = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 			fluid.creativeTabs = emptyLists ? List.of() : tabs;
 			fluid.emptySound = !emptyLists ?
-					new Sound(modElement.getWorkspace(), "") :
+					new Sound(modElement.getWorkspace(), new DataListEntry.Null()) :
 					new Sound(modElement.getWorkspace(),
-							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+							getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Fluid.class, "rarity"));
 			fluid.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
@@ -624,7 +654,8 @@ public class TestWorkspaceDataProvider {
 			fluid.ignitedByLava = !_true;
 			fluid.flammability = getRandomInt(random, Fluid.class, "flammability");
 			fluid.fireSpreadSpeed = getRandomInt(random, Fluid.class, "fireSpreadSpeed");
-			fluid.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			fluid.colorOnMap = new MapColor(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
 			fluid.onBlockAdded = new Procedure("procedure5");
 			fluid.onNeighbourChanges = new Procedure("procedure2");
 			fluid.onTickUpdate = new Procedure("procedure3");
@@ -637,11 +668,14 @@ public class TestWorkspaceDataProvider {
 			return fluid;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
-			keyBinding.triggerKey = getRandomString(random,
-					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
+			keyBinding.triggerKey = new KeyButton(modElement.getWorkspace(),
+					TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.getDataListAsStringArray("keybuttons")));
 			keyBinding.keyBindingName = modElement.getName();
-			keyBinding.keyBindingCategoryKey = getRandomString(random,
-					AnnotationUtils.getLimitedOptionsList(KeyBinding.class, "keyBindingCategoryKey"));
+			keyBinding.keyBindingCategoryKey = _true ?
+					"custom_category" :
+					getRandomString(random,
+							AnnotationUtils.getLimitedOptionsList(KeyBinding.class, "keyBindingCategoryKey"));
 			if (!emptyLists)
 				keyBinding.onKeyPressed = new Procedure("procedure3");
 			if (_true)
@@ -655,7 +689,8 @@ public class TestWorkspaceDataProvider {
 			return tab;
 		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
 			Overlay overlay = new Overlay(modElement);
-			overlay.priority = getRandomItem(random, new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+			overlay.priority = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Overlay.class, "priority"));
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
 			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
@@ -684,9 +719,10 @@ public class TestWorkspaceDataProvider {
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";
 			if (_true)
-				overlay.overlayTarget = "Ingame";
+				overlay.overlayTarget = new ScreenEntry(modElement.getWorkspace(), "Ingame");
 			else
-				overlay.overlayTarget = getRandomItem(random, ElementUtil.getDataListAsStringArray("screens"));
+				overlay.overlayTarget = new ScreenEntry(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.getDataListAsStringArray("screens")));
 			return overlay;
 		} else if (ModElementType.GUI.equals(modElement.getType())) {
 			GUI gui = new GUI(modElement);
@@ -793,11 +829,11 @@ public class TestWorkspaceDataProvider {
 			dimension.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			dimension.portalTexture = new TextureHolder(modElement.getWorkspace(), "test2");
 			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
-			dimension.portalParticles = new Particle(modElement.getWorkspace(),
+			dimension.portalParticles = new ParticleEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			dimension.creativeTabs = emptyLists ? List.of() : tabs;
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
 			dimension.biomesInDimensionCaves = new ArrayList<>();
 			if (!emptyLists) {
@@ -825,7 +861,8 @@ public class TestWorkspaceDataProvider {
 			dimension.hasRaids = _true;
 			dimension.minMonsterSpawnLightLimit = monsterSpawnLightLimit.getMinimum();
 			dimension.maxMonsterSpawnLightLimit = monsterSpawnLightLimit.getMaximum();
-			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class, "monsterSpawnBlockLightLimit");
+			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class,
+					"monsterSpawnBlockLightLimit");
 			dimension.defaultEffects = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(Dimension.class, "defaultEffects"));
 			dimension.useCustomEffects = emptyLists;
@@ -862,6 +899,16 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
+			dimension.enableCustomSkyboxTextures = _true;
+			dimension.skyboxTextureUp = new TextureHolder(modElement.getWorkspace(), "other0");
+			dimension.skyboxTextureDown = new TextureHolder(modElement.getWorkspace(), "other0");
+			dimension.skyboxTextureNorth = new TextureHolder(modElement.getWorkspace(), "other0");
+			dimension.skyboxTextureSouth = new TextureHolder(modElement.getWorkspace(), "other0");
+			dimension.skyboxTextureWest = new TextureHolder(modElement.getWorkspace(), "other0");
+			dimension.skyboxTextureEast = new TextureHolder(modElement.getWorkspace(), "other0");
+			dimension.enableCustomSunMoonTextures = _true;
+			dimension.sunTexture = new TextureHolder(modElement.getWorkspace(), "other0");
+			dimension.moonTexture = new TextureHolder(modElement.getWorkspace(), "other0");
 			return dimension;
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
@@ -885,8 +932,7 @@ public class TestWorkspaceDataProvider {
 			structure.projection = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(Structure.class, "projection"));
 			structure.restrictionBiomes = new ArrayList<>();
-			Range<Integer> separationSpacingRange = getRandomIntRange(random, Structure.class, "separation",
-					"spacing");
+			Range<Integer> separationSpacingRange = getRandomIntRange(random, Structure.class, "separation", "spacing");
 			structure.separation = separationSpacingRange.getMinimum();
 			structure.spacing = separationSpacingRange.getMaximum();
 			if (_true) {
@@ -895,8 +941,9 @@ public class TestWorkspaceDataProvider {
 			} else {
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 			}
-			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
-					ElementUtil.getDataListAsStringArray("generationsteps"));
+			structure.generationStep = new GenerationStep(modElement.getWorkspace(),
+					TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.getDataListAsStringArray("generationsteps")));
 			structure.size = getRandomInt(random, Structure.class, "size");
 			structure.maxDistanceFromCenter = getRandomInt(random, Structure.class, "maxDistanceFromCenter");
 			structure.jigsawPools = new ArrayList<>();
@@ -1013,7 +1060,7 @@ public class TestWorkspaceDataProvider {
 			armor.leggingsPiglinNeutral = new LogicProcedure(_true ? "condition3" : null, _true);
 			armor.bootsPiglinNeutral = new LogicProcedure(_true ? "condition4" : null, _true);
 			armor.equipSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");
 			armor.onBodyTick = new Procedure("procedure2");
 			armor.onLeggingsTick = new Procedure("procedure3");
@@ -1039,7 +1086,31 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 			}
+			armor.attributeModifiers = new ArrayList<>();
+			if (!emptyLists) {
+				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
+					AttributeModifierEntry entry = new AttributeModifierEntry();
+					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
+							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
+					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
+					entry.amount = random.nextDouble(-5, 5);
+					entry.operation = getRandomItem(random,
+							new String[] { "ADD_VALUE", "ADD_MULTIPLIED_BASE", "ADD_MULTIPLIED_TOTAL" });
+					entry.armorPieces = new boolean[4];
+					for (int i = 0; i < 3; i++) {
+						entry.armorPieces[i] = random.nextBoolean();
+					}
+					armor.attributeModifiers.add(entry);
+				}
+			}
 			return armor;
+		} else if (ModElementType.ARMORTRIM.equals(modElement.getType())) {
+			ArmorTrim armortrim = new ArmorTrim(modElement);
+			armortrim.name = modElement.getName();
+			armortrim.item = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItems).getName());
+			armortrim.armorTextureFile = "armor_texture";
+			return armortrim;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
@@ -1048,14 +1119,15 @@ public class TestWorkspaceDataProvider {
 			plant.texture = new TextureHolder(modElement.getWorkspace(), "test");
 			plant.itemTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "itest");
 			plant.particleTexture = new TextureHolder(modElement.getWorkspace(), emptyLists ? "" : "test3");
-			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes"));
+			plant.growapableSpawnType = new GrowapableSpawnType(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes")));
 
 			// Set some plant type properties
 			switch (plant.plantType) {
 			case "normal" -> {
-				plant.suspiciousStewEffect = getRandomString(random,
+				plant.suspiciousStewEffect = new EffectEntry(modElement.getWorkspace(), getRandomString(random,
 						ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
-								.toList());
+								.toList()));
 				plant.suspiciousStewDuration = getRandomInt(random, Plant.class, "suspiciousStewDuration");
 			}
 			case "double" -> plant.textureBottom = new TextureHolder(modElement.getWorkspace(), "test2");
@@ -1113,25 +1185,28 @@ public class TestWorkspaceDataProvider {
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
-			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-			plant.offsetType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Plant.class, "offsetType"));
-			plant.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
+			plant.colorOnMap = new MapColor(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
+			plant.offsetType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Plant.class, "offsetType"));
+			plant.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes")));
 			plant.strippingResult = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			plant.unbreakable = _true;
 			plant.isCustomSoundType = !_true;
 			plant.soundOnStep = new StepSound(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+					getRandomDataListEntry(random, DataListLoader.loadDataList("stepsounds")));
 			plant.breakSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.stepSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.placeSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.hitSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.fallSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			plant.customDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			Range<Integer> xpAmount = getRandomIntRange(random, Plant.class, "xpAmountMin", "xpAmountMax");
@@ -1282,7 +1357,8 @@ public class TestWorkspaceDataProvider {
 			item.saturation = getRandomDouble(random, Item.class, "saturation");
 			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
-			item.animation = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Item.class, "animation"));
+			item.animation = new ItemUseAnimation(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadItemUseAnimations(modElement.getWorkspace())));
 			item.eatResultItem = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
@@ -1299,7 +1375,7 @@ public class TestWorkspaceDataProvider {
 			item.musicDiscLengthInTicks = getRandomInt(random, Item.class, "musicDiscLengthInTicks");
 			item.musicDiscAnalogOutput = getRandomInt(random, Item.class, "musicDiscAnalogOutput");
 			item.musicDiscMusic = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			if (!emptyLists) {
 				item.providedBannerPatterns.add("Examplebannerpattern1");
 				item.providedBannerPatterns.add("Examplebannerpattern2");
@@ -1318,7 +1394,8 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
-					entry.equipmentSlot = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
+					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
+							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = getRandomDouble(random, AttributeModifierEntry.class, "amount");
 					entry.operation = getRandomItem(random,
@@ -1343,7 +1420,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PROJECTILE.equals(modElement.getType())) {
 			Projectile projectile = new Projectile(modElement);
 			projectile.actionSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			projectile.power = getRandomDouble(random, Projectile.class, "power");
 			projectile.damage = getRandomDouble(random, Projectile.class, "damage");
 			projectile.knockback = getRandomInt(random, Projectile.class, "knockback");
@@ -1409,10 +1486,11 @@ public class TestWorkspaceDataProvider {
 			potionEffect.isCuredbyHoney = _true;
 			potionEffect.particle = emptyLists ?
 					null :
-					new Particle(modElement.getWorkspace(),
+					new ParticleEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(),
-					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			potionEffect.onAddedSound = new Sound(modElement.getWorkspace(), emptyLists ?
+					new DataListEntry.Null() :
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 			List<AttributeModifierEntry> modifiers = new ArrayList<>();
 			if (!emptyLists) {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
@@ -1494,7 +1572,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
 			enchantment.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			enchantment.supportedSlots = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
+			enchantment.supportedSlots = new EquipmentSlotEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots")));
 			enchantment.weight = getRandomInt(random, Enchantment.class, "weight");
 			enchantment.anvilCost = getRandomInt(random, Enchantment.class, "anvilCost");
 			enchantment.maxLevel = getRandomInt(random, Enchantment.class, "maxLevel");
@@ -1517,13 +1596,13 @@ public class TestWorkspaceDataProvider {
 				if (_true) {
 					enchantment.incompatibleEnchantments = subset(random, 10,
 							ElementUtil.loadAllEnchantments(modElement.getWorkspace()),
-							e -> new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(), e.getName()));
+							e -> new EnchantmentEntry(modElement.getWorkspace(), e.getName()));
 				} else {
 					enchantment.incompatibleEnchantments.add(
-							new net.mcreator.element.parts.Enchantment(modElement.getWorkspace(),
-									"#minecraft:non_treasure"));
+							new EnchantmentEntry(modElement.getWorkspace(), "#minecraft:non_treasure"));
 				}
 			}
+			enchantment.effectsxml = Enchantment.XML_BASE;
 			return enchantment;
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
@@ -1534,37 +1613,34 @@ public class TestWorkspaceDataProvider {
 			painting.height = getRandomInt(random, Painting.class, "height");
 			return painting;
 		} else if (ModElementType.PARTICLE.equals(modElement.getType())) {
-			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
+			Particle particle = new Particle(modElement);
 			particle.texture = new TextureHolder(modElement.getWorkspace(), "particle1");
-			particle.width = getRandomDouble(random, net.mcreator.element.types.Particle.class, "width");
-			particle.frameDuration = getRandomInt(random, net.mcreator.element.types.Particle.class, "frameDuration");
+			particle.width = getRandomDouble(random, Particle.class, "width");
+			particle.frameDuration = getRandomInt(random, Particle.class, "frameDuration");
 			particle.emissiveRendering = _true;
-			particle.height = getRandomDouble(random, net.mcreator.element.types.Particle.class, "height");
+			particle.height = getRandomDouble(random, Particle.class, "height");
 			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			particle.fixedScale = _true;
-			particle.gravity = getRandomDouble(random, net.mcreator.element.types.Particle.class, "gravity");
-			particle.speedFactor = getRandomDouble(random, net.mcreator.element.types.Particle.class, "speedFactor");
+			particle.gravity = getRandomDouble(random, Particle.class, "gravity");
+			particle.speedFactor = getRandomDouble(random, Particle.class, "speedFactor");
 			particle.canCollide = _true;
-			particle.angularVelocity = getRandomDouble(random, net.mcreator.element.types.Particle.class,
-					"angularVelocity");
-			particle.angularAcceleration = getRandomDouble(random, net.mcreator.element.types.Particle.class,
-					"angularAcceleration");
+			particle.angularVelocity = getRandomDouble(random, Particle.class, "angularVelocity");
+			particle.angularAcceleration = getRandomDouble(random, Particle.class, "angularAcceleration");
 			particle.alwaysShow = !_true;
 			particle.animate = _true;
-			particle.maxAge = getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAge");
-			particle.maxAgeDiff = emptyLists ? 0 :
-					getRandomInt(random, net.mcreator.element.types.Particle.class, "maxAgeDiff");
+			particle.maxAge = getRandomInt(random, Particle.class, "maxAge");
+			particle.maxAgeDiff = emptyLists ? 0 : getRandomInt(random, Particle.class, "maxAgeDiff");
 			particle.rotationProvider = emptyLists ? null : new Procedure("vector1");
-			particle.renderType = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(net.mcreator.element.types.Particle.class,
-					"renderType"));
+			particle.renderType = getRandomItem(random,
+					AnnotationUtils.getLimitedOptionsList(Particle.class, "renderType"));
 			particle.additionalExpiryCondition = new Procedure("condition1");
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
 			GameRule gamerule = new GameRule(modElement);
 			gamerule.displayName = modElement.getName();
 			gamerule.description = modElement.getName() + " description";
-			gamerule.category = getRandomString(random, AnnotationUtils.getLimitedOptionsList(GameRule.class,
-					"category"));
+			gamerule.category = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(GameRule.class, "category"));
 			gamerule.type = getRandomString(random, AnnotationUtils.getLimitedOptionsList(GameRule.class, "type"));
 			gamerule.defaultValueLogic = random.nextBoolean();
 			gamerule.defaultValueNumber = getRandomInt(random, GameRule.class, "defaultValueNumber");
@@ -1588,17 +1664,17 @@ public class TestWorkspaceDataProvider {
 									.toLowerCase(Locale.ENGLISH).contains("water")))
 							.collect(Collectors.toList())).getName());
 			profession.actionSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			profession.hat = getRandomString(random, AnnotationUtils.getLimitedOptionsList(VillagerProfession.class, "hat"));
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+			profession.hat = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(VillagerProfession.class, "hat"));
 			profession.professionTextureFile = "entity_texture_0.png";
 			profession.zombifiedProfessionTextureFile = "entity_texture_1.png";
 			return profession;
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
-			villagerTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(),
-					_true ? new DataListEntry.Dummy("WANDERING_TRADER") :
-					getRandomDataListEntry(random,
-							ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
+			villagerTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(), _true ?
+					new DataListEntry.Dummy("WANDERING_TRADER") :
+					getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
 			villagerTrade.trades = new ArrayList<>();
 			if (!emptyLists) {
 				int entries = random.nextInt(5) + 1;
@@ -1638,8 +1714,10 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
 			DamageType damageType = new DamageType(modElement);
 			damageType.exhaustion = getRandomDouble(random, DamageType.class, "exhaustion");
-			damageType.scaling = getRandomString(random, AnnotationUtils.getLimitedOptionsList(DamageType.class, "scaling"));
-			damageType.effects = getRandomString(random, AnnotationUtils.getLimitedOptionsList(DamageType.class, "effects"));
+			damageType.scaling = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(DamageType.class, "scaling"));
+			damageType.effects = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(DamageType.class, "effects"));
 			damageType.normalDeathMessage = "%1$s was slain";
 			damageType.itemDeathMessage = "%1$s was slain by %2$s using %3$s";
 			damageType.playerDeathMessage = "%1$s was slain whilst escaping %2$s";
@@ -1649,8 +1727,9 @@ public class TestWorkspaceDataProvider {
 		// For generator tests, it will be tested by GTFeatureBlocks anyway
 		else if (ModElementType.FEATURE.equals(modElement.getType()) && uiTest) {
 			Feature feature = new Feature(modElement);
-			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
-					ElementUtil.getDataListAsStringArray("generationsteps"));
+			feature.generationStep = new GenerationStep(modElement.getWorkspace(),
+					TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.getDataListAsStringArray("generationsteps")));
 			feature.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				feature.restrictionBiomes = subset(random, 5, biomes,
@@ -1697,7 +1776,8 @@ public class TestWorkspaceDataProvider {
 			beitem.handEquipped = _true;
 			beitem.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(BEItem.class, "rarity"));
 			beitem.enableCreativeTab = !_true;
-			beitem.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beitem.creativeTab = new TabEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			beitem.isHiddenInCommands = _true;
 			beitem.movementModifier = getRandomDouble(random, BEItem.class, "movementModifier");
 			beitem.allowOffHand = _true;
@@ -1706,7 +1786,8 @@ public class TestWorkspaceDataProvider {
 			beitem.stackedByData = _true;
 			beitem.usingConvertsTo = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
-			beitem.animation = getRandomString(random, AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
+			beitem.animation = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
 			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocks)).getName());
 			beitem.blockPlaceableOn = new ArrayList<>();
@@ -1740,7 +1821,8 @@ public class TestWorkspaceDataProvider {
 			beblock.renderType = new int[] { 10, 11, 12, 10 }[valueIndex];
 			beblock.customModelName = new String[] { "Normal", "Cross model", "Single texture", "Normal" }[valueIndex];
 			beblock.enableCreativeTab = !_true;
-			beblock.creativeTab = getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())).toString();
+			beblock.creativeTab = new TabEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			beblock.isHiddenInCommands = _true;
 			beblock.hardness = getRandomDouble(random, BEBlock.class, "hardness");
 			beblock.resistance = getRandomDouble(random, BEBlock.class, "resistance");
@@ -1751,9 +1833,10 @@ public class TestWorkspaceDataProvider {
 			beblock.flammableDestroyChance = getRandomInt(random, BEBlock.class, "flammableDestroyChance");
 			beblock.friction = getRandomDouble(random, BEBlock.class, "friction");
 			beblock.soundOnStep = new StepSound(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+					getRandomDataListEntry(random, DataListLoader.loadDataList("stepsounds")));
 			beblock.lightEmission = getRandomInt(random, BEBlock.class, "lightEmission");
-			beblock.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
+			beblock.colorOnMap = new MapColor(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
 			beblock.generateFeature = _true;
 			beblock.generationShape = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "generationShape"));
@@ -1773,13 +1856,99 @@ public class TestWorkspaceDataProvider {
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "renderMethod"));
 			beblock.tintMethod = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "tintMethod"));
-
 			beblock.localScripts = new ArrayList<>();
 			if (!emptyLists) {
 				beblock.localScripts.add("Examplebescript1");
 				beblock.localScripts.add("Examplebescript3");
 			}
 			return beblock;
+		} else if (ModElementType.BEBIOME.equals(modElement.getType())) {
+			BEBiome bebiome = new BEBiome(modElement);
+			bebiome.downfall = getRandomInt(random, BEBiome.class, "downfall");
+			bebiome.temperature = getRandomInt(random, BEBiome.class, "temperature");
+			bebiome.maxSnow = getRandomInt(random, BEBiome.class, "maxSnow");
+			bebiome.minSnow = getRandomInt(random, BEBiome.class, "minSnow");
+			bebiome.airColor = Color.red;
+			if (!emptyLists) {
+				bebiome.fogColor = Color.yellow;
+				bebiome.grassColor = Color.green;
+				bebiome.foliageColor = Color.magenta;
+				bebiome.waterColor = Color.blue;
+				bebiome.waterFogColor = Color.cyan;
+			}
+			bebiome.topMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.midMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.foundationMaterial = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.seaFloorMaterial = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.seaMaterial = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, worldgenBlocks).getName());
+			bebiome.seaFloorDepth = getRandomInt(random, BEBiome.class, "seaFloorDepth");
+			bebiome.noiseType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "noiseType"));
+			bebiome.villageType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "villageType"));
+			bebiome.biomeTags = subset(random, 5, DataListLoader.loadDataList("be_biometags"),
+					e -> new BEBiomeTagEntry(modElement.getWorkspace(), e.getName()));
+			bebiome.biomeReplacements = subset(random, 5, DataListLoader.loadDataList("be_biomes"),
+					e -> new BEBiomeEntry(modElement.getWorkspace(), e.getName()));
+			bebiome.replacementAmount = getRandomInt(random, BEBiome.class, "replacementAmount");
+			bebiome.replacementNoiseFrequencyScale = getRandomInt(random, BEBiome.class,
+					"replacementNoiseFrequencyScale");
+			bebiome.ambientSound = new Sound(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+			bebiome.moodSound = new Sound(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+			bebiome.additionsSound = new Sound(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+			bebiome.music = new Sound(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+			bebiome.spawnParticles = _true;
+			bebiome.particleToSpawn = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEBiome.class, "particleToSpawn"));
+			bebiome.particleDensity = getRandomInt(random, BEBiome.class, "particleDensity");
+		} else if (ModElementType.BEENTITY.equals(modElement.getType())) {
+			BEEntity beentity = new BEEntity(modElement);
+			beentity.entityName = modElement.getName();
+			beentity.modelName = getRandomString(random,
+					List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
+							"Villager"));
+			beentity.modelTexture = "entity_texture_1.png";
+			beentity.collisionBoxHeight = getRandomDouble(random, BEEntity.class, "collisionBoxHeight");
+			beentity.collisionBoxWidth = getRandomDouble(random, BEEntity.class, "collisionBoxWidth");
+			beentity.isSummonable = _true;
+			beentity.xpAmountOnDeath = getRandomInt(random, BEEntity.class, "xpAmountOnDeath");
+			beentity.entityDrop = new MItemBlock(modElement.getWorkspace(),
+					getRandomItem(random, blocksAndItems).getName());
+			beentity.healthValue = getRandomInt(random, BEEntity.class, "healthValue");
+			beentity.attackDamage = getRandomInt(random, BEEntity.class, "attackDamage");
+			beentity.speedValue = getRandomDouble(random, BEEntity.class, "speedValue");
+			beentity.canFly = _true;
+			beentity.flyingSpeedValue = getRandomDouble(random, BEEntity.class, "flyingSpeedValue");
+			beentity.followRangeValue = getRandomInt(random, BEEntity.class, "followRangeValue");
+			beentity.isImmuneToFire = _true;
+			beentity.isPushable = _true;
+			beentity.isPushableByPiston = _true;
+			beentity.spawnNaturally = !_true;
+			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
+			beentity.spawningProbability = getRandomInt(random, BEEntity.class, "spawningProbability");
+			var numberOfMobsPerGroup = getRandomIntRange(random, BEEntity.class, "minHerdSize", "maxHerdSize");
+			beentity.minHerdSize = numberOfMobsPerGroup.getMinimum();
+			beentity.maxHerdSize = numberOfMobsPerGroup.getMaximum();
+			beentity.hasSpawnEgg = !_true;
+			beentity.spawnEggBaseColor = new Color(10, 20, 34);
+			beentity.spawnEggDotColor = new Color(182, 172, 122);
+			beentity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+			beentity.entityBehaviourType = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(BEEntity.class, "entityBehaviourType"));
+			beentity.waterEntity = _true;
+			beentity.isImmuneToDrowning = _true;
+			beentity.isImmuneToFallDamage = _true;
+			return beentity;
 		}
 		return null;
 	}
@@ -1817,7 +1986,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomString(random,
 				AnnotationUtils.getLimitedOptionsList(LivingEntity.class, "bossBarColor"));
 		livingEntity.bossBarType = getRandomString(random,
@@ -1875,15 +2044,17 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.livingSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.hurtSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.deathSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
-				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(),
-				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+		livingEntity.stepSound = new Sound(modElement.getWorkspace(), emptyLists ?
+				new DataListEntry.Null() :
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
+		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(), emptyLists ?
+				new DataListEntry.Null() :
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		livingEntity.rangedItemType = "Default item";
 		if (!emptyLists) {
 			livingEntity.spawningCondition = new Procedure("condition3");
@@ -1918,7 +2089,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.spawnThisMob = !_true;
 		livingEntity.doesDespawnWhenIdle = _true;
 		livingEntity.spawningProbability = getRandomInt(random, LivingEntity.class, "spawningProbability");
-		livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+		livingEntity.mobSpawningType = new MobSpawnType(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
 		var numberOfMobsPerGroup = getRandomIntRange(random, LivingEntity.class, "minNumberOfMobsPerGroup",
 				"maxNumberOfMobsPerGroup");
 		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getMinimum();
@@ -1986,7 +2158,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.sensitiveToVibration = _true;
 		livingEntity.vibrationalEvents = new ArrayList<>();
 		if (!emptyLists) {
-			livingEntity.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+			livingEntity.vibrationalEvents.addAll(DataListLoader.loadDataList("gameevents").stream()
 					.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
 			livingEntity.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
 		}
@@ -2005,8 +2177,7 @@ public class TestWorkspaceDataProvider {
 		var biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 		var tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
-		var guis = modElement.getWorkspace().getModElements().stream()
-				.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
+		var guis = modElement.getWorkspace().getModElementsByType(ModElementType.GUI).stream().map(ModElement::getName)
 				.collect(Collectors.toList());
 
 		Block block = new Block(modElement);
@@ -2034,9 +2205,9 @@ public class TestWorkspaceDataProvider {
 				block.boundingBoxes.add(box);
 			}
 		}
-		block.rotationMode = blockBase == null
-				? random.nextInt(AnnotationUtils.getLimitedOptionsList(Block.class, "rotationMode").size())
-				: 0;
+		block.rotationMode = blockBase == null ?
+				random.nextInt(AnnotationUtils.getLimitedOptionsList(Block.class, "rotationMode").size()) :
+				0;
 		block.enablePitch = !_true;
 		block.customProperties = new ArrayList<>();
 		if (!emptyLists) {
@@ -2132,32 +2303,36 @@ public class TestWorkspaceDataProvider {
 		block.speedFactor = getRandomDouble(random, Block.class, "speedFactor");
 		block.jumpFactor = getRandomDouble(random, Block.class, "jumpFactor");
 		block.strippingResult = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-		block.blockSetType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "blockSetType"));
+		block.blockSetType = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "blockSetType"));
 		block.tickRate = _true ? 0 : getRandomInt(random, Block.class, "tickRate");
 		block.isCustomSoundType = !_true;
 		block.soundOnStep = new StepSound(modElement.getWorkspace(),
-				getRandomDataListEntry(random, ElementUtil.loadStepSounds()));
+				getRandomDataListEntry(random, DataListLoader.loadDataList("stepsounds")));
 		block.breakSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.stepSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.placeSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.hitSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.fallSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				getRandomDataListEntry(random, ElementUtil.loadAllSounds(modElement.getWorkspace())));
 		block.luminance = new NumberProcedure(emptyLists ? null : "number3", 3);
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
-		block.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
-		block.noteBlockInstrument = getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments"));
-		block.offsetType = blockBase == null
-				? getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType"))
-				: "NONE";
-		block.aiPathNodeType = getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes"));
+		block.colorOnMap = new MapColor(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
+		block.noteBlockInstrument = new NoteBlockInstrument(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getDataListAsStringArray("noteblockinstruments")));
+		block.offsetType = blockBase == null ?
+				getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "offsetType")) :
+				"NONE";
+		block.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getDataListAsStringArray("pathnodetypes")));
 		block.beaconColorModifier = emptyLists ? null : Color.cyan;
 		block.unbreakable = _true;
 		block.vanillaToolTier = getRandomString(random,
@@ -2188,7 +2363,7 @@ public class TestWorkspaceDataProvider {
 		block.sensitiveToVibration = _true;
 		block.vibrationalEvents = new ArrayList<>();
 		if (!emptyLists) {
-			block.vibrationalEvents.addAll(ElementUtil.loadAllGameEvents().stream()
+			block.vibrationalEvents.addAll(DataListLoader.loadDataList("gameevents").stream()
 					.map(e -> new GameEventEntry(modElement.getWorkspace(), e.getName())).toList());
 			block.vibrationalEvents.add(new GameEventEntry(modElement.getWorkspace(), "#allay_can_listen"));
 		}
@@ -2205,7 +2380,7 @@ public class TestWorkspaceDataProvider {
 		block.fluidRestrictions = new ArrayList<>();
 		if (!emptyLists) {
 			block.fluidRestrictions.addAll(ElementUtil.loadAllFluids(modElement.getWorkspace()).stream()
-					.map(e -> new net.mcreator.element.parts.Fluid(modElement.getWorkspace(), e.getName())).toList());
+					.map(e -> new FluidEntry(modElement.getWorkspace(), e.getName())).toList());
 		}
 		block.restrictionBiomes = new ArrayList<>();
 		if (!emptyLists) {
@@ -2223,11 +2398,12 @@ public class TestWorkspaceDataProvider {
 					e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:walls"));
 		}
-			block.generationShape = getRandomItem(random,
-					AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
+		block.generationShape = getRandomItem(random,
+				AnnotationUtils.getLimitedOptionsList(Block.class, "generationShape").toArray(String[]::new));
 		block.frequencyPerChunks = getRandomInt(random, Block.class, "frequencyPerChunks");
 		block.frequencyOnChunk = getRandomInt(random, Block.class, "frequencyOnChunk");
-		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight", "maxGenerateHeight");
+		Range<Integer> generateHeight = getRandomIntRange(random, Block.class, "minGenerateHeight",
+				"maxGenerateHeight");
 		block.minGenerateHeight = generateHeight.getMinimum();
 		block.maxGenerateHeight = generateHeight.getMaximum();
 		if (!emptyLists) {
@@ -2260,7 +2436,7 @@ public class TestWorkspaceDataProvider {
 		if ("Leaves".equals(blockBase)) {
 			block.leavesParticleType = emptyLists ?
 					null :
-					new Particle(modElement.getWorkspace(),
+					new ParticleEntry(modElement.getWorkspace(),
 							getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			block.leavesParticleChance = getRandomDouble(random, Block.class, "leavesParticleChance");
 		} else if ("FlowerPot".equals(blockBase)) {
@@ -2283,9 +2459,7 @@ public class TestWorkspaceDataProvider {
 		block.textureBack = new TextureHolder(modElement.getWorkspace(), "test6");
 		block.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-		block.tintType = getRandomString(random,
-				Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
-						"Water", "Sky", "Fog", "Water fog"));
+		block.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "tintType"));
 		block.isItemTinted = _true;
 		block.renderType = emptyLists ?
 				new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12, 14 }[valueIndex] :
@@ -2369,15 +2543,16 @@ public class TestWorkspaceDataProvider {
 		tool.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
-		tool.blockDropsTier = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Tool.class, "blockDropsTier"));
+		tool.blockDropsTier = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(Tool.class, "blockDropsTier"));
 		tool.additionalDropCondition = new Procedure("condition3");
 		tool.efficiency = getRandomDouble(random, Tool.class, "efficiency");
 		tool.attackSpeed = getRandomDouble(random, Tool.class, "attackSpeed");
 		tool.enchantability = getRandomInt(random, Tool.class, "enchantability");
 		tool.damageVsEntity = getRandomDouble(random, Tool.class, "damageVsEntity");
-		tool.usageCount = getRandomInt(random, Tool.class, "usageCount");
+		tool.usageCount = emptyLists ? 0 : getRandomInt(random, Tool.class, "usageCount");
 		tool.stayInGridWhenCrafting = _true;
 		tool.damageOnCrafting = emptyLists;
 		tool.immuneToFire = _true;
@@ -2403,7 +2578,8 @@ public class TestWorkspaceDataProvider {
 		if (!emptyLists) {
 			for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 				AttributeModifierEntry entry = new AttributeModifierEntry();
-				entry.equipmentSlot = getRandomItem(random, ElementUtil.getDataListAsStringArray("equipmentslots"));
+				entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
+						getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
 				entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 				entry.amount = getRandomDouble(random, AttributeModifierEntry.class, "amount");
 				entry.operation = getRandomItem(random,
@@ -2569,9 +2745,8 @@ public class TestWorkspaceDataProvider {
 		achievement.disableDisplay = !_true;
 		achievement.rewardXP = getRandomInt(random, Achievement.class, "rewardXP");
 		achievement.hideIfNotCompleted = !_true;
-		var functions = modElement.getWorkspace().getModElements().stream()
-				.filter(var -> var.getType() == ModElementType.FUNCTION).map(ModElement::getName)
-				.collect(Collectors.toList());
+		var functions = modElement.getWorkspace().getModElementsByType(ModElementType.FUNCTION).stream()
+				.map(ModElement::getName).collect(Collectors.toList());
 		achievement.rewardFunction = emptyLists || functions.isEmpty() ? null : getRandomItem(random, functions);
 		achievement.background = emptyLists ? "Default" : "test.png";
 		achievement.rewardLoot = new ArrayList<>();
@@ -2589,16 +2764,23 @@ public class TestWorkspaceDataProvider {
 		return achievement;
 	}
 
-	public static SpecialEntity getSpecialEntityExample(ModElement modElement, String entityType, boolean emptyLists) {
+	public static SpecialEntity getSpecialEntityExample(ModElement modElement, Random random, String entityType,
+			boolean emptyLists) {
 		SpecialEntity specialEntity = new SpecialEntity(modElement);
 		specialEntity.name = modElement.getName();
 		specialEntity.entityType = entityType;
 		specialEntity.entityTexture = new TextureHolder(modElement.getWorkspace(), "entity_texture_0");
 		specialEntity.itemTexture = new TextureHolder(modElement.getWorkspace(), "itest");
+		specialEntity.rarity = getRandomString(random,
+				AnnotationUtils.getLimitedOptionsList(SpecialEntity.class, "rarity"));
 		specialEntity.creativeTabs = emptyLists ?
 				List.of() :
 				ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
-				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+						.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
+		if (!emptyLists) {
+			specialEntity.onTickUpdate = new Procedure("procedure1");
+			specialEntity.onPlayerCollidesWith = new Procedure("procedure2");
+		}
 
 		return specialEntity;
 	}
@@ -2609,19 +2791,15 @@ public class TestWorkspaceDataProvider {
 		return list[randomIndex];
 	}
 
-	public static <T> T getRandomItem(Random random, List<T> list) {
-		int listSize = list.size();
-		int randomIndex = random.nextInt(listSize);
-		return list.get(randomIndex);
+	public static <T> T getRandomItem(Random random, Collection<T> collection) {
+		return Iterables.get(collection, random.nextInt(collection.size()));
 	}
 
-	public static DataListEntry getRandomDataListEntry(Random random, List<DataListEntry> list) {
-		if (list.isEmpty())
+	public static DataListEntry getRandomDataListEntry(Random random, Collection<DataListEntry> collection) {
+		if (collection.isEmpty())
 			return new DataListEntry.Null();
 
-		int listSize = list.size();
-		int randomIndex = random.nextInt(listSize);
-		return list.get(randomIndex);
+		return Iterables.get(collection, random.nextInt(collection.size()));
 	}
 
 	public static MCItem getRandomMCItem(Random random, List<MCItem> list) {

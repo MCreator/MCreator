@@ -201,7 +201,7 @@ public class ActionRegistry {
 		this.mcreatorPublish = new VisitURIAction(this, L10N.t("action.publish_modification"),
 				MCreatorApplication.SERVER_DOMAIN + "/node/add/modification/");
 		this.preferences = new BasicAction(this, L10N.t("action.preferences"),
-				e -> new PreferencesDialog(mcreator, null)).setIcon(UIRES.get("settings"));
+				e -> new PreferencesDialog(mcreator)).setIcon(UIRES.get("settings"));
 		this.exitMCreator = new BasicAction(this, L10N.t("action.exit"),
 				e -> mcreator.getApplication().closeApplication());
 		this.aboutMCreator = new AboutAction(this);
@@ -278,7 +278,7 @@ public class ActionRegistry {
 		this.showWorkspaceTab = new BasicAction(this, L10N.t("action.show_workspace"),
 				e -> mcreator.getTabs().showTab(mcreator.workspaceTab));
 		this.closeAllTabs = new BasicAction(this, L10N.t("action.close_all_tabs"),
-				e -> mcreator.getTabs().closeAllTabs());
+				e -> mcreator.getTabs().closeAllTabs(false));
 		this.closeCurrentTab = new BasicAction(this, L10N.t("action.close_tab"),
 				e -> mcreator.getTabs().closeTab(mcreator.getTabs().getCurrentTab()));
 		this.openWorkspace = new OpenWorkspaceAction(this);

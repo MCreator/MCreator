@@ -35,9 +35,9 @@ public class ListDiffTest {
 		List<TestObject> second = new ArrayList<>(
 				Arrays.asList(new TestObject("bbb", 0), new TestObject("ddd", 2), new TestObject("ccc", 3)));
 		DiffResult<TestObject> result = ListDiff.getListDiff(first, second);
-		assertEquals(result.added().size(), 2);
-		assertEquals(result.removed().size(), 1);
-		assertEquals(result.changed().size(), 1);
+		assertEquals(2, result.added().size());
+		assertEquals(1, result.removed().size());
+		assertEquals(1, result.changed().size());
 	}
 
 	private record TestObject(String fieldA, int fieldB) {

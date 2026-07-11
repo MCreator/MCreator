@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Tool;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.GeneratorFlavor;
@@ -46,8 +47,11 @@ public class ToolToBedrockConverter implements IConverter {
 			beitem.maxDurability = tool.usageCount;
 			beitem.enableMeleeDamage = tool.damageVsEntity > 0;
 			beitem.damageVsEntity = (int) Math.min(tool.damageVsEntity, 255);
-			beitem.enableCreativeTab = true;
-			beitem.creativeTab = "TOOLS";
+			beitem.enableCreativeTab = !tool.creativeTabs.isEmpty();
+			if (beitem.enableCreativeTab)
+				beitem.creativeTab = new TabEntry(workspace, tool.creativeTabs.getFirst().getUnmappedValue());
+			else
+				beitem.creativeTab = new TabEntry(workspace, "TOOLS");
 			beitem.handEquipped = true;
 			beitem.stackedByData = true;
 

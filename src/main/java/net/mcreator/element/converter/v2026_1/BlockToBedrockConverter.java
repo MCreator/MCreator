@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.bedrock.BEBlock;
 import net.mcreator.generator.GeneratorFlavor;
@@ -49,6 +50,11 @@ public class BlockToBedrockConverter implements IConverter {
 			beblock.textureLeft = block.textureLeft;
 			beblock.textureRight = block.textureRight;
 			beblock.textureTop = block.textureTop;
+			beblock.enableCreativeTab = !block.creativeTabs.isEmpty();
+			if (beblock.enableCreativeTab)
+				beblock.creativeTab = new TabEntry(workspace, block.creativeTabs.getFirst().getUnmappedValue());
+			else
+				beblock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
 			beblock.hardness = block.hardness;
 			beblock.resistance = block.resistance;
 			beblock.customDrop = block.customDrop;

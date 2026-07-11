@@ -1,0 +1,1 @@
+Wenn diese Option ausgewählt ist, wird dieser Trankeffekt nach dem Verzehr einer Honigflasche geheilt.

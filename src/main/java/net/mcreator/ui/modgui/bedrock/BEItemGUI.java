@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui.bedrock;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEItem;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
@@ -136,7 +137,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
-		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
+		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab, 5, 5));
 		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
 		enableCreativeTab.setOpaque(false);
 
@@ -146,7 +147,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.item.damage_vs_entity")));
-		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity));
+		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity, 5, 5));
 		enableMeleeDamage.addActionListener(_ -> updateMeleeDamage());
 		enableMeleeDamage.setOpaque(false);
 
@@ -360,7 +361,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		handEquipped.setSelected(item.handEquipped);
 		rarity.setSelectedItem(item.rarity);
 		enableCreativeTab.setSelected(item.enableCreativeTab);
-		creativeTab.setSelectedItem(item.creativeTab);
+		creativeTab.setSelectedItem(item.creativeTab.getUnmappedValue());
 		isHiddenInCommands.setSelected(item.isHiddenInCommands);
 		movementModifier.setValue(item.movementModifier);
 		allowOffHand.setSelected(item.allowOffHand);
@@ -400,7 +401,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.handEquipped = handEquipped.isSelected();
 		item.rarity = rarity.getSelectedItem();
 		item.enableCreativeTab = enableCreativeTab.isSelected();
-		item.creativeTab = creativeTab.getSelectedItem().toString();
+		item.creativeTab = new TabEntry(modElement.getWorkspace(), creativeTab.getSelectedItem());
 		item.isHiddenInCommands = isHiddenInCommands.isSelected();
 		item.movementModifier = (double) movementModifier.getValue();
 		item.allowOffHand = allowOffHand.isSelected();

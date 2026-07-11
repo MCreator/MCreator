@@ -40,14 +40,14 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, String::toString), new Render());
 
 		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open"),
-				e -> workspacePanel.getMCreator().getActionRegistry().importStructure.doAction());
+				_ -> workspacePanel.getMCreator().getActionRegistry().importStructure.doAction());
 
 		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform()
 				== GeneratorFlavor.GamePlatform.JAVAEDITION)
 			addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open"),
-					e -> workspacePanel.getMCreator().getActionRegistry().importStructureFromMinecraft.doAction());
+					_ -> workspacePanel.getMCreator().getActionRegistry().importStructureFromMinecraft.doAction());
 
-		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+		addToolBarButton("common.search_usages", UIRES.get("16px.search"), _ -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -62,7 +62,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 						L10N.t("dialog.search_usages.type.resource.structure"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), _ -> deleteCurrentlySelected());
 	}
 
 	@Override protected void deleteCurrentlySelected() {

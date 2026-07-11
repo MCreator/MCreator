@@ -26,12 +26,12 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.Overlay;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.TranslatedComboBox;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
@@ -42,6 +42,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -110,15 +111,8 @@ public class WYSIWYGEditor extends JPanel {
 
 	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
 	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public final TranslatedComboBox priority = new TranslatedComboBox(
-			//@formatter:off
-			Map.entry("NORMAL", "elementgui.gui.priority_normal"),
-			Map.entry("HIGH", "elementgui.gui.priority_high"),
-			Map.entry("HIGHEST", "elementgui.gui.priority_highest"),
-			Map.entry("LOW", "elementgui.gui.priority_low"),
-			Map.entry("LOWEST", "elementgui.gui.priority_lowest")
-			//@formatter:on
-	);
+	public final TranslatedComboBox priority = ComponentFromAnnotation.translatedOptions(Overlay.class, "priority",
+			"elementgui.gui.priority_");
 
 	public TextureComboBox overlayBaseTexture;
 
@@ -280,7 +274,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, null);
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-							 InvocationTargetException ex) {
+					         InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 				});
@@ -471,7 +465,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, component).getEditingComponent();
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-							 InvocationTargetException ex) {
+					         InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 					break;

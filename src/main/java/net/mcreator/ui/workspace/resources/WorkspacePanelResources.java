@@ -83,7 +83,7 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("vanilla_resources"))
 			addResourcesTab(L10N.t("workspace.resources.tab.resource_pack"), resourcePackEditor);
 
-		resourceTabs.addChangeListener(changeEvent -> reloadElements());
+		resourceTabs.addChangeListener(_ -> reloadElements());
 		add(resourceTabs);
 	}
 

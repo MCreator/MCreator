@@ -82,8 +82,7 @@ public class RunServerAction extends GradleAction {
 			actionRegistry.getMCreator().showConsole();
 			actionRegistry.getMCreator().getGradleConsole().exec(tasksToRun, result -> {
 				if (result == GradleResultCode.STATUS_OK) {
-					actionRegistry.getMCreator().getBottomDockRegion()
-							.setDockVisibility(MCreator.DOCK_CONSOLE, false);
+					actionRegistry.getMCreator().getBottomDockRegion().setDockVisibility(MCreator.DOCK_CONSOLE, false);
 				}
 			});
 		} catch (Exception e) { // if something fails, we still need to free the gradle console

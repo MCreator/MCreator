@@ -59,7 +59,7 @@ public class JBCefOsrHandler implements CefRenderHandler {
 					return component.isShowing() ?
 							component.getGraphicsConfiguration().getDevice().getDefaultConfiguration().getBounds() :
 							GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-							.getDefaultConfiguration().getBounds();
+									.getDefaultConfiguration().getBounds();
 				} catch (Exception ignored) {
 				}
 			}
@@ -133,7 +133,9 @@ public class JBCefOsrHandler implements CefRenderHandler {
 				} else if (front != null) {
 					// Targeted Dirty Rect Copy! Only copies what changed.
 					copyRectangles(myBackImage, front, safeRects, width);
-					Collections.addAll(myTextureDirtyRects, safeRects);
+					// Dirty rects are drained in paint(), which does not run while hidden — skip to avoid unbounded growth
+					if (myComponent.isShowing())
+						Collections.addAll(myTextureDirtyRects, safeRects);
 				}
 			}
 		}

@@ -75,10 +75,10 @@ function validateIntProviderInputs(...inputs) {
                 changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
                 return;
             }
-            var isValid = true;
+            let isValid = true;
             // For each passed input, we check if it's within bounds
-            for (var i = 0; i < inputs.length; i++) {
-                var countValue = this.getInput(inputs[i][0]).connection.targetBlock();
+            for (let i = 0; i < inputs.length; i++) {
+                const countValue = this.getInput(inputs[i][0]).connection.targetBlock();
                 isValid = isIntProviderWithinBounds(countValue, inputs[i][1], inputs[i][2]);
                 if (!isValid)
                     break; // Stop checking as soon as one input isn't valid

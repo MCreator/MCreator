@@ -272,12 +272,12 @@ public class CollapsibleDockPanel extends JSplitPane {
 		void dockShown(String dockID);
 	}
 
-	public static JToolBar createStaticTwoRegionsStrip(MCreatorFrame parent, CollapsibleDockPanel collapsibleDockPanelA, CollapsibleDockPanel collapsibleDockPaneB) {
+	public static JToolBar createStaticTwoRegionsStrip(MCreatorFrame parent, CollapsibleDockPanel collapsibleDockPanelA,
+			CollapsibleDockPanel collapsibleDockPaneB) {
 		JToolBar dockStrip = parent.hasBackgroundImage() ? new TransparentToolBar() : new JToolBar();
 		dockStrip.setOrientation(JToolBar.VERTICAL);
 		dockStrip.setFloatable(false);
-		dockStrip.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));
+		dockStrip.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()));
 		dockStrip.add(collapsibleDockPanelA.getDockStrip());
 		dockStrip.add(Box.createVerticalGlue());
 		dockStrip.add(collapsibleDockPaneB.getDockStrip());

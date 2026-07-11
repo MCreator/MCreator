@@ -139,8 +139,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		name.setValidator(new UniqueNameValidator(
 			L10N.t("modelement.recipe"),
 			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
-			() -> mcreator.getWorkspace().getModElements().stream()
-				.filter(me -> me.getType() == ModElementType.RECIPE)
+			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.RECIPE).stream()
 				.map(ModElement::getGeneratableElement)
 				.filter(Objects::nonNull)
 				.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name),
@@ -320,7 +319,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 			boolean isRecipeJSON = List.of("Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting",
 					"Campfire cooking", "Smithing").contains(recipeTypeValue);
-			groupPanel.setVisible(isRecipeJSON);
 			namespacePanel.setVisible(isRecipeJSON);
 			namePanel.setVisible(isRecipeJSON);
 			unlockRecipePanel.setVisible(isRecipeJSON);
@@ -328,6 +326,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			boolean isRecipeCrafting = recipeTypeValue.equals("Crafting");
 			shapelessPanel.setVisible(isRecipeCrafting);
 			craftingBookCategoryPanel.setVisible(isRecipeCrafting);
+
+			groupPanel.setVisible(isRecipeCrafting || isCookingRecipe);
 
 			if (!isEditingMode() && isCookingRecipe) {
 				if (recipeTypeValue.equals("Smelting")) {

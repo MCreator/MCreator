@@ -1,0 +1,1 @@
+Ez a paraméter az entitás alapvető viselkedését és modelljét szabályozza.

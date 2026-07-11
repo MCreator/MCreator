@@ -1,0 +1,35 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "t",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "math",
+    "toolbox_init": [
+      "<value name=\"t\"><block type=\"math_number\"><field name=\"NUM\">0.5</field></block></value>",
+      "<value name=\"a\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"b\"><block type=\"math_number\"><field name=\"NUM\">10</field></block></value>"
+    ],
+    "inputs": [
+      "t",
+      "a",
+      "b"
+    ]
+  }
+}

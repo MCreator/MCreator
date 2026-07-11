@@ -1,0 +1,1 @@
+Die maximale Distanz, die diese Einheit Vibrationen erhalten kann.

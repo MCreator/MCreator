@@ -174,7 +174,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			oreBlock.vanillaToolTier = "DIAMOND";
 		}
 		oreBlock.requiresCorrectTool = true;
-		oreBlock.noteBlockInstrument = "basedrum";
+		oreBlock.noteBlockInstrument = new NoteBlockInstrument(workspace, "basedrum");
 		oreBlock.generateFeature = true;
 		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;

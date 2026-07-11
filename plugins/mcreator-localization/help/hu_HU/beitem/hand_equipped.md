@@ -1,0 +1,1 @@
+Ha ez a beállítás engedélyezve van, az elem úgy jelenik meg, mintha a játékos kezében tartaná az eszköz transzformációját.

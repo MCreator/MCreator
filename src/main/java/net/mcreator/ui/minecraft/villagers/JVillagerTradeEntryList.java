@@ -29,7 +29,6 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class JVillagerTradeEntryList extends JSimpleEntriesList<JVillagerTradeEntry, VillagerTrade.TradeEntry> {

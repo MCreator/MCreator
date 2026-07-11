@@ -115,12 +115,20 @@ public class ZipIO {
 		if (!new File(nameZipFile).getParentFile().isDirectory())
 			new File(nameZipFile).getParentFile().mkdirs();
 
+		File targetZipFile = new File(nameZipFile).getCanonicalFile();
+
 		FileOutputStream fw = new FileOutputStream(nameZipFile);
 		ZipOutputStream zip = new ZipOutputStream(fw);
 		File dir = new File(dirName);
 		File[] all = dir.listFiles();
 		if (all != null) {
 			for (File el : all) {
+				if (Files.isSymbolicLink(el.toPath()))
+					continue;
+
+				if (el.getCanonicalFile().equals(targetZipFile))
+					continue;
+
 				if (el.isDirectory() && Arrays.asList(excludes).contains(el.getName() + "/"))
 					continue;
 
@@ -128,17 +136,17 @@ public class ZipIO {
 					continue;
 
 				if (el.isDirectory())
-					addFolderToZip("", el.getAbsolutePath(), zip, excludes);
+					addFolderToZip("", el.getAbsolutePath(), zip, targetZipFile, excludes);
 				else
-					addFileToZip("", el.getAbsolutePath(), zip, false, excludes);
+					addFileToZip("", el.getAbsolutePath(), zip, false, targetZipFile, excludes);
 			}
 		}
 		zip.close();
 		fw.close();
 	}
 
-	private static void addFolderToZip(String path, String srcFolder, ZipOutputStream zip, String... excludes)
-			throws IOException {
+	private static void addFolderToZip(String path, String srcFolder, ZipOutputStream zip, File targetZipFile,
+			String... excludes) throws IOException {
 
 		if (Arrays.asList(excludes).contains(path + "/"))
 			return;
@@ -146,41 +154,49 @@ public class ZipIO {
 		File folder = new File(srcFolder);
 		String[] filesin = folder.list();
 		if (filesin != null && filesin.length == 0) {
-			addFileToZip(path, srcFolder, zip, true, excludes);
+			addFileToZip(path, srcFolder, zip, true, targetZipFile, excludes);
 		} else {
 			for (String fileName : filesin != null ? filesin : new String[0]) {
 				if (Arrays.asList(excludes).contains("#" + fileName))
 					continue;
 
 				if (path.isEmpty()) {
-					addFileToZip(folder.getName(), srcFolder + "/" + fileName, zip, false, excludes);
+					addFileToZip(folder.getName(), srcFolder + "/" + fileName, zip, false, targetZipFile, excludes);
 				} else {
-					addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip, false, excludes);
+					addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip, false, targetZipFile,
+							excludes);
 				}
 			}
 		}
 	}
 
 	private static void addFileToZip(String path, String srcFile, ZipOutputStream zip, boolean isDirFile,
-			String... excludes) throws IOException {
+			File targetZipFile, String... excludes) throws IOException {
 		File file = new File(srcFile);
+
+		if (Files.isSymbolicLink(file.toPath()))
+			return;
+
+		if (file.getCanonicalFile().equals(targetZipFile))
+			return;
+
 		if (isDirFile) {
-			zip.putNextEntry(new ZipEntry(path + "/" + file.getName() + "/"));
+			zip.putNextEntry(createZipEntry(path + "/" + file.getName() + "/", file));
+			zip.closeEntry();
 		} else {
 			if (file.isDirectory()) {
-				addFolderToZip(path, srcFile, zip, excludes);
+				addFolderToZip(path, srcFile, zip, targetZipFile, excludes);
 			} else {
 				byte[] buf = new byte[8192];
 				int len;
 				FileInputStream in = new FileInputStream(srcFile);
-				if (!path.isEmpty())
-					zip.putNextEntry(new ZipEntry(path + "/" + file.getName()));
-				else
-					zip.putNextEntry(new ZipEntry(file.getName()));
+				String entryName = path.isEmpty() ? file.getName() : path + "/" + file.getName();
+				zip.putNextEntry(createZipEntry(entryName, file));
 				while ((len = in.read(buf)) > 0) {
 					zip.write(buf, 0, len);
 				}
 				in.close();
+				zip.closeEntry();
 			}
 		}
 	}
@@ -199,6 +215,17 @@ public class ZipIO {
 		} catch (IOException e) {
 			return false;
 		}
+	}
+
+	private static ZipEntry createZipEntry(String name, File source) {
+		ZipEntry entry = new ZipEntry(name);
+		entry.setTime(source.lastModified());
+		if (name.endsWith("/")) {
+			entry.setSize(0);
+			entry.setCrc(0);
+			entry.setMethod(ZipEntry.STORED);
+		}
+		return entry;
 	}
 
 	private static void reportError(String action, String path, Throwable exception) {

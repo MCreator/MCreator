@@ -22,6 +22,8 @@ import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class NullBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
@@ -34,6 +36,32 @@ public class NullBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "direction_unspecified",
+          "output": "Null",
+          "colour": 20
+        }""", """
+        {
+          "type": "entity_none",
+          "args0": [
+              {
+                  "type": "field_image",
+                  "src": "./res/null.png",
+                  "width": 8,
+                  "height": 24
+              }
+          ],
+          "output": "Entity",
+          "colour": 195
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "mcelements";
 	}
 
 }

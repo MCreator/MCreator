@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TextMatches implements IBlockGenerator {
@@ -58,5 +59,31 @@ public class TextMatches implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "text_matches",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "text",
+                  "check": "String"
+              },
+              {
+                  "type": "input_value",
+                  "name": "contains",
+                  "check": "String"
+              }
+          ],
+          "inputsInline": true,
+          "output": "Boolean",
+          "colour": "%{BKY_LOGIC_HUE}"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "text";
 	}
 }

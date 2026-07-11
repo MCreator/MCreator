@@ -39,19 +39,30 @@ public class ScrollWheelPassLayer extends LayerUI<JScrollPane> {
 	}
 
 	@Override protected void processMouseWheelEvent(MouseWheelEvent e, JLayer<? extends JScrollPane> l) {
-		Component c = e.getComponent();
-		int dir = e.getWheelRotation();
 		JScrollPane main = l.getView();
-		if (c instanceof JScrollPane child && !c.equals(main)) {
-			boolean horizontal = e.isShiftDown();
-			BoundedRangeModel m = (horizontal ? child.getHorizontalScrollBar() : child.getVerticalScrollBar()).getModel();
-			int extent = m.getExtent();
-			int minimum = m.getMinimum();
-			int maximum = m.getMaximum();
-			int value = m.getValue();
-			if (value + extent >= maximum && dir > 0 || value <= minimum && dir < 0) {
-				main.dispatchEvent(SwingUtilities.convertMouseEvent(c, e, main));
+		JScrollPane child = findNestedScrollPane(e.getComponent(), main);
+		if (child == null) {
+			return;
+		}
+
+		int dir = e.getWheelRotation();
+		boolean horizontal = e.isShiftDown();
+		BoundedRangeModel m = (horizontal ? child.getHorizontalScrollBar() : child.getVerticalScrollBar()).getModel();
+		int extent = m.getExtent();
+		int minimum = m.getMinimum();
+		int maximum = m.getMaximum();
+		int value = m.getValue();
+		if (value + extent >= maximum && dir > 0 || value <= minimum && dir < 0) {
+			main.dispatchEvent(SwingUtilities.convertMouseEvent(child, e, main));
+		}
+	}
+
+	private static JScrollPane findNestedScrollPane(Component origin, JScrollPane main) {
+		for (Component current = origin; current != null && current != main; current = current.getParent()) {
+			if (current instanceof JScrollPane nested) {
+				return nested;
 			}
 		}
+		return null;
 	}
 }

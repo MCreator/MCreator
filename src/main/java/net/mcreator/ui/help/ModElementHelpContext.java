@@ -27,8 +27,8 @@ import javax.swing.*;
 import java.net.URI;
 
 public record ModElementHelpContext<GE extends GeneratableElement>(@Nullable String contextName,
-																   @Nullable URI contextURL, @Nullable String entry,
-																   ModElementGUI<GE> modElementGUI)
+                                                                   @Nullable URI contextURL, @Nullable String entry,
+                                                                   ModElementGUI<GE> modElementGUI)
 		implements IHelpContext {
 
 	public GE getModElementFromGUI() {

@@ -27,6 +27,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Block;
@@ -53,7 +54,7 @@ public class BlockGenerationConditionRemover implements IConverter {
 			Feature feature = new Feature(new ModElement(workspace,
 					ConverterUtils.findSuitableModElementName(workspace, modElementName + "Feature"),
 					ModElementType.FEATURE));
-			feature.generationStep = "UNDERGROUND_ORES";
+			feature.generationStep = new GenerationStep(workspace, "UNDERGROUND_ORES");
 
 			JsonArray spawnWorldTypes = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 					.get("spawnWorldTypes").getAsJsonArray();

@@ -1,0 +1,1 @@
+Diese Bedingung gibt an, ob die Entität die erkannte Vibration erhalten soll oder nicht.

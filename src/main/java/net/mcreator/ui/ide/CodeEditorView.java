@@ -20,10 +20,10 @@ package net.mcreator.ui.ide;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import net.mcreator.generator.io.GradleTrackingFileIO;
+import net.mcreator.generator.io.JSONWriter;
+import net.mcreator.generator.io.JSWriter;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
-import net.mcreator.io.writer.JSONWriter;
-import net.mcreator.io.writer.JSWriter;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;
@@ -76,11 +76,16 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.List;
 
 public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger("Code Editor");
+
+	private static final List<String> SUPPORTED_FILE_EXTENSIONS = List.of("java", "info", "txt", "json", "mcmeta",
+			"lang", "gradle", "ini", "conf", "xml", "properties", "mcfunction", "toml", "js", "yaml", "yml", "md",
+			"cfg", "fsh", "vsh", "csv",
+			"classtweaker"); // classtweaker is Fabric's access transformer format (formerly known as accesswidener)
 
 	public final SearchBar sed;
 	public final ReplaceBar rep;
@@ -364,7 +369,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				ac = (AutoCompletion) method.invoke(jls, te);
 				ac.setAutoCompleteSingleChoices(false);
 			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
-					 NoSuchMethodException | IllegalAccessException e1) {
+			         NoSuchMethodException | IllegalAccessException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
 
@@ -486,7 +491,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			});
 		} else if (fileName.endsWith(".xml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
-		} else if (fileName.endsWith(".lang")) {
+		} else if (fileName.endsWith(".lang") || fileName.endsWith(".properties")) {
 			ThreadUtil.runOnSwingThreadAndWait(
 					() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
 		} else if (fileName.endsWith(".gradle")) {
@@ -499,6 +504,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
+		} else if (fileName.endsWith(".csv")) {
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_CSV));
 		}
 
 		SwingUtilities.invokeLater(this::loadSourceTree);
@@ -596,7 +603,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	public void saveCode() {
 		savingMCreatorModElementWarning();
-		TrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
+		GradleTrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));
@@ -691,9 +698,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	public static boolean isFileSupported(String fileName) {
-		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg", "fsh", "vsh")
-				.contains(FilenameUtilsPatched.getExtension(fileName));
+		return SUPPORTED_FILE_EXTENSIONS.contains(FilenameUtilsPatched.getExtension(fileName).toLowerCase());
 	}
 
 	public void jumpToLine(int linenum) {

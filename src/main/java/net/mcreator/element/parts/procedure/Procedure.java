@@ -23,7 +23,7 @@ import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.util.TestUtil;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -63,7 +63,6 @@ import java.util.List;
 			}
 		} else {
 			LOG.warn("Procedure {} not found while trying to extract dependencies!", name);
-			TestUtil.failIfTestingEnvironment();
 		}
 
 		this.exists = false;
@@ -90,20 +89,24 @@ import java.util.List;
 
 		@Override public Procedure deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
-			if (json.isJsonNull()) {
-				return new Procedure(null);
-			} else if (json.isJsonPrimitive()) {
-				return new Procedure(json.getAsString());
+			String procedureName = null;
+			if (json.isJsonPrimitive()) {
+				procedureName = json.getAsString();
 			} else if (json.isJsonObject()) {
-				return new Procedure(json.getAsJsonObject().get("name").getAsString());
-			} else {
-				throw new JsonParseException("Invalid JSON for Procedure: " + json);
+				procedureName = json.getAsJsonObject().get("name").getAsString();
 			}
+
+			if (procedureName != null && procedureName.startsWith(NameMapper.MCREATOR_PREFIX)) {
+				procedureName = procedureName.substring(NameMapper.MCREATOR_PREFIX.length());
+			}
+
+			return new Procedure(procedureName);
 		}
 
-		@Override
-		public JsonElement serialize(Procedure procedure, Type typeOfSrc, JsonSerializationContext context) {
-			return (procedure.name == null || procedure.name.isEmpty()) ? JsonNull.INSTANCE : new JsonPrimitive(procedure.name);
+		@Override public JsonElement serialize(Procedure procedure, Type typeOfSrc, JsonSerializationContext context) {
+			return (procedure.name == null || procedure.name.isEmpty()) ?
+					JsonNull.INSTANCE :
+					new JsonPrimitive(procedure.name);
 		}
 
 	}

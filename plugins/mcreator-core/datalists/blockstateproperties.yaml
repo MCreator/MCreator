@@ -58,6 +58,16 @@
   type: Logic
   other:
     registry_name: conditional
+- COPPER_GOLEM_POSE:
+  readable_name: COPPER_GOLEM_POSE
+  type: Enum
+  other:
+    registry_name: copper_golem_pose
+    values:
+      - standing
+      - sitting
+      - running
+      - star
 - CRACKED:
   readable_name: CRACKED
   type: Logic
@@ -695,6 +705,16 @@
       - inactive
       - active
       - cooldown
+- SIDE_CHAIN_PART:
+  readable_name: SIDE_CHAIN_PART
+  type: Enum
+  other:
+    registry_name: side_chain
+    values:
+      - unconnected
+      - right
+      - center
+      - left
 - SLAB_TYPE:
   readable_name: SLAB_TYPE
   type: Enum

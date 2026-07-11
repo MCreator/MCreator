@@ -23,7 +23,7 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 
 public record WYSIWYGComponentRegistration<T extends GUIComponent>(String machineName, String icon,
-																   boolean worksInOverlay, Class<T> component,
-																   Class<? extends AbstractWYSIWYGDialog<T>> editor) {
+                                                                   boolean worksInOverlay, Class<T> component,
+                                                                   Class<? extends AbstractWYSIWYGDialog<T>> editor) {
 
 }

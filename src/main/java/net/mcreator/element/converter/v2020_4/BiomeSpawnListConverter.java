@@ -24,6 +24,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.types.Biome;
 import net.mcreator.workspace.Workspace;
 
@@ -41,7 +42,7 @@ public class BiomeSpawnListConverter implements IConverter {
 
 				Biome.SpawnEntry spawnEntry = new Biome.SpawnEntry();
 				spawnEntry.entity = new EntityEntry(workspace, name);
-				spawnEntry.spawnType = "creature";
+				spawnEntry.spawnType = new MobSpawnType(workspace, "creature");
 				spawnEntry.weight = 15;
 				spawnEntry.minGroup = 1;
 				spawnEntry.maxGroup = 15;

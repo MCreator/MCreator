@@ -1,0 +1,1 @@
+Dieser Parameter bestimmt, wie schnell die Abklingzeit deines Gegenstands ist, wenn du Objekte angreifst.

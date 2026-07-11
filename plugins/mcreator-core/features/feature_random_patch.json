@@ -5,6 +5,7 @@
       "name": "tries",
       "value": 128,
       "min": 1,
+      "max": 4096,
       "precision": 1
     },
     {
@@ -12,6 +13,7 @@
       "name": "xzSpread",
       "value": 7,
       "min": 0,
+      "max": 16,
       "precision": 1
     },
     {
@@ -19,6 +21,7 @@
       "name": "ySpread",
       "value": 3,
       "min": 0,
+      "max": 16,
       "precision": 1
     },
     {

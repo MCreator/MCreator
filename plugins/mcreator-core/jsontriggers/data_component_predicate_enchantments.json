@@ -1,0 +1,20 @@
+{
+  "mutator": "item_enchanted_mutator",
+  "inputsInline": false,
+  "output": "DataComponentPredicate",
+  "colour": 130,
+  "extensions": [
+    "disable_duplicate_input_type"
+  ],
+  "mcreator": {
+    "group": "damage",
+    "toolbox_id": "components",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"enchantment0\"><block type=\"enchantment_entry\"><field name=\"enchantment\"></field><field name=\"min\">1</field><field name=\"max\">5</field></block></value>"
+    ],
+    "repeating_inputs": [
+      "enchantment"
+    ]
+  }
+}

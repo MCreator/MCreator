@@ -104,7 +104,8 @@ public class SplashScreen extends JWindow {
 			if (OS.getOS() == OS.MAC && Integer.parseInt(System.getProperty("os.version").split("\\.")[0]) >= 26) {
 				getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) {
+		}
 
 		setSize(imagePanel.getSize());
 		setLocationRelativeTo(null);

@@ -1,0 +1,1 @@
+Wenn ein Sound ausgewählt ist, wird er abgespielt, wenn dieser Trank-Effekt einer Entität hinzugefügt wird.

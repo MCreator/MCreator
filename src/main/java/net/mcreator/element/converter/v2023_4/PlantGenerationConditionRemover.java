@@ -27,6 +27,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Feature;
@@ -49,7 +50,7 @@ public class PlantGenerationConditionRemover implements IConverter {
 			Feature feature = new Feature(new ModElement(workspace,
 					ConverterUtils.findSuitableModElementName(workspace, modElementName + "Feature"),
 					ModElementType.FEATURE));
-			feature.generationStep = "VEGETAL_DECORATION";
+			feature.generationStep = new GenerationStep(workspace, "VEGETAL_DECORATION");
 
 			JsonArray spawnWorldTypes = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 					.get("spawnWorldTypes").getAsJsonArray();

@@ -1,0 +1,1 @@
+Sofern nicht aktiviert, wird das rote Overlay auf dieser Ebene angezeigt, wenn die Entität verletzt wird.

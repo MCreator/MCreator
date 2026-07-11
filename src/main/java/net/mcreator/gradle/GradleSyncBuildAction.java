@@ -23,27 +23,14 @@ import org.gradle.tooling.BuildAction;
 import org.gradle.tooling.BuildController;
 import org.gradle.tooling.model.eclipse.RunEclipseSynchronizationTasks;
 
-import java.lang.reflect.Constructor;
-
 public class GradleSyncBuildAction implements BuildAction<Void> {
 
-	private GradleSyncBuildAction() {
+	public GradleSyncBuildAction() {
 	}
 
 	@Override public Void execute(BuildController controller) {
 		controller.getModel(RunEclipseSynchronizationTasks.class);
 		return null;
-	}
-
-	@SuppressWarnings("unchecked") public static GradleSyncBuildAction loadFromIsolatedClassLoader() {
-		try {
-			Constructor<GradleSyncBuildAction> constructor = (Constructor<GradleSyncBuildAction>) IsolatedGradleClassLoader.loadClass(
-					GradleSyncBuildAction.class.getName()).getDeclaredConstructor();
-			constructor.setAccessible(true);
-			return constructor.newInstance();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 }

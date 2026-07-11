@@ -273,9 +273,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	}
 
 	public void setReadOnly() {
-		add.setVisible(false);
-		remove.setVisible(false);
-		removeall.setVisible(false);
+		hideButtons();
 		this.readOnly = true;
 	}
 

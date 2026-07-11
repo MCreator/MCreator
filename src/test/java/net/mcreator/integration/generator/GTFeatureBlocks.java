@@ -23,6 +23,7 @@ import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.types.Feature;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
@@ -72,8 +73,8 @@ public class GTFeatureBlocks {
 					"<block type=\"" + featureBlock.getMachineName() + "\">" + additionalXML);
 
 			Feature feature = new Feature(modElement);
-			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
-					ElementUtil.getDataListAsStringArray("generationsteps"));
+			feature.generationStep = new GenerationStep(workspace, TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps")));
 			feature.restrictionBiomes = new ArrayList<>();
 			feature.generateCondition = null;
 
@@ -91,13 +92,13 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value></block></xml>
 						""".formatted(testXML);
-				// Placed features are tested with the "Random patch" feature
+				// Placed features are tested with the "Simple random selector" feature
 				case "PlacedFeature" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
-						<value name="feature"><block type="feature_random_patch">
-							<value name="feature">%s</value>
-							<field name="tries">128</field><field name="xzSpread">7</field><field name="ySpread">3</field>
+						<value name="feature"><block type="feature_simple_random_selector">
+							<mutation inputs="1"></mutation>
+							<value name="feature0">%s</value>
 						</block></value></block></xml>
 						""".formatted(testXML);
 				// Vertical anchors are tested with the "Height: At constant height" placement

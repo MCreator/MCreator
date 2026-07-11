@@ -121,6 +121,7 @@ public class ToolboxCategory {
 		put("logicloops", builtin("logic_and_loops", "120"));
 		put("logicoperations", builtin("logic", "210"));
 		put("math", builtin("math", "230"));
+		put("vector", builtin("vector", "270"));
 		put("text", builtin("text", "160"));
 		put("time", builtin("time", "#628c94"));
 		put("advanced", builtin("advanced", "250"));

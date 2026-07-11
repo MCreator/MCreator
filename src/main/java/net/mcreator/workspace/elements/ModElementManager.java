@@ -29,7 +29,6 @@ import net.mcreator.element.util.GEValidator;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.TagsUtils;
 import net.mcreator.io.FileIO;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,6 +47,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 /**
  * ModElementManager is not thread safe
@@ -114,7 +114,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 
 		// remove any potential references to this mod element in tags
-		TagsUtils.removeTagsForModElement(workspace, element);
+		TagsUtils.removeTagEntriesReferencingModElement(workspace, element);
 
 		// after we don't need the definition anymore, remove actual files
 		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
@@ -174,7 +174,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	@Nullable public GeneratableElement fromJSONtoGeneratableElementOrNull(String json, ModElement modElement) {
 		try {
-			return fromJSONtoGeneratableElement(json, modElement);
+			return fromJSONtoGeneratableElement(json, modElement,
+					message -> LOG.debug("GE validation notice: {}", message));
 		} catch (Exception e) {
 			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
 					modElement.getName(), e);
@@ -182,13 +183,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 	}
 
-	@Nonnull public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement)
-			throws IOException, GEValidator.ValidationException {
+	@Nonnull
+	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement,
+			@Nullable Consumer<String> validationLog) throws IOException, GEValidator.ValidationException {
 		this.modElementsInConversion.push(modElement);
 
 		try {
 			GeneratableElement retval = gson.fromJson(json, GeneratableElement.class);
-			GEValidator.validateAndTryToCorrect(retval);
+			GEValidator.validateAndTryToCorrect(retval, validationLog);
 			return retval;
 		} catch (GEValidator.ValidationException e) {
 			throw e;
@@ -237,7 +239,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 			}
 		} catch (Exception e1) {
 			LOG.warn("Failed to generate mod element picture for {}", element.getModElement().getName(), e1);
-			TestUtil.failIfTestingEnvironment();
 		}
 	}
 
@@ -250,10 +251,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	/**
 	 * Invalidates the generatable element cache
-	 *
-	 * @apiNote This method performs sensitive operations on the host workspace. Avoid using it!
 	 */
-	@SuppressWarnings("unused") public void invalidateCache() {
+	public void invalidateCache() {
 		cache.clear();
 	}
 

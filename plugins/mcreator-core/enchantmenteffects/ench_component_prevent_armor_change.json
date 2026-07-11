@@ -1,0 +1,12 @@
+{
+  "extensions": [
+    "disable_repeated_enchantment_component"
+  ],
+  "inputsInline": true,
+  "previousStatement": "EnchantmentComponent",
+  "nextStatement": "EnchantmentComponent",
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "enchantmentcomponents"
+  }
+}

@@ -55,7 +55,7 @@ public class ${JavaModName}Entities {
 		<#elseif entity.getModElement().getTypeString() == "livingentity">
 			public static final DeferredHolder<EntityType<?>, EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
-						of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
+						of(${entity.getModElement().getName()}Entity::new, ${entity.mobSpawningType})
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
 							<#if entity.immuneToFire>.fireImmune()</#if>
 							<#if entity.mobModelName == "Biped">.ridingOffset(-0.6f)</#if>

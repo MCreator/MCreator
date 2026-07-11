@@ -52,7 +52,8 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	private ProcedureSelector fuelSuccessCondition;
 	private NumberProcedureSelector fuelPower;
 
-	private final JSpinner compostLayerChance = ComponentFromAnnotation.spinner(ItemExtension.class, "compostLayerChance");
+	private final JSpinner compostLayerChance = ComponentFromAnnotation.spinner(ItemExtension.class,
+			"compostLayerChance");
 
 	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector dispenseSuccessCondition;

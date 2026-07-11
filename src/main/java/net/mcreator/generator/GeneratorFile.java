@@ -18,6 +18,8 @@
 
 package net.mcreator.generator;
 
+import org.apache.commons.io.FilenameUtils;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.File;
@@ -54,10 +56,15 @@ public record GeneratorFile(GeneratorTemplate source, @Nonnull Writer writer, St
 
 		JAVA, JSON, FILE, JS;
 
-		public static Writer fromString(@Nullable String string) {
-			// Default to JAVA if nothing is specified (null) - for backwards compatibility
-			if (string == null)
-				return JAVA;
+		public static Writer fromString(@Nullable String string, @Nonnull File file) {
+			if (string == null) {
+				switch (FilenameUtils.getExtension(file.getName())) {
+				case "java" -> string = "java";
+				case "json" -> string = "json";
+				case "js" -> string = "js";
+				default -> string = "file";
+				}
+			}
 
 			return switch (string) {
 				case "java" -> JAVA;

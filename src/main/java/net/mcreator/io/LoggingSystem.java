@@ -21,7 +21,6 @@ package net.mcreator.io;
 
 import net.mcreator.util.DefaultExceptionHandler;
 import net.mcreator.util.LoggingOutputStream;
-import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
@@ -41,9 +40,7 @@ public class LoggingSystem {
 		}
 
 		//noinspection resource
-		System.setErr(new PrintStream(
-				new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR).withCustomLogAction(
-						log -> TestUtil.failIfTestingEnvironment()), true));
+		System.setErr(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR), true));
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
 		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
 	}

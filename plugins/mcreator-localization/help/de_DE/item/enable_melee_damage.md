@@ -1,0 +1,1 @@
+Wenn du diesen Parameter überprüfst, kannst du deinen Gegenstand zu einer Nahkampfwaffe mit Angriffsschaden und Angriffsgeschwindigkeit machen.

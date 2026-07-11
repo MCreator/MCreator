@@ -20,11 +20,11 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.Plant;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -59,8 +59,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PlantGUI extends ModElementGUI<Plant> {
@@ -82,8 +84,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JSpinner resistance = ComponentFromAnnotation.spinner(Plant.class, "resistance");
 	private final JSpinner frequencyOnChunks = ComponentFromAnnotation.spinner(Plant.class, "frequencyOnChunks");
 	private final JSpinner dropAmount = ComponentFromAnnotation.spinner(Plant.class, "dropAmount");
-	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation
-			.minMaxSpinner(Plant.class, "xpAmountMin", "xpAmountMax").allowEqualValues();
+	private final JMinMaxSpinner xpAmount = ComponentFromAnnotation.minMaxSpinner(Plant.class, "xpAmountMin",
+			"xpAmountMax").allowEqualValues();
 
 	private final JCheckBox useLootTableForDrops = L10N.checkbox("elementgui.common.use_table_loot_drops");
 	private final JCheckBox unbreakable = L10N.checkbox("elementgui.common.enable");
@@ -113,7 +115,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			"elementgui.block.error_block_needs_fall_sound");
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("mapcolors"));
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -123,8 +126,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
 	private final JLabel plantTypeIndicator = new JLabel();
 
-	private final Model cross = new Model.BuiltInModel("Cross model");
-	private final Model crop = new Model.BuiltInModel("Crop model");
+	private static final Model cross = new Model.BuiltInModel("Cross model");
+	private static final Model crop = new Model.BuiltInModel("Crop model");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = ComponentFromAnnotation.spinner(Plant.class, "growapableMaxHeight");
 
@@ -935,7 +938,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isBonemealTargetCondition.refreshListKeepSelected(context);
 		bonemealSuccessCondition.refreshListKeepSelected(context);
 
-		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
+		ComboBoxUtil.updateComboBoxContents(soundOnStep, DataListLoader.loadDataList("stepsounds"),
 				new DataListEntry.Dummy("PLANT"));
 
 		ComboBoxUtil.updateComboBoxContents(growapableSpawnType,
@@ -1007,7 +1010,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isReplaceable.setSelected(plant.isReplaceable);
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
-		aiPathNodeType.setSelectedItem(plant.aiPathNodeType);
+		aiPathNodeType.setSelectedItem(plant.aiPathNodeType.getUnmappedValue());
 		strippingResult.setBlock(plant.strippingResult);
 		creativePickItem.setBlock(plant.creativePickItem);
 		ignitedByLava.setSelected(plant.ignitedByLava);
@@ -1034,13 +1037,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plantType.setSelectedItem(plant.plantType);
 
-		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
+		growapableSpawnType.setSelectedItem(plant.growapableSpawnType.getUnmappedValue());
 		generationType.setSelectedItem(plant.generationType);
 
 		// Plant type specific fields
 		switch (plant.plantType) {
 		case "normal" -> {
-			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
+			suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect.getUnmappedValue());
 			suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
 		}
 		case "double" -> textureBottom.setTexture(plant.textureBottom);
@@ -1084,7 +1087,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		// Plant type specific fields
 		switch (Objects.requireNonNull((String) plantType.getSelectedItem())) {
 		case "normal" -> {
-			plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
+			plant.suspiciousStewEffect = new EffectEntry(modElement.getWorkspace(),
+					(String) suspiciousStewEffect.getSelectedItem());
 			plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
 		}
 		case "double" -> plant.textureBottom = textureBottom.getTextureHolder();
@@ -1099,7 +1103,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 		}
 
-		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
+		plant.growapableSpawnType = new GrowapableSpawnType(modElement.getWorkspace(),
+				(String) growapableSpawnType.getSelectedItem());
 		plant.hardness = (double) hardness.getValue();
 		plant.resistance = (double) resistance.getValue();
 		plant.luminance = (int) luminance.getValue();
@@ -1140,9 +1145,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.generationType = (String) generationType.getSelectedItem();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
-		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
+		plant.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		plant.offsetType = (String) offsetType.getSelectedItem();
-		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
+		plant.aiPathNodeType = new AIPathNodeType(modElement.getWorkspace(), aiPathNodeType.getSelectedItem());
 		plant.strippingResult = strippingResult.getBlock();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.ignitedByLava = ignitedByLava.isSelected();

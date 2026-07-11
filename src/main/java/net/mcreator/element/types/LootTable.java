@@ -26,6 +26,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LootTable
@@ -42,6 +43,8 @@ import java.util.List;
 
 	public LootTable(ModElement element) {
 		super(element);
+
+		this.pools = new ArrayList<>();
 	}
 
 	public static class Pool {
@@ -51,6 +54,10 @@ import java.util.List;
 		public boolean hasbonusrolls;
 
 		@ModElementReference public List<Entry> entries;
+
+		public Pool() {
+			this.entries = new ArrayList<>();
+		}
 
 		public static class Entry {
 
@@ -66,6 +73,7 @@ import java.util.List;
 
 			public boolean affectedByFortune, explosionDecay;
 
+			@LimitedOptions({ "Ignore silk touch", "Only with silk touch", "Only without silk touch" })
 			public int silkTouchMode;
 
 			// initiate default values

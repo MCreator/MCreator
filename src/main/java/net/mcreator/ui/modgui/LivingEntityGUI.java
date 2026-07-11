@@ -19,18 +19,18 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
-import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.data.ToolboxType;
+import net.mcreator.blockly.InternalBlocksLoader;
+import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
+import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
@@ -111,19 +111,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JSpinner stepHeight = ComponentFromAnnotation.spinner(LivingEntity.class, "stepHeight");
 	private final JSpinner armorBaseValue = ComponentFromAnnotation.spinner(LivingEntity.class, "armorBaseValue");
 	private final JSpinner health = ComponentFromAnnotation.spinner(LivingEntity.class, "health");
-	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(LivingEntity.class, "knockbackResistance");
+	private final JSpinner knockbackResistance = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"knockbackResistance");
 	private final JSpinner attackKnockback = ComponentFromAnnotation.spinner(LivingEntity.class, "attackKnockback");
 
 	private final JSpinner trackingRange = ComponentFromAnnotation.spinner(LivingEntity.class, "trackingRange");
 	private final JSpinner followRange = ComponentFromAnnotation.spinner(LivingEntity.class, "followRange");
 
-	private final JSpinner rangedAttackInterval = ComponentFromAnnotation.spinner(LivingEntity.class, "rangedAttackInterval");
-	private final JSpinner rangedAttackRadius = ComponentFromAnnotation.spinner(LivingEntity.class, "rangedAttackRadius");
+	private final JSpinner rangedAttackInterval = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"rangedAttackInterval");
+	private final JSpinner rangedAttackRadius = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"rangedAttackRadius");
 
-	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(LivingEntity.class, "spawningProbability");
-	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation
-			.minMaxSpinner(LivingEntity.class, "minNumberOfMobsPerGroup", "maxNumberOfMobsPerGroup")
-			.allowEqualValues();
+	private final JSpinner spawningProbability = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"spawningProbability");
+	private final JMinMaxSpinner numberOfMobsPerGroup = ComponentFromAnnotation.minMaxSpinner(LivingEntity.class,
+			"minNumberOfMobsPerGroup", "maxNumberOfMobsPerGroup").allowEqualValues();
 
 	private final JSpinner modelWidth = ComponentFromAnnotation.spinner(LivingEntity.class, "modelWidth");
 	private final JSpinner modelHeight = ComponentFromAnnotation.spinner(LivingEntity.class, "modelHeight");
@@ -173,7 +176,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private SingleModElementSelector guiBoundTo;
 	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(LivingEntity.class, "inventorySize");
-	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(LivingEntity.class, "inventoryStackSize");
+	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(LivingEntity.class,
+			"inventoryStackSize");
 
 	private MCItemHolder rangedAttackItem;
 	private final SearchableComboBox<String> rangedItemType = new SearchableComboBox<>();
@@ -197,8 +201,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final Model spider = new Model.BuiltInModel("Spider");
 	private static final Model villager = new Model.BuiltInModel("Villager");
 	private static final Model witch = new Model.BuiltInModel("Witch");
-	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cod, cow, creeper, ghast, ocelot, pig,
-			piglin, salmon, silverfish, slime, spider, villager, witch };
+	public static final Model[] builtinmobmodels = AnnotationUtils.getLimitedOptionsList(LivingEntity.class,
+			"mobModelName", Model.BuiltInModel::new).toArray(new Model[0]);
 	private final SearchableComboBox<Model> mobModel = new SearchableComboBox<>(builtinmobmodels);
 
 	private TextureComboBox mobModelTexture;
@@ -208,10 +212,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
-	private final SearchableComboBox<String> aiBase = ComponentFromAnnotation.searchableOptions(LivingEntity.class, "aiBase");
+	private final SearchableComboBox<String> aiBase = ComponentFromAnnotation.searchableOptions(LivingEntity.class,
+			"aiBase");
 
-	private final JComboBox<String> mobBehaviourType = ComponentFromAnnotation.options(LivingEntity.class, "mobBehaviourType");
-	private final JComboBox<String> mobCreatureType = ComponentFromAnnotation.options(LivingEntity.class, "mobCreatureType");
+	private final JComboBox<String> mobBehaviourType = ComponentFromAnnotation.options(LivingEntity.class,
+			"mobBehaviourType");
+	private final JComboBox<String> mobCreatureType = ComponentFromAnnotation.options(LivingEntity.class,
+			"mobCreatureType");
 	private final JComboBox<String> bossBarColor = ComponentFromAnnotation.options(LivingEntity.class, "bossBarColor");
 	private final JComboBox<String> bossBarType = ComponentFromAnnotation.options(LivingEntity.class, "bossBarType");
 
@@ -279,7 +286,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.AI_TASK,
-					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
+					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
+					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			TestUtil.failIfTestingEnvironment();
 			return List.of(); // should not be possible to happen here
@@ -782,6 +790,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.AI_TASK);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.addChangeListener(
@@ -1048,9 +1058,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						.collect(Collectors.toList())));
 
 		ComboBoxUtil.updateComboBoxContents(rangedItemType, ListUtils.merge(Collections.singleton("Default item"),
-				mcreator.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.PROJECTILE).map(ModElement::getName)
-						.collect(Collectors.toList())), "Default item");
+				mcreator.getWorkspace().getModElementsByType(ModElementType.PROJECTILE).stream()
+						.map(ModElement::getName).collect(Collectors.toList())), "Default item");
 
 		disableMobModelCheckBoxListener = false;
 	}
@@ -1113,7 +1122,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
 		visualScale.setSelectedProcedure(livingEntity.visualScale);
 		boundingBoxScale.setSelectedProcedure(livingEntity.boundingBoxScale);
-		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
+		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType.getUnmappedValue());
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1307,7 +1316,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.spawnThisMob = spawnThisMob.isSelected();
 		livingEntity.doesDespawnWhenIdle = doesDespawnWhenIdle.isSelected();
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();
-		livingEntity.mobSpawningType = (String) mobSpawningType.getSelectedItem();
+		livingEntity.mobSpawningType = new MobSpawnType(modElement.getWorkspace(),
+				(String) mobSpawningType.getSelectedItem());
 		livingEntity.rangedItemType = rangedItemType.getSelectedItem();
 		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMinValue();
 		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();
