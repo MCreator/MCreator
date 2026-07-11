@@ -6,5 +6,5 @@
         ${input$player}
       }
     }
-  </#if>
+    </#if>
 },
