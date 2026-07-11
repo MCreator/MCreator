@@ -20,11 +20,11 @@
 package net.mcreator.ui.views.editor.image.animation;
 
 import net.mcreator.io.ResourcePointer;
-import net.mcreator.io.TemplatesLoader;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -52,7 +52,7 @@ public class AnimationImportUtils {
 	private static final Logger LOG = LogManager.getLogger("Animation Import Utils");
 
 	public static void addFramesFromTemplate(AnimationMakerView timeline) {
-		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.animations", "png");
+		List<ResourcePointer> templatesSorted = ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList();
 
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
