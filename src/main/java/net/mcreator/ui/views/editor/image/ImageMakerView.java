@@ -470,6 +470,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
+		// TODO: Find a solution for this
+		// When importing an animation strip, it can sometimes cause a NullPointerException
+		// because it thinks we're dragging the tool on the canvas. It's not problematic however
 		setEditorCursor(toolPanel.getCurrentTool().getUsingCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
 		updateInfoBar(e.getX(), e.getY());

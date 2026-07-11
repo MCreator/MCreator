@@ -84,12 +84,14 @@ public class AnimationMakerView extends JPanel {
 					// The following code handle when we arrive at the last frame (when forward) or the first frame (when backward)
 					// Only frames selected by the user are animated
 					if (!playAllFrames && framesToPlay != null && framesToPlay.length > 0) {
-						if (!playBackward && animindex >= framesToPlay.length) // If we are at the last frame and go forward
+						if (!playBackward
+								&& animindex >= framesToPlay.length) // If we are at the last frame and go forward
 							animindex = framesToPlay[0]; // We go back to the first frame
 						else if (playBackward && animindex < 0) // If we play backward and are at the first frame
 							animindex = framesToPlay[framesToPlay.length - 1]; // We go back to the last frame
-					// All frames are animated
-					} else if (!playBackward && animindex > timelinevector.getSize() - 1) { // If we play forward, and we are at the last frame
+						// All frames are animated
+					} else if (!playBackward && animindex
+							> timelinevector.getSize() - 1) { // If we play forward, and we are at the last frame
 						animindex = 0; // We go back to the first frame
 					} else if (playBackward && animindex < 0) { // If we play backward and are at the first frame
 						animindex = timelinevector.getSize() - 1; // We go back to the last frame
@@ -209,39 +211,20 @@ public class AnimationMakerView extends JPanel {
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
+
+		JButton importButton = new JButton(L10N.t("dialog.animation_maker.import"), UIRES.get("16px.import"));
+		importButton.addActionListener(_ -> AnimationImportUtils.importImagesAsFrames(this));
+		timelinebar.add(importButton);
+
 		JButton add = L10N.button("dialog.animation_maker.add_new_frame");
 		add.addActionListener(_ -> addFrameFromEmptyLayer());
-		//		add.addActionListener(_ -> {
-		//			File[] frames = FileDialogs.getMultiOpenDialog(imv.getMCreator(), new String[] { ".png" });
-		//			if (frames != null) {
-		//				Arrays.stream(frames).forEach(frame -> {
-		//					try {
-		//						timelinevector.addElement(createCanvasFromBufferedImage(ImageIO.read(frame),
-		//								FilenameUtilsPatched.removeExtension(frame.getName())));
-		//					} catch (IOException e) {
-		//						LOG.error(e.getMessage(), e);
-		//					}
-		//				});
-		//			}
-		//		});
 		add.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add);
 
-		JButton addFromTemplates = L10N.button("dialog.animation_maker.add_frames_from_template");
+		JButton addFromTemplates = L10N.button("dialog.animation_maker.create_frames_from_template");
 		addFromTemplates.addActionListener(_ -> AnimationImportUtils.addFramesFromTemplate(this));
 		addFromTemplates.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(addFromTemplates);
-
-		JButton addFromStrip = L10N.button("dialog.animation_maker.add_frames_from_strip");
-		addFromStrip.addActionListener(_ -> AnimationImportUtils.addFramesFromStrip(this));
-		addFromStrip.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(addFromStrip);
-
-		JButton addFromGif = L10N.button("dialog.animation_maker.add_frames_from_gif");
-		addFromGif.addActionListener(_ -> {
-		});
-		addFromGif.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(addFromGif);
 
 		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 		remove.addActionListener(_ -> {
@@ -266,12 +249,12 @@ public class AnimationMakerView extends JPanel {
 
 		timelinePanel.setPreferredSize(new Dimension(9000, 260));
 
-//		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
-//		save.setMargin(new Insets(1, 40, 1, 40));
-//		save.setBackground(Theme.current().getInterfaceAccentColor());
-//		save.setForeground(Theme.current().getSecondAltBackgroundColor());
-//		save.setFocusPainted(false);
-//		save.addActionListener(_ -> use());
+		//		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
+		//		save.setMargin(new Insets(1, 40, 1, 40));
+		//		save.setBackground(Theme.current().getInterfaceAccentColor());
+		//		save.setForeground(Theme.current().getSecondAltBackgroundColor());
+		//		save.setFocusPainted(false);
+		//		save.addActionListener(_ -> use());
 
 		add("North", PanelUtils.westAndCenterElement(controls, timelinebar));
 		add("Center", timelinePanel);
@@ -327,25 +310,15 @@ public class AnimationMakerView extends JPanel {
 
 	/**
 	 * <p>This method takes a {@link BufferedImage} that contains multiple frames (a tiled image) and divide each image into their own frame.
-	 * Then, each individual frame is added to the timeline. It can also colorize the original picture before adding frames to the timeline.</p>
+	 * Then, each individual frame is added to the timeline.</p>
 	 *
 	 * @param bufferedImage The tiled {@link BufferedImage} containing all frames
 	 * @param name          This is the name that will be used for each {@link Layer}
-	 * @param colorize      If true, it will colorize the image with the provided {@link Color}
-	 * @param colorizerType If false, it will lock the saturation and lightness
-	 * @param color         This is the color used by the recolorization process
 	 */
-	public void generateTimelineFromTiledBufferedImage(BufferedImage bufferedImage, String name, boolean colorize,
-			boolean colorizerType, Color color) {
-		BufferedImage b;
-		if (colorize)
-			b = ImageUtils.toBufferedImage(
-					ImageUtils.colorize(new ImageIcon(bufferedImage), color, colorizerType).getImage());
-		else
-			b = bufferedImage;
-		int x = Math.min(b.getHeight(), b.getWidth());
+	public void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name) {
+		int x = Math.min(bufferedImage.getHeight(), bufferedImage.getWidth());
 		try {
-			TiledImageUtils tiledImageUtils = new TiledImageUtils(b, x, x);
+			TiledImageUtils tiledImageUtils = new TiledImageUtils(bufferedImage, x, x);
 			for (int i = 1; i <= tiledImageUtils.getWidthInTiles(); i++) {
 				for (int j = 1; j <= tiledImageUtils.getHeightInTiles(); j++) {
 					BufferedImage buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());

@@ -44,23 +44,21 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class AnimationImportUtils {
+@SuppressWarnings("SuspiciousNameCombination") public class AnimationImportUtils {
 
 	private static final Logger LOG = LogManager.getLogger("Animation Import Utils");
 
 	public static void addFramesFromTemplate(AnimationMakerView timeline) {
-		List<ResourcePointer> templatesSorted = ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList();
+		List<ResourcePointer> templatesSorted = new ArrayList<>(
+				ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList());
+		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
 
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
-
-		JLabel lab1 = L10N.label("dialog.animation_maker.template_color_choice");
-		JLabel lab2 = L10N.label("dialog.animation_maker.template");
-		JLabel lab3 = L10N.label("dialog.animation_maker.color");
-		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
 
 		JLabel preview = new JLabel();
 		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
@@ -70,13 +68,14 @@ public class AnimationImportUtils {
 		templatesSorted.forEach(types::addItem);
 
 		JColor colors = new JColor(timeline.getImageMakerView().getMCreator(), false, true);
-		JCheckBox cbox = new JCheckBox();
+		JCheckBox lockSaturation = new JCheckBox();
 		ActionListener al = _ -> {
 			try {
 				int width = ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()).getWidth();
 				preview.setIcon(new ImageIcon(ImageUtils.resize(ImageUtils.colorize(
-						new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width,
-								width).getIcon(1, 1), colors.getColor(), !cbox.isSelected()).getImage(), 128)));
+								new TiledImageUtils(templatesSorted.get(types.getSelectedIndex()).getStream(), width,
+										width).getIcon(1, 1), colors.getColor(), !lockSaturation.isSelected()).getImage(),
+						128)));
 			} catch (InvalidTileSizeException | IOException e) {
 				LOG.error(e.getMessage(), e);
 			}
@@ -85,19 +84,19 @@ public class AnimationImportUtils {
 		al.actionPerformed(new ActionEvent("", 0, null));
 
 		types.addActionListener(al);
-		cbox.addActionListener(al);
+		lockSaturation.addActionListener(al);
 		colors.addColorSelectedListener(al);
 
-		panel.add("North", lab1);
+		panel.add("North", L10N.label("dialog.animation_maker.strip_color_choice"));
 		panel.add("Center", centerPanel);
 		panel.add("South", PanelUtils.centerInPanel(preview));
 
-		centerPanel.add(lab2);
+		centerPanel.add(L10N.label("dialog.animation_maker.template"));
 		centerPanel.add(types);
-		centerPanel.add(lab3);
+		centerPanel.add(L10N.label("dialog.animation_maker.color"));
 		centerPanel.add(colors);
-		centerPanel.add(lab4);
-		centerPanel.add(cbox);
+		centerPanel.add(L10N.label("dialog.animation_maker.saturation_lightness_lock"));
+		centerPanel.add(lockSaturation);
 
 		if (JOptionPane.showOptionDialog(timeline.getImageMakerView(), panel,
 				L10N.t("dialog.animation_maker.add_frames_from_template"), JOptionPane.YES_NO_CANCEL_OPTION,
@@ -106,104 +105,122 @@ public class AnimationImportUtils {
 				L10N.t("common.add")) == 0) {
 			try {
 				ResourcePointer rp = templatesSorted.get(types.getSelectedIndex());
-				timeline.generateTimelineFromTiledBufferedImage(
-						TiledImageUtils.convert(ImageIO.read(rp.getStream()), BufferedImage.TYPE_INT_ARGB),
-						rp.toString(), true, !cbox.isSelected(), colors.getColor());
+				BufferedImage finalImage = ImageUtils.toBufferedImage(
+						ImageUtils.colorize(new ImageIcon(ImageIO.read(rp.getStream())), colors.getColor(),
+								!lockSaturation.isSelected()).getImage());
+				timeline.generateTimelineFromBufferedImage(finalImage,
+						FilenameUtilsPatched.removeExtension(rp.toString()));
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
 			}
 		}
 	}
 
-	public static void addFramesFromStrip(AnimationMakerView timeline) {
-		AtomicReference<File> f = new AtomicReference<>();
+	public static void importImagesAsFrames(AnimationMakerView timeline) {
+		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(),
+				new String[] { ".png", ".gif" });
+		for (File file : files) {
+			if (file != null) {
+				if (file.getName().endsWith(".gif")) {
+					gifToFrames(timeline, file);
+				} else if (file.getName().endsWith(".png")) {
+					try {
+						BufferedImage image = TiledImageUtils.convert(ImageIO.read(file), BufferedImage.TYPE_INT_ARGB);
+						if (image.getHeight()
+								== image.getWidth()) { // This is a single/normal texture, so we can simply import it normally
+							timeline.addFrameToTimeline(timeline.createCanvasFromBufferedImage(image,
+									FilenameUtilsPatched.removeExtension(file.getName())));
+						} else { // This is a strip texture, so we offer the user to colorize the strip before importing it
+							int x = Math.min(image.getHeight(), image.getWidth());
+							colorizeFramesDialog(timeline, image, new TiledImageUtils(image, x, x).getIcon(1, 1),
+									file.getName());
+						}
+					} catch (InvalidTileSizeException | IOException e) {
+						LOG.error(e.getMessage(), e);
+					}
+				}
+			}
+		}
+	}
 
-		JPanel od = new JPanel(new BorderLayout());
+	public static void colorizeFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
+			ImageIcon previewIcon, String name) throws IOException {
+		JPanel optionsPanel = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
-
-		JLabel lab1 = L10N.label("dialog.animation_maker.strip_color_choice");
-		JLabel lab2 = L10N.label("dialog.animation_maker.strip");
-		JLabel lab3 = L10N.label("dialog.animation_maker.color");
-		JLabel lab4 = L10N.label("dialog.animation_maker.saturation_lightness_lock");
-		JLabel lab5 = L10N.label("dialog.animation_maker.colorize");
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
 		preview.setBorder(
 				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
 						timeline.getFont().deriveFont(12.0f), Color.gray));
 
-		JButton selectFile = new JButton("...");
+		JCheckBox colorize = new JCheckBox();
 		JColor colors = new JColor(timeline.getImageMakerView().getMCreator(), false, true);
-		JCheckBox cbox = new JCheckBox();
-		JCheckBox cbox2 = new JCheckBox();
+		JCheckBox lockSaturation = new JCheckBox();
 
-		AtomicReference<TiledImageUtils> tilImgUtl = new AtomicReference<>();
-
-		selectFile.addActionListener(_ -> {
-			f.set(FileDialogs.getOpenDialog(timeline.getImageMakerView().getMCreator(), new String[] { ".png" }));
-			try {
-				if (f.get() != null) {
-					BufferedImage imge = TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB);
-					int x = Math.min(imge.getHeight(), imge.getWidth());
-					selectFile.setText(StringUtils.abbreviateString(f.get().getName(), 25));
-					tilImgUtl.set(new TiledImageUtils(imge, x, x));
-					if (cbox2.isSelected())
-						preview.setIcon(new ImageIcon(ImageUtils.resize(
-								ImageUtils.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(),
-										!cbox.isSelected()).getImage(), 128)));
-					else
-						preview.setIcon(
-								new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
-				}
-			} catch (InvalidTileSizeException | IOException e) {
-				LOG.error(e.getMessage(), e);
-			}
-		});
+		if (colorize.isSelected())
+			preview.setIcon(new ImageIcon(ImageUtils.resize(
+					ImageUtils.colorize(previewIcon, colors.getColor(), !lockSaturation.isSelected()).getImage(),
+					128)));
+		else
+			preview.setIcon(new ImageIcon(ImageUtils.resize(previewIcon.getImage(), 128)));
 
 		ActionListener al = _ -> {
-			if (f.get() != null && tilImgUtl.get() != null)
-				if (cbox2.isSelected())
-					preview.setIcon(new ImageIcon(ImageUtils.resize(
-							ImageUtils.colorize(tilImgUtl.get().getIcon(1, 1), colors.getColor(), !cbox.isSelected())
-									.getImage(), 128)));
-				else
-					preview.setIcon(new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
+			if (colorize.isSelected()) {
+				preview.setIcon(new ImageIcon(ImageUtils.resize(
+						ImageUtils.colorize(previewIcon, colors.getColor(), !lockSaturation.isSelected()).getImage(),
+						128)));
+			} else {
+				preview.setIcon(new ImageIcon(ImageUtils.resize(previewIcon.getImage(), 128)));
+			}
+			updateColorParameters(colorize, lockSaturation, colors);
 		};
+		updateColorParameters(colorize, lockSaturation, colors);
 
 		colors.addColorSelectedListener(al);
-		cbox.addActionListener(al);
-		cbox2.addActionListener(al);
+		lockSaturation.addActionListener(al);
+		colorize.addActionListener(al);
 
-		od.add("North", lab1);
-		od.add("Center", centerPanel);
-		od.add("South", preview);
-
-		centerPanel.add(lab2);
-		centerPanel.add(selectFile);
-		centerPanel.add(lab3);
+		centerPanel.add(L10N.label("dialog.animation_maker.strip"));
+		centerPanel.add(new JLabel(StringUtils.abbreviateString(name, 25)));
+		centerPanel.add(L10N.label("dialog.animation_maker.colorize"));
+		centerPanel.add(colorize);
+		centerPanel.add(L10N.label("dialog.animation_maker.color"));
 		centerPanel.add(colors);
-		centerPanel.add(lab4);
-		centerPanel.add(cbox);
-		centerPanel.add(lab5);
-		centerPanel.add(cbox2);
+		centerPanel.add(L10N.label("dialog.animation_maker.saturation_lightness_lock"));
+		centerPanel.add(lockSaturation);
 
-		if (JOptionPane.showOptionDialog(timeline.getImageMakerView(), od,
+		optionsPanel.add("North", L10N.label("dialog.animation_maker.optional_colorization"));
+		optionsPanel.add("Center", centerPanel);
+		optionsPanel.add("South", preview);
+
+		int answer = JOptionPane.showOptionDialog(timeline.getImageMakerView(), optionsPanel,
 				L10N.t("dialog.animation_maker.add_frames_from_file"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Add", "Cancel" }, "Add") == 0) {
-			try {
-				timeline.generateTimelineFromTiledBufferedImage(
-						TiledImageUtils.convert(ImageIO.read(f.get()), BufferedImage.TYPE_INT_ARGB),
-						FilenameUtilsPatched.removeExtension(f.get().getName()), cbox2.isSelected(), !cbox.isSelected(),
-						colors.getColor());
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+				JOptionPane.PLAIN_MESSAGE, null, new String[] { L10N.t("common.add"), L10N.t("common.cancel") },
+				L10N.t("common.add"));
+
+		if (answer == 0) {
+			BufferedImage finalImage = bufferedImage;
+			if (colorize.isSelected()) {
+				finalImage = ImageUtils.toBufferedImage(
+						ImageUtils.colorize(new ImageIcon(bufferedImage), colors.getColor(),
+								!lockSaturation.isSelected()).getImage());
 			}
+			timeline.generateTimelineFromBufferedImage(finalImage, FilenameUtilsPatched.removeExtension(name));
 		}
 	}
 
-	public static void addFramesFromGif(AnimationMakerView timeline) {
-		File frame = FileDialogs.getOpenDialog(timeline.getImageMakerView().getMCreator(), new String[] { ".gif" });
-		if (frame != null) {
+	private static void updateColorParameters(JCheckBox colorize, JCheckBox lockSaturation, JColor colors) {
+		if (colorize.isSelected()) {
+			lockSaturation.setEnabled(true);
+			colors.setEnabled(true);
+		} else {
+			lockSaturation.setEnabled(false);
+			colors.setEnabled(false);
+		}
+	}
+
+	public static void gifToFrames(AnimationMakerView timeline, File file) {
+		if (file != null) {
 			ProgressDialog dial = new ProgressDialog(timeline.getImageMakerView().getMCreator(),
 					L10N.t("dialog.animation_maker.gif_importing"));
 			Thread t = new Thread(() -> {
@@ -211,7 +228,7 @@ public class AnimationImportUtils {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 							L10N.t("dialog.animation_maker.gif_reading"));
 					dial.addProgressUnit(p1);
-					Image[] frames = GifUtil.readAnimatedGif(frame);
+					Image[] frames = GifUtil.readAnimatedGif(file);
 					if (frames.length > 0)
 						p1.markStateOk();
 					else {
@@ -231,7 +248,7 @@ public class AnimationImportUtils {
 						int finalI = i;
 						SwingUtilities.invokeLater(() -> timeline.addFrameToTimeline(
 								timeline.createCanvasFromBufferedImage(ImageUtils.toBufferedImage(frames[finalI]),
-										FilenameUtilsPatched.removeExtension(frame.getName()) + finalI)));
+										FilenameUtilsPatched.removeExtension(file.getName()) + finalI)));
 						p2.setPercent((int) (i / (float) frames.length * 100));
 					}
 					p2.markStateOk();
