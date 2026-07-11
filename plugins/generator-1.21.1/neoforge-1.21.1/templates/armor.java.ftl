@@ -354,7 +354,7 @@ import net.minecraft.client.model.Model;
 	.add(${modifier.attribute}, new AttributeModifier(
 			ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}.${armorPart}"),
 			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}),
-			<#if modifier.equipmentSlot == "default">${defaultEquipSlot}<#else>${modifier.equipmentSlot}</#if>)
+			<#if modifier.equipmentSlot == "default">${defaultEquipSlot}<#else>${modifier.equipmentSlot.getUnmappedValue()}</#if>)
 	</#list>.build()
 )
 </#if>
