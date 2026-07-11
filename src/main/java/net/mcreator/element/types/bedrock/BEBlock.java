@@ -52,7 +52,7 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@TextureReference(TextureType.BLOCK) public TextureHolder destructionParticles;
 	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
 			"water" }) public String particleTintMethod;
-	@Numeric(init= 100, min = 0, max = 255, step = 1) public int particleCount;
+	@Numeric(init = 100, min = 0, max = 255, step = 1) public int particleCount;
 	public boolean flowerPottable;
 	@Nullable @TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
 	public int pottedRenderType;

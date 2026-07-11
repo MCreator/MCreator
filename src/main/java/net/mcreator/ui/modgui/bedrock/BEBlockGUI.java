@@ -82,7 +82,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JCheckBox flowerPottable = L10N.checkbox("elementgui.common.enable");
 	private final TextureSelectionButton pottedTexture = new TextureSelectionButton(
 			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
-	private final SearchableComboBox<Model> pottedModel = new SearchableComboBox<>(new Model[] { original, normal, cross });
+	private final SearchableComboBox<Model> pottedModel = new SearchableComboBox<>(
+			new Model[] { original, normal, cross });
 
 	private final VTextField name = new VTextField(10).requireValue("elementgui.block.error_block_must_have_name")
 			.enableRealtimeValidation();
@@ -165,7 +166,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/render_method"),
 				L10N.label("elementgui.beblock.render_method")));
-		renderMethod.setPreferredSize(new Dimension(260, 42));
 		renderSettings.add(renderMethod);
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/tint_method"),
@@ -180,7 +180,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/potted_model"),
 				L10N.label("elementgui.beblock.potted_model")));
 		ComponentUtils.deriveFont(pottedModel, 16);
-		pottedModel.setPreferredSize(new Dimension(280, 42));
 		pottedModel.setRenderer(new ModelComboBoxRenderer());
 		renderSettings.add(pottedModel);
 
