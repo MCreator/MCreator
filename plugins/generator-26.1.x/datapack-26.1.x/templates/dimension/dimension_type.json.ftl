@@ -48,8 +48,10 @@
     <#elseif data.defaultEffects == "the_nether">
       "minecraft:visual/fog_start_distance": 10,
       "minecraft:visual/fog_end_distance": 96,
+      "minecraft:visual/ambient_light_color": "#302821",
       "minecraft:visual/sky_light_color": "#7a7aff",
       "minecraft:visual/sky_light_factor": 0,
+      "minecraft:gameplay/sky_light_level": 4.0,
     <#elseif data.defaultEffects == "the_end">
       "minecraft:visual/ambient_light_color": "#3f473f",
       "minecraft:visual/fog_color": "#181318",
