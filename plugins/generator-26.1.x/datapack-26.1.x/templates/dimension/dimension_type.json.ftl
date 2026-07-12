@@ -46,8 +46,8 @@
       "minecraft:visual/fog_color": "#c0d8ff",
       "minecraft:visual/sky_color": "#78a7ff",
     <#elseif data.defaultEffects == "the_nether">
-      "minecraft:visual/fog_start_distance": 10,
-      "minecraft:visual/fog_end_distance": 96,
+      "minecraft:visual/fog_start_distance": 5,
+      "minecraft:visual/fog_end_distance": 40,
       "minecraft:visual/sky_light_color": "#7a7aff",
       "minecraft:visual/sky_light_factor": 0,
     <#elseif data.defaultEffects == "the_end">
