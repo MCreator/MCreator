@@ -1,46 +1,19 @@
-<#-- Color helpers for hex string tracks -->
-<#function hexToDec hex>
-  <#assign hexChars = "0123456789abcdef">
-  <#assign val = 0>
-  <#list 0..(hex?length-1) as i>
-    <#assign char = hex?substring(i, i+1)?lower_case>
-    <#assign val = val * 16 + hexChars?index_of(char)>
-  </#list>
-  <#return val>
-</#function>
-
-<#function decToHex dec>
-  <#assign hexChars = "0123456789abcdef">
-  <#assign d = dec?floor>
-  <#assign h1 = (d / 16)?floor % 16>
-  <#assign h2 = d % 16>
-  <#return hexChars?substring(h1, h1+1) + hexChars?substring(h2, h2+1)>
-</#function>
-
 <#function parseColor val>
   <#assign hex = val?replace("#", "")>
   <#if hex?length == 6>
     <#assign a = 255>
-    <#assign r = hexToDec(hex?substring(0,2))>
-    <#assign g = hexToDec(hex?substring(2,4))>
-    <#assign b = hexToDec(hex?substring(4,6))>
+    <#assign r = thelper.hexToDec(hex?substring(0,2))>
+    <#assign g = thelper.hexToDec(hex?substring(2,4))>
+    <#assign b = thelper.hexToDec(hex?substring(4,6))>
+    <#return {"r": r, "g": g, "b": b, "a": a}>
   <#elseif hex?length == 8>
-    <#assign r = hexToDec(hex?substring(0,2))>
-    <#assign g = hexToDec(hex?substring(2,4))>
-    <#assign b = hexToDec(hex?substring(4,6))>
-    <#assign a = hexToDec(hex?substring(6,8))>
+    <#assign r = thelper.hexToDec(hex?substring(0,2))>
+    <#assign g = thelper.hexToDec(hex?substring(2,4))>
+    <#assign b = thelper.hexToDec(hex?substring(4,6))>
+    <#assign a = thelper.hexToDec(hex?substring(6,8))>
+    <#return {"r": r, "g": g, "b": b, "a": a}>
   <#else>
     <#return {"r": 255, "g": 255, "b": 255, "a": 255}>
-  </#if>
-  <#return {"r": r, "g": g, "b": b, "a": a}>
-</#function>
-
-<#function formatColor c>
-  <#assign baseHex = "#" + decToHex(c.r) + decToHex(c.g) + decToHex(c.b)>
-  <#if c.a == 255>
-    <#return baseHex>
-  <#else>
-    <#return baseHex + decToHex(c.a)>
   </#if>
 </#function>
 
@@ -51,7 +24,7 @@
   <#assign g = c1.g + (c2.g - c1.g) * progress>
   <#assign b = c1.b + (c2.b - c1.b) * progress>
   <#assign a = c1.a + (c2.a - c1.a) * progress>
-  <#return formatColor({"r": r, "g": g, "b": b, "a": a})>
+  <#return thelper.formatColor(r, g, b, a)>
 </#function>
 
 <#function isHexColorValue val>
@@ -170,10 +143,6 @@
   </#if>
 </#function>
 
-<#assign fixedTime = (data.fixedTimeValue)!0>
-<#assign time = fixedTime % 24000>
-<#if time < 0><#assign time = time + 24000></#if>
-
 <#assign timelineData = '{
   "clock": "minecraft:overworld",
   "period_ticks": 24000,
@@ -207,7 +176,7 @@
 <#assign trackNames = tracks?keys>
 <#list trackNames as trackName>
   <#assign track = tracks[trackName]>
-  <#assign val = getTrackValue(trackName, track, time)>
+  <#assign val = getTrackValue(trackName, track, data.fixedTimeValue)>
   <#assign isLast = !trackName_has_next>
   <#assign formattedVal = val>
   <#if val?is_boolean>

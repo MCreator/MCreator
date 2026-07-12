@@ -65,7 +65,11 @@
   "coordinate_scale": ${data.coordinateScale},
   "ambient_light": ${data.ambientLight},
   "infiniburn": "#${data.infiniburnTag}",
-  <#if data.hasFixedTime>
+  <#if data.defaultEffects == "the_end">
+  "timelines": "#minecraft:in_end",
+  <#elseif data.defaultEffects == "the_nether">
+  "timelines": "#minecraft:in_nether",
+  <#elseif data.hasFixedTime>
   "has_fixed_time": true,
   "timelines": "${modid}:${registryname}_fixed",
   "default_clock": "minecraft:overworld",
