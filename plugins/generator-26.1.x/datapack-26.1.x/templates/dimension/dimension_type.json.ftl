@@ -29,8 +29,8 @@
     </#if>
     <#if data.useCustomEffects>
       <#if data.hasFog>
-      "minecraft:visual/fog_start_distance": 1,
-      "minecraft:visual/fog_end_distance": 10,
+      "minecraft:visual/fog_start_distance": 5,
+      "minecraft:visual/fog_end_distance": 40,
       </#if>
       <#if data.airColor?has_content>
       "minecraft:visual/fog_color": "${thelper.colorToHexString(data.airColor)}",
