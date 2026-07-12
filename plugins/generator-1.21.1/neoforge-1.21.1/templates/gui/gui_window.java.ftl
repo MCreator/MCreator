@@ -164,11 +164,20 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
 					<#if hasProcedure(component.text)>
 					String hoverText = <@procedureOBJToStringCode component.text/>;
+					List<Component> listComponents = Arrays.stream(hoverText.getString().split("%nl"))
+                                                    .map(Component::literal)
+                                                    .collect(Collectors.toList());
 					if (hoverText != null) {
-						guiGraphics.renderComponentTooltip(font, Arrays.stream(hoverText.split("\n")).map(Component::literal).collect(Collectors.toList()), mouseX, mouseY);
+						guiGraphics.renderComponentTooltip(font, listComponent, mouseX, mouseY);
 					}
 					<#else>
-						guiGraphics.renderTooltip(font, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), mouseX, mouseY);
+						String hoverText = Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString();
+						List<Component> listComponent = Arrays.stream(hoverText.split("%nl"))
+                                                        .map(Component::literal)
+                                                     	.collect(Collectors.toList());
+						if (hoverText != null) {
+							guiGraphics.renderComponentTooltip(font, listComponent, mouseX, mouseY);
+						}
 					</#if>
 					customTooltipShown = true;
 				}
@@ -253,9 +262,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
-			guiGraphics.drawString(this.font,
-				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()}, ${component.hasShadow});
+			String LabelText = <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString()</#if>;
+            			List<Component> listComponents = Arrays.stream(LabelText.split("%nl"))
+                                                        .map(Component::literal)
+                                                     	.collect(Collectors.toList());
+            			height = ${component.gy(data.height)};
+            			int BaseSpaceBetweenLine = 10;
+            			for(Component actualComponent : listComponents){
+            				guiGraphics.drawString(this.font,
+                            				actualComponent,
+                            				${component.gx(data.width)}, ${component.gy(data.height)} + BaseSpaceBetweenLine, ${component.color.getRGB()}, ${component.hasShadow});
+            				BaseSpaceBetweenLine += 10;
+						}
 		</#list>
 	}
 
