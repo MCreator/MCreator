@@ -139,7 +139,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
 					<#if hasProcedure(component.text)>
 					String hoverText = <@procedureOBJToStringCode component.text/>;
-					List<Component> listComponents = Arrays.stream(hoverText.getString().split("%nl")) // \\R gère tous les sauts de ligne
+					List<Component> listComponents = Arrays.stream(hoverText.getString().split("%nl"))
                                 .map(Component::literal) // Convertit chaque String en Component
                                 .collect(Collectors.toList());
 					if (hoverText != null) {
@@ -147,7 +147,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 					}
 					<#else>
 					String hoverText = Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString();
-					List<Component> listComponent = Arrays.stream(hoverText.split("%nl")) // \\R gère tous les sauts de ligne
+					List<Component> listComponent = Arrays.stream(hoverText.split("%nl"))
                                 .map(Component::literal) // Convertit chaque String en Component
                              	.collect(Collectors.toList());
 					if (hoverText != null) {
