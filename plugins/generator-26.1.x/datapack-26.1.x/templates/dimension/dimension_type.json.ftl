@@ -20,9 +20,6 @@
       }
     },
     </#if>
-    <#if data.hasFixedTime>
-    "minecraft:visual/sun_angle": ${data.fixedTimeValue * 0.015},
-    </#if>
     <#if data.hasClouds>
     "minecraft:visual/cloud_height": ${[[(((data.cloudHeight + 8) / 16)?floor * 16), 2031]?min, -2032]?max},
     "minecraft:visual/cloud_color": "#ccffffff",
@@ -72,8 +69,14 @@
   "coordinate_scale": ${data.coordinateScale},
   "ambient_light": ${data.ambientLight},
   "infiniburn": "#${data.infiniburnTag}",
-  <#if data.hasFixedTime>
+  <#if data.defaultEffects == "the_end">
+  "timelines": "#minecraft:in_end",
+  <#elseif data.defaultEffects == "the_nether">
+  "timelines": "#minecraft:in_nether",
+  <#elseif data.hasFixedTime>
   "has_fixed_time": true,
+  "timelines": "${modid}:${registryname}_fixed",
+  "default_clock": "minecraft:overworld",
   <#else>
   "timelines": "#minecraft:in_overworld",
   "default_clock": "minecraft:overworld",

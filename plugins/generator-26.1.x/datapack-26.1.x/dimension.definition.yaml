@@ -2,6 +2,10 @@ templates:
   - template: dimension/dimension_type.json.ftl
     writer: json
     name: "@MODDATAROOT/dimension_type/@registryname.json"
+  - template: dimension/fixed_timeline.json.ftl
+    writer: json
+    condition: hasFixedTime
+    name: "@MODDATAROOT/timeline/@registryname_fixed.json"
   - template: dimension/dimension_overworld.json.ftl
     writer: json
     condition: "worldGenType %= Normal world gen"
