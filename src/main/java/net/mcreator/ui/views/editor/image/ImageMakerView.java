@@ -520,7 +520,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 					leftSplitPane.setDividerLocation(0.16);
 					rightSplitPane.setDividerLocation(0.79);
 					southSplitPane.setDividerLocation(
-							PreferencesManager.PREFERENCES.imageEditor.defaultPercentageTimeline.get() / 100d);
+							(100 - PreferencesManager.PREFERENCES.imageEditor.defaultPercentageTimeline.get()) / 100d);
 					paletteLayerSplitPane.setDividerLocation(0.5);
 					zoomPane.getZoomport().fitZoom();
 					firstTime = false;
