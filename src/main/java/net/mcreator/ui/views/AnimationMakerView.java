@@ -50,6 +50,8 @@ public class AnimationMakerView extends JPanel {
 	private final DefaultListModel<Canvas> timelinevector = new DefaultListModel<>();
 	private final JList<Canvas> timeline = new JList<>(timelinevector);
 
+	private final JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
+
 	private int animindex = 0;
 	private int[] framesToPlay;
 	private boolean playAllFrames = true;
@@ -220,14 +222,28 @@ public class AnimationMakerView extends JPanel {
 		addFromTemplates.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(addFromTemplates);
 
-		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 		remove.addActionListener(_ -> {
-			if (timeline.getSelectedValue() != null)
-				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
+			if (timeline.getSelectedValue() != null) {
+				timeline.getSelectedValuesList().forEach(canvas -> {
+					if (timelinevector.getSize() > 1) {
+						timelinevector.removeElement(canvas);
+					} else if (timelinevector.getSize() == 1
+							&& PreferencesManager.PREFERENCES.imageEditor.singleFrameDeletionBehaviour.get()
+							.equals("Empty frame")) {
+						timelinevector.removeElement(canvas);
+						addFrameFromEmptyLayer();
+					}
+				});
+			}
 
-			if (timelinevector.getSize() <= 1) {
+			if (timelinevector.getSize() == 1) {
 				imv.save.setText(L10N.t("dialog.image_maker.save"));
 				imv.saveNew.setText(L10N.t("dialog.image_maker.save_as_new"));
+
+				if (PreferencesManager.PREFERENCES.imageEditor.singleFrameDeletionBehaviour.get()
+						.equals("Keep existing frame")) {
+					remove.setEnabled(false);
+				}
 			}
 		});
 		remove.setIcon(UIRES.get("18px.remove"));
@@ -286,6 +302,11 @@ public class AnimationMakerView extends JPanel {
 		if (timelinevector.getSize() > 1) {
 			imv.save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
 			imv.saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
+
+			if (PreferencesManager.PREFERENCES.imageEditor.singleFrameDeletionBehaviour.get()
+					.equals("Keep existing frame")) {
+				remove.setEnabled(true);
+			}
 		}
 	}
 
@@ -325,14 +346,6 @@ public class AnimationMakerView extends JPanel {
 		imv.getLayerPanel().setCanvas(newCanvas);
 		imv.getLayerPanel().updateSelection();
 		imv.repaint();
-	}
-
-	public int getAnimationIndex() {
-		return animindex;
-	}
-
-	public void setAnimationIndex(int animindex) {
-		this.animindex = animindex;
 	}
 
 	public ImageMakerView getImageMakerView() {

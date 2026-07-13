@@ -33,14 +33,16 @@ public class ImageEditorSection extends PreferencesSection {
 	public final ColorEntry selectedFramesColor;
 	public final IntegerEntry defaultPercentageTimeline;
 	public final StringEntry selectedFrameAtOpening;
+	public final StringEntry singleFrameDeletionBehaviour;
 
 	ImageEditorSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
 		storeMetadata = addEntry(new BooleanEntry("storeMetadata", true));
 		selectedFramesColor = addEntry(new ColorEntry("selectedFramesColor", new Color(75, 85, 197)));
-		defaultPercentageTimeline = addEntry(new IntegerEntry("defaultPercentageTimeline", 76, 50, 100));
+		defaultPercentageTimeline = addEntry(new IntegerEntry("defaultPercentageTimeline", 24, 0, 50));
 		selectedFrameAtOpening = addEntry(new StringEntry("selectedFrameAtOpening", "First frame", "First frame", "Last frame"));
+		singleFrameDeletionBehaviour = addEntry(new StringEntry("singleFrameDeletionBehaviour", "Empty frame", "Empty frame", "Keep existing frame"));
 	}
 
 	@Override public String getSectionKey() {
