@@ -50,12 +50,8 @@ public class AnimationMakerView extends JPanel {
 	private final DefaultListModel<Canvas> timelinevector = new DefaultListModel<>();
 	private final JList<Canvas> timeline = new JList<>(timelinevector);
 
+	private final JToolBar controls = new JToolBar();
 	private final JButton play = new JButton("");
-	private final JButton stop = new JButton("");
-	private final JButton prev = new JButton(UIRES.get("16px.previous"));
-	private final JButton backward = new JButton(UIRES.get("16px.rwd"));
-	private final JButton forward = new JButton(UIRES.get("16px.fwd"));
-	private final JButton next = new JButton(UIRES.get("16px.next"));
 	private final JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 	private final JButton convertButton = L10N.button("dialog.animation_maker.convert");
 
@@ -113,8 +109,6 @@ public class AnimationMakerView extends JPanel {
 			}
 		}, "AnimationRenderer");
 
-		JToolBar controls = new JToolBar();
-
 		play.setIcon(UIRES.get("16px.play"));
 		play.addActionListener(_ -> {
 			if (timeline.getSelectedIndices().length > 1) {
@@ -138,6 +132,7 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(play);
 
+		JButton stop = new JButton("");
 		stop.addActionListener(_ -> {
 			animindex = 0;
 			playanim = false;
@@ -151,6 +146,7 @@ public class AnimationMakerView extends JPanel {
 
 		controls.addSeparator();
 
+		JButton prev = new JButton(UIRES.get("16px.previous"));
 		prev.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex--;
@@ -163,6 +159,7 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(prev);
 
+		JButton backward = new JButton(UIRES.get("16px.rwd"));
 		backward.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				if (!animator.isAlive())
@@ -178,6 +175,7 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(backward);
 
+		JButton forward = new JButton(UIRES.get("16px.fwd"));
 		forward.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				if (!animator.isAlive())
@@ -191,6 +189,7 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(forward);
 
+		JButton next = new JButton(UIRES.get("16px.next"));
 		next.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex++;
@@ -285,21 +284,11 @@ public class AnimationMakerView extends JPanel {
 
 	private void updateTimelineButtons() {
 		if (timelinevector.getSize() == 1) {
-			play.setEnabled(false);
-			stop.setEnabled(false);
-			prev.setEnabled(false);
-			backward.setEnabled(false);
-			forward.setEnabled(false);
-			next.setEnabled(false);
-			remove.setEnabled(false);
+			controls.setVisible(false);
+			remove.setVisible(false);
 		} else {
-			play.setEnabled(true);
-			stop.setEnabled(true);
-			prev.setEnabled(true);
-			backward.setEnabled(true);
-			forward.setEnabled(true);
-			next.setEnabled(true);
-			remove.setEnabled(true);
+			controls.setVisible(true);
+			remove.setVisible(true);
 		}
 		convertButton.setVisible(imv.getCanvas() != null && imv.getCanvas().getWidth() != imv.getCanvas().getHeight());
 	}
