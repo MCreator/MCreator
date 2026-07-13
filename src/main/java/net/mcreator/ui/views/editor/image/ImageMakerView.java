@@ -601,6 +601,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public void setCanvas(Canvas newCanvas) {
 		canvas = newCanvas;
 		canvasRenderer.setCanvas(newCanvas);
+		canvasRenderer.recalculateBounds();
+		zoomPane.getZoomport().fitZoom();
 		canvasRenderer.repaint();
 		toolPanel.setCanvas(newCanvas);
 		layerPanel.setCanvas(newCanvas);

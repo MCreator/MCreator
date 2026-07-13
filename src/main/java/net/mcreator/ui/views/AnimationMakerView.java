@@ -57,6 +57,7 @@ public class AnimationMakerView extends JPanel {
 	private final JButton forward = new JButton(UIRES.get("16px.fwd"));
 	private final JButton next = new JButton(UIRES.get("16px.next"));
 	private final JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
+	private final JButton convertButton = L10N.button("dialog.animation_maker.convert");
 
 	private int animindex = 0;
 	private int[] framesToPlay;
@@ -71,8 +72,6 @@ public class AnimationMakerView extends JPanel {
 	public AnimationMakerView(ImageMakerView imv) {
 		this.imv = imv;
 		setLayout(new BorderLayout());
-
-		JToolBar controls = new JToolBar();
 
 		animator = new Thread(() -> {
 			active = true;
@@ -113,6 +112,8 @@ public class AnimationMakerView extends JPanel {
 				}
 			}
 		}, "AnimationRenderer");
+
+		JToolBar controls = new JToolBar();
 
 		play.setIcon(UIRES.get("16px.play"));
 		play.addActionListener(_ -> {
@@ -222,6 +223,17 @@ public class AnimationMakerView extends JPanel {
 		addFromTemplates.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(addFromTemplates);
 
+		convertButton.setIcon(UIRES.get("18px.add"));
+		convertButton.addActionListener(_ -> {
+			Canvas current = imv.getCanvas();
+			int index = timelinevector.indexOf(current);
+			generateTimelineFromBufferedImage(current.render(), imv.getViewName());
+			timelinevector.remove(index);
+			imv.setCanvas(timelinevector.getElementAt(index));
+			convertButton.setVisible(false);
+		});
+		timelinebar.add(convertButton);
+
 		remove.addActionListener(_ -> {
 			if (timeline.getSelectedValue() != null) {
 				timeline.getSelectedValuesList().forEach(canvas -> {
@@ -289,6 +301,7 @@ public class AnimationMakerView extends JPanel {
 			next.setEnabled(true);
 			remove.setEnabled(true);
 		}
+		convertButton.setVisible(imv.getCanvas() != null && imv.getCanvas().getWidth() != imv.getCanvas().getHeight());
 	}
 
 	public void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name) {
