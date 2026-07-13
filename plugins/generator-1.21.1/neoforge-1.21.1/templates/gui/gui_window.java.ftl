@@ -164,13 +164,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
 					<#if hasProcedure(component.text)>
 						<#assign hoverText><@procedureOBJToStringCode component.text/></#assign>
-						<#assign listComponentsTooltip>Arrays.stream(${hoverText}.split("%nl")).map(Component::literal).collect(Collectors.toList())</#assign>
+						<#assign listComponentsTooltip>Arrays.stream(${hoverText}.split("\\\\n")).map(Component::literal).collect(Collectors.toList())</#assign>
 						if (${hoverText} != null) {
 							guiGraphics.renderComponentTooltip(font, ${listComponentsTooltip}, mouseX, mouseY);
 						}
 					<#else>
 						<#assign hoverText>Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString()</#assign>
-						<#assign listComponentsTooltip>Arrays.stream(${hoverText}.split("%nl")).map(Component::literal).collect(Collectors.toList())</#assign>
+						<#assign listComponentsTooltip>Arrays.stream(${hoverText}.split("\\\\n")).map(Component::literal).collect(Collectors.toList())</#assign>
 						if (${hoverText} != null) {
 							guiGraphics.renderComponentTooltip(font, ${listComponentsTooltip}, mouseX, mouseY);
 						}
@@ -260,7 +260,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
 			<#assign LabelText><#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString()</#if></#assign>
-            <#assign ListComponentsLabel>Arrays.stream(${LabelText}.split("%nl")).map(Component::literal).collect(Collectors.toList())</#assign>
+            <#assign ListComponentsLabel>Arrays.stream(${LabelText}.split("\\\\n")).map(Component::literal).collect(Collectors.toList())</#assign>
 			BaseSpaceBetweenLine = 0;
 			for(Component actualComponent : ${ListComponentsLabel}){
 				guiGraphics.drawString(this.font,

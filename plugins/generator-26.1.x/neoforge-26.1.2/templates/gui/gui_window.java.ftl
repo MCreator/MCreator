@@ -129,7 +129,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	}
 	</#if>
 
-		@Override public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+	@Override public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		<#list tooltips as component>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
@@ -139,13 +139,13 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height}) {
 					<#if hasProcedure(component.text)>
 					<#assign hoverText><@procedureOBJToStringCode component.text/></#assign>
-					<#assign listComponentTooltip>Arrays.stream(${hoverText}.split("%nl")).map(Component::literal).collect(Collectors.toList())</#assign>
+					<#assign listComponentTooltip>Arrays.stream(${hoverText}.split("\\\\n")).map(Component::literal).collect(Collectors.toList())</#assign>
 					if (${hoverText} != null) {
 						guiGraphics.setComponentTooltipForNextFrame( font, ${listComponentTooltip}, mouseX, mouseY);
 					}
 					<#else>
 					<#assign hoverText>Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString()</#assign>
-					<#assign listComponentTooltip>Arrays.stream(${hoverText}.split("%nl")).map(Component::literal).collect(Collectors.toList())</#assign>
+					<#assign listComponentTooltip>Arrays.stream(${hoverText}.split("\\\\n")).map(Component::literal).collect(Collectors.toList())</#assign>
 					if (${hoverText} != null) {
 						guiGraphics.setComponentTooltipForNextFrame( font, ${listComponentTooltip}, mouseX, mouseY);
                     }
@@ -244,7 +244,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
 			<#assign LabelText><#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString()</#if></#assign>
-			<#assign listComponentsLabel>Arrays.stream(${LabelText}.split("%nl")).map(Component::literal).collect(Collectors.toList())</#assign>
+			<#assign listComponentsLabel>Arrays.stream(${LabelText}.split("\\\\n")).map(Component::literal).collect(Collectors.toList())</#assign>
 			height = ${component.gy(data.height)};
 			BaseSpaceBetweenLine = 0;
 			for(Component actualComponent : ${listComponentsLabel}){
