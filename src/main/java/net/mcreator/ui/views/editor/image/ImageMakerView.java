@@ -284,15 +284,22 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			canEdit = false;
 			name = FilenameUtilsPatched.getName(path[1]);
 
-			createCanvasFromBufferedImage(
-					Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
-						try {
-							return ImageIO.read(file.getInputStream(entry));
-						} catch (IOException e) {
-							LOG.error(e.getMessage(), e);
-							return null;
-						}
-					}), "Could not read source image asset!"));
+			BufferedImage bufferedImage = Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
+				try {
+					return ImageIO.read(file.getInputStream(entry));
+				} catch (IOException e) {
+					LOG.error(e.getMessage(), e);
+					return null;
+				}
+			}), "Could not read source image asset!");
+			if (bufferedImage.getHeight() == bufferedImage.getWidth()) {
+				createCanvasFromBufferedImage(bufferedImage);
+			} else {
+				animationTimeline.generateTimelineFromBufferedImage(bufferedImage,
+						FilenameUtilsPatched.removeExtension(name));
+				canvas = animationTimeline.getTimelineModel().firstElement();
+			}
+
 			toolPanel.initTools();
 			updateInfoBar(0, 0);
 		} catch (IOException e) {
