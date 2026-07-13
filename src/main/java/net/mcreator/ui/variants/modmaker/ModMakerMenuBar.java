@@ -92,7 +92,6 @@ class ModMakerMenuBar extends MainMenuBar {
 		tools.setMnemonic('T');
 		tools.add(mcreator.getActionRegistry().createTexture);
 		tools.add(hideableMenu(mcreator.getActionRegistry().createArmorTexture));
-		tools.add(hideableMenu(mcreator.getActionRegistry().createAnimatedTexture));
 		tools.addSeparator();
 		tools.add(hideableMenu(mcreator.getActionRegistry().openMaterialPackMaker));
 		tools.add(hideableMenu(mcreator.getActionRegistry().openOrePackMaker));
