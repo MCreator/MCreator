@@ -82,6 +82,10 @@ import java.util.Random;
 		return baseHex + decToHex(a);
 	}
 
+	public double clamp(double val, double min, double max) {
+		return Math.clamp(val, min, max);
+	}
+
 	public String obj2str(Object object) {
 		return new Gson().toJson(object);
 	}
