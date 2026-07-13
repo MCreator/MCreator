@@ -35,12 +35,15 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /*
  * Metadata File Format
@@ -52,6 +55,27 @@ import java.security.NoSuchAlgorithmException;
  *          Used to verify if this metadata matches the rendered image.
  * 20 - 23: Length of the canvas JSON string (int) - canvasJSONStringLength
  * 24 - (24 + canvasJSONStringLength - 1): Canvas JSON string (byte[canvasJSONStringLength])
+ *
+ * Next 4 bytes:
+ * [canvasEnd] - [canvasEnd + 3]: Number of images (int) - imageCount
+ *
+ * For each image (repeated imageCount times):
+ *   0 -  3: Length of PNG byte data (int) - pngBytesLength
+ *   4 - (4 + pngBytesLength - 1): PNG image data (byte[pngBytesLength])
+ *
+ */
+
+/*
+ * Metadata File Format for animated textures
+ *
+ * Byte layout:
+ *
+ *  0 -  3: File type identifier (byte[4]) - currently 0x0000_0000_0000_0000
+ *  4 - 7: Canvas index (int) - This the index of the canvas from the animation timeline.
+ *  8 - 23: MD5 hash of the final rendered image file (byte[16])
+ *          Used to verify if this metadata matches the rendered image.
+ * 24 - 27: Length of the canvas JSON string (int) - canvasJSONStringLength
+ * 28 - (28 + canvasJSONStringLength - 1): Canvas JSON string (byte[canvasJSONStringLength])
  *
  * Next 4 bytes:
  * [canvasEnd] - [canvasEnd + 3]: Number of images (int) - imageCount
@@ -176,6 +200,123 @@ public class MetadataManager {
 				byte[] pngBytes = baos.toByteArray();
 				das.writeInt(pngBytes.length);
 				das.write(pngBytes);
+			}
+		} catch (Exception e) {
+			LOG.warn("Failed to save metadata for {}", file, e);
+		}
+	}
+
+	public static DefaultListModel<Canvas> loadAnimationForFile(Workspace workspace, File file,
+			ImageMakerView canvasOwner, DefaultListModel<Canvas> timeline)
+			throws MetadataOutdatedException, NullPointerException {
+		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
+			throw new NullPointerException("Metadata is disabled in preferences");
+
+		File metadataFile = getMetadataFile(workspace, file);
+		if (metadataFile.isFile()) {
+			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
+				// Read file header - unused for now
+				dis.readInt();
+
+				try {
+					while (dis.available() > 0) {
+						int index = dis.readInt();
+
+						byte[] md5 = new byte[16];
+						dis.read(md5);
+
+						// Extract canvas JSON string
+						int canvasJSONStringLength = dis.readInt();
+						byte[] canvasJSONStringBytes = new byte[canvasJSONStringLength];
+						dis.read(canvasJSONStringBytes);
+						String canvasJSONString = new String(canvasJSONStringBytes, StandardCharsets.UTF_8);
+
+						// Extract layer rasters
+						int imageCount = dis.readInt();
+						BufferedImage[] rasters = new BufferedImage[imageCount];
+						for (int i = 0; i < imageCount; i++) {
+							int pngBytesLength = dis.readInt();
+							byte[] pngBytes = new byte[pngBytesLength];
+							dis.read(pngBytes);
+							try (ByteArrayInputStream bais = new ByteArrayInputStream(pngBytes)) {
+								rasters[i] = ImageIO.read(bais);
+							}
+						}
+
+						Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT)
+								.registerTypeAdapter(Canvas.class,
+										new Canvas.GSONAdapter(canvasOwner).setRasters(rasters)).create();
+
+						Canvas canvas = gson.fromJson(canvasJSONString, Canvas.class);
+						timeline.set(index, canvas);
+
+						if (!MessageDigest.isEqual(md5, filemd5(file))) {
+							throw new MetadataOutdatedException("File " + file + " has changed, metadata is invalid",
+									canvas);
+						}
+					}
+				} catch (EOFException ignored) { // End of the file
+				}
+
+				return timeline;
+			} catch (MetadataOutdatedException e) {
+				throw e;
+			} catch (Exception e) {
+				LOG.warn("Failed to load metadata for {}", file, e);
+			}
+		}
+
+		throw new NullPointerException("Could not correctly determine metadata for " + file);
+	}
+
+	public static void saveAnimation(Workspace workspace, File file, DefaultListModel<Canvas> frames) {
+		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
+			return;
+
+		LinkedHashMap<Canvas, BufferedImage[]> layeredCanvas = new LinkedHashMap<>();
+		int bound = frames.getSize();
+		for (int i = 0; i < bound; i++) {
+			Canvas canvas = frames.get(i);
+			BufferedImage[] layers = canvas.stream().map(Layer::getRaster).toArray(BufferedImage[]::new);
+			if (layers.length >= 1)
+				layeredCanvas.put(canvas, layers);
+		}
+
+		if (layeredCanvas.isEmpty())
+			return; // If there is only one layer or less, we do not save metadata as it is not "worth it"
+
+		File metadataFile = getMetadataFile(workspace, file);
+		try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
+			das.writeInt(0); // File type identifier - unused for now
+
+			for (int i = 0; i < bound; i++) {
+				Canvas canvas = frames.get(i);
+				if (layeredCanvas.containsKey(canvas)) {
+					try {
+						das.writeInt(i);
+						das.write(filemd5(file));
+
+						Gson gson = new GsonBuilder().registerTypeAdapter(Canvas.class,
+								new Canvas.GSONAdapter(canvas.getImageMakerView())).create();
+						String canvasJSONString = gson.toJson(canvas);
+						byte[] canvasJSONStringBytes = canvasJSONString.getBytes(StandardCharsets.UTF_8);
+						das.writeInt(canvasJSONStringBytes.length);
+						das.write(canvasJSONStringBytes);
+
+						BufferedImage[] layers = layeredCanvas.get(canvas);
+
+						das.writeInt(layers.length);
+						for (BufferedImage layerImage : layers) {
+							ByteArrayOutputStream baos = new ByteArrayOutputStream();
+							ImageIO.write(layerImage, "png", baos);
+							byte[] pngBytes = baos.toByteArray();
+							das.writeInt(pngBytes.length);
+							das.write(pngBytes);
+						}
+					} catch (IOException | NoSuchAlgorithmException e) {
+						LOG.warn("Failed to save metadata for {}", file, e);
+					}
+				}
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to save metadata for {}", file, e);

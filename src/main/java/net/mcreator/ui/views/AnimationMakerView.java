@@ -271,8 +271,6 @@ public class AnimationMakerView extends JPanel {
 					addFrameToTimeline(createCanvasFromBufferedImage(buf, name));
 				}
 			}
-			if (PreferencesManager.PREFERENCES.imageEditor.selectedFrameAtOpening.get().equals("First frame"))
-				changeFrame(timelinevector.firstElement());
 		} catch (InvalidTileSizeException e) {
 			LOG.warn("Invalid tile size", e);
 		}
@@ -343,5 +341,9 @@ public class AnimationMakerView extends JPanel {
 
 	public DefaultListModel<Canvas> getTimelineModel() {
 		return timelinevector;
+	}
+
+	public void setTimelineModel(DefaultListModel<Canvas> timelineModel) {
+		timeline.setModel(timelineModel);
 	}
 }

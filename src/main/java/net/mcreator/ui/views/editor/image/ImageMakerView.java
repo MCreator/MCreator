@@ -235,7 +235,20 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			} else {
 				animationTimeline.generateTimelineFromBufferedImage(bufferedImage,
 						FilenameUtilsPatched.removeExtension(name));
-				canvas = animationTimeline.getTimelineModel().firstElement();
+				try {
+					animationTimeline.setTimelineModel(
+							MetadataManager.loadAnimationForFile(mcreator.getWorkspace(), image, this,
+									animationTimeline.getTimelineModel()));
+				} catch (MetadataOutdatedException | NullPointerException e) {
+					LOG.warn("Failed to import metadata for animated texture {}. Frames will be imported as regular images", image.getName());
+				}
+
+				if (PreferencesManager.PREFERENCES.imageEditor.selectedFrameAtOpening.get().equals("First frame")) {
+					canvas = animationTimeline.getTimelineModel().firstElement();
+					animationTimeline.changeFrame(animationTimeline.getTimelineModel().firstElement());
+				} else {
+					canvas = animationTimeline.getTimelineModel().lastElement();
+				}
 			}
 			toolPanel.initTools();
 			updateInfoBar(0, 0);
@@ -284,14 +297,15 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			canEdit = false;
 			name = FilenameUtilsPatched.getName(path[1]);
 
-			BufferedImage bufferedImage = Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
-				try {
-					return ImageIO.read(file.getInputStream(entry));
-				} catch (IOException e) {
-					LOG.error(e.getMessage(), e);
-					return null;
-				}
-			}), "Could not read source image asset!");
+			BufferedImage bufferedImage = Objects.requireNonNull(
+					ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
+						try {
+							return ImageIO.read(file.getInputStream(entry));
+						} catch (IOException e) {
+							LOG.error(e.getMessage(), e);
+							return null;
+						}
+					}), "Could not read source image asset!");
 			if (bufferedImage.getHeight() == bufferedImage.getWidth()) {
 				createCanvasFromBufferedImage(bufferedImage);
 			} else {
@@ -327,16 +341,15 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				} else {
 					ImageIO.write(canvasRenderer.render(), FilenameUtilsPatched.getExtension(image.toString()), image);
 					MetadataManager.saveCanvas(mcreator.getWorkspace(), image, canvas);
-
-					this.name = image.getName();
-
-					//reload image in java cache
-					new ImageIcon(image.getAbsolutePath()).getImage().flush();
-					mcreator.reloadWorkspaceTabContents();
-
-					refreshTab();
-
 				}
+
+				this.name = image.getName();
+
+				//reload image in java cache
+				new ImageIcon(image.getAbsolutePath()).getImage().flush();
+				mcreator.reloadWorkspaceTabContents();
+
+				refreshTab();
 			} else {
 				saveAs();
 			}
@@ -395,14 +408,14 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 						Image image = canvasRenderer.render();
 						FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
 						MetadataManager.saveCanvas(mcreator.getWorkspace(), exportFile, canvas);
-
-						// load image in java cache
-						new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
-
-						this.image = exportFile;
-						this.name = this.image.getName();
-						refreshTab();
 					}
+
+					// load image in java cache
+					new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
+
+					this.image = exportFile;
+					this.name = this.image.getName();
+					refreshTab();
 				}
 			}
 		});
@@ -446,7 +459,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		FileIO.writeStringToFile(mcmetacode, new File(exportFile.getAbsolutePath() + ".mcmeta"));
 		FileIO.writeImageToPNGFile(makeAnimationImage(timeline.getSize(), timeline, sizetwocubes), exportFile);
 
-		MetadataManager.saveCanvas(mcreator.getWorkspace(), exportFile, canvas);
+		MetadataManager.saveAnimation(mcreator.getWorkspace(), exportFile, animationTimeline.getTimelineModel());
 	}
 
 	private BufferedImage makeAnimationImage(int stevilo, DefaultListModel<Canvas> timelinevector, int size) {
