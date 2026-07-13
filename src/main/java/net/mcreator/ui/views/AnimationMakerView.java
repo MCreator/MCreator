@@ -50,6 +50,12 @@ public class AnimationMakerView extends JPanel {
 	private final DefaultListModel<Canvas> timelinevector = new DefaultListModel<>();
 	private final JList<Canvas> timeline = new JList<>(timelinevector);
 
+	private final JButton play = new JButton("");
+	private final JButton stop = new JButton("");
+	private final JButton prev = new JButton(UIRES.get("16px.previous"));
+	private final JButton backward = new JButton(UIRES.get("16px.rwd"));
+	private final JButton forward = new JButton(UIRES.get("16px.fwd"));
+	private final JButton next = new JButton(UIRES.get("16px.next"));
 	private final JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 
 	private int animindex = 0;
@@ -108,7 +114,6 @@ public class AnimationMakerView extends JPanel {
 			}
 		}, "AnimationRenderer");
 
-		JButton play = new JButton("");
 		play.setIcon(UIRES.get("16px.play"));
 		play.addActionListener(_ -> {
 			if (timeline.getSelectedIndices().length > 1) {
@@ -132,7 +137,6 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(play);
 
-		JButton stop = new JButton("");
 		stop.addActionListener(_ -> {
 			animindex = 0;
 			playanim = false;
@@ -146,7 +150,6 @@ public class AnimationMakerView extends JPanel {
 
 		controls.addSeparator();
 
-		JButton prev = new JButton(UIRES.get("16px.previous"));
 		prev.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex--;
@@ -159,7 +162,6 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(prev);
 
-		JButton backward = new JButton(UIRES.get("16px.rwd"));
 		backward.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				if (!animator.isAlive())
@@ -175,7 +177,6 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(backward);
 
-		JButton forward = new JButton(UIRES.get("16px.fwd"));
 		forward.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				if (!animator.isAlive())
@@ -189,7 +190,6 @@ public class AnimationMakerView extends JPanel {
 		});
 		controls.add(forward);
 
-		JButton next = new JButton(UIRES.get("16px.next"));
 		next.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex++;
@@ -242,11 +242,12 @@ public class AnimationMakerView extends JPanel {
 
 				if (PreferencesManager.PREFERENCES.imageEditor.singleFrameDeletionBehaviour.get()
 						.equals("Keep existing frame")) {
-					remove.setEnabled(false);
+					updateTimelineButtons();
 				}
 			}
 		});
 		remove.setIcon(UIRES.get("18px.remove"));
+		updateTimelineButtons();
 		timelinebar.add(remove);
 
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -268,6 +269,26 @@ public class AnimationMakerView extends JPanel {
 		add("Center", timelinePanel);
 
 		ComponentUtils.makeSection(this, L10N.t("dialog.animation_maker.animation_timeline"));
+	}
+
+	private void updateTimelineButtons() {
+		if (timelinevector.getSize() == 1) {
+			play.setEnabled(false);
+			stop.setEnabled(false);
+			prev.setEnabled(false);
+			backward.setEnabled(false);
+			forward.setEnabled(false);
+			next.setEnabled(false);
+			remove.setEnabled(false);
+		} else {
+			play.setEnabled(true);
+			stop.setEnabled(true);
+			prev.setEnabled(true);
+			backward.setEnabled(true);
+			forward.setEnabled(true);
+			next.setEnabled(true);
+			remove.setEnabled(true);
+		}
 	}
 
 	/**
@@ -302,12 +323,8 @@ public class AnimationMakerView extends JPanel {
 		if (timelinevector.getSize() > 1) {
 			imv.save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
 			imv.saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
-
-			if (PreferencesManager.PREFERENCES.imageEditor.singleFrameDeletionBehaviour.get()
-					.equals("Keep existing frame")) {
-				remove.setEnabled(true);
-			}
 		}
+		updateTimelineButtons();
 	}
 
 	/**
@@ -318,6 +335,7 @@ public class AnimationMakerView extends JPanel {
 		Canvas canvas = new Canvas(imv, 16, 16);
 		canvas.add(layer);
 		addFrameToTimeline(canvas);
+		updateTimelineButtons();
 	}
 
 	/**
