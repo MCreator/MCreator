@@ -136,10 +136,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		template.setForeground(Theme.current().getForegroundColor());
 		template.setFocusPainted(false);
 
-		save.addActionListener(event -> save());
-		saveNew.addActionListener(event -> saveAs());
-		template.addActionListener(event -> {
-			FromTemplateDialog fromTemplateDialog = new FromTemplateDialog(f, canvas, versionManager);
+		save.addActionListener(_ -> save());
+		saveNew.addActionListener(_ -> saveAs());
+		template.addActionListener(_ -> {
+			FromTemplateDialog fromTemplateDialog = new FromTemplateDialog(f, getAnimationTimeline(), versionManager);
 			fromTemplateDialog.setVisible(true);
 		});
 
@@ -245,9 +245,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 				if (PreferencesManager.PREFERENCES.imageEditor.selectedFrameAtOpening.get().equals("First frame")) {
 					canvas = animationTimeline.getTimelineModel().firstElement();
-					animationTimeline.changeFrame(animationTimeline.getTimelineModel().firstElement());
+					setCanvas(animationTimeline.getTimelineModel().firstElement());
 				} else {
-					canvas = animationTimeline.getTimelineModel().lastElement();
+					setCanvas(animationTimeline.getTimelineModel().lastElement());
 				}
 			}
 			toolPanel.initTools();
@@ -615,6 +615,22 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			title = L10N.t("dialog.image_maker.info_bar.new_image");
 
 		imageInfo.setText(L10N.t("dialog.image_maker.info_bar", title, canvas.getWidth(), canvas.getHeight(), x, y));
+	}
+
+	/**
+	 * <p>This changes the current {@link Canvas} of the {@link ImageMakerView} to the provided {@link Canvas}.
+	 * This updates both visual and logical parts</p>
+	 *
+	 * @param newCanvas The canvas to display on the {@link ImageMakerView}
+	 */
+	public void setCanvas(Canvas newCanvas) {
+		canvas = newCanvas;
+		canvasRenderer.setCanvas(newCanvas);
+		canvasRenderer.repaint();
+		toolPanel.setCanvas(newCanvas);
+		layerPanel.setCanvas(newCanvas);
+		layerPanel.updateSelection();
+		repaint();
 	}
 
 	public CanvasRenderer getCanvasRenderer() {

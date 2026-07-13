@@ -34,6 +34,7 @@ public class ImageEditorSection extends PreferencesSection {
 	public final IntegerEntry defaultPercentageTimeline;
 	public final StringEntry selectedFrameAtOpening;
 	public final StringEntry singleFrameDeletionBehaviour;
+	public final BooleanEntry applyGeneratedTemplateToAllFrames;
 
 	ImageEditorSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -43,6 +44,7 @@ public class ImageEditorSection extends PreferencesSection {
 		defaultPercentageTimeline = addEntry(new IntegerEntry("defaultPercentageTimeline", 24, 0, 50));
 		selectedFrameAtOpening = addEntry(new StringEntry("selectedFrameAtOpening", "First frame", "First frame", "Last frame"));
 		singleFrameDeletionBehaviour = addEntry(new StringEntry("singleFrameDeletionBehaviour", "Empty frame", "Empty frame", "Keep existing frame"));
+		applyGeneratedTemplateToAllFrames = addEntry(new BooleanEntry("applyGeneratedTemplateToAllFrames", true));
 	}
 
 	@Override public String getSectionKey() {

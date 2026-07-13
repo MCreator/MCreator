@@ -42,7 +42,7 @@ public class TimelineRenderer extends JPanel implements ListCellRenderer<Canvas>
 		removeAll();
 		if (cellHasFocus) {
 			setBackground(PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get());
-			timeline.changeFrame(value);
+			timeline.getImageMakerView().setCanvas(value);
 		} else if (isSelected) {
 			setBackground(PreferencesManager.PREFERENCES.imageEditor.selectedFramesColor.get());
 		} else {

@@ -100,7 +100,7 @@ public class AnimationMakerView extends JPanel {
 					}
 
 					SwingUtilities.invokeLater(() -> {
-						changeFrame(timelinevector.getElementAt(animindex));
+						imv.setCanvas(timelinevector.getElementAt(animindex));
 						timeline.setSelectedIndex(animindex);
 						timeline.repaint();
 					});
@@ -142,7 +142,7 @@ public class AnimationMakerView extends JPanel {
 			playanim = false;
 			play.setIcon(UIRES.get("16px.play"));
 			timeline.setSelectedValue(timelinevector.getElementAt(0), false);
-			changeFrame(timelinevector.getElementAt(0));
+			imv.setCanvas(timelinevector.getElementAt(0));
 			timeline.repaint();
 		});
 		stop.setIcon(UIRES.get("16px.stopanimation"));
@@ -155,7 +155,7 @@ public class AnimationMakerView extends JPanel {
 				animindex--;
 				if (animindex < 0)
 					animindex = timelinevector.getSize() - 1;
-				changeFrame(timelinevector.getElementAt(animindex));
+				imv.setCanvas(timelinevector.getElementAt(animindex));
 				timeline.setSelectedIndex(animindex);
 				timeline.repaint();
 			}
@@ -195,7 +195,7 @@ public class AnimationMakerView extends JPanel {
 				animindex++;
 				if (animindex >= timelinevector.getSize())
 					animindex = 0;
-				changeFrame(timelinevector.getElementAt(animindex));
+				imv.setCanvas(timelinevector.getElementAt(animindex));
 				timeline.setSelectedIndex(animindex);
 				timeline.repaint();
 			}
@@ -352,20 +352,6 @@ public class AnimationMakerView extends JPanel {
 		return canvas;
 	}
 
-	/**
-	 * <p>This changes the displayed {@link Canvas} of the {@link ImageMakerView} to the provided {@link Canvas}.</p>
-	 *
-	 * @param newCanvas The canvas to display on the {@link ImageMakerView}
-	 */
-	public void changeFrame(Canvas newCanvas) {
-		imv.getCanvasRenderer().setCanvas(newCanvas);
-		imv.getCanvasRenderer().repaint();
-		imv.getToolPanel().setCanvas(newCanvas);
-		imv.getLayerPanel().setCanvas(newCanvas);
-		imv.getLayerPanel().updateSelection();
-		imv.repaint();
-	}
-
 	public ImageMakerView getImageMakerView() {
 		return imv;
 	}
@@ -376,5 +362,9 @@ public class AnimationMakerView extends JPanel {
 
 	public void setTimelineModel(DefaultListModel<Canvas> timelineModel) {
 		timeline.setModel(timelineModel);
+	}
+
+	public JList<Canvas> getTimeline() {
+		return timeline;
 	}
 }
