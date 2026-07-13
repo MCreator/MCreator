@@ -19,9 +19,7 @@
 
 package net.mcreator.ui.views;
 
-import com.google.gson.*;
-import net.mcreator.io.FileIO;
-import net.mcreator.minecraft.RegistryNameFixer;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -31,7 +29,6 @@ import net.mcreator.ui.views.editor.image.animation.AnimationImportUtils;
 import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
-import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -43,13 +40,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class AnimationMakerView extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Animation Timeline");
-
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	private final ImageMakerView imv;
 
@@ -230,6 +224,11 @@ public class AnimationMakerView extends JPanel {
 		remove.addActionListener(_ -> {
 			if (timeline.getSelectedValue() != null)
 				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
+
+			if (timelinevector.getSize() <= 1) {
+				imv.save.setText(L10N.t("dialog.image_maker.save"));
+				imv.saveNew.setText(L10N.t("dialog.image_maker.save_as_new"));
+			}
 		});
 		remove.setIcon(UIRES.get("18px.remove"));
 		timelinebar.add(remove);
@@ -249,63 +248,10 @@ public class AnimationMakerView extends JPanel {
 
 		timelinePanel.setPreferredSize(new Dimension(9000, 260));
 
-		//		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
-		//		save.setMargin(new Insets(1, 40, 1, 40));
-		//		save.setBackground(Theme.current().getInterfaceAccentColor());
-		//		save.setForeground(Theme.current().getSecondAltBackgroundColor());
-		//		save.setFocusPainted(false);
-		//		save.addActionListener(_ -> use());
-
 		add("North", PanelUtils.westAndCenterElement(controls, timelinebar));
 		add("Center", timelinePanel);
 
 		ComponentUtils.makeSection(this, L10N.t("dialog.animation_maker.animation_timeline"));
-	}
-
-	protected void use() {
-		if (timelinevector.isEmpty())
-			return;
-		TextureType[] options = TextureType.getSupportedTypes(imv.getMCreator().getWorkspace(), false);
-		int n = JOptionPane.showOptionDialog(imv, L10N.t("dialog.animation_maker.kind_of_texture"),
-				L10N.t("dialog.animation_maker.type_of_texture"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-		if (n < 0)
-			return;
-
-		String namec = JOptionPane.showInputDialog(L10N.t("dialog.animation_maker.enter_texture_name"));
-		if (namec != null) {
-			namec = RegistryNameFixer.fix(namec);
-			File exportFile = imv.getMCreator().getFolderManager().getTextureFile(namec, options[n]);
-
-			if (exportFile.isFile()) {
-				JOptionPane.showMessageDialog(imv, L10N.t("dialog.animation_maker.texture_already_exists", options[n]),
-						L10N.t("dialog.animation_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
-			} else {
-				Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
-						"512 x 512" };
-				String s = (String) JOptionPane.showInputDialog(imv, L10N.t("dialog.animation_maker.animation_size"),
-						L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null, possibilities,
-						"16 x 16");
-				int sizetwocubes = 16;
-				if (s != null) {
-					sizetwocubes = switch (s) {
-						case "4 x 4" -> 4;
-						case "8 x 8" -> 8;
-						case "32 x 32" -> 32;
-						case "64 x 64" -> 64;
-						case "128 x 128" -> 128;
-						case "256 x 256" -> 256;
-						case "512 x 512" -> 512;
-						default -> 16;
-					};
-				}
-				Image image = makeAnimationIcon(timelinevector.getSize(), timelinevector, sizetwocubes).getImage();
-				String mcmetacode = generateAnimationMcmeta(imv.getAnimationSettings().getFrameDuration(),
-						timelinevector.size(), imv.getAnimationSettings().doesInterpolate());
-				FileIO.writeStringToFile(mcmetacode, new File(exportFile.getAbsolutePath() + ".mcmeta"));
-				FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
-			}
-		}
 	}
 
 	/**
@@ -325,6 +271,8 @@ public class AnimationMakerView extends JPanel {
 					addFrameToTimeline(createCanvasFromBufferedImage(buf, name));
 				}
 			}
+			if (PreferencesManager.PREFERENCES.imageEditor.selectedFrameAtOpening.get().equals("First frame"))
+				changeFrame(timelinevector.firstElement());
 		} catch (InvalidTileSizeException e) {
 			LOG.warn("Invalid tile size", e);
 		}
@@ -337,6 +285,10 @@ public class AnimationMakerView extends JPanel {
 	 */
 	public void addFrameToTimeline(Canvas canvas) {
 		timelinevector.addElement(canvas);
+		if (timelinevector.getSize() > 1) {
+			imv.save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
+			imv.saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
+		}
 	}
 
 	/**
@@ -377,28 +329,6 @@ public class AnimationMakerView extends JPanel {
 		imv.repaint();
 	}
 
-	private ImageIcon makeAnimationIcon(int stevilo, DefaultListModel<Canvas> timelinevector, int size) {
-		BufferedImage resizedImage = new BufferedImage(size, size * stevilo, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImage.createGraphics();
-		for (int i = 0; i < timelinevector.getSize(); i++)
-			g.drawImage(timelinevector.get(i).render(), 0, i * size, size, size, new JLabel());
-		g.dispose();
-		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(resizedImage.getSource()));
-	}
-
-	private String generateAnimationMcmeta(int frametime_tick, int framenum_num, boolean interpolate) {
-		JsonObject mcmeta = new JsonObject();
-		JsonObject animation = new JsonObject();
-		animation.add("frametime", new JsonPrimitive(frametime_tick));
-		animation.add("interpolate", new JsonPrimitive(interpolate));
-		JsonArray frames = new JsonArray();
-		for (int i = 0; i < framenum_num; i++)
-			frames.add(i);
-		animation.add("frames", frames);
-		mcmeta.add("animation", animation);
-		return gson.toJson(mcmeta);
-	}
-
 	public int getAnimationIndex() {
 		return animindex;
 	}
@@ -409,5 +339,9 @@ public class AnimationMakerView extends JPanel {
 
 	public ImageMakerView getImageMakerView() {
 		return imv;
+	}
+
+	public DefaultListModel<Canvas> getTimelineModel() {
+		return timelinevector;
 	}
 }

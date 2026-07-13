@@ -23,6 +23,7 @@ import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.ColorEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
+import net.mcreator.preferences.entries.StringEntry;
 
 import java.awt.*;
 
@@ -31,6 +32,7 @@ public class ImageEditorSection extends PreferencesSection {
 	public final BooleanEntry storeMetadata;
 	public final ColorEntry selectedFramesColor;
 	public final IntegerEntry defaultPercentageTimeline;
+	public final StringEntry selectedFrameAtOpening;
 
 	ImageEditorSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -38,6 +40,7 @@ public class ImageEditorSection extends PreferencesSection {
 		storeMetadata = addEntry(new BooleanEntry("storeMetadata", true));
 		selectedFramesColor = addEntry(new ColorEntry("selectedFramesColor", new Color(75, 85, 197)));
 		defaultPercentageTimeline = addEntry(new IntegerEntry("defaultPercentageTimeline", 76, 50, 100));
+		selectedFrameAtOpening = addEntry(new StringEntry("selectedFrameAtOpening", "First frame", "First frame", "Last frame"));
 	}
 
 	@Override public String getSectionKey() {

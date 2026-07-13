@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.views.editor.image;
 
+import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.tree.FileNode;
 import net.mcreator.io.zip.ZipIO;
@@ -94,7 +95,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	private final AnimationSettings animationSettings;
 	private final AnimationMakerView animationTimeline;
 
-	public final JButton save;
+	public final JButton save = L10N.button("dialog.image_maker.save");
+	public final JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 
 	private String name = L10N.t("tab.image_maker");
 	private MCreatorTabs.Tab tab;
@@ -115,7 +117,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		JPanel leftControls = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel rightControls = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		save = L10N.button("dialog.image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground(Theme.current().getInterfaceAccentColor());
 		save.setForeground(Theme.current().getSecondAltBackgroundColor());
@@ -124,7 +125,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		imageInfo.setForeground((Theme.current().getAltForegroundColor()).darker());
 		imageInfo.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-		JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 		saveNew.setMargin(new Insets(1, 40, 1, 40));
 		saveNew.setBackground(Theme.current().getAltBackgroundColor());
 		saveNew.setForeground(Theme.current().getForegroundColor());
@@ -160,7 +160,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		zoomPane = new JZoomPane(canvasRenderer);
 		toolPanel = new ToolPanel(f, canvas, zoomPane, canvasRenderer, versionManager);
 
-		animationSettings = new  AnimationSettings();
+		animationSettings = new AnimationSettings();
 		animationTimeline = new AnimationMakerView(this);
 
 		palettePanel = new PalettePanel(f, toolPanel);
@@ -229,29 +229,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		try {
 			this.image = image;
 			this.name = image.getName();
-			try {
-				// references will be updated
-				canvas = MetadataManager.loadCanvasForFile(mcreator.getWorkspace(), image, this);
-			} catch (NullPointerException e) {
-				createCanvasFromBufferedImage(ImageIO.read(image));
-			} catch (MetadataOutdatedException e) {
-				Canvas old = e.getCanvas();
-				if (old != null) {
-					String[] options = { L10N.t("dialog.image_maker.load_new_version"),
-							L10N.t("dialog.image_maker.load_old_version") };
-					int option = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.metadata_outdated"),
-							L10N.t("dialog.image_maker.metadata_outdated.title"), JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-					if (option == 1) {
-						// references were already updated during deserialization
-						// in MetadataManager before MetadataOutdatedException was thrown
-						canvas = old;
-					} else {
-						createCanvasFromBufferedImage(ImageIO.read(image));
-					}
-				} else {
-					createCanvasFromBufferedImage(ImageIO.read(image));
-				}
+			BufferedImage bufferedImage = ImageIO.read(image);
+			if (bufferedImage.getHeight() == bufferedImage.getWidth()) {
+				openSingleFrameTexture(image);
+			} else {
+				animationTimeline.generateTimelineFromBufferedImage(bufferedImage,
+						FilenameUtilsPatched.removeExtension(name));
+				canvas = animationTimeline.getTimelineModel().firstElement();
 			}
 			toolPanel.initTools();
 			updateInfoBar(0, 0);
@@ -260,10 +244,38 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		}
 	}
 
+	private void openSingleFrameTexture(File texture) throws IOException {
+		try {
+			// references will be updated
+			canvas = MetadataManager.loadCanvasForFile(mcreator.getWorkspace(), texture, this);
+		} catch (NullPointerException e) {
+			createCanvasFromBufferedImage(ImageIO.read(texture));
+		} catch (MetadataOutdatedException e) {
+			Canvas old = e.getCanvas();
+			if (old != null) {
+				String[] options = { L10N.t("dialog.image_maker.load_new_version"),
+						L10N.t("dialog.image_maker.load_old_version") };
+				int option = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.metadata_outdated"),
+						L10N.t("dialog.image_maker.metadata_outdated.title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if (option == 1) {
+					// references were already updated during deserialization
+					// in MetadataManager before MetadataOutdatedException was thrown
+					canvas = old;
+				} else {
+					createCanvasFromBufferedImage(ImageIO.read(texture));
+				}
+			} else {
+				createCanvasFromBufferedImage(ImageIO.read(texture));
+			}
+		}
+	}
+
 	private void createCanvasFromBufferedImage(BufferedImage bufferedImage) throws IOException {
 		Layer layer = Layer.toLayer(bufferedImage, image != null ? image.getName() : name);
 		canvas = new Canvas(this, layer.getWidth(), layer.getHeight());
 		canvas.add(layer);
+		animationTimeline.addFrameToTimeline(canvas);
 	}
 
 	public void openInReadOnlyMode(FileNode<?> image) {
@@ -297,16 +309,27 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public void save() {
 		try {
 			if (image != null) {
-				ImageIO.write(canvasRenderer.render(), FilenameUtilsPatched.getExtension(image.toString()), image);
-				MetadataManager.saveCanvas(mcreator.getWorkspace(), image, canvas);
+				if (animationTimeline.getTimelineModel().getSize() > 1) {
+					Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128",
+							"256 x 256", "512 x 512" };
+					String size = (String) JOptionPane.showInputDialog(this,
+							L10N.t("dialog.animation_maker.animation_size"),
+							L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null,
+							possibilities, "16 x 16");
+					saveAnimation(image, size);
+				} else {
+					ImageIO.write(canvasRenderer.render(), FilenameUtilsPatched.getExtension(image.toString()), image);
+					MetadataManager.saveCanvas(mcreator.getWorkspace(), image, canvas);
 
-				this.name = image.getName();
+					this.name = image.getName();
 
-				//reload image in java cache
-				new ImageIcon(image.getAbsolutePath()).getImage().flush();
-				mcreator.reloadWorkspaceTabContents();
+					//reload image in java cache
+					new ImageIcon(image.getAbsolutePath()).getImage().flush();
+					mcreator.reloadWorkspaceTabContents();
 
-				refreshTab();
+					refreshTab();
+
+				}
 			} else {
 				saveAs();
 			}
@@ -323,21 +346,28 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				return;
 		}
 
-		Image image = canvasRenderer.render();
+		boolean isAnimation = animationTimeline.getTimelineModel().getSize() > 1;
 
 		JComboBox<TextureType> types = new JComboBox<>(TextureType.getSupportedTypes(mcreator.getWorkspace(), false));
 		VTextField name = new VTextField(20);
 		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
 		name.enableRealtimeValidation();
+		JComboBox<String> animationSize = new JComboBox<>(
+				new String[] { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
+						"512 x 512" });
+		animationSize.setSelectedItem("16 x 16");
+		animationSize.setEnabled(isAnimation);
 
 		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
 
-		JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
+		JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
 
 		panel.add(L10N.label("dialog.image_maker.enter_name"));
 		panel.add(name);
 		panel.add(L10N.label("dialog.image_maker.texture_type.message"));
 		panel.add(types);
+		panel.add(L10N.label("dialog.animation_maker.animation_size"));
+		panel.add(animationSize);
 
 		JButton ok = L10N.button("dialog.image_maker.save");
 		ok.addActionListener(e -> {
@@ -352,15 +382,20 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
 							L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 				} else {
-					FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
-					MetadataManager.saveCanvas(mcreator.getWorkspace(), exportFile, canvas);
+					if (isAnimation) {
+						saveAnimation(exportFile, (String) animationSize.getSelectedItem());
+					} else {
+						Image image = canvasRenderer.render();
+						FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
+						MetadataManager.saveCanvas(mcreator.getWorkspace(), exportFile, canvas);
 
-					// load image in java cache
-					new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
+						// load image in java cache
+						new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
 
-					this.image = exportFile;
-					this.name = this.image.getName();
-					refreshTab();
+						this.image = exportFile;
+						this.name = this.image.getName();
+						refreshTab();
+					}
 				}
 			}
 		});
@@ -380,6 +415,58 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		typeDialog.setSize(550, 150);
 		typeDialog.setLocationRelativeTo(null);
 		typeDialog.setVisible(true);
+	}
+
+	private void saveAnimation(File exportFile, String selectedSize) {
+		DefaultListModel<Canvas> timeline = animationTimeline.getTimelineModel();
+
+		int sizetwocubes = 16;
+		if (selectedSize != null) {
+			sizetwocubes = switch (selectedSize) {
+				case "4 x 4" -> 4;
+				case "8 x 8" -> 8;
+				case "32 x 32" -> 32;
+				case "64 x 64" -> 64;
+				case "128 x 128" -> 128;
+				case "256 x 256" -> 256;
+				case "512 x 512" -> 512;
+				default -> 16;
+			};
+		}
+
+		String mcmetacode = generateAnimationMcmeta(animationSettings.getFrameDuration(), timeline.size(),
+				this.getAnimationSettings().doesInterpolate());
+		FileIO.writeStringToFile(mcmetacode, new File(exportFile.getAbsolutePath() + ".mcmeta"));
+		FileIO.writeImageToPNGFile(makeAnimationImage(timeline.getSize(), timeline, sizetwocubes), exportFile);
+
+		MetadataManager.saveCanvas(mcreator.getWorkspace(), exportFile, canvas);
+	}
+
+	private BufferedImage makeAnimationImage(int stevilo, DefaultListModel<Canvas> timelinevector, int size) {
+		BufferedImage resizedImage = new BufferedImage(size, size * stevilo, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImage.createGraphics();
+		int bound = timelinevector.getSize();
+		for (int i = 0; i < bound; i++) {
+			Canvas canvas = timelinevector.get(i);
+			g.drawImage(canvas.render(), 0, i * canvas.getHeight(), canvas.getWidth(), canvas.getHeight(),
+					new JLabel());
+		}
+		g.dispose();
+		return resizedImage;
+	}
+
+	private String generateAnimationMcmeta(int frametime_tick, int framenum_num, boolean interpolate) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		JsonObject mcmeta = new JsonObject();
+		JsonObject animation = new JsonObject();
+		animation.add("frametime", new JsonPrimitive(frametime_tick));
+		animation.add("interpolate", new JsonPrimitive(interpolate));
+		JsonArray frames = new JsonArray();
+		for (int i = 0; i < framenum_num; i++)
+			frames.add(i);
+		animation.add("frames", frames);
+		mcmeta.add("animation", animation);
+		return gson.toJson(mcmeta);
 	}
 
 	public void newImage(Layer layer) {
@@ -412,7 +499,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				if (firstTime) {
 					leftSplitPane.setDividerLocation(0.16);
 					rightSplitPane.setDividerLocation(0.79);
-					southSplitPane.setDividerLocation(PreferencesManager.PREFERENCES.imageEditor.defaultPercentageTimeline.get() / 100d);
+					southSplitPane.setDividerLocation(
+							PreferencesManager.PREFERENCES.imageEditor.defaultPercentageTimeline.get() / 100d);
 					paletteLayerSplitPane.setDividerLocation(0.5);
 					zoomPane.getZoomport().fitZoom();
 					firstTime = false;
