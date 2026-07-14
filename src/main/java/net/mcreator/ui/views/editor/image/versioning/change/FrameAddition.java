@@ -42,7 +42,7 @@ public class FrameAddition extends Change implements IVisualChange {
 
 	@Override public void revert() {
 		if (frameIndex > 0) {// We don't revert the original frame to avoid getting an empty timeline
-			imv.getAnimationTimeline().getTimelineModel().remove(frameIndex);
+			imv.getAnimationTimeline().removeFrameFromTimelineNR(frameIndex);
 			try {
 				imv.setDisplayedCanvas(imv.getAnimationTimeline().getTimelineModel().get(frameIndex));
 			} catch (ArrayIndexOutOfBoundsException e) {

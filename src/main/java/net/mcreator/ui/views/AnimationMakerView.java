@@ -364,7 +364,18 @@ public class AnimationMakerView extends JPanel {
 
 	public void removeFrameFromTimeline(Canvas canvas, boolean addEmptyFrame) {
 		timelinevector.removeElement(canvas);
+		updateTimelineButtons();
 		imv.getVersionManager().addRevision(new FrameRemoval(canvas, canvas.getFirst(), timelinevector.size(), addEmptyFrame));
+	}
+
+	public void removeFrameFromTimelineNR(Canvas canvas) {
+		timelinevector.removeElement(canvas);
+		updateTimelineButtons();
+	}
+
+	public void removeFrameFromTimelineNR(int index) {
+		timelinevector.remove(index);
+		updateTimelineButtons();
 	}
 
 	/**

@@ -51,7 +51,7 @@ public class FrameRemoval extends FrameAddition implements IVisualChange {
 
 	@Override public void revert() {
 		if (addEmptyFrame)
-			imv.getAnimationTimeline().getTimelineModel().removeElementAt(frameIndex);
+			imv.getAnimationTimeline().removeFrameFromTimelineNR(frameIndex);
 		super.apply();
 	}
 
