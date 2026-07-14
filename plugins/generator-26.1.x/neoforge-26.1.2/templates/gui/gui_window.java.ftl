@@ -237,19 +237,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	</#if>
 
 	@Override protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
-		int BaseSpaceBetweenLine;
-		int height;
+		int heightPadding = 0;
+		int yOffset = 0;
 		<#list data.getComponentsOfType("Label") as component>
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
 			<#assign LabelText><#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString()</#if></#assign>
 			<#assign listComponentsLabel>Arrays.stream(${LabelText}.split("\\\\n")).map(Component::literal).collect(Collectors.toList())</#assign>
-			height = ${component.gy(data.height)};
-			BaseSpaceBetweenLine = 0;
+			yOffset = 0;
 			for(Component actualComponent : ${listComponentsLabel}){
-				guiGraphics.text(this.font,actualComponent,${component.gx(data.width)}, ${component.gy(data.height)} +  BaseSpaceBetweenLine, ${component.color.getRGB()}, ${component.hasShadow});
-				BaseSpaceBetweenLine+=10;
+				guiGraphics.text(this.font,actualComponent,${component.gx(data.width)}, ${component.gy(data.height)} + yOffset, ${component.color.getRGB()}, ${component.hasShadow});
+				heightPadding = 2;
+				yOffset += this.font.lineHeight + heightPadding;
 			}
 		</#list>
 	}
