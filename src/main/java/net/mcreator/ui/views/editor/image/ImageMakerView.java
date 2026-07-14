@@ -246,9 +246,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 				if (PreferencesManager.PREFERENCES.imageEditor.selectedFrameAtOpening.get().equals("First frame")) {
 					canvas = animationTimeline.getTimelineModel().firstElement();
-					setCanvas(animationTimeline.getTimelineModel().firstElement());
+					setDisplayedCanvas(animationTimeline.getTimelineModel().firstElement());
 				} else {
-					setCanvas(animationTimeline.getTimelineModel().lastElement());
+					setDisplayedCanvas(animationTimeline.getTimelineModel().lastElement());
 				}
 			} else {
 				openSingleFrameTexture(image);
@@ -598,13 +598,14 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	 *
 	 * @param newCanvas The canvas to display on the {@link ImageMakerView}
 	 */
-	public void setCanvas(Canvas newCanvas) {
+	public void setDisplayedCanvas(Canvas newCanvas) {
 		canvas = newCanvas;
 		canvasRenderer.setCanvas(newCanvas);
 		canvasRenderer.recalculateBounds();
 		zoomPane.getZoomport().fitZoom();
 		canvasRenderer.repaint();
 		toolPanel.setCanvas(newCanvas);
+		toolPanel.setLayer(newCanvas.getFirst());
 		layerPanel.setCanvas(newCanvas);
 		layerPanel.updateSelection();
 		repaint();

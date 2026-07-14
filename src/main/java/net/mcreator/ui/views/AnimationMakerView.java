@@ -29,6 +29,8 @@ import net.mcreator.ui.views.editor.image.animation.AnimationImportUtils;
 import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
+import net.mcreator.ui.views.editor.image.versioning.change.FrameAddition;
+import net.mcreator.ui.views.editor.image.versioning.change.FrameRemoval;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -95,7 +97,7 @@ public class AnimationMakerView extends JPanel {
 					}
 
 					SwingUtilities.invokeLater(() -> {
-						imv.setCanvas(timelinevector.getElementAt(animindex));
+						imv.setDisplayedCanvas(timelinevector.getElementAt(animindex));
 						timeline.setSelectedIndex(animindex);
 						timeline.repaint();
 					});
@@ -138,7 +140,7 @@ public class AnimationMakerView extends JPanel {
 			playanim = false;
 			play.setIcon(UIRES.get("16px.play"));
 			timeline.setSelectedValue(timelinevector.getElementAt(0), false);
-			imv.setCanvas(timelinevector.getElementAt(0));
+			imv.setDisplayedCanvas(timelinevector.getElementAt(0));
 			timeline.repaint();
 		});
 		stop.setIcon(UIRES.get("16px.stopanimation"));
@@ -152,7 +154,7 @@ public class AnimationMakerView extends JPanel {
 				animindex--;
 				if (animindex < 0)
 					animindex = timelinevector.getSize() - 1;
-				imv.setCanvas(timelinevector.getElementAt(animindex));
+				imv.setDisplayedCanvas(timelinevector.getElementAt(animindex));
 				timeline.setSelectedIndex(animindex);
 				timeline.repaint();
 			}
@@ -195,7 +197,7 @@ public class AnimationMakerView extends JPanel {
 				animindex++;
 				if (animindex >= timelinevector.getSize())
 					animindex = 0;
-				imv.setCanvas(timelinevector.getElementAt(animindex));
+				imv.setDisplayedCanvas(timelinevector.getElementAt(animindex));
 				timeline.setSelectedIndex(animindex);
 				timeline.repaint();
 			}
@@ -228,7 +230,7 @@ public class AnimationMakerView extends JPanel {
 			int index = timelinevector.indexOf(current);
 			generateTimelineFromBufferedImage(current.render(), imv.getViewName());
 			timelinevector.remove(index);
-			imv.setCanvas(timelinevector.getElementAt(index));
+			imv.setDisplayedCanvas(timelinevector.getElementAt(index));
 			convertButton.setVisible(false);
 		});
 		timelinebar.add(convertButton);
@@ -237,12 +239,11 @@ public class AnimationMakerView extends JPanel {
 			if (timeline.getSelectedValue() != null) {
 				timeline.getSelectedValuesList().forEach(canvas -> {
 					if (timelinevector.getSize() > 1) {
-						timelinevector.removeElement(canvas);
+						removeFrameFromTimeline(canvas, false);
 					} else if (timelinevector.getSize() == 1
 							&& PreferencesManager.PREFERENCES.imageEditor.singleFrameDeletionBehaviour.get()
 							.equals("Empty frame")) {
-						timelinevector.removeElement(canvas);
-						addFrameFromEmptyLayer();
+						removeFrameFromTimeline(canvas, true);
 					}
 				});
 			}
@@ -311,7 +312,10 @@ public class AnimationMakerView extends JPanel {
 			for (int i = 1; i <= tiledImageUtils.getWidthInTiles(); i++) {
 				for (int j = 1; j <= tiledImageUtils.getHeightInTiles(); j++) {
 					BufferedImage buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());
-					addFrameToTimeline(createCanvasFromBufferedImage(buf, name));
+					if (timelinevector.getSize() == 0)
+						insertFrameToTimelineNR(createCanvasFromBufferedImage(buf, name), 0);
+					else
+						addFrameToTimeline(createCanvasFromBufferedImage(buf, name));
 				}
 			}
 		} catch (InvalidTileSizeException e) {
@@ -325,7 +329,22 @@ public class AnimationMakerView extends JPanel {
 	 * @param canvas The {@link Canvas} to add at the timeline
 	 */
 	public void addFrameToTimeline(Canvas canvas) {
+		if (timelinevector.getSize() == 0) { // This is the original frame, so we don't want the revision
+			insertFrameToTimelineNR(canvas, 0);
+			return;
+		}
+
 		timelinevector.addElement(canvas);
+		imv.getVersionManager().addRevision(new FrameAddition(canvas, canvas.getFirst(), timelinevector.size() - 1));
+		if (timelinevector.getSize() > 1) {
+			imv.save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
+			imv.saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
+		}
+		updateTimelineButtons();
+	}
+
+	public void insertFrameToTimelineNR(Canvas canvas, int index) {
+		timelinevector.insertElementAt(canvas, index);
 		if (timelinevector.getSize() > 1) {
 			imv.save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
 			imv.saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
@@ -341,7 +360,11 @@ public class AnimationMakerView extends JPanel {
 		Canvas canvas = new Canvas(imv, imv.getCanvas().getWidth(), imv.getCanvas().getHeight());
 		canvas.add(layer);
 		addFrameToTimeline(canvas);
-		updateTimelineButtons();
+	}
+
+	public void removeFrameFromTimeline(Canvas canvas, boolean addEmptyFrame) {
+		timelinevector.removeElement(canvas);
+		imv.getVersionManager().addRevision(new FrameRemoval(canvas, canvas.getFirst(), timelinevector.size(), addEmptyFrame));
 	}
 
 	/**
