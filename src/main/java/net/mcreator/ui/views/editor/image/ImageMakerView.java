@@ -605,7 +605,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		zoomPane.getZoomport().fitZoom();
 		canvasRenderer.repaint();
 		toolPanel.setCanvas(newCanvas);
-		toolPanel.setLayer(newCanvas.getFirst());
 		layerPanel.setCanvas(newCanvas);
 		layerPanel.updateSelection();
 		repaint();

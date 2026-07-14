@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.views.editor.image.versioning.change;
 
+import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 
@@ -27,10 +28,12 @@ import java.awt.image.BufferedImage;
 public class FrameAddition extends Change implements IVisualChange {
 
 	private final int frameIndex;
+	private final ImageMakerView imv;
 
 	public FrameAddition(Canvas canvas, Layer layer, int frameIndex) {
 		super(canvas, layer);
 		this.frameIndex = frameIndex;
+		this.imv = canvas.getImageMakerView();
 	}
 
 	@Override public void apply() {
@@ -39,7 +42,12 @@ public class FrameAddition extends Change implements IVisualChange {
 
 	@Override public void revert() {
 		if (frameIndex > 0) {// We don't revert the original frame to avoid getting an empty timeline
-			canvas.getImageMakerView().getAnimationTimeline().getTimelineModel().remove(frameIndex);
+			imv.getAnimationTimeline().getTimelineModel().remove(frameIndex);
+			try {
+				imv.setDisplayedCanvas(imv.getAnimationTimeline().getTimelineModel().get(frameIndex));
+			} catch (ArrayIndexOutOfBoundsException e) {
+				imv.setDisplayedCanvas(imv.getAnimationTimeline().getTimelineModel().lastElement());
+			}
 		}
 	}
 
