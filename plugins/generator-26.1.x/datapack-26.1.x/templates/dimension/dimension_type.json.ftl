@@ -11,19 +11,13 @@
     "minecraft:gameplay/water_evaporates": true,
     "minecraft:gameplay/fast_lava": true,
     </#if>
+    <#if !data.bedWorks>
     "minecraft:gameplay/bed_rule": {
-    <#if data.bedWorks>
-      "can_sleep": "when_dark",
-      "can_set_spawn": "always",
-      "error_message": {
-        "translate": "block.minecraft.bed.no_sleep"
-      }
-    <#else>
       "can_set_spawn": "never",
       "can_sleep": "never",
       "explodes": true
-    </#if>
     },
+    </#if>
     <#if data.hasClouds>
     "minecraft:visual/cloud_height": ${[[(((data.cloudHeight + 8) / 16)?floor * 16), 2031]?min, -2032]?max},
     "minecraft:visual/cloud_color": "#ccffffff",
