@@ -1,0 +1,1 @@
+Si activé, ceci autorisera votre entité à fonctionner avec la commande '/summon'
