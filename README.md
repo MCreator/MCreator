@@ -73,4 +73,4 @@ At the time of writing, the license is:
 > NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.
 
 ## Documentation
-Visit the official [Wiki]([https://mcreator.net/wiki](https://mcreator.net/wiki/index)) for help on creating mods with MCreator.
+Visit the official [Wiki](https://mcreator.net/wiki/index) for help on creating mods with MCreator.
