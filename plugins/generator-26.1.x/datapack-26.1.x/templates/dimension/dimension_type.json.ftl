@@ -31,13 +31,11 @@
     "minecraft:gameplay/water_evaporates": true,
     "minecraft:gameplay/fast_lava": true,
     </#if>
-    <#if data.bedWorks>
+    <#if !data.bedWorks>
     "minecraft:gameplay/bed_rule": {
-      "can_sleep": "when_dark",
-      "can_set_spawn": "always",
-      "error_message": {
-        "translate": "block.minecraft.bed.no_sleep"
-      }
+      "can_set_spawn": "never",
+      "can_sleep": "never",
+      "explodes": true
     },
     </#if>
     <#if data.hasClouds>
