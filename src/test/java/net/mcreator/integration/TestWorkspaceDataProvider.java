@@ -906,7 +906,7 @@ public class TestWorkspaceDataProvider {
 			dimension.skyboxTextureSouth = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureWest = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureEast = new TextureHolder(modElement.getWorkspace(), "other0");
-			dimension.enableCustomSunMoonTextures = _true;
+			dimension.enableCustomSunMoonTextures = !dimension.skyType.equals("NONE") && _true;
 			dimension.sunTexture = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.moonTexture = new TextureHolder(modElement.getWorkspace(), "other0");
 			return dimension;
