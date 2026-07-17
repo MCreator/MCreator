@@ -899,7 +899,7 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
-			dimension.enableCustomSkyboxTextures = _true;
+			dimension.enableCustomSkyboxTextures = !dimension.skyType.equals("NONE") && _true;
 			dimension.skyboxTextureUp = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureDown = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureNorth = new TextureHolder(modElement.getWorkspace(), "other0");
