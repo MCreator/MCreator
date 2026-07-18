@@ -396,7 +396,12 @@ Blockly.Extensions.register('empty_any_item_in_validation',
             		return;
             }
 
-            const isValid = this.getField("item0") != null;
+            const isValid = this.getField("item0") != null && this.getFields().every(field => {
+                const value = field.getValue();
+                return value !== "Blocks.AIR" &&
+                    value !== "Blocks.VOID_AIR" &&
+                    value !== "Blocks.CAVE_AIR";
+            });
 
             if (!this.isInFlyout) {
             	// Add a warning for the first non-valid input

@@ -25,6 +25,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
@@ -44,6 +45,11 @@ public class MCItemBlock implements IBlockGenerator {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.mcitem_broken_reference",
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
+			}
+
+			if (master.getEditorType() == BlocklyEditorType.AI_TASK && textContent.contains("AIR")) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.mcitem_air_value", textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 
 			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("_mcitem.java.ftl")
