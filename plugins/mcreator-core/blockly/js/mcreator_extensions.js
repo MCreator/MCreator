@@ -396,7 +396,9 @@ Blockly.Extensions.register('empty_any_item_in_validation',
             		return;
             }
 
-            const isValid = this.getField("item0") != null && this.getFields().every(field => {
+            const isValid = this.getField("item0") != null && this.getField("item0").getValue() !== "";
+
+            const hasNoAir = this.getFields().every(field => {
                 const value = field.getValue();
                 return value !== "Blocks.AIR" &&
                     value !== "Blocks.VOID_AIR" &&
@@ -405,11 +407,16 @@ Blockly.Extensions.register('empty_any_item_in_validation',
 
             if (!this.isInFlyout) {
             	// Add a warning for the first non-valid input
-                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.empty_any_item_in'));
+                if (!isValid)
+                    this.setWarningText(javabridge.t('blockly.extension.empty_any_item_in'));
+                else if (!hasNoAir)
+                    this.setWarningText(javabridge.t('blockly.extension.air_any_item_in'));
+                else
+                    this.setWarningText(null);
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
-                this.setDisabledReason(!isValid, "empty_any_item_in");
+                this.setDisabledReason(!isValid || !hasNoAir, "empty_any_item_in");
                 Blockly.Events.setGroup(group);
             }
         });
