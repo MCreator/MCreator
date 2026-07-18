@@ -21,6 +21,7 @@ package net.mcreator;
 import net.mcreator.io.LoggingSystem;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
+import net.mcreator.io.WindowsPackage;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.util.MCreatorVersionNumber;
@@ -88,6 +89,8 @@ public class Launcher {
 
 		LOG.info("Installation path: {}", System.getProperty("user.dir"));
 		LOG.info("User home of MCreator: {}", UserFolderManager.getFileFromUserFolder("/"));
+
+		WindowsPackage.initIfWindows();
 
 		if (!UserFolderManager.createUserFolderIfNotExists()) {
 			JOptionPane.showMessageDialog(null, "<html><b>MCreator failed to write to user directory!</b><br><br>"
