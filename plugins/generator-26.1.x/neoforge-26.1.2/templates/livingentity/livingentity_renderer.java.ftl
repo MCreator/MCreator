@@ -129,7 +129,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		<#list data.modelLayers as layer>
 		this.addLayer(new RenderLayer<>(this) {
 			final Identifier LAYER_TEXTURE = Identifier.parse("${modid}:textures/entities/${layer.texture}");
-			final RenderType RENDER_TYPE = RenderTypes.<#if layer.glow>eyes<#else>entityCutout</#if>(LAYER_TEXTURE);
+			<#if layer.model != "Default">
+				EntityModel model = null;
+			</#if>
 
 			<@javacompress>
 			@Override public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, ${renderState} state, float headYaw, float headPitch) {
@@ -143,14 +145,17 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 				if (<@procedureOBJToConditionCode layer.condition/>) {
 				</#if>
 
+				Minecraft mc = Minecraft.getInstance();
+				VertexConsumer vertexConsumer = mc.renderBuffers().bufferSource().getBuffer(RenderTypes.<#if layer.glow>eyes<#else>entityCutout</#if>(LAYER_TEXTURE));
 				<#if layer.model != "Default">
-					EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
+					if (model == null)
+						model = new ${layer.model}(mc.getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
 					model.setupAnim(state);
-					submitNodeCollector.submitModel(model, state, poseStack, RENDER_TYPE, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
+					model.renderToBuffer(poseStack, vertexConsumer, light,
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>);
 				<#else>
-					submitNodeCollector.submitModel(this.getParentModel(), state, poseStack, RENDER_TYPE, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
+					this.getParentModel().renderToBuffer(poseStack, vertexConsumer, light,
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>);
 				</#if>
 
 				<#if hasProcedure(layer.condition)>}</#if>
