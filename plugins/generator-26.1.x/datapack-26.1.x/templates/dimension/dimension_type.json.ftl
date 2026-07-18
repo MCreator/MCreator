@@ -35,6 +35,7 @@
     "minecraft:visual/cloud_color": "#ccffffff",
     </#if>
     <#if data.useCustomEffects>
+      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
       <#if data.hasFog>
       "minecraft:visual/fog_start_distance": 5,
       "minecraft:visual/fog_end_distance": 40,
@@ -42,9 +43,6 @@
       <#if data.airColor?has_content>
       "minecraft:visual/fog_color": "${thelper.colorToHexString(data.airColor)}",
       "minecraft:visual/sky_color": "${thelper.colorToHexString(data.airColor)}",
-      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
-      <#else>
-      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
       </#if>
       <#if !data.sunHeightAffectsFog>
       "minecraft:visual/sunrise_sunset_color": {
