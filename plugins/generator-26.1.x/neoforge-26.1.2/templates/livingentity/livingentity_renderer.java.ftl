@@ -129,8 +129,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		<#list data.modelLayers as layer>
 		this.addLayer(new RenderLayer<>(this) {
 			final Identifier LAYER_TEXTURE = Identifier.parse("${modid}:textures/entities/${layer.texture}");
+			final RenderType RENDER_TYPE = RenderTypes.<#if layer.glow>eyes<#else>entityCutout</#if>(LAYER_TEXTURE);
 			<#if layer.model != "Default">
-				EntityModel model = null;
+				final EntityModel LAYER_MODEL = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
 			</#if>
 
 			<@javacompress>
@@ -145,17 +146,13 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 				if (<@procedureOBJToConditionCode layer.condition/>) {
 				</#if>
 
-				Minecraft mc = Minecraft.getInstance();
-				VertexConsumer vertexConsumer = mc.renderBuffers().bufferSource().getBuffer(RenderTypes.<#if layer.glow>eyes<#else>entityCutout</#if>(LAYER_TEXTURE));
 				<#if layer.model != "Default">
-					if (model == null)
-						model = new ${layer.model}(mc.getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
-					model.setupAnim(state);
-					model.renderToBuffer(poseStack, vertexConsumer, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>);
+					LAYER_MODEL.setupAnim(state);
+					submitNodeCollector.submitModel(LAYER_MODEL, state, poseStack, RENDER_TYPE, light,
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
 				<#else>
-					this.getParentModel().renderToBuffer(poseStack, vertexConsumer, light,
-						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>);
+					submitNodeCollector.submitModel(this.getParentModel(), state, poseStack, RENDER_TYPE, light,
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
 				</#if>
 
 				<#if hasProcedure(layer.condition)>}</#if>
