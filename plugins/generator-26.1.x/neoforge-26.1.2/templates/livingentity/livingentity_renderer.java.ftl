@@ -130,6 +130,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		this.addLayer(new RenderLayer<>(this) {
 			final Identifier LAYER_TEXTURE = Identifier.parse("${modid}:textures/entities/${layer.texture}");
 			final RenderType RENDER_TYPE = RenderTypes.<#if layer.glow>eyes<#else>entityCutout</#if>(LAYER_TEXTURE);
+			<#if layer.model != "Default">
+				final EntityModel LAYER_MODEL = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
+			</#if>
 
 			<@javacompress>
 			@Override public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, ${renderState} state, float headYaw, float headPitch) {
@@ -144,9 +147,8 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 				</#if>
 
 				<#if layer.model != "Default">
-					EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
-					model.setupAnim(state);
-					submitNodeCollector.submitModel(model, state, poseStack, RENDER_TYPE, light,
+					LAYER_MODEL.setupAnim(state);
+					submitNodeCollector.submitModel(LAYER_MODEL, state, poseStack, RENDER_TYPE, light,
 						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
 				<#else>
 					submitNodeCollector.submitModel(this.getParentModel(), state, poseStack, RENDER_TYPE, light,
