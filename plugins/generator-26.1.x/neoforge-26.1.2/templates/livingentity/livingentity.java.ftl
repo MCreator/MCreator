@@ -915,8 +915,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) &&
-							world.getRawBrightness(pos, 0) > 8)
+						world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) &&
+						(EntitySpawnReason.ignoresLightRequirements(reason) || world.getRawBrightness(pos, 0) > 8)
 				</#if>,
 				RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
@@ -947,8 +947,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					}
 					<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos).is(Blocks.WATER) &&
-							world.getBlockState(pos.above()).is(Blocks.WATER))
+						world.getBlockState(pos).is(Blocks.WATER) &&
+						world.getBlockState(pos.above()).is(Blocks.WATER)
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
@@ -963,11 +963,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					(entityType, world, reason, pos, random) ->
-							(world.getFluidState(pos.below()).is(FluidTags.WATER) &&
-							world.getBlockState(pos.above()).is(Blocks.WATER) &&
-							pos.getY() >= (world.getSeaLevel() - 13) &&
-							pos.getY() <= world.getSeaLevel())
+					GlowSquid::checkGlowSquidSpawnRules
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
@@ -983,9 +979,9 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					}
 					<#else>
 						(entityType, world, reason, pos, random) ->
-								(world.getDifficulty() != Difficulty.PEACEFUL &&
-								Monster.isDarkEnoughToSpawn(world, pos, random) &&
-								Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
+							world.getDifficulty() != Difficulty.PEACEFUL &&
+							(EntitySpawnReason.ignoresLightRequirements(reason) || Monster.isDarkEnoughToSpawn(world, pos, random)) &&
+							Mob.checkMobSpawnRules(entityType, world, reason, pos, random)
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
