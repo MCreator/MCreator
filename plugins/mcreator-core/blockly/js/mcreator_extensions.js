@@ -410,10 +410,7 @@ Blockly.Extensions.register('empty_any_item_in_validation',
 
             if (!this.isInFlyout) {
             	// Add a warning for the first non-valid input
-                if (!isValid)
-                    this.setWarningText(javabridge.t('blockly.extension.empty_any_item_in'));
-                else
-                    this.setWarningText(null);
+                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.empty_any_item_in'));
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
