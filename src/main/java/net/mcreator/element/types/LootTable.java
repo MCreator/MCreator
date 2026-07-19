@@ -26,6 +26,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,13 +38,15 @@ import java.util.List;
 
 	@ModElementReference public List<Pool> pools;
 
+	@Nullable
+	public String lootTableToModify;
+
 	private LootTable() {
 		this(null);
 	}
 
 	public LootTable(ModElement element) {
 		super(element);
-
 		this.pools = new ArrayList<>();
 	}
 
@@ -85,6 +88,10 @@ import java.util.List;
 
 		}
 
+	}
+
+	public boolean hasLootModifier() {
+		return lootTableToModify != null && !lootTableToModify.isEmpty();
 	}
 
 }
