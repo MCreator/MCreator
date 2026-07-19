@@ -32,6 +32,7 @@ import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MCItemBlock implements IBlockGenerator {
@@ -47,7 +48,8 @@ public class MCItemBlock implements IBlockGenerator {
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 
-			if (master.getEditorType() == BlocklyEditorType.AI_TASK && textContent.contains("AIR")) {
+			List<String> AIR_BLOCKS = List.of("Blocks.AIR", "Blocks.CAVE_AIR", "Blocks.VOID_AIR");
+			if (master.getEditorType() == BlocklyEditorType.AI_TASK && AIR_BLOCKS.contains(textContent)) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.mcitem_air_value", textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
