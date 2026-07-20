@@ -13,7 +13,8 @@
       }
     },
     <#if data.imitateOverworldBehaviour>
-    "minecraft:gameplay/nether_portal_spawns_piglin": true,
+    "minecraft:gameplay/eyeblossom_open": true,
+    "minecraft:gameplay/creaking_active": true,
     </#if>
     <#if data.piglinSafe>
     "minecraft:gameplay/piglins_zombify": false,
