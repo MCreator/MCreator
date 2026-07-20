@@ -1,5 +1,4 @@
 {
-  "ambient_light": ${data.ambientLight},
   "attributes": {
     "minecraft:audio/background_music": {
       "creative": {
@@ -74,12 +73,17 @@
     </#if>
     "minecraft:gameplay/respawn_anchor_works": ${data.canRespawnHere}
   },
+  "has_skylight": ${data.hasSkyLight},
+  "has_ceiling": ${data.worldGenType == "Nether like gen"},
+  "has_ender_dragon_fight": false,
   "coordinate_scale": ${data.coordinateScale},
+  "ambient_light": ${data.ambientLight},
+  "infiniburn": "#${data.infiniburnTag}",
   <#if data.defaultEffects == "the_end">
   "timelines": "#minecraft:in_end",
   <#elseif data.defaultEffects == "the_nether">
-  "cardinal_light": "nether",
   "timelines": "#minecraft:in_nether",
+  "cardinal_light": "nether",
   <#elseif data.hasFixedTime>
   "has_fixed_time": true,
   "timelines": "${modid}:${registryname}_fixed",
@@ -88,10 +92,6 @@
   "timelines": "#minecraft:in_overworld",
   "default_clock": "minecraft:overworld",
   </#if>
-  "has_ceiling": ${data.worldGenType == "Nether like gen"},
-  "has_ender_dragon_fight": false,
-  "has_skylight": ${data.hasSkyLight},
-  "infiniburn": "#${data.infiniburnTag}",
   <#if data.worldGenType == "Normal world gen">
   "min_y": -64,
   "height": 384,
@@ -101,7 +101,6 @@
   "height": 256,
   "logical_height": 256,
   </#if>
-  "monster_spawn_block_light_limit": ${data.monsterSpawnBlockLightLimit},
   <#if data.minMonsterSpawnLightLimit == data.maxMonsterSpawnLightLimit>
   "monster_spawn_light_level": ${data.minMonsterSpawnLightLimit},
   <#else>
@@ -111,6 +110,7 @@
     "max_inclusive": ${data.maxMonsterSpawnLightLimit}
   },
   </#if>
+  "monster_spawn_block_light_limit": ${data.monsterSpawnBlockLightLimit},
   "skybox": "${data.skyType?lower_case?replace("normal", "overworld")}"
 }
 
