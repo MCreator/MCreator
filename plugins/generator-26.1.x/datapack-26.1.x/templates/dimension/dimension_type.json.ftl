@@ -1,6 +1,18 @@
 {
   "ambient_light": ${data.ambientLight},
   "attributes": {
+    "minecraft:audio/background_music": {
+      "creative": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.creative"
+      },
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.game"
+      }
+    },
     <#if data.imitateOverworldBehaviour>
     "minecraft:gameplay/nether_portal_spawns_piglin": true,
     </#if>
@@ -12,13 +24,11 @@
     "minecraft:gameplay/fast_lava": true,
     "minecraft:gameplay/snow_golem_melts": true,
     </#if>
-    <#if data.bedWorks>
+    <#if !data.bedWorks>
     "minecraft:gameplay/bed_rule": {
-      "can_sleep": "when_dark",
-      "can_set_spawn": "always",
-      "error_message": {
-        "translate": "block.minecraft.bed.no_sleep"
-      }
+      "can_set_spawn": "never",
+      "can_sleep": "never",
+      "explodes": true
     },
     </#if>
     <#if data.hasClouds>
@@ -26,6 +36,7 @@
     "minecraft:visual/cloud_color": "#ccffffff",
     </#if>
     <#if data.useCustomEffects>
+      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
       <#if data.hasFog>
       "minecraft:visual/fog_start_distance": 5,
       "minecraft:visual/fog_end_distance": 40,
@@ -33,9 +44,6 @@
       <#if data.airColor?has_content>
       "minecraft:visual/fog_color": "${thelper.colorToHexString(data.airColor)}",
       "minecraft:visual/sky_color": "${thelper.colorToHexString(data.airColor)}",
-      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
-      <#else>
-      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
       </#if>
       <#if !data.sunHeightAffectsFog>
       "minecraft:visual/sunrise_sunset_color": {

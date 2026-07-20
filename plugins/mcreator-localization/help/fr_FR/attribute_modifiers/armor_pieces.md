@@ -1,0 +1,1 @@
+Ce modificateur d'attribut n'est appliqué qu'aux pièces d'armure sélectionnées.
