@@ -1,0 +1,25 @@
+{
+  "mutator": "biome_location_component_mutator",
+  "inputsInline": false,
+  "output": "LocationParameter",
+  "colour": 330,
+  "extensions": [
+    "disable_duplicate_input_type"
+  ],
+  "mcreator": {
+    "group": "location",
+    "toolbox_id": "playerconditions",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>"
+    ],
+    "repeating_fields": [
+      {
+        "name": "biome",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_data_list_selector"
+        }
+      }
+    ]
+  }
+}
