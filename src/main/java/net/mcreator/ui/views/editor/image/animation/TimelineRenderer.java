@@ -20,7 +20,6 @@
 package net.mcreator.ui.views.editor.image.animation;
 
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.util.image.ImageUtils;
 
@@ -29,9 +28,9 @@ import java.awt.*;
 
 public class TimelineRenderer extends JPanel implements ListCellRenderer<Canvas> {
 
-	private final AnimationMakerView timeline;
+	private final AnimationTimeline timeline;
 
-	public TimelineRenderer(AnimationMakerView timeline) {
+	public TimelineRenderer(AnimationTimeline timeline) {
 		this.timeline = timeline;
 		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
 	}

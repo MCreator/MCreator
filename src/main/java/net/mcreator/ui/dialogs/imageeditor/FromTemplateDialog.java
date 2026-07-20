@@ -29,7 +29,7 @@ import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.views.AnimationMakerView;
+import net.mcreator.ui.views.editor.image.animation.AnimationTimeline;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
@@ -86,7 +86,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 	private boolean disableRefresh = false;
 
-	public FromTemplateDialog(MCreator window, AnimationMakerView timeline, VersionManager versionManager) {
+	public FromTemplateDialog(MCreator window, AnimationTimeline timeline, VersionManager versionManager) {
 		super(window, L10N.t("dialog.imageeditor.template_from_title"), true);
 
 		List<Canvas> affectedFrames = new ArrayList<>();

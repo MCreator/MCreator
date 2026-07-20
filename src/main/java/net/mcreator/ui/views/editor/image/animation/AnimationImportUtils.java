@@ -26,7 +26,6 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
@@ -52,7 +51,7 @@ import java.util.List;
 
 	private static final Logger LOG = LogManager.getLogger("Animation Import Utils");
 
-	public static void addFramesFromTemplate(AnimationMakerView timeline) {
+	public static void addFramesFromTemplate(AnimationTimeline timeline) {
 		List<ResourcePointer> templatesSorted = new ArrayList<>(
 				ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
@@ -116,7 +115,7 @@ import java.util.List;
 		}
 	}
 
-	public static void importImagesAsFrames(AnimationMakerView timeline) {
+	public static void importImagesAsFrames(AnimationTimeline timeline) {
 		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(),
 				new String[] { ".png", ".gif" });
 		for (File file : files) {
@@ -143,7 +142,7 @@ import java.util.List;
 		}
 	}
 
-	public static void colorizeFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
+	public static void colorizeFramesDialog(AnimationTimeline timeline, BufferedImage bufferedImage,
 			ImageIcon previewIcon, String name) throws IOException {
 		JPanel optionsPanel = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
@@ -219,7 +218,7 @@ import java.util.List;
 		}
 	}
 
-	public static void gifToFrames(AnimationMakerView timeline, File file) {
+	public static void gifToFrames(AnimationTimeline timeline, File file) {
 		if (file != null) {
 			ProgressDialog dial = new ProgressDialog(timeline.getImageMakerView().getMCreator(),
 					L10N.t("dialog.animation_maker.gif_importing"));

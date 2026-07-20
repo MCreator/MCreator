@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.views;
+package net.mcreator.ui.views.editor.image.animation;
 
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -25,8 +25,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
-import net.mcreator.ui.views.editor.image.animation.AnimationImportUtils;
-import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.change.FrameAddition;
@@ -43,7 +41,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-public class AnimationMakerView extends JPanel {
+public class AnimationTimeline extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Animation Timeline");
 
@@ -67,7 +65,7 @@ public class AnimationMakerView extends JPanel {
 
 	private boolean active;
 
-	public AnimationMakerView(ImageMakerView imv) {
+	public AnimationTimeline(ImageMakerView imv) {
 		this.imv = imv;
 		setLayout(new BorderLayout());
 
