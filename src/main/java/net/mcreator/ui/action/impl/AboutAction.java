@@ -22,6 +22,7 @@ import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
+import net.mcreator.io.WindowsPackage;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
@@ -54,11 +55,18 @@ public class AboutAction extends BasicAction {
 		logoPanel.add("Center", new JLabel(UIRES.SVG.getBuiltIn("logo", 250, (int) (250 * (63 / 350.0)))));
 		logoPanel.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 0));
 
-		JLabel aboutLabel = L10N.label("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(),
-				(MCreatorApplication.isInternet ?
-						MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor() :
-						L10N.t("common.not_applicable")), GeneratableElement.formatVersion, OS.getSystemBits(),
-				OS.getArchitecture(), OS.getBundledJVMBits());
+		String versionString = Launcher.version.getFullString();
+		if (WindowsPackage.isRunningAsMSIX()) {
+			versionString += " (MSIX)";
+		}
+
+		String latestMajorVersion = MCreatorApplication.isInternet ?
+				MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor() :
+				L10N.t("common.not_applicable");
+
+		JLabel aboutLabel = L10N.label("dialog.about.message", Launcher.version.major, versionString,
+				latestMajorVersion, GeneratableElement.formatVersion, OS.getSystemBits(), OS.getArchitecture(),
+				OS.getBundledJVMBits());
 
 		JComponent dialogPanel = PanelUtils.westAndCenterElement(
 				PanelUtils.pullElementUp(PanelUtils.centerInPanel(logoPanel)), aboutLabel, 48, 48);

@@ -1,0 +1,1 @@
+Si activé, l'entité ne prendra pas de dégâts par le feu.
