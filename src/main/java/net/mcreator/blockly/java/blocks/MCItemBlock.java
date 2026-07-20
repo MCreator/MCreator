@@ -25,14 +25,12 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MCItemBlock implements IBlockGenerator {
@@ -46,12 +44,6 @@ public class MCItemBlock implements IBlockGenerator {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.mcitem_broken_reference",
 								textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
-			}
-
-			List<String> AIR_BLOCKS = List.of("Blocks.AIR", "Blocks.CAVE_AIR", "Blocks.VOID_AIR");
-			if (master.getEditorType() == BlocklyEditorType.AI_TASK && AIR_BLOCKS.contains(textContent)) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.mcitem_air_value", textContent.replaceFirst(NameMapper.MCREATOR_PREFIX, ""))));
 			}
 
 			if (master.getTemplateGenerator() != null && master.getTemplateGenerator().hasTemplate("_mcitem.java.ftl")

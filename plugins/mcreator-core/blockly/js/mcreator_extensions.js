@@ -384,6 +384,12 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
         }
     });
 
+function isAirMCItemValue(value) {
+    return value === "Blocks.AIR" ||
+        value === "Blocks.VOID_AIR" ||
+        value === "Blocks.CAVE_AIR";
+}
+
 // Helper function for extensions that validate if Any item in block has at least one item field argument
 Blockly.Extensions.register('empty_any_item_in_validation',
     function () {
@@ -399,10 +405,7 @@ Blockly.Extensions.register('empty_any_item_in_validation',
             const isValid = this.getFields().every(field => {
                 if (field != null) {
                     const value = field.getValue();
-                    return value !== "" &&
-                        value !== "Blocks.AIR" &&
-                        value !== "Blocks.VOID_AIR" &&
-                        value !== "Blocks.CAVE_AIR";
+                    return value !== "" && !isAirMCItemValue(value);
                 }
 
                 return false;
@@ -420,3 +423,48 @@ Blockly.Extensions.register('empty_any_item_in_validation',
         });
 
     });
+
+// Validates direct mcitem_all / mcitem_allblocks blocks on value inputs are not air.
+// Pass input names to limit validation; omit to check all value inputs on the block.
+function validateMCItemInputsNotAir(...inputNames) {
+    const checkAllInputs = inputNames.length === 0;
+
+    return function () {
+        this.setOnChange(function (changeEvent) {
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+
+            let isValid = true;
+            for (const input of this.inputList) {
+                if (!input.connection)
+                    continue;
+
+                if (!checkAllInputs && !inputNames.includes(input.name))
+                    continue;
+
+                const connectedBlock = input.connection.targetBlock();
+                if (connectedBlock &&
+                    (connectedBlock.type === 'mcitem_all' || connectedBlock.type === 'mcitem_allblocks')) {
+                    if (isAirMCItemValue(connectedBlock.getFieldValue('value'))) {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!this.isInFlyout) {
+                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.empty_any_item_in'));
+                const group = Blockly.Events.getGroup();
+                Blockly.Events.setGroup(changeEvent.group);
+                this.setDisabledReason(!isValid, "air_mcitem_input");
+                Blockly.Events.setGroup(group);
+            }
+        });
+    };
+}
+
+Blockly.Extensions.register('air_mcitem_input_validation', validateMCItemInputsNotAir());
