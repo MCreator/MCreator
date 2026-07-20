@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 {
-  "format_version": "1.21.40",
+  "format_version": "1.21.120",
   "minecraft:block": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -28,14 +28,7 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry":
-        <#if data.hasCustomModel()>
-          "geometry.${data.getModel().getReadableName()}"
-        <#elseif data.renderType() == 11>
-          "minecraft:geometry.cross"
-        <#else>
-          "minecraft:geometry.full_block"
-        </#if>,
+      "minecraft:geometry": <@regular_model/>,
       "minecraft:material_instances": {
         <#if data.hasOneTexture()>
 		"*": <@material_face "" data.renderType() == 11 data.renderType() == 11/>
@@ -48,6 +41,39 @@
         "west": <@material_face "west"/>
 		</#if>
       },
+      <#if data.hasParticleTexture()>
+      "minecraft:destruction_particles": {
+        "texture": "${modid}_${registryname}_destruction_particles"
+        <#if data.particleTintMethod != "(none)">,
+        "tint_method": "${data.particleTintMethod}"
+        </#if>
+        <#if data.particleCount != 100>,
+        "particle_count": ${data.particleCount}
+        </#if>
+      },
+      </#if>
+      <#if data.flowerPottable>
+      "minecraft:flower_pottable": {},
+       <#if data.hasCustomPottedModel() || data.pottedRenderType() == 11 || data.pottedRenderType() == 12 || data.hasPottedTexture()>
+		  "minecraft:embedded_visual": {
+		    "geometry":
+		      <#if data.hasCustomPottedModel()>
+		      "geometry.${data.getPottedModel().getReadableName()}"
+		      <#elseif data.pottedRenderType() == 11>
+		      "minecraft:geometry.cross"
+		      <#elseif data.pottedRenderType() == 12>
+		      "minecraft:geometry.full_block"
+		      <#elseif data.hasCustomModel()>
+		      "geometry.${data.getModel().getReadableName()}"
+		      <#else>
+		      <@regular_model/>
+		      </#if>,
+	    	  "material_instances": {
+	  	       "*": <@material_face "potted" data.pottedRenderType() == 11 data.pottedRenderType() == 11/>
+		      }
+	      },
+       </#if>
+      </#if>
       <#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
       "minecraft:map_color": "${data.colorOnMap}",
       </#if>
@@ -154,6 +180,16 @@
     <#return "q.block_state('minecraft:block_face')">
   </#if>
 </#function>
+
+<#macro regular_model>
+  <#if data.hasCustomModel()>
+  "geometry.${data.getModel().getReadableName()}"
+  <#elseif data.renderType() == 11>
+  "minecraft:geometry.cross"
+  <#else>
+  "minecraft:geometry.full_block"
+  </#if>
+</#macro>
 
 <#macro material_face suffix="" disableAmbientOcclusion=false disableFaceDimming=false>
 {
