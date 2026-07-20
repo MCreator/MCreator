@@ -92,7 +92,7 @@ import java.util.stream.Collectors;
 	@NonNullIf({ "blockBase %= Door", "blockBase %= TrapDoor", "blockBase %= PressurePlate", "blockBase %= Button" })
 	public String blockSetType;
 	@NonNullIf("blockBase %= FlowerPot") public MItemBlock pottedPlant;
-	@NonNullIf("blockBase %= Leaves") public ParticleEntry leavesParticleType;
+	public ParticleEntry leavesParticleType;
 	@Numeric(init = 0.01, min = 0, max = 1, step = 0.001) public double leavesParticleChance;
 	@NonNullIf({ "blockBase %= Sign", "blockBase %= HangingSign" }) @TextureReference(TextureType.ENTITY)
 	public TextureHolder signEntityTexture;

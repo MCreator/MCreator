@@ -68,7 +68,7 @@ import java.util.List;
 	public boolean useCustomEffects;
 	public boolean hasClouds;
 	@Numeric(init = 192, min = -2032, max = 2031, step = 16) public int cloudHeight;
-	@LimitedOptions({ "NONE", "NORMAL", "END" }) public String skyType;
+	@LimitedOptions({ "NORMAL", "NONE", "END" }) public String skyType;
 	@Nullable public Color airColor;
 	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
@@ -146,7 +146,7 @@ import java.util.List;
 		this.creativeTabs = new ArrayList<>();
 		this.defaultEffects = "overworld";
 		this.cloudHeight = 192;
-		this.skyType = "NONE";
+		this.skyType = "NORMAL";
 		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
 		this.biomesInDimension = new ArrayList<>();
@@ -164,6 +164,10 @@ import java.util.List;
 
 	public boolean hasDimensionTriggers() {
 		return onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
+	}
+
+	public boolean hasFixedTimeAndNeedsCustomTimeline() {
+		return !useCustomEffects && "overworld".equals(defaultEffects) && hasFixedTime;
 	}
 
 	public Set<String> getWorldgenBlocks() {

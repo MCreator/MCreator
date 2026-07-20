@@ -1,0 +1,1 @@
+Deze parameter bepaalt het terugslag weerstand van het harnas.

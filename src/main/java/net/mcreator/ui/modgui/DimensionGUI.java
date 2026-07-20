@@ -425,6 +425,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		enableCustomSkyboxTextures.addActionListener(_ -> updateSkyboxElements());
 		enableCustomSunMoonTextures.addActionListener(_ -> updateSkyboxElements());
+		skyType.addActionListener(_ -> updateSkyboxElements());
 		updateSkyboxElements();
 
 		// Dimension generation settings
@@ -704,6 +705,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	}
 
 	private void updateSkyboxElements() {
+		boolean skyNone = skyType.getSelectedItem().equals("NONE");
+		if (skyNone) {
+			enableCustomSkyboxTextures.setSelected(false);
+			enableCustomSunMoonTextures.setSelected(false);
+		}
+		enableCustomSkyboxTextures.setEnabled(!skyNone);
+		enableCustomSunMoonTextures.setEnabled(!skyNone);
 		boolean skyboxEnabled = enableCustomSkyboxTextures.isSelected();
 		skyboxTextureUp.setEnabled(skyboxEnabled);
 		skyboxTextureDown.setEnabled(skyboxEnabled);
