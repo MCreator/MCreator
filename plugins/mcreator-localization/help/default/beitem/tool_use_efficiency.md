@@ -1,0 +1,1 @@
+If true, the "Efficiency" enchantment will affect the destroy speeds of the diggeable blocks.

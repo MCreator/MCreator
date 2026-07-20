@@ -59,7 +59,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		this.workspace = mcreator.getWorkspace();
 		this.entryType = entryType;
 
-		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(true));
+		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace(), true));
 		equipmentSlot.setRenderer(new JComboBox<>().getRenderer());
 
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));
@@ -105,7 +105,7 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 	}
 
 	@Override public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots(true));
+		ComboBoxUtil.updateComboBoxContents(equipmentSlot, ElementUtil.loadAllEquipmentSlots(workspace, true));
 		ComboBoxUtil.updateComboBoxContents(attribute, ElementUtil.loadAllAttributes(workspace));
 	}
 
