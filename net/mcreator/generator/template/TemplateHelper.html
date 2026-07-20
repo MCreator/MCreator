@@ -67,6 +67,10 @@ loadScripts(document, 'script');</script>
 <li><a href="#randomlong(java.lang.String)" tabindex="0">randomlong(String)</a></li>
 <li><a href="#randompositiveint(java.lang.String)" tabindex="0">randompositiveint(String)</a></li>
 <li><a href="#colorToHexString(java.awt.Color)" tabindex="0">colorToHexString(Color)</a></li>
+<li><a href="#hexToDec(java.lang.String)" tabindex="0">hexToDec(String)</a></li>
+<li><a href="#decToHex(double)" tabindex="0">decToHex(double)</a></li>
+<li><a href="#formatColor(double,double,double,double)" tabindex="0">formatColor(double, double, double, double)</a></li>
+<li><a href="#clamp(double,double,double)" tabindex="0">clamp(double, double, double)</a></li>
 <li><a href="#obj2str(java.lang.Object)" tabindex="0">obj2str(Object)</a></li>
 <li><a href="#removeDuplicates(java.util.List)" tabindex="0">removeDuplicates(List)</a></li>
 </ol>
@@ -114,8 +118,25 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clamp(double,double,double)" class="member-name-link">clamp</a><wbr>(double&nbsp;val,
+ double&nbsp;min,
+ double&nbsp;max)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#colorToHexString(java.awt.Color)" class="member-name-link">colorToHexString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#colorToHexString(java.awt.Color)" class="member-name-link">colorToHexString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#decToHex(double)" class="member-name-link">decToHex</a><wbr>(double&nbsp;dec)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#formatColor(double,double,double,double)" class="member-name-link">formatColor</a><wbr>(double&nbsp;r,
+ double&nbsp;g,
+ double&nbsp;b,
+ double&nbsp;a)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hexToDec(java.lang.String)" class="member-name-link">hexToDec</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hex)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mapToString(double,double,double,java.lang.String...)" class="member-name-link">mapToString</a><wbr>(double&nbsp;val,
@@ -211,6 +232,43 @@ loadScripts(document, 'script');</script>
 <h3>colorToHexString</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">colorToHexString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="hexToDec(java.lang.String)">
+<h3>hexToDec</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hexToDec</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;hex)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="decToHex(double)">
+<h3>decToHex</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">decToHex</span><wbr><span class="parameters">(double&nbsp;dec)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="formatColor(double,double,double,double)">
+<h3>formatColor</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">formatColor</span><wbr><span class="parameters">(double&nbsp;r,
+ double&nbsp;g,
+ double&nbsp;b,
+ double&nbsp;a)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="clamp(double,double,double)">
+<h3>clamp</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">clamp</span><wbr><span class="parameters">(double&nbsp;val,
+ double&nbsp;min,
+ double&nbsp;max)</span></div>
 </div>
 </section>
 </li>
