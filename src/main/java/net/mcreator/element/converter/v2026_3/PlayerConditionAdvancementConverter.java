@@ -132,10 +132,14 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 
 	private Element createBiomeLocationParameter(Document doc, String biome) {
 		Element biomeParam = doc.createElement("block");
-		biomeParam.setAttribute("type", "location_component_predicate_biomes_single");
+		biomeParam.setAttribute("type", "location_component_predicate_biomes");
+
+		Element predicateMutation = doc.createElement("mutation");
+		predicateMutation.setAttribute("inputs", "1");
+		biomeParam.appendChild(predicateMutation);
 
 		Element biomeField = doc.createElement("field");
-		biomeField.setAttribute("name", "biome");
+		biomeField.setAttribute("name", "biome0");
 		biomeField.setTextContent(biome);
 		biomeParam.appendChild(biomeField);
 
