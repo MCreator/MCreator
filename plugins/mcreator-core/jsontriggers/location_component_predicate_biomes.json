@@ -9,6 +9,9 @@
   "mcreator": {
     "group": "location",
     "toolbox_id": "playerconditions",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>"
+    ],
     "repeating_fields": [
       {
         "name": "biome",
