@@ -11,7 +11,7 @@
     "toolbox_id": "playerconditions",
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
-      "<value name=\"locationComponent0\"><block type=\"location_component_predicate_biomes_single\"><field name=\"biome\"></field></block></value>"
+      "<value name=\"locationComponent0\"><block type=\"location_component_predicate_biomes\"><mutation inputs=\"1\"></mutation><field name=\"biome0\"></field></block></value>"
     ],
     "repeating_inputs": [
       "locationComponent"

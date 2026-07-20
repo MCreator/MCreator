@@ -338,3 +338,12 @@ Blockly.Extensions.registerMutator('location_component_mutator', simpleRepeating
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['location_component_mutator_input']);
+
+Blockly.Extensions.registerMutator('biome_location_component_mutator', simpleRepeatingInputMixin(
+        'biome_location_component_mutator_container', 'biome_location_component_mutator_input', 'biome',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new FieldDataListSelector('biomes'), 'biome' + index);
+        }, false, ['biome']),
+    undefined, ['biome_location_component_mutator_input']);

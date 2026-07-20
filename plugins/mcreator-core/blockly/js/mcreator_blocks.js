@@ -198,6 +198,9 @@ registerSimpleMutatorInput('item_predicate_mutator_input', 'blockly.block.item_p
 registerSimpleMutatorContainer('player_predicate_mutator_container', 'blockly.block.player_predicate_mutator.container', 175);
 registerSimpleMutatorInput('player_predicate_mutator_input', 'blockly.block.player_predicate_mutator.input', 175);
 
+registerSimpleMutatorContainer("biome_location_component_mutator_container", "blockly.block.biome_location_component.container", 330);
+registerSimpleMutatorInput("biome_location_component_mutator_input", "blockly.block.biome_location_component_mutator.input", 330);
+
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('any_item_mutator_container', 'blockly.block.any_item_mutator.container', 350);
 registerSimpleMutatorInput('any_item_mutator_input', 'blockly.block.any_item_mutator.input', 350);
