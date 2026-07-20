@@ -373,7 +373,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
 
-		JPanel panel = new JPanel(new GridLayout(2, 2, 5, 5));
+		JPanel panel = new JPanel(new GridLayout(3, 2, 5, 5));
 
 		panel.add(L10N.label("dialog.image_maker.enter_name"));
 		panel.add(name);
