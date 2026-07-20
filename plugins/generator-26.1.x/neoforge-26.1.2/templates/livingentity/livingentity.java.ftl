@@ -762,6 +762,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		Entity entity = this;
 		return <@procedureOBJToConditionCode data.breatheUnderwater false true/>;
 	}
+
+	<#-- Fix #6456 - NeoForge did not patch canDrownInFluidType yet, so we also need use canBreatheUnderwater -->
+	@Override public boolean canBreatheUnderwater() {
+		return !this.canDrownInFluidType(NeoForgeMod.WATER_TYPE.value());
+	}
 	</#if>
 
 	<#if data.pushedByFluids?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
