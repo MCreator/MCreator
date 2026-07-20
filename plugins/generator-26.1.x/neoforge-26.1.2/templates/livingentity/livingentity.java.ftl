@@ -906,6 +906,14 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
+	<#if data.spawnThisMob && data.mobSpawningType.getUnmappedValue() == "monster" && data.mobBehaviourType != "Creature">
+	<#-- Fix #6451 - monsters won't spawn in end in 26.1 as it has skylight.
+	     EnderMan fixes this by returning 0 in getWalkTargetValue, but this has other unwanted consequences -->
+	@Override public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+		return this.level().dimension() == Level.OVERWORLD ? super.checkSpawnRules(level, reason) : true;
+	}
+	</#if>
+
 	public static void init(RegisterSpawnPlacementsEvent event) {
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType.getUnmappedValue() == "creature">
