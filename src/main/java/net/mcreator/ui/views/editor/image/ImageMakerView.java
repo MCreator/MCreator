@@ -235,13 +235,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			} else {
 				animationTimeline.generateTimelineFromBufferedImage(bufferedImage,
 						FilenameUtilsPatched.removeExtension(name));
-				try {
-					animationTimeline.setTimelineModel(
-							MetadataManager.loadAnimationForFile(mcreator.getWorkspace(), image, this,
-									animationTimeline.getTimelineModel()));
-				} catch (MetadataOutdatedException | NullPointerException e) {
-					LOG.warn("Failed to import metadata for animated texture {}. Frames will be imported as regular images", image.getName());
-				}
 
 				if (PreferencesManager.PREFERENCES.imageEditor.selectedFrameAtOpening.get().equals("First frame")) {
 					canvas = animationTimeline.getTimelineModel().firstElement();
@@ -458,8 +451,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				this.getAnimationSettings().doesInterpolate());
 		FileIO.writeStringToFile(mcmetacode, new File(exportFile.getAbsolutePath() + ".mcmeta"));
 		FileIO.writeImageToPNGFile(makeAnimationImage(timeline.getSize(), timeline, sizetwocubes), exportFile);
-
-		MetadataManager.saveAnimation(mcreator.getWorkspace(), exportFile, animationTimeline.getTimelineModel());
 	}
 
 	private BufferedImage makeAnimationImage(int stevilo, DefaultListModel<Canvas> timelinevector, int size) {
