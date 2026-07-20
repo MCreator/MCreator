@@ -292,11 +292,6 @@ public class AnimationTimeline extends JPanel {
 		convertButton.setVisible(imv.getCanvas() != null && imv.getCanvas().getWidth() != imv.getCanvas().getHeight());
 	}
 
-	public void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name) {
-		int x = Math.min(bufferedImage.getHeight(), bufferedImage.getWidth());
-		generateTimelineFromBufferedImage(bufferedImage, x, x, name);
-	}
-
 	/**
 	 * <p>This method takes a {@link BufferedImage} that contains multiple frames (a tiled image) and divide each image into their own frame.
 	 * Then, each individual frame is added to the timeline.</p>
@@ -304,9 +299,10 @@ public class AnimationTimeline extends JPanel {
 	 * @param bufferedImage The tiled {@link BufferedImage} containing all frames
 	 * @param name          This is the name that will be used for each {@link Layer}
 	 */
-	public void generateTimelineFromBufferedImage(BufferedImage bufferedImage, int width, int height, String name) {
+	public void generateTimelineFromBufferedImage(BufferedImage bufferedImage, String name) {
+		int x = Math.min(bufferedImage.getHeight(), bufferedImage.getWidth());
 		try {
-			TiledImageUtils tiledImageUtils = new TiledImageUtils(bufferedImage, width, height);
+			TiledImageUtils tiledImageUtils = new TiledImageUtils(bufferedImage, x, x);
 			for (int i = 1; i <= tiledImageUtils.getWidthInTiles(); i++) {
 				for (int j = 1; j <= tiledImageUtils.getHeightInTiles(); j++) {
 					BufferedImage buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());
@@ -354,8 +350,8 @@ public class AnimationTimeline extends JPanel {
 	 * <p>This adds an empty {@link Canvas} at the end of the timeline</p>
 	 */
 	private void addFrameFromEmptyLayer() {
-		Layer layer = new Layer(imv.getCanvas().getWidth(), imv.getCanvas().getHeight(), 0, 0, "Layer");
-		Canvas canvas = new Canvas(imv, imv.getCanvas().getWidth(), imv.getCanvas().getHeight());
+		Layer layer = new Layer(16, 16, 0, 0, "Layer");
+		Canvas canvas = new Canvas(imv, 16, 16);
 		canvas.add(layer);
 		addFrameToTimeline(canvas);
 	}

@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * Byte layout:
  *
- *  0 -  3: File type identifier (byte[4]) - currently 0x0000_0000_0000_0000 - Regular texture type
+ *  0 -  3: File type identifier (byte[4]) - currently 0x0000_0000_0000_0000
  *  4 - 19: MD5 hash of the final rendered image file (byte[16])
  *          Used to verify if this metadata matches the rendered image.
  * 20 - 23: Length of the canvas JSON string (int) - canvasJSONStringLength
@@ -70,15 +70,12 @@ import java.util.Map;
  *
  * Byte layout:
  *
- *  0 -  3: File type identifier (byte[4]) - currently 0x0000_0000_0000_0001 - Animated texture type
- *  4 - 7: The width of a frame
- *  8 - 9: The height of a frame
- * <-- End of mandatory animation info -->
- *  9 - 13: Canvas index (int) - This the index of the canvas from the animation timeline.
- *  14 - 27: MD5 hash of the final rendered image file (byte[16])
+ *  0 -  3: File type identifier (byte[4]) - currently 0x0000_0000_0000_0000
+ *  4 - 7: Canvas index (int) - This the index of the canvas from the animation timeline.
+ *  8 - 23: MD5 hash of the final rendered image file (byte[16])
  *          Used to verify if this metadata matches the rendered image.
- * 28 - 31: Length of the canvas JSON string (int) - canvasJSONStringLength
- * 32 - (32 + canvasJSONStringLength - 1): Canvas JSON string (byte[canvasJSONStringLength])
+ * 24 - 27: Length of the canvas JSON string (int) - canvasJSONStringLength
+ * 28 - (28 + canvasJSONStringLength - 1): Canvas JSON string (byte[canvasJSONStringLength])
  *
  * Next 4 bytes:
  * [canvasEnd] - [canvasEnd + 3]: Number of images (int) - imageCount
@@ -129,7 +126,7 @@ public class MetadataManager {
 			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
 				Canvas retval;
 
-				// Read file header - 0: Regular texture, 1: Animated texture No longer needed at this point
+				// Read file header - unused for now
 				dis.readInt();
 
 				byte[] md5 = new byte[16];
@@ -212,14 +209,14 @@ public class MetadataManager {
 	public static DefaultListModel<Canvas> loadAnimationForFile(Workspace workspace, File file,
 			ImageMakerView canvasOwner, DefaultListModel<Canvas> timeline)
 			throws MetadataOutdatedException, NullPointerException {
+		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
+			throw new NullPointerException("Metadata is disabled in preferences");
 
 		File metadataFile = getMetadataFile(workspace, file);
 		if (metadataFile.isFile()) {
 			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
-
-				dis.readInt(); // Read file header (texture type) - No longer needed at this point
-				dis.readInt(); // Read width - No longer needed at this point
-				dis.readInt(); // Read height - No longer needed at this point
+				// Read file header - unused for now
+				dis.readInt();
 
 				try {
 					while (dis.available() > 0) {
@@ -274,28 +271,23 @@ public class MetadataManager {
 
 	public static void saveAnimation(Workspace workspace, File file, DefaultListModel<Canvas> frames) {
 		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
-			saveBasicAnimation(workspace, file, frames.firstElement());
+			return;
 
 		LinkedHashMap<Canvas, BufferedImage[]> layeredCanvas = new LinkedHashMap<>();
 		int bound = frames.getSize();
 		for (int i = 0; i < bound; i++) {
 			Canvas canvas = frames.get(i);
 			BufferedImage[] layers = canvas.stream().map(Layer::getRaster).toArray(BufferedImage[]::new);
-			if (layers.length > 1)
+			if (layers.length >= 1)
 				layeredCanvas.put(canvas, layers);
 		}
 
-		if (layeredCanvas.isEmpty()) {
-			System.out.println("No layers to save for " + file);
-			saveBasicAnimation(workspace, file, frames.firstElement()); // If there is only one layer or less for all frames, we only save the basic info
-			return;
-		}
+		if (layeredCanvas.isEmpty())
+			return; // If there is only one layer or less, we do not save metadata as it is not "worth it"
 
 		File metadataFile = getMetadataFile(workspace, file);
 		try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
-			das.writeInt(1); // File type identifier - Animated texture type
-			das.writeInt(frames.firstElement().getWidth());
-			das.writeInt(frames.firstElement().getHeight());
+			das.writeInt(0); // File type identifier - unused for now
 
 			for (int i = 0; i < bound; i++) {
 				Canvas canvas = frames.get(i);
@@ -329,38 +321,6 @@ public class MetadataManager {
 		} catch (Exception e) {
 			LOG.warn("Failed to save metadata for {}", file, e);
 		}
-	}
-
-	public static void saveBasicAnimation(Workspace workspace, File file, Canvas canvas) {
-		if (!PreferencesManager.PREFERENCES.imageEditor.storeMetadata.get())
-			saveBasicAnimation(workspace, file, canvas);
-
-		File metadataFile = getMetadataFile(workspace, file);
-		try (DataOutputStream das = new DataOutputStream(FileUtils.openOutputStream(metadataFile))) {
-			das.writeInt(1); // File type identifier - Animated texture type
-			das.writeInt(canvas.getWidth());
-			das.writeInt(canvas.getHeight());
-		} catch (Exception e) {
-			LOG.warn("Failed to save metadata for {}", file, e);
-		}
-	}
-
-	public static int[] getMetadataType(Workspace workspace, File file) {
-		File metadataFile = getMetadataFile(workspace, file);
-		if (metadataFile.isFile()) {
-			try (DataInputStream dis = new DataInputStream(new FileInputStream(metadataFile))) {
-				int type = dis.readInt(); // Read file header - 0: Regular texture, 1: Animated texture
-				if (type == 1) {
-					int width = dis.readInt();
-					int height = dis.readInt();
-					return new int[] { type, width, height };
-				}
-			} catch (Exception e) {
-				LOG.warn("Failed to load metadata for {}. Regular texture type will be used", file, e);
-			}
-		}
-
-		return new int[] { 0, 0, 0 };
 	}
 
 	private static byte[] filemd5(File file) throws NoSuchAlgorithmException, IOException {

@@ -230,18 +230,17 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			this.image = image;
 			this.name = image.getName();
 			BufferedImage bufferedImage = ImageIO.read(image);
-			int[] info = MetadataManager.getMetadataType(mcreator.getWorkspace(), image);
-			if (info[0] == 1) {
-				animationTimeline.generateTimelineFromBufferedImage(bufferedImage, info[1], info[2],
+			if (bufferedImage.getHeight() == bufferedImage.getWidth()) {
+				openSingleFrameTexture(image);
+			} else {
+				animationTimeline.generateTimelineFromBufferedImage(bufferedImage,
 						FilenameUtilsPatched.removeExtension(name));
 				try {
 					animationTimeline.setTimelineModel(
 							MetadataManager.loadAnimationForFile(mcreator.getWorkspace(), image, this,
 									animationTimeline.getTimelineModel()));
 				} catch (MetadataOutdatedException | NullPointerException e) {
-					LOG.warn(
-							"Failed to import metadata for animated texture {}. Frames will be imported as regular images",
-							image.getName());
+					LOG.warn("Failed to import metadata for animated texture {}. Frames will be imported as regular images", image.getName());
 				}
 
 				if (PreferencesManager.PREFERENCES.imageEditor.selectedFrameAtOpening.get().equals("First frame")) {
@@ -250,8 +249,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				} else {
 					setDisplayedCanvas(animationTimeline.getTimelineModel().lastElement());
 				}
-			} else {
-				openSingleFrameTexture(image);
 			}
 			toolPanel.initTools();
 			updateInfoBar(0, 0);
@@ -334,7 +331,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		try {
 			if (image != null) {
 				if (animationTimeline.getTimelineModel().getSize() > 1) {
-					saveAnimation(image);
+					Object[] possibilities = { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128",
+							"256 x 256", "512 x 512" };
+					String size = (String) JOptionPane.showInputDialog(this,
+							L10N.t("dialog.animation_maker.animation_size"),
+							L10N.t("dialog.animation_maker.size_selection"), JOptionPane.PLAIN_MESSAGE, null,
+							possibilities, "16 x 16");
+					saveAnimation(image, size);
 				} else {
 					ImageIO.write(canvasRenderer.render(), FilenameUtilsPatched.getExtension(image.toString()), image);
 					MetadataManager.saveCanvas(mcreator.getWorkspace(), image, canvas);
@@ -363,10 +366,17 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				return;
 		}
 
+		boolean isAnimation = animationTimeline.getTimelineModel().getSize() > 1;
+
 		JComboBox<TextureType> types = new JComboBox<>(TextureType.getSupportedTypes(mcreator.getWorkspace(), false));
 		VTextField name = new VTextField(20);
 		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
 		name.enableRealtimeValidation();
+		JComboBox<String> animationSize = new JComboBox<>(
+				new String[] { "4 x 4", "8 x 8", "16 x 16", "32 x 32", "64 x 64", "128 x 128", "256 x 256",
+						"512 x 512" });
+		animationSize.setSelectedItem("16 x 16");
+		animationSize.setEnabled(isAnimation);
 
 		MCreatorDialog typeDialog = new MCreatorDialog(mcreator, L10N.t("dialog.image_maker.texture_type.title"), true);
 
@@ -376,6 +386,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		panel.add(name);
 		panel.add(L10N.label("dialog.image_maker.texture_type.message"));
 		panel.add(types);
+		panel.add(L10N.label("dialog.animation_maker.animation_size"));
+		panel.add(animationSize);
 
 		JButton ok = L10N.button("dialog.image_maker.save");
 		ok.addActionListener(e -> {
@@ -390,8 +402,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
 							L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 				} else {
-					if (animationTimeline.getTimelineModel().getSize() > 1) {
-						saveAnimation(exportFile);
+					if (isAnimation) {
+						saveAnimation(exportFile, (String) animationSize.getSelectedItem());
 					} else {
 						Image image = canvasRenderer.render();
 						FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
@@ -425,20 +437,33 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		typeDialog.setVisible(true);
 	}
 
-	private void saveAnimation(File exportFile) {
+	private void saveAnimation(File exportFile, String selectedSize) {
 		DefaultListModel<Canvas> timeline = animationTimeline.getTimelineModel();
+
+		int sizetwocubes = 16;
+		if (selectedSize != null) {
+			sizetwocubes = switch (selectedSize) {
+				case "4 x 4" -> 4;
+				case "8 x 8" -> 8;
+				case "32 x 32" -> 32;
+				case "64 x 64" -> 64;
+				case "128 x 128" -> 128;
+				case "256 x 256" -> 256;
+				case "512 x 512" -> 512;
+				default -> 16;
+			};
+		}
 
 		String mcmetacode = generateAnimationMcmeta(animationSettings.getFrameDuration(), timeline.size(),
 				this.getAnimationSettings().doesInterpolate());
 		FileIO.writeStringToFile(mcmetacode, new File(exportFile.getAbsolutePath() + ".mcmeta"));
-		FileIO.writeImageToPNGFile(makeAnimationImage(timeline.getSize(), timeline), exportFile);
+		FileIO.writeImageToPNGFile(makeAnimationImage(timeline.getSize(), timeline, sizetwocubes), exportFile);
 
 		MetadataManager.saveAnimation(mcreator.getWorkspace(), exportFile, animationTimeline.getTimelineModel());
 	}
 
-	private BufferedImage makeAnimationImage(int stevilo, DefaultListModel<Canvas> timelinevector) {
-		BufferedImage resizedImage = new BufferedImage(timelinevector.firstElement().getWidth(),
-				timelinevector.firstElement().getHeight() * stevilo, BufferedImage.TYPE_INT_ARGB);
+	private BufferedImage makeAnimationImage(int stevilo, DefaultListModel<Canvas> timelinevector, int size) {
+		BufferedImage resizedImage = new BufferedImage(size, size * stevilo, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
 		int bound = timelinevector.getSize();
 		for (int i = 0; i < bound; i++) {
