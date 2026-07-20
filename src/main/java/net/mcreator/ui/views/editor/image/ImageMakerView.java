@@ -95,8 +95,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	private final AnimationSettings animationSettings;
 	private final AnimationTimeline animationTimeline;
 
-	public final JButton save = L10N.button("dialog.image_maker.save");
-	public final JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
+	private final JButton save = L10N.button("dialog.image_maker.save");
+	private final JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 
 	private String name = L10N.t("tab.image_maker");
 	private MCreatorTabs.Tab tab;
@@ -621,6 +621,17 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		layerPanel.setCanvas(newCanvas);
 		layerPanel.updateSelection();
 		repaint();
+	}
+
+	public void changeSaveButtonsText(boolean isAnimation) {
+		if (isAnimation) {
+			save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
+			saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
+		} else {
+			save.setText(L10N.t("dialog.image_maker.save"));
+			saveNew.setText(L10N.t("dialog.image_maker.save_as_new"));
+		}
+
 	}
 
 	public CanvasRenderer getCanvasRenderer() {

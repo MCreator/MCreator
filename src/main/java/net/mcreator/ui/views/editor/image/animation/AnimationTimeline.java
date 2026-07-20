@@ -247,8 +247,7 @@ public class AnimationTimeline extends JPanel {
 			}
 
 			if (timelinevector.getSize() == 1) {
-				imv.save.setText(L10N.t("dialog.image_maker.save"));
-				imv.saveNew.setText(L10N.t("dialog.image_maker.save_as_new"));
+				imv.changeSaveButtonsText(false);
 
 				if (PreferencesManager.PREFERENCES.imageEditor.singleFrameDeletionBehaviour.get()
 						.equals("Keep existing frame")) {
@@ -331,8 +330,7 @@ public class AnimationTimeline extends JPanel {
 		timelinevector.addElement(canvas);
 		imv.getVersionManager().addRevision(new FrameAddition(canvas, canvas.getFirst(), timelinevector.size() - 1));
 		if (timelinevector.getSize() > 1) {
-			imv.save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
-			imv.saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
+			imv.changeSaveButtonsText(true);
 		}
 		updateTimelineButtons();
 	}
@@ -340,8 +338,7 @@ public class AnimationTimeline extends JPanel {
 	public void insertFrameToTimelineNR(Canvas canvas, int index) {
 		timelinevector.insertElementAt(canvas, index);
 		if (timelinevector.getSize() > 1) {
-			imv.save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
-			imv.saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
+			imv.changeSaveButtonsText(true);
 		}
 		updateTimelineButtons();
 	}
