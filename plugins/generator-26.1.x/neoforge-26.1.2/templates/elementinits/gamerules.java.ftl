@@ -46,10 +46,10 @@ public class ${JavaModName}GameRules {
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
 		<#assign hasNumberRules = true>
-		public static DeferredHolder<GameRule<?>, GameRule<Integer>> ${gamerule.getModElement().getRegistryNameUpper()} = registerInteger("${StringUtils.camelToSnake(gamerule.getModElement().getName())?lower_case}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueNumber});
+		public static DeferredHolder<GameRule<?>, GameRule<Integer>> ${gamerule.getModElement().getRegistryNameUpper()} = registerInteger("${gamerule.getModElement().getRegistryName()}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueNumber});
 		<#else>
 		<#assign hasLogicRules = true>
-		public static DeferredHolder<GameRule<?>, GameRule<Boolean>> ${gamerule.getModElement().getRegistryNameUpper()} = registerBoolean("${StringUtils.camelToSnake(gamerule.getModElement().getName())?lower_case}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueLogic});
+		public static DeferredHolder<GameRule<?>, GameRule<Boolean>> ${gamerule.getModElement().getRegistryNameUpper()} = registerBoolean("${gamerule.getModElement().getRegistryName()}", GameRuleCategory.${gamerule.category}, ${gamerule.defaultValueLogic});
 		</#if>
 	</#list>
 
