@@ -762,6 +762,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		Entity entity = this;
 		return <@procedureOBJToConditionCode data.breatheUnderwater false true/>;
 	}
+
+	<#-- Fix #6456 - NeoForge did not patch canDrownInFluidType yet, so we also need use canBreatheUnderwater -->
+	@Override public boolean canBreatheUnderwater() {
+		return !this.canDrownInFluidType(NeoForgeMod.WATER_TYPE.value());
+	}
 	</#if>
 
 	<#if data.pushedByFluids?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
@@ -898,6 +903,14 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 
 	@Override protected float getFlyingSpeed() {
 		return (float) this.getAttributeValue(Attributes.FLYING_SPEED);
+	}
+	</#if>
+
+	<#if data.spawnThisMob && data.mobSpawningType.getUnmappedValue() == "monster" && data.mobBehaviourType != "Creature">
+	<#-- Fix #6451 - monsters won't spawn in end in 26.1 as it has skylight.
+	     EnderMan fixes this by returning 0 in getWalkTargetValue, but this has other unwanted consequences -->
+	@Override public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+		return this.level().dimension() == Level.OVERWORLD ? super.checkSpawnRules(level, reason) : true;
 	}
 	</#if>
 

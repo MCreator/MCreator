@@ -166,6 +166,10 @@ import java.util.List;
 		return onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
 	}
 
+	public boolean hasFixedTimeAndNeedsCustomTimeline() {
+		return !useCustomEffects && "overworld".equals(defaultEffects) && hasFixedTime;
+	}
+
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
 		retval.add(mainFillerBlock.getUnmappedValue());

@@ -79,16 +79,20 @@
   "coordinate_scale": ${data.coordinateScale},
   "ambient_light": ${data.ambientLight},
   "infiniburn": "#${data.infiniburnTag}",
-  <#if data.defaultEffects == "the_end">
+  <#if data.useCustomEffects>
+  <#-- no timelines or clock if useCustomEffects is true -->
+  <#elseif data.defaultEffects == "the_end">
+  "has_fixed_time": true,
   "timelines": "#minecraft:in_end",
   <#elseif data.defaultEffects == "the_nether">
+  "has_fixed_time": true,
   "timelines": "#minecraft:in_nether",
   "cardinal_light": "nether",
-  <#elseif data.hasFixedTime>
+  <#elseif data.hasFixedTimeAndNeedsCustomTimeline()>
   "has_fixed_time": true,
   "timelines": "${modid}:${registryname}_fixed",
   "default_clock": "minecraft:overworld",
-  <#else>
+  <#elseif data.defaultEffects == "overworld">
   "timelines": "#minecraft:in_overworld",
   "default_clock": "minecraft:overworld",
   </#if>
