@@ -60,9 +60,7 @@ public class AIConditionEditor {
 			continueCondition.setSelectedProcedure(data[1]);
 		}
 
-		MCreatorDialog window = new MCreatorDialog(parent, L10N.t("dialog.ai_condition.panel_name"));
-		window.setLocationRelativeTo(parent);
-		window.setModal(true);
+		MCreatorDialog window = new MCreatorDialog(parent, L10N.t("dialog.ai_condition.panel_name"), true);
 
 		JPanel conditions = new JPanel();
 		conditions.add(PanelUtils.centerAndEastElement(startCondition, continueCondition, 20, 5));
@@ -79,12 +77,13 @@ public class AIConditionEditor {
 		});
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		cancel.addActionListener(e -> window.dispose());
-		parent.getRootPane().setDefaultButton(ok);
+		window.getRootPane().setDefaultButton(ok);
 		JPanel options = new JPanel();
 		options.add(PanelUtils.join(ok, cancel));
 
 		window.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndSouthElement(conditions, options)));
 		window.pack();
+		window.setLocationRelativeTo(parent);
 		window.setVisible(true);
 
 		return retVal;
