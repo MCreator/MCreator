@@ -68,7 +68,7 @@
       "minecraft:visual/sky_light_color": "#ac60cd",
       "minecraft:visual/sky_light_factor": 0,
     </#if>
-    "minecraft:gameplay/can_start_raid": ${data.hasRaids}.
+    "minecraft:gameplay/can_start_raid": ${data.hasRaids},
     "minecraft:gameplay/respawn_anchor_works": ${data.canRespawnHere}
   },
   "has_skylight": ${data.hasSkyLight},
