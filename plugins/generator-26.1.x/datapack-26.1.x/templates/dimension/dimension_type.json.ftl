@@ -22,7 +22,6 @@
     <#if data.doesWaterVaporize>
     "minecraft:gameplay/water_evaporates": true,
     "minecraft:gameplay/fast_lava": true,
-    "minecraft:gameplay/snow_golem_melts": true,
     </#if>
     <#if !data.bedWorks>
     "minecraft:gameplay/bed_rule": {
