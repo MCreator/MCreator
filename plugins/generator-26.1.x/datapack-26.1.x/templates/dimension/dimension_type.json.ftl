@@ -85,6 +85,7 @@
   <#elseif data.defaultEffects == "the_nether">
   "has_fixed_time": true,
   "timelines": "#minecraft:in_nether",
+  "cardinal_light": "nether",
   <#elseif data.hasFixedTimeAndNeedsCustomTimeline()>
   "has_fixed_time": true,
   "timelines": "${modid}:${registryname}_fixed",
