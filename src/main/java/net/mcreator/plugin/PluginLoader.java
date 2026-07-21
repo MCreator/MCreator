@@ -70,6 +70,10 @@ public class PluginLoader extends URLClassLoader {
 	// list of plugins that failed to load and are thus not present on plugins list
 	private final Set<PluginLoadFailure> failedPlugins;
 
+	// list of plugins skipped due to MCreator version mismatch, only reported as failures if no other
+	// plugin with the same ID was loaded successfully (same plugin bundled for multiple MCreator versions)
+	private final Set<PluginLoadFailure> incompatiblePlugins;
+
 	private final Set<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
@@ -87,6 +91,7 @@ public class PluginLoader extends URLClassLoader {
 		this.plugins = new LinkedHashSet<>();
 		this.javaPlugins = new LinkedHashSet<>();
 		this.failedPlugins = new LinkedHashSet<>();
+		this.incompatiblePlugins = new LinkedHashSet<>();
 		this.pluginUpdates = new LinkedHashSet<>();
 		this.pluginsModules = new LinkedHashSet<>();
 
@@ -313,7 +318,7 @@ public class PluginLoader extends URLClassLoader {
 			LOG.warn("Plugin {} is not compatible with this MCreator version!", plugin.getID());
 			if (System.getenv("MCREATOR_PLUGINS_DEV")
 					== null) { // Only prevent the loading of incompatible plugins if MCREATOR_PLUGINS_DEV is not set
-				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
+				incompatiblePlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
 				return null;
 			}
 		}
@@ -350,6 +355,13 @@ public class PluginLoader extends URLClassLoader {
 
 	public Collection<PluginLoadFailure> getFailedPlugins() {
 		Set<PluginLoadFailure> failedPluginsAggregated = new HashSet<>(this.failedPlugins);
+
+		Set<String> loadedPluginIDs = plugins.stream().filter(Plugin::isLoaded).map(Plugin::getID)
+				.collect(Collectors.toSet());
+
+		// Version mismatch is not an error if another plugin with the same ID was loaded successfully
+		this.incompatiblePlugins.stream().filter(failure -> !loadedPluginIDs.contains(failure.pluginID()))
+				.forEach(failedPluginsAggregated::add);
 
 		for (Plugin plugin : plugins) {
 			if (!plugin.isLoaded())
