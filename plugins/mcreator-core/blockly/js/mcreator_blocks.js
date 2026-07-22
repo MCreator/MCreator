@@ -66,7 +66,6 @@ Blockly.Blocks['args_start'] = {
         this.setStyle('hat_blocks');
         this.setNextStatement(true);
         this.setColour(120);
-        this.setTooltip(javabridge.t("blockly.block.cmdargs_start.tooltip"));
     }
 };
 
