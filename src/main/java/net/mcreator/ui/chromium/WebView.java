@@ -20,6 +20,7 @@
 package net.mcreator.ui.chromium;
 
 import net.mcreator.Launcher;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.chromium.osr.CefBrowserOsrCustom;
 import net.mcreator.ui.chromium.osr.JBCefOsrComponent;
 import net.mcreator.ui.chromium.osr.JBCefOsrHandler;
@@ -47,10 +48,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Map;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -59,6 +58,12 @@ public class WebView extends JPanel implements Closeable {
 	private static final Logger LOG = LogManager.getLogger(WebView.class);
 
 	private static final int MAX_JS_EXECUTION_TIME = 10; // seconds
+
+	// Lookup of WebView instances by the CefBrowser they wrap, used to get the WebView
+	// (and its MCreator reference) from CEF callbacks that only provide the CefBrowser
+	private static final Map<CefBrowser, WebView> BROWSER_TO_WEBVIEW = new ConcurrentHashMap<>();
+
+	@Nullable private final MCreator mcreator;
 
 	private final CefClient client;
 	private final CefMessageRouter router;
@@ -96,10 +101,20 @@ public class WebView extends JPanel implements Closeable {
 	});
 
 	public WebView(String url) {
-		this(url, false);
+		this(null, url, false);
 	}
 
 	public WebView(String url, boolean isTransparent) {
+		this(null, url, isTransparent);
+	}
+
+	public WebView(@Nullable MCreator mcreator, String url) {
+		this(mcreator, url, false);
+	}
+
+	public WebView(@Nullable MCreator mcreator, String url, boolean isTransparent) {
+		this.mcreator = mcreator;
+
 		setLayout(new BorderLayout());
 
 		this.client = CefUtils.createClient();
@@ -121,6 +136,8 @@ public class WebView extends JPanel implements Closeable {
 		} else {
 			this.browser = this.client.createBrowser(url, CefRendering.DEFAULT, false);
 		}
+
+		BROWSER_TO_WEBVIEW.put(this.browser, this);
 
 		this.router.addHandler(new CefMessageRouterHandlerAdapter() {
 			@Override
@@ -432,6 +449,23 @@ public class WebView extends JPanel implements Closeable {
 		executeScript("window['%s'] = '%s';".formatted(name, value), JSExecutionType.LOCAL_SAFE);
 	}
 
+	/**
+	 * @return The MCreator instance this WebView belongs to, or null if the WebView is not bound to a MCreator window.
+	 */
+	@Nullable public MCreator getMCreator() {
+		return mcreator;
+	}
+
+	/**
+	 * Looks up the WebView wrapping the given CefBrowser.
+	 *
+	 * @param browser The CefBrowser to look up the WebView for.
+	 * @return The WebView the given browser belongs to, or null if there is none.
+	 */
+	@Nullable public static WebView fromBrowser(@Nullable CefBrowser browser) {
+		return browser != null ? BROWSER_TO_WEBVIEW.get(browser) : null;
+	}
+
 	CefMessageRouter getRouter() {
 		return router;
 	}
@@ -448,11 +482,13 @@ public class WebView extends JPanel implements Closeable {
 		}
 	}
 
-	@Override public void close() {
+	@SuppressWarnings("resource") @Override public void close() {
 		if (isClosing)
 			return;
 
 		isClosing = true;
+
+		BROWSER_TO_WEBVIEW.remove(browser);
 
 		remove(cefComponent);
 
