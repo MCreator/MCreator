@@ -4,8 +4,8 @@ Blockly.Extensions.register('procedure_dependencies_tooltip',
         this.setTooltip(function () {
             const depList = javabridge.getDependencies(thisBlock.getFieldValue('procedure'));
             if (depList.length === 0)
-                return javabridge.t('blockly.extension.procedure_dep_tooltip.empty');
-            let tooltip = javabridge.t('blockly.extension.procedure_dep_tooltip');
+                return translate('blockly.extension.procedure_dep_tooltip.empty');
+            let tooltip = translate('blockly.extension.procedure_dep_tooltip');
             for (const dependency of depList)
                 tooltip += '\n' + dependency.readableName;
             return tooltip;
@@ -188,9 +188,9 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         for (let i = 0; i < this.inputCount_; i++) {
             if (!this.getInput('arg' + i)) {
                 this.appendValueInput('arg' + i).setAlign(Blockly.ALIGN_RIGHT)
-                    .appendField(javabridge.t('blockly.block.call_procedure.name'))
+                    .appendField(translate('blockly.block.call_procedure.name'))
                     .appendField(new FieldJavaName('', uniqueValueValidator('name')), 'name' + i)
-                    .appendField(javabridge.t('blockly.block.call_procedure.arg'));
+                    .appendField(translate('blockly.block.call_procedure.arg'));
             }
         }
         for (let i = this.inputCount_; this.getInput('arg' + i); i++)

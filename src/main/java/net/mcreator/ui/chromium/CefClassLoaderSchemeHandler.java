@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.chromium;
 
+import com.google.gson.Gson;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -33,8 +34,10 @@ import org.cef.misc.StringRef;
 import org.cef.network.CefRequest;
 import org.cef.network.CefResponse;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 class CefClassLoaderSchemeHandler implements CefResourceHandler {
 
@@ -54,6 +57,30 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 		blocklyThemeID = _blocklyThemeID;
 	}
 
+	private static final String BLOCKLY_LANG_JS_PATH = "/l10n/blockly_lang.js";
+	private static byte[] blocklyLangJSCache = null;
+
+	/**
+	 * Generates (and caches) a JavaScript file with a map of all blockly.* translations for the current
+	 * language and a function to look up translations in this map, so translation calls don't need to
+	 * do synchronous IPC round trips to Java.
+	 */
+	private static synchronized byte[] getBlocklyLangJS() {
+		if (blocklyLangJSCache == null) {
+			String js = """
+					const blockly_lang = %s;
+					function translate(key) {
+						if (key in blockly_lang)
+							return blockly_lang[key];
+						console.error('Error: missing Blockly translation for key: ' + key);
+						return null;
+					}
+					""".formatted(new Gson().toJson(L10N.getBlocklyTranslations()));
+			blocklyLangJSCache = js.getBytes(StandardCharsets.UTF_8);
+		}
+		return blocklyLangJSCache;
+	}
+
 	@SuppressWarnings("unused")
 	public CefClassLoaderSchemeHandler(CefBrowser browser, CefFrame frame, String schemeName, CefRequest request) {
 	}
@@ -69,6 +96,9 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 		if (path.contains("favicon.ico")) {
 			// return empty stream for favicon requests
 			inputStream = InputStream.nullInputStream();
+		} else if (path.equals(BLOCKLY_LANG_JS_PATH)) {
+			// virtual resource with generated map of blockly.* translations for the current language
+			inputStream = new ByteArrayInputStream(getBlocklyLangJS());
 		} else {
 			inputStream = getClass().getResourceAsStream(path);
 			if (inputStream == null) {

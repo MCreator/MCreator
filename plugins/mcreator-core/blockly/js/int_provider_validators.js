@@ -85,7 +85,7 @@ function validateIntProviderInputs(...inputs) {
             }
             if (!this.isInFlyout) {
                 // Add a warning for the first non-valid input
-                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.' + this.type + '.' + inputs[i][0]));
+                this.setWarningText(isValid ? null : translate('blockly.extension.' + this.type + '.' + inputs[i][0]));
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
