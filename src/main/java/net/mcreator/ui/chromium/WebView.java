@@ -211,13 +211,15 @@ public class WebView extends JPanel implements Closeable {
 					return false;
 				}
 
-				if (!browser.getUIComponent().hasFocus()) {
-					if (OS.isLinux()) {
-						browser.getUIComponent().requestFocus();
-					} else {
-						browser.getUIComponent().requestFocusInWindow();
+				SwingUtilities.invokeLater(() -> {
+					if (!browser.getUIComponent().hasFocus()) {
+						if (OS.isLinux()) {
+							browser.getUIComponent().requestFocus();
+						} else {
+							browser.getUIComponent().requestFocusInWindow();
+						}
 					}
-				}
+				});
 				return false;
 			}
 		});
