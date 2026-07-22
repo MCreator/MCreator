@@ -55,7 +55,6 @@ class FieldAiConditionSelector extends Blockly.Field {
                         Blockly.Events.setGroup(true);
                         thisField.setValue(data || 'null,null');
                         Blockly.Events.setGroup(group);
-                        javabridge.triggerEvent();
                     }
                 });
             } else {
