@@ -192,8 +192,9 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 		 * @param mcreator The MCreator instance the WebView making the request belongs to, or null if unknown.
 		 * @param path     The requested resource path (e.g. /blockly/blockly.html).
 		 * @return Stream with the resource contents, or null to pass processing back to the default handler.
+		 * @throws Exception If the request handling fails. The request is then passed to the remaining handlers.
 		 */
-		@Nullable InputStream handleRequest(@Nullable MCreator mcreator, String path);
+		@Nullable InputStream handleRequest(@Nullable MCreator mcreator, String path) throws Exception;
 	}
 
 }
