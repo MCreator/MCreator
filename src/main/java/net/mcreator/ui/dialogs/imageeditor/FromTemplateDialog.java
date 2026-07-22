@@ -246,7 +246,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 					ImageIcon layer1 = new ImageIcon(ImageIO.read(
 							((ResourcePointer) Objects.requireNonNull(cbs.getSelectedItem())).getStream()));
 					Layer first = new Layer(16, 16, 0, 0, cbs.getSelectedItem().toString(), layer1.getImage());
-					canvas.add(first, changeGroup);
+					canvas.add(first, 0, changeGroup);
 				}
 				if (cbs2.getSelectedItem() != null && !cbs2.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer2 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
@@ -254,7 +254,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 							(Integer) ang1.getValue());
 					Layer second = new Layer(16, 16, 0, 0, cbs2.getSelectedItem().toString(),
 							ImageUtils.colorize(layer2, col1.getColor(), !type1.isSelected()).getImage());
-					canvas.add(second, changeGroup);
+					canvas.add(second, 0, changeGroup);
 				}
 				if (cbs3.getSelectedItem() != null && !cbs3.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer3 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
@@ -262,7 +262,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 							(Integer) ang2.getValue());
 					Layer third = new Layer(16, 16, 0, 0, cbs3.getSelectedItem().toString(),
 							ImageUtils.colorize(layer3, col2.getColor(), !type2.isSelected()).getImage());
-					canvas.add(third, changeGroup);
+					canvas.add(third, 0, changeGroup);
 				}
 				if (cbs4.getSelectedItem() != null && !cbs4.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer4 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
@@ -270,7 +270,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 							(Integer) ang3.getValue());
 					Layer fourth = new Layer(16, 16, 0, 0, cbs4.getSelectedItem().toString(),
 							ImageUtils.colorize(layer4, col4.getColor(), !type3.isSelected()).getImage());
-					canvas.add(fourth, changeGroup);
+					canvas.add(fourth, 0, changeGroup);
 				}
 			} catch (IOException ex) {
 				LOG.error(ex.getMessage(), e);

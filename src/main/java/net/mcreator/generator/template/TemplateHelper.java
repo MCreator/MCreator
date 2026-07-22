@@ -66,6 +66,26 @@ import java.util.Random;
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
+	public int hexToDec(String hex) {
+		return Integer.parseInt(hex, 16);
+	}
+
+	public String decToHex(double dec) {
+		return String.format("%02x", (int) Math.floor(dec) % 256);
+	}
+
+	public String formatColor(double r, double g, double b, double a) {
+		String baseHex = "#" + decToHex(r) + decToHex(g) + decToHex(b);
+		if ((int) Math.floor(a) == 255) {
+			return baseHex;
+		}
+		return baseHex + decToHex(a);
+	}
+
+	public double clamp(double val, double min, double max) {
+		return Math.clamp(val, min, max);
+	}
+
 	public String obj2str(Object object) {
 		return new Gson().toJson(object);
 	}

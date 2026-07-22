@@ -1,5 +1,17 @@
 {
   "attributes": {
+    "minecraft:audio/background_music": {
+      "creative": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.creative"
+      },
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 12000,
+        "sound": "minecraft:music.game"
+      }
+    },
     <#if data.imitateOverworldBehaviour>
     "minecraft:gameplay/eyeblossom_open": true,
     "minecraft:gameplay/creaking_active": true,
@@ -11,26 +23,22 @@
     "minecraft:gameplay/water_evaporates": true,
     "minecraft:gameplay/fast_lava": true,
     </#if>
-    <#if data.bedWorks>
+    <#if !data.bedWorks>
     "minecraft:gameplay/bed_rule": {
-      "can_sleep": "when_dark",
-      "can_set_spawn": "always",
-      "error_message": {
-        "translate": "block.minecraft.bed.no_sleep"
-      }
+      "can_set_spawn": "never",
+      "can_sleep": "never",
+      "explodes": true
     },
-    </#if>
-    <#if data.hasFixedTime>
-    "minecraft:visual/sun_angle": ${data.fixedTimeValue * 0.015},
     </#if>
     <#if data.hasClouds>
     "minecraft:visual/cloud_height": ${[[(((data.cloudHeight + 8) / 16)?floor * 16), 2031]?min, -2032]?max},
     "minecraft:visual/cloud_color": "#ccffffff",
     </#if>
     <#if data.useCustomEffects>
+      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
       <#if data.hasFog>
-      "minecraft:visual/fog_start_distance": 1,
-      "minecraft:visual/fog_end_distance": 10,
+      "minecraft:visual/fog_start_distance": 5,
+      "minecraft:visual/fog_end_distance": 40,
       </#if>
       <#if data.airColor?has_content>
       "minecraft:visual/fog_color": "${thelper.colorToHexString(data.airColor)}",
@@ -45,13 +53,16 @@
     <#elseif data.defaultEffects == "overworld">
       "minecraft:visual/fog_color": "#c0d8ff",
       "minecraft:visual/sky_color": "#78a7ff",
+      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#0a0a0a", data.ambientLight, 0.0)}",
     <#elseif data.defaultEffects == "the_nether">
       "minecraft:visual/fog_start_distance": 10,
       "minecraft:visual/fog_end_distance": 96,
+      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#302821", data.ambientLight, 0.1)}",
       "minecraft:visual/sky_light_color": "#7a7aff",
       "minecraft:visual/sky_light_factor": 0,
+      "minecraft:gameplay/sky_light_level": 4.0,
     <#elseif data.defaultEffects == "the_end">
-      "minecraft:visual/ambient_light_color": "#3f473f",
+      "minecraft:visual/ambient_light_color": "${scaleAmbientLight("#3f473f", data.ambientLight, 0.25)}",
       "minecraft:visual/fog_color": "#181318",
       "minecraft:visual/sky_color": "#000000",
       "minecraft:visual/sky_light_color": "#ac60cd",
@@ -66,9 +77,20 @@
   "coordinate_scale": ${data.coordinateScale},
   "ambient_light": ${data.ambientLight},
   "infiniburn": "#${data.infiniburnTag}",
-  <#if data.hasFixedTime>
+  <#if data.useCustomEffects>
+  <#-- no timelines or clock if useCustomEffects is true -->
+  <#elseif data.defaultEffects == "the_end">
   "has_fixed_time": true,
-  <#else>
+  "timelines": "#minecraft:in_end",
+  <#elseif data.defaultEffects == "the_nether">
+  "has_fixed_time": true,
+  "timelines": "#minecraft:in_nether",
+  "cardinal_light": "nether",
+  <#elseif data.hasFixedTimeAndNeedsCustomTimeline()>
+  "has_fixed_time": true,
+  "timelines": "${modid}:${registryname}_fixed",
+  "default_clock": "minecraft:overworld",
+  <#elseif data.defaultEffects == "overworld">
   "timelines": "#minecraft:in_overworld",
   "default_clock": "minecraft:overworld",
   </#if>
@@ -93,3 +115,12 @@
   "monster_spawn_block_light_limit": ${data.monsterSpawnBlockLightLimit},
   "skybox": "${data.skyType?lower_case?replace("normal", "overworld")}"
 }
+
+<#function scaleAmbientLight baseHexColor userAmbientLight vanillaAmbientLight>
+    <#assign baseColor = thelper.hexToDec(baseHexColor?substring(1))>
+    <#assign r = (baseColor / 65536)?floor % 256>
+    <#assign g = (baseColor / 256)?floor % 256>
+    <#assign b = baseColor % 256>
+    <#assign shift = ((userAmbientLight - vanillaAmbientLight) * 245)?floor>
+    <#return thelper.formatColor(thelper.clamp(r + shift, 0, 255), thelper.clamp(g + shift, 0, 255), thelper.clamp(b + shift, 0, 255), 255)>
+</#function>

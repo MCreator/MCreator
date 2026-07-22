@@ -6,5 +6,10 @@
     "secondAltBackgroundColor": "0x161b23",
     "foregroundColor": "0x00a54e",
     "altForegroundColor": "0x00a54e"
+  },
+  "flatLafOverrides": {
+    "CheckBox.icon.disabledCheckmarkColor": "fade(@foreground, 55%)",
+    "RadioButton.icon.disabledCenterColor": "fade(@foreground, 55%)",
+    "CheckBoxMenuItem.icon.disabledCheckmarkColor": "fade(@foreground, 55%)"
   }
 }

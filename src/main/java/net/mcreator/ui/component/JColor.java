@@ -126,6 +126,7 @@ public class JColor extends JPanel {
 		colorText.setEnabled(enabled);
 		edit.setEnabled(enabled);
 		remove.setEnabled(enabled);
+		colorText.setOpaque(enabled);
 	}
 
 	public void addColorSelectedListener(ActionListener a) {
@@ -144,7 +145,7 @@ public class JColor extends JPanel {
 			colorText.setForeground(Theme.current().getForegroundColor());
 		} else {
 			colorText.setText(String.format("#%06X", 0xFFFFFF & color.getRGB()));
-			colorText.setOpaque(true);
+			colorText.setOpaque(isEnabled());
 			colorText.setBackground(color);
 			colorText.setForeground(getColorLuminance(color) > 128 ? Color.black : Color.white);
 		}

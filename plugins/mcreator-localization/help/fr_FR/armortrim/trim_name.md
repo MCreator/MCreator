@@ -1,0 +1,1 @@
+C'est le nom qui sera affiché dans l'infobulle de n'importe quelle pièce d'armure à laquelle cet ornement est appliquée.

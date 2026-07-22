@@ -140,7 +140,7 @@ public class ModElementList extends LinkedHashSet<ModElement> {
 
 	private void addToIndexes(ModElement element) {
 		byName.put(element.getName(), element);
-		byType.computeIfAbsent(element.getType(), _ -> new HashSet<>()).add(element);
+		byType.computeIfAbsent(element.getType(), _ -> new LinkedHashSet<>()).add(element);
 	}
 
 	private void removeFromIndexes(ModElement element) {

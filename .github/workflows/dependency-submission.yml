@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
@@ -23,4 +23,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate and submit dependency graph
         if: github.repository == 'MCreator/MCreator'
-        uses: gradle/actions/dependency-submission@v5
+        uses: gradle/actions/dependency-submission@v6
