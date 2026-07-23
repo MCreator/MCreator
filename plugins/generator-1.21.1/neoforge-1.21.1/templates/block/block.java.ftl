@@ -736,6 +736,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
@@ -766,6 +768,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#elseif data.tintType == "Sky">
