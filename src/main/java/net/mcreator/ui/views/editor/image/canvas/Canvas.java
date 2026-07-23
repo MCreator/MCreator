@@ -154,6 +154,20 @@ public class Canvas extends ArrayListListModel<Layer> {
 		}
 	}
 
+	public BufferedImage render() {
+		BufferedImage layerStack = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D layerStackGraphics2D = layerStack.createGraphics();
+		for (int i = size() - 1; i >= 0; i--) {
+			Layer layer = get(i);
+			if (layer.isVisible()) {
+				layerStackGraphics2D.drawImage(layer.mergeOverlay(false), null, layer.getX(), layer.getY());
+			}
+		}
+		layerStackGraphics2D.dispose();
+		return layerStack;
+	}
+
 	public Layer getFloatingLayer() {
 		return floatingLayer;
 	}
