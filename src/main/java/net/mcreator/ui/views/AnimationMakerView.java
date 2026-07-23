@@ -201,7 +201,7 @@ public class AnimationMakerView extends ViewBase {
 				timeline.repaint();
 			}
 		});
-		next.setIcon(UIRES.get("16px.fwd"));
+		next.setIcon(UIRES.get("16px.next"));
 		controls.add(next);
 
 		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
@@ -214,7 +214,7 @@ public class AnimationMakerView extends ViewBase {
 				timeline.repaint();
 			}
 		});
-		prev.setIcon(UIRES.get("16px.rwd"));
+		prev.setIcon(UIRES.get("16px.previous"));
 		controls.add(prev);
 
 		JPanel timelinee = new JPanel(new BorderLayout());
