@@ -1,0 +1,1 @@
+This parameter defines whether the sound can be stopped.
