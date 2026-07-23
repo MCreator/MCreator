@@ -1,13 +1,13 @@
 <#macro boundingBoxWithRotation boundingBox rotationMode=0 enablePitch=false>
-	<#assign positiveBoxes = boundingBox.positiveBoundingBoxes()>
-	<#assign negativeBoxes = boundingBox.negativeBoundingBoxes()>
+	<#local positiveBoxes = boundingBox.positiveBoundingBoxes()>
+	<#local negativeBoxes = boundingBox.negativeBoundingBoxes()>
 	<#if boundingBox.isBoundingBoxEmpty()>
 		Shapes.empty()
 	<#elseif rotationMode == 0>
 		<@makeBoundingBox positiveBoxes negativeBoxes "north"/>
 	<#else>
 		<#if rotationMode != 5>
-			<#assign pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
+			<#local pitch = (rotationMode == 1 || rotationMode == 3) && enablePitch>
 			switch (state.getValue(FACING)) {
 				case NORTH -> <@checkPitchSupport positiveBoxes negativeBoxes "north" pitch/>
 				case EAST -> <@checkPitchSupport positiveBoxes negativeBoxes "east" pitch/>
