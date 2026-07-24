@@ -217,13 +217,16 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 	}
 
 	private static class FailOnWarnAppender extends AbstractAppender {
+		private static final boolean MCREATOR_TESTS_FAIL_ON_WARN =
+				System.getenv("MCREATOR_TESTS_FAIL_ON_WARN") == null || Boolean.parseBoolean(
+						System.getenv("MCREATOR_TESTS_FAIL_ON_WARN"));
 
 		public FailOnWarnAppender() {
 			super("FailOnWarn", null, null, false, Property.EMPTY_ARRAY);
 		}
 
 		@Override public void append(LogEvent event) {
-			if (event.getLevel().isMoreSpecificThan(Level.WARN)) {
+			if (event.getLevel().isMoreSpecificThan(Level.WARN) && MCREATOR_TESTS_FAIL_ON_WARN) {
 				failTests();
 			}
 		}
