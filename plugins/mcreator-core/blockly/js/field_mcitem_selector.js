@@ -18,8 +18,8 @@ class FieldMCItemSelector extends Blockly.FieldImage {
         let thisField = this;
         this.setTooltip(function () {
             return thisField.getValue() || (thisField.supported_mcitems === 'allblocks' ?
-                javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block') :
-                javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block_item'));
+                translate('blockly.field_mcitem_selector.tooltip.empty_block') :
+                translate('blockly.field_mcitem_selector.tooltip.empty_block_item'));
         });
     };
 

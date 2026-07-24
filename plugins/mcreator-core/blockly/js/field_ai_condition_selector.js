@@ -11,28 +11,28 @@ class FieldAiConditionSelector extends Blockly.Field {
         super('null,null', opt_validator);
 
         // Cache the label here
-        this.conditionsText = javabridge.t('blockly.field_ai_condition_selector.conditions');
+        this.conditionsText = translate('blockly.field_ai_condition_selector.conditions');
 
         // Show the selected conditions, or the "Double click to select conditions" message
         let thisField = this;
         this.setTooltip(function () {
             let conditions = thisField.getValue() && thisField.getValue().split(',');
             if (!conditions)
-                return javabridge.t('blockly.field_ai_condition_selector.tooltip.empty');
+                return translate('blockly.field_ai_condition_selector.tooltip.empty');
 
             let startCond = conditions[0];
             let continueCond = conditions[1];
             // If no condition is selected, show the "Double click to select conditions" message
             if (startCond === 'null' && continueCond === 'null')
-                return javabridge.t('blockly.field_ai_condition_selector.tooltip.empty');
+                return translate('blockly.field_ai_condition_selector.tooltip.empty');
 
             let tooltip = '';
             if (startCond !== 'null') {
-                tooltip += javabridge.t('blockly.field_ai_condition_selector.tooltip.start_condition') + startCond +
+                tooltip += translate('blockly.field_ai_condition_selector.tooltip.start_condition') + startCond +
                     (continueCond !== 'null' ? '\n' : ''); // Add a new line if both conditions are selected
             }
             if (continueCond !== 'null') {
-                tooltip += javabridge.t('blockly.field_ai_condition_selector.tooltip.continue_condition') + continueCond;
+                tooltip += translate('blockly.field_ai_condition_selector.tooltip.continue_condition') + continueCond;
             }
             return tooltip;
         });

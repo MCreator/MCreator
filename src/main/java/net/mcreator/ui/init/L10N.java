@@ -140,6 +140,30 @@ public class L10N {
 		return t_impl(rb, key, parameters);
 	}
 
+	/**
+	 * Collects all translations for keys starting with "blockly.". Keys not translated in the current
+	 * locale fall back to the English translation through the resource bundle parent chain.
+	 *
+	 * @return map of blockly.* translation keys to their translations in the current locale
+	 */
+	public static Map<String, String> getBlocklyTranslations() {
+		Map<String, String> translations = new HashMap<>();
+		Set<String> keys = new HashSet<>(rb.keySet());
+		keys.addAll(rb_en.keySet());
+		for (String key : keys) {
+			if (key.startsWith("blockly.")) {
+				try {
+					String value = t(key);
+					if (value != null)
+						translations.put(key, value);
+				} catch (IllegalArgumentException e) {
+					LOG.warn("Failed to format translation for key: {} in locale: {}", key, getLocale(), e);
+				}
+			}
+		}
+		return translations;
+	}
+
 	public static String t_en(String key, Object... parameters) {
 		return t_impl(rb_en, key, parameters);
 	}
