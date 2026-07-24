@@ -8,6 +8,12 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBoatTypes.java"
   # Dispense behaviors are controlled by generator.yaml
 
+tags:
+  - tag: ITEMS:minecraft:boats
+    condition: "!isBoatChestVariant()"
+  - tag: ITEMS:minecraft:chest_boats
+    condition: "isBoatChestVariant()"
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name
