@@ -69,7 +69,6 @@ class FieldDataListSelector extends Blockly.Field {
                         Blockly.Events.setGroup(true);
                         thisField.setValue(value);
                         Blockly.Events.setGroup(group);
-                        javabridge.triggerEvent();
                     }
                 });
             } else {

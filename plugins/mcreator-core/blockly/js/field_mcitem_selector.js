@@ -57,7 +57,6 @@ class FieldMCItemSelector extends Blockly.FieldImage {
                         Blockly.Events.setGroup(true);
                         thisField.setValue(selected || '');
                         Blockly.Events.setGroup(group);
-                        javabridge.triggerEvent();
                     }
                 });
                 this.lastClickTime = -1;
