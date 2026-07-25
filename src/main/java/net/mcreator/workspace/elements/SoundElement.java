@@ -220,20 +220,20 @@ public class SoundElement implements IElement {
 					new SoundElement(name, files, subtitle);
 		}
 
-		private Biome.ClimatePoint getBEAttenuationDistance(JsonObject jsonObject) {
+		private static Biome.ClimatePoint getBEAttenuationDistance(JsonObject jsonObject) {
 			JsonObject obj = jsonObject.getAsJsonObject("beAttenuationDistance");
 			return new Biome.ClimatePoint(getFloatValue(obj, "min"), getFloatValue(obj, "max"));
 		}
 
-		private Float getFloatValue(JsonObject jsonObject, String name) {
+		private static Float getFloatValue(JsonObject jsonObject, String name) {
 			return jsonObject.has(name) ? jsonObject.get(name).getAsFloat() : 0;
 		}
 
-		private String getObjectName(JsonObject jsonObject, String name) {
+		private static String getObjectName(JsonObject jsonObject, String name) {
 			return getObjectName(jsonObject, name, null);
 		}
 
-		private String getObjectName(JsonObject jsonObject, String name, String defaultValue) {
+		private static String getObjectName(JsonObject jsonObject, String name, String defaultValue) {
 			return jsonObject.has(name) ? jsonObject.get(name).getAsString() : defaultValue;
 		}
 	}
