@@ -308,7 +308,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 			String type = block.getAttribute("type");
 
-			if (!block.getAttribute("disabled-reasons").isEmpty()) { // Skip disabled blocks
+			// Skip disabled blocks
+			if (!block.getAttribute("disabled-reasons").isEmpty() || block.getAttribute("disabled").equals("true")) {
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.disabled_block_type.skip", type)));
 			} else {
@@ -353,7 +354,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		Element block = conditionBlocks.getFirst();
 		String type = block.getAttribute("type");
 
-		if (!block.getAttribute("disabled-reasons").isEmpty()) { // Add compile error if block is disabled
+		// Add compile error if block is disabled
+		if (!block.getAttribute("disabled-reasons").isEmpty() || block.getAttribute("disabled").equals("true")) {
 			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 					L10N.t("blockly.errors.disabled_block_type.remove", type)));
 		} else {
