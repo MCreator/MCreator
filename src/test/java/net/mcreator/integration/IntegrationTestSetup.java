@@ -226,8 +226,11 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 		}
 
 		@Override public void append(LogEvent event) {
-			if (event.getLevel().isMoreSpecificThan(Level.WARN) && MCREATOR_TESTS_FAIL_ON_WARN) {
-				failTests();
+			Level level = event.getLevel();
+
+			if (level.isMoreSpecificThan(Level.WARN)) {
+				if (MCREATOR_TESTS_FAIL_ON_WARN || !level.equals(Level.WARN))
+					failTests();
 			}
 		}
 	}
