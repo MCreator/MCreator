@@ -35,7 +35,6 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import java.io.Closeable;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
@@ -75,7 +74,7 @@ public final class WorkspaceFileManager implements Closeable {
 
 		this.dataSaveExecutor = Executors.newScheduledThreadPool(1, runnable -> {
 			Thread thread = new Thread(runnable);
-			thread.setName("Workspace-File-Manager");
+			thread.setName("Workspace-File-Manager" );
 			thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
 			return thread;
 		});
@@ -104,7 +103,7 @@ public final class WorkspaceFileManager implements Closeable {
 	}
 
 	public void saveWorkspaceDirectlyAndWait() {
-		LOG.info("Saving the workspace by direct request");
+		LOG.info("Saving the workspace by direct request" );
 
 		// set changed flag so the saving happens in all cases (this is a direct save request)
 		workspace.markDirty();
@@ -132,19 +131,18 @@ public final class WorkspaceFileManager implements Closeable {
 
 			// We do an "atomic" write to the FS
 			File outFile = workspaceFile;
-			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock");
+			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock" );
 			FileIO.writeStringToFile(workspacestring, tmpFile);
 			try {
 				Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.ATOMIC_MOVE);
 			} catch (Exception e) {
-				LOG.info("Failed to do atomic move, trying normal move!");
+				LOG.info("Failed to do atomic move, trying normal move!", e);
 				try {
-					Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.REPLACE_EXISTING,
-							StandardCopyOption.COPY_ATTRIBUTES);
-				} catch (IOException e1) {
-					LOG.error(e1.getMessage(), e1);
-					LOG.error("Falling back to normal write (non atomic, without move!)");
+					Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				} catch (Exception e1) {
+					LOG.error("Falling back to normal write (non atomic, without move!)", e1);
 					FileIO.writeStringToFile(workspacestring, outFile);
+					tmpFile.delete(); // we delete the tmp file if it was not moved
 				}
 			}
 
@@ -156,9 +154,9 @@ public final class WorkspaceFileManager implements Closeable {
 
 			MCREvent.event(new WorkspaceSavedEvent.AfterSaving(workspace));
 
-			LOG.debug("Workspace stored on the FS");
+			LOG.debug("Workspace stored on the FS" );
 		} else {
-			LOG.error("Skipping workspace save. Workspace is defined but we failed to serialize it!");
+			LOG.error("Skipping workspace save. Workspace is defined but we failed to serialize it!" );
 		}
 	}
 
@@ -187,7 +185,7 @@ public final class WorkspaceFileManager implements Closeable {
 		// if workspace file exists, so we can back it up, we back it up
 		if (workspaceFile.isFile()) {
 			File backupFile = new File(folderManager.getWorkspaceBackupsCacheDir(),
-					workspaceFile.getName() + "-backup_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
+					workspaceFile.getName() + "-backup_" + new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date()));
 			FileIO.copyFile(workspaceFile, backupFile);
 		}
 	}
