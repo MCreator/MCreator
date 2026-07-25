@@ -18,8 +18,8 @@
 
 package net.mcreator.workspace.elements;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import net.mcreator.element.types.Biome;
 
 import javax.annotation.Nullable;
@@ -30,26 +30,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class SoundElement implements IElement {
-	private static final Biome.ClimatePoint DefaultBEAttenuationDistance = new Biome.ClimatePoint(0, 0);
-
 	private final String name;
 	private List<Sound> files;
 	@Nullable private String subtitle;
 
-	private String beCategory;
-	private Biome.ClimatePoint beAttenuationDistance;
-
 	public SoundElement(String name, List<Sound> files, @Nullable String subtitle) {
-		this(name, "neutral", DefaultBEAttenuationDistance, files, subtitle);
-	}
-
-	public SoundElement(String name, String beCategory, Biome.ClimatePoint beAttenuationDistance, List<Sound> files,
-			@Nullable String subtitle) {
 		this.name = name;
 		this.files = files;
 		this.subtitle = subtitle;
-		this.beCategory = beCategory;
-		this.beAttenuationDistance = beAttenuationDistance;
 	}
 
 	@Override public String toString() {
@@ -86,22 +74,6 @@ public class SoundElement implements IElement {
 
 	public void setSubtitle(@Nullable String subtitle) {
 		this.subtitle = subtitle;
-	}
-
-	public String getBECategory() {
-		return beCategory;
-	}
-
-	public void setBECategory(String beCategory) {
-		this.beCategory = beCategory;
-	}
-
-	public Biome.ClimatePoint getBEAttenuationDistance() {
-		return beAttenuationDistance;
-	}
-
-	public void setBEAttenuationDistance(Biome.ClimatePoint beAttenuationDistance) {
-		this.beAttenuationDistance = beAttenuationDistance;
 	}
 
 	public static class Sound {
@@ -235,23 +207,26 @@ public class SoundElement implements IElement {
 				List<Sound> finalFiles = files;
 				oldFiles.forEach(oldFile -> finalFiles.add(new Sound(oldFile)));
 				files.forEach(file -> file.setCategory(str));
-				category = getObjectName(jsonObject, "category", "neutral");
+				category = str;
 			} else {
 				category = getObjectName(jsonObject, "beCategory", "neutral");
 			}
 
-			return new SoundElement(jsonObject.getAsJsonPrimitive("name").getAsString(), category,
-					jsonObject.getAsJsonObject("beAttenuationDistance") == null ?
-							DefaultBEAttenuationDistance :
-							new Biome.ClimatePoint(
-									getFloatValue(jsonObject.getAsJsonObject("beAttenuationDistance"), "min"),
+			String name = jsonObject.get("name").getAsString();
+			String subtitle = getObjectName(jsonObject, "subtitle");
 
-									getFloatValue(jsonObject.getAsJsonObject("beAttenuationDistance"), "max")), files,
-					getObjectName(jsonObject, "subtitle"));
+			return jsonObject.has("beAttenuationDistance") ?
+					new BedrockSoundElement(name, category, getBEAttenuationDistance(jsonObject), files, subtitle) :
+					new SoundElement(name, files, subtitle);
+		}
+
+		private Biome.ClimatePoint getBEAttenuationDistance(JsonObject jsonObject) {
+			JsonObject obj = jsonObject.getAsJsonObject("beAttenuationDistance");
+			return new Biome.ClimatePoint(getFloatValue(obj, "min"), getFloatValue(obj, "max"));
 		}
 
 		private Float getFloatValue(JsonObject jsonObject, String name) {
-			return jsonObject.getAsJsonPrimitive(name) != null ? jsonObject.getAsJsonPrimitive(name).getAsFloat() : 0;
+			return jsonObject.has(name) ? jsonObject.get(name).getAsFloat() : 0;
 		}
 
 		private String getObjectName(JsonObject jsonObject, String name) {
@@ -259,9 +234,7 @@ public class SoundElement implements IElement {
 		}
 
 		private String getObjectName(JsonObject jsonObject, String name, String defaultValue) {
-			return jsonObject.getAsJsonPrimitive(name) != null ?
-					jsonObject.getAsJsonPrimitive(name).getAsString() :
-					defaultValue;
+			return jsonObject.has(name) ? jsonObject.get(name).getAsString() : defaultValue;
 		}
 	}
 

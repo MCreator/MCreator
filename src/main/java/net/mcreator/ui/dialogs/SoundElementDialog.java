@@ -37,6 +37,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.elements.BedrockSoundElement;
 import net.mcreator.workspace.elements.SoundElement;
 
 import javax.annotation.Nullable;
@@ -53,7 +54,7 @@ public class SoundElementDialog {
 	@Nullable
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
 		return mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-				== GeneratorFlavor.ADDON ? addBedrockUI(mcreator, element, files) : addJavaUI(mcreator, element, files);
+				== GeneratorFlavor.ADDON ? addBedrockUI(mcreator, (BedrockSoundElement) element, files) : addJavaUI(mcreator, element, files);
 	}
 
 	private static SoundElement addJavaUI(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
@@ -168,7 +169,7 @@ public class SoundElementDialog {
 		}
 	}
 
-	private static SoundElement addBedrockUI(MCreator mcreator, @Nullable SoundElement element,
+	private static BedrockSoundElement addBedrockUI(MCreator mcreator, @Nullable BedrockSoundElement element,
 			@Nullable File[] files) {
 		JPanel ui = new JPanel(new GridLayout(4, 2, 10, 2));
 		VTextField soundName = new VTextField(26);
@@ -290,7 +291,7 @@ public class SoundElementDialog {
 						return element;
 					}
 
-					return new SoundElement(registryname, (String) soundCategory.getSelectedItem(),
+					return new BedrockSoundElement(registryname, (String) soundCategory.getSelectedItem(),
 							new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()), sounds,
 							subtitle.getText());
 				}
