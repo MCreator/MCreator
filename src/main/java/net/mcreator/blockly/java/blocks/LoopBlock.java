@@ -29,8 +29,6 @@ import org.w3c.dom.Element;
 
 public class LoopBlock implements IBlockGenerator {
 
-	private int loopIndex = 0;
-
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		Element statement = XMLUtil.getFirstChildrenWithName(block, "statement");
@@ -38,16 +36,16 @@ public class LoopBlock implements IBlockGenerator {
 		String blocktype = block.getAttribute("type");
 
 		if (value != null && statement != null) {
-			int index = loopIndex++;
+			int index = master.getBlockCount();
 
 			if ("controls_while".equals(blocktype)) {
 				master.append("while(");
 				master.processOutputBlockWithoutParentheses(value);
 				master.append(") {");
 			} else if ("controls_repeat_ext".equals(blocktype)) {
-				master.append("for (int index").append(index).append(" = 0; index").append(index).append("<");
+				master.append("for (int _i").append(index).append(" = 0; _i").append(index).append("<");
 				master.processOutputBlockToInt(value);
-				master.append("; index").append(index).append("++) {");
+				master.append("; _i").append(index).append("++) {");
 			}
 
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
