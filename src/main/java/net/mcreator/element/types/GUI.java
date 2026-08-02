@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
@@ -89,6 +90,16 @@ import java.util.List;
 			}
 		}
 		return currentMax;
+	}
+
+	public List<String> getBlocksBoundToThisGUI() {
+		List<String> blocks = new ArrayList<>();
+		for (ModElement modElement : getModElement().getWorkspace().getModElementsByType(ModElementType.BLOCK)) {
+			if (modElement.getGeneratableElement() instanceof Block block && block.hasInventory
+					&& getModElement().getName().equals(block.guiBoundTo))
+				blocks.add(modElement.getName());
+		}
+		return blocks;
 	}
 
 	public boolean hasButtonEvents() {
