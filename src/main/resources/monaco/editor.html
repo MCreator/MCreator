@@ -391,12 +391,6 @@
             }
         });
 
-        monaco.languages.registerDefinitionProvider('java', {
-            provideDefinition: function (model, position, token) {
-                return [];
-            }
-        });
-
         var externalClasses = [];
 
         window.setExternalClasses = function (classesList) {
