@@ -366,6 +366,12 @@
             invokeBridge('onSaveAndBuildRequested');
         });
 
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Space, function () {
+            if (window.autocompleteEnabled) {
+                editor.trigger('keyboard', 'editor.action.triggerSuggest', {});
+            }
+        });
+
         editor.onMouseDown(function (e) {
             var isJava = editor.getModel() && editor.getModel().getLanguageId() === 'java';
             if (isJava && e.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
@@ -580,9 +586,20 @@
         window.autocompleteMode = autocompleteMode || 'Smart';
         window.autocompleteDocWindow = (autocompleteDocWindow !== false);
 
-        var quickSuggestionsVal = window.autocompleteEnabled;
-        if (window.autocompleteMode === 'Manual') {
-            quickSuggestionsVal = false;
+        var quickSuggestionsVal = false;
+        var triggerOnDotVal = false;
+
+        if (window.autocompleteEnabled) {
+            if (window.autocompleteMode === 'Smart') {
+                quickSuggestionsVal = true;
+                triggerOnDotVal = true;
+            } else if (window.autocompleteMode === 'Trigger on dot') {
+                quickSuggestionsVal = false;
+                triggerOnDotVal = true;
+            } else if (window.autocompleteMode === 'Manual') {
+                quickSuggestionsVal = false;
+                triggerOnDotVal = false;
+            }
         }
 
         if (editor) {
@@ -599,12 +616,13 @@
                 fontSize: fontSize,
                 glyphMargin: language === 'java',
                 quickSuggestions: quickSuggestionsVal ? { other: true, comments: false, strings: false } : false,
-                suggestOnTriggerCharacters: window.autocompleteEnabled && (window.autocompleteMode !== 'Manual'),
+                suggestOnTriggerCharacters: triggerOnDotVal,
                 parameterHints: { enabled: window.autocompleteDocWindow },
                 suggest: {
                     showDocs: window.autocompleteDocWindow,
                     showIcons: true
                 },
+                wordBasedSuggestions: false,
                 mouseWheelZoom: true
             });
         } else {
