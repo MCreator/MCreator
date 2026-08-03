@@ -190,6 +190,7 @@ public class JavaTypeResolver {
 			String paramsRaw = matcher.group(3);
 
 			if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
+			if (returnType.equals("new") || returnType.equals("return") || returnType.equals("throw") || returnType.equals("else")) continue;
 
 			String[] pTypes;
 			String[] pNames;
