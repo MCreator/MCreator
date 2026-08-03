@@ -31,6 +31,8 @@ import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
 import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
 import org.fife.rsta.ac.java.rjc.ast.NormalClassDeclaration;
 import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
+import org.fife.rsta.ac.java.rjc.lexer.Scanner;
+import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,6 +53,23 @@ public class ClassFinder {
 			if (td instanceof NormalClassDeclaration normalClassDeclaration) {
 				return normalClassDeclaration.getPackage() + "." + normalClassDeclaration.getName();
 			}
+		}
+		return null;
+	}
+
+	public static String getCurrentFQDN(String code) {
+		try {
+			CompilationUnit cu = new ASTFactory().getCompilationUnit(
+					"File.java", new Scanner(new java.io.StringReader(code)));
+			Iterator<TypeDeclaration> i = cu.getTypeDeclarationIterator();
+			while (i.hasNext()) {
+				TypeDeclaration td = i.next();
+				if (td instanceof NormalClassDeclaration normalClassDeclaration) {
+					return normalClassDeclaration.getPackage() + "." + normalClassDeclaration.getName();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

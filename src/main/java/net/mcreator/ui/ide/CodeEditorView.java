@@ -86,6 +86,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private final JFileBreadCrumb fileBreadCrumb;
 
+	private BreakpointHandler breakpointHandler;
+
 	@Nullable private ModElement fileOwner = null;
 
 	public CodeEditorView(MCreator fa, File fs) {
@@ -121,6 +123,9 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 		te.setSaveRequestListener(this::saveCode);
 		te.setSaveAndBuildRequestListener(this::saveAndBuildCode);
+
+		this.breakpointHandler = new BreakpointHandler(this, null);
+		te.setBreakpointToggleListener(breakpointHandler::toggleBreakpoint);
 
 		spne.setLeftComponent(te);
 		spne.setContinuousLayout(true);
@@ -326,7 +331,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	@Nullable public BreakpointHandler getBreakpointHandler() {
-		return null;
+		return breakpointHandler;
 	}
 
 }

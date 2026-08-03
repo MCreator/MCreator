@@ -48,6 +48,7 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 
 	private final WebView webView;
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
+	private Consumer<Integer> breakpointToggleListener;
 	private Runnable saveRequestListener;
 	private Runnable saveAndBuildRequestListener;
 
@@ -366,6 +367,21 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		this.saveAndBuildRequestListener = runnable;
 	}
 
+	public void setBreakpointToggleListener(Consumer<Integer> listener) {
+		this.breakpointToggleListener = listener;
+	}
+
+	public void setBreakpoints(int[] lines) {
+		if (!isLoaded || webView == null) return;
+		StringBuilder js = new StringBuilder("if(window.setBreakpoints) window.setBreakpoints([");
+		for (int i = 0; i < lines.length; i++) {
+			js.append(lines[i]);
+			if (i < lines.length - 1) js.append(",");
+		}
+		js.append("]);");
+		executeAsyncJS(js.toString());
+	}
+
 	@Override
 	public void close() {
 		webView.close();
@@ -448,6 +464,15 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		public void onSaveAndBuildRequested() {
 			if (saveAndBuildRequestListener != null) {
 				ThreadUtil.runOnSwingThread(saveAndBuildRequestListener);
+			}
+		}
+
+		public void onBreakpointToggled(String lineStr) {
+			if (breakpointToggleListener != null) {
+				try {
+					int line = Integer.parseInt(lineStr);
+					ThreadUtil.runOnSwingThread(() -> breakpointToggleListener.accept(line));
+				} catch (NumberFormatException ignored) {}
 			}
 		}
 

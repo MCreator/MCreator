@@ -56,6 +56,42 @@ public class BreakpointHandler {
 		}
 	}
 
+	public void toggleBreakpoint(int line) {
+		JVMDebugClient debugClient = cev.getMCreator().getGradleConsole().getDebugClient();
+
+		GutterBreakpointInfo anyMatch = null;
+		for (GutterBreakpointInfo breakpointInfo : breakpointsList) {
+			if (breakpointInfo.getCurrentLine(cev.te) == line) {
+				anyMatch = breakpointInfo;
+				break;
+			}
+		}
+
+		if (anyMatch != null) {
+			breakpointsList.remove(anyMatch);
+			if (anyMatch.getBreakpoint() != null && debugClient != null) {
+				debugClient.removeBreakpoint(anyMatch.getBreakpoint());
+			}
+		} else {
+			GutterBreakpointInfo gutterBreakpointInfo = new GutterBreakpointInfo(line);
+			breakpointsList.add(gutterBreakpointInfo);
+
+			if (debugClient != null) {
+				registerBreakpointWithDebugClient(debugClient, gutterBreakpointInfo);
+			}
+		}
+
+		updateMonacoBreakpoints();
+	}
+
+	private void updateMonacoBreakpoints() {
+		int[] lines = new int[breakpointsList.size()];
+		for (int i = 0; i < breakpointsList.size(); i++) {
+			lines[i] = breakpointsList.get(i).getCurrentLine(cev.te);
+		}
+		cev.te.setBreakpoints(lines);
+	}
+
 	private void registerBreakpointWithDebugClient(@Nonnull JVMDebugClient debugClient,
 			GutterBreakpointInfo gutterBreakpointInfo) {
 		debugClient.addEventListener((vm, eventSet, resumed) -> {
@@ -72,7 +108,7 @@ public class BreakpointHandler {
 		});
 
 		try {
-			Breakpoint breakpoint = new Breakpoint(ClassFinder.getCurrentFQDN(parser),
+			Breakpoint breakpoint = new Breakpoint(ClassFinder.getCurrentFQDN(cev.te.getText()),
 					gutterBreakpointInfo.getCurrentLine(cev.te) + 1, new Breakpoint.BreakpointListener() {
 				@Override public void breakpointLoaded(Breakpoint breakpoint) {
 				}
