@@ -152,11 +152,8 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 	}
 
 	private void executeAsyncJS(String script) {
-		if (webView != null && webView.getBrowser() != null) {
-			try {
-				webView.getBrowser().executeJavaScript(script, "http://mcreator/monaco/editor.html", 0);
-			} catch (Exception ignored) {
-			}
+		if (webView != null) {
+			webView.executeScript(script, WebView.JSExecutionType.LOCAL_SAFE);
 		}
 	}
 

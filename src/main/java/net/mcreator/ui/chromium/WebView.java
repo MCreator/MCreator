@@ -432,10 +432,6 @@ public class WebView extends JPanel implements Closeable {
 		executeScript("window['%s'] = '%s';".formatted(name, value), JSExecutionType.LOCAL_SAFE);
 	}
 
-	public CefBrowser getBrowser() {
-		return browser;
-	}
-
 	CefMessageRouter getRouter() {
 		return router;
 	}
