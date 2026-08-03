@@ -45,6 +45,15 @@ public class JavaTypeResolver {
 		public boolean isStatic;
 	}
 
+	public static class ResolutionResult {
+		public String fqdn;
+		public boolean isStaticContext;
+		public ResolutionResult(String fqdn, boolean isStaticContext) {
+			this.fqdn = fqdn;
+			this.isStaticContext = isStaticContext;
+		}
+	}
+
 	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, boolean isStatic, List<CompletionItem> result, Set<String> added) {
 		StringBuilder label = new StringBuilder(mName).append("(");
 		StringBuilder insert = new StringBuilder(mName).append("(");
@@ -416,14 +425,5 @@ public class JavaTypeResolver {
 		}
 
 		return new ResolutionResult(currentFQDN, isStaticContext);
-	}
-
-	public static class ResolutionResult {
-		public String fqdn;
-		public boolean isStaticContext;
-		public ResolutionResult(String fqdn, boolean isStaticContext) {
-			this.fqdn = fqdn;
-			this.isStaticContext = isStaticContext;
-		}
 	}
 }
