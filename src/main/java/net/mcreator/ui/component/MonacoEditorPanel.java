@@ -400,7 +400,9 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 			try {
 				int line = Integer.parseInt(lineStr);
 				invokeListener(() -> editorEventListener.onBreakpointToggled(line));
-			} catch (NumberFormatException ignored) {}
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
 		}
 
 		public void onOpenDeclaration(String word) {
