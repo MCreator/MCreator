@@ -69,7 +69,7 @@ public class ClassFinder {
 
 		// if there is no package, it is a class in the current package
 		if (!classIn.contains(".")) {
-			if (new File(workspace.getGenerator().getSourceRoot(),
+			if (packagefqdn != null && new File(workspace.getGenerator().getSourceRoot(),
 					packagefqdn.replace(".", "/") + "/" + classIn + ".java").isFile()) {
 				position.classFileNode = new File(workspace.getGenerator().getSourceRoot(),
 						packagefqdn.replace(".", "/") + "/" + classIn + ".java");
@@ -79,9 +79,14 @@ public class ClassFinder {
 			}
 
 			// if there was no package, but the class was not found in SRCROOT, add package declaration to it
-			classFQDN = packagefqdn + "." + classIn;
-		} else
+			if (packagefqdn != null) {
+				classFQDN = packagefqdn + "." + classIn;
+			} else {
+				classFQDN = classIn;
+			}
+		} else {
 			classFQDN = classIn;
+		}
 
 		// next we check if the class might be located in the src directory of the project under the given fqdn
 		if (new File(workspace.getGenerator().getSourceRoot(), classFQDN.replace(".", "/") + ".java").isFile()) {
