@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.component;
 
+import com.google.common.io.Files;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -30,8 +32,7 @@ public class CodePreviewPanel extends JPanel {
 	public CodePreviewPanel(String code, File file) {
 		super(new BorderLayout());
 
-		String lang = file.getName().endsWith(".json") || file.getName().endsWith(".mcmeta") ? "json" : "java";
-		te = MonacoEditorPool.getOrCreate(code, lang, true);
+		te = MonacoEditorPool.getOrCreate(code, MonacoEditorPanel.mapToMonacoLanguage(Files.getFileExtension(file.getName())), true);
 
 		add("Center", te);
 	}
