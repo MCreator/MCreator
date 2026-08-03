@@ -378,31 +378,29 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 			});
 		}
 
-		public void onSaveRequested() {
+		private void invokeListener(Runnable action) {
 			if (editorEventListener != null) {
-				ThreadUtil.runOnSwingThread(() -> editorEventListener.onSaveRequested());
+				ThreadUtil.runOnSwingThread(action);
 			}
+		}
+
+		public void onSaveRequested() {
+			invokeListener(() -> editorEventListener.onSaveRequested());
 		}
 
 		public void onSaveAndBuildRequested() {
-			if (editorEventListener != null) {
-				ThreadUtil.runOnSwingThread(() -> editorEventListener.onSaveAndBuildRequested());
-			}
+			invokeListener(() -> editorEventListener.onSaveAndBuildRequested());
 		}
 
 		public void onBreakpointToggled(String lineStr) {
-			if (editorEventListener != null) {
-				try {
-					int line = Integer.parseInt(lineStr);
-					ThreadUtil.runOnSwingThread(() -> editorEventListener.onBreakpointToggled(line));
-				} catch (NumberFormatException ignored) {}
-			}
+			try {
+				int line = Integer.parseInt(lineStr);
+				invokeListener(() -> editorEventListener.onBreakpointToggled(line));
+			} catch (NumberFormatException ignored) {}
 		}
 
 		public void onOpenDeclaration(String word) {
-			if (editorEventListener != null) {
-				ThreadUtil.runOnSwingThread(() -> editorEventListener.onOpenDeclaration(word));
-			}
+			invokeListener(() -> editorEventListener.onOpenDeclaration(word));
 		}
 
 		public void getDotCompletions(String targetName, String code, Consumer<Object> callback) {

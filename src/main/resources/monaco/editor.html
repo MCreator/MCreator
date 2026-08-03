@@ -344,31 +344,33 @@
             breakpointDecorations = editor.deltaDecorations(breakpointDecorations, newDecorations);
         };
 
+        function invokeBridge(method, arg1, arg2) {
+            if (window.javabridge && window.javabridge[method]) {
+                if (arg2 !== undefined) window.javabridge[method](arg1, arg2, { callback: function () {} });
+                else if (arg1 !== undefined) window.javabridge[method](arg1, { callback: function () {} });
+                else window.javabridge[method]({ callback: function () {} });
+            }
+        }
+
         editor.onDidChangeModelContent(function (e) {
-            if (!isSettingValue && window.javabridge && window.javabridge.onTextChanged) {
-                window.javabridge.onTextChanged(editor.getValue(), { callback: function () {} });
+            if (!isSettingValue) {
+                invokeBridge('onTextChanged', editor.getValue());
             }
         });
 
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
-            if (window.javabridge && window.javabridge.onSaveRequested) {
-                window.javabridge.onSaveRequested({ callback: function () {} });
-            }
+            invokeBridge('onSaveRequested');
         });
 
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB, function () {
-            if (window.javabridge && window.javabridge.onSaveAndBuildRequested) {
-                window.javabridge.onSaveAndBuildRequested({ callback: function () {} });
-            }
+            invokeBridge('onSaveAndBuildRequested');
         });
 
         editor.onMouseDown(function (e) {
             var isJava = editor.getModel() && editor.getModel().getLanguageId() === 'java';
             if (isJava && e.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
                 var line = e.target.position.lineNumber;
-                if (window.javabridge && window.javabridge.onBreakpointToggled) {
-                    window.javabridge.onBreakpointToggled(line.toString(), { callback: function () {} });
-                }
+                invokeBridge('onBreakpointToggled', line.toString());
             }
 
             if ((e.event.ctrlKey || e.event.metaKey) && (e.event.leftButton || e.event.button === 0)) {
@@ -376,8 +378,8 @@
                 if (target && target.position) {
                     var model = editor.getModel();
                     var word = model.getWordAtPosition(target.position);
-                    if (word && word.word && window.javabridge && window.javabridge.onOpenDeclaration) {
-                        window.javabridge.onOpenDeclaration(word.word, { callback: function () {} });
+                    if (word && word.word) {
+                        invokeBridge('onOpenDeclaration', word.word);
                     }
                 }
             }

@@ -44,6 +44,46 @@ public class JavaTypeResolver {
 		public boolean isSnippet;
 	}
 
+	private static void addMethodCompletion(String mName, String returnType, String[] paramNames, List<CompletionItem> result, Set<String> added) {
+		StringBuilder label = new StringBuilder(mName).append("(");
+		StringBuilder insert = new StringBuilder(mName).append("(");
+		
+		for (int i = 0; i < paramNames.length; i++) {
+			if (i > 0) {
+				label.append(", ");
+				insert.append(", ");
+			}
+			String pName = paramNames[i];
+			label.append(pName);
+			insert.append("${").append(i + 1).append(":").append(pName).append("}");
+		}
+		label.append(")");
+		insert.append(")");
+
+		String key = label.toString();
+		if (added.add(key)) {
+			CompletionItem item = new CompletionItem();
+			item.label = key;
+			item.insertText = paramNames.length > 0 ? insert.toString() : mName + "()";
+			item.kind = "method";
+			item.detail = returnType;
+			item.isSnippet = paramNames.length > 0;
+			result.add(item);
+		}
+	}
+
+	private static void addFieldCompletion(String fName, String fType, List<CompletionItem> result, Set<String> added) {
+		if (added.add(fName)) {
+			CompletionItem item = new CompletionItem();
+			item.label = fName;
+			item.insertText = fName;
+			item.kind = "field";
+			item.detail = fType;
+			item.isSnippet = false;
+			result.add(item);
+		}
+	}
+
 	public static List<CompletionItem> getCompletionsFor(String targetName, String code, Workspace workspace) {
 		List<CompletionItem> result = new ArrayList<>();
 		if (targetName == null || targetName.trim().isEmpty()) return result;
@@ -60,44 +100,17 @@ public class JavaTypeResolver {
 			for (Method m : clazz.getMethods()) {
 				if (!Modifier.isPublic(m.getModifiers())) continue;
 
-				StringBuilder label = new StringBuilder(m.getName()).append("(");
-				StringBuilder insert = new StringBuilder(m.getName()).append("(");
 				Class<?>[] params = m.getParameterTypes();
+				String[] pNames = new String[params.length];
 				for (int i = 0; i < params.length; i++) {
-					if (i > 0) {
-						label.append(", ");
-						insert.append(", ");
-					}
-					String pName = params[i].getSimpleName();
-					label.append(pName);
-					insert.append("${").append(i + 1).append(":").append(pName).append("}");
+					pNames[i] = params[i].getSimpleName();
 				}
-				label.append(")");
-				insert.append(")");
-
-				String key = label.toString();
-				if (added.add(key)) {
-					CompletionItem item = new CompletionItem();
-					item.label = key;
-					item.insertText = params.length > 0 ? insert.toString() : m.getName() + "()";
-					item.kind = "method";
-					item.detail = m.getReturnType().getSimpleName();
-					item.isSnippet = params.length > 0;
-					result.add(item);
-				}
+				addMethodCompletion(m.getName(), m.getReturnType().getSimpleName(), pNames, result, added);
 			}
 
 			for (Field f : clazz.getFields()) {
 				if (!Modifier.isPublic(f.getModifiers())) continue;
-				if (added.add(f.getName())) {
-					CompletionItem item = new CompletionItem();
-					item.label = f.getName();
-					item.insertText = f.getName();
-					item.kind = "field";
-					item.detail = f.getType().getSimpleName();
-					item.isSnippet = false;
-					result.add(item);
-				}
+				addFieldCompletion(f.getName(), f.getType().getSimpleName(), result, added);
 			}
 
 			if (!result.isEmpty()) return result;
@@ -150,37 +163,18 @@ public class JavaTypeResolver {
 
 			if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
 
-			StringBuilder label = new StringBuilder(mName).append("(");
-			StringBuilder insert = new StringBuilder(mName).append("(");
-			int paramCount = 0;
-
+			String[] pNames;
 			if (!paramsRaw.trim().isEmpty()) {
 				String[] params = paramsRaw.split(",");
-				paramCount = params.length;
+				pNames = new String[params.length];
 				for (int p = 0; p < params.length; p++) {
-					if (p > 0) {
-						label.append(", ");
-						insert.append(", ");
-					}
 					String pToken = params[p].trim();
-					String pName = pToken.contains(" ") ? pToken.substring(pToken.lastIndexOf(' ') + 1) : pToken;
-					label.append(pName);
-					insert.append("${").append(p + 1).append(":").append(pName).append("}");
+					pNames[p] = pToken.contains(" ") ? pToken.substring(pToken.lastIndexOf(' ') + 1) : pToken;
 				}
+			} else {
+				pNames = new String[0];
 			}
-			label.append(")");
-			insert.append(")");
-
-			String key = label.toString();
-			if (added.add(key)) {
-				CompletionItem item = new CompletionItem();
-				item.label = key;
-				item.insertText = paramCount > 0 ? insert.toString() : mName + "()";
-				item.kind = "method";
-				item.detail = returnType;
-				item.isSnippet = paramCount > 0;
-				result.add(item);
-			}
+			addMethodCompletion(mName, returnType, pNames, result, added);
 		}
 
 		Pattern fieldPattern = Pattern.compile("(?:public|protected|static|final|\\s)+\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])");
@@ -189,15 +183,7 @@ public class JavaTypeResolver {
 			String fType = fieldMatcher.group(1);
 			String fName = fieldMatcher.group(2);
 			if (fName.equals("class") || fName.equals("interface") || fName.equals("enum")) continue;
-			if (added.add(fName)) {
-				CompletionItem item = new CompletionItem();
-				item.label = fName;
-				item.insertText = fName;
-				item.kind = "field";
-				item.detail = fType;
-				item.isSnippet = false;
-				result.add(item);
-			}
+			addFieldCompletion(fName, fType, result, added);
 		}
 	}
 
