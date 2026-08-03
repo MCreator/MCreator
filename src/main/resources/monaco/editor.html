@@ -63,6 +63,46 @@
             colors: {}
         });
 
+        monaco.languages.register({ id: 'glsl' });
+        monaco.languages.setMonarchTokensProvider('glsl', {
+            tokenizer: {
+                root: [
+                    [/\b(attribute|const|uniform|varying|break|continue|do|for|while|if|else|in|out|inout|float|int|void|bool|true|false|lowp|mediump|highp|precision|invariant|discard|return|mat2|mat3|mat4|vec2|vec3|vec4|ivec2|ivec3|ivec4|bvec2|bvec3|bvec4|sampler2D|samplerCube|struct)\b/, 'keyword'],
+                    [/\b[a-zA-Z_][a-zA-Z0-9_]*(?=\s*\()/, 'function'],
+                    [/\b[a-zA-Z_][a-zA-Z0-9_]*\b/, 'identifier'],
+                    [/[{}()\[\]]/, '@brackets'],
+                    [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
+                    [/\b0[xX][0-9a-fA-F]+\b/, 'number.hex'],
+                    [/\b\d+\b/, 'number'],
+                    [/\/\*/, 'comment', '@comment'],
+                    [/\/\/.*$/, 'comment'],
+                    [/#\s*(define|undef|if|ifdef|ifndef|else|elif|endif|error|pragma|extension|version|line)\b/, 'keyword.directive']
+                ],
+                comment: [
+                    [/[^\/*]+/, 'comment'],
+                    [/\/\*/, 'comment', '@push'],
+                    ["\\*/", 'comment', '@pop'],
+                    [/[\/*]/, 'comment']
+                ]
+            }
+        });
+
+        monaco.languages.register({ id: 'csv' });
+        monaco.languages.setMonarchTokensProvider('csv', {
+            tokenizer: {
+                root: [
+                    [/[^,\r\n"]+/, 'string'],
+                    [/,/, 'delimiter'],
+                    [/"/, 'string.quote', '@string']
+                ],
+                string: [
+                    [/[^"]+/, 'string'],
+                    [/""/, 'string.escape'],
+                    [/"/, 'string.quote', '@pop']
+                ]
+            }
+        });
+
         monaco.languages.register({ id: 'mcfunction' });
         monaco.languages.setMonarchTokensProvider('mcfunction', {
             tokenizer: {

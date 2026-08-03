@@ -341,6 +341,8 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 			case "properties", "lang", "ini", "conf", "toml", "classtweaker", "cfg" -> "ini";
 			case "html" -> "html";
 			case "css" -> "css";
+			case "fsh", "vsh" -> "glsl";
+			case "csv" -> "csv";
 			default -> "plaintext";
 		};
 	}
