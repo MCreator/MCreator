@@ -44,7 +44,7 @@ public class JavaTypeResolver {
 		public boolean isSnippet;
 	}
 
-	private static void addMethodCompletion(String mName, String returnType, String[] paramNames, List<CompletionItem> result, Set<String> added) {
+	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, List<CompletionItem> result, Set<String> added) {
 		StringBuilder label = new StringBuilder(mName).append("(");
 		StringBuilder insert = new StringBuilder(mName).append("(");
 		
@@ -53,8 +53,9 @@ public class JavaTypeResolver {
 				label.append(", ");
 				insert.append(", ");
 			}
+			String pType = paramTypes[i];
 			String pName = paramNames[i];
-			label.append(pName);
+			label.append(pType).append(" ").append(pName);
 			insert.append("${").append(i + 1).append(":").append(pName).append("}");
 		}
 		label.append(")");
@@ -112,11 +113,13 @@ public class JavaTypeResolver {
 				if (!Modifier.isPublic(m.getModifiers())) continue;
 
 				Class<?>[] params = m.getParameterTypes();
+				String[] pTypes = new String[params.length];
 				String[] pNames = new String[params.length];
 				for (int i = 0; i < params.length; i++) {
-					pNames[i] = params[i].getSimpleName();
+					pTypes[i] = params[i].getSimpleName();
+					pNames[i] = "arg" + i;
 				}
-				addMethodCompletion(m.getName(), m.getReturnType().getSimpleName(), pNames, result, added);
+				addMethodCompletion(m.getName(), m.getReturnType().getSimpleName(), pTypes, pNames, result, added);
 			}
 
 			for (Field f : clazz.getFields()) {
@@ -188,18 +191,28 @@ public class JavaTypeResolver {
 
 			if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
 
+			String[] pTypes;
 			String[] pNames;
 			if (!paramsRaw.trim().isEmpty()) {
 				String[] params = paramsRaw.split(",");
+				pTypes = new String[params.length];
 				pNames = new String[params.length];
 				for (int p = 0; p < params.length; p++) {
 					String pToken = params[p].trim();
-					pNames[p] = pToken.contains(" ") ? pToken.substring(pToken.lastIndexOf(' ') + 1) : pToken;
+					int lastSpace = pToken.lastIndexOf(' ');
+					if (lastSpace != -1) {
+						pTypes[p] = pToken.substring(0, lastSpace).trim();
+						pNames[p] = pToken.substring(lastSpace + 1).trim();
+					} else {
+						pTypes[p] = pToken;
+						pNames[p] = pToken;
+					}
 				}
 			} else {
+				pTypes = new String[0];
 				pNames = new String[0];
 			}
-			addMethodCompletion(mName, returnType, pNames, result, added);
+			addMethodCompletion(mName, returnType, pTypes, pNames, result, added);
 		}
 
 		Pattern fieldPattern = Pattern.compile("(?:public|protected|static|final|\\s)+\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])");
