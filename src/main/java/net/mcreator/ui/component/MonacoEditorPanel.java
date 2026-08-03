@@ -49,6 +49,7 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 	private final WebView webView;
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
 	private Runnable saveRequestListener;
+	private Runnable saveAndBuildRequestListener;
 
 	private volatile boolean isLoaded = false;
 	private volatile String cachedCode = "";
@@ -349,12 +350,23 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		}
 	}
 
+	public void showNotification(String message) {
+		if (isLoaded && message != null) {
+			String escaped = escapeJSString(message);
+			executeAsyncJS("showNotification('" + escaped + "');");
+		}
+	}
+
 	public void addChangeListener(ChangeListener listener) {
 		changeListeners.add(listener);
 	}
 
 	public void setSaveRequestListener(Runnable runnable) {
 		this.saveRequestListener = runnable;
+	}
+
+	public void setSaveAndBuildRequestListener(Runnable runnable) {
+		this.saveAndBuildRequestListener = runnable;
 	}
 
 	@Override
@@ -433,6 +445,12 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		public void onSaveRequested() {
 			if (saveRequestListener != null) {
 				ThreadUtil.runOnSwingThread(saveRequestListener);
+			}
+		}
+
+		public void onSaveAndBuildRequested() {
+			if (saveAndBuildRequestListener != null) {
+				ThreadUtil.runOnSwingThread(saveAndBuildRequestListener);
 			}
 		}
 

@@ -22,7 +22,6 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
-import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 
 import javax.swing.*;
 
@@ -34,6 +33,7 @@ public class ReformatCodeAction extends BasicAction {
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {
 					codeEditorView.reformatTheCodeOnly();
+					codeEditorView.te.showNotification(L10N.t("action.ide.reformat_code_only.result"));
 				}
 			}
 		});

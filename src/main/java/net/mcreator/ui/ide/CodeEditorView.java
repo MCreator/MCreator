@@ -120,6 +120,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		});
 
 		te.setSaveRequestListener(this::saveCode);
+		te.setSaveAndBuildRequestListener(this::saveAndBuildCode);
 
 		spne.setLeftComponent(te);
 		spne.setContinuousLayout(true);
@@ -214,7 +215,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	public void setChangeListener(ChangeListener changeListener) {
 		this.changeListener = changeListener;
 	}
-
+	
 	public void reformatTheCodeOnly() {
 		te.formatCode();
 	}
@@ -235,6 +236,10 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));
+	}
+
+	public void saveAndBuildCode() {
+		te.showNotification(L10N.t("ide.tips.save_and_build"));
 	}
 
 	void setFileOwnerModElement(ModElement fileOwner) {

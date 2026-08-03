@@ -293,6 +293,12 @@
             }
         });
 
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyB, function () {
+            if (window.javabridge && window.javabridge.onSaveAndBuildRequested) {
+                window.javabridge.onSaveAndBuildRequested({ callback: function () {} });
+            }
+        });
+
         editor.onMouseDown(function (e) {
             if ((e.event.ctrlKey || e.event.metaKey) && (e.event.leftButton || e.event.button === 0)) {
                 var target = e.target;
@@ -508,6 +514,20 @@
             }
         });
         monaco.editor.setTheme(themeName);
+    }
+
+    function showNotification(message) {
+        if (!editor) return;
+        var node = document.createElement('div');
+        node.className = 'monaco-toast-notification';
+        node.innerText = message;
+        node.style.cssText = 'position: absolute; top: 12px; right: 24px; background: rgba(30,30,30,0.9); color: #4ec9b0; padding: 6px 14px; border-radius: 4px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 9999; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; border: 1px solid rgba(255,255,255,0.15);';
+        document.body.appendChild(node);
+        setTimeout(function() { node.style.opacity = '1'; }, 10);
+        setTimeout(function() {
+            node.style.opacity = '0';
+            setTimeout(function() { if (node.parentNode) node.parentNode.removeChild(node); }, 300);
+        }, 2000);
     }
 
     function initEditor(code, language, theme, readOnly, fontSize, autocompleteEnabled, autocompleteMode, autocompleteDocWindow) {
