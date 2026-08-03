@@ -91,15 +91,22 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 
 	@Override public void removeAllElements() {
 		super.removeAllElements();
+		int oldSize = filterItems.size();
 		items.clear();
 		filterItems.clear();
+		if (oldSize > 0)
+			fireIntervalRemoved(this, 0, oldSize - 1);
 	}
 
 	@SuppressWarnings("SuspiciousMethodCalls") @Override public boolean removeElement(Object a) {
 		if (a != null) {
 			try {
 				items.remove(a);
-				filterItems.remove(a);
+				int index = filterItems.indexOf(a);
+				if (index >= 0) {
+					filterItems.remove(index);
+					fireIntervalRemoved(this, index, index);
+				}
 			} catch (ClassCastException ignored) {
 			}
 		}
@@ -107,15 +114,21 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 	}
 
 	protected void refilter() {
-		filterItems.clear();
-		filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item -> refilterItemsFilter.apply(item,
-				workspacePanel.getSearchTerm().toLowerCase(Locale.ENGLISH))).toList());
+		String query = workspacePanel.getSearchTerm().toLowerCase(Locale.ENGLISH);
+
+		// Build the new filtered list into a temporary list first, so a failure mid-filter
+		// can not leave the model in a half-cleared state
+		List<T> newFilterItems = new ArrayList<>(new ArrayList<>(items).stream().filter(Objects::nonNull)
+				.filter(item -> refilterItemsFilter.apply(item, query)).toList());
 
 		if (workspacePanel.sortName.isSelected())
-			filterItems.sort(Comparator.comparing(resourceNameSupplier));
+			newFilterItems.sort(Comparator.comparing(resourceNameSupplier));
 
 		if (workspacePanel.desc.isSelected())
-			Collections.reverse(filterItems);
+			Collections.reverse(newFilterItems);
+
+		filterItems.clear();
+		filterItems.addAll(newFilterItems);
 
 		fireContentsChanged(this, 0, getSize());
 	}

@@ -257,14 +257,26 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	protected void afterVerticalTabChanged() {
 	}
 
-	public synchronized final void reloadWorkspaceTab() {
+	public final void reloadWorkspaceTab() {
+		// Section panels and their list models are not thread-safe, so all reloads must happen on the EDT
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(this::reloadWorkspaceTab);
+			return;
+		}
+
 		reloadToolBarComponents();
 
 		if (currentTabPanel != null)
 			currentTabPanel.reloadElements();
 	}
 
-	public synchronized void refilterWorkspaceTab() {
+	public void refilterWorkspaceTab() {
+		// Section panels and their list models are not thread-safe, so all refilters must happen on the EDT
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(this::refilterWorkspaceTab);
+			return;
+		}
+
 		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
