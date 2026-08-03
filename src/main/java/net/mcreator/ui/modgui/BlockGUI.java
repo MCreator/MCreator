@@ -473,11 +473,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 				}
 
 				String selectedBlockBase = blockBase.getSelectedItem();
-				switch (selectedBlockBase) {
-				case "Pane" -> {
+
+				// Connected sides skip all faces touching the same block, which only renders
+				// correctly on full cube geometry, so of the block bases, only leaves support them
+				if (!"Leaves".equals(selectedBlockBase)) {
 					connectedSides.setEnabled(false);
 					connectedSides.setSelected(false);
+				}
 
+				switch (selectedBlockBase) {
+				case "Pane" -> {
 					if (!isEditingMode()) {
 						transparencyType.setSelectedItem("CUTOUT_MIPPED");
 					}
