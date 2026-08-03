@@ -59,7 +59,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		imv.newImage(new Layer(100, 100, 0, 0, "Layer", Color.red));
 
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new DesaturateDialog(mcreator, imv.getCanvas(), null, null));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new FromTemplateDialog(mcreator, imv.getCanvas(), null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new FromTemplateDialog(mcreator, imv.getAnimationTimeline(), null));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new HSVNoiseDialog(mcreator, imv.getCanvas(), null, null));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewImageDialog(mcreator));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewLayerDialog(mcreator, imv.getCanvas()));
