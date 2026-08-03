@@ -42,9 +42,10 @@ public class JavaTypeResolver {
 		public String kind; // "method" or "field"
 		public String detail;
 		public boolean isSnippet;
+		public boolean isStatic;
 	}
 
-	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, List<CompletionItem> result, Set<String> added) {
+	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, boolean isStatic, List<CompletionItem> result, Set<String> added) {
 		StringBuilder label = new StringBuilder(mName).append("(");
 		StringBuilder insert = new StringBuilder(mName).append("(");
 		
@@ -69,11 +70,12 @@ public class JavaTypeResolver {
 			item.kind = "method";
 			item.detail = returnType;
 			item.isSnippet = paramNames.length > 0;
+			item.isStatic = isStatic;
 			result.add(item);
 		}
 	}
 
-	private static void addFieldCompletion(String fName, String fType, List<CompletionItem> result, Set<String> added) {
+	private static void addFieldCompletion(String fName, String fType, boolean isStatic, List<CompletionItem> result, Set<String> added) {
 		if (added.add(fName)) {
 			CompletionItem item = new CompletionItem();
 			item.label = fName;
@@ -81,6 +83,7 @@ public class JavaTypeResolver {
 			item.kind = "field";
 			item.detail = fType;
 			item.isSnippet = false;
+			item.isStatic = isStatic;
 			result.add(item);
 		}
 	}
@@ -90,10 +93,16 @@ public class JavaTypeResolver {
 		if (targetName == null || targetName.trim().isEmpty()) return result;
 		targetName = targetName.trim();
 
-		String fqdn = resolveTargetFQDN(targetName, code, codeBeforeCursor, workspace);
-		if (fqdn == null) return result;
+		ResolutionResult res = resolveTargetFQDN(targetName, code, codeBeforeCursor, workspace);
+		if (res == null || res.fqdn == null) return result;
 
-		return getMembersOfFQDN(fqdn, workspace);
+		List<CompletionItem> allMembers = getMembersOfFQDN(res.fqdn, workspace);
+		for (CompletionItem item : allMembers) {
+			if (!res.isStaticContext || item.isStatic) {
+				result.add(item);
+			}
+		}
+		return result;
 	}
 
 	public static List<CompletionItem> getMembersOfFQDN(String fqdn, Workspace workspace) {
@@ -119,12 +128,12 @@ public class JavaTypeResolver {
 					pTypes[i] = params[i].getSimpleName();
 					pNames[i] = "arg" + i;
 				}
-				addMethodCompletion(m.getName(), m.getReturnType().getSimpleName(), pTypes, pNames, result, added);
+				addMethodCompletion(m.getName(), m.getReturnType().getSimpleName(), pTypes, pNames, Modifier.isStatic(m.getModifiers()), result, added);
 			}
 
 			for (Field f : clazz.getFields()) {
 				if (!Modifier.isPublic(f.getModifiers())) continue;
-				addFieldCompletion(f.getName(), f.getType().getSimpleName(), result, added);
+				addFieldCompletion(f.getName(), f.getType().getSimpleName(), Modifier.isStatic(f.getModifiers()), result, added);
 			}
 
 			return;
@@ -182,12 +191,13 @@ public class JavaTypeResolver {
 	private static void parseSourceCodeCompletions(String srcCode, List<CompletionItem> result, Set<String> added) {
 		if (srcCode == null || srcCode.isEmpty()) return;
 
-		Pattern methodPattern = Pattern.compile("(?:public|protected|static|final|native|synchronized|\\s)+\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)");
+		Pattern methodPattern = Pattern.compile("((?:public|protected|static|final|native|synchronized|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)");
 		Matcher matcher = methodPattern.matcher(srcCode);
 		while (matcher.find()) {
-			String returnType = matcher.group(1);
-			String mName = matcher.group(2);
-			String paramsRaw = matcher.group(3);
+			boolean isStatic = matcher.group(1).contains("static");
+			String returnType = matcher.group(2);
+			String mName = matcher.group(3);
+			String paramsRaw = matcher.group(4);
 
 			if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
 			if (returnType.equals("new") || returnType.equals("return") || returnType.equals("throw") || returnType.equals("else")) continue;
@@ -213,16 +223,17 @@ public class JavaTypeResolver {
 				pTypes = new String[0];
 				pNames = new String[0];
 			}
-			addMethodCompletion(mName, returnType, pTypes, pNames, result, added);
+			addMethodCompletion(mName, returnType, pTypes, pNames, isStatic, result, added);
 		}
 
-		Pattern fieldPattern = Pattern.compile("(?:public|protected|static|final|\\s)+\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])");
+		Pattern fieldPattern = Pattern.compile("((?:public|protected|static|final|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])");
 		Matcher fieldMatcher = fieldPattern.matcher(srcCode);
 		while (fieldMatcher.find()) {
-			String fType = fieldMatcher.group(1);
-			String fName = fieldMatcher.group(2);
+			boolean isStatic = fieldMatcher.group(1).contains("static");
+			String fType = fieldMatcher.group(2);
+			String fName = fieldMatcher.group(3);
 			if (fName.equals("class") || fName.equals("interface") || fName.equals("enum")) continue;
-			addFieldCompletion(fName, fType, result, added);
+			addFieldCompletion(fName, fType, isStatic, result, added);
 		}
 	}
 
@@ -329,7 +340,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
-	public static String resolveTargetFQDN(String targetName, String code, String codeBeforeCursor, Workspace workspace) {
+	public static ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor, Workspace workspace) {
 		if (code == null) code = "";
 		if (codeBeforeCursor == null) codeBeforeCursor = code;
 
@@ -338,6 +349,7 @@ public class JavaTypeResolver {
 		List<String> chain = splitChains(targetName);
 		if (chain.isEmpty()) return null;
 
+		boolean isStaticContext = false;
 		String currentFQDN = null;
 		String base = chain.get(0);
 		
@@ -377,6 +389,7 @@ public class JavaTypeResolver {
 			if (typeName == null) {
 				if (!base.isEmpty() && Character.isUpperCase(base.charAt(0))) {
 					typeName = base;
+					isStaticContext = true;
 				} else {
 					String fieldTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, workspace);
 					if (fieldTypeSimple != null) {
@@ -396,11 +409,21 @@ public class JavaTypeResolver {
 			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, workspace);
 			if (returnTypeSimple != null) {
 				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, workspace, currentPkg);
+				isStaticContext = false;
 			} else {
 				return null;
 			}
 		}
 
-		return currentFQDN;
+		return new ResolutionResult(currentFQDN, isStaticContext);
+	}
+
+	public static class ResolutionResult {
+		public String fqdn;
+		public boolean isStaticContext;
+		public ResolutionResult(String fqdn, boolean isStaticContext) {
+			this.fqdn = fqdn;
+			this.isStaticContext = isStaticContext;
+		}
 	}
 }
