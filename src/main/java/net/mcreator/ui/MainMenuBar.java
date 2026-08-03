@@ -164,6 +164,7 @@ public abstract class MainMenuBar extends JMenuBar {
 		addHelpSearch(help);
 		help.add(mcreator.getActionRegistry().help);
 		help.add(mcreator.getActionRegistry().support);
+		help.add(mcreator.getActionRegistry().reportBug);
 		help.add(mcreator.getActionRegistry().knowledgeBase);
 		if (macOSscreenMenuBar) {
 			help.addSeparator();

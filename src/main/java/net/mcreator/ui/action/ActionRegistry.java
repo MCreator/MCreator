@@ -73,6 +73,7 @@ public class ActionRegistry {
 	public final BasicAction showShortcuts;
 	public final BasicAction help;
 	public final BasicAction support;
+	public final BasicAction reportBug;
 	public final BasicAction knowledgeBase;
 
 	// Gradle related actions
@@ -210,6 +211,7 @@ public class ActionRegistry {
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
+		this.reportBug = new VisitURIAction(this, L10N.t("action.report_bug"), "https://github.com/MCreator/MCreator/issues");
 		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open"),
 				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit"));
 		this.openFileInDesktop = new BasicAction(this, L10N.t("workspace_file_browser.open_desktop"),
