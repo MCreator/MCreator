@@ -112,7 +112,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 		String ext = FilenameUtilsPatched.getExtension(this.fileWorkingOn.getName());
 		te = MonacoEditorPool.getOrCreate(code, ext, readOnly);
-		te.setWorkspaceContext(mcreator.getWorkspace());
+		te.setWorkspace(mcreator.getWorkspace());
 
 		te.addChangeListener(e -> {
 			if (!changed && !readOnly) {

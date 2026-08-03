@@ -20,7 +20,6 @@ package net.mcreator.ui.component;
 
 import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.JavaTypeResolver;
-import net.mcreator.java.ProjectJarManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.chromium.WebView;
@@ -74,7 +73,7 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		});
 	}
 
-	public void setWorkspaceContext(Workspace workspace) {
+	public void setWorkspace(Workspace workspace) {
 		this.workspace = workspace;
 		if (isLoaded && workspace != null) {
 			sendExternalClassesToMonaco();
