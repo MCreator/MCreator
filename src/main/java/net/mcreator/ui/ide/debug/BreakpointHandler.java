@@ -29,7 +29,6 @@ import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.ide.CodeEditorView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.java.JavaParser;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -43,11 +42,9 @@ public class BreakpointHandler {
 	private final List<GutterBreakpointInfo> breakpointsList = new ArrayList<>();
 
 	private final CodeEditorView cev;
-	private final JavaParser parser;
 
-	public BreakpointHandler(CodeEditorView cev, JavaParser parser) {
+	public BreakpointHandler(CodeEditorView cev) {
 		this.cev = cev;
-		this.parser = parser;
 	}
 
 	public void newDebugClient(JVMDebugClient debugClient) {

@@ -122,7 +122,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			}
 		});
 
-		this.breakpointHandler = new BreakpointHandler(this, null);
+		this.breakpointHandler = new BreakpointHandler(this);
 
 		te.setEditorEventListener(new MonacoEditorPanel.EditorEventListener() {
 			@Override public void onSaveRequested() { saveCode(); }
