@@ -49,20 +49,6 @@
     require.config({ paths: { 'vs': './vs' } });
 
     require(['vs/editor/editor.main'], function () {
-        monaco.editor.defineTheme('mcreator-dark', {
-            base: 'vs-dark',
-            inherit: true,
-            rules: [],
-            colors: {}
-        });
-
-        monaco.editor.defineTheme('mcreator-light', {
-            base: 'vs',
-            inherit: true,
-            rules: [],
-            colors: {}
-        });
-
         monaco.languages.register({ id: 'glsl' });
         monaco.languages.setMonarchTokensProvider('glsl', {
             tokenizer: {
