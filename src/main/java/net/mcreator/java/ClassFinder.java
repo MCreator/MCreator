@@ -24,7 +24,6 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JarManager;
-import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
@@ -46,17 +45,6 @@ public class ClassFinder {
 
 	private static final Logger LOG = LogManager.getLogger("Class Finder");
 
-	public static String getCurrentFQDN(JavaParser parser) {
-		Iterator<TypeDeclaration> i = parser.getCompilationUnit().getTypeDeclarationIterator();
-		while (i.hasNext()) {
-			TypeDeclaration td = i.next();
-			if (td instanceof NormalClassDeclaration normalClassDeclaration) {
-				return normalClassDeclaration.getPackage() + "." + normalClassDeclaration.getName();
-			}
-		}
-		return null;
-	}
-
 	public static String getCurrentFQDN(String code) {
 		try {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(
@@ -74,9 +62,9 @@ public class ClassFinder {
 		return null;
 	}
 
-	public static DeclarationFinder.InClassPosition fqdnToInClassPosition(Workspace workspace, String classIn,
+	public static DeclarationChecker.InClassPosition fqdnToInClassPosition(Workspace workspace, String classIn,
 			String packagefqdn, JarManager jarManager) {
-		DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
+		DeclarationChecker.InClassPosition position = new DeclarationChecker.InClassPosition();
 		String classFQDN;
 
 		// if there is no package, it is a class in the current package
@@ -107,7 +95,7 @@ public class ClassFinder {
 		// next we try to find the declaration using JarManager to check
 		// if the class we are looking for is loaded with source
 		SourceLocation sourceLocation = jarManager.getSourceLocForClass(classFQDN);
-		DeclarationFinder.InClassPosition position1 = sourceLocationToInClassPosition(sourceLocation, classFQDN);
+		DeclarationChecker.InClassPosition position1 = sourceLocationToInClassPosition(sourceLocation, classFQDN);
 		if (position1 != null)
 			return position1;
 
@@ -120,21 +108,30 @@ public class ClassFinder {
 		return position1; // position1 can be null if position was not found
 	}
 
-	private static DeclarationFinder.InClassPosition sourceLocationToInClassPosition(SourceLocation sourceLocation,
+	private static DeclarationChecker.InClassPosition sourceLocationToInClassPosition(SourceLocation sourceLocation,
 			String classfqdn) {
 		if (sourceLocation != null) {
 			if (sourceLocation instanceof ZipSourceLocation) {
 				// since we check for ZipSourceLocation, we can always use ZipIO directly
 				try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
-					String entryName = classfqdn.replaceAll("\\.", "/");
-					entryName = entryName + ".java";
+					String entryName = classfqdn.replaceAll("\\.", "/") + ".java";
+
+					ZipEntry exactEntry = zipFile.getEntry(entryName);
+					if (exactEntry != null) {
+						String code = ZipIO.entryToString(zipFile, exactEntry);
+						DeclarationChecker.InClassPosition position = new DeclarationChecker.InClassPosition();
+						position.classFileNode = tmpFileFromCode(classfqdn, code);
+						position.openInReadOnly = true;
+						position.virtualFile = new File(classfqdn.replaceAll("\\.", "/") + ".java");
+						return position;
+					}
 
 					Enumeration<? extends ZipEntry> entries = zipFile.entries();
 					while (entries.hasMoreElements()) {
 						ZipEntry entry = entries.nextElement();
 						if (entry.getName().endsWith(entryName)) {
 							String code = ZipIO.entryToString(zipFile, entry);
-							DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
+							DeclarationChecker.InClassPosition position = new DeclarationChecker.InClassPosition();
 							position.classFileNode = tmpFileFromCode(classfqdn, code);
 							position.openInReadOnly = true;
 							position.virtualFile = new File(classfqdn.replaceAll("\\.", "/") + ".java");

@@ -22,7 +22,6 @@ import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationChecker;
-import net.mcreator.java.DeclarationFinder;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JFileBreadCrumb;
@@ -176,7 +175,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit("File.java", new Scanner(new java.io.StringReader(code)));
 			JarManager jarManager = mcreator.getGenerator().getProjectJarManager();
 			if (cu != null && jarManager != null) {
-				DeclarationFinder.InClassPosition pos = DeclarationChecker.checkForClassDeclaration(
+				DeclarationChecker.InClassPosition pos = DeclarationChecker.checkForClassDeclaration(
 						mcreator.getWorkspace(), word, cu, jarManager);
 				if (pos != null && (pos.classFileNode != null || pos.virtualFile != null)) {
 					ProjectFileOpener.openFileSpecific(mcreator, pos.classFileNode, pos.openInReadOnly, pos.caret, pos.virtualFile);

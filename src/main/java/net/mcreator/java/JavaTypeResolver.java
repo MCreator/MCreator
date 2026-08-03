@@ -84,17 +84,28 @@ public class JavaTypeResolver {
 		}
 	}
 
-	public static List<CompletionItem> getCompletionsFor(String targetName, String code, Workspace workspace) {
+	public static List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor, Workspace workspace) {
 		List<CompletionItem> result = new ArrayList<>();
 		if (targetName == null || targetName.trim().isEmpty()) return result;
 		targetName = targetName.trim();
 
-		String fqdn = resolveTargetFQDN(targetName, code, workspace);
+		String fqdn = resolveTargetFQDN(targetName, code, codeBeforeCursor, workspace);
 		if (fqdn == null) return result;
 
-		Set<String> added = new HashSet<>();
+		return getMembersOfFQDN(fqdn, workspace);
+	}
 
-		// JDK runtime classes
+	public static List<CompletionItem> getMembersOfFQDN(String fqdn, Workspace workspace) {
+		List<CompletionItem> result = new ArrayList<>();
+		Set<String> added = new HashSet<>();
+		Set<String> visited = new HashSet<>();
+		populateMembersOfFQDN(fqdn, workspace, result, added, visited);
+		return result;
+	}
+
+	private static void populateMembersOfFQDN(String fqdn, Workspace workspace, List<CompletionItem> result, Set<String> added, Set<String> visited) {
+		if (fqdn == null || !visited.add(fqdn)) return;
+
 		try {
 			Class<?> clazz = Class.forName(fqdn);
 			for (Method m : clazz.getMethods()) {
@@ -113,42 +124,56 @@ public class JavaTypeResolver {
 				addFieldCompletion(f.getName(), f.getType().getSimpleName(), result, added);
 			}
 
-			if (!result.isEmpty()) return result;
+			return;
 		} catch (ClassNotFoundException ignored) {
 		}
 
-		// Workspace source
 		if (workspace != null && workspace.getGenerator() != null) {
+			String srcCode = null;
 			File srcFile = new File(workspace.getGenerator().getSourceRoot(), fqdn.replace('.', '/') + ".java");
 			if (srcFile.isFile()) {
-				String srcCode = FileIO.readFileToString(srcFile);
-				parseSourceCodeCompletions(srcCode, result, added);
-				if (!result.isEmpty()) return result;
+				srcCode = FileIO.readFileToString(srcFile);
+			} else {
+				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
+				if (jarManager != null) {
+					SourceLocation sourceLocation = jarManager.getSourceLocForClass(fqdn);
+					if (sourceLocation instanceof ZipSourceLocation) {
+						try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
+							String entryName = fqdn.replace('.', '/') + ".java";
+							ZipEntry entry = zipFile.getEntry(entryName);
+							if (entry != null) {
+								srcCode = ZipIO.entryToString(zipFile, entry);
+							} else {
+								Enumeration<? extends ZipEntry> entries = zipFile.entries();
+								while (entries.hasMoreElements()) {
+									ZipEntry e = entries.nextElement();
+									if (e.getName().endsWith(entryName)) {
+										srcCode = ZipIO.entryToString(zipFile, e);
+										break;
+									}
+								}
+							}
+						} catch (Exception ignored) {
+						}
+					}
+				}
 			}
 
-			// JarManager for minecraft classes
-			ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-			if (jarManager != null) {
-				SourceLocation sourceLocation = jarManager.getSourceLocForClass(fqdn);
-				if (sourceLocation instanceof ZipSourceLocation) {
-					try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
-						String entryName = fqdn.replace('.', '/') + ".java";
-						Enumeration<? extends ZipEntry> entries = zipFile.entries();
-						while (entries.hasMoreElements()) {
-							ZipEntry entry = entries.nextElement();
-							if (entry.getName().endsWith(entryName)) {
-								String srcCode = ZipIO.entryToString(zipFile, entry);
-								parseSourceCodeCompletions(srcCode, result, added);
-								break;
-							}
-						}
-					} catch (Exception ignored) {
+			if (srcCode != null) {
+				parseSourceCodeCompletions(srcCode, result, added);
+				Pattern extendsPattern = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
+				Matcher matcher = extendsPattern.matcher(srcCode);
+				if (matcher.find()) {
+					String parentName = matcher.group(1);
+					Map<String, String> imports = parseImports(srcCode);
+					String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+					String parentFQDN = resolveSimpleTypeName(parentName, imports, workspace, pkg);
+					if (parentFQDN != null) {
+						populateMembersOfFQDN(parentFQDN, workspace, result, added, visited);
 					}
 				}
 			}
 		}
-
-		return result;
 	}
 
 	private static void parseSourceCodeCompletions(String srcCode, List<CompletionItem> result, Set<String> added) {
@@ -187,9 +212,7 @@ public class JavaTypeResolver {
 		}
 	}
 
-	public static String resolveTargetFQDN(String targetName, String code, Workspace workspace) {
-		if (code == null) code = "";
-
+	private static Map<String, String> parseImports(String code) {
 		Map<String, String> imports = new HashMap<>();
 		Pattern importPattern = Pattern.compile("import\\s+([a-zA-Z0-9_.]+);");
 		Matcher importMatcher = importPattern.matcher(code);
@@ -200,47 +223,170 @@ public class JavaTypeResolver {
 				imports.put(simple, imp);
 			}
 		}
-
 		String[] javaLangTypes = {"String", "Math", "System", "Object", "Integer", "Double", "Float", "Boolean", "Long", "Short", "Byte", "Character", "Thread", "Throwable", "Exception"};
 		for (String t : javaLangTypes) {
 			imports.putIfAbsent(t, "java.lang." + t);
 		}
+		return imports;
+	}
 
-		Pattern varPattern = Pattern.compile("\\b([A-Z][a-zA-Z0-9_<>]*)\\s+(?:[a-zA-Z0-9_]+\\s*,\\s*)*" + Pattern.quote(targetName) + "(?:\\s*[,;=)]|\\b)");
-		Matcher varMatcher = varPattern.matcher(code);
-		String typeName = null;
-		if (varMatcher.find()) {
-			typeName = varMatcher.group(1);
-			if (typeName.contains("<") && typeName.contains(">")) {
-				typeName = typeName.substring(typeName.indexOf('<') + 1, typeName.indexOf('>'));
-			} else if (typeName.contains("<")) {
-				typeName = typeName.substring(0, typeName.indexOf('<'));
-			}
-		} else {
-			if (!targetName.isEmpty() && Character.isUpperCase(targetName.charAt(0))) {
-				typeName = targetName;
-			}
-		}
-
+	private static String resolveSimpleTypeName(String typeName, Map<String, String> imports, Workspace workspace, String currentPkg) {
 		if (typeName == null) return null;
+		if (typeName.contains(".")) return typeName;
 
 		if (imports.containsKey(typeName)) {
 			return imports.get(typeName);
 		}
 
+		if (currentPkg != null && !currentPkg.isEmpty()) {
+			String possibleFQDN = currentPkg + "." + typeName;
+			if (workspace != null && workspace.getGenerator() != null) {
+				File f = new File(workspace.getGenerator().getSourceRoot(), possibleFQDN.replace('.', '/') + ".java");
+				if (f.exists()) return possibleFQDN;
+			}
+		}
+
 		if (workspace != null && workspace.getGenerator() != null) {
-			ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-			if (jarManager != null) {
-				Map<String, List<String>> tree = ImportTreeBuilder.generateImportTree(jarManager);
-				if (tree != null && tree.containsKey(typeName)) {
-					List<String> fqdns = tree.get(typeName);
-					if (fqdns != null && !fqdns.isEmpty()) {
-						return fqdns.getFirst();
-					}
+			Map<String, List<String>> tree = null;
+			if (workspace.getGenerator().getGradleCache() != null) {
+				tree = workspace.getGenerator().getGradleCache().getImportTree();
+			} else {
+				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
+				if (jarManager != null) {
+					tree = ImportTreeBuilder.generateImportTree(jarManager);
+				}
+			}
+			
+			if (tree != null && tree.containsKey(typeName)) {
+				List<String> fqdns = tree.get(typeName);
+				if (fqdns != null && !fqdns.isEmpty()) {
+					return fqdns.getFirst();
+				}
+			}
+
+			Map<String, List<String>> workspaceTree = new HashMap<>();
+			ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), workspaceTree);
+			if (workspaceTree.containsKey(typeName)) {
+				List<String> fqdns = workspaceTree.get(typeName);
+				if (fqdns != null && !fqdns.isEmpty()) {
+					return fqdns.getFirst();
 				}
 			}
 		}
 
 		return null;
+	}
+
+	private static List<String> splitChains(String expression) {
+		List<String> result = new ArrayList<>();
+		int depth = 0;
+		StringBuilder current = new StringBuilder();
+		for (char c : expression.toCharArray()) {
+			if (c == '(') depth++;
+			else if (c == ')') depth--;
+			else if (c == '.' && depth == 0) {
+				result.add(current.toString().trim());
+				current.setLength(0);
+				continue;
+			}
+			current.append(c);
+		}
+		if (!current.isEmpty()) {
+			result.add(current.toString().trim());
+		}
+		return result;
+	}
+
+	private static String getReturnTypeOfMember(String fqdn, String member, Workspace workspace) {
+		if (fqdn == null || fqdn.isEmpty()) return null;
+		String memberName = member;
+		if (memberName.contains("(")) {
+			memberName = memberName.substring(0, memberName.indexOf('('));
+		}
+		
+		List<CompletionItem> members = getMembersOfFQDN(fqdn, workspace);
+		for (CompletionItem item : members) {
+			if (item.kind.equals("method") && item.label.startsWith(memberName + "(")) {
+				return item.detail;
+			} else if (item.kind.equals("field") && item.label.equals(memberName)) {
+				return item.detail;
+			}
+		}
+		return null;
+	}
+
+	public static String resolveTargetFQDN(String targetName, String code, String codeBeforeCursor, Workspace workspace) {
+		if (code == null) code = "";
+		if (codeBeforeCursor == null) codeBeforeCursor = code;
+
+		Map<String, String> imports = parseImports(code);
+
+		List<String> chain = splitChains(targetName);
+		if (chain.isEmpty()) return null;
+
+		String currentFQDN = null;
+		String base = chain.get(0);
+		
+		String currentClassFQDN = ClassFinder.getCurrentFQDN(code);
+		String currentPkg = currentClassFQDN != null && currentClassFQDN.contains(".") ? currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) : "";
+
+		if (base.equals("this") || base.equals("super")) {
+			currentFQDN = currentClassFQDN;
+			if (base.equals("super") && currentFQDN != null) {
+				Pattern extendsPattern = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
+				Matcher matcher = extendsPattern.matcher(code);
+				if (matcher.find()) {
+					String parentName = matcher.group(1);
+					currentFQDN = resolveSimpleTypeName(parentName, imports, workspace, currentPkg);
+				} else {
+					currentFQDN = "java.lang.Object";
+				}
+			}
+		} else if (base.contains("(")) {
+			String returnTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, workspace);
+			if (returnTypeSimple != null) {
+				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, workspace, currentPkg);
+			}
+		} else {
+			Pattern varPattern = Pattern.compile("\\b([A-Z][a-zA-Z0-9_<>]*)\\s+(?:[a-zA-Z0-9_]+\\s*,\\s*)*" + Pattern.quote(base) + "(?:\\s*[,;=)]|\\b)");
+			Matcher varMatcher = varPattern.matcher(codeBeforeCursor);
+			String typeName = null;
+			while (varMatcher.find()) {
+				typeName = varMatcher.group(1);
+				if (typeName.contains("<") && typeName.contains(">")) {
+					typeName = typeName.substring(typeName.indexOf('<') + 1, typeName.indexOf('>'));
+				} else if (typeName.contains("<")) {
+					typeName = typeName.substring(0, typeName.indexOf('<'));
+				}
+			}
+			
+			if (typeName == null) {
+				if (!base.isEmpty() && Character.isUpperCase(base.charAt(0))) {
+					typeName = base;
+				} else {
+					String fieldTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, workspace);
+					if (fieldTypeSimple != null) {
+						typeName = fieldTypeSimple;
+					}
+				}
+			}
+
+			if (typeName != null) {
+				currentFQDN = resolveSimpleTypeName(typeName, imports, workspace, currentPkg);
+			}
+		}
+
+		for (int i = 1; i < chain.size(); i++) {
+			if (currentFQDN == null) return null;
+			String member = chain.get(i);
+			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, workspace);
+			if (returnTypeSimple != null) {
+				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, workspace, currentPkg);
+			} else {
+				return null;
+			}
+		}
+
+		return currentFQDN;
 	}
 }

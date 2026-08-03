@@ -434,12 +434,30 @@
 
                 if (isDotContext) {
                     var beforeDot = textBeforeCursor.substring(0, textBeforeCursor.lastIndexOf('.')).trim();
-                    var targetMatch = beforeDot.match(/([a-zA-Z0-9_]+)$/);
-                    var targetName = targetMatch ? targetMatch[1] : '';
+                    var targetName = "";
+                    var depth = 0;
+                    for (var i = beforeDot.length - 1; i >= 0; i--) {
+                        var char = beforeDot.charAt(i);
+                        if (char === ')') depth++;
+                        else if (char === '(') depth--;
+                        else if (depth === 0) {
+                            if (!char.match(/[a-zA-Z0-9_.]/)) {
+                                break;
+                            }
+                        }
+                        targetName = char + targetName;
+                    }
+                    targetName = targetName.trim();
 
                     if (targetName && window.javabridge && window.javabridge.getDotCompletions) {
                         return new Promise(function (resolve) {
-                            window.javabridge.getDotCompletions(targetName, model.getValue(), {
+                            var fullTextBeforeCursor = model.getValueInRange({
+                                startLineNumber: 1,
+                                startColumn: 1,
+                                endLineNumber: position.lineNumber,
+                                endColumn: position.column
+                            });
+                            window.javabridge.getDotCompletions(targetName, model.getValue(), fullTextBeforeCursor, {
                                 callback: function (items) {
                                     var dotSuggestions = [];
                                     if (Array.isArray(items)) {

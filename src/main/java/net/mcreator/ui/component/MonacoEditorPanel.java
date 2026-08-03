@@ -92,8 +92,12 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 	private static String buildExternalClassesJson(Workspace workspace) {
 		if (workspace == null || workspace.getGenerator() == null) return "[]";
 		try {
-			ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-			Map<String, List<String>> tree = jarManager != null ? ImportTreeBuilder.generateImportTree(jarManager) : null;
+			Map<String, List<String>> tree = null;
+			if (workspace.getGenerator().getGradleCache() != null) {
+				tree = workspace.getGenerator().getGradleCache().getImportTree();
+			} else if (workspace.getGenerator().getProjectJarManager() != null) {
+				tree = ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager());
+			}
 			StringBuilder sb = new StringBuilder("[");
 			boolean first = true;
 
@@ -403,11 +407,11 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 			invokeListener(() -> editorEventListener.onOpenDeclaration(word));
 		}
 
-		public void getDotCompletions(String targetName, String code, Consumer<Object> callback) {
+		public void getDotCompletions(String targetName, String code, String codeBeforeCursor, Consumer<Object> callback) {
 			new Thread(() -> {
-				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, workspace);
+				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, workspace);
 				if (callback != null) {
-					callback.accept(new Object[] { items });
+					invokeListener(() -> callback.accept(new Object[] { items }));
 				}
 			}, "MonacoDotCompletions").start();
 		}

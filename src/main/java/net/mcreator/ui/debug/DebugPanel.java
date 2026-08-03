@@ -26,7 +26,7 @@ import com.sun.jdi.event.*;
 import com.sun.jdi.event.Event;
 import com.sun.jdi.request.StepRequest;
 import net.mcreator.java.ClassFinder;
-import net.mcreator.java.DeclarationFinder;
+import net.mcreator.java.DeclarationChecker;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -271,7 +271,7 @@ public class DebugPanel extends JPanel {
 						});
 
 						try {
-							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
+							DeclarationChecker.InClassPosition position = ClassFinder.fqdnToInClassPosition(
 									mcreator.getWorkspace(), stepEvent.location().declaringType().name(),
 									"mod.mcreator", mcreator.getGenerator().getProjectJarManager());
 							if (position != null) {

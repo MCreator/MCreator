@@ -23,7 +23,7 @@ import net.mcreator.Launcher;
 import net.mcreator.gradle.*;
 import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.java.ClassFinder;
-import net.mcreator.java.DeclarationFinder;
+import net.mcreator.java.DeclarationChecker;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.java.monitoring.JMXMonitorClient;
@@ -158,7 +158,7 @@ public class GradleConsole extends JPanel implements ISearchable {
 								fileurl = fileurl.substring(fileurl.lastIndexOf("/") + 1);
 							}
 
-							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
+							DeclarationChecker.InClassPosition position = ClassFinder.fqdnToInClassPosition(
 									ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);
 
 							if (position != null) {
