@@ -86,7 +86,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private final JFileBreadCrumb fileBreadCrumb;
 
-	private BreakpointHandler breakpointHandler;
+	@Nullable private BreakpointHandler breakpointHandler;
 
 	@Nullable private ModElement fileOwner = null;
 
