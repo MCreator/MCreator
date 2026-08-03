@@ -91,14 +91,27 @@
 
         monaco.languages.register({ id: 'mcfunction' });
         monaco.languages.setMonarchTokensProvider('mcfunction', {
+            ignoreCase: false,
+            keywords: ['achievement','actionbar','advancement','attribute','ban','ban-ip','banlist','bossbar','clear','clone','data','datapack','debug','defaultgamemode','deop','difficulty','effect','enchant','execute','experience','fill','function','gamemode','gamerule','give','help','item','kick','kill','list','locate','loot','op','pardon','pardon-ip','particle','playsound','publish','recipe','replaceitem','run','save-all','save-off','save-on','say','scoreboard','seed','setblock','setidletimeout','setworldspawn','spawnpoint','spreadplayers','stop','stopsound','summon','tag','team','teams','teleport','tellraw','time','title','tp','weather','whitelist','xp'],
+            typeKeywords: ['add','advancements','anchored','aqua','arbitrary','as','at','black','block','blue','bold','byte','color','creative','dark_aqua','dark_blue','dark_gray','dark_green','dark_purple','dark_red','distance','double','dx','dy','dz','entity','extra','eyes','false','feet','float','furthest','gold','gray','green','if','int','italic','level','light_purple','limit','list','long','name','nbt','nearest','obfuscated','objectives','offset','players','positioned','random','red','remove','replace','reset','result','scores','set','short','sort','spectator','store','strikethrough','success','survival','text','true','type','underline','unless','values','white','x','x_rotation','y','y_rotation','yellow','z'],
+            operators: ['=','+=','-=','*=','/=','%=','<','>','<=','>=','<>',',',':'],
             tokenizer: {
                 root: [
                     [/#[^\n]*/, 'comment'],
-                    [/\b(execute|run|say|give|tp|teleport|summon|setblock|fill|effect|clear|kill|gamemode|difficulty|time|weather|datapack|tag|scoreboard|team|bossbar|title|actionbar|recipe|loot|advancement|experience|xp|attribute|item|playsound|stopsound|particle|seed|help|op|deop|kick|ban|pardon|whitelist)\b/, 'keyword'],
-                    [/@[a-eprs]\[[^\]]*\]|@[a-eprs]/, 'variable'],
-                    [/"[^"]*"/, 'string'],
-                    [/\b[0-9]+(\.[0-9]+)?[fFdD]?\b/, 'number'],
-                ]
+                    [/@[a-eprs]\b/, 'variable.predefined'],
+                    [/[~^]-?(?:\d+(?:\.\d+)?)?/, 'keyword'],
+                    [/[a-zA-Z_][a-zA-Z0-9_-]*/, { cases: { '@keywords': 'keyword', '@typeKeywords': 'type', '@default': 'identifier' } }],
+                    { include: '@whitespace' },
+                    [/-?\d+\.\d+(?:[eE][\-+]?\d+)?/, 'number.float'],
+                    [/-?\d+/, 'number'],
+                    [/"([^"\\]|\\.)*$/, 'string.invalid'],
+                    [/"/, { token: 'string.quote', bracket: '@open', next: '@string' }],
+                    [/[=><!+\-*/%:]+/, { cases: { '@operators': 'operator', '@default': '' } }],
+                    [/,/, 'delimiter'],
+                    [/[{}()\[\]]/, '@brackets']
+                ],
+                whitespace: [ [/[ \t\r\n]+/, 'white'] ],
+                string: [ [/[^\\"]+/, 'string'], [/\\./, 'string.escape'], [/"/, { token: 'string.quote', bracket: '@close', next: '@pop' }] ]
             }
         });
 
