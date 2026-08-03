@@ -31,11 +31,8 @@ public class MonacoEditorPool {
 		// Asynchronously pre-warm pool on Swing thread
 		SwingUtilities.invokeLater(() -> {
 			for (int i = 0; i < MAX_POOL_SIZE; i++) {
-				try {
-					MonacoEditorPanel prewarmed = new MonacoEditorPanel("", "java", false);
-					POOL.offer(prewarmed);
-				} catch (Exception ignored) {
-				}
+				MonacoEditorPanel prewarmed = new MonacoEditorPanel("", "java", false);
+				POOL.offer(prewarmed);
 			}
 		});
 	}
@@ -48,10 +45,7 @@ public class MonacoEditorPool {
 				replenishPool();
 				return panel;
 			} else {
-				try {
-					panel.close();
-				} catch (Exception ignored) {
-				}
+				panel.close();
 			}
 		}
 		MonacoEditorPanel fresh = new MonacoEditorPanel(code, langOrExtension, readOnly);
@@ -62,10 +56,7 @@ public class MonacoEditorPool {
 	private static void replenishPool() {
 		SwingUtilities.invokeLater(() -> {
 			if (POOL.size() < MAX_POOL_SIZE) {
-				try {
-					POOL.offer(new MonacoEditorPanel("", "java", false));
-				} catch (Exception ignored) {
-				}
+				POOL.offer(new MonacoEditorPanel("", "java", false));
 			}
 		});
 	}
@@ -76,10 +67,7 @@ public class MonacoEditorPool {
 				panel.resetForPool();
 				POOL.offer(panel);
 			} else {
-				try {
-					panel.close();
-				} catch (Exception ignored) {
-				}
+				panel.close();
 			}
 		}
 	}

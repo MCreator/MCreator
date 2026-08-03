@@ -90,7 +90,6 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 
 	private static String buildExternalClassesJson(Workspace workspace) {
 		if (workspace == null || workspace.getGenerator() == null) return "[]";
-		try {
 			Map<String, List<String>> tree = null;
 			if (workspace.getGenerator().getGradleCache() != null) {
 				tree = workspace.getGenerator().getGradleCache().getImportTree();
@@ -121,9 +120,6 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 
 			sb.append("]");
 			return sb.toString();
-		} catch (Exception e) {
-			return "[]";
-		}
 	}
 
 	private static boolean addWorkspaceSourceFiles(File root, File dir, StringBuilder sb, boolean first) {
@@ -199,7 +195,9 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 					jsonStr = new String(is.readAllBytes(), StandardCharsets.UTF_8);
 					is.close();
 				}
-			} catch (Exception ignored) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			jsonStr = LegacyCodeEditorThemes.getThemeJson(editorThemePref);
 		}
