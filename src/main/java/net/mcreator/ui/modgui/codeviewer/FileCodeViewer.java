@@ -59,7 +59,6 @@ public class FileCodeViewer<T extends GeneratableElement> extends JPanel {
 			cev.te.setText(code);
 			try {
 				cev.te.setCaretPosition(StringUtils.indexOfDifference(oldCode, code));
-				cev.centerLineInScrollPane();
 			} catch (Exception ignored) {
 			}
 			oldCode = code;

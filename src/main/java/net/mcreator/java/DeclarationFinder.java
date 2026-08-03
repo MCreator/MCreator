@@ -22,7 +22,6 @@ import net.mcreator.workspace.Workspace;
 import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.swing.text.BadLocationException;
 import java.io.File;
@@ -30,98 +29,11 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.mcreator.ui.component.MonacoEditorPanel;
+
 public class DeclarationFinder {
 	public static final Pattern SEPARATORS_BEHIND = Pattern.compile("[^a-zA-Z0-9_$.]");
 	public static final Pattern SEPARATORS_AHEAD = Pattern.compile("[^a-zA-Z0-9_$]");
-
-	public static DeclarationFinder.InClassPosition getDeclarationOnPos(Workspace workspace, JavaParser parser,
-			RSyntaxTextArea textArea, JarManager jarManager) {
-
-		int caret = textArea.getCaretPosition();
-
-		//----- seek for word clicked
-		int startexp, endexp;
-		//seek start
-		for (int i = 1; true; i++) {
-			try {
-				String curr = textArea.getText(caret - i, i);
-				if (isValidSeparatorContained(curr, true)) {
-					startexp = caret - i + 1;
-					break;
-				}
-			} catch (BadLocationException e) {
-				startexp = 0;
-				break;
-			}
-		}
-		//seek end
-		for (int i = 1; true; i++) {
-			try {
-				String curr = textArea.getText(caret, i);
-				if (isValidSeparatorContained(curr, false)) {
-					endexp = caret + i - 1;
-					break;
-				}
-			} catch (BadLocationException e) {
-				endexp = caret + i - 1;
-				break;
-			}
-		}
-
-		try {
-			return checkForPossibleDeclarations(workspace, parser, textArea,
-					textArea.getText(startexp, endexp - startexp), jarManager);
-		} catch (BadLocationException e) {
-			return null;
-		}
-
-	}
-
-	private static InClassPosition checkForPossibleDeclarations(Workspace workspace, JavaParser parser,
-			RSyntaxTextArea textArea, String clickedWord, JarManager jarManager) {
-		int start, end;
-		int caret = textArea.getCaretPosition();
-		String code = textArea.getText();
-
-		if (parser == null || parser.getCompilationUnit() == null)
-			return null;
-
-		InClassPosition pos;
-
-		Iterator<TypeDeclaration> i = parser.getCompilationUnit().getTypeDeclarationIterator();
-		while (i.hasNext()) {
-			TypeDeclaration td = i.next();
-			start = td.getNameStartOffset(); // from beginning of name of declaration
-			end = td.getBodyEndOffset(); // to the full end
-
-			if (caret > start && caret <= end) {
-				TypeDeclaration classNameInWhichWeAre = getLatestChild(td, caret);
-
-				pos = DeclarationChecker.checkForThisDeclaration(code, clickedWord, classNameInWhichWeAre);
-				if (pos != null)
-					return pos;
-
-				pos = DeclarationChecker.checkForSuperDeclaration(workspace, clickedWord, classNameInWhichWeAre,
-						parser.getCompilationUnit(), jarManager);
-				if (pos != null)
-					return pos;
-
-				pos = DeclarationChecker.checkForClassDeclaration(workspace, clickedWord, parser.getCompilationUnit(),
-						jarManager);
-				if (pos != null)
-					return pos;
-			} else if (caret < start) {
-				// Before any declaration, could be imports section, so we check for class declarations
-				pos = DeclarationChecker.checkForClassDeclaration(workspace, clickedWord, parser.getCompilationUnit(),
-						jarManager);
-				if (pos != null)
-					return pos;
-				else
-					break;
-			}
-		}
-		return null;
-	}
 
 	private static TypeDeclaration getLatestChild(TypeDeclaration parent, int caret) {
 		if (parent.getChildTypeAtOffset(caret) == null) {//main declaration

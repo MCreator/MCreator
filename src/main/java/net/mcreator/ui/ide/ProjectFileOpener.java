@@ -65,7 +65,6 @@ public class ProjectFileOpener {
 			cev = (CodeEditorView) cev.showView();
 			cev.te.setCaretPosition(caret);
 			cev.te.requestFocus();
-			SwingUtilities.invokeLater(cev::centerLineInScrollPane);
 			return cev;
 
 		}

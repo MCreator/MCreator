@@ -33,11 +33,7 @@ public class ReformatCodeAction extends BasicAction {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {
-					codeEditorView.disableJumpToMode();
 					codeEditorView.reformatTheCodeOnly();
-					if (codeEditorView.mouseEvent != null)
-						new FocusableTip(codeEditorView.te, null).toolTipRequested(codeEditorView.mouseEvent,
-								L10N.t("action.ide.reformat_code_only.result"));
 				}
 			}
 		});
@@ -47,4 +43,3 @@ public class ReformatCodeAction extends BasicAction {
 	}
 
 }
-

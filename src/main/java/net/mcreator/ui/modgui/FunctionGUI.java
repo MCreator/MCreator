@@ -23,21 +23,14 @@ import net.mcreator.element.types.Function;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.MonacoEditorPanel;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
-import net.mcreator.ui.ide.RSyntaxTextAreaStyler;
-import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
-import org.fife.rsta.ac.LanguageSupportFactory;
-import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -46,13 +39,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Objects;
+import net.mcreator.ui.component.MonacoEditorPool;
 
 public class FunctionGUI extends ModElementGUI<Function> {
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
 	private final VTextField name = new VTextField();
 
-	private final RSyntaxTextArea te = new RSyntaxTextArea();
+	private final MonacoEditorPanel te = MonacoEditorPool.getOrCreate("", "mcfunction", false);
 
 	public FunctionGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -97,34 +91,8 @@ public class FunctionGUI extends ModElementGUI<Function> {
 				L10N.label("elementgui.function.namespace")));
 		northPanel.add(namespace);
 
-		RTextScrollPane sp = new RTextScrollPane(te, true);
-
-		RSyntaxTextAreaStyler.style(te, sp, 14);
-		LanguageSupportFactory.get().register(te);
-
-		te.requestFocusInWindow();
-		te.setMarkOccurrences(true);
-		te.setCodeFoldingEnabled(false);
-		te.setClearWhitespaceLinesEnabled(true);
-		te.setAutoIndentEnabled(false);
-		te.setTabSize(4);
-		te.setTabsEmulated(false);
-
-		sp.setFoldIndicatorEnabled(true);
-		sp.getGutter().setFoldBackground(Theme.current().getBackgroundColor());
-		sp.getGutter().setBorderColor(Theme.current().getBackgroundColor());
-		sp.getGutter().setBackground(Theme.current().getBackgroundColor());
-		sp.getGutter().setBookmarkingEnabled(true);
-		sp.setIconRowHeaderEnabled(false);
-		sp.setBackground(Theme.current().getBackgroundColor());
-		sp.setBorder(null);
-
-		AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
-		atmf.putMapping("text/mcfunction", MinecraftCommandsTokenMaker.class.getName());
-		te.setSyntaxEditingStyle("text/mcfunction");
-
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel),
-				PanelUtils.northAndCenterElement(L10N.label("elementgui.function.indications"), sp, 10, 10), 15, 15));
+				PanelUtils.northAndCenterElement(L10N.label("elementgui.function.indications"), te, 10, 10), 15, 15));
 
 		addPage(pane3).validate(name);
 	}

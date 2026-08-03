@@ -19,53 +19,21 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.ide.RSyntaxTextAreaStyler;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rtextarea.RTextScrollPane;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
 public class CodePreviewPanel extends JPanel {
 
-	public final RSyntaxTextArea te = new RSyntaxTextArea();
+	public final MonacoEditorPanel te;
 
 	public CodePreviewPanel(String code, File file) {
 		super(new BorderLayout());
 
-		te.requestFocusInWindow();
-		te.setMarkOccurrences(true);
-		te.setCodeFoldingEnabled(true);
-		te.setClearWhitespaceLinesEnabled(true);
-		te.setAutoIndentEnabled(true);
-		te.setEnabled(false);
-		if (file.getName().endsWith(".json") || file.getName().endsWith(".mcmeta")) {
-			te.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JSON);
-		} else {
-			te.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_JAVA);
-		}
-		te.setText(code);
+		String lang = file.getName().endsWith(".json") || file.getName().endsWith(".mcmeta") ? "json" : "java";
+		te = MonacoEditorPool.getOrCreate(code, lang, true);
 
-		te.setTabSize(4);
-
-		RTextScrollPane sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
-
-		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize.get());
-
-		sp.setFoldIndicatorEnabled(true);
-
-		sp.getGutter().setFoldBackground(getBackground());
-		sp.getGutter().setBorderColor(getBackground());
-
-		sp.setIconRowHeaderEnabled(true);
-
-		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
-		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
-		sp.setBorder(null);
-
-		add("Center", sp);
+		add("Center", te);
 	}
 
 }

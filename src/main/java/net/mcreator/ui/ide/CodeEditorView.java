@@ -18,29 +18,20 @@
 
 package net.mcreator.ui.ide;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import net.mcreator.generator.io.GradleTrackingFileIO;
-import net.mcreator.generator.io.JSONWriter;
-import net.mcreator.generator.io.JSWriter;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.CodeCleanup;
+import net.mcreator.java.DeclarationChecker;
 import net.mcreator.java.DeclarationFinder;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JFileBreadCrumb;
+import net.mcreator.ui.component.MonacoEditorPanel;
+import net.mcreator.ui.component.MonacoEditorPool;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.KeyStrokes;
-import net.mcreator.ui.component.util.ThreadUtil;
-import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
-import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
-import net.mcreator.ui.ide.json.JsonTree;
-import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.FileIcons;
-import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.views.ViewBase;
@@ -48,16 +39,10 @@ import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.AbstractSourceTree;
-import org.fife.rsta.ac.java.JavaCompletionProvider;
-import org.fife.rsta.ac.java.JavaLanguageSupport;
-import org.fife.rsta.ac.java.JavaParser;
-import org.fife.rsta.ac.java.tree.JavaOutlineTree;
-import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.DefaultCompletionProvider;
-import org.fife.ui.rsyntaxtextarea.*;
-import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
-import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.rsta.ac.java.JarManager;
+import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
+import org.fife.rsta.ac.java.rjc.lexer.Scanner;
+import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -66,16 +51,10 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.Rectangle2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class CodeEditorView extends ViewBase implements ISearchable {
@@ -87,35 +66,17 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			"cfg", "fsh", "vsh", "csv",
 			"classtweaker"); // classtweaker is Fabric's access transformer format (formerly known as accesswidener)
 
-	public final SearchBar sed;
-	public final ReplaceBar rep;
-
 	private final JSplitPane spne = new JSplitPane();
+	private final JScrollPane treeSP = new JScrollPane();
 	private final JPanel cp = new JPanel(new BorderLayout());
 
-	private final JScrollPane treeSP = new JScrollPane();
-	private AbstractSourceTree tree;
 	public ChangeListener changeListener;
 
-	private final RTextScrollPane sp;
-
-	public final RSyntaxTextArea te = new RSyntaxTextArea() {
-		@Override public void setCursor(Cursor c) {
-			if (jumpToMode)
-				return;
-			if (c != null && !c.equals(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)))
-				super.setCursor(c);
-		}
-	};
+	public final MonacoEditorPanel te;
 
 	public File fileWorkingOn;
 
 	public boolean changed = false;
-
-	private AutoCompletion ac = null;
-
-	private boolean jumpToMode = false;
-	public MouseEvent mouseEvent;
 
 	private final JLabel ro = new JLabel();
 
@@ -126,10 +87,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	private final JFileBreadCrumb fileBreadCrumb;
 
 	@Nullable private ModElement fileOwner = null;
-
-	@Nullable private JavaParser parser = null;
-
-	@Nullable private BreakpointHandler breakpointHandler = null;
 
 	public CodeEditorView(MCreator fa, File fs) {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
@@ -150,88 +107,21 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, this.fileWorkingOn, fa.getWorkspaceFolder());
 
-		te.addFocusListener(new FocusAdapter() {
-			@Override public void focusGained(FocusEvent focusEvent) {
-				super.focusGained(focusEvent);
-				fileBreadCrumb.reloadPath(CodeEditorView.this.fileWorkingOn);
-				te.setCursor(new Cursor(Cursor.TEXT_CURSOR));
+		String ext = FilenameUtilsPatched.getExtension(this.fileWorkingOn.getName());
+		te = MonacoEditorPool.getOrCreate(code, ext, readOnly);
+		te.setWorkspaceContext(mcreator.getWorkspace());
+
+		te.addChangeListener(e -> {
+			if (!changed && !readOnly) {
+				changed = true;
+				if (changeListener != null)
+					changeListener.stateChanged(new ChangeEvent(this));
 			}
 		});
 
-		sed = new SearchBar(te);
-		rep = new ReplaceBar(te);
-		te.setText(code);
+		te.setSaveRequestListener(this::saveCode);
 
-		if (readOnly) {
-			te.setEditable(false);
-		}
-
-		te.requestFocusInWindow();
-		te.setMarkOccurrences(true);
-		te.setCodeFoldingEnabled(true);
-		te.setClearWhitespaceLinesEnabled(true);
-		te.setAutoIndentEnabled(true);
-
-		te.setTabSize(4);
-
-		ToolTipManager.sharedInstance().registerComponent(te);
-
-		sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
-
-		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize.get());
-
-		sp.setFoldIndicatorEnabled(true);
-
-		sp.getGutter().setFoldBackground(getBackground());
-		sp.getGutter().setBorderColor(getBackground());
-
-		sp.setIconRowHeaderEnabled(true);
-
-		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
-		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
-		sp.setBorder(null);
-
-		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
-		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
-		treeSP.setBorder(null);
-
-		te.getDocument().addDocumentListener(new DocumentListener() {
-			@Override public void insertUpdate(DocumentEvent documentEvent) {
-				if (!changed && !readOnly) {
-					changed = true;
-					if (changeListener != null)
-						changeListener.stateChanged(new ChangeEvent(this));
-				}
-			}
-
-			@Override public void removeUpdate(DocumentEvent documentEvent) {
-				if (!changed && !readOnly) {
-					changed = true;
-					if (changeListener != null)
-						changeListener.stateChanged(new ChangeEvent(this));
-				}
-
-			}
-
-			@Override public void changedUpdate(DocumentEvent documentEvent) {
-			}
-		});
-
-		sp.setOpaque(false);
-
-		spne.setRightComponent(new JPanel());
-
-		cp.setBackground(Theme.current().getBackgroundColor());
-		cp.add(sp);
-
-		if (PreferencesManager.PREFERENCES.ide.errorInfoEnable.get()) {
-			ErrorStrip errorStrip = new ErrorStrip(te);
-			errorStrip.setFollowCaret(false);
-			errorStrip.setBackground(Theme.current().getBackgroundColor());
-			cp.add(errorStrip, BorderLayout.LINE_END);
-		}
-
-		spne.setLeftComponent(cp);
+		spne.setLeftComponent(te);
 		spne.setContinuousLayout(true);
 		spne.setBorder(null);
 
@@ -250,19 +140,11 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			}
 		});
 
-		if (!readOnly) {
-			bars.add("North", ro);
-			bars.add("Center", sed);
-			bars.add("South", rep);
-		} else {
+		if (readOnly) {
 			ro.setText(L10N.t("ide.warnings.read_only"));
 			bars.add("North", ro);
-			bars.add("South", sed);
 			ro.setVisible(true);
 		}
-
-		sed.setVisible(false);
-		rep.setVisible(false);
 
 		JPanel topPan = new JPanel(new BorderLayout());
 		topPan.setOpaque(false);
@@ -272,243 +154,52 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			topPan.add("North", fileBreadCrumb);
 
 		add("North", topPan);
-		add("Center", spne);
+
+		te.setOpenDeclarationListener(this::handleOpenDeclaration);
+
+		add("Center", te);
 		setBorder(null);
-
-		if (!readOnly) {
-			KeyStrokes.registerKeyStroke(
-					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
-					new AbstractAction() {
-						@Override public void actionPerformed(ActionEvent actionEvent) {
-							disableJumpToMode();
-							saveCode();
-							fa.getActionRegistry().buildWorkspace.doAction();
-							if (CodeEditorView.this.mouseEvent != null)
-								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
-										L10N.t("ide.tips.save_and_build"));
-						}
-					});
-
-			KeyStrokes.registerKeyStroke(
-					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
-					new AbstractAction() {
-						@Override public void actionPerformed(ActionEvent actionEvent) {
-							disableJumpToMode();
-							reformatTheCodeOrganiseAndFixImports();
-							if (CodeEditorView.this.mouseEvent != null)
-								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
-										L10N.t("ide.tips.reformat_and_organize_imports"));
-						}
-					});
-
-			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
-					new AbstractAction() {
-						@Override public void actionPerformed(ActionEvent actionEvent) {
-							disableJumpToMode();
-							saveCode();
-							fa.getActionRegistry().runClient.doAction();
-							if (CodeEditorView.this.mouseEvent != null)
-								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
-										L10N.t("ide.tips.save_and_launch"));
-						}
-					});
-
-			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_D,
-							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
-					new AbstractAction() {
-						@Override public void actionPerformed(ActionEvent actionEvent) {
-							disableJumpToMode();
-							saveCode();
-							fa.getActionRegistry().debugClient.doAction();
-							if (CodeEditorView.this.mouseEvent != null)
-								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
-										L10N.t("ide.tips.save_and_debug"));
-						}
-					});
-		}
-
-		spne.setResizeWeight(1);
-
-		int posit = te.getText().indexOf("public class");
-		if (posit < 0)
-			posit = 0;
-
-		te.setHyperlinksEnabled(false);
-		te.setCaretPosition(posit);
-
-		te.discardAllEdits();
-
-		new Thread(() -> setupCodeSupport(fileName), "CodeSupport-Loader").start();
 	}
 
-	private void setupCodeSupport(String fileName) {
-		if (fileName.endsWith(".java")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
+	private void handleOpenDeclaration(String word) {
+		if (word == null || word.isBlank() || mcreator == null || mcreator.getWorkspace() == null) return;
 
-			JavaLanguageSupport jls = new JavaLanguageSupport();
-			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
-			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
-			jls.setParameterAssistanceEnabled(true);
-			jls.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
-
-			try {
-				Field field = jls.getClass().getDeclaredField("jarManager");
-				field.setAccessible(true);
-				field.set(jls, mcreator.getGenerator().getProjectJarManager());
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
+		try {
+			String code = te.getText();
+			CompilationUnit cu = new ASTFactory().getCompilationUnit("File.java", new Scanner(new java.io.StringReader(code)));
+			JarManager jarManager = mcreator.getGenerator().getProjectJarManager();
+			if (cu != null && jarManager != null) {
+				DeclarationFinder.InClassPosition pos = DeclarationChecker.checkForClassDeclaration(
+						mcreator.getWorkspace(), word, cu, jarManager);
+				if (pos != null && (pos.classFileNode != null || pos.virtualFile != null)) {
+					ProjectFileOpener.openFileSpecific(mcreator, pos.classFileNode, pos.openInReadOnly, pos.caret, pos.virtualFile);
+					return;
+				}
 			}
-
-			jls.install(te);
-
-			try {
-				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
-				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
-				method.setAccessible(true);
-				ac = (AutoCompletion) method.invoke(jls, te);
-				ac.setAutoCompleteSingleChoices(false);
-			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
-			         NoSuchMethodException | IllegalAccessException e1) {
-				LOG.error(e1.getMessage(), e1);
-			}
-
-			JavaCompletionProvider jcp = jls.getCompletionProvider(te);
-
-			try {
-				Field field = jcp.getClass().getDeclaredField("sourceProvider");
-				field.setAccessible(true);
-				DefaultCompletionProvider sourceCompletionProvider = (DefaultCompletionProvider) field.get(jcp);
-				jcp.setShorthandCompletionCache(
-						new CustomJSCCache(sourceCompletionProvider, new DefaultCompletionProvider()));
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
-			}
-
-			jcp.setStringCompletionProvider(new StringCompletitionProvider(mcreator.getWorkspace()));
-
-			if (ac != null)
-				AutocompleteStyle.installStyle(ac, te);
-
-			this.parser = jls.getParser(te);
-
-			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
-
-			te.addKeyListener(new KeyAdapter() {
-
-				private volatile boolean completionInAction = false;
-
-				@Override public void keyPressed(KeyEvent keyEvent) {
-					super.keyPressed(keyEvent);
-					if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
-						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
-						jumpToMode = true;
-					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && jls.isAutoActivationEnabled() &&
-							// only smart autocomplete if the char we typed is a letter or digit
-							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
-							// only smart autocomplete if we have at least one char already written
-							!jcp.getAlreadyEnteredText(te).isBlank()
-							// only smart autocomplete if we have more than one completion to choose from
-							// (so it is not applied automatically when we don't want to)
-							&& jcp.getCompletions(te).size() > 1) {
-						if (!completionInAction) {
-							new Thread(() -> {
-								if (ac != null) {
-									completionInAction = true;
-									ThreadUtil.runOnSwingThreadAndWait(() -> {
-										try {
-											ac.doCompletion();
-										} catch (Throwable ignored) {
-										}
-									});
-									completionInAction = false;
-								}
-							}, "AutoComplete").start();
-						}
-					}
-				}
-
-				@Override public void keyReleased(KeyEvent keyEvent) {
-					super.keyReleased(keyEvent);
-					if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
-						disableJumpToMode();
-					}
-				}
-			});
-
-			te.addMouseListener(new MouseAdapter() {
-				@Override public void mouseExited(MouseEvent e) {
-					super.mouseExited(e);
-					disableJumpToMode();
-				}
-
-				@Override public void mouseEntered(MouseEvent e) {
-					super.mouseEntered(e);
-					if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK) {
-						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
-						jumpToMode = true;
-					}
-				}
-			});
-
-			te.addMouseListener(new MouseAdapter() {
-
-				@Override public void mouseClicked(MouseEvent mouseEvent) {
-					CodeEditorView.this.mouseEvent = mouseEvent;
-					if (jumpToMode && ac != null) {
-						DeclarationFinder.InClassPosition position = DeclarationFinder.getDeclarationOnPos(
-								mcreator.getWorkspace(), parser, te, jls.getJarManager());
-						if (position != null) {
-							if (position.classFileNode == null) {
-								te.setCaretPosition(position.caret);
-								SwingUtilities.invokeLater(() -> centerLineInScrollPane());
-							} else {
-								ProjectFileOpener.openFileSpecific(mcreator, position.classFileNode,
-										position.openInReadOnly, position.caret, position.virtualFile);
-							}
-							disableJumpToMode();
-						} else {
-							new FocusableTip(te, null).toolTipRequested(mouseEvent,
-									L10N.t("ide.errors.failed_find_declaration"));
-						}
-					}
-					jumpToMode = false;
-				}
-			});
-		} else if (fileName.endsWith(".mcfunction")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> {
-				AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
-				atmf.putMapping("text/mcfunction", MinecraftCommandsTokenMaker.class.getName());
-				te.setSyntaxEditingStyle("text/mcfunction");
-			});
-		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> {
-				try {
-					te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
-				} catch (Exception ignored) {
-				}
-			});
-		} else if (fileName.endsWith(".xml")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
-		} else if (fileName.endsWith(".lang") || fileName.endsWith(".properties")) {
-			ThreadUtil.runOnSwingThreadAndWait(
-					() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
-		} else if (fileName.endsWith(".gradle")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_GROOVY));
-		} else if (fileName.endsWith(".md")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_MARKDOWN));
-		} else if (fileName.endsWith(".vsh") || fileName.endsWith(".fsh")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_C));
-		} else if (fileName.endsWith(".js")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
-		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
-		} else if (fileName.endsWith(".csv")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_CSV));
+		} catch (Exception e) {
+			LOG.error("Failed to open declaration for {}", word, e);
 		}
 
-		SwingUtilities.invokeLater(this::loadSourceTree);
+		File srcRoot = mcreator.getWorkspace().getGenerator().getSourceRoot();
+		File targetFile = findJavaFileInDir(srcRoot, word);
+		if (targetFile != null && targetFile.exists()) {
+			ProjectFileOpener.openCodeFile(mcreator, targetFile);
+		}
+	}
+
+	private File findJavaFileInDir(File dir, String className) {
+		if (dir == null || !dir.isDirectory()) return null;
+		File[] files = dir.listFiles();
+		if (files == null) return null;
+		for (File f : files) {
+			if (f.isDirectory()) {
+				File res = findJavaFileInDir(f, className);
+				if (res != null) return res;
+			} else if (f.getName().equalsIgnoreCase(className + ".java")) {
+				return f;
+			}
+		}
+		return null;
 	}
 
 	private void setCustomNotice(String notice) {
@@ -520,84 +211,21 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		ro.setVisible(false);
 	}
 
-	public void disableJumpToMode() {
-		jumpToMode = false;
-		te.setCursor(new Cursor(Cursor.TEXT_CURSOR));
-	}
-
-	private void loadSourceTree() {
-		String language = te.getSyntaxEditingStyle();
-
-		if (SyntaxConstants.SYNTAX_STYLE_JAVA.equals(language)) {
-			tree = new JavaOutlineTree();
-		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
-			tree = new JsonTree();
-		}
-
-		if (tree != null) {
-			tree.setCellRenderer(new AstTreeCellRendererCustom());
-			tree.setOpaque(false);
-			tree.listenTo(te);
-			tree.setRowHeight(18);
-			treeSP.setViewportView(tree);
-			treeSP.revalidate();
-			spne.setRightComponent(treeSP);
-			spne.setDividerLocation(0.8);
-		} else {
-			remove(spne);
-			add("Center", cp);
-		}
-	}
-
 	public void setChangeListener(ChangeListener changeListener) {
 		this.changeListener = changeListener;
 	}
 
 	public void reformatTheCodeOnly() {
-		String language = te.getSyntaxEditingStyle();
-		if (SyntaxConstants.SYNTAX_STYLE_JAVA.equals(language)) {
-			int pos = te.getCaretPosition();
-			String ncode = codeCleanup.reformatTheCodeOnly(te.getText());
-			te.setText(ncode);
-			if (pos < ncode.length())
-				te.setCaretPosition(pos);
-		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
-			int pos = te.getCaretPosition();
-			JsonElement json = JsonParser.parseString(te.getText());
-			String ncode = JSONWriter.gson.toJson(json);
-			te.setText(ncode);
-			if (pos < ncode.length())
-				te.setCaretPosition(pos);
-		} else if (SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT.equals(language)) {
-			int pos = te.getCaretPosition();
-			String ncode = JSWriter.formatJS(te.getText());
-			te.setText(ncode);
-			if (pos < ncode.length())
-				te.setCaretPosition(pos);
-		}
+		te.formatCode();
 	}
 
 	public void reformatTheCodeOrganiseAndFixImports() {
-		String language = te.getSyntaxEditingStyle();
-		if (SyntaxConstants.SYNTAX_STYLE_JAVA.equals(language)) {
-			int pos = te.getCaretPosition();
+		String ext = FilenameUtilsPatched.getExtension(fileWorkingOn.getName());
+		if ("java".equalsIgnoreCase(ext)) {
 			String ncode = codeCleanup.reformatTheCodeAndOrganiseImports(mcreator.getWorkspace(), te.getText());
 			te.setText(ncode);
-			if (pos < ncode.length())
-				te.setCaretPosition(pos);
-		} else if (SyntaxConstants.SYNTAX_STYLE_JSON.equals(language)) {
-			int pos = te.getCaretPosition();
-			JsonElement json = JsonParser.parseString(te.getText());
-			String ncode = JSONWriter.gson.toJson(json);
-			te.setText(ncode);
-			if (pos < ncode.length())
-				te.setCaretPosition(pos);
-		} else if (SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT.equals(language)) {
-			int pos = te.getCaretPosition();
-			String ncode = JSWriter.formatJS(te.getText());
-			te.setText(ncode);
-			if (pos < ncode.length())
-				te.setCaretPosition(pos);
+		} else {
+			te.formatCode();
 		}
 	}
 
@@ -607,28 +235,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));
-	}
-
-	public void centerLineInScrollPane() {
-		Container container = SwingUtilities.getAncestorOfClass(JViewport.class, te);
-
-		if (container == null)
-			return;
-
-		try {
-			Rectangle2D r = te.modelToView2D(te.getCaretPosition());
-			if (r == null)
-				return;
-			JViewport viewport = (JViewport) container;
-			int extentHeight = viewport.getExtentSize().height;
-			int viewHeight = viewport.getViewSize().height;
-
-			int y = (int) Math.max(0, r.getY() - ((extentHeight - r.getHeight()) / 2));
-			y = Math.min(y, viewHeight - extentHeight);
-
-			viewport.setViewPosition(new Point(0, y));
-		} catch (BadLocationException ignored) {
-		}
 	}
 
 	void setFileOwnerModElement(ModElement fileOwner) {
@@ -668,12 +274,17 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				int res = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.file_not_saved",
 								((CodeEditorView) tab.getContent()).fileWorkingOn.getName()), L10N.t("common.warning"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+				boolean shouldClose = res == 1;
 				if (res == 0) {
 					((CodeEditorView) tab.getContent()).saveCode();
-					return true;
-				} else
-					return res == 1;
+					shouldClose = true;
+				}
+				if (shouldClose) {
+					MonacoEditorPool.recycle(((CodeEditorView) tab.getContent()).te);
+				}
+				return shouldClose;
 			}
+			MonacoEditorPool.recycle(((CodeEditorView) tab.getContent()).te);
 			return true;
 		});
 
@@ -702,39 +313,15 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	public void jumpToLine(int linenum) {
-		new Thread(() -> {
-			SwingUtilities.invokeLater(te::requestFocus);
-			try {
-				Thread.sleep(250);
-			} catch (InterruptedException ignored) {
-			}
-			SwingUtilities.invokeLater(() -> {
-				try {
-					te.setCaretPosition(te.getLineStartOffset(linenum));
-					centerLineInScrollPane();
-				} catch (BadLocationException ignored) {
-				}
-			});
-		}, "JumpToLine").start();
-	}
-
-	@Nullable public JavaParser getParser() {
-		return parser;
-	}
-
-	@Nullable public BreakpointHandler getBreakpointHandler() {
-		return breakpointHandler;
+		te.jumpToLine(linenum);
 	}
 
 	@Override public void search(@Nullable String searchTerm) {
-		sed.setVisible(true);
-		rep.setVisible(false);
-		disableJumpToMode();
+		te.triggerFind();
+	}
 
-		sed.getSearchField().requestFocusInWindow();
-
-		if (searchTerm != null)
-			sed.getSearchField().setText(searchTerm);
+	@Nullable public BreakpointHandler getBreakpointHandler() {
+		return null;
 	}
 
 }

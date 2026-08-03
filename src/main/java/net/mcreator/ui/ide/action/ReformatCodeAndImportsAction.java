@@ -33,11 +33,7 @@ public class ReformatCodeAndImportsAction extends BasicAction {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {
-					codeEditorView.disableJumpToMode();
 					codeEditorView.reformatTheCodeOrganiseAndFixImports();
-					if (codeEditorView.mouseEvent != null)
-						new FocusableTip(codeEditorView.te, null).toolTipRequested(codeEditorView.mouseEvent,
-								L10N.t("action.ide.reformat_and_imports.result"));
 				}
 			}
 		});
@@ -47,4 +43,3 @@ public class ReformatCodeAndImportsAction extends BasicAction {
 	}
 
 }
-

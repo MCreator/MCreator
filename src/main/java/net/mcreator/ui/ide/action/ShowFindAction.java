@@ -31,14 +31,7 @@ public class ShowFindAction extends BasicAction {
 		super(actionRegistry, L10N.t("action.ide.search_in_code"), actionEvent -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
-				codeEditorView.sed.setVisible(true);
-				codeEditorView.rep.setVisible(false);
-				String selectedText = codeEditorView.te.getSelectedText();
-				if (selectedText != null && !selectedText.isEmpty())
-					codeEditorView.sed.getSearchField().setText(selectedText);
-				codeEditorView.sed.getSearchField().selectAll();
-				codeEditorView.sed.getSearchField().requestFocusInWindow();
-				codeEditorView.disableJumpToMode();
+				codeEditorView.te.triggerFind();
 			}
 		});
 		actionRegistry.getMCreator().getTabs()

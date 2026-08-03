@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: transparent;
+        }
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        window.MonacoEnvironment = {
+            baseUrl: 'http://mcreator/monaco/',
+            getWorkerUrl: function (workerId, label) {
+                return 'data:text/javascript;charset=utf-8,' + encodeURIComponent(
+                    'self.MonacoEnvironment = { baseUrl: "http://mcreator/monaco/" };' +
+                    'importScripts("http://mcreator/monaco/vs/base/worker/workerMain.js");'
+                );
+            }
+        };
+    </script>
+    <script src="./vs/loader.js"></script>
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+    var editor = null;
+    var isSettingValue = false;
+    var pendingInit = null;
+
+    require.config({ paths: { 'vs': './vs' } });
+
+    require(['vs/editor/editor.main'], function () {
+        monaco.editor.defineTheme('mcreator-dark', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [],
+            colors: {}
+        });
+
+        monaco.editor.defineTheme('mcreator-light', {
+            base: 'vs',
+            inherit: true,
+            rules: [],
+            colors: {}
+        });
+
+        monaco.languages.register({ id: 'mcfunction' });
+        monaco.languages.setMonarchTokensProvider('mcfunction', {
+            tokenizer: {
+                root: [
+                    [/#[^\n]*/, 'comment'],
+                    [/\b(execute|run|say|give|tp|teleport|summon|setblock|fill|effect|clear|kill|gamemode|difficulty|time|weather|datapack|tag|scoreboard|team|bossbar|title|actionbar|recipe|loot|advancement|experience|xp|attribute|item|playsound|stopsound|particle|seed|help|op|deop|kick|ban|pardon|whitelist)\b/, 'keyword'],
+                    [/@[a-eprs]\[[^\]]*\]|@[a-eprs]/, 'variable'],
+                    [/"[^"]*"/, 'string'],
+                    [/\b[0-9]+(\.[0-9]+)?[fFdD]?\b/, 'number'],
+                ]
+            }
+        });
+
+        monaco.languages.register({ id: 'java' });
+        monaco.languages.setMonarchTokensProvider('java', {
+            defaultToken: '',
+            tokenPostfix: '.java',
+            keywords: [
+                'abstract', 'assert', 'break', 'case', 'catch', 'class',
+                'const', 'continue', 'default', 'do', 'else', 'enum', 'extends', 'final',
+                'finally', 'for', 'goto', 'if', 'implements', 'import', 'instanceof',
+                'interface', 'native', 'new', 'package', 'private', 'protected', 'public',
+                'return', 'static', 'strictfp', 'switch', 'synchronized',
+                'throw', 'throws', 'transient', 'try', 'volatile', 'while', 'yield', 'record',
+                'sealed', 'non-sealed', 'var', 'permits'
+            ],
+            primitives: [
+                'boolean', 'byte', 'char', 'double', 'float', 'int', 'long', 'short', 'void'
+            ],
+            operators: [
+                '=', '>', '<', '!', '~', '?', ':', '==', '<=', '>=', '!=',
+                '&&', '||', '++', '--', '+', '-', '*', '/', '&', '|', '^', '%',
+                '<<', '>>', '>>>', '+=', '-=', '*=', '/=', '&=', '|=', '^=',
+                '%=', '<<=', '>>=', '>>>='
+            ],
+            symbols: /[=><!~?:&|+\-*\/\^%]+/,
+            escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
+            tokenizer: {
+                root: [
+                    [/@[a-zA-Z_]\w*/, 'annotation'],
+                    [/\b(this|super)\b/, 'variable.language'],
+                    [/\b(true|false|null)\b/, 'constant.language'],
+                    [/\b[A-Z_][A-Z0-9_]{2,}\b/, 'constant'],
+                    [/\b[A-Z][a-zA-Z0-9_]*\b/, 'type.identifier'],
+                    [/\b[a-zA-Z_]\w*(?=\s*\()/, 'entity.name.function'],
+                    [/[a-zA-Z_$][\w$]*/, {
+                        cases: {
+                            '@keywords': 'keyword',
+                            '@primitives': 'type.primitive',
+                            '@default': 'variable'
+                        }
+                    }],
+                    { include: '@whitespace' },
+                    [/[{}()\[\]]/, '@brackets'],
+                    [/[<>](?!@symbols)/, '@brackets'],
+                    [/@symbols/, {
+                        cases: {
+                            '@operators': 'operator',
+                            '@default': ''
+                        }
+                    }],
+                    [/\d*\.\d+([eE][\-+]?\d+)?[fFdD]?/, 'number.float'],
+                    [/0[xX][0-9a-fA-F]+[lL]?/, 'number.hex'],
+                    [/\d+[lL]?/, 'number'],
+                    [/[;,.]/, 'delimiter'],
+                    [/"([^"\\]|\\.)*"/, 'string'],
+                    [/'([^'\\]|\\.)*'/, 'string.char'],
+                ],
+                whitespace: [
+                    [/[ \t\r\n]+/, 'white'],
+                    [/\/\*/, 'comment', '@comment'],
+                    [/\/\/.*$/, 'comment'],
+                ],
+                comment: [
+                    [/[^\/*]+/, 'comment'],
+                    [/\/\*/, 'comment', '@push'],
+                    ["\\*/", 'comment', '@pop'],
+                    [/[\/*]/, 'comment']
+                ],
+            }
+        });
+
+        (function registerGroovy() {
+            var id = 'groovy';
+            monaco.languages.register({ id: id, aliases: ['Groovy'] });
+
+            function getTokens(tokens, divider) {
+                return tokens.split(divider || "|");
+            }
+
+            var brackets = [
+                ["{", "}"],
+                ["[", "]"],
+                ["(", ")"]
+            ];
+
+            var autoClosingPairs = [
+                { open: "{", close: "}" },
+                { open: "[", close: "]" },
+                { open: "(", close: ")" },
+                { open: '"', close: '"' },
+                { open: "'", close: "'" },
+                { open: "`", close: "`" }
+            ];
+
+            monaco.languages.setMonarchTokensProvider(id, {
+                tokenPostfix: ".groovy",
+                keywords: getTokens("assert|with|abstract|continue|for|new|switch|assert|default|goto|package|synchronized|boolean|do|if|private|this|break|double|implements|protected|throw|byte|else|import|public|throws|case|enum|instanceof|return|transient|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|strictfp|volatile|def|float|native|super|while|in|as"),
+                typeKeywords: getTokens("Long|Integer|Short|Byte|Double|Number|Float|Character|Boolean|StackTraceElement|Appendable|StringBuffer|Iterable|ThreadGroup|Runnable|Thread|IllegalMonitorStateException|StackOverflowError|OutOfMemoryError|VirtualMachineError|ArrayStoreException|ClassCastException|LinkageError|NoClassDefFoundError|ClassNotFoundException|RuntimeException|Exception|ThreadDeath|Error|Throwable|System|ClassLoader|Cloneable|Class|CharSequence|Comparable|String|Object"),
+                constants: getTokens("null|Infinity|NaN|undefined|true|false"),
+                builtinFunctions: getTokens("AbstractMethodError|AssertionError|ClassCircularityError|ClassFormatError|Deprecated|EnumConstantNotPresentException|ExceptionInInitializerError|IllegalAccessError|IllegalThreadStateException|InstantiationError|InternalError|NegativeArraySizeException|NoSuchFieldError|Override|Process|ProcessBuilder|SecurityManager|StringIndexOutOfBoundsException|SuppressWarnings|TypeNotPresentException|UnknownError|UnsatisfiedLinkError|UnsupportedClassVersionError|VerifyError|InstantiationException|IndexOutOfBoundsException|ArrayIndexOutOfBoundsException|CloneNotSupportedException|NoSuchFieldException|IllegalArgumentException|NumberFormatException|SecurityException|Void|InheritableThreadLocal|IllegalStateException|InterruptedException|NoSuchMethodException|IllegalAccessException|UnsupportedOperationException|Enum|StrictMath|Package|Compiler|Readable|Runtime|StringBuilder|Math|IncompatibleClassChangeError|NoSuchMethodError|ThreadLocal|RuntimePermission|ArithmeticException|NullPointerException"),
+                operators: [".", ".&", ".@", "?.", "*", "*.", "*:", "~", "!", "++", "--", "**", "+", "-", "*", "/", "%", "<<", ">>", ">>>", "..", "..<", "<", "<=", ">", ">=", "==", "!=", "<=>", "===", "!==", "=~", "==~", "^", "|", "&&", "||", "?", ":", "?:", "=", "**=", "*=", "/=", "%=", "+=", "-=", "<<=", ">>=", ">>>=", "&=", "^=", "|=", "?="],
+                symbols: /[=><!~?:&|+\-*/^%]+/,
+                escapes: /\\(?:[abfnrtv\\"'`]|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
+                regexpctl: /[(){}[\]$^|\-*+?.]/.source,
+                regexpesc: /\\(?:[bBdDfnrstvwWn0\\/]|@regexpctl|c[A-Z]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4})/,
+
+                tokenizer: {
+                    root: [
+                        { include: "@whitespace" },
+                        [/\/(?=([^\\/]|\\.)+\/([dgimsuy]*)(\s*)(\.|;|,|\)|\]|\}|$))/, { token: "regexp", bracket: "@open", next: "@regexp" }],
+                        { include: "@comments" },
+                        { include: "@numbers" },
+                        { include: "common" },
+                        [/[;,.]/, "delimiter"],
+                        [/[(){}[\]]/, "@brackets"],
+                        [/[a-zA-Z_$]\w*/, { cases: { "@keywords": "keyword", "@typeKeywords": "type", "@constants": "constant.groovy", "@builtinFunctions": "constant.other.color", "@default": "identifier" } }],
+                        [/@symbols/, { cases: { "@operators": "operator", "@default": "" } }]
+                    ],
+                    common: [
+                        [/[()[\]]/, "@brackets"],
+                        [/[<>](?!@symbols)/, "@brackets"],
+                        [/@symbols/, { cases: { "@operators": "delimiter", "@default": "" } }],
+                        [/\/(?=([^\\/]|\\.)+\/([gimsuy]*)(\s*)(\.|;|\/|,|\)|\]|\}|$))/, { token: "regexp", bracket: "@open", next: "@regexp" }],
+                        [/[;,.]/, "delimiter"],
+                        [/"([^"\\]|\\.)*$/, "string.invalid"],
+                        [/'([^'\\]|\\.)*$/, "string.invalid"],
+                        [/"/, "string", "@string_double"],
+                        [/'/, "string", "@string_single"]
+                    ],
+                    whitespace: [[/\s+/, "white"]],
+                    comments: [
+                        [/\/\/.*/, "comment"],
+                        [/\/\*/, { token: "comment.quote", next: "@comment" }]
+                    ],
+                    comment: [
+                        [/[^*/]+/, "comment"],
+                        [/\*\//, { token: "comment.quote", next: "@pop" }],
+                        [/./, "comment"]
+                    ],
+                    numbers: [
+                        [/[+-]?\d+(?:(?:\.\d*)?(?:[eE][+-]?\d+)?)?f?\b/, "number.float"],
+                        [/[+-]?(?:0[obx])?\d+(?:u?[lst]?)?\b/, "number"]
+                    ],
+                    regexp: [
+                        [/(\{)(\d+(?:,\d*)?)(\})/, ["regexp.escape.control", "regexp.escape.control", "regexp.escape.control"]],
+                        [/(\[)(\^?)(?=(?:[^\]\\/]|\\.)+)/, ["regexp.escape.control", { token: "regexp.escape.control", next: "@regexrange" }]],
+                        [/(\()(\?:|\?=|\?!)/, ["regexp.escape.control", "regexp.escape.control"]],
+                        [/[()]/, "regexp.escape.control"],
+                        [/@regexpctl/, "regexp.escape.control"],
+                        [/[^\\/]/, "regexp"],
+                        [/@regexpesc/, "regexp.escape"],
+                        [/\\\./, "regexp.invalid"],
+                        [/(\/)([gimsuy]*)/, [{ token: "regexp", bracket: "@close", next: "@pop" }, "keyword.other"]]
+                    ],
+                    regexrange: [
+                        [/-/, "regexp.escape.control"],
+                        [/\^/, "regexp.invalid"],
+                        [/@regexpesc/, "regexp.escape"],
+                        [/[^\]]/, "regexp"],
+                        [/\]/, { token: "regexp.escape.control", next: "@pop", bracket: "@close" }]
+                    ],
+                    string_double: [
+                        [/\$\{/, { token: "delimiter.bracket", next: "@bracketCounting" }],
+                        [/[^\\"$]+/, "string"],
+                        [/[^\\"]+/, "string"],
+                        [/@escapes/, "string.escape"],
+                        [/\\./, "string.escape.invalid"],
+                        [/"/, "string", "@pop"]
+                    ],
+                    string_single: [
+                        [/[^\\']+/, "string"],
+                        [/@escapes/, "string.escape"],
+                        [/\\./, "string.escape.invalid"],
+                        [/'/, "string", "@pop"]
+                    ],
+                    bracketCounting: [
+                        [/\{/, "delimiter.bracket", "@bracketCounting"],
+                        [/\}/, "delimiter.bracket", "@pop"],
+                        { include: "common" }
+                    ]
+                }
+            });
+
+            monaco.languages.setLanguageConfiguration(id, {
+                comments: { lineComment: "//", blockComment: ["/*", "*/"] },
+                brackets: brackets,
+                autoClosingPairs: autoClosingPairs,
+                surroundingPairs: autoClosingPairs,
+                wordPattern: /(-?\d*\.\d\w*)|([^`~!@#%^&*()\-=+[{\]}\\|;:'",./?\s]+)/g
+            });
+        })();
+
+        var initData = pendingInit || {
+            code: '',
+            language: 'java',
+            theme: 'vs-dark',
+            readOnly: false,
+            fontSize: 14
+        };
+
+        editor = monaco.editor.create(document.getElementById('container'), {
+            value: initData.code,
+            language: initData.language,
+            theme: resolveTheme(initData.theme),
+            readOnly: initData.readOnly,
+            fontSize: initData.fontSize,
+            automaticLayout: true,
+            minimap: { enabled: true },
+            scrollBeyondLastLine: false,
+            renderWhitespace: 'selection',
+            tabSize: 4,
+            insertSpaces: false,
+            mouseWheelZoom: true
+        });
+
+        editor.onDidChangeModelContent(function (e) {
+            if (!isSettingValue && window.javabridge && window.javabridge.onTextChanged) {
+                window.javabridge.onTextChanged(editor.getValue(), { callback: function () {} });
+            }
+        });
+
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
+            if (window.javabridge && window.javabridge.onSaveRequested) {
+                window.javabridge.onSaveRequested({ callback: function () {} });
+            }
+        });
+
+        editor.onMouseDown(function (e) {
+            if ((e.event.ctrlKey || e.event.metaKey) && (e.event.leftButton || e.event.button === 0)) {
+                var target = e.target;
+                if (target && target.position) {
+                    var model = editor.getModel();
+                    var word = model.getWordAtPosition(target.position);
+                    if (word && word.word && window.javabridge && window.javabridge.onOpenDeclaration) {
+                        window.javabridge.onOpenDeclaration(word.word, { callback: function () {} });
+                    }
+                }
+            }
+        });
+
+        monaco.languages.registerDefinitionProvider('java', {
+            provideDefinition: function (model, position, token) {
+                return [];
+            }
+        });
+
+        var externalClasses = [];
+
+        window.setExternalClasses = function (classesList) {
+            externalClasses = classesList || [];
+        };
+
+        var javaKeywords = [
+            "abstract", "boolean", "break", "byte", "case", "catch", "char", "class",
+            "continue", "default", "do", "double", "else", "enum", "extends", "final",
+            "finally", "float", "for", "if", "implements", "import", "instanceof", "int",
+            "interface", "long", "native", "new", "null", "package", "private", "protected",
+            "public", "return", "short", "static", "super", "switch", "synchronized",
+            "this", "throw", "throws", "transient", "try", "void", "volatile", "while",
+            "true", "false"
+        ];
+
+        monaco.languages.registerCompletionItemProvider('java', {
+            triggerCharacters: ['.'],
+            provideCompletionItems: function (model, position, context) {
+                if (window.autocompleteEnabled === false) {
+                    return { suggestions: [] };
+                }
+
+                var lineContent = model.getLineContent(position.lineNumber);
+                var lineUntilPosition = lineContent.substring(0, position.column - 1);
+
+                if (window.autocompleteMode === 'Trigger on dot' && !lineUntilPosition.endsWith('.') && context.triggerKind !== monaco.languages.CompletionTriggerKind.Invoke) {
+                    return { suggestions: [] };
+                }
+
+                var wordInfo = model.getWordUntilPosition(position);
+                var range = {
+                    startLineNumber: position.lineNumber,
+                    endLineNumber: position.lineNumber,
+                    startColumn: wordInfo.startColumn,
+                    endColumn: wordInfo.endColumn
+                };
+
+                var textBeforeCursor = lineUntilPosition.substring(0, lineUntilPosition.length - wordInfo.word.length);
+                var isDotContext = textBeforeCursor.trim().endsWith('.');
+
+                if (isDotContext) {
+                    var beforeDot = textBeforeCursor.substring(0, textBeforeCursor.lastIndexOf('.')).trim();
+                    var targetMatch = beforeDot.match(/([a-zA-Z0-9_]+)$/);
+                    var targetName = targetMatch ? targetMatch[1] : '';
+
+                    if (targetName && window.javabridge && window.javabridge.getDotCompletions) {
+                        return new Promise(function (resolve) {
+                            window.javabridge.getDotCompletions(targetName, model.getValue(), {
+                                callback: function (items) {
+                                    var dotSuggestions = [];
+                                    if (Array.isArray(items)) {
+                                        for (var j = 0; j < items.length; j++) {
+                                            var item = items[j];
+                                            dotSuggestions.push({
+                                                label: item.label,
+                                                kind: item.kind === 'field' ? monaco.languages.CompletionItemKind.Field : monaco.languages.CompletionItemKind.Method,
+                                                detail: item.detail,
+                                                insertText: item.insertText,
+                                                insertTextRules: item.isSnippet ? monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet : undefined,
+                                                range: range
+                                            });
+                                        }
+                                    }
+                                    resolve({ suggestions: dotSuggestions });
+                                }
+                            });
+                        });
+                    }
+
+                    return { suggestions: [] };
+                } else {
+                    var suggestions = [];
+
+                    for (var k = 0; k < javaKeywords.length; k++) {
+                        var kw = javaKeywords[k];
+                        suggestions.push({
+                            label: kw,
+                            kind: monaco.languages.CompletionItemKind.Keyword,
+                            insertText: kw,
+                            range: range
+                        });
+                    }
+
+                    var codeText = model.getValue();
+                    var docWordRegex = /\b([a-zA-Z_][a-zA-Z0-9_]*)\b/g;
+                    var match;
+                    var addedWords = {};
+
+                    for (var k = 0; k < javaKeywords.length; k++) {
+                        addedWords[javaKeywords[k]] = true;
+                    }
+
+                    while ((match = docWordRegex.exec(codeText)) !== null) {
+                        var w = match[1];
+                        if (w.length > 1 && !addedWords[w]) {
+                            addedWords[w] = true;
+                            suggestions.push({
+                                label: w,
+                                kind: monaco.languages.CompletionItemKind.Variable,
+                                insertText: w,
+                                range: range
+                            });
+                        }
+                    }
+
+                    var textBeforeWord = lineUntilPosition.substring(0, lineUntilPosition.length - wordInfo.word.length).trim();
+                    var isClassContext = /(?:new|extends|implements|import|class|interface|enum)\s*$/.test(textBeforeWord) ||
+                                         textBeforeWord.endsWith('@') ||
+                                         (wordInfo.word.length > 0 && wordInfo.word[0] === wordInfo.word[0].toUpperCase() && wordInfo.word[0] !== wordInfo.word[0].toLowerCase());
+
+                    if (isClassContext) {
+                        var addedClasses = {};
+                        for (var i = 0; i < externalClasses.length; i++) {
+                            var cls = externalClasses[i];
+                            if (cls.name && !cls.name.includes('.') && !addedClasses[cls.name]) {
+                                addedClasses[cls.name] = true;
+                                suggestions.push({
+                                    label: cls.name,
+                                    kind: monaco.languages.CompletionItemKind.Class,
+                                    detail: cls.pkg,
+                                    documentation: cls.pkg ? (cls.pkg + '.' + cls.name) : cls.name,
+                                    insertText: cls.name,
+                                    range: range
+                                });
+                            }
+                        }
+                    }
+
+                    return { suggestions: suggestions };
+                }
+            }
+        });
+
+        if (pendingInit) {
+            initEditor(
+                pendingInit.code,
+                pendingInit.language,
+                pendingInit.theme,
+                pendingInit.readOnly,
+                pendingInit.fontSize,
+                pendingInit.autocompleteEnabled,
+                pendingInit.autocompleteMode,
+                pendingInit.autocompleteDocWindow
+            );
+        }
+
+        if (window.javabridge && window.javabridge.onEditorReady) {
+            window.javabridge.onEditorReady({ callback: function () {} });
+        }
+    });
+
+    function resolveTheme(t) {
+        if (t === 'vs-dark' || t === 'dark' || t === 'mcreator-dark') {
+            return 'mcreator-dark';
+        }
+        return 'mcreator-light';
+    }
+
+    function applyCustomTheme(t) {
+        if (!t || !editor) return;
+        var themeName = 'mcreator-custom';
+        monaco.editor.defineTheme(themeName, {
+            base: (t.base === 'vs-dark') ? 'vs-dark' : 'vs',
+            inherit: true,
+            rules: [
+                { token: 'keyword', foreground: t.keyword, fontStyle: 'bold' },
+                { token: 'type.primitive', foreground: t.dataType },
+                { token: 'type.identifier', foreground: t.dataType },
+                { token: 'entity.name.function', foreground: t.function },
+                { token: 'annotation', foreground: t.annotation },
+                { token: 'variable', foreground: t.variable },
+                { token: 'variable.language', foreground: t.keyword },
+                { token: 'variable.other.property', foreground: t.variable },
+                { token: 'constant', foreground: t.number },
+                { token: 'constant.language', foreground: t.keyword },
+                { token: 'string', foreground: t.string },
+                { token: 'string.char', foreground: t.char },
+                { token: 'number', foreground: t.number },
+                { token: 'number.float', foreground: t.number },
+                { token: 'number.hex', foreground: t.number },
+                { token: 'comment', foreground: t.comment, fontStyle: 'italic' },
+                { token: 'operator', foreground: t.operator },
+                { token: 'delimiter', foreground: t.separator },
+                { token: 'identifier', foreground: t.identifier }
+            ],
+            colors: {
+                'editor.background': '#' + t.bg,
+                'editor.foreground': '#' + t.fg,
+                'editorCursor.foreground': '#' + t.caret,
+                'editor.selectionBackground': '#' + t.selectionBg,
+                'editor.lineHighlightBackground': '#' + t.lineHighlight,
+                'editorLineNumber.foreground': '#' + t.lineNumberFg
+            }
+        });
+        monaco.editor.setTheme(themeName);
+    }
+
+    function initEditor(code, language, theme, readOnly, fontSize, autocompleteEnabled, autocompleteMode, autocompleteDocWindow) {
+        window.autocompleteEnabled = (autocompleteEnabled !== false);
+        window.autocompleteMode = autocompleteMode || 'Smart';
+        window.autocompleteDocWindow = (autocompleteDocWindow !== false);
+
+        var quickSuggestionsVal = window.autocompleteEnabled;
+        if (window.autocompleteMode === 'Manual') {
+            quickSuggestionsVal = false;
+        }
+
+        if (editor) {
+            isSettingValue = true;
+            editor.setValue(code);
+            isSettingValue = false;
+            var model = editor.getModel();
+            if (model) {
+                monaco.editor.setModelLanguage(model, language);
+            }
+            monaco.editor.setTheme(resolveTheme(theme));
+            editor.updateOptions({
+                readOnly: readOnly,
+                fontSize: fontSize,
+                quickSuggestions: quickSuggestionsVal ? { other: true, comments: false, strings: false } : false,
+                suggestOnTriggerCharacters: window.autocompleteEnabled && (window.autocompleteMode !== 'Manual'),
+                parameterHints: { enabled: window.autocompleteDocWindow },
+                suggest: {
+                    showDocs: window.autocompleteDocWindow,
+                    showIcons: true
+                },
+                mouseWheelZoom: true
+            });
+        } else {
+            pendingInit = {
+                code: code,
+                language: language,
+                theme: theme,
+                readOnly: readOnly,
+                fontSize: fontSize,
+                autocompleteEnabled: autocompleteEnabled,
+                autocompleteMode: autocompleteMode,
+                autocompleteDocWindow: autocompleteDocWindow
+            };
+        }
+    }
+
+    function setEditorValue(val) {
+        if (!editor) return;
+        isSettingValue = true;
+        editor.setValue(val);
+        isSettingValue = false;
+    }
+
+    function setLanguage(lang) {
+        if (!editor) return;
+        var model = editor.getModel();
+        if (model) {
+            monaco.editor.setModelLanguage(model, lang);
+        }
+    }
+
+    function setTheme(theme) {
+        if (!editor) return;
+        monaco.editor.setTheme(resolveTheme(theme));
+    }
+
+    function setReadOnly(readOnly) {
+        if (!editor) return;
+        editor.updateOptions({ readOnly: readOnly });
+    }
+
+    function setFontSize(size) {
+        if (!editor) return;
+        editor.updateOptions({ fontSize: size });
+    }
+
+    function jumpToLine(lineNumber) {
+        if (!editor) return;
+        editor.revealLineInCenter(lineNumber);
+        editor.setPosition({ lineNumber: lineNumber, column: 1 });
+        editor.focus();
+    }
+
+    function triggerFind() {
+        if (!editor) return;
+        editor.getAction('actions.find').run();
+    }
+
+    function triggerReplace() {
+        if (!editor) return;
+        editor.getAction('editor.action.startFindReplaceAction').run();
+    }
+
+    function setCaretPosition(offset) {
+        if (!editor) return;
+        var model = editor.getModel();
+        if (model) {
+            var pos = model.getPositionAt(offset);
+            editor.setPosition(pos);
+            editor.revealPositionInCenter(pos);
+            editor.focus();
+        }
+    }
+
+    function formatCode() {
+        if (!editor) return;
+        editor.getAction('editor.action.formatDocument').run();
+    }
+
+    function resetPanel() {
+        if (!editor) return;
+        setEditorValue('');
+        editor.getAction('editor.action.fontZoomReset').run();
+        editor.setScrollTop(0);
+        editor.setPosition({ lineNumber: 1, column: 1 });
+        editor.focus();
+    }
+</script>
+</body>
+</html>

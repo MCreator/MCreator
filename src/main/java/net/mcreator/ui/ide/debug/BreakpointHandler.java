@@ -27,22 +27,12 @@ import net.mcreator.java.debug.Breakpoint;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.ide.CodeEditorView;
-import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JavaParser;
-import org.fife.ui.rtextarea.Gutter;
-import org.fife.ui.rtextarea.GutterIconInfo;
-import org.fife.ui.rtextarea.IconRowHeader;
-import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,83 +43,16 @@ public class BreakpointHandler {
 	private final List<GutterBreakpointInfo> breakpointsList = new ArrayList<>();
 
 	private final CodeEditorView cev;
-	private final RTextScrollPane sp;
 	private final JavaParser parser;
 
-	public BreakpointHandler(CodeEditorView cev, RTextScrollPane sp, JavaParser parser) {
+	public BreakpointHandler(CodeEditorView cev, JavaParser parser) {
 		this.cev = cev;
-		this.sp = sp;
 		this.parser = parser;
-
-		try {
-			Field field = Gutter.class.getDeclaredField("iconArea");
-			field.setAccessible(true);
-			IconRowHeader iconRowHeader = (IconRowHeader) field.get(sp.getGutter());
-			iconRowHeader.addMouseListener(new MouseAdapter() {
-
-				private int viewToModelLine(Point p) throws BadLocationException {
-					int offs = cev.te.viewToModel2D(p);
-					return offs > -1 ? cev.te.getLineOfOffset(offs) : -1;
-				}
-
-				@Override public void mousePressed(MouseEvent e) {
-					try {
-						int line = viewToModelLine(e.getPoint());
-						if (line < 0)
-							return;
-
-						JVMDebugClient debugClient = cev.getMCreator().getGradleConsole().getDebugClient();
-
-						GutterBreakpointInfo anyMatch = null;
-						for (GutterBreakpointInfo breakpointInfo : breakpointsList) {
-							if (breakpointInfo.getCurrentLine(cev.te) == line) {
-								anyMatch = breakpointInfo;
-								break;
-							}
-						}
-
-						if (anyMatch != null) {
-							sp.getGutter().removeTrackingIcon(anyMatch.getGutterIconInfo());
-							breakpointsList.remove(anyMatch);
-
-							// if active debug session, remove breakpoint from the client too
-							if (anyMatch.getBreakpoint() != null && debugClient != null) {
-								debugClient.removeBreakpoint(anyMatch.getBreakpoint());
-							}
-						} else {
-							GutterIconInfo gutterIconInfo = sp.getGutter()
-									.addLineTrackingIcon(line, UIRES.get("16px.breakpoint_na"));
-							GutterBreakpointInfo gutterBreakpointInfo = new GutterBreakpointInfo(gutterIconInfo);
-							breakpointsList.add(gutterBreakpointInfo);
-
-							if (debugClient != null) {
-								registerBreakpointWithDebugClient(debugClient, gutterBreakpointInfo);
-							}
-						}
-					} catch (BadLocationException ignored) {
-					}
-				}
-			});
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			LOG.error("Failed to add breakpoint handler to the gutter", e);
-		}
 	}
 
 	public void newDebugClient(JVMDebugClient debugClient) {
-		// register all current breakpoints to the debug client
 		for (GutterBreakpointInfo breakpointInfo : breakpointsList) {
 			registerBreakpointWithDebugClient(debugClient, breakpointInfo);
-		}
-	}
-
-	private void replaceGutterIcon(RTextScrollPane sp, GutterBreakpointInfo gutterBreakpointInfo, ImageIcon newIcon) {
-		try {
-			GutterIconInfo currentGutterIconInfo = gutterBreakpointInfo.getGutterIconInfo();
-			int line = gutterBreakpointInfo.getCurrentLine(cev.te);
-			sp.getGutter().removeTrackingIcon(currentGutterIconInfo);
-			GutterIconInfo newGutterIconInfo = sp.getGutter().addLineTrackingIcon(line, newIcon);
-			gutterBreakpointInfo.setGutterIconInfo(newGutterIconInfo);
-		} catch (BadLocationException ignored) {
 		}
 	}
 
@@ -139,10 +62,6 @@ public class BreakpointHandler {
 			for (Event event : eventSet) {
 				if (event instanceof VMDisconnectEvent) {
 					for (GutterBreakpointInfo breakpointInfo : breakpointsList) {
-						// mark breakpoints as not active
-						replaceGutterIcon(sp, gutterBreakpointInfo, UIRES.get("16px.breakpoint_na"));
-
-						// remove breakpoints from debug client
 						if (breakpointInfo.getBreakpoint() != null) {
 							debugClient.removeBreakpoint(breakpointInfo.getBreakpoint());
 							breakpointInfo.setBreakpoint(null);
@@ -156,7 +75,6 @@ public class BreakpointHandler {
 			Breakpoint breakpoint = new Breakpoint(ClassFinder.getCurrentFQDN(parser),
 					gutterBreakpointInfo.getCurrentLine(cev.te) + 1, new Breakpoint.BreakpointListener() {
 				@Override public void breakpointLoaded(Breakpoint breakpoint) {
-					replaceGutterIcon(sp, gutterBreakpointInfo, UIRES.get("16px.breakpoint"));
 				}
 
 				@Override public boolean breakpointHit(Breakpoint breakpoint, BreakpointEvent breakpointEvent) {
@@ -166,14 +84,8 @@ public class BreakpointHandler {
 							CodeEditorView bpCev = (CodeEditorView) existing.getContent();
 							if (bpCev == cev) {
 								bpCev.getMCreator().getTabs().showTab(existing);
-								try {
-									int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
-									int startOffset = bpCev.te.getLineStartOffset(breakpointLine);
-									bpCev.te.setCaretPosition(startOffset);
-									bpCev.te.setActiveLineRange(breakpointLine, breakpointLine + 1);
-								} catch (BadLocationException ignored) {
-								}
-								bpCev.te.requestFocusInWindow();
+								int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
+								bpCev.te.jumpToLine(breakpointLine);
 								bpCev.getMCreator().toFront();
 								bpCev.getMCreator().requestFocus();
 							}
@@ -189,7 +101,6 @@ public class BreakpointHandler {
 			gutterBreakpointInfo.setBreakpoint(breakpoint);
 		} catch (Exception ex) {
 			LOG.warn("Failed to add breakpoint", ex);
-			sp.getGutter().removeTrackingIcon(gutterBreakpointInfo.getGutterIconInfo());
 		}
 	}
 

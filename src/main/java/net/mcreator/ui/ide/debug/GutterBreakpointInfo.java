@@ -20,32 +20,22 @@
 package net.mcreator.ui.ide.debug;
 
 import net.mcreator.java.debug.Breakpoint;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rtextarea.GutterIconInfo;
+import net.mcreator.ui.component.MonacoEditorPanel;
 
 import javax.annotation.Nullable;
-import javax.swing.text.BadLocationException;
 
 public class GutterBreakpointInfo {
 
-	private GutterIconInfo gutterIconInfo;
+	private int line;
 
 	@Nullable private Breakpoint breakpoint;
 
-	public GutterBreakpointInfo(GutterIconInfo gutterIconInfo) {
-		this.gutterIconInfo = gutterIconInfo;
+	public GutterBreakpointInfo(int line) {
+		this.line = line;
 	}
 
-	public GutterIconInfo getGutterIconInfo() {
-		return gutterIconInfo;
-	}
-
-	public int getCurrentLine(RSyntaxTextArea te) {
-		try {
-			return te.getLineOfOffset(gutterIconInfo.getMarkedOffset());
-		} catch (BadLocationException e) {
-			return -1;
-		}
+	public int getCurrentLine(MonacoEditorPanel te) {
+		return line;
 	}
 
 	@Nullable public Breakpoint getBreakpoint() {
@@ -54,9 +44,5 @@ public class GutterBreakpointInfo {
 
 	public void setBreakpoint(@Nullable Breakpoint breakpoint) {
 		this.breakpoint = breakpoint;
-	}
-
-	public void setGutterIconInfo(GutterIconInfo gutterIconInfo) {
-		this.gutterIconInfo = gutterIconInfo;
 	}
 }

@@ -29,7 +29,7 @@ import org.fife.rsta.ac.java.rjc.lang.Type;
 
 import java.util.List;
 
-class DeclarationChecker {
+public class DeclarationChecker {
 
 	static DeclarationFinder.InClassPosition checkForThisDeclaration(String code, String clickedWord,
 			TypeDeclaration classNameInWhichWeAre) {
@@ -64,7 +64,7 @@ class DeclarationChecker {
 		return null;
 	}
 
-	static DeclarationFinder.InClassPosition checkForClassDeclaration(Workspace workspace, String clickedWord,
+	public static DeclarationFinder.InClassPosition checkForClassDeclaration(Workspace workspace, String clickedWord,
 			CompilationUnit compilationUnit, JarManager jarManager) {
 		List<ImportDeclaration> imports = compilationUnit.getImports();
 
@@ -104,9 +104,15 @@ class DeclarationChecker {
 			String className) {
 		if (original == null)
 			return null;
-		String codeFromParent = FileIO.readFileToString(original.classFileNode);
-		int startPos = codeFromParent.indexOf("class " + className);
-		original.caret = startPos + 6;
+		if (original.classFileNode != null) {
+			String codeFromParent = FileIO.readFileToString(original.classFileNode);
+			if (codeFromParent != null) {
+				int startPos = codeFromParent.indexOf("class " + className);
+				if (startPos != -1) {
+					original.caret = startPos + 6;
+				}
+			}
+		}
 		return original;
 	}
 
