@@ -25,6 +25,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.util.ThreadUtil;
+import net.mcreator.ui.ide.themes.LegacyCodeEditorThemes;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.Workspace;
 
@@ -157,22 +158,23 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 	}
 
 	private void applyInitSettings() {
-		Color bg = Theme.current().getBackgroundColor();
-		boolean isDark = (bg.getRed() * 0.299 + bg.getGreen() * 0.587 + bg.getBlue() * 0.114) < 128;
-		String baseTheme = isDark ? "vs-dark" : "vs";
 		int fontSize = PreferencesManager.PREFERENCES.ide.fontSize.get();
-
 		boolean autocomplete = PreferencesManager.PREFERENCES.ide.autocomplete.get();
 		String autocompleteMode = PreferencesManager.PREFERENCES.ide.autocompleteMode.get();
 		boolean autocompleteDocWindow = PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get();
 
 		String escapedCode = escapeJSString(cachedCode);
+		String themeJson = getThemeJsonString();
 
-		String themeJson = buildMonacoThemeJson(baseTheme);
-
-		String script = "initEditor('" + escapedCode + "', '" + currentLanguage + "', '" + baseTheme + "', " + currentReadOnly + ", " + fontSize + ", " + autocomplete + ", '" + autocompleteMode + "', " + autocompleteDocWindow + ");";
+		String script = "initEditor('" + escapedCode + "', '" + currentLanguage + "', " + currentReadOnly + ", " + fontSize + ", " + autocomplete + ", '" + autocompleteMode + "', " + autocompleteDocWindow + ");";
 		executeAsyncJS(script);
-		executeAsyncJS("applyCustomTheme(" + themeJson + ");");
+
+		if (themeJson != null) {
+			executeAsyncJS("monaco.editor.defineTheme('dynamic-theme', " + themeJson + "); monaco.editor.setTheme('dynamic-theme');");
+		} else {
+			executeAsyncJS("monaco.editor.setTheme('vs-dark');");
+		}
+
 		isLoaded = true;
 
 		if (workspace != null) {
@@ -180,102 +182,45 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		}
 	}
 
-	private String buildMonacoThemeJson(String baseTheme) {
+	private String getThemeJsonString() {
 		String editorThemePref = PreferencesManager.PREFERENCES.ide.editorTheme.get();
+		String jsonStr = null;
 
-		// Colors from the existing RSyntaxTextArea code_editor.xml themes
-		String bgColor, fgColor, caretColor, selectionBg, lineHighlight, lineNumberFg;
-		String keywordFg, dataTypeFg, identifierFg, functionFg, annotationFg;
-		String commentFg, stringFg, charFg, numberFg, operatorFg, separatorFg, variableFg;
-
-		Color themeBg = Theme.current().getBackgroundColor();
-		String accentHex = colorToHex(Theme.current().getInterfaceAccentColor());
-		String fgHex = colorToHex(Theme.current().getForegroundColor());
-
-		String themeId = Theme.current().getID();
-		Map<String, String> tokens = parseMCreatorThemeXml(themeId);
-
-		bgColor = tokens.getOrDefault("background", colorToHex(themeBg));
-		fgColor = fgHex;
-		caretColor = tokens.getOrDefault("caret", "c1cbc2");
-		selectionBg = tokens.getOrDefault("selection_bg", "404E51");
-		lineHighlight = tokens.getOrDefault("currentLineHighlight", "2F393C");
-		lineNumberFg = tokens.getOrDefault("lineNumbers_fg", "81969A");
-
-		keywordFg = tokens.getOrDefault("RESERVED_WORD", accentHex);
-		dataTypeFg = tokens.getOrDefault("DATA_TYPE", "678CB1");
-		identifierFg = tokens.getOrDefault("IDENTIFIER", fgHex);
-		functionFg = tokens.getOrDefault("FUNCTION", fgHex);
-		annotationFg = tokens.getOrDefault("ANNOTATION", "E8E2B7");
-		commentFg = tokens.getOrDefault("COMMENT_EOL", "66747B");
-		stringFg = tokens.getOrDefault("LITERAL_STRING_DOUBLE_QUOTE", "00DAFF");
-		charFg = tokens.getOrDefault("LITERAL_CHAR", "00DAFF");
-		numberFg = tokens.getOrDefault("LITERAL_NUMBER_DECIMAL_INT", accentHex);
-		operatorFg = tokens.getOrDefault("OPERATOR", "E8E2B7");
-		separatorFg = tokens.getOrDefault("SEPARATOR", "E8E2B7");
-		variableFg = tokens.getOrDefault("VARIABLE", "ae9fbf");
-
-		return "{\"base\":\"" + baseTheme + "\"," + "\"bg\":\"" + bgColor + "\"," + "\"fg\":\"" + fgColor + "\","
-				+ "\"caret\":\"" + caretColor + "\"," + "\"selectionBg\":\"" + selectionBg + "\","
-				+ "\"lineHighlight\":\"" + lineHighlight + "\"," + "\"lineNumberFg\":\"" + lineNumberFg + "\","
-				+ "\"keyword\":\"" + keywordFg + "\"," + "\"dataType\":\"" + dataTypeFg + "\"," + "\"identifier\":\""
-				+ identifierFg + "\"," + "\"function\":\"" + functionFg + "\"," + "\"annotation\":\"" + annotationFg
-				+ "\"," + "\"comment\":\"" + commentFg + "\"," + "\"string\":\"" + stringFg + "\"," + "\"char\":\""
-				+ charFg + "\"," + "\"number\":\"" + numberFg + "\"," + "\"operator\":\"" + operatorFg + "\","
-				+ "\"separator\":\"" + separatorFg + "\"," + "\"variable\":\"" + variableFg + "\"" + "}";
-	}
-
-	private Map<String, String> parseMCreatorThemeXml(String themeId) {
-		Map<String, String> result = new HashMap<>();
-		try {
-			InputStream is = PluginLoader.INSTANCE.getResourceAsStream(
-					"themes/" + themeId + "/styles/code_editor.xml");
-			if (is == null) {
-				is = PluginLoader.INSTANCE.getResourceAsStream(
-						"themes/default_dark/styles/code_editor.xml");
-			}
-			if (is != null) {
-				String xml = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-				is.close();
-
-				String accentHex = colorToHex(Theme.current().getInterfaceAccentColor());
-				String bgHex = colorToHex(Theme.current().getBackgroundColor());
-				String fgHex = colorToHex(Theme.current().getForegroundColor());
-				String altBgHex = colorToHex(Theme.current().getAltBackgroundColor());
-				String altFgHex = colorToHex(Theme.current().getAltForegroundColor());
-				String secAltBgHex = colorToHex(Theme.current().getSecondAltBackgroundColor());
-
-				xml = xml.replace("${mainTint}", accentHex)
-						.replace("${backgroundColor}", bgHex)
-						.replace("${foregroundColor}", fgHex)
-						.replace("${altBackgroundColor}", altBgHex)
-						.replace("${altForegroundColor}", altFgHex)
-						.replace("${secondAltBackgroundColor}", secAltBgHex);
-
-				Matcher bgMatcher = Pattern.compile("<background\\s+color=\"([^\"]+)\"").matcher(xml);
-				if (bgMatcher.find()) result.put("background", bgMatcher.group(1));
-
-				Matcher caretMatcher = Pattern.compile("<caret\\s+color=\"([^\"]+)\"").matcher(xml);
-				if (caretMatcher.find()) result.put("caret", caretMatcher.group(1));
-
-				Matcher selMatcher = Pattern.compile("<selection[^>]*bg=\"([^\"]+)\"").matcher(xml);
-				if (selMatcher.find()) result.put("selection_bg", selMatcher.group(1));
-
-				Matcher clhMatcher = Pattern.compile("<currentLineHighlight\\s+color=\"([^\"]+)\"").matcher(xml);
-				if (clhMatcher.find()) result.put("currentLineHighlight", clhMatcher.group(1));
-
-				Matcher lnMatcher = Pattern.compile("<lineNumbers\\s+fg=\"([^\"]+)\"").matcher(xml);
-				if (lnMatcher.find()) result.put("lineNumbers_fg", lnMatcher.group(1));
-
-				Pattern tokenPattern = Pattern.compile("<style\\s+token=\"([^\"]+)\"\\s+fg=\"([^\"]+)\"");
-				Matcher tokenMatcher = tokenPattern.matcher(xml);
-				while (tokenMatcher.find()) {
-					result.put(tokenMatcher.group(1), tokenMatcher.group(2));
+		if ("MCreator".equalsIgnoreCase(editorThemePref)) {
+			String themeId = Theme.current().getID();
+			try {
+				InputStream is = PluginLoader.INSTANCE.getResourceAsStream(
+						"themes/" + themeId + "/styles/code_editor.json");
+				if (is == null) {
+					is = PluginLoader.INSTANCE.getResourceAsStream(
+							"themes/default_dark/styles/code_editor.json");
 				}
-			}
-		} catch (Exception ignored) {
+				if (is != null) {
+					jsonStr = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+					is.close();
+				}
+			} catch (Exception ignored) {}
+		} else {
+			jsonStr = LegacyCodeEditorThemes.getThemeJson(editorThemePref);
 		}
-		return result;
+
+		if (jsonStr == null) return null;
+
+		String accentHex = "#" + colorToHex(Theme.current().getInterfaceAccentColor());
+		String bgHex = "#" + colorToHex(Theme.current().getBackgroundColor());
+		String fgHex = "#" + colorToHex(Theme.current().getForegroundColor());
+		String altBgHex = "#" + colorToHex(Theme.current().getAltBackgroundColor());
+		String altFgHex = "#" + colorToHex(Theme.current().getAltForegroundColor());
+		String secAltBgHex = "#" + colorToHex(Theme.current().getSecondAltBackgroundColor());
+
+		jsonStr = jsonStr.replace("${mainTint}", accentHex)
+				.replace("${backgroundColor}", bgHex)
+				.replace("${foregroundColor}", fgHex)
+				.replace("${altBackgroundColor}", altBgHex)
+				.replace("${altForegroundColor}", altFgHex)
+				.replace("${secondAltBackgroundColor}", secAltBgHex);
+
+		return jsonStr;
 	}
 
 	private static String colorToHex(Color c) {
@@ -401,14 +346,9 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 	}
 
 	private String escapeJSString(String str) {
-		return str
-				.replace("\\", "\\\\")
-				.replace("'", "\\'")
-				.replace("\n", "\\n")
-				.replace("\r", "\\r")
+		return str.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r")
 				.replace("\"", "\\\"");
 	}
-
 
 	public void initForReuse(String code, String languageOrExtension, boolean readOnly) {
 		executeAsyncJS("resetPanel();");

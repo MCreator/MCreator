@@ -277,7 +277,7 @@
         editor = monaco.editor.create(document.getElementById('container'), {
             value: initData.code,
             language: initData.language,
-            theme: resolveTheme(initData.theme),
+            theme: 'vs-dark',
             readOnly: initData.readOnly,
             fontSize: initData.fontSize,
             automaticLayout: true,
@@ -501,52 +501,6 @@
         }
     });
 
-    function resolveTheme(t) {
-        if (t === 'vs-dark' || t === 'dark' || t === 'mcreator-dark') {
-            return 'mcreator-dark';
-        }
-        return 'mcreator-light';
-    }
-
-    function applyCustomTheme(t) {
-        if (!t || !editor) return;
-        var themeName = 'mcreator-custom';
-        monaco.editor.defineTheme(themeName, {
-            base: (t.base === 'vs-dark') ? 'vs-dark' : 'vs',
-            inherit: true,
-            rules: [
-                { token: 'keyword', foreground: t.keyword, fontStyle: 'bold' },
-                { token: 'type.primitive', foreground: t.dataType },
-                { token: 'type.identifier', foreground: t.dataType },
-                { token: 'entity.name.function', foreground: t.function },
-                { token: 'annotation', foreground: t.annotation },
-                { token: 'variable', foreground: t.variable },
-                { token: 'variable.language', foreground: t.keyword },
-                { token: 'variable.other.property', foreground: t.variable },
-                { token: 'constant', foreground: t.number },
-                { token: 'constant.language', foreground: t.keyword },
-                { token: 'string', foreground: t.string },
-                { token: 'string.char', foreground: t.char },
-                { token: 'number', foreground: t.number },
-                { token: 'number.float', foreground: t.number },
-                { token: 'number.hex', foreground: t.number },
-                { token: 'comment', foreground: t.comment, fontStyle: 'italic' },
-                { token: 'operator', foreground: t.operator },
-                { token: 'delimiter', foreground: t.separator },
-                { token: 'identifier', foreground: t.identifier }
-            ],
-            colors: {
-                'editor.background': '#' + t.bg,
-                'editor.foreground': '#' + t.fg,
-                'editorCursor.foreground': '#' + t.caret,
-                'editor.selectionBackground': '#' + t.selectionBg,
-                'editor.lineHighlightBackground': '#' + t.lineHighlight,
-                'editorLineNumber.foreground': '#' + t.lineNumberFg
-            }
-        });
-        monaco.editor.setTheme(themeName);
-    }
-
     function showNotification(message) {
         if (!editor) return;
         var node = document.createElement('div');
@@ -561,7 +515,7 @@
         }, 2000);
     }
 
-    function initEditor(code, language, theme, readOnly, fontSize, autocompleteEnabled, autocompleteMode, autocompleteDocWindow) {
+    function initEditor(code, language, readOnly, fontSize, autocompleteEnabled, autocompleteMode, autocompleteDocWindow) {
         window.autocompleteEnabled = (autocompleteEnabled !== false);
         window.autocompleteMode = autocompleteMode || 'Smart';
         window.autocompleteDocWindow = (autocompleteDocWindow !== false);
@@ -579,7 +533,7 @@
             if (model) {
                 monaco.editor.setModelLanguage(model, language);
             }
-            monaco.editor.setTheme(resolveTheme(theme));
+
             editor.updateOptions({
                 readOnly: readOnly,
                 fontSize: fontSize,
@@ -597,7 +551,6 @@
             pendingInit = {
                 code: code,
                 language: language,
-                theme: theme,
                 readOnly: readOnly,
                 fontSize: fontSize,
                 autocompleteEnabled: autocompleteEnabled,
@@ -624,7 +577,7 @@
 
     function setTheme(theme) {
         if (!editor) return;
-        monaco.editor.setTheme(resolveTheme(theme));
+        monaco.editor.setTheme(theme);
     }
 
     function setReadOnly(readOnly) {

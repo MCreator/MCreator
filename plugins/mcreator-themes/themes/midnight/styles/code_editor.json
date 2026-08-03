@@ -1,0 +1,178 @@
+{
+    "base": "vs-dark",
+    "inherit": true,
+    "colors": {
+        "editor.background": "#1a202a",
+        "editorCursor.foreground": "#c1cbc2",
+        "editor.selectionBackground": "#272d37",
+        "editor.lineHighlightBackground": "#272d37",
+        "editorBracketMatch.background": "#6b8189",
+        "editorBracketMatch.border": "#6A8088",
+        "editorLineNumber.foreground": "#63676d",
+        "editor.foldBackground": "#1a202a"
+    },
+    "rules": [
+        {
+            "token": "identifier",
+            "foreground": "#E0E2E4"
+        },
+        {
+            "token": "keyword",
+            "foreground": "#ae81ff"
+        },
+        {
+            "token": "keyword",
+            "foreground": "#ae81ff"
+        },
+        {
+            "token": "annotation",
+            "foreground": "#E8E2B7"
+        },
+        {
+            "token": "comment.doc",
+            "foreground": "#6C788C"
+        },
+        {
+            "token": "comment",
+            "foreground": "#66747B"
+        },
+        {
+            "token": "comment",
+            "foreground": "#66747B"
+        },
+        {
+            "token": "comment.keyword",
+            "foreground": "#ae9fbf"
+        },
+        {
+            "token": "comment.markup",
+            "foreground": "#ae9fbf"
+        },
+        {
+            "token": "function",
+            "foreground": "#ff6058"
+        },
+        {
+            "token": "entity.name.function",
+            "foreground": "#ff6058"
+        },
+        {
+            "token": "type",
+            "foreground": "#ef4200",
+            "fontStyle": "bold"
+        },
+        {
+            "token": "number",
+            "foreground": "#ae81ff"
+        },
+        {
+            "token": "number",
+            "foreground": "#ae81ff",
+            "fontStyle": "bold"
+        },
+        {
+            "token": "number",
+            "foreground": "#ae81ff",
+            "fontStyle": "bold"
+        },
+        {
+            "token": "number.hex",
+            "foreground": "#ae81ff",
+            "fontStyle": "bold"
+        },
+        {
+            "token": "string",
+            "foreground": "#f9e62a"
+        },
+        {
+            "token": "string",
+            "foreground": "#00DAFF"
+        },
+        {
+            "token": "string",
+            "foreground": "#00DAFF"
+        },
+        {
+            "token": "delimiter.html",
+            "foreground": "#00ff00"
+        },
+        {
+            "token": "tag",
+            "foreground": "#ABBFD3",
+            "fontStyle": "bold"
+        },
+        {
+            "token": "attribute.name",
+            "foreground": "#B3B689"
+        },
+        {
+            "token": "string",
+            "foreground": "#e1e2cf"
+        },
+        {
+            "token": "comment",
+            "foreground": "#66747B"
+        },
+        {
+            "token": "metatag",
+            "foreground": "#d48211"
+        },
+        {
+            "token": "metatag",
+            "foreground": "#d48211"
+        },
+        {
+            "token": "string",
+            "foreground": "#d5e6f0"
+        },
+        {
+            "token": "delimiter",
+            "foreground": "#ae9fbf"
+        },
+        {
+            "token": "string",
+            "foreground": "#0000ff"
+        },
+        {
+            "token": "operator",
+            "foreground": "#E8E2B7"
+        },
+        {
+            "token": "keyword",
+            "foreground": "#d48211"
+        },
+        {
+            "token": "regexp",
+            "foreground": "#d39745"
+        },
+        {
+            "token": "delimiter",
+            "foreground": "#E8E2B7"
+        },
+        {
+            "token": "variable",
+            "foreground": "#ae9fbf",
+            "fontStyle": "bold"
+        },
+        {
+            "token": "invalid",
+            "foreground": "#E0E2E4",
+            "background": "#04790e"
+        },
+        {
+            "token": "invalid",
+            "foreground": "#E0E2E4",
+            "background": "#04790e"
+        },
+        {
+            "token": "invalid",
+            "foreground": "#E0E2E4",
+            "background": "#04790e"
+        },
+        {
+            "token": "invalid",
+            "foreground": "#E0E2E4",
+            "background": "#04790e"
+        }
+    ]
+}
