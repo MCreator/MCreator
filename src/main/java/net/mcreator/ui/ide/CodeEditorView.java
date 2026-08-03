@@ -46,6 +46,8 @@ import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.util.Iterator;
+import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
@@ -175,10 +177,28 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit("File.java", new Scanner(new java.io.StringReader(code)));
 			JarManager jarManager = mcreator.getGenerator().getProjectJarManager();
 			if (cu != null && jarManager != null) {
-				DeclarationChecker.InClassPosition pos = DeclarationChecker.checkForClassDeclaration(
-						mcreator.getWorkspace(), word, cu, jarManager);
-				if (pos != null && (pos.classFileNode != null || pos.virtualFile != null)) {
-					ProjectFileOpener.openFileSpecific(mcreator, pos.classFileNode, pos.openInReadOnly, pos.caret, pos.virtualFile);
+				DeclarationChecker.InClassPosition pos = null;
+				TypeDeclaration typeDecl = null;
+				Iterator<TypeDeclaration> typeDeclIter = cu.getTypeDeclarationIterator();
+				if (typeDeclIter != null && typeDeclIter.hasNext()) {
+					typeDecl = typeDeclIter.next();
+				}
+				
+				if ("this".equals(word) && typeDecl != null) {
+					pos = DeclarationChecker.checkForThisDeclaration(code, word, typeDecl);
+				} else if ("super".equals(word) && typeDecl != null) {
+					pos = DeclarationChecker.checkForSuperDeclaration(mcreator.getWorkspace(), word, typeDecl, cu, jarManager);
+				} else {
+					pos = DeclarationChecker.checkForClassDeclaration(mcreator.getWorkspace(), word, cu, jarManager);
+				}
+				
+				if (pos != null) {
+					if (pos.classFileNode != null || pos.virtualFile != null) {
+						ProjectFileOpener.openFileSpecific(mcreator, pos.classFileNode, pos.openInReadOnly, pos.caret, pos.virtualFile);
+					} else {
+						te.setCaretPosition(pos.caret);
+						te.requestFocus();
+					}
 					return;
 				}
 			}

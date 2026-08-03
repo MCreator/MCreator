@@ -32,7 +32,7 @@ import java.util.List;
 
 public class DeclarationChecker {
 
-	static InClassPosition checkForThisDeclaration(String code, String clickedWord,
+	public static InClassPosition checkForThisDeclaration(String code, String clickedWord,
 			TypeDeclaration classNameInWhichWeAre) {
 		if ("this".equals(clickedWord)) {
 			int startPos = code.indexOf("class " + classNameInWhichWeAre.getName());
@@ -47,7 +47,7 @@ public class DeclarationChecker {
 		return null;
 	}
 
-	static InClassPosition checkForSuperDeclaration(Workspace workspace, String clickedWord,
+	public static InClassPosition checkForSuperDeclaration(Workspace workspace, String clickedWord,
 			TypeDeclaration classNameInWhichWeAre, CompilationUnit compilationUnit, JarManager jarManager) {
 		if ("super".equals(clickedWord) && classNameInWhichWeAre instanceof NormalClassDeclaration) {
 			Type superClassName = ((NormalClassDeclaration) classNameInWhichWeAre).getExtendedType();
