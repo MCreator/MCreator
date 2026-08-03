@@ -121,11 +121,14 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			}
 		});
 
-		te.setSaveRequestListener(this::saveCode);
-		te.setSaveAndBuildRequestListener(this::saveAndBuildCode);
-
 		this.breakpointHandler = new BreakpointHandler(this, null);
-		te.setBreakpointToggleListener(breakpointHandler::toggleBreakpoint);
+
+		te.setEditorEventListener(new MonacoEditorPanel.EditorEventListener() {
+			@Override public void onSaveRequested() { saveCode(); }
+			@Override public void onSaveAndBuildRequested() { saveAndBuildCode(); }
+			@Override public void onBreakpointToggled(int line) { if (breakpointHandler != null) breakpointHandler.toggleBreakpoint(line); }
+			@Override public void onOpenDeclaration(String word) { handleOpenDeclaration(word); }
+		});
 
 		spne.setLeftComponent(te);
 		spne.setContinuousLayout(true);
@@ -160,8 +163,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			topPan.add("North", fileBreadCrumb);
 
 		add("North", topPan);
-
-		te.setOpenDeclarationListener(this::handleOpenDeclaration);
 
 		add("Center", te);
 		setBorder(null);

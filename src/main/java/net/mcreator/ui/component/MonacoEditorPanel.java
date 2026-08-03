@@ -48,9 +48,7 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 
 	private final WebView webView;
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
-	private Consumer<Integer> breakpointToggleListener;
-	private Runnable saveRequestListener;
-	private Runnable saveAndBuildRequestListener;
+	private EditorEventListener editorEventListener;
 
 	private volatile boolean isLoaded = false;
 	private volatile String cachedCode = "";
@@ -359,16 +357,8 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		changeListeners.add(listener);
 	}
 
-	public void setSaveRequestListener(Runnable runnable) {
-		this.saveRequestListener = runnable;
-	}
-
-	public void setSaveAndBuildRequestListener(Runnable runnable) {
-		this.saveAndBuildRequestListener = runnable;
-	}
-
-	public void setBreakpointToggleListener(Consumer<Integer> listener) {
-		this.breakpointToggleListener = listener;
+	public void setEditorEventListener(EditorEventListener listener) {
+		this.editorEventListener = listener;
 	}
 
 	public void setBreakpoints(int[] lines) {
@@ -419,11 +409,6 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 				.replace("\"", "\\\"");
 	}
 
-	private Consumer<String> openDeclarationListener;
-
-	public void setOpenDeclarationListener(Consumer<String> openDeclarationListener) {
-		this.openDeclarationListener = openDeclarationListener;
-	}
 
 	public void initForReuse(String code, String languageOrExtension, boolean readOnly) {
 		executeAsyncJS("resetPanel();");
@@ -438,8 +423,7 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 
 	public void resetForPool() {
 		this.changeListeners.clear();
-		this.saveRequestListener = null;
-		this.openDeclarationListener = null;
+		this.editorEventListener = null;
 		this.cachedCode = "";
 		this.workspace = null;
 	}
@@ -456,29 +440,29 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		}
 
 		public void onSaveRequested() {
-			if (saveRequestListener != null) {
-				ThreadUtil.runOnSwingThread(saveRequestListener);
+			if (editorEventListener != null) {
+				ThreadUtil.runOnSwingThread(() -> editorEventListener.onSaveRequested());
 			}
 		}
 
 		public void onSaveAndBuildRequested() {
-			if (saveAndBuildRequestListener != null) {
-				ThreadUtil.runOnSwingThread(saveAndBuildRequestListener);
+			if (editorEventListener != null) {
+				ThreadUtil.runOnSwingThread(() -> editorEventListener.onSaveAndBuildRequested());
 			}
 		}
 
 		public void onBreakpointToggled(String lineStr) {
-			if (breakpointToggleListener != null) {
+			if (editorEventListener != null) {
 				try {
 					int line = Integer.parseInt(lineStr);
-					ThreadUtil.runOnSwingThread(() -> breakpointToggleListener.accept(line));
+					ThreadUtil.runOnSwingThread(() -> editorEventListener.onBreakpointToggled(line));
 				} catch (NumberFormatException ignored) {}
 			}
 		}
 
 		public void onOpenDeclaration(String word) {
-			if (openDeclarationListener != null) {
-				ThreadUtil.runOnSwingThread(() -> openDeclarationListener.accept(word));
+			if (editorEventListener != null) {
+				ThreadUtil.runOnSwingThread(() -> editorEventListener.onOpenDeclaration(word));
 			}
 		}
 
@@ -494,5 +478,12 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		public void onEditorReady() {
 			applyInitSettings();
 		}
+	}
+
+	public interface EditorEventListener {
+		default void onSaveRequested() {}
+		default void onSaveAndBuildRequested() {}
+		default void onBreakpointToggled(int line) {}
+		default void onOpenDeclaration(String word) {}
 	}
 }
