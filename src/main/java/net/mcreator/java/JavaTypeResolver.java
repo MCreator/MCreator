@@ -39,8 +39,8 @@ import java.util.zip.ZipFile;
 public class JavaTypeResolver {
 
 	private static final Logger LOG = LogManager.getLogger(JavaTypeResolver.class);
-	private static final Pattern METHOD_PATTERN = Pattern.compile("((?:public|protected|static|final|native|synchronized|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)");
-	private static final Pattern FIELD_PATTERN = Pattern.compile("((?:public|protected|static|final|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])");
+	private static final Pattern METHOD_PATTERN = Pattern.compile("^[ \\t]*((?:(?:public|protected|private|static|final|native|synchronized|abstract)\\s+)*)\\b([A-Za-z0-9_<>?\\[\\]]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)", Pattern.MULTILINE);
+	private static final Pattern FIELD_PATTERN = Pattern.compile("^[ \\t]*((?:(?:public|protected|private|static|final|volatile|transient)\\s+)+)\\b([A-Za-z0-9_<>?\\[\\]]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])", Pattern.MULTILINE);
 	private static final Pattern IMPORT_PATTERN = Pattern.compile("import\\s+([a-zA-Z0-9_.]+);");
 	private static final Pattern EXTENDS_PATTERN = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
 
