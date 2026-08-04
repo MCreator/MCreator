@@ -20,7 +20,7 @@ templates:
     name: "@MODDATAROOT/dimension_type/@registryname.json"
   - template: dimension/fixed_timeline.json.ftl # loaded from datapack generator
     writer: json
-    condition: hasFixedTime
+    condition: hasFixedTimeAndNeedsCustomTimeline()
     name: "@MODDATAROOT/timeline/@registryname_fixed.json"
   - template: dimension/dimension_overworld.json.ftl # loaded from datapack generator
     writer: json

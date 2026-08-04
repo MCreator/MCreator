@@ -533,7 +533,7 @@ import java.util.stream.Collectors;
 	}
 
 	public Set<String> getVibrationalEvents() {
-		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
+		return vibrationalEvents.stream().map(GameEventEntry::getUnmappedValue).collect(Collectors.toSet());
 	}
 
 	public int getLeavesParticleColor() {

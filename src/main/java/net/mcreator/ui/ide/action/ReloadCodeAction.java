@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
+import javax.swing.text.BadLocationException;
 import java.io.File;
 
 public class ReloadCodeAction extends BasicAction {
