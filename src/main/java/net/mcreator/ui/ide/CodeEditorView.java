@@ -236,10 +236,12 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 	
 	public void reformatTheCodeOnly() {
+		if (readOnly) return;
 		te.formatCode();
 	}
 
 	public void reformatTheCodeOrganiseAndFixImports() {
+		if (readOnly) return;
 		String ext = FilenameUtilsPatched.getExtension(fileWorkingOn.getName());
 		if ("java".equalsIgnoreCase(ext)) {
 			String ncode = codeCleanup.reformatTheCodeAndOrganiseImports(mcreator.getWorkspace(), te.getText());
@@ -250,6 +252,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	public void saveCode() {
+		if (readOnly) return;
 		savingMCreatorModElementWarning();
 		GradleTrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
 		changed = false;
@@ -258,6 +261,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	public void saveAndBuildCode() {
+		if (readOnly) return;
 		te.showNotification(L10N.t("ide.tips.save_and_build"));
 	}
 
