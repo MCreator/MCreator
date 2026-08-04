@@ -365,7 +365,7 @@ public class JavaTypeResolver {
 
 		boolean isStaticContext = false;
 		String currentFQDN = null;
-		String base = chain.get(0);
+		String base = chain.getFirst();
 		
 		String currentClassFQDN = ClassFinder.getCurrentFQDN(code);
 		String currentPkg = currentClassFQDN != null && currentClassFQDN.contains(".") ? currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) : "";
