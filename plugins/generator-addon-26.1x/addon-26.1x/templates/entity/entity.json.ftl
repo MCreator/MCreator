@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 {
-  "format_version": "1.13.0",
+  "format_version": "1.26.10",
   "minecraft:entity": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -30,8 +30,8 @@
       </#if>
       <#if !data.waterEntity && !data.isImmuneToDrowning>
       "minecraft:breathable": {
-        "totalSupply": 15,
-        "suffocateTime": 0
+        "total_supply": 15,
+        "suffocate_time": 0
       },
       </#if>
       <#if data.entityBehaviourType == "Mob">
@@ -93,13 +93,13 @@
         ]
       },
       <#else>
-      "minecraft:fire_immune": true,
+      "minecraft:fire_immune": {},
       </#if>
-      <#if data.isPushable || data.isPushableByPiston>
-      "minecraft:pushable": {
-        "is_pushable": ${data.isPushable},
-        "is_pushable_by_piston": ${data.isPushableByPiston}
-      },
+      <#if data.isPushable>
+      "minecraft:pushable_by_entity": true,
+      </#if>
+      <#if data.isPushableByPiston>
+      "minecraft:pushable_by_block": true,
       </#if>
       ${aicode}
       "minecraft:follow_range": {
