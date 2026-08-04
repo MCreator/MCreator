@@ -57,7 +57,7 @@ public class ClassFinder {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.debug("couldn't parse FQDN from code", e);
 		}
 		return null;
 	}

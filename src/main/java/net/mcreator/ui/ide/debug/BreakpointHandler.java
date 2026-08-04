@@ -58,7 +58,7 @@ public class BreakpointHandler {
 
 		GutterBreakpointInfo anyMatch = null;
 		for (GutterBreakpointInfo breakpointInfo : breakpointsList) {
-			if (breakpointInfo.getCurrentLine(cev.te) == line) {
+			if (breakpointInfo.getCurrentLine(cev.getEditor()) == line) {
 				anyMatch = breakpointInfo;
 				break;
 			}
@@ -84,9 +84,9 @@ public class BreakpointHandler {
 	private void updateMonacoBreakpoints() {
 		int[] lines = new int[breakpointsList.size()];
 		for (int i = 0; i < breakpointsList.size(); i++) {
-			lines[i] = breakpointsList.get(i).getCurrentLine(cev.te);
+			lines[i] = breakpointsList.get(i).getCurrentLine(cev.getEditor());
 		}
-		cev.te.setBreakpoints(lines);
+		cev.getEditor().setBreakpoints(lines);
 	}
 
 	private void registerBreakpointWithDebugClient(@Nonnull JVMDebugClient debugClient,
@@ -105,8 +105,8 @@ public class BreakpointHandler {
 		});
 
 		try {
-			Breakpoint breakpoint = new Breakpoint(ClassFinder.getCurrentFQDN(cev.te.getText()),
-					gutterBreakpointInfo.getCurrentLine(cev.te) + 1, new Breakpoint.BreakpointListener() {
+			Breakpoint breakpoint = new Breakpoint(ClassFinder.getCurrentFQDN(cev.getEditor().getText()),
+					gutterBreakpointInfo.getCurrentLine(cev.getEditor()) + 1, new Breakpoint.BreakpointListener() {
 				@Override public void breakpointLoaded(Breakpoint breakpoint) {
 				}
 
@@ -117,8 +117,8 @@ public class BreakpointHandler {
 							CodeEditorView bpCev = (CodeEditorView) existing.getContent();
 							if (bpCev == cev) {
 								bpCev.getMCreator().getTabs().showTab(existing);
-								int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
-								bpCev.te.jumpToLine(breakpointLine);
+								int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.getEditor());
+								bpCev.getEditor().jumpToLine(breakpointLine);
 								bpCev.getMCreator().toFront();
 								bpCev.getMCreator().requestFocus();
 							}

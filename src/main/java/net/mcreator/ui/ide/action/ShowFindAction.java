@@ -31,7 +31,7 @@ public class ShowFindAction extends BasicAction {
 		super(actionRegistry, L10N.t("action.ide.search_in_code"), actionEvent -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
-				codeEditorView.te.triggerFind();
+				codeEditorView.getEditor().triggerFind();
 			}
 		});
 		actionRegistry.getMCreator().getTabs()

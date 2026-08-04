@@ -63,8 +63,8 @@ public class ProjectFileOpener {
 			String code = FileIO.readFileToString(file);
 			CodeEditorView cev = new CodeEditorView(mcreator, code, virtualFile.getName(), virtualFile, readOnly);
 			cev = (CodeEditorView) cev.showView();
-			cev.te.setCaretPosition(caret);
-			cev.te.requestFocus();
+			cev.getEditor().setCaretPosition(caret);
+			cev.getEditor().requestFocus();
 			return cev;
 
 		}

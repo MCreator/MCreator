@@ -33,7 +33,7 @@ public class ReformatCodeAndImportsAction extends BasicAction {
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {
 					codeEditorView.reformatTheCodeOrganiseAndFixImports();
-					codeEditorView.te.showNotification(L10N.t("action.ide.reformat_and_imports.result"));
+					codeEditorView.getEditor().showNotification(L10N.t("action.ide.reformat_and_imports.result"));
 				}
 			}
 		});

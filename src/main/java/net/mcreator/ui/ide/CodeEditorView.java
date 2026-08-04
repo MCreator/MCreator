@@ -67,13 +67,11 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			"cfg", "fsh", "vsh", "csv",
 			"classtweaker"); // classtweaker is Fabric's access transformer format (formerly known as accesswidener)
 
-	private final JSplitPane spne = new JSplitPane();
-	private final JScrollPane treeSP = new JScrollPane();
-	private final JPanel cp = new JPanel(new BorderLayout());
-
 	public ChangeListener changeListener;
 
-	public final MonacoEditorPanel te;
+	private final MonacoEditorPanel te;
+
+	public MonacoEditorPanel getEditor() { return te; }
 
 	public File fileWorkingOn;
 
@@ -130,10 +128,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			@Override public void onBreakpointToggled(int line) { if (breakpointHandler != null) breakpointHandler.toggleBreakpoint(line); }
 			@Override public void onOpenDeclaration(String word) { handleOpenDeclaration(word); }
 		});
-
-		spne.setLeftComponent(te);
-		spne.setContinuousLayout(true);
-		spne.setBorder(null);
 
 		JPanel bars = new JPanel(new BorderLayout(2, 2));
 		ComponentUtils.deriveFont(ro, 12);
@@ -310,11 +304,11 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					shouldClose = true;
 				}
 				if (shouldClose) {
-					MonacoEditorPool.recycle(((CodeEditorView) tab.getContent()).te);
+					MonacoEditorPool.recycle(((CodeEditorView) tab.getContent()).getEditor());
 				}
 				return shouldClose;
 			}
-			MonacoEditorPool.recycle(((CodeEditorView) tab.getContent()).te);
+			MonacoEditorPool.recycle(((CodeEditorView) tab.getContent()).getEditor());
 			return true;
 		});
 

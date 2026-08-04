@@ -33,7 +33,7 @@ public class SaveCodeAction extends BasicAction {
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {
 					codeEditorView.saveCode();
-					codeEditorView.te.showNotification(L10N.t("action.ide.save.result"));
+					codeEditorView.getEditor().showNotification(L10N.t("action.ide.save.result"));
 				}
 			}
 		});

@@ -23,6 +23,8 @@ import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
 import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -35,6 +37,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class JavaTypeResolver {
+
+	private static final Logger LOG = LogManager.getLogger(JavaTypeResolver.class);
+	private static final Pattern METHOD_PATTERN = Pattern.compile("((?:public|protected|static|final|native|synchronized|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)");
+	private static final Pattern FIELD_PATTERN = Pattern.compile("((?:public|protected|static|final|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])");
+	private static final Pattern IMPORT_PATTERN = Pattern.compile("import\\s+([a-zA-Z0-9_.]+);");
+	private static final Pattern EXTENDS_PATTERN = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
 
 	public static class CompletionItem {
 		public String label;
@@ -174,7 +182,8 @@ public class JavaTypeResolver {
 									}
 								}
 							}
-						} catch (Exception ignored) {
+						} catch (Exception e) {
+							LOG.debug("could not read source from jar", e);
 						}
 					}
 				}
@@ -182,8 +191,7 @@ public class JavaTypeResolver {
 
 			if (srcCode != null) {
 				parseSourceCodeCompletions(srcCode, result, added);
-				Pattern extendsPattern = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
-				Matcher matcher = extendsPattern.matcher(srcCode);
+				Matcher matcher = EXTENDS_PATTERN.matcher(srcCode);
 				if (matcher.find()) {
 					String parentName = matcher.group(1);
 					Map<String, String> imports = parseImports(srcCode);
@@ -200,8 +208,7 @@ public class JavaTypeResolver {
 	private static void parseSourceCodeCompletions(String srcCode, List<CompletionItem> result, Set<String> added) {
 		if (srcCode == null || srcCode.isEmpty()) return;
 
-		Pattern methodPattern = Pattern.compile("((?:public|protected|static|final|native|synchronized|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)");
-		Matcher matcher = methodPattern.matcher(srcCode);
+		Matcher matcher = METHOD_PATTERN.matcher(srcCode);
 		while (matcher.find()) {
 			boolean isStatic = matcher.group(1).contains("static");
 			String returnType = matcher.group(2);
@@ -235,8 +242,7 @@ public class JavaTypeResolver {
 			addMethodCompletion(mName, returnType, pTypes, pNames, isStatic, result, added);
 		}
 
-		Pattern fieldPattern = Pattern.compile("((?:public|protected|static|final|\\s)+)\\b([A-Za-z0-9_<>]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])");
-		Matcher fieldMatcher = fieldPattern.matcher(srcCode);
+		Matcher fieldMatcher = FIELD_PATTERN.matcher(srcCode);
 		while (fieldMatcher.find()) {
 			boolean isStatic = fieldMatcher.group(1).contains("static");
 			String fType = fieldMatcher.group(2);
@@ -248,8 +254,7 @@ public class JavaTypeResolver {
 
 	private static Map<String, String> parseImports(String code) {
 		Map<String, String> imports = new HashMap<>();
-		Pattern importPattern = Pattern.compile("import\\s+([a-zA-Z0-9_.]+);");
-		Matcher importMatcher = importPattern.matcher(code);
+		Matcher importMatcher = IMPORT_PATTERN.matcher(code);
 		while (importMatcher.find()) {
 			String imp = importMatcher.group(1);
 			if (imp.contains(".")) {
@@ -368,8 +373,7 @@ public class JavaTypeResolver {
 		if (base.equals("this") || base.equals("super")) {
 			currentFQDN = currentClassFQDN;
 			if (base.equals("super") && currentFQDN != null) {
-				Pattern extendsPattern = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
-				Matcher matcher = extendsPattern.matcher(code);
+				Matcher matcher = EXTENDS_PATTERN.matcher(code);
 				if (matcher.find()) {
 					String parentName = matcher.group(1);
 					currentFQDN = resolveSimpleTypeName(parentName, imports, workspace, currentPkg);

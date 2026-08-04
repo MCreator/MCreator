@@ -42,7 +42,7 @@ public class ReloadCodeAction extends BasicAction {
 								L10N.t("action.ide.reload_code.dialog"), L10N.t("common.confirmation"),
 								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (sel == JOptionPane.OK_OPTION) {
-						codeEditorView.te.setText(FileIO.readFileToString(curr));
+						codeEditorView.getEditor().setText(FileIO.readFileToString(curr));
 						codeEditorView.changed = false;
 						if (codeEditorView.changeListener != null)
 							codeEditorView.changeListener.stateChanged(new ChangeEvent(codeEditorView));

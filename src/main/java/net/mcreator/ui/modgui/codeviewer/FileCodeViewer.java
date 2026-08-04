@@ -46,7 +46,7 @@ public class FileCodeViewer<T extends GeneratableElement> extends JPanel {
 
 		try {
 			String code = format(file);
-			cev.te.setText(code);
+			cev.getEditor().setText(code);
 			oldCode = code;
 		} catch (Exception e) {
 			oldCode = "";
@@ -56,9 +56,9 @@ public class FileCodeViewer<T extends GeneratableElement> extends JPanel {
 	public boolean update(GeneratorFile file) throws Exception {
 		String code = format(file);
 		if (!code.equals(oldCode)) {
-			cev.te.setText(code);
+			cev.getEditor().setText(code);
 			try {
-				cev.te.setCaretPosition(StringUtils.indexOfDifference(oldCode, code));
+				cev.getEditor().setCaretPosition(StringUtils.indexOfDifference(oldCode, code));
 			} catch (Exception ignored) {
 			}
 			oldCode = code;

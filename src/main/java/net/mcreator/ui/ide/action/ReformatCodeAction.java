@@ -33,7 +33,7 @@ public class ReformatCodeAction extends BasicAction {
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {
 					codeEditorView.reformatTheCodeOnly();
-					codeEditorView.te.showNotification(L10N.t("action.ide.reformat_code_only.result"));
+					codeEditorView.getEditor().showNotification(L10N.t("action.ide.reformat_code_only.result"));
 				}
 			}
 		});

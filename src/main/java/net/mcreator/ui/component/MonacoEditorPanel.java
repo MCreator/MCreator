@@ -27,6 +27,8 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.themes.LegacyCodeEditorThemes;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -42,6 +44,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 public class MonacoEditorPanel extends JPanel implements Closeable {
+
+	private static final Logger LOG = LogManager.getLogger(MonacoEditorPanel.class);
 
 	private final WebView webView;
 	private final List<ChangeListener> changeListeners = new CopyOnWriteArrayList<>();
@@ -90,36 +94,36 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 
 	private static String buildExternalClassesJson(Workspace workspace) {
 		if (workspace == null || workspace.getGenerator() == null) return "[]";
-			Map<String, List<String>> tree = null;
-			if (workspace.getGenerator().getGradleCache() != null) {
-				tree = workspace.getGenerator().getGradleCache().getImportTree();
-			} else if (workspace.getGenerator().getProjectJarManager() != null) {
-				tree = ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager());
-			}
-			StringBuilder sb = new StringBuilder("[");
-			boolean first = true;
+		Map<String, List<String>> tree = null;
+		if (workspace.getGenerator().getGradleCache() != null) {
+			tree = workspace.getGenerator().getGradleCache().getImportTree();
+		} else if (workspace.getGenerator().getProjectJarManager() != null) {
+			tree = ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager());
+		}
+		StringBuilder sb = new StringBuilder("[");
+		boolean first = true;
 
-			if (tree != null) {
-				for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
-					String className = entry.getKey();
-					List<String> fqdns = entry.getValue();
-					if (fqdns != null && !fqdns.isEmpty()) {
-						String fqdn = fqdns.get(0);
-						String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-						if (!first) sb.append(",");
-						sb.append("{\"name\":\"").append(className).append("\",\"pkg\":\"").append(pkg).append("\"}");
-						first = false;
-					}
+		if (tree != null) {
+			for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
+				String className = entry.getKey();
+				List<String> fqdns = entry.getValue();
+				if (fqdns != null && !fqdns.isEmpty()) {
+					String fqdn = fqdns.get(0);
+					String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+					if (!first) sb.append(",");
+					sb.append("{\"name\":\"").append(className).append("\",\"pkg\":\"").append(pkg).append("\"}");
+					first = false;
 				}
 			}
+		}
 
-			File srcRoot = workspace.getGenerator().getSourceRoot();
-			if (srcRoot != null && srcRoot.isDirectory()) {
-				addWorkspaceSourceFiles(srcRoot, srcRoot, sb, first);
-			}
+		File srcRoot = workspace.getGenerator().getSourceRoot();
+		if (srcRoot != null && srcRoot.isDirectory()) {
+			addWorkspaceSourceFiles(srcRoot, srcRoot, sb, first);
+		}
 
-			sb.append("]");
-			return sb.toString();
+		sb.append("]");
+		return sb.toString();
 	}
 
 	private static boolean addWorkspaceSourceFiles(File root, File dir, StringBuilder sb, boolean first) {
@@ -166,7 +170,8 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		executeAsyncJS(script);
 
 		if (themeJson != null) {
-			executeAsyncJS("monaco.editor.defineTheme('dynamic-theme', " + themeJson + "); monaco.editor.setTheme('dynamic-theme');");
+			String uniqueThemeId = "dyn-" + System.nanoTime();
+			executeAsyncJS("monaco.editor.defineTheme('" + uniqueThemeId + "', " + themeJson + "); monaco.editor.setTheme('" + uniqueThemeId + "');");
 		} else {
 			executeAsyncJS("monaco.editor.setTheme('vs-dark');");
 		}
@@ -196,7 +201,7 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 					is.close();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.warn("Failed to load editor theme", e);
 			}
 		} else {
 			jsonStr = LegacyCodeEditorThemes.getThemeJson(editorThemePref);
@@ -398,7 +403,7 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 				int line = Integer.parseInt(lineStr);
 				invokeListener(() -> editorEventListener.onBreakpointToggled(line));
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				LOG.warn("bad breakpoint line: {}", lineStr);
 			}
 		}
 

@@ -31,7 +31,7 @@ public class ShowReplaceAction extends BasicAction {
 		super(actionRegistry, L10N.t("action.ide.replace_in_code"), actionEvent -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
-				codeEditorView.te.triggerReplace();
+				codeEditorView.getEditor().triggerReplace();
 			}
 		});
 		actionRegistry.getMCreator().getTabs()
