@@ -217,20 +217,21 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 	}
 
 	private static class FailOnWarnAppender extends AbstractAppender {
-		private static final boolean MCREATOR_TESTS_FAIL_ON_WARN =
+		/**
+		 * Plugins can use this flag to disable test failures caused by WARN-level errors.
+		 * This flag is enabled by default.
+		 **/
+		private static final Level FAIL_LEVEL =
 				System.getenv("MCREATOR_TESTS_FAIL_ON_WARN") == null || Boolean.parseBoolean(
-						System.getenv("MCREATOR_TESTS_FAIL_ON_WARN"));
+						System.getenv("MCREATOR_TESTS_FAIL_ON_WARN")) ? Level.WARN : Level.ERROR;
 
 		public FailOnWarnAppender() {
 			super("FailOnWarn", null, null, false, Property.EMPTY_ARRAY);
 		}
 
 		@Override public void append(LogEvent event) {
-			Level level = event.getLevel();
-
-			if (level.isMoreSpecificThan(Level.WARN)) {
-				if (MCREATOR_TESTS_FAIL_ON_WARN || !level.equals(Level.WARN))
-					failTests();
+			if (event.getLevel().isMoreSpecificThan(FAIL_LEVEL)) {
+				failTests();
 			}
 		}
 	}
