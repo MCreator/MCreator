@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import com.google.gson.Gson;
 import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.JavaTypeResolver;
 import net.mcreator.plugin.PluginLoader;
@@ -30,16 +31,19 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.io.Closeable;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
@@ -86,22 +90,23 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 
 	private void sendExternalClassesToMonaco() {
 		if (workspace == null) return;
-		new Thread(() -> {
+		CompletableFuture.runAsync(() -> {
 			String json = buildExternalClassesJson(workspace);
 			executeAsyncJS("setExternalClasses(" + json + ");");
-		}, "MonacoExternalClassesLoader").start();
+		});
 	}
+
+	private record ClassEntry(String name, String pkg) {}
 
 	private static String buildExternalClassesJson(Workspace workspace) {
 		if (workspace == null || workspace.getGenerator() == null) return "[]";
+		List<ClassEntry> entries = new ArrayList<>();
 		Map<String, List<String>> tree = null;
 		if (workspace.getGenerator().getGradleCache() != null) {
 			tree = workspace.getGenerator().getGradleCache().getImportTree();
 		} else if (workspace.getGenerator().getProjectJarManager() != null) {
 			tree = ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager());
 		}
-		StringBuilder sb = new StringBuilder("[");
-		boolean first = true;
 
 		if (tree != null) {
 			for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
@@ -110,28 +115,25 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 				if (fqdns != null && !fqdns.isEmpty()) {
 					String fqdn = fqdns.get(0);
 					String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-					if (!first) sb.append(",");
-					sb.append("{\"name\":\"").append(className).append("\",\"pkg\":\"").append(pkg).append("\"}");
-					first = false;
+					entries.add(new ClassEntry(className, pkg));
 				}
 			}
 		}
 
 		File srcRoot = workspace.getGenerator().getSourceRoot();
 		if (srcRoot != null && srcRoot.isDirectory()) {
-			addWorkspaceSourceFiles(srcRoot, srcRoot, sb, first);
+			addWorkspaceSourceFiles(srcRoot, srcRoot, entries);
 		}
 
-		sb.append("]");
-		return sb.toString();
+		return new Gson().toJson(entries);
 	}
 
-	private static boolean addWorkspaceSourceFiles(File root, File dir, StringBuilder sb, boolean first) {
+	private static void addWorkspaceSourceFiles(File root, File dir, List<ClassEntry> entries) {
 		File[] files = dir.listFiles();
-		if (files == null) return first;
+		if (files == null) return;
 		for (File f : files) {
 			if (f.isDirectory()) {
-				first = addWorkspaceSourceFiles(root, f, sb, first);
+				addWorkspaceSourceFiles(root, f, entries);
 			} else if (f.getName().endsWith(".java")) {
 				String name = f.getName().substring(0, f.getName().length() - 5);
 				String relPath = root.toPath().relativize(f.toPath()).toString().replace('\\', '.').replace('/', '.');
@@ -139,12 +141,9 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 				if (pkg.endsWith("." + name)) {
 					pkg = pkg.substring(0, pkg.length() - name.length() - 1);
 				}
-				if (!first) sb.append(",");
-				sb.append("{\"name\":\"").append(name).append("\",\"pkg\":\"").append(pkg).append("\"}");
-				first = false;
+				entries.add(new ClassEntry(name, pkg));
 			}
 		}
-		return first;
 	}
 
 	public boolean isLoaded() {
@@ -412,12 +411,12 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 		}
 
 		public void getDotCompletions(String targetName, String code, String codeBeforeCursor, Consumer<Object> callback) {
-			new Thread(() -> {
+			CompletableFuture.runAsync(() -> {
 				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, workspace);
 				if (callback != null) {
 					invokeListener(() -> callback.accept(new Object[] { items }));
 				}
-			}, "MonacoDotCompletions").start();
+			});
 		}
 
 		public void onEditorReady() {

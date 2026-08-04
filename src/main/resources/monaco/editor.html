@@ -103,7 +103,7 @@
 
         editor.onMouseDown(function (e) {
             var isJava = editor.getModel() && editor.getModel().getLanguageId() === 'java';
-            if (isJava && e.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN) {
+            if (isJava && e.target && e.target.type === monaco.editor.MouseTargetType.GUTTER_GLYPH_MARGIN && e.target.position) {
                 var line = e.target.position.lineNumber;
                 invokeBridge('onBreakpointToggled', line.toString());
             }
