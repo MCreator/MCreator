@@ -35,6 +35,7 @@ import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ClassFinder {
 	public static String getCurrentFQDN(String code) {
 		try {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(
-					"File.java", new Scanner(new java.io.StringReader(code)));
+					"File.java", new Scanner(new StringReader(code)));
 			Iterator<TypeDeclaration> i = cu.getTypeDeclarationIterator();
 			while (i.hasNext()) {
 				TypeDeclaration td = i.next();
