@@ -113,9 +113,10 @@ public class MonacoEditorPanel extends JPanel implements Closeable {
 				String className = entry.getKey();
 				List<String> fqdns = entry.getValue();
 				if (fqdns != null && !fqdns.isEmpty()) {
-					String fqdn = fqdns.get(0);
-					String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-					entries.add(new ClassEntry(className, pkg));
+					for (String fqdn : fqdns) {
+						String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+						entries.add(new ClassEntry(className, pkg));
+					}
 				}
 			}
 		}

@@ -146,13 +146,14 @@ function handleGeneralCompletion(model, position, range, lineUntilPosition, word
         var addedClasses = {};
         for (var i = 0; i < externalClasses.length; i++) {
             var cls = externalClasses[i];
-            if (cls.name && !cls.name.includes('.') && !addedClasses[cls.name]) {
-                addedClasses[cls.name] = true;
+            var fullClassName = cls.pkg ? (cls.pkg + '.' + cls.name) : cls.name;
+            if (cls.name && !cls.name.includes('.') && !addedClasses[fullClassName]) {
+                addedClasses[fullClassName] = true;
                 suggestions.push({
                     label: cls.name,
                     kind: monaco.languages.CompletionItemKind.Class,
                     detail: cls.pkg,
-                    documentation: cls.pkg ? (cls.pkg + '.' + cls.name) : cls.name,
+                    documentation: fullClassName,
                     insertText: cls.name,
                     range: range
                 });
