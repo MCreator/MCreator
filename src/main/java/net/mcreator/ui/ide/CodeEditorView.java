@@ -399,6 +399,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			te.addKeyListener(new KeyAdapter() {
 
+				private volatile boolean completionInAction = false;
+
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
 					if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
