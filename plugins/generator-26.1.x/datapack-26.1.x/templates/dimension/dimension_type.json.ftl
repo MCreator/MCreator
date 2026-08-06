@@ -92,7 +92,7 @@
   <#elseif data.defaultEffects == "the_nether">
     "has_fixed_time": true,
     "timelines": "#minecraft:in_nether",
-  "cardinal_light": "nether",
+    "cardinal_light": "nether",
   <#elseif data.defaultEffects == "overworld">
     "timelines": "#minecraft:in_overworld",
     "default_clock": "minecraft:overworld",
