@@ -309,12 +309,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				<@buttonOnClick component/>
 			) {
 				@Override public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-					<#if hasProcedure(component.displayCondition)>
-					int x = ${name}Screen.this.x; <#-- x and y provided by buttons are in-GUI, not in-world coordinates -->
-					int y = ${name}Screen.this.y;
-					if (<@procedureOBJToConditionCode component.displayCondition/>)
-					</#if>
-					guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+				    if (this.visible)
+					    guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
 				}
 			};
 
@@ -369,6 +365,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		super.containerTick();
 
 		<#list data.getComponentsOfType("Button") as component>
+			<#if hasProcedure(component.displayCondition)>
+				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+			</#if>
+		</#list>
+
+		<#list data.getComponentsOfType("ImageButton") as component>
 			<#if hasProcedure(component.displayCondition)>
 				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
 			</#if>
