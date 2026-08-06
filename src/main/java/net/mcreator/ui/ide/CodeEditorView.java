@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
+import net.mcreator.ui.ide.autocomplete.CustomJavaCompletionProvider;
 import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
@@ -347,45 +348,23 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
 
 			JavaLanguageSupport jls = new JavaLanguageSupport();
-			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
-			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
-			jls.setParameterAssistanceEnabled(true);
-			jls.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
-
+			jls.setAutoCompleteEnabled(false);
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
 				field.set(jls, mcreator.getGenerator().getProjectJarManager());
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
+			} catch (Throwable ignored) {
 			}
-
 			jls.install(te);
 
-			try {
-				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
-				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
-				method.setAccessible(true);
-				ac = (AutoCompletion) method.invoke(jls, te);
-				ac.setAutoCompleteSingleChoices(false);
-			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
-			         NoSuchMethodException | IllegalAccessException e1) {
-				LOG.error(e1.getMessage(), e1);
-			}
-
-			JavaCompletionProvider jcp = jls.getCompletionProvider(te);
-
-			try {
-				Field field = jcp.getClass().getDeclaredField("sourceProvider");
-				field.setAccessible(true);
-				DefaultCompletionProvider sourceCompletionProvider = (DefaultCompletionProvider) field.get(jcp);
-				jcp.setShorthandCompletionCache(
-						new CustomJSCCache(sourceCompletionProvider, new DefaultCompletionProvider()));
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
-			}
-
-			jcp.setStringCompletionProvider(new StringCompletitionProvider(mcreator.getWorkspace()));
+			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace());
+			ac = new AutoCompletion(jcp);
+			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
+			ac.setAutoActivationDelay(200);
+			ac.setParameterAssistanceEnabled(true);
+			ac.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
+			ac.setAutoCompleteSingleChoices(false);
+			ac.install(te);
 
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
@@ -404,7 +383,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && jls.isAutoActivationEnabled() &&
+							&& !completionInAction && ac.isAutoActivationEnabled() &&
 							// only smart autocomplete if the char we typed is a letter or digit
 							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
 							// only smart autocomplete if we have at least one char already written
