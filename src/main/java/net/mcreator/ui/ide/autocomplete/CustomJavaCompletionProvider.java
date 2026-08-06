@@ -441,15 +441,18 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			if (isClassContext && workspace != null && workspace.getGenerator() != null) {
 				Map<String, List<String>> tree = getImportTreeCached(workspace);
 				if (tree != null) {
+					Set<String> addedFQDNs = new HashSet<>();
 					for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
 						String className = entry.getKey();
 						if (matchesFilter(className, wordOnly)) {
 							List<String> fqdns = entry.getValue();
 							if (fqdns != null && !fqdns.isEmpty()) {
 								for (String fqdn : fqdns) {
-									ClassInfo info = getClassInfo(fqdn);
-									CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
-									completions.add(ccc);
+									if (addedFQDNs.add(fqdn)) {
+										ClassInfo info = getClassInfo(fqdn);
+										CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
+										completions.add(ccc);
+									}
 								}
 							}
 						}
@@ -477,10 +480,18 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			if (workspace != null && workspace.getGenerator() != null) {
 				if (workspace.getGenerator().getGradleCache() != null) {
 					Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
-					if (gTree != null) tree.putAll(gTree);
+					if (gTree != null) {
+						for (Map.Entry<String, List<String>> e : gTree.entrySet()) {
+							tree.put(e.getKey(), new ArrayList<>(e.getValue()));
+						}
+					}
 				} else if (workspace.getGenerator().getProjectJarManager() != null) {
 					Map<String, List<String>> jTree = ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager());
-					if (jTree != null) tree.putAll(jTree);
+					if (jTree != null) {
+						for (Map.Entry<String, List<String>> e : jTree.entrySet()) {
+							tree.put(e.getKey(), new ArrayList<>(e.getValue()));
+						}
+					}
 				}
 				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), tree);
 			}

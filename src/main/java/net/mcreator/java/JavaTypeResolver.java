@@ -347,27 +347,14 @@ public class JavaTypeResolver {
 		}
 
 		if (workspace != null && workspace.getGenerator() != null) {
-			Map<String, List<String>> tree = null;
-			if (workspace.getGenerator().getGradleCache() != null) {
-				tree = workspace.getGenerator().getGradleCache().getImportTree();
-			} else {
-				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-				if (jarManager != null) {
-					tree = ImportTreeBuilder.generateImportTree(jarManager);
-				}
-			}
+			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache() != null ?
+					workspace.getGenerator().getGradleCache().getImportTree() :
+					(workspace.getGenerator().getProjectJarManager() != null ?
+							ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager()) : null);
 
-			if (tree != null && tree.containsKey(typeName)) {
+			if (tree != null) {
+				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), tree);
 				List<String> fqdns = tree.get(typeName);
-				if (fqdns != null && !fqdns.isEmpty()) {
-					return fqdns.getFirst();
-				}
-			}
-
-			Map<String, List<String>> workspaceTree = new HashMap<>();
-			ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), workspaceTree);
-			if (workspaceTree.containsKey(typeName)) {
-				List<String> fqdns = workspaceTree.get(typeName);
 				if (fqdns != null && !fqdns.isEmpty()) {
 					return fqdns.getFirst();
 				}
@@ -399,10 +386,7 @@ public class JavaTypeResolver {
 
 	private static String getReturnTypeOfMember(String fqdn, String member, Workspace workspace) {
 		if (fqdn == null || fqdn.isEmpty()) return null;
-		String memberName = member;
-		if (memberName.contains("(")) {
-			memberName = memberName.substring(0, memberName.indexOf('('));
-		}
+		String memberName = member.contains("(") ? member.substring(0, member.indexOf('(')) : member;
 
 		List<CompletionItem> members = getMembersOfFQDN(fqdn, workspace);
 		for (CompletionItem item : members) {
