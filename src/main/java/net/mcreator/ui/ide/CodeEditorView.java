@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
+import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
@@ -362,6 +363,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			jls.install(te);
 
+			JavaLanguageSupportBridge.bridge(te, jls);
+
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
@@ -395,8 +398,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
 			te.addKeyListener(new KeyAdapter() {
-
-				private volatile boolean completionInAction = false;
 
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
