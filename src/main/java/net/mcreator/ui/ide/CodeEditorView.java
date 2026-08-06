@@ -360,7 +360,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace());
 			ac = new AutoCompletion(jcp);
 			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
-			ac.setAutoActivationDelay(200);
+			ac.setAutoActivationDelay(0);
 			ac.setParameterAssistanceEnabled(true);
 			ac.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
 			ac.setAutoCompleteSingleChoices(false);

@@ -49,6 +49,32 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private static Map<String, List<String>> cachedImportTree = null;
 	private static long lastImportTreeUpdate = 0;
 
+	private static class ClassInfo {
+		final String pkg;
+		final boolean isInterface;
+		final boolean isEnum;
+
+		ClassInfo(String fqdn) {
+			this.pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+			boolean inf = false;
+			boolean enm = false;
+			try {
+				Class<?> clazz = Class.forName(fqdn);
+				inf = clazz.isInterface();
+				enm = clazz.isEnum();
+			} catch (Throwable ignored) {
+			}
+			this.isInterface = inf;
+			this.isEnum = enm;
+		}
+	}
+
+	private static final Map<String, ClassInfo> CLASS_INFO_CACHE = new ConcurrentHashMap<>();
+
+	private static ClassInfo getClassInfo(String fqdn) {
+		return CLASS_INFO_CACHE.computeIfAbsent(fqdn, ClassInfo::new);
+	}
+
 	public static class CustomMethodCompletion extends TemplateCompletion {
 		private final String name;
 		private final String returnType;
@@ -421,16 +447,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 							List<String> fqdns = entry.getValue();
 							if (fqdns != null && !fqdns.isEmpty()) {
 								for (String fqdn : fqdns) {
-									String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-									boolean isInterface = false;
-									boolean isEnum = false;
-									try {
-										Class<?> clazz = Class.forName(fqdn);
-										isInterface = clazz.isInterface();
-										isEnum = clazz.isEnum();
-									} catch (Throwable ignored) {
-									}
-									CustomClassCompletion ccc = new CustomClassCompletion(this, className, pkg, isInterface, isEnum);
+									ClassInfo info = getClassInfo(fqdn);
+									CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
 									completions.add(ccc);
 								}
 							}
