@@ -678,7 +678,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		// Fixed time is only supported when default overworld effects are used
 		boolean supportsFixedTime = !hasCustomEffects && "overworld".equals(defaultEffects.getSelectedItem());
 		hasFixedTime.setEnabled(supportsFixedTime);
-		hasFixedTime.setSelected(false);
 		fixedTimeValue.setEnabled(supportsFixedTime && hasFixedTime.isSelected());
 	}
 
