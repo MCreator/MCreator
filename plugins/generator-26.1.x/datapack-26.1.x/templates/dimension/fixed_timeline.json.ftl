@@ -173,7 +173,12 @@
   "period_ticks": 24000,
   "tracks": {
 <#assign tracks = timelineData.tracks>
+<#-- Custom effects dimensions with sun height effects disabled keep fog and sunrise/sunset colors constant -->
+<#if data.useCustomEffects && !data.sunHeightAffectsFog>
+<#assign trackNames = tracks?keys?filter(name -> name != "minecraft:visual/fog_color" && name != "minecraft:visual/sunrise_sunset_color")?sequence>
+<#else>
 <#assign trackNames = tracks?keys>
+</#if>
 <#list trackNames as trackName>
   <#assign track = tracks[trackName]>
   <#assign val = getTrackValue(trackName, track, data.fixedTimeValue)>

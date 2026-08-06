@@ -425,7 +425,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		enableCustomSkyboxTextures.addActionListener(_ -> updateSkyboxElements());
 		enableCustomSunMoonTextures.addActionListener(_ -> updateSkyboxElements());
-		skyType.addActionListener(_ -> updateSkyboxElements());
+		skyType.addActionListener(_ -> {
+			updateSkyboxElements();
+			updateDimensionEffectSettings();
+		});
 		updateSkyboxElements();
 
 		// Dimension generation settings
@@ -675,8 +678,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		sunHeightAffectsFog.setEnabled(hasCustomEffects);
 		hasFog.setEnabled(hasCustomEffects);
 
-		// Fixed time is only supported when default overworld effects are used
-		boolean supportsFixedTime = !hasCustomEffects && "overworld".equals(defaultEffects.getSelectedItem());
+		// Fixed time is only supported when there is a day/night cycle to freeze:
+		// default overworld effects, or custom effects with NORMAL sky type
+		boolean supportsFixedTime = hasCustomEffects ?
+				"NORMAL".equals(skyType.getSelectedItem()) :
+				"overworld".equals(defaultEffects.getSelectedItem());
 		hasFixedTime.setEnabled(supportsFixedTime);
 		fixedTimeValue.setEnabled(supportsFixedTime && hasFixedTime.isSelected());
 	}
