@@ -853,7 +853,7 @@ public class TestWorkspaceDataProvider {
 			dimension.imitateOverworldBehaviour = _true;
 			dimension.ambientLight = getRandomDouble(random, Dimension.class, "ambientLight");
 			dimension.doesWaterVaporize = !_true;
-			dimension.hasFixedTime = !_true && !emptyLists; // UI resets this to false if useCustomEffects is enabled
+			dimension.hasFixedTime = !_true;
 			dimension.fixedTimeValue = getRandomInt(random, Dimension.class, "fixedTimeValue");
 			dimension.coordinateScale = getRandomDouble(random, Dimension.class, "coordinateScale");
 			dimension.infiniburnTag = "minecraft:infiniburn_end";
@@ -863,9 +863,8 @@ public class TestWorkspaceDataProvider {
 			dimension.maxMonsterSpawnLightLimit = monsterSpawnLightLimit.getMaximum();
 			dimension.monsterSpawnBlockLightLimit = getRandomInt(random, Dimension.class,
 					"monsterSpawnBlockLightLimit");
-			dimension.defaultEffects = dimension.hasFixedTime ?
-					"overworld" : // UI resets hasFixedTime to false unless default overworld effects are used
-					getRandomString(random, AnnotationUtils.getLimitedOptionsList(Dimension.class, "defaultEffects"));
+			dimension.defaultEffects = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(Dimension.class, "defaultEffects"));
 			dimension.useCustomEffects = emptyLists;
 			dimension.hasClouds = _true;
 			dimension.cloudHeight = getRandomInt(random, Dimension.class, "cloudHeight");
