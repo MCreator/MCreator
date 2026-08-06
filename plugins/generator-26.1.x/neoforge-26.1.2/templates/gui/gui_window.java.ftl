@@ -292,7 +292,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				<@buttonOnClick component/>
 			) {
 				@Override public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-	                guiGraphics.blit(RenderPipelines.GUI_TEXTURED, sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+					guiGraphics.blit(RenderPipelines.GUI_TEXTURED, sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
 				}
 			};
 
@@ -343,7 +343,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	}
 
 	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0
-	    || data.getComponentsOfType("ImageButton")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
+		|| data.getComponentsOfType("ImageButton")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
 	@Override protected void containerTick() {
 		super.containerTick();
 

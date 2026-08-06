@@ -309,7 +309,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				<@buttonOnClick component/>
 			) {
 				@Override public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		            guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+					guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
 				}
 			};
 
@@ -360,7 +360,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	}
 
 	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0
-	    || data.getComponentsOfType("ImageButton")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
+		|| data.getComponentsOfType("ImageButton")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
 	@Override protected void containerTick() {
 		super.containerTick();
 
