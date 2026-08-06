@@ -60,6 +60,7 @@ import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -397,6 +398,11 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
+			// Computing completions is expensive, so smart autocomplete only evaluates them after
+			// a short pause in typing instead of on every keystroke to avoid blocking the EDT.
+			// Once the popup is open, AutoCompletePopupWindow narrows the list on each keystroke itself.
+			Timer smartAutocompleteTimer = createSmartAutocompleteTimer(jcp);
+
 			te.addKeyListener(new KeyAdapter() {
 
 				@Override public void keyPressed(KeyEvent keyEvent) {
@@ -405,28 +411,12 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && jls.isAutoActivationEnabled() &&
+							&& jls.isAutoActivationEnabled()
+							// if the popup is already visible, the library refreshes it on caret updates
+							&& ac != null && !ac.isPopupVisible()
 							// only smart autocomplete if the char we typed is a letter or digit
-							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
-							// only smart autocomplete if we have at least one char already written
-							!jcp.getAlreadyEnteredText(te).isBlank()
-							// only smart autocomplete if we have more than one completion to choose from
-							// (so it is not applied automatically when we don't want to)
-							&& jcp.getCompletions(te).size() > 1) {
-						if (!completionInAction) {
-							new Thread(() -> {
-								if (ac != null) {
-									completionInAction = true;
-									ThreadUtil.runOnSwingThreadAndWait(() -> {
-										try {
-											ac.doCompletion();
-										} catch (Throwable ignored) {
-										}
-									});
-									completionInAction = false;
-								}
-							}, "AutoComplete").start();
-						}
+							&& Character.isLetterOrDigit(keyEvent.getKeyChar())) {
+						smartAutocompleteTimer.restart();
 					}
 				}
 
@@ -510,6 +500,26 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		}
 
 		SwingUtilities.invokeLater(this::loadSourceTree);
+	}
+
+	@Nonnull private Timer createSmartAutocompleteTimer(JavaCompletionProvider jcp) {
+		Timer smartAutocompleteTimer = new Timer(200, _ -> {
+			if (ac == null)
+				return;
+			// only smart autocomplete if we have at least one char written before the one that
+			// triggered the timer (timer fires after the typed char is inserted into the document)
+			if (jcp.getAlreadyEnteredText(te).length() > 1
+					// only smart autocomplete if we have more than one completion to choose from
+					// (so it is not applied automatically when we don't want to)
+					&& jcp.getCompletions(te).size() > 1) {
+				try {
+					ac.doCompletion();
+				} catch (Throwable ignored) {
+				}
+			}
+		});
+		smartAutocompleteTimer.setRepeats(false);
+		return smartAutocompleteTimer;
 	}
 
 	private void setCustomNotice(String notice) {
