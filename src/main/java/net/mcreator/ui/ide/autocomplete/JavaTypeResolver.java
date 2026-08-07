@@ -30,102 +30,75 @@ import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 
+import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster.model.JavaType;
+import org.jboss.forge.roaster.model.source.*;
+
+import org.fife.rsta.ac.java.rjc.lexer.Scanner;
+import org.fife.rsta.ac.java.rjc.lexer.Token;
+
 import java.io.File;
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class JavaTypeResolver {
 
 	private static final Logger LOG = LogManager.getLogger(JavaTypeResolver.class);
-	private static final Pattern METHOD_PATTERN = Pattern.compile("^[ \\t]*((?:(?:public|protected|private|default|static|final|native|synchronized|abstract)\\s+)*)\\b([A-Za-z0-9_<>?\\[\\]]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)", Pattern.MULTILINE);
-	private static final Pattern FIELD_PATTERN = Pattern.compile("(?:@[A-Za-z0-9_$.]+(?:\\([^)]*\\))?\\s*)*(?:^|[ \\t;{}])((?:(?:public|protected|private|default|static|final|volatile|transient)\\s+)+)([A-Za-z0-9_$.<>?, \\t\\[\\]]+?)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])", Pattern.MULTILINE);
-	private static final Pattern IMPORT_PATTERN = Pattern.compile("import\\s+([a-zA-Z0-9_.]+);");
-	private static final Pattern EXTENDS_PATTERN = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
+	private static final Map<String, Map<String, String>> IMPORTS_CACHE = new ConcurrentHashMap<>();
 
 	public static class CompletionItem {
-		public String label;
-		public String insertText;
-		public String kind; // "method" or "field"
-		public String detail;
-		public String declaringClass;
-		public String visibility = "public"; // "public", "protected", "private", "package"
-		public boolean isSnippet;
-		public boolean isStatic;
-		public boolean isFinal;
-		public boolean isAbstract;
-		public boolean isDeprecated;
-		public List<String> paramTypes;
-		public List<String> paramNames;
-		public List<String> fqdnParamTypes;
-	}
+		public String label, insertText, kind, detail, declaringClass, visibility;
+		public boolean isSnippet, isStatic, isFinal, isAbstract, isDeprecated;
+		public List<String> paramTypes, paramNames, fqdnParamTypes;
 
-	public static class ResolutionResult {
-		public String fqdn;
-		public boolean isStaticContext;
-		public ResolutionResult(String fqdn, boolean isStaticContext) {
-			this.fqdn = fqdn;
-			this.isStaticContext = isStaticContext;
+		public CompletionItem(String label, String insertText, String kind, String detail, String declaringClass, String visibility, boolean isSnippet, boolean isStatic, boolean isFinal, boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames, List<String> fqdnParamTypes) {
+			this.label = label;
+			this.insertText = insertText;
+			this.kind = kind;
+			this.detail = detail;
+			this.declaringClass = declaringClass;
+			this.visibility = visibility;
+			this.isSnippet = isSnippet;
+			this.isStatic = isStatic;
+			this.isFinal = isFinal;
+			this.isAbstract = isAbstract;
+			this.isDeprecated = isDeprecated;
+			this.paramTypes = paramTypes;
+			this.paramNames = paramNames;
+			this.fqdnParamTypes = fqdnParamTypes;
 		}
 	}
+
+	public record ResolutionResult(String fqdn, boolean isStaticContext) {}
 
 	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, String[] fqdnParamTypes, boolean isStatic, boolean isAbstract, boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result, Set<String> added) {
 		StringBuilder label = new StringBuilder(mName).append("(");
 		StringBuilder insert = new StringBuilder(mName).append("(");
-
 		for (int i = 0; i < paramNames.length; i++) {
 			if (i > 0) {
 				label.append(", ");
 				insert.append(", ");
 			}
-			String pType = paramTypes[i];
-			String pName = paramNames[i];
-			label.append(pType).append(" ").append(pName);
-			insert.append("${").append(i + 1).append(":").append(pName).append("}");
+			label.append(paramTypes[i]).append(" ").append(paramNames[i]);
+			insert.append("${").append(i + 1).append(":").append(paramNames[i]).append("}");
 		}
 		label.append(")");
 		insert.append(")");
-
 		String key = label.toString();
 		if (added.add(key)) {
-			CompletionItem item = new CompletionItem();
-			item.label = key;
-			item.insertText = paramNames.length > 0 ? insert.toString() : mName + "()";
-			item.kind = "method";
-			item.detail = returnType;
-			item.declaringClass = declaringClass;
-			item.visibility = visibility;
-			item.isSnippet = paramNames.length > 0;
-			item.isStatic = isStatic;
-			item.isAbstract = isAbstract;
-			item.isDeprecated = isDeprecated;
-			item.paramTypes = Arrays.asList(paramTypes);
-			item.paramNames = Arrays.asList(paramNames);
-			item.fqdnParamTypes = fqdnParamTypes != null ? Arrays.asList(fqdnParamTypes) : Arrays.asList(paramTypes);
-			result.add(item);
+			result.add(new CompletionItem(key, paramNames.length > 0 ? insert.toString() : mName + "()", "method", returnType, declaringClass, visibility, paramNames.length > 0, isStatic, false, isAbstract, isDeprecated, Arrays.asList(paramTypes), Arrays.asList(paramNames), fqdnParamTypes != null ? Arrays.asList(fqdnParamTypes) : Arrays.asList(paramTypes)));
 		}
 	}
 
 	private static void addFieldCompletion(String fName, String fType, boolean isStatic, boolean isFinal, boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result, Set<String> added) {
 		if (added.add(fName)) {
-			CompletionItem item = new CompletionItem();
-			item.label = fName;
-			item.insertText = fName;
-			item.kind = "field";
-			item.detail = fType;
-			item.declaringClass = declaringClass;
-			item.visibility = visibility;
-			item.isSnippet = false;
-			item.isStatic = isStatic;
-			item.isFinal = isFinal;
-			item.isDeprecated = isDeprecated;
-			result.add(item);
+			result.add(new CompletionItem(fName, fName, "field", fType, declaringClass, visibility, false, isStatic, isFinal, false, isDeprecated, null, null, null));
 		}
 	}
 
@@ -159,7 +132,7 @@ public class JavaTypeResolver {
 		Set<String> visited = new HashSet<>();
 		populateMembersOfFQDN(fqdn, workspace, result, added, visited);
 		if (!result.isEmpty()) {
-			MEMBER_CACHE.put(fqdn, Collections.unmodifiableList(new ArrayList<>(result)));
+			MEMBER_CACHE.put(fqdn, List.copyOf(result));
 		}
 		return result;
 	}
@@ -220,15 +193,6 @@ public class JavaTypeResolver {
 							ZipEntry entry = zipFile.getEntry(entryName);
 							if (entry != null) {
 								srcCode = ZipIO.entryToString(zipFile, entry);
-							} else {
-								Enumeration<? extends ZipEntry> entries = zipFile.entries();
-								while (entries.hasMoreElements()) {
-									ZipEntry e = entries.nextElement();
-									if (e.getName().endsWith(entryName)) {
-										srcCode = ZipIO.entryToString(zipFile, e);
-										break;
-									}
-								}
 							}
 						} catch (Exception e) {
 							LOG.debug("could not read source from jar", e);
@@ -239,15 +203,20 @@ public class JavaTypeResolver {
 
 			if (srcCode != null) {
 				parseSourceCodeCompletions(srcCode, declaringClass, result, added);
-				Matcher matcher = EXTENDS_PATTERN.matcher(srcCode);
-				if (matcher.find()) {
-					String parentName = matcher.group(1);
-					Map<String, String> imports = parseImports(srcCode);
-					String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-					String parentFQDN = resolveSimpleTypeName(parentName, imports, workspace, pkg);
-					if (parentFQDN != null) {
-						populateMembersOfFQDN(parentFQDN, workspace, result, added, visited);
+				try {
+					JavaType<?> source = Roaster.parse(srcCode);
+					if (source instanceof JavaClassSource javaClass) {
+						String parentName = javaClass.getSuperType();
+						if (parentName != null && !parentName.isEmpty() && !parentName.equals("java.lang.Object")) {
+							Map<String, String> imports = parseImports(srcCode);
+							String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+							String parentFQDN = resolveSimpleTypeName(parentName, imports, workspace, pkg);
+							if (parentFQDN != null) {
+								populateMembersOfFQDN(parentFQDN, workspace, result, added, visited);
+							}
+						}
 					}
+				} catch (Throwable ignored) {
 				}
 			}
 		}
@@ -256,74 +225,68 @@ public class JavaTypeResolver {
 	private static void parseSourceCodeCompletions(String srcCode, String declaringClass, List<CompletionItem> result, Set<String> added) {
 		if (srcCode == null || srcCode.isEmpty()) return;
 
-		Map<String, String> imports = parseImports(srcCode);
+		try {
+			JavaType<?> source = Roaster.parse(srcCode);
 
-		Matcher matcher = METHOD_PATTERN.matcher(srcCode);
-		while (matcher.find()) {
-			String modsStr = matcher.group(1);
-			boolean isStatic = modsStr.contains("static");
-			boolean isAbstract = modsStr.contains("abstract");
-			String vis = modsStr.contains("protected") ? "protected" : (modsStr.contains("private") ? "private" : (modsStr.contains("public") ? "public" : "package"));
-			String returnType = matcher.group(2);
-			String mName = matcher.group(3);
-			String paramsRaw = matcher.group(4);
+			List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ? (List) fhs.getFields() : Collections.emptyList();
+			List<MethodSource<?>> methods = source instanceof MethodHolderSource<?> mhs ? (List) mhs.getMethods() : Collections.emptyList();
 
-			if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
-			if (returnType.equals("new") || returnType.equals("return") || returnType.equals("throw") || returnType.equals("else")) continue;
+			for (FieldSource<?> f : fields) {
+				if (f.isPrivate()) continue;
+				String fName = f.getName();
+				if (fName.equals("class") || fName.equals("interface") || fName.equals("enum")) continue;
 
-			String[] pTypes;
-			String[] pNames;
-			String[] fqdnPTypes;
-			if (!paramsRaw.trim().isEmpty()) {
-				String[] params = paramsRaw.split(",");
-				pTypes = new String[params.length];
-				pNames = new String[params.length];
-				fqdnPTypes = new String[params.length];
-				for (int p = 0; p < params.length; p++) {
-					String pToken = params[p].trim();
-					int lastSpace = pToken.lastIndexOf(' ');
-					if (lastSpace != -1) {
-						pTypes[p] = pToken.substring(0, lastSpace).trim();
-						pNames[p] = pToken.substring(lastSpace + 1).trim();
-					} else {
-						pTypes[p] = pToken;
-						pNames[p] = pToken;
-					}
-					String resolvedFQDN = imports.get(pTypes[p]);
-					fqdnPTypes[p] = resolvedFQDN != null ? resolvedFQDN : pTypes[p];
-				}
-			} else {
-				pTypes = new String[0];
-				pNames = new String[0];
-				fqdnPTypes = new String[0];
+				String fType = f.getType().getSimpleName();
+				String vis = f.isPublic() ? "public" : (f.isProtected() ? "protected" : "package");
+				addFieldCompletion(fName, fType, f.isStatic(), f.isFinal(), f.hasAnnotation(Deprecated.class), vis, declaringClass, result, added);
 			}
-			addMethodCompletion(mName, returnType, pTypes, pNames, fqdnPTypes, isStatic, isAbstract, false, vis, declaringClass, result, added);
-		}
 
-		Matcher fieldMatcher = FIELD_PATTERN.matcher(srcCode);
-		while (fieldMatcher.find()) {
-			String modsStr = fieldMatcher.group(1);
-			boolean isStatic = modsStr.contains("static");
-			boolean isFinal = modsStr.contains("final");
-			String vis = modsStr.contains("protected") ? "protected" : (modsStr.contains("private") ? "private" : (modsStr.contains("public") ? "public" : "package"));
-			String fType = fieldMatcher.group(2);
-			String fName = fieldMatcher.group(3);
-			if (fName.equals("class") || fName.equals("interface") || fName.equals("enum")) continue;
-			addFieldCompletion(fName, fType, isStatic, isFinal, false, vis, declaringClass, result, added);
+			Map<String, String> imports = parseImports(srcCode);
+			for (MethodSource<?> m : methods) {
+				if (m.isPrivate() || m.isConstructor()) continue;
+				String mName = m.getName();
+				if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
+
+				String returnType = m.getReturnType().getSimpleName();
+				List<? extends ParameterSource<?>> params = m.getParameters();
+				String[] pTypes = new String[params.size()];
+				String[] pNames = new String[params.size()];
+				String[] fqdnPTypes = new String[params.size()];
+
+				for (int p = 0; p < params.size(); p++) {
+					ParameterSource<?> param = params.get(p);
+					pTypes[p] = param.getType().getSimpleName();
+					pNames[p] = param.getName();
+					String rawType = param.getType().getName();
+					String resolvedFQDN = imports.get(rawType);
+					fqdnPTypes[p] = resolvedFQDN != null ? resolvedFQDN : rawType;
+				}
+
+				String vis = m.isPublic() ? "public" : (m.isProtected() ? "protected" : "package");
+				addMethodCompletion(mName, returnType, pTypes, pNames, fqdnPTypes, m.isStatic(), m.isAbstract(), m.hasAnnotation(Deprecated.class), vis, declaringClass, result, added);
+			}
+		} catch (Throwable e) {
+			LOG.debug("Roaster failed to parse source code completions", e);
 		}
 	}
 
 	private static Map<String, String> parseImports(String code) {
-		Map<String, String> imports = new HashMap<>();
-		Matcher importMatcher = IMPORT_PATTERN.matcher(code);
-		while (importMatcher.find()) {
-			String imp = importMatcher.group(1);
-			if (imp.contains(".")) {
-				String simple = imp.substring(imp.lastIndexOf('.') + 1);
-				imports.put(simple, imp);
+		if (code == null || code.isEmpty()) return Collections.emptyMap();
+		return IMPORTS_CACHE.computeIfAbsent(code, c -> {
+			Map<String, String> imports = new HashMap<>();
+			try {
+				JavaType<?> source = Roaster.parse(c);
+				if (source instanceof Importer<?> importer) {
+					for (Import imp : importer.getImports()) {
+						String fqdn = imp.getQualifiedName();
+						String simple = imp.getSimpleName();
+						imports.put(simple, fqdn);
+					}
+				}
+			} catch (Throwable ignored) {
 			}
-		}
-		return imports;
+			return imports;
+		});
 	}
 
 	private static String resolveSimpleTypeName(String typeName, Map<String, String> imports, Workspace workspace, String currentPkg) {
@@ -414,11 +377,17 @@ public class JavaTypeResolver {
 		if (base.equals("this") || base.equals("super")) {
 			currentFQDN = currentClassFQDN;
 			if (base.equals("super") && currentFQDN != null) {
-				Matcher matcher = EXTENDS_PATTERN.matcher(code);
-				if (matcher.find()) {
-					String parentName = matcher.group(1);
-					currentFQDN = resolveSimpleTypeName(parentName, imports, workspace, currentPkg);
-				} else {
+				try {
+					JavaType<?> source = Roaster.parse(code);
+					if (source instanceof JavaClassSource javaClass) {
+						String parentName = javaClass.getSuperType();
+						if (parentName != null && !parentName.isEmpty()) {
+							currentFQDN = resolveSimpleTypeName(parentName, imports, workspace, currentPkg);
+						} else {
+							currentFQDN = "java.lang.Object";
+						}
+					}
+				} catch (Throwable ignored) {
 					currentFQDN = "java.lang.Object";
 				}
 			}
@@ -428,16 +397,21 @@ public class JavaTypeResolver {
 				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, workspace, currentPkg);
 			}
 		} else {
-			Pattern varPattern = Pattern.compile("\\b([A-Z][a-zA-Z0-9_<>]*)\\s+(?:[a-zA-Z0-9_]+\\s*,\\s*)*" + Pattern.quote(base) + "(?:\\s*[,;=)]|\\b)");
-			Matcher varMatcher = varPattern.matcher(codeBeforeCursor);
 			String typeName = null;
-			while (varMatcher.find()) {
-				typeName = varMatcher.group(1);
-				if (typeName.contains("<") && typeName.contains(">")) {
-					typeName = typeName.substring(typeName.indexOf('<') + 1, typeName.indexOf('>'));
-				} else if (typeName.contains("<")) {
-					typeName = typeName.substring(0, typeName.indexOf('<'));
+			try {
+				Scanner scanner = new Scanner(new StringReader(codeBeforeCursor));
+				Token t;
+				Token prevToken = null;
+				while ((t = scanner.yylex()) != null) {
+					if (t.isIdentifier()) {
+						String lex = t.getLexeme();
+						if (lex.equals(base) && prevToken != null && prevToken.isIdentifier() && !prevToken.getLexeme().equals(base) && Character.isUpperCase(prevToken.getLexeme().charAt(0))) {
+							typeName = prevToken.getLexeme();
+						}
+					}
+					prevToken = t;
 				}
+			} catch (Throwable ignored) {
 			}
 
 			if (typeName == null) {

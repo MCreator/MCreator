@@ -24,6 +24,8 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
+import org.fife.rsta.ac.java.rjc.lexer.Scanner;
+import org.fife.rsta.ac.java.rjc.lexer.Token;
 import org.fife.ui.autocomplete.*;
 
 import javax.annotation.Nullable;
@@ -32,15 +34,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
+import java.io.StringReader;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
-
-	private static final Pattern DOC_WORD_PATTERN = Pattern.compile("\\b([a-zA-Z_][a-zA-Z0-9_]*)\\b");
-	private static final Pattern CLASS_CONTEXT_PATTERN = Pattern.compile("(?:new|extends|implements|import|class|interface|enum)\\s*$");
 
 	private final Workspace workspace;
 	@Nullable private final StringCompletitionProvider stringProvider;
@@ -48,34 +46,28 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private static Map<String, List<String>> cachedImportTree = null;
 	private static long lastImportTreeUpdate = 0;
 
-	private static class ClassInfo {
-		final String pkg;
-		final boolean isInterface;
-		final boolean isEnum;
-
-		ClassInfo(String fqdn) {
-			this.pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-			boolean inf = false;
-			boolean enm = false;
+	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {
+		static ClassInfo of(String fqdn) {
+			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+			boolean inf = false, enm = false;
 			try {
 				Class<?> clazz = Class.forName(fqdn);
 				inf = clazz.isInterface();
 				enm = clazz.isEnum();
 			} catch (Throwable ignored) {
 			}
-			this.isInterface = inf;
-			this.isEnum = enm;
+			return new ClassInfo(pkg, inf, enm);
 		}
 	}
 
 	private static final Map<String, ClassInfo> CLASS_INFO_CACHE = new ConcurrentHashMap<>();
 
 	private static ClassInfo getClassInfo(String fqdn) {
-		return CLASS_INFO_CACHE.computeIfAbsent(fqdn, ClassInfo::new);
+		return CLASS_INFO_CACHE.computeIfAbsent(fqdn, ClassInfo::of);
 	}
 
 	public static class CustomMethodCompletion extends TemplateCompletion {
-		private final String name;
+		private final String label;
 		private final String returnType;
 		private final String declaringClass;
 		private final String docSummary;
@@ -84,9 +76,9 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		private final boolean isAbstract;
 		private final boolean isDeprecated;
 
-		public CustomMethodCompletion(CompletionProvider provider, String name, String returnType, String declaringClass, String template, String docSummary, String visibility, boolean isStatic, boolean isAbstract, boolean isDeprecated) {
+		public CustomMethodCompletion(CompletionProvider provider, String name, String label, String returnType, String declaringClass, String template, String docSummary, String visibility, boolean isStatic, boolean isAbstract, boolean isDeprecated) {
 			super(provider, name, name, template, null, null);
-			this.name = name;
+			this.label = label;
 			this.returnType = returnType;
 			this.declaringClass = declaringClass;
 			this.docSummary = docSummary;
@@ -131,16 +123,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 		@Override
 		public String toString() {
-			String label = name;
-			if (docSummary != null && docSummary.contains("(") && docSummary.contains(")")) {
-				int start = docSummary.indexOf('(');
-				int end = docSummary.indexOf(')', start);
-				if (start != -1 && end != -1) {
-					String paramsPart = docSummary.substring(start, end + 1);
-					paramsPart = paramsPart.replaceAll("[a-zA-Z0-9_.]+\\.([a-zA-Z0-9_]+)", "$1");
-					label = name + paramsPart;
-				}
-			}
 			String text = label + " : " + returnType;
 			if (declaringClass != null && !declaringClass.isEmpty()) {
 				text += " - " + declaringClass;
@@ -266,30 +248,16 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	@Override
 	public String getAlreadyEnteredText(JTextComponent comp) {
-		Document doc = comp.getDocument();
-		int dot = comp.getCaretPosition();
-		Element root = doc.getDefaultRootElement();
-		int index = root.getElementIndex(dot);
-		Element elem = root.getElement(index);
-		int start = elem.getStartOffset();
+		String word = super.getAlreadyEnteredText(comp);
+		if (word == null) word = "";
 		try {
-			String line = doc.getText(start, dot - start);
-			int len = line.length();
-			int wordStart = len;
-			while (wordStart > 0 && Character.isJavaIdentifierPart(line.charAt(wordStart - 1))) {
-				wordStart--;
-			}
-			String word = line.substring(wordStart);
-			String prefix = line.substring(0, wordStart).trim();
-			if (prefix.endsWith("Blocks.")) {
-				return "Blocks." + word;
-			} else if (prefix.endsWith("Items.")) {
-				return "Items." + word;
-			}
-			return word;
-		} catch (BadLocationException e) {
-			return "";
+			int caret = comp.getCaretPosition();
+			String textBefore = comp.getText(0, Math.max(0, caret - word.length())).trim();
+			if (textBefore.endsWith("Blocks.")) return "Blocks." + word;
+			if (textBefore.endsWith("Items.")) return "Items." + word;
+		} catch (BadLocationException ignored) {
 		}
+		return word;
 	}
 
 	@Override
@@ -338,68 +306,12 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String targetName = extractTargetName(beforeDot);
 			if (!targetName.isEmpty()) {
 				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, workspace);
-				for (JavaTypeResolver.CompletionItem item : items) {
-					String methodName = item.label.contains("(") ? item.label.substring(0, item.label.indexOf('(')) : item.label;
-					if (matchesFilter(methodName, wordOnly) || (item.kind.equals("field") && matchesFilter(item.insertText, wordOnly))) {
-						if (item.kind.equals("method")) {
-							String template = item.insertText.replaceAll("\\$\\{\\d+:", "\\${");
-							if (!template.contains("${")) {
-								template = template + "${cursor}";
-							}
-
-							StringBuilder docSb = new StringBuilder();
-							docSb.append(item.detail).append(" ").append(methodName).append("(");
-							if (item.paramNames != null && !item.paramNames.isEmpty()) {
-								for (int p = 0; p < item.paramNames.size(); p++) {
-									if (p > 0) docSb.append(", ");
-									String pType = item.paramTypes != null && p < item.paramTypes.size() ? item.paramTypes.get(p) : "Object";
-									String pName = item.paramNames.get(p);
-									docSb.append(pType).append(" ").append(pName);
-								}
-							}
-							docSb.append(")");
-
-							CustomMethodCompletion mc = new CustomMethodCompletion(this, methodName, item.detail, item.declaringClass, template, docSb.toString(), item.visibility, item.isStatic, item.isAbstract, item.isDeprecated);
-							completions.add(mc);
-						} else {
-							CustomFieldCompletion fc = new CustomFieldCompletion(this, item.insertText, item.detail, item.declaringClass, item.visibility, item.isStatic, item.isFinal, item.isDeprecated, alreadyEntered.startsWith("Blocks.") || alreadyEntered.startsWith("Items."));
-							completions.add(fc);
-						}
-					}
-				}
+				addResolverItems(items, wordOnly, alreadyEntered.startsWith("Blocks.") || alreadyEntered.startsWith("Items."), completions);
 			}
 		} else {
 			// General completions
 			List<JavaTypeResolver.CompletionItem> thisItems = JavaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, workspace);
-			for (JavaTypeResolver.CompletionItem item : thisItems) {
-				String methodName = item.label.contains("(") ? item.label.substring(0, item.label.indexOf('(')) : item.label;
-				if (matchesFilter(methodName, wordOnly) || (item.kind.equals("field") && matchesFilter(item.insertText, wordOnly))) {
-					if (item.kind.equals("method")) {
-						String template = item.insertText.replaceAll("\\$\\{\\d+:", "\\${");
-						if (!template.contains("${")) {
-							template = template + "${cursor}";
-						}
-
-						StringBuilder docSb = new StringBuilder();
-						docSb.append(item.detail).append(" ").append(methodName).append("(");
-						if (item.paramNames != null && !item.paramNames.isEmpty()) {
-							for (int p = 0; p < item.paramNames.size(); p++) {
-								if (p > 0) docSb.append(", ");
-								String pType = item.paramTypes != null && p < item.paramTypes.size() ? item.paramTypes.get(p) : "Object";
-								String pName = item.paramNames.get(p);
-								docSb.append(pType).append(" ").append(pName);
-							}
-						}
-						docSb.append(")");
-
-						CustomMethodCompletion mc = new CustomMethodCompletion(this, methodName, item.detail, item.declaringClass, template, docSb.toString(), item.visibility, item.isStatic, item.isAbstract, item.isDeprecated);
-						completions.add(mc);
-					} else {
-						CustomFieldCompletion fc = new CustomFieldCompletion(this, item.insertText, item.detail, item.declaringClass, item.visibility, item.isStatic, item.isFinal, item.isDeprecated, false);
-						completions.add(fc);
-					}
-				}
-			}
+			addResolverItems(thisItems, wordOnly, false, completions);
 
 			// Keywords
 			for (String kw : JavaConventions.JAVA_RESERVED_WORDS) {
@@ -420,23 +332,37 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				}
 			}
 
-			// Document words
+			// Document words extracted via RSTA Java Lexer
 			Set<String> addedWords = new HashSet<>(JavaConventions.JAVA_RESERVED_WORDS);
-			Matcher docWordMatcher = DOC_WORD_PATTERN.matcher(code);
-			while (docWordMatcher.find()) {
-				String w = docWordMatcher.group(1);
-				if (w.length() > 1 && addedWords.add(w)) {
-					if (matchesFilter(w, wordOnly)) {
-						CustomVariableCompletion cvc = new CustomVariableCompletion(this, w);
-						completions.add(cvc);
+			try {
+				Scanner scanner = new Scanner(new StringReader(code));
+				Token t;
+				while ((t = scanner.yylex()) != null) {
+					if (t.isIdentifier()) {
+						String w = t.getLexeme();
+						if (w != null && w.length() > 1 && addedWords.add(w)) {
+							if (matchesFilter(w, wordOnly)) {
+								CustomVariableCompletion cvc = new CustomVariableCompletion(this, w);
+								completions.add(cvc);
+							}
+						}
 					}
 				}
+			} catch (Throwable ignored) {
 			}
 
 			// External classes & workspace classes
-			boolean isClassContext = CLASS_CONTEXT_PATTERN.matcher(textBeforeWord.trim()).find() ||
-					textBeforeWord.trim().endsWith("@") ||
+			String trimmedBefore = textBeforeWord.trim();
+			boolean isClassContext = trimmedBefore.endsWith("@") ||
 					(!wordOnly.isEmpty() && Character.isUpperCase(wordOnly.charAt(0)));
+			if (!isClassContext) {
+				for (String kw : new String[]{"new", "extends", "implements", "import", "class", "interface", "enum"}) {
+					if (trimmedBefore.endsWith(kw)) {
+						isClassContext = true;
+						break;
+					}
+				}
+			}
 
 			if (isClassContext && workspace != null && workspace.getGenerator() != null) {
 				Map<String, List<String>> tree = getImportTreeCached(workspace);
@@ -471,6 +397,26 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		});
 
 		return completions;
+	}
+
+	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly, boolean isBlocksContext, List<Completion> completions) {
+		for (JavaTypeResolver.CompletionItem item : items) {
+			String methodName = item.label.contains("(") ? item.label.substring(0, item.label.indexOf('(')) : item.label;
+			if (matchesFilter(methodName, wordOnly) || (item.kind.equals("field") && matchesFilter(item.insertText, wordOnly))) {
+				if (item.kind.equals("method")) {
+					String template = item.insertText.replaceAll("\\$\\{\\d+:", "\\${");
+					if (!template.contains("${")) {
+						template = template + "${cursor}";
+					}
+
+					String docStr = item.detail + " " + item.label;
+
+					completions.add(new CustomMethodCompletion(this, methodName, item.label, item.detail, item.declaringClass, template, docStr, item.visibility, item.isStatic, item.isAbstract, item.isDeprecated));
+				} else {
+					completions.add(new CustomFieldCompletion(this, item.insertText, item.detail, item.declaringClass, item.visibility, item.isStatic, item.isFinal, item.isDeprecated, isBlocksContext));
+				}
+			}
+		}
 	}
 
 	private static synchronized Map<String, List<String>> getImportTreeCached(Workspace workspace) {
