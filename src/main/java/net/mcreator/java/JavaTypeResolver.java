@@ -41,7 +41,7 @@ public class JavaTypeResolver {
 
 	private static final Logger LOG = LogManager.getLogger(JavaTypeResolver.class);
 	private static final Pattern METHOD_PATTERN = Pattern.compile("^[ \\t]*((?:(?:public|protected|private|default|static|final|native|synchronized|abstract)\\s+)*)\\b([A-Za-z0-9_<>?\\[\\]]+)\\s+([a-zA-Z0-9_]+)\\s*\\(([^)]*)\\)", Pattern.MULTILINE);
-	private static final Pattern FIELD_PATTERN = Pattern.compile("^[ \\t]*((?:(?:public|protected|private|default|static|final|volatile|transient)\\s+)+)\\b([A-Za-z0-9_<>?\\[\\]]+)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])", Pattern.MULTILINE);
+	private static final Pattern FIELD_PATTERN = Pattern.compile("(?:@[A-Za-z0-9_$.]+(?:\\([^)]*\\))?\\s*)*(?:^|[ \\t;{}])((?:(?:public|protected|private|default|static|final|volatile|transient)\\s+)+)([A-Za-z0-9_$.<>?, \\t\\[\\]]+?)\\s+([a-zA-Z0-9_]+)\\s*(?:=|[;=])", Pattern.MULTILINE);
 	private static final Pattern IMPORT_PATTERN = Pattern.compile("import\\s+([a-zA-Z0-9_.]+);");
 	private static final Pattern EXTENDS_PATTERN = Pattern.compile("class\\s+[A-Za-z0-9_]+\\s+extends\\s+([A-Za-z0-9_.]+)");
 
@@ -184,11 +184,16 @@ public class JavaTypeResolver {
 				addMethodCompletion(m.getName(), m.getReturnType().getSimpleName(), pTypes, pNames, fqdnPTypes, Modifier.isStatic(mods), Modifier.isAbstract(mods), m.isAnnotationPresent(Deprecated.class), vis, clazz.getSimpleName(), result, added);
 			}
 
-			for (Field f : clazz.getFields()) {
+			Set<String> processedFields = new HashSet<>();
+			List<Field> allFields = new ArrayList<>();
+			Collections.addAll(allFields, clazz.getFields());
+			Collections.addAll(allFields, clazz.getDeclaredFields());
+			for (Field f : allFields) {
+				if (!processedFields.add(f.getName())) continue;
 				int mods = f.getModifiers();
-				if (!Modifier.isPublic(mods) && !Modifier.isProtected(mods)) continue;
+				if (Modifier.isPrivate(mods)) continue;
 
-				String vis = Modifier.isPublic(mods) ? "public" : (Modifier.isProtected(mods) ? "protected" : (Modifier.isPrivate(mods) ? "private" : "package"));
+				String vis = Modifier.isPublic(mods) ? "public" : (Modifier.isProtected(mods) ? "protected" : "package");
 				addFieldCompletion(f.getName(), f.getType().getSimpleName(), Modifier.isStatic(mods), Modifier.isFinal(mods), f.isAnnotationPresent(Deprecated.class), vis, clazz.getSimpleName(), result, added);
 			}
 
@@ -327,15 +332,6 @@ public class JavaTypeResolver {
 
 		if (imports.containsKey(typeName)) {
 			return imports.get(typeName);
-		}
-
-		String[] defaultPkgs = {"java.lang", "java.io", "java.util"};
-		for (String pkg : defaultPkgs) {
-			try {
-				Class<?> clazz = Class.forName(pkg + "." + typeName);
-				return clazz.getName();
-			} catch (ClassNotFoundException ignored) {
-			}
 		}
 
 		if (currentPkg != null && !currentPkg.isEmpty()) {

@@ -409,7 +409,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 			// Localization keys
 			if (stringProvider != null) {
-				@SuppressWarnings("unchecked")
 				List<Completion> stringComps = stringProvider.getCompletions(comp);
 				if (stringComps != null) {
 					for (Completion sc : stringComps) {
