@@ -393,6 +393,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 							&& !completionInAction && ac.isAutoActivationEnabled() &&
 							// only smart autocomplete if the char we typed is a letter or digit
 							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
+							// if the popup is already visible, the library refreshes it on caret updates
+							ac != null && !ac.isPopupVisible() &&
 							// only smart autocomplete if we have at least one char already written
 							!jcp.getAlreadyEnteredText(te).isBlank()
 							// only smart autocomplete if we have more than one completion to choose from
