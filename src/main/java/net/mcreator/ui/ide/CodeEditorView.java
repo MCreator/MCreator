@@ -610,6 +610,10 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));
+
+		if (te.getSyntaxEditingStyle().equals(SyntaxConstants.SYNTAX_STYLE_JAVA)) {
+			mcreator.getGenerator().refreshWorkspaceSourceInfo();
+		}
 	}
 
 	public void centerLineInScrollPane() {
