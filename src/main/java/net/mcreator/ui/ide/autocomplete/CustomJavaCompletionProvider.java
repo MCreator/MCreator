@@ -20,7 +20,6 @@ package net.mcreator.ui.ide.autocomplete;
 
 import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.JavaConventions;
-import net.mcreator.java.JavaTypeResolver;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
 import org.fife.rsta.ac.java.DecoratableIcon;
