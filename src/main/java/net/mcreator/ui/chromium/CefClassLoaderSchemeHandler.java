@@ -27,8 +27,12 @@ import org.apache.logging.log4j.Logger;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefCallback;
+import org.cef.callback.CefResourceReadCallback;
+import org.cef.callback.CefResourceSkipCallback;
 import org.cef.handler.CefResourceHandler;
+import org.cef.misc.BoolRef;
 import org.cef.misc.IntRef;
+import org.cef.misc.LongRef;
 import org.cef.misc.StringRef;
 import org.cef.network.CefRequest;
 import org.cef.network.CefResponse;
@@ -54,11 +58,15 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 		blocklyThemeID = _blocklyThemeID;
 	}
 
-	@SuppressWarnings("unused")
-	public CefClassLoaderSchemeHandler(CefBrowser browser, CefFrame frame, String schemeName, CefRequest request) {
+	public CefClassLoaderSchemeHandler(CefBrowser ignoredBrowser, CefFrame ignoredFrame, String ignoredSchemeName,
+			CefRequest ignoredRequest) {
 	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
+		return open(request, new BoolRef(), callback);
+	}
+
+	@Override public boolean open(CefRequest request, BoolRef handleRequest, CefCallback callback) {
 		String path = request.getURL().replaceFirst("^http://mcreator/", "/")
 				//@formatter:off
 				.replace("__LANG__", L10N.getBlocklyLangName())
@@ -76,6 +84,7 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 				inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
 				if (inputStream == null) {
 					LOG.warn("Resource not found: {}", path);
+					handleRequest.set(false);
 					return false; // resource not found
 				}
 			}
@@ -93,6 +102,10 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	}
 
 	@Override public boolean readResponse(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefCallback callback) {
+		return read(dataOut, bytesToRead, bytesRead, null);
+	}
+
+	@Override public boolean read(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefResourceReadCallback callback) {
 		try {
 			int n = inputStream.read(dataOut, 0, bytesToRead);
 			if (n == -1) {
@@ -104,6 +117,18 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 		} catch (IOException e) {
 			LOG.warn("Error reading resource: {}", e.getMessage());
 			closeStream();
+			return false;
+		}
+	}
+
+	@Override public boolean skip(long bytesToSkip, LongRef bytesSkipped, CefResourceSkipCallback callback) {
+		try {
+			inputStream.skipNBytes(bytesToSkip);
+			bytesSkipped.set(bytesToSkip);
+			return true;
+		} catch (IOException e) {
+			LOG.warn("Error skipping resource: {}", e.getMessage());
+			bytesSkipped.set(-2);
 			return false;
 		}
 	}
