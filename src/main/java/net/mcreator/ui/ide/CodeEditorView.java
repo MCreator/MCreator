@@ -350,7 +350,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			} catch (Throwable ignored) {
 			}
 			jls.install(te);
-
+      
 			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace());
 			ac = new AutoCompletion(jcp);
 			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
