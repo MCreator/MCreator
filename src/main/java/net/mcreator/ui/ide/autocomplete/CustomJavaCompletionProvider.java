@@ -354,8 +354,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 									if (p > 0) docSb.append(", ");
 									String pType = item.paramTypes != null && p < item.paramTypes.size() ? item.paramTypes.get(p) : "Object";
 									String pName = item.paramNames.get(p);
-									String fqdnPType = item.fqdnParamTypes != null && p < item.fqdnParamTypes.size() ? item.fqdnParamTypes.get(p) : pType;
-									docSb.append(fqdnPType).append(" ").append(pName);
+									docSb.append(pType).append(" ").append(pName);
 								}
 							}
 							docSb.append(")");
@@ -388,8 +387,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 								if (p > 0) docSb.append(", ");
 								String pType = item.paramTypes != null && p < item.paramTypes.size() ? item.paramTypes.get(p) : "Object";
 								String pName = item.paramNames.get(p);
-								String fqdnPType = item.fqdnParamTypes != null && p < item.fqdnParamTypes.size() ? item.fqdnParamTypes.get(p) : pType;
-								docSb.append(fqdnPType).append(" ").append(pName);
+								docSb.append(pType).append(" ").append(pName);
 							}
 						}
 						docSb.append(")");
