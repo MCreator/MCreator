@@ -27,43 +27,42 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 
+import org.fife.rsta.ac.java.classreader.ClassFile;
+import org.fife.rsta.ac.java.classreader.FieldInfo;
+import org.fife.rsta.ac.java.classreader.MethodInfo;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.*;
 
-import org.fife.rsta.ac.java.rjc.lexer.Scanner;
-import org.fife.rsta.ac.java.rjc.lexer.Token;
-
 import java.io.File;
-import java.io.StringReader;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class JavaTypeResolver {
 
 	private static final Logger LOG = LogManager.getLogger(JavaTypeResolver.class);
-	private static final Map<String, Map<String, String>> IMPORTS_CACHE = new ConcurrentHashMap<>();
 
 	public static class CompletionItem {
-		public String label, insertText, kind, detail, declaringClass, visibility;
+		public String label, insertText, kind, detail, declaringClass, visibility, docSummary;
 		public boolean isSnippet, isStatic, isFinal, isAbstract, isDeprecated;
 		public List<String> paramTypes, paramNames, fqdnParamTypes;
 
-		public CompletionItem(String label, String insertText, String kind, String detail, String declaringClass, String visibility, boolean isSnippet, boolean isStatic, boolean isFinal, boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames, List<String> fqdnParamTypes) {
+		public CompletionItem(String label, String insertText, String kind, String detail, String declaringClass, String visibility, String docSummary, boolean isSnippet, boolean isStatic, boolean isFinal, boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames, List<String> fqdnParamTypes) {
 			this.label = label;
 			this.insertText = insertText;
 			this.kind = kind;
 			this.detail = detail;
 			this.declaringClass = declaringClass;
 			this.visibility = visibility;
+			this.docSummary = docSummary;
 			this.isSnippet = isSnippet;
 			this.isStatic = isStatic;
 			this.isFinal = isFinal;
@@ -77,7 +76,7 @@ public class JavaTypeResolver {
 
 	public record ResolutionResult(String fqdn, boolean isStaticContext) {}
 
-	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, String[] fqdnParamTypes, boolean isStatic, boolean isAbstract, boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result, Set<String> added) {
+	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, String[] fqdnParamTypes, boolean isStatic, boolean isAbstract, boolean isDeprecated, String visibility, String declaringClass, String docSummary, List<CompletionItem> result, Set<String> added) {
 		StringBuilder label = new StringBuilder(mName).append("(");
 		StringBuilder insert = new StringBuilder(mName).append("(");
 		for (int i = 0; i < paramNames.length; i++) {
@@ -92,13 +91,13 @@ public class JavaTypeResolver {
 		insert.append(")");
 		String key = label.toString();
 		if (added.add(key)) {
-			result.add(new CompletionItem(key, paramNames.length > 0 ? insert.toString() : mName + "()", "method", returnType, declaringClass, visibility, paramNames.length > 0, isStatic, false, isAbstract, isDeprecated, Arrays.asList(paramTypes), Arrays.asList(paramNames), fqdnParamTypes != null ? Arrays.asList(fqdnParamTypes) : Arrays.asList(paramTypes)));
+			result.add(new CompletionItem(key, paramNames.length > 0 ? insert.toString() : mName + "()", "method", returnType, declaringClass, visibility, docSummary, paramNames.length > 0, isStatic, false, isAbstract, isDeprecated, Arrays.asList(paramTypes), Arrays.asList(paramNames), fqdnParamTypes != null ? Arrays.asList(fqdnParamTypes) : Arrays.asList(paramTypes)));
 		}
 	}
 
 	private static void addFieldCompletion(String fName, String fType, boolean isStatic, boolean isFinal, boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result, Set<String> added) {
 		if (added.add(fName)) {
-			result.add(new CompletionItem(fName, fName, "field", fType, declaringClass, visibility, false, isStatic, isFinal, false, isDeprecated, null, null, null));
+			result.add(new CompletionItem(fName, fName, "field", fType, declaringClass, visibility, null, false, isStatic, isFinal, false, isDeprecated, null, null, null));
 		}
 	}
 
@@ -123,7 +122,10 @@ public class JavaTypeResolver {
 
 	public static List<CompletionItem> getMembersOfFQDN(String fqdn, Workspace workspace) {
 		if (fqdn == null || fqdn.isEmpty()) return new ArrayList<>();
-		List<CompletionItem> cached = MEMBER_CACHE.get(fqdn);
+		int managerId = (workspace != null && workspace.getGenerator() != null && workspace.getGenerator().getProjectJarManager() != null)
+				? System.identityHashCode(workspace.getGenerator().getProjectJarManager()) : 0;
+		String cacheKey = managerId + ":" + fqdn;
+		List<CompletionItem> cached = MEMBER_CACHE.get(cacheKey);
 		if (cached != null) {
 			return new ArrayList<>(cached);
 		}
@@ -132,75 +134,85 @@ public class JavaTypeResolver {
 		Set<String> visited = new HashSet<>();
 		populateMembersOfFQDN(fqdn, workspace, result, added, visited);
 		if (!result.isEmpty()) {
-			MEMBER_CACHE.put(fqdn, List.copyOf(result));
+			MEMBER_CACHE.put(cacheKey, List.copyOf(result));
 		}
 		return result;
 	}
 
 	private static void populateMembersOfFQDN(String fqdn, Workspace workspace, List<CompletionItem> result, Set<String> added, Set<String> visited) {
-		if (fqdn == null || !visited.add(fqdn)) return;
+		if (fqdn == null || fqdn.isEmpty() || !visited.add(fqdn)) return;
 
 		String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
 
-		try {
-			Class<?> clazz = Class.forName(fqdn);
-			for (Method m : clazz.getMethods()) {
-				int mods = m.getModifiers();
-				if (!Modifier.isPublic(mods) && !Modifier.isProtected(mods)) continue;
+		JarManager jarManager = workspace.getGenerator().getProjectJarManager();
 
-				String vis = Modifier.isPublic(mods) ? "public" : (Modifier.isProtected(mods) ? "protected" : (Modifier.isPrivate(mods) ? "private" : "package"));
-				Class<?>[] params = m.getParameterTypes();
-				String[] pTypes = new String[params.length];
-				String[] pNames = new String[params.length];
-				String[] fqdnPTypes = new String[params.length];
-				for (int i = 0; i < params.length; i++) {
-					pTypes[i] = params[i].getSimpleName();
-					pNames[i] = "param" + i;
-					fqdnPTypes[i] = params[i].getName();
+		if (jarManager != null) {
+			try {
+				ClassFile cf = jarManager.getClassEntry(fqdn);
+				if (cf != null) {
+					String srcCode = loadSourceCodeForFQDN(fqdn, workspace);
+					Map<String, String> docs = getMethodDocsFromSource(srcCode);
+
+					int mCount = cf.getMethodCount();
+					for (int i = 0; i < mCount; i++) {
+						MethodInfo mi = cf.getMethodInfo(i);
+						int flags = mi.getAccessFlags();
+						if ((flags & 0x0002) != 0) continue; // private
+
+						String mName = mi.getName();
+						if (mi.isConstructor() || mName.startsWith("<") || mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
+
+						boolean isPublic = (flags & 0x0001) != 0;
+						boolean isProtected = (flags & 0x0004) != 0;
+						String vis = isPublic ? "public" : (isProtected ? "protected" : "package");
+
+						int pCount = mi.getParameterCount();
+						String[] pTypes = new String[pCount];
+						String[] pNames = new String[pCount];
+						String[] fqdnPTypes = new String[pCount];
+						for (int j = 0; j < pCount; j++) {
+							pTypes[j] = mi.getParameterType(j, false);
+							pNames[j] = mi.getParameterName(j);
+							if (pNames[j] == null || pNames[j].isEmpty()) pNames[j] = "arg" + j;
+							fqdnPTypes[j] = mi.getParameterType(j, true);
+						}
+
+						String key = mName + "(" + String.join(",", fqdnPTypes) + ")";
+						String doc = docs.get(key);
+						if (doc == null) doc = docs.get(mName);
+
+						addMethodCompletion(mName, mi.getReturnTypeString(false), pTypes, pNames, fqdnPTypes, mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result, added);
+					}
+
+					int fCount = cf.getFieldCount();
+					for (int i = 0; i < fCount; i++) {
+						FieldInfo fi = cf.getFieldInfo(i);
+						int flags = fi.getAccessFlags();
+						if ((flags & 0x0002) != 0) continue; // private
+
+						String fName = fi.getName();
+						if (fName.equals("class") || fName.equals("interface") || fName.equals("enum")) continue;
+
+						boolean isPublic = (flags & 0x0001) != 0;
+						boolean isProtected = (flags & 0x0004) != 0;
+						String vis = isPublic ? "public" : (isProtected ? "protected" : "package");
+						addFieldCompletion(fName, fi.getTypeString(false), fi.isStatic(), fi.isFinal(), fi.isDeprecated(), vis, declaringClass, result, added);
+					}
+
+					String superClassName = cf.getSuperClassName(true);
+					if (superClassName != null && !superClassName.isEmpty() && !superClassName.equals("java.lang.Object")) {
+						populateMembersOfFQDN(superClassName, workspace, result, added, visited);
+					}
+
+					return;
 				}
-				addMethodCompletion(m.getName(), m.getReturnType().getSimpleName(), pTypes, pNames, fqdnPTypes, Modifier.isStatic(mods), Modifier.isAbstract(mods), m.isAnnotationPresent(Deprecated.class), vis, clazz.getSimpleName(), result, added);
+			} catch (Throwable e) {
+				LOG.debug("Failed to read class file from ProjectJarManager for " + fqdn, e);
 			}
-
-			Set<String> processedFields = new HashSet<>();
-			List<Field> allFields = new ArrayList<>();
-			Collections.addAll(allFields, clazz.getFields());
-			Collections.addAll(allFields, clazz.getDeclaredFields());
-			for (Field f : allFields) {
-				if (!processedFields.add(f.getName())) continue;
-				int mods = f.getModifiers();
-				if (Modifier.isPrivate(mods)) continue;
-
-				String vis = Modifier.isPublic(mods) ? "public" : (Modifier.isProtected(mods) ? "protected" : "package");
-				addFieldCompletion(f.getName(), f.getType().getSimpleName(), Modifier.isStatic(mods), Modifier.isFinal(mods), f.isAnnotationPresent(Deprecated.class), vis, clazz.getSimpleName(), result, added);
-			}
-
-			return;
-		} catch (ClassNotFoundException ignored) {
 		}
 
-		if (workspace != null && workspace.getGenerator() != null) {
-			String srcCode = null;
-			File srcFile = new File(workspace.getGenerator().getSourceRoot(), fqdn.replace('.', '/') + ".java");
-			if (srcFile.isFile()) {
-				srcCode = FileIO.readFileToString(srcFile);
-			} else {
-				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-				if (jarManager != null) {
-					SourceLocation sourceLocation = jarManager.getSourceLocForClass(fqdn);
-					if (sourceLocation instanceof ZipSourceLocation) {
-						try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
-							String entryName = fqdn.replace('.', '/') + ".java";
-							ZipEntry entry = zipFile.getEntry(entryName);
-							if (entry != null) {
-								srcCode = ZipIO.entryToString(zipFile, entry);
-							}
-						} catch (Exception e) {
-							LOG.debug("could not read source from jar", e);
-						}
-					}
-				}
-			}
-
+		if (workspace != null) {
+			String srcCode = loadSourceCodeForFQDN(fqdn, workspace);
 			if (srcCode != null) {
 				parseSourceCodeCompletions(srcCode, declaringClass, result, added);
 				try {
@@ -220,6 +232,61 @@ public class JavaTypeResolver {
 				}
 			}
 		}
+	}
+
+	private static Map<String, String> getMethodDocsFromSource(String srcCode) {
+		if (srcCode == null || srcCode.isEmpty()) return Collections.emptyMap();
+		Map<String, String> docs = new HashMap<>();
+		try {
+			JavaType<?> source = Roaster.parse(srcCode);
+			if (source instanceof MethodHolderSource<?> mhs) {
+				for (MethodSource<?> m : mhs.getMethods()) {
+					if (m.getJavaDoc() != null) {
+						String text = m.getJavaDoc().getFullText();
+						if (text != null && !text.trim().isEmpty()) {
+							docs.put(m.getName(), text.trim());
+						}
+					}
+				}
+			}
+		} catch (Throwable ignored) {
+		}
+		return docs;
+	}
+
+	private static String loadSourceCodeForFQDN(String fqdn, Workspace workspace) {
+		if (workspace == null || workspace.getGenerator() == null || fqdn == null) return null;
+		File srcFile = new File(workspace.getGenerator().getSourceRoot(), fqdn.replace('.', '/') + ".java");
+		if (srcFile.isFile()) {
+			return FileIO.readFileToString(srcFile);
+		}
+		ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
+		if (jarManager != null) {
+			SourceLocation sourceLocation = jarManager.getSourceLocForClass(fqdn);
+			if (sourceLocation instanceof ZipSourceLocation) {
+				try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
+					String relativePath = fqdn.replace('.', '/') + ".java";
+					ZipEntry entry = zipFile.getEntry(relativePath);
+					if (entry == null) {
+						Enumeration<? extends ZipEntry> entries = zipFile.entries();
+						while (entries.hasMoreElements()) {
+							ZipEntry ze = entries.nextElement();
+							String name = ze.getName();
+							if (name.endsWith("/" + relativePath) || name.equals(relativePath)) {
+								entry = ze;
+								break;
+							}
+						}
+					}
+					if (entry != null) {
+						return ZipIO.entryToString(zipFile, entry);
+					}
+				} catch (Exception e) {
+					LOG.debug("could not read source from jar", e);
+				}
+			}
+		}
+		return null;
 	}
 
 	private static void parseSourceCodeCompletions(String srcCode, String declaringClass, List<CompletionItem> result, Set<String> added) {
@@ -243,7 +310,7 @@ public class JavaTypeResolver {
 
 			Map<String, String> imports = parseImports(srcCode);
 			for (MethodSource<?> m : methods) {
-				if (m.isPrivate() || m.isConstructor()) continue;
+				if (m.isPrivate() || m.isConstructor() || m.getName().startsWith("<")) continue;
 				String mName = m.getName();
 				if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
 
@@ -263,7 +330,8 @@ public class JavaTypeResolver {
 				}
 
 				String vis = m.isPublic() ? "public" : (m.isProtected() ? "protected" : "package");
-				addMethodCompletion(mName, returnType, pTypes, pNames, fqdnPTypes, m.isStatic(), m.isAbstract(), m.hasAnnotation(Deprecated.class), vis, declaringClass, result, added);
+				String docSummary = m.getJavaDoc() != null ? m.getJavaDoc().getFullText() : null;
+				addMethodCompletion(mName, returnType, pTypes, pNames, fqdnPTypes, m.isStatic(), m.isAbstract(), m.hasAnnotation(Deprecated.class), vis, declaringClass, docSummary, result, added);
 			}
 		} catch (Throwable e) {
 			LOG.debug("Roaster failed to parse source code completions", e);
@@ -272,21 +340,19 @@ public class JavaTypeResolver {
 
 	private static Map<String, String> parseImports(String code) {
 		if (code == null || code.isEmpty()) return Collections.emptyMap();
-		return IMPORTS_CACHE.computeIfAbsent(code, c -> {
-			Map<String, String> imports = new HashMap<>();
-			try {
-				JavaType<?> source = Roaster.parse(c);
-				if (source instanceof Importer<?> importer) {
-					for (Import imp : importer.getImports()) {
-						String fqdn = imp.getQualifiedName();
-						String simple = imp.getSimpleName();
-						imports.put(simple, fqdn);
-					}
+		Map<String, String> imports = new HashMap<>();
+		try {
+			JavaType<?> source = Roaster.parse(code);
+			if (source instanceof Importer<?> importer) {
+				for (Import imp : importer.getImports()) {
+					String fqdn = imp.getQualifiedName();
+					String simple = imp.getSimpleName();
+					imports.put(simple, fqdn);
 				}
-			} catch (Throwable ignored) {
 			}
-			return imports;
-		});
+		} catch (Throwable ignored) {
+		}
+		return imports;
 	}
 
 	private static String resolveSimpleTypeName(String typeName, Map<String, String> imports, Workspace workspace, String currentPkg) {
@@ -369,6 +435,8 @@ public class JavaTypeResolver {
 
 		boolean isStaticContext = false;
 		String currentFQDN = null;
+		String typeName = null;
+		String currentGenericArg = null;
 		String base = chain.getFirst();
 
 		String currentClassFQDN = ClassFinder.getCurrentFQDN(code);
@@ -391,30 +459,10 @@ public class JavaTypeResolver {
 					currentFQDN = "java.lang.Object";
 				}
 			}
-		} else if (base.contains("(")) {
-			String returnTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, workspace);
-			if (returnTypeSimple != null) {
-				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, workspace, currentPkg);
-			}
 		} else {
-			String typeName = null;
-			try {
-				Scanner scanner = new Scanner(new StringReader(codeBeforeCursor));
-				Token t;
-				Token prevToken = null;
-				while ((t = scanner.yylex()) != null) {
-					if (t.isIdentifier()) {
-						String lex = t.getLexeme();
-						if (lex.equals(base) && prevToken != null && prevToken.isIdentifier() && !prevToken.getLexeme().equals(base) && Character.isUpperCase(prevToken.getLexeme().charAt(0))) {
-							typeName = prevToken.getLexeme();
-						}
-					}
-					prevToken = t;
-				}
-			} catch (Throwable ignored) {
-			}
+			VarTypeInfo varInfo = findLocalVariableType(codeBeforeCursor, base);
 
-			if (typeName == null) {
+			if (varInfo == null) {
 				if (!base.isEmpty() && Character.isUpperCase(base.charAt(0))) {
 					typeName = base;
 					isStaticContext = true;
@@ -424,6 +472,9 @@ public class JavaTypeResolver {
 						typeName = fieldTypeSimple;
 					}
 				}
+			} else {
+				typeName = varInfo.rawType();
+				currentGenericArg = varInfo.genericArg();
 			}
 
 			if (typeName != null) {
@@ -435,6 +486,11 @@ public class JavaTypeResolver {
 			if (currentFQDN == null) return null;
 			String member = chain.get(i);
 			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, workspace);
+
+			if ((returnTypeSimple == null || returnTypeSimple.equals("Object") || returnTypeSimple.equals("E") || returnTypeSimple.equals("T") || returnTypeSimple.equals("V") || returnTypeSimple.equals("K")) && currentGenericArg != null) {
+				returnTypeSimple = currentGenericArg;
+			}
+
 			if (returnTypeSimple != null) {
 				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, workspace, currentPkg);
 				isStaticContext = false;
@@ -444,5 +500,63 @@ public class JavaTypeResolver {
 		}
 
 		return new ResolutionResult(currentFQDN, isStaticContext);
+	}
+
+	private static class VarTypeInfo {
+		private final String rawType;
+		private final String genericArg;
+		public VarTypeInfo(String rawType, String genericArg) {
+			this.rawType = rawType;
+			this.genericArg = genericArg;
+		}
+		public String rawType() { return rawType; }
+		public String genericArg() { return genericArg; }
+	}
+
+	private static VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
+		if (codeBeforeCursor == null || base == null || base.isEmpty()) return null;
+
+		// Match standard / generic / array declarations
+		Pattern pDecl = Pattern.compile("\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[\\])*\\s+" + Pattern.quote(base) + "\\b");
+		Matcher mDecl = pDecl.matcher(codeBeforeCursor);
+		VarTypeInfo lastType = null;
+		while (mDecl.find()) {
+			String raw = mDecl.group(1);
+			String gen = mDecl.group(2);
+			if (gen != null && gen.contains(",")) {
+				gen = gen.substring(gen.lastIndexOf(',') + 1).trim();
+			}
+			lastType = new VarTypeInfo(raw, gen != null ? gen.trim() : null);
+		}
+		if (lastType != null) return lastType;
+
+		// Match foreach
+		Pattern pFor = Pattern.compile("for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[\\])*\\s+" + Pattern.quote(base) + "\\s*:");
+		Matcher mFor = pFor.matcher(codeBeforeCursor);
+		while (mFor.find()) {
+			lastType = new VarTypeInfo(mFor.group(1), null);
+		}
+		if (lastType != null) return lastType;
+
+		// Match lambda
+		Pattern pLambda = Pattern.compile("\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[\\])*\\s+" + Pattern.quote(base) + "\\s*\\)");
+		Matcher mLambda = pLambda.matcher(codeBeforeCursor);
+		while (mLambda.find()) {
+			lastType = new VarTypeInfo(mLambda.group(1), null);
+		}
+		if (lastType != null) return lastType;
+
+		// Match var assignment
+		Pattern pVar = Pattern.compile("\\bvar\\s+" + Pattern.quote(base) + "\\s*=\\s*(?:new\\s+)?([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
+		Matcher mVar = pVar.matcher(codeBeforeCursor);
+		while (mVar.find()) {
+			String raw = mVar.group(1);
+			String gen = mVar.group(2);
+			if (gen != null && gen.contains(",")) {
+				gen = gen.substring(gen.lastIndexOf(',') + 1).trim();
+			}
+			lastType = new VarTypeInfo(raw, gen != null ? gen.trim() : null);
+		}
+		return lastType;
 	}
 }

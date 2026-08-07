@@ -22,8 +22,6 @@ import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
-import org.fife.rsta.ac.java.DecoratableIcon;
-import org.fife.rsta.ac.java.IconFactory;
 import org.fife.rsta.ac.java.rjc.lexer.Scanner;
 import org.fife.rsta.ac.java.rjc.lexer.Token;
 import org.fife.ui.autocomplete.*;
@@ -235,7 +233,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 						template = template + "${cursor}";
 					}
 
-					String docStr = item.detail + " " + item.label;
+					String docStr = item.docSummary != null ? item.docSummary : item.detail + " " + item.label;
 
 					completions.add(new CustomMethodCompletion(this, methodName, item.label, item.detail, item.declaringClass, template, docStr, item.visibility, item.isStatic, item.isAbstract, item.isDeprecated));
 				} else {

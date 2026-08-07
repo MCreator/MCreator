@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJavaCompletionProvider;
+import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
@@ -71,6 +72,7 @@ import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 public class CodeEditorView extends ViewBase implements ISearchable {
@@ -350,6 +352,17 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			} catch (Throwable ignored) {
 			}
 			jls.install(te);
+			JavaLanguageSupportBridge.bridge(te, jls);
+			try {
+				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
+				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
+				method.setAccessible(true);
+				AutoCompletion defaultAc = (AutoCompletion) method.invoke(jls, te);
+				if (defaultAc != null) {
+					defaultAc.uninstall();
+				}
+			} catch (Throwable ignored) {
+			}
       
 			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace());
 			ac = new AutoCompletion(jcp);
