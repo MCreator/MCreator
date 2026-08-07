@@ -144,7 +144,7 @@ public class JavaTypeResolver {
 
 		String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
 
-		JarManager jarManager = workspace.getGenerator().getProjectJarManager();
+		ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 
 		if (jarManager != null) {
 			try {
