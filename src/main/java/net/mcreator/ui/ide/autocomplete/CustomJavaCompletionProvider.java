@@ -125,7 +125,9 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 		@Override
 		public String getSummary() {
-			return docSummary;
+			if (docSummary == null) return null;
+			String safeDoc = docSummary.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+			return "<html>" + safeDoc + "</html>";
 		}
 
 		@Override
@@ -196,7 +198,9 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 		@Override
 		public String getSummary() {
-			return type + " " + name;
+			String safeType = type != null ? type.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") : "";
+			String safeName = name != null ? name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") : "";
+			return "<html>" + safeType + " " + safeName + "</html>";
 		}
 
 		@Override

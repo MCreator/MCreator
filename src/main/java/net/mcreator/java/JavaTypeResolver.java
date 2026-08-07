@@ -319,10 +319,6 @@ public class JavaTypeResolver {
 				imports.put(simple, imp);
 			}
 		}
-		String[] javaLangTypes = {"String", "Math", "System", "Object", "Integer", "Double", "Float", "Boolean", "Long", "Short", "Byte", "Character", "Thread", "Throwable", "Exception"};
-		for (String t : javaLangTypes) {
-			imports.putIfAbsent(t, "java.lang." + t);
-		}
 		return imports;
 	}
 
