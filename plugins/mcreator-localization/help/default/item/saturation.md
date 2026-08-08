@@ -4,8 +4,8 @@ and it must be completely depleted before the visible hunger meter begins decrea
 This option is a multiplier used by the game to determine the resulting saturation provided by a food item. It uses this formula:
 
 ```
-Resulting saturation = Player's previous saturation + 
-(2 * Nutritional value * Saturation multiplier)
+Resulting saturation = Player's previous saturation
++ (2 * Nutritional value * Saturation multiplier)
 ```
 There is also a clamp in the game preventing the resulting saturation from being greater than the player's hunger point level.
 
