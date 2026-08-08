@@ -27,7 +27,7 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.java.JarManager;
+import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 
@@ -38,6 +38,7 @@ import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.*;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -103,12 +104,13 @@ public class JavaTypeResolver {
 
 	private static final Map<String, List<CompletionItem>> MEMBER_CACHE = new ConcurrentHashMap<>();
 
-	public static List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor, Workspace workspace) {
+	public static List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor, Workspace workspace,
+			@Nullable JavaParser parser) {
 		List<CompletionItem> result = new ArrayList<>();
 		if (targetName == null || targetName.trim().isEmpty()) return result;
 		targetName = targetName.trim();
 
-		ResolutionResult res = resolveTargetFQDN(targetName, code, codeBeforeCursor, workspace);
+		ResolutionResult res = resolveTargetFQDN(targetName, code, codeBeforeCursor, workspace, parser);
 		if (res == null || res.fqdn == null) return result;
 
 		List<CompletionItem> allMembers = getMembersOfFQDN(res.fqdn, workspace);
@@ -424,7 +426,8 @@ public class JavaTypeResolver {
 		return null;
 	}
 
-	public static ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor, Workspace workspace) {
+	public static ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor,
+			Workspace workspace, @Nullable JavaParser parser) {
 		if (code == null) code = "";
 		if (codeBeforeCursor == null) codeBeforeCursor = code;
 
@@ -439,7 +442,7 @@ public class JavaTypeResolver {
 		String currentGenericArg = null;
 		String base = chain.getFirst();
 
-		String currentClassFQDN = ClassFinder.getCurrentFQDN(code);
+		String currentClassFQDN = ClassFinder.getCurrentFQDN(parser);
 		String currentPkg = currentClassFQDN != null && currentClassFQDN.contains(".") ? currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) : "";
 
 		if (base.equals("this") || base.equals("super")) {

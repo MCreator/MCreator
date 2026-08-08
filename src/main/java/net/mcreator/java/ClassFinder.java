@@ -40,30 +40,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.fife.rsta.ac.java.rjc.lexer.Scanner;
-import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
-import java.io.StringReader;
-
 public class ClassFinder {
 
 	private static final Logger LOG = LogManager.getLogger("Class Finder");
-
-	public static String getCurrentFQDN(String code) {
-		try {
-			CompilationUnit cu = new ASTFactory().getCompilationUnit(
-					"File.java", new Scanner(new StringReader(code)));
-			Iterator<TypeDeclaration> i = cu.getTypeDeclarationIterator();
-			while (i.hasNext()) {
-				TypeDeclaration td = i.next();
-				if (td instanceof NormalClassDeclaration normalClassDeclaration) {
-					return normalClassDeclaration.getPackage() + "." + normalClassDeclaration.getName();
-				}
-			}
-		} catch (Exception e) {
-			LOG.debug("couldn't parse FQDN from code", e);
-		}
-		return null;
-	}
 
 	public static String getCurrentFQDN(JavaParser parser) {
 		Iterator<TypeDeclaration> i = parser.getCompilationUnit().getTypeDeclarationIterator();

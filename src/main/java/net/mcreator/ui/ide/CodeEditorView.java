@@ -364,7 +364,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			} catch (Throwable ignored) {
 			}
       
-			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace());
+			this.parser = jls.getParser(te);
+			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
 			ac = new AutoCompletion(jcp);
 			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
 			ac.setAutoActivationDelay(0);
@@ -375,8 +376,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
-
-			this.parser = jls.getParser(te);
 
 			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 

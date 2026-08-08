@@ -22,6 +22,7 @@ import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
+import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.rjc.lexer.Scanner;
 import org.fife.rsta.ac.java.rjc.lexer.Token;
 import org.fife.ui.autocomplete.*;
@@ -40,6 +41,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private final Workspace workspace;
 	@Nullable private final StringCompletitionProvider stringProvider;
+	private final JavaParser parser;
 
 	private static Map<String, List<String>> cachedImportTree = null;
 	private static long lastImportTreeUpdate = 0;
@@ -64,8 +66,9 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		return CLASS_INFO_CACHE.computeIfAbsent(fqdn, ClassInfo::of);
 	}
 
-	public CustomJavaCompletionProvider(Workspace workspace) {
+	public CustomJavaCompletionProvider(Workspace workspace, JavaParser parser) {
 		this.workspace = workspace;
+		this.parser = parser;
 		this.stringProvider = workspace != null ? new StringCompletitionProvider(workspace) : null;
 		setAutoActivationRules(true, ".");
 	}
@@ -129,12 +132,12 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String beforeDot = textBeforeWord.substring(0, textBeforeWord.lastIndexOf('.')).trim();
 			String targetName = extractTargetName(beforeDot);
 			if (!targetName.isEmpty()) {
-				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, workspace);
+				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, workspace, parser);
 				addResolverItems(items, wordOnly, alreadyEntered.startsWith("Blocks.") || alreadyEntered.startsWith("Items."), completions);
 			}
 		} else {
 			// General completions
-			List<JavaTypeResolver.CompletionItem> thisItems = JavaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, workspace);
+			List<JavaTypeResolver.CompletionItem> thisItems = JavaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, workspace, parser);
 			addResolverItems(thisItems, wordOnly, false, completions);
 
 			// Keywords
