@@ -604,6 +604,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.getActionRegistry().buildWorkspace.doAction();
 		}
 
+		// reload source info
+		mcreator.getGenerator().refreshWorkspaceSourceInfo();
+
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
 				modElement.getType().getRegistryName());
