@@ -347,7 +347,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 							menu.sendMenuStateUpdate(entity, 2, "${component.getName()}", this.getValue(), false);
 						<#if hasProcedure(component.whenSliderMoves)>
 							PacketDistributor.sendToServer(new ${name}SliderMessage(${slid}, x, y, z, this.getValue()));
-							${name}SliderMessage.handleSliderAction(entity, ${btid}, x, y, z, this.getValue());
+							${name}SliderMessage.handleSliderAction(entity, ${slid}, x, y, z, this.getValue());
 						</#if>
 					}
 				};
