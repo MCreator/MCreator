@@ -76,3 +76,11 @@
         </#if>
     </#if>
 </#function>
+
+<#function mappedMCItemToRegistryNameOrTag mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return "{\"tags\": \"q.any_tag(\'" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\')\" }">
+    <#else>
+        <#return "\"" + mappedMCItemToRegistryNameNoTags(mappedBlock) + "\"">
+    </#if>
+</#function>
