@@ -230,10 +230,6 @@ public final class BlocklyJavascriptBridge {
 				new Dependency.BlocklyDependency[0];
 	}
 
-	@SuppressWarnings("unused") public String t(String key) {
-		return L10N.t(key);
-	}
-
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
 		Workspace workspace = mcreator.getWorkspace();
 
