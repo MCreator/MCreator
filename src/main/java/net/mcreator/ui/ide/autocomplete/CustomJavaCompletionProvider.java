@@ -118,6 +118,18 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			lineUntilPosition = "";
 		}
 
+		boolean insideString = StringCompletitionProvider.isInsideString(lineUntilPosition);
+
+		if (insideString) {
+			if (stringProvider != null) {
+				List<Completion> stringComps = stringProvider.getCompletions(comp);
+				if (stringComps != null) {
+					completions.addAll(stringComps);
+				}
+			}
+			return completions;
+		}
+
 		String alreadyEntered = getAlreadyEnteredText(comp);
 		String wordOnly = alreadyEntered.contains(".") ? alreadyEntered.substring(alreadyEntered.lastIndexOf('.') + 1) : alreadyEntered;
 
@@ -144,18 +156,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			for (String kw : JavaConventions.JAVA_RESERVED_WORDS) {
 				if (matchesFilter(kw, wordOnly)) {
 					completions.add(new JavaKeywordCompletition(this, kw));
-				}
-			}
-
-			// Localization keys
-			if (stringProvider != null) {
-				List<Completion> stringComps = stringProvider.getCompletions(comp);
-				if (stringComps != null) {
-					for (Completion sc : stringComps) {
-						if (matchesFilter(sc.getInputText(), wordOnly)) {
-							completions.add(sc);
-						}
-					}
 				}
 			}
 
