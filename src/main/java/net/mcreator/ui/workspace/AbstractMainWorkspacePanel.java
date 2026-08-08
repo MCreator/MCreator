@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ITextFieldSearchable;
@@ -257,15 +258,17 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	protected void afterVerticalTabChanged() {
 	}
 
-	public synchronized final void reloadWorkspaceTab() {
-		reloadToolBarComponents();
+	public final void reloadWorkspaceTab() {
+		ThreadUtil.runOnSwingThread(() -> {
+			reloadToolBarComponents();
 
-		if (currentTabPanel != null)
-			currentTabPanel.reloadElements();
+			if (currentTabPanel != null)
+				currentTabPanel.reloadElements();
+		});
 	}
 
-	public synchronized void refilterWorkspaceTab() {
-		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+	public final void refilterWorkspaceTab() {
+		ThreadUtil.runOnSwingThread(() -> sectionTabs.values().forEach(IReloadableFilterable::refilterElements));
 	}
 
 	@Override public JTextComponent getSearchTextField() {

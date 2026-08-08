@@ -196,8 +196,12 @@ public class ToolPanel extends JPanel {
 	}
 
 	public void setLayer(Layer layer) {
-		for (AbstractTool tool : toolList)
+		for (AbstractTool tool : toolList) {
+			Layer oldLayer = tool.getLayer();
 			tool.setLayer(layer);
+			if (tool == currentTool)
+				tool.layerChanged(oldLayer, layer);
+		}
 	}
 
 	public void setCanvas(Canvas canvas) {
