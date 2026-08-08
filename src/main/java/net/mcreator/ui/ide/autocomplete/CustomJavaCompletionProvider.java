@@ -164,7 +164,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			// Keywords - executed synchronously
 			for (String kw : JavaConventions.JAVA_RESERVED_WORDS) {
 				if (matchesFilter(kw, wordOnly)) {
-					completions.add(new JavaKeywordCompletition(this, kw));
+					completions.add(new JavaKeywordCompletion(this, kw));
 				}
 			}
 
