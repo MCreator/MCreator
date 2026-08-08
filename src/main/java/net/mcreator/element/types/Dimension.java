@@ -167,7 +167,13 @@ import java.util.List;
 	}
 
 	public boolean hasFixedTimeAndNeedsCustomTimeline() {
-		return !useCustomEffects && "overworld".equals(defaultEffects) && hasFixedTime;
+		return hasFixedTime && (useCustomEffects ?
+				"NORMAL".equals(skyType) :
+				"overworld".equals(defaultEffects));
+	}
+
+	public boolean needsCustomEffectsTimeline() {
+		return useCustomEffects && "NORMAL".equals(skyType) && !hasFixedTime;
 	}
 
 	public Set<String> getWorldgenBlocks() {

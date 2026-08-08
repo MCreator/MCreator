@@ -77,21 +77,25 @@
   "coordinate_scale": ${data.coordinateScale},
   "ambient_light": ${data.ambientLight},
   "infiniburn": "#${data.infiniburnTag}",
-  <#if data.useCustomEffects>
-  <#-- no timelines or clock if useCustomEffects is true -->
+  <#if data.hasFixedTimeAndNeedsCustomTimeline()>
+    "has_fixed_time": true,
+    "timelines": "${modid}:${registryname}_fixed",
+    "default_clock": "minecraft:overworld",
+  <#elseif data.needsCustomEffectsTimeline()>
+    "timelines": "${modid}:${registryname}_effects",
+    "default_clock": "minecraft:overworld",
+  <#elseif data.useCustomEffects>
+    <#-- no timelines or clock if useCustomEffects is used with NONE or END sky type -->
   <#elseif data.defaultEffects == "the_end">
-  "has_fixed_time": true,
-  "timelines": "#minecraft:in_end",
+    "has_fixed_time": true,
+    "timelines": "#minecraft:in_end",
   <#elseif data.defaultEffects == "the_nether">
-  "has_fixed_time": true,
-  "timelines": "#minecraft:in_nether",
-  <#elseif data.hasFixedTimeAndNeedsCustomTimeline()>
-  "has_fixed_time": true,
-  "timelines": "${modid}:${registryname}_fixed",
-  "default_clock": "minecraft:overworld",
+    "has_fixed_time": true,
+    "timelines": "#minecraft:in_nether",
+    "cardinal_light": "nether",
   <#elseif data.defaultEffects == "overworld">
-  "timelines": "#minecraft:in_overworld",
-  "default_clock": "minecraft:overworld",
+    "timelines": "#minecraft:in_overworld",
+    "default_clock": "minecraft:overworld",
   </#if>
   <#if data.worldGenType == "Normal world gen">
   "min_y": -64,
