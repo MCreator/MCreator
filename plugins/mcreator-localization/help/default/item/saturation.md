@@ -1,9 +1,7 @@
 Saturation is the first statistic to decrease when a player performs energy-intensive actions, 
 and it must be completely depleted before the visible hunger meter begins decreasing.
 
-
 The saturation option is a multiplier used by the game to determine the resulting saturation given by your food item using this formula:
-
 
 ```
 resulting saturation = 2 * food value * multiplier
