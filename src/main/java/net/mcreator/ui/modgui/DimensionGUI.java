@@ -326,7 +326,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings());
 		defaultEffects.addActionListener(_ -> updateDimensionEffectSettings());
 		hasClouds.setOpaque(false);
-		hasClouds.addActionListener(_ -> cloudHeight.setEnabled(hasClouds.isSelected()));
+		hasClouds.addActionListener(_ -> updateDimensionEffectSettings());
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
 		sunHeightAffectsFog.setOpaque(false);
@@ -677,6 +677,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		airColor.setEnabled(hasCustomEffects);
 		sunHeightAffectsFog.setEnabled(hasCustomEffects);
 		hasFog.setEnabled(hasCustomEffects);
+		cloudHeight.setEnabled(hasClouds.isSelected());
 
 		// Fixed time is only supported when there is a day/night cycle to freeze:
 		// default overworld effects, or custom effects with NORMAL sky type
