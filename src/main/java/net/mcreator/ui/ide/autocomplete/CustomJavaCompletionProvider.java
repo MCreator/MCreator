@@ -321,9 +321,15 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		int depth = 0;
 		for (int i = beforeDot.length() - 1; i >= 0; i--) {
 			char c = beforeDot.charAt(i);
-			if (c == ')') depth++;
-			else if (c == '(') depth--;
-			else if (depth == 0) {
+			if (c == ')') {
+				depth++;
+			} else if (c == '(') {
+				if (depth > 0) {
+					depth--;
+				} else {
+					break;
+				}
+			} else if (depth == 0) {
 				if (!Character.isLetterOrDigit(c) && c != '_' && c != '.') {
 					break;
 				}

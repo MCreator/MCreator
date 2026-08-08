@@ -132,10 +132,12 @@ public class JavaTypeResolver {
 		if (targetName == null || targetName.trim().isEmpty()) return result;
 		targetName = targetName.trim();
 
+		String currentClassFQDN = ClassFinder.getCurrentFQDN(parser);
+
 		ResolutionResult res = resolveTargetFQDN(targetName, code, codeBeforeCursor, workspace, parser);
 		if (res == null || res.fqdn == null) return result;
 
-		List<CompletionItem> allMembers = getMembersOfFQDN(res.fqdn, workspace);
+		List<CompletionItem> allMembers = getMembersOfFQDN(res.fqdn, workspace, currentClassFQDN, code);
 		for (CompletionItem item : allMembers) {
 			if (!res.isStaticContext || item.isStatic) {
 				result.add(item);
@@ -145,19 +147,53 @@ public class JavaTypeResolver {
 	}
 
 	public static List<CompletionItem> getMembersOfFQDN(String fqdn, Workspace workspace) {
+		return getMembersOfFQDN(fqdn, workspace, null, null);
+	}
+
+	public static List<CompletionItem> getMembersOfFQDN(String fqdn, Workspace workspace, @Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty()) return new ArrayList<>();
+		boolean isCurrentClass = currentClassFQDN != null && fqdn.equals(currentClassFQDN);
 		int managerId = (workspace != null && workspace.getGenerator() != null && workspace.getGenerator().getProjectJarManager() != null)
 				? System.identityHashCode(workspace.getGenerator().getProjectJarManager()) : 0;
-		String cacheKey = managerId + ":" + fqdn;
-		List<CompletionItem> cached = MEMBER_CACHE.get(cacheKey);
-		if (cached != null) {
-			return new ArrayList<>(cached);
+
+		if (!isCurrentClass) {
+			String cacheKey = managerId + ":" + fqdn;
+			List<CompletionItem> cached = MEMBER_CACHE.get(cacheKey);
+			if (cached != null) {
+				return new ArrayList<>(cached);
+			}
 		}
+
 		List<CompletionItem> result = new ArrayList<>();
 		Set<String> added = new HashSet<>();
 		Set<String> visited = new HashSet<>();
-		populateMembersOfFQDN(fqdn, workspace, result, added, visited);
-		MEMBER_CACHE.put(cacheKey, List.copyOf(result));
+
+		if (isCurrentClass && currentCode != null && !currentCode.isEmpty()) {
+			String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
+			parseSourceCodeCompletions(currentCode, declaringClass, result, added, true);
+			try {
+				JavaType<?> source = Roaster.parse(currentCode);
+				if (source instanceof JavaClassSource javaClass) {
+					String parentName = javaClass.getSuperType();
+					if (parentName != null && !parentName.isEmpty() && !parentName.equals("java.lang.Object")) {
+						Map<String, String> imports = parseImports(currentCode);
+						String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+						String parentFQDN = resolveSimpleTypeName(parentName, imports, workspace, pkg);
+						if (parentFQDN != null) {
+							populateMembersOfFQDN(parentFQDN, workspace, result, added, visited);
+						}
+					}
+				}
+			} catch (Throwable ignored) {
+			}
+		} else {
+			populateMembersOfFQDN(fqdn, workspace, result, added, visited);
+		}
+
+		if (!isCurrentClass) {
+			String cacheKey = managerId + ":" + fqdn;
+			MEMBER_CACHE.put(cacheKey, List.copyOf(result));
+		}
 		return result;
 	}
 
@@ -236,7 +272,7 @@ public class JavaTypeResolver {
 		if (workspace != null) {
 			String srcCode = loadSourceCodeForFQDN(fqdn, workspace);
 			if (srcCode != null) {
-				parseSourceCodeCompletions(srcCode, declaringClass, result, added);
+				parseSourceCodeCompletions(srcCode, declaringClass, result, added, false);
 				try {
 					JavaType<?> source = Roaster.parse(srcCode);
 					if (source instanceof JavaClassSource javaClass) {
@@ -329,7 +365,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
-	private static void parseSourceCodeCompletions(String srcCode, String declaringClass, List<CompletionItem> result, Set<String> added) {
+	private static void parseSourceCodeCompletions(String srcCode, String declaringClass, List<CompletionItem> result, Set<String> added, boolean includePrivate) {
 		if (srcCode == null || srcCode.isEmpty()) return;
 
 		try {
@@ -339,18 +375,18 @@ public class JavaTypeResolver {
 			List<MethodSource<?>> methods = source instanceof MethodHolderSource<?> mhs ? (List) mhs.getMethods() : Collections.emptyList();
 
 			for (FieldSource<?> f : fields) {
-				if (f.isPrivate()) continue;
+				if (!includePrivate && f.isPrivate()) continue;
 				String fName = f.getName();
 				if (fName.equals("class") || fName.equals("interface") || fName.equals("enum")) continue;
 
 				String fType = f.getType().getSimpleName();
-				String vis = f.isPublic() ? "public" : (f.isProtected() ? "protected" : "package");
+				String vis = f.isPublic() ? "public" : (f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
 				addFieldCompletion(fName, fType, f.isStatic(), f.isFinal(), f.hasAnnotation(Deprecated.class), vis, declaringClass, result, added);
 			}
 
 			Map<String, String> imports = parseImports(srcCode);
 			for (MethodSource<?> m : methods) {
-				if (m.isPrivate() || m.isConstructor() || m.getName().startsWith("<")) continue;
+				if ((!includePrivate && m.isPrivate()) || m.isConstructor() || m.getName().startsWith("<")) continue;
 				String mName = m.getName();
 				if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch") || mName.equals("catch") || mName.equals("class")) continue;
 
@@ -369,7 +405,7 @@ public class JavaTypeResolver {
 					fqdnPTypes[p] = resolvedFQDN != null ? resolvedFQDN : rawType;
 				}
 
-				String vis = m.isPublic() ? "public" : (m.isProtected() ? "protected" : "package");
+				String vis = m.isPublic() ? "public" : (m.isProtected() ? "protected" : (m.isPrivate() ? "private" : "package"));
 				String docSummary = m.getJavaDoc() != null ? m.getJavaDoc().getFullText() : null;
 				addMethodCompletion(mName, returnType, pTypes, pNames, fqdnPTypes, m.isStatic(), m.isAbstract(), m.hasAnnotation(Deprecated.class), vis, declaringClass, docSummary, result, added);
 			}
@@ -467,11 +503,11 @@ public class JavaTypeResolver {
 		return result;
 	}
 
-	private static String getReturnTypeOfMember(String fqdn, String member, Workspace workspace) {
+	private static String getReturnTypeOfMember(String fqdn, String member, Workspace workspace, @Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty()) return null;
 		String memberName = member.contains("(") ? member.substring(0, member.indexOf('(')) : member;
 
-		List<CompletionItem> members = getMembersOfFQDN(fqdn, workspace);
+		List<CompletionItem> members = getMembersOfFQDN(fqdn, workspace, currentClassFQDN, currentCode);
 		for (CompletionItem item : members) {
 			if (item.kind.equals("method") && item.label.startsWith(memberName + "(")) {
 				return item.detail;
@@ -526,7 +562,7 @@ public class JavaTypeResolver {
 					typeName = base;
 					isStaticContext = true;
 				} else {
-					String fieldTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, workspace);
+					String fieldTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, workspace, currentClassFQDN, code);
 					if (fieldTypeSimple != null) {
 						typeName = fieldTypeSimple;
 					}
@@ -544,7 +580,7 @@ public class JavaTypeResolver {
 		for (int i = 1; i < chain.size(); i++) {
 			if (currentFQDN == null) return null;
 			String member = chain.get(i);
-			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, workspace);
+			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, workspace, currentClassFQDN, code);
 
 			if ((returnTypeSimple == null || returnTypeSimple.equals("Object") || returnTypeSimple.equals("E") || returnTypeSimple.equals("T") || returnTypeSimple.equals("V") || returnTypeSimple.equals("K")) && currentGenericArg != null) {
 				returnTypeSimple = currentGenericArg;
