@@ -21,9 +21,12 @@ package net.mcreator.ui.ide.autocomplete;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.Workspace;
 import org.fife.ui.autocomplete.BasicCompletion;
+import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,24 +34,28 @@ public class StringCompletitionProvider extends DefaultCompletionProvider {
 
 	public StringCompletitionProvider(Workspace workspace) {
 		Map<String, String> enLangMap = workspace.getLanguageMap().get("en_us");
-		Set<String> localizationKeys = enLangMap.keySet();
-		for (String localKeyTest : localizationKeys) {
-			String[] data = localKeyTest.split("\\.");
-			String langKey = localKeyTest;
-			if (data.length > 1)
-				langKey = data[1];
-			String summary = "Inserts a Minecraft localization system text resource key for the entry " + langKey
-					+ ".<br><br>EN text for this entry: " + enLangMap.get(localKeyTest);
-			addCompletion(new BasicCompletion(this, langKey, "Localization text short key", summary) {
-				@Override public Icon getIcon() {
-					return UIRES.get("16px.large");
-				}
-			});
-			addCompletion(new BasicCompletion(this, localKeyTest, "Localization text key", summary) {
-				@Override public Icon getIcon() {
-					return UIRES.get("16px.large");
-				}
-			});
+		if (enLangMap != null) {
+			Set<String> localizationKeys = enLangMap.keySet();
+			List<Completion> list = new ArrayList<>(localizationKeys.size() * 2);
+			for (String localKeyTest : localizationKeys) {
+				String[] data = localKeyTest.split("\\.");
+				String langKey = localKeyTest;
+				if (data.length > 1)
+					langKey = data[1];
+				String summary = "Inserts a Minecraft localization system text resource key for the entry " + langKey
+						+ ".<br><br>EN text for this entry: " + enLangMap.get(localKeyTest);
+				list.add(new BasicCompletion(this, langKey, "Localization text short key", summary) {
+					@Override public Icon getIcon() {
+						return UIRES.get("16px.large");
+					}
+				});
+				list.add(new BasicCompletion(this, localKeyTest, "Localization text key", summary) {
+					@Override public Icon getIcon() {
+						return UIRES.get("16px.large");
+					}
+				});
+			}
+			addCompletions(list);
 		}
 	}
 }

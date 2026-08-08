@@ -345,13 +345,13 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			JavaLanguageSupport jls = new JavaLanguageSupport();
 			jls.setAutoCompleteEnabled(false);
+			jls.install(te);
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
 				field.set(jls, mcreator.getGenerator().getProjectJarManager());
 			} catch (Throwable ignored) {
 			}
-			jls.install(te);
 			JavaLanguageSupportBridge.bridge(te, jls);
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
