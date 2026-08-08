@@ -154,12 +154,18 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String targetName = extractTargetName(beforeDot);
 			if (!targetName.isEmpty()) {
 				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, workspace, parser);
-				addResolverItems(items, wordOnly, alreadyEntered.startsWith("Blocks.") || alreadyEntered.startsWith("Items."), completions);
+				CustomFieldCompletion.PrefixContext prefixContext = CustomFieldCompletion.PrefixContext.NONE;
+				if (alreadyEntered.startsWith("Blocks.")) {
+					prefixContext = CustomFieldCompletion.PrefixContext.BLOCKS;
+				} else if (alreadyEntered.startsWith("Items.")) {
+					prefixContext = CustomFieldCompletion.PrefixContext.ITEMS;
+				}
+				addResolverItems(items, wordOnly, prefixContext, completions);
 			}
 		} else {
 			// Method/field completions for "this" - executed synchronously
 			List<JavaTypeResolver.CompletionItem> thisItems = JavaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, workspace, parser);
-			addResolverItems(thisItems, wordOnly, false, completions);
+			addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
 
 			// Keywords - executed synchronously
 			for (String kw : JavaConventions.JAVA_RESERVED_WORDS) {
@@ -257,7 +263,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
-	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly, boolean isBlocksContext, List<Completion> completions) {
+	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly, CustomFieldCompletion.PrefixContext prefixContext, List<Completion> completions) {
 		for (JavaTypeResolver.CompletionItem item : items) {
 			String methodName = item.label.contains("(") ? item.label.substring(0, item.label.indexOf('(')) : item.label;
 			if (matchesFilter(methodName, wordOnly) || (item.kind.equals("field") && matchesFilter(item.insertText, wordOnly))) {
@@ -271,7 +277,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 					completions.add(new CustomMethodCompletion(this, methodName, item.label, item.detail, item.declaringClass, template, docStr, item.visibility, item.isStatic, item.isAbstract, item.isDeprecated));
 				} else {
-					completions.add(new CustomFieldCompletion(this, item.insertText, item.detail, item.declaringClass, item.visibility, item.isStatic, item.isFinal, item.isDeprecated, isBlocksContext));
+					completions.add(new CustomFieldCompletion(this, item.insertText, item.detail, item.declaringClass, item.visibility, item.isStatic, item.isFinal, item.isDeprecated, prefixContext));
 				}
 			}
 		}

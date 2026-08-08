@@ -26,6 +26,22 @@ import org.fife.ui.autocomplete.VariableCompletion;
 import javax.swing.Icon;
 
 public class CustomFieldCompletion extends VariableCompletion {
+	public enum PrefixContext {
+		NONE(""),
+		BLOCKS("Blocks."),
+		ITEMS("Items.");
+
+		private final String prefix;
+
+		PrefixContext(String prefix) {
+			this.prefix = prefix;
+		}
+
+		public String getPrefix() {
+			return prefix;
+		}
+	}
+
 	private final String name;
 	private final String type;
 	private final String declaringClass;
@@ -34,8 +50,8 @@ public class CustomFieldCompletion extends VariableCompletion {
 	private final boolean isFinal;
 	private final boolean isDeprecated;
 
-	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass, String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated, boolean isBlocksContext) {
-		super(provider, isBlocksContext ? "Blocks." + name : name, type);
+	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass, String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated, PrefixContext prefixContext) {
+		super(provider, (prefixContext != null ? prefixContext.getPrefix() : "") + name, type);
 		this.name = name;
 		this.type = type;
 		this.declaringClass = declaringClass;
@@ -44,6 +60,10 @@ public class CustomFieldCompletion extends VariableCompletion {
 		this.isFinal = isFinal;
 		this.isDeprecated = isDeprecated;
 		setRelevance(100);
+	}
+
+	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass, String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated) {
+		this(provider, name, type, declaringClass, visibility, isStatic, isFinal, isDeprecated, PrefixContext.NONE);
 	}
 
 	@Override
