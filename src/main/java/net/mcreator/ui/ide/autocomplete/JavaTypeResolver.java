@@ -41,7 +41,6 @@ import org.jboss.forge.roaster.model.source.*;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;

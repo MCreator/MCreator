@@ -27,7 +27,6 @@ import org.fife.rsta.ac.java.rjc.lexer.Scanner;
 import org.fife.rsta.ac.java.rjc.lexer.Token;
 import org.fife.ui.autocomplete.*;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -49,7 +48,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	);
 
 	private final Workspace workspace;
-	@Nullable private final StringCompletitionProvider stringProvider;
 	private final JavaParser parser;
 
 	private static Map<String, List<String>> cachedImportTree = null;
@@ -78,7 +76,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	public CustomJavaCompletionProvider(Workspace workspace, JavaParser parser) {
 		this.workspace = workspace;
 		this.parser = parser;
-		this.stringProvider = workspace != null ? new StringCompletitionProvider(workspace) : null;
 		setAutoActivationRules(true, ".");
 	}
 
@@ -125,18 +122,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			lineUntilPosition = doc.getText(lineStart, caretPos - lineStart);
 		} catch (BadLocationException e) {
 			lineUntilPosition = "";
-		}
-
-		boolean insideString = StringCompletitionProvider.isInsideString(lineUntilPosition);
-
-		if (insideString) {
-			if (stringProvider != null) {
-				List<Completion> stringComps = stringProvider.getCompletions(comp);
-				if (stringComps != null) {
-					completions.addAll(stringComps);
-				}
-			}
-			return completions;
 		}
 
 		String alreadyEntered = getAlreadyEnteredText(comp);
