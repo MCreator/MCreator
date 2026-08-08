@@ -102,11 +102,29 @@ public class JavaTypeResolver {
 		}
 	}
 
-	private static final Map<String, List<CompletionItem>> MEMBER_CACHE = new ConcurrentHashMap<>();
-	private static final Map<Integer, Map<String, String>> IMPORTS_CACHE = new ConcurrentHashMap<>();
-	private static final Map<Integer, Map<String, String>> DOCS_CACHE = new ConcurrentHashMap<>();
-	private static final Map<String, String> SOURCE_CACHE = new ConcurrentHashMap<>();
-	private static final Map<String, String> SIMPLE_TYPE_CACHE = new ConcurrentHashMap<>();
+	private static <K, V> Map<K, V> createBoundedCache(int maxSize) {
+		return Collections.synchronizedMap(new LinkedHashMap<>(maxSize, 0.75f, true) {
+			@Override
+			protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+				return size() > maxSize;
+			}
+		});
+	}
+
+	// Maps "managerId:fqdn" -> List<CompletionItem> (cached field and method completion items for a class)
+	private static final Map<String, List<CompletionItem>> MEMBER_CACHE = createBoundedCache(500);
+
+	// Maps code.hashCode() -> Map<simpleClassName, fqdn> (parsed import mappings for a source code snapshot)
+	private static final Map<Integer, Map<String, String>> IMPORTS_CACHE = createBoundedCache(50);
+
+	// Maps srcCode.hashCode() -> Map<methodKey, javadocText> (parsed Javadoc documentation for a source code snapshot)
+	private static final Map<Integer, Map<String, String>> DOCS_CACHE = createBoundedCache(50);
+
+	// Maps "managerId:fqdn" -> sourceCodeString (loaded Java source code string)
+	private static final Map<String, String> SOURCE_CACHE = createBoundedCache(100);
+
+	// Maps "managerId:currentPkg:typeName" -> resolvedFQDN (simple type name resolution result)
+	private static final Map<String, String> SIMPLE_TYPE_CACHE = createBoundedCache(500);
 
 	public static List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor, Workspace workspace,
 			@Nullable JavaParser parser) {
