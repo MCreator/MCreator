@@ -35,7 +35,6 @@ import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
 import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
-import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
@@ -387,8 +386,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
-
-			jcp.setStringCompletionProvider(new StringCompletitionProvider(mcreator.getWorkspace()));
 
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
