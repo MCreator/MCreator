@@ -35,9 +35,18 @@ import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
 import java.io.StringReader;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 
 public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
+
+	private static final ExecutorService COMPLETION_EXECUTOR = Executors.newFixedThreadPool(
+			Math.max(2, Runtime.getRuntime().availableProcessors()),
+			r -> {
+				Thread t = new Thread(r, "CustomJavaCompletionProvider-Worker");
+				t.setDaemon(true);
+				return t;
+			}
+	);
 
 	private final Workspace workspace;
 	@Nullable private final StringCompletitionProvider stringProvider;
@@ -89,7 +98,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	@Override
 	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
-		List<Completion> completions = new ArrayList<>();
+		List<Completion> completions = Collections.synchronizedList(new ArrayList<>());
 		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get()) {
 			return completions;
 		}
@@ -148,18 +157,18 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				addResolverItems(items, wordOnly, alreadyEntered.startsWith("Blocks.") || alreadyEntered.startsWith("Items."), completions);
 			}
 		} else {
-			// General completions
+			// Method/field completions for "this" - executed synchronously
 			List<JavaTypeResolver.CompletionItem> thisItems = JavaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, workspace, parser);
 			addResolverItems(thisItems, wordOnly, false, completions);
 
-			// Keywords
+			// Keywords - executed synchronously
 			for (String kw : JavaConventions.JAVA_RESERVED_WORDS) {
 				if (matchesFilter(kw, wordOnly)) {
 					completions.add(new JavaKeywordCompletition(this, kw));
 				}
 			}
 
-			// Document words extracted via RSTA Java Lexer
+			// Document words extracted via RSTA Java Lexer - executed synchronously
 			Set<String> addedWords = new HashSet<>(JavaConventions.JAVA_RESERVED_WORDS);
 			try {
 				Scanner scanner = new Scanner(new StringReader(code));
@@ -178,7 +187,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			} catch (Throwable ignored) {
 			}
 
-			// External classes & workspace classes
+			// External classes & workspace classes - offloaded to background thread with timeout
 			String trimmedBefore = textBeforeWord.trim();
 			boolean isClassContext = trimmedBefore.endsWith("@") ||
 					(!wordOnly.isEmpty() && Character.isUpperCase(wordOnly.charAt(0)));
@@ -192,29 +201,41 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			}
 
 			if (isClassContext && workspace != null && workspace.getGenerator() != null) {
-				Map<String, List<String>> tree = getImportTreeCached(workspace);
-				if (tree != null) {
-					Set<String> addedFQDNs = new HashSet<>();
-					for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
-						String className = entry.getKey();
-						if (matchesFilter(className, wordOnly)) {
-							List<String> fqdns = entry.getValue();
-							if (fqdns != null && !fqdns.isEmpty()) {
-								for (String fqdn : fqdns) {
-									if (addedFQDNs.add(fqdn)) {
-										ClassInfo info = getClassInfo(fqdn);
-										CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
-										completions.add(ccc);
+				CompletableFuture<List<Completion>> classTask = CompletableFuture.supplyAsync(() -> {
+					List<Completion> classComps = new ArrayList<>();
+					Map<String, List<String>> tree = getImportTreeCached(workspace);
+					if (tree != null) {
+						Set<String> addedFQDNs = new HashSet<>();
+						for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
+							String className = entry.getKey();
+							if (matchesFilter(className, wordOnly)) {
+								List<String> fqdns = entry.getValue();
+								if (fqdns != null && !fqdns.isEmpty()) {
+									for (String fqdn : fqdns) {
+										if (addedFQDNs.add(fqdn)) {
+											ClassInfo info = getClassInfo(fqdn);
+											CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
+											classComps.add(ccc);
+										}
 									}
 								}
 							}
 						}
 					}
+					return classComps;
+				}, COMPLETION_EXECUTOR);
+
+				try {
+					completions.addAll(classTask.get(50, TimeUnit.MILLISECONDS));
+				} catch (TimeoutException e) {
+					// Class completions timed out; return method/field/keyword completions immediately
+				} catch (Exception ignored) {
 				}
 			}
 		}
 
-		completions.sort((c1, c2) -> {
+		List<Completion> result = new ArrayList<>(completions);
+		result.sort((c1, c2) -> {
 			int r1 = c1.getRelevance();
 			int r2 = c2.getRelevance();
 			if (r1 != r2) return Integer.compare(r2, r1);
@@ -223,7 +244,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			return Integer.compare(System.identityHashCode(c1), System.identityHashCode(c2));
 		});
 
-		return completions;
+		return result;
 	}
 
 	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly, boolean isBlocksContext, List<Completion> completions) {

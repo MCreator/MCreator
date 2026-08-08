@@ -103,6 +103,10 @@ public class JavaTypeResolver {
 	}
 
 	private static final Map<String, List<CompletionItem>> MEMBER_CACHE = new ConcurrentHashMap<>();
+	private static final Map<Integer, Map<String, String>> IMPORTS_CACHE = new ConcurrentHashMap<>();
+	private static final Map<Integer, Map<String, String>> DOCS_CACHE = new ConcurrentHashMap<>();
+	private static final Map<String, String> SOURCE_CACHE = new ConcurrentHashMap<>();
+	private static final Map<String, String> SIMPLE_TYPE_CACHE = new ConcurrentHashMap<>();
 
 	public static List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor, Workspace workspace,
 			@Nullable JavaParser parser) {
@@ -135,9 +139,7 @@ public class JavaTypeResolver {
 		Set<String> added = new HashSet<>();
 		Set<String> visited = new HashSet<>();
 		populateMembersOfFQDN(fqdn, workspace, result, added, visited);
-		if (!result.isEmpty()) {
-			MEMBER_CACHE.put(cacheKey, List.copyOf(result));
-		}
+		MEMBER_CACHE.put(cacheKey, List.copyOf(result));
 		return result;
 	}
 
@@ -238,6 +240,10 @@ public class JavaTypeResolver {
 
 	private static Map<String, String> getMethodDocsFromSource(String srcCode) {
 		if (srcCode == null || srcCode.isEmpty()) return Collections.emptyMap();
+		int hash = srcCode.hashCode();
+		Map<String, String> cached = DOCS_CACHE.get(hash);
+		if (cached != null) return cached;
+
 		Map<String, String> docs = new HashMap<>();
 		try {
 			JavaType<?> source = Roaster.parse(srcCode);
@@ -253,11 +259,25 @@ public class JavaTypeResolver {
 			}
 		} catch (Throwable ignored) {
 		}
-		return docs;
+		Map<String, String> unmodifiable = Collections.unmodifiableMap(docs);
+		DOCS_CACHE.put(hash, unmodifiable);
+		return unmodifiable;
 	}
 
 	private static String loadSourceCodeForFQDN(String fqdn, Workspace workspace) {
 		if (workspace == null || workspace.getGenerator() == null || fqdn == null) return null;
+		int managerId = workspace.getGenerator().getProjectJarManager() != null
+				? System.identityHashCode(workspace.getGenerator().getProjectJarManager()) : 0;
+		String cacheKey = managerId + ":" + fqdn;
+		String cached = SOURCE_CACHE.get(cacheKey);
+		if (cached != null) return cached.isEmpty() ? null : cached;
+
+		String srcCode = loadSourceCodeForFQDNImpl(fqdn, workspace);
+		SOURCE_CACHE.put(cacheKey, srcCode != null ? srcCode : "");
+		return srcCode;
+	}
+
+	private static String loadSourceCodeForFQDNImpl(String fqdn, Workspace workspace) {
 		File srcFile = new File(workspace.getGenerator().getSourceRoot(), fqdn.replace('.', '/') + ".java");
 		if (srcFile.isFile()) {
 			return FileIO.readFileToString(srcFile);
@@ -342,6 +362,10 @@ public class JavaTypeResolver {
 
 	private static Map<String, String> parseImports(String code) {
 		if (code == null || code.isEmpty()) return Collections.emptyMap();
+		int hash = code.hashCode();
+		Map<String, String> cached = IMPORTS_CACHE.get(hash);
+		if (cached != null) return cached;
+
 		Map<String, String> imports = new HashMap<>();
 		try {
 			JavaType<?> source = Roaster.parse(code);
@@ -354,13 +378,27 @@ public class JavaTypeResolver {
 			}
 		} catch (Throwable ignored) {
 		}
-		return imports;
+		Map<String, String> unmodifiable = Collections.unmodifiableMap(imports);
+		IMPORTS_CACHE.put(hash, unmodifiable);
+		return unmodifiable;
 	}
 
 	private static String resolveSimpleTypeName(String typeName, Map<String, String> imports, Workspace workspace, String currentPkg) {
 		if (typeName == null) return null;
 		if (typeName.contains(".")) return typeName;
 
+		int managerId = (workspace != null && workspace.getGenerator() != null && workspace.getGenerator().getProjectJarManager() != null)
+				? System.identityHashCode(workspace.getGenerator().getProjectJarManager()) : 0;
+		String cacheKey = managerId + ":" + (currentPkg != null ? currentPkg : "") + ":" + typeName;
+		String cached = SIMPLE_TYPE_CACHE.get(cacheKey);
+		if (cached != null) return cached.isEmpty() ? null : cached;
+
+		String resolved = resolveSimpleTypeNameImpl(typeName, imports, workspace, currentPkg);
+		SIMPLE_TYPE_CACHE.put(cacheKey, resolved != null ? resolved : "");
+		return resolved;
+	}
+
+	private static String resolveSimpleTypeNameImpl(String typeName, Map<String, String> imports, Workspace workspace, String currentPkg) {
 		if (imports.containsKey(typeName)) {
 			return imports.get(typeName);
 		}
