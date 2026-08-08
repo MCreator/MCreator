@@ -98,7 +98,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	@Override
 	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
-		List<Completion> completions = Collections.synchronizedList(new ArrayList<>());
+		List<Completion> completions = new CopyOnWriteArrayList<>();
 		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get()) {
 			return completions;
 		}
@@ -209,7 +209,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					}, COMPLETION_EXECUTOR);
 
 					try {
-						completions.addAll(classTask.get(50, TimeUnit.MILLISECONDS));
+						completions.addAll(classTask.get(100, TimeUnit.MILLISECONDS));
 					} catch (TimeoutException e) {
 						// Class completions timed out in smart mode; return method/field/keyword completions immediately
 					} catch (Exception ignored) {
