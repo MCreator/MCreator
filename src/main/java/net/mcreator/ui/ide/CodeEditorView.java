@@ -33,7 +33,7 @@ import net.mcreator.ui.component.JFileBreadCrumb;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
-import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
+import net.mcreator.ui.ide.autocomplete.CustomJavaCompletionProvider;
 import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
@@ -49,12 +49,10 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.AbstractSourceTree;
-import org.fife.rsta.ac.java.JavaCompletionProvider;
 import org.fife.rsta.ac.java.JavaLanguageSupport;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.tree.JavaOutlineTree;
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -74,7 +72,6 @@ import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -347,50 +344,38 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
 
 			JavaLanguageSupport jls = new JavaLanguageSupport();
-			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
-			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
-			jls.setParameterAssistanceEnabled(true);
-			jls.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
-
+			jls.setAutoCompleteEnabled(false);
+			jls.install(te);
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
 				field.set(jls, mcreator.getGenerator().getProjectJarManager());
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
+			} catch (Throwable ignored) {
 			}
-
-			jls.install(te);
-
 			JavaLanguageSupportBridge.bridge(te, jls);
-
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
 				method.setAccessible(true);
-				ac = (AutoCompletion) method.invoke(jls, te);
-				ac.setAutoCompleteSingleChoices(false);
-			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
-			         NoSuchMethodException | IllegalAccessException e1) {
-				LOG.error(e1.getMessage(), e1);
+				AutoCompletion defaultAc = (AutoCompletion) method.invoke(jls, te);
+				if (defaultAc != null) {
+					defaultAc.uninstall();
+				}
+			} catch (Throwable ignored) {
 			}
-
-			JavaCompletionProvider jcp = jls.getCompletionProvider(te);
-
-			try {
-				Field field = jcp.getClass().getDeclaredField("sourceProvider");
-				field.setAccessible(true);
-				DefaultCompletionProvider sourceCompletionProvider = (DefaultCompletionProvider) field.get(jcp);
-				jcp.setShorthandCompletionCache(
-						new CustomJSCCache(sourceCompletionProvider, new DefaultCompletionProvider()));
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
-			}
+      
+			this.parser = jls.getParser(te);
+			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
+			ac = new AutoCompletion(jcp);
+			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
+			ac.setAutoActivationDelay(0);
+			ac.setParameterAssistanceEnabled(true);
+			ac.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
+			ac.setAutoCompleteSingleChoices(false);
+			ac.install(te);
 
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
-
-			this.parser = jls.getParser(te);
 
 			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
@@ -404,7 +389,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && jls.isAutoActivationEnabled() &&
+							&& !completionInAction && ac.isAutoActivationEnabled() &&
 							// only smart autocomplete if the char we typed is a letter or digit
 							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
 							// if the popup is already visible, the library refreshes it on caret updates

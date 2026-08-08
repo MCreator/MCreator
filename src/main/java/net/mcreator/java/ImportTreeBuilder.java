@@ -111,7 +111,7 @@ public class ImportTreeBuilder {
 		return retval;
 	}
 
-	static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {
+	public static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {
 		reloadClassesFromModImpl(generator.getSourceRoot(), generator.getSourceRoot(), store);
 	}
 
