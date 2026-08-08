@@ -343,8 +343,7 @@
 				"blockstate": "blockstate"
 			}/>
 		</#if>
-	}
-		<#if hasProcedure(onRedstoneOff)> else {
+		} <#if hasProcedure(onRedstoneOff)> else {
 			<@procedureCode onRedstoneOff, {
 				"x": "pos.getX()",
 				"y": "pos.getY()",

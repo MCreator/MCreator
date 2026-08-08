@@ -22,7 +22,7 @@
 					double z = ${name}Entity.this.getZ();
 					Entity entity = ${name}Entity.this;
 					Level world = ${name}Entity.this.level();
-					return super.canContinueToUse() && <@procedureOBJToConditionCode conditions[0]/>;
+					return super.canContinueToUse() && <@procedureOBJToConditionCode conditions[1]/>;
 				}
 				</#if>
 			<#if includeBraces>}</#if>

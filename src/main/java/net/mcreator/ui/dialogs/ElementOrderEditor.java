@@ -154,7 +154,8 @@ public class ElementOrderEditor {
 
 			for (String element : tab.getValue()) {
 				ModElement me = mcreator.getWorkspace().getModElementByName(element);
-				if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
+				if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement
+						&& !tabElement.getCreativeTabItems().isEmpty())
 					tabEditors.get(tab.getKey()).addElement(me);
 			}
 

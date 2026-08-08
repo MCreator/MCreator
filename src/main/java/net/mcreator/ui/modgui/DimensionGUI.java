@@ -312,8 +312,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		canRespawnHere.setOpaque(false);
 		doesWaterVaporize.setOpaque(false);
 		hasFixedTime.setOpaque(false);
-		hasFixedTime.addActionListener(_ -> fixedTimeValue.setEnabled(hasFixedTime.isSelected()));
-		fixedTimeValue.setEnabled(false);
+		hasFixedTime.addActionListener(_ -> updateDimensionEffectSettings());
 		if (!isEditingMode()) {
 			bedWorks.setSelected(true);
 			imitateOverworldBehaviour.setSelected(true);
@@ -324,9 +323,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
 
 		useCustomEffects.setOpaque(false);
-		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings(useCustomEffects.isSelected()));
+		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings());
+		defaultEffects.addActionListener(_ -> updateDimensionEffectSettings());
 		hasClouds.setOpaque(false);
-		hasClouds.addActionListener(_ -> cloudHeight.setEnabled(hasClouds.isSelected()));
+		hasClouds.addActionListener(_ -> updateDimensionEffectSettings());
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
 		sunHeightAffectsFog.setOpaque(false);
@@ -337,7 +337,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			useCustomEffects.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 					== GeneratorFlavor.BaseLanguage.JAVA);
 			hasClouds.setSelected(true);
-			updateDimensionEffectSettings(useCustomEffects.isSelected());
+			updateDimensionEffectSettings();
 		}
 
 		propertiesPage.add("Center", PanelUtils.totalCenterInPanel(
@@ -425,6 +425,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		enableCustomSkyboxTextures.addActionListener(_ -> updateSkyboxElements());
 		enableCustomSunMoonTextures.addActionListener(_ -> updateSkyboxElements());
+		skyType.addActionListener(_ -> {
+			updateSkyboxElements();
+			updateDimensionEffectSettings();
+		});
 		updateSkyboxElements();
 
 		// Dimension generation settings
@@ -667,11 +671,21 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		igniterRarity.setEnabled(enabled);
 	}
 
-	private void updateDimensionEffectSettings(boolean hasCustomEffects) {
+	private void updateDimensionEffectSettings() {
+		boolean hasCustomEffects = useCustomEffects.isSelected();
 		defaultEffects.setEnabled(!hasCustomEffects);
 		airColor.setEnabled(hasCustomEffects);
 		sunHeightAffectsFog.setEnabled(hasCustomEffects);
 		hasFog.setEnabled(hasCustomEffects);
+		cloudHeight.setEnabled(hasClouds.isSelected());
+
+		// Fixed time is only supported when there is a day/night cycle to freeze:
+		// default overworld effects, or custom effects with NORMAL sky type
+		boolean supportsFixedTime = hasCustomEffects ?
+				"NORMAL".equals(skyType.getSelectedItem()) :
+				"overworld".equals(defaultEffects.getSelectedItem());
+		hasFixedTime.setEnabled(supportsFixedTime);
+		fixedTimeValue.setEnabled(supportsFixedTime && hasFixedTime.isSelected());
 	}
 
 	private void updateWorldgenSettings() {
@@ -704,6 +718,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	}
 
 	private void updateSkyboxElements() {
+		boolean skyNone = "NONE".equals(skyType.getSelectedItem());
+		if (skyNone) {
+			enableCustomSkyboxTextures.setSelected(false);
+			enableCustomSunMoonTextures.setSelected(false);
+		}
+		enableCustomSkyboxTextures.setEnabled(!skyNone);
+		enableCustomSunMoonTextures.setEnabled(!skyNone);
 		boolean skyboxEnabled = enableCustomSkyboxTextures.isSelected();
 		skyboxTextureUp.setEnabled(skyboxEnabled);
 		skyboxTextureDown.setEnabled(skyboxEnabled);
@@ -798,9 +819,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		sunTexture.setTexture(dimension.sunTexture);
 		moonTexture.setTexture(dimension.moonTexture);
 
-		fixedTimeValue.setEnabled(dimension.hasFixedTime);
 		updateWorldgenSettings();
-		updateDimensionEffectSettings(dimension.useCustomEffects);
+		updateDimensionEffectSettings();
 		updatePortalElements();
 		updateSkyboxElements();
 	}

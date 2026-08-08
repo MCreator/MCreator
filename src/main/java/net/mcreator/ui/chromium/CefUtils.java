@@ -41,6 +41,7 @@ import org.cef.handler.CefRequestHandlerAdapter;
 import org.cef.network.CefRequest;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
@@ -276,8 +277,10 @@ public class CefUtils {
 
 			@Override public boolean onCursorChange(CefBrowser browser, int cursorType) {
 				if (!useOSR()) {
-					//noinspection MagicConstant
-					browser.getUIComponent().setCursor(Cursor.getPredefinedCursor(cursorType));
+					SwingUtilities.invokeLater(() -> {
+						//noinspection MagicConstant
+						browser.getUIComponent().setCursor(Cursor.getPredefinedCursor(cursorType));
+					});
 					return true;
 				}
 				return false;
