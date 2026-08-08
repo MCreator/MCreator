@@ -201,35 +201,22 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			}
 
 			if (isClassContext && workspace != null && workspace.getGenerator() != null) {
-				CompletableFuture<List<Completion>> classTask = CompletableFuture.supplyAsync(() -> {
-					List<Completion> classComps = new ArrayList<>();
-					Map<String, List<String>> tree = getImportTreeCached(workspace);
-					if (tree != null) {
-						Set<String> addedFQDNs = new HashSet<>();
-						for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
-							String className = entry.getKey();
-							if (matchesFilter(className, wordOnly)) {
-								List<String> fqdns = entry.getValue();
-								if (fqdns != null && !fqdns.isEmpty()) {
-									for (String fqdn : fqdns) {
-										if (addedFQDNs.add(fqdn)) {
-											ClassInfo info = getClassInfo(fqdn);
-											CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
-											classComps.add(ccc);
-										}
-									}
-								}
-							}
-						}
-					}
-					return classComps;
-				}, COMPLETION_EXECUTOR);
+				if ("Smart".equals(mode)) {
+					CompletableFuture<List<Completion>> classTask = CompletableFuture.supplyAsync(() -> {
+						List<Completion> classComps = new ArrayList<>();
+						addClassCompletions(wordOnly, classComps);
+						return classComps;
+					}, COMPLETION_EXECUTOR);
 
-				try {
-					completions.addAll(classTask.get(50, TimeUnit.MILLISECONDS));
-				} catch (TimeoutException e) {
-					// Class completions timed out; return method/field/keyword completions immediately
-				} catch (Exception ignored) {
+					try {
+						completions.addAll(classTask.get(50, TimeUnit.MILLISECONDS));
+					} catch (TimeoutException e) {
+						// Class completions timed out in smart mode; return method/field/keyword completions immediately
+					} catch (Exception ignored) {
+					}
+				} else {
+					// Autocomplete is not in smart mode: run class completion synchronously so completions are always shown
+					addClassCompletions(wordOnly, completions);
 				}
 			}
 		}
@@ -245,6 +232,29 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		});
 
 		return result;
+	}
+
+	private void addClassCompletions(String wordOnly, List<Completion> completions) {
+		if (workspace == null || workspace.getGenerator() == null) return;
+		Map<String, List<String>> tree = getImportTreeCached(workspace);
+		if (tree != null) {
+			Set<String> addedFQDNs = new HashSet<>();
+			for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
+				String className = entry.getKey();
+				if (matchesFilter(className, wordOnly)) {
+					List<String> fqdns = entry.getValue();
+					if (fqdns != null && !fqdns.isEmpty()) {
+						for (String fqdn : fqdns) {
+							if (addedFQDNs.add(fqdn)) {
+								ClassInfo info = getClassInfo(fqdn);
+								CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
+								completions.add(ccc);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly, boolean isBlocksContext, List<Completion> completions) {
