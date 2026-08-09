@@ -21,8 +21,10 @@ package net.mcreator.ui.ide.autocomplete;
 import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.fife.rsta.ac.java.JavaParser;
+import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.fife.rsta.ac.java.rjc.lexer.Scanner;
 import org.fife.rsta.ac.java.rjc.lexer.Token;
 import org.fife.ui.autocomplete.*;
@@ -54,14 +56,22 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private static long lastImportTreeUpdate = 0;
 
 	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {
-		static ClassInfo of(String fqdn) {
+		static ClassInfo of(Workspace workspace, String fqdn) {
 			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
 			boolean inf = false, enm = false;
-			try {
-				Class<?> clazz = Class.forName(fqdn);
-				inf = clazz.isInterface();
-				enm = clazz.isEnum();
-			} catch (Throwable ignored) {
+			if (workspace != null && workspace.getGenerator() != null) {
+				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
+				if (jarManager != null) {
+					try {
+						ClassFile cf = jarManager.getClassEntry(fqdn);
+						if (cf != null) {
+							int flags = cf.getAccessFlags();
+							inf = (flags & 0x0200) != 0;
+							enm = (flags & 0x4000) != 0;
+						}
+					} catch (Throwable ignored) {
+					}
+				}
 			}
 			return new ClassInfo(pkg, inf, enm);
 		}
@@ -69,8 +79,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private static final Map<String, ClassInfo> CLASS_INFO_CACHE = new ConcurrentHashMap<>();
 
-	private static ClassInfo getClassInfo(String fqdn) {
-		return CLASS_INFO_CACHE.computeIfAbsent(fqdn, ClassInfo::of);
+	private static ClassInfo getClassInfo(Workspace workspace, String fqdn) {
+		int managerId = (workspace != null && workspace.getGenerator() != null && workspace.getGenerator().getProjectJarManager() != null)
+				? System.identityHashCode(workspace.getGenerator().getProjectJarManager()) : 0;
+		String cacheKey = managerId + ":" + fqdn;
+		return CLASS_INFO_CACHE.computeIfAbsent(cacheKey, _ -> ClassInfo.of(workspace, fqdn));
 	}
 
 	public CustomJavaCompletionProvider(Workspace workspace, JavaParser parser) {
@@ -237,7 +250,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					if (fqdns != null && !fqdns.isEmpty()) {
 						for (String fqdn : fqdns) {
 							if (addedFQDNs.add(fqdn)) {
-								ClassInfo info = getClassInfo(fqdn);
+								ClassInfo info = getClassInfo(workspace, fqdn);
 								CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
 								completions.add(ccc);
 							}
