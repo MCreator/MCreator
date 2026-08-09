@@ -23,6 +23,8 @@ import net.mcreator.java.JavaConventions;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.fife.rsta.ac.java.rjc.lexer.Scanner;
@@ -39,6 +41,8 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
+
+	private static final Logger LOG = LogManager.getLogger(CustomJavaCompletionProvider.class);
 
 	private static final ExecutorService COMPLETION_EXECUTOR = Executors.newFixedThreadPool(
 			Math.max(2, Runtime.getRuntime().availableProcessors()),
@@ -70,7 +74,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 							inf = (flags & 0x0200) != 0;
 							enm = (flags & 0x4000) != 0;
 						}
-					} catch (Throwable ignored) {
+					} catch (Throwable e) {
+						LOG.debug("Failed to read class file entry for " + fqdn, e);
 					}
 				}
 			}
@@ -100,7 +105,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String textBefore = comp.getText(0, Math.max(0, caret - word.length())).trim();
 			if (textBefore.endsWith("Blocks.")) return "Blocks." + word;
 			if (textBefore.endsWith("Items.")) return "Items." + word;
-		} catch (BadLocationException ignored) {
+		} catch (BadLocationException e) {
+			LOG.debug("Failed to get already entered text", e);
 		}
 		return word;
 	}
@@ -187,7 +193,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 						}
 					}
 				}
-			} catch (Throwable ignored) {
+			} catch (Throwable e) {
+				LOG.error("Failed to lex document words for completion", e);
 			}
 
 			// External classes & workspace classes - offloaded to background thread with timeout
@@ -215,7 +222,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 						completions.addAll(classTask.get(100, TimeUnit.MILLISECONDS));
 					} catch (TimeoutException e) {
 						// Class completions timed out in smart mode; return method/field/keyword completions immediately
-					} catch (Exception ignored) {
+					} catch (Exception e) {
+						LOG.error("Failed to get class completions", e);
 					}
 				} else {
 					// Autocomplete is not in smart mode: run class completion synchronously so completions are always shown

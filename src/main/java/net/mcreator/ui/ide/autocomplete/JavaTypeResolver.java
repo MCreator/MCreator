@@ -172,7 +172,8 @@ public class JavaTypeResolver {
 						}
 					}
 				}
-			} catch (Throwable ignored) {
+			} catch (Throwable e) {
+				LOG.debug("Failed to parse super type from current code", e);
 			}
 		} else {
 			populateMembersOfFQDN(fqdn, result, added, visited);
@@ -273,7 +274,8 @@ public class JavaTypeResolver {
 							}
 						}
 					}
-				} catch (Throwable ignored) {
+				} catch (Throwable e) {
+					LOG.debug("Failed to parse super type for " + fqdn, e);
 				}
 			}
 		}
@@ -298,7 +300,8 @@ public class JavaTypeResolver {
 					}
 				}
 			}
-		} catch (Throwable ignored) {
+		} catch (Throwable e) {
+			LOG.debug("Failed to parse method docs from source code", e);
 		}
 		Map<String, String> unmodifiable = Collections.unmodifiableMap(docs);
 		docsCache.put(hash, unmodifiable);
@@ -414,7 +417,8 @@ public class JavaTypeResolver {
 					imports.put(simple, fqdn);
 				}
 			}
-		} catch (Throwable ignored) {
+		} catch (Throwable e) {
+			LOG.debug("Failed to parse imports from source code", e);
 		}
 		Map<String, String> unmodifiable = Collections.unmodifiableMap(imports);
 		importsCache.put(hash, unmodifiable);
@@ -532,7 +536,8 @@ public class JavaTypeResolver {
 							currentFQDN = "java.lang.Object";
 						}
 					}
-				} catch (Throwable ignored) {
+				} catch (Throwable e) {
+					LOG.debug("Failed to resolve superclass for super keyword", e);
 					currentFQDN = "java.lang.Object";
 				}
 			}
