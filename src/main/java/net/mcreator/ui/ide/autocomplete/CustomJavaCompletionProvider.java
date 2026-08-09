@@ -51,9 +51,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private final Workspace workspace;
 	private final JavaParser parser;
+	private final JavaTypeResolver javaTypeResolver;
 
-	private static Map<String, List<String>> cachedImportTree = null;
-	private static long lastImportTreeUpdate = 0;
+	private Map<String, List<String>> cachedImportTree = null;
+	private long lastImportTreeUpdate = 0;
 
 	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {
 		static ClassInfo of(Workspace workspace, String fqdn) {
@@ -77,18 +78,16 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
-	private static final Map<String, ClassInfo> CLASS_INFO_CACHE = new ConcurrentHashMap<>();
+	private final Map<String, ClassInfo> classInfoCache = new ConcurrentHashMap<>();
 
-	private static ClassInfo getClassInfo(Workspace workspace, String fqdn) {
-		int managerId = (workspace != null && workspace.getGenerator() != null && workspace.getGenerator().getProjectJarManager() != null)
-				? System.identityHashCode(workspace.getGenerator().getProjectJarManager()) : 0;
-		String cacheKey = managerId + ":" + fqdn;
-		return CLASS_INFO_CACHE.computeIfAbsent(cacheKey, _ -> ClassInfo.of(workspace, fqdn));
+	private ClassInfo getClassInfo(String fqdn) {
+		return classInfoCache.computeIfAbsent(fqdn, _ -> ClassInfo.of(workspace, fqdn));
 	}
 
 	public CustomJavaCompletionProvider(Workspace workspace, JavaParser parser) {
 		this.workspace = workspace;
 		this.parser = parser;
+		this.javaTypeResolver = new JavaTypeResolver(workspace);
 		setAutoActivationRules(true, ".");
 	}
 
@@ -151,7 +150,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String beforeDot = textBeforeWord.substring(0, textBeforeWord.lastIndexOf('.')).trim();
 			String targetName = extractTargetName(beforeDot);
 			if (!targetName.isEmpty()) {
-				List<JavaTypeResolver.CompletionItem> items = JavaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, workspace, parser);
+				List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, parser);
 				CustomFieldCompletion.PrefixContext prefixContext = CustomFieldCompletion.PrefixContext.NONE;
 				if (alreadyEntered.startsWith("Blocks.")) {
 					prefixContext = CustomFieldCompletion.PrefixContext.BLOCKS;
@@ -162,7 +161,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			}
 		} else {
 			// Method/field completions for "this" - executed synchronously
-			List<JavaTypeResolver.CompletionItem> thisItems = JavaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, workspace, parser);
+			List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, parser);
 			addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
 
 			// Keywords - executed synchronously
@@ -240,7 +239,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private void addClassCompletions(String wordOnly, List<Completion> completions) {
 		if (workspace == null || workspace.getGenerator() == null) return;
-		Map<String, List<String>> tree = getImportTreeCached(workspace);
+		Map<String, List<String>> tree = getImportTreeCached();
 		if (tree != null) {
 			Set<String> addedFQDNs = new HashSet<>();
 			for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
@@ -250,7 +249,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					if (fqdns != null && !fqdns.isEmpty()) {
 						for (String fqdn : fqdns) {
 							if (addedFQDNs.add(fqdn)) {
-								ClassInfo info = getClassInfo(workspace, fqdn);
+								ClassInfo info = getClassInfo(fqdn);
 								CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
 								completions.add(ccc);
 							}
@@ -281,7 +280,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
-	private static synchronized Map<String, List<String>> getImportTreeCached(Workspace workspace) {
+	private synchronized Map<String, List<String>> getImportTreeCached() {
 		long now = System.currentTimeMillis();
 		if (cachedImportTree == null || (now - lastImportTreeUpdate > 5000)) {
 			Map<String, List<String>> tree = new HashMap<>();
