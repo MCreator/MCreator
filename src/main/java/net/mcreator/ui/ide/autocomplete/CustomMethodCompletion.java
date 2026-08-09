@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
+import net.mcreator.util.JavadocUtils;
+
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
 import org.fife.ui.autocomplete.CompletionProvider;
@@ -75,43 +77,9 @@ public class CustomMethodCompletion extends TemplateCompletion {
 
 	@Override
 	public String getSummary() {
-		if (docSummary == null || docSummary.trim().isEmpty()) return null;
-		String text = docSummary;
-
-		text = text.replaceAll("(?m)^\\s*/\\*+\\s*", "")
-				   .replaceAll("(?m)\\s*\\*/\\s*$", "")
-				   .replaceAll("(?m)^\\s*\\*\\s?", "");
-
-		text = text.replaceAll("\\{@code\\s+([^}]+)\\}", "<code>$1</code>");
-		text = text.replaceAll("\\{@link\\s+([^}]+)\\}", "<code>$1</code>");
-		text = text.replaceAll("\\{@linkplain\\s+([^}]+)\\}", "$1");
-		text = text.replaceAll("\\{@literal\\s+([^}]+)\\}", "<code>$1</code>");
-		text = text.replaceAll("\\{@value\\s+([^}]+)\\}", "<code>$1</code>");
-
-		text = text.replaceAll("(?m)^@param\\s+<(\\w+)>", "<br><b>Type Parameters:</b><br>&nbsp;&nbsp;<code>&lt;$1&gt;</code> - ");
-		text = text.replaceAll("(?m)^@param\\s+(\\w+)", "<br><b>Parameters:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = text.replaceAll("(?m)^@return", "<br><b>Returns:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@throws\\s+(\\S+)", "<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = text.replaceAll("(?m)^@exception\\s+(\\S+)", "<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = text.replaceAll("(?m)^@see\\s+(\\S+)", "<br><b>See Also:</b><br>&nbsp;&nbsp;<code>$1</code>");
-		text = text.replaceAll("(?m)^@since\\s+(.+)", "<br><b>Since:</b><br>&nbsp;&nbsp;$1");
-		text = text.replaceAll("(?m)^@deprecated", "<br><b>Deprecated:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@implSpec", "<br><b>Implementation Requirements:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@implNote", "<br><b>Implementation Note:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@apiNote", "<br><b>API Note:</b><br>&nbsp;&nbsp;");
-
-		text = text.replace("\r", "");
-		String[] parts = text.split("(?i)(?=<pre>)|(?<=</pre>)");
-		StringBuilder sb = new StringBuilder();
-		for (String part : parts) {
-			if (part.toLowerCase().startsWith("<pre>")) {
-				sb.append(part);
-			} else {
-				sb.append(part.replace("\n", "<br>"));
-			}
-		}
-
-		return "<html><b>" + label + "</b><hr>" + sb.toString() + "</html>";
+		String formatted = JavadocUtils.formatJavadoc(docSummary);
+		if (formatted == null) return null;
+		return "<html><b>" + label + "</b><hr>" + formatted + "</html>";
 	}
 
 	@Override
