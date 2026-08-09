@@ -50,29 +50,11 @@ public class JavaTypeResolver {
 
 	private static final Logger LOG = LogManager.getLogger(JavaTypeResolver.class);
 
-	public static class CompletionItem {
-		public String label, insertText, kind, detail, declaringClass, visibility, docSummary;
-		public boolean isSnippet, isStatic, isFinal, isAbstract, isDeprecated;
-		public List<String> paramTypes, paramNames, fqdnParamTypes;
-
-		public CompletionItem(String label, String insertText, String kind, String detail, String declaringClass, String visibility, String docSummary, boolean isSnippet, boolean isStatic, boolean isFinal, boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames, List<String> fqdnParamTypes) {
-			this.label = label;
-			this.insertText = insertText;
-			this.kind = kind;
-			this.detail = detail;
-			this.declaringClass = declaringClass;
-			this.visibility = visibility;
-			this.docSummary = docSummary;
-			this.isSnippet = isSnippet;
-			this.isStatic = isStatic;
-			this.isFinal = isFinal;
-			this.isAbstract = isAbstract;
-			this.isDeprecated = isDeprecated;
-			this.paramTypes = paramTypes;
-			this.paramNames = paramNames;
-			this.fqdnParamTypes = fqdnParamTypes;
-		}
-	}
+	public record CompletionItem(
+			String label, String insertText, String kind, String detail, String declaringClass, String visibility, String docSummary,
+			boolean isSnippet, boolean isStatic, boolean isFinal, boolean isAbstract, boolean isDeprecated,
+			List<String> paramTypes, List<String> paramNames, List<String> fqdnParamTypes
+	) {}
 
 	public record ResolutionResult(String fqdn, boolean isStaticContext) {}
 
@@ -138,7 +120,7 @@ public class JavaTypeResolver {
 
 		List<CompletionItem> allMembers = getMembersOfFQDN(res.fqdn, workspace, currentClassFQDN, code);
 		for (CompletionItem item : allMembers) {
-			if (!res.isStaticContext || item.isStatic) {
+			if (!res.isStaticContext || item.isStatic()) {
 				result.add(item);
 			}
 		}
@@ -508,10 +490,10 @@ public class JavaTypeResolver {
 
 		List<CompletionItem> members = getMembersOfFQDN(fqdn, workspace, currentClassFQDN, currentCode);
 		for (CompletionItem item : members) {
-			if (item.kind.equals("method") && item.label.startsWith(memberName + "(")) {
-				return item.detail;
-			} else if (item.kind.equals("field") && item.label.equals(memberName)) {
-				return item.detail;
+			if (item.kind().equals("method") && item.label().startsWith(memberName + "(")) {
+				return item.detail();
+			} else if (item.kind().equals("field") && item.label().equals(memberName)) {
+				return item.detail();
 			}
 		}
 		return null;
@@ -596,16 +578,7 @@ public class JavaTypeResolver {
 		return new ResolutionResult(currentFQDN, isStaticContext);
 	}
 
-	private static class VarTypeInfo {
-		private final String rawType;
-		private final String genericArg;
-		public VarTypeInfo(String rawType, String genericArg) {
-			this.rawType = rawType;
-			this.genericArg = genericArg;
-		}
-		public String rawType() { return rawType; }
-		public String genericArg() { return genericArg; }
-	}
+	private record VarTypeInfo(String rawType, String genericArg) {}
 
 	private static VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
 		if (codeBeforeCursor == null || base == null || base.isEmpty()) return null;

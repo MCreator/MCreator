@@ -250,19 +250,19 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly, CustomFieldCompletion.PrefixContext prefixContext, List<Completion> completions) {
 		for (JavaTypeResolver.CompletionItem item : items) {
-			String methodName = item.label.contains("(") ? item.label.substring(0, item.label.indexOf('(')) : item.label;
-			if (matchesFilter(methodName, wordOnly) || (item.kind.equals("field") && matchesFilter(item.insertText, wordOnly))) {
-				if (item.kind.equals("method")) {
-					String template = item.insertText.replaceAll("\\$\\{\\d+:", "\\${");
+			String methodName = item.label().contains("(") ? item.label().substring(0, item.label().indexOf('(')) : item.label();
+			if (matchesFilter(methodName, wordOnly) || (item.kind().equals("field") && matchesFilter(item.insertText(), wordOnly))) {
+				if (item.kind().equals("method")) {
+					String template = item.insertText().replaceAll("\\$\\{\\d+:", "\\${");
 					if (!template.contains("${")) {
 						template = template + "${cursor}";
 					}
 
-					String docStr = item.docSummary != null ? item.docSummary : item.detail + " " + item.label;
+					String docStr = item.docSummary() != null ? item.docSummary() : item.detail() + " " + item.label();
 
-					completions.add(new CustomMethodCompletion(this, methodName, item.label, item.detail, item.declaringClass, template, docStr, item.visibility, item.isStatic, item.isAbstract, item.isDeprecated));
+					completions.add(new CustomMethodCompletion(this, methodName, item.label(), item.detail(), item.declaringClass(), template, docStr, item.visibility(), item.isStatic(), item.isAbstract(), item.isDeprecated()));
 				} else {
-					completions.add(new CustomFieldCompletion(this, item.insertText, item.detail, item.declaringClass, item.visibility, item.isStatic, item.isFinal, item.isDeprecated, prefixContext));
+					completions.add(new CustomFieldCompletion(this, item.insertText(), item.detail(), item.declaringClass(), item.visibility(), item.isStatic(), item.isFinal(), item.isDeprecated(), prefixContext));
 				}
 			}
 		}
