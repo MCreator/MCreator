@@ -25,9 +25,9 @@ import org.fife.ui.autocomplete.CompletionProvider;
 import javax.swing.*;
 import java.awt.*;
 
-public class JavaKeywordCompletition extends JavaTemplateCompletion {
+public class JavaKeywordCompletion extends JavaTemplateCompletion {
 
-	public JavaKeywordCompletition(CompletionProvider provider, String keyWord) {
+	public JavaKeywordCompletion(CompletionProvider provider, String keyWord) {
 		super(provider, keyWord, keyWord, keyWord + "${cursor}", "Java keyword",
 				"Inserts " + keyWord + " Java keyword");
 	}

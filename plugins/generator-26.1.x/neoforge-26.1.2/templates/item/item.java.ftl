@@ -367,7 +367,7 @@ public class ${name}Item extends Item {
 					"y": "owner != null ? owner.position().y() : 0",
 					"z": "owner != null ? owner.position().z() : 0",
 					"world": "owner != null ? owner.level() : clientWorld",
-					"entity": "owner.asLivingEntity()",
+					"entity": "owner != null ? owner.asLivingEntity() : null",
 					"itemstack": "itemStackToRender"
 				}, false/>;
 				<#else>
