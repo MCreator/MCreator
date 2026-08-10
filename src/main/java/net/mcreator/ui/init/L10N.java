@@ -142,7 +142,7 @@ public class L10N {
 		else if (Locale.of("zh", "CN").equals(locale)) // Chinese Simplified
 			return "zh-hans";
 
-		return getLocaleString().split("_")[0].replace("iw", "he");
+		return getLocaleString().split("_")[0].replace("iw", "he").replace("no", "nb");
 	}
 
 	public static String t(String key, Object... parameters) {
