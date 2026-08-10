@@ -65,6 +65,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#toolEnabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)" tabindex="0">toolEnabled(ToolActivationEvent)</a></li>
 <li><a href="#toolDisabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)" tabindex="0">toolDisabled(ToolActivationEvent)</a></li>
+<li><a href="#layerChanged(net.mcreator.ui.views.editor.image.layer.Layer,net.mcreator.ui.views.editor.image.layer.Layer)" tabindex="0">layerChanged(Layer, Layer)</a></li>
 </ol>
 </li>
 </ol>
@@ -138,11 +139,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toolDisabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)" class="member-name-link">toolDisabled</a><wbr>(<a href="event/ToolActivationEvent.html" title="class in net.mcreator.ui.views.editor.image.tool.tools.event">ToolActivationEvent</a>&nbsp;e)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#layerChanged(net.mcreator.ui.views.editor.image.layer.Layer,net.mcreator.ui.views.editor.image.layer.Layer)" class="member-name-link">layerChanged</a><wbr>(<a href="../../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a>&nbsp;oldLayer,
+ <a href="../../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a>&nbsp;newLayer)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called on the currently active tool when the selected layer changes.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toolEnabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)" class="member-name-link">toolEnabled</a><wbr>(<a href="event/ToolActivationEvent.html" title="class in net.mcreator.ui.views.editor.image.tool.tools.event">ToolActivationEvent</a>&nbsp;e)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toolDisabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)" class="member-name-link">toolDisabled</a><wbr>(<a href="event/ToolActivationEvent.html" title="class in net.mcreator.ui.views.editor.image.tool.tools.event">ToolActivationEvent</a>&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toolEnabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)" class="member-name-link">toolEnabled</a><wbr>(<a href="event/ToolActivationEvent.html" title="class in net.mcreator.ui.views.editor.image.tool.tools.event">ToolActivationEvent</a>&nbsp;e)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -215,6 +222,24 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="event/ToolActivationListener.html#toolDisabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)">toolDisabled</a></code>&nbsp;in interface&nbsp;<code><a href="event/ToolActivationListener.html" title="interface in net.mcreator.ui.views.editor.image.tool.tools.event">ToolActivationListener</a></code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="DrawingTool.html#toolDisabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)">toolDisabled</a></code>&nbsp;in class&nbsp;<code><a href="DrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">DrawingTool</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="layerChanged(net.mcreator.ui.views.editor.image.layer.Layer,net.mcreator.ui.views.editor.image.layer.Layer)">
+<h3>layerChanged</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">layerChanged</span><wbr><span class="parameters">(<a href="../../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a>&nbsp;oldLayer,
+ <a href="../../layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a>&nbsp;newLayer)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="AbstractTool.html#layerChanged(net.mcreator.ui.views.editor.image.layer.Layer,net.mcreator.ui.views.editor.image.layer.Layer)">AbstractTool</a></code></span></div>
+<div class="block">Called on the currently active tool when the selected layer changes.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="AbstractTool.html#layerChanged(net.mcreator.ui.views.editor.image.layer.Layer,net.mcreator.ui.views.editor.image.layer.Layer)">layerChanged</a></code>&nbsp;in class&nbsp;<code><a href="AbstractTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractTool</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>oldLayer</code> - The layer that was selected before the change; can be null</dd>
+<dd><code>newLayer</code> - The newly selected layer</dd>
 </dl>
 </div>
 </section>
