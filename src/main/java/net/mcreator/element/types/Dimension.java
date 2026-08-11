@@ -178,6 +178,9 @@ import java.util.List;
 
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
+		if ("Void gen".equals(this.worldGenType)) {
+			return retval;
+		}
 		retval.add(mainFillerBlock.getUnmappedValue());
 		for (BiomeEntry biomeEntry : getUsedBiomes()) {
 			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {

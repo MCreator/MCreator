@@ -13,7 +13,9 @@
       "disable_mob_generation": false,
       "aquifers_enabled": false,
       "ore_veins_enabled": false,
-      "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
+      "default_block": {
+	    "Name": "minecraft:stone"
+	  },
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "spawn_target": [],
       "noise": {
