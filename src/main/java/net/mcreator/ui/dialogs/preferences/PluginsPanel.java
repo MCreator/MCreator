@@ -44,7 +44,7 @@ class PluginsPanel {
 	private final DefaultListModel<Plugin> tmodel = new DefaultListModel<>();
 
 	PluginsPanel(PreferencesDialog preferencesDialog) {
-		preferencesDialog.model.addElement(L10N.t("dialog.preferences.page_plugins"));
+		preferencesDialog.addSection(L10N.t("dialog.preferences.page_plugins"));
 
 		JList<Plugin> plugins = new JList<>(tmodel);
 		plugins.setCellRenderer(new PluginsListCellRenderer());

@@ -40,6 +40,16 @@ base_templates:
   - template: resourcepack/terrain_texture.json.ftl
     writer: json
     name: "@RESROOT/textures/terrain_texture.json"
+  - template: scripts_base.js.ftl
+    name: "@SRCROOT/scripts/@modid_scripts.js"
+    writer: js
+    condition_any:
+      - "${w.hasElementsOfType('bescript')}"
+      - hasVariables()
+  - template: variables.js.ftl
+    name: "@SRCROOT/scripts/@modid_variables.js"
+    writer: js
+    condition: hasVariables()
 
 language_file:
   format: keyvalue

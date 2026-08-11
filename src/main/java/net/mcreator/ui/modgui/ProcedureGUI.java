@@ -19,6 +19,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.element.ModElementType;
@@ -66,7 +67,7 @@ import java.util.*;
 import java.util.List;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure>
-		implements IBlocklyPanelHolder, ISearchable {
+		implements IBlocklyPanelHolder, ISearchable, IBlocklyPanelHolder.IBlocklyPanelVariablesHolder {
 
 	private static final Logger LOG = LogManager.getLogger(ProcedureGUI.class);
 
@@ -76,7 +77,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private BlocklyPanel blocklyPanel;
 
-	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
+	private final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
 	private boolean hasDependencyErrors = false;
@@ -446,8 +447,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						}
 					}, VariableTypeLoader.INSTANCE.getLocalVariableTypes(mcreator.getGeneratorConfiguration()));
 			if (element != null) {
-				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
-				localVars.addElement(element);
+				new Thread(() -> {
+					blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
+					SwingUtilities.invokeLater(() -> localVars.addElement(element));
+				}, "Procedure-Add-Local-Variable").start();
 			}
 		});
 
@@ -457,10 +460,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
-					for (var element : elements) {
-						blocklyPanel.removeLocalVariable(element.getName());
-						localVars.removeElement(element);
-					}
+					new Thread(() -> {
+						for (var element : elements)
+							blocklyPanel.removeLocalVariable(element.getName());
+						SwingUtilities.invokeLater(() -> {
+							for (var element : elements)
+								localVars.removeElement(element);
+						});
+					}, "Procedure-Remove-Local-Variable").start();
 				}
 			}
 		});
@@ -588,6 +595,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.PROCEDURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
@@ -693,6 +702,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		if (searchTerm != null)
 			blocklyEditorToolbar.getSearchField().setText(searchTerm);
+	}
+
+	@Override public DefaultListModel<VariableElement> getLocalVariablesListModel() {
+		return localVars;
 	}
 
 }

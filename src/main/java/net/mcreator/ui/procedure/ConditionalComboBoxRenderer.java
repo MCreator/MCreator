@@ -33,6 +33,10 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<ProcedureEntry> {
 	@Override
 	public Component getListCellRendererComponent(JList list, ProcedureEntry value, int index, boolean isSelected,
 			boolean cellHasFocus) {
+		if (value == null) {
+			return renderer.getListCellRendererComponent(list, null, index, isSelected, cellHasFocus);
+		}
+
 		JLabel component = (JLabel) renderer.getListCellRendererComponent(list, value.string, index, isSelected,
 				cellHasFocus);
 

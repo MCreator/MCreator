@@ -61,7 +61,7 @@ public class AdvancementTriggerInverter implements IConverter {
 	}
 
 	private String fixXML(String xml) throws Exception {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();

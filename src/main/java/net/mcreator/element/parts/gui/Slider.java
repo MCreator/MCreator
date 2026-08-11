@@ -23,12 +23,13 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.math.BigDecimal;
 
 public class Slider extends SizedComponent {
 
-	public String name;
+	@Nonnull public String name;
 	public double min;
 	public double max;
 	public double value;
@@ -37,8 +38,8 @@ public class Slider extends SizedComponent {
 	public final String suffix;
 	public final Procedure whenSliderMoves;
 
-	public Slider(int x, int y, int width, int height, String name, double min, double max, double value, double step,
-			String prefix, String suffix, Procedure whenSliderMoves) {
+	public Slider(int x, int y, int width, int height, @Nonnull String name, double min, double max, double value,
+			double step, String prefix, String suffix, Procedure whenSliderMoves) {
 		super(x, y, width, height);
 		this.name = name;
 		this.min = min;
@@ -54,7 +55,7 @@ public class Slider extends SizedComponent {
 		return 15;
 	}
 
-	@Override public String getName() {
+	@Nonnull @Override public String getName() {
 		return name;
 	}
 

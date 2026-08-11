@@ -46,6 +46,7 @@ import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.metadata.MetadataManager;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
@@ -63,6 +64,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
@@ -188,7 +190,11 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 					if (selectedEntry != null) {
 						if (selectedEntry.isFolder()) { // Importing files into a folder
 							File importTargetFolder = selectedEntry.override();
-							File[] fileOrigin = FileDialogs.getMultiOpenDialog(mcreator, new String[] { "*" });
+							List<String> extensions = new ArrayList<>(List.of("png"));
+							textExtensions.forEach(ext -> extensions.add("." + ext));
+							extensions.add(".ogg");
+							File[] fileOrigin = FileDialogs.getMultiOpenDialog(mcreator,
+									extensions.toArray(new String[0]));
 							if (fileOrigin != null) {
 								for (File file : fileOrigin) {
 									FileIO.copyFile(file, new File(importTargetFolder, file.getName()));
@@ -297,6 +303,10 @@ public class ResourcePackEditor extends JPanel implements IReloadableFilterable 
 	private void editOrOverrideCurrentEntry() {
 		if (selectedEntry != null) {
 			if (!selectedEntry.isFolder()) { // Make sure not a folder
+				// For resource pack editor, this is our source of checkpoint actions
+				if (mcreator instanceof ResourcePackMaker)
+					workspace.getHistoryManager().checkpoint("pack_edit", FilenameUtils.getName(selectedEntry.path()));
+
 				if (selectedEntry.type() != ResourcePackStructure.EntryType.VANILLA) {
 					File override = selectedEntry.override();
 					if (override.isFile()) {

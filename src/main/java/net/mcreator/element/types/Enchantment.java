@@ -85,7 +85,8 @@ import java.util.List;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS).getDefinedBlocks(),
-					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.ENCHANTMENT_EFFECTS),
+					getModElement().getGenerator().getGeneratorStats()
+							.getBlocklyBlocks(BlocklyEditorType.ENCHANTMENT_EFFECTS),
 					this.getModElement().getGenerator()
 							.getTemplateGeneratorFromName(BlocklyEditorType.ENCHANTMENT_EFFECTS.registryName()),
 					additionalData).setTemplateExtension("json");

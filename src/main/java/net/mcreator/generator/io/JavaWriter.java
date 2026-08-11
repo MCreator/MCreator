@@ -48,18 +48,32 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.IntConsumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class JavaWriter {
 
 	private static final CodeCleanup codeCleanup = new CodeCleanup();
 
+	private static final ForkJoinPool PARALLEL_WRITE_THREAD_POOL = new ForkJoinPool();
+
+	private static <T> T inParallelPool(Supplier<T> task) {
+		try {
+			return PARALLEL_WRITE_THREAD_POOL.submit(task::get).get();
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void writeJavaToFile(@Nullable Workspace workspace, String code, File file,
 			boolean formatAndOrganiseImports) {
 		if (formatAndOrganiseImports) {
-			GradleTrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
+			GradleTrackingFileIO.writeFile(workspace, codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code),
+					file);
 		} else {
 			GradleTrackingFileIO.writeFile(workspace, code, file);
 		}
@@ -73,11 +87,11 @@ public class JavaWriter {
 					.ifPresent(code -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code, false));
 
 			AtomicInteger counter = new AtomicInteger();
-			Map<File, String> formattedCodes = codes.keySet().parallelStream().peek(file -> {
+			Map<File, String> formattedCodes = inParallelPool(() -> codes.keySet().parallelStream().peek(_ -> {
 				if (intConsumer != null)
 					intConsumer.accept(counter.incrementAndGet());
 			}).filter(codes::containsKey).collect(Collectors.toMap(file -> file,
-					file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true)));
+					file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true))));
 
 			formattedCodes.forEach((file, code) -> GradleTrackingFileIO.writeFile(workspace, code, file));
 		} else {
@@ -87,9 +101,9 @@ public class JavaWriter {
 
 	public static void formatAndOrganiseImportsForFiles(@Nullable Workspace workspace, @Nonnull Collection<File> files,
 			@Nullable IntConsumer intConsumer) {
-		Map<File, String> codes = files.parallelStream()
+		Map<File, String> codes = inParallelPool(() -> files.parallelStream()
 				.filter(file -> FilenameUtils.isExtension(file.getName().toLowerCase(Locale.ENGLISH), "java"))
-				.collect(Collectors.toMap(file -> file, FileIO::readFileToString));
+				.collect(Collectors.toMap(file -> file, FileIO::readFileToString)));
 		batchWriteJavaToFile(workspace, codes, true, intConsumer);
 	}
 

@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.Launcher;
+import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.plugin.MCREvent;
@@ -38,10 +39,14 @@ import net.mcreator.ui.search.GlobalSearchListener;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.variants.resourcepackmaker.ResourcePackMaker;
 import net.mcreator.ui.workspace.AbstractMainWorkspacePanel;
+import net.mcreator.ui.workspace.localhistory.LocalHistoryPanel;
+import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
+import net.mcreator.util.GSONClone;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,6 +66,7 @@ public abstract class MCreator extends MCreatorFrame {
 
 	public static final String DOCK_CONSOLE = "console";
 	public static final String DOCK_PROJECT_BROWSER = "project_browser";
+	public static final String DOCK_LOCAL_HISTORY = "local_history";
 
 	private final GradleConsole gradleConsole;
 
@@ -134,6 +140,10 @@ public abstract class MCreator extends MCreatorFrame {
 		leftDockRegion.addDock(DOCK_PROJECT_BROWSER, 280, L10N.t("dock.project_browser"), UIRES.get("16px.dock_folder"),
 				workspaceFileBrowser);
 
+		if (workspace.getHistoryManager().isAvailable()) {
+			leftDockRegion.addDock(DOCK_LOCAL_HISTORY, 280, createLocalHistoryButton(), new LocalHistoryPanel(this));
+		}
+
 		bottomDockRegion.addDock(DOCK_CONSOLE, 300, createConsoleButton(), gradleConsole);
 
 		JToolBar dockStripLeft = CollapsibleDockPanel.createStaticTwoRegionsStrip(this, leftDockRegion,
@@ -195,6 +205,30 @@ public abstract class MCreator extends MCreatorFrame {
 			}
 		});
 		return consoleButton;
+	}
+
+	@Nonnull private JToggleButton createLocalHistoryButton() {
+		JToggleButton localHistoryButton = new JToggleButton(UIRES.get("16px.dock_history")) {
+
+			@Override protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+
+				Color dotColor = null;
+				if (workspace.getHistoryManager().isBusy()) {
+					dotColor = new Color(0x739df0);
+				}
+
+				if (dotColor != null) {
+					Graphics2D g2 = (Graphics2D) g;
+					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+					g.setColor(dotColor);
+					g.fillOval(getWidth() - 11, 5, 7, 7);
+				}
+			}
+		};
+		localHistoryButton.setToolTipText(L10N.t("dock.local_history"));
+		return localHistoryButton;
 	}
 
 	protected abstract MainMenuBar createMenuBar();
@@ -294,6 +328,11 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 
 		if (safetoexit) {
+			if (workspace.getHistoryManager().isBusy()) {
+				JOptionPane.showMessageDialog(this, L10N.t("action.workspace.close_while_history_busy_message"),
+						L10N.t("action.workspace.close_while_history_busy_title"), JOptionPane.WARNING_MESSAGE);
+			}
+
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 
@@ -346,6 +385,43 @@ public abstract class MCreator extends MCreatorFrame {
 							"type-" + workspace.getGeneratorConfiguration().getGeneratorFlavor().name()
 									.toLowerCase(Locale.ENGLISH));
 		}
+	}
+
+	/**
+	 * Reloads the workspace from the file system.
+	 */
+	public void reloadWorkspaceFromFileSystem() {
+		this.getTabs().closeAllTabs(true);
+		this.getTabs().showTabNoNotify(workspaceTab);
+
+		// load settings before reading from file system to check if generator was switched, and to perform necessary actions after reload
+		WorkspaceSettings preResetSettings = GSONClone.clone(workspace.getWorkspaceSettings(), WorkspaceSettings.class);
+
+		// read new workspace setup from file system
+		workspace.reloadFromFileSystem();
+
+		// if version changed, switch the generator
+		String currentGenerator = workspace.getWorkspaceSettings().getCurrentGenerator();
+		if (!currentGenerator.equals(preResetSettings.getCurrentGenerator())) {
+			LOG.debug("Switching local workspace generator to {}", currentGenerator);
+			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(workspace,
+					Generator.GENERATOR_CACHE.get(currentGenerator));
+			workspace.switchGenerator(currentGenerator);
+			WorkspaceGeneratorSetupDialog.runSetup(this, false);
+			this.workspaceGeneratorSwitched();
+		}
+		// No need to do refactor WorkspaceSettingsChange as if the whole workspace changed on the file system due to e.g. VCS-like system
+		// We expect the files are already in the correct state and thus only Gradle needs to setup for the changed generator
+
+		this.getWorkspacePanel().reloadWorkspaceTab();
+
+		// update recent workspace list in case workspace file name changed
+		this.getApplication().getWorkspaceSelector().addOrUpdateRecentWorkspace(
+				new RecentWorkspaceEntry(this.getWorkspace(), this.getWorkspace().getFileManager().getWorkspaceFile(),
+						Launcher.version.getFullString()));
+
+		// update title if needed
+		setTitle(WindowTitleHelper.getWindowTitle(this));
 	}
 
 	public void showConsole() {

@@ -21,22 +21,23 @@ package net.mcreator.element.parts.gui;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class TextField extends SizedComponent {
 
 	public String placeholder;
 
-	public String name;
+	@Nonnull public String name;
 
-	public TextField(String name, int x, int y, int width, int height, String placeholder) {
+	public TextField(@Nonnull String name, int x, int y, int width, int height, String placeholder) {
 		super(x, y, width, height);
 		this.placeholder = placeholder;
 
 		this.name = name;
 	}
 
-	@Override public String getName() {
+	@Override public @Nonnull String getName() {
 		return name;
 	}
 

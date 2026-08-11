@@ -23,8 +23,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.generator.io.JSONWriter;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -56,7 +54,9 @@ public class TagsUtils {
 							.map(e -> tag.getKey().type().getMappableElementProvider().apply(workspace, e)).toList());
 					String json = generator.getTemplateGeneratorFromName("templates")
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
-					JSONWriter.writeJSONToFile(workspace, json, tagFile);
+
+					GeneratorTemplate template = GeneratorTemplate.fromFile(tagFile, tagsSpecification);
+					generator.generateFiles(List.of(template.toGeneratorFile(json)), true);
 				} catch (TemplateGeneratorException e) {
 					generator.getLogger().error("Failed to generate code for tag: {}", tag.getKey(), e);
 				}
@@ -158,7 +158,6 @@ public class TagsUtils {
 			}
 		} catch (Throwable e) {
 			LOG.warn("Failed to entries for expression {}", entryProviderRaw, e);
-			TestUtil.failIfTestingEnvironment();
 		}
 		return null;
 	}
@@ -169,9 +168,12 @@ public class TagsUtils {
 
 		if (delete) {
 			// only delete the entry if it is present in the list as managed
-			if (entries != null && entries.contains(entry)) {
-				generator.getWorkspace().getTagElements().get(tag).remove(entry);
-				removeTagElementIfSafe(generator.getWorkspace(), tag);
+			if (entries != null) {
+				int index = entries.indexOf(entry);
+				if (index != -1 && entries.get(index).isManaged()) {
+					entries.remove(index);
+					removeTagElementIfSafe(generator.getWorkspace(), tag);
+				}
 			}
 		} else {
 			if (entries == null) { // tag does not exist yet, create it

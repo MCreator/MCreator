@@ -19,30 +19,41 @@
 package net.mcreator.ui.component.util;
 
 import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.ui.component.SearchableComboBox;
 
 import javax.swing.*;
-import java.util.List;
+import java.util.Collection;
 
 public class ComboBoxUtil {
 
-	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, List<T> data) {
+	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, Collection<T> data) {
 		Object selected = comboBox.getSelectedItem();
-		comboBox.removeAllItems();
-		data.forEach(comboBox::addItem);
+		setComboBoxValues(comboBox, data);
 		if (selected != null && !(selected instanceof DataListEntry.Null))
 			comboBox.setSelectedItem(selected);
 		else if (comboBox.getItemCount() > 0)
 			comboBox.setSelectedIndex(0);
 	}
 
-	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, List<T> data, T defaultValue) {
+	public static <T> void updateComboBoxContents(JComboBox<T> comboBox, Collection<T> data, T defaultValue) {
 		Object selected = comboBox.getSelectedItem();
-		comboBox.removeAllItems();
-		data.forEach(comboBox::addItem);
+		setComboBoxValues(comboBox, data);
 		if (selected != null && !(selected instanceof DataListEntry.Null))
 			comboBox.setSelectedItem(selected);
 		else
 			comboBox.setSelectedItem(defaultValue);
+	}
+
+	private static <T> void setComboBoxValues(JComboBox<T> comboBox, Collection<T> data) {
+		if (comboBox instanceof SearchableComboBox<T> searchableComboBox) {
+			searchableComboBox.setItems(data);
+		} else if (comboBox.getModel() instanceof DefaultComboBoxModel<T> model) {
+			model.removeAllElements();
+			model.addAll(data);
+		} else {
+			comboBox.removeAllItems();
+			data.forEach(comboBox::addItem);
+		}
 	}
 
 }

@@ -38,17 +38,16 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class WorkspaceUtils {
 
 	private static final Logger LOG = LogManager.getLogger(WorkspaceUtils.class);
 
 	public static File getWorkspaceFileForWorkspaceFolder(File workspaceDir) {
-		File[] files = workspaceDir.listFiles();
-		for (File wfile : files != null ? files : new File[0])
-			if (wfile.isFile() && wfile.getName().endsWith(".mcreator"))
-				return wfile;
-		return null;
+		return Stream.ofNullable(workspaceDir.listFiles()).flatMap(Arrays::stream).filter(File::isFile)
+				.filter(wfile -> wfile.getName().endsWith(".mcreator"))
+				.max(Comparator.comparingLong(File::lastModified)).orElse(null);
 	}
 
 	public static void verifyPluginRequirements(Workspace workspace, GeneratorConfiguration generatorConfiguration)

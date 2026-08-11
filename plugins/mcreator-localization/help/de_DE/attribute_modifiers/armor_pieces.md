@@ -1,0 +1,1 @@
+Dieser Attribut-Modifikator wird nur auf die ausgewählten Rüstungsstücke angewendet.

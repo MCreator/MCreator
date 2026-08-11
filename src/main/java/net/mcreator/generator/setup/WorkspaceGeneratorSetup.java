@@ -29,7 +29,6 @@ import net.mcreator.generator.template.InlineTemplatesHandler;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -48,6 +47,8 @@ public class WorkspaceGeneratorSetup {
 	private static final Logger LOG = LogManager.getLogger("Workspace Setup");
 
 	public static void cleanupGeneratorForSwitchTo(Workspace workspace, GeneratorConfiguration newGenerator) {
+		workspace.getHistoryManager().checkpoint("generator_switch_cleanup", newGenerator.getGeneratorName());
+
 		Generator currentGenerator = workspace.getGenerator();
 
 		if (currentGenerator != null) { // conversion from a generator that is present
@@ -157,7 +158,6 @@ public class WorkspaceGeneratorSetup {
 				}
 			} catch (Exception e) {
 				LOG.error("Failed to copy workspace base file", e);
-				TestUtil.failIfTestingEnvironment();
 			}
 		}
 	}

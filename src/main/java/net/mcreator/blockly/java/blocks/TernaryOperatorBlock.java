@@ -28,6 +28,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class TernaryOperatorBlock implements IBlockGenerator {
@@ -78,5 +79,36 @@ public class TernaryOperatorBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "logic_ternary_op",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "condition",
+                  "check": "Boolean"
+              },
+              {
+                  "type": "input_value",
+                  "name": "THEN"
+              },
+              {
+                  "type": "input_value",
+                  "name": "ELSE"
+              }
+          ],
+          "inputsInline": true,
+          "output": null,
+          "colour": "#888888",
+          "extensions": ["logic_ternary"],
+          "mutator": "mark_attached_to_block_item"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "logicloops";
 	}
 }

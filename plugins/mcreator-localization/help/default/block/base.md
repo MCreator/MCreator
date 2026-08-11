@@ -2,4 +2,4 @@ If block base is used, some parameters might be disabled or might not work due t
 requiring them on default values from the base block.
 
 Only use this parameter if there is a good reason for it, most blocks should have this set
-to Default basic block.
+to Default basic block (meaning no block base).

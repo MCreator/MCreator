@@ -49,6 +49,6 @@ import java.util.Collection;
 	/**
 	 * Special values indicating the texture is not assigned.
 	 */
-	String[] defaultValues() default "";
+	String[] defaultValues() default {};
 
 }

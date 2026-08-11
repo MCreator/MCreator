@@ -31,6 +31,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.*;
 import java.lang.reflect.Type;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -141,6 +142,10 @@ import java.util.stream.Collectors;
 		String id = StringUtils.camelToSnake(type.getSimpleName()).toLowerCase();
 		typeMappings.put(id, type);
 		typeMappingsReverse.put(type, id);
+	}
+
+	public static Map<String, Class<? extends GUIComponent>> getTypeMappings() {
+		return Collections.unmodifiableMap(typeMappings);
 	}
 
 	public static class GSONAdapter implements JsonSerializer<GUIComponent>, JsonDeserializer<GUIComponent> {

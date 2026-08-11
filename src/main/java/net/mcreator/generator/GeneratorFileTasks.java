@@ -19,10 +19,10 @@
 
 package net.mcreator.generator;
 
-import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.io.FileIO;
 import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.io.JavaWriter;
+import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
@@ -70,18 +70,14 @@ public class GeneratorFileTasks {
 					try {
 						BufferedImage image = ImageIO.read(from);
 						BufferedImage resized = ImageUtils.toBufferedImage(ImageUtils.resize(image, w, h));
-						ImageIO.write(resized, "png", to);
+						FileIO.writeImageToPNGFile(resized, to);
 					} catch (IOException e) {
 						generator.getLogger().warn("Failed to read image file for resizing", e);
 					}
 				} else if (generator.getWorkspace().getFolderManager().isFileInWorkspace(to)) {
-					try {
-						BufferedImage resized = ImageUtils.toBufferedImage(
-								ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
-						ImageIO.write(resized, "png", to);
-					} catch (IOException e) {
-						generator.getLogger().warn("Failed to read image file for resizing", e);
-					}
+					BufferedImage resized = ImageUtils.toBufferedImage(
+							ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
+					FileIO.writeImageToPNGFile(resized, to);
 				}
 			}
 			case "provide_default_pack_icon" -> {
@@ -92,13 +88,9 @@ public class GeneratorFileTasks {
 				int h = Integer.parseInt(GeneratorTokens.replaceTokens(generator.getWorkspace(),
 						(String) ((Map<?, ?>) task).get("height")));
 				if (generator.getWorkspace().getFolderManager().isFileInWorkspace(to) && !to.isFile()) {
-					try {
-						BufferedImage resized = ImageUtils.toBufferedImage(
-								ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
-						ImageIO.write(resized, "png", to);
-					} catch (IOException e) {
-						generator.getLogger().warn("Failed to read image file for resizing", e);
-					}
+					BufferedImage resized = ImageUtils.toBufferedImage(
+							ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
+					FileIO.writeImageToPNGFile(resized, to);
 				}
 			}
 			case "copy_models" -> {
@@ -120,7 +112,8 @@ public class GeneratorFileTasks {
 							if (model.getType() == Model.Type.OBJ) {
 								Arrays.stream(model.getFiles())
 										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
-										.forEach(f -> GradleTrackingFileIO.copyFile(generator, f, new File(to, f.getName())));
+										.forEach(f -> GradleTrackingFileIO.copyFile(generator, f,
+												new File(to, f.getName())));
 							}
 						}
 						break;
