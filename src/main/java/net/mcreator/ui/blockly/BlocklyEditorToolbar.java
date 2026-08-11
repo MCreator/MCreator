@@ -44,6 +44,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -148,17 +149,23 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			});
 			search.setPreferredSize(new Dimension(340, 22));
 
+			final Timer searchDebounceTimer = new Timer(100, _ -> updateSearch(blocklyEditorType));
+			searchDebounceTimer.setRepeats(false);
 			search.getDocument().addDocumentListener(new DocumentListener() {
 				@Override public void insertUpdate(DocumentEvent e) {
-					updateSearch(blocklyEditorType);
+					triggerSearch();
 				}
 
 				@Override public void removeUpdate(DocumentEvent e) {
-					updateSearch(blocklyEditorType);
+					triggerSearch();
 				}
 
 				@Override public void changedUpdate(DocumentEvent e) {
-					updateSearch(blocklyEditorType);
+					triggerSearch();
+				}
+
+				private void triggerSearch() {
+					searchDebounceTimer.restart();
 				}
 			});
 
@@ -246,6 +253,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private List<ToolboxBlock> allBlocks = null;
 
+	private static final Pattern searchSanitizer = Pattern.compile("[^ \\p{L}\\p{Nd}/._-]+");
+
 	private void updateSearch(BlocklyEditorType blocklyEditorType) {
 		if (allBlocks == null) {
 			allBlocks = BlocklyLoader.INSTANCE.getAllToolboxBlocksFor(mcreator.getGeneratorConfiguration(),
@@ -254,23 +263,19 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 		if (!search.getText().isBlank()) {
 			String lowerCaseSearch = search.getText().toLowerCase(Locale.ROOT);
-			String[] keyWords = lowerCaseSearch.replaceAll("[^ \\p{L}\\p{Nd}/._-]+", "").split(" ");
+			String[] keyWords = searchSanitizer.matcher(lowerCaseSearch).replaceAll("").split(" ");
 
 			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 			for (ToolboxBlock block : allBlocks) {
-				if (block.getName().toLowerCase(Locale.ROOT).contains(lowerCaseSearch) || block.getMachineName()
-						.contains(lowerCaseSearch)) {
+				String lcBlockName = block.getName().toLowerCase(Locale.ROOT);
+
+				if (lcBlockName.contains(lowerCaseSearch) || block.getMachineName().contains(lowerCaseSearch)) {
 					filtered.add(block);
 					continue;
 				}
 
 				for (String keyWord : keyWords) {
-					if (block.getName().toLowerCase(Locale.ROOT).contains(keyWord) && (
-							block.getToolboxCategory() != null && block.getToolboxCategory().getName()
-									.toLowerCase(Locale.ROOT).contains(keyWord))) {
-						filtered.add(block);
-						break;
-					} else if (block.getName().toLowerCase(Locale.ROOT).contains(keyWord)) {
+					if (lcBlockName.contains(keyWord)) {
 						filtered.add(block);
 						break;
 					}
@@ -283,7 +288,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				for (ToolboxBlock toolboxBlock : filtered) {
 					results.add(blockMenuItemCache.computeIfAbsent(toolboxBlock, block -> {
 						JMenuItem menuItem = new JMenuItem(getHTMLForBlock(block));
-						menuItem.addActionListener(ev -> {
+						menuItem.addActionListener(_ -> {
 							search.setText(null);
 							results.setVisible(false);
 							blocklyPanel.requestFocus();

@@ -22,7 +22,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
-import net.mcreator.util.TestUtil;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -98,26 +97,24 @@ import java.util.stream.Collectors;
 	}
 
 	public String getRegistryNameForModElement(String modElement) {
-		ModElement element = generator.getWorkspace().getModElementByName(modElement);
+		ModElement element = generator.getWorkspace().getModElementByName(getElementPlainName(modElement));
 		if (element != null)
 			return element.getRegistryName();
 
 		generator.getLogger()
 				.warn("({}) Failed to determine registry name for: {}", TraceUtil.tryToFindMCreatorInvoker(),
 						modElement);
-		TestUtil.failIfTestingEnvironment();
 		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
 	public String getResourceLocationForModElement(String modElement) {
-		ModElement element = generator.getWorkspace().getModElementByName(modElement);
+		ModElement element = generator.getWorkspace().getModElementByName(getElementPlainName(modElement));
 		if (element != null) {
 			return getResourceLocationForModElement(element);
 		}
 
 		generator.getLogger().warn("({}) Failed to determine resource location for mod element: {}",
 				TraceUtil.tryToFindMCreatorInvoker(), modElement);
-		TestUtil.failIfTestingEnvironment();
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 

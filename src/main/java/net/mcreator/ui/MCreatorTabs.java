@@ -68,7 +68,7 @@ public class MCreatorTabs extends JTabbedPane {
 		});
 
 		addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
+			@Override public void mouseReleased(MouseEvent e) {
 				int tabIndex = indexAtLocation(e.getX(), e.getY());
 				if (tabIndex >= 0) {
 					Tab clickedTab = getTabForTabIndex(tabIndex);
@@ -148,6 +148,8 @@ public class MCreatorTabs extends JTabbedPane {
 						if (tab.tabShownListener != null)
 							tab.tabShownListener.tabShown(tab);
 					}
+
+					tab.wasPreviouslyShown = true;
 				});
 
 				this.current = tab;
@@ -227,6 +229,8 @@ public class MCreatorTabs extends JTabbedPane {
 
 		private String text;
 		@Nullable private ImageIcon icon;
+
+		private boolean wasPreviouslyShown = false;
 
 		public Tab(ViewBase content) {
 			this(content.getViewName(), content.getViewIcon(), content,
@@ -319,6 +323,10 @@ public class MCreatorTabs extends JTabbedPane {
 
 		public TabClosedListener getTabClosedListener() {
 			return tabClosedListener;
+		}
+
+		public boolean wasPreviouslyShown() {
+			return wasPreviouslyShown;
 		}
 
 		@Override public boolean equals(Object o) {

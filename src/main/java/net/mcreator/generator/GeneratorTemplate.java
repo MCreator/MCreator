@@ -46,6 +46,10 @@ public class GeneratorTemplate {
 		this.templateDefinition = templateDefinition;
 	}
 
+	public static GeneratorTemplate fromFile(File file, Map<?, ?> templateDefinition) {
+		return new GeneratorTemplate(file, file.getName(), templateDefinition);
+	}
+
 	/**
 	 * @return File where this GeneratorTemplate should be generated into
 	 */
@@ -93,7 +97,7 @@ public class GeneratorTemplate {
 	// Helper functions below
 
 	public GeneratorFile toGeneratorFile(String code) {
-		return new GeneratorFile(this, GeneratorFile.Writer.fromString((String) templateDefinition.get("writer")),
+		return new GeneratorFile(this, GeneratorFile.Writer.fromString((String) templateDefinition.get("writer"), file),
 				code);
 	}
 

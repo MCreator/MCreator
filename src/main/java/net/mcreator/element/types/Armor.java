@@ -23,10 +23,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
-import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.element.types.interfaces.LimitedOptions;
-import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
@@ -50,13 +47,13 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public boolean enableHelmet;
-	@TextureReference(TextureType.ITEM) public TextureHolder textureHelmet;
+	@TextureReference(TextureType.ITEM) @NonNullIf("enableHelmet") public TextureHolder textureHelmet;
 	public boolean enableBody;
-	@TextureReference(TextureType.ITEM) public TextureHolder textureBody;
+	@TextureReference(TextureType.ITEM) @NonNullIf("enableBody") public TextureHolder textureBody;
 	public boolean enableLeggings;
-	@TextureReference(TextureType.ITEM) public TextureHolder textureLeggings;
+	@TextureReference(TextureType.ITEM) @NonNullIf("enableLeggings") public TextureHolder textureLeggings;
 	public boolean enableBoots;
-	@TextureReference(TextureType.ITEM) public TextureHolder textureBoots;
+	@TextureReference(TextureType.ITEM) @NonNullIf("enableBoots") public TextureHolder textureBoots;
 
 	public Procedure onHelmetTick;
 	public Procedure onBodyTick;

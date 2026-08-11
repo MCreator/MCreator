@@ -52,7 +52,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 			// If the procedure doesn't actually exist, add a warning and skip this block
 			if (!procedure.exists) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.warnings.call_procedure.nonexistent", procedure.getName())));
 				return;
 			}
@@ -184,28 +184,28 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Nullable @Override public String[] getBlockJSONDefinitions() {
 		String procedureDependencies = editorType == BlocklyEditorType.PROCEDURE ? """
-          ,
-          "extensions": [
-              "procedure_dependencies_tooltip",
-              "procedure_dependencies_onchange_mixin"
-          ],
-          "mutator": "procedure_dependencies_mutator"
-          """ : "";
+				,
+				"extensions": [
+				    "procedure_dependencies_tooltip",
+				    "procedure_dependencies_onchange_mixin"
+				],
+				"mutator": "procedure_dependencies_mutator"
+				""" : "";
 
 		return new String[] { """
-        {
-          "type": "call_procedure",
-          "args0": [
-              {
-                  "type": "field_data_list_selector",
-                  "name": "procedure",
-                  "datalist": "procedure"
-              }
-          ],
-          "previousStatement": null,
-          "nextStatement": null,
-          "colour": 250%s
-        }""".formatted(procedureDependencies), """
+				{
+				  "type": "call_procedure",
+				  "args0": [
+				      {
+				          "type": "field_data_list_selector",
+				          "name": "procedure",
+				          "datalist": "procedure"
+				      }
+				  ],
+				  "previousStatement": null,
+				  "nextStatement": null,
+				  "colour": 250%s
+				}""".formatted(procedureDependencies), """
         {
           "type": "old_command",
           "args0": [

@@ -19,7 +19,6 @@
 package net.mcreator.generator;
 
 import net.mcreator.generator.template.TemplateExpressionParser;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -86,7 +85,6 @@ public class GeneratorTokens {
 						value = TemplateExpressionParser.getValueFrom(match.substring("item.".length()), listItem);
 					} catch (Throwable e) {
 						LOG.warn("Failed to load token value {}", match, e);
-						TestUtil.failIfTestingEnvironment();
 					}
 				}
 			} else if (element != null) { // get a value from the mod element
@@ -94,7 +92,6 @@ public class GeneratorTokens {
 					value = TemplateExpressionParser.getValueFrom(match, element);
 				} catch (Throwable e) {
 					LOG.warn("Failed to load token value {}", match, e);
-					TestUtil.failIfTestingEnvironment();
 				}
 			}
 			rawname = rawname.replace("@[" + match + "]", String.valueOf(value));

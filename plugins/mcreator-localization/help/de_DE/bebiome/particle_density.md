@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, wie dicht verpackt die gespawnten Partikel im Biom sein werden.

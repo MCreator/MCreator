@@ -24,6 +24,7 @@ import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.util.TestUtil;
+import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.TagElement;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +34,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public abstract class MappableElement implements IWorkspaceDependent {
@@ -81,6 +83,25 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		return value;
 	}
 
+	/**
+	 * @return A string representing this entry as a tag (if it starts with "TAG:"), after replacing the "mod:" prefix
+	 * with the actual mod ID
+	 */
+	@SuppressWarnings("unused") public String asTagEntry() {
+		String retval = getUnmappedValue();
+		if (!retval.startsWith("TAG:")) {
+			LOG.warn("Tried to convert non-tag mappable element to tag: {}", value);
+		} else {
+			retval = retval.substring(4); // Remove the "TAG:" prefix
+			if (retval.startsWith("mod:")) {
+				retval = Objects.requireNonNull(this.getWorkspace()).getWorkspaceSettings().getModID()
+						+ retval.substring(3); // Replace the "mod" prefix with the actual mod ID
+			}
+		}
+
+		return retval;
+	}
+
 	public NameMapper getNameMapper() {
 		return mapper;
 	}
@@ -113,17 +134,17 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		if (value.startsWith(NameMapper.MCREATOR_PREFIX)) {
 			boolean retval = workspace.containsModElement(GeneratorWrapper.getElementPlainName(value));
 			if (!retval) {
-				LOG.warn("Broken reference found. Referencing non-existent element: {}", value);
-				TestUtil.failIfTestingEnvironment();
+				LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
+						TraceUtil.tryToFindMCreatorInvoker(), value);
 			}
 			return retval;
 		} else if (mappingSource != null && !value.startsWith(NameMapper.EXTERNAL_PREFIX) && !value.startsWith("#")
-				&& !value.startsWith("TAG:") && !TestUtil.isTestingEnvironment()) {
+				&& !value.startsWith("TAG:") && !value.startsWith("POTION:") && !TestUtil.isTestingEnvironment()) {
 			Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mappingSource);
 			if (dataListEntryMap != null) {
 				if (!dataListEntryMap.containsKey(value)) {
-					LOG.warn("Broken vanilla reference found. Referencing non-existent element: {} from {}", value,
-							mappingSource);
+					LOG.warn("({}) Broken vanilla reference found. Referencing non-existent element: {} from {}",
+							TraceUtil.tryToFindMCreatorInvoker(), value, mappingSource);
 					return false;
 				}
 			}

@@ -44,19 +44,33 @@ public class GradleFileTracker {
 
 	public void trackFile(File file) {
 		try {
-			changedFiles.add(file.getCanonicalFile().toPath());
+			Path path = file.getCanonicalFile().toPath();
+			synchronized (changedFiles) {
+				changedFiles.add(path);
+			}
 		} catch (IOException ignored) {
 		}
 	}
 
 	public void notifyDaemonsAboutChangedPaths() {
+		if (changedFiles.isEmpty()) {
+			return;
+		}
+
+		Set<Path> pathsToNotify;
+		synchronized (changedFiles) {
+			pathsToNotify = new HashSet<>(changedFiles);
+		}
+
 		try {
-			projectConnection.notifyDaemonsAboutChangedPaths(new ArrayList<>(changedFiles));
-			LOG.debug("Notified Gradle about {} changed paths", changedFiles.size());
+			projectConnection.notifyDaemonsAboutChangedPaths(new ArrayList<>(pathsToNotify));
+			LOG.debug("Notified Gradle about {} changed paths", pathsToNotify.size());
+
+			synchronized (changedFiles) {
+				changedFiles.removeAll(pathsToNotify);
+			}
 		} catch (Exception e) {
 			LOG.warn("Failed to notify Gradle about changed paths", e);
-		} finally {
-			changedFiles.clear();
 		}
 	}
 

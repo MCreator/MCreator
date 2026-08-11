@@ -65,6 +65,9 @@ class GitHistoryBackend implements AutoCloseable {
 	GitHistoryBackend(HistoryManager historyManager) throws IOException {
 		File workspaceRoot = historyManager.getWorkspaceFolder();
 		File historyDatabaseDir = HistoryManager.getLocalHistoryRoot(workspaceRoot);
+		if (!historyDatabaseDir.isDirectory()) {
+			historyDatabaseDir.mkdirs();
+		}
 
 		boolean isNewRepo = !new File(historyDatabaseDir, "HEAD").isFile();
 
@@ -274,7 +277,7 @@ class GitHistoryBackend implements AutoCloseable {
 		// stop executor
 		executor.shutdown();
 		try {
-			if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+			if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
 				LOG.warn("Failed to stop Git task executor");
 				executor.shutdownNow();
 			}

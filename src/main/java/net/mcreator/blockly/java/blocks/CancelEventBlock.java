@@ -29,10 +29,9 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 public class CancelEventBlock implements IBlockGenerator {
 

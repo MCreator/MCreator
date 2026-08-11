@@ -90,8 +90,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
-	private final Model normal = new Model.BuiltInModel("Normal");
-	private final Model normalBlocking = new Model.BuiltInModel("Normal blocking");
+	private static final Model normal = new Model.BuiltInModel("Normal");
+	private static final Model normalBlocking = new Model.BuiltInModel("Normal blocking");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { normalBlocking });
 

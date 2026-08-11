@@ -22,15 +22,14 @@ import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.*;
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
-import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.localhistory.HistoryManager;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
@@ -250,6 +249,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
+		// first, we delete all associated files, in case generator later fails to do so
+		element.getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(this, f));
+
 		if (!mod_elements.contains(element)) // skip if it is not present on the list already
 			return;
 
@@ -420,7 +422,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.fileManager.close(); // first close current workspace file
 		this.fileManager = null; // reset reference
 		currentWorkspaceFile.delete(); // delete old workspace file
-		this.fileManager = new WorkspaceFileManager(newWorkspaceFile, this); // new file manager instance for the new file
+		this.fileManager = new WorkspaceFileManager(newWorkspaceFile,
+				this); // new file manager instance for the new file
 		this.userSettingsManager = new WorkspaceUserSettingsManager(this, this.getFolderManager());
 	}
 
@@ -516,9 +519,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 					retval.generator.loadOrCreateGradleCaches();
 				} catch (GradleCacheImportFailedException e) {
 					LOG.warn("Failed to import caches when opening a workspace", e);
-
-					// This should never happen in a testing environment
-					TestUtil.failIfTestingEnvironment();
 
 					// Gradle is missing libs, rerun the setup to fix this
 					WorkspaceGeneratorSetup.requestSetup(retval);

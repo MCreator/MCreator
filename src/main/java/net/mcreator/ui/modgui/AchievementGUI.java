@@ -235,7 +235,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger));
+		page1.add("Center",
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger));
 
 		page1.setOpaque(false);
 

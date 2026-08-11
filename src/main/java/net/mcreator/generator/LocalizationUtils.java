@@ -21,6 +21,7 @@ package net.mcreator.generator;
 import com.google.gson.GsonBuilder;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.io.GradleTrackingFileIO;
+import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.io.FileIO;
 import net.mcreator.util.StringUtils;
@@ -62,7 +63,8 @@ public class LocalizationUtils {
 
 			String fileName = GeneratorTokens.replaceTokens(workspace,
 					rawName.replace("@langname", entry.getKey()).replace("@lang_NAME", uppercaseLangName));
-			GradleTrackingFileIO.writeFile(generator, langFileContent.toString(), new File(generator.getLangFilesRoot(), fileName));
+			GradleTrackingFileIO.writeFile(generator, langFileContent.toString(),
+					new File(generator.getLangFilesRoot(), fileName));
 		}
 	}
 
@@ -75,7 +77,7 @@ public class LocalizationUtils {
 		for (Map.Entry<String, LinkedHashMap<String, String>> entry : workspace.getLanguageMap().entrySet()) {
 			LinkedHashMap<String, String> entries = entry.getValue();
 			String fileName = GeneratorTokens.replaceTokens(workspace, rawName.replace("@langname", entry.getKey()));
-			GradleTrackingFileIO.writeFile(generator, new GsonBuilder().setPrettyPrinting().create().toJson(entries),
+			JSONWriter.writeJSONToFile(workspace, new GsonBuilder().setPrettyPrinting().create().toJson(entries),
 					new File(generator.getLangFilesRoot(), fileName));
 		}
 	}

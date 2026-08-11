@@ -5,12 +5,12 @@
       "description": {
         "identifier": "${modid}:${registryname}",
         "textures": {
-          "default": "textures/entities/${data.mobModelTexture}",
-          "farmer": "textures/entities/${data.mobModelTexture}",
-          "librarian": "textures/entities/${data.mobModelTexture}",
-          "priest": "textures/entities/${data.mobModelTexture}",
-          "smith": "textures/entities/${data.mobModelTexture}",
-          "butcher": "textures/entities/${data.mobModelTexture}"
+          "default": "textures/entities/${data.modelTexture}",
+          "farmer": "textures/entities/${data.modelTexture}",
+          "librarian": "textures/entities/${data.modelTexture}",
+          "priest": "textures/entities/${data.modelTexture}",
+          "smith": "textures/entities/${data.modelTexture}",
+          "butcher": "textures/entities/${data.modelTexture}"
         },
         <#if data.hasSpawnEgg>
         "spawn_egg": {

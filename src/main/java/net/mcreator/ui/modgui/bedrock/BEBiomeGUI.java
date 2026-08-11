@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui.bedrock;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.bedrock.BEBiome;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -28,7 +29,10 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.BEBiomeListField;
+import net.mcreator.ui.minecraft.BEBiomeTagsListField;
+import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
@@ -56,7 +60,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JSpinner replacementNoiseFrequencyScale = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 100, 0.1));
 	private final JSpinner particleDensity = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 10.0, 0.1));
 
-	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125);
+	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125).allowEqualValues();
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 
@@ -70,7 +74,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JComboBox<String> noiseType = new JComboBox<>(
 			new String[] { "default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
 					"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" });
-	private final JComboBox<String> villageType = new JComboBox<>(new String[]{"default", "desert", "ice", "savanna", "taiga"});
+	private final JComboBox<String> villageType = new JComboBox<>(
+			new String[] { "default", "desert", "ice", "savanna", "taiga" });
 	private final JComboBox<String> particleToSpawn = new JComboBox<>(
 			new String[] { "ash", "blue_spores", "red_spores", "white_ash" });
 
@@ -249,6 +254,12 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		page2group.addValidationElement(midMaterial);
 		page2group.addValidationElement(foundationMaterial);
 		page2group.addValidationElement(biomeReplacements);
+
+		if (!isEditingMode()) {
+			topMaterial.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRASS"));
+			midMaterial.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.DIRT#0"));
+			foundationMaterial.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"));
+		}
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
 		addPage(L10N.t("elementgui.biome.biome_generation"), PanelUtils.totalCenterInPanel(materialsPanel)).validate(

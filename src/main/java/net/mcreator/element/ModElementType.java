@@ -75,6 +75,8 @@ public class ModElementType<GE extends GeneratableElement> {
 			return "livingentities";
 		else if (this == SPECIALENTITY)
 			return "specialentities";
+		else if (this == BEENTITY)
+			return "beentities";
 
 		return registryName.toLowerCase(Locale.ENGLISH) + "s";
 	}
@@ -183,9 +185,10 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> VILLAGERTRADE;
 
 	// Bedrock-specific METs
-	public static ModElementType<?> BEITEM;
 	public static ModElementType<?> BEBLOCK;
 	public static ModElementType<?> BEBIOME;
+	public static ModElementType<?> BEENTITY;
+	public static ModElementType<?> BEITEM;
 	public static ModElementType<?> BESCRIPT;
 
 	public static ModElementType<?> UNKNOWN;

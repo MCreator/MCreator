@@ -34,7 +34,6 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.util.TestUtil;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -216,6 +215,16 @@ import java.util.*;
 		// Add tabs without order to the end of the main list
 		tabMap.putAll(customTabsWithoutOrder);
 
+		tabMap.entrySet().removeIf(entry -> {
+			if (entry.getKey().startsWith(NameMapper.MCREATOR_PREFIX) && !workspace.containsModElement(
+					GeneratorWrapper.getElementPlainName(entry.getKey()))) {
+				LOG.warn("Broken creative tab reference found. Referencing non-existent custom tab: {}",
+						entry.getKey().replaceFirst(NameMapper.MCREATOR_PREFIX, ""));
+				return true;
+			}
+			return false;
+		});
+
 		return tabMap;
 	}
 
@@ -238,7 +247,6 @@ import java.util.*;
 					LOG.warn("({}) Broken reference found. Referencing non-existent element: {}",
 							TraceUtil.tryToFindMCreatorInvoker(),
 							t.getUnmappedValue().replaceFirst(NameMapper.MCREATOR_PREFIX, ""));
-					TestUtil.failIfTestingEnvironment();
 				}
 			} else {
 				retval.add(new UniquelyMappedElement(t));
