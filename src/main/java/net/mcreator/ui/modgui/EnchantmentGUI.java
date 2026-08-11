@@ -19,7 +19,9 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.DynamicBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.datapack.BlocklyToEnchantmentEffects;
@@ -196,6 +198,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 				.getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.ENCHANTMENT_EFFECTS);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
 			blocklyPanel.addChangeListener(changeEvent -> new Thread(() -> regenerateBlockAssemblies(true),

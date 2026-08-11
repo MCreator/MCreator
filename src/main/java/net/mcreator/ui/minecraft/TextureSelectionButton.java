@@ -26,6 +26,7 @@ import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.resources.CustomTexture;
 import net.mcreator.workspace.resources.Texture;
 
 import javax.annotation.Nullable;
@@ -101,6 +102,9 @@ public class TextureSelectionButton extends VButton {
 
 	protected void setTexture(@Nullable Texture texture) {
 		if (texture != null) {
+			if (texture instanceof CustomTexture customTexture && !customTexture.getTextureFile()
+					.isFile()) // only set texture if if exists
+				return;
 			selectedTexture = texture;
 			setIcon(new ImageIcon(
 					ImageUtils.resize(texture.getTextureIcon(td.getMCreator().getWorkspace()).getImage(), this.size)));

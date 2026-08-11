@@ -19,11 +19,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.NoteBlockInstrument;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.ItemExtension;
 import net.mcreator.element.types.Recipe;

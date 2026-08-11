@@ -23,17 +23,18 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 
 public class Button extends SizedComponent {
 
-	public String name;
+	@Nonnull public String name;
 	public final String text;
 	public final boolean isUndecorated;
 	public final Procedure onClick;
 	public final Procedure displayCondition;
 
-	public Button(String name, int x, int y, String text, int width, int height, boolean isUndecorated,
+	public Button(@Nonnull String name, int x, int y, String text, int width, int height, boolean isUndecorated,
 			Procedure onClick, Procedure displayCondition) {
 		super(x, y, width, height);
 		this.text = text;

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TransliterationTest {
 	@Test public void transliterateString() {
 		String transliterated = Transliteration.transliterateString("test this: č#ć");
-		assertEquals(transliterated, "test this: c#c");
+		assertEquals("test this: c#c", transliterated);
 	}
 
 }

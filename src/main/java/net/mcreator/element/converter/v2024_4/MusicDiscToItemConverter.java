@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.ItemUseAnimation;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
@@ -53,7 +54,7 @@ public class MusicDiscToItemConverter implements IConverter {
 
 		item.stackSize = 1;
 		item.toolType = 1.0;
-		item.animation = "none";
+		item.animation = new ItemUseAnimation(workspace, "none");
 
 		JsonObject creativeTab = musicdisc.getAsJsonObject("creativeTab");
 		if (creativeTab != null && !creativeTab.get("value").getAsString().equals("No creative tab entry")) {

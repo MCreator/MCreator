@@ -1,0 +1,1 @@
+If enabled, this will allow your entity to work with the `/summon` command.

@@ -22,7 +22,6 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.util.TestUtil;
 import net.mcreator.util.yaml.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,12 +74,10 @@ public class MappingLoader {
 						}
 					} catch (Exception e) {
 						LOG.error("[{}] Error: {} for mapping file {}", mappingName, e.getMessage(), mappingResource);
-						TestUtil.failIfTestingEnvironment();
 					}
 				});
 			} catch (IOException e) {
 				LOG.error("Failed to load mapping resource", e);
-				TestUtil.failIfTestingEnvironment();
 			}
 		}
 

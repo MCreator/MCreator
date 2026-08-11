@@ -1,0 +1,1 @@
+Wenn irgendein Gegenstand aus dieser Liste gesammelt wird, wird das Rezept im Rezeptbuch freigeschaltet.

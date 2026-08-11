@@ -32,21 +32,25 @@ import net.mcreator.util.image.ImageUtils;
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.util.Collection;
 
 public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
-	public DataListComboBox(MCreator mcreator, List<DataListEntry> list) {
+	public DataListComboBox(MCreator mcreator, Collection<DataListEntry> list) {
+		this(mcreator, list, false);
+	}
+
+	public DataListComboBox(MCreator mcreator, Collection<DataListEntry> list, boolean rawNames) {
 		super(list.toArray(new DataListEntry[0]));
-		init(mcreator);
+		init(mcreator, rawNames);
 	}
 
 	public DataListComboBox(MCreator mcreator) {
-		init(mcreator);
+		init(mcreator, false);
 	}
 
-	private void init(MCreator mcreator) {
-		setRenderer(new CustomRenderer(mcreator));
+	private void init(MCreator mcreator, boolean rawNames) {
+		setRenderer(new CustomRenderer(mcreator, rawNames));
 	}
 
 	public void setSelectedItem(String string) {
@@ -75,13 +79,15 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 	public static class CustomRenderer extends JLabel implements ListCellRenderer<DataListEntry> {
 
 		private final MCreator mcreator;
+		private final boolean rawNames;
 
-		public CustomRenderer(MCreator mcreator) {
+		public CustomRenderer(MCreator mcreator, boolean rawNames) {
 			setOpaque(true);
 			setHorizontalAlignment(CENTER);
 			setVerticalAlignment(CENTER);
 
 			this.mcreator = mcreator;
+			this.rawNames = rawNames;
 		}
 
 		@Override
@@ -96,7 +102,7 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 				setForeground(list.getForeground());
 			}
 
-			setText(value.getReadableName());
+			setText(rawNames ? value.getName() : value.getReadableName());
 
 			if (value instanceof DataListEntry.Custom custom) {
 				setIcon(MCItem.getBlockIconBasedOnName(custom.getModElement().getWorkspace(), value.getName()));

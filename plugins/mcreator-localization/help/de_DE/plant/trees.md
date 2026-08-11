@@ -1,0 +1,1 @@
+Dies sind die Bäume, die aus einem Setzling unter normalen Bedingungen wachsen können.

@@ -72,8 +72,11 @@ public class NameMapper {
 
 		Map<?, ?> mapping = workspace.getGenerator().getMappings().getMapping(mappingSource);
 
-		if (mapping == null)
+		if (mapping == null) {
+			LOG.warn("({}) Mapping source {} not found, returning original name: {}",
+					TraceUtil.tryToFindMCreatorInvoker(), mappingSource, origName);
 			return origName;
+		}
 
 		if (origName.startsWith(EXTERNAL_PREFIX)) {
 			return origName.replace(EXTERNAL_PREFIX, "");
@@ -125,8 +128,8 @@ public class NameMapper {
 				String retval = GeneratorTokens.replaceTokens(workspace, toMapTemplate.replace("@NAME", origName)
 						.replace("@UPPERNAME", origName.toUpperCase(Locale.ENGLISH))
 						.replace("@name", origName.toLowerCase(Locale.ENGLISH)));
-				if (toMapTemplate.contains("@SnakeCaseName")) {
-					retval = retval.replace("@SnakeCaseName", net.mcreator.util.StringUtils.snakeToCamel(origName));
+				if (toMapTemplate.contains("@CamelCaseName")) {
+					retval = retval.replace("@CamelCaseName", net.mcreator.util.StringUtils.snakeToCamel(origName));
 				}
 				if (toMapTemplate.contains("@registryname") || toMapTemplate.contains("@REGISTRYNAME")) {
 					ModElement element = workspace.getModElementByName(origName);

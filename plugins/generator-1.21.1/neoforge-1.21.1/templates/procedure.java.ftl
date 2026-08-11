@@ -48,6 +48,13 @@ import net.neoforged.bus.api.Event;
 	</#list>
 </#if>
 
+<#assign methodSignature><#list dependencies as d>${d.getType(generator.getWorkspace())} ${d.getName()}<#sep>, </#list></#assign>
+<#assign methodArgs><#list dependencies as d>${d.getName()}<#sep>, </#list></#assign>
+
+<#-- Variants without the world dependency, with a leading comma per entry, so blocks can pass a custom world in its place -->
+<#assign methodSignatureNoWorld><#list dependencies as d><#if d.getName() != "world">, ${d.getType(generator.getWorkspace())} ${d.getName()}</#if></#list></#assign>
+<#assign methodArgsNoWorld><#list dependencies as d><#if d.getName() != "world">, ${d.getName()}</#if></#list></#assign>
+
 <@javacompress>
 
 <#if trigger_code?has_content>
@@ -57,21 +64,13 @@ public class ${name}Procedure {
 </#if>
 
 	<#if trigger_code?has_content>
-	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(
-		<#list dependencies as dependency>
-			${dependency.getType(generator.getWorkspace())} ${dependency.getName()}<#sep>,
-		</#list>
-	) {
-		<#if return_type??>return </#if>execute(null<#if dependencies?has_content>,</#if><#list dependencies as dependency>${dependency.getName()}<#sep>,</#list>);
+	public static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(${methodSignature}) {
+		<#if return_type??>return </#if>execute(null<#if dependencies?has_content>,</#if>${methodArgs});
 	}
 	</#if>
 
 	<#if trigger_code?has_content>private <#else>public </#if>static <#if return_type??>${return_type.getJavaType(generator.getWorkspace())}<#else>void</#if> execute(
-		<#if trigger_code?has_content>@Nullable Event event<#if dependencies?has_content>,</#if></#if>
-		<#list dependencies as dependency>
-				${dependency.getType(generator.getWorkspace())} ${dependency.getName()}<#sep>,
-		</#list>
-	) {
+		<#if trigger_code?has_content>@Nullable Event event<#if dependencies?has_content>,</#if></#if>${methodSignature}) {
 		<#if nullableDependencies?has_content>
 			if (
 			<#list nullableDependencies as dependency>
@@ -84,8 +83,10 @@ public class ${name}Procedure {
 			<@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/>
 		</#list>
 
-		${procedurecode}
+		${procedurecode?replace("@procedureSignatureNoWorld@", methodSignatureNoWorld)?replace("@procedureArgsNoWorld@", methodArgsNoWorld)}
 	}
+
+	${additional_code?replace("@procedureSignatureNoWorld@", methodSignatureNoWorld)?replace("@procedureArgsNoWorld@", methodArgsNoWorld)}
 
 	${extra_templates_code}
 

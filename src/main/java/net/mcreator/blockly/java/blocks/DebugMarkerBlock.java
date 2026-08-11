@@ -26,6 +26,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class DebugMarkerBlock implements IBlockGenerator {
 
 	public static final String CODE_START = "assert Boolean.TRUE; //#dbg:";
@@ -46,6 +48,27 @@ public class DebugMarkerBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "debug_marker",
+          "args0": [
+              {
+                  "type": "field_javaname",
+                  "name": "NAME",
+                  "text": "marker1"
+              }
+          ],
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": "#ef323d"
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
 	}
 
 }

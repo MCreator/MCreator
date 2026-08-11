@@ -1,0 +1,1 @@
+Führt eine Prozedur aus, wenn der Schieberegler ausgewählt ist und der Cursor sich bewegt.

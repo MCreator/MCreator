@@ -53,7 +53,7 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 	private ProcedureSelector onKeyReleased;
 
 	private final DataListComboBox triggerKey = new DataListComboBox(mcreator,
-			DataListLoader.loadDataList("keybuttons"));
+			DataListLoader.loadDataList("keybuttons"), true);
 
 	private final VTextField keyBindingName = new VTextField(20).requireValue("elementgui.keybind.error_key_needs_name")
 			.enableRealtimeValidation();

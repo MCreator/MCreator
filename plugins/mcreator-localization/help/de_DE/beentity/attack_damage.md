@@ -1,0 +1,2 @@
+Dies ist die Höhe des Schadens, den die Entität verursacht, wenn sie eine andere Einheit verletzt. Typische Werte sind von 3 (z. Zombie) bis 7-21 (Eisen-Golem).
+Wird ein negativer Wert verwendet, wird das angegriffene Wesen geheilt, anstatt es zu verletzen.

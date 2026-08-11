@@ -44,7 +44,10 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Achievement extends GeneratableElement {
 
-	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"></block></xml>";
+	private static final String XML_BASE = """
+			<xml xmlns="https://developers.google.com/blockly/xml">\
+			<block type="advancement_trigger" deletable="false" x="40" y="80">\
+			<next><shadow type="custom_trigger"></shadow></next></block></xml>""";
 
 	public String achievementName;
 	public String achievementDescription;

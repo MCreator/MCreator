@@ -108,7 +108,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 		item.setForeground(Theme.current().getForegroundColor());
 		item.setIconTextGap(8);
 		item.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 0));
-		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));
+		item.addActionListener(_ -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));
 		return item;
 	}
 }

@@ -36,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Overlay extends GeneratableElement implements IGUI {
@@ -61,6 +62,7 @@ import java.util.List;
 
 		this.gridSettings = new GridSettings();
 		this.priority = "NORMAL";
+		this.components = new ArrayList<>();
 	}
 
 	public boolean hasTextures() {
