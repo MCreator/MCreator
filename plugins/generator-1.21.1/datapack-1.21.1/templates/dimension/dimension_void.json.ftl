@@ -14,7 +14,7 @@
       "aquifers_enabled": false,
       "ore_veins_enabled": false,
       "default_block": {
-	    "Name": "minecraft:air"
+        "Name": "minecraft:air"
 	  },
       "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
       "spawn_target": [],
