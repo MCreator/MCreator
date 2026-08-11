@@ -47,19 +47,11 @@ import java.util.List;
 
 	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
-	private static final String XML_SUGGESTION = """
-			<xml xmlns="https://developers.google.com/blockly/xml">\
-				<block type="feature_container" deletable="false" x="40" y="40">\
-					<value name="feature"><!-- feature to place --></value>\
-					<next><!-- placements --></next>\
-				</block>\
-			</xml>""";
-
 	public boolean skipPlacement;
 	public GenerationStep generationStep;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
-	@BlocklyXML(name = "features", defaultXML = XML_BASE, suggestedXML = XML_SUGGESTION) public String featurexml;
+	@BlocklyXML(name = "features", defaultXML = XML_BASE) public String featurexml;
 
 	private transient Boolean hasConfiguredFeature = null;
 

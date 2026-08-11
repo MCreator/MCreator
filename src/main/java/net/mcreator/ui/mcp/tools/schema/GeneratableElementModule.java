@@ -273,10 +273,6 @@ public class GeneratableElementModule implements Module {
 
 		BlocklyXML blocklyXML = this.getAnnotationFromFieldOrGetter(member, BlocklyXML.class);
 		if (blocklyXML != null) {
-			String suggestedXML = blocklyXML.suggestedXML();
-			if (suggestedXML != null && !suggestedXML.isEmpty()) {
-				return suggestedXML;
-			}
 			return blocklyXML.defaultXML();
 		}
 
