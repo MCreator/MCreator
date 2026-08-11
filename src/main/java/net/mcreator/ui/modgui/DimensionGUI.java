@@ -690,7 +690,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private void updateWorldgenSettings() {
 		String genType = (String) worldGenType.getSelectedItem();
-		mainFillerBlock.setEnabled(!"Void gen".equals(genType));
+		boolean voidGenSelected = "Void gen".equals(genType);
+		mainFillerBlock.setEnabled(!voidGenSelected);
+		horizontalNoiseSize.setEnabled(!voidGenSelected);
+		verticalNoiseSize.setEnabled(!voidGenSelected);
 		if ("Normal world gen".equals(genType)) {
 			generateAquifers.setEnabled(true);
 			generateOreVeins.setEnabled(true);
