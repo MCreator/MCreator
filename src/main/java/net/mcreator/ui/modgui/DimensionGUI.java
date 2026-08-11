@@ -690,39 +690,48 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private void updateWorldgenSettings() {
 		String genType = (String) worldGenType.getSelectedItem();
-		if ("Void gen".equals(genType)) {
+		if ("Normal world gen".equals(genType)) {
+			mainFillerBlock.setEnabled(true);
+			horizontalNoiseSize.setEnabled(true);
+			verticalNoiseSize.setEnabled(true);
+			generateAquifers.setEnabled(true);
+			generateOreVeins.setEnabled(true);
+			if (!isEditingMode()) {
+				seaLevel.setValue(63);
+				horizontalNoiseSize.setValue(1);
+				verticalNoiseSize.setValue(2);
+			}
+			biomesInDimensionCaves.setEnabled(true);
+		} else if ("Void gen".equals(genType)) {
 			mainFillerBlock.setEnabled(false);
 			horizontalNoiseSize.setEnabled(false);
 			verticalNoiseSize.setEnabled(false);
+			generateAquifers.setEnabled(false);
+			generateOreVeins.setEnabled(false);
+			if (!isEditingMode()) {
+				seaLevel.setValue(0);
+				horizontalNoiseSize.setValue(2);
+				verticalNoiseSize.setValue(1);
+			}
+			biomesInDimensionCaves.setEnabled(false);
 		} else {
 			mainFillerBlock.setEnabled(true);
 			horizontalNoiseSize.setEnabled(true);
 			verticalNoiseSize.setEnabled(true);
-			if ("Normal world gen".equals(genType)) {
-				generateAquifers.setEnabled(true);
-				generateOreVeins.setEnabled(true);
-				if (!isEditingMode()) {
-					seaLevel.setValue(63);
+			generateAquifers.setEnabled(false);
+			generateOreVeins.setEnabled(false);
+			if (!isEditingMode()) {
+				if ("Nether like gen".equals(genType)) {
+					seaLevel.setValue(32);
 					horizontalNoiseSize.setValue(1);
 					verticalNoiseSize.setValue(2);
+				} else {
+					seaLevel.setValue(0);
+					horizontalNoiseSize.setValue(2);
+					verticalNoiseSize.setValue(1);
 				}
-				biomesInDimensionCaves.setEnabled(true);
-			} else {
-				generateAquifers.setEnabled(false);
-				generateOreVeins.setEnabled(false);
-				if (!isEditingMode()) {
-					if ("Nether like gen".equals(genType)) {
-						seaLevel.setValue(32);
-						horizontalNoiseSize.setValue(1);
-						verticalNoiseSize.setValue(2);
-					} else {
-						seaLevel.setValue(0);
-						horizontalNoiseSize.setValue(2);
-						verticalNoiseSize.setValue(1);
-					}
-				}
-				biomesInDimensionCaves.setEnabled(false);
 			}
+			biomesInDimensionCaves.setEnabled(false);
 		}
 	}
 
