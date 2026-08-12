@@ -37,7 +37,7 @@ public class LoopBlock implements IBlockGenerator {
 		Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 
 		if (value != null && statement != null) {
-			int index = master.getBlockCount();
+			int index = master.getBlockCount(); // Fallback for existing procedures where mutation isn't applied yet
 			if (mutation != null) {
 				index = Integer.parseInt(mutation.getAttribute("nesting_level"));
 			}
