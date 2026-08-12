@@ -710,8 +710,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			generateOreVeins.setEnabled(false);
 			if (!isEditingMode()) {
 				seaLevel.setValue(0);
-				horizontalNoiseSize.setValue(2);
-				verticalNoiseSize.setValue(1);
 			}
 			biomesInDimensionCaves.setEnabled(false);
 		} else {
