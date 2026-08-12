@@ -43,7 +43,7 @@ public class ReadClassSourceTool extends MCreatorMcpTool<ReadClassSourceTool.Arg
 	}
 
 	@Override public String getDescription() {
-		return "Reads Java source code for a class by its FQDN (package.Name) from the workspace classpath.";
+		return "Reads Java source code for a class by its FQDN (package.Name) from the workspace classpath (reads project and dependency sources).";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
