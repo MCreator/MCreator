@@ -199,6 +199,7 @@ registerSimpleMutatorInput('any_item_mutator_input', 'blockly.block.any_item_mut
 
 // Unregister blocks that we will register again later
 delete Blockly.Blocks['controls_flow_statements'];
+delete Blockly.Blocks['controls_repeat_ext'];
 delete Blockly.Blocks['text_replace'];
 delete Blockly.Blocks['text_trim'];
 
