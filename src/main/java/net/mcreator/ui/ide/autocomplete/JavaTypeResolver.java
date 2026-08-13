@@ -95,7 +95,7 @@ public class JavaTypeResolver {
 	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
 
 	// Maps srcCode.hashCode() -> Map<methodKey, javadocText> (parsed Javadoc documentation for a source code snapshot)
-	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(50).build();
+	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	// Maps "managerId:fqdn" -> sourceCodeString (loaded Java source code string)
 	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
@@ -219,6 +219,7 @@ public class JavaTypeResolver {
 
 						String key = mName + "(" + String.join(",", fqdnPTypes) + ")";
 						String doc = docs.get(key);
+						if (doc == null) doc = docs.get(mName + "/" + pCount);
 						if (doc == null) doc = docs.get(mName);
 
 						addMethodCompletion(mName, mi.getReturnTypeString(false), pTypes, pNames, fqdnPTypes, mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result, added);
@@ -285,11 +286,23 @@ public class JavaTypeResolver {
 		try {
 			JavaType<?> source = Roaster.parse(srcCode);
 			if (source instanceof MethodHolderSource<?> mhs) {
+				Map<String, String> imports = parseImports(srcCode);
 				for (MethodSource<?> m : mhs.getMethods()) {
 					if (m.getJavaDoc() != null) {
 						String text = m.getJavaDoc().getFullText();
 						if (text != null && !text.trim().isEmpty()) {
-							docs.put(m.getName(), text.trim());
+							List<? extends ParameterSource<?>> params = m.getParameters();
+							String[] pTypes = params.stream()
+									.map(p -> {
+										String name = p.getType().getName();
+										String resolved = imports.get(name);
+										if (resolved != null) return resolved;
+										return name.length() == 1 ? "java.lang.Object" : name;
+									})
+									.toArray(String[]::new);
+							docs.put(m.getName() + "(" + String.join(",", pTypes) + ")", text.trim());
+							docs.putIfAbsent(m.getName() + "/" + params.size(), text.trim());
+							docs.putIfAbsent(m.getName(), text.trim());
 						}
 					}
 				}
