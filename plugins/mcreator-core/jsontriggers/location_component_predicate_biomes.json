@@ -17,7 +17,9 @@
         "name": "biome",
         "field_definition": {
           "testCount": 2,
-          "type": "field_data_list_selector"
+          "type": "field_data_list_selector",
+          "datalist": "biome",
+          "testValue": "plains"
         }
       }
     ]
