@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.java.ClassFinder;
@@ -83,32 +85,23 @@ public class JavaTypeResolver {
 		}
 	}
 
-	private static <K, V> Map<K, V> createBoundedCache(int maxSize) {
-		return Collections.synchronizedMap(new LinkedHashMap<>(maxSize, 0.75f, true) {
-			@Override
-			protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-				return size() > maxSize;
-			}
-		});
-	}
-
 	@Nullable
 	private final Workspace workspace;
 
 	// Maps "managerId:fqdn" -> List<CompletionItem> (cached field and method completion items for a class)
-	private final Map<String, List<CompletionItem>> memberCache = createBoundedCache(500);
+	private final Cache<String, List<CompletionItem>> memberCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
 	// Maps code.hashCode() -> Map<simpleClassName, fqdn> (parsed import mappings for a source code snapshot)
-	private final Map<Integer, Map<String, String>> importsCache = createBoundedCache(50);
+	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
 
 	// Maps srcCode.hashCode() -> Map<methodKey, javadocText> (parsed Javadoc documentation for a source code snapshot)
-	private final Map<Integer, Map<String, String>> docsCache = createBoundedCache(50);
+	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(50).build();
 
 	// Maps "managerId:fqdn" -> sourceCodeString (loaded Java source code string)
-	private final Map<String, String> sourceCache = createBoundedCache(100);
+	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	// Maps "managerId:currentPkg:typeName" -> resolvedFQDN (simple type name resolution result)
-	private final Map<String, String> simpleTypeCache = createBoundedCache(500);
+	private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
 	public JavaTypeResolver(Workspace workspace) {
 		this.workspace = workspace;
@@ -147,7 +140,7 @@ public class JavaTypeResolver {
 		boolean isCurrentClass = currentClassFQDN != null && fqdn.equals(currentClassFQDN);
 
 		if (!isCurrentClass) {
-			List<CompletionItem> cached = memberCache.get(fqdn);
+			List<CompletionItem> cached = memberCache.getIfPresent(fqdn);
 			if (cached != null) {
 				return new ArrayList<>(cached);
 			}
@@ -285,7 +278,7 @@ public class JavaTypeResolver {
 	private Map<String, String> getMethodDocsFromSource(String srcCode) {
 		if (srcCode == null || srcCode.isEmpty()) return Collections.emptyMap();
 		int hash = srcCode.hashCode();
-		Map<String, String> cached = docsCache.get(hash);
+		Map<String, String> cached = docsCache.getIfPresent(hash);
 		if (cached != null) return cached;
 
 		Map<String, String> docs = new HashMap<>();
@@ -311,7 +304,7 @@ public class JavaTypeResolver {
 
 	private String loadSourceCodeForFQDN(String fqdn) {
 		if (workspace == null || workspace.getGenerator() == null || fqdn == null) return null;
-		String cached = sourceCache.get(fqdn);
+		String cached = sourceCache.getIfPresent(fqdn);
 		if (cached != null) return cached.isEmpty() ? null : cached;
 
 		String srcCode = loadSourceCodeForFQDNImpl(fqdn);
@@ -405,7 +398,7 @@ public class JavaTypeResolver {
 	private Map<String, String> parseImports(String code) {
 		if (code == null || code.isEmpty()) return Collections.emptyMap();
 		int hash = code.hashCode();
-		Map<String, String> cached = importsCache.get(hash);
+		Map<String, String> cached = importsCache.getIfPresent(hash);
 		if (cached != null) return cached;
 
 		Map<String, String> imports = new HashMap<>();
@@ -431,7 +424,7 @@ public class JavaTypeResolver {
 		if (typeName.contains(".")) return typeName;
 
 		String cacheKey = (currentPkg != null ? currentPkg : "") + ":" + typeName;
-		String cached = simpleTypeCache.get(cacheKey);
+		String cached = simpleTypeCache.getIfPresent(cacheKey);
 		if (cached != null) return cached.isEmpty() ? null : cached;
 
 		String resolved = resolveSimpleTypeNameImpl(typeName, imports, currentPkg);
