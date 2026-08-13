@@ -18,7 +18,33 @@
 
 package net.mcreator.util;
 
+import java.util.regex.Pattern;
+
 public final class JavadocUtils {
+
+	private static final Pattern COMMENT_START = Pattern.compile("(?m)^\\h*/\\*+\\h*");
+	private static final Pattern COMMENT_END = Pattern.compile("(?m)\\h*\\*/\\h*$");
+	private static final Pattern COMMENT_LINE_PREFIX = Pattern.compile("(?m)^\\h*\\*\\h*");
+
+	private static final Pattern TAG_CODE = Pattern.compile("\\{@code\\h+([^}]+)\\}");
+	private static final Pattern TAG_LINK = Pattern.compile("\\{@link\\h+([^}]+)\\}");
+	private static final Pattern TAG_LINKPLAIN = Pattern.compile("\\{@linkplain\\h+([^}]+)\\}");
+	private static final Pattern TAG_LITERAL = Pattern.compile("\\{@literal\\h+([^}]+)\\}");
+	private static final Pattern TAG_VALUE = Pattern.compile("\\{@value\\h+([^}]+)\\}");
+
+	private static final Pattern TAG_PARAM_TYPE = Pattern.compile("(?m)^\\h*@param\\h+<\\h*([^>]+?)\\h*>");
+	private static final Pattern TAG_PARAM = Pattern.compile("(?m)^\\h*@param\\h+(\\w+)");
+	private static final Pattern TAG_RETURN = Pattern.compile("(?m)^\\h*@return");
+	private static final Pattern TAG_THROWS = Pattern.compile("(?m)^\\h*@throws\\h+(\\S+)");
+	private static final Pattern TAG_EXCEPTION = Pattern.compile("(?m)^\\h*@exception\\h+(\\S+)");
+	private static final Pattern TAG_SEE = Pattern.compile("(?m)^\\h*@see\\h+(\\S+)");
+	private static final Pattern TAG_SINCE = Pattern.compile("(?m)^\\h*@since\\h+(.+)");
+	private static final Pattern TAG_DEPRECATED = Pattern.compile("(?m)^\\h*@deprecated");
+	private static final Pattern TAG_IMPL_SPEC = Pattern.compile("(?m)^\\h*@implSpec");
+	private static final Pattern TAG_IMPL_NOTE = Pattern.compile("(?m)^\\h*@implNote");
+	private static final Pattern TAG_API_NOTE = Pattern.compile("(?m)^\\h*@apiNote");
+
+	private static final Pattern PRE_SPLIT = Pattern.compile("(?i)(?=<pre>)|(?<=</pre>)");
 
 	public static String formatJavadoc(String docSummary) {
 		if (docSummary == null || docSummary.trim().isEmpty()) {
@@ -27,30 +53,35 @@ public final class JavadocUtils {
 
 		String text = docSummary;
 
-		text = text.replaceAll("(?m)^\\s*/\\*+\\s*", "")
-				   .replaceAll("(?m)\\s*\\*/\\s*$", "")
-				   .replaceAll("(?m)^\\s*\\*\\s?", "");
+		text = COMMENT_START.matcher(text).replaceAll("");
+		text = COMMENT_END.matcher(text).replaceAll("");
+		text = COMMENT_LINE_PREFIX.matcher(text).replaceAll("");
 
-		text = text.replaceAll("\\{@code\\s+([^}]+)\\}", "<code>$1</code>");
-		text = text.replaceAll("\\{@link\\s+([^}]+)\\}", "<code>$1</code>");
-		text = text.replaceAll("\\{@linkplain\\s+([^}]+)\\}", "$1");
-		text = text.replaceAll("\\{@literal\\s+([^}]+)\\}", "<code>$1</code>");
-		text = text.replaceAll("\\{@value\\s+([^}]+)\\}", "<code>$1</code>");
+		text = TAG_CODE.matcher(text).replaceAll("<code>$1</code>");
+		text = TAG_LINK.matcher(text).replaceAll("<code>$1</code>");
+		text = TAG_LINKPLAIN.matcher(text).replaceAll("$1");
+		text = TAG_LITERAL.matcher(text).replaceAll("<code>$1</code>");
+		text = TAG_VALUE.matcher(text).replaceAll("<code>$1</code>");
 
-		text = text.replaceAll("(?m)^@param\\s+<(\\w+)>", "<br><b>Type Parameters:</b><br>&nbsp;&nbsp;<code>&lt;$1&gt;</code> - ");
-		text = text.replaceAll("(?m)^@param\\s+(\\w+)", "<br><b>Parameters:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = text.replaceAll("(?m)^@return", "<br><b>Returns:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@throws\\s+(\\S+)", "<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = text.replaceAll("(?m)^@exception\\s+(\\S+)", "<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = text.replaceAll("(?m)^@see\\s+(\\S+)", "<br><b>See Also:</b><br>&nbsp;&nbsp;<code>$1</code>");
-		text = text.replaceAll("(?m)^@since\\s+(.+)", "<br><b>Since:</b><br>&nbsp;&nbsp;$1");
-		text = text.replaceAll("(?m)^@deprecated", "<br><b>Deprecated:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@implSpec", "<br><b>Implementation Requirements:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@implNote", "<br><b>Implementation Note:</b><br>&nbsp;&nbsp;");
-		text = text.replaceAll("(?m)^@apiNote", "<br><b>API Note:</b><br>&nbsp;&nbsp;");
+		text = TAG_PARAM_TYPE.matcher(text).replaceAll("<br><b>Type Parameters:</b><br>&nbsp;&nbsp;<code>&lt;$1&gt;</code> - ");
+		text = TAG_PARAM.matcher(text).replaceAll("<br><b>Parameters:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
+		text = TAG_RETURN.matcher(text).replaceAll("<br><b>Returns:</b><br>&nbsp;&nbsp;");
+		text = TAG_THROWS.matcher(text).replaceAll("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
+		text = TAG_EXCEPTION.matcher(text).replaceAll("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
+		text = TAG_SEE.matcher(text).replaceAll("<br><b>See Also:</b><br>&nbsp;&nbsp;<code>$1</code>");
+		text = TAG_SINCE.matcher(text).replaceAll("<br><b>Since:</b><br>&nbsp;&nbsp;$1");
+		text = TAG_DEPRECATED.matcher(text).replaceAll("<br><b>Deprecated:</b><br>&nbsp;&nbsp;");
+		text = TAG_IMPL_SPEC.matcher(text).replaceAll("<br><b>Implementation Requirements:</b><br>&nbsp;&nbsp;");
+		text = TAG_IMPL_NOTE.matcher(text).replaceAll("<br><b>Implementation Note:</b><br>&nbsp;&nbsp;");
+		text = TAG_API_NOTE.matcher(text).replaceAll("<br><b>API Note:</b><br>&nbsp;&nbsp;");
+
+		text = deduplicateHeader(text, "<br><b>Type Parameters:</b><br>");
+		text = deduplicateHeader(text, "<br><b>Parameters:</b><br>");
+		text = deduplicateHeader(text, "<br><b>Throws:</b><br>");
+		text = deduplicateHeader(text, "<br><b>See Also:</b><br>");
 
 		text = text.replace("\r", "");
-		String[] parts = text.split("(?i)(?=<pre>)|(?<=</pre>)");
+		String[] parts = PRE_SPLIT.split(text);
 		StringBuilder sb = new StringBuilder();
 		for (String part : parts) {
 			if (part.toLowerCase().startsWith("<pre>")) {
@@ -61,5 +92,16 @@ public final class JavadocUtils {
 		}
 
 		return sb.toString();
+	}
+
+	private static String deduplicateHeader(String text, String headerHtml) {
+		int firstIdx = text.indexOf(headerHtml);
+		if (firstIdx != -1) {
+			String prefix = text.substring(0, firstIdx + headerHtml.length());
+			String rest = text.substring(firstIdx + headerHtml.length());
+			rest = rest.replace(headerHtml, "<br>");
+			return prefix + rest;
+		}
+		return text;
 	}
 }
