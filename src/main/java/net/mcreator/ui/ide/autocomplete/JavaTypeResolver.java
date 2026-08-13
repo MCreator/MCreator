@@ -180,7 +180,7 @@ public class JavaTypeResolver {
 
 		String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
 
-		ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
+		ProjectJarManager jarManager = workspace != null && workspace.getGenerator() != null ? workspace.getGenerator().getProjectJarManager() : null;
 
 		if (jarManager != null) {
 			try {
@@ -322,6 +322,7 @@ public class JavaTypeResolver {
 	}
 
 	private String loadSourceCodeForFQDNImpl(String fqdn) {
+		if (workspace == null || workspace.getGenerator() == null) return null;
 		File srcFile = new File(workspace.getGenerator().getSourceRoot(), fqdn.replace('.', '/') + ".java");
 		if (srcFile.isFile()) {
 			return FileIO.readFileToString(srcFile);
