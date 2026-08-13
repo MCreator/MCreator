@@ -113,7 +113,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	@Override
 	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
-		List<Completion> completions = new CopyOnWriteArrayList<>();
+		List<Completion> completions = new ArrayList<>();
 		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get()) {
 			return completions;
 		}
