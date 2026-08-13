@@ -131,10 +131,6 @@ public class JavaTypeResolver {
 		return result;
 	}
 
-	public List<CompletionItem> getMembersOfFQDN(String fqdn) {
-		return getMembersOfFQDN(fqdn, null, null);
-	}
-
 	public List<CompletionItem> getMembersOfFQDN(String fqdn, @Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty()) return new ArrayList<>();
 		boolean isCurrentClass = currentClassFQDN != null && fqdn.equals(currentClassFQDN);
