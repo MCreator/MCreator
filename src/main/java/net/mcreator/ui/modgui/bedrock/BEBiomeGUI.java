@@ -54,14 +54,16 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private MCItemHolder seaFloorMaterial;
 	private MCItemHolder seaMaterial;
 
-	private final JSpinner seaFloorDepth = new JSpinner(new SpinnerNumberModel(7, 0, 256, 1));
-	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 2.0, 0.1));
-	private final JSpinner downfall = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
-	private final JSpinner replacementAmount = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
-	private final JSpinner replacementNoiseFrequencyScale = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 100, 0.1));
-	private final JSpinner particleDensity = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 10.0, 0.1));
+	private final JSpinner seaFloorDepth = ComponentFromAnnotation.spinner(BEBiome.class, "seaFloorDepth");
+	private final JSpinner temperature = ComponentFromAnnotation.spinner(BEBiome.class, "temperature");
+	private final JSpinner downfall = ComponentFromAnnotation.spinner(BEBiome.class, "downfall");
+	private final JSpinner replacementAmount = ComponentFromAnnotation.spinner(BEBiome.class, "replacementAmount");
+	private final JSpinner replacementNoiseFrequencyScale = ComponentFromAnnotation.spinner(BEBiome.class,
+			"replacementNoiseFrequencyScale");
+	private final JSpinner particleDensity = ComponentFromAnnotation.spinner(BEBiome.class, "particleDensity");
 
-	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125).allowEqualValues();
+	private final JMinMaxSpinner snowAccumulation = ComponentFromAnnotation.minMaxSpinner(BEBiome.class, "minSnow",
+			"maxSnow").allowEqualValues();
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 
