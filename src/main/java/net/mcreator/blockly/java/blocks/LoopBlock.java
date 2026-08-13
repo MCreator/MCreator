@@ -26,21 +26,16 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
-
-import javax.annotation.Nullable;
+import org.w3c.dom.Node;
 
 public class LoopBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		Element statement = XMLUtil.getFirstChildrenWithName(block, "statement");
-		Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 
 		if (value != null && statement != null) {
-			int index = master.getBlockCount(); // Fallback for existing procedures where mutation isn't applied yet
-			if (mutation != null) {
-				index = Integer.parseInt(mutation.getAttribute("nesting_level"));
-			}
+			int index = getNestingLevel(block);
 
 			master.append("for (int _i").append(index).append(" = 0; _i").append(index).append("<");
 			master.processOutputBlockToInt(value);
@@ -53,44 +48,24 @@ public class LoopBlock implements IBlockGenerator {
 		}
 	}
 
+	private static int getNestingLevel(Element block) {
+		int level = 1;
+		Node node = block;
+		while (node.getParentNode() != null) {
+			Node parent = node.getParentNode();
+			if ("statement".equals(node.getNodeName()) && parent instanceof Element parentElement
+					&& "controls_repeat_ext".equals(parentElement.getAttribute("type")))
+				level++;
+			node = parent;
+		}
+		return level;
+	}
+
 	@Override public String[] getSupportedBlocks() {
 		return new String[] { "controls_repeat_ext" };
 	}
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
-	}
-
-	@Nullable @Override public String[] getBlockJSONDefinitions() {
-		return new String[] { """
-        {
-            'type': 'controls_repeat_ext',
-            'message0': '%{BKY_CONTROLS_REPEAT_TITLE}',
-            'args0': [
-                {
-                    'type': 'input_value',
-                    'name': 'TIMES',
-                    'check': 'Number',
-                    'ariaLabelText': '%{BKY_INPUT_LABEL_LOOP_TIMES}'
-                }
-            ],
-            'message1': '%{BKY_CONTROLS_REPEAT_INPUT_DO} %1',
-            'args1': [
-                {
-                    'type': 'input_statement',
-                    'name': 'DO'
-                }
-            ],
-            "mutator": "store_nesting_level",
-            'previousStatement': null,
-            'nextStatement': null,
-            'style': 'loop_blocks',
-            'tooltip': '%{BKY_CONTROLS_REPEAT_TOOLTIP}',
-            'helpUrl': '%{BKY_CONTROLS_REPEAT_HELPURL}'
-        }""" };
-	}
-
-	@Nullable @Override public String getToolboxCategory() {
-		return "logicloops";
 	}
 }

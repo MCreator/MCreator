@@ -89,34 +89,6 @@ Blockly.Extensions.registerMutator('variable_entity_input',
         }
     });
 
-// Mutator that counts and stores how many times this block has been nested within itself, starting from 1
-Blockly.Extensions.registerMutator('store_nesting_level',
-    {
-        mutationToDom: function () {
-            const container = document.createElement('mutation');
-            const thisType = this.type;
-            const nestingLevel = countWithin(this, function (type) {
-                return type === thisType;
-            });
-            container.setAttribute('nesting_level', nestingLevel);
-            return container;
-        },
-
-        domToMutation: function (xmlElement) {
-        }
-    });
-
-function countWithin(block, predicate) {
-    let count = 0;
-    do {
-        if (predicate(block.type)) {
-            count++;
-        }
-        block = block.getSurroundParent();
-    } while (block);
-    return count;
-}
-
 // Helper function to use in Blockly extensions that register one data list selector field to update contents of another
 // The block may define input called "<targetName>Field" to customize field's position
 // Note that the source field must be inserted before the target field for their values to be loaded properly
