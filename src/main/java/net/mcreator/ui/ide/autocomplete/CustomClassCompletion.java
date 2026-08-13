@@ -31,7 +31,7 @@ public class CustomClassCompletion extends BasicCompletion {
 	private final boolean isEnum;
 
 	public CustomClassCompletion(CompletionProvider provider, String name, String pkg, boolean isInterface, boolean isEnum) {
-		super(provider, name, pkg, (isInterface ? "interface " : (isEnum ? "enum " : "class ")) + name + (pkg != null && !pkg.isEmpty() ? "\npackage " + pkg : ""));
+		super(provider, name, pkg, "<html>" + (isInterface ? "interface " : (isEnum ? "enum " : "class ")) + name + (pkg != null && !pkg.isEmpty() ? "<br>package " + pkg : "") + "</html>");
 		this.className = name;
 		this.pkg = pkg;
 		this.isInterface = isInterface;
