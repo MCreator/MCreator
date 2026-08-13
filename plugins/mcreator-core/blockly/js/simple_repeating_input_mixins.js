@@ -142,7 +142,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 function weightedListMutatorMixin(inputType) {
     return simpleRepeatingInputMixin('weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck(inputType).setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck(inputType).setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.weighted_list.weight'))
                 .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
                 .appendField(javabridge.t('blockly.block.weighted_list.entry'));
@@ -152,7 +152,7 @@ function weightedListMutatorMixin(inputType) {
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('BlockPredicate').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('BlockPredicate').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['block_predicate_mutator_input']);
@@ -161,7 +161,7 @@ Blockly.Extensions.registerMutator('feature_simple_random_mutator', simpleRepeat
         'feature_simple_random_mutator_container', 'feature_simple_random_mutator_input', 'feature',
         function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck(['Feature', 'PlacedFeature'])
-                .setAlign(Blockly.ALIGN_RIGHT)
+                .setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }, true, [], true),
     undefined, ['feature_simple_random_mutator_input']);
@@ -169,7 +169,7 @@ Blockly.Extensions.registerMutator('feature_simple_random_mutator', simpleRepeat
 Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMixin(
         'block_list_mutator_container', 'block_list_mutator_input', 'condition',
         function (thisBlock, inputName, index) {
-            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
                 .appendField(new FieldMCItemSelector('allblocks'), 'block' + index);
         }, false, ['block']),
@@ -187,7 +187,7 @@ Blockly.Extensions.registerMutator('geode_crystal_mutator', simpleRepeatingInput
 Blockly.Extensions.registerMutator('ore_feature_mutator', simpleRepeatingInputMixin(
         'ore_mutator_container', 'ore_mutator_input', 'target',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('OreTarget').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('OreTarget').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t(
                     index === 0 ? 'blockly.block.ore_mutator.try' : 'blockly.block.ore_mutator.else_try'));
         }),
@@ -203,7 +203,7 @@ Blockly.Extensions.registerMutator('weighted_int_provider_mutator', weightedList
 Blockly.Extensions.registerMutator('weighted_state_provider_mutator', simpleRepeatingInputMixin(
         'weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.weighted_list.weight'))
                 .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
                 .appendField(javabridge.t('blockly.block.weighted_list.entry'))
@@ -215,7 +215,7 @@ Blockly.Extensions.registerMutator('weighted_state_provider_mutator', simpleRepe
 Blockly.Extensions.registerMutator('tree_decorator_mutator', simpleRepeatingInputMixin(
         'tree_decorator_mutator_container', 'tree_decorator_mutator_input', 'decorator',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('TreeDecorator').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('TreeDecorator').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.feature_tree.decorator_input'));
         }),
     undefined, ['tree_decorator_mutator_input']);
@@ -224,7 +224,7 @@ Blockly.Extensions.registerMutator('tree_decorator_mutator', simpleRepeatingInpu
 Blockly.Extensions.registerMutator('direction_list_mutator', simpleRepeatingInputMixin(
         'direction_list_mutator_container', 'direction_list_mutator_input', 'direction',
         function (thisBlock, inputName, index) {
-            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
                 .appendField(new FieldDataListDropdown('direction'), 'direction' + index);
         }, false, ['direction'], true),
@@ -246,7 +246,7 @@ Blockly.Extensions.registerMutator('blockstate_selector_mutator', simpleRepeatin
 Blockly.Extensions.registerMutator('feature_block_column_mutator', simpleRepeatingInputMixin(
         'feature_block_column_mutator_container', 'feature_block_column_mutator_input', 'layer',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('BlockColumnLayer').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('BlockColumnLayer').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['feature_block_column_mutator_input']);
@@ -255,7 +255,7 @@ Blockly.Extensions.registerMutator('feature_block_column_mutator', simpleRepeati
 Blockly.Extensions.registerMutator('disk_feature_mutator', simpleRepeatingInputMixin(
         'feature_disk_mutator_container', 'feature_disk_mutator_input', 'rule',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('DiskRule').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('DiskRule').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t(
                     index === 0 ? 'blockly.block.feature_disk_mutator.try' : 'blockly.block.feature_disk_mutator.else_try'));
         }),
@@ -266,7 +266,7 @@ Blockly.Extensions.registerMutator('random_feature_selector_mutator', simpleRepe
         'feature_simple_random_mutator_container', 'feature_simple_random_mutator_input', 'feature',
         function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck(['Feature', 'PlacedFeature'])
-                .setAlign(Blockly.ALIGN_RIGHT)
+                .setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t(
                     index === 0 ? 'blockly.block.feature_random_selector.with_chance' : 'blockly.block.feature_random_selector.else_with_chance'
                 ))
@@ -293,7 +293,7 @@ Blockly.Extensions.registerMutator('fixed_placement_mutator', simpleRepeatingInp
 Blockly.Extensions.registerMutator('player_effect_changed_mutator', simpleRepeatingInputMixin(
         'player_effect_changed_mutator_container', 'player_effect_changed_mutator_input', 'effect',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('Effect').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('Effect').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['player_effect_changed_mutator_input']);
@@ -301,7 +301,7 @@ Blockly.Extensions.registerMutator('player_effect_changed_mutator', simpleRepeat
 Blockly.Extensions.registerMutator('item_enchanted_mutator', simpleRepeatingInputMixin(
         'item_enchanted_mutator_container', 'item_enchanted_mutator_input', 'enchantment',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('Enchantment').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('Enchantment').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['item_enchanted_mutator_input']);
@@ -309,7 +309,7 @@ Blockly.Extensions.registerMutator('item_enchanted_mutator', simpleRepeatingInpu
 Blockly.Extensions.registerMutator('any_item_mutator', simpleRepeatingInputMixin(
         'any_item_mutator_container', 'any_item_mutator_input', 'item',
         function (thisBlock, inputName, index) {
-            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
                 .appendField(new FieldMCItemSelector(), 'item' + index);
         }, false, ['item']),
@@ -318,7 +318,7 @@ Blockly.Extensions.registerMutator('any_item_mutator', simpleRepeatingInputMixin
 Blockly.Extensions.registerMutator('item_predicate_mutator', simpleRepeatingInputMixin(
         'item_predicate_mutator_container', 'item_predicate_mutator_input', 'predicateComponent',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('DataComponentPredicate').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('DataComponentPredicate').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['item_predicate_mutator_input']);

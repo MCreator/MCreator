@@ -249,6 +249,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeModElement(ModElement element) {
+		// first, we delete all associated files, in case generator later fails to do so
+		element.getAssociatedFiles().forEach(f -> GradleTrackingFileIO.deleteFile(this, f));
+
 		if (!mod_elements.contains(element)) // skip if it is not present on the list already
 			return;
 

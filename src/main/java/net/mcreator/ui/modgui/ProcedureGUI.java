@@ -447,8 +447,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						}
 					}, VariableTypeLoader.INSTANCE.getLocalVariableTypes(mcreator.getGeneratorConfiguration()));
 			if (element != null) {
-				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
-				localVars.addElement(element);
+				new Thread(() -> {
+					blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
+					SwingUtilities.invokeLater(() -> localVars.addElement(element));
+				}, "Procedure-Add-Local-Variable").start();
 			}
 		});
 
@@ -458,10 +460,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
-					for (var element : elements) {
-						blocklyPanel.removeLocalVariable(element.getName());
-						localVars.removeElement(element);
-					}
+					new Thread(() -> {
+						for (var element : elements)
+							blocklyPanel.removeLocalVariable(element.getName());
+						SwingUtilities.invokeLater(() -> {
+							for (var element : elements)
+								localVars.removeElement(element);
+						});
+					}, "Procedure-Remove-Local-Variable").start();
 				}
 			}
 		});
