@@ -92,6 +92,7 @@ public class JavaTypeResolver {
 		});
 	}
 
+	@Nullable
 	private final Workspace workspace;
 
 	// Maps "managerId:fqdn" -> List<CompletionItem> (cached field and method completion items for a class)
