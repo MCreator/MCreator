@@ -25,6 +25,7 @@ import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceBuildStartedEvent;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import org.apache.logging.log4j.LogManager;
@@ -96,12 +97,14 @@ public class BuildTool extends MCreatorMcpTool<BuildTool.Args> {
 			mcreator.getGenerator().generateBase(true);
 			MCREvent.event(new WorkspaceBuildStartedEvent(mcreator));
 
-			gradleConsole.exec("build", result -> {
+			// exec mutates Swing components, so it must run on the EDT; the returned future still
+			// blocks the caller until the taskComplete listener fires when the build finishes
+			ThreadUtil.runOnSwingThreadAndWait(() -> gradleConsole.exec("build", result -> {
 				Map<String, Object> resultMap = new HashMap<>();
 				resultMap.put("result", result);
 				resultMap.put("gradleOutput", gradleConsole.getConsoleText());
 				future.complete(ToolResult.object(resultMap));
-			});
+			}));
 		} catch (Exception e) {
 			gradleConsole.markReady();
 			throw e;
