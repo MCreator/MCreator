@@ -27,18 +27,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.classreader.ClassFile;
-import org.fife.rsta.ac.java.rjc.lexer.Scanner;
-import org.fife.rsta.ac.java.rjc.lexer.Token;
 import org.fife.ui.autocomplete.*;
+
+import org.jboss.forge.roaster.model.source.*;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
-import java.io.StringReader;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
@@ -178,24 +179,13 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				}
 			}
 
-			// Document words extracted via RSTA Java Lexer - executed synchronously
-			Set<String> addedWords = new HashSet<>(JavaConventions.JAVA_RESERVED_WORDS);
-			try {
-				Scanner scanner = new Scanner(new StringReader(code));
-				Token t;
-				while ((t = scanner.yylex()) != null) {
-					if (t.isIdentifier()) {
-						String w = t.getLexeme();
-						if (w != null && w.length() > 1 && addedWords.add(w)) {
-							if (matchesFilter(w, wordOnly)) {
-								CustomVariableCompletion cvc = new CustomVariableCompletion(this, w);
-								completions.add(cvc);
-							}
-						}
-					}
+			// Local symbols (method parameters and local variables in current method scope)
+			Map<String, String> localVars = getLocalVariables(codeBeforeCursor);
+			for (Map.Entry<String, String> entry : localVars.entrySet()) {
+				String varName = entry.getKey();
+				if (matchesFilter(varName, wordOnly) && !varName.equals(wordOnly)) {
+					completions.add(new CustomVariableCompletion(this, varName, entry.getValue()));
 				}
-			} catch (Throwable e) {
-				LOG.error("Failed to lex document words for completion", e);
 			}
 
 			// External classes & workspace classes - offloaded to background thread with timeout
@@ -343,5 +333,26 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			targetName = c + targetName;
 		}
 		return targetName.trim();
+	}
+
+	private Map<String, String> getLocalVariables(String codeBeforeCursor) {
+		Map<String, String> vars = new LinkedHashMap<>();
+		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty()) return vars;
+
+		int lastEnd = Math.max(codeBeforeCursor.lastIndexOf("}\n"), codeBeforeCursor.lastIndexOf("}\r\n"));
+		String currentMethodCode = lastEnd != -1 ? codeBeforeCursor.substring(lastEnd) : codeBeforeCursor;
+
+		Matcher m = Pattern.compile("\\b(boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b").matcher(currentMethodCode);
+		while (m.find()) {
+			String type = m.group(1);
+			String name = m.group(2);
+			if (type.contains("."))
+				type = type.substring(type.lastIndexOf('.') + 1);
+			if (!JavaConventions.JAVA_RESERVED_WORDS.contains(name)) {
+				vars.putIfAbsent(name, type);
+			}
+		}
+
+		return vars;
 	}
 }

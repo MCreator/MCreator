@@ -25,9 +25,22 @@ import org.fife.ui.autocomplete.CompletionProvider;
 import javax.swing.Icon;
 
 public class CustomVariableCompletion extends BasicCompletion {
-	public CustomVariableCompletion(CompletionProvider provider, String name) {
-		super(provider, name, "Local symbol", name);
+	private final String name;
+	private final String type;
+
+	public CustomVariableCompletion(CompletionProvider provider, String name, String type) {
+		super(provider, name, type != null && !type.isBlank() ? type : "Local symbol", name);
+		this.name = name;
+		this.type = type;
 		setRelevance(1);
+	}
+
+	@Override
+	public String toString() {
+		if (type != null && !type.isBlank()) {
+			return name + " : " + type + " - Local symbol";
+		}
+		return name + " - Local symbol";
 	}
 
 	@Override
