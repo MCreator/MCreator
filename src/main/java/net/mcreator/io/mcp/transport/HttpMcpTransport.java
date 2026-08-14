@@ -25,10 +25,13 @@ import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
@@ -54,6 +57,13 @@ public class HttpMcpTransport implements McpTransport {
 		server = HttpServer.create(new InetSocketAddress(loopbackAddress, port), 0);
 
 		server.createContext("/mcp", exchange -> {
+			if (!isOriginAllowed(exchange.getRequestHeaders().getFirst("Origin"))) {
+				LOG.warn("Rejected /mcp request with disallowed origin: {}",
+						exchange.getRequestHeaders().getFirst("Origin"));
+				exchange.sendResponseHeaders(403, -1);
+				return;
+			}
+
 			String method = exchange.getRequestMethod();
 			if ("GET".equalsIgnoreCase(method)) {
 				handleGet(exchange);
@@ -78,6 +88,23 @@ public class HttpMcpTransport implements McpTransport {
 		}), 15, 15, TimeUnit.SECONDS);
 
 		LOG.info("MCP HTTP Server (Streamable HTTP) started on {}:{} at /mcp", loopbackAddress.getHostAddress(), port);
+	}
+
+	/**
+	 * The Origin header is only sent by browsers, so requests without it (regular MCP clients) are allowed.
+	 * Browser origins other than local ones are rejected to prevent DNS rebinding and drive-by requests
+	 * from web pages, as this server is otherwise unauthenticated.
+	 */
+	private static boolean isOriginAllowed(@Nullable String origin) {
+		if (origin == null || origin.isBlank())
+			return true;
+		try {
+			String host = new URI(origin).getHost();
+			return host != null && (host.equalsIgnoreCase("localhost") || host.equals("127.0.0.1") || host.equals(
+					"[::1]") || host.equals("::1"));
+		} catch (URISyntaxException e) {
+			return false;
+		}
 	}
 
 	private void handleGet(HttpExchange exchange) throws IOException {
