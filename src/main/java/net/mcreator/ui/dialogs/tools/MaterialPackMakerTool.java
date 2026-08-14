@@ -96,15 +96,18 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 
 	public static boolean addMaterialPackToWorkspace(@Nullable List<GeneratableElement> generationQueue,
 			MCreator mcreator, Workspace workspace, String name, String type, Color color, double factor) {
-		if (!OrePackMakerTool.addOrePackToWorkspace(generationQueue, mcreator, workspace, name, type, color, factor))
-			return false;
+		// intentionally attempt every sub-pack even if one fails (non-short-circuit &=), so the dialog path
+		// still creates the remaining sub-packs when one is skipped due to a name conflict
+		boolean success = OrePackMakerTool.addOrePackToWorkspace(generationQueue, mcreator, workspace, name, type,
+				color, factor);
 
 		MItemBlock gem = new MItemBlock(workspace, "CUSTOM:" + OrePackMakerTool.getOreItemName(name, type));
-		if (!ToolPackMakerTool.addToolPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color, factor))
-			return false;
-
-		return ArmorPackMakerTool.addArmorPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color,
+		success &= ToolPackMakerTool.addToolPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color,
 				factor);
+		success &= ArmorPackMakerTool.addArmorPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color,
+				factor);
+
+		return success;
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
