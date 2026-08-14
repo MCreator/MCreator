@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.mcreator.io.mcp.protocol.JsonRpcException;
 import net.mcreator.io.mcp.protocol.JsonRpcRequest;
 import net.mcreator.io.mcp.protocol.JsonRpcResponse;
 import net.mcreator.io.mcp.protocol.JsonSchemaGenerator;
@@ -35,6 +36,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -82,7 +84,8 @@ public class McpServer {
 
 				if (!"2.0".equals(request.jsonrpc())) {
 					JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
-							new JsonRpcResponse.JsonRpcError(-32600, "Invalid Request: expected jsonrpc 2.0"));
+							new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INVALID_REQUEST,
+									"Invalid Request: expected jsonrpc 2.0"));
 					responseFuture.complete(gson.toJson(errorResponse));
 					return;
 				}
@@ -94,7 +97,8 @@ public class McpServer {
 						responseFuture.complete(null);
 					} else {
 						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
-								new JsonRpcResponse.JsonRpcError(-32600, "Invalid Request: missing method"));
+								new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INVALID_REQUEST,
+										"Invalid Request: missing method"));
 						responseFuture.complete(gson.toJson(errorResponse));
 					}
 					return;
@@ -125,7 +129,8 @@ public class McpServer {
 						LOG.warn("Method not found: {}", request.method());
 						if (request.id() != null && !request.id().isJsonNull()) {
 							JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
-									new JsonRpcResponse.JsonRpcError(-32601, "Method not found"));
+									new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.METHOD_NOT_FOUND,
+											"Method not found"));
 							responseFuture.complete(gson.toJson(errorResponse));
 						} else {
 							responseFuture.complete(null);
@@ -133,10 +138,13 @@ public class McpServer {
 						return;
 					}
 				} catch (Exception e) {
-					LOG.error("Error processing method {}", request.method(), e);
+					if (e instanceof JsonRpcException) {
+						LOG.warn("Client error processing method {}: {}", request.method(), e.getMessage());
+					} else {
+						LOG.error("Error processing method {}", request.method(), e);
+					}
 					if (request.id() != null && !request.id().isJsonNull()) {
-						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
-								new JsonRpcResponse.JsonRpcError(-32603, "Internal error: " + e.getMessage()));
+						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(), toJsonRpcError(e));
 						responseFuture.complete(gson.toJson(errorResponse));
 					} else {
 						responseFuture.complete(null);
@@ -150,8 +158,7 @@ public class McpServer {
 						responseFuture.complete(gson.toJson(rpcResponse));
 					}).exceptionally(e -> {
 						LOG.error("Error in async processing of method {}", request.method(), e);
-						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
-								new JsonRpcResponse.JsonRpcError(-32603, "Internal error: " + e.getMessage()));
+						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(), toJsonRpcError(e));
 						responseFuture.complete(gson.toJson(errorResponse));
 						return null;
 					});
@@ -161,12 +168,12 @@ public class McpServer {
 			} catch (com.google.gson.JsonSyntaxException e) {
 				LOG.error("JSON parse error", e);
 				JsonRpcResponse errorResponse = new JsonRpcResponse(null,
-						new JsonRpcResponse.JsonRpcError(-32700, "Parse error"));
+						new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.PARSE_ERROR, "Parse error"));
 				responseFuture.complete(gson.toJson(errorResponse));
 			} catch (Exception e) {
 				LOG.error("Unexpected error handling message", e);
 				JsonRpcResponse errorResponse = new JsonRpcResponse(null,
-						new JsonRpcResponse.JsonRpcError(-32603, "Internal error"));
+						new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INTERNAL_ERROR, "Internal error"));
 				responseFuture.complete(gson.toJson(errorResponse));
 			}
 		});
@@ -192,14 +199,26 @@ public class McpServer {
 
 	private CompletableFuture<McpSchema.CallToolResponse> handleCallTool(JsonElement params) {
 		McpSchema.CallToolRequest req = gson.fromJson(params, McpSchema.CallToolRequest.class);
-		IMcpTool tool = tools.get(req.name());
-		if (tool != null) {
-			JsonObject arguments = req.arguments() != null && req.arguments().isJsonObject() ?
-					req.arguments().getAsJsonObject() :
-					new JsonObject();
-			return tool.invoke(arguments);
+		if (req == null || req.name() == null) {
+			throw new JsonRpcException(JsonRpcResponse.JsonRpcError.INVALID_PARAMS, "Invalid params: missing tool name");
 		}
-		return CompletableFuture.failedFuture(new RuntimeException("Tool not found: " + req.name()));
+		IMcpTool tool = tools.get(req.name());
+		if (tool == null) {
+			throw new JsonRpcException(JsonRpcResponse.JsonRpcError.INVALID_PARAMS, "Unknown tool: " + req.name());
+		}
+		JsonObject arguments = req.arguments() != null && req.arguments().isJsonObject() ?
+				req.arguments().getAsJsonObject() :
+				new JsonObject();
+		return tool.invoke(arguments);
+	}
+
+	private static JsonRpcResponse.JsonRpcError toJsonRpcError(Throwable e) {
+		if (e instanceof CompletionException && e.getCause() != null)
+			e = e.getCause();
+		if (e instanceof JsonRpcException jsonRpcException)
+			return new JsonRpcResponse.JsonRpcError(jsonRpcException.getCode(), jsonRpcException.getMessage());
+		return new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INTERNAL_ERROR,
+				"Internal error: " + e.getMessage());
 	}
 
 }
