@@ -21,6 +21,8 @@ package net.mcreator.ui.mcp.tools;
 
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.java.JavaConventions;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.workspace.Workspace;
@@ -56,7 +58,9 @@ public class VariableTool extends MCreatorMcpTool<VariableTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "Adds or removes a workspace variable. Use list query_workspace MOD_VARIABLES to see existing variables. When adding, fill out all fields.";
+		return "Adds or removes a workspace variable. Use list query_workspace MOD_VARIABLES to see existing variables. When adding, fill out all fields."
+				+ " initialValue must be true or false for logic variables, a number for number variables, and a direction name for direction variables;"
+				+ " other variable types except string do not support custom initial values, so omit initialValue for them to use the default value.";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
@@ -114,10 +118,43 @@ public class VariableTool extends MCreatorMcpTool<VariableTool.Args> {
 			return completedError("Scope not supported for this variable type");
 		}
 
+		Object value;
+		if (input.initialValue == null || input.initialValue.isBlank()) {
+			value = type.getDefaultValue(workspace);
+		} else if (type == VariableTypeLoader.BuiltInTypes.LOGIC) {
+			String raw = input.initialValue.trim();
+			if (raw.equalsIgnoreCase("true") || raw.equals("1"))
+				value = "true";
+			else if (raw.equalsIgnoreCase("false") || raw.equals("0"))
+				value = "false";
+			else
+				return completedError("Invalid initialValue for logic variable, use true or false");
+		} else if (type == VariableTypeLoader.BuiltInTypes.NUMBER) {
+			String raw = input.initialValue.trim();
+			try {
+				if (!Double.isFinite(Double.parseDouble(raw)))
+					return completedError("Invalid initialValue for number variable, must be a finite number");
+			} catch (NumberFormatException e) {
+				return completedError("Invalid initialValue for number variable, must be a number");
+			}
+			value = raw;
+		} else if (type == VariableTypeLoader.BuiltInTypes.DIRECTION) {
+			String raw = input.initialValue.trim();
+			value = DataListLoader.loadDataList("directions").stream().map(DataListEntry::getName)
+					.filter(direction -> direction.equalsIgnoreCase(raw)).findFirst().orElse(null);
+			if (value == null)
+				return completedError("Invalid initialValue for direction variable");
+		} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
+			value = input.initialValue;
+		} else {
+			// silently ignore default value if not supported for this variable type
+			value = type.getDefaultValue(workspace);
+		}
+
 		VariableElement element = new VariableElement(variableName);
 		element.setType(type);
 		element.setScope(scope);
-		element.setValue(input.initialValue != null ? input.initialValue : type.getDefaultValue(workspace));
+		element.setValue(value);
 
 		workspace.addVariableElement(element);
 		mcreator.reloadWorkspaceTabContents();
