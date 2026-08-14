@@ -60,7 +60,7 @@ public class JavaTypeResolver {
 
 	public record ResolutionResult(String fqdn, boolean isStaticContext) {}
 
-	private static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, String[] fqdnParamTypes, boolean isStatic, boolean isAbstract, boolean isDeprecated, String visibility, String declaringClass, String docSummary, List<CompletionItem> result, Set<String> added) {
+	private void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames, String[] fqdnParamTypes, boolean isStatic, boolean isAbstract, boolean isDeprecated, String visibility, String declaringClass, String docSummary, List<CompletionItem> result, Set<String> added) {
 		StringBuilder label = new StringBuilder(mName).append("(");
 		StringBuilder insert = new StringBuilder(mName).append("(");
 		for (int i = 0; i < paramNames.length; i++) {
@@ -79,7 +79,7 @@ public class JavaTypeResolver {
 		}
 	}
 
-	private static void addFieldCompletion(String fName, String fType, boolean isStatic, boolean isFinal, boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result, Set<String> added) {
+	private void addFieldCompletion(String fName, String fType, boolean isStatic, boolean isFinal, boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result, Set<String> added) {
 		if (added.add(fName)) {
 			result.add(new CompletionItem(fName, fName, "field", fType, declaringClass, visibility, null, false, isStatic, isFinal, false, isDeprecated, null, null, null));
 		}
@@ -469,7 +469,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
-	private static List<String> splitChains(String expression) {
+	private List<String> splitChains(String expression) {
 		List<String> result = new ArrayList<>();
 		int depth = 0;
 		StringBuilder current = new StringBuilder();
@@ -585,7 +585,7 @@ public class JavaTypeResolver {
 
 	private record VarTypeInfo(String rawType, String genericArg) {}
 
-	private static VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
+	private VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
 		if (codeBeforeCursor == null || base == null || base.isEmpty()) return null;
 
 		// Match standard / generic / array declarations
