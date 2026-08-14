@@ -510,7 +510,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 		boolean triggerTypeChanged = triggerTypeBeforeEdit != null && !triggerTypeBeforeEdit.equals(triggerType);
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && (triggerTypeChanged || forceActions))
+		// triggerTypeBeforeEdit can be null if the script has no external trigger, in which case there is nothing to fix
+		if (isEditingMode() && triggerTypeBeforeEdit != null && (triggerTypeChanged || forceActions))
 			fixScriptReferences(modElement, triggerTypeBeforeEdit);
 
 		triggerTypeBeforeEdit = triggerType;
