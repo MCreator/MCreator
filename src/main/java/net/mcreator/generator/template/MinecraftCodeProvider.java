@@ -46,8 +46,8 @@ import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.StringReader;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused") public class MinecraftCodeProvider {
 
@@ -55,7 +55,7 @@ import java.util.Map;
 
 	private final Workspace workspace;
 
-	private final Map<String, String> CACHE = new HashMap<>();
+	private final Map<String, String> CACHE = new ConcurrentHashMap<>();
 
 	public MinecraftCodeProvider(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
