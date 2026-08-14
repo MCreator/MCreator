@@ -53,7 +53,7 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 
 	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass,
 			String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated, PrefixContext prefixContext) {
-		super(provider, (prefixContext != null ? prefixContext.getPrefix() : "") + name, type);
+		super(provider, buildPrefixedName(name, prefixContext), type);
 		this.name = name;
 		this.type = type;
 		this.declaringClass = declaringClass;
@@ -62,6 +62,13 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 		this.isFinal = isFinal;
 		this.isDeprecated = isDeprecated;
 		setRelevance(100);
+	}
+
+	private static String buildPrefixedName(String name, PrefixContext prefixContext) {
+		if (prefixContext != null) {
+			return prefixContext.getPrefix() + name;
+		}
+		return name;
 	}
 
 	@Override public Icon getIcon() {

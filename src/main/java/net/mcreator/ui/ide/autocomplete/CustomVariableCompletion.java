@@ -29,10 +29,17 @@ public class CustomVariableCompletion extends BasicCompletion {
 	private final String type;
 
 	public CustomVariableCompletion(CompletionProvider provider, String name, String type) {
-		super(provider, name, type != null && !type.isBlank() ? type : "Local symbol", name);
+		super(provider, name, buildDefinedName(type), name);
 		this.name = name;
 		this.type = type;
 		setRelevance(1);
+	}
+
+	private static String buildDefinedName(String type) {
+		if (type != null && !type.isBlank()) {
+			return type;
+		}
+		return "Local symbol";
 	}
 
 	@Override public String toString() {
