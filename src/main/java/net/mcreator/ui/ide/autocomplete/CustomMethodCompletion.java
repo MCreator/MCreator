@@ -22,15 +22,18 @@ import net.mcreator.util.JavadocUtils;
 
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
+import org.fife.rsta.ac.java.JavaSourceCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
 import org.fife.ui.autocomplete.TemplateCompletion;
 
 import javax.swing.Icon;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomMethodCompletion extends TemplateCompletion {
+public class CustomMethodCompletion extends TemplateCompletion implements JavaSourceCompletion {
 	private final String label;
 	private final String returnType;
 	private final String declaringClass;
@@ -98,9 +101,6 @@ public class CustomMethodCompletion extends TemplateCompletion {
 		Icon baseIcon = IconFactory.get().getIcon(iconKey);
 		if (isStatic || isAbstract || isDeprecated) {
 			DecoratableIcon dec = new DecoratableIcon(baseIcon);
-			if (isDeprecated) {
-				dec.addDecorationIcon(IconFactory.get().getIcon(IconFactory.DEPRECATED_ICON));
-			}
 			if (isAbstract) {
 				dec.addDecorationIcon(IconFactory.get().getIcon(IconFactory.ABSTRACT_ICON));
 			}
@@ -110,6 +110,18 @@ public class CustomMethodCompletion extends TemplateCompletion {
 			return dec;
 		}
 		return baseIcon;
+	}
+
+	@Override
+	public void rendererText(Graphics g, int x, int y, boolean selected) {
+		g.drawString(toString(), x, y);
+		if (isDeprecated) {
+			FontMetrics fm = g.getFontMetrics();
+			String nameStr = label != null ? label : super.getDefinitionString();
+			int nameWidth = fm.stringWidth(nameStr);
+			int lineY = y + fm.getDescent() - fm.getHeight() / 2;
+			g.drawLine(x, lineY, x + nameWidth - 1, lineY);
+		}
 	}
 
 	@Override

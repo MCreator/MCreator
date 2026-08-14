@@ -20,12 +20,15 @@ package net.mcreator.ui.ide.autocomplete;
 
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
+import org.fife.rsta.ac.java.JavaSourceCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.VariableCompletion;
 
 import javax.swing.Icon;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 
-public class CustomFieldCompletion extends VariableCompletion {
+public class CustomFieldCompletion extends VariableCompletion implements JavaSourceCompletion {
 	public enum PrefixContext {
 		NONE(""),
 		BLOCKS("Blocks."),
@@ -62,10 +65,6 @@ public class CustomFieldCompletion extends VariableCompletion {
 		setRelevance(100);
 	}
 
-	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass, String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated) {
-		this(provider, name, type, declaringClass, visibility, isStatic, isFinal, isDeprecated, PrefixContext.NONE);
-	}
-
 	@Override
 	public Icon getIcon() {
 		String iconKey = switch (visibility != null ? visibility : "public") {
@@ -77,9 +76,6 @@ public class CustomFieldCompletion extends VariableCompletion {
 		Icon baseIcon = IconFactory.get().getIcon(iconKey);
 		if (isStatic || isFinal || isDeprecated) {
 			DecoratableIcon dec = new DecoratableIcon(baseIcon);
-			if (isDeprecated) {
-				dec.addDecorationIcon(IconFactory.get().getIcon(IconFactory.DEPRECATED_ICON));
-			}
 			if (isStatic) {
 				dec.addDecorationIcon(IconFactory.get().getIcon(IconFactory.STATIC_ICON));
 			}
@@ -89,6 +85,18 @@ public class CustomFieldCompletion extends VariableCompletion {
 			return dec;
 		}
 		return baseIcon;
+	}
+
+	@Override
+	public void rendererText(Graphics g, int x, int y, boolean selected) {
+		g.drawString(toString(), x, y);
+		if (isDeprecated) {
+			FontMetrics fm = g.getFontMetrics();
+			String nameStr = getName();
+			int nameWidth = fm.stringWidth(nameStr);
+			int lineY = y + fm.getDescent() - fm.getHeight() / 2;
+			g.drawLine(x, lineY, x + nameWidth - 1, lineY);
+		}
 	}
 
 	@Override
