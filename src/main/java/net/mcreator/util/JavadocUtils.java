@@ -37,9 +37,9 @@ public final class JavadocUtils {
 	private static final Pattern TAG_PARAM_TYPE = Pattern.compile("(?m)^\\h*@param\\h+<\\h*([^>]+?)\\h*>");
 	private static final Pattern TAG_PARAM = Pattern.compile("(?m)^\\h*@param\\h+(\\w+)");
 	private static final Pattern TAG_RETURN = Pattern.compile("(?m)^\\h*@return");
-	private static final Pattern TAG_THROWS = Pattern.compile("(?m)^\\h*@throws\\h+(\\S+)");
-	private static final Pattern TAG_EXCEPTION = Pattern.compile("(?m)^\\h*@exception\\h+(\\S+)");
-	private static final Pattern TAG_SEE = Pattern.compile("(?m)^\\h*@see\\h+(\\S+)");
+	private static final Pattern TAG_THROWS = Pattern.compile("(?m)^\\h*@throws\\h+((?:\\([^)]*\\)|<[^>]*>|\\S)+)");
+	private static final Pattern TAG_EXCEPTION = Pattern.compile("(?m)^\\h*@exception\\h+((?:\\([^)]*\\)|<[^>]*>|\\S)+)");
+	private static final Pattern TAG_SEE = Pattern.compile("(?m)^\\h*@see\\h+((?:\\([^)]*\\)|<[^>]*>|\\S)+)");
 	private static final Pattern TAG_SINCE = Pattern.compile("(?m)^\\h*@since\\h+(.+)");
 	private static final Pattern TAG_DEPRECATED = Pattern.compile("(?m)^\\h*@deprecated");
 	private static final Pattern TAG_IMPL_SPEC = Pattern.compile("(?m)^\\h*@implSpec");
