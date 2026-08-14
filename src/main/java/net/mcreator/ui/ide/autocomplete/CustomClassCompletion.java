@@ -30,8 +30,10 @@ public class CustomClassCompletion extends BasicCompletion {
 	private final boolean isInterface;
 	private final boolean isEnum;
 
-	public CustomClassCompletion(CompletionProvider provider, String name, String pkg, boolean isInterface, boolean isEnum) {
-		super(provider, name, pkg, "<html>" + (isInterface ? "interface " : (isEnum ? "enum " : "class ")) + name + (pkg != null && !pkg.isEmpty() ? "<br>package " + pkg : "") + "</html>");
+	public CustomClassCompletion(CompletionProvider provider, String name, String pkg, boolean isInterface,
+			boolean isEnum) {
+		super(provider, name, pkg, "<html>" + (isInterface ? "interface " : (isEnum ? "enum " : "class ")) + name + (
+				pkg != null && !pkg.isEmpty() ? "<br>package " + pkg : "") + "</html>");
 		this.className = name;
 		this.pkg = pkg;
 		this.isInterface = isInterface;
@@ -39,8 +41,7 @@ public class CustomClassCompletion extends BasicCompletion {
 		setRelevance(2);
 	}
 
-	@Override
-	public Icon getIcon() {
+	@Override public Icon getIcon() {
 		if (isInterface) {
 			return IconFactory.get().getIcon(IconFactory.INTERFACE_ICON);
 		} else if (isEnum) {
@@ -49,8 +50,7 @@ public class CustomClassCompletion extends BasicCompletion {
 		return IconFactory.get().getIcon(IconFactory.CLASS_ICON);
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		if (pkg != null && !pkg.isEmpty()) {
 			return className + " - " + pkg;
 		}

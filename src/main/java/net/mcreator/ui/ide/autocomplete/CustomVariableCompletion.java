@@ -35,16 +35,14 @@ public class CustomVariableCompletion extends BasicCompletion {
 		setRelevance(1);
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		if (type != null && !type.isBlank()) {
 			return name + " : " + type + " - Local symbol";
 		}
 		return name + " - Local symbol";
 	}
 
-	@Override
-	public Icon getIcon() {
+	@Override public Icon getIcon() {
 		return IconFactory.get().getIcon(IconFactory.LOCAL_VARIABLE_ICON);
 	}
 }

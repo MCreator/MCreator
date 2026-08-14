@@ -30,9 +30,7 @@ import java.awt.Graphics;
 
 public class CustomFieldCompletion extends VariableCompletion implements JavaSourceCompletion {
 	public enum PrefixContext {
-		NONE(""),
-		BLOCKS("Blocks."),
-		ITEMS("Items.");
+		NONE(""), BLOCKS("Blocks."), ITEMS("Items.");
 
 		private final String prefix;
 
@@ -53,7 +51,8 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 	private final boolean isFinal;
 	private final boolean isDeprecated;
 
-	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass, String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated, PrefixContext prefixContext) {
+	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass,
+			String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated, PrefixContext prefixContext) {
 		super(provider, (prefixContext != null ? prefixContext.getPrefix() : "") + name, type);
 		this.name = name;
 		this.type = type;
@@ -65,8 +64,7 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 		setRelevance(100);
 	}
 
-	@Override
-	public Icon getIcon() {
+	@Override public Icon getIcon() {
 		String iconKey = switch (visibility != null ? visibility : "public") {
 			case "protected" -> IconFactory.FIELD_PROTECTED_ICON;
 			case "private" -> IconFactory.FIELD_PRIVATE_ICON;
@@ -87,8 +85,7 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 		return baseIcon;
 	}
 
-	@Override
-	public void rendererText(Graphics g, int x, int y, boolean selected) {
+	@Override public void rendererText(Graphics g, int x, int y, boolean selected) {
 		g.drawString(toString(), x, y);
 		if (isDeprecated) {
 			FontMetrics fm = g.getFontMetrics();
@@ -99,15 +96,13 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 		}
 	}
 
-	@Override
-	public String getSummary() {
+	@Override public String getSummary() {
 		String safeType = type != null ? type.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") : "";
 		String safeName = name != null ? name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") : "";
 		return "<html>" + safeType + " " + safeName + "</html>";
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		String text = name + " : " + type;
 		if (declaringClass != null && !declaringClass.isEmpty()) {
 			text += " - " + declaringClass;

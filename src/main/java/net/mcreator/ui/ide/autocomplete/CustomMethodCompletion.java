@@ -44,7 +44,9 @@ public class CustomMethodCompletion extends TemplateCompletion implements JavaSo
 	private final boolean isDeprecated;
 	private final List<ParameterizedCompletion.Parameter> params;
 
-	public CustomMethodCompletion(CompletionProvider provider, String name, String label, String returnType, String declaringClass, String template, String docSummary, String visibility, boolean isStatic, boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames) {
+	public CustomMethodCompletion(CompletionProvider provider, String name, String label, String returnType,
+			String declaringClass, String template, String docSummary, String visibility, boolean isStatic,
+			boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames) {
 		super(provider, name, name, template, null, null);
 		this.label = label;
 		this.returnType = returnType;
@@ -64,34 +66,29 @@ public class CustomMethodCompletion extends TemplateCompletion implements JavaSo
 		setRelevance(100);
 	}
 
-	@Override
-	public boolean getShowParameterToolTip() {
+	@Override public boolean getShowParameterToolTip() {
 		return getParamCount() > 0;
 	}
 
-	@Override
-	public int getParamCount() {
+	@Override public int getParamCount() {
 		if (params != null && !params.isEmpty()) {
 			return params.size();
 		}
 		return super.getParamCount();
 	}
 
-	@Override
-	public ParameterizedCompletion.Parameter getParam(int index) {
+	@Override public ParameterizedCompletion.Parameter getParam(int index) {
 		if (params != null && !params.isEmpty() && index >= 0 && index < params.size()) {
 			return params.get(index);
 		}
 		return super.getParam(index);
 	}
 
-	@Override
-	public String getDefinitionString() {
+	@Override public String getDefinitionString() {
 		return label != null ? label : super.getDefinitionString();
 	}
 
-	@Override
-	public Icon getIcon() {
+	@Override public Icon getIcon() {
 		String iconKey = switch (visibility != null ? visibility : "public") {
 			case "protected" -> IconFactory.METHOD_PROTECTED_ICON;
 			case "private" -> IconFactory.METHOD_PRIVATE_ICON;
@@ -112,8 +109,7 @@ public class CustomMethodCompletion extends TemplateCompletion implements JavaSo
 		return baseIcon;
 	}
 
-	@Override
-	public void rendererText(Graphics g, int x, int y, boolean selected) {
+	@Override public void rendererText(Graphics g, int x, int y, boolean selected) {
 		g.drawString(toString(), x, y);
 		if (isDeprecated) {
 			FontMetrics fm = g.getFontMetrics();
@@ -124,15 +120,14 @@ public class CustomMethodCompletion extends TemplateCompletion implements JavaSo
 		}
 	}
 
-	@Override
-	public String getSummary() {
+	@Override public String getSummary() {
 		String formatted = JavadocUtils.formatJavadoc(docSummary);
-		if (formatted == null) return null;
+		if (formatted == null)
+			return null;
 		return "<html><b>" + label + "</b><hr>" + formatted + "</html>";
 	}
 
-	@Override
-	public String toString() {
+	@Override public String toString() {
 		String text = label + " : " + returnType;
 		if (declaringClass != null && !declaringClass.isEmpty()) {
 			text += " - " + declaringClass;

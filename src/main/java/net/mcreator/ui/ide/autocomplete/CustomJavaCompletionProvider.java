@@ -46,13 +46,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private static final Logger LOG = LogManager.getLogger(CustomJavaCompletionProvider.class);
 
 	private static final ExecutorService COMPLETION_EXECUTOR = Executors.newFixedThreadPool(
-			Math.max(2, Runtime.getRuntime().availableProcessors()),
-			r -> {
+			Math.max(2, Runtime.getRuntime().availableProcessors()), r -> {
 				Thread t = new Thread(r, "CustomJavaCompletionProvider-Worker");
 				t.setDaemon(true);
 				return t;
-			}
-	);
+			});
 
 	private final Workspace workspace;
 	private final JavaParser parser;
@@ -94,27 +92,29 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		this.workspace = workspace;
 		this.parser = parser;
 		this.javaTypeResolver = new JavaTypeResolver(workspace);
-		setAutoActivationRules(!"Trigger on dot".equals(PreferencesManager.PREFERENCES.ide.autocompleteMode.get()), ".");
+		setAutoActivationRules(!"Trigger on dot".equals(PreferencesManager.PREFERENCES.ide.autocompleteMode.get()),
+				".");
 		setParameterizedCompletionParams('(', ", ", ')');
 	}
 
-	@Override
-	public String getAlreadyEnteredText(JTextComponent comp) {
+	@Override public String getAlreadyEnteredText(JTextComponent comp) {
 		String word = super.getAlreadyEnteredText(comp);
-		if (word == null) word = "";
+		if (word == null)
+			word = "";
 		try {
 			int caret = comp.getCaretPosition();
 			String textBefore = comp.getText(0, Math.max(0, caret - word.length())).trim();
-			if (textBefore.endsWith("Blocks.")) return "Blocks." + word;
-			if (textBefore.endsWith("Items.")) return "Items." + word;
+			if (textBefore.endsWith("Blocks."))
+				return "Blocks." + word;
+			if (textBefore.endsWith("Items."))
+				return "Items." + word;
 		} catch (BadLocationException e) {
 			LOG.debug("Failed to get already entered text", e);
 		}
 		return word;
 	}
 
-	@Override
-	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
+	@Override protected List<Completion> getCompletionsImpl(JTextComponent comp) {
 		List<Completion> completions = new ArrayList<>();
 		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get()) {
 			return completions;
@@ -145,16 +145,20 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 
 		String alreadyEntered = getAlreadyEnteredText(comp);
-		String wordOnly = alreadyEntered.contains(".") ? alreadyEntered.substring(alreadyEntered.lastIndexOf('.') + 1) : alreadyEntered;
+		String wordOnly = alreadyEntered.contains(".") ?
+				alreadyEntered.substring(alreadyEntered.lastIndexOf('.') + 1) :
+				alreadyEntered;
 
-		String textBeforeWord = lineUntilPosition.substring(0, Math.max(0, lineUntilPosition.length() - wordOnly.length()));
+		String textBeforeWord = lineUntilPosition.substring(0,
+				Math.max(0, lineUntilPosition.length() - wordOnly.length()));
 		boolean isDotContext = textBeforeWord.trim().endsWith(".");
 
 		if (isDotContext) {
 			String beforeDot = textBeforeWord.substring(0, textBeforeWord.lastIndexOf('.')).trim();
 			String targetName = extractTargetName(beforeDot);
 			if (!targetName.isEmpty()) {
-				List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code, codeBeforeCursor, parser);
+				List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code,
+						codeBeforeCursor, parser);
 				CustomFieldCompletion.PrefixContext prefixContext = CustomFieldCompletion.PrefixContext.NONE;
 				if (alreadyEntered.startsWith("Blocks.")) {
 					prefixContext = CustomFieldCompletion.PrefixContext.BLOCKS;
@@ -165,7 +169,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			}
 		} else {
 			// Method/field completions for "this" - executed synchronously
-			List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code, codeBeforeCursor, parser);
+			List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
+					codeBeforeCursor, parser);
 			addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
 
 			// Keywords - executed synchronously
@@ -186,10 +191,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 			// External classes & workspace classes - offloaded to background thread with timeout
 			String trimmedBefore = textBeforeWord.trim();
-			boolean isClassContext = trimmedBefore.endsWith("@") ||
-					(!wordOnly.isEmpty() && Character.isUpperCase(wordOnly.charAt(0)));
+			boolean isClassContext =
+					trimmedBefore.endsWith("@") || (!wordOnly.isEmpty() && Character.isUpperCase(wordOnly.charAt(0)));
 			if (!isClassContext) {
-				for (String kw : new String[]{"new", "extends", "implements", "import", "class", "interface", "enum"}) {
+				for (String kw : new String[] { "new", "extends", "implements", "import", "class", "interface",
+						"enum" }) {
 					if (trimmedBefore.endsWith(kw)) {
 						isClassContext = true;
 						break;
@@ -223,9 +229,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		result.sort((c1, c2) -> {
 			int r1 = c1.getRelevance();
 			int r2 = c2.getRelevance();
-			if (r1 != r2) return Integer.compare(r2, r1);
+			if (r1 != r2)
+				return Integer.compare(r2, r1);
 			int cmp = c1.toString().compareTo(c2.toString());
-			if (cmp != 0) return cmp;
+			if (cmp != 0)
+				return cmp;
 			return Integer.compare(System.identityHashCode(c1), System.identityHashCode(c2));
 		});
 
@@ -233,7 +241,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private void addClassCompletions(String wordOnly, List<Completion> completions) {
-		if (workspace == null || workspace.getGenerator() == null) return;
+		if (workspace == null || workspace.getGenerator() == null)
+			return;
 		Map<String, List<String>> tree = getImportTreeCached();
 		if (tree != null) {
 			Set<String> addedFQDNs = new HashSet<>();
@@ -245,7 +254,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 						for (String fqdn : fqdns) {
 							if (addedFQDNs.add(fqdn)) {
 								ClassInfo info = getClassInfo(fqdn);
-								CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg, info.isInterface, info.isEnum);
+								CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
+										info.isInterface, info.isEnum);
 								completions.add(ccc);
 							}
 						}
@@ -255,10 +265,14 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
-	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly, CustomFieldCompletion.PrefixContext prefixContext, List<Completion> completions) {
+	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly,
+			CustomFieldCompletion.PrefixContext prefixContext, List<Completion> completions) {
 		for (JavaTypeResolver.CompletionItem item : items) {
-			String methodName = item.label().contains("(") ? item.label().substring(0, item.label().indexOf('(')) : item.label();
-			if (matchesFilter(methodName, wordOnly) || (item.kind().equals("field") && matchesFilter(item.insertText(), wordOnly))) {
+			String methodName = item.label().contains("(") ?
+					item.label().substring(0, item.label().indexOf('(')) :
+					item.label();
+			if (matchesFilter(methodName, wordOnly) || (item.kind().equals("field") && matchesFilter(item.insertText(),
+					wordOnly))) {
 				if (item.kind().equals("method")) {
 					String template = item.insertText().replaceAll("\\$\\{\\d+:", "\\${");
 					if (!template.contains("${")) {
@@ -267,9 +281,14 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 					String docStr = item.docSummary() != null ? item.docSummary() : item.detail() + " " + item.label();
 
-					completions.add(new CustomMethodCompletion(this, methodName, item.label(), item.detail(), item.declaringClass(), template, docStr, item.visibility(), item.isStatic(), item.isAbstract(), item.isDeprecated(), item.paramTypes(), item.paramNames()));
+					completions.add(new CustomMethodCompletion(this, methodName, item.label(), item.detail(),
+							item.declaringClass(), template, docStr, item.visibility(), item.isStatic(),
+							item.isAbstract(), item.isDeprecated(), item.paramTypes(), item.paramNames()));
 				} else {
-					completions.add(new CustomFieldCompletion(this, item.insertText(), item.detail(), item.declaringClass(), item.visibility(), item.isStatic(), item.isFinal(), item.isDeprecated(), prefixContext));
+					completions.add(
+							new CustomFieldCompletion(this, item.insertText(), item.detail(), item.declaringClass(),
+									item.visibility(), item.isStatic(), item.isFinal(), item.isDeprecated(),
+									prefixContext));
 				}
 			}
 		}
@@ -288,7 +307,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 						}
 					}
 				} else if (workspace.getGenerator().getProjectJarManager() != null) {
-					Map<String, List<String>> jTree = ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager());
+					Map<String, List<String>> jTree = ImportTreeBuilder.generateImportTree(
+							workspace.getGenerator().getProjectJarManager());
 					if (jTree != null) {
 						for (Map.Entry<String, List<String>> e : jTree.entrySet()) {
 							tree.put(e.getKey(), new ArrayList<>(e.getValue()));
@@ -304,7 +324,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private boolean matchesFilter(String candidate, String filter) {
-		if (filter == null || filter.isEmpty()) return true;
+		if (filter == null || filter.isEmpty())
+			return true;
 		return candidate.toLowerCase(Locale.ROOT).startsWith(filter.toLowerCase(Locale.ROOT));
 	}
 
@@ -333,12 +354,15 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private Map<String, String> getLocalVariables(String codeBeforeCursor) {
 		Map<String, String> vars = new LinkedHashMap<>();
-		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty()) return vars;
+		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
+			return vars;
 
 		int lastEnd = Math.max(codeBeforeCursor.lastIndexOf("}\n"), codeBeforeCursor.lastIndexOf("}\r\n"));
 		String currentMethodCode = lastEnd != -1 ? codeBeforeCursor.substring(lastEnd) : codeBeforeCursor;
 
-		Matcher m = Pattern.compile("\\b(boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b").matcher(currentMethodCode);
+		Matcher m = Pattern.compile(
+						"\\b(boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b")
+				.matcher(currentMethodCode);
 		while (m.find()) {
 			String type = m.group(1);
 			String name = m.group(2);
