@@ -96,11 +96,15 @@ public class CreateArmorTextureTool extends MCreatorMcpTool<CreateArmorTextureTo
 			return ToolResult.error("Invalid armor texture name");
 		}
 
-		String template = input.template;
-		if (template == null || template.isBlank()) {
+		String template;
+		if (input.template == null || input.template.isBlank()) {
 			template = "Standard";
-		} else if (!isKnownTemplate(template)) {
-			return ToolResult.error("Unknown armor template: " + template);
+		} else {
+			// canonicalize to the known template name, as the downstream texture cache lookup is exact-match
+			template = canonicalTemplateName(input.template);
+			if (template == null) {
+				return ToolResult.error("Unknown armor template: " + input.template);
+			}
 		}
 
 		Color color;
@@ -135,12 +139,12 @@ public class CreateArmorTextureTool extends MCreatorMcpTool<CreateArmorTextureTo
 		}
 	}
 
-	private static boolean isKnownTemplate(String template) {
+	@Nullable private static String canonicalTemplateName(String template) {
 		for (String knownTemplate : ArmorMakerTexturesCache.getTemplateNames()) {
 			if (knownTemplate.equalsIgnoreCase(template.trim())) {
-				return true;
+				return knownTemplate;
 			}
 		}
-		return false;
+		return null;
 	}
 }
