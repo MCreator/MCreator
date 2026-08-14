@@ -24,9 +24,9 @@ import java.util.regex.Pattern;
 
 public final class JavadocUtils {
 
-	private static final Pattern COMMENT_START = Pattern.compile("(?m)^\\h*/\\*+\\h*");
+	private static final Pattern COMMENT_START = Pattern.compile("(?m)^\\h*/\\*+\\h?");
 	private static final Pattern COMMENT_END = Pattern.compile("(?m)\\h*\\*/\\h*$");
-	private static final Pattern COMMENT_LINE_PREFIX = Pattern.compile("(?m)^\\h*\\*\\h*");
+	private static final Pattern COMMENT_LINE_PREFIX = Pattern.compile("(?m)^\\h*\\*\\h?");
 
 	private static final Pattern TAG_CODE = Pattern.compile("\\{@code\\h+([^}]+)}");
 	private static final Pattern TAG_LINK = Pattern.compile("\\{@link\\h+([^}]+)}");
