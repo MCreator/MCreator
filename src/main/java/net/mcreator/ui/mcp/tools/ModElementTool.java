@@ -298,59 +298,72 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 		ModElementGUI<?> modElementGUI = modElementGUIRef.get();
 
-		// Verify that BlocklyPanels are fully loaded
-		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
-			CountDownLatch latch = new CountDownLatch(1);
+		try {
+			// Verify that BlocklyPanels are fully loaded
+			if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
+				CountDownLatch latch = new CountDownLatch(1);
 
-			// Prepare a listener to detect if BlocklyPanel(s) are responding
-			Set<BlocklyPanel> blocklyPanels = new HashSet<>();
-			panelHolder.addBlocklyChangedListener((blocklyPanel, jsEventTriggeredChange) -> {
-				if (jsEventTriggeredChange) {
-					blocklyPanels.add(blocklyPanel);
-					if (blocklyPanels.equals(panelHolder.getBlocklyPanels()))
-						latch.countDown();
+				// Prepare a listener to detect if BlocklyPanel(s) are responding
+				Set<BlocklyPanel> blocklyPanels = new HashSet<>();
+				panelHolder.addBlocklyChangedListener((blocklyPanel, jsEventTriggeredChange) -> {
+					if (jsEventTriggeredChange) {
+						blocklyPanels.add(blocklyPanel);
+						if (blocklyPanels.equals(panelHolder.getBlocklyPanels()))
+							latch.countDown();
+					}
+				});
+
+				panelHolder.forceLoadPanels();
+
+				// Give it time for BlocklyPanel(s) to load and propagate the event
+				if (!latch.await(10, TimeUnit.SECONDS)) {
+					throw new Exception("BlocklyPanel(s) did not respond within 10 seconds");
 				}
+			}
+
+			AtomicReference<AggregatedValidationResult> validationResultRef = new AtomicReference<>();
+			ThreadUtil.runOnSwingThreadAndWait(() -> validationResultRef.set(modElementGUI.validateAllPages()));
+			AggregatedValidationResult validationResult = validationResultRef.get();
+
+			List<String> errors = new ArrayList<>();
+			List<ValidationResult> validationResults = validationResult.getGroupedValidationResults();
+			for (ValidationResult result : validationResults) {
+				if (result.type() == ValidationResult.Type.ERROR) {
+					errors.add(result.message());
+				}
+			}
+
+			if (!errors.isEmpty()) {
+				throw new Exception("Validation failed: " + String.join(", ", errors));
+			}
+
+			AtomicReference<GeneratableElement> elementFromGUIRef = new AtomicReference<>();
+			ThreadUtil.runOnSwingThreadAndWait(() -> {
+				modElementGUI.afterGeneratableElementGenerated(true);
+				elementFromGUIRef.set(modElementGUI.getElementFromGUI());
 			});
 
-			panelHolder.forceLoadPanels();
-
-			// Give it time for BlocklyPanel(s) to load and propagate the event
-			if (!latch.await(10, TimeUnit.SECONDS)) {
-				throw new Exception("BlocklyPanel(s) did not respond within 10 seconds");
-			}
+			return new GEResult(elementFromGUIRef.get(), validationResults);
+		} finally {
+			// the validation GUI is never shown as a tab, so release its resources (e.g. native Blockly panels) here
+			ThreadUtil.runOnSwingThreadAndWait(modElementGUI::onViewClosed);
 		}
-
-		AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
-
-		List<String> errors = new ArrayList<>();
-		List<ValidationResult> validationResults = validationResult.getGroupedValidationResults();
-		for (ValidationResult result : validationResults) {
-			if (result.type() == ValidationResult.Type.ERROR) {
-				errors.add(result.message());
-			}
-		}
-
-		if (!errors.isEmpty()) {
-			throw new Exception("Validation failed: " + String.join(", ", errors));
-		}
-
-		modElementGUI.afterGeneratableElementGenerated(true);
-
-		return new GEResult(modElementGUI.getElementFromGUI(), validationResults);
 	}
 
 	private synchronized void reloadUI(MCreator mcreator, ModElement element) {
-		mcreator.reloadWorkspaceTabContents();
-		MCreatorTabs.Tab currentTab = mcreator.getTabs().getCurrentTab();
-		if (currentTab != null && currentTab.getContent() instanceof ModElementGUI<?> modElementGUI) {
-			if (modElementGUI.getModElement().equals(element)) {
-				mcreator.getTabs().closeTab(currentTab);
-				modElementGUI = element.getType().getModElementGUI(mcreator, element, true);
-				if (modElementGUI != null) {
-					modElementGUI.showView();
+		ThreadUtil.runOnSwingThreadAndWait(() -> {
+			mcreator.reloadWorkspaceTabContents();
+			MCreatorTabs.Tab currentTab = mcreator.getTabs().getCurrentTab();
+			if (currentTab != null && currentTab.getContent() instanceof ModElementGUI<?> modElementGUI) {
+				if (modElementGUI.getModElement().equals(element)) {
+					mcreator.getTabs().closeTab(currentTab);
+					modElementGUI = element.getType().getModElementGUI(mcreator, element, true);
+					if (modElementGUI != null) {
+						modElementGUI.showView();
+					}
 				}
 			}
-		}
+		});
 	}
 
 	record GEResult(GeneratableElement generatableElement, List<ValidationResult> validationResults) {}
