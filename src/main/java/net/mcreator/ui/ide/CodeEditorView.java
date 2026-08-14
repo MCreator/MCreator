@@ -367,6 +367,16 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			}
       
 			this.parser = jls.getParser(te);
+			if (this.parser == null) {
+				this.parser = new JavaParser(te);
+			}
+			if (this.parser.getCompilationUnit() == null) {
+				try {
+					this.parser.parse((RSyntaxDocument) te.getDocument(), null);
+				} catch (Throwable e) {
+					LOG.error("Failed initial parse for JavaParser", e);
+				}
+			}
 			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
 			ac = new AutoCompletion(jcp);
 			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
