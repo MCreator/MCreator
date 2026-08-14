@@ -357,8 +357,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
 			return vars;
 
-		int lastEnd = Math.max(codeBeforeCursor.lastIndexOf("}\n"), codeBeforeCursor.lastIndexOf("}\r\n"));
-		String currentMethodCode = lastEnd != -1 ? codeBeforeCursor.substring(lastEnd) : codeBeforeCursor;
+		String strippedCode = javaTypeResolver.stripCommentsAndStrings(codeBeforeCursor);
+
+		int lastEnd = Math.max(strippedCode.lastIndexOf("}\n"), strippedCode.lastIndexOf("}\r\n"));
+		String currentMethodCode = lastEnd != -1 ? strippedCode.substring(lastEnd) : strippedCode;
 
 		Matcher m = Pattern.compile(
 						"\\b(boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b")

@@ -657,16 +657,24 @@ public class JavaTypeResolver {
 		return new ResolutionResult(currentFQDN, isStaticContext);
 	}
 
+	public String stripCommentsAndStrings(String code) {
+		return code == null ?
+				"" :
+				code.replaceAll("//.*|(?s)/\\*.*?\\*/|\"(?:\\\\.|[^\\\\\"])*\"|'(?:\\\\.|[^\\\\'])*'", "");
+	}
+
 	private record VarTypeInfo(String rawType, String genericArg) {}
 
 	private VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
 		if (codeBeforeCursor == null || base == null || base.isEmpty())
 			return null;
 
+		String strippedCode = stripCommentsAndStrings(codeBeforeCursor);
+
 		// Match standard / generic / array declarations
-		Pattern pDecl = Pattern.compile(
-				"\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\b");
-		Matcher mDecl = pDecl.matcher(codeBeforeCursor);
+		Matcher mDecl = Pattern.compile(
+						"\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\b")
+				.matcher(strippedCode);
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
 			String raw = mDecl.group(1);
@@ -682,7 +690,7 @@ public class JavaTypeResolver {
 		// Match foreach
 		Pattern pFor = Pattern.compile(
 				"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*:");
-		Matcher mFor = pFor.matcher(codeBeforeCursor);
+		Matcher mFor = pFor.matcher(strippedCode);
 		while (mFor.find()) {
 			lastType = new VarTypeInfo(mFor.group(1), null);
 		}
@@ -692,7 +700,7 @@ public class JavaTypeResolver {
 		// Match lambda
 		Pattern pLambda = Pattern.compile(
 				"\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*\\)");
-		Matcher mLambda = pLambda.matcher(codeBeforeCursor);
+		Matcher mLambda = pLambda.matcher(strippedCode);
 		while (mLambda.find()) {
 			lastType = new VarTypeInfo(mLambda.group(1), null);
 		}
@@ -702,7 +710,7 @@ public class JavaTypeResolver {
 		// Match var assignment
 		Pattern pVar = Pattern.compile(
 				"\\bvar\\s+" + Pattern.quote(base) + "\\s*=\\s*(?:new\\s+)?([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
-		Matcher mVar = pVar.matcher(codeBeforeCursor);
+		Matcher mVar = pVar.matcher(strippedCode);
 		while (mVar.find()) {
 			String raw = mVar.group(1);
 			String gen = mVar.group(2);
