@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.tools;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -37,7 +38,10 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class MaterialPackMakerTool extends AbstractPackMakerTool {
 
@@ -81,20 +85,26 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
-		addMaterialPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(),
+		addMaterialPackToWorkspace(toGenerate, mcreator, mcreator.getWorkspace(), name.getText(),
 				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue());
 	}
 
-	public static boolean addMaterialPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
-			Workspace workspace, String name, String type, Color color, double factor) {
-		if (!OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color, factor))
+	public static String[] getPackElementNames(String name, String type) {
+		return Stream.of(OrePackMakerTool.getPackElementNames(name, type), ToolPackMakerTool.getPackElementNames(name),
+				ArmorPackMakerTool.getPackElementNames(name)).flatMap(Arrays::stream).toArray(String[]::new);
+	}
+
+	public static boolean addMaterialPackToWorkspace(@Nullable List<GeneratableElement> generationQueue,
+			MCreator mcreator, Workspace workspace, String name, String type, Color color, double factor) {
+		if (!OrePackMakerTool.addOrePackToWorkspace(generationQueue, mcreator, workspace, name, type, color, factor))
 			return false;
 
 		MItemBlock gem = new MItemBlock(workspace, "CUSTOM:" + OrePackMakerTool.getOreItemName(name, type));
-		if (!ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor))
+		if (!ToolPackMakerTool.addToolPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color, factor))
 			return false;
 
-		return ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
+		return ArmorPackMakerTool.addArmorPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color,
+				factor);
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {

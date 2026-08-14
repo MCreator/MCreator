@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.mcp.protocol.SchemaDescription;
@@ -31,10 +32,12 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -141,9 +144,15 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 		String materialType = toMaterialTypeString(
 				input.materialSubtype != null ? input.materialSubtype : Args.MaterialSubtype.GEM_BASED);
 
-		if ((input.packType == Args.PackType.TOOL || input.packType == Args.PackType.ARMOR) && (input.baseItem == null
-				|| input.baseItem.isBlank())) {
-			return ToolResult.error("baseItem must be provided for TOOL and ARMOR packs");
+		MItemBlock baseItem = null;
+		if (input.packType == Args.PackType.TOOL || input.packType == Args.PackType.ARMOR) {
+			if (input.baseItem == null || input.baseItem.isBlank()) {
+				return ToolResult.error("baseItem must be provided for TOOL and ARMOR packs");
+			}
+			baseItem = parseBaseItem(mcreator.getWorkspace(), input.baseItem);
+			if (baseItem == null) {
+				return ToolResult.error("Invalid baseItem: " + input.baseItem);
+			}
 		}
 
 		Color barkColor = color;
@@ -155,32 +164,52 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 			barkColor = parsedBarkColor;
 		}
 
+		// check all names across sub-packs up front, so a pack is either created completely or not at all
+		String[] packElementNames = switch (input.packType) {
+			case MATERIAL -> MaterialPackMakerTool.getPackElementNames(name, materialType);
+			case ORE -> OrePackMakerTool.getPackElementNames(name, materialType);
+			case TOOL -> ToolPackMakerTool.getPackElementNames(name);
+			case ARMOR -> ArmorPackMakerTool.getPackElementNames(name);
+			case WOOD -> WoodPackMakerTool.getPackElementNames(name);
+		};
+		List<String> usedElementNames = mcreator.getWorkspace().getWorkspaceInfo().getUsedElementNames();
+		List<String> nameConflicts = Arrays.stream(packElementNames).filter(usedElementNames::contains).toList();
+		if (!nameConflicts.isEmpty()) {
+			return ToolResult.error(
+					"Failed to create pack. These element names already exist: " + String.join(", ", nameConflicts));
+		}
+
+		List<GeneratableElement> packElements = new ArrayList<>();
 		try {
 			boolean created = switch (input.packType) {
-				case MATERIAL ->
-						MaterialPackMakerTool.addMaterialPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
-								materialType, color, powerFactor);
-				case ORE -> OrePackMakerTool.addOrePackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
-						materialType, color, powerFactor);
-				case TOOL -> ToolPackMakerTool.addToolPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
-						Objects.requireNonNull(parseBaseItem(mcreator.getWorkspace(), input.baseItem)), color,
-						powerFactor);
-				case ARMOR -> ArmorPackMakerTool.addArmorPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name,
-						Objects.requireNonNull(parseBaseItem(mcreator.getWorkspace(), input.baseItem)), color,
-						powerFactor);
-				case WOOD ->
-						WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator, mcreator.getWorkspace(), name, color,
-								barkColor, powerFactor);
+				case MATERIAL -> MaterialPackMakerTool.addMaterialPackToWorkspace(packElements, mcreator,
+						mcreator.getWorkspace(), name, materialType, color, powerFactor);
+				case ORE -> OrePackMakerTool.addOrePackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
+						name, materialType, color, powerFactor);
+				case TOOL -> ToolPackMakerTool.addToolPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
+						name, baseItem, color, powerFactor);
+				case ARMOR -> ArmorPackMakerTool.addArmorPackToWorkspace(packElements, mcreator,
+						mcreator.getWorkspace(), name, baseItem, color, powerFactor);
+				case WOOD -> WoodPackMakerTool.addWoodPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
+						name, color, barkColor, powerFactor);
 			};
 
 			if (!created) {
+				removePackElements(mcreator, packElements);
 				return ToolResult.error("Failed to create pack. Required element names may already exist.");
 			}
+
+			// generate mod base first (this is needed so imports tree generator can see base
+			// files while generating imports for the mod element Java files)
+			mcreator.getGenerator().generateBase();
+			for (GeneratableElement element : packElements) {
+				mcreator.getGenerator().generateElement(element);
+			}
 		} catch (Exception e) {
+			removePackElements(mcreator, packElements);
 			return ToolResult.error("Failed to create pack: " + e.getMessage(), e);
 		}
 
-		mcreator.getGenerator().generateBase();
 		mcreator.reloadWorkspaceTabContents();
 		mcreator.getWorkspace().markDirty();
 
@@ -189,6 +218,12 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 		response.put("packType", input.packType.name());
 		response.put("name", name);
 		return ToolResult.object(response);
+	}
+
+	private static void removePackElements(MCreator mcreator, List<GeneratableElement> packElements) {
+		for (GeneratableElement element : packElements) {
+			mcreator.getWorkspace().removeModElement(element.getModElement());
+		}
 	}
 
 	@Nullable private static Color parseColor(String color) {
