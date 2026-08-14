@@ -89,35 +89,30 @@ public class JavaTypeResolver {
 	private final Workspace workspace;
 
 	// Maps class FQDN -> cached list of field and method completion items
-	private final Cache<String, List<CompletionItem>> memberCache = CacheBuilder.newBuilder().maximumSize(500).build();
+	@SuppressWarnings("NullableProblems") private final Cache<String, List<CompletionItem>> memberCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
 	// Maps source code hashCode -> map of simple class names to FQDNs parsed from imports
-	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
+	@SuppressWarnings("NullableProblems") private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
 
 	// Maps source code hashCode -> map of method signatures to Javadoc documentation
-	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(100).build();
+	@SuppressWarnings("NullableProblems") private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	// Maps class FQDN -> loaded Java source code string
-	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
+	@SuppressWarnings("NullableProblems") private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	// Maps "currentPkg:typeName" -> resolved FQDN for simple type name lookup
-	private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(500).build();
+	@SuppressWarnings("NullableProblems") private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
-	public JavaTypeResolver(Workspace workspace) {
+	public JavaTypeResolver(@Nullable Workspace workspace) {
 		this.workspace = workspace;
 	}
 
-	public JavaTypeResolver() {
-		this(null);
-	}
-
-	public List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor,
-			@Nullable JavaParser parser) {
+	public List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor, JavaParser parser) {
 		List<CompletionItem> result = new ArrayList<>();
 		if (targetName == null || targetName.trim().isEmpty()) return result;
 		targetName = targetName.trim();
 
-		String currentClassFQDN = ClassFinder.getCurrentFQDN(parser);
+		String currentClassFQDN = ClassFinder.getCurrentFQDN(Objects.requireNonNull(parser));
 
 		ResolutionResult res = resolveTargetFQDN(targetName, code, codeBeforeCursor, parser);
 		if (res == null || res.fqdn == null) return result;
@@ -133,7 +128,7 @@ public class JavaTypeResolver {
 
 	public List<CompletionItem> getMembersOfFQDN(String fqdn, @Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty()) return new ArrayList<>();
-		boolean isCurrentClass = currentClassFQDN != null && fqdn.equals(currentClassFQDN);
+		boolean isCurrentClass = fqdn.equals(currentClassFQDN);
 
 		if (!isCurrentClass) {
 			List<CompletionItem> cached = memberCache.getIfPresent(fqdn);
@@ -244,7 +239,7 @@ public class JavaTypeResolver {
 					return;
 				}
 			} catch (Throwable e) {
-				LOG.debug("Failed to read class file from ProjectJarManager for " + fqdn, e);
+				LOG.debug("Failed to read class file from ProjectJarManager for {}", fqdn, e);
 			}
 		}
 
@@ -266,7 +261,7 @@ public class JavaTypeResolver {
 						}
 					}
 				} catch (Throwable e) {
-					LOG.debug("Failed to parse super type for " + fqdn, e);
+					LOG.debug("Failed to parse super type for {}", fqdn, e);
 				}
 			}
 		}
@@ -356,6 +351,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private void parseSourceCodeCompletions(String srcCode, String declaringClass, List<CompletionItem> result, Set<String> added, boolean includePrivate) {
 		if (srcCode == null || srcCode.isEmpty()) return;
 
@@ -508,8 +504,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
-	public ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor,
-			@Nullable JavaParser parser) {
+	public ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor, JavaParser parser) {
 		if (code == null) code = "";
 		if (codeBeforeCursor == null) codeBeforeCursor = code;
 
@@ -524,7 +519,7 @@ public class JavaTypeResolver {
 		String currentGenericArg = null;
 		String base = chain.getFirst();
 
-		String currentClassFQDN = ClassFinder.getCurrentFQDN(parser);
+		String currentClassFQDN = ClassFinder.getCurrentFQDN(Objects.requireNonNull(parser));
 		String currentPkg = currentClassFQDN != null && currentClassFQDN.contains(".") ? currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) : "";
 
 		if (base.equals("this") || base.equals("super")) {
@@ -594,7 +589,7 @@ public class JavaTypeResolver {
 		if (codeBeforeCursor == null || base == null || base.isEmpty()) return null;
 
 		// Match standard / generic / array declarations
-		Pattern pDecl = Pattern.compile("\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[\\])*\\s+" + Pattern.quote(base) + "\\b");
+		Pattern pDecl = Pattern.compile("\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\b");
 		Matcher mDecl = pDecl.matcher(codeBeforeCursor);
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
@@ -608,7 +603,7 @@ public class JavaTypeResolver {
 		if (lastType != null) return lastType;
 
 		// Match foreach
-		Pattern pFor = Pattern.compile("for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[\\])*\\s+" + Pattern.quote(base) + "\\s*:");
+		Pattern pFor = Pattern.compile("for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*:");
 		Matcher mFor = pFor.matcher(codeBeforeCursor);
 		while (mFor.find()) {
 			lastType = new VarTypeInfo(mFor.group(1), null);
@@ -616,7 +611,7 @@ public class JavaTypeResolver {
 		if (lastType != null) return lastType;
 
 		// Match lambda
-		Pattern pLambda = Pattern.compile("\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[\\])*\\s+" + Pattern.quote(base) + "\\s*\\)");
+		Pattern pLambda = Pattern.compile("\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*\\)");
 		Matcher mLambda = pLambda.matcher(codeBeforeCursor);
 		while (mLambda.find()) {
 			lastType = new VarTypeInfo(mLambda.group(1), null);
