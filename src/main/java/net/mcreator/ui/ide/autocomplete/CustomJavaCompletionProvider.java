@@ -94,6 +94,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		this.parser = parser;
 		this.javaTypeResolver = new JavaTypeResolver(workspace);
 		setAutoActivationRules(true, ".");
+		setParameterizedCompletionParams('(', ", ", ')');
 	}
 
 	@Override
@@ -280,7 +281,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 					String docStr = item.docSummary() != null ? item.docSummary() : item.detail() + " " + item.label();
 
-					completions.add(new CustomMethodCompletion(this, methodName, item.label(), item.detail(), item.declaringClass(), template, docStr, item.visibility(), item.isStatic(), item.isAbstract(), item.isDeprecated()));
+					completions.add(new CustomMethodCompletion(this, methodName, item.label(), item.detail(), item.declaringClass(), template, docStr, item.visibility(), item.isStatic(), item.isAbstract(), item.isDeprecated(), item.paramTypes(), item.paramNames()));
 				} else {
 					completions.add(new CustomFieldCompletion(this, item.insertText(), item.detail(), item.declaringClass(), item.visibility(), item.isStatic(), item.isFinal(), item.isDeprecated(), prefixContext));
 				}

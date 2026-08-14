@@ -23,9 +23,12 @@ import net.mcreator.util.JavadocUtils;
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
 import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.autocomplete.ParameterizedCompletion;
 import org.fife.ui.autocomplete.TemplateCompletion;
 
 import javax.swing.Icon;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomMethodCompletion extends TemplateCompletion {
 	private final String label;
@@ -36,8 +39,9 @@ public class CustomMethodCompletion extends TemplateCompletion {
 	private final boolean isStatic;
 	private final boolean isAbstract;
 	private final boolean isDeprecated;
+	private final List<ParameterizedCompletion.Parameter> params;
 
-	public CustomMethodCompletion(CompletionProvider provider, String name, String label, String returnType, String declaringClass, String template, String docSummary, String visibility, boolean isStatic, boolean isAbstract, boolean isDeprecated) {
+	public CustomMethodCompletion(CompletionProvider provider, String name, String label, String returnType, String declaringClass, String template, String docSummary, String visibility, boolean isStatic, boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames) {
 		super(provider, name, name, template, null, null);
 		this.label = label;
 		this.returnType = returnType;
@@ -47,7 +51,40 @@ public class CustomMethodCompletion extends TemplateCompletion {
 		this.isStatic = isStatic;
 		this.isAbstract = isAbstract;
 		this.isDeprecated = isDeprecated;
+
+		this.params = new ArrayList<>();
+		if (paramTypes != null && paramNames != null && paramTypes.size() == paramNames.size()) {
+			for (int i = 0; i < paramTypes.size(); i++) {
+				this.params.add(new ParameterizedCompletion.Parameter(paramTypes.get(i), paramNames.get(i)));
+			}
+		}
 		setRelevance(100);
+	}
+
+	@Override
+	public boolean getShowParameterToolTip() {
+		return getParamCount() > 0;
+	}
+
+	@Override
+	public int getParamCount() {
+		if (params != null && !params.isEmpty()) {
+			return params.size();
+		}
+		return super.getParamCount();
+	}
+
+	@Override
+	public ParameterizedCompletion.Parameter getParam(int index) {
+		if (params != null && !params.isEmpty() && index >= 0 && index < params.size()) {
+			return params.get(index);
+		}
+		return super.getParam(index);
+	}
+
+	@Override
+	public String getDefinitionString() {
+		return label != null ? label : super.getDefinitionString();
 	}
 
 	@Override
