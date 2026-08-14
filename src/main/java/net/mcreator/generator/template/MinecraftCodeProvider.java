@@ -62,6 +62,10 @@ import java.util.Map;
 	}
 
 	public String readCode(@Nonnull String template) {
+		return readCode(template, true);
+	}
+
+	private String readCode(@Nonnull String template, boolean silent) {
 		return CACHE.computeIfAbsent(template, key -> {
 			try {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
@@ -77,16 +81,21 @@ import java.util.Map;
 				}
 				return null;
 			} catch (Exception e) {
-				this.workspace.markFailingGradleDependencies();
-				LOG.error("Failed to load code provider for {}", key, e);
-				TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+				if (silent) {
+					// missing class may simply be an invalid class name from the caller, don't flag the workspace
+					LOG.warn("Failed to load code provider for {}", key, e);
+				} else {
+					this.workspace.markFailingGradleDependencies();
+					LOG.error("Failed to load code provider for {}", key, e);
+					TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
+				}
 				return null;
 			}
 		});
 	}
 
 	public CodeString getCodeFor(@Nonnull String template, int lineFrom, int lineTo) {
-		String code = readCode(template);
+		String code = readCode(template, false);
 		if (code != null) {
 			String[] lines = code.split("\\r?\\n");
 			String[] usedLines = Arrays.copyOfRange(lines, lineFrom - 1, lineTo);
@@ -98,7 +107,7 @@ import java.util.Map;
 	}
 
 	public CodeString getMethod(@Nonnull String template, String method, String... params) {
-		String code = readCode(template);
+		String code = readCode(template, false);
 		if (code != null) {
 			JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(code);
 			MethodSource<?> methodSource = classJavaSource.getMethod(method, params);
@@ -111,7 +120,7 @@ import java.util.Map;
 	}
 
 	public CodeString getInnerClassBody(@Nonnull String template, String innerClass) {
-		String code = readCode(template);
+		String code = readCode(template, false);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
 
@@ -134,7 +143,7 @@ import java.util.Map;
 	}
 
 	public CodeString getClassBody(@Nonnull String template) {
-		String code = readCode(template);
+		String code = readCode(template, false);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
 			TypeDeclaration mainClass = cu.getTypeDeclaration(0);
