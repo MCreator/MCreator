@@ -49,8 +49,7 @@ public class HelpTipsTool extends MCreatorMcpTool<HelpTipsTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Lists help tips or reads help tip by full path query or searches help tips containing query.\
-				Help tips are written for human use and don't contain technical details.""";
+				Lists help tips or reads help tip for a given parameter by full path query or searches help tips containing query.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
