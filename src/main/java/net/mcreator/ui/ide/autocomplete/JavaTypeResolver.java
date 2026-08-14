@@ -88,19 +88,19 @@ public class JavaTypeResolver {
 	@Nullable
 	private final Workspace workspace;
 
-	// Maps "managerId:fqdn" -> List<CompletionItem> (cached field and method completion items for a class)
+	// Maps class FQDN -> cached list of field and method completion items
 	private final Cache<String, List<CompletionItem>> memberCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
-	// Maps code.hashCode() -> Map<simpleClassName, fqdn> (parsed import mappings for a source code snapshot)
+	// Maps source code hashCode -> map of simple class names to FQDNs parsed from imports
 	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
 
-	// Maps srcCode.hashCode() -> Map<methodKey, javadocText> (parsed Javadoc documentation for a source code snapshot)
+	// Maps source code hashCode -> map of method signatures to Javadoc documentation
 	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
-	// Maps "managerId:fqdn" -> sourceCodeString (loaded Java source code string)
+	// Maps class FQDN -> loaded Java source code string
 	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
-	// Maps "managerId:currentPkg:typeName" -> resolvedFQDN (simple type name resolution result)
+	// Maps "currentPkg:typeName" -> resolved FQDN for simple type name lookup
 	private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
 	public JavaTypeResolver(Workspace workspace) {
