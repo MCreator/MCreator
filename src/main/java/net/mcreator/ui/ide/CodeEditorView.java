@@ -482,10 +482,12 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				te.setSyntaxEditingStyle("text/mcfunction");
 			});
 		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			try {
-				te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
-			} catch (Exception ignored) {
-			}
+			ThreadUtil.runOnSwingThreadAndWait(() -> {
+				try {
+					te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+				} catch (Exception ignored) {
+				}
+			});
 		} else if (fileName.endsWith(".xml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
 		} else if (fileName.endsWith(".lang") || fileName.endsWith(".properties")) {
@@ -709,8 +711,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				try {
 					te.setCaretPosition(te.getLineStartOffset(linenum));
 					centerLineInScrollPane();
-				} catch (BadLocationException e) {
-					LOG.warn("Failed to jump to line {}; total lines in document: {}", linenum, te.getLineCount(), e);
+				} catch (BadLocationException ignored) {
 				}
 			});
 		}, "JumpToLine").start();
