@@ -386,8 +386,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ac.setAutoCompleteSingleChoices(false);
 			ac.install(te);
 
-			if (ac != null)
-				AutocompleteStyle.installStyle(ac, te);
+			AutocompleteStyle.installStyle(ac, te);
 
 			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
