@@ -176,6 +176,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			retval = this;
 		} else {
+			// This GUI instance will be discarded in favor of the existing tab, so we need to close
+			// resources it may have eagerly allocated (e.g., Blockly panel web views)
+			onViewClosed();
+
 			retval = (ViewBase) existing.getContent();
 		}
 
