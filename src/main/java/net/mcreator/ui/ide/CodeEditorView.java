@@ -460,7 +460,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					CodeEditorView.this.mouseEvent = mouseEvent;
 					if (jumpToMode && ac != null) {
 						DeclarationFinder.InClassPosition position = DeclarationFinder.getDeclarationOnPos(
-								mcreator.getWorkspace(), parser, te, jls.getJarManager());
+								mcreator.getWorkspace(), parser, te, mcreator.getGenerator().getProjectJarManager());
 						if (position != null) {
 							if (position.classFileNode == null) {
 								te.setCaretPosition(position.caret);

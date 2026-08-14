@@ -25,6 +25,8 @@ import net.mcreator.generator.GeneratorGradleCache;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.gradle.GradleToolchainUtil;
 import net.mcreator.gradle.GradleUtils;
+import net.mcreator.io.FileIO;
+import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +34,7 @@ import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.buildpath.DirSourceLocation;
 import org.fife.rsta.ac.java.buildpath.JarLibraryInfo;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
+import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.gradle.tooling.BuildException;
 import org.gradle.tooling.ModelBuilder;
@@ -45,7 +48,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class ProjectJarManager extends JarManager {
 
@@ -172,6 +178,49 @@ public class ProjectJarManager extends JarManager {
 	public List<LibraryInfo> getExternalClassFileSources() {
 		return getClassFileSources().stream().filter(libraryInfo -> !(libraryInfo instanceof WorkspaceLibraryInfo))
 				.toList();
+	}
+
+	/**
+	 * Reads the source code of the given class from the source location registered for it with
+	 * this jar manager. Both ZIP/JAR and directory based source locations are supported.
+	 *
+	 * @param classFqdn Fully qualified name of the class to read the source code of.
+	 * @return Source code of the given class, or null if there is no source location for it or
+	 * the source location does not contain it.
+	 */
+	@Nullable public String getSourceCodeForClass(String classFqdn) {
+		SourceLocation sourceLocation = getSourceLocForClass(classFqdn);
+		if (sourceLocation == null)
+			return null;
+
+		String sourcePath = classFqdn.replace('.', '/') + ".java";
+		File sourceLocationFile = new File(sourceLocation.getLocationAsString());
+
+		if (sourceLocation instanceof ZipSourceLocation) {
+			try (ZipFile zipFile = ZipIO.openZipFile(sourceLocationFile)) {
+				ZipEntry entry = zipFile.getEntry(sourcePath);
+				if (entry == null) { // Sources may be located under a prefix directory inside the archive
+					Enumeration<? extends ZipEntry> entries = zipFile.entries();
+					while (entries.hasMoreElements()) {
+						ZipEntry candidate = entries.nextElement();
+						if (candidate.getName().endsWith(sourcePath)) {
+							entry = candidate;
+							break;
+						}
+					}
+				}
+				if (entry != null)
+					return ZipIO.entryToString(zipFile, entry);
+			} catch (IOException e) {
+				LOG.error("Failed to read source code for {} from {}", classFqdn, sourceLocationFile, e);
+			}
+		} else if (sourceLocation instanceof DirSourceLocation) {
+			File sourceFile = new File(sourceLocationFile, sourcePath);
+			if (sourceFile.isFile())
+				return FileIO.readFileToString(sourceFile);
+		}
+
+		return null;
 	}
 
 	private void processProjectClassPath(EclipseProject project,
