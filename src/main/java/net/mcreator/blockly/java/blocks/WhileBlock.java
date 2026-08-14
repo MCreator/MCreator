@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,43 +27,27 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-public class LoopBlock implements IBlockGenerator {
+public class WhileBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		Element statement = XMLUtil.getFirstChildrenWithName(block, "statement");
 
 		if (value != null && statement != null) {
-			int index = getNestingLevel(block);
-
-			master.append("for (int _i").append(index).append(" = 0; _i").append(index).append("<");
-			master.processOutputBlockToInt(value);
-			master.append("; _i").append(index).append("++) {");
+			master.append("while(");
+			master.processOutputBlockWithoutParentheses(value);
+			master.append(") {");
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
 			master.append("}");
 		} else {
 			master.addCompileNote(
-					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_loop")));
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_while")));
 		}
-	}
-
-	private static int getNestingLevel(Element block) {
-		int level = 1;
-		Node node = block;
-		while (node.getParentNode() != null) {
-			Node parent = node.getParentNode();
-			if ("statement".equals(node.getNodeName()) && parent instanceof Element parentElement
-					&& "controls_repeat_ext".equals(parentElement.getAttribute("type")))
-				level++;
-			node = parent;
-		}
-		return level;
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "controls_repeat_ext" };
+		return new String[] { "controls_while" };
 	}
 
 	@Override public BlockType getBlockType() {

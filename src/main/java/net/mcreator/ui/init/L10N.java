@@ -71,6 +71,11 @@ public class L10N {
 		LOG.info("Setting default locale to: {}; OS locale: {}", getLocale(), osLocale);
 		Locale.setDefault(getLocale());
 		JComponent.setDefaultLocale(getLocale());
+
+		// UIDefaults tables cache the default locale at construction time, and LaF is installed before
+		// this method is called, so we need to update their locale for UIManager.getString(...) lookups
+		UIManager.getDefaults().setDefaultLocale(getLocale());
+		UIManager.getLookAndFeelDefaults().setDefaultLocale(getLocale());
 	}
 
 	private static void initLocalesImpl() {
@@ -137,7 +142,7 @@ public class L10N {
 		else if (Locale.of("zh", "CN").equals(locale)) // Chinese Simplified
 			return "zh-hans";
 
-		return getLocaleString().split("_")[0].replace("iw", "he");
+		return getLocaleString().split("_")[0].replace("iw", "he").replace("no", "nb");
 	}
 
 	public static String t(String key, Object... parameters) {

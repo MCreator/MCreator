@@ -6,6 +6,10 @@ templates:
     writer: json
     condition: hasFixedTimeAndNeedsCustomTimeline()
     name: "@MODDATAROOT/timeline/@registryname_fixed.json"
+  - template: dimension/effects_timeline.json.ftl
+    writer: json
+    condition: needsCustomEffectsTimeline()
+    name: "@MODDATAROOT/timeline/@registryname_effects.json"
   - template: dimension/dimension_overworld.json.ftl
     writer: json
     condition: "worldGenType %= Normal world gen"
