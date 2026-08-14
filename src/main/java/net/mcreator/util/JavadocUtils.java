@@ -60,19 +60,19 @@ public final class JavadocUtils {
 		text = COMMENT_END.matcher(text).replaceAll("");
 		text = COMMENT_LINE_PREFIX.matcher(text).replaceAll("");
 
-		text = TAG_CODE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>"));
-		text = TAG_LINK.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>"));
-		text = TAG_LINKPLAIN.matcher(text).replaceAll(mr -> Matcher.quoteReplacement(StringEscapeUtils.escapeHtml4(mr.group(1))));
-		text = TAG_LITERAL.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>"));
-		text = TAG_VALUE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>"));
+		text = TAG_CODE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code>"));
+		text = TAG_LINK.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code>"));
+		text = TAG_LINKPLAIN.matcher(text).replaceAll(mr -> Matcher.quoteReplacement(StringEscapeUtils.escapeHtml3(mr.group(1))));
+		text = TAG_LITERAL.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code>"));
+		text = TAG_VALUE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code>"));
 
-		text = TAG_PARAM_TYPE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Type Parameters:</b><br>&nbsp;&nbsp;<code>&lt;" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "&gt;</code> - "));
-		text = TAG_PARAM.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Parameters:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code> - "));
+		text = TAG_PARAM_TYPE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Type Parameters:</b><br>&nbsp;&nbsp;<code>&lt;" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "&gt;</code> - "));
+		text = TAG_PARAM.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Parameters:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code> - "));
 		text = TAG_RETURN.matcher(text).replaceAll("<br><b>Returns:</b><br>&nbsp;&nbsp;");
-		text = TAG_THROWS.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code> - "));
-		text = TAG_EXCEPTION.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code> - "));
-		text = TAG_SEE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>See Also:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>"));
-		text = TAG_SINCE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Since:</b><br>&nbsp;&nbsp;" + StringEscapeUtils.escapeHtml4(mr.group(1))));
+		text = TAG_THROWS.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code> - "));
+		text = TAG_EXCEPTION.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code> - "));
+		text = TAG_SEE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>See Also:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml3(mr.group(1)) + "</code>"));
+		text = TAG_SINCE.matcher(text).replaceAll(mr -> Matcher.quoteReplacement("<br><b>Since:</b><br>&nbsp;&nbsp;" + StringEscapeUtils.escapeHtml3(mr.group(1))));
 		text = TAG_DEPRECATED.matcher(text).replaceAll("<br><b>Deprecated:</b><br>&nbsp;&nbsp;");
 		text = TAG_IMPL_SPEC.matcher(text).replaceAll("<br><b>Implementation Requirements:</b><br>&nbsp;&nbsp;");
 		text = TAG_IMPL_NOTE.matcher(text).replaceAll("<br><b>Implementation Note:</b><br>&nbsp;&nbsp;");
