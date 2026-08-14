@@ -46,6 +46,8 @@ import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.AbstractSourceTree;
 import org.fife.rsta.ac.java.JavaLanguageSupport;
 import org.fife.rsta.ac.java.JavaParser;
@@ -72,37 +74,10 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.logging.Filter;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
 
 public class CodeEditorView extends ViewBase implements ISearchable {
 
-	private static final Logger FIFE_LOGGER = java.util.logging.Logger.getLogger("org.fife.rsta.ac");
-
-	static {
-		// Suppress harmless rsta-ac debug/warning logs (unsupported attributes, generic signatures, etc.).
-		// They are harmless because rsta-ac falls back gracefully without breaking completions or compilation,
-		// but MCreator routes System.err to Log4j as [ERROR], causing them to flood the console as fake errors.
-		Filter filter = record -> {
-			String msg = record.getMessage();
-			if (msg != null) {
-				if (msg.contains("Unsupported Code attribute")) return false;
-				if (msg.contains("Can't parse signature")) return false;
-				if (msg.contains("Couldn't find ClassFile for")) return false;
-			}
-			return true;
-		};
-
-		FIFE_LOGGER.setFilter(filter);
-		Logger.getLogger("org.fife.rsta.ac.java.classreader.attributes.Code").setFilter(filter);
-		Logger.getLogger("org.fife.rsta.ac.java.classreader.attributes.Signature").setFilter(filter);
-		Logger.getLogger("org.fife.rsta.ac.java.SourceCompletionProvider").setFilter(filter);
-
-		for (Handler handler : Logger.getLogger("").getHandlers()) {
-			handler.setFilter(filter);
-		}
-	}
+	private static final Logger LOG = LogManager.getLogger(CodeEditorView.class);
 
 	private static final List<String> SUPPORTED_FILE_EXTENSIONS = List.of("java", "info", "txt", "json", "mcmeta",
 			"lang", "gradle", "ini", "conf", "xml", "properties", "mcfunction", "toml", "js", "yaml", "yml", "md",
@@ -386,7 +361,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				if (defaultAc != null) {
 					defaultAc.uninstall();
 				}
-			} catch (Throwable ignored) {
+			} catch (Throwable e) {
 			}
       
 			this.parser = jls.getParser(te);
