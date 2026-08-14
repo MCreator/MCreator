@@ -50,7 +50,6 @@ public class McpServer {
 	private final ExecutorService executor = Executors.newCachedThreadPool();
 
 	private final Map<String, IMcpTool> tools = new HashMap<>();
-	private final Set<String> activeSessions = Collections.synchronizedSet(new HashSet<>());
 
 	public McpServer(String name, String version, McpTransport transport) {
 		this.name = name;
@@ -89,13 +88,17 @@ public class McpServer {
 				}
 
 				if (request.method() == null) {
-					JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
-							new JsonRpcResponse.JsonRpcError(-32600, "Invalid Request: missing method"));
-					responseFuture.complete(gson.toJson(errorResponse));
+					JsonObject raw = gson.fromJson(message, JsonObject.class);
+					if (raw != null && (raw.has("result") || raw.has("error"))) {
+						// a JSON-RPC response from the client to a server-initiated request, only acknowledge it
+						responseFuture.complete(null);
+					} else {
+						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
+								new JsonRpcResponse.JsonRpcError(-32600, "Invalid Request: missing method"));
+						responseFuture.complete(gson.toJson(errorResponse));
+					}
 					return;
 				}
-
-				activeSessions.add(sessionId);
 
 				CompletableFuture<?> resultFuture;
 				try {

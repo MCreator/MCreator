@@ -19,6 +19,8 @@
 
 package net.mcreator.io.mcp.transport;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import org.apache.commons.io.IOUtils;
@@ -42,10 +44,11 @@ public class HttpMcpTransport implements McpTransport {
 	private static final Logger LOG = LogManager.getLogger(HttpMcpTransport.class);
 
 	private static final int maxToolDurationSeconds = 120;
+	private static final int sessionIdleTimeoutMinutes = 30;
 
 	private final int port;
 	private HttpServer server;
-	private final Map<String, StreamSession> sessions = new ConcurrentHashMap<>();
+	private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 	public HttpMcpTransport(int port) {
@@ -69,6 +72,8 @@ public class HttpMcpTransport implements McpTransport {
 				handleGet(exchange);
 			} else if ("POST".equalsIgnoreCase(method)) {
 				handlePost(exchange, handler);
+			} else if ("DELETE".equalsIgnoreCase(method)) {
+				handleDelete(exchange);
 			} else {
 				exchange.sendResponseHeaders(405, -1);
 			}
@@ -78,12 +83,18 @@ public class HttpMcpTransport implements McpTransport {
 		server.start();
 
 		scheduler.scheduleAtFixedRate(() -> sessions.forEach((id, session) -> {
-			try {
-				session.sendComment("");
-			} catch (IOException e) {
-				LOG.debug("Session {} heart-beat failed, closing session", id);
+			StreamSession stream = session.stream;
+			if (stream != null) {
+				try {
+					stream.sendComment("");
+					session.touch();
+				} catch (IOException e) {
+					LOG.debug("Session {} heart-beat failed, closing its SSE stream", id);
+					session.detachStream(stream);
+				}
+			} else if (session.isIdleLongerThan(sessionIdleTimeoutMinutes)) {
+				LOG.debug("Removing idle session {}", id);
 				sessions.remove(id);
-				session.close();
 			}
 		}), 15, 15, TimeUnit.SECONDS);
 
@@ -108,31 +119,71 @@ public class HttpMcpTransport implements McpTransport {
 	}
 
 	private void handleGet(HttpExchange exchange) throws IOException {
-		String sessionId = UUID.randomUUID().toString();
+		String sessionId = exchange.getRequestHeaders().getFirst("Mcp-Session-Id");
+		if (sessionId == null || sessionId.isBlank()) {
+			exchange.sendResponseHeaders(400, -1);
+			return;
+		}
+		Session session = sessions.get(sessionId);
+		if (session == null) {
+			exchange.sendResponseHeaders(404, -1); // per spec, client is expected to start a new session on 404
+			return;
+		}
+
 		exchange.getResponseHeaders().add("Content-Type", "text/event-stream");
 		exchange.getResponseHeaders().add("Cache-Control", "no-cache");
 		exchange.getResponseHeaders().add("Connection", "keep-alive");
-		exchange.getResponseHeaders().add("Mcp-Session-Id", sessionId);
 		exchange.sendResponseHeaders(200, 0);
 
-		StreamSession session = new StreamSession(exchange);
-		sessions.put(sessionId, session);
+		StreamSession stream = new StreamSession(exchange);
+		try {
+			// JDK HttpServer does not flush the status line and headers of a chunked response until
+			// the first body write, so prime the stream so the client sees the response immediately
+			stream.sendComment("connected");
+		} catch (IOException e) {
+			stream.close();
+			throw e;
+		}
 
-		LOG.info("New Streamable HTTP session established: {}", sessionId);
+		session.attachStream(stream);
+		session.touch();
+
+		LOG.info("SSE stream opened for session {}", sessionId);
 	}
 
 	private void handlePost(HttpExchange exchange, McpHandler handler) throws IOException {
 		try {
-			String sessionId = exchange.getRequestHeaders().getFirst("Mcp-Session-Id");
 			String requestBody = IOUtils.toString(exchange.getRequestBody(), StandardCharsets.UTF_8);
 
-			CompletableFuture<String> responseFuture = handler.handleMessage(sessionId != null ? sessionId : "default",
-					requestBody);
+			String sessionId = exchange.getRequestHeaders().getFirst("Mcp-Session-Id");
+			String newSessionId = null;
+			if (sessionId != null && !sessionId.isBlank()) {
+				Session session = sessions.get(sessionId);
+				if (session == null) {
+					exchange.sendResponseHeaders(404, -1); // per spec, client is expected to start a new session on 404
+					return;
+				}
+				session.touch();
+			} else if (isInitializeRequest(requestBody)) {
+				// Per spec, the session ID is assigned on the initialize request response
+				newSessionId = UUID.randomUUID().toString();
+				sessions.put(newSessionId, new Session());
+				sessionId = newSessionId;
+				LOG.info("New Streamable HTTP session established: {}", sessionId);
+			} else {
+				// Lenient mode: also serve requests without a session ID, so simple clients
+				// that ignore the Mcp-Session-Id header and don't use SSE can still use the server
+				sessionId = "default";
+			}
 
-			// Per MCP Streamable HTTP spec, the response to a POSTed request is returned in the POST body,
-			// also for session-bound requests. The SSE stream is only used for server-initiated messages.
+			CompletableFuture<String> responseFuture = handler.handleMessage(sessionId, requestBody);
+
+			// Per MCP Streamable HTTP spec, the response to a POSTed request is returned in the POST body.
+			// The SSE stream is only used for server-initiated messages.
 			try {
 				String response = responseFuture.get(maxToolDurationSeconds, TimeUnit.SECONDS);
+				if (newSessionId != null)
+					exchange.getResponseHeaders().add("Mcp-Session-Id", newSessionId);
 				if (response != null) {
 					byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
 					exchange.getResponseHeaders().add("Content-Type", "application/json");
@@ -154,29 +205,89 @@ public class HttpMcpTransport implements McpTransport {
 		}
 	}
 
+	private void handleDelete(HttpExchange exchange) throws IOException {
+		String sessionId = exchange.getRequestHeaders().getFirst("Mcp-Session-Id");
+		if (sessionId == null || sessionId.isBlank()) {
+			exchange.sendResponseHeaders(400, -1);
+			return;
+		}
+		Session session = sessions.remove(sessionId);
+		if (session == null) {
+			exchange.sendResponseHeaders(404, -1);
+			return;
+		}
+		session.closeStream();
+		LOG.info("Session {} terminated by the client", sessionId);
+		exchange.sendResponseHeaders(204, -1);
+	}
+
+	private static boolean isInitializeRequest(String requestBody) {
+		try {
+			JsonElement root = JsonParser.parseString(requestBody);
+			return root.isJsonObject() && root.getAsJsonObject().has("method") && "initialize".equals(
+					root.getAsJsonObject().get("method").getAsString());
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 	@Override public void stop() {
 		scheduler.shutdown();
 		if (server != null) {
 			server.stop(0);
 			LOG.info("MCP HTTP Server stopped");
 		}
-		sessions.values().forEach(StreamSession::close);
+		sessions.values().forEach(Session::closeStream);
 		sessions.clear();
 	}
 
 	@Override public void sendMessage(String sessionId, String message) {
-		StreamSession session = sessions.get(sessionId);
-		if (session != null) {
+		Session session = sessions.get(sessionId);
+		StreamSession stream = session != null ? session.stream : null;
+		if (stream != null) {
 			try {
-				session.sendEvent("message", message);
+				stream.sendEvent("message", message);
 			} catch (IOException e) {
 				LOG.error("Failed to send message to session {}", sessionId, e);
-				sessions.remove(sessionId);
-				session.close();
+				session.detachStream(stream);
 			}
 		} else {
-			if (sessionId != null && !sessionId.equals("default")) {
-				LOG.warn("Attempted to send message to unknown or closed session: {}", sessionId);
+			LOG.debug("No open SSE stream for session {}, server-initiated message was dropped", sessionId);
+		}
+	}
+
+	private static class Session {
+
+		private volatile long lastActive = System.currentTimeMillis();
+		@Nullable private volatile StreamSession stream;
+
+		void touch() {
+			lastActive = System.currentTimeMillis();
+		}
+
+		boolean isIdleLongerThan(int minutes) {
+			return System.currentTimeMillis() - lastActive > TimeUnit.MINUTES.toMillis(minutes);
+		}
+
+		synchronized void attachStream(StreamSession newStream) {
+			StreamSession oldStream = stream;
+			if (oldStream != null)
+				oldStream.close();
+			stream = newStream;
+		}
+
+		// only clears the field if the stream is still the current one, so a stale stream can't detach its replacement
+		synchronized void detachStream(StreamSession expected) {
+			if (stream == expected)
+				stream = null;
+			expected.close();
+		}
+
+		synchronized void closeStream() {
+			StreamSession oldStream = stream;
+			if (oldStream != null) {
+				oldStream.close();
+				stream = null;
 			}
 		}
 	}
