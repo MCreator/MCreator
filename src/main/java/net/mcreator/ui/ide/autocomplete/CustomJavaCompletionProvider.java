@@ -94,7 +94,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		this.workspace = workspace;
 		this.parser = parser;
 		this.javaTypeResolver = new JavaTypeResolver(workspace);
-		setAutoActivationRules(true, ".");
+		setAutoActivationRules(!"Trigger on dot".equals(PreferencesManager.PREFERENCES.ide.autocompleteMode.get()), ".");
 		setParameterizedCompletionParams('(', ", ", ')');
 	}
 
@@ -149,10 +149,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 		String textBeforeWord = lineUntilPosition.substring(0, Math.max(0, lineUntilPosition.length() - wordOnly.length()));
 		boolean isDotContext = textBeforeWord.trim().endsWith(".");
-
-		if ("Trigger on dot".equals(mode) && !isDotContext) {
-			return completions;
-		}
 
 		if (isDotContext) {
 			String beforeDot = textBeforeWord.substring(0, textBeforeWord.lastIndexOf('.')).trim();
