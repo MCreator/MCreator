@@ -28,11 +28,11 @@ public final class JavadocUtils {
 	private static final Pattern COMMENT_END = Pattern.compile("(?m)\\h*\\*/\\h*$");
 	private static final Pattern COMMENT_LINE_PREFIX = Pattern.compile("(?m)^\\h*\\*\\h*");
 
-	private static final Pattern TAG_CODE = Pattern.compile("\\{@code\\h+([^}]+)\\}");
-	private static final Pattern TAG_LINK = Pattern.compile("\\{@link\\h+([^}]+)\\}");
-	private static final Pattern TAG_LINKPLAIN = Pattern.compile("\\{@linkplain\\h+([^}]+)\\}");
-	private static final Pattern TAG_LITERAL = Pattern.compile("\\{@literal\\h+([^}]+)\\}");
-	private static final Pattern TAG_VALUE = Pattern.compile("\\{@value\\h+([^}]+)\\}");
+	private static final Pattern TAG_CODE = Pattern.compile("\\{@code\\h+([^}]+)}");
+	private static final Pattern TAG_LINK = Pattern.compile("\\{@link\\h+([^}]+)}");
+	private static final Pattern TAG_LINKPLAIN = Pattern.compile("\\{@linkplain\\h+([^}]+)}");
+	private static final Pattern TAG_LITERAL = Pattern.compile("\\{@literal\\h+([^}]+)}");
+	private static final Pattern TAG_VALUE = Pattern.compile("\\{@value\\h+([^}]+)}");
 
 	private static final Pattern TAG_PARAM_TYPE = Pattern.compile("(?m)^\\h*@param\\h+<\\h*([^>]+?)\\h*>");
 	private static final Pattern TAG_PARAM = Pattern.compile("(?m)^\\h*@param\\h+(\\w+)");
