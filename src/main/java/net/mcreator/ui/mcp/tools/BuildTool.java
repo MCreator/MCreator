@@ -35,11 +35,14 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class BuildTool extends MCreatorMcpTool<BuildTool.Args> {
 
 	private static final Logger LOG = LogManager.getLogger(BuildTool.class);
+
+	private static final int BUILD_AND_WAIT_TIMEOUT_SECONDS = 45;
 
 	public static class Args {
 		@SchemaDescription("""
@@ -101,6 +104,7 @@ public class BuildTool extends MCreatorMcpTool<BuildTool.Args> {
 			// blocks the caller until the taskComplete listener fires when the build finishes
 			ThreadUtil.runOnSwingThreadAndWait(() -> gradleConsole.exec("build", result -> {
 				Map<String, Object> resultMap = new HashMap<>();
+				resultMap.put("finished", true);
 				resultMap.put("result", result);
 				resultMap.put("gradleOutput", gradleConsole.getConsoleText());
 				future.complete(ToolResult.object(resultMap));
@@ -109,7 +113,14 @@ public class BuildTool extends MCreatorMcpTool<BuildTool.Args> {
 			gradleConsole.markReady();
 			throw e;
 		}
-		return future;
+
+		Map<String, Object> timeoutMap = new HashMap<>();
+		timeoutMap.put("finished", false);
+		timeoutMap.put("message", "Build is still running after " + BUILD_AND_WAIT_TIMEOUT_SECONDS
+				+ " seconds and continues in the background. Poll with IS_GRADLE_RUNNING until it reports not"
+				+ " running, then use read_console to get the build output.");
+		return future.completeOnTimeout(ToolResult.object(timeoutMap), BUILD_AND_WAIT_TIMEOUT_SECONDS,
+				TimeUnit.SECONDS);
 	}
 
 	private CompletableFuture<ToolResult> startBuild(MCreator mcreator) {
