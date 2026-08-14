@@ -350,7 +350,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
 				field.set(jls, mcreator.getGenerator().getProjectJarManager());
-			} catch (Throwable ignored) {
+			} catch (Throwable e) {
+				LOG.error("Failed to set jarManager field on JavaLanguageSupport", e);
 			}
 			JavaLanguageSupportBridge.bridge(te, jls);
 			try {
@@ -362,6 +363,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					defaultAc.uninstall();
 				}
 			} catch (Throwable e) {
+				LOG.error("Failed to uninstall default RSTA completions", e);
 			}
       
 			this.parser = jls.getParser(te);
@@ -406,7 +408,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 									ThreadUtil.runOnSwingThreadAndWait(() -> {
 										try {
 											ac.doCompletion();
-										} catch (Throwable ignored) {
+										} catch (Throwable e) {
+											LOG.error("Failed to show autocomplete completion", e);
 										}
 									});
 									completionInAction = false;
@@ -470,12 +473,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				te.setSyntaxEditingStyle("text/mcfunction");
 			});
 		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> {
-				try {
-					te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
-				} catch (Exception ignored) {
-				}
-			});
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON));
 		} else if (fileName.endsWith(".xml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
 		} else if (fileName.endsWith(".lang") || fileName.endsWith(".properties")) {
@@ -614,7 +612,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			y = Math.min(y, viewHeight - extentHeight);
 
 			viewport.setViewPosition(new Point(0, y));
-		} catch (BadLocationException ignored) {
+		} catch (BadLocationException e) {
+			LOG.debug("Failed to center line in scroll pane; caret offset {} is out of model bounds.", te.getCaretPosition(), e);
 		}
 	}
 
@@ -693,13 +692,15 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			SwingUtilities.invokeLater(te::requestFocus);
 			try {
 				Thread.sleep(250);
-			} catch (InterruptedException ignored) {
+			} catch (InterruptedException e) {
+				LOG.debug("JumpToLine thread interrupted during initial delay for line {}", linenum, e);
 			}
 			SwingUtilities.invokeLater(() -> {
 				try {
 					te.setCaretPosition(te.getLineStartOffset(linenum));
 					centerLineInScrollPane();
-				} catch (BadLocationException ignored) {
+				} catch (BadLocationException e) {
+					LOG.warn("Failed to jump to line {}; total lines in document: {}", linenum, te.getLineCount(), e);
 				}
 			});
 		}, "JumpToLine").start();
