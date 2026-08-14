@@ -76,7 +76,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 							enm = (flags & 0x4000) != 0;
 						}
 					} catch (Throwable e) {
-						LOG.debug("Failed to read class file entry for " + fqdn, e);
+						LOG.debug("Failed to read class file entry for {}", fqdn, e);
 					}
 				}
 			}
