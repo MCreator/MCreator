@@ -18,6 +18,8 @@
 
 package net.mcreator.util;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.util.regex.Pattern;
 
 public final class JavadocUtils {
@@ -57,18 +59,18 @@ public final class JavadocUtils {
 		text = COMMENT_END.matcher(text).replaceAll("");
 		text = COMMENT_LINE_PREFIX.matcher(text).replaceAll("");
 
-		text = TAG_CODE.matcher(text).replaceAll("<code>$1</code>");
-		text = TAG_LINK.matcher(text).replaceAll("<code>$1</code>");
-		text = TAG_LINKPLAIN.matcher(text).replaceAll("$1");
-		text = TAG_LITERAL.matcher(text).replaceAll("<code>$1</code>");
-		text = TAG_VALUE.matcher(text).replaceAll("<code>$1</code>");
+		text = TAG_CODE.matcher(text).replaceAll(mr -> "<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>");
+		text = TAG_LINK.matcher(text).replaceAll(mr -> "<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>");
+		text = TAG_LINKPLAIN.matcher(text).replaceAll(mr -> StringEscapeUtils.escapeHtml4(mr.group(1)));
+		text = TAG_LITERAL.matcher(text).replaceAll(mr -> "<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>");
+		text = TAG_VALUE.matcher(text).replaceAll(mr -> "<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>");
 
 		text = TAG_PARAM_TYPE.matcher(text).replaceAll("<br><b>Type Parameters:</b><br>&nbsp;&nbsp;<code>&lt;$1&gt;</code> - ");
 		text = TAG_PARAM.matcher(text).replaceAll("<br><b>Parameters:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
 		text = TAG_RETURN.matcher(text).replaceAll("<br><b>Returns:</b><br>&nbsp;&nbsp;");
-		text = TAG_THROWS.matcher(text).replaceAll("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = TAG_EXCEPTION.matcher(text).replaceAll("<br><b>Throws:</b><br>&nbsp;&nbsp;<code>$1</code> - ");
-		text = TAG_SEE.matcher(text).replaceAll("<br><b>See Also:</b><br>&nbsp;&nbsp;<code>$1</code>");
+		text = TAG_THROWS.matcher(text).replaceAll(mr -> "<br><b>Throws:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code> - ");
+		text = TAG_EXCEPTION.matcher(text).replaceAll(mr -> "<br><b>Throws:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code> - ");
+		text = TAG_SEE.matcher(text).replaceAll(mr -> "<br><b>See Also:</b><br>&nbsp;&nbsp;<code>" + StringEscapeUtils.escapeHtml4(mr.group(1)) + "</code>");
 		text = TAG_SINCE.matcher(text).replaceAll("<br><b>Since:</b><br>&nbsp;&nbsp;$1");
 		text = TAG_DEPRECATED.matcher(text).replaceAll("<br><b>Deprecated:</b><br>&nbsp;&nbsp;");
 		text = TAG_IMPL_SPEC.matcher(text).replaceAll("<br><b>Implementation Requirements:</b><br>&nbsp;&nbsp;");
