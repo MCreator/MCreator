@@ -102,33 +102,24 @@ public class HttpMcpTransport implements McpTransport {
 			CompletableFuture<String> responseFuture = handler.handleMessage(sessionId != null ? sessionId : "default",
 					requestBody);
 
-			if (sessionId != null && sessions.containsKey(sessionId)) {
-				// We acknowledge the POST and the response will be sent via SSE by the McpServer calling sendMessage
-				exchange.sendResponseHeaders(202, -1);
-			} else {
-				// For non-session requests or if session was just established but not yet in our map (though unlikely)
-				// wait for response and return directly
-				try {
-					String response = responseFuture.get(maxToolDurationSeconds, TimeUnit.SECONDS);
-					if (response != null) {
-						byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
-						exchange.getResponseHeaders().add("Content-Type", "application/json");
-						exchange.sendResponseHeaders(200, bytes.length);
-						try (OutputStream os = exchange.getResponseBody()) {
-							os.write(bytes);
-						}
-					} else {
-						exchange.sendResponseHeaders(204, -1);
+			// Per MCP Streamable HTTP spec, the response to a POSTed request is returned in the POST body,
+			// also for session-bound requests. The SSE stream is only used for server-initiated messages.
+			try {
+				String response = responseFuture.get(maxToolDurationSeconds, TimeUnit.SECONDS);
+				if (response != null) {
+					byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+					exchange.getResponseHeaders().add("Content-Type", "application/json");
+					exchange.sendResponseHeaders(200, bytes.length);
+					try (OutputStream os = exchange.getResponseBody()) {
+						os.write(bytes);
 					}
-				} catch (Exception e) {
-					if (sessionId == null || !sessions.containsKey(sessionId)) {
-						LOG.error("Timeout or error waiting for response", e);
-						exchange.sendResponseHeaders(500, -1);
-					} else {
-						// If session was closed during processing, we might get here
-						exchange.sendResponseHeaders(503, -1);
-					}
+				} else {
+					// notifications and responses produce no response message, acknowledge with 202
+					exchange.sendResponseHeaders(202, -1);
 				}
+			} catch (Exception e) {
+				LOG.error("Timeout or error waiting for response", e);
+				exchange.sendResponseHeaders(500, -1);
 			}
 		} catch (Exception e) {
 			LOG.error("Error handling POST request", e);

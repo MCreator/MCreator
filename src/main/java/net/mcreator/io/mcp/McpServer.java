@@ -84,7 +84,6 @@ public class McpServer {
 				if (!"2.0".equals(request.jsonrpc())) {
 					JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
 							new JsonRpcResponse.JsonRpcError(-32600, "Invalid Request: expected jsonrpc 2.0"));
-					sendResponse(sessionId, errorResponse);
 					responseFuture.complete(gson.toJson(errorResponse));
 					return;
 				}
@@ -92,7 +91,6 @@ public class McpServer {
 				if (request.method() == null) {
 					JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
 							new JsonRpcResponse.JsonRpcError(-32600, "Invalid Request: missing method"));
-					sendResponse(sessionId, errorResponse);
 					responseFuture.complete(gson.toJson(errorResponse));
 					return;
 				}
@@ -125,7 +123,6 @@ public class McpServer {
 						if (request.id() != null && !request.id().isJsonNull()) {
 							JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
 									new JsonRpcResponse.JsonRpcError(-32601, "Method not found"));
-							sendResponse(sessionId, errorResponse);
 							responseFuture.complete(gson.toJson(errorResponse));
 						} else {
 							responseFuture.complete(null);
@@ -137,7 +134,6 @@ public class McpServer {
 					if (request.id() != null && !request.id().isJsonNull()) {
 						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
 								new JsonRpcResponse.JsonRpcError(-32603, "Internal error: " + e.getMessage()));
-						sendResponse(sessionId, errorResponse);
 						responseFuture.complete(gson.toJson(errorResponse));
 					} else {
 						responseFuture.complete(null);
@@ -148,13 +144,11 @@ public class McpServer {
 				if (request.id() != null && !request.id().isJsonNull()) {
 					resultFuture.thenAccept(result -> {
 						JsonRpcResponse rpcResponse = new JsonRpcResponse(request.id(), gson.toJsonTree(result));
-						sendResponse(sessionId, rpcResponse);
 						responseFuture.complete(gson.toJson(rpcResponse));
 					}).exceptionally(e -> {
 						LOG.error("Error in async processing of method {}", request.method(), e);
 						JsonRpcResponse errorResponse = new JsonRpcResponse(request.id(),
 								new JsonRpcResponse.JsonRpcError(-32603, "Internal error: " + e.getMessage()));
-						sendResponse(sessionId, errorResponse);
 						responseFuture.complete(gson.toJson(errorResponse));
 						return null;
 					});
@@ -165,21 +159,15 @@ public class McpServer {
 				LOG.error("JSON parse error", e);
 				JsonRpcResponse errorResponse = new JsonRpcResponse(null,
 						new JsonRpcResponse.JsonRpcError(-32700, "Parse error"));
-				sendResponse(sessionId, errorResponse);
 				responseFuture.complete(gson.toJson(errorResponse));
 			} catch (Exception e) {
 				LOG.error("Unexpected error handling message", e);
 				JsonRpcResponse errorResponse = new JsonRpcResponse(null,
 						new JsonRpcResponse.JsonRpcError(-32603, "Internal error"));
-				sendResponse(sessionId, errorResponse);
 				responseFuture.complete(gson.toJson(errorResponse));
 			}
 		});
 		return responseFuture;
-	}
-
-	private void sendResponse(String sessionId, JsonRpcResponse response) {
-		transport.sendMessage(sessionId, gson.toJson(response));
 	}
 
 	private McpSchema.InitializeResponse handleInitialize() {
