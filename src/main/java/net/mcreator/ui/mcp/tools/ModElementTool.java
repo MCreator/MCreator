@@ -39,6 +39,7 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -210,7 +211,16 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 				return CompletableFuture.completedFuture(
 						ToolResult.error("Element not found. Names usually CamelCase"));
 			}
+			List<String> references = ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), modElement)
+					.stream().filter(reference -> !reference.equals(modElement)).map(ModElement::getName).sorted()
+					.toList();
+			if (!references.isEmpty()) {
+				return CompletableFuture.completedFuture(ToolResult.error(
+						"Element not removed because it is used by other mod elements. Remove these usages first: "
+								+ String.join(", ", references)));
+			}
 			mcreator.getWorkspace().removeModElement(modElement);
+			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 			return CompletableFuture.completedFuture(ToolResult.text("Element removed"));
 		} else {
 			return CompletableFuture.completedFuture(ToolResult.error("Invalid action type"));
