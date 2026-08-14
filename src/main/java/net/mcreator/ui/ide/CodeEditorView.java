@@ -483,7 +483,10 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				te.setSyntaxEditingStyle("text/mcfunction");
 			});
 		} else if (fileName.endsWith(".info") || fileName.endsWith(".json") || fileName.endsWith(".mcmeta")) {
-			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON));
+			try {
+				te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JSON);
+			} catch (Exception ignored) {
+			}
 		} else if (fileName.endsWith(".xml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
 		} else if (fileName.endsWith(".lang") || fileName.endsWith(".properties")) {
@@ -622,8 +625,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			y = Math.min(y, viewHeight - extentHeight);
 
 			viewport.setViewPosition(new Point(0, y));
-		} catch (BadLocationException e) {
-			LOG.debug("Failed to center line in scroll pane; caret offset {} is out of model bounds.", te.getCaretPosition(), e);
+		} catch (BadLocationException ignored) {
 		}
 	}
 
@@ -702,8 +704,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			SwingUtilities.invokeLater(te::requestFocus);
 			try {
 				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				LOG.debug("JumpToLine thread interrupted during initial delay for line {}", linenum, e);
+			} catch (InterruptedException ignored) {
 			}
 			SwingUtilities.invokeLater(() -> {
 				try {
