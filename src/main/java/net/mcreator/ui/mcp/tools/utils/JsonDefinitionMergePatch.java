@@ -28,7 +28,8 @@ import java.util.Map;
 
 public final class JsonDefinitionMergePatch {
 
-	private static final Gson gson = McpJson.lenientGson();
+	// serializeNulls is required, so null values in the patch map survive toJsonTree and can remove keys
+	private static final Gson gson = McpJson.lenientGson().newBuilder().serializeNulls().create();
 
 	private JsonDefinitionMergePatch() {}
 
