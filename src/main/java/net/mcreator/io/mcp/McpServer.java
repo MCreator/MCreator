@@ -49,7 +49,8 @@ public class McpServer {
 	private final McpTransport transport;
 	private final Gson gson = new GsonBuilder().create();
 	private final JsonSchemaGenerator schemaGenerator = new JsonSchemaGenerator();
-	private final ExecutorService executor = Executors.newCachedThreadPool();
+	// single thread so tool calls that mutate the workspace cannot run concurrently
+	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	private final Map<String, IMcpTool> tools = new HashMap<>();
 
