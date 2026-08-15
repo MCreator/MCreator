@@ -1,1 +1,1 @@
-(dimension.getBlock({ x: ${input$x}, y: ${input$y}, z: ${input$z} })?.getRedstonePower() > 0 ?? false)
+(dimension.getBlock({ x: ${input$x}, y: ${input$y}, z: ${input$z} })?.getRedstonePower() > 0)
