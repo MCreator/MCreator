@@ -1,1 +1,2 @@
-(dimension.getBlock({ x: ${input$x}, y: ${input$y}, z: ${input$z} })?.hasTag(${input$tagName}))
+<#include "mcitems.ftl">
+(${mappedBlockToBlockPermutation(input$block)}?.hasTag(${input$tagName}) ?? false)
