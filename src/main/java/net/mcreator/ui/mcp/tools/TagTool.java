@@ -25,6 +25,7 @@ import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.TagElement;
@@ -89,7 +90,7 @@ public class TagTool extends MCreatorMcpTool<TagTool.Args> {
 		}
 
 		if (input.entries == null || input.entries.isEmpty()) {
-			mcreator.reloadWorkspaceTabContents();
+			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 			return completedText(created ? "Tag created" : "Tag already exists");
 		}
 
@@ -126,7 +127,7 @@ public class TagTool extends MCreatorMcpTool<TagTool.Args> {
 		}
 
 		workspace.markDirty();
-		mcreator.reloadWorkspaceTabContents();
+		ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 
 		Map<String, Object> result = new LinkedHashMap<>();
 		result.put("created", created);

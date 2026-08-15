@@ -22,6 +22,7 @@ package net.mcreator.ui.mcp.tools;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.ArmorMakerTexturesCache;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.views.ArmorImageMakerView;
@@ -124,7 +125,7 @@ public class CreateArmorTextureTool extends MCreatorMcpTool<CreateArmorTextureTo
 
 		try {
 			ArmorImageMakerView.generateArmorImages(mcreator.getWorkspace(), fixedName, template, color, colorizeType);
-			mcreator.reloadWorkspaceTabContents();
+			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 
 			Map<String, Object> response = new HashMap<>();
 			response.put("success", true);

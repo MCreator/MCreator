@@ -24,6 +24,7 @@ import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
@@ -89,7 +90,7 @@ public class VariableTool extends MCreatorMcpTool<VariableTool.Args> {
 				return completedError("Variable not found: " + variableName);
 			}
 			workspace.removeVariableElement(element);
-			mcreator.reloadWorkspaceTabContents();
+			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 			return completedText("Variable removed");
 		}
 
@@ -157,7 +158,7 @@ public class VariableTool extends MCreatorMcpTool<VariableTool.Args> {
 		element.setValue(value);
 
 		workspace.addVariableElement(element);
-		mcreator.reloadWorkspaceTabContents();
+		ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 		return completedText("Variable added");
 	}
 

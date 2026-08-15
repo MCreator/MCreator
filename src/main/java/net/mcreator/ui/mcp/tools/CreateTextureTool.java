@@ -24,6 +24,7 @@ import net.mcreator.io.ResourcePointer;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -134,7 +135,7 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 			BufferedImage image = composeLayers(input.layers);
 			FileIO.writeImageToPNGFile(image, exportFile);
 			new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
-			mcreator.reloadWorkspaceTabContents();
+			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 
 			Map<String, Object> response = new HashMap<>();
 			response.put("success", true);
