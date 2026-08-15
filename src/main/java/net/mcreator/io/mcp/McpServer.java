@@ -76,6 +76,8 @@ public class McpServer {
 	private CompletableFuture<String> handleMessage(String sessionId, String message) {
 		CompletableFuture<String> responseFuture = new CompletableFuture<>();
 		executor.execute(() -> {
+			if (responseFuture.isDone())
+				return; // the transport gave up waiting (e.g. timeout), don't execute stale work
 			try {
 				JsonRpcRequest request = gson.fromJson(message, JsonRpcRequest.class);
 				if (request == null) {
