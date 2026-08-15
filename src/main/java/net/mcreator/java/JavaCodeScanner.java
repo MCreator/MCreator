@@ -49,9 +49,6 @@ public final class JavaCodeScanner {
 
 	}
 
-	private JavaCodeScanner() {
-	}
-
 	/**
 	 * Scans the given code and reports every character along with its {@link Region} to the visitor.
 	 * Text blocks ({@code """ ... """}) are reported as {@link Region#STRING}. The line terminator
