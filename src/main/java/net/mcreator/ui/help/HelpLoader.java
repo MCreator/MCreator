@@ -96,7 +96,7 @@ public class HelpLoader {
 
 		String lowerQuery = query.toLowerCase();
 		return DEFAULT_CACHE.keySet().stream().filter(s -> {
-			if (s.contains(lowerQuery)) {
+			if (s.toLowerCase().contains(lowerQuery)) {
 				return true;
 			}
 
