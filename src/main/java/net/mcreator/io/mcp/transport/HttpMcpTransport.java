@@ -43,7 +43,7 @@ public class HttpMcpTransport implements McpTransport {
 
 	private static final Logger LOG = LogManager.getLogger(HttpMcpTransport.class);
 
-	private static final int maxToolDurationSeconds = 120;
+	private static final int maxToolDurationSeconds = 60;
 	private static final int sessionIdleTimeoutMinutes = 30;
 
 	private final int port;
