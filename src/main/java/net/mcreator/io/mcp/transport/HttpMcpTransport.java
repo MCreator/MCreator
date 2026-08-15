@@ -45,11 +45,16 @@ public class HttpMcpTransport implements McpTransport {
 
 	private static final int maxToolDurationSeconds = 60;
 	private static final int sessionIdleTimeoutMinutes = 30;
+	private static final int maxInFlightRequests = 4;
 
 	private final int port;
 	private HttpServer server;
 	private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+	// Bounds in-flight POSTs (1 executing on the handler + the rest awaiting their turn), so a request
+	// flood can neither pile up HTTP threads nor grow the handler queue; overflow is rejected with 429
+	private final Semaphore requestSlots = new Semaphore(maxInFlightRequests);
 
 	public HttpMcpTransport(int port) {
 		this.port = port;
@@ -152,6 +157,16 @@ public class HttpMcpTransport implements McpTransport {
 	}
 
 	private void handlePost(HttpExchange exchange, McpHandler handler) throws IOException {
+		if (!requestSlots.tryAcquire()) {
+			byte[] bytes = "Server busy: too many concurrent MCP requests, retry later".getBytes(
+					StandardCharsets.UTF_8);
+			exchange.getResponseHeaders().add("Content-Type", "text/plain");
+			exchange.sendResponseHeaders(429, bytes.length);
+			try (OutputStream os = exchange.getResponseBody()) {
+				os.write(bytes);
+			}
+			return;
+		}
 		try {
 			String requestBody = IOUtils.toString(exchange.getRequestBody(), StandardCharsets.UTF_8);
 
@@ -196,12 +211,16 @@ public class HttpMcpTransport implements McpTransport {
 					exchange.sendResponseHeaders(202, -1);
 				}
 			} catch (Exception e) {
+				// cancel so the handler can skip this request if it is still waiting for its turn
+				responseFuture.cancel(true);
 				LOG.error("Timeout or error waiting for response", e);
 				exchange.sendResponseHeaders(500, -1);
 			}
 		} catch (Exception e) {
 			LOG.error("Error handling POST request", e);
 			exchange.sendResponseHeaders(500, -1);
+		} finally {
+			requestSlots.release();
 		}
 	}
 
