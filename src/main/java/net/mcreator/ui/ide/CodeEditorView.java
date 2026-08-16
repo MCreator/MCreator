@@ -126,6 +126,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	@Nullable private JavaParser parser = null;
 
+	@Nullable private CustomJavaCompletionProvider jcp = null;
+
 	@Nullable private BreakpointHandler breakpointHandler = null;
 
 	public CodeEditorView(MCreator fa, File fs) {
@@ -377,8 +379,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					LOG.error("Failed initial parse for JavaParser", e);
 				}
 			}
-			CustomJavaCompletionProvider jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
-			ac = new AutoCompletion(jcp);
+			this.jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
+			ac = new AutoCompletion(this.jcp);
 			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
 			ac.setAutoActivationDelay(0);
 			ac.setParameterAssistanceEnabled(true);
@@ -674,6 +676,11 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					return res == 1;
 			}
 			return true;
+		});
+		fileTab.setTabShownListener(tab -> {
+			if (this.jcp != null) {
+				this.jcp.invalidateCaches();
+			}
 		});
 
 		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(fileWorkingOn);

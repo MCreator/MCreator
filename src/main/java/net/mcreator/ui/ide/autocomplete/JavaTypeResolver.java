@@ -123,6 +123,14 @@ public class JavaTypeResolver {
 		this.workspace = workspace;
 	}
 
+	public void invalidateCaches() {
+		memberCache.invalidateAll();
+		importsCache.invalidateAll();
+		docsCache.invalidateAll();
+		sourceCache.invalidateAll();
+		simpleTypeCache.invalidateAll();
+	}
+
 	public List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor,
 			JavaParser parser) {
 		List<CompletionItem> result = new ArrayList<>();

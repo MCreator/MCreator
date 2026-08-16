@@ -107,6 +107,15 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		setParameterizedCompletionParams('(', ", ", ')');
 	}
 
+	public synchronized void invalidateCaches() {
+		classInfoCache.clear();
+		cachedImportTree = null;
+		lastImportTreeUpdate = 0;
+		if (javaTypeResolver != null) {
+			javaTypeResolver.invalidateCaches();
+		}
+	}
+
 	private boolean isInsideCommentOrString(JTextComponent comp) {
 		if (!(comp instanceof RSyntaxTextArea rsta))
 			return false;
