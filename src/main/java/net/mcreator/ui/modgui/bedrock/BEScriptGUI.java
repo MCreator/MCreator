@@ -510,16 +510,17 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 		boolean triggerTypeChanged = triggerTypeBeforeEdit != null && !triggerTypeBeforeEdit.equals(triggerType);
 
 		// this procedure could be in use and new dependencies were added
-		// triggerTypeBeforeEdit can be null if the script has no external trigger, in which case there is nothing to fix
-		if (isEditingMode() && triggerTypeBeforeEdit != null && (triggerTypeChanged || forceActions))
-			fixScriptReferences(modElement, triggerTypeBeforeEdit);
+		// fixScriptReferences only removes references stale relative to the current trigger type, so forcing it
+		// is safe even when forceActions callers (e.g. MCP) can not tell whether the trigger type changed
+		if (isEditingMode() && (triggerTypeChanged || forceActions))
+			fixScriptReferences(modElement);
 
 		triggerTypeBeforeEdit = triggerType;
 	}
 
-	private void fixScriptReferences(ModElement beScript, String triggerTypeBeforeEdit) {
+	private void fixScriptReferences(ModElement beScript) {
 		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), beScript)) {
-			if (triggerTypeBeforeEdit.equals("block") && element.getType() == ModElementType.BEBLOCK) {
+			if (element.getType() == ModElementType.BEBLOCK && !"block".equals(triggerType)) {
 				if (element.getGeneratableElement() instanceof BEBlock beBlock) {
 					beBlock.localScripts.remove(beScript.getName());
 					LOG.info("Regenerating BEBlock {} because it referenced script {}", element.getName(),
@@ -527,7 +528,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 					mcreator.getGenerator().generateElement(element.getGeneratableElement());
 					mcreator.getWorkspace().getModElementManager().storeModElement(beBlock);
 				}
-			} else if (triggerTypeBeforeEdit.equals("item") && element.getType() == ModElementType.BEITEM) {
+			} else if (element.getType() == ModElementType.BEITEM && !"item".equals(triggerType)) {
 				if (element.getGeneratableElement() instanceof BEItem beItem) {
 					beItem.localScripts.remove(beScript.getName());
 					LOG.info("Regenerating BEItem {} because it referenced script {}", element.getName(),
