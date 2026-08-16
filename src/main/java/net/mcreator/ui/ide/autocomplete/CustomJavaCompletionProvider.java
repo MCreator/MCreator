@@ -86,6 +86,12 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
+	private record ScopeBlock(StringBuilder text, int headerStartInParent) {
+		ScopeBlock(int headerStartInParent) {
+			this(new StringBuilder(), headerStartInParent);
+		}
+	}
+
 	private final Map<String, ClassInfo> classInfoCache = new ConcurrentHashMap<>();
 
 	private ClassInfo getClassInfo(String fqdn) {
@@ -393,6 +399,25 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		return targetName.trim();
 	}
 
+	private int findHeaderStart(StringBuilder sb) {
+		int depth = 0;
+		for (int j = sb.length() - 1; j >= 0; j--) {
+			char c = sb.charAt(j);
+			if (c == ')') {
+				depth++;
+			} else if (c == '(') {
+				if (depth > 0) {
+					depth--;
+				}
+			} else if (depth == 0) {
+				if (c == ';' || c == '{' || c == '}') {
+					return j + 1;
+				}
+			}
+		}
+		return 0;
+	}
+
 	private Map<String, String> getLocalVariables(String codeBeforeCursor) {
 		Map<String, String> vars = new LinkedHashMap<>();
 		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
@@ -400,12 +425,39 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 		String strippedCode = javaTypeResolver.stripCommentsAndStrings(codeBeforeCursor);
 
-		int lastEnd = Math.max(strippedCode.lastIndexOf("}\n"), strippedCode.lastIndexOf("}\r\n"));
-		String currentMethodCode = lastEnd != -1 ? strippedCode.substring(lastEnd) : strippedCode;
+		Deque<ScopeBlock> stack = new ArrayDeque<>();
+		stack.push(new ScopeBlock(0));
+
+		for (int i = 0; i < strippedCode.length(); i++) {
+			char c = strippedCode.charAt(i);
+			if (c == '{') {
+				int headerStart = 0;
+				if (stack.peek() != null) {
+					headerStart = findHeaderStart(stack.peek().text);
+				}
+				stack.push(new ScopeBlock(headerStart));
+			} else if (c == '}') {
+				if (stack.size() > 1) {
+					ScopeBlock closed = stack.pop();
+					if (stack.peek() != null) {
+						stack.peek().text.setLength(closed.headerStartInParent);
+					}
+				}
+			} else {
+				if (stack.peek() != null) {
+					stack.peek().text.append(c);
+				}
+			}
+		}
+
+		StringBuilder activeCode = new StringBuilder();
+		for (ScopeBlock block : stack) {
+			activeCode.append(block.text).append('\n');
+		}
 
 		Matcher m = Pattern.compile(
 						"\\b(boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b")
-				.matcher(currentMethodCode);
+				.matcher(activeCode);
 		while (m.find()) {
 			String type = m.group(1);
 			String name = m.group(2);
