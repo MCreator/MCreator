@@ -51,5 +51,9 @@ public class JEntityAnimationList extends JSimpleEntriesList<JEntityAnimationLis
 		return new JEntityAnimationListEntry(mcreator, gui, parent, entryList, entityDataListProvider);
 	}
 
+	public void entityDataListChanged() {
+		entryList.forEach(JEntityAnimationListEntry::entityDataListChanged);
+	}
+
 }
 

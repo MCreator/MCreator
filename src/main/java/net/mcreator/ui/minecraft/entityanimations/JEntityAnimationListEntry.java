@@ -67,8 +67,8 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 		this.mcreator = mcreator;
 		this.entityDataListProvider = entityDataListProvider;
 
-		line.setLayout(new BorderLayout(3, 3));
-		line.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+		line.setLayout(new BorderLayout(4, 4));
+		line.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
 
 		condition = new ProcedureSelector(gui.withEntry("animations/condition_animation"), mcreator,
 				L10N.t("elementgui.animations.animation_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -138,9 +138,18 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 	private void reloadConditionSources() {
 		ComboBoxUtil.updateComboBoxContents(conditionSource,
 				ListUtils.merge(Collections.singleton(L10N.t("elementgui.animations.animation_condition_procedure")),
-						entityDataListProvider.get().stream()
-								.filter(e -> e.property() instanceof PropertyData.LogicType)
-								.map(e -> e.property().getName()).toList()));
+						logicEntityDataNames()));
+	}
+
+	private List<String> logicEntityDataNames() {
+		return entityDataListProvider.get().stream().filter(e -> e.property() instanceof PropertyData.LogicType)
+				.map(e -> e.property().getName()).toList();
+	}
+
+	void entityDataListChanged() {
+		reloadConditionSources();
+		if (conditionSource.getSelectedIndex() == -1) // selected entity data entry was removed
+			conditionSource.setSelectedIndex(0);
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
