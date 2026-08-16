@@ -111,26 +111,23 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			return false;
 		int dot = rsta.getCaretPosition();
 		Token curToken = RSyntaxUtilities.getTokenAtOffset(t, dot);
-		if (curToken == null) {
-			int type = doc.getLastTokenTypeOnLine(line);
-			if (type == 0) {
-				Token temp = t.getLastPaintableToken();
-				if (temp == null)
-					return false;
-				type = temp.getType();
-			} else if (type < 0) {
+		int type;
+		if (curToken != null && dot > curToken.getOffset()) {
+			type = curToken.getType();
+		} else {
+			type = doc.getLastTokenTypeOnLine(line);
+			if (type == Token.NULL && t.getLastPaintableToken() != null) {
+				type = t.getLastPaintableToken().getType();
+			} else if ((type == Token.NULL || (curToken != null && dot == curToken.getOffset())) && line > 0) {
+				type = doc.getLastTokenTypeOnLine(line - 1);
+			}
+			if (type < 0) {
 				type = doc.getClosestStandardTokenTypeForInternalType(type);
 			}
-			return type == Token.COMMENT_EOL || type == Token.COMMENT_MULTILINE || type == Token.COMMENT_DOCUMENTATION
-					|| type == Token.ERROR_STRING_DOUBLE;
-		} else if (dot == curToken.getOffset()) {
-			return false;
-		} else {
-			int type = curToken.getType();
-			return curToken.isComment() || type == Token.LITERAL_STRING_DOUBLE_QUOTE
-					|| type == Token.ERROR_STRING_DOUBLE || type == Token.LITERAL_CHAR || type == Token.ERROR_CHAR
-					|| type == Token.LITERAL_BACKQUOTE;
 		}
+		return (type >= Token.COMMENT_EOL && type <= Token.COMMENT_MARKUP) || type == Token.LITERAL_STRING_DOUBLE_QUOTE
+				|| type == Token.ERROR_STRING_DOUBLE || type == Token.LITERAL_CHAR || type == Token.ERROR_CHAR
+				|| type == Token.LITERAL_BACKQUOTE;
 	}
 
 	@Override public boolean isAutoActivateOkay(JTextComponent tc) {
