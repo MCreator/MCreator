@@ -28,6 +28,7 @@ import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.types.bedrock.BEEntity;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
@@ -39,10 +40,12 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
@@ -50,9 +53,11 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -61,17 +66,21 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPanelHolder {
 
 	private final VTextField entityName = new VTextField().requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
-	private final SearchableComboBox<String> entityModel = ComponentFromAnnotation.searchableOptions(BEEntity.class,
-			"modelName");
+	public static final Model[] builtinmobmodels = AnnotationUtils.getLimitedOptionsList(BEEntity.class, "modelName",
+			Model.BuiltInModel::new).toArray(new Model[0]);
+	private final SearchableComboBox<Model> entityModel = new SearchableComboBox<>(builtinmobmodels);
 	private TextureComboBox modelTexture;
 	private final JSpinner collisionBoxWidth = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxWidth");
 	private final JSpinner collisionBoxHeight = ComponentFromAnnotation.spinner(BEEntity.class, "collisionBoxHeight");
@@ -138,6 +147,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		visualProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.beentity.entity_model")));
+		entityModel.setRenderer(new ModelComboBoxRenderer());
 		visualProps.add(entityModel);
 
 		visualProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
@@ -306,6 +316,10 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		super.reloadDataLists();
 
 		modelTexture.reload();
+
+		ComboBoxUtil.updateComboBoxContents(entityModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
+				Model.getModels(mcreator.getWorkspace()).stream().filter(el -> el.getType() == Model.Type.BEDROCK)
+						.collect(Collectors.toList())));
 	}
 
 	@Override public void addBlocklyChangedListener(IBlocklyPanelHolder.BlocklyChangedListener listener) {
@@ -360,7 +374,9 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	@Override protected void openInEditingMode(BEEntity entity) {
 		entityName.setText(entity.entityName);
 
-		entityModel.setSelectedItem(entity.modelName);
+		Model model = entity.getEntityModel();
+		if (model != null)
+			entityModel.setSelectedItem(model);
 		modelTexture.setTextureFromTextureName(entity.modelTexture);
 		collisionBoxHeight.setValue(entity.collisionBoxHeight);
 		collisionBoxWidth.setValue(entity.collisionBoxWidth);
@@ -399,7 +415,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	@Override public BEEntity getElementFromGUI() {
 		BEEntity entity = new BEEntity(this.modElement);
 		entity.entityName = entityName.getText();
-		entity.modelName = entityModel.getSelectedItem();
+		entity.modelName = Objects.requireNonNull(entityModel.getSelectedItem()).getReadableName();
 		entity.modelTexture = modelTexture.getTextureName();
 		entity.collisionBoxHeight = (double) collisionBoxHeight.getValue();
 		entity.collisionBoxWidth = (double) collisionBoxWidth.getValue();
