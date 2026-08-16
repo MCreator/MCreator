@@ -1214,9 +1214,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
 		modelLayers.setEntries(livingEntity.modelLayers);
-		animations.setEntries(livingEntity.animations);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
+		animations.setEntries(livingEntity.animations); // load after data entries, because animations can use data entries
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);
 		sensitiveToVibration.setSelected(livingEntity.sensitiveToVibration);
