@@ -39,8 +39,13 @@ import org.fife.rsta.ac.java.classreader.MethodInfo;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.*;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.Token;
+import org.fife.ui.rsyntaxtextarea.TokenMaker;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 
 import javax.annotation.Nullable;
+import javax.swing.text.Segment;
 import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -658,9 +663,39 @@ public class JavaTypeResolver {
 	}
 
 	public String stripCommentsAndStrings(String code) {
-		return code == null ?
-				"" :
-				code.replaceAll("//.*|(?s)/\\*.*?\\*/|\"(?:\\\\.|[^\\\\\"])*\"|'(?:\\\\.|[^\\\\'])*'", "");
+		if (code == null || code.isEmpty())
+			return "";
+
+		TokenMaker tm = TokenMakerFactory.getDefaultInstance().getTokenMaker(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		StringBuilder sb = new StringBuilder(code.length());
+		String[] lines = code.split("\n", -1);
+		int tokenType = Token.NULL;
+
+		synchronized (tm) {
+			for (int i = 0; i < lines.length; i++) {
+				String line = lines[i];
+				char[] chars = line.toCharArray();
+				Segment segment = new Segment(chars, 0, chars.length);
+				Token token = tm.getTokenList(segment, tokenType, 0);
+				while (token != null && token.isPaintable()) {
+					int type = token.getType();
+					if (!token.isComment() && type != Token.LITERAL_STRING_DOUBLE_QUOTE
+							&& type != Token.ERROR_STRING_DOUBLE && type != Token.LITERAL_CHAR
+							&& type != Token.ERROR_CHAR && type != Token.LITERAL_BACKQUOTE) {
+						sb.append(token.getLexeme());
+					} else {
+						sb.append(' ');
+					}
+					token = token.getNextToken();
+				}
+				tokenType = tm.getLastTokenTypeOnLine(segment, tokenType);
+				if (i < lines.length - 1) {
+					sb.append('\n');
+				}
+			}
+		}
+
+		return sb.toString();
 	}
 
 	private record VarTypeInfo(String rawType, String genericArg) {}
