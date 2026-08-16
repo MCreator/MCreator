@@ -429,7 +429,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		modelLayers = new JModelLayerList(mcreator, this);
 
-		animations = new JEntityAnimationList(mcreator, this);
+		animations = new JEntityAnimationList(mcreator, this, () -> entityDataList.getEntries());
 
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane2 = new JPanel(new BorderLayout(0, 0));

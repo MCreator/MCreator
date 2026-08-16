@@ -25,14 +25,20 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class JEntityAnimationList extends JSimpleEntriesList<JEntityAnimationListEntry, LivingEntity.AnimationEntry> {
 
-	public JEntityAnimationList(MCreator mcreator, IHelpContext gui) {
+	private final Supplier<List<PropertyDataWithValue<?>>> entityDataListProvider;
+
+	public JEntityAnimationList(MCreator mcreator, IHelpContext gui,
+			Supplier<List<PropertyDataWithValue<?>>> entityDataListProvider) {
 		super(mcreator, gui);
+		this.entityDataListProvider = entityDataListProvider;
 
 		add.setText(L10N.t("elementgui.living_entity.add_playable_animation"));
 
@@ -42,7 +48,7 @@ public class JEntityAnimationList extends JSimpleEntriesList<JEntityAnimationLis
 	@Override
 	protected JEntityAnimationListEntry newEntry(JPanel parent, List<JEntityAnimationListEntry> entryList,
 			boolean userAction) {
-		return new JEntityAnimationListEntry(mcreator, gui, parent, entryList);
+		return new JEntityAnimationListEntry(mcreator, gui, parent, entryList, entityDataListProvider);
 	}
 
 }
