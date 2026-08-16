@@ -28,6 +28,10 @@ import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.fife.ui.autocomplete.*;
+import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.Token;
 
 import org.jboss.forge.roaster.model.source.*;
 
@@ -97,7 +101,47 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		setParameterizedCompletionParams('(', ", ", ')');
 	}
 
+	private boolean isInsideCommentOrString(JTextComponent comp) {
+		if (!(comp instanceof RSyntaxTextArea rsta))
+			return false;
+		RSyntaxDocument doc = (RSyntaxDocument) rsta.getDocument();
+		int line = rsta.getCaretLineNumber();
+		Token t = doc.getTokenListForLine(line);
+		if (t == null)
+			return false;
+		int dot = rsta.getCaretPosition();
+		Token curToken = RSyntaxUtilities.getTokenAtOffset(t, dot);
+		if (curToken == null) {
+			int type = doc.getLastTokenTypeOnLine(line);
+			if (type == 0) {
+				Token temp = t.getLastPaintableToken();
+				if (temp == null)
+					return false;
+				type = temp.getType();
+			} else if (type < 0) {
+				type = doc.getClosestStandardTokenTypeForInternalType(type);
+			}
+			return type == Token.COMMENT_EOL || type == Token.COMMENT_MULTILINE || type == Token.COMMENT_DOCUMENTATION
+					|| type == Token.ERROR_STRING_DOUBLE;
+		} else if (dot == curToken.getOffset()) {
+			return false;
+		} else {
+			int type = curToken.getType();
+			return curToken.isComment() || type == Token.LITERAL_STRING_DOUBLE_QUOTE
+					|| type == Token.ERROR_STRING_DOUBLE || type == Token.LITERAL_CHAR || type == Token.ERROR_CHAR
+					|| type == Token.LITERAL_BACKQUOTE;
+		}
+	}
+
+	@Override public boolean isAutoActivateOkay(JTextComponent tc) {
+		if (isInsideCommentOrString(tc))
+			return false;
+		return super.isAutoActivateOkay(tc);
+	}
+
 	@Override public String getAlreadyEnteredText(JTextComponent comp) {
+		if (isInsideCommentOrString(comp))
+			return "";
 		String word = super.getAlreadyEnteredText(comp);
 		if (word == null)
 			word = "";
@@ -116,7 +160,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	@Override protected List<Completion> getCompletionsImpl(JTextComponent comp) {
 		List<Completion> completions = new ArrayList<>();
-		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get()) {
+		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get() || isInsideCommentOrString(comp)) {
 			return completions;
 		}
 
