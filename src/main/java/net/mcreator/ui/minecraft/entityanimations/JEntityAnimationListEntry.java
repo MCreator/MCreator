@@ -67,7 +67,7 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 		this.mcreator = mcreator;
 		this.entityDataListProvider = entityDataListProvider;
 
-		line.setLayout(new BorderLayout(4, 4));
+		line.setLayout(new BorderLayout(2, 2));
 		line.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
 
 		condition = new ProcedureSelector(gui.withEntry("animations/condition_animation"), mcreator,
@@ -83,10 +83,10 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 		});
 		conditionSource.addActionListener(
 				_ -> condition.setEnabled(isEnabled() && conditionSource.getSelectedIndex() <= 0));
-		conditionSource.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
+		conditionSource.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXX");
 
 		animation = new DataListComboBox(mcreator);
-		animation.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
+		animation.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"));
 
 		JPanel topLine = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		JPanel bottomLine = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -102,7 +102,7 @@ public class JEntityAnimationListEntry extends JSimpleListEntry<LivingEntity.Ani
 				L10N.label("elementgui.animations.animation_speed")));
 		topLine.add(speed);
 
-		topLine.add(new JEmptyBox(45, 2));
+		topLine.add(new JEmptyBox(40, 2));
 
 		topLine.add(HelpUtils.wrapWithHelpButton(gui.withEntry("animations/animation_walking"), walking));
 
