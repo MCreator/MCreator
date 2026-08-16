@@ -79,10 +79,11 @@ public class McpInstallHelper {
 			JsonObject mcpServers = root.getAsJsonObject("mcpServers");
 
 			// Validate if an update is even necessary to prevent unnecessary I/O
-			if (mcpServers.has(serverName)) {
+			// A non-object entry (e.g. hand-edited config) is treated as outdated and overwritten
+			if (mcpServers.has(serverName) && mcpServers.get(serverName).isJsonObject()) {
 				JsonObject existingServer = mcpServers.getAsJsonObject(serverName);
-				boolean urlMatches =
-						existingServer.has("url") && targetUrl.equals(existingServer.get("url").getAsString());
+				boolean urlMatches = existingServer.get("url") instanceof JsonPrimitive urlPrimitive && targetUrl.equals(
+						urlPrimitive.getAsString());
 
 				if (urlMatches) {
 					LOG.info("Server '{}' is already up-to-date in Cursor.", serverName);
@@ -106,7 +107,7 @@ public class McpInstallHelper {
 			FileIO.writeStringToFile(jsonOutput, cursorFile);
 			LOG.info("Successfully configured '{}' for Cursor.", serverName);
 		} catch (Exception e) {
-			LOG.warn("Direct file installation failed: {}. Falling back to hotlink.", e.getMessage());
+			LOG.warn("Failed to install MCP server config for Cursor", e);
 		}
 	}
 
