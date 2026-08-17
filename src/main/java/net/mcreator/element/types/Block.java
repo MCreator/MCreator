@@ -620,7 +620,10 @@ import java.util.stream.Collectors;
 	public List<StateEntry> getDefinedStatesWithCustomShape() {
 		List<StateEntry> retval = new ArrayList<>();
 		for (StateEntry stateEntry : getDefinedStates()) {
-			if (stateEntry.hasCustomBoundingBox && !stateEntry.isFullCube()) {
+			// full cube states are skipped as an optimization in variants mode where the shape of the matched
+			// state falls back to the default block shape, but in multipart mode they must be kept, as parts
+			// only contribute to the union of shapes of all matching parts when listed here
+			if (stateEntry.hasCustomBoundingBox && (multipartModel || !stateEntry.isFullCube())) {
 				retval.add(stateEntry);
 			}
 		}
