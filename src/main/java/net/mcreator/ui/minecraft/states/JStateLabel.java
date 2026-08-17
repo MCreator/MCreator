@@ -95,6 +95,11 @@ public class JStateLabel extends JPanel {
 	public boolean editState() {
 		List<PropertyData<?>> propertyList = properties.get();
 		if (propertyList == null || propertyList.isEmpty()) {
+			if (allowEmpty) { // without properties, the only possible state is the empty (always matching) one
+				setStateMap(new StateMap());
+				return true;
+			}
+
 			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_no_properties"),
 					L10N.t("components.state_label.error_no_properties.title"), JOptionPane.WARNING_MESSAGE);
 			return false;
