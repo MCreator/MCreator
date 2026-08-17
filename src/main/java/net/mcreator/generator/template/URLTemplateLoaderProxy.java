@@ -29,13 +29,13 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.net.URL;
 
-public class TemplateLoaderProxy extends URLTemplateLoader {
+public class URLTemplateLoaderProxy extends URLTemplateLoader {
 
-	private static final Logger LOGGER = LogManager.getLogger(TemplateLoaderProxy.class);
+	private static final Logger LOGGER = LogManager.getLogger(URLTemplateLoaderProxy.class);
 
 	private final URLTemplateLoader templateLoader;
 
-	public TemplateLoaderProxy(URLTemplateLoader templateLoader) {
+	public URLTemplateLoaderProxy(URLTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
 	}
 
@@ -77,7 +77,6 @@ public class TemplateLoaderProxy extends URLTemplateLoader {
 			});
 			MCREvent.event(event);
 			if (event.isModified()) {
-				LOGGER.debug("Plugin has modified the {}", event.getTemplateURL());
 				return new StringReader(event.getTemplateOutput());
 			}
 		}
