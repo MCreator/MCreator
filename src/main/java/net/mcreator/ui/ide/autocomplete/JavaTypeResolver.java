@@ -206,7 +206,7 @@ public class JavaTypeResolver {
 
 		String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
 
-		ProjectJarManager jarManager = workspace != null && workspace.getGenerator() != null ?
+		ProjectJarManager jarManager = workspace != null ?
 				workspace.getGenerator().getProjectJarManager() :
 				null;
 
@@ -373,7 +373,6 @@ public class JavaTypeResolver {
 			return FileIO.readFileToString(srcFile);
 		}
 		ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-		if (jarManager != null) {
 			SourceLocation sourceLocation = jarManager.getSourceLocForClass(fqdn);
 			if (sourceLocation instanceof ZipSourceLocation) {
 				try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
@@ -397,7 +396,6 @@ public class JavaTypeResolver {
 					LOG.debug("could not read source from jar", e);
 				}
 			}
-		}
 		return null;
 	}
 
@@ -517,14 +515,14 @@ public class JavaTypeResolver {
 
 		if (currentPkg != null && !currentPkg.isEmpty()) {
 			String possibleFQDN = currentPkg + "." + typeName;
-			if (workspace != null && workspace.getGenerator() != null) {
+			if (workspace != null) {
 				File f = new File(workspace.getGenerator().getSourceRoot(), possibleFQDN.replace('.', '/') + ".java");
 				if (f.exists())
 					return possibleFQDN;
 			}
 		}
 
-		if (workspace != null && workspace.getGenerator() != null) {
+		if (workspace != null) {
 			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache() != null ?
 					workspace.getGenerator().getGradleCache().getImportTree() :
 					(workspace.getGenerator().getProjectJarManager() != null ?

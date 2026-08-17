@@ -67,19 +67,17 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		static ClassInfo of(Workspace workspace, String fqdn) {
 			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
 			boolean inf = false, enm = false;
-			if (workspace != null && workspace.getGenerator() != null) {
+			if (workspace != null) {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-				if (jarManager != null) {
-					try {
-						ClassFile cf = jarManager.getClassEntry(fqdn);
-						if (cf != null) {
-							int flags = cf.getAccessFlags();
-							inf = (flags & 0x0200) != 0;
-							enm = (flags & 0x4000) != 0;
-						}
-					} catch (Throwable e) {
-						LOG.debug("Failed to read class file entry for {}", fqdn, e);
+				try {
+					ClassFile cf = jarManager.getClassEntry(fqdn);
+					if (cf != null) {
+						int flags = cf.getAccessFlags();
+						inf = (flags & 0x0200) != 0;
+						enm = (flags & 0x4000) != 0;
 					}
+				} catch (Throwable e) {
+					LOG.debug("Failed to read class file entry for {}", fqdn, e);
 				}
 			}
 			return new ClassInfo(pkg, inf, enm);
@@ -259,7 +257,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				}
 			}
 
-			if (isClassContext && workspace != null && workspace.getGenerator() != null) {
+			if (isClassContext && workspace != null) {
 				if ("Smart".equals(mode)) {
 					CompletableFuture<List<Completion>> classTask = CompletableFuture.supplyAsync(() -> {
 						List<Completion> classComps = new ArrayList<>();
@@ -297,7 +295,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private void addClassCompletions(String wordOnly, List<Completion> completions) {
-		if (workspace == null || workspace.getGenerator() == null)
+		if (workspace == null)
 			return;
 		Map<String, List<String>> tree = getImportTreeCached();
 		if (tree != null) {
@@ -354,7 +352,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		long now = System.currentTimeMillis();
 		if (cachedImportTree == null || (now - lastImportTreeUpdate > 5000)) {
 			Map<String, List<String>> tree = new HashMap<>();
-			if (workspace != null && workspace.getGenerator() != null) {
+			if (workspace != null) {
 				if (workspace.getGenerator().getGradleCache() != null) {
 					Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
 					if (gTree != null) {
