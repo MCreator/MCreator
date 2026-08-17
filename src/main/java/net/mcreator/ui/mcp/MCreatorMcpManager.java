@@ -43,7 +43,15 @@ public class MCreatorMcpManager implements Closeable {
 	@Nullable private final MCreatorMcp mcreatorMcp;
 
 	private final Map<MCreator, AbstractButton> mcpButtons = new HashMap<>();
-	private final ButtonGroup mcpButtonGroup = new ButtonGroup();
+	private final ButtonGroup mcpButtonGroup = new ButtonGroup() {
+		@Override public void setSelected(ButtonModel model, boolean selected) {
+			if (selected) {
+				super.setSelected(model, true);
+			} else {
+				clearSelection();
+			}
+		}
+	};
 
 	public MCreatorMcpManager() {
 		if (PreferencesManager.PREFERENCES.integrations.mcpEnable.get()) {
@@ -76,9 +84,9 @@ public class MCreatorMcpManager implements Closeable {
 		mcpButton.setMargin(new Insets(0, 3, 0, 3));
 		mcpButton.addItemListener(_ -> mcpButton.setForeground(mcpButton.isSelected() ?
 				Theme.current().getInterfaceAccentColor() :
-				Theme.current().getAltBackgroundColor()));
+				Theme.current().getAltForegroundColor()));
 		mcpButton.setContentAreaFilled(false);
-		mcpButton.setForeground(Theme.current().getAltBackgroundColor());
+		mcpButton.setForeground(Theme.current().getAltForegroundColor());
 
 		mcpButtonGroup.add(mcpButton);
 		mcpButtons.put(mcreator, mcpButton);
