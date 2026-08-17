@@ -359,7 +359,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
 		if (gTree == null)
 			return null;
-		
+
 		// TODO PR #6542: Remove reloadClassesFromMod once WorkspaceLibraryInfo in PJM handles workspace classes
 		Map<String, List<String>> tree = new HashMap<>();
 		for (Map.Entry<String, List<String>> e : gTree.entrySet()) {
@@ -434,7 +434,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
 			return vars;
 
-		String strippedCode = javaTypeResolver.stripCommentsAndStrings(codeBeforeCursor);
+		String strippedCode = LocalVariableResolver.stripCommentsAndStrings(codeBeforeCursor);
 
 		Deque<ScopeBlock> stack = new ArrayDeque<>();
 		stack.push(new ScopeBlock(0));
