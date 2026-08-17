@@ -73,8 +73,11 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		if (!multipartModel) // variants mode does not support duplicate or empty state conditions, so remove them
 			removeInvalidEntriesForVariantsMode();
 
-		entryList.forEach(
-				entry -> entry.getStateLabel().setAllowEmpty(multipartModel).setAllowDuplicates(multipartModel));
+		entryList.forEach(entry -> entry.setMultipartModel(multipartModel));
+	}
+
+	boolean isMultipartModel() {
+		return multipartModel;
 	}
 
 	// called when a property is removed

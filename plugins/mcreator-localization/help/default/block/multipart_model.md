@@ -10,7 +10,9 @@ use the same condition to render multiple models at once.
 
 The default block model of this block is not rendered in the world when the multipart
 format is used; add a part with an empty condition if some geometry should always render.
-The default model is still used for the block item and block previews.
+The default model is still used for the block item and block previews. Parts always use
+the default particle texture of the block; particle textures of individual state entries
+only apply to the variants format.
 
 If parts define custom bounding boxes, the shape of the block is the union of the bounding
 boxes of all parts whose condition matches the block state.
