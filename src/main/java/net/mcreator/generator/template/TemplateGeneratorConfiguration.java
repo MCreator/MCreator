@@ -39,7 +39,7 @@ public class TemplateGeneratorConfiguration {
 
 		// Load templates from the generator subfolder
 		for (String path : generatorConfiguration.getGeneratorPaths(generatorSubfolder)) {
-			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
+			templateLoaderList.add(new TemplateLoaderProxy(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path)));
 		}
 
 		// Load templates from the utils subfolder
