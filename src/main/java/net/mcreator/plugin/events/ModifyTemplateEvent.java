@@ -29,7 +29,7 @@ public class ModifyTemplateEvent extends MCREvent {
 
 	private final String templateURL;
 	private String templateOutputOriginal;
-	private Supplier<String> templateContentProvider;
+	private final Supplier<String> templateContentProvider;
 	private String templateOutput;
 	private boolean modified;
 
