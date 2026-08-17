@@ -372,6 +372,9 @@ public class JavaTypeResolver {
 		if (srcFile.isFile()) {
 			return FileIO.readFileToString(srcFile);
 		}
+		// TODO PR #6542: Replace manual source loading below with jarManager.getSourceCodeForClass(fqdn)
+		// once the updated ProjectJarManager is merged. The new PJM method handles both zip and directory
+		// source locations, and also covers workspace sources via WorkspaceLibraryInfo.
 		ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 			SourceLocation sourceLocation = jarManager.getSourceLocForClass(fqdn);
 			if (sourceLocation instanceof ZipSourceLocation) {
@@ -522,14 +525,13 @@ public class JavaTypeResolver {
 			}
 		}
 
-		if (workspace != null) {
-			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache() != null ?
-					workspace.getGenerator().getGradleCache().getImportTree() :
-					(workspace.getGenerator().getProjectJarManager() != null ?
-							ImportTreeBuilder.generateImportTree(workspace.getGenerator().getProjectJarManager()) :
-							null);
-
+		// TODO PR #6542: Once the updated ProjectJarManager with WorkspaceLibraryInfo is merged,
+		// workspace classes will be indexed directly in the PJM. The import tree from
+		// GeneratorGradleCache will include them, and reloadClassesFromMod will no longer be needed.
+		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
+			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache().getImportTree();
 			if (tree != null) {
+				// TODO PR #6542: Remove reloadClassesFromMod once WorkspaceLibraryInfo handles workspace classes
 				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), tree);
 				List<String> fqdns = tree.get(typeName);
 				if (fqdns != null && !fqdns.isEmpty()) {

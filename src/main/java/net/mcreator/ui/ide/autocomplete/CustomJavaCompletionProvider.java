@@ -60,8 +60,9 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private final JavaParser parser;
 	private final JavaTypeResolver javaTypeResolver;
 
-	private Map<String, List<String>> cachedImportTree = null;
-	private long lastImportTreeUpdate = 0;
+	// TODO PR #6542: Remove cachedModClasses when WorkspaceLibraryInfo in updated PJM handles workspace classes
+	private Map<String, List<String>> cachedModClasses = null;
+	private long lastModClassesUpdate = 0;
 
 	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {
 		static ClassInfo of(Workspace workspace, String fqdn) {
@@ -107,8 +108,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	public synchronized void invalidateCaches() {
 		classInfoCache.clear();
-		cachedImportTree = null;
-		lastImportTreeUpdate = 0;
+		cachedModClasses = null;
+		lastModClassesUpdate = 0;
 		if (javaTypeResolver != null) {
 			javaTypeResolver.invalidateCaches();
 		}
@@ -348,33 +349,36 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
+	// TODO PR #6542: This method can be simplified once the updated ProjectJarManager with
+	// WorkspaceLibraryInfo is merged. WorkspaceLibraryInfo loads compiled workspace classes directly
+	// into the PJM, so reloadClassesFromMod will no longer be needed for the import tree.
 	private synchronized Map<String, List<String>> getImportTreeCached() {
-		long now = System.currentTimeMillis();
-		if (cachedImportTree == null || (now - lastImportTreeUpdate > 5000)) {
-			Map<String, List<String>> tree = new HashMap<>();
-			if (workspace != null) {
-				if (workspace.getGenerator().getGradleCache() != null) {
-					Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
-					if (gTree != null) {
-						for (Map.Entry<String, List<String>> e : gTree.entrySet()) {
-							tree.put(e.getKey(), new ArrayList<>(e.getValue()));
-						}
-					}
-				} else if (workspace.getGenerator().getProjectJarManager() != null) {
-					Map<String, List<String>> jTree = ImportTreeBuilder.generateImportTree(
-							workspace.getGenerator().getProjectJarManager());
-					if (jTree != null) {
-						for (Map.Entry<String, List<String>> e : jTree.entrySet()) {
-							tree.put(e.getKey(), new ArrayList<>(e.getValue()));
-						}
-					}
-				}
-				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), tree);
-			}
-			cachedImportTree = tree;
-			lastImportTreeUpdate = now;
+		if (workspace == null || workspace.getGenerator().getGradleCache() == null)
+			return null;
+
+		Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
+		if (gTree == null)
+			return null;
+		
+		// TODO PR #6542: Remove reloadClassesFromMod once WorkspaceLibraryInfo in PJM handles workspace classes
+		Map<String, List<String>> tree = new HashMap<>();
+		for (Map.Entry<String, List<String>> e : gTree.entrySet()) {
+			tree.put(e.getKey(), new ArrayList<>(e.getValue()));
 		}
-		return cachedImportTree;
+
+		long now = System.currentTimeMillis();
+		if (cachedModClasses == null || (now - lastModClassesUpdate > 5000)) {
+			Map<String, List<String>> modClasses = new HashMap<>();
+			ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), modClasses);
+			cachedModClasses = modClasses;
+			lastModClassesUpdate = now;
+		}
+
+		for (Map.Entry<String, List<String>> e : cachedModClasses.entrySet()) {
+			tree.computeIfAbsent(e.getKey(), _ -> new ArrayList<>()).addAll(e.getValue());
+		}
+
+		return tree;
 	}
 
 	private boolean matchesFilter(String candidate, String filter) {
