@@ -78,6 +78,7 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
+	public boolean multipartModel;
 	@TextureReference(TextureType.BLOCK) @ResourceReference("model") public List<Block.StateEntry> states;
 
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
@@ -629,7 +630,11 @@ import java.util.stream.Collectors;
 	public List<String> getPropertiesUsedInStates() {
 		if (!supportsBlockStates() || states.isEmpty())
 			return List.of();
-		return states.getFirst().stateMap.keySet().stream().map(PropertyData::getName).collect(Collectors.toList());
+		// multipart states can each use a different subset of properties, so collect the union over all states
+		Set<String> usedProperties = new LinkedHashSet<>();
+		for (StateEntry state : states)
+			state.stateMap.keySet().forEach(property -> usedProperties.add(property.getName()));
+		return new ArrayList<>(usedProperties);
 	}
 
 	public String getWallName() {

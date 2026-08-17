@@ -265,6 +265,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			return this.getShapeForEachState(state -> {
 				<#list statesWithCustomShape as state>
 					<#if !state?is_first>else </#if>if (
+					<#if !state.stateMap.keySet()?has_content>true</#if><#-- unconditional multipart part, applies to all states -->
 					<#list state.stateMap.keySet() as property>
 						<#assign value = state.stateMap.get(property)>
 						<#if property.getClass().getSimpleName().equals("StringType")>

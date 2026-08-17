@@ -48,6 +48,8 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 
 	private final List<PropertyData<?>> lastPropertyState = new ArrayList<>();
 
+	private boolean multipartModel = false;
+
 	public JBlockStatesList(MCreator mcreator, IHelpContext gui,
 			Supplier<List<PropertyData<?>>> currentPropertiesSupplier, Supplier<Boolean> isBlockNotTinted) {
 		super(mcreator, gui);
@@ -63,6 +65,11 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 		// Make sure inner scroll panes work correctly in tandem with outer one
 		remove(scrollPane);
 		add("Center", new JLayer<>(scrollPane, new ScrollWheelPassLayer()));
+	}
+
+	public void setMultipartModel(boolean multipartModel) {
+		this.multipartModel = multipartModel;
+		entryList.forEach(entry -> entry.getStateLabel().setAllowEmpty(multipartModel));
 	}
 
 	// called when a property is removed
@@ -86,8 +93,9 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 			JBlockStatesListEntry s = iterator.next();
 			StateMap stateMap = s.getStateLabel().getStateMap();
 			stateMap.remove(data);
-			if (stateMap.isEmpty() || !duplicateFilter.add(
-					stateMap)) { // if the state map is empty or a duplicate is found
+			// multipart parts with empty condition are valid (they always apply), so only
+			// remove empty entries in variants mode, and duplicates in both modes
+			if ((stateMap.isEmpty() && !multipartModel) || !duplicateFilter.add(stateMap)) {
 				iterator.remove(); // remove the JItemStatesListEntry
 				entries.remove(s.getContainerPanel());
 			} else {
@@ -106,7 +114,7 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 	@Nullable @Override
 	protected JBlockStatesListEntry newEntry(JPanel parent, List<JBlockStatesListEntry> entryList, boolean userAction) {
 		JStateLabel stateLabel = new JStateLabel(mcreator, currentPropertiesSupplier,
-				() -> entryList.stream().map(JBlockStatesListEntry::getStateLabel));
+				() -> entryList.stream().map(JBlockStatesListEntry::getStateLabel)).setAllowEmpty(multipartModel);
 		if (userAction && !stateLabel.editState())
 			return null;
 
@@ -114,9 +122,13 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 	}
 
 	@Override public ValidationResult getValidationStatus() {
-		// validate state definitions - if a certain property is used in one state, it needs to be present in all states
 		List<Block.StateEntry> entries = getEntries();
 
+		// multipart parts can use arbitrary subsets of properties (including none), no validation needed
+		if (multipartModel)
+			return ValidationResult.PASSED;
+
+		// validate state definitions - if a certain property is used in one state, it needs to be present in all states
 		// collect all used properties
 		Set<PropertyData<?>> usedProperties = new HashSet<>();
 		for (Block.StateEntry entry : entries) {
@@ -125,6 +137,10 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 
 		// make sure all states contain all used properties
 		for (Block.StateEntry entry : entries) {
+			if (entry.stateMap.isEmpty()) {
+				return new ValidationResult(ValidationResult.Type.ERROR,
+						L10N.t("elementgui.block.custom_states.error_empty_not_allowed"));
+			}
 			if (!entry.stateMap.keySet().containsAll(usedProperties)) {
 				return new ValidationResult(ValidationResult.Type.ERROR,
 						L10N.t("elementgui.block.custom_states.error_missing_properties",

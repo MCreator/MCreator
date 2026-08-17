@@ -2473,6 +2473,7 @@ public class TestWorkspaceDataProvider {
 				false }[valueIndex]; // third is true because third index for model is cross which requires transparency
 		block.hasCustomOpacity =
 				block.hasTransparency || valueIndex == 3; // Test custom opacity with non-transparent block
+		block.multipartModel = _true;
 		block.states = new ArrayList<>();
 		if (!emptyLists) {
 			int size2 = random.nextInt(4) + 1;
@@ -2487,6 +2488,8 @@ public class TestWorkspaceDataProvider {
 			for (int i = 0; i < size2; i++) {
 				StateMap stateMap = new StateMap();
 				for (PropertyDataWithValue<?> property : stateProperties) {
+					if (block.multipartModel && random.nextBoolean())
+						continue; // multipart state conditions can use arbitrary property subsets
 					if (property.property() instanceof PropertyData.IntegerType) {
 						stateMap.put(property.property(), random.nextInt(1, 10));
 					} else if (property.property() instanceof PropertyData.LogicType) {
