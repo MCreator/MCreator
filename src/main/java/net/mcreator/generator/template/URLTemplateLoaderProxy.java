@@ -19,21 +19,17 @@
 
 package net.mcreator.generator.template;
 
+import freemarker.cache.TemplateLoader;
 import freemarker.cache.URLTemplateLoader;
 import freemarker.cache.URLTemplateSource;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ModifyTemplateEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.net.URL;
 
-public class URLTemplateLoaderProxy extends URLTemplateLoader {
+public class URLTemplateLoaderProxy implements TemplateLoader {
 
-	private static final Logger LOGGER = LogManager.getLogger(URLTemplateLoaderProxy.class);
-
-	private final URLTemplateLoader templateLoader;
+	private final TemplateLoader templateLoader;
 
 	public URLTemplateLoaderProxy(URLTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
@@ -51,17 +47,6 @@ public class URLTemplateLoaderProxy extends URLTemplateLoader {
 		templateLoader.closeTemplateSource(templateSource);
 	}
 
-	@Override public Boolean getURLConnectionUsesCaches() {
-		return templateLoader.getURLConnectionUsesCaches();
-	}
-
-	@Override public void setURLConnectionUsesCaches(Boolean urlConnectionUsesCaches) {
-		templateLoader.setURLConnectionUsesCaches(urlConnectionUsesCaches);
-	}
-
-	@Override protected URL getURL(String name) {
-		return null;
-	}
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
 		var reader = templateLoader.getReader(templateSource, encoding);
