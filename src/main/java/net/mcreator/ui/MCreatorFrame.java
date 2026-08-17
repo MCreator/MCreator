@@ -68,8 +68,6 @@ public abstract class MCreatorFrame extends JFrame
 
 	private final JPanel mainContent;
 
-	private long lastFocusTime = 0;
-
 	public MCreatorFrame(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		this.windowUID = System.currentTimeMillis();
 		this.workspace = workspace;
@@ -115,12 +113,6 @@ public abstract class MCreatorFrame extends JFrame
 
 		add("Center", mainContent);
 		add("South", statusBar);
-
-		addWindowFocusListener(new WindowAdapter() {
-			@Override public void windowGainedFocus(WindowEvent e) {
-				lastFocusTime = System.currentTimeMillis();
-			}
-		});
 	}
 
 	protected void setMainContent(JComponent component) {
@@ -176,10 +168,6 @@ public abstract class MCreatorFrame extends JFrame
 
 	public boolean hasBackgroundImage() {
 		return mainContent instanceof ImagePanel;
-	}
-
-	public long getLastFocusTime() {
-		return lastFocusTime;
 	}
 
 }

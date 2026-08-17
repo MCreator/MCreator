@@ -53,7 +53,7 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 		MCreator mcreator = currentMCreator.get();
 		if (mcreator == null) {
 			return CompletableFuture.completedFuture(
-					ToolResult.error("No active MCreator instance. Open a workspace first."));
+					ToolResult.error("No workspace open or marked to be used by MCP server by user."));
 		}
 
 		if (mcreator.getGradleConsole().isGradleSetupTaskRunning()) {

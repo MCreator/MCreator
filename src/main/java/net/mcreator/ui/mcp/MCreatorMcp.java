@@ -34,36 +34,16 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.function.Supplier;
 
-public final class MCreatorMcp implements Closeable {
-
-	private static final Logger LOG = LogManager.getLogger(MCreatorMcp.class);
-
-	private final McpServer server;
-
-	private final Supplier<MCreator> currentMCreator;
-
-	public MCreatorMcp(Supplier<MCreator> currentMCreator) {
-		this(new HttpMcpTransport(PreferencesManager.PREFERENCES.integrations.mcpPort.get()), currentMCreator);
-
-		if (PreferencesManager.PREFERENCES.integrations.mcpEnable.get()) {
-			try {
-				if (PreferencesManager.PREFERENCES.integrations.mcpAutoInstall.get()) {
-					McpInstallHelper.installToAll("MCreator", "http://127.0.0.1:" + PreferencesManager.PREFERENCES.integrations.mcpPort.get() + "/mcp");
-				}
-
-				this.server.start();
-				LOG.debug("MCP server started at port {}", PreferencesManager.PREFERENCES.integrations.mcpPort.get());
-			} catch (IOException e) {
-				LOG.warn("Failed to start MCP server", e);
-			}
-		}
-	}
+public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) implements Closeable {
 
 	public MCreatorMcp(McpTransport transport, Supplier<MCreator> currentMCreator) {
-		this.currentMCreator = currentMCreator;
-		this.server = new McpServer("MCreator", Launcher.version.full, transport);
+		this(new McpServer("MCreator", Launcher.version.full, transport), currentMCreator);
 
 		registerTools();
+	}
+
+	public void start() throws IOException {
+		this.server.start();
 	}
 
 	private void registerTools() {
@@ -88,16 +68,7 @@ public final class MCreatorMcp implements Closeable {
 		server.registerTool(new PackMakerTool(currentMCreator));
 	}
 
-	public McpServer getServer() {
-		return server;
-	}
-
-	public Supplier<MCreator> getCurrentMCreator() {
-		return currentMCreator;
-	}
-
 	@Override public void close() throws IOException {
-		LOG.debug("Stopping MCP server...");
 		server.stop();
 	}
 
