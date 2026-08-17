@@ -1,0 +1,11 @@
+_default: UseAnim.NONE
+none: UseAnim.NONE
+eat: UseAnim.EAT
+drink: UseAnim.DRINK
+block: UseAnim.BLOCK
+bow: UseAnim.BOW
+spear: UseAnim.SPEAR
+crossbow: UseAnim.CROSSBOW
+spyglass: UseAnim.SPYGLASS
+toot_horn: UseAnim.TOOT_HORN
+brush: UseAnim.BRUSH

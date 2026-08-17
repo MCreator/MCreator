@@ -22,7 +22,6 @@ package net.mcreator.blockly.datapack;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.datapack.blocks.MCItemBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -48,8 +47,6 @@ public class BlocklyToFeature extends BlocklyToCode {
 	}
 
 	@Override protected void beforeGenerate() {
-		blockGenerators.add(new MCItemBlock());
-
 		featureConfigurationCode = new StringBuilder();
 		featureType = "";
 	}

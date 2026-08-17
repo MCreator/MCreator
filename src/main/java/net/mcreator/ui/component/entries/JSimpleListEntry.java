@@ -153,6 +153,11 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 		moveDown.setEnabled(true);
 	}
 
+	void showArrows(boolean hasArrows) {
+		moveDown.setVisible(hasArrows);
+		moveUp.setVisible(hasArrows);
+	}
+
 	protected abstract void setEntryEnabled(boolean enabled);
 
 	public abstract T getEntry();

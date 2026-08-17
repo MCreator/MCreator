@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, hogy melyik falusi szakma kínálhat kereskedelmet

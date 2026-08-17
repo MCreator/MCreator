@@ -1,0 +1,1 @@
+Ez az a név, amely bármely páncéldarab eszközleírásában megjelenik, amelyre ezt a páncéldíszt felvitték.

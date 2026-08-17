@@ -1,0 +1,1 @@
+Wenn aktiviert, kann die Entität unbegrenzt unter Wasser atmen wie Fische.

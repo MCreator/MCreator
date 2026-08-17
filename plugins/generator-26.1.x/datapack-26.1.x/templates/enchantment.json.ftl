@@ -39,8 +39,9 @@
     <#list incompatibleEnchantments as incompatibleEnchantment>"${generator.map(incompatibleEnchantment.getUnmappedValue(), "enchantments", 1)}"<#sep>,</#list>
   ]
   </#if>
-  <#if data.damageModifier != 0>,
+  <#if (data.damageModifier != 0) || (effectblocks?size != 0)>,
   "effects": {
+    <#if data.damageModifier != 0>
     "minecraft:damage_protection": [
       {
         "effect": {
@@ -50,9 +51,22 @@
             "base": ${data.damageModifier},
             "per_level_above_first": ${data.damageModifier}
           }
+        },
+        "requirements": {
+          "condition": "minecraft:damage_source_properties",
+          "predicate": {
+            "tags": [
+              {
+                "expected": false,
+                "id": "minecraft:bypasses_invulnerability"
+              }
+            ]
+          }
         }
       }
-    ]
+    ]<#if effectblocks?size != 0>,</#if>
+    </#if>
+    ${effectcode?remove_ending(",")}
   }
   </#if>
 }

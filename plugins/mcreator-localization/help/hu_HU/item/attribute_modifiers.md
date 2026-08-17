@@ -1,0 +1,1 @@
+Ezek az attribútummódosítók akkor érvényesülnek az entitásra, amikor az adott tárgy a megadott helyeken van felszerelve.

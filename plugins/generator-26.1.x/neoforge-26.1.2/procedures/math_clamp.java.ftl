@@ -1,0 +1,1 @@
+(Mth.clamp(${opt.removeParentheses(input$value)}, ${opt.removeParentheses(input$min)}, ${opt.removeParentheses(input$max)}))

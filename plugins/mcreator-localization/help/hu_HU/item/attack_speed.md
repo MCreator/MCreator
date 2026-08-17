@@ -1,0 +1,1 @@
+Ez a paraméter határozza meg, milyen gyorsan telik le a tárgyad támadási visszatöltési ideje, amikor lényeket támadsz.

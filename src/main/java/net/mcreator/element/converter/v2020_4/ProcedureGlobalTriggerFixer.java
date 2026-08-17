@@ -50,7 +50,7 @@ public class ProcedureGlobalTriggerFixer implements IConverter {
 			throws ParserConfigurationException, IOException, SAXException, TransformerException {
 		Procedure procedure = (Procedure) input;
 
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(procedure.procedurexml)));
 		doc.getDocumentElement().normalize();

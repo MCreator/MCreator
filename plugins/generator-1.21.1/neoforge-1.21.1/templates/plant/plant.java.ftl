@@ -107,7 +107,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		.jumpFactor(${data.jumpFactor}f)
 		</#if>
 		<#if data.luminance != 0>
-		.lightLevel(s -> ${data.luminance})
+		.lightLevel(state -> ${data.luminance})
 		</#if>
 		<#if data.isSolid>
 			.noOcclusion()
@@ -442,7 +442,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	<#if (blockList?size > 1) && condition>(</#if>
 	<#list blockList as canBePlacedOn>
 	<#if canBePlacedOn.getUnmappedValue().startsWith("TAG:")>
-	groundState.is(BlockTags.create(ResourceLocation.parse("${canBePlacedOn.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")}")))
+	groundState.is(BlockTags.create(ResourceLocation.parse("${canBePlacedOn.asTagEntry()}")))
 	<#elseif canBePlacedOn.getMappedValue(1).startsWith("#")>
 	groundState.is(BlockTags.create(ResourceLocation.parse("${canBePlacedOn.getMappedValue(1)?remove_beginning("#")}")))
 	<#else>

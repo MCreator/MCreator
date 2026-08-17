@@ -30,7 +30,6 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -80,9 +79,8 @@ public class GTProcedureTriggers {
 				additionalBlocks++;
 			}
 
-			List<DataListEntry> eventparameters = DataListLoader.loadDataList("eventparameters");
 			GeneratorWrapper generatorWrapper = new GeneratorWrapper(workspace.getGenerator());
-			for (DataListEntry entry : eventparameters) {
+			for (DataListEntry entry : DataListLoader.loadDataList("eventparameters")) {
 				String parameter = entry.getName();
 				String requiredGlobalTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
 				if (requiredGlobalTrigger.equals(externalTrigger.getID())) {

@@ -1,1 +1,1 @@
-Ezzel a paraméterrel aktiválhatod a tárgyad közelharci sebzését, és beállíthatod a sebzés értékét.
+Ez a paraméter határozza meg, hogy a tárgyad mennyi támadási sebzést okoz az entitásoknak.

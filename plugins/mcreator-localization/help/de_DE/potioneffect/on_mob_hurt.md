@@ -1,0 +1,1 @@
+Diese Prozedur wird jedes Mal durchgeführt, wenn eine Kreatur mit diesem Effekt verletzt wird.

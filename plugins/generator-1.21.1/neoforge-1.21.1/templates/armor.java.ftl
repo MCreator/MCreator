@@ -33,6 +33,11 @@
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
 
+<#assign helmetCustomModel = data.enableHelmet && data.helmetModelName != "Default" && data.getHelmetModel()?? && data.helmetModelPart?has_content>
+<#assign bodyCustomModel = data.enableBody && data.bodyModelName != "Default" && data.getBodyModel()?? && data.bodyModelPart?has_content && data.armsModelPartL?has_content && data.armsModelPartR?has_content>
+<#assign leggingsCustomModel = data.enableLeggings && data.leggingsModelName != "Default" && data.getLeggingsModel()?? && (data.leggingsModelPartL?has_content || data.leggingsModelPartR?has_content)>
+<#assign bootsCustomModel = data.enableBoots && data.bootsModelName != "Default" && data.getBootsModel()?? && data.bootsModelPartL?has_content && data.bootsModelPartR?has_content>
+
 package ${package}.item;
 
 import java.util.function.Consumer;
@@ -69,10 +74,9 @@ import net.minecraft.client.model.Model;
 		});
 	}
 
-	<#if (data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet) || (data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody) ||
-		 (data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings) || (data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots)>
+	<#if helmetCustomModel || bodyCustomModel || leggingsCustomModel || bootsCustomModel>
 	@SubscribeEvent public static void registerItemExtensions(RegisterClientExtensionsEvent event) {
-		<#if data.helmetModelName != "Default" && data.getHelmetModel()?? && data.enableHelmet>
+		<#if helmetCustomModel>
 		event.registerItem(new IClientItemExtensions() {
 			private HumanoidModel armorModel = null;
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
@@ -110,7 +114,7 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_HELMET.get());
 		</#if>
 
-		<#if data.bodyModelName != "Default" && data.getBodyModel()?? && data.enableBody>
+		<#if bodyCustomModel>
 		event.registerItem(new IClientItemExtensions() {
 			private HumanoidModel armorModel = null;
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
@@ -149,15 +153,15 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get());
 		</#if>
 
-		<#if data.leggingsModelName != "Default" && data.getLeggingsModel()?? && data.enableLeggings>
+		<#if leggingsCustomModel>
 		event.registerItem(new IClientItemExtensions() {
 			private HumanoidModel armorModel = null;
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
 				if (armorModel == null) {
 					${data.leggingsModelName} model = new ${data.leggingsModelName}(Minecraft.getInstance().getEntityModels().bakeLayer(${data.leggingsModelName}.LAYER_LOCATION));
 					armorModel = new HumanoidModel(new ModelPart(Collections.emptyList(), Map.of(
-						"left_leg", model.${data.leggingsModelPartL},
-						"right_leg", model.${data.leggingsModelPartR},
+						"left_leg", <#if data.leggingsModelPartL?has_content>model.${data.leggingsModelPartL}<#else>new ModelPart(Collections.emptyList(), Collections.emptyMap())</#if>,
+						"right_leg", <#if data.leggingsModelPartR?has_content>model.${data.leggingsModelPartR}<#else>new ModelPart(Collections.emptyList(), Collections.emptyMap())</#if>,
 						"head", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"hat", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
 						"body", new ModelPart(Collections.emptyList(), Collections.emptyMap()),
@@ -188,7 +192,7 @@ import net.minecraft.client.model.Model;
 		}, ${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get());
 		</#if>
 
-		<#if data.bootsModelName != "Default" && data.getBootsModel()?? && data.enableBoots>
+		<#if bootsCustomModel>
 		event.registerItem(new IClientItemExtensions() {
 			private HumanoidModel armorModel = null;
 			@Override @OnlyIn(Dist.CLIENT) public HumanoidModel getHumanoidArmorModel(LivingEntity living, ItemStack stack, EquipmentSlot slot, HumanoidModel defaultModel) {
@@ -237,7 +241,8 @@ import net.minecraft.client.model.Model;
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(${data.maxDamage}))<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.HELMET, new Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(${data.maxDamage}))<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[0]) "helmet" "EquipmentSlotGroup.HEAD" data.damageValueHelmet/>);
 		}
 
 		<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
@@ -262,7 +267,8 @@ import net.minecraft.client.model.Model;
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.CHESTPLATE, new Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[1]) "chestplate" "EquipmentSlotGroup.CHEST" data.damageValueBody/>);
 		}
 
 		<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
@@ -287,7 +293,8 @@ import net.minecraft.client.model.Model;
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(${data.maxDamage}))<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.LEGGINGS, new Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(${data.maxDamage}))<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[2]) "leggings" "EquipmentSlotGroup.LEGS" data.damageValueLeggings/>);
 		}
 
 		<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
@@ -312,7 +319,8 @@ import net.minecraft.client.model.Model;
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(${data.maxDamage}))<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>);
+			super(ArmorItem.Type.BOOTS, new Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(${data.maxDamage}))<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[3]) "boots" "EquipmentSlotGroup.FEET" data.damageValueBoots/>);
 		}
 
 		<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
@@ -336,3 +344,22 @@ import net.minecraft.client.model.Model;
 }
 </@javacompress>
 <#-- @formatter:on -->
+
+<#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>
+<#if modifiers?size != 0>
+.attributes(
+	ItemAttributeModifiers.builder()
+	<#-- First add the default armor attributes -->
+	.add(Attributes.ARMOR, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.${armorPart}"), ${defense}, AttributeModifier.Operation.ADD_VALUE), ${defaultEquipSlot})
+	<#if data.toughness != 0>.add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.${armorPart}"), ${data.toughness}, AttributeModifier.Operation.ADD_VALUE), ${defaultEquipSlot})</#if>
+	<#if data.knockbackResistance != 0>.add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(ResourceLocation.withDefaultNamespace("armor.${armorPart}"), ${data.knockbackResistance}, AttributeModifier.Operation.ADD_VALUE), ${defaultEquipSlot})</#if>
+	<#-- Then add the custom modifiers -->
+	<#list modifiers as modifier>
+	.add(${modifier.attribute}, new AttributeModifier(
+			ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}.${armorPart}"),
+			${modifier.amount}, AttributeModifier.Operation.${modifier.operation}),
+			<#if modifier.equipmentSlot.getUnmappedValue() == "default">${defaultEquipSlot}<#else>${modifier.equipmentSlot}</#if>)
+	</#list>.build()
+)
+</#if>
+</#macro>

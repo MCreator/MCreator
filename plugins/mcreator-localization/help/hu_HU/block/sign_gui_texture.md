@@ -1,0 +1,1 @@
+Ez a textúra a függőtábla szövegének szerkesztése közben jelenik meg. A textúra mérete 16x16 képpont legyen.

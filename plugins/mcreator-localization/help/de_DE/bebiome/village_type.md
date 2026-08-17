@@ -1,0 +1,1 @@
+Dieser Parameter gibt an, welche Biomvorgabe der Dorfstruktur in deinem Biom generiert.

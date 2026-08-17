@@ -60,7 +60,7 @@ public class ${name}Command {
 
 <#macro commandRegistrationCode>
 	event.getDispatcher().register(Commands.literal("${data.commandName}")
-		<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
+		<#if data.permissionLevel != "No requirement">.requires(source -> source.hasPermission(${data.permissionLevel}))</#if>
 		${argscode}
 	);
 </#macro>

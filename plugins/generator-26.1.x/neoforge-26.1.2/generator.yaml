@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: stable
-buildfileversion: 26.1.2.65-beta
+buildfileversion: 26.1.2.95
 
 import:
   - datapack-26.1.x
@@ -86,6 +86,7 @@ base_templates:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
       - "${w.hasElementsOfType('feature')}"
       - "${w.hasElementsOfType('armor')}"
+      - "${w.hasElementsOfType('fluid')}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition_any:

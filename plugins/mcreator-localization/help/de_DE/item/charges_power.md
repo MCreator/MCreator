@@ -1,0 +1,1 @@
+Wenn diese Option aktiviert ist, wird die Projektil-Kraft des Fernkampfgegenstandes unterschiedlich sein, je nachdem, wie lange der Fernkampfgegenstand geladen wurde.

@@ -327,7 +327,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if data.connectedSides>
+	<#-- Connected sides skip all faces touching the same block, which only renders correctly on full cube geometry -->
+	<#if data.connectedSides && (!data.blockBase?has_content || data.blockBase == "Leaves")>
 	@Override public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}

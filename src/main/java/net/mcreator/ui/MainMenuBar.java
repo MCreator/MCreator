@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.io.OS;
+import net.mcreator.io.WindowsPackage;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
@@ -79,7 +80,7 @@ public abstract class MainMenuBar extends JMenuBar {
 
 				JMenuItem recent = new JMenuItem(recentWorkspaceEntry.getName());
 				recent.addActionListener(
-						e -> mcreator.getApplication().openWorkspaceInMCreator(recentWorkspaceEntry.getPath()));
+						_ -> mcreator.getApplication().openWorkspaceInMCreator(recentWorkspaceEntry.getPath()));
 				recentWorkspacesList.add(recent);
 
 				// limit to max. 10 recent workspaces on the list
@@ -175,7 +176,8 @@ public abstract class MainMenuBar extends JMenuBar {
 		help.addSeparator();
 		help.add(mcreator.getActionRegistry().donate);
 		help.addSeparator();
-		help.add(mcreator.getActionRegistry().checkForUpdates);
+		if (!WindowsPackage.isRunningAsMSIX())
+			help.add(mcreator.getActionRegistry().checkForUpdates);
 		help.add(mcreator.getActionRegistry().checkForPluginUpdates);
 		help.add(mcreator.getActionRegistry().aboutMCreator);
 		help.setMnemonic('H');

@@ -731,14 +731,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 				retval.setTame(true, true);
 			}
 			</#if>
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
 			return retval;
 		}
 	<#elseif data.breedable>
 		@Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			${name}Entity retval = ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld, EntitySpawnReason.BREEDING);
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), EntitySpawnReason.BREEDING, null);
-			return retval;
+			return ${JavaModName}Entities.${REGISTRYNAME}.get().create(serverWorld, EntitySpawnReason.BREEDING);
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
@@ -764,6 +761,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		Level world = this.level();
 		Entity entity = this;
 		return <@procedureOBJToConditionCode data.breatheUnderwater false true/>;
+	}
+
+	<#-- Fix #6456 - NeoForge did not patch canDrownInFluidType yet, so we also need use canBreatheUnderwater -->
+	@Override public boolean canBreatheUnderwater() {
+		return !this.canDrownInFluidType(NeoForgeMod.WATER_TYPE.value());
 	}
 	</#if>
 
@@ -904,6 +906,14 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
+	<#if data.spawnThisMob && data.mobSpawningType.getUnmappedValue() == "monster" && data.mobBehaviourType != "Creature">
+	<#-- Fix #6451 - monsters won't spawn in end in 26.1 as it has skylight.
+	     EnderMan fixes this by returning 0 in getWalkTargetValue, but this has other unwanted consequences -->
+	@Override public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+		return this.level().dimension() == Level.OVERWORLD ? super.checkSpawnRules(level, reason) : true;
+	}
+	</#if>
+
 	public static void init(RegisterSpawnPlacementsEvent event) {
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType.getUnmappedValue() == "creature">
@@ -918,8 +928,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) &&
-							world.getRawBrightness(pos, 0) > 8)
+						world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) &&
+						(EntitySpawnReason.ignoresLightRequirements(reason) || world.getRawBrightness(pos, 0) > 8)
 				</#if>,
 				RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
@@ -950,8 +960,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					}
 					<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos).is(Blocks.WATER) &&
-							world.getBlockState(pos.above()).is(Blocks.WATER))
+						world.getBlockState(pos).is(Blocks.WATER) &&
+						world.getBlockState(pos.above()).is(Blocks.WATER)
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
@@ -966,11 +976,7 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 						return <@procedureOBJToConditionCode data.spawningCondition/>;
 					}
 					<#else>
-					(entityType, world, reason, pos, random) ->
-							(world.getFluidState(pos.below()).is(FluidTags.WATER) &&
-							world.getBlockState(pos.above()).is(Blocks.WATER) &&
-							pos.getY() >= (world.getSeaLevel() - 13) &&
-							pos.getY() <= world.getSeaLevel())
+					GlowSquid::checkGlowSquidSpawnRules
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);
@@ -986,9 +992,9 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 					}
 					<#else>
 						(entityType, world, reason, pos, random) ->
-								(world.getDifficulty() != Difficulty.PEACEFUL &&
-								Monster.isDarkEnoughToSpawn(world, pos, random) &&
-								Mob.checkMobSpawnRules(entityType, world, reason, pos, random))
+							world.getDifficulty() != Difficulty.PEACEFUL &&
+							(EntitySpawnReason.ignoresLightRequirements(reason) || Monster.isDarkEnoughToSpawn(world, pos, random)) &&
+							Mob.checkMobSpawnRules(entityType, world, reason, pos, random)
 					</#if>,
 					RegisterSpawnPlacementsEvent.Operation.REPLACE
 			);

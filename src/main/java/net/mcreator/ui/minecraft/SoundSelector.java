@@ -19,12 +19,13 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.Sound;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.StringSelectorDialog;
+import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -55,10 +56,10 @@ public class SoundSelector extends JPanel {
 		this.mcreator = frame;
 
 		bt.addActionListener(event -> {
-			String s = StringSelectorDialog.openSelectorDialog(mcreator, ElementUtil::getAllSounds,
+			DataListEntry entry = DataListSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadAllSounds,
 					L10N.t("dialog.selector.sound.title"), L10N.t("dialog.selector.sound.message"));
-			if (s != null)
-				setSound(s);
+			if (entry != null)
+				setSound(entry.getName());
 		});
 		rm.addActionListener(e -> setSound((String) null));
 		tfe.setEditable(false);

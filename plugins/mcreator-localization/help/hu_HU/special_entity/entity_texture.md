@@ -1,0 +1,1 @@
+Ez az objektum textúrája. Győződj meg arról, hogy a textúra kompatibilis az objektum modelljével.

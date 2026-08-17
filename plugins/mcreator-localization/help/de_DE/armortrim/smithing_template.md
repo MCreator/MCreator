@@ -1,0 +1,1 @@
+Dieser Gegenstand wird als Schmiedevorlage verwendet, die deine Verzierung auf die Rüstung in der Schmiedetabelle anwendet.

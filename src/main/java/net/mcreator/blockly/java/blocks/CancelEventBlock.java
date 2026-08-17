@@ -29,6 +29,7 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -76,5 +77,19 @@ public class CancelEventBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "cancel_event",
+          "previousStatement": null,
+          "nextStatement": null,
+          "colour": 90
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
 	}
 }

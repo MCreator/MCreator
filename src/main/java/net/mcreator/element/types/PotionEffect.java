@@ -20,7 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AttributeModifierEntry;
-import net.mcreator.element.parts.Particle;
+import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -48,7 +48,7 @@ import java.util.List;
 	public String effectName;
 	@TextureReference(TextureType.EFFECT) public TextureHolder icon;
 	public Color color;
-	@Nullable public Particle particle;
+	@Nullable public ParticleEntry particle;
 	public Sound onAddedSound;
 	public boolean isInstant;
 	@LimitedOptions({ "NEUTRAL", "HARMFUL", "BENEFICIAL" }) public String mobEffectCategory;

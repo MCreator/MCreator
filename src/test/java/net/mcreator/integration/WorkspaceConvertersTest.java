@@ -96,6 +96,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 						mod.getGeneratableElement();
 					}
 
+					// Clear GE cache at this point to force reading definitions from files
+					workspace.getModElementManager().invalidateCache();
+
 					MCreator mcreator = MCreator.create(null, workspace);
 
 					// Delete auto-generated code from old workspace

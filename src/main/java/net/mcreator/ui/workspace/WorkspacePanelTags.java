@@ -28,7 +28,6 @@ import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.AddCommonTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
@@ -38,6 +37,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -66,7 +66,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			workspacePanel.getMCreator(), ModElementType.FUNCTION);
 	private final JItemListField<DamageTypeEntry> listFieldDamageTypes = new DamageTypeListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
-	private final JItemListField<Enchantment> listFieldEnchantment = new EnchantmentListField(
+	private final JItemListField<EnchantmentEntry> listFieldEnchantment = new EnchantmentListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<GameEventEntry> listFieldGameEvents = new GameEventListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
@@ -83,6 +83,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	// Cache of list editor
 	private ItemListFieldCellEditor lastEditor = null;
+
+	private final JToolBar bar = new JToolBar();
 
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -133,8 +135,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					// Calculate how many elements can fit in the cell (assuming 31px per element which is true for ITEMS and BLOCKS)
 					int visibleCount = (int) Math.ceil(elements.getColumnModel().getColumn(3).getWidth() / 31.0);
 					TagElement tagElement = tagElementForRow(row);
-					Stream<TagElement.Entry> entries = workspacePanel.getMCreator().getWorkspace().getTagElements()
-							.get(tagElement).stream().limit(visibleCount);
+					Stream<TagElement.Entry> entries = entriesForTag(tagElement).stream().limit(visibleCount);
 					JItemListField<?> listField = switch (tagElement.type()) {
 						case ITEMS, BLOCKS -> {
 							listFieldBlocksItems.setListElements(entries.map(
@@ -180,7 +181,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 						}
 						case ENCHANTMENTS -> {
 							listFieldEnchantment.setListElements(entries.map(
-											e -> (Enchantment) TagElement.entryToMappableElement(
+											e -> (EnchantmentEntry) TagElement.entryToMappableElement(
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldEnchantment;
@@ -241,7 +242,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		sorter = new TableRowSorter<>(elements.getModel());
 		sorter.toggleSortOrder(2);
-		sorter.addRowSorterListener(e -> clearEditor());
+		sorter.addRowSorterListener(_ -> clearEditor());
 		elements.setRowSorter(sorter);
 
 		elements.setBackground(Theme.current().getBackgroundColor());
@@ -273,10 +274,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		add("Center", sp);
 
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add"), e -> {
+		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add"), _ -> {
 			TagElement tag = NewTagDialog.showNewTagDialog(workspacePanel.getMCreator());
 			if (tag != null) {
 				workspacePanel.getMCreator().getWorkspace().addTagElement(tag);
@@ -284,15 +282,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(createToolBarButton("workspace.tags.add_common", UIRES.get("16px.injecttags"), e -> {
+		bar.add(createToolBarButton("workspace.tags.add_common", UIRES.get("16px.injecttags"), _ -> {
 			AddCommonTagsDialog.open(workspacePanel.getMCreator());
 			reloadElements();
 		}));
 
 		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
-				e -> deleteCurrentlySelected()));
-
-		add("North", bar);
+				_ -> deleteCurrentlySelected()));
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
@@ -313,6 +309,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		});
 	}
 
+	@Nullable @Override public JToolBar getToolBarComponent() {
+		return bar;
+	}
+
 	private static void prepareListField(JItemListField<?> listField) {
 		listField.disableItemCentering();
 		listField.hideButtons();
@@ -323,6 +323,11 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	private TagElement tagElementForRow(int row) {
 		return new TagElement((TagType) elements.getValueAt(row, 0),
 				elements.getValueAt(row, 1).toString() + ":" + elements.getValueAt(row, 2).toString());
+	}
+
+	private ArrayList<TagElement.Entry> entriesForTag(TagElement tagElement) {
+		return workspacePanel.getMCreator().getWorkspace().getTagElements()
+				.getOrDefault(tagElement, new ArrayList<>());
 	}
 
 	@Override public boolean isSupportedInWorkspace() {
@@ -342,8 +347,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			return;
 		}
 
-		if (workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
-				.anyMatch(TagElement.Entry::isManaged)) {
+		if (entriesForTag(tagElement).stream().anyMatch(TagElement.Entry::isManaged)) {
 			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.tags.remove_tags_managed_error"), L10N.t("common.warning"),
 					JOptionPane.ERROR_MESSAGE);
@@ -414,7 +418,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			this.listField.setBorder(UIManager.getBorder("Table.focusSelectedCellHighlightBorder"));
 
 			// Slight delay before enabling so initial click on the row doesn't trigger button actions
-			timer = new Timer(250, e -> listField.setEnabled(true));
+			timer = new Timer(250, _ -> listField.setEnabled(true));
 			timer.start();
 		}
 
@@ -455,7 +459,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 							tagElement.type() == TagType.ITEMS ?
 									ElementUtil::loadBlocksAndItems :
 									ElementUtil::loadBlocks).allowTags().allowExternalElements();
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (MItemBlock) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
@@ -463,7 +467,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case ENTITIES -> {
 					JItemListField<EntityEntry> retval = new SpawnableEntityListField(mcreator).allowTags()
 							.allowExternalElements();
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (EntityEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
@@ -471,7 +475,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case BIOMES -> {
 					JItemListField<BiomeEntry> retval = new BiomeListField(mcreator).allowTags()
 							.allowExternalElements();
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (BiomeEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
@@ -479,7 +483,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case STRUCTURES -> {
 					JItemListField<StructureEntry> retval = new StructureListField(mcreator).allowTags()
 							.allowExternalElements();
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (StructureEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
@@ -487,7 +491,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case FUNCTIONS -> {
 					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
 							ModElementType.FUNCTION);
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
@@ -495,23 +499,23 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case DAMAGE_TYPES -> {
 					JItemListField<DamageTypeEntry> retval = new DamageTypeListField(mcreator).allowTags()
 							.allowExternalElements();
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case ENCHANTMENTS -> {
-					JItemListField<Enchantment> retval = new EnchantmentListField(mcreator).allowTags()
+					JItemListField<EnchantmentEntry> retval = new EnchantmentListField(mcreator).allowTags()
 							.allowExternalElements();
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
-							.map(e -> (Enchantment) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+					retval.setListElements(entriesForTag(tagElement).stream()
+							.map(e -> (EnchantmentEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
 				case GAME_EVENTS -> {
 					JItemListField<GameEventEntry> retval = new GameEventListField(mcreator).allowTags()
 							.allowExternalElements();
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (GameEventEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
@@ -519,7 +523,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case PAINTING_VARIANTS -> {
 					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
 							ModElementType.PAINTING);
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					retval.setReadOnly();
@@ -528,7 +532,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case BANNER_PATTERNS -> {
 					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
 							ModElementType.BANNERPATTERN);
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					retval.setReadOnly();
@@ -537,7 +541,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case POINTS_OF_INTEREST -> {
 					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
 							ModElementType.VILLAGERPROFESSION);
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					retval.setReadOnly();
@@ -546,7 +550,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				case VILLAGER_TRADES -> {
 					JItemListField<NonMappableElement> retval = new ModElementListField(mcreator,
 							ModElementType.VILLAGERTRADE);
-					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+					retval.setListElements(entriesForTag(tagElement).stream()
 							.map(e -> (NonMappableElement) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					retval.setReadOnly();

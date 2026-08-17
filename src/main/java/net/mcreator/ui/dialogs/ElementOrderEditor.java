@@ -154,7 +154,8 @@ public class ElementOrderEditor {
 
 			for (String element : tab.getValue()) {
 				ModElement me = mcreator.getWorkspace().getModElementByName(element);
-				if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
+				if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement
+						&& !tabElement.getCreativeTabItems().isEmpty())
 					tabEditors.get(tab.getKey()).addElement(me);
 			}
 
@@ -188,7 +189,8 @@ public class ElementOrderEditor {
 
 		int resultval = JOptionPane.showOptionDialog(mcreator, mainPanel, L10N.t("dialog.element_order.editor_title"),
 				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-				new String[] { "Save layout", UIManager.getString("OptionPane.cancelButtonText") }, "");
+				new String[] { L10N.t("dialog.common.save_changes"),
+						UIManager.getString("OptionPane.cancelButtonText") }, "");
 		if (resultval == 0) {
 			for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
 				ModElement[] newOrder = Collections.list(entry.getValue().elements()).toArray(new ModElement[0]);
@@ -208,6 +210,7 @@ public class ElementOrderEditor {
 				}
 			}
 
+			mcreator.getWorkspace().getHistoryManager().checkpoint("local_history.checkpoint.tab_order_changed");
 			mcreator.getWorkspace().markDirty();
 		}
 	}

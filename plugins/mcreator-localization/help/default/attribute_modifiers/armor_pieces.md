@@ -1,0 +1,1 @@
+This attribute modifier is applied only to the selected armor pieces.

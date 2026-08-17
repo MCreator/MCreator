@@ -12,6 +12,10 @@
         <custom-mcelements/>
     </category>
     <sep/>
+    <category name="${t:blockly.category.custom_variables}" colour="150">
+        <custom-customvariables/>
+    </category>
+    <sep/>
     <category name="${t:blockly.category.logic_and_loops}" colour="120">
         <block type="controls_if"/>
         <block type="controls_if">

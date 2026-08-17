@@ -1,3 +1,1 @@
-Der Typ des Werkzeugs ist dieses Werkzeug.
-
-Einige der folgenden Parameter werden von einigen Werkzeugtypen nicht verwendet.
+Der Werkzeugtyp dieses Werkzeugs.
