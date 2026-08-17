@@ -47,8 +47,7 @@ public class TemplateLoaderProxy extends URLTemplateLoader {
 		return templateLoader.getLastModified(templateSource);
 	}
 
-	@Override public void closeTemplateSource(Object templateSource)
-			throws IOException {
+	@Override public void closeTemplateSource(Object templateSource) throws IOException {
 		templateLoader.closeTemplateSource(templateSource);
 	}
 
@@ -66,15 +65,19 @@ public class TemplateLoaderProxy extends URLTemplateLoader {
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
 		var reader = templateLoader.getReader(templateSource, encoding);
-		try (var writer = new StringWriter()) {
-			reader.transferTo(writer);
-			var str = writer.toString();
-			if (templateSource instanceof URLTemplateSource urlTemplateSource) {
-				var event = new ModifyTemplateEvent(urlTemplateSource.toString(),str);
-				MCREvent.event(event);
-				if (!event.getTemplateOutput().equals(event.getTemplateOutputOriginal())){
-					LOGGER.debug("Plugin has modified the {}", event.getTemplateURL());
+		if (templateSource instanceof URLTemplateSource urlTemplateSource) {
+			var event = new ModifyTemplateEvent(urlTemplateSource.toString(), () -> {
+				var wr = new StringWriter();
+				try {
+					reader.transferTo(wr);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
 				}
+				return wr.toString();
+			});
+			MCREvent.event(event);
+			if (event.isModified()) {
+				LOGGER.debug("Plugin has modified the {}", event.getTemplateURL());
 				return new StringReader(event.getTemplateOutput());
 			}
 		}
