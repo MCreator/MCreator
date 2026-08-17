@@ -1,5 +1,5 @@
-If enabled, the block state definitions of this block are exported using the multipart
-format instead of the variants format.
+Here you can select the format used to export the block state definitions of this block:
+variants (the default) or multipart.
 
 In the multipart format, each block state entry defines an independent part of the block model.
 All parts whose conditions match the current block state are rendered together.
