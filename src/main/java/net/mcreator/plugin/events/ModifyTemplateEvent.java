@@ -37,7 +37,7 @@ public class ModifyTemplateEvent extends MCREvent {
 	}
 
 	/**
-	 * @return Template file name
+	 * @return Template file url
 	 */
 	public String getTemplateURL() {
 		return templateURL;

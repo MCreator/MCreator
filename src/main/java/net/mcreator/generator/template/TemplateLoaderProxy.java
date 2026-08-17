@@ -77,9 +77,7 @@ public class TemplateLoaderProxy extends URLTemplateLoader {
 				}
 				return new StringReader(event.getTemplateOutput());
 			}
-		} catch (Exception ignored) {
 		}
-
 		return reader;
 	}
 }
