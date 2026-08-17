@@ -129,6 +129,9 @@ public class GetVariableBlock implements IBlockGenerator {
 							.generateFromString(getterTemplate.toString(), dataModel);
 					master.append(code);
 				}
+			} else {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.get_var"))));
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

@@ -83,7 +83,10 @@ public record BlocklyVariables(BlocklyToCode generator) {
 			return false;
 		String[] name = field.split(":");
 		if (name.length == 2 && name[0].equals("global")) {
-			VariableType.Scope scope = workspace.getVariableElementByName(name[1]).getScope();
+			VariableElement variable = workspace.getVariableElementByName(name[1]);
+			if (variable == null)
+				return false;
+			VariableType.Scope scope = variable.getScope();
 			return scope == VariableType.Scope.PLAYER_LIFETIME || scope == VariableType.Scope.PLAYER_PERSISTENT;
 		}
 		return false;
