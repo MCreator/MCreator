@@ -33,7 +33,7 @@ import org.fife.rsta.ac.java.classreader.FieldInfo;
 import org.fife.rsta.ac.java.classreader.MethodInfo;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
-import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.*;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -50,7 +50,7 @@ public class JavaTypeResolver {
 
 	public record ResolutionResult(String fqdn, boolean isStaticContext) {}
 
-	static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames,
+	public static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames,
 			String[] fqdnParamTypes, boolean isStatic, boolean isAbstract, boolean isDeprecated, String visibility,
 			String declaringClass, String docSummary, List<CompletionItem> result, Set<String> added) {
 		StringBuilder label = new StringBuilder(mName).append("(");
@@ -65,17 +65,18 @@ public class JavaTypeResolver {
 		}
 		label.append(")");
 		insert.append(")");
-		String key = label.toString();
-		if (added.add(key)) {
-			result.add(new CompletionItem(key, paramNames.length > 0 ? insert.toString() : mName + "()", "method",
-					returnType, declaringClass, visibility, docSummary, paramNames.length > 0, isStatic, false,
-					isAbstract, isDeprecated, Arrays.asList(paramTypes), Arrays.asList(paramNames),
+		String methodSig = mName + "(" + String.join(",", paramTypes) + ")";
+		if (added.add(methodSig)) {
+			result.add(new CompletionItem(label.toString(), paramNames.length > 0 ? insert.toString() : mName + "()",
+					"method", returnType, declaringClass, visibility, docSummary, paramNames.length > 0, isStatic,
+					false, isAbstract, isDeprecated, Arrays.asList(paramTypes), Arrays.asList(paramNames),
 					fqdnParamTypes != null ? Arrays.asList(fqdnParamTypes) : Arrays.asList(paramTypes)));
 		}
 	}
 
-	static void addFieldCompletion(String fName, String fType, boolean isStatic, boolean isFinal, boolean isDeprecated,
-			String visibility, String declaringClass, List<CompletionItem> result, Set<String> added) {
+	public static void addFieldCompletion(String fName, String fType, boolean isStatic, boolean isFinal,
+			boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result,
+			Set<String> added) {
 		if (added.add(fName)) {
 			result.add(
 					new CompletionItem(fName, fName, "field", fType, declaringClass, visibility, null, false, isStatic,
@@ -146,25 +147,10 @@ public class JavaTypeResolver {
 
 		if (isCurrentClass && currentCode != null && !currentCode.isEmpty()) {
 			String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
-			sourceMemberResolver.parseSourceCodeCompletions(currentCode, declaringClass, result, added, true);
-			try {
-				JavaType<?> source = Roaster.parse(currentCode);
-				if (source instanceof JavaClassSource javaClass) {
-					String parentName = javaClass.getSuperType();
-					if (parentName != null && !parentName.isEmpty() && !parentName.equals("java.lang.Object")) {
-						Map<String, String> imports = sourceMemberResolver.parseImports(currentCode);
-						String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-						String parentFQDN = resolveSimpleTypeName(parentName, imports, pkg);
-						if (parentFQDN != null) {
-							populateMembersOfFQDN(parentFQDN, result, added, visited);
-						}
-					}
-				}
-			} catch (Throwable e) {
-				LOG.debug("Failed to parse super type from current code", e);
-			}
+			sourceMemberResolver.parseSourceCodeCompletions(currentCode, declaringClass, result, added, true, false);
+			populateSuperAndInterfaces(currentCode, fqdn, result, added, visited, false);
 		} else {
-			populateMembersOfFQDN(fqdn, result, added, visited);
+			populateMembersOfFQDN(fqdn, result, added, visited, false);
 		}
 
 		if (!isCurrentClass) {
@@ -173,13 +159,45 @@ public class JavaTypeResolver {
 		return result;
 	}
 
-	private void populateMembersOfFQDN(String fqdn, List<CompletionItem> result, Set<String> added,
-			Set<String> visited) {
-		if (fqdn == null || fqdn.isEmpty() || !visited.add(fqdn))
+	private void populateSuperAndInterfaces(String srcCode, String fqdn, List<CompletionItem> result, Set<String> added,
+			Set<String> visited, boolean defaultOnly) {
+		try {
+			JavaType<?> source = Roaster.parse(srcCode);
+			Map<String, String> imports = sourceMemberResolver.parseImports(srcCode);
+			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+			if (source instanceof JavaClassSource javaClass) {
+				String parentName = javaClass.getSuperType();
+				if (parentName != null && !parentName.isEmpty() && !parentName.equals("java.lang.Object")) {
+					String parentFQDN = resolveSimpleTypeName(parentName, imports, pkg);
+					if (parentFQDN != null) {
+						populateMembersOfFQDN(parentFQDN, result, added, visited, false);
+					}
+				}
+				for (String ifName : javaClass.getInterfaces()) {
+					String ifFQDN = resolveSimpleTypeName(ifName, imports, pkg);
+					if (ifFQDN != null) {
+						populateMembersOfFQDN(ifFQDN, result, added, visited, true);
+					}
+				}
+			} else if (source instanceof JavaInterfaceSource javaInterface) {
+				for (String ifName : javaInterface.getInterfaces()) {
+					String ifFQDN = resolveSimpleTypeName(ifName, imports, pkg);
+					if (ifFQDN != null) {
+						populateMembersOfFQDN(ifFQDN, result, added, visited, defaultOnly);
+					}
+				}
+			}
+		} catch (Throwable e) {
+			LOG.debug("Failed to parse super type / interfaces for {}", fqdn, e);
+		}
+	}
+
+	private void populateMembersOfFQDN(String fqdn, List<CompletionItem> result, Set<String> added, Set<String> visited,
+			boolean defaultOnly) {
+		if (fqdn == null || fqdn.isEmpty() || !visited.add(fqdn + (defaultOnly ? "#default" : "")))
 			return;
 
 		String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
-
 		ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
 
 		if (jarManager != null) {
@@ -189,12 +207,17 @@ public class JavaTypeResolver {
 					String srcCode = sourceMemberResolver.loadSourceCodeForFQDN(fqdn);
 					Map<String, String> docs = sourceMemberResolver.getMethodDocsFromSource(srcCode);
 
+					int flags = cf.getAccessFlags();
+					boolean isInterface = (flags & 0x0200) != 0;
+
 					int mCount = cf.getMethodCount();
 					for (int i = 0; i < mCount; i++) {
 						MethodInfo mi = cf.getMethodInfo(i);
-						int flags = mi.getAccessFlags();
-						if ((flags & 0x0002) != 0)
-							continue; // private
+						int mFlags = mi.getAccessFlags();
+						if ((mFlags & 0x0002) != 0 || (mFlags & 0x0040) != 0 || (mFlags & 0x1000) != 0)
+							continue;
+						if (defaultOnly && (mi.isAbstract() || mi.isStatic()))
+							continue;
 
 						String mName = mi.getName();
 						if (mi.isConstructor() || mName.startsWith("<") || mName.equals("if") || mName.equals("for")
@@ -202,8 +225,8 @@ public class JavaTypeResolver {
 								|| mName.equals("class"))
 							continue;
 
-						boolean isPublic = (flags & 0x0001) != 0;
-						boolean isProtected = (flags & 0x0004) != 0;
+						boolean isPublic = (mFlags & 0x0001) != 0;
+						boolean isProtected = (mFlags & 0x0004) != 0;
 						String vis = isPublic ? "public" : (isProtected ? "protected" : "package");
 
 						int pCount = mi.getParameterCount();
@@ -230,28 +253,47 @@ public class JavaTypeResolver {
 								added);
 					}
 
-					int fCount = cf.getFieldCount();
-					for (int i = 0; i < fCount; i++) {
-						FieldInfo fi = cf.getFieldInfo(i);
-						int flags = fi.getAccessFlags();
-						if ((flags & 0x0002) != 0)
-							continue; // private
+					if (!defaultOnly) {
+						int fCount = cf.getFieldCount();
+						for (int i = 0; i < fCount; i++) {
+							FieldInfo fi = cf.getFieldInfo(i);
+							int fFlags = fi.getAccessFlags();
+							if ((fFlags & 0x0002) != 0)
+								continue;
 
-						String fName = fi.getName();
-						if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
-							continue;
+							String fName = fi.getName();
+							if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
+								continue;
 
-						boolean isPublic = (flags & 0x0001) != 0;
-						boolean isProtected = (flags & 0x0004) != 0;
-						String vis = isPublic ? "public" : (isProtected ? "protected" : "package");
-						addFieldCompletion(fName, fi.getTypeString(false), fi.isStatic(), fi.isFinal(),
-								fi.isDeprecated(), vis, declaringClass, result, added);
+							boolean isPublic = (fFlags & 0x0001) != 0;
+							boolean isProtected = (fFlags & 0x0004) != 0;
+							String vis = isPublic ? "public" : (isProtected ? "protected" : "package");
+							addFieldCompletion(fName, fi.getTypeString(false), fi.isStatic(), fi.isFinal(),
+									fi.isDeprecated(), vis, declaringClass, result, added);
+						}
 					}
 
-					String superClassName = cf.getSuperClassName(true);
-					if (superClassName != null && !superClassName.isEmpty() && !superClassName.equals(
-							"java.lang.Object")) {
-						populateMembersOfFQDN(superClassName, result, added, visited);
+					int ifCount = cf.getImplementedInterfaceCount();
+					if (isInterface) {
+						for (int j = 0; j < ifCount; j++) {
+							String superIf = cf.getImplementedInterfaceName(j, true);
+							if (superIf != null && !superIf.isEmpty()) {
+								populateMembersOfFQDN(superIf, result, added, visited, defaultOnly);
+							}
+						}
+					} else {
+						String superClassName = cf.getSuperClassName(true);
+						if (superClassName != null && !superClassName.isEmpty() && !superClassName.equals(
+								"java.lang.Object")) {
+							populateMembersOfFQDN(superClassName, result, added, visited, false);
+						}
+
+						for (int j = 0; j < ifCount; j++) {
+							String ifName = cf.getImplementedInterfaceName(j, true);
+							if (ifName != null && !ifName.isEmpty()) {
+								populateMembersOfFQDN(ifName, result, added, visited, true);
+							}
+						}
 					}
 
 					return;
@@ -264,23 +306,9 @@ public class JavaTypeResolver {
 		if (workspace != null) {
 			String srcCode = sourceMemberResolver.loadSourceCodeForFQDN(fqdn);
 			if (srcCode != null) {
-				sourceMemberResolver.parseSourceCodeCompletions(srcCode, declaringClass, result, added, false);
-				try {
-					JavaType<?> source = Roaster.parse(srcCode);
-					if (source instanceof JavaClassSource javaClass) {
-						String parentName = javaClass.getSuperType();
-						if (parentName != null && !parentName.isEmpty() && !parentName.equals("java.lang.Object")) {
-							Map<String, String> imports = sourceMemberResolver.parseImports(srcCode);
-							String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-							String parentFQDN = resolveSimpleTypeName(parentName, imports, pkg);
-							if (parentFQDN != null) {
-								populateMembersOfFQDN(parentFQDN, result, added, visited);
-							}
-						}
-					}
-				} catch (Throwable e) {
-					LOG.debug("Failed to parse super type for {}", fqdn, e);
-				}
+				sourceMemberResolver.parseSourceCodeCompletions(srcCode, declaringClass, result, added, false,
+						defaultOnly);
+				populateSuperAndInterfaces(srcCode, fqdn, result, added, visited, defaultOnly);
 			}
 		}
 	}

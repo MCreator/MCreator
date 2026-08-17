@@ -184,45 +184,50 @@ public class JavaSourceMemberResolver {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void parseSourceCodeCompletions(String srcCode, String declaringClass,
-			List<JavaTypeResolver.CompletionItem> result, Set<String> added, boolean includePrivate) {
+			List<JavaTypeResolver.CompletionItem> result, Set<String> added, boolean includePrivate,
+			boolean defaultOnly) {
 		if (srcCode == null || srcCode.isEmpty())
 			return;
 
 		try {
 			JavaType<?> source = Roaster.parse(srcCode);
 
-			List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ?
-					(List) fhs.getFields() :
-					Collections.emptyList();
+			if (!defaultOnly) {
+				List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ?
+						(List) fhs.getFields() :
+						Collections.emptyList();
+				for (FieldSource<?> f : fields) {
+					if (!includePrivate && f.isPrivate())
+						continue;
+					String fName = f.getName();
+					if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
+						continue;
+
+					String fType = f.getType().getSimpleName();
+					String vis = f.isPublic() ?
+							"public" :
+							(f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
+					JavaTypeResolver.addFieldCompletion(fName, fType, f.isStatic(), f.isFinal(),
+							f.hasAnnotation(Deprecated.class), vis, declaringClass, result, added);
+				}
+			}
+
 			List<MethodSource<?>> methods = source instanceof MethodHolderSource<?> mhs ?
 					(List) mhs.getMethods() :
 					Collections.emptyList();
 
-			for (FieldSource<?> f : fields) {
-				if (!includePrivate && f.isPrivate())
-					continue;
-				String fName = f.getName();
-				if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
-					continue;
-
-				String fType = f.getType().getSimpleName();
-				String vis = f.isPublic() ?
-						"public" :
-						(f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
-				JavaTypeResolver.addFieldCompletion(fName, fType, f.isStatic(), f.isFinal(),
-						f.hasAnnotation(Deprecated.class), vis, declaringClass, result, added);
-			}
-
 			Map<String, String> imports = parseImports(srcCode);
 			for (MethodSource<?> m : methods) {
 				if ((!includePrivate && m.isPrivate()) || m.isConstructor() || m.getName().startsWith("<"))
+					continue;
+				if (defaultOnly && (m.isAbstract() || m.isStatic()))
 					continue;
 				String mName = m.getName();
 				if (mName.equals("if") || mName.equals("for") || mName.equals("while") || mName.equals("switch")
 						|| mName.equals("catch") || mName.equals("class"))
 					continue;
 
-				String returnType = m.getReturnType().getSimpleName();
+				String returnType = m.getReturnType() != null ? m.getReturnType().getSimpleName() : "void";
 				List<? extends ParameterSource<?>> params = m.getParameters();
 				String[] pTypes = new String[params.size()];
 				String[] pNames = new String[params.size()];
