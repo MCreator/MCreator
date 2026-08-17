@@ -1808,7 +1808,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isItemTinted.setSelected(block.isItemTinted);
 		animations.setEntries(block.animations);
 		blockStatesFormat.setSelectedIndex(block.multipartModel ? 1 : 0);
-		blockStatesList.setMultipartModel(block.multipartModel);
 		blockStatesList.setEntries(block.states);
 
 		if (block.blockBase == null) {
