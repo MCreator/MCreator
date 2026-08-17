@@ -33,9 +33,9 @@ public class ModifyTemplateEvent extends MCREvent {
 	private String templateOutput;
 	private boolean modified;
 
-	public ModifyTemplateEvent(@Nullable String templateURL, @Nonnull Supplier<String> templateContent) {
+	public ModifyTemplateEvent(@Nullable String templateURL, @Nonnull Supplier<String> templateContentProvider) {
 		this.templateURL = templateURL;
-		templateContentProvider = templateContent;
+		this.templateContentProvider = templateContentProvider;
 	}
 
 	/**
@@ -49,20 +49,26 @@ public class ModifyTemplateEvent extends MCREvent {
 	 * @return Original template output content before any modifications from plugins
 	 */
 	public String getTemplateOutputOriginal() {
+		if (templateOutputOriginal == null) {
+			tryToGetTemplateContent();
+		}
 		return templateOutputOriginal;
 	}
-
 
 	/**
 	 * @return Current template output content. At this point, plugins with higher priority may have already modified it
 	 */
 	public String getTemplateOutput() {
-		if (templateOutput == null){
-			var template = templateContentProvider.get();
-			templateOutput = template;
-			templateOutputOriginal = template;
+		if (templateOutput == null) {
+			tryToGetTemplateContent();
 		}
 		return templateOutput;
+	}
+
+	private void tryToGetTemplateContent() {
+		var template = templateContentProvider.get();
+		templateOutput = template;
+		templateOutputOriginal = template;
 	}
 
 	public void setTemplateOutput(String templateContent) {
