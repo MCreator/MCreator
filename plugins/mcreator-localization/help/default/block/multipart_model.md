@@ -15,6 +15,8 @@ the default particle texture of the block; particle textures of individual state
 only apply to the variants format.
 
 If parts define custom bounding boxes, the shape of the block is the union of the bounding
-boxes of all parts whose condition matches the block state.
+boxes of all parts whose condition matches the block state. In this case, the default
+bounding box of the block is not used, and block states matched by no such part have an
+empty shape; add a part with an empty condition if the block should always have a base shape.
 
 If block rotation is enabled, MCreator will automatically rotate all parts together with the block.

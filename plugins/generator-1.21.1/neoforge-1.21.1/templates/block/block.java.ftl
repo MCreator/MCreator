@@ -269,14 +269,13 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 			return this.getShapeForEachState(state -> {
 				<#if data.multipartModel && statesWithCustomShape?has_content>
-					<#-- multipart: shape is union of shapes of all parts with matching condition -->
+					<#-- multipart: shape is union of shapes of all parts with matching condition,
+					     block states not matched by any part have an empty shape -->
 					VoxelShape shape = Shapes.empty();
 					<#list statesWithCustomShape as state>
 					if (<@stateCondition state/>)
 						shape = Shapes.or(shape, <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>);
 					</#list>
-					if (shape.isEmpty())
-						shape = <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
 					return shape;
 				<#else>
 					<#list statesWithCustomShape as state>
