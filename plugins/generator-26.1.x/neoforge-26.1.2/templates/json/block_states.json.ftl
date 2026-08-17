@@ -1,5 +1,5 @@
 <#assign definedStates = (data.getDefinedStates?? && data.getDefinedStates()?has_content)?then(data.getDefinedStates(), [])>
-<#assign multipart = data.multipartModel && definedStates?has_content>
+<#assign multipart = ((data.multipartModel)!false) && definedStates?has_content>
 <#assign stateCombinations = (!multipart && definedStates?has_content)?then(data.getStateCombinations(), [])>
 
 <#if data.rotationMode?? && (data.rotationMode == 1 || data.rotationMode == 3)>
