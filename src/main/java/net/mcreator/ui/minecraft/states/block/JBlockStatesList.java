@@ -69,7 +69,12 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 
 	public void setMultipartModel(boolean multipartModel) {
 		this.multipartModel = multipartModel;
-		entryList.forEach(entry -> entry.getStateLabel().setAllowEmpty(multipartModel));
+
+		if (!multipartModel) // variants mode does not support duplicate or empty state conditions, so remove them
+			removeInvalidEntriesForVariantsMode();
+
+		entryList.forEach(
+				entry -> entry.getStateLabel().setAllowEmpty(multipartModel).setAllowDuplicates(multipartModel));
 	}
 
 	// called when a property is removed
@@ -87,19 +92,30 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 
 	// Called when a state property is removed, to make sure we correct state definitions
 	private void propertyRemoved(PropertyData<?> data) {
+		for (JBlockStatesListEntry entry : entryList) {
+			StateMap stateMap = entry.getStateLabel().getStateMap();
+			stateMap.remove(data);
+			entry.getStateLabel().setStateMap(stateMap);
+		}
+
+		// multipart parts with empty or duplicate conditions are valid, in variants mode neither is
+		if (!multipartModel)
+			removeInvalidEntriesForVariantsMode();
+
+		entries.revalidate();
+		entries.repaint();
+	}
+
+	// Removes entries with empty or duplicate state conditions, which variants mode does not support
+	private void removeInvalidEntriesForVariantsMode() {
 		Set<StateMap> duplicateFilter = new HashSet<>();
 		Iterator<JBlockStatesListEntry> iterator = entryList.iterator();
 		while (iterator.hasNext()) {
-			JBlockStatesListEntry s = iterator.next();
-			StateMap stateMap = s.getStateLabel().getStateMap();
-			stateMap.remove(data);
-			// multipart parts with empty condition are valid (they always apply), so only
-			// remove empty entries in variants mode, and duplicates in both modes
-			if ((stateMap.isEmpty() && !multipartModel) || !duplicateFilter.add(stateMap)) {
-				iterator.remove(); // remove the JItemStatesListEntry
-				entries.remove(s.getContainerPanel());
-			} else {
-				s.getStateLabel().setStateMap(stateMap);
+			JBlockStatesListEntry entry = iterator.next();
+			StateMap stateMap = entry.getStateLabel().getStateMap();
+			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) {
+				iterator.remove();
+				entries.remove(entry.getContainerPanel());
 			}
 		}
 
@@ -114,7 +130,8 @@ public class JBlockStatesList extends JSimpleEntriesList<JBlockStatesListEntry, 
 	@Nullable @Override
 	protected JBlockStatesListEntry newEntry(JPanel parent, List<JBlockStatesListEntry> entryList, boolean userAction) {
 		JStateLabel stateLabel = new JStateLabel(mcreator, currentPropertiesSupplier,
-				() -> entryList.stream().map(JBlockStatesListEntry::getStateLabel)).setAllowEmpty(multipartModel);
+				() -> entryList.stream().map(JBlockStatesListEntry::getStateLabel)).setAllowEmpty(multipartModel)
+				.setAllowDuplicates(multipartModel);
 		if (userAction && !stateLabel.editState())
 			return null;
 

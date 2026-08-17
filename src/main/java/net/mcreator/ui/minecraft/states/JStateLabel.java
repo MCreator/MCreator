@@ -44,6 +44,7 @@ public class JStateLabel extends JPanel {
 
 	private StateMap stateMap = new StateMap();
 	protected boolean allowEmpty = false;
+	protected boolean allowDuplicates = false;
 	protected NumberMatchType numberMatchType = NumberMatchType.EQUAL;
 
 	private final JTextField label = new JTextField();
@@ -107,7 +108,7 @@ public class JStateLabel extends JPanel {
 			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_empty"),
 					L10N.t("components.state_label.error_empty.title"), JOptionPane.ERROR_MESSAGE);
 			return false;
-		} else if (otherStates.get().anyMatch(s -> s != this && s.getStateMap().equals(stateMap))) {
+		} else if (!allowDuplicates && otherStates.get().anyMatch(s -> s != this && s.getStateMap().equals(stateMap))) {
 			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_duplicate"),
 					L10N.t("components.state_label.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -119,6 +120,11 @@ public class JStateLabel extends JPanel {
 
 	public JStateLabel setAllowEmpty(boolean allowEmpty) {
 		this.allowEmpty = allowEmpty;
+		return this;
+	}
+
+	public JStateLabel setAllowDuplicates(boolean allowDuplicates) {
+		this.allowDuplicates = allowDuplicates;
 		return this;
 	}
 
