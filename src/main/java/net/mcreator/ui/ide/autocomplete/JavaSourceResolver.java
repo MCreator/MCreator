@@ -54,8 +54,8 @@ public class JavaSourceResolver {
 	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	// Maps class FQDN -> loaded Java source code string
-	@SuppressWarnings("NullableProblems") private final Cache<String, String> sourceCache = CacheBuilder.newBuilder()
-			.maximumSize(100).build();
+	@SuppressWarnings("NullableProblems")
+	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	public JavaSourceResolver(@Nullable Workspace workspace) {
 		this.workspace = workspace;
