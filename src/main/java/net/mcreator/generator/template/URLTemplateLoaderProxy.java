@@ -59,8 +59,9 @@ public class URLTemplateLoaderProxy implements TemplateLoader {
 	@Override public void closeTemplateSource(Object templateSource) throws IOException {
 		if (templateSource instanceof URLTemplateSourceHolder holder) {
 			templateLoader.closeTemplateSource(holder.urlTemplateSource());
+		} else {
+			templateLoader.closeTemplateSource(templateSource);
 		}
-		templateLoader.closeTemplateSource(templateSource);
 	}
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
