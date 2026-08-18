@@ -266,7 +266,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					}, COMPLETION_EXECUTOR);
 
 					try {
-						completions.addAll(classTask.get(100, TimeUnit.MILLISECONDS));
+						completions.addAll(classTask.get(65, TimeUnit.MILLISECONDS));
 					} catch (TimeoutException e) {
 						// Class completions timed out in smart mode; return method/field/keyword completions immediately
 					} catch (Exception e) {
