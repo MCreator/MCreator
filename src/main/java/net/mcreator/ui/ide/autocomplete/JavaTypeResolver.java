@@ -343,13 +343,9 @@ public class JavaTypeResolver {
 			}
 		}
 
-		// TODO PR #6542: Once the updated ProjectJarManager with WorkspaceLibraryInfo is merged,
-		// workspace classes will be indexed directly in the PJM. The import tree from
-		// GeneratorGradleCache will include them, and reloadClassesFromMod will no longer be needed.
 		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache().getImportTree();
 			if (tree != null) {
-				// TODO PR #6542: Remove reloadClassesFromMod once WorkspaceLibraryInfo handles workspace classes
 				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), tree);
 				List<String> fqdns = tree.get(typeName);
 				if (fqdns != null && !fqdns.isEmpty()) {

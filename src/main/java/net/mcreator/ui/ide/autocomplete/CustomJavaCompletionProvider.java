@@ -59,8 +59,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private final Workspace workspace;
 	private final JavaParser parser;
 	private final JavaTypeResolver javaTypeResolver;
-
-	// TODO PR #6542: Remove cachedModClasses when WorkspaceLibraryInfo in updated PJM handles workspace classes
+	
 	private Map<String, List<String>> cachedModClasses = null;
 	private long lastModClassesUpdate = 0;
 
@@ -349,9 +348,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
-	// TODO PR #6542: This method can be simplified once the updated ProjectJarManager with
-	// WorkspaceLibraryInfo is merged. WorkspaceLibraryInfo loads compiled workspace classes directly
-	// into the PJM, so reloadClassesFromMod will no longer be needed for the import tree.
 	private synchronized Map<String, List<String>> getImportTreeCached() {
 		if (workspace == null || workspace.getGenerator().getGradleCache() == null)
 			return null;
@@ -360,7 +356,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		if (gTree == null)
 			return null;
 
-		// TODO PR #6542: Remove reloadClassesFromMod once WorkspaceLibraryInfo in PJM handles workspace classes
 		Map<String, List<String>> tree = new HashMap<>();
 		for (Map.Entry<String, List<String>> e : gTree.entrySet()) {
 			tree.put(e.getKey(), new ArrayList<>(e.getValue()));
