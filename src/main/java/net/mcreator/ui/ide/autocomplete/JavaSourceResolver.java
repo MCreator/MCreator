@@ -39,9 +39,9 @@ import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public class JavaSourceMemberResolver {
+public class JavaSourceResolver {
 
-	private static final Logger LOG = LogManager.getLogger(JavaSourceMemberResolver.class);
+	private static final Logger LOG = LogManager.getLogger(JavaSourceResolver.class);
 
 	@Nullable private final Workspace workspace;
 
@@ -57,7 +57,7 @@ public class JavaSourceMemberResolver {
 	@SuppressWarnings("NullableProblems") private final Cache<String, String> sourceCache = CacheBuilder.newBuilder()
 			.maximumSize(100).build();
 
-	public JavaSourceMemberResolver(@Nullable Workspace workspace) {
+	public JavaSourceResolver(@Nullable Workspace workspace) {
 		this.workspace = workspace;
 	}
 
