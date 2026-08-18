@@ -24,46 +24,60 @@ import freemarker.cache.URLTemplateLoader;
 import freemarker.cache.URLTemplateSource;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ModifyTemplateEvent;
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.io.*;
 
 public class URLTemplateLoaderProxy implements TemplateLoader {
 
-	private final TemplateLoader templateLoader;
+	private static final Logger LOG = LoggerFactory.getLogger(URLTemplateLoaderProxy.class);
+
+	private final URLTemplateLoader templateLoader;
 
 	public URLTemplateLoaderProxy(URLTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
 	}
 
 	@Override public Object findTemplateSource(String name) throws IOException {
-		return templateLoader.findTemplateSource(name);
+		Object source = templateLoader.findTemplateSource(name);
+		if (source == null) {
+			return null;
+		}
+		return new URLTemplateSourceHolder((URLTemplateSource) source, name);
 	}
 
 	@Override public long getLastModified(Object templateSource) {
+		if (templateSource instanceof URLTemplateSourceHolder holder) {
+			return templateLoader.getLastModified(holder.urlTemplateSource());
+		}
 		return templateLoader.getLastModified(templateSource);
 	}
 
 	@Override public void closeTemplateSource(Object templateSource) throws IOException {
+		if (templateSource instanceof URLTemplateSourceHolder holder) {
+			templateLoader.closeTemplateSource(holder.urlTemplateSource());
+		}
 		templateLoader.closeTemplateSource(templateSource);
 	}
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
-		var reader = templateLoader.getReader(templateSource, encoding);
-		if (templateSource instanceof URLTemplateSource urlTemplateSource) {
-			var event = new ModifyTemplateEvent(urlTemplateSource.toString(), () -> {
-				var wr = new StringWriter();
-				try {
-					reader.transferTo(wr);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-				return wr.toString();
-			});
-			MCREvent.event(event);
-			if (event.isModified()) {
-				return new StringReader(event.getTemplateOutput());
+		if (templateSource instanceof URLTemplateSourceHolder(URLTemplateSource urlSource, String logicalName)) {
+			String content;
+			try (Reader reader = templateLoader.getReader(urlSource, encoding)) {
+				content = IOUtils.toString(reader);
+			} catch (IOException e) {
+				LOG.error("Failed to read template: {}", logicalName, e);
+				throw e;
 			}
+			ModifyTemplateEvent event = new ModifyTemplateEvent(logicalName, content, templateLoader);
+			MCREvent.event(event);
+			return new StringReader(event.getTemplateOutput());
 		}
-		return reader;
+		return templateLoader.getReader(templateSource, encoding);
 	}
+
+	private record URLTemplateSourceHolder(@Nonnull URLTemplateSource urlTemplateSource, @Nonnull String name) {}
 }

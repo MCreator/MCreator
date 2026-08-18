@@ -19,39 +19,37 @@
 
 package net.mcreator.plugin.events;
 
+import freemarker.cache.TemplateLoader;
 import net.mcreator.plugin.MCREvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 public class ModifyTemplateEvent extends MCREvent {
 
-	private final String templateURL;
-	private String templateOutputOriginal;
-	private final Supplier<String> templateContentProvider;
+	private final String templateName;
+	private final String templateOutputOriginal;
 	private String templateOutput;
-	private boolean modified;
+	private final TemplateLoader templateLoader;
 
-	public ModifyTemplateEvent(@Nullable String templateURL, @Nonnull Supplier<String> templateContentProvider) {
-		this.templateURL = templateURL;
-		this.templateContentProvider = templateContentProvider;
+	public ModifyTemplateEvent(@Nullable String templateName, @Nonnull String templateContent, @Nonnull TemplateLoader templateLoader) {
+		this.templateName = templateName;
+		this.templateOutput = templateContent;
+		this.templateOutputOriginal = templateContent;
+		this.templateLoader = templateLoader;
 	}
 
 	/**
-	 * @return Template file url
+	 * @return Logical template name as used in findTemplateSource
 	 */
-	public String getTemplateURL() {
-		return templateURL;
+	public String getTemplateName() {
+		return templateName;
 	}
 
 	/**
 	 * @return Original template output content before any modifications from plugins
 	 */
 	public String getTemplateOutputOriginal() {
-		if (templateOutputOriginal == null) {
-			tryToGetTemplateContent();
-		}
 		return templateOutputOriginal;
 	}
 
@@ -59,24 +57,14 @@ public class ModifyTemplateEvent extends MCREvent {
 	 * @return Current template output content. At this point, plugins with higher priority may have already modified it
 	 */
 	public String getTemplateOutput() {
-		if (templateOutput == null) {
-			tryToGetTemplateContent();
-		}
 		return templateOutput;
 	}
 
-	private void tryToGetTemplateContent() {
-		var template = templateContentProvider.get();
-		templateOutput = template;
-		templateOutputOriginal = template;
-	}
-
-	public void setTemplateOutput(String templateContent) {
-		modified = true;
+	public void setTemplateOutput(@Nonnull String templateContent) {
 		this.templateOutput = templateContent;
 	}
 
-	public boolean isModified() {
-		return modified;
+	public TemplateLoader getTemplateLoader() {
+		return templateLoader;
 	}
 }
