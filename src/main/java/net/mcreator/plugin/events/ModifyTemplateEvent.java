@@ -62,7 +62,9 @@ public class ModifyTemplateEvent extends MCREvent {
 		// Otherwise load and cache original content
 		if (templateContentOrigin == null) {
 			templateContentOrigin = contentLoader.get();
-			templateContent = templateContentOrigin;
+			if (templateContent == null) {
+				templateContent = templateContentOrigin;
+			}
 		}
 		return templateContent;
 	}
@@ -75,8 +77,8 @@ public class ModifyTemplateEvent extends MCREvent {
 	/**
 	 * Sets a new template content. This marks the event as modified.
 	 */
-	public void setTemplateContentOrigin(@Nonnull String templateContentOrigin) {
-		this.templateContent = templateContentOrigin;
+	public void setTemplateContent(@Nonnull String templateContent) {
+		this.templateContent = templateContent;
 	}
 
 	/**
