@@ -25,15 +25,11 @@ import freemarker.cache.URLTemplateSource;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ModifyTemplateEvent;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.io.*;
 
 public class URLTemplateLoaderProxy implements TemplateLoader {
-
-	private static final Logger LOG = LoggerFactory.getLogger(URLTemplateLoaderProxy.class);
 
 	private final URLTemplateLoader templateLoader;
 
@@ -66,24 +62,16 @@ public class URLTemplateLoaderProxy implements TemplateLoader {
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
 		if (templateSource instanceof URLTemplateSourceHolder(URLTemplateSource urlSource, String logicalName)) {
-			// Create event with a lazy supplier
 			ModifyTemplateEvent event = new ModifyTemplateEvent(logicalName, () -> {
 				try (Reader reader = templateLoader.getReader(urlSource, encoding)) {
 					return IOUtils.toString(reader);
 				}
 			});
-
-			// Fire the event
 			MCREvent.event(event);
-
-			// If no listener read the content and no one modified it,
-			// we can return the original reader (zero extra work).
-			if (!event.isModified() && !event.wasContentRead()) {
+			if (!event.isModified()) {
 				return templateLoader.getReader(urlSource, encoding);
 			}
-
-			// Otherwise, return a StringReader from the (now cached or modified) content
-			return new StringReader(event.getTemplateContentOrigin());
+			return new StringReader(event.getTemplateContent());
 		}
 		return templateLoader.getReader(templateSource, encoding);
 	}

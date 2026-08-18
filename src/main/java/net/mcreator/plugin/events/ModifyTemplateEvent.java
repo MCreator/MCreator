@@ -22,7 +22,6 @@ package net.mcreator.plugin.events;
 import net.mcreator.plugin.MCREvent;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.function.Supplier;
@@ -31,12 +30,13 @@ public class ModifyTemplateEvent extends MCREvent {
 
 	private final String templateName;
 	private final Supplier<String> contentLoader;
+	private boolean modified;
 
 	// Volatile because listeners run on the plugin event queue thread
 	private volatile String templateContentOrigin;       // cached after first read
 	private volatile String templateContent;     // set by plugin via setTemplateOutput
 
-	public ModifyTemplateEvent(@Nullable String templateName,
+	public ModifyTemplateEvent(@Nonnull String templateName,
 			@Nonnull ThrowingSupplier<String> contentLoader) {
 		this.templateName = templateName;
 		this.contentLoader = () -> {
@@ -48,7 +48,6 @@ public class ModifyTemplateEvent extends MCREvent {
 		};
 	}
 
-	@Nullable
 	public String getTemplateName() {
 		return templateName;
 	}
@@ -57,19 +56,18 @@ public class ModifyTemplateEvent extends MCREvent {
 	 * Returns the current template content. If no plugin has called setTemplateOutput(),
 	 * this loads the original content once and caches it.
 	 */
-	@Nonnull
 	public String getTemplateContent() {
-		// Otherwise load and cache original content
+		if (templateContent != null) {
+			return templateContent;
+		}
+
 		if (templateContentOrigin == null) {
 			templateContentOrigin = contentLoader.get();
-			if (templateContent == null) {
-				templateContent = templateContentOrigin;
-			}
+			templateContent = templateContentOrigin;
 		}
 		return templateContent;
 	}
 
-	@Nonnull
 	public String getTemplateContentOrigin() {
 		return templateContentOrigin;
 	}
@@ -79,20 +77,14 @@ public class ModifyTemplateEvent extends MCREvent {
 	 */
 	public void setTemplateContent(@Nonnull String templateContent) {
 		this.templateContent = templateContent;
+		this.modified = true;
 	}
 
 	/**
 	 * @return true if a plugin called setTemplateOutput()
 	 */
 	public boolean isModified() {
-		return templateContent != null;
-	}
-
-	/**
-	 * @return true if any plugin called getTemplateOutput() (which loads the content)
-	 */
-	public boolean wasContentRead() {
-		return templateContentOrigin != null || templateContent != null;
+		return modified;
 	}
 
 	@FunctionalInterface
