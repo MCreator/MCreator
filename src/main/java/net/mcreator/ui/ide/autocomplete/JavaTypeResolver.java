@@ -44,7 +44,7 @@ public class JavaTypeResolver {
 								 boolean isFinal, boolean isAbstract, boolean isDeprecated, List<String> paramTypes,
 								 List<String> paramNames, List<String> fqdnParamTypes) {}
 
-	public record ResolutionResult(String fqdn, boolean isStaticContext) {}
+	private record ResolutionResult(String fqdn, boolean isStaticContext) {}
 
 	public static void addMethodCompletion(String mName, String returnType, String[] paramTypes, String[] paramNames,
 			String[] fqdnParamTypes, boolean isStatic, boolean isAbstract, boolean isDeprecated, String visibility,
