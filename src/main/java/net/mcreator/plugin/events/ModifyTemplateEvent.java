@@ -19,52 +19,80 @@
 
 package net.mcreator.plugin.events;
 
-import freemarker.cache.TemplateLoader;
 import net.mcreator.plugin.MCREvent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.function.Supplier;
 
 public class ModifyTemplateEvent extends MCREvent {
 
 	private final String templateName;
-	private final String templateOutputOriginal;
-	private String templateOutput;
-	private final TemplateLoader templateLoader;
+	private final Supplier<String> contentLoader;
 
-	public ModifyTemplateEvent(@Nullable String templateName, @Nonnull String templateContent, @Nonnull TemplateLoader templateLoader) {
+	// Volatile because listeners run on the plugin event queue thread
+	private volatile String loadedContent;       // cached after first read
+	private volatile String modifiedContent;     // set by plugin via setTemplateOutput
+
+	public ModifyTemplateEvent(@Nullable String templateName,
+			@Nonnull ThrowingSupplier<String, IOException> contentLoader) {
 		this.templateName = templateName;
-		this.templateOutput = templateContent;
-		this.templateOutputOriginal = templateContent;
-		this.templateLoader = templateLoader;
+		this.contentLoader = () -> {
+			try {
+				return contentLoader.get();
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to load template: " + templateName, e);
+			}
+		};
 	}
 
-	/**
-	 * @return Logical template name as used in findTemplateSource
-	 */
+	@Nullable
 	public String getTemplateName() {
 		return templateName;
 	}
 
 	/**
-	 * @return Original template output content before any modifications from plugins
+	 * Returns the current template content. If no plugin has called setTemplateOutput(),
+	 * this loads the original content once and caches it.
 	 */
-	public String getTemplateOutputOriginal() {
-		return templateOutputOriginal;
+	@Nonnull
+	public String getTemplateOutput() {
+		// If modified content exists, return it (plugin override)
+		if (modifiedContent != null) {
+			return modifiedContent;
+		}
+		// Otherwise load and cache original content
+		if (loadedContent == null) {
+			loadedContent = contentLoader.get();
+		}
+		return loadedContent;
 	}
 
 	/**
-	 * @return Current template output content. At this point, plugins with higher priority may have already modified it
+	 * Sets a new template content. This marks the event as modified.
 	 */
-	public String getTemplateOutput() {
-		return templateOutput;
-	}
-
 	public void setTemplateOutput(@Nonnull String templateContent) {
-		this.templateOutput = templateContent;
+		this.modifiedContent = templateContent;
 	}
 
-	public TemplateLoader getTemplateLoader() {
-		return templateLoader;
+	/**
+	 * @return true if a plugin called setTemplateOutput()
+	 */
+	public boolean isModified() {
+		return modifiedContent != null;
+	}
+
+	/**
+	 * @return true if any plugin called getTemplateOutput() (which loads the content)
+	 */
+	public boolean wasContentRead() {
+		return loadedContent != null || modifiedContent != null;
+	}
+
+	@FunctionalInterface
+	public interface ThrowingSupplier<T, E extends Exception> {
+		T get() throws E;
 	}
 }

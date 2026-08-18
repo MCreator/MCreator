@@ -66,15 +66,27 @@ public class URLTemplateLoaderProxy implements TemplateLoader {
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
 		if (templateSource instanceof URLTemplateSourceHolder(URLTemplateSource urlSource, String logicalName)) {
-			String content;
-			try (Reader reader = templateLoader.getReader(urlSource, encoding)) {
-				content = IOUtils.toString(reader);
-			} catch (IOException e) {
-				LOG.error("Failed to read template: {}", logicalName, e);
-				throw e;
-			}
-			ModifyTemplateEvent event = new ModifyTemplateEvent(logicalName, content, templateLoader);
+
+			// Create event with a lazy supplier
+			ModifyTemplateEvent event = new ModifyTemplateEvent(
+					logicalName,
+					() -> {
+						try (Reader reader = templateLoader.getReader(urlSource, encoding)) {
+							return IOUtils.toString(reader);
+						}
+					}
+			);
+
+			// Fire the event
 			MCREvent.event(event);
+
+			// If no listener read the content and no one modified it,
+			// we can return the original reader (zero extra work).
+			if (!event.isModified() && !event.wasContentRead()) {
+				return templateLoader.getReader(urlSource, encoding);
+			}
+
+			// Otherwise, return a StringReader from the (now cached or modified) content
 			return new StringReader(event.getTemplateOutput());
 		}
 		return templateLoader.getReader(templateSource, encoding);
