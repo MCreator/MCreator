@@ -113,18 +113,13 @@ public class JavaTypeResolver {
 		if (res == null || res.fqdn == null)
 			return result;
 
-		List<CompletionItem> allMembers = getMembersOfFQDN(res.fqdn, currentClassFQDN, code);
+		List<CompletionItem> allMembers = memberResolver.getMembersOfFQDN(res.fqdn, currentClassFQDN, code);
 		for (CompletionItem item : allMembers) {
 			if (!res.isStaticContext || item.isStatic()) {
 				result.add(item);
 			}
 		}
 		return result;
-	}
-
-	public List<CompletionItem> getMembersOfFQDN(String fqdn, @Nullable String currentClassFQDN,
-			@Nullable String currentCode) {
-		return memberResolver.getMembersOfFQDN(fqdn, currentClassFQDN, currentCode);
 	}
 
 	public String resolveSimpleTypeName(String typeName, Map<String, String> imports, String currentPkg) {
@@ -199,7 +194,7 @@ public class JavaTypeResolver {
 			return null;
 		String memberName = member.contains("(") ? member.substring(0, member.indexOf('(')) : member;
 
-		List<CompletionItem> members = getMembersOfFQDN(fqdn, currentClassFQDN, currentCode);
+		List<CompletionItem> members = memberResolver.getMembersOfFQDN(fqdn, currentClassFQDN, currentCode);
 		for (CompletionItem item : members) {
 			if (item.kind().equals("method") && item.label().startsWith(memberName + "(")) {
 				return item.detail();
