@@ -19,8 +19,8 @@
 
 package net.mcreator.generator.template;
 
+import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
-import freemarker.cache.URLTemplateLoader;
 import freemarker.cache.URLTemplateSource;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ModifyTemplateEvent;
@@ -29,11 +29,11 @@ import org.apache.commons.io.IOUtils;
 import javax.annotation.Nonnull;
 import java.io.*;
 
-public class URLTemplateLoaderProxy implements TemplateLoader {
+public class ClassTemplateLoaderProxy implements TemplateLoader {
 
-	private final URLTemplateLoader templateLoader;
+	private final ClassTemplateLoader templateLoader;
 
-	public URLTemplateLoaderProxy(URLTemplateLoader templateLoader) {
+	public ClassTemplateLoaderProxy(ClassTemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
 	}
 
@@ -42,7 +42,8 @@ public class URLTemplateLoaderProxy implements TemplateLoader {
 		if (source == null) {
 			return null;
 		}
-		return new URLTemplateSourceHolder((URLTemplateSource) source, name);
+		// if we do not append the base package root. Plugin developer will only get file name.
+		return new URLTemplateSourceHolder((URLTemplateSource) source, templateLoader.getBasePackagePath() + name);
 	}
 
 	@Override public long getLastModified(Object templateSource) {
