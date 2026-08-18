@@ -34,7 +34,6 @@ class ModMakerToolBar extends MainToolBar {
 
 	@Override protected void assembleLeftSection(MCreator mcreator) {
 		hideableButton(add(mcreator.getActionRegistry().createTexture));
-		hideableButton(add(mcreator.getActionRegistry().createAnimatedTexture));
 
 		addSeparator(new Dimension(10, 4));
 

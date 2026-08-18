@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs.imageeditor;
 
 import net.mcreator.io.ResourcePointer;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -28,6 +29,7 @@ import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.views.editor.image.animation.AnimationTimeline;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
@@ -84,8 +86,15 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 	private boolean disableRefresh = false;
 
-	public FromTemplateDialog(MCreator window, Canvas canvas, VersionManager versionManager) {
+	public FromTemplateDialog(MCreator window, AnimationTimeline timeline, VersionManager versionManager) {
 		super(window, L10N.t("dialog.imageeditor.template_from_title"), true);
+
+		List<Canvas> affectedFrames = new ArrayList<>();
+		if (PreferencesManager.PREFERENCES.imageEditor.applyGeneratedTemplateToAllFrames.get()) {
+			affectedFrames.addAll(timeline.getTimeline().getSelectedValuesList());
+		} else {
+			affectedFrames.add(timeline.getTimeline().getSelectedValue());
+		}
 
 		templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
@@ -235,7 +244,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 		merge.addActionListener(e -> {
 			Layer first = new Layer(16, 16, 0, 0, L10N.t("dialog.imageeditor.template_merged_layer"),
 					refreshIcon().getImage());
-			canvas.add(first);
+			affectedFrames.forEach(canvas -> canvas.add(first));
 			dispose();
 		});
 
@@ -246,7 +255,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 					ImageIcon layer1 = new ImageIcon(ImageIO.read(
 							((ResourcePointer) Objects.requireNonNull(cbs.getSelectedItem())).getStream()));
 					Layer first = new Layer(16, 16, 0, 0, cbs.getSelectedItem().toString(), layer1.getImage());
-					canvas.add(first, 0, changeGroup);
+					affectedFrames.forEach(canvas -> canvas.add(first, changeGroup));
 				}
 				if (cbs2.getSelectedItem() != null && !cbs2.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer2 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
@@ -254,7 +263,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 							(Integer) ang1.getValue());
 					Layer second = new Layer(16, 16, 0, 0, cbs2.getSelectedItem().toString(),
 							ImageUtils.colorize(layer2, col1.getColor(), !type1.isSelected()).getImage());
-					canvas.add(second, 0, changeGroup);
+					affectedFrames.forEach(canvas -> canvas.add(second, changeGroup));
 				}
 				if (cbs3.getSelectedItem() != null && !cbs3.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer3 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
@@ -262,7 +271,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 							(Integer) ang2.getValue());
 					Layer third = new Layer(16, 16, 0, 0, cbs3.getSelectedItem().toString(),
 							ImageUtils.colorize(layer3, col2.getColor(), !type2.isSelected()).getImage());
-					canvas.add(third, 0, changeGroup);
+					affectedFrames.forEach(canvas -> canvas.add(third, changeGroup));
 				}
 				if (cbs4.getSelectedItem() != null && !cbs4.getSelectedItem().toString().contains("(no image)")) {
 					ImageIcon layer4 = ImageUtils.rotate(new ImageIcon(ImageIO.read(
@@ -270,7 +279,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 							(Integer) ang3.getValue());
 					Layer fourth = new Layer(16, 16, 0, 0, cbs4.getSelectedItem().toString(),
 							ImageUtils.colorize(layer4, col4.getColor(), !type3.isSelected()).getImage());
-					canvas.add(fourth, 0, changeGroup);
+					affectedFrames.forEach(canvas -> canvas.add(fourth, changeGroup));
 				}
 			} catch (IOException ex) {
 				LOG.error(ex.getMessage(), e);
