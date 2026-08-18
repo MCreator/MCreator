@@ -83,7 +83,7 @@ public class URLTemplateLoaderProxy implements TemplateLoader {
 			}
 
 			// Otherwise, return a StringReader from the (now cached or modified) content
-			return new StringReader(event.getTemplateOutput());
+			return new StringReader(event.getTemplateContentOrigin());
 		}
 		return templateLoader.getReader(templateSource, encoding);
 	}

@@ -33,11 +33,11 @@ public class ModifyTemplateEvent extends MCREvent {
 	private final Supplier<String> contentLoader;
 
 	// Volatile because listeners run on the plugin event queue thread
-	private volatile String loadedContent;       // cached after first read
-	private volatile String modifiedContent;     // set by plugin via setTemplateOutput
+	private volatile String templateContentOrigin;       // cached after first read
+	private volatile String templateContent;     // set by plugin via setTemplateOutput
 
 	public ModifyTemplateEvent(@Nullable String templateName,
-			@Nonnull ThrowingSupplier<String, IOException> contentLoader) {
+			@Nonnull ThrowingSupplier<String> contentLoader) {
 		this.templateName = templateName;
 		this.contentLoader = () -> {
 			try {
@@ -58,41 +58,43 @@ public class ModifyTemplateEvent extends MCREvent {
 	 * this loads the original content once and caches it.
 	 */
 	@Nonnull
-	public String getTemplateOutput() {
-		// If modified content exists, return it (plugin override)
-		if (modifiedContent != null) {
-			return modifiedContent;
-		}
+	public String getTemplateContent() {
 		// Otherwise load and cache original content
-		if (loadedContent == null) {
-			loadedContent = contentLoader.get();
+		if (templateContentOrigin == null) {
+			templateContentOrigin = contentLoader.get();
+			templateContent = templateContentOrigin;
 		}
-		return loadedContent;
+		return templateContent;
+	}
+
+	@Nonnull
+	public String getTemplateContentOrigin() {
+		return templateContentOrigin;
 	}
 
 	/**
 	 * Sets a new template content. This marks the event as modified.
 	 */
-	public void setTemplateOutput(@Nonnull String templateContent) {
-		this.modifiedContent = templateContent;
+	public void setTemplateContentOrigin(@Nonnull String templateContentOrigin) {
+		this.templateContent = templateContentOrigin;
 	}
 
 	/**
 	 * @return true if a plugin called setTemplateOutput()
 	 */
 	public boolean isModified() {
-		return modifiedContent != null;
+		return templateContent != null;
 	}
 
 	/**
 	 * @return true if any plugin called getTemplateOutput() (which loads the content)
 	 */
 	public boolean wasContentRead() {
-		return loadedContent != null || modifiedContent != null;
+		return templateContentOrigin != null || templateContent != null;
 	}
 
 	@FunctionalInterface
-	public interface ThrowingSupplier<T, E extends Exception> {
-		T get() throws E;
+	public interface ThrowingSupplier<T> {
+		T get() throws IOException;
 	}
 }
