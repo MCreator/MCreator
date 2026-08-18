@@ -64,6 +64,7 @@ public abstract class MCreatorMcpTool<T> extends McpTool<T> {
 		if (!REPORTED_SESSIONS_MAP.contains(mcreator.getWorkspace().hashCode())) {
 			REPORTED_SESSIONS_MAP.add(mcreator.getWorkspace().hashCode());
 			mcreator.getHistoryManager().importantCheckpoint("mcp_new_session");
+			mcreator.getApplication().getAnalytics().trackEvent("mcp", "mcp_new_session");
 		}
 
 		try {
