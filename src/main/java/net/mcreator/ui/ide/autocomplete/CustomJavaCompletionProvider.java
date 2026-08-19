@@ -18,8 +18,6 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
-import net.mcreator.java.ImportTreeBuilder;
-import net.mcreator.java.JavaConventions;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
@@ -59,9 +57,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private final JavaParser parser;
 	private final JavaTypeResolver javaTypeResolver;
 	private final ShorthandCompletionCache shorthandCache;
-	
-	private Map<String, List<String>> cachedModClasses = null;
-	private long lastModClassesUpdate = 0;
 
 	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {
 		static ClassInfo of(Workspace workspace, String fqdn) {
@@ -84,7 +79,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
-
 	private final Map<String, ClassInfo> classInfoCache = new ConcurrentHashMap<>();
 
 	private ClassInfo getClassInfo(String fqdn) {
@@ -103,8 +97,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	public synchronized void invalidateCaches() {
 		classInfoCache.clear();
-		cachedModClasses = null;
-		lastModClassesUpdate = 0;
 		if (javaTypeResolver != null) {
 			javaTypeResolver.invalidateCaches();
 		}
@@ -293,21 +285,33 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private void addClassCompletions(String wordOnly, List<Completion> completions) {
 		if (workspace == null)
 			return;
-		Map<String, List<String>> tree = getImportTreeCached();
-		if (tree != null) {
-			Set<String> addedFQDNs = new HashSet<>();
-			for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
-				String className = entry.getKey();
-				if (matchesFilter(className, wordOnly)) {
-					List<String> fqdns = entry.getValue();
-					if (fqdns != null && !fqdns.isEmpty()) {
-						for (String fqdn : fqdns) {
-							if (addedFQDNs.add(fqdn)) {
-								ClassInfo info = getClassInfo(fqdn);
-								CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
-										info.isInterface, info.isEnum);
-								completions.add(ccc);
-							}
+
+		Set<String> addedFQDNs = new HashSet<>();
+
+		if (workspace.getGenerator().getGradleCache() != null) {
+			Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
+			addClassCompletionsFromTree(gTree, wordOnly, addedFQDNs, completions);
+		}
+
+		Map<String, List<String>> modClasses = javaTypeResolver.getModClasses();
+		if (modClasses != null) {
+			addClassCompletionsFromTree(modClasses, wordOnly, addedFQDNs, completions);
+		}
+	}
+
+	private void addClassCompletionsFromTree(Map<String, List<String>> tree, String wordOnly, Set<String> addedFQDNs,
+			List<Completion> completions) {
+		for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
+			String className = entry.getKey();
+			if (matchesFilter(className, wordOnly)) {
+				List<String> fqdns = entry.getValue();
+				if (fqdns != null && !fqdns.isEmpty()) {
+					for (String fqdn : fqdns) {
+						if (addedFQDNs.add(fqdn)) {
+							ClassInfo info = getClassInfo(fqdn);
+							CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
+									info.isInterface, info.isEnum);
+							completions.add(ccc);
 						}
 					}
 				}
@@ -342,34 +346,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				}
 			}
 		}
-	}
-
-	private synchronized Map<String, List<String>> getImportTreeCached() {
-		if (workspace == null || workspace.getGenerator().getGradleCache() == null)
-			return null;
-
-		Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
-		if (gTree == null)
-			return null;
-
-		Map<String, List<String>> tree = new HashMap<>();
-		for (Map.Entry<String, List<String>> e : gTree.entrySet()) {
-			tree.put(e.getKey(), new ArrayList<>(e.getValue()));
-		}
-
-		long now = System.currentTimeMillis();
-		if (cachedModClasses == null || (now - lastModClassesUpdate > 5000)) {
-			Map<String, List<String>> modClasses = new HashMap<>();
-			ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), modClasses);
-			cachedModClasses = modClasses;
-			lastModClassesUpdate = now;
-		}
-
-		for (Map.Entry<String, List<String>> e : cachedModClasses.entrySet()) {
-			tree.computeIfAbsent(e.getKey(), _ -> new ArrayList<>()).addAll(e.getValue());
-		}
-
-		return tree;
 	}
 
 	private boolean matchesFilter(String candidate, String filter) {

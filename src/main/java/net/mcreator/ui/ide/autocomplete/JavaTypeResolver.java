@@ -88,16 +88,34 @@ public class JavaTypeResolver {
 	@SuppressWarnings("NullableProblems")
 	private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
+	private Map<String, List<String>> cachedModClasses = null;
+	private long lastModClassesUpdate = 0;
+
 	public JavaTypeResolver(@Nullable Workspace workspace) {
 		this.workspace = workspace;
 		this.sourceResolver = new JavaSourceResolver(workspace);
 		this.memberResolver = new JavaMemberResolver(workspace, sourceResolver, this);
 	}
 
-	public void invalidateCaches() {
+	public synchronized void invalidateCaches() {
 		memberResolver.invalidateCaches();
 		simpleTypeCache.invalidateAll();
 		sourceResolver.invalidateCaches();
+		cachedModClasses = null;
+		lastModClassesUpdate = 0;
+	}
+
+	public synchronized Map<String, List<String>> getModClasses() {
+		if (workspace == null)
+			return Collections.emptyMap();
+		long now = System.currentTimeMillis();
+		if (cachedModClasses == null || (now - lastModClassesUpdate > 5000)) {
+			Map<String, List<String>> modClasses = new HashMap<>();
+			ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), modClasses);
+			cachedModClasses = modClasses;
+			lastModClassesUpdate = now;
+		}
+		return cachedModClasses;
 	}
 
 	public List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor,
@@ -155,8 +173,17 @@ public class JavaTypeResolver {
 		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache().getImportTree();
 			if (tree != null) {
-				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), tree);
 				List<String> fqdns = tree.get(typeName);
+				if (fqdns != null && !fqdns.isEmpty()) {
+					return fqdns.getFirst();
+				}
+			}
+		}
+
+		if (workspace != null) {
+			Map<String, List<String>> modClasses = getModClasses();
+			if (modClasses != null) {
+				List<String> fqdns = modClasses.get(typeName);
 				if (fqdns != null && !fqdns.isEmpty()) {
 					return fqdns.getFirst();
 				}
