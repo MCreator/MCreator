@@ -42,10 +42,6 @@ public final class LocalVariableResolver {
 		public VarTypeInfo(String rawType) {
 			this(rawType, Collections.emptyList());
 		}
-
-		public String genericArg() {
-			return genericArgs.isEmpty() ? null : genericArgs.getLast();
-		}
 	}
 
 	private record ScopeBlock(StringBuilder text, int headerStartInParent) {
@@ -102,13 +98,7 @@ public final class LocalVariableResolver {
 				.matcher(strippedCode);
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
-			String raw = mDecl.group(1);
-			String gen = mDecl.group(2);
-			List<String> genericArgs = Collections.emptyList();
-			if (gen != null && !gen.isEmpty()) {
-				genericArgs = Arrays.stream(gen.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
-			}
-			lastType = new VarTypeInfo(raw, genericArgs);
+			lastType = new VarTypeInfo(mDecl.group(1), mDecl.group(2));
 		}
 		if (lastType != null)
 			return lastType;
@@ -138,13 +128,7 @@ public final class LocalVariableResolver {
 				"\\bvar\\s+" + Pattern.quote(base) + "\\s*=\\s*(?:new\\s+)?([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
 		Matcher mVar = pVar.matcher(strippedCode);
 		while (mVar.find()) {
-			String raw = mVar.group(1);
-			String gen = mVar.group(2);
-			List<String> genericArgs = Collections.emptyList();
-			if (gen != null && !gen.isEmpty()) {
-				genericArgs = Arrays.stream(gen.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
-			}
-			lastType = new VarTypeInfo(raw, genericArgs);
+			lastType = new VarTypeInfo(mVar.group(1), mVar.group(2));
 		}
 		return lastType;
 	}
