@@ -128,18 +128,14 @@ public class JavaSourceResolver {
 		try {
 			JavaType<?> source = Roaster.parse(srcCode);
 			if (source instanceof MethodHolderSource<?> mhs) {
-				Map<String, String> imports = parseImports(srcCode);
 				for (MethodSource<?> m : mhs.getMethods()) {
 					if (m.getJavaDoc() != null) {
 						String text = m.getJavaDoc().getFullText();
 						if (text != null && !text.trim().isEmpty()) {
 							List<? extends ParameterSource<?>> params = m.getParameters();
 							String[] pTypes = params.stream().map(p -> {
-								String name = p.getType().getName();
-								String resolved = imports.get(name);
-								if (resolved != null)
-									return resolved;
-								return name.length() == 1 ? "java.lang.Object" : name;
+								String name = p.getType().getSimpleName();
+								return name.length() == 1 ? "Object" : name;
 							}).toArray(String[]::new);
 							docs.put(m.getName() + "(" + String.join(",", pTypes) + ")", text.trim());
 							docs.putIfAbsent(m.getName() + "/" + params.size(), text.trim());

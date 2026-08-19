@@ -195,7 +195,7 @@ public class JavaMemberResolver {
 				pTypes[j] = toSimpleType(fqdnPTypes[j]);
 			}
 
-			String doc = lookupDoc(docs, mName, fqdnPTypes, pCount);
+			String doc = lookupDoc(docs, mName, pTypes, pCount);
 			JavaTypeResolver.addMethodCompletion(mName, toSimpleType(mi.getReturnTypeString(true)), pTypes, pNames,
 					fqdnPTypes, mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result,
 					added);
@@ -259,8 +259,8 @@ public class JavaMemberResolver {
 		return null;
 	}
 
-	private String lookupDoc(Map<String, String> docs, String mName, String[] fqdnPTypes, int pCount) {
-		String doc = docs.get(mName + "(" + String.join(",", fqdnPTypes) + ")");
+	private String lookupDoc(Map<String, String> docs, String mName, String[] pTypes, int pCount) {
+		String doc = docs.get(mName + "(" + String.join(",", pTypes) + ")");
 		if (doc == null)
 			doc = docs.get(mName + "/" + pCount);
 		if (doc == null)
