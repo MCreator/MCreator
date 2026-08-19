@@ -42,7 +42,8 @@ public class ClassTemplateLoaderProxy implements TemplateLoader {
 		if (source == null) {
 			return null;
 		}
-		// if we do not append the base package root. Plugin developer will only get file name.
+		// if we do not append the base package root. Plugin developer will only receive file name.
+		// eg. mixin.ftl.json -> neoforge-1.x/templates/modbase/mixin.ftl.json
 		return new URLTemplateSourceHolder((URLTemplateSource) source, templateLoader.getBasePackagePath() + name);
 	}
 
