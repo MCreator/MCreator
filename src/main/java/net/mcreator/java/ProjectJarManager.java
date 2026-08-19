@@ -167,7 +167,7 @@ public class ProjectJarManager extends JarManager {
 			throw new GradleCacheImportFailedException(new IOException("Failed to load cached library " + libString));
 		}
 
-		JarLibraryInfo libraryInfo = new JarLibraryInfo(libString);
+		JarLibraryInfo libraryInfo = new SafeJarLibraryInfo(libString);
 		String srcString = classpathEntry.getSrc(workspace);
 		if (srcString != null) {
 			File srcFile = new File(srcString);
@@ -230,7 +230,7 @@ public class ProjectJarManager extends JarManager {
 		} else if (classesArchive.getName().endsWith(".jmod")) {
 			return new JModLibraryInfo(classesArchive);
 		} else {
-			return new JarLibraryInfo(classesArchive);
+			return new SafeJarLibraryInfo(classesArchive);
 		}
 	}
 
