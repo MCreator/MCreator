@@ -232,7 +232,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
-	public ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor,
+	private ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor,
 			JavaParser parser) {
 		if (code == null)
 			code = "";
