@@ -21,6 +21,7 @@ package net.mcreator.ui.ide.autocomplete;
 import org.fife.rsta.ac.java.IconFactory;
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.swing.Icon;
 
@@ -52,6 +53,39 @@ public class CustomClassCompletion extends BasicCompletion {
 
 		String packageInfo = (pkg != null && !pkg.isEmpty()) ? "<br>package " + pkg : "";
 		return "<html>" + type + name + packageInfo + "</html>";
+	}
+
+	public void insert(RSyntaxTextArea te, String alreadyEntered) {
+		int dot = te.getCaretPosition();
+		int start = dot - (alreadyEntered != null ? alreadyEntered.length() : 0);
+
+		if (pkg == null || pkg.isEmpty() || "java.lang".equals(pkg)) {
+			te.replaceRange(className, start, dot);
+			return;
+		}
+
+		String fqdn = pkg + "." + className;
+		String text = te.getText();
+
+		if (text.contains("package " + pkg + ";") || text.contains("import " + fqdn + ";")) {
+			te.replaceRange(className, start, dot);
+			return;
+		}
+
+		if (text.contains("." + className + ";")) {
+			te.replaceRange(fqdn, start, dot);
+			return;
+		}
+
+		te.beginAtomicEdit();
+		try {
+			te.replaceRange(className, start, dot);
+			int pos = Math.max(text.lastIndexOf("\nimport "), text.indexOf("package "));
+			int end = pos >= 0 ? text.indexOf(';', pos) + 1 : 0;
+			te.insert((end > 0 ? "\nimport " : "import ") + fqdn + ";", end);
+		} finally {
+			te.endAtomicEdit();
+		}
 	}
 
 	@Override public Icon getIcon() {

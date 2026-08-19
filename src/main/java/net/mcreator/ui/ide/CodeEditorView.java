@@ -33,6 +33,7 @@ import net.mcreator.ui.component.JFileBreadCrumb;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
+import net.mcreator.ui.ide.autocomplete.CustomClassCompletion;
 import net.mcreator.ui.ide.autocomplete.CustomJavaCompletionProvider;
 import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
@@ -53,6 +54,7 @@ import org.fife.rsta.ac.java.JavaLanguageSupport;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.tree.JavaOutlineTree;
 import org.fife.ui.autocomplete.AutoCompletion;
+import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -380,7 +382,15 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				}
 			}
 			this.jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
-			ac = new AutoCompletion(this.jcp);
+			ac = new AutoCompletion(this.jcp) {
+				@Override protected void insertCompletion(Completion c, boolean typedParamListStartChar) {
+					if (c instanceof CustomClassCompletion cc) {
+						cc.insert(te, c.getAlreadyEntered(te));
+					} else {
+						super.insertCompletion(c, typedParamListStartChar);
+					}
+				}
+			};
 			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
 			ac.setAutoActivationDelay(0);
 			ac.setParameterAssistanceEnabled(true);
