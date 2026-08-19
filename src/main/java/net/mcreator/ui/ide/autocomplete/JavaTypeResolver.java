@@ -105,6 +105,10 @@ public class JavaTypeResolver {
 		lastModClassesUpdate = 0;
 	}
 
+	public JavaSourceResolver getSourceResolver() {
+		return sourceResolver;
+	}
+
 	public synchronized Map<String, List<String>> getModClasses() {
 		if (workspace == null)
 			return Collections.emptyMap();
@@ -146,6 +150,10 @@ public class JavaTypeResolver {
 		if (typeName.contains("."))
 			return typeName;
 
+		if (imports != null && imports.containsKey(typeName)) {
+			return imports.get(typeName);
+		}
+
 		String cacheKey = (currentPkg != null ? currentPkg : "") + ":" + typeName;
 		String cached = simpleTypeCache.getIfPresent(cacheKey);
 		if (cached != null)
@@ -157,7 +165,7 @@ public class JavaTypeResolver {
 	}
 
 	private String resolveSimpleTypeNameImpl(String typeName, Map<String, String> imports, String currentPkg) {
-		if (imports.containsKey(typeName)) {
+		if (imports != null && imports.containsKey(typeName)) {
 			return imports.get(typeName);
 		}
 

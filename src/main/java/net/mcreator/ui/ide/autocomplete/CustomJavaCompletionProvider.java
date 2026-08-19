@@ -246,10 +246,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			}
 
 			if (isClassContext && workspace != null) {
+				Map<String, String> imports = javaTypeResolver.getSourceResolver().parseImports(code);
 				if ("Smart".equals(mode)) {
 					CompletableFuture<List<Completion>> classTask = CompletableFuture.supplyAsync(() -> {
 						List<Completion> classComps = new ArrayList<>();
-						addClassCompletions(wordOnly, classComps);
+						addClassCompletions(wordOnly, classComps, imports);
 						return classComps;
 					}, COMPLETION_EXECUTOR);
 
@@ -262,7 +263,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					}
 				} else {
 					// Autocomplete is not in smart mode: run class completion synchronously so completions are always shown
-					addClassCompletions(wordOnly, completions);
+					addClassCompletions(wordOnly, completions, imports);
 				}
 			}
 		}
@@ -282,7 +283,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		return result;
 	}
 
-	private void addClassCompletions(String wordOnly, List<Completion> completions) {
+	private void addClassCompletions(String wordOnly, List<Completion> completions, Map<String, String> imports) {
 		if (workspace == null)
 			return;
 
@@ -290,17 +291,17 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 		if (workspace.getGenerator().getGradleCache() != null) {
 			Map<String, List<String>> gTree = workspace.getGenerator().getGradleCache().getImportTree();
-			addClassCompletionsFromTree(gTree, wordOnly, addedFQDNs, completions);
+			addClassCompletionsFromTree(gTree, wordOnly, addedFQDNs, completions, imports);
 		}
 
 		Map<String, List<String>> modClasses = javaTypeResolver.getModClasses();
 		if (modClasses != null) {
-			addClassCompletionsFromTree(modClasses, wordOnly, addedFQDNs, completions);
+			addClassCompletionsFromTree(modClasses, wordOnly, addedFQDNs, completions, imports);
 		}
 	}
 
 	private void addClassCompletionsFromTree(Map<String, List<String>> tree, String wordOnly, Set<String> addedFQDNs,
-			List<Completion> completions) {
+			List<Completion> completions, Map<String, String> imports) {
 		for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
 			String className = entry.getKey();
 			if (matchesFilter(className, wordOnly)) {
@@ -311,6 +312,9 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 							ClassInfo info = getClassInfo(fqdn);
 							CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
 									info.isInterface, info.isEnum);
+							if (imports != null && fqdn.equals(imports.get(className))) {
+								ccc.setRelevance(3);
+							}
 							completions.add(ccc);
 						}
 					}
