@@ -108,7 +108,7 @@ public class ImportTreeBuilder {
 				LOG.warn("Failed to load import format classes", e);
 			}
 		});
-		return retval;
+		return Collections.unmodifiableMap(retval);
 	}
 
 	static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {
