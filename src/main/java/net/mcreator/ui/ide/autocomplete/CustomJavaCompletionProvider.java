@@ -25,6 +25,7 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.rsta.ac.ShorthandCompletionCache;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.fife.ui.autocomplete.*;
@@ -57,6 +58,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private final Workspace workspace;
 	private final JavaParser parser;
 	private final JavaTypeResolver javaTypeResolver;
+	private final ShorthandCompletionCache shorthandCache;
 	
 	private Map<String, List<String>> cachedModClasses = null;
 	private long lastModClassesUpdate = 0;
@@ -93,6 +95,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		this.workspace = workspace;
 		this.parser = parser;
 		this.javaTypeResolver = new JavaTypeResolver(workspace);
+		this.shorthandCache = new CustomJSCCache(this, new DefaultCompletionProvider());
 		setAutoActivationRules(!"Trigger on dot".equals(PreferencesManager.PREFERENCES.ide.autocompleteMode.get()),
 				".");
 		setParameterizedCompletionParams('(', ", ", ')');
@@ -220,10 +223,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					codeBeforeCursor, parser);
 			addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
 
-			// Keywords - executed synchronously
-			for (String kw : JavaConventions.JAVA_RESERVED_WORDS) {
-				if (matchesFilter(kw, wordOnly)) {
-					completions.add(new JavaKeywordCompletion(this, kw));
+			// Shorthand completions (templates and keywords) - executed synchronously
+			for (Completion c : shorthandCache.getShorthandCompletions()) {
+				if (matchesFilter(c.getInputText(), wordOnly)) {
+					completions.add(c);
 				}
 			}
 
