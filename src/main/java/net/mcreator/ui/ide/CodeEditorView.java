@@ -391,6 +391,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					}
 				}
 			};
+			this.jcp.setAc(ac);
 			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
 			ac.setAutoActivationDelay(0);
 			ac.setParameterAssistanceEnabled(true);

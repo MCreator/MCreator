@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
@@ -39,12 +41,17 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private static final Logger LOG = LogManager.getLogger(CustomJavaCompletionProvider.class);
+
+	private static final int COMPLETION_TIMEOUT_MS = 25;
 
 	private static final ExecutorService COMPLETION_EXECUTOR = Executors.newFixedThreadPool(
 			Math.max(2, Runtime.getRuntime().availableProcessors()), r -> {
@@ -57,6 +64,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private final JavaParser parser;
 	private final JavaTypeResolver javaTypeResolver;
 	private final ShorthandCompletionCache shorthandCache;
+	private AutoCompletion ac;
+
+	@SuppressWarnings("NullableProblems")
+	private final Cache<String, List<Completion>> classCompletionsCache = CacheBuilder.newBuilder().maximumSize(100)
+			.expireAfterWrite(Duration.ofSeconds(10)).build();
 
 	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {
 		static ClassInfo of(Workspace workspace, String fqdn) {
@@ -95,10 +107,52 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		setParameterizedCompletionParams('(', ", ", ')');
 	}
 
+	public void setAc(AutoCompletion ac) {
+		this.ac = ac;
+	}
+
 	public synchronized void invalidateCaches() {
 		classInfoCache.clear();
+		classCompletionsCache.invalidateAll();
 		if (javaTypeResolver != null) {
 			javaTypeResolver.invalidateCaches();
+		}
+	}
+
+	private void runCompletionTask(Supplier<List<Completion>> supplier, JTextComponent comp, Document expectedDoc,
+			int expectedCaret, List<Completion> completions) {
+		final AtomicBoolean timedOut = new AtomicBoolean(false);
+		CompletableFuture<List<Completion>> task = CompletableFuture.supplyAsync(supplier, COMPLETION_EXECUTOR);
+
+		task.whenComplete((taskComps, ex) -> {
+			if (ex != null) {
+				LOG.error("Failed to compute completions", ex);
+				return;
+			}
+			if (timedOut.get() && taskComps != null && !taskComps.isEmpty()) {
+				SwingUtilities.invokeLater(() -> {
+					try {
+						if (comp.getDocument() == expectedDoc && comp.getCaretPosition() == expectedCaret) {
+							if (ac != null) {
+								ac.doCompletion();
+							}
+						}
+					} catch (Throwable t) {
+						LOG.debug("Failed to trigger completions after task timeout", t);
+					}
+				});
+			}
+		});
+
+		try {
+			List<Completion> taskComps = task.get(COMPLETION_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+			if (taskComps != null) {
+				completions.addAll(taskComps);
+			}
+		} catch (TimeoutException e) {
+			timedOut.set(true);
+		} catch (Exception e) {
+			LOG.error("Failed to get completions", e);
 		}
 	}
 
@@ -162,8 +216,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			return completions;
 		}
 
-		String mode = PreferencesManager.PREFERENCES.ide.autocompleteMode.get();
-
 		Document doc = comp.getDocument();
 		int caretPos = comp.getCaretPosition();
 		String code;
@@ -199,23 +251,32 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String beforeDot = textBeforeWord.substring(0, textBeforeWord.lastIndexOf('.')).trim();
 			String targetName = extractTargetName(beforeDot);
 			if (!targetName.isEmpty()) {
-				List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code,
-						codeBeforeCursor, parser);
 				CustomFieldCompletion.PrefixContext prefixContext = CustomFieldCompletion.PrefixContext.NONE;
 				if (alreadyEntered.startsWith("Blocks.")) {
 					prefixContext = CustomFieldCompletion.PrefixContext.BLOCKS;
 				} else if (alreadyEntered.startsWith("Items.")) {
 					prefixContext = CustomFieldCompletion.PrefixContext.ITEMS;
 				}
-				addResolverItems(items, wordOnly, prefixContext, completions);
+				final CustomFieldCompletion.PrefixContext finalPrefixContext = prefixContext;
+				runCompletionTask(() -> {
+					List<Completion> dotComps = new ArrayList<>();
+					List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code,
+							codeBeforeCursor, parser);
+					addResolverItems(items, wordOnly, finalPrefixContext, dotComps);
+					return dotComps;
+				}, comp, doc, caretPos, completions);
 			}
 		} else {
-			// Method/field completions for "this" - executed synchronously
-			List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
-					codeBeforeCursor, parser);
-			addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
+			// Method/field completions for "this"
+			runCompletionTask(() -> {
+				List<Completion> thisComps = new ArrayList<>();
+				List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
+						codeBeforeCursor, parser);
+				addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, thisComps);
+				return thisComps;
+			}, comp, doc, caretPos, completions);
 
-			// Shorthand completions (templates and keywords) - executed synchronously
+			// Shorthand completions (templates and keywords)
 			for (Completion c : shorthandCache.getShorthandCompletions()) {
 				if (matchesFilter(c.getInputText(), wordOnly)) {
 					completions.add(c);
@@ -223,15 +284,19 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			}
 
 			// Local symbols (method parameters and local variables in current method scope)
-			Map<String, String> localVars = LocalVariableResolver.getLocalVariables(codeBeforeCursor);
-			for (Map.Entry<String, String> entry : localVars.entrySet()) {
-				String varName = entry.getKey();
-				if (matchesFilter(varName, wordOnly) && !varName.equals(wordOnly)) {
-					completions.add(new CustomVariableCompletion(this, varName, entry.getValue()));
+			runCompletionTask(() -> {
+				List<Completion> varComps = new ArrayList<>();
+				Map<String, String> localVars = LocalVariableResolver.getLocalVariables(codeBeforeCursor);
+				for (Map.Entry<String, String> entry : localVars.entrySet()) {
+					String varName = entry.getKey();
+					if (matchesFilter(varName, wordOnly) && !varName.equals(wordOnly)) {
+						varComps.add(new CustomVariableCompletion(this, varName, entry.getValue()));
+					}
 				}
-			}
+				return varComps;
+			}, comp, doc, caretPos, completions);
 
-			// External classes & workspace classes - offloaded to background thread with timeout
+			// External classes & workspace classes
 			String trimmedBefore = textBeforeWord.trim();
 			boolean isClassContext =
 					trimmedBefore.endsWith("@") || (!wordOnly.isEmpty() && Character.isUpperCase(wordOnly.charAt(0)));
@@ -247,23 +312,17 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 			if (isClassContext && workspace != null) {
 				Map<String, String> imports = javaTypeResolver.getSourceResolver().parseImports(code);
-				if ("Smart".equals(mode)) {
-					CompletableFuture<List<Completion>> classTask = CompletableFuture.supplyAsync(() -> {
-						List<Completion> classComps = new ArrayList<>();
-						addClassCompletions(wordOnly, classComps, imports);
-						return classComps;
-					}, COMPLETION_EXECUTOR);
-
-					try {
-						completions.addAll(classTask.get(65, TimeUnit.MILLISECONDS));
-					} catch (TimeoutException e) {
-						// Class completions timed out in smart mode; return method/field/keyword completions immediately
-					} catch (Exception e) {
-						LOG.error("Failed to get class completions", e);
-					}
+				List<Completion> cachedClassComps = classCompletionsCache.getIfPresent(wordOnly);
+				if (cachedClassComps != null) {
+					completions.addAll(cachedClassComps);
 				} else {
-					// Autocomplete is not in smart mode: run class completion synchronously so completions are always shown
-					addClassCompletions(wordOnly, completions, imports);
+					final String targetWord = wordOnly;
+					runCompletionTask(() -> {
+						List<Completion> classComps = new ArrayList<>();
+						addClassCompletions(targetWord, classComps, imports);
+						classCompletionsCache.put(targetWord, classComps);
+						return classComps;
+					}, comp, doc, caretPos, completions);
 				}
 			}
 		}
