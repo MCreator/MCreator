@@ -226,6 +226,10 @@ public final class BlocklyJavascriptBridge {
 		return BlocklyVariables.isPlayerVariableForWorkspace(mcreator.getWorkspace(), field);
 	}
 
+	@SuppressWarnings("unused") public boolean globalVariableExists(String field) {
+		return BlocklyVariables.isGlobalVariableForWorkspace(mcreator.getWorkspace(), field);
+	}
+
 	/**
 	 * Gets the readable name of a data list entry from the type of searchable selector
 	 *

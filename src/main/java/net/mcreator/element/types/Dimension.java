@@ -167,7 +167,13 @@ import java.util.List;
 	}
 
 	public boolean hasFixedTimeAndNeedsCustomTimeline() {
-		return !useCustomEffects && "overworld".equals(defaultEffects) && hasFixedTime;
+		return hasFixedTime && (useCustomEffects ?
+				"NORMAL".equals(skyType) :
+				"overworld".equals(defaultEffects));
+	}
+
+	public boolean needsCustomEffectsTimeline() {
+		return useCustomEffects && "NORMAL".equals(skyType) && !hasFixedTime;
 	}
 
 	public Set<String> getWorldgenBlocks() {
@@ -190,9 +196,9 @@ import java.util.List;
 	}
 
 	public List<BiomeEntry> getUsedBiomes() {
-		List<BiomeEntry> usedBiomes = new ArrayList<>();
-		usedBiomes.addAll(biomesInDimension);
-		usedBiomes.addAll(biomesInDimensionCaves);
+		List<BiomeEntry> usedBiomes = new ArrayList<>(biomesInDimension);
+		if ("Normal world gen".equals(worldGenType)) // cave biomes are only supported by normal world gen
+			usedBiomes.addAll(biomesInDimensionCaves);
 		return usedBiomes;
 	}
 

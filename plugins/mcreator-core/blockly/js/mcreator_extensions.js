@@ -56,7 +56,11 @@ Blockly.Extensions.registerMutator('variable_entity_input',
     {
         mutationToDom: function () {
             const container = document.createElement('mutation');
-            const isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
+            // Also check the actual block shape: if the referenced variable no longer exists,
+            // isPlayerVariable returns false, but the entity input must be serialized anyway
+            // so blocks attached to it are not lost when the block is restored (e.g. on undo)
+            const isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR')) ||
+                (this.getInput('entity') != null);
             container.setAttribute('is_player_var', isPlayerVar);
             const hasEntity = (this.getInputTargetBlock('entity') != null);
             container.setAttribute('has_entity', hasEntity);

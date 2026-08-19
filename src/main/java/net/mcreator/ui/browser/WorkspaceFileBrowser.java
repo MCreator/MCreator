@@ -432,7 +432,8 @@ public class WorkspaceFileBrowser extends JPanel {
 		FilterTreeNode extDeps = new FilterTreeNode(NODE_EXTERNAL_LIBRARIES);
 
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
-			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
+			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager()
+					.getExternalClassFileSources();
 			for (LibraryInfo libraryInfo : libraryInfos) {
 				try {
 					File libraryFile = new File(libraryInfo.getLocationAsString());
