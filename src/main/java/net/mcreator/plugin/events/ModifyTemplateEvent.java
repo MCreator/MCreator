@@ -57,7 +57,7 @@ public class ModifyTemplateEvent extends MCREvent {
 	 * this loads the original content once and caches it.
 	 */
 	public String getTemplateContent() {
-		if (templateContent != null) {
+		if (modified) {
 			return templateContent;
 		}
 
