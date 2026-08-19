@@ -68,7 +68,16 @@ public class ModifyTemplateEvent extends MCREvent {
 		return templateContent;
 	}
 
+	/**
+	 * @return Original template content before any modifications from plugins
+	 */
 	public String getTemplateContentOrigin() {
+		if (templateContentOrigin == null) {
+			templateContentOrigin = contentLoader.get();
+			if (!modified) {
+				templateContent = templateContentOrigin;
+			}
+		}
 		return templateContentOrigin;
 	}
 
