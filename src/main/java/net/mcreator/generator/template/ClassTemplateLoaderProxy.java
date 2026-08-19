@@ -69,7 +69,8 @@ public class ClassTemplateLoaderProxy implements TemplateLoader {
 				}
 			});
 			MCREvent.event(event);
-			if (!event.isModified()) {
+			// if no plugin edit and read, this will ensure only one I/O open.
+			if (!event.isModified() && !event.hasContentRead()) {
 				return templateLoader.getReader(urlSource, encoding);
 			}
 			return new StringReader(event.getTemplateContent());

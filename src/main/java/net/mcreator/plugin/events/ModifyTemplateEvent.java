@@ -69,7 +69,7 @@ public class ModifyTemplateEvent extends MCREvent {
 	}
 
 	/**
-	 * @return Original template content before any modifications from plugins
+	 * @return Original template content before any modifications from plugins.
 	 */
 	public String getTemplateContentOrigin() {
 		if (templateContentOrigin == null) {
@@ -90,10 +90,17 @@ public class ModifyTemplateEvent extends MCREvent {
 	}
 
 	/**
-	 * @return true if a plugin called setTemplateOutput()
+	 * @return true if a plugin called setTemplateOutput().
 	 */
 	public boolean isModified() {
 		return modified;
+	}
+
+	/**
+	 * @return true if event has read the template content.
+	 */
+	public boolean hasContentRead(){
+		return templateContentOrigin != null;
 	}
 
 	@FunctionalInterface
