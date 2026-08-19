@@ -160,6 +160,7 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 		return switch (extension) {
 			case "ttf" -> "application/octet-stream";
 			case "png" -> "image/png";
+			case "svg" -> "image/svg+xml";
 			case "jpeg" -> "image/jpeg";
 			case "css" -> "text/css";
 			case "js" -> "text/javascript";

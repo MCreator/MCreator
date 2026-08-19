@@ -97,7 +97,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			"elementgui.common.rarity_");
 	private StringListProcedureSelector specialInformation;
 
-	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
+	private final JComboBox<String> fluidtype = ComponentFromAnnotation.options(Fluid.class, "type");
 
 	private final JSpinner resistance = ComponentFromAnnotation.spinner(Fluid.class, "resistance");
 	private final JSpinner luminance = ComponentFromAnnotation.spinner(Fluid.class, "luminance");
