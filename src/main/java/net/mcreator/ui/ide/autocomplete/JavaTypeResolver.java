@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JavaParser;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
+import org.jboss.forge.roaster.model.Named;
 import org.jboss.forge.roaster.model.source.*;
 
 import javax.annotation.Nullable;
@@ -240,6 +241,28 @@ public class JavaTypeResolver {
 		return null;
 	}
 
+	private List<String> getTypeParameters(String fqdn, @Nullable String currentClassFQDN,
+			@Nullable String currentCode) {
+		if (fqdn == null || fqdn.isEmpty())
+			return Collections.emptyList();
+		String src = fqdn.equals(currentClassFQDN) && currentCode != null ?
+				currentCode :
+				sourceResolver.loadSourceCodeForFQDN(fqdn);
+		if (src != null) {
+			try {
+				JavaType<?> type = Roaster.parse(src);
+				if (type instanceof JavaClassSource javaClass) {
+					return javaClass.getTypeVariables().stream().map(Named::getName).toList();
+				} else if (type instanceof JavaInterfaceSource javaInterface) {
+					return javaInterface.getTypeVariables().stream().map(Named::getName).toList();
+				}
+			} catch (Throwable e) {
+				LOG.debug("Failed to parse type parameters for {}", fqdn, e);
+			}
+		}
+		return Collections.emptyList();
+	}
+
 	private ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor,
 			JavaParser parser) {
 		if (code == null)
@@ -256,7 +279,7 @@ public class JavaTypeResolver {
 		boolean isStaticContext = false;
 		String currentFQDN = null;
 		String typeName = null;
-		String currentGenericArg = null;
+		List<String> currentGenericArgs = Collections.emptyList();
 		String base = chain.getFirst();
 
 		String currentClassFQDN = ClassFinder.getCurrentFQDN(Objects.requireNonNull(parser));
@@ -298,10 +321,20 @@ public class JavaTypeResolver {
 				}
 			} else {
 				typeName = varInfo.rawType();
-				currentGenericArg = varInfo.genericArg();
+				currentGenericArgs = varInfo.genericArgs();
 			}
 
 			if (typeName != null) {
+				if (typeName.contains("<") && typeName.endsWith(">")) {
+					String gen = typeName.substring(typeName.indexOf('<') + 1, typeName.length() - 1);
+					typeName = typeName.substring(0, typeName.indexOf('<')).trim();
+					if (!gen.isEmpty() && currentGenericArgs.isEmpty()) {
+						currentGenericArgs = Arrays.stream(gen.split(","))
+								.map(String::trim)
+								.filter(s -> !s.isEmpty())
+								.toList();
+					}
+				}
 				currentFQDN = resolveSimpleTypeName(typeName, imports, currentPkg);
 			}
 		}
@@ -312,14 +345,29 @@ public class JavaTypeResolver {
 			String member = chain.get(i);
 			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, currentClassFQDN, code);
 
-			if ((returnTypeSimple == null || returnTypeSimple.equals("Object") || returnTypeSimple.equals("E")
-					|| returnTypeSimple.equals("T") || returnTypeSimple.equals("V") || returnTypeSimple.equals("K"))
-					&& currentGenericArg != null) {
-				returnTypeSimple = currentGenericArg;
+			List<String> typeParams = getTypeParameters(currentFQDN, currentClassFQDN, code);
+			int paramIndex = typeParams.indexOf(returnTypeSimple);
+			if (paramIndex >= 0 && paramIndex < currentGenericArgs.size()) {
+				returnTypeSimple = currentGenericArgs.get(paramIndex);
+			} else if ((returnTypeSimple == null || returnTypeSimple.equals("Object") || returnTypeSimple.length() == 1)
+					&& !currentGenericArgs.isEmpty()) {
+				returnTypeSimple = currentGenericArgs.getLast();
 			}
 
 			if (returnTypeSimple != null) {
-				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, currentPkg);
+				String rawType = returnTypeSimple;
+				currentGenericArgs = Collections.emptyList();
+				if (rawType.contains("<") && rawType.endsWith(">")) {
+					String gen = rawType.substring(rawType.indexOf('<') + 1, rawType.length() - 1);
+					rawType = rawType.substring(0, rawType.indexOf('<')).trim();
+					if (!gen.isEmpty()) {
+						currentGenericArgs = Arrays.stream(gen.split(","))
+								.map(String::trim)
+								.filter(s -> !s.isEmpty())
+								.toList();
+					}
+				}
+				currentFQDN = resolveSimpleTypeName(rawType, imports, currentPkg);
 				isStaticContext = false;
 			} else {
 				return null;

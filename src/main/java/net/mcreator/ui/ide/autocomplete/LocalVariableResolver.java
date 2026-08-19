@@ -26,16 +26,27 @@ import org.fife.ui.rsyntaxtextarea.TokenMaker;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 
 import javax.swing.text.Segment;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public final class LocalVariableResolver {
 
-	public record VarTypeInfo(String rawType, String genericArg) {}
+	public record VarTypeInfo(String rawType, List<String> genericArgs) {
+		public VarTypeInfo(String rawType, String genericArg) {
+			this(rawType, genericArg != null && !genericArg.isEmpty() ?
+					Arrays.stream(genericArg.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList() :
+					Collections.emptyList());
+		}
+
+		public VarTypeInfo(String rawType) {
+			this(rawType, Collections.emptyList());
+		}
+
+		public String genericArg() {
+			return genericArgs.isEmpty() ? null : genericArgs.getLast();
+		}
+	}
 
 	private record ScopeBlock(StringBuilder text, int headerStartInParent) {
 		ScopeBlock(int headerStartInParent) {
@@ -93,10 +104,11 @@ public final class LocalVariableResolver {
 		while (mDecl.find()) {
 			String raw = mDecl.group(1);
 			String gen = mDecl.group(2);
-			if (gen != null && gen.contains(",")) {
-				gen = gen.substring(gen.lastIndexOf(',') + 1).trim();
+			List<String> genericArgs = Collections.emptyList();
+			if (gen != null && !gen.isEmpty()) {
+				genericArgs = Arrays.stream(gen.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
 			}
-			lastType = new VarTypeInfo(raw, gen != null ? gen.trim() : null);
+			lastType = new VarTypeInfo(raw, genericArgs);
 		}
 		if (lastType != null)
 			return lastType;
@@ -106,7 +118,7 @@ public final class LocalVariableResolver {
 				"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*:");
 		Matcher mFor = pFor.matcher(strippedCode);
 		while (mFor.find()) {
-			lastType = new VarTypeInfo(mFor.group(1), null);
+			lastType = new VarTypeInfo(mFor.group(1));
 		}
 		if (lastType != null)
 			return lastType;
@@ -116,7 +128,7 @@ public final class LocalVariableResolver {
 				"\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*\\)");
 		Matcher mLambda = pLambda.matcher(strippedCode);
 		while (mLambda.find()) {
-			lastType = new VarTypeInfo(mLambda.group(1), null);
+			lastType = new VarTypeInfo(mLambda.group(1));
 		}
 		if (lastType != null)
 			return lastType;
@@ -128,10 +140,11 @@ public final class LocalVariableResolver {
 		while (mVar.find()) {
 			String raw = mVar.group(1);
 			String gen = mVar.group(2);
-			if (gen != null && gen.contains(",")) {
-				gen = gen.substring(gen.lastIndexOf(',') + 1).trim();
+			List<String> genericArgs = Collections.emptyList();
+			if (gen != null && !gen.isEmpty()) {
+				genericArgs = Arrays.stream(gen.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
 			}
-			lastType = new VarTypeInfo(raw, gen != null ? gen.trim() : null);
+			lastType = new VarTypeInfo(raw, genericArgs);
 		}
 		return lastType;
 	}

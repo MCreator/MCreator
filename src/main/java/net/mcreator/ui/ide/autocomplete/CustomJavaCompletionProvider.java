@@ -337,10 +337,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 						template = template + "${cursor}";
 					}
 
-					String docStr = item.docSummary() != null ? item.docSummary() : item.detail() + " " + item.label();
-
 					completions.add(new CustomMethodCompletion(this, methodName, item.label(), item.detail(),
-							item.declaringClass(), template, docStr, item.visibility(), item.isStatic(),
+							item.declaringClass(), template, item.docSummary(), item.visibility(), item.isStatic(),
 							item.isAbstract(), item.isDeprecated(), item.paramTypes(), item.paramNames()));
 				} else {
 					completions.add(

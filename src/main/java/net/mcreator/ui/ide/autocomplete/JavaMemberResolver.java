@@ -158,6 +158,10 @@ public class JavaMemberResolver {
 		}
 	}
 
+	private String toSimpleType(String fqdnType) {
+		return fqdnType == null ? null : fqdnType.replaceAll("([a-zA-Z_$][a-zA-Z0-9_$]*\\.)+", "");
+	}
+
 	private void addMembersFromClassFile(ClassFile cf, String declaringClass,
 			List<JavaTypeResolver.CompletionItem> result, Set<String> added, boolean defaultOnly) {
 		String fqdn = cf.getClassName(true);
@@ -184,16 +188,17 @@ public class JavaMemberResolver {
 			String[] pNames = new String[pCount];
 			String[] fqdnPTypes = new String[pCount];
 			for (int j = 0; j < pCount; j++) {
-				pTypes[j] = mi.getParameterType(j, false);
 				pNames[j] = mi.getParameterName(j);
 				if (pNames[j] == null || pNames[j].isEmpty())
 					pNames[j] = "arg" + j;
 				fqdnPTypes[j] = mi.getParameterType(j, true);
+				pTypes[j] = toSimpleType(fqdnPTypes[j]);
 			}
 
 			String doc = lookupDoc(docs, mName, fqdnPTypes, pCount);
-			JavaTypeResolver.addMethodCompletion(mName, mi.getReturnTypeString(false), pTypes, pNames, fqdnPTypes,
-					mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result, added);
+			JavaTypeResolver.addMethodCompletion(mName, toSimpleType(mi.getReturnTypeString(true)), pTypes, pNames,
+					fqdnPTypes, mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result,
+					added);
 		}
 
 		if (!defaultOnly) {
@@ -208,8 +213,8 @@ public class JavaMemberResolver {
 					continue;
 
 				String vis = Util.isPublic(flags) ? "public" : (Util.isProtected(flags) ? "protected" : "package");
-				JavaTypeResolver.addFieldCompletion(fName, fi.getTypeString(false), fi.isStatic(), fi.isFinal(),
-						fi.isDeprecated(), vis, declaringClass, result, added);
+				JavaTypeResolver.addFieldCompletion(fName, toSimpleType(fi.getTypeString(true)), fi.isStatic(),
+						fi.isFinal(), fi.isDeprecated(), vis, declaringClass, result, added);
 			}
 		}
 	}

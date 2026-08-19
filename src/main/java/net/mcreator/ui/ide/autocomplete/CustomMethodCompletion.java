@@ -19,6 +19,7 @@
 package net.mcreator.ui.ide.autocomplete;
 
 import net.mcreator.util.JavadocUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
@@ -121,10 +122,12 @@ public class CustomMethodCompletion extends TemplateCompletion implements JavaSo
 	}
 
 	@Override public String getSummary() {
+		String safeLabel = StringEscapeUtils.escapeHtml3(label);
+		String safeReturnType = StringEscapeUtils.escapeHtml3(returnType);
 		String formatted = JavadocUtils.formatJavadoc(docSummary);
 		if (formatted == null)
-			return null;
-		return "<html><b>" + label + "</b><hr>" + formatted + "</html>";
+			return "<html><b>" + safeLabel + "</b><hr>" + safeReturnType + " " + safeLabel + "</html>";
+		return "<html><b>" + safeLabel + "</b><hr>" + formatted + "</html>";
 	}
 
 	@Override public String toString() {

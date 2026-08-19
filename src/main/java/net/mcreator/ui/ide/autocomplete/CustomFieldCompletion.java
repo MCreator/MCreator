@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
 import org.fife.rsta.ac.java.JavaSourceCompletion;
@@ -104,9 +105,7 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 	}
 
 	@Override public String getSummary() {
-		String safeType = type != null ? type.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") : "";
-		String safeName = name != null ? name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;") : "";
-		return "<html>" + safeType + " " + safeName + "</html>";
+		return "<html>" + StringEscapeUtils.escapeHtml3(type) + " " + StringEscapeUtils.escapeHtml3(name) + "</html>";
 	}
 
 	@Override public String toString() {
