@@ -21,23 +21,16 @@ package net.mcreator.ui.ide.autocomplete;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.mcreator.io.FileIO;
-import net.mcreator.io.zip.ZipIO;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.java.buildpath.SourceLocation;
-import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.*;
 
 import javax.annotation.Nullable;
-import java.io.File;
 import java.util.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class JavaSourceResolver {
 
@@ -68,52 +61,17 @@ public class JavaSourceResolver {
 	}
 
 	public String loadSourceCodeForFQDN(String fqdn) {
-		if (workspace == null || workspace.getGenerator() == null || fqdn == null)
+		if (workspace == null || fqdn == null)
 			return null;
 		String cached = sourceCache.getIfPresent(fqdn);
 		if (cached != null)
 			return cached.isEmpty() ? null : cached;
 
-		String srcCode = loadSourceCodeForFQDNImpl(fqdn);
-		sourceCache.put(fqdn, srcCode != null ? srcCode : "");
-		return srcCode;
-	}
-
-	private String loadSourceCodeForFQDNImpl(String fqdn) {
-		if (workspace == null || workspace.getGenerator() == null)
-			return null;
-		File srcFile = new File(workspace.getGenerator().getSourceRoot(), fqdn.replace('.', '/') + ".java");
-		if (srcFile.isFile()) {
-			return FileIO.readFileToString(srcFile);
-		}
-		// TODO PR #6542: Replace manual source loading below with jarManager.getSourceCodeForClass(fqdn)
-		// once the updated ProjectJarManager is merged. The new PJM method handles both zip and directory
-		// source locations, and also covers workspace sources via WorkspaceLibraryInfo.
 		ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
-		SourceLocation sourceLocation = jarManager.getSourceLocForClass(fqdn);
-		if (sourceLocation instanceof ZipSourceLocation) {
-			try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
-				String relativePath = fqdn.replace('.', '/') + ".java";
-				ZipEntry entry = zipFile.getEntry(relativePath);
-				if (entry == null) {
-					Enumeration<? extends ZipEntry> entries = zipFile.entries();
-					while (entries.hasMoreElements()) {
-						ZipEntry ze = entries.nextElement();
-						String name = ze.getName();
-						if (name.endsWith("/" + relativePath) || name.equals(relativePath)) {
-							entry = ze;
-							break;
-						}
-					}
-				}
-				if (entry != null) {
-					return ZipIO.entryToString(zipFile, entry);
-				}
-			} catch (Exception e) {
-				LOG.debug("could not read source from jar", e);
-			}
-		}
-		return null;
+		String srcCode = jarManager != null ? jarManager.getSourceCodeForClass(fqdn) : null;
+		sourceCache.put(fqdn, srcCode != null ? srcCode : "");
+
+		return srcCode;
 	}
 
 	public Map<String, String> getMethodDocsFromSource(String srcCode) {
