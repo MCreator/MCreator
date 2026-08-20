@@ -327,7 +327,7 @@ Blockly.Extensions.registerMutator('level_based_value_lookup_mutator', simpleRep
         'level_based_value_lookup_mutator_container', 'level_based_value_lookup_mutator_input', 'value',
         function (thisBlock, inputName, index) {
             thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
-                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.entry').replace('%1', index + 1))
+                .appendField(translate('blockly.block.' + thisBlock.type + '.entry').replace('%1', index + 1))
                 .appendField(new Blockly.FieldNumber(index + 1), 'value' + index)
         }, false, ['value']),
     undefined, ['level_based_value_lookup_mutator_input']);
@@ -337,7 +337,7 @@ Blockly.Extensions.registerMutator('value_effect_all_of_mutator', simpleRepeatin
         'value_effect_all_of_mutator_container', 'value_effect_all_of_mutator_input', 'effect',
         function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck('ValueEffect').setAlign(Blockly.ALIGN_RIGHT)
-                .appendField(javabridge.t(
+                .appendField(translate(
                     index === 0 ? 'blockly.block.value_effect_all_of.first' : 'blockly.block.value_effect_all_of.then'));
         }),
     undefined, ['value_effect_all_of_mutator_input']);
