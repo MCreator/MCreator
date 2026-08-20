@@ -168,9 +168,12 @@ public class TagsUtils {
 
 		if (delete) {
 			// only delete the entry if it is present in the list as managed
-			if (entries != null && entries.contains(entry)) {
-				generator.getWorkspace().getTagElements().get(tag).remove(entry);
-				removeTagElementIfSafe(generator.getWorkspace(), tag);
+			if (entries != null) {
+				int index = entries.indexOf(entry);
+				if (index != -1 && entries.get(index).isManaged()) {
+					entries.remove(index);
+					removeTagElementIfSafe(generator.getWorkspace(), tag);
+				}
 			}
 		} else {
 			if (entries == null) { // tag does not exist yet, create it
