@@ -19,13 +19,9 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
+import net.mcreator.java.JavaCodeScanner;
 import net.mcreator.java.JavaConventions;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import org.fife.ui.rsyntaxtextarea.Token;
-import org.fife.ui.rsyntaxtextarea.TokenMaker;
-import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 
-import javax.swing.text.Segment;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,47 +46,11 @@ public final class LocalVariableResolver {
 		}
 	}
 
-	public static String stripCommentsAndStrings(String code) {
-		if (code == null || code.isEmpty())
-			return "";
-
-		TokenMaker tm = TokenMakerFactory.getDefaultInstance().getTokenMaker(SyntaxConstants.SYNTAX_STYLE_JAVA);
-		StringBuilder sb = new StringBuilder(code.length());
-		String[] lines = code.split("\n", -1);
-		int tokenType = Token.NULL;
-
-		synchronized (tm) {
-			for (int i = 0; i < lines.length; i++) {
-				String line = lines[i];
-				char[] chars = line.toCharArray();
-				Segment segment = new Segment(chars, 0, chars.length);
-				Token token = tm.getTokenList(segment, tokenType, 0);
-				while (token != null && token.isPaintable()) {
-					int type = token.getType();
-					if (!token.isComment() && type != Token.LITERAL_STRING_DOUBLE_QUOTE
-							&& type != Token.ERROR_STRING_DOUBLE && type != Token.LITERAL_CHAR
-							&& type != Token.ERROR_CHAR && type != Token.LITERAL_BACKQUOTE) {
-						sb.append(token.getLexeme());
-					} else {
-						sb.append(' ');
-					}
-					token = token.getNextToken();
-				}
-				tokenType = tm.getLastTokenTypeOnLine(segment, tokenType);
-				if (i < lines.length - 1) {
-					sb.append('\n');
-				}
-			}
-		}
-
-		return sb.toString();
-	}
-
 	public static VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
 		if (codeBeforeCursor == null || base == null || base.isEmpty())
 			return null;
 
-		String strippedCode = stripCommentsAndStrings(codeBeforeCursor);
+		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
 
 		// Match standard / generic / array declarations
 		Matcher mDecl = Pattern.compile(
@@ -159,7 +119,7 @@ public final class LocalVariableResolver {
 		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
 			return vars;
 
-		String strippedCode = stripCommentsAndStrings(codeBeforeCursor);
+		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
 
 		Deque<ScopeBlock> stack = new ArrayDeque<>();
 		stack.push(new ScopeBlock(0));
