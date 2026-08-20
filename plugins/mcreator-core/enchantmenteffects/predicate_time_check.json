@@ -12,6 +12,7 @@
       "type": "field_number",
       "name": "period",
       "value": 24000,
+      "min": 1,
       "precision": 1
     },
     {
