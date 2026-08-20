@@ -130,13 +130,14 @@ public class CustomClassCompletion extends BasicCompletion {
 			offset = id.getNameEndOffset() + 1;
 
 			if (!id.isStatic()) {
+				String outerClassName = className.contains(".") ? className.substring(0, className.indexOf('.')) : className;
 				if (id.isWildcard()) {
 					if (lastClassNameDot > -1) {
 						String imported = id.getName();
 						int dot = imported.lastIndexOf('.');
 						String importedPkg = dot > -1 ? imported.substring(0, dot) : imported;
 						String classPkg = fqClassName.substring(0, lastClassNameDot);
-						if (importedPkg.equals(classPkg)) {
+						if (importedPkg.equals(classPkg) || (pkg != null && pkg.equals(importedPkg))) {
 							alreadyImported = true;
 							break;
 						}
@@ -146,9 +147,9 @@ public class CustomClassCompletion extends BasicCompletion {
 					int dot = fullyImportedClassName.lastIndexOf('.');
 					String importedClassName =
 							dot > -1 ? fullyImportedClassName.substring(dot + 1) : fullyImportedClassName;
-					if (className.equals(importedClassName)) {
+					if (className.equals(importedClassName) || (className.contains(".") && outerClassName.equals(importedClassName))) {
 						offset = -1;
-						if (fqClassName.equals(fullyImportedClassName)) {
+						if (fqClassName.equals(fullyImportedClassName) || (pkg + "." + outerClassName).equals(fullyImportedClassName)) {
 							alreadyImported = true;
 						}
 						break;

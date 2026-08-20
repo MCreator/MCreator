@@ -69,6 +69,14 @@ public class JavaSourceResolver {
 
 		ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 		String srcCode = jarManager != null ? jarManager.getSourceCodeForClass(fqdn) : null;
+		if (srcCode == null && jarManager != null) {
+			String temp = fqdn;
+			while (srcCode == null && (temp.contains(".") || temp.contains("$"))) {
+				int lastIdx = Math.max(temp.lastIndexOf('.'), temp.lastIndexOf('$'));
+				temp = temp.substring(0, lastIdx);
+				srcCode = jarManager.getSourceCodeForClass(temp);
+			}
+		}
 		sourceCache.put(fqdn, srcCode != null ? srcCode : "");
 
 		return srcCode;
@@ -138,6 +146,29 @@ public class JavaSourceResolver {
 		return unmodifiable;
 	}
 
+	public static JavaType<?> findType(JavaType<?> source, String name) {
+		if (source == null || name == null)
+			return source;
+		if (name.equals(source.getName()))
+			return source;
+		List<?> nestedList = Collections.emptyList();
+		if (source instanceof JavaClassSource javaClass) {
+			nestedList = javaClass.getNestedTypes();
+		} else if (source instanceof JavaInterfaceSource javaInterface) {
+			nestedList = javaInterface.getNestedTypes();
+		} else if (source instanceof JavaEnumSource javaEnum) {
+			nestedList = javaEnum.getNestedTypes();
+		}
+		for (Object o : nestedList) {
+			if (o instanceof JavaType<?> nested) {
+				JavaType<?> found = findType(nested, name);
+				if (found != null)
+					return found;
+			}
+		}
+		return source;
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void parseSourceCodeCompletions(String srcCode, String declaringClass,
 			List<JavaTypeResolver.CompletionItem> result, Set<String> added, boolean includePrivate,
@@ -147,6 +178,9 @@ public class JavaSourceResolver {
 
 		try {
 			JavaType<?> source = Roaster.parse(srcCode);
+			if (declaringClass != null && !declaringClass.isEmpty()) {
+				source = findType(source, declaringClass);
+			}
 
 			if (!defaultOnly) {
 				List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ?

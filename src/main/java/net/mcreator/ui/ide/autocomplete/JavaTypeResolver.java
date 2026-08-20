@@ -89,6 +89,10 @@ public class JavaTypeResolver {
 	@SuppressWarnings("NullableProblems")
 	private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
+	// Maps class FQDN -> list of inner class simple names
+	@SuppressWarnings("NullableProblems")
+	private final Cache<String, List<String>> innerClassesCache = CacheBuilder.newBuilder().maximumSize(200).build();
+
 	private Map<String, List<String>> cachedModClasses = null;
 	private long lastModClassesUpdate = 0;
 
@@ -101,6 +105,7 @@ public class JavaTypeResolver {
 	public synchronized void invalidateCaches() {
 		memberResolver.invalidateCaches();
 		simpleTypeCache.invalidateAll();
+		innerClassesCache.invalidateAll();
 		sourceResolver.invalidateCaches();
 		cachedModClasses = null;
 		lastModClassesUpdate = 0;
@@ -123,6 +128,42 @@ public class JavaTypeResolver {
 		return cachedModClasses;
 	}
 
+	public List<String> getInnerClasses(String fqdn) {
+		if (fqdn == null || fqdn.isEmpty())
+			return Collections.emptyList();
+		List<String> cached = innerClassesCache.getIfPresent(fqdn);
+		if (cached != null)
+			return cached;
+
+		List<String> inners = new ArrayList<>();
+		String src = sourceResolver.loadSourceCodeForFQDN(fqdn);
+		if (src != null && !src.isEmpty()) {
+			try {
+				JavaType<?> source = Roaster.parse(src);
+				List<?> nestedList = Collections.emptyList();
+				if (source instanceof JavaClassSource javaClass) {
+					nestedList = javaClass.getNestedTypes();
+				} else if (source instanceof JavaInterfaceSource javaInterface) {
+					nestedList = javaInterface.getNestedTypes();
+				} else if (source instanceof JavaEnumSource javaEnum) {
+					nestedList = javaEnum.getNestedTypes();
+				}
+				for (Object nested : nestedList) {
+					if (nested instanceof JavaSource<?> js) {
+						if (!js.isPrivate()) {
+							inners.add(js.getName());
+						}
+					}
+				}
+			} catch (Throwable e) {
+				LOG.debug("Failed to parse inner classes for {}", fqdn, e);
+			}
+		}
+		inners = Collections.unmodifiableList(inners);
+		innerClassesCache.put(fqdn, inners);
+		return inners;
+	}
+
 	public List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor,
 			@Nullable String currentClassFQDN) {
 		List<CompletionItem> result = new ArrayList<>();
@@ -140,14 +181,21 @@ public class JavaTypeResolver {
 				result.add(item);
 			}
 		}
+
+		if (res.isStaticContext) {
+			String declaringClass = res.fqdn.contains(".") ? res.fqdn.substring(res.fqdn.lastIndexOf('.') + 1) : res.fqdn;
+			for (String inner : getInnerClasses(res.fqdn)) {
+				result.add(new CompletionItem(inner, inner, "field", res.fqdn + "." + inner, declaringClass,
+						"public", null, false, true, true, false, false, null, null, null));
+			}
+		}
+
 		return result;
 	}
 
 	public String resolveSimpleTypeName(String typeName, Map<String, String> imports, String currentPkg) {
 		if (typeName == null)
 			return null;
-		if (typeName.contains("."))
-			return typeName;
 
 		if (imports != null && imports.containsKey(typeName)) {
 			return imports.get(typeName);
@@ -195,6 +243,16 @@ public class JavaTypeResolver {
 					return fqdns.getFirst();
 				}
 			}
+		}
+
+		if (typeName.contains(".")) {
+			int dot = typeName.indexOf('.');
+			String outer = typeName.substring(0, dot);
+			String resolvedOuter = resolveSimpleTypeName(outer, imports, currentPkg);
+			if (resolvedOuter != null) {
+				return resolvedOuter + typeName.substring(dot);
+			}
+			return typeName;
 		}
 
 		return null;

@@ -81,8 +81,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			.expireAfterWrite(Duration.ofSeconds(10)).build();
 
 	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {
-		static ClassInfo of(Workspace workspace, String fqdn) {
-			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+		static ClassInfo of(Workspace workspace, String fqdn, String className) {
+			String pkg = (fqdn != null && className != null && fqdn.length() > className.length()) ?
+					fqdn.substring(0, fqdn.length() - className.length() - 1) :
+					(fqdn != null && fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "");
 			boolean inf = false, enm = false;
 			if (workspace != null) {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
@@ -90,6 +92,12 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					ClassFile cf = null;
 					if (jarManager != null) {
 						cf = jarManager.getClassEntry(fqdn);
+						String temp = fqdn;
+						while (cf == null && temp.contains(".")) {
+							int lastDot = temp.lastIndexOf('.');
+							temp = temp.substring(0, lastDot) + "$" + temp.substring(lastDot + 1);
+							cf = jarManager.getClassEntry(temp);
+						}
 					}
 					if (cf != null) {
 						int flags = cf.getAccessFlags();
@@ -106,8 +114,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private final Map<String, ClassInfo> classInfoCache = new ConcurrentHashMap<>();
 
-	private ClassInfo getClassInfo(String fqdn) {
-		return classInfoCache.computeIfAbsent(fqdn, _ -> ClassInfo.of(workspace, fqdn));
+	private ClassInfo getClassInfo(String fqdn, String className) {
+		return classInfoCache.computeIfAbsent(fqdn, _ -> ClassInfo.of(workspace, fqdn, className));
 	}
 
 	public CustomJavaCompletionProvider(Workspace workspace, JavaParser parser) {
@@ -395,16 +403,34 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				if (fqdns != null && !fqdns.isEmpty()) {
 					for (String fqdn : fqdns) {
 						if (addedFQDNs.add(fqdn)) {
-							ClassInfo info = getClassInfo(fqdn);
+							ClassInfo info = getClassInfo(fqdn, className);
 							CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
 									info.isInterface, info.isEnum);
 							if (imports != null && fqdn.equals(imports.get(className))) {
 								ccc.setRelevance(3);
 							}
 							completions.add(ccc);
+							addInnerClassCompletions(fqdn, className, addedFQDNs, completions, imports);
 						}
 					}
 				}
+			}
+		}
+	}
+
+	private void addInnerClassCompletions(String fqdn, String className, Set<String> addedFQDNs,
+			List<Completion> completions, Map<String, String> imports) {
+		for (String inner : javaTypeResolver.getInnerClasses(fqdn)) {
+			String innerClassName = className + "." + inner;
+			String innerFQDN = fqdn + "." + inner;
+			if (addedFQDNs.add(innerFQDN)) {
+				ClassInfo info = getClassInfo(innerFQDN, innerClassName);
+				CustomClassCompletion ccc = new CustomClassCompletion(this, innerClassName, info.pkg,
+						info.isInterface, info.isEnum);
+				if (imports != null && (innerFQDN.equals(imports.get(innerClassName)) || fqdn.equals(imports.get(className)))) {
+					ccc.setRelevance(3);
+				}
+				completions.add(ccc);
 			}
 		}
 	}

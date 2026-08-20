@@ -49,8 +49,7 @@ public class JavaMemberResolver {
 
 	// Maps class FQDN -> cached list of field and method completion items
 	@SuppressWarnings("NullableProblems")
-	private final Cache<String, List<JavaTypeResolver.CompletionItem>> memberCache = CacheBuilder.newBuilder()
-			.maximumSize(500).build();
+	private final Cache<String, List<JavaTypeResolver.CompletionItem>> memberCache = CacheBuilder.newBuilder().maximumSize(500).build();
 
 	public JavaMemberResolver(@Nullable Workspace workspace, JavaSourceResolver sourceResolver,
 			JavaTypeResolver typeResolver) {
@@ -85,7 +84,7 @@ public class JavaMemberResolver {
 			sourceResolver.parseSourceCodeCompletions(currentCode, declaringClass, result, added, true, false);
 			populateSuperAndInterfaces(currentCode, fqdn, result, added, visited, false);
 		} else {
-			populateMembersOfFQDN(fqdn, result, added, visited, false);
+			populateMembersOfFQDN(fqdn, currentClassFQDN, currentCode, result, added, visited, false);
 		}
 
 		if (!isCurrentClass) {
@@ -98,6 +97,8 @@ public class JavaMemberResolver {
 			Set<String> added, Set<String> visited, boolean defaultOnly) {
 		try {
 			JavaType<?> source = Roaster.parse(srcCode);
+			String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
+			source = JavaSourceResolver.findType(source, declaringClass);
 			Map<String, String> imports = sourceResolver.parseImports(srcCode);
 			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
 			if (source instanceof JavaClassSource javaClass) {
@@ -105,20 +106,20 @@ public class JavaMemberResolver {
 				if (parentName != null && !parentName.isEmpty() && !parentName.equals("java.lang.Object")) {
 					String parentFQDN = typeResolver.resolveSimpleTypeName(parentName, imports, pkg);
 					if (parentFQDN != null) {
-						populateMembersOfFQDN(parentFQDN, result, added, visited, false);
+						populateMembersOfFQDN(parentFQDN, null, null, result, added, visited, false);
 					}
 				}
 				for (String ifName : javaClass.getInterfaces()) {
 					String ifFQDN = typeResolver.resolveSimpleTypeName(ifName, imports, pkg);
 					if (ifFQDN != null) {
-						populateMembersOfFQDN(ifFQDN, result, added, visited, true);
+						populateMembersOfFQDN(ifFQDN, null, null, result, added, visited, true);
 					}
 				}
 			} else if (source instanceof JavaInterfaceSource javaInterface) {
 				for (String ifName : javaInterface.getInterfaces()) {
 					String ifFQDN = typeResolver.resolveSimpleTypeName(ifName, imports, pkg);
 					if (ifFQDN != null) {
-						populateMembersOfFQDN(ifFQDN, result, added, visited, defaultOnly);
+						populateMembersOfFQDN(ifFQDN, null, null, result, added, visited, defaultOnly);
 					}
 				}
 			}
@@ -127,8 +128,8 @@ public class JavaMemberResolver {
 		}
 	}
 
-	private void populateMembersOfFQDN(String fqdn, List<JavaTypeResolver.CompletionItem> result, Set<String> added,
-			Set<String> visited, boolean defaultOnly) {
+	private void populateMembersOfFQDN(String fqdn, @Nullable String currentClassFQDN, @Nullable String currentCode,
+			List<JavaTypeResolver.CompletionItem> result, Set<String> added, Set<String> visited, boolean defaultOnly) {
 		if (fqdn == null || fqdn.isEmpty() || !visited.add(fqdn + (defaultOnly ? "#default" : "")))
 			return;
 
@@ -150,7 +151,9 @@ public class JavaMemberResolver {
 
 		// Fallback to source code parsing when no ClassFile is available
 		if (workspace != null) {
-			String srcCode = sourceResolver.loadSourceCodeForFQDN(fqdn);
+			String srcCode = (currentClassFQDN != null && fqdn.startsWith(currentClassFQDN) && currentCode != null) ?
+					currentCode :
+					sourceResolver.loadSourceCodeForFQDN(fqdn);
 			if (srcCode != null) {
 				sourceResolver.parseSourceCodeCompletions(srcCode, declaringClass, result, added, false, defaultOnly);
 				populateSuperAndInterfaces(srcCode, fqdn, result, added, visited, defaultOnly);
@@ -234,18 +237,18 @@ public class JavaMemberResolver {
 			for (int j = 0; j < cf.getImplementedInterfaceCount(); j++) {
 				String superIf = cf.getImplementedInterfaceName(j, true);
 				if (superIf != null && !superIf.isEmpty()) {
-					populateMembersOfFQDN(superIf, result, added, visited, defaultOnly);
+					populateMembersOfFQDN(superIf, null, null, result, added, visited, defaultOnly);
 				}
 			}
 		} else {
 			String superClassName = cf.getSuperClassName(true);
 			if (superClassName != null && !superClassName.isEmpty() && !superClassName.equals("java.lang.Object")) {
-				populateMembersOfFQDN(superClassName, result, added, visited, false);
+				populateMembersOfFQDN(superClassName, null, null, result, added, visited, false);
 			}
 			for (int j = 0; j < cf.getImplementedInterfaceCount(); j++) {
 				String ifName = cf.getImplementedInterfaceName(j, true);
 				if (ifName != null && !ifName.isEmpty()) {
-					populateMembersOfFQDN(ifName, result, added, visited, true);
+					populateMembersOfFQDN(ifName, null, null, result, added, visited, true);
 				}
 			}
 		}
