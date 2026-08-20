@@ -46,6 +46,8 @@ import java.util.concurrent.TimeUnit;
 
 public final class WorkspaceFileManager implements Closeable {
 
+	public final Gson gson;
+
 	private final Logger LOG;
 
 	private DataSavedListener dataSavedListener;
@@ -61,6 +63,11 @@ public final class WorkspaceFileManager implements Closeable {
 	WorkspaceFileManager(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
 		this.workspaceFile = workspaceFile;
 		this.workspace = workspace;
+
+		this.gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
+				.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
+				.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
+				.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
 
 		this.LOG = LogManager.getLogger("Workspace File Manager/" + workspace.toString().toUpperCase());
 
@@ -117,7 +124,7 @@ public final class WorkspaceFileManager implements Closeable {
 		if (!workspace.isDirty()) // if the workspace file was not changed, we do not perform save
 			return;
 
-		String workspacestring = workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform().getGson().toJson(workspace);
+		String workspacestring = gson.toJson(workspace);
 		if (!workspacestring.isEmpty()) {
 			MCREvent.event(new WorkspaceSavedEvent.BeforeSaving(workspace));
 

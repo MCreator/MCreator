@@ -35,7 +35,6 @@ import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.workspace.WorkspaceFileManager;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -76,9 +75,8 @@ import java.util.Map;
 		dependencies = new ArrayList<>();
 		if ((List<?>) getModElement().getMetadata("dependencies") instanceof List<?> dependenciesList) {
 			for (Object depobj : dependenciesList) {
-				Gson gson = getModElement().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform().getGson();
-				Dependency dependency = gson.fromJson(
-						gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
+				Gson gson = getModElement().getWorkspace().getFileManager().gson;
+				Dependency dependency = gson.fromJson(gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
 				dependencies.add(dependency);
 			}
 		}

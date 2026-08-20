@@ -116,20 +116,7 @@ public enum GeneratorFlavor {
 	}
 
 	public enum GamePlatform {
-		JAVAEDITION, BEDROCKEDITION;
-
-		private final Gson gson;
-
-		GamePlatform() {
-			this.gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
-					.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
-					.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
-					.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
-		}
-
-		public Gson getGson() {
-			return gson;
-		}
+		JAVAEDITION, BEDROCKEDITION
 	}
 
 }
