@@ -1,6 +1,5 @@
 {
-  "condition": "minecraft:weather_check",
-  <#if field$weather == "clear">"raining": false
-  <#elseif field$weather == "raining">"raining": true
-  <#else>"thundering": true</#if>
+  "condition": "minecraft:weather_check"
+  <#if field$raining != "unspecified">, "raining": ${field$raining}</#if>
+  <#if field$thundering != "unspecified">, "thundering": ${field$thundering}</#if>
 }
