@@ -46,9 +46,9 @@ import java.util.concurrent.TimeUnit;
 
 public final class WorkspaceFileManager implements Closeable {
 
-	public final Gson gson;
-
 	private final Logger LOG;
+
+	public final Gson gson;
 
 	private DataSavedListener dataSavedListener;
 

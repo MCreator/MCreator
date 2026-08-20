@@ -18,14 +18,8 @@
 
 package net.mcreator.generator;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.Strictness;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.EmptyIcon;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.SoundElement;
-import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
 import java.util.List;
