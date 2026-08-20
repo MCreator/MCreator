@@ -157,6 +157,13 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				fileBreadCrumb.reloadPath(CodeEditorView.this.fileWorkingOn);
 				te.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 			}
+
+			@Override public void focusLost(FocusEvent focusEvent) {
+				super.focusLost(focusEvent);
+				if (jcp != null) {
+					jcp.cancelPendingCompletion();
+				}
+			}
 		});
 
 		sed = new SearchBar(te);
@@ -409,7 +416,9 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
-					if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
+					if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+						jcp.cancelPendingCompletion();
+					} else if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
