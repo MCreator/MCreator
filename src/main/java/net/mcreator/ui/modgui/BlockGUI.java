@@ -252,7 +252,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
 	private SingleModElementSelector guiBoundTo;
-	@Nullable private String guiBoundToBeforeEdit = null;
 
 	private final JSpinner inventorySize = ComponentFromAnnotation.spinner(Block.class, "inventorySize");
 	private final JSpinner inventoryStackSize = ComponentFromAnnotation.spinner(Block.class, "inventoryStackSize");
@@ -1711,34 +1710,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 	}
 
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
-
-		// GUI code only checks for blocks that are bound to it and have an inventory, so we track this combination
-		String currentBoundGUI = hasInventory.isSelected() ? guiBoundTo.getEntry() : null;
-
-		// if the GUI this block provides an inventory for changed, we regenerate code of affected GUIs
-		// so the bound block checks in their code stay in sync with this block
-		if (!Objects.equals(currentBoundGUI, guiBoundToBeforeEdit)) {
-			for (String boundGUI : Stream.of(currentBoundGUI, guiBoundToBeforeEdit).filter(Objects::nonNull).toList()) {
-				ModElement element = mcreator.getWorkspace().getModElementByName(boundGUI);
-				// if this mod element is not locked, we (re)generate its code so bound block checks in it get updated
-				if (element != null && !element.isCodeLocked() && element.getGeneratableElement() instanceof GUI gui) {
-					mcreator.getGenerator().generateElement(gui);
-				}
-			}
-		}
-
-		guiBoundToBeforeEdit = currentBoundGUI;
-	}
-
 	@Override public void openInEditingMode(Block block) {
 		itemTexture.setTexture(block.itemTexture);
 		particleTexture.setTexture(block.particleTexture);
 		textures.setTextures(block.texture, block.textureTop, block.textureLeft, block.textureFront, block.textureRight,
 				block.textureBack);
 		guiBoundTo.setEntry(block.guiBoundTo);
-		guiBoundToBeforeEdit = block.hasInventory ? block.guiBoundTo : null;
 		rotationMode.setSelectedIndex(block.rotationMode);
 		enablePitch.setSelected(block.enablePitch);
 		statePropertiesList.setProperties(block.customProperties);
