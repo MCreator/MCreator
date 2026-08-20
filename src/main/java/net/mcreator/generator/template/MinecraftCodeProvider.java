@@ -27,13 +27,11 @@
 
 package net.mcreator.generator.template;
 
-import net.mcreator.io.zip.ZipIO;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
 import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
 import org.fife.rsta.ac.java.rjc.lexer.Scanner;
@@ -43,7 +41,6 @@ import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 
 import javax.annotation.Nonnull;
-import java.io.File;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Map;
@@ -70,10 +67,7 @@ import java.util.concurrent.ConcurrentHashMap;
 			try {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 				if (jarManager != null) {
-					SourceLocation sourceLocation = jarManager.getSourceLocForClass(key);
-					// we always expect ZIP-formatted file for source here, so we can use ZipIO
-					String code = ZipIO.readCodeInZip(new File(sourceLocation.getLocationAsString()),
-							key.replace(".", "/") + ".java");
+					String code = jarManager.getSourceCodeForClass(key);
 					if (code == null)
 						throw new NullPointerException("Provided code is null");
 

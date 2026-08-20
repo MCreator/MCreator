@@ -26,8 +26,11 @@ import org.apache.logging.log4j.LogManager;
 
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
+import java.util.logging.Logger;
 
 public class LoggingSystem {
+
+	public static final Logger FIFE_LOGGER = Logger.getLogger("org.fife");
 
 	public static void init() {
 		System.setProperty("log_directory", UserFolderManager.getFileFromUserFolder("").getAbsolutePath());
@@ -38,6 +41,9 @@ public class LoggingSystem {
 		} else {
 			System.setProperty("log_disable_ansi", "false");
 		}
+
+		// Silence redundant logging spam from code editor
+		FIFE_LOGGER.setLevel(java.util.logging.Level.SEVERE);
 
 		//noinspection resource
 		System.setErr(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR), true));
