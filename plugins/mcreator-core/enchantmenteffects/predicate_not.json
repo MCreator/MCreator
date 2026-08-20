@@ -11,7 +11,7 @@
   "mcreator": {
     "toolbox_id": "predicates",
     "toolbox_init": [
-      "~<value name=\"term\"><block type=\"predicate_weather_check\"><field name=\"weather\">clear</field></block></value>"
+      "~<value name=\"term\"><block type=\"predicate_weather_check\"><field name=\"raining\">true</field><field name=\"thundering\">false</field></block></value>"
     ],
     "inputs": [
       "term"

@@ -6,8 +6,8 @@
     "toolbox_id": "predicates",
     "toolbox_init": [
       "<mutation inputs=\"2\"></mutation>",
-      "~<value name=\"condition0\"><block type=\"predicate_weather_check\"><field name=\"weather\">clear</field></block></value>",
-      "~<value name=\"condition1\"><block type=\"predicate_weather_check\"><field name=\"weather\">clear</field></block></value>"
+      "~<value name=\"condition0\"><block type=\"predicate_weather_check\"><field name=\"raining\">true</field><field name=\"thundering\">false</field></block></value>",
+      "~<value name=\"condition1\"><block type=\"predicate_weather_check\"><field name=\"raining\">false</field><field name=\"thundering\">true</field></block></value>"
     ],
     "repeating_inputs": [
       "condition"
