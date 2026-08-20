@@ -212,7 +212,7 @@ public class CefUtils {
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
 				@Override public void onContextInitialized() {
-					cefApp.registerSchemeHandlerFactory("http", "mcreator", CefClassLoaderSchemeHandler::new);
+					cefApp.registerSchemeHandlerFactory("http", "mcreator", MCreatorSchemeHandler::new);
 				}
 
 				@Override public boolean onBeforeTerminate() {
