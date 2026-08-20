@@ -10,6 +10,9 @@ class FieldAiConditionSelector extends Blockly.Field {
     constructor(opt_validator) {
         super('null,null', opt_validator);
 
+        // Cache the label here
+        this.conditionsText = javabridge.t('blockly.field_ai_condition_selector.conditions');
+
         // Show the selected conditions, or the "Double click to select conditions" message
         let thisField = this;
         this.setTooltip(function () {
@@ -52,7 +55,6 @@ class FieldAiConditionSelector extends Blockly.Field {
                         Blockly.Events.setGroup(true);
                         thisField.setValue(data || 'null,null');
                         Blockly.Events.setGroup(group);
-                        javabridge.triggerEvent();
                     }
                 });
             } else {
@@ -65,11 +67,11 @@ class FieldAiConditionSelector extends Blockly.Field {
     getText_() {
         let currentValues = this.getValue().split(',');
         if (currentValues.length === 2) {
-            return javabridge.t('blockly.field_ai_condition_selector.conditions') +
+            return this.conditionsText +
                 (currentValues[0] === 'null' ? 'O' : 'X') +
                 (currentValues[1] === 'null' ? 'O' : 'X');
         }
-        return javabridge.t('blockly.field_ai_condition_selector.conditions') + 'OO';
+        return this.conditionsText + 'OO';
     };
 }
 

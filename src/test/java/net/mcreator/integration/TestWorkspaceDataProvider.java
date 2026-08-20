@@ -23,6 +23,7 @@ import com.google.common.collect.Iterables;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
@@ -664,7 +665,7 @@ public class TestWorkspaceDataProvider {
 			fluid.onDestroyedByExplosion = new Procedure("procedure6");
 			fluid.flowCondition = new Procedure("condition1");
 			fluid.beforeReplacingBlock = new Procedure("procedure7");
-			fluid.type = _true ? "WATER" : "LAVA";
+			fluid.type = AnnotationUtils.getLimitedOptionsList(Fluid.class, "type").get(_true ? 0 : 1);
 			return fluid;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
@@ -899,14 +900,14 @@ public class TestWorkspaceDataProvider {
 			dimension.onPlayerLeavesDimension = new Procedure("procedure5");
 			dimension.portalMakeCondition = new Procedure("condition3");
 			dimension.portalUseCondition = new Procedure("condition4");
-			dimension.enableCustomSkyboxTextures = _true;
+			dimension.enableCustomSkyboxTextures = !dimension.skyType.equals("NONE");
 			dimension.skyboxTextureUp = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureDown = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureNorth = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureSouth = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureWest = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.skyboxTextureEast = new TextureHolder(modElement.getWorkspace(), "other0");
-			dimension.enableCustomSunMoonTextures = _true;
+			dimension.enableCustomSunMoonTextures = !dimension.skyType.equals("NONE");
 			dimension.sunTexture = new TextureHolder(modElement.getWorkspace(), "other0");
 			dimension.moonTexture = new TextureHolder(modElement.getWorkspace(), "other0");
 			return dimension;
@@ -1514,8 +1515,9 @@ public class TestWorkspaceDataProvider {
 			LootTable lootTable = new LootTable(modElement);
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
 			lootTable.lootTableToModify = _true ? "minecraft:chests/spawn_bonus_chest" : "";
+			lootTable.namespace = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(NamespacedGeneratableElement.class, "namespace"));
 			lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type"));
 
 			lootTable.pools = new ArrayList<>();
@@ -1567,7 +1569,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.FUNCTION.equals(modElement.getType())) {
 			Function function = new Function(modElement);
 			function.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			function.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
+			function.namespace = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(NamespacedGeneratableElement.class, "namespace"));
 			function.code = "execute as @a at @s run function custom:test\n";
 			return function;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
@@ -1852,7 +1855,8 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			}
 
-			beblock.rotationMode = random.nextInt(0, 5);
+			beblock.rotationMode = random.nextInt(
+					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "rotationMode").size());
 			beblock.renderMethod = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "renderMethod"));
 			beblock.tintMethod = getRandomString(random,

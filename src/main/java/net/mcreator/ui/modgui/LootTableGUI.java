@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.types.LootTable;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -50,7 +51,9 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
+	private final JComboBox<String> namespace = ComponentFromAnnotation.options(NamespacedGeneratableElement.class,
+			"namespace");
+  
 	private final VComboBox<String> name = new VComboBox<>();
 
 	private final JComboBox<String> type = ComponentFromAnnotation.options(LootTable.class, "type");

@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.minecraft.ElementUtil;
@@ -72,7 +73,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final JSpinner xpReward = ComponentFromAnnotation.spinner(Recipe.class, "xpReward");
 	private final JSpinner cookingTime = ComponentFromAnnotation.spinner(Recipe.class, "cookingTime");
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
+	private final JComboBox<String> namespace = ComponentFromAnnotation.options(NamespacedGeneratableElement.class,
+			"namespace");
 
 	private final VComboBox<String> name = new VComboBox<>();
 
