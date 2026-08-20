@@ -131,11 +131,20 @@ public class JavaSourceResolver {
 			JavaType<?> source = Roaster.parse(code);
 			if (source instanceof Importer<?> importer) {
 				for (Import imp : importer.getImports()) {
-					if (imp.isWildcard())
-						continue;
-					String fqdn = imp.getQualifiedName();
-					String simple = imp.getSimpleName();
-					imports.put(simple, fqdn);
+					try {
+						if (imp.isWildcard())
+							continue;
+						String fqdn = imp.getQualifiedName();
+						if (fqdn == null || fqdn.isEmpty())
+							continue;
+						int lastDot = fqdn.lastIndexOf('.');
+						String simple = lastDot != -1 ? fqdn.substring(lastDot + 1) : fqdn;
+						if (!simple.isEmpty()) {
+							imports.put(simple, fqdn);
+						}
+					} catch (Throwable t) {
+						LOG.debug("Failed to parse import declaration: {}", imp, t);
+					}
 				}
 			}
 		} catch (Throwable e) {
