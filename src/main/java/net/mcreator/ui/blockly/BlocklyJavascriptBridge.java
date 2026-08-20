@@ -32,21 +32,16 @@ import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -54,8 +49,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public final class BlocklyJavascriptBridge {
-
-	private static final Logger LOG = LogManager.getLogger("Blockly JS Bridge");
 
 	private final Runnable blocklyEvent;
 	private final MCreator mcreator;
@@ -73,25 +66,6 @@ public final class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String startBlockForEditor(String editorName) {
 		BlocklyEditorType bet = BlocklyEditorType.fromName(editorName);
 		return bet == null ? null : bet.startBlockName();
-	}
-
-	@SuppressWarnings("unused") public String getMCItemURI(String name) {
-		ImageIcon base = new ImageIcon(ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 36, 36));
-		ImageIcon image;
-		if (name != null && !name.isEmpty() && !name.equals("null"))
-			image = ImageUtils.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32,
-					32);
-		else
-			image = base;
-
-		try {
-			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			ImageIO.write(ImageUtils.toBufferedImage(image.getImage()), "PNG", os);
-			return "data:image/png;base64," + Base64.getMimeEncoder().encodeToString(os.toByteArray());
-		} catch (Exception ioe) {
-			LOG.error(ioe.getMessage(), ioe);
-			return "";
-		}
 	}
 
 	@SuppressWarnings("unused") public void openColorSelector(String color, Consumer<String> callback) {
