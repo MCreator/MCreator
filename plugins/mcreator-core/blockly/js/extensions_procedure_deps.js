@@ -187,7 +187,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     updateShape_: function () {
         for (let i = 0; i < this.inputCount_; i++) {
             if (!this.getInput('arg' + i)) {
-                this.appendValueInput('arg' + i).setAlign(Blockly.ALIGN_RIGHT)
+                this.appendValueInput('arg' + i).setAlign(Blockly.inputs.Align.RIGHT)
                     .appendField(javabridge.t('blockly.block.call_procedure.name'))
                     .appendField(new FieldJavaName('', uniqueValueValidator('name')), 'name' + i)
                     .appendField(javabridge.t('blockly.block.call_procedure.arg'));

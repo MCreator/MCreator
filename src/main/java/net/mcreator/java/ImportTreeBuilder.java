@@ -40,7 +40,10 @@ public class ImportTreeBuilder {
 
 	public static Map<String, List<String>> generateImportTree(ProjectJarManager projectJarManager) {
 		Map<String, List<String>> retval = new ConcurrentHashMap<>();
-		List<LibraryInfo> libraryInfos = projectJarManager.getClassFileSources();
+		// Compiled workspace classes are skipped: mod classes enter the import tree from up-to-date
+		// workspace sources on each import format pass (reloadClassesFromMod), so indexing them
+		// here would add potentially stale duplicates to the cached import tree
+		List<LibraryInfo> libraryInfos = projectJarManager.getExternalClassFileSources();
 		libraryInfos.parallelStream().forEach(libraryInfo -> {
 			try {
 				boolean isJmod = libraryInfo instanceof JModLibraryInfo;
@@ -108,7 +111,7 @@ public class ImportTreeBuilder {
 				LOG.warn("Failed to load import format classes", e);
 			}
 		});
-		return retval;
+		return Collections.unmodifiableMap(retval);
 	}
 
 	public static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {
