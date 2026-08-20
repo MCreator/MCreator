@@ -92,7 +92,7 @@ public class JavaSourceResolver {
 						if (text != null && !text.trim().isEmpty()) {
 							List<? extends ParameterSource<?>> params = m.getParameters();
 							String[] pTypes = params.stream().map(p -> {
-								String name = p.getType().getSimpleName();
+								String name = p.getType().getName();
 								return name.length() == 1 ? "Object" : name;
 							}).toArray(String[]::new);
 							docs.put(m.getName() + "(" + String.join(",", pTypes) + ")", text.trim());
@@ -123,6 +123,8 @@ public class JavaSourceResolver {
 			JavaType<?> source = Roaster.parse(code);
 			if (source instanceof Importer<?> importer) {
 				for (Import imp : importer.getImports()) {
+					if (imp.isWildcard())
+						continue;
 					String fqdn = imp.getQualifiedName();
 					String simple = imp.getSimpleName();
 					imports.put(simple, fqdn);
@@ -157,7 +159,7 @@ public class JavaSourceResolver {
 					if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
 						continue;
 
-					String fType = f.getType().getSimpleName();
+					String fType = f.getType().getName();
 					String vis = f.isPublic() ?
 							"public" :
 							(f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
@@ -181,7 +183,7 @@ public class JavaSourceResolver {
 						|| mName.equals("catch") || mName.equals("class"))
 					continue;
 
-				String returnType = m.getReturnType() != null ? m.getReturnType().getSimpleName() : "void";
+				String returnType = m.getReturnType() != null ? m.getReturnType().getName() : "void";
 				List<? extends ParameterSource<?>> params = m.getParameters();
 				String[] pTypes = new String[params.size()];
 				String[] pNames = new String[params.size()];
@@ -189,9 +191,9 @@ public class JavaSourceResolver {
 
 				for (int p = 0; p < params.size(); p++) {
 					ParameterSource<?> param = params.get(p);
-					pTypes[p] = param.getType().getSimpleName();
+					pTypes[p] = param.getType().getName();
 					pNames[p] = param.getName();
-					String rawType = param.getType().getName();
+					String rawType = pTypes[p];
 					String resolvedFQDN = imports.get(rawType);
 					fqdnPTypes[p] = resolvedFQDN != null ? resolvedFQDN : rawType;
 				}
