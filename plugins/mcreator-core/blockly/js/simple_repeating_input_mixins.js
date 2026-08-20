@@ -319,7 +319,7 @@ Blockly.Extensions.registerMutator('predicate_all_any_mutator', simpleRepeatingI
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
         function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck('Predicate').setAlign(Blockly.inputs.Align.RIGHT)
-                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+                .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['block_predicate_mutator_input']);
 
