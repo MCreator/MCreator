@@ -60,7 +60,7 @@ public final class LocalVariableResolver {
 			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*(?:new\\s+)?([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
 
 	private static final Pattern DECL_PATTERN = Pattern.compile(
-			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[\\])*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[])*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
 
 	public static VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
 		if (codeBeforeCursor == null || base == null || base.isEmpty())
