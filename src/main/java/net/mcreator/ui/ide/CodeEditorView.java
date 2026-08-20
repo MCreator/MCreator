@@ -385,7 +385,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ac = new AutoCompletion(this.jcp) {
 				@Override protected void insertCompletion(Completion c, boolean typedParamListStartChar) {
 					if (c instanceof CustomClassCompletion cc) {
-						cc.insert(te, c.getAlreadyEntered(te));
+						cc.insert(te, parser, c.getAlreadyEntered(te));
 					} else {
 						super.insertCompletion(c, typedParamListStartChar);
 					}
