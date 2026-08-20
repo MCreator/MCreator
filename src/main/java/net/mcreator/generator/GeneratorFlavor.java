@@ -18,8 +18,14 @@
 
 package net.mcreator.generator;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.Strictness;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.EmptyIcon;
+import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
 import java.util.List;
@@ -110,7 +116,20 @@ public enum GeneratorFlavor {
 	}
 
 	public enum GamePlatform {
-		JAVAEDITION, BEDROCKEDITION
+		JAVAEDITION, BEDROCKEDITION;
+
+		private final Gson gson;
+
+		GamePlatform() {
+			this.gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
+					.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
+					.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
+					.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
+		}
+
+		public Gson getGson() {
+			return gson;
+		}
 	}
 
 }

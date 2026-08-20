@@ -562,7 +562,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 */
 	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile,
 			GeneratorConfiguration generatorConfiguration) throws MissingGeneratorFeaturesException {
-		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
+		Workspace retval = generatorConfiguration.getGeneratorFlavor().getGamePlatform().getGson().fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 		retval.userSettingsManager = new WorkspaceUserSettingsManager(retval, retval.getFolderManager());
 		retval.historyManager = new HistoryManager(retval);
@@ -625,8 +625,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 
 		// Read new workspace definition from the file
-		loadStoredDataFrom(
-				WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFileToRead), Workspace.class));
+		loadStoredDataFrom(getGenerator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform().getGson().fromJson(FileIO.readFileToString(workspaceFileToRead), Workspace.class));
 
 		// If the modid or workspace file changed, we need to bind to the new workspace file
 		String modIdAfterReload = this.getWorkspaceSettings().getModID();

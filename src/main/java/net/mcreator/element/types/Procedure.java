@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.Gson;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.data.Dependency;
@@ -75,8 +76,9 @@ import java.util.Map;
 		dependencies = new ArrayList<>();
 		if ((List<?>) getModElement().getMetadata("dependencies") instanceof List<?> dependenciesList) {
 			for (Object depobj : dependenciesList) {
-				Dependency dependency = WorkspaceFileManager.gson.fromJson(
-						WorkspaceFileManager.gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
+				Gson gson = getModElement().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform().getGson();
+				Dependency dependency = gson.fromJson(
+						gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
 				dependencies.add(dependency);
 			}
 		}

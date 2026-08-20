@@ -48,11 +48,6 @@ public final class WorkspaceFileManager implements Closeable {
 
 	private final Logger LOG;
 
-	public static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
-			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
-			.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
-			.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
-
 	private DataSavedListener dataSavedListener;
 
 	private final ScheduledExecutorService dataSaveExecutor;
@@ -122,7 +117,7 @@ public final class WorkspaceFileManager implements Closeable {
 		if (!workspace.isDirty()) // if the workspace file was not changed, we do not perform save
 			return;
 
-		String workspacestring = gson.toJson(workspace);
+		String workspacestring = workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor().getGamePlatform().getGson().toJson(workspace);
 		if (!workspacestring.isEmpty()) {
 			MCREvent.event(new WorkspaceSavedEvent.BeforeSaving(workspace));
 
