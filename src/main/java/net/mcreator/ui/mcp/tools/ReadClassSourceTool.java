@@ -61,9 +61,8 @@ public class ReadClassSourceTool extends MCreatorMcpTool<ReadClassSourceTool.Arg
 			code = jarManager.getSourceCodeForClass(input.className.trim());
 
 		if (code == null) {
-			return CompletableFuture.completedFuture(ToolResult.error(
-					"Could not read source for class: " + input.className
-							+ ". If this is a workspace class, make sure the workspace is built."));
+			return CompletableFuture.completedFuture(
+					ToolResult.error("Could not read source for class: " + input.className));
 		}
 
 		return CompletableFuture.completedFuture(ToolResult.text(code));
