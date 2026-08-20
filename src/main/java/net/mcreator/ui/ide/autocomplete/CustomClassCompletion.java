@@ -86,7 +86,7 @@ public class CustomClassCompletion extends BasicCompletion {
 			return;
 		}
 
-		ImportResult result = getShouldAddImport(te, parser);
+		ImportResult result = getShouldAddImport(parser);
 		String textToInsert = result.mustFullyQualify ? getClassName(true) : className;
 
 		te.beginAtomicEdit();
@@ -100,7 +100,7 @@ public class CustomClassCompletion extends BasicCompletion {
 		}
 	}
 
-	private ImportResult getShouldAddImport(RSyntaxTextArea te, JavaParser parser) {
+	private ImportResult getShouldAddImport(JavaParser parser) {
 		CompilationUnit cu = parser.getCompilationUnit();
 
 		if (pkg == null || pkg.isEmpty() || "java.lang".equals(pkg)) {
@@ -137,7 +137,7 @@ public class CustomClassCompletion extends BasicCompletion {
 						int dot = imported.lastIndexOf('.');
 						String importedPkg = dot > -1 ? imported.substring(0, dot) : imported;
 						String classPkg = fqClassName.substring(0, lastClassNameDot);
-						if (importedPkg.equals(classPkg) || (pkg != null && pkg.equals(importedPkg))) {
+						if (importedPkg.equals(classPkg) || pkg.equals(importedPkg)) {
 							alreadyImported = true;
 							break;
 						}
