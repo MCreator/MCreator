@@ -183,4 +183,4 @@ public final class LocalVariableResolver {
 
 		return vars;
 	}
-}                // Rerun tests
+}
