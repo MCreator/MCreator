@@ -40,11 +40,27 @@ public final class LocalVariableResolver {
 		}
 	}
 
-	private record ScopeBlock(StringBuilder text, int headerStartInParent) {
-		ScopeBlock(int headerStartInParent) {
-			this(new StringBuilder(), headerStartInParent);
+	private record ScopeBlock(StringBuilder text) {
+		ScopeBlock() {
+			this(new StringBuilder());
+		}
+
+		ScopeBlock(String initialText) {
+			this(new StringBuilder(initialText));
 		}
 	}
+
+	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
+			"\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+	private static final Pattern FOR_PATTERN = Pattern.compile(
+			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
+	private static final Pattern LAMBDA_PARAM_PATTERN = Pattern.compile(
+			"\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*\\)");
+	private static final Pattern VAR_ASSIGN_PATTERN = Pattern.compile(
+			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*(?:new\\s+)?([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
+
+	private static final Pattern DECL_PATTERN = Pattern.compile(
+			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[\\])*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
 
 	public static VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
 		if (codeBeforeCursor == null || base == null || base.isEmpty())
@@ -52,62 +68,63 @@ public final class LocalVariableResolver {
 
 		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
 
-		// Match standard / generic / array declarations
-		Matcher mDecl = Pattern.compile(
-						"\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\b")
-				.matcher(strippedCode);
+		Matcher mDecl = TYPE_DECL_PATTERN.matcher(strippedCode);
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
-			lastType = new VarTypeInfo(mDecl.group(1), mDecl.group(2));
+			if (base.equals(mDecl.group(3)))
+				lastType = new VarTypeInfo(mDecl.group(1), mDecl.group(2));
 		}
 		if (lastType != null)
 			return lastType;
 
-		// Match foreach
-		Pattern pFor = Pattern.compile(
-				"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*:");
-		Matcher mFor = pFor.matcher(strippedCode);
+		Matcher mFor = FOR_PATTERN.matcher(strippedCode);
 		while (mFor.find()) {
-			lastType = new VarTypeInfo(mFor.group(1));
+			if (base.equals(mFor.group(2)))
+				lastType = new VarTypeInfo(mFor.group(1));
 		}
 		if (lastType != null)
 			return lastType;
 
-		// Match lambda
-		Pattern pLambda = Pattern.compile(
-				"\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+" + Pattern.quote(base) + "\\s*\\)");
-		Matcher mLambda = pLambda.matcher(strippedCode);
+		Matcher mLambda = LAMBDA_PARAM_PATTERN.matcher(strippedCode);
 		while (mLambda.find()) {
-			lastType = new VarTypeInfo(mLambda.group(1));
+			if (base.equals(mLambda.group(2)))
+				lastType = new VarTypeInfo(mLambda.group(1));
 		}
 		if (lastType != null)
 			return lastType;
 
-		// Match var assignment
-		Pattern pVar = Pattern.compile(
-				"\\bvar\\s+" + Pattern.quote(base) + "\\s*=\\s*(?:new\\s+)?([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
-		Matcher mVar = pVar.matcher(strippedCode);
+		Matcher mVar = VAR_ASSIGN_PATTERN.matcher(strippedCode);
 		while (mVar.find()) {
-			lastType = new VarTypeInfo(mVar.group(1), mVar.group(2));
+			if (base.equals(mVar.group(1)))
+				lastType = new VarTypeInfo(mVar.group(2), mVar.group(3));
 		}
 		return lastType;
 	}
 
-	private static int findHeaderStart(StringBuilder sb) {
-		int depth = 0;
-		for (int j = sb.length() - 1; j >= 0; j--) {
-			char c = sb.charAt(j);
+	private static int findSplitIndex(StringBuilder sb) {
+		int depth = 0, lastComma = -1;
+		for (int i = sb.length() - 1; i >= 0; i--) {
+			char c = sb.charAt(i);
 			if (c == ')') {
 				depth++;
 			} else if (c == '(') {
 				if (depth > 0) {
 					depth--;
 				} else {
-					break;
+					return lastComma != -1 ? lastComma + 1 : i + 1;
 				}
 			} else if (depth == 0) {
-				if (c == ';' || c == '{' || c == '}') {
-					return j + 1;
+				if (c == ',') {
+					if (lastComma == -1)
+						lastComma = i;
+				} else if (c == '=') {
+					char prev = i > 0 ? sb.charAt(i - 1) : ' ';
+					char next = i + 1 < sb.length() ? sb.charAt(i + 1) : ' ';
+					if (prev != '=' && prev != '<' && prev != '>' && prev != '!' && next != '=' && next != '>') {
+						return i + 1;
+					}
+				} else if (c == ';' || c == '{' || c == '}') {
+					return i + 1;
 				}
 			}
 		}
@@ -122,25 +139,27 @@ public final class LocalVariableResolver {
 		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
 
 		Deque<ScopeBlock> stack = new ArrayDeque<>();
-		stack.push(new ScopeBlock(0));
+		stack.push(new ScopeBlock());
 
 		for (int i = 0; i < strippedCode.length(); i++) {
 			char c = strippedCode.charAt(i);
 			if (c == '{') {
-				int headerStart = 0;
-				if (stack.peek() != null) {
-					headerStart = findHeaderStart(stack.peek().text);
-				}
-				stack.push(new ScopeBlock(headerStart));
-			} else if (c == '}') {
-				if (stack.size() > 1) {
-					ScopeBlock closed = stack.pop();
-					if (stack.peek() != null) {
-						stack.peek().text.setLength(closed.headerStartInParent);
+				String childHeader = "";
+				if (!stack.isEmpty()) {
+					ScopeBlock current = stack.peek();
+					int split = findSplitIndex(current.text);
+					if (split < current.text.length()) {
+						childHeader = current.text.substring(split);
+						current.text.setLength(split);
 					}
 				}
+				stack.push(new ScopeBlock(childHeader));
+			} else if (c == '}') {
+				if (stack.size() > 1) {
+					stack.pop();
+				}
 			} else {
-				if (stack.peek() != null) {
+				if (!stack.isEmpty()) {
 					stack.peek().text.append(c);
 				}
 			}
@@ -151,9 +170,7 @@ public final class LocalVariableResolver {
 			activeCode.append(block.text).append('\n');
 		}
 
-		Matcher m = Pattern.compile(
-						"\\b(boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b")
-				.matcher(activeCode);
+		Matcher m = DECL_PATTERN.matcher(activeCode);
 		while (m.find()) {
 			String type = m.group(1);
 			String name = m.group(2);
