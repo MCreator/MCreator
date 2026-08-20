@@ -161,12 +161,12 @@ public class JavaSourceResolver {
 		if (name.equals(source.getName()))
 			return source;
 		List<?> nestedList = Collections.emptyList();
-		if (source instanceof JavaClassSource javaClass) {
-			nestedList = javaClass.getNestedTypes();
-		} else if (source instanceof JavaInterfaceSource javaInterface) {
-			nestedList = javaInterface.getNestedTypes();
-		} else if (source instanceof JavaEnumSource javaEnum) {
-			nestedList = javaEnum.getNestedTypes();
+		switch (source) {
+		case JavaClassSource javaClass -> nestedList = javaClass.getNestedTypes();
+		case JavaInterfaceSource javaInterface -> nestedList = javaInterface.getNestedTypes();
+		case JavaEnumSource javaEnum -> nestedList = javaEnum.getNestedTypes();
+		default -> {
+		}
 		}
 		for (Object o : nestedList) {
 			if (o instanceof JavaType<?> nested) {
