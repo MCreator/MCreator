@@ -156,9 +156,7 @@ public class JavaSourceResolver {
 	}
 
 	public static JavaType<?> findType(JavaType<?> source, String name) {
-		if (source == null || name == null)
-			return source;
-		if (name.equals(source.getName()))
+		if (source == null || name == null || name.equals(source.getName()))
 			return source;
 		List<?> nestedList = Collections.emptyList();
 		switch (source) {
@@ -171,7 +169,7 @@ public class JavaSourceResolver {
 		for (Object o : nestedList) {
 			if (o instanceof JavaType<?> nested) {
 				JavaType<?> found = findType(nested, name);
-				if (found != null)
+				if (found != null && name.equals(found.getName()))
 					return found;
 			}
 		}

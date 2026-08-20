@@ -140,6 +140,10 @@ public class JavaTypeResolver {
 		if (src != null && !src.isEmpty()) {
 			try {
 				JavaType<?> source = Roaster.parse(src);
+				if (fqdn.contains(".")) {
+					String declaringClass = fqdn.substring(fqdn.lastIndexOf('.') + 1);
+					source = JavaSourceResolver.findType(source, declaringClass);
+				}
 				List<?> nestedList = Collections.emptyList();
 				if (source instanceof JavaClassSource javaClass) {
 					nestedList = javaClass.getNestedTypes();
@@ -297,6 +301,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
+
 	private List<String> getTypeParameters(String fqdn, @Nullable String currentClassFQDN,
 			@Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty())
@@ -305,12 +310,16 @@ public class JavaTypeResolver {
 		ClassFile cf = jarManager != null ? memberResolver.getClassFile(jarManager, fqdn) : null;
 		if (cf != null && cf.getParamTypes() != null)
 			return cf.getParamTypes();
-		String src = fqdn.equals(currentClassFQDN) && currentCode != null ?
+		String src = (currentClassFQDN != null && fqdn.startsWith(currentClassFQDN) && currentCode != null) ?
 				currentCode :
 				sourceResolver.loadSourceCodeForFQDN(fqdn);
 		if (src != null) {
 			try {
 				JavaType<?> type = Roaster.parse(src);
+				if (fqdn.contains(".")) {
+					String declaringClass = fqdn.substring(fqdn.lastIndexOf('.') + 1);
+					type = JavaSourceResolver.findType(type, declaringClass);
+				}
 				if (type instanceof JavaClassSource javaClass) {
 					return javaClass.getTypeVariables().stream().map(Named::getName).toList();
 				} else if (type instanceof JavaInterfaceSource javaInterface) {
@@ -427,6 +436,10 @@ public class JavaTypeResolver {
 				}
 				currentFQDN = resolveSimpleTypeName(rawType, imports, currentPkg);
 				isStaticContext = false;
+			} else if (getInnerClasses(currentFQDN).contains(member)) {
+				currentFQDN += "." + member;
+				isStaticContext = true;
+				currentGenericArgs = Collections.emptyList();
 			} else {
 				return null;
 			}

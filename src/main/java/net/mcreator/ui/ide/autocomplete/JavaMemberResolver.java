@@ -150,14 +150,12 @@ public class JavaMemberResolver {
 		}
 
 		// Fallback to source code parsing when no ClassFile is available
-		if (workspace != null) {
-			String srcCode = (currentClassFQDN != null && fqdn.startsWith(currentClassFQDN) && currentCode != null) ?
-					currentCode :
-					sourceResolver.loadSourceCodeForFQDN(fqdn);
-			if (srcCode != null) {
-				sourceResolver.parseSourceCodeCompletions(srcCode, declaringClass, result, added, false, defaultOnly);
-				populateSuperAndInterfaces(srcCode, fqdn, result, added, visited, defaultOnly);
-			}
+		String srcCode = (currentClassFQDN != null && fqdn.startsWith(currentClassFQDN) && currentCode != null) ?
+				currentCode :
+				(workspace != null ? sourceResolver.loadSourceCodeForFQDN(fqdn) : null);
+		if (srcCode != null) {
+			sourceResolver.parseSourceCodeCompletions(srcCode, declaringClass, result, added, false, defaultOnly);
+			populateSuperAndInterfaces(srcCode, fqdn, result, added, visited, defaultOnly);
 		}
 	}
 
