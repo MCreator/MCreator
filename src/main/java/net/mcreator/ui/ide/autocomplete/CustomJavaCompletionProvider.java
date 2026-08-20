@@ -21,6 +21,7 @@ package net.mcreator.ui.ide.autocomplete;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.java.ClassFinder;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -237,10 +238,13 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		cancelledByUser = false;
 		long requestId = currentRequestId.incrementAndGet();
 		final AtomicBoolean timedOut = new AtomicBoolean(false);
+		String currentClassFQDN = (parser != null && parser.getCompilationUnit() != null) ?
+				ClassFinder.getCurrentFQDN(parser) :
+				null;
 
 		CompletableFuture<List<Completion>> future = CompletableFuture.supplyAsync(
 				() -> computeCompletions(code, codeBeforeCursor, alreadyEntered, wordOnly, textBeforeWord,
-						isDotContext), COMPLETION_EXECUTOR);
+						isDotContext, currentClassFQDN), COMPLETION_EXECUTOR);
 
 		future.whenComplete((result, ex) -> {
 			if (ex != null) {
@@ -283,7 +287,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private List<Completion> computeCompletions(String code, String codeBeforeCursor, String alreadyEntered,
-			String wordOnly, String textBeforeWord, boolean isDotContext) {
+			String wordOnly, String textBeforeWord, boolean isDotContext, String currentClassFQDN) {
 		List<Completion> completions = new ArrayList<>();
 
 		if (isDotContext) {
@@ -297,13 +301,13 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					prefixContext = CustomFieldCompletion.PrefixContext.ITEMS;
 				}
 				List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code,
-						codeBeforeCursor, parser);
+						codeBeforeCursor, currentClassFQDN);
 				addResolverItems(items, wordOnly, prefixContext, completions);
 			}
 		} else {
 			// Method/field completions for "this"
 			List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
-					codeBeforeCursor, parser);
+					codeBeforeCursor, currentClassFQDN);
 			addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
 
 			// Shorthand completions (templates and keywords)

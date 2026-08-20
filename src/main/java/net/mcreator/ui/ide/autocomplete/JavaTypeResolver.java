@@ -21,13 +21,11 @@ package net.mcreator.ui.ide.autocomplete;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.mcreator.java.ClassFinder;
 import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
@@ -126,15 +124,13 @@ public class JavaTypeResolver {
 	}
 
 	public List<CompletionItem> getCompletionsFor(String targetName, String code, String codeBeforeCursor,
-			JavaParser parser) {
+			@Nullable String currentClassFQDN) {
 		List<CompletionItem> result = new ArrayList<>();
 		if (targetName == null || targetName.trim().isEmpty())
 			return result;
 		targetName = targetName.trim();
 
-		String currentClassFQDN = ClassFinder.getCurrentFQDN(Objects.requireNonNull(parser));
-
-		ResolutionResult res = resolveTargetFQDN(targetName, code, codeBeforeCursor, parser);
+		ResolutionResult res = resolveTargetFQDN(targetName, code, codeBeforeCursor, currentClassFQDN);
 		if (res == null || res.fqdn == null)
 			return result;
 
@@ -270,7 +266,7 @@ public class JavaTypeResolver {
 	}
 
 	private ResolutionResult resolveTargetFQDN(String targetName, String code, String codeBeforeCursor,
-			JavaParser parser) {
+			@Nullable String currentClassFQDN) {
 		if (code == null)
 			code = "";
 		if (codeBeforeCursor == null)
@@ -288,7 +284,6 @@ public class JavaTypeResolver {
 		List<String> currentGenericArgs = Collections.emptyList();
 		String base = chain.getFirst();
 
-		String currentClassFQDN = ClassFinder.getCurrentFQDN(Objects.requireNonNull(parser));
 		String currentPkg = currentClassFQDN != null && currentClassFQDN.contains(".") ?
 				currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) :
 				"";
