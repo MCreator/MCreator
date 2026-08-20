@@ -23,10 +23,12 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.ImportTreeBuilder;
+import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JavaParser;
+import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.Named;
@@ -245,6 +247,10 @@ public class JavaTypeResolver {
 			@Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty())
 			return Collections.emptyList();
+		ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
+		ClassFile cf = jarManager != null ? memberResolver.getClassFile(jarManager, fqdn) : null;
+		if (cf != null && cf.getParamTypes() != null)
+			return cf.getParamTypes();
 		String src = fqdn.equals(currentClassFQDN) && currentCode != null ?
 				currentCode :
 				sourceResolver.loadSourceCodeForFQDN(fqdn);
@@ -349,9 +355,8 @@ public class JavaTypeResolver {
 			int paramIndex = typeParams.indexOf(returnTypeSimple);
 			if (paramIndex >= 0 && paramIndex < currentGenericArgs.size()) {
 				returnTypeSimple = currentGenericArgs.get(paramIndex);
-			} else if ((returnTypeSimple == null || returnTypeSimple.equals("Object") || returnTypeSimple.length() == 1)
-					&& !currentGenericArgs.isEmpty()) {
-				returnTypeSimple = currentGenericArgs.getLast();
+			} else if (returnTypeSimple != null && returnTypeSimple.length() == 1 && currentGenericArgs.size() == 1) {
+				returnTypeSimple = currentGenericArgs.getFirst();
 			}
 
 			if (returnTypeSimple != null) {

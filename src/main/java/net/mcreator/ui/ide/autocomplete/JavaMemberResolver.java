@@ -164,6 +164,13 @@ public class JavaMemberResolver {
 
 	private void addMembersFromClassFile(ClassFile cf, String declaringClass,
 			List<JavaTypeResolver.CompletionItem> result, Set<String> added, boolean defaultOnly) {
+		if (cf.getParamTypes() != null) {
+			Map<String, String> identity = new HashMap<>();
+			for (String p : cf.getParamTypes())
+				identity.put(p, p);
+			cf.setTypeParamsToTypeArgs(identity);
+		}
+
 		String fqdn = cf.getClassName(true);
 		String srcCode = sourceResolver.loadSourceCodeForFQDN(fqdn);
 		Map<String, String> docs = sourceResolver.getMethodDocsFromSource(srcCode);
@@ -244,7 +251,7 @@ public class JavaMemberResolver {
 		}
 	}
 
-	@Nullable private ClassFile getClassFile(ProjectJarManager jarManager, String fqdn) {
+	@Nullable public ClassFile getClassFile(ProjectJarManager jarManager, String fqdn) {
 		ClassFile cf = jarManager.getClassEntry(fqdn);
 		if (cf != null)
 			return cf;
