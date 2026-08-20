@@ -182,7 +182,11 @@ public class ProjectJarManager extends JarManager {
 
 	/**
 	 * Reads the source code of the given class from the source location registered for it with
-	 * this jar manager. Both ZIP/JAR and directory based source locations are supported.
+	 * this jar manager. Both ZIP/JAR and directory-based source locations are supported.
+	 * <p>
+	 * Workspace classes are readable even before they are compiled: if the class is not indexed
+	 * (the class list is built from compiled classes), the workspace source location is probed
+	 * on disk directly, so sources of freshly generated classes are found too.
 	 *
 	 * @param classFqdn Fully qualified name of the class to read the source code of.
 	 * @return Source code of the given class, or null if there is no source location for it or
@@ -190,6 +194,8 @@ public class ProjectJarManager extends JarManager {
 	 */
 	@Nullable public String getSourceCodeForClass(String classFqdn) {
 		SourceLocation sourceLocation = getSourceLocForClass(classFqdn);
+		if (sourceLocation == null && workspaceLibraryInfo != null)
+			sourceLocation = workspaceLibraryInfo.getSourceLocation();
 		if (sourceLocation == null)
 			return null;
 
