@@ -19,12 +19,11 @@
 
 package net.mcreator.ui.mcp.tools;
 
-import net.mcreator.io.FileIO;
 import net.mcreator.io.mcp.tool.ToolResult;
+import net.mcreator.java.ProjectJarManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 
-import java.io.File;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -43,7 +42,8 @@ public class ReadClassSourceTool extends MCreatorMcpTool<ReadClassSourceTool.Arg
 	}
 
 	@Override public String getDescription() {
-		return "Reads Java source code for a class by its FQDN (package.Name) from the workspace classpath (reads project and dependency sources).";
+		return "Reads Java source code for a class by its FQDN (org.package.ClassName) from the workspace classpath."
+				+ "One use case is to read source of Minecraft classes to confirm behavior.";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
@@ -55,25 +55,18 @@ public class ReadClassSourceTool extends MCreatorMcpTool<ReadClassSourceTool.Arg
 			return CompletableFuture.completedFuture(ToolResult.error("className is required"));
 		}
 
-		String className = input.className.trim();
-		String code = readFromProjectSourceRoot(mcreator, className);
+		String code = null;
+		ProjectJarManager jarManager = mcreator.getGenerator().getProjectJarManager();
+		if (jarManager != null)
+			code = jarManager.getSourceCodeForClass(input.className.trim());
+
 		if (code == null) {
-			code = mcreator.getGenerator().getMinecraftCodeProvider().readCode(className);
-		}
-		if (code == null) {
-			return CompletableFuture.completedFuture(
-					ToolResult.error("Could not read source for class: " + input.className));
+			return CompletableFuture.completedFuture(ToolResult.error(
+					"Could not read source for class: " + input.className
+							+ ". If this is a workspace class, make sure the workspace is built."));
 		}
 
 		return CompletableFuture.completedFuture(ToolResult.text(code));
-	}
-
-	private static String readFromProjectSourceRoot(MCreator mcreator, String className) {
-		File sourceFile = new File(mcreator.getGenerator().getSourceRoot(), className.replace(".", "/") + ".java");
-		if (!sourceFile.isFile()) {
-			return null;
-		}
-		return FileIO.readFileToString(sourceFile);
 	}
 
 }

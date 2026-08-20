@@ -43,8 +43,8 @@ import org.jboss.forge.roaster.model.source.MethodSource;
 import javax.annotation.Nonnull;
 import java.io.StringReader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings("unused") public class MinecraftCodeProvider {
 
@@ -52,17 +52,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 	private final Workspace workspace;
 
-	private final Map<String, String> CACHE = new ConcurrentHashMap<>();
+	private final Map<String, String> CACHE = new HashMap<>();
 
 	public MinecraftCodeProvider(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 	}
 
-	public String readCode(@Nonnull String template) {
-		return readCode(template, true);
-	}
-
-	private String readCode(@Nonnull String template, boolean silent) {
+	private String readCode(@Nonnull String template) {
 		return CACHE.computeIfAbsent(template, key -> {
 			try {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
@@ -75,21 +71,16 @@ import java.util.concurrent.ConcurrentHashMap;
 				}
 				return null;
 			} catch (Exception e) {
-				if (silent) {
-					// missing class may simply be an invalid class name from the caller, don't flag the workspace
-					LOG.warn("Failed to load code provider for {}", key, e);
-				} else {
-					this.workspace.markFailingGradleDependencies();
-					LOG.error("Failed to load code provider for {}", key, e);
-					TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
-				}
+				this.workspace.markFailingGradleDependencies();
+				LOG.error("Failed to load code provider for {}", key, e);
+				TestUtil.failIfTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest");
 				return null;
 			}
 		});
 	}
 
 	public CodeString getCodeFor(@Nonnull String template, int lineFrom, int lineTo) {
-		String code = readCode(template, false);
+		String code = readCode(template);
 		if (code != null) {
 			String[] lines = code.split("\\r?\\n");
 			String[] usedLines = Arrays.copyOfRange(lines, lineFrom - 1, lineTo);
@@ -101,7 +92,7 @@ import java.util.concurrent.ConcurrentHashMap;
 	}
 
 	public CodeString getMethod(@Nonnull String template, String method, String... params) {
-		String code = readCode(template, false);
+		String code = readCode(template);
 		if (code != null) {
 			JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(code);
 			MethodSource<?> methodSource = classJavaSource.getMethod(method, params);
@@ -114,7 +105,7 @@ import java.util.concurrent.ConcurrentHashMap;
 	}
 
 	public CodeString getInnerClassBody(@Nonnull String template, String innerClass) {
-		String code = readCode(template, false);
+		String code = readCode(template);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
 
@@ -137,7 +128,7 @@ import java.util.concurrent.ConcurrentHashMap;
 	}
 
 	public CodeString getClassBody(@Nonnull String template) {
-		String code = readCode(template, false);
+		String code = readCode(template);
 		if (code != null) {
 			CompilationUnit cu = new ASTFactory().getCompilationUnit(template, new Scanner(new StringReader(code)));
 			TypeDeclaration mainClass = cu.getTypeDeclaration(0);
