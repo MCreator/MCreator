@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.blockly;
 
+import com.google.gson.Gson;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.plugin.PluginLoader;
@@ -45,6 +46,8 @@ class BlocklyRequestHandler implements MCreatorSchemeHandler.RequestHandler {
 
 	private static final String MCITEM_ICON_PATH_PREFIX = "/blockly/mcitem/";
 
+	private static final String BLOCKLY_LANG_JS_PATH = "/l10n/blockly_lang.js";
+
 	private static final String blocklyThemeID;
 
 	static {
@@ -65,7 +68,9 @@ class BlocklyRequestHandler implements MCreatorSchemeHandler.RequestHandler {
 	}
 
 	@Nullable @Override public InputStream handleRequest(@Nullable MCreator mcreator, String path) throws Exception {
-		if (mcreator != null && path.startsWith(MCITEM_ICON_PATH_PREFIX) && path.endsWith(".png")) {
+		if (path.equals(BLOCKLY_LANG_JS_PATH)) {
+			return new ByteArrayInputStream(getBlocklyLangJS());
+		} else if (mcreator != null && path.startsWith(MCITEM_ICON_PATH_PREFIX) && path.endsWith(".png")) {
 			String name = URLDecoder.decode(
 					path.substring(MCITEM_ICON_PATH_PREFIX.length(), path.length() - ".png".length()),
 					StandardCharsets.UTF_8);
@@ -79,6 +84,24 @@ class BlocklyRequestHandler implements MCreatorSchemeHandler.RequestHandler {
 			return new ByteArrayInputStream(os.toByteArray());
 		}
 		return null;
+	}
+
+	private static byte[] blocklyLangJSCache = null;
+
+	private static synchronized byte[] getBlocklyLangJS() {
+		if (blocklyLangJSCache == null) {
+			String js = """
+					const blockly_lang = %s;
+					function translate(key) {
+						if (key in blockly_lang)
+							return blockly_lang[key];
+						console.error('Error: missing Blockly translation for key: ' + key);
+						return null;
+					}
+					""".formatted(new Gson().toJson(L10N.getBlocklyTranslations()));
+			blocklyLangJSCache = js.getBytes(StandardCharsets.UTF_8);
+		}
+		return blocklyLangJSCache;
 	}
 
 }
