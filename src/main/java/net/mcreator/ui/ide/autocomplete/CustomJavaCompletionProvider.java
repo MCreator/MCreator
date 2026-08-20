@@ -77,7 +77,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			if (workspace != null) {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 				try {
-					ClassFile cf = jarManager.getClassEntry(fqdn);
+					ClassFile cf = null;
+					if (jarManager != null) {
+						cf = jarManager.getClassEntry(fqdn);
+					}
 					if (cf != null) {
 						int flags = cf.getAccessFlags();
 						inf = (flags & 0x0200) != 0;
