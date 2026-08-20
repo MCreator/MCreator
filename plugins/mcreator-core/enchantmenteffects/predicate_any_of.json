@@ -1,0 +1,16 @@
+{
+  "mutator": "predicate_all_any_mutator",
+  "output": "Predicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "predicates",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>",
+      "~<value name=\"condition0\"><block type=\"predicate_weather_check\"><field name=\"weather\">clear</field></block></value>",
+      "~<value name=\"condition1\"><block type=\"predicate_weather_check\"><field name=\"weather\">clear</field></block></value>"
+    ],
+    "repeating_inputs": [
+      "condition"
+    ]
+  }
+}
