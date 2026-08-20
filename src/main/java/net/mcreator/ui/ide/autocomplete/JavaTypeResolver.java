@@ -355,6 +355,40 @@ public class JavaTypeResolver {
 				currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) :
 				"";
 
+		if (targetName.contains(".")) {
+			ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
+			if (jarManager != null) {
+				String[] segments = targetName.split("\\.");
+				String fqdnCandidate = "";
+				int classSegmentIndex = -1;
+				for (int s = 0; s < segments.length; s++) {
+					fqdnCandidate = fqdnCandidate.isEmpty() ? segments[s] : fqdnCandidate + "." + segments[s];
+					if (jarManager.getClassEntry(fqdnCandidate) != null) {
+						classSegmentIndex = s;
+						currentFQDN = fqdnCandidate;
+						isStaticContext = true;
+						break;
+					}
+				}
+				if (classSegmentIndex >= 0) {
+					for (int i = classSegmentIndex + 1; i < segments.length; i++) {
+						String member = segments[i];
+						String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, currentClassFQDN, code);
+						if (returnTypeSimple != null) {
+							currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, currentPkg);
+							isStaticContext = false;
+						} else if (getInnerClasses(currentFQDN).contains(member)) {
+							currentFQDN += "." + member;
+							isStaticContext = true;
+						} else {
+							return null;
+						}
+					}
+					return new ResolutionResult(currentFQDN, isStaticContext);
+				}
+			}
+		}
+
 		if (base.equals("this") || base.equals("super")) {
 			currentFQDN = currentClassFQDN;
 			if (base.equals("super") && currentFQDN != null) {

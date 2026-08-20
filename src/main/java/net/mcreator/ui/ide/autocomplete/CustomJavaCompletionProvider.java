@@ -311,6 +311,14 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code,
 						codeBeforeCursor, currentClassFQDN);
 				addResolverItems(items, wordOnly, prefixContext, completions);
+				if (completions.isEmpty() && workspace != null) {
+					ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
+					if (jarManager != null) {
+						Set<Completion> jarComps = new TreeSet<>();
+						jarManager.addCompletions(this, targetName + "." + wordOnly, jarComps);
+						completions.addAll(jarComps);
+					}
+				}
 			}
 		} else {
 			// Method/field completions for "this"

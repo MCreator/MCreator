@@ -78,9 +78,9 @@ public class CustomClassCompletion extends BasicCompletion {
 		int start = dot - (alreadyEntered != null ? alreadyEntered.length() : 0);
 
 		String lineText = getCurrentLineText(te);
-		if (lineText.startsWith("import ")) {
-			String textBeforeCaret = lineText.substring(0,
-					Math.max(0, lineText.length() - (alreadyEntered != null ? alreadyEntered.length() : 0))).trim();
+		String textBeforeCaret = lineText.substring(0,
+				Math.max(0, lineText.length() - (alreadyEntered != null ? alreadyEntered.length() : 0))).trim();
+		if (textBeforeCaret.endsWith(".") || lineText.startsWith("import ") || lineText.startsWith("package ")) {
 			String toInsert = textBeforeCaret.endsWith(".") ? className : getClassName(true);
 			te.replaceRange(toInsert, start, dot);
 			return;
