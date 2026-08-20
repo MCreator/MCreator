@@ -102,22 +102,15 @@ public class CustomClassCompletion extends BasicCompletion {
 
 	private ImportResult getShouldAddImport(JavaParser parser) {
 		CompilationUnit cu = parser.getCompilationUnit();
-
-		if (pkg == null || pkg.isEmpty() || "java.lang".equals(pkg)) {
+		if (cu == null || pkg == null || pkg.isEmpty() || "java.lang".equals(pkg)) {
 			return ImportResult.NONE;
 		}
 
-		String fqClassName = getClassName(true);
-		int lastClassNameDot = fqClassName.lastIndexOf('.');
-		boolean ccInPackage = lastClassNameDot > -1;
+		String outerClassName = className.contains(".") ? className.substring(0, className.indexOf('.')) : className;
+		String fqOuterClassName = pkg + "." + outerClassName;
 		Package pkgDecl = cu.getPackage();
 
-		if (ccInPackage && pkgDecl != null) {
-			String ccPkg = fqClassName.substring(0, lastClassNameDot);
-			if (ccPkg.equals(pkgDecl.getName())) {
-				return ImportResult.NONE;
-			}
-		} else if (!ccInPackage && pkgDecl == null) {
+		if (pkgDecl != null && pkg.equals(pkgDecl.getName())) {
 			return ImportResult.NONE;
 		}
 
@@ -130,26 +123,22 @@ public class CustomClassCompletion extends BasicCompletion {
 			offset = id.getNameEndOffset() + 1;
 
 			if (!id.isStatic()) {
-				String outerClassName = className.contains(".") ? className.substring(0, className.indexOf('.')) : className;
 				if (id.isWildcard()) {
-					if (lastClassNameDot > -1) {
-						String imported = id.getName();
-						int dot = imported.lastIndexOf('.');
-						String importedPkg = dot > -1 ? imported.substring(0, dot) : imported;
-						String classPkg = fqClassName.substring(0, lastClassNameDot);
-						if (importedPkg.equals(classPkg) || pkg.equals(importedPkg)) {
-							alreadyImported = true;
-							break;
-						}
+					String imported = id.getName();
+					int dot = imported.lastIndexOf('.');
+					String importedPkg = dot > -1 ? imported.substring(0, dot) : imported;
+					if (pkg.equals(importedPkg)) {
+						alreadyImported = true;
+						break;
 					}
 				} else {
 					String fullyImportedClassName = id.getName();
 					int dot = fullyImportedClassName.lastIndexOf('.');
 					String importedClassName =
 							dot > -1 ? fullyImportedClassName.substring(dot + 1) : fullyImportedClassName;
-					if (className.equals(importedClassName) || (className.contains(".") && outerClassName.equals(importedClassName))) {
+					if (outerClassName.equals(importedClassName)) {
 						offset = -1;
-						if (fqClassName.equals(fullyImportedClassName) || (pkg + "." + outerClassName).equals(fullyImportedClassName)) {
+						if (fqOuterClassName.equals(fullyImportedClassName)) {
 							alreadyImported = true;
 						}
 						break;
@@ -167,9 +156,9 @@ public class CustomClassCompletion extends BasicCompletion {
 				}
 
 				if (offset > 0) {
-					importToAdd.append("\nimport ").append(fqClassName).append(';');
+					importToAdd.append("\nimport ").append(fqOuterClassName).append(';');
 				} else {
-					importToAdd.append("import ").append(fqClassName).append(";\n");
+					importToAdd.append("import ").append(fqOuterClassName).append(";\n");
 				}
 
 				return new ImportResult(new ImportToAddInfo(offset, importToAdd.toString()), false);
