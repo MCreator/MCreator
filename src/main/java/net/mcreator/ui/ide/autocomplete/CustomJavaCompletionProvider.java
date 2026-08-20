@@ -93,7 +93,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					if (jarManager != null) {
 						cf = jarManager.getClassEntry(fqdn);
 						String temp = fqdn;
-						while (cf == null && temp.contains(".")) {
+						while (cf == null && (temp != null && temp.contains("."))) {
 							int lastDot = temp.lastIndexOf('.');
 							temp = temp.substring(0, lastDot) + "$" + temp.substring(lastDot + 1);
 							cf = jarManager.getClassEntry(temp);
