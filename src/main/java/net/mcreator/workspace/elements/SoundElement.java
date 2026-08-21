@@ -21,6 +21,7 @@ package net.mcreator.workspace.elements;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import net.mcreator.element.types.Biome;
+import net.mcreator.generator.GeneratorFlavor;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Type;
@@ -178,6 +179,13 @@ public class SoundElement implements IElement {
 	}
 
 	public static class SoundElementDeserializer implements JsonDeserializer<SoundElement> {
+		private final boolean isBedrock;
+
+		public SoundElementDeserializer(@Nullable GeneratorFlavor generatorFlavor) {
+			this.isBedrock = generatorFlavor != null
+					&& generatorFlavor.getGamePlatform() == GeneratorFlavor.GamePlatform.BEDROCKEDITION;
+		}
+
 		@Override public SoundElement deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			JsonObject jsonObject = json.getAsJsonObject();
@@ -191,7 +199,7 @@ public class SoundElement implements IElement {
 			}
 
 			// MCreator 2026.2 converter
-			String category;
+			String category = null;
 			if (jsonObject.has("category") && jsonObject.get("category").getAsString() instanceof String str) {
 				List<String> oldFiles;
 				if (jsonObject.has("file")) {
@@ -208,14 +216,14 @@ public class SoundElement implements IElement {
 				oldFiles.forEach(oldFile -> finalFiles.add(new Sound(oldFile)));
 				files.forEach(file -> file.setCategory(str));
 				category = str;
-			} else {
+			} else if (isBedrock) {
 				category = getObjectName(jsonObject, "beCategory", "neutral");
 			}
 
 			String name = jsonObject.get("name").getAsString();
 			String subtitle = getObjectName(jsonObject, "subtitle");
 
-			return jsonObject.has("beAttenuationDistance") ?
+			return isBedrock ?
 					new BedrockSoundElement(name, category, getBEAttenuationDistance(jsonObject), files, subtitle) :
 					new SoundElement(name, files, subtitle);
 		}
