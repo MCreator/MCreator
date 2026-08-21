@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.gson.*;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.*;
@@ -47,8 +48,10 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -659,6 +662,36 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);
+	}
+
+	/**
+	 * Deserializer for Workspace objects that determines the generator flavor of the workspace being
+	 * deserialized from the workspace JSON itself and delegates the actual deserialization to a Gson instance
+	 * aware of this generator flavor. This way adapters of objects used by the workspace can behave
+	 * based on the generator flavor of the workspace they belong to.
+	 */
+	public static class WorkspaceDeserializer implements JsonDeserializer<Workspace> {
+
+		private static final Map<GeneratorConfiguration, Gson> GSON_CACHE = new ConcurrentHashMap<>();
+
+		private static final Gson GENERIC_GSON = WorkspaceFileManager.createGsonBuilder(null).create();
+
+		@Override public Workspace deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			GeneratorConfiguration generatorConfiguration = null;
+			if (json.isJsonObject() && json.getAsJsonObject().get("workspaceSettings") instanceof JsonObject settings
+					&& settings.get("currentGenerator") instanceof JsonPrimitive generatorName) {
+				generatorConfiguration = Generator.GENERATOR_CACHE.get(
+						WorkspaceSettings.normalizeGeneratorName(generatorName.getAsString()));
+			}
+
+			Gson gson = generatorConfiguration == null ? GENERIC_GSON :
+					GSON_CACHE.computeIfAbsent(generatorConfiguration,
+							configuration -> WorkspaceFileManager.createGsonBuilder(configuration.getGeneratorFlavor())
+									.create());
+			return gson.fromJson(json, Workspace.class);
+		}
+
 	}
 
 }
