@@ -20,7 +20,6 @@
 package net.mcreator.ui.chromium;
 
 import net.mcreator.Launcher;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.chromium.osr.CefBrowserOsrCustom;
 import net.mcreator.ui.chromium.osr.JBCefOsrComponent;
 import net.mcreator.ui.chromium.osr.JBCefOsrHandler;
@@ -59,8 +58,6 @@ public class WebView extends JPanel implements Closeable {
 
 	private static final int MAX_JS_EXECUTION_TIME = 10; // seconds
 
-	@Nullable private final MCreator mcreator;
-
 	private final CefClient client;
 	private final CefMessageRouter router;
 	private final CefBrowser browser;
@@ -82,6 +79,8 @@ public class WebView extends JPanel implements Closeable {
 
 	private volatile boolean isClosing = false;
 
+	private final List<RequestHandler> requestHandlers = new ArrayList<>();
+
 	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("WebView-Callback-Thread");
@@ -97,20 +96,10 @@ public class WebView extends JPanel implements Closeable {
 	});
 
 	public WebView(String url) {
-		this(null, url, false);
+		this(url, false);
 	}
 
 	public WebView(String url, boolean isTransparent) {
-		this(null, url, isTransparent);
-	}
-
-	public WebView(@Nullable MCreator mcreator, String url) {
-		this(mcreator, url, false);
-	}
-
-	public WebView(@Nullable MCreator mcreator, String url, boolean isTransparent) {
-		this.mcreator = mcreator;
-
 		setLayout(new BorderLayout());
 
 		this.client = CefUtils.createClient();
@@ -134,7 +123,7 @@ public class WebView extends JPanel implements Closeable {
 					return new CefResourceRequestHandlerAdapter() {
 						@Override public CefResourceHandler getResourceHandler(CefBrowser browser, CefFrame frame,
 								CefRequest request) {
-							return new MCreatorSchemeHandler(mcreator);
+							return new MCreatorSchemeHandler(requestHandlers);
 						}
 					};
 				}
@@ -357,6 +346,10 @@ public class WebView extends JPanel implements Closeable {
 		addLoadListener(() -> addCSSToDOM(css.toString()));
 	}
 
+	public void addRequestHandler(RequestHandler handler) {
+		requestHandlers.add(handler);
+	}
+
 	public void forceLoad() {
 		this.browser.createImmediately(); // needed so tests that don't render also work
 	}
@@ -470,13 +463,6 @@ public class WebView extends JPanel implements Closeable {
 		executeScript("window['%s'] = '%s';".formatted(name, value), JSExecutionType.LOCAL_SAFE);
 	}
 
-	/**
-	 * @return The MCreator instance this WebView belongs to, or null if the WebView is not bound to a MCreator window.
-	 */
-	@Nullable public MCreator getMCreator() {
-		return mcreator;
-	}
-
 	CefMessageRouter getRouter() {
 		return router;
 	}
@@ -493,7 +479,7 @@ public class WebView extends JPanel implements Closeable {
 		}
 	}
 
-	@SuppressWarnings("resource") @Override public void close() {
+	@Override public void close() {
 		if (isClosing)
 			return;
 
