@@ -37,46 +37,48 @@ public class JMinMaxSpinner extends JPanel implements IValidable {
 
 	private boolean directValueSet = false;
 
-	public JMinMaxSpinner(double minVal, double maxVal, double smin, double smax, double step) {
-		this(minVal, maxVal, smin, smax, step, L10N.t("minmaxspinner.min"), L10N.t("minmaxspinner.max"));
+	public JMinMaxSpinner(double initialMinValue, double initialMaxValue, double min, double max, double step) {
+		this(initialMinValue, initialMaxValue, min, max, step, L10N.t("minmaxspinner.min"),
+				L10N.t("minmaxspinner.max"));
 	}
 
-	public JMinMaxSpinner(int minVal, int maxVal, int smin, int smax, int step) {
-		this(minVal, maxVal, smin, smax, step, L10N.t("minmaxspinner.min"), L10N.t("minmaxspinner.max"));
+	public JMinMaxSpinner(int initialMin, int initialMax, int minimum, int maximum, int step) {
+		this(initialMin, initialMax, minimum, maximum, step, L10N.t("minmaxspinner.min"), L10N.t("minmaxspinner.max"));
 	}
 
-	public JMinMaxSpinner(double minVal, double maxVal, double smin, double smax, double step, String stringMin,
-			String stringMax) {
-		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
-		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
+	public JMinMaxSpinner(double initialMinValue, double initialMaxValue, double min, double max, double step,
+			String minLabel, String maxLabel) {
+		this.min = new JSpinner(new SpinnerNumberModel(initialMinValue, min, max, step));
+		this.max = new JSpinner(new SpinnerNumberModel(initialMaxValue, min, max, step));
 
-		init(stringMin, stringMax);
+		init(minLabel, maxLabel);
 
 		// increase visible fraction part if needed
 		if (step < 0.00001) {
-			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(6);
-			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(6);
+			((JSpinner.NumberEditor) this.min.getEditor()).getFormat().setMaximumFractionDigits(6);
+			((JSpinner.NumberEditor) this.max.getEditor()).getFormat().setMaximumFractionDigits(6);
 		} else if (step < 0.0001) {
-			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(5);
-			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(5);
+			((JSpinner.NumberEditor) this.min.getEditor()).getFormat().setMaximumFractionDigits(5);
+			((JSpinner.NumberEditor) this.max.getEditor()).getFormat().setMaximumFractionDigits(5);
 		} else if (step < 0.001) {
-			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(4);
-			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(4);
+			((JSpinner.NumberEditor) this.min.getEditor()).getFormat().setMaximumFractionDigits(4);
+			((JSpinner.NumberEditor) this.max.getEditor()).getFormat().setMaximumFractionDigits(4);
 		}
 	}
 
-	public JMinMaxSpinner(int minVal, int maxVal, int smin, int smax, int step, String stringMin, String stringMax) {
-		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
-		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
+	public JMinMaxSpinner(int initialMinValue, int initialMaxValue, int min, int max, int step, String minLabel,
+			String maxLabel) {
+		this.min = new JSpinner(new SpinnerNumberModel(initialMinValue, min, max, step));
+		this.max = new JSpinner(new SpinnerNumberModel(initialMaxValue, min, max, step));
 
-		init(stringMin, stringMax);
+		init(minLabel, maxLabel);
 	}
 
-	private void init(String stringMin, String stringMax) {
+	private void init(String minLabel, String maxLabel) {
 		setLayout(new GridLayout(1, 2, 5, 0));
 		setOpaque(false);
 
-		min.addChangeListener(e -> {
+		min.addChangeListener(_ -> {
 			if (directValueSet)
 				return;
 
@@ -87,7 +89,7 @@ public class JMinMaxSpinner extends JPanel implements IValidable {
 				min.setValue(min.getPreviousValue()); // if fails, cancel minimum value update
 			}
 		});
-		max.addChangeListener(e -> {
+		max.addChangeListener(_ -> {
 			if (directValueSet)
 				return;
 
@@ -99,8 +101,8 @@ public class JMinMaxSpinner extends JPanel implements IValidable {
 			}
 		});
 
-		add(PanelUtils.westAndCenterElement(new JLabel(stringMin), min, 5, 0));
-		add(PanelUtils.westAndCenterElement(new JLabel(stringMax), max, 5, 0));
+		add(PanelUtils.westAndCenterElement(new JLabel(minLabel), min, 5, 0));
+		add(PanelUtils.westAndCenterElement(new JLabel(maxLabel), max, 5, 0));
 	}
 
 	@Override public void setEnabled(boolean enabled) {
