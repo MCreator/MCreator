@@ -23,8 +23,6 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cef.browser.CefBrowser;
-import org.cef.browser.CefFrame;
 import org.cef.callback.CefCallback;
 import org.cef.handler.CefResourceHandler;
 import org.cef.misc.IntRef;
@@ -47,7 +45,7 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 	private InputStream inputStream;
 	private String contentType;
 
-	private final CefBrowser browser;
+	@Nullable private final MCreator mcreator;
 
 	/**
 	 * Registers an additional request handler that is queried before the default class-loader-based resource
@@ -59,24 +57,16 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 		REQUEST_HANDLERS.add(handler);
 	}
 
-	@SuppressWarnings("unused")
-	public MCreatorSchemeHandler(CefBrowser browser, CefFrame frame, String schemeName, CefRequest request) {
-		this.browser = browser;
-	}
-
 	/**
-	 * @return The MCreator instance the WebView holding the CefBrowser this handler serves is part of,
-	 * or null if it can't be determined.
+	 * @param mcreator The MCreator instance the WebView this handler serves requests for belongs to,
+	 *                 or null if the WebView is not bound to a MCreator window.
 	 */
-	@SuppressWarnings("resource") @Nullable public MCreator getMCreator() {
-		WebView webView = WebView.fromBrowser(browser);
-		return webView != null ? webView.getMCreator() : null;
+	public MCreatorSchemeHandler(@Nullable MCreator mcreator) {
+		this.mcreator = mcreator;
 	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
 		String path = request.getURL().replaceFirst("^http://mcreator/", "/");
-
-		MCreator mcreator = getMCreator();
 
 		// Give registered request handlers a chance to rewrite the request path
 		for (RequestHandler handler : REQUEST_HANDLERS) {
