@@ -339,6 +339,16 @@ public class TestWorkspaceDataProvider {
 				throw new RuntimeException(e);
 			}
 		}
+
+		if (workspace.getGeneratorStats().hasBaseCoverage("model_bedrock")) {
+			try {
+				FileIO.writeStringToFile(
+						IOUtils.resourceToString("/entitymodel-bedrock.geo.json", StandardCharsets.UTF_8),
+						new File(workspace.getFolderManager().getModelsDir(), "custom_bedrock_model.geo.json"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	public static void fillWorkspaceWithSampleTags(Workspace workspace) {
@@ -1918,9 +1928,11 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BEENTITY.equals(modElement.getType())) {
 			BEEntity beentity = new BEEntity(modElement);
 			beentity.entityName = modElement.getName();
-			beentity.modelName = getRandomString(random,
-					List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
-							"Villager"));
+			beentity.modelName = emptyLists ?
+					"custom_bedrock_model" :
+					getRandomString(random,
+							List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime",
+									"Spider", "Villager"));
 			beentity.modelTexture = "entity_texture_1.png";
 			beentity.collisionBoxHeight = getRandomDouble(random, BEEntity.class, "collisionBoxHeight");
 			beentity.collisionBoxWidth = getRandomDouble(random, BEEntity.class, "collisionBoxWidth");
