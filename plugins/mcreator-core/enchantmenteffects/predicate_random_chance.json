@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "chance",
+      "check": "Number"
+    }
+  ],
+  "output": "Predicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "predicates",
+    "toolbox_init": [
+      "<value name=\"chance\"><block type=\"math_number\"><field name=\"NUM\">0.5</field></block></value>"
+    ],
+    "inputs": [
+      "chance"
+    ]
+  }
+}
