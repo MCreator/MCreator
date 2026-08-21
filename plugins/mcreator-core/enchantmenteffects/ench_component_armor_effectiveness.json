@@ -1,0 +1,30 @@
+{
+  "args0": [
+    {
+      "type": "input_statement",
+      "name": "conditionalEffect",
+      "check": "ConditionalValueEffect"
+    }
+  ],
+  "extensions": [
+    "disable_repeated_enchantment_component"
+  ],
+  "previousStatement": "EnchantmentComponent",
+  "nextStatement": "EnchantmentComponent",
+  "colour": 190,
+  "inputsInline": false,
+  "mcreator": {
+    "toolbox_id": "enchantmentcomponents",
+    "toolbox_init": [
+      "<statement name=\"conditionalEffect\"><block type=\"conditional_value_effect\">",
+      "<value name=\"effect\"><block type=\"value_effect_multiply\"><value name=\"factor\"><block type=\"math_number\"><field name=\"NUM\">0.8</field></block></value></block></value>",
+      "<value name=\"requirements\"><shadow type=\"predicate_true\"></shadow></value>",
+      "</block></statement>"
+    ],
+    "statements": [
+      {
+        "name": "conditionalEffect"
+      }
+    ]
+  }
+}
