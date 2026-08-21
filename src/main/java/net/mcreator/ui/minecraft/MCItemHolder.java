@@ -31,7 +31,6 @@ import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
-import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -44,7 +43,7 @@ public class MCItemHolder extends JButton implements IValidable {
 	private static final Color warn = new Color(236, 238, 207);
 	private static final Color bg = new Color(140, 140, 140);
 
-	private @Nonnull String block = "";
+	private String block = "";
 	private final MCItemSelectorDialog selectorDialog;
 
 	private boolean showValidation = true;
@@ -107,15 +106,15 @@ public class MCItemHolder extends JButton implements IValidable {
 	 * @return true if selector has item defined (air doesn't count as an item)
 	 */
 	public boolean containsItem() {
-		return !block.isEmpty() && !(block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR") || block.equals(
-				"Blocks.CAVE_AIR"));
+		return block != null && !block.isEmpty() && !(block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR")
+				|| block.equals("Blocks.CAVE_AIR"));
 	}
 
 	/**
 	 * @return true if selector has item defined (air also counts)
 	 */
 	public boolean containsItemOrAir() {
-		return !block.isEmpty();
+		return block != null && !block.isEmpty();
 	}
 
 	private void initGUI() {
