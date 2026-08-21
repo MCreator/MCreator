@@ -144,7 +144,7 @@ document.addEventListener('keydown', (e) => {
     if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
         return;
     e.preventDefault();
-    const { selectionStart, selectionEnd, value } = el;
+    const {selectionStart, selectionEnd, value} = el;
     if (selectionStart !== selectionEnd) {
         el.setRangeText('', selectionStart, selectionEnd, 'end');
     } else {
@@ -152,5 +152,5 @@ document.addEventListener('keydown', (e) => {
         const end = lineEnd === -1 ? value.length : lineEnd;
         el.setRangeText('', selectionStart, end, 'end');
     }
-    el.dispatchEvent(new Event('input', { bubbles: true }));
+    el.dispatchEvent(new Event('input', {bubbles: true}));
 });
