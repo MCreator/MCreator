@@ -126,10 +126,6 @@ public class SoundSelector extends JPanel {
 		listeners.forEach(l -> l.actionPerformed(new ActionEvent("", 0, "")));
 	}
 
-	public void setText(String text) {
-		this.setSound(text);
-	}
-
 	public SoundSelector enableRealTimeValidation() {
 		this.textField.enableRealtimeValidation();
 		return this;
