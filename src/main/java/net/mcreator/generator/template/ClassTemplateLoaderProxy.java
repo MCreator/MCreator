@@ -21,7 +21,6 @@ package net.mcreator.generator.template;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
-import freemarker.cache.URLTemplateSource;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ModifyTemplateEvent;
 import org.apache.commons.io.IOUtils;
@@ -44,7 +43,7 @@ public class ClassTemplateLoaderProxy implements TemplateLoader {
 		}
 		// if we do not append the base package root. Plugin developer will only receive file name.
 		// eg. mixin.ftl.json -> neoforge-1.x/templates/modbase/mixin.ftl.json
-		return new URLTemplateSourceHolder((URLTemplateSource) source, templateLoader.getBasePackagePath() + name);
+		return new URLTemplateSourceHolder(source, templateLoader.getBasePackagePath() + name);
 	}
 
 	@Override public long getLastModified(Object templateSource) {
@@ -63,7 +62,7 @@ public class ClassTemplateLoaderProxy implements TemplateLoader {
 	}
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
-		if (templateSource instanceof URLTemplateSourceHolder(URLTemplateSource urlSource, String logicalName)) {
+		if (templateSource instanceof URLTemplateSourceHolder(Object urlSource, String logicalName)) {
 			ModifyTemplateEvent event = new ModifyTemplateEvent(logicalName, () -> {
 				try (Reader reader = templateLoader.getReader(urlSource, encoding)) {
 					return IOUtils.toString(reader);
@@ -79,5 +78,5 @@ public class ClassTemplateLoaderProxy implements TemplateLoader {
 		return templateLoader.getReader(templateSource, encoding);
 	}
 
-	private record URLTemplateSourceHolder(@Nonnull URLTemplateSource urlTemplateSource, @Nonnull String name) {}
+	private record URLTemplateSourceHolder(@Nonnull Object urlTemplateSource, @Nonnull String name) {}
 }
