@@ -37,8 +37,8 @@ public class JMinMaxSpinner extends JPanel implements IValidable {
 
 	private boolean directValueSet = false;
 
-	public JMinMaxSpinner(double initialMinValue, double initialMaxValue, double min, double max, double step) {
-		this(initialMinValue, initialMaxValue, min, max, step, L10N.t("minmaxspinner.min"),
+	public JMinMaxSpinner(double initialMinValue, double initialMaxValue, double minimum, double maximum, double step) {
+		this(initialMinValue, initialMaxValue, minimum, maximum, step, L10N.t("minmaxspinner.min"),
 				L10N.t("minmaxspinner.max"));
 	}
 
@@ -46,30 +46,30 @@ public class JMinMaxSpinner extends JPanel implements IValidable {
 		this(initialMin, initialMax, minimum, maximum, step, L10N.t("minmaxspinner.min"), L10N.t("minmaxspinner.max"));
 	}
 
-	public JMinMaxSpinner(double initialMinValue, double initialMaxValue, double min, double max, double step,
+	public JMinMaxSpinner(double initialMinValue, double initialMaxValue, double minimum, double maximum, double step,
 			String minLabel, String maxLabel) {
-		this.min = new JSpinner(new SpinnerNumberModel(initialMinValue, min, max, step));
-		this.max = new JSpinner(new SpinnerNumberModel(initialMaxValue, min, max, step));
+		min = new JSpinner(new SpinnerNumberModel(initialMinValue, minimum, maximum, step));
+		max = new JSpinner(new SpinnerNumberModel(initialMaxValue, minimum, maximum, step));
 
 		init(minLabel, maxLabel);
 
 		// increase visible fraction part if needed
 		if (step < 0.00001) {
-			((JSpinner.NumberEditor) this.min.getEditor()).getFormat().setMaximumFractionDigits(6);
-			((JSpinner.NumberEditor) this.max.getEditor()).getFormat().setMaximumFractionDigits(6);
+			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(6);
+			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(6);
 		} else if (step < 0.0001) {
-			((JSpinner.NumberEditor) this.min.getEditor()).getFormat().setMaximumFractionDigits(5);
-			((JSpinner.NumberEditor) this.max.getEditor()).getFormat().setMaximumFractionDigits(5);
+			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(5);
+			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(5);
 		} else if (step < 0.001) {
-			((JSpinner.NumberEditor) this.min.getEditor()).getFormat().setMaximumFractionDigits(4);
-			((JSpinner.NumberEditor) this.max.getEditor()).getFormat().setMaximumFractionDigits(4);
+			((JSpinner.NumberEditor) min.getEditor()).getFormat().setMaximumFractionDigits(4);
+			((JSpinner.NumberEditor) max.getEditor()).getFormat().setMaximumFractionDigits(4);
 		}
 	}
 
-	public JMinMaxSpinner(int initialMinValue, int initialMaxValue, int min, int max, int step, String minLabel,
+	public JMinMaxSpinner(int initialMinValue, int initialMaxValue, int minimum, int maximum, int step, String minLabel,
 			String maxLabel) {
-		this.min = new JSpinner(new SpinnerNumberModel(initialMinValue, min, max, step));
-		this.max = new JSpinner(new SpinnerNumberModel(initialMaxValue, min, max, step));
+		min = new JSpinner(new SpinnerNumberModel(initialMinValue, minimum, maximum, step));
+		max = new JSpinner(new SpinnerNumberModel(initialMaxValue, minimum, maximum, step));
 
 		init(minLabel, maxLabel);
 	}
