@@ -72,7 +72,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		this.mcreator = mcreator;
 		this.returnType = returnType;
 
-		this.providedDependencies = Sets.newHashSet(providedDependencies);
+		this.providedDependencies = Sets.newLinkedHashSet(Arrays.asList(providedDependencies));
 
 		setEnabled(isEnabled());
 	}

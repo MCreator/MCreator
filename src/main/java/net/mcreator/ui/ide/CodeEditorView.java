@@ -34,7 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
-import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
+import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
@@ -362,6 +362,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			jls.install(te);
 
+			JavaLanguageSupportBridge.bridge(te, jls);
+
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
@@ -385,8 +387,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				LOG.error(e1.getMessage(), e1);
 			}
 
-			jcp.setStringCompletionProvider(new StringCompletitionProvider(mcreator.getWorkspace()));
-
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 
@@ -407,6 +407,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 							&& !completionInAction && jls.isAutoActivationEnabled() &&
 							// only smart autocomplete if the char we typed is a letter or digit
 							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
+							// if the popup is already visible, the library refreshes it on caret updates
+							ac != null && !ac.isPopupVisible() &&
 							// only smart autocomplete if we have at least one char already written
 							!jcp.getAlreadyEnteredText(te).isBlank()
 							// only smart autocomplete if we have more than one completion to choose from
@@ -458,7 +460,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					CodeEditorView.this.mouseEvent = mouseEvent;
 					if (jumpToMode && ac != null) {
 						DeclarationFinder.InClassPosition position = DeclarationFinder.getDeclarationOnPos(
-								mcreator.getWorkspace(), parser, te, jls.getJarManager());
+								mcreator.getWorkspace(), parser, te, mcreator.getGenerator().getProjectJarManager());
 						if (position != null) {
 							if (position.classFileNode == null) {
 								te.setCaretPosition(position.caret);
@@ -607,6 +609,10 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));
+
+		if (te.getSyntaxEditingStyle().equals(SyntaxConstants.SYNTAX_STYLE_JAVA)) {
+			mcreator.getGenerator().refreshWorkspaceSourceInfo();
+		}
 	}
 
 	public void centerLineInScrollPane() {
