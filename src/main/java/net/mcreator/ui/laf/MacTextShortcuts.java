@@ -30,11 +30,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-public final class MacTextShortcuts {
-	private MacTextShortcuts() {
-	}
+public class MacTextShortcuts {
 
-	public static void install() {
+	public static void installIfMac() {
 		if (OS.getOS() != OS.MAC)
 			return;
 

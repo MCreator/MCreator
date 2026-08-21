@@ -140,10 +140,12 @@ document.addEventListener('keydown', (e) => {
         return;
     if (!navigator.platform.toLowerCase().includes("mac"))
         return;
+
     const el = e.target;
     if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
         return;
     e.preventDefault();
+
     const {selectionStart, selectionEnd, value} = el;
     if (selectionStart !== selectionEnd) {
         el.setRangeText('', selectionStart, selectionEnd, 'end');
@@ -152,5 +154,6 @@ document.addEventListener('keydown', (e) => {
         const end = lineEnd === -1 ? value.length : lineEnd;
         el.setRangeText('', selectionStart, end, 'end');
     }
+
     el.dispatchEvent(new Event('input', {bubbles: true}));
 });

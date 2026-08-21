@@ -86,7 +86,7 @@ public class ThemeManager {
 			theme.applyUIDefaultsOverrides(UIManager.getDefaults());
 
 			LafUtil.applyDefaultHTMLStyles();
-			MacTextShortcuts.install();
+			MacTextShortcuts.installIfMac();
 		} catch (Exception e) {
 			LOG.error("Failed to set MCreator UI theme", e);
 		}
