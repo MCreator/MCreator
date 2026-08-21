@@ -31,10 +31,9 @@ public class ModifyTemplateEvent extends MCREvent {
 	private final String templateName;
 	private final Supplier<String> contentLoader;
 	private boolean modified;
-
-	// Volatile because listeners run on the plugin event queue thread
-	private volatile String templateContentOrigin;       // cached after first read
-	private volatile String templateContent;     // set by plugin via setTemplateOutput
+	
+	private volatile String templateContentOrigin;
+	private volatile String templateContent;
 
 	public ModifyTemplateEvent(@Nonnull String templateName,
 			@Nonnull ThrowingSupplier<String> contentLoader) {

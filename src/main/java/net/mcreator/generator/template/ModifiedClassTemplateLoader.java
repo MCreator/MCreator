@@ -20,7 +20,6 @@
 package net.mcreator.generator.template;
 
 import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.TemplateLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ModifyTemplateEvent;
 import org.apache.commons.io.IOUtils;
@@ -28,55 +27,53 @@ import org.apache.commons.io.IOUtils;
 import javax.annotation.Nonnull;
 import java.io.*;
 
-public class ClassTemplateLoaderProxy implements TemplateLoader {
+public class ModifiedClassTemplateLoader extends ClassTemplateLoader {
 
-	private final ClassTemplateLoader templateLoader;
-
-	public ClassTemplateLoaderProxy(ClassTemplateLoader templateLoader) {
-		this.templateLoader = templateLoader;
+	public ModifiedClassTemplateLoader(ClassLoader classLoader, String basePackagePath) {
+		super(classLoader,basePackagePath);
 	}
 
 	@Override public Object findTemplateSource(String name) throws IOException {
-		Object source = templateLoader.findTemplateSource(name);
+		Object source = super.findTemplateSource(name);
 		if (source == null) {
 			return null;
 		}
 		// if we do not append the base package root. Plugin developer will only receive file name.
 		// eg. mixin.ftl.json -> neoforge-1.x/templates/modbase/mixin.ftl.json
-		return new URLTemplateSourceHolder(source, templateLoader.getBasePackagePath() + name);
+		return new TemplateSourceHolder(source, getBasePackagePath() + name);
 	}
 
 	@Override public long getLastModified(Object templateSource) {
-		if (templateSource instanceof URLTemplateSourceHolder holder) {
-			return templateLoader.getLastModified(holder.urlTemplateSource());
+		if (templateSource instanceof TemplateSourceHolder holder) {
+			return super.getLastModified(holder.templateSource());
 		}
-		return templateLoader.getLastModified(templateSource);
+		return super.getLastModified(templateSource);
 	}
 
 	@Override public void closeTemplateSource(Object templateSource) throws IOException {
-		if (templateSource instanceof URLTemplateSourceHolder holder) {
-			templateLoader.closeTemplateSource(holder.urlTemplateSource());
+		if (templateSource instanceof TemplateSourceHolder holder) {
+			super.closeTemplateSource(holder.templateSource());
 		} else {
-			templateLoader.closeTemplateSource(templateSource);
+			super.closeTemplateSource(templateSource);
 		}
 	}
 
 	@Override public Reader getReader(Object templateSource, String encoding) throws IOException {
-		if (templateSource instanceof URLTemplateSourceHolder(Object urlSource, String logicalName)) {
+		if (templateSource instanceof TemplateSourceHolder(Object templateSource1, String logicalName)) {
 			ModifyTemplateEvent event = new ModifyTemplateEvent(logicalName, () -> {
-				try (Reader reader = templateLoader.getReader(urlSource, encoding)) {
+				try (Reader reader = getReader(templateSource1, encoding)) {
 					return IOUtils.toString(reader);
 				}
 			});
 			MCREvent.event(event);
 			// if no plugin edit and read, this will ensure only one I/O open.
 			if (!event.isModified() && !event.hasContentRead()) {
-				return templateLoader.getReader(urlSource, encoding);
+				return getReader(templateSource1, encoding);
 			}
 			return new StringReader(event.getTemplateContent());
 		}
-		return templateLoader.getReader(templateSource, encoding);
+		return getReader(templateSource, encoding);
 	}
 
-	private record URLTemplateSourceHolder(@Nonnull Object urlTemplateSource, @Nonnull String name) {}
+	private record TemplateSourceHolder(@Nonnull Object templateSource, @Nonnull String name) {}
 }
