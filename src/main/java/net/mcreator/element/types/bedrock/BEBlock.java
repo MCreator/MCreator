@@ -32,6 +32,7 @@ import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -48,6 +49,14 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public int renderType;
 	@Nonnull public String customModelName;
+	@TextureReference(TextureType.BLOCK) public TextureHolder destructionParticles;
+	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+			"water" }) public String particleTintMethod;
+	@Numeric(init = 100, min = 0, max = 255, step = 1) public int particleCount;
+	public boolean flowerPottable;
+	@Nullable @TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
+	public int pottedRenderType;
+	public String pottedModelName;
 
 	public String name;
 	public boolean enableCreativeTab;
@@ -97,6 +106,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";
+		pottedModelName = "Same as original";
+		pottedRenderType = 10;
+		particleTintMethod = "(none)";
+		particleCount = 100;
 
 		generationShape = "uniform";
 
@@ -106,6 +119,10 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public int renderType() {
 		return renderType;
+	}
+
+	public int pottedRenderType() {
+		return pottedRenderType;
 	}
 
 	public boolean hasCustomDrop() {
@@ -145,8 +162,19 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
+	public Model getPottedModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (pottedRenderType == 2)
+			modelType = Model.Type.BEDROCK;
+		return Model.getModelByParams(getModElement().getWorkspace(), pottedModelName, modelType);
+	}
+
 	public boolean hasCustomModel() {
 		return renderType == 2;
+	}
+
+	public boolean hasCustomPottedModel() {
+		return pottedRenderType == 2;
 	}
 
 	public boolean hasOneTexture() {
@@ -175,5 +203,17 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public TextureHolder textureBack() {
 		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
+	}
+
+	public TextureHolder pottedTexture() {
+		return pottedTexture == null || pottedTexture.isEmpty() ? texture : pottedTexture;
+	}
+
+	public boolean hasPottedTexture() {
+		return pottedTexture != null && !pottedTexture.isEmpty();
+	}
+
+	public boolean hasParticleTexture() {
+		return destructionParticles != null && !destructionParticles.isEmpty();
 	}
 }
