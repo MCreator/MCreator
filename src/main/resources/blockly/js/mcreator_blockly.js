@@ -47,24 +47,6 @@ window.addEventListener('resize', function () {
 });
 Blockly.svgResize(workspace);
 
-document.addEventListener('keydown', (e) => {
-    if (!e.metaKey || e.key !== 'Delete')
-        return;
-    const el = e.target;
-    if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
-        return;
-    e.preventDefault();
-    const { selectionStart, selectionEnd, value } = el;
-    if (selectionStart !== selectionEnd) {
-        el.setRangeText('', selectionStart, selectionEnd, 'end');
-    } else {
-        const lineEnd = value.indexOf('\n', selectionStart);
-        const end = lineEnd === -1 ? value.length : lineEnd;
-        el.setRangeText('', selectionStart, end, 'end');
-    }
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-});
-
 // disable help entry
 Blockly.Block.prototype.setHelpUrl = function () {
     return '';
@@ -151,3 +133,24 @@ function workspaceToXML() {
 
     return Blockly.Xml.domToText(treeXml);
 }
+
+// macOS cmd + delete shortcut (delete to end of line from cursor)
+document.addEventListener('keydown', (e) => {
+    if (!e.metaKey || e.key !== 'Delete')
+        return;
+    if (!navigator.platform.toLowerCase().includes("mac"))
+        return;
+    const el = e.target;
+    if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
+        return;
+    e.preventDefault();
+    const { selectionStart, selectionEnd, value } = el;
+    if (selectionStart !== selectionEnd) {
+        el.setRangeText('', selectionStart, selectionEnd, 'end');
+    } else {
+        const lineEnd = value.indexOf('\n', selectionStart);
+        const end = lineEnd === -1 ? value.length : lineEnd;
+        el.setRangeText('', selectionStart, end, 'end');
+    }
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+});
