@@ -24,6 +24,7 @@ import net.mcreator.io.OS;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.Keymap;
 import javax.swing.text.Utilities;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -37,51 +38,49 @@ public final class MacTextShortcuts {
 		if (OS.getOS() != OS.MAC)
 			return;
 
-		if (JTextComponent.getKeymap(JTextComponent.DEFAULT_KEYMAP) == null)
+		Keymap keymap = JTextComponent.getKeymap(JTextComponent.DEFAULT_KEYMAP);
+		if (keymap == null)
 			return;
 
-		JTextComponent.getKeymap(JTextComponent.DEFAULT_KEYMAP)
-				.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_DOWN_MASK),
-						new AbstractAction() {
-							@Override public void actionPerformed(ActionEvent e) {
-								if (!(e.getSource() instanceof JTextComponent textComponent))
-									return;
+		keymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, InputEvent.META_DOWN_MASK),
+				new AbstractAction() {
+					@Override public void actionPerformed(ActionEvent e) {
+						if (!(e.getSource() instanceof JTextComponent textComponent))
+							return;
 
-								if (textComponent.getSelectionStart() != textComponent.getSelectionEnd()) {
-									textComponent.replaceSelection("");
-									return;
-								}
+						if (textComponent.getSelectionStart() != textComponent.getSelectionEnd()) {
+							textComponent.replaceSelection("");
+							return;
+						}
 
-								try {
-									int caretPosition = textComponent.getCaretPosition();
-									int lineStart = Utilities.getRowStart(textComponent, caretPosition);
-									if (lineStart >= 0 && lineStart < caretPosition)
-										textComponent.getDocument().remove(lineStart, caretPosition - lineStart);
-								} catch (BadLocationException _) {
-								}
-							}
-						});
+						try {
+							int caretPosition = textComponent.getCaretPosition();
+							int lineStart = Utilities.getRowStart(textComponent, caretPosition);
+							if (lineStart >= 0 && lineStart < caretPosition)
+								textComponent.getDocument().remove(lineStart, caretPosition - lineStart);
+						} catch (BadLocationException _) {
+						}
+					}
+				});
+		keymap.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, InputEvent.META_DOWN_MASK),
+				new AbstractAction() {
+					@Override public void actionPerformed(ActionEvent e) {
+						if (!(e.getSource() instanceof JTextComponent textComponent))
+							return;
 
-		JTextComponent.getKeymap(JTextComponent.DEFAULT_KEYMAP)
-				.addActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, InputEvent.META_DOWN_MASK),
-						new AbstractAction() {
-							@Override public void actionPerformed(ActionEvent e) {
-								if (!(e.getSource() instanceof JTextComponent textComponent))
-									return;
+						if (textComponent.getSelectionStart() != textComponent.getSelectionEnd()) {
+							textComponent.replaceSelection("");
+							return;
+						}
 
-								if (textComponent.getSelectionStart() != textComponent.getSelectionEnd()) {
-									textComponent.replaceSelection("");
-									return;
-								}
-
-								try {
-									int caretPosition = textComponent.getCaretPosition();
-									int lineEnd = Utilities.getRowEnd(textComponent, caretPosition);
-									if (lineEnd >= 0 && lineEnd > caretPosition)
-										textComponent.getDocument().remove(caretPosition, lineEnd - caretPosition);
-								} catch (BadLocationException _) {
-								}
-							}
-						});
+						try {
+							int caretPosition = textComponent.getCaretPosition();
+							int lineEnd = Utilities.getRowEnd(textComponent, caretPosition);
+							if (lineEnd >= 0 && lineEnd > caretPosition)
+								textComponent.getDocument().remove(caretPosition, lineEnd - caretPosition);
+						} catch (BadLocationException _) {
+						}
+					}
+				});
 	}
 }
