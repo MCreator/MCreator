@@ -98,9 +98,6 @@
       <#if data.isPushable>
       "minecraft:pushable_by_entity": {},
       </#if>
-      <#if data.isPushableByPiston>
-      "minecraft:pushable_by_block": {},
-      </#if>
       ${aicode}
       "minecraft:follow_range": {
         "value": ${data.followRangeValue}

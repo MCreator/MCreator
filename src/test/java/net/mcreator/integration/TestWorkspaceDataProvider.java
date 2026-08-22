@@ -1936,7 +1936,6 @@ public class TestWorkspaceDataProvider {
 			beentity.followRangeValue = getRandomInt(random, BEEntity.class, "followRangeValue");
 			beentity.isImmuneToFire = _true;
 			beentity.isPushable = _true;
-			beentity.isPushableByPiston = _true;
 			beentity.spawnNaturally = !_true;
 			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
