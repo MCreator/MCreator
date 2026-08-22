@@ -50,6 +50,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 	<#if data.hasInventory>
 		<#assign interfaces += ["EntityBlock"]>
+		<#if data.guiBoundTo?has_content>
+			<#assign interfaces += ["${JavaModName}Menus.BoundBlock"]>
+		</#if>
 	</#if>
 	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["BonemealableBlock"]>
@@ -688,6 +691,12 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			BlockEntity tileEntity = worldIn.getBlockEntity(pos);
 			return tileEntity instanceof MenuProvider menuProvider ? menuProvider : null;
 		}
+
+		<#if data.guiBoundTo?has_content>
+		@Override public Class<? extends AbstractContainerMenu> getBoundMenuClass() {
+			return ${data.guiBoundTo}Menu.class;
+		}
+		</#if>
 
 		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new ${name}BlockEntity(pos, state);
