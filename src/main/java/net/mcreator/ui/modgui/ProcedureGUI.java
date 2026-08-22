@@ -634,15 +634,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
+	@Override public void afterGeneratableElementGenerated(boolean forceActions) {
+		super.afterGeneratableElementGenerated(forceActions);
 
 		// check if dependency list has changed
 		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
 				new HashSet<>(dependenciesArrayList));
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && dependenciesChanged)
+		if (isEditingMode() && (dependenciesChanged || forceActions))
 			regenerateProcedureCallers(modElement, new Stack<>());
 
 		dependenciesBeforeEdit = dependenciesArrayList;

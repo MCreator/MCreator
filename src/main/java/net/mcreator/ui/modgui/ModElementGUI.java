@@ -600,7 +600,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// re-init mod element to pick up the new mod element picture and reload mcitems cache
 		modElement.reinit(mcreator.getWorkspace());
 
-		afterGeneratableElementGenerated();
+		afterGeneratableElementGenerated(false);
 
 		// build if selected and needed
 		if ((Launcher.version.isDevelopment() || PreferencesManager.PREFERENCES.gradle.buildOnSave.get())
@@ -645,7 +645,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	protected void afterGeneratableElementStored() {
 	}
 
-	protected void afterGeneratableElementGenerated() {
+	public void afterGeneratableElementGenerated(boolean forceActions) {
 	}
 
 	protected boolean allowCodePreview() {
