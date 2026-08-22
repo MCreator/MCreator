@@ -24,7 +24,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.chromium.MCreatorSchemeHandler;
+import net.mcreator.ui.chromium.RequestHandler;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
@@ -42,7 +42,7 @@ import java.nio.charset.StandardCharsets;
  * Rewrites Blockly specific placeholders (language and Blockly theme) in mcreator scheme request paths
  * and serves MC item icons for the Blockly MC item selector fields.
  */
-class BlocklyRequestHandler implements MCreatorSchemeHandler.RequestHandler {
+class BlocklyRequestHandler implements RequestHandler {
 
 	private static final String MCITEM_ICON_PATH_PREFIX = "/blockly/mcitem/";
 
@@ -59,7 +59,13 @@ class BlocklyRequestHandler implements MCreatorSchemeHandler.RequestHandler {
 		blocklyThemeID = _blocklyThemeID;
 	}
 
-	@Override public String rewritePath(@Nullable MCreator mcreator, String path) {
+	private final MCreator mcreator;
+
+	BlocklyRequestHandler(MCreator mcreator) {
+		this.mcreator = mcreator;
+	}
+
+	@Override public String rewritePath(String path) {
 		//@formatter:off
 		return path
 				.replace("__LANG__", L10N.getBlocklyLangName())
@@ -67,10 +73,10 @@ class BlocklyRequestHandler implements MCreatorSchemeHandler.RequestHandler {
 		//@formatter:on
 	}
 
-	@Nullable @Override public InputStream handleRequest(@Nullable MCreator mcreator, String path) throws Exception {
+	@Nullable @Override public InputStream handleRequest(String path) throws Exception {
 		if (path.equals(BLOCKLY_LANG_JS_PATH)) {
 			return new ByteArrayInputStream(getBlocklyLangJS());
-		} else if (mcreator != null && path.startsWith(MCITEM_ICON_PATH_PREFIX) && path.endsWith(".png")) {
+		} else if (path.startsWith(MCITEM_ICON_PATH_PREFIX) && path.endsWith(".png")) {
 			String name = URLDecoder.decode(
 					path.substring(MCITEM_ICON_PATH_PREFIX.length(), path.length() - ".png".length()),
 					StandardCharsets.UTF_8);

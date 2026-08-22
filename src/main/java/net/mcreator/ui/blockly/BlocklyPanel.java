@@ -25,7 +25,6 @@ import net.mcreator.plugin.events.ui.BlocklyPanelRegisterDOMData;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.chromium.CefUtils;
-import net.mcreator.ui.chromium.MCreatorSchemeHandler;
 import net.mcreator.ui.chromium.WebView;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
@@ -56,11 +55,6 @@ public class BlocklyPanel extends JPanel implements Closeable {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly");
 
-	static {
-		// Register handler that rewrites Blockly specific placeholders in mcreator scheme request paths
-		MCreatorSchemeHandler.registerRequestHandler(new BlocklyRequestHandler());
-	}
-
 	private final WebView webView;
 
 	private final BlocklyJavascriptBridge bridge;
@@ -86,7 +80,8 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
-		webView = new WebView(mcreator, "http://mcreator/blockly/blockly.html", isTransparent());
+		webView = new WebView("http://mcreator/blockly/blockly.html", isTransparent());
+		webView.addRequestHandler(new BlocklyRequestHandler(mcreator));
 
 		add("Center", webView);
 
