@@ -80,7 +80,7 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		add(new JEmptyBox());
 		add(new JEmptyBox());
 
-		textureLeft.addTextureSelectedListener(event -> {
+		textureLeft.addTextureSelectedListener(_ -> {
 			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
 					|| textureFront.hasTexture() || textureRight.hasTexture())) {
 				texture.setTexture(textureLeft.getTextureHolder());

@@ -546,7 +546,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		creativeTabs.setPreferredSize(new java.awt.Dimension(0, 42));
 
-		portalSound.setText("block.portal.ambient");
+		portalSound.setSound("block.portal.ambient");
 
 		portalParticles.setFont(portalParticles.getFont().deriveFont(16.0f));
 
