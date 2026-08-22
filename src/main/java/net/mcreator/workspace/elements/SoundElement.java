@@ -229,8 +229,12 @@ public class SoundElement implements IElement {
 		}
 
 		private static Biome.ClimatePoint getBEAttenuationDistance(JsonObject jsonObject) {
-			JsonObject obj = jsonObject.getAsJsonObject("beAttenuationDistance");
-			return new Biome.ClimatePoint(getFloatValue(obj, "min"), getFloatValue(obj, "max"));
+			if (jsonObject.has("beAttenuationDistance")) {
+				JsonObject obj = jsonObject.getAsJsonObject("beAttenuationDistance");
+				return new Biome.ClimatePoint(getFloatValue(obj, "min"), getFloatValue(obj, "max"));
+			}
+
+			return BedrockSoundElement.DefaultBEAttenuationDistance;
 		}
 
 		private static Float getFloatValue(JsonObject jsonObject, String name) {
