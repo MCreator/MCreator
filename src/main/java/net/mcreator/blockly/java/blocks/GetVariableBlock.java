@@ -20,6 +20,7 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
+import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.StatementInput;
@@ -58,10 +59,15 @@ public class GetVariableBlock implements IBlockGenerator {
 				String scope = varfield[0];
 				String name = varfield[1];
 
-				if (scope.equals("global") && !master.getWorkspace().getVariableElements().stream()
-						.map(VariableElement::getName).toList().contains(name)) {
+				if (scope.equals("global") && master.getWorkspace().getVariableElementByName(name) == null) {
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.variables.invalid_var", L10N.t("blockly.block.get_var"),
+									L10N.t("blockly.errors.remove_block"))));
+					return;
+				} else if (scope.equals("global") && !BlocklyVariables.isVariableTypeCompatible(typeObject,
+						master.getWorkspace().getVariableElementByName(name).getType())) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.variables.type_mismatch", L10N.t("blockly.block.get_var"),
 									L10N.t("blockly.errors.remove_block"))));
 					return;
 				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
@@ -69,6 +75,14 @@ public class GetVariableBlock implements IBlockGenerator {
 						.toList().contains(name)) { // check if local variable exists
 					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.errors.variables.invalid_local_var", L10N.t("blockly.block.get_var"),
+									L10N.t("blockly.errors.remove_block"))));
+					return;
+				} else if (master instanceof BlocklyToProcedure && scope.equals("local")
+						&& ((BlocklyToProcedure) master).getLocalVariables().stream()
+						.filter(e -> e.getName().equals(name))
+						.noneMatch(e -> BlocklyVariables.isVariableTypeCompatible(typeObject, e.getType()))) {
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.variables.type_mismatch", L10N.t("blockly.block.get_var"),
 									L10N.t("blockly.errors.remove_block"))));
 					return;
 				} else if (scope.equals("local") && !(master instanceof BlocklyToProcedure)) {
@@ -129,6 +143,9 @@ public class GetVariableBlock implements IBlockGenerator {
 							.generateFromString(getterTemplate.toString(), dataModel);
 					master.append(code);
 				}
+			} else {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.variables.improperly_defined", L10N.t("blockly.block.get_var"))));
 			}
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

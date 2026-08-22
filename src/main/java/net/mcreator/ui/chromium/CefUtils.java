@@ -37,10 +37,9 @@ import org.cef.callback.CefRunContextMenuCallback;
 import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefContextMenuHandler;
 import org.cef.handler.CefDisplayHandlerAdapter;
-import org.cef.handler.CefRequestHandlerAdapter;
-import org.cef.network.CefRequest;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
@@ -210,10 +209,6 @@ public class CefUtils {
 
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
-				@Override public void onContextInitialized() {
-					cefApp.registerSchemeHandlerFactory("http", "mcreator", CefClassLoaderSchemeHandler::new);
-				}
-
 				@Override public boolean onBeforeTerminate() {
 					return true; // Do not let JCEF terminate itself
 				}
@@ -276,8 +271,10 @@ public class CefUtils {
 
 			@Override public boolean onCursorChange(CefBrowser browser, int cursorType) {
 				if (!useOSR()) {
-					//noinspection MagicConstant
-					browser.getUIComponent().setCursor(Cursor.getPredefinedCursor(cursorType));
+					SwingUtilities.invokeLater(() -> {
+						//noinspection MagicConstant
+						browser.getUIComponent().setCursor(Cursor.getPredefinedCursor(cursorType));
+					});
 					return true;
 				}
 				return false;
@@ -306,15 +303,6 @@ public class CefUtils {
 			}
 
 			@Override public void onContextMenuDismissed(CefBrowser browser, CefFrame frame) {
-			}
-		});
-
-		// Disable access to the internet
-		cefClient.addRequestHandler(new CefRequestHandlerAdapter() {
-			@Override
-			public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, boolean userGesture,
-					boolean isRedirect) {
-				return !request.getURL().startsWith("http://mcreator/"); // return true to block the request
 			}
 		});
 
