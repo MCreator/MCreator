@@ -21,6 +21,7 @@ package net.mcreator.workspace;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceSavedEvent;
@@ -33,6 +34,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.nio.file.Files;
@@ -48,10 +50,15 @@ public final class WorkspaceFileManager implements Closeable {
 
 	private final Logger LOG;
 
-	public static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
-			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
-			.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
-			.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
+	public static final Gson gson = createGsonBuilder(null).registerTypeAdapter(Workspace.class,
+			new Workspace.WorkspaceDeserializer()).create();
+
+	static GsonBuilder createGsonBuilder(@Nullable GeneratorFlavor ignoredGeneratorFlavor) {
+		return new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
+				.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
+				.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
+				.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer());
+	}
 
 	private DataSavedListener dataSavedListener;
 
