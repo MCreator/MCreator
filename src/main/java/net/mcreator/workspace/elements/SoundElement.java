@@ -182,8 +182,7 @@ public class SoundElement implements IElement {
 		private final boolean isBedrock;
 
 		public SoundElementDeserializer(@Nullable GeneratorFlavor generatorFlavor) {
-			this.isBedrock = generatorFlavor != null
-					&& generatorFlavor.getGamePlatform() == GeneratorFlavor.GamePlatform.BEDROCKEDITION;
+			this.isBedrock = generatorFlavor == GeneratorFlavor.ADDON;
 		}
 
 		@Override public SoundElement deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
