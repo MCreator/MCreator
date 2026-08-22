@@ -1,7 +1,9 @@
 {
   <#list sounds as sound>
+    <#assign category = sound.getBECategory()?replace("master", "neutral")?replace("master", "neutral")?replace("voice", "ui")?replace("ambient", "weather")>
+    <#assign isStream = (category == "record" || category == "music")>
     "${modid}:${sound.getName()}": {
-      "category": "${sound.getBECategory()?replace("master", "neutral")?replace("master", "neutral")?replace("voice", "ui")?replace("ambient", "weather")}",
+      "category": "${category}",
       <#if sound.getBEAttenuationDistance().min != 0>
       "min_distance": ${sound.getBEAttenuationDistance().min},
       </#if>
@@ -16,13 +18,13 @@
           <#else>
             {
               "name": "sounds/${file.getName()}"
-              <#if file.getCategory() == "record" || file.getCategory() == "music">,
+              <#if isStream>,
               "stream": true</#if>
               <#if file.getVolume() != 1>,
               "volume": ${file.getVolume()?string("0.##")}</#if>
               <#if file.getPitch() != 1>,
               "pitch": ${file.getPitch()?string("0.##")}</#if>
-              <#if file.getWeight() != 1>,
+              <#if file.getWeight() gt 1>,
               "weight": ${file.getWeight()}</#if>
               <#if !file.isBEIs3D()>,
               "is3D": false</#if>

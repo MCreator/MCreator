@@ -15,7 +15,7 @@
       "volume": ${file.getVolume()?string("0.##")}</#if>
       <#if file.getPitch() != 1>,
       "pitch": ${file.getPitch()?string("0.##")}</#if>
-      <#if file.getWeight() != 1>,
+      <#if file.getWeight() gt 1>,
       "weight": ${file.getWeight()}</#if>
       <#if file.getAttenuationDistance() != 16>,
       "attenuation_distance": ${file.getAttenuationDistance()}</#if>

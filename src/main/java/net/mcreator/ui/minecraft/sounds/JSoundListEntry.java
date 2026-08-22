@@ -70,23 +70,32 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 		line.add(L10N.label("dialog.sounds.file"));
 		line.add(singleFileField);
 
-		line.add(L10N.label("dialog.sounds.category"));
-		line.add(soundCategory);
-
-		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/volume"), L10N.label("dialog.sounds.volume")));
-		line2.add(volume);
-
-		line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/pitch"), L10N.label("dialog.sounds.pitch")));
-		line2.add(pitch);
-
-		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/weight"), L10N.label("dialog.sounds.weight")));
-		line.add(weight);
-
 		if (!isForBedrock) {
+			line.add(L10N.label("dialog.sounds.category"));
+			line.add(soundCategory);
+
+			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/volume"), L10N.label("dialog.sounds.volume")));
+			line2.add(volume);
+
+			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/pitch"), L10N.label("dialog.sounds.pitch")));
+			line2.add(pitch);
+
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/weight"), L10N.label("dialog.sounds.weight")));
+			line.add(weight);
+
 			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/attenuation_distance"),
 					L10N.label("dialog.sounds.attenuation_distance")));
 			line2.add(attenuationDistance);
 		} else {
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/volume"), L10N.label("dialog.sounds.volume")));
+			line.add(volume);
+
+			line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/pitch"), L10N.label("dialog.sounds.pitch")));
+			line.add(pitch);
+
+			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("sound/weight"), L10N.label("dialog.sounds.weight")));
+			line2.add(weight);
+
 			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/is3D"), is3D));
 			line2.add(HelpUtils.wrapWithHelpButton(gui.withEntry("besound/interruptible"), interruptible));
 			is3D.setSelected(true);
