@@ -245,6 +245,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 			modElement.getGeneratorConfiguration());
 
 	private JBlockStatesList blockStatesList;
+	private final JComboBox<String> blockStatesFormat = new JComboBox<>(
+			new String[] { L10N.t("elementgui.block.states_format.variants"),
+					L10N.t("elementgui.block.states_format.multipart") });
 
 	private final JComboBox<String> transparencyType = ComponentFromAnnotation.options(Block.class, "transparencyType");
 
@@ -428,6 +431,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		blockStatesList = new JBlockStatesList(mcreator, this, this::propertiesForBlockBases,
 				() -> "No tint".equals(tintType.getSelectedItem()));
 		blockStatesList.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+
+		blockStatesFormat.setPreferredSize(new Dimension(280, 42));
+		blockStatesFormat.addActionListener(
+				_ -> blockStatesList.setMultipartModel(blockStatesFormat.getSelectedIndex() == 1));
 
 		statePropertiesList = new JBlockStatePropertiesList(mcreator, this, this::nonUserProvidedProperties,
 				blockStatesList);
@@ -1405,9 +1412,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		animationsPane.setOpaque(false);
 		animationsPane.add("Center", animationsList);
 
-		JComponent statesListWrap = PanelUtils.northAndCenterElement(
-				HelpUtils.wrapWithHelpButton(this.withEntry("block/states_list"),
-						L10N.label("elementgui.block.states_list")), blockStatesList);
+		JComponent statesListWrap = PanelUtils.northAndCenterElement(PanelUtils.column(2,
+						HelpUtils.wrapWithHelpButton(this.withEntry("block/states_list"),
+								L10N.label("elementgui.block.states_list")), PanelUtils.join(FlowLayout.LEFT, 0, 0,
+								HelpUtils.wrapWithHelpButton(this.withEntry("block/multipart_model"),
+										L10N.label("elementgui.block.states_format")), new JEmptyBox(5, 5), blockStatesFormat)),
+				blockStatesList, 10, 10);
 		statesListWrap.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		statesPane.setOpaque(false);
@@ -1654,6 +1664,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			supportsBlockStates = false;
 
 		blockStatesList.setEnabled(supportsBlockStates);
+		blockStatesFormat.setEnabled(supportsBlockStates);
 	}
 
 	@Override public void reloadDataLists() {
@@ -1796,6 +1807,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tintType.setSelectedItem(block.tintType);
 		isItemTinted.setSelected(block.isItemTinted);
 		animations.setEntries(block.animations);
+		blockStatesFormat.setSelectedIndex(block.multipartModel ? 1 : 0);
 		blockStatesList.setEntries(block.states);
 
 		if (block.blockBase == null) {
@@ -2037,6 +2049,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.onReceivedVibration = onReceivedVibration.getSelectedProcedure();
 
 		block.animations = animations.getEntries();
+		block.multipartModel = blockStatesFormat.getSelectedIndex() == 1;
 		block.states = blockStatesList.getEntries();
 
 		if (blockBase.getSelectedIndex() != 0)

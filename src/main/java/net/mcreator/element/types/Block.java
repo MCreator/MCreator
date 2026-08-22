@@ -78,6 +78,7 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
+	public boolean multipartModel;
 	@TextureReference(TextureType.BLOCK) @ResourceReference("model") public List<Block.StateEntry> states;
 
 	@ModElementReference @ResourceReference("animation") public List<AnimationEntry> animations;
@@ -619,7 +620,10 @@ import java.util.stream.Collectors;
 	public List<StateEntry> getDefinedStatesWithCustomShape() {
 		List<StateEntry> retval = new ArrayList<>();
 		for (StateEntry stateEntry : getDefinedStates()) {
-			if (stateEntry.hasCustomBoundingBox && !stateEntry.isFullCube()) {
+			// full cube states are skipped as an optimization in variants mode where the shape of the matched
+			// state falls back to the default block shape, but in multipart mode they must be kept, as parts
+			// only contribute to the union of shapes of all matching parts when listed here
+			if (stateEntry.hasCustomBoundingBox && (multipartModel || !stateEntry.isFullCube())) {
 				retval.add(stateEntry);
 			}
 		}
@@ -629,7 +633,11 @@ import java.util.stream.Collectors;
 	public List<String> getPropertiesUsedInStates() {
 		if (!supportsBlockStates() || states.isEmpty())
 			return List.of();
-		return states.getFirst().stateMap.keySet().stream().map(PropertyData::getName).collect(Collectors.toList());
+		// multipart states can each use a different subset of properties, so collect the union over all states
+		Set<String> usedProperties = new LinkedHashSet<>();
+		for (StateEntry state : states)
+			state.stateMap.keySet().forEach(property -> usedProperties.add(property.getName()));
+		return new ArrayList<>(usedProperties);
 	}
 
 	public String getWallName() {

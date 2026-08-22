@@ -139,7 +139,14 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 			boundingBoxList.modelChanged();
 		});
 
+		setMultipartModel(blockStatesList.isMultipartModel());
+
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+	}
+
+	void setMultipartModel(boolean multipartModel) {
+		stateLabel.setAllowEmpty(multipartModel).setAllowDuplicates(multipartModel);
+		particleTexture.setEnabled(!multipartModel);
 	}
 
 	@Override public void reloadDataLists() {
@@ -172,7 +179,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		retVal.textureRight = textures.getTextureRight();
 		retVal.textureBack = textures.getTextureBack();
 
-		retVal.particleTexture = particleTexture.getTextureHolder();
+		// multipart parts always use the default block particle texture
+		retVal.particleTexture = blockStatesList.isMultipartModel() ? null : particleTexture.getTextureHolder();
 
 		retVal.hasCustomBoundingBox = hasCustomBoundingBox.isSelected();
 		retVal.boundingBoxes = boundingBoxList.getEntries();
