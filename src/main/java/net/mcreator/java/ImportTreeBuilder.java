@@ -114,7 +114,7 @@ public class ImportTreeBuilder {
 		return Collections.unmodifiableMap(retval);
 	}
 
-	static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {
+	public static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {
 		reloadClassesFromModImpl(generator.getSourceRoot(), generator.getSourceRoot(), store);
 	}
 

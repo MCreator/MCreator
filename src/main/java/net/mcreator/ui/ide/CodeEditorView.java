@@ -33,7 +33,8 @@ import net.mcreator.ui.component.JFileBreadCrumb;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
-import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
+import net.mcreator.ui.ide.autocomplete.CustomClassCompletion;
+import net.mcreator.ui.ide.autocomplete.CustomJavaCompletionProvider;
 import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
@@ -49,12 +50,11 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.AbstractSourceTree;
-import org.fife.rsta.ac.java.JavaCompletionProvider;
 import org.fife.rsta.ac.java.JavaLanguageSupport;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.tree.JavaOutlineTree;
 import org.fife.ui.autocomplete.AutoCompletion;
-import org.fife.ui.autocomplete.DefaultCompletionProvider;
+import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -74,13 +74,12 @@ import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
 public class CodeEditorView extends ViewBase implements ISearchable {
 
-	private static final Logger LOG = LogManager.getLogger("Code Editor");
+	private static final Logger LOG = LogManager.getLogger(CodeEditorView.class);
 
 	private static final List<String> SUPPORTED_FILE_EXTENSIONS = List.of("java", "info", "txt", "json", "mcmeta",
 			"lang", "gradle", "ini", "conf", "xml", "properties", "mcfunction", "toml", "js", "yaml", "yml", "md",
@@ -129,6 +128,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	@Nullable private JavaParser parser = null;
 
+	@Nullable private CustomJavaCompletionProvider jcp = null;
+
 	@Nullable private BreakpointHandler breakpointHandler = null;
 
 	public CodeEditorView(MCreator fa, File fs) {
@@ -155,6 +156,13 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				super.focusGained(focusEvent);
 				fileBreadCrumb.reloadPath(CodeEditorView.this.fileWorkingOn);
 				te.setCursor(new Cursor(Cursor.TEXT_CURSOR));
+			}
+
+			@Override public void focusLost(FocusEvent focusEvent) {
+				super.focusLost(focusEvent);
+				if (jcp != null) {
+					jcp.cancelPendingCompletion();
+				}
 			}
 		});
 
@@ -347,50 +355,58 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA));
 
 			JavaLanguageSupport jls = new JavaLanguageSupport();
-			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
-			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
-			jls.setParameterAssistanceEnabled(true);
-			jls.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
-
+			jls.setAutoCompleteEnabled(false);
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
 				field.setAccessible(true);
 				field.set(jls, mcreator.getGenerator().getProjectJarManager());
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
+			} catch (Throwable e) {
+				LOG.error("Failed to set jarManager field on JavaLanguageSupport", e);
 			}
-
 			jls.install(te);
-
 			JavaLanguageSupportBridge.bridge(te, jls);
-
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
 				method.setAccessible(true);
-				ac = (AutoCompletion) method.invoke(jls, te);
-				ac.setAutoCompleteSingleChoices(false);
-			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
-			         NoSuchMethodException | IllegalAccessException e1) {
-				LOG.error(e1.getMessage(), e1);
+				AutoCompletion defaultAc = (AutoCompletion) method.invoke(jls, te);
+				if (defaultAc != null) {
+					defaultAc.uninstall();
+				}
+			} catch (Throwable e) {
+				LOG.error("Failed to uninstall default RSTA completions", e);
 			}
-
-			JavaCompletionProvider jcp = jls.getCompletionProvider(te);
-
-			try {
-				Field field = jcp.getClass().getDeclaredField("sourceProvider");
-				field.setAccessible(true);
-				DefaultCompletionProvider sourceCompletionProvider = (DefaultCompletionProvider) field.get(jcp);
-				jcp.setShorthandCompletionCache(
-						new CustomJSCCache(sourceCompletionProvider, new DefaultCompletionProvider()));
-			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
-				LOG.error(e1.getMessage(), e1);
-			}
-
-			if (ac != null)
-				AutocompleteStyle.installStyle(ac, te);
-
+      
 			this.parser = jls.getParser(te);
+			if (this.parser == null) {
+				this.parser = new JavaParser(te);
+			}
+			if (this.parser.getCompilationUnit() == null) {
+				try {
+					this.parser.parse((RSyntaxDocument) te.getDocument(), null);
+				} catch (Throwable e) {
+					LOG.error("Failed initial parse for JavaParser", e);
+				}
+			}
+			this.jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
+			ac = new AutoCompletion(this.jcp) {
+				@Override protected void insertCompletion(Completion c, boolean typedParamListStartChar) {
+					if (c instanceof CustomClassCompletion cc) {
+						cc.insert(te, parser, c.getAlreadyEntered(te));
+					} else {
+						super.insertCompletion(c, typedParamListStartChar);
+					}
+				}
+			};
+			this.jcp.setAc(ac);
+			ac.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
+			ac.setAutoActivationDelay(0);
+			ac.setParameterAssistanceEnabled(true);
+			ac.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
+			ac.setAutoCompleteSingleChoices(false);
+			ac.install(te);
+
+			AutocompleteStyle.installStyle(ac, te);
 
 			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
@@ -400,11 +416,13 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
-					if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
+					if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
+						jcp.cancelPendingCompletion();
+					} else if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
 					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && jls.isAutoActivationEnabled() &&
+							&& !completionInAction && ac.isAutoActivationEnabled() &&
 							// only smart autocomplete if the char we typed is a letter or digit
 							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
 							// if the popup is already visible, the library refreshes it on caret updates
@@ -421,7 +439,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 									ThreadUtil.runOnSwingThreadAndWait(() -> {
 										try {
 											ac.doCompletion();
-										} catch (Throwable ignored) {
+										} catch (Throwable e) {
+											LOG.error("Failed to show autocomplete completion", e);
 										}
 									});
 									completionInAction = false;
@@ -681,6 +700,11 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					return res == 1;
 			}
 			return true;
+		});
+		fileTab.setTabShownListener(tab -> {
+			if (this.jcp != null) {
+				this.jcp.invalidateCaches();
+			}
 		});
 
 		MCreatorTabs.Tab existing = mcreator.getTabs().showTabOrGetExisting(fileWorkingOn);
