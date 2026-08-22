@@ -28,6 +28,7 @@ import net.mcreator.io.OS;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.laf.LafUtil;
+import net.mcreator.ui.laf.MacTextShortcuts;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -85,6 +86,7 @@ public class ThemeManager {
 			theme.applyUIDefaultsOverrides(UIManager.getDefaults());
 
 			LafUtil.applyDefaultHTMLStyles();
+			MacTextShortcuts.installIfMac();
 		} catch (Exception e) {
 			LOG.error("Failed to set MCreator UI theme", e);
 		}
