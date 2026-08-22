@@ -213,7 +213,10 @@ public class SoundElementDialog {
 		ui.add(L10N.label("dialog.sounds.category"));
 		ui.add(soundCategory);
 
-		ui.add(L10N.label("dialog.sounds.attenuation_distance"));
+		ui.add(
+				PanelUtils.join(FlowLayout.LEFT, 0, 0, L10N.label("dialog.sounds.attenuation_distance"),
+						PanelUtils.join(FlowLayout.RIGHT,
+								HelpUtils.helpButton(IHelpContext.NONE.withEntry("sound/attenuation_distance")))));
 		ui.add(jMinMaxSpinner);
 
 		ui.add(L10N.label("dialog.sounds.subtitle"));
