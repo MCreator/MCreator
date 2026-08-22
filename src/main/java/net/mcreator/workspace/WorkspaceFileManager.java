@@ -55,7 +55,7 @@ public final class WorkspaceFileManager implements Closeable {
 
 	static GsonBuilder createGsonBuilder(@Nullable GeneratorFlavor ignoredGeneratorFlavor) {
 		return new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
-				.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
+				.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer(ignoredGeneratorFlavor))
 				.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
 				.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer());
 	}
