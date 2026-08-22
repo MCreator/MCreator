@@ -68,11 +68,11 @@ public class ModifiedClassTemplateLoader extends ClassTemplateLoader {
 			MCREvent.event(event);
 			// if no plugin edit and read, this will ensure only one I/O open.
 			if (!event.isModified() && !event.hasContentRead()) {
-				return getReader(templateSource1, encoding);
+				return super.getReader(templateSource1, encoding);
 			}
 			return new StringReader(event.getTemplateContent());
 		}
-		return getReader(templateSource, encoding);
+		return super.getReader(templateSource, encoding);
 	}
 
 	private record TemplateSourceHolder(@Nonnull Object templateSource, @Nonnull String name) {}
