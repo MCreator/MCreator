@@ -691,6 +691,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private void updateWorldgenSettings() {
 		String genType = (String) worldGenType.getSelectedItem();
 		if ("Normal world gen".equals(genType)) {
+			mainFillerBlock.setEnabled(true);
+			horizontalNoiseSize.setEnabled(true);
+			verticalNoiseSize.setEnabled(true);
 			generateAquifers.setEnabled(true);
 			generateOreVeins.setEnabled(true);
 			if (!isEditingMode()) {
@@ -699,7 +702,20 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				verticalNoiseSize.setValue(2);
 			}
 			biomesInDimensionCaves.setEnabled(true);
+		} else if ("Void gen".equals(genType)) {
+			mainFillerBlock.setEnabled(false);
+			horizontalNoiseSize.setEnabled(false);
+			verticalNoiseSize.setEnabled(false);
+			generateAquifers.setEnabled(false);
+			generateOreVeins.setEnabled(false);
+			if (!isEditingMode()) {
+				seaLevel.setValue(0);
+			}
+			biomesInDimensionCaves.setEnabled(false);
 		} else {
+			mainFillerBlock.setEnabled(true);
+			horizontalNoiseSize.setEnabled(true);
+			verticalNoiseSize.setEnabled(true);
 			generateAquifers.setEnabled(false);
 			generateOreVeins.setEnabled(false);
 			if (!isEditingMode()) {

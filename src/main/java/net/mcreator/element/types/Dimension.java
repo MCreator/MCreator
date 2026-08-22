@@ -54,7 +54,7 @@ import java.util.List;
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
-	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
+	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen", "Void gen" }) public String worldGenType;
 
 	@NonNullMappable("Blocks.STONE#0") public MItemBlock mainFillerBlock;
 	@NonNullMappable("Blocks.WATER") public MItemBlock fluidBlock;
@@ -178,6 +178,9 @@ import java.util.List;
 
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
+		if ("Void gen".equals(this.worldGenType)) {
+			return retval;
+		}
 		retval.add(mainFillerBlock.getUnmappedValue());
 		for (BiomeEntry biomeEntry : getUsedBiomes()) {
 			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
