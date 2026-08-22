@@ -96,10 +96,10 @@
       "minecraft:fire_immune": {},
       </#if>
       <#if data.isPushable>
-      "minecraft:pushable_by_entity": true,
+      "minecraft:pushable_by_entity": {},
       </#if>
       <#if data.isPushableByPiston>
-      "minecraft:pushable_by_block": true,
+      "minecraft:pushable_by_block": {},
       </#if>
       ${aicode}
       "minecraft:follow_range": {
