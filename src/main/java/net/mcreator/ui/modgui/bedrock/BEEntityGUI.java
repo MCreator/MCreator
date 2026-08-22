@@ -89,8 +89,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 	private final JSpinner followRangeValue = ComponentFromAnnotation.spinner(BEEntity.class, "followRangeValue");
 	private final JSpinner xpAmountOnDeath = ComponentFromAnnotation.spinner(BEEntity.class, "xpAmountOnDeath");
 	private MCItemHolder entityDrop;
-	private final JCheckBox isPushable = L10N.checkbox("elementgui.beentity.is_pushable");
-	private final JCheckBox isPushableByPiston = L10N.checkbox("elementgui.beentity.is_pushable_by_piston");
+	private final JCheckBox isPushable = L10N.checkbox("elementgui.beentity.is_pushable_by_entities");
 	private final JCheckBox isImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isImmuneToFallDamage = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isImmuneToDrowning = L10N.checkbox("elementgui.common.enable");
@@ -198,7 +197,7 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/pushable_behavior"),
 				L10N.label("elementgui.beentity.pushable_behavior")));
-		behaviourProps.add(PanelUtils.join(FlowLayout.LEFT, isPushable, new JEmptyBox(2, 2), isPushableByPiston));
+		behaviourProps.add(isPushable);
 
 		behaviourProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("beentity/is_immune_to_fire"),
 				L10N.label("elementgui.beentity.is_immune_to_fire")));
@@ -293,7 +292,6 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 			entityName.setText(readableNameFromModElement);
 			isSummonable.setSelected(true);
 			isPushable.setSelected(true);
-			isPushableByPiston.setSelected(true);
 			hasSpawnEgg.setSelected(true);
 		}
 
@@ -379,7 +377,6 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		isImmuneToFire.setSelected(entity.isImmuneToFire);
 		isImmuneToFallDamage.setSelected(entity.isImmuneToFallDamage);
 		isPushable.setSelected(entity.isPushable);
-		isPushableByPiston.setSelected(entity.isPushableByPiston);
 
 		spawnNaturally.setSelected(entity.spawnNaturally);
 		populationControl.setSelectedItem(entity.populationControl.getUnmappedValue());
@@ -418,7 +415,6 @@ public class BEEntityGUI extends ModElementGUI<BEEntity> implements IBlocklyPane
 		entity.isImmuneToFire = isImmuneToFire.isSelected();
 		entity.isImmuneToFallDamage = isImmuneToFallDamage.isSelected();
 		entity.isPushable = isPushable.isSelected();
-		entity.isPushableByPiston = isPushableByPiston.isSelected();
 		entity.spawnNaturally = spawnNaturally.isSelected();
 		entity.populationControl = new MobSpawnType(modElement.getWorkspace(),
 				(String) populationControl.getSelectedItem());
