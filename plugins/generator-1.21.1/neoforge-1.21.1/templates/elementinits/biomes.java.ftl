@@ -61,7 +61,11 @@ import com.mojang.datafixers.util.Pair;
 			Holder<DimensionType> dimensionType = levelStem.type();
 			if (dimensionType.is(BuiltinDimensionTypes.NETHER) || dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) {
 				if(levelStem.generator() instanceof NoiseBasedChunkGenerator noiseGenerator) {
-					((${JavaModName}NoiseGeneratorSettings)(Object)noiseGenerator.generatorSettings().value()).set${modid}DimensionTypeReference(dimensionType);
+					if ((Object) noiseGenerator.generatorSettings().value() instanceof ${JavaModName}NoiseGeneratorSettings settings) {
+						settings.set${modid}DimensionTypeReference(dimensionType);
+					} else {
+						${JavaModName}.LOGGER.error("NoiseGeneratorSettings mixin of ${modid} was not applied, custom biomes may not generate properly");
+					}
 				}
 			}
 		}

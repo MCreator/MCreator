@@ -196,9 +196,9 @@ import java.util.List;
 	}
 
 	public List<BiomeEntry> getUsedBiomes() {
-		List<BiomeEntry> usedBiomes = new ArrayList<>();
-		usedBiomes.addAll(biomesInDimension);
-		usedBiomes.addAll(biomesInDimensionCaves);
+		List<BiomeEntry> usedBiomes = new ArrayList<>(biomesInDimension);
+		if ("Normal world gen".equals(worldGenType)) // cave biomes are only supported by normal world gen
+			usedBiomes.addAll(biomesInDimensionCaves);
 		return usedBiomes;
 	}
 

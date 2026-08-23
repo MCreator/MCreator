@@ -176,6 +176,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			retval = this;
 		} else {
+			// This GUI instance will be discarded in favor of the existing tab, so we need to close
+			// resources it may have eagerly allocated (e.g., Blockly panel web views)
+			onViewClosed();
+
 			retval = (ViewBase) existing.getContent();
 		}
 
@@ -603,6 +607,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				&& mcreator.getModElementManager().requiresElementGradleBuild(element)) {
 			mcreator.getActionRegistry().buildWorkspace.doAction();
 		}
+
+		// reload source info
+		mcreator.getGenerator().refreshWorkspaceSourceInfo();
 
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,

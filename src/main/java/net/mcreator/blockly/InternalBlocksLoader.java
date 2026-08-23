@@ -85,6 +85,7 @@ public class InternalBlocksLoader {
 		// add standard procedural blocks
 		blockGenerators.add(new PrintTextBlock());
 		blockGenerators.add(new IfBlock());
+		blockGenerators.add(new WhileBlock());
 		blockGenerators.add(new LoopBlock());
 		blockGenerators.add(new FlowControlBlock());
 		blockGenerators.add(new SingularMathOperationsBlock());
@@ -163,6 +164,7 @@ public class InternalBlocksLoader {
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.IfBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeProceduralBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.FlowControlBlock());
+		blockGenerators.add(new net.mcreator.blockly.java.blocks.WhileBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.LoopBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.TernaryOperatorBlock());
 		blockGenerators.add(new net.mcreator.blockly.javascript.blocks.SetVariableBlock());
