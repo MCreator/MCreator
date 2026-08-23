@@ -45,7 +45,6 @@ public class LoggingSystem {
 		// Silence redundant logging spam from code editor
 		FIFE_LOGGER.setLevel(java.util.logging.Level.SEVERE);
 
-		//noinspection resource
 		System.setErr(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR), true));
 		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
 		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());

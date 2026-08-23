@@ -120,7 +120,7 @@ dependencies {
     implementation "org.jboss.forge.roaster:roaster-jdt:2.31.1.Final"
     implementation "org.snakeyaml:snakeyaml-engine:3.1.1"
     implementation "org.reflections:reflections:0.10.2"
-    implementation "com.google.guava:guava:33.6.0-jre"
+    implementation "com.google.guava:guava:33.7.1-jre"
     implementation "de.javagl:obj:0.4.0"
     implementation "com.univocity:univocity-parsers:2.9.1"
     implementation "org.slf4j:slf4j-nop:2.0.18"
