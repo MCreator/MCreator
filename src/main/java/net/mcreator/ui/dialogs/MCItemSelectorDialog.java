@@ -36,7 +36,6 @@ import java.util.function.Predicate;
 
 public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
-	private final JList<MCItem> list = new JList<>(model);
 	private final JTextField jtf = new JTextField(16);
 
 	private ActionListener itemSelectedListener;

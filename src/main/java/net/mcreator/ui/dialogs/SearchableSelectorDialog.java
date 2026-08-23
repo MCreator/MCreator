@@ -44,6 +44,8 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	final FilterModel model = new FilterModel();
 	final JTextField filterField = new JTextField(14);
 
+	final JList<T> list = new JList<>(model);
+
 	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider) {
 		super(mcreator);
 		this.mcreator = mcreator;

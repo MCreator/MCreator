@@ -40,7 +40,7 @@ import java.util.function.Function;
  * @param <T> The type of elements contained in the list
  */
 public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> {
-	final JList<T> list = new JList<>(model);
+
 	final JLabel message = new JLabel("");
 
 	public ListSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> entryProvider) {
