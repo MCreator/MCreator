@@ -107,7 +107,7 @@ public class MCItemHolder extends JButton implements IValidable {
 	 * @return true if selector has item defined (air doesn't count as an item)
 	 */
 	public boolean containsItem() {
-		return !block.isEmpty() && !(block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR") || block.equals(
+		return !(block.isEmpty() || block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR") || block.equals(
 				"Blocks.CAVE_AIR"));
 	}
 
