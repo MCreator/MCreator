@@ -56,7 +56,7 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		});
 
 		JButton selectButton = L10N.button("dialog.item_selector.use_selected");
-		selectButton.addActionListener(e -> dispose());
+		selectButton.addActionListener(_ -> dispose());
 
 		message.setBorder(BorderFactory.createEmptyBorder(4, 4, 2, 0));
 
