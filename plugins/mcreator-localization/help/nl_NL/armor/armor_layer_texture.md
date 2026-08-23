@@ -1,0 +1,1 @@
+De Harnas laag textuur is de textuur die zichtbaar is wanneer de speler het Harnas draagt.
