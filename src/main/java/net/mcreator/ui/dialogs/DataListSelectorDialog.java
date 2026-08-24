@@ -49,7 +49,14 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 
 	public static DataListEntry openSelectorDialog(MCreator mcreator,
 			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
-		return openSelectorDialog(mcreator, entryProvider, null, title, message);
+		return openSelectorDialog(mcreator, entryProvider, (DataListEntry) null, title, message);
+	}
+
+	public static DataListEntry openSelectorDialog(MCreator mcreator,
+			Function<Workspace, Collection<DataListEntry>> entryProvider, String selectedEntry, String title,
+			String message) {
+		return openSelectorDialog(mcreator, entryProvider,
+				selectedEntry == null ? null : new DataListEntry.Dummy(selectedEntry), title, message);
 	}
 
 	public static DataListEntry openSelectorDialog(MCreator mcreator,
