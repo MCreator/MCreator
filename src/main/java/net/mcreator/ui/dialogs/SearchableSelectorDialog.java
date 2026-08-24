@@ -53,6 +53,10 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		this(mcreator, provider, Collections.emptyList());
 	}
 
+	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider, T selectedEntry) {
+		this(mcreator, provider, selectedEntry == null ? null : List.of(selectedEntry));
+	}
+
 	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider, List<T> selectedEntries) {
 		super(mcreator);
 		this.mcreator = mcreator;

@@ -79,10 +79,11 @@ public final class BlocklyJavascriptBridge {
 		});
 	}
 
-	@SuppressWarnings("unused") public void openMCItemSelector(String type, Consumer<String> callback) {
+	@SuppressWarnings("unused") public void openMCItemSelector(String type, String currentValue, Consumer<String> callback) {
 		SwingUtilities.invokeLater(() -> {
 			MCItem selected = MCItemSelectorDialog.openSelectorDialog(mcreator,
-					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems);
+					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems,
+					currentValue == null ? null : new MCItem(new DataListEntry.Dummy(currentValue)));
 			callback.accept(selected == null ? null : selected.getName());
 		});
 	}

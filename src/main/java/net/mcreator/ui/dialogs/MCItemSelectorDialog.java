@@ -41,12 +41,17 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 	private ActionListener itemSelectedListener;
 
 	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags) {
-		this(mcreator, supplier, supportTags, false);
+		this(mcreator, supplier, null, supportTags, false);
 	}
 
 	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags,
 			boolean hasPotions) {
-		super(mcreator, supplier::provide);
+		this(mcreator, supplier, null, supportTags, hasPotions);
+	}
+
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, MCItem selectedEntry,
+			boolean supportTags, boolean hasPotions) {
+		super(mcreator, supplier::provide, selectedEntry);
 
 		setTitle(L10N.t("dialog.item_selector.title"));
 		list.setCellRenderer(new Render());
@@ -202,8 +207,8 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		return list.getSelectedValue();
 	}
 
-	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks) {
-		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false);
+	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks, MCItem selectedItem) {
+		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, selectedItem, false, false);
 		bsd.setVisible(true);
 		return bsd.list.getSelectedValue();
 	}
