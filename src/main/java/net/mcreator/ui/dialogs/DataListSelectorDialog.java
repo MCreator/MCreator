@@ -35,10 +35,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
-	public DataListSelectorDialog(MCreator mcreator, Function<Workspace, Collection<DataListEntry>> entryProvider) {
+	public DataListSelectorDialog(MCreator mcreator, Function<Workspace, Collection<DataListEntry>> entryProvider,
+			List<DataListEntry> selectedEntries) {
 		super(mcreator,
 				workspace -> entryProvider.apply(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.toList());
+						.toList(), selectedEntries);
 		list.setCellRenderer(new DataListCellRenderer());
 	}
 
@@ -48,7 +49,14 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 
 	public static DataListEntry openSelectorDialog(MCreator mcreator,
 			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
-		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
+		return openSelectorDialog(mcreator, entryProvider, null, title, message);
+	}
+
+	public static DataListEntry openSelectorDialog(MCreator mcreator,
+			Function<Workspace, Collection<DataListEntry>> entryProvider, DataListEntry selectedEntry,
+			String title, String message) {
+		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider,
+				selectedEntry == null ? null : List.of(selectedEntry));
 		dataListSelector.setMessage(message);
 		dataListSelector.setTitle(title);
 		dataListSelector.setVisible(true);
@@ -57,7 +65,13 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 
 	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
 			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
-		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
+		return openMultiSelectorDialog(mcreator, entryProvider, null, title, message);
+	}
+
+	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
+			Function<Workspace, Collection<DataListEntry>> entryProvider, List<DataListEntry> selectedEntries,
+			String title, String message) {
+		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider, selectedEntries);
 		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		dataListSelector.setTitle(title);

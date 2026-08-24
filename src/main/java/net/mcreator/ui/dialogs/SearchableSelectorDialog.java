@@ -22,12 +22,14 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -40,6 +42,7 @@ import java.util.function.Predicate;
 public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	final MCreator mcreator;
 	final Function<Workspace, List<T>> provider;
+	final @Nonnull List<T> selectedEntries;
 
 	final FilterModel model = new FilterModel();
 	final JTextField filterField = new JTextField(14);
@@ -47,9 +50,14 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	final JList<T> list = new JList<>(model);
 
 	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider) {
+		this(mcreator, provider, Collections.emptyList());
+	}
+
+	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider, List<T> selectedEntries) {
 		super(mcreator);
 		this.mcreator = mcreator;
 		this.provider = provider;
+		this.selectedEntries = selectedEntries == null ? Collections.emptyList() : selectedEntries;
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
@@ -134,5 +142,20 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	void reloadElements() {
 		model.removeAllElements();
 		provider.apply(this.mcreator.getWorkspace()).forEach(model::addElement);
+		selectEntries();
+	}
+
+	protected void selectEntries() {
+		if (!selectedEntries.isEmpty()) {
+			List<Integer> indicesToSelect = new ArrayList<>();
+			for (int i = 0; i < list.getModel().getSize(); i++) {
+				if (selectedEntries.contains(list.getModel().getElementAt(i)))
+					indicesToSelect.add(i);
+			}
+			if (!indicesToSelect.isEmpty()) {
+				list.setSelectedIndices(indicesToSelect.stream().mapToInt(i -> i).toArray());
+				list.ensureIndexIsVisible(indicesToSelect.getFirst());
+			}
+		}
 	}
 }
