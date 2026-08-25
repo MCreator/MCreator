@@ -106,8 +106,7 @@ public final class BlocklyJavascriptBridge {
 	private String[] openDataListEntrySelector(Function<Workspace, Collection<DataListEntry>> entryProvider,
 			String selectedEntry, String type) {
 		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-		DataListEntry toSelect = selectedEntry == null ? null : new DataListEntry.Dummy(selectedEntry);
-		DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider, toSelect,
+		DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider, selectedEntry,
 				L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
 		if (selected != null) {
 			retval[0] = selected.getName();
