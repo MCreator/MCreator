@@ -59,7 +59,7 @@
       <@modelRef data/>
     }
   <#else>
-    <@modelRef data, var_sufix!""/>
+    <@modelRef data, var_suffix!""/>
   </#if>
 </#macro>
 

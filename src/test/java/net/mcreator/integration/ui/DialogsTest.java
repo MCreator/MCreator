@@ -222,7 +222,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test suffix"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
