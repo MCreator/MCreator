@@ -1,0 +1,1 @@
+The damage multiplier applied when using the spear as a kinetic weapon, assuming one of the conditions are met.

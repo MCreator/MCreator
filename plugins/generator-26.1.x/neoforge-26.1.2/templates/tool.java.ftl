@@ -39,11 +39,11 @@ package ${package}.item;
 <#if modifiesDefaultComponents(data.toolType)>
 @EventBusSubscriber
 </#if>
-<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
+<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spear" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
-public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool|Pickaxe|Sword", "", "r")}Item {
+public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool|Pickaxe|Sword|Spear", "", "r")}Item {
 
-	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spear" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 	private static final ToolMaterial TOOL_MATERIAL = new ToolMaterial(
 		<#if data.blockDropsTier == "WOOD">BlockTags.INCORRECT_FOR_WOODEN_TOOL
 		<#elseif data.blockDropsTier == "STONE">BlockTags.INCORRECT_FOR_STONE_TOOL
@@ -74,6 +74,8 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			.pickaxe(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
 			<#elseif data.toolType == "Sword">
 			.sword(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			<#elseif data.toolType == "Spear">
+			.spear(TOOL_MATERIAL, ${data.spearSpeedModifier}f, ${data.spearKineticDamageMultiplier}f, ${data.spearKineticCooldown}f, ${data.spearDismountTime}f, ${data.spearMinimumDismountSpeed}f, ${data.spearMaximumKnockbackTime}f, ${data.spearMinimumKnockbackSpeed}f, ${data.spearMaximumKineticDamageTime}f, ${data.spearMinimumKineticDamageSpeed}f)
 			<#elseif data.toolType == "MultiTool">
 			.attributes(<@itemAttributeModifiers true/>)
 			<#elseif data.toolType == "Shield">

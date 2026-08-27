@@ -1,0 +1,1 @@
+The minimum speed, in blocks, of the attacker using the kinetic weapon to damage a hit entity. This is relative to the attacked entity's speed.

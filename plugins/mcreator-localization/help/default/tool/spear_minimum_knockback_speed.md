@@ -1,0 +1,1 @@
+The minimum speed, in blocks, of the attacker using the kinetic weapon to knockack a hit entity.

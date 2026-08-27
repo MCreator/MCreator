@@ -1,0 +1,1 @@
+The maximum number of seconds that can pass while using the kinetic weapon to knockback a hit entity.
