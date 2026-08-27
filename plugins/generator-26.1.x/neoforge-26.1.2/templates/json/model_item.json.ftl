@@ -108,7 +108,7 @@
       }
     }
   <#else>
-    <#if data.toolType == "Spear">
+    <#if (data.toolType!"") == "Spear">
     "type": "minecraft:select",
     "cases": [
     	{
