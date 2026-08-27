@@ -457,7 +457,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 			switch ((String) toolType.getSelectedItem()) {
 			case "Special" -> dropTierPanel.setVisible(false);
-			case "Fishing rod", "Shield", "Spear" -> {
+			case "Fishing rod", "Shield" -> {
 				dropTierPanel.setVisible(false);
 				additionalDropCondition.setVisible(false);
 				efficiencyPanel.setVisible(false);
@@ -467,6 +467,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			case "Shears" -> {
 				dropTierPanel.setVisible(false);
 				additionalDropCondition.setVisible(false);
+				attackDamagePanel.setVisible(false);
+				attackSpeedPanel.setVisible(false);
+			}
+			case "Spear" -> {
+				additionalDropCondition.setVisible(false);
+				efficiencyPanel.setVisible(false);
 				attackDamagePanel.setVisible(false);
 				attackSpeedPanel.setVisible(false);
 			}
