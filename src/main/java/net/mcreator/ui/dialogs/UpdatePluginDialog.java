@@ -56,7 +56,7 @@ public class UpdatePluginDialog {
 
 				JLabel label = new JLabel(usb.toString());
 				JButton update = L10N.button("dialog.plugin_update_notify.update");
-				update.addActionListener(e -> DesktopUtils.browseSafe(
+				update.addActionListener(_ -> DesktopUtils.browseSafe(
 						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.plugin().getInfo()
 								.getPluginPageID()));
 				plugins.add(PanelUtils.westAndEastElement(label, PanelUtils.join(update)));
@@ -68,7 +68,7 @@ public class UpdatePluginDialog {
 			dialog.setModal(true);
 
 			JButton close = L10N.button("dialog.plugin_update_notify.close");
-			close.addActionListener(e -> dialog.dispose());
+			close.addActionListener(_ -> dialog.dispose());
 
 			dialog.add("Center", PanelUtils.centerAndSouthElement(pan, PanelUtils.join(close)));
 			dialog.setVisible(true);
