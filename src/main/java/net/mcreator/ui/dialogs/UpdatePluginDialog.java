@@ -74,7 +74,7 @@ public class UpdatePluginDialog {
 			dialog.setVisible(true);
 
 		} else if (showNoUpdates) {
-			JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_pluin_update_message"),
+			JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_plugin_update_message"),
 					L10N.t("dialog.update_notify.no_update_title"), JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
