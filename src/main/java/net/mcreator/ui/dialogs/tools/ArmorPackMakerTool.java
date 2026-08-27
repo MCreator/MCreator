@@ -75,7 +75,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		props.add(L10N.label("dialog.tools.armor_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
-		base.addBlockSelectedListener(e -> {
+		base.addBlockSelectedListener(_ -> {
 			try {
 				if (base.getBlock() != null) {
 					color.setColor(ImageUtils.getAverageColor(
@@ -216,7 +216,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.armor"),
-				e -> new ArmorPackMakerTool(actionRegistry.getMCreator())) {
+				_ -> new ArmorPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
