@@ -26,7 +26,7 @@
 </#if>
 
 <#macro defaultItemModel>
-  <#assign models = (data.getModels??)?then(data.getModels(), [])>
+  <#local models = (data.getModels??)?then(data.getModels(), [])>
   <#if models?has_content>
     "type": "${modid}:legacy_overrides",
     "overrides": [
