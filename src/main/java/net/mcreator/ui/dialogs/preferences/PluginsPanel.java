@@ -111,14 +111,17 @@ class PluginsPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Plugin> list, Plugin value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground(Theme.current().getForegroundColor());
+			setBackground(isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getBackgroundColor());
+			setOpaque(isSelected);
 
-			setOpaque(false);
-
-			if (value.isBuiltin()) {
-				setForeground(Theme.current().getAltForegroundColor());
+			if (isSelected) {
+				setForeground(Theme.current().getBackgroundColor());
 			} else {
-				setForeground(Theme.current().getForegroundColor());
+				if (value.isBuiltin()) {
+					setForeground(Theme.current().getAltForegroundColor());
+				} else {
+					setForeground(Theme.current().getForegroundColor());
+				}
 			}
 
 			ComponentUtils.deriveFont(this, 12);
@@ -144,7 +147,7 @@ class PluginsPanel {
 			}
 
 			setToolTipText(value.getInfo().getDescription());
-			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			return this;
 		}
 	}
