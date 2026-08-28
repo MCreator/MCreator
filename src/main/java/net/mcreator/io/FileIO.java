@@ -33,6 +33,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
 import java.util.List;
 
 public final class FileIO {
@@ -294,6 +297,17 @@ public final class FileIO {
 		} else {
 			return new File[] {};
 		}
+	}
+
+	public static String sha256file(File file) throws IOException, NoSuchAlgorithmException {
+		MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		try (InputStream inputStream = new BufferedInputStream(new FileInputStream(file))) {
+			byte[] buffer = new byte[8192];
+			int read;
+			while ((read = inputStream.read(buffer)) != -1)
+				digest.update(buffer, 0, read);
+		}
+		return HexFormat.of().formatHex(digest.digest());
 	}
 
 }

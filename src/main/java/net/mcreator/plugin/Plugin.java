@@ -36,6 +36,7 @@ public class Plugin implements Comparable<Plugin> {
 	transient File file;
 	transient boolean builtin;
 	@Nullable transient String loaded_failure = null; // indicates if plugin was fully loaded without any errors
+	@Nullable transient String sha256 = null; // SHA-256 of the plugin file, only computed for non-builtin file plugins
 
 	String id;
 
@@ -157,6 +158,13 @@ public class Plugin implements Comparable<Plugin> {
 
 	@Nullable public String getLoadFailure() {
 		return loaded_failure;
+	}
+
+	/**
+	 * @return <p>SHA-256 hash of the plugin file or null if the hash was not computed (builtin or directory plugins)</p>
+	 */
+	@Nullable public String getSHA256() {
+		return sha256;
 	}
 
 	public boolean isJavaPlugin() {

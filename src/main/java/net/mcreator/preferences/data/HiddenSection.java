@@ -21,6 +21,7 @@ package net.mcreator.preferences.data;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesSection;
@@ -29,13 +30,16 @@ import net.mcreator.preferences.entries.HiddenEntry;
 import net.mcreator.preferences.entries.StringEntry;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class HiddenSection extends PreferencesSection {
 
 	public final BooleanEntry fullScreen;
 	public final PreferencesEntry<File> java_home;
 	public final StringEntry uiTheme;
-	public final BooleanEntry enableJavaPlugins;
+	public final BooleanEntry verifyPluginHashes;
+	public final PreferencesEntry<Map<String, Boolean>> pluginHashApprovals;
 	public final StringEntry lastWebsiteNewsRead;
 
 	HiddenSection(String preferencesIdentifier) {
@@ -56,7 +60,21 @@ public class HiddenSection extends PreferencesSection {
 			}
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
-		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", true));
+		verifyPluginHashes = addEntry(new BooleanEntry("verifyPluginHashes", true));
+		pluginHashApprovals = addEntry(
+				new HiddenEntry<Map<String, Boolean>>("pluginHashApprovals", new LinkedHashMap<>()) {
+					@Override public void setValueFromJsonElement(JsonElement object) {
+						this.value = new LinkedHashMap<>();
+						object.getAsJsonObject().entrySet()
+								.forEach(entry -> this.value.put(entry.getKey(), entry.getValue().getAsBoolean()));
+					}
+
+					@Override public JsonElement getSerializedValue() {
+						JsonObject retval = new JsonObject();
+						value.forEach(retval::addProperty);
+						return retval;
+					}
+				});
 		lastWebsiteNewsRead = addEntry(new StringEntry("lastWebsiteNewsRead", ""));
 	}
 

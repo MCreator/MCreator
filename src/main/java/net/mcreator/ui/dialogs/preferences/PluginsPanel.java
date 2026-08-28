@@ -38,6 +38,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Map;
 
 class PluginsPanel {
 
@@ -61,7 +62,7 @@ class PluginsPanel {
 		opts.add(add);
 		opts.add(new JEmptyBox(5, 5));
 
-		add.addActionListener(e -> {
+		add.addActionListener(_ -> {
 			File[] files = FileDialogs.getMultiOpenDialog(preferencesDialog, new String[] { ".zip" });
 			if (files != null && files.length > 0) {
 				Arrays.stream(files).forEach(f -> FileIO.copyFile(f,
@@ -76,7 +77,7 @@ class PluginsPanel {
 		opts.add(explorePlugins);
 		opts.add(new JEmptyBox(5, 5));
 
-		explorePlugins.addActionListener(e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
+		explorePlugins.addActionListener(_ -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 		reloadPluginList();
 
@@ -86,17 +87,42 @@ class PluginsPanel {
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 
-		JCheckBox box = L10N.checkbox("dialog.preferences.java_plugins");
-		box.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get());
+		JButton toggleApproval = L10N.button("dialog.preferences.toggle_plugin_approval");
+		opts.add(toggleApproval);
+		opts.add(new JEmptyBox(5, 5));
 
-		box.addActionListener(e -> PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.set(box.isSelected()));
+		toggleApproval.addActionListener(_ -> {
+			Plugin selected = plugins.getSelectedValue();
+			if (selected == null || selected.isBuiltin() || selected.getSHA256() == null) {
+				Toolkit.getDefaultToolkit().beep();
+				return;
+			}
+
+			Map<String, Boolean> approvals = PreferencesManager.PREFERENCES.hidden.pluginHashApprovals.get();
+			boolean newState = !Boolean.TRUE.equals(approvals.get(selected.getSHA256()));
+			approvals.put(selected.getSHA256(), newState);
+			PreferencesManager.savePreferences();
+
+			PluginLoader.initInstance(); // reload plugin loader
+			reloadPluginList();
+
+			JOptionPane.showMessageDialog(preferencesDialog, L10N.t("dialog.preferences.plugin_approval_changed"),
+					L10N.t("dialog.preferences.page_plugins"), JOptionPane.INFORMATION_MESSAGE);
+		});
+
+		JCheckBox verifyHashes = L10N.checkbox("dialog.preferences.verify_plugin_hashes");
+		verifyHashes.setSelected(PreferencesManager.PREFERENCES.hidden.verifyPluginHashes.get());
+
+		verifyHashes.addActionListener(
+				_ -> PreferencesManager.PREFERENCES.hidden.verifyPluginHashes.set(verifyHashes.isSelected()));
 
 		openPluginFolder.addActionListener(
-				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
+				_ -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
 
-		sectionPanel.add("Center", PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(opts, box, 10, 10),
-				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.plugins_list"),
-						new JScrollPane(plugins), 3, 3), 10, 10));
+		sectionPanel.add("Center",
+				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(opts, verifyHashes, 10, 10),
+						PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.plugins_list"),
+								new JScrollPane(plugins), 3, 3), 10, 10));
 
 		preferencesDialog.preferences.add(sectionPanel, L10N.t("dialog.preferences.page_plugins"));
 	}
@@ -111,14 +137,17 @@ class PluginsPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Plugin> list, Plugin value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground(Theme.current().getForegroundColor());
+			setBackground(isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getBackgroundColor());
+			setOpaque(isSelected);
 
-			setOpaque(false);
-
-			if (value.isBuiltin()) {
-				setForeground(Theme.current().getAltForegroundColor());
+			if (isSelected) {
+				setForeground(Theme.current().getBackgroundColor());
 			} else {
-				setForeground(Theme.current().getForegroundColor());
+				if (value.isBuiltin()) {
+					setForeground(Theme.current().getAltForegroundColor());
+				} else {
+					setForeground(Theme.current().getForegroundColor());
+				}
 			}
 
 			ComponentUtils.deriveFont(this, 12);
@@ -143,8 +172,16 @@ class PluginsPanel {
 						"<html><font color=#f24122>no</font>"));
 			}
 
+			if (!value.isBuiltin() && value.getSHA256() != null) {
+				Boolean approved = PreferencesManager.PREFERENCES.hidden.pluginHashApprovals.get()
+						.get(value.getSHA256());
+				setText(getText() + ", approved: " + (approved == null ?
+						"<font color=#f5a742>not decided</font>" :
+						(approved ? "<font color=#a7ed1a>yes</font>" : "<font color=#f24122>no</font>")));
+			}
+
 			setToolTipText(value.getInfo().getDescription());
-			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			return this;
 		}
 	}

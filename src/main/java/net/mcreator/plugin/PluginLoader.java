@@ -22,12 +22,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.dialogs.PluginApprovalDialog;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.Tuple;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -38,10 +41,16 @@ import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
 import java.beans.Introspector;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
@@ -103,6 +112,9 @@ public class PluginLoader extends URLClassLoader {
 
 		Collections.sort(pluginsLoadList);
 
+		// Plugins that are not approved by the user are not loaded and thus also can't be used as plugin dependencies
+		pluginsLoadList.removeIf(plugin -> !verifyPluginApproval(plugin));
+
 		Set<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toSet());
 
 		for (Plugin plugin : pluginsLoadList) {
@@ -120,7 +132,7 @@ public class PluginLoader extends URLClassLoader {
 						plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.isJavaPlugin()) {
+				if (plugin.isJavaPlugin()) {
 					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
 							"PluginClassLoader-" + plugin.getID(), new URL[] {},
 							Thread.currentThread().getContextClassLoader()) {
@@ -153,10 +165,6 @@ public class PluginLoader extends URLClassLoader {
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-				} else if (plugin.isJavaPlugin()) {
-					LOG.warn("{} is Java plugin, but Java plugins are disabled in preferences", plugin.getID());
-
-					plugin.loaded_failure = "Java plugins disabled";
 				}
 			} catch (Exception e) {
 				plugin.loaded_failure = "Load error: " + e.getMessage();
@@ -268,6 +276,12 @@ public class PluginLoader extends URLClassLoader {
 		if (pluginFile.isDirectory()) {
 			File pluginInfoFile = new File(pluginFile, "plugin.json");
 			if (pluginInfoFile.isFile()) {
+				if (!builtin && !directoryPluginsAllowed()) {
+					LOG.warn("Directory plugin {} can only be loaded in development environments", pluginFile);
+					failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
+							"directory plugins are only loaded in development environments"));
+					return null;
+				}
 				try {
 					String pluginInfo = FileIO.readFileToString(pluginInfoFile);
 					Plugin plugin = new Gson().fromJson(pluginInfo, Plugin.class);
@@ -300,6 +314,60 @@ public class PluginLoader extends URLClassLoader {
 			}
 		}
 		return null;
+	}
+
+	private static boolean directoryPluginsAllowed() {
+		return (Launcher.version != null && Launcher.version.isDevelopment())
+				|| System.getenv("MCREATOR_PLUGINS_DEV") != null;
+	}
+
+	/**
+	 * <p>Checks if the given plugin is approved to be loaded by the user. Non-builtin file plugins are identified
+	 * by the SHA-256 hash of their file. If the hash is not known yet, the user is asked whether to load the
+	 * plugin or not and the decision is remembered in the preferences. This check can be disabled in preferences.</p>
+	 *
+	 * @return <p>True if the plugin can be loaded, false otherwise. In the latter case, load failure is recorded.</p>
+	 */
+	private boolean verifyPluginApproval(Plugin plugin) {
+		if (plugin.isBuiltin())
+			return true;
+
+		// Directory plugins are only loaded in development environments (see loadPlugin) where they are trusted
+		if (plugin.getFile().isDirectory())
+			return true;
+
+		// Hash is computed even if verification is disabled, so the plugin management UI can show and alter approvals
+		try {
+			plugin.sha256 = FileIO.sha256file(plugin.getFile());
+		} catch (IOException | NoSuchAlgorithmException e) {
+			LOG.error("Failed to compute SHA-256 hash of plugin {}", plugin.getFile(), e);
+		}
+
+		if (!PreferencesManager.PREFERENCES.hidden.verifyPluginHashes.get())
+			return true;
+
+		if (TestUtil.isTestingEnvironment())
+			return true; // run tests with plugins without user approval, so tests can run in CI environments
+
+		if (plugin.sha256 == null) {
+			plugin.loaded_failure = "failed to verify plugin file";
+			return false;
+		}
+
+		Map<String, Boolean> approvals = PreferencesManager.PREFERENCES.hidden.pluginHashApprovals.get();
+		Boolean approved = approvals.get(plugin.sha256);
+		if (approved == null) {
+			approved = PluginApprovalDialog.promptPluginApproval(plugin);
+			approvals.put(plugin.sha256, approved);
+		}
+
+		if (!approved) {
+			LOG.warn("Plugin {} was not approved by the user and will not be loaded", plugin.getID());
+			plugin.loaded_failure = "plugin was not approved for loading";
+			return false;
+		}
+
+		return true;
 	}
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
