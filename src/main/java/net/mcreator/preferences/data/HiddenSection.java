@@ -35,7 +35,6 @@ public class HiddenSection extends PreferencesSection {
 	public final BooleanEntry fullScreen;
 	public final PreferencesEntry<File> java_home;
 	public final StringEntry uiTheme;
-	public final BooleanEntry enableJavaPlugins;
 	public final StringEntry lastWebsiteNewsRead;
 
 	HiddenSection(String preferencesIdentifier) {
@@ -56,7 +55,6 @@ public class HiddenSection extends PreferencesSection {
 			}
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
-		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", true));
 		lastWebsiteNewsRead = addEntry(new StringEntry("lastWebsiteNewsRead", ""));
 	}
 
