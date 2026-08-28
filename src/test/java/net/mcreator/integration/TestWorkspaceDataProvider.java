@@ -2567,6 +2567,17 @@ public class TestWorkspaceDataProvider {
 		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);
 		tool.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
+
+		tool.spearInHandTexture = new TextureHolder(modElement.getWorkspace(), "itest");
+		tool.spearSpeedModifier = getRandomDouble(random, Tool.class, "spearSpeedModifier");
+		tool.spearKineticDamageMultiplier = getRandomDouble(random, Tool.class, "spearKineticDamageMultiplier");
+		tool.spearDismountTime = getRandomDouble(random, Tool.class, "spearDismountTime");
+		tool.spearMinimumDismountSpeed = getRandomDouble(random, Tool.class, "spearMinimumDismountSpeed");
+		tool.spearMaximumKnockbackTime = getRandomDouble(random, Tool.class, "spearMaximumKnockbackTime");
+		tool.spearMinimumKnockbackSpeed = getRandomDouble(random, Tool.class, "spearMinimumKnockbackSpeed");
+		tool.spearMaximumKineticDamageTime = getRandomDouble(random, Tool.class, "spearMaximumKineticDamageTime");
+		tool.spearMinimumKineticDamageSpeed = getRandomDouble(random, Tool.class, "spearMinimumKineticDamageSpeed");
+
 		if (!emptyLists && "Special".equals(toolType)) {
 			List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 			tool.blocksAffected.addAll(
