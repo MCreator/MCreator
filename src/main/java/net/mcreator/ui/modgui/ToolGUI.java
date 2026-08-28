@@ -75,6 +75,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JSpinner damageVsEntity = ComponentFromAnnotation.spinner(Tool.class, "damageVsEntity");
 	private final JSpinner attackSpeed = ComponentFromAnnotation.spinner(Tool.class, "attackSpeed");
 	private final JSpinner usageCount = ComponentFromAnnotation.spinner(Tool.class, "usageCount");
+
 	private final JSpinner spearSpeedModifier = ComponentFromAnnotation.spinner(Tool.class, "spearSpeedModifier");
 	private final JSpinner spearKineticDamageMultiplier = ComponentFromAnnotation.spinner(Tool.class, "spearKineticDamageMultiplier");
 	private final JSpinner spearKineticCooldown = ComponentFromAnnotation.spinner(Tool.class, "spearKineticCooldown");
@@ -132,16 +133,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private JComponent efficiencyPanel;
 	private JComponent blockingModelPanel;
 	private JComponent blocksAffectedPanel;
-	private JComponent spearInHandTexturePanel;
-	private JComponent spearSpeedModifierPanel;
-	private JComponent spearKineticDamageMultiplierPanel;
-	private JComponent spearKineticCooldownPanel;
-	private JComponent spearDismountTimePanel;
-	private JComponent spearMinimumDismountSpeedPanel;
-	private JComponent spearMaximumKnockbackTimePanel;
-	private JComponent spearMinimumKnockbackSpeedPanel;
-	private JComponent spearMaximumKineticDamageTimePanel;
-	private JComponent spearMinimumKineticDamageSpeedPanel;
+
+	private JComponent spearPropertiesPanel;
 
 	private final JAttributeModifierList attributeModifiersList = new JAttributeModifierList(mcreator, this,
 			JAttributeModifierList.EntryType.ITEM);
@@ -294,10 +287,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.label("elementgui.item.container_item_damage")));
 		itemProperties.add(damageOnCrafting);
 
+		JPanel toolPropertiesBase = new JPanel(new BorderLayout());
+
 		JPanel toolProperties = new JPanel(new AdaptiveGridLayout(-1, 1, 0, 2));
 		toolProperties.setOpaque(false);
 
-		ComponentUtils.makeSection(toolProperties, L10N.t("elementgui.tool.tool_properties"));
+		ComponentUtils.makeSection(toolPropertiesBase, L10N.t("elementgui.tool.tool_properties"));
 
 		blockDropsTier.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -333,46 +328,52 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("tool/blocks_affected"),
 						L10N.label("elementgui.tool.blocks_affected")), blocksAffected));
 
-		toolProperties.add(spearInHandTexturePanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_in_hand_texture"),
-						L10N.label("elementgui.tool.spear_in_hand_texture")), spearInHandTexture));
+		spearPropertiesPanel = new JPanel(new GridLayout(-1, 2, 2, 2));
+		spearPropertiesPanel.setOpaque(false);
 
-		toolProperties.add(spearSpeedModifierPanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_speed_modifier"),
-						L10N.label("elementgui.tool.spear_speed_modifier")), spearSpeedModifier));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_in_hand_texture"),
+				L10N.label("elementgui.tool.spear_in_hand_texture")));
+		spearPropertiesPanel.add(spearInHandTexture);
 
-		toolProperties.add(spearKineticDamageMultiplierPanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_kinetic_damage_multiplier"),
-						L10N.label("elementgui.tool.spear_kinetic_damage_multiplier")), spearKineticDamageMultiplier));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_speed_modifier"),
+				L10N.label("elementgui.tool.spear_speed_modifier")));
+		spearPropertiesPanel.add(spearSpeedModifier);
 
-		toolProperties.add(spearKineticCooldownPanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_kinetic_cooldown"),
-						L10N.label("elementgui.tool.spear_kinetic_cooldown")), spearKineticCooldown));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_kinetic_damage_multiplier"),
+				L10N.label("elementgui.tool.spear_kinetic_damage_multiplier")));
+		spearPropertiesPanel.add(spearKineticDamageMultiplier);
 
-		toolProperties.add(spearDismountTimePanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_dismount_time"),
-						L10N.label("elementgui.tool.spear_dismount_time")), spearDismountTime));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_kinetic_cooldown"),
+				L10N.label("elementgui.tool.spear_kinetic_cooldown")));
+		spearPropertiesPanel.add(spearKineticCooldown);
 
-		toolProperties.add(spearMinimumDismountSpeedPanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_minimum_dismount_speed"),
-						L10N.label("elementgui.tool.spear_minimum_dismount_speed")), spearMinimumDismountSpeed));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_dismount_time"),
+				L10N.label("elementgui.tool.spear_dismount_time")));
+		spearPropertiesPanel.add(spearDismountTime);
 
-		toolProperties.add(spearMaximumKnockbackTimePanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_maximum_knockback_time"),
-						L10N.label("elementgui.tool.spear_maximum_knockback_time")), spearMaximumKnockbackTime));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_minimum_dismount_speed"),
+				L10N.label("elementgui.tool.spear_minimum_dismount_speed")));
+		spearPropertiesPanel.add(spearMinimumDismountSpeed);
 
-		toolProperties.add(spearMinimumKnockbackSpeedPanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_minimum_knockback_speed"),
-						L10N.label("elementgui.tool.spear_minimum_knockback_speed")), spearMinimumKnockbackSpeed));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_maximum_knockback_time"),
+				L10N.label("elementgui.tool.spear_maximum_knockback_time")));
+		spearPropertiesPanel.add(spearMaximumKnockbackTime);
 
-		toolProperties.add(spearMaximumKineticDamageTimePanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_minimum_knockback_speed"),
-						L10N.label("elementgui.tool.spear_maximum_kinetic_damage_time")), spearMaximumKineticDamageTime));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_minimum_knockback_speed"),
+				L10N.label("elementgui.tool.spear_minimum_knockback_speed")));
+		spearPropertiesPanel.add(spearMinimumKnockbackSpeed);
 
-		toolProperties.add(spearMinimumKineticDamageSpeedPanel = PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_minimum_kinetic_damage_speed"),
-						L10N.label("elementgui.tool.spear_minimum_kinetic_damage_speed")), spearMinimumKineticDamageSpeed));
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_maximum_kinetic_damage_time"),
+				L10N.label("elementgui.tool.spear_maximum_kinetic_damage_time")));
+		spearPropertiesPanel.add(spearMaximumKineticDamageTime);
 
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_minimum_kinetic_damage_speed"),
+				L10N.label("elementgui.tool.spear_minimum_kinetic_damage_speed")));
+		spearPropertiesPanel.add(spearMinimumKineticDamageSpeed);
+
+		ComponentUtils.makeSection(spearPropertiesPanel, "Spear properties");
+
+		toolPropertiesBase.add(PanelUtils.northAndCenterElement(toolProperties, spearPropertiesPanel));
 
 		usageCount.addChangeListener(_ -> updateCraftingSettings());
 
@@ -389,7 +390,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		pane4.setOpaque(false);
 
 		pane4.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(itemProperties, toolProperties)));
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(itemProperties, toolPropertiesBase)));
 
 		pane3.setOpaque(false);
 
@@ -436,23 +437,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			blockingModelPanel.setVisible(selectedToolType.equals("Shield"));
 			blocksAffectedPanel.setVisible(selectedToolType.equals("Special"));
 
-			spearInHandTexturePanel.setVisible(selectedToolType.equals("Spear"));
-			spearSpeedModifierPanel.setVisible(selectedToolType.equals("Spear"));
-			spearKineticDamageMultiplierPanel.setVisible(selectedToolType.equals("Spear"));
-			spearKineticCooldownPanel.setVisible(selectedToolType.equals("Spear"));
-			spearDismountTimePanel.setVisible(selectedToolType.equals("Spear"));
-			spearMinimumDismountSpeedPanel.setVisible(selectedToolType.equals("Spear"));
-			spearMaximumKnockbackTimePanel.setVisible(selectedToolType.equals("Spear"));
-			spearMinimumDismountSpeedPanel.setVisible(selectedToolType.equals("Spear"));
-			spearMinimumKnockbackSpeedPanel.setVisible(selectedToolType.equals("Spear"));
-			spearMaximumKineticDamageTimePanel.setVisible(selectedToolType.equals("Spear"));
-			spearMinimumKineticDamageSpeedPanel.setVisible(selectedToolType.equals("Spear"));
-
 			dropTierPanel.setVisible(true);
 			additionalDropCondition.setVisible(true);
 			efficiencyPanel.setVisible(true);
 			attackDamagePanel.setVisible(true);
 			attackSpeedPanel.setVisible(true);
+			spearPropertiesPanel.setVisible(false);
 
 
 			switch ((String) toolType.getSelectedItem()) {
@@ -475,6 +465,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				efficiencyPanel.setVisible(false);
 				attackDamagePanel.setVisible(false);
 				attackSpeedPanel.setVisible(false);
+				spearPropertiesPanel.setVisible(true);
 			}
 			}
 		}

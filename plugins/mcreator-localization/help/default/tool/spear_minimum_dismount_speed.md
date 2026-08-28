@@ -1,1 +1,1 @@
-The minimum speed, in blocks, of the attacker using the kinetic weapon to dismount a hit entity.
+The minimum speed, in blocks per second, required for the attacker using the spear to dismount a hit entity.

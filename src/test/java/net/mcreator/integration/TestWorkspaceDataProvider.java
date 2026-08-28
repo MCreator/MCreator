@@ -135,15 +135,16 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "4"), "Pickaxe", random, true, true));
 			generatableElements.add(getToolExample(me(workspace, type, "5"), "Axe", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "6"), "Sword", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "7"), "Spear", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "8"), "Spade", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "9"), "Hoe", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "10"), "Special", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "11"), "MultiTool", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "12"), "Shears", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "13"), "Fishing rod", random, true, false));
-			generatableElements.add(getToolExample(me(workspace, type, "14"), "Shield", random, true, false));
-		} else if (type == ModElementType.BLOCK) {
+			generatableElements.add(getToolExample(me(workspace, type, "7"), "Spade", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "8"), "Hoe", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "9"), "Special", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "13"), "Shield", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "14"), "Spear", random, true, false));
+		}
+		else if (type == ModElementType.BLOCK) {
 			generatableElements.add(getBlockExample(me(workspace, type, "1"), random, true, true, 0, null));
 			generatableElements.add(getBlockExample(me(workspace, type, "2"), random, true, false, 1, null));
 			generatableElements.add(getBlockExample(me(workspace, type, "3"), random, false, true, 2, null));

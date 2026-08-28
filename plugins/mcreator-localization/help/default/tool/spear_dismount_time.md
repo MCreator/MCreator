@@ -1,1 +1,1 @@
-The maximum number of seconds that can pass while using the kinetic weapon to dismount a hit entity.
+The maximum number of seconds that can pass while using the spear to dismount a hit entity.

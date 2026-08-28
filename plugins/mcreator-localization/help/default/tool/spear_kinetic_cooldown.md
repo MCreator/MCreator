@@ -1,1 +1,1 @@
-The number of seconds that must pass before the spear can be used as a kinetic weapon.
+The number of seconds before the player can use the spear again.

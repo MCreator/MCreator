@@ -1,1 +1,1 @@
-The minimum speed, in blocks, of the attacker using the kinetic weapon to damage a hit entity. This is relative to the attacked entity's speed.
+The minimum speed, in blocks per second, required for the attacker using the spear to damage a hit entity. This is relative to the attacked entity's speed.

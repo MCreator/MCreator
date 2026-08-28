@@ -1,1 +1,1 @@
-The maximum number of seconds that can pass while using the kinetic weapon to damage a hit entity.
+The maximum duration, in seconds that the spear can damage a hit entity.

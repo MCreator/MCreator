@@ -68,6 +68,7 @@ import java.util.stream.Collectors;
 	@Numeric(init = 2, min = 1, max = 128000, step = 1) public int enchantability;
 	@Numeric(init = 4, min = 0, max = 128000, step = 0.1) public double damageVsEntity;
 	@Numeric(init = 100, min = 0, max = 128000, step = 1) public int usageCount;
+
 	@Numeric(init = 0.85, min = 0.01, max = 128000, step = 0.05) public double spearSpeedModifier;
 	@Numeric(init = 0.82, min = 0.01, max = 128000, step = 0.05) public double spearKineticDamageMultiplier;
 	@Numeric(init = 0.65, min = 0.01, max = 128000, step = 0.05) public double spearKineticCooldown;
@@ -77,6 +78,7 @@ import java.util.stream.Collectors;
 	@Numeric(init = 5.1, min = 0.01, max = 128000.0, step = 0.1) public double spearMinimumKnockbackSpeed;
 	@Numeric(init = 12.5, min = 0.01, max = 128000, step = 0.1) public double spearMaximumKineticDamageTime;
 	@Numeric(init = 4.6, min = 0.01, max = 128000, step = 0.1) public double spearMinimumKineticDamageSpeed;
+
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
