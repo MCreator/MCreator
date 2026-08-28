@@ -2571,6 +2571,7 @@ public class TestWorkspaceDataProvider {
 		tool.spearInHandTexture = new TextureHolder(modElement.getWorkspace(), "itest");
 		tool.spearSpeedModifier = getRandomDouble(random, Tool.class, "spearSpeedModifier");
 		tool.spearKineticDamageMultiplier = getRandomDouble(random, Tool.class, "spearKineticDamageMultiplier");
+		tool.spearKineticCooldown = getRandomDouble(random, Tool.class, "spearKineticCooldown");
 		tool.spearDismountTime = getRandomDouble(random, Tool.class, "spearDismountTime");
 		tool.spearMinimumDismountSpeed = getRandomDouble(random, Tool.class, "spearMinimumDismountSpeed");
 		tool.spearMaximumKnockbackTime = getRandomDouble(random, Tool.class, "spearMaximumKnockbackTime");
