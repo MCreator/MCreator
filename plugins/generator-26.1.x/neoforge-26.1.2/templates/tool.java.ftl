@@ -54,7 +54,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		</#if>,
 		${data.usageCount},
 		${data.efficiency}f,
-		${data.spearAttackDamageBonus},
+		<#if data.toolType == "Spear">${data.spearAttackDamageBonus}f<#else>0</#if>,
 		${data.enchantability},
 		TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")) <#-- data.repairItems are put into a tag -->
 	);
