@@ -1,0 +1,1 @@
+Ten parametr kontroluje, w co ten blok zamieni się, gdy zostanie ścięty siekierą

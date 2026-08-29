@@ -285,9 +285,17 @@ import java.util.stream.Stream;
 	}
 
 	public String getCurrentGenerator() {
-		if (!currentGenerator.contains("-")) // pre 2020.3 compatibility
-			return "forge-" + currentGenerator;
-		return currentGenerator;
+		return normalizeGeneratorName(currentGenerator);
+	}
+
+	/**
+	 * @param generatorName Name of the generator as stored in the workspace file.
+	 * @return Name of the generator in the current generator name format.
+	 */
+	public static String normalizeGeneratorName(String generatorName) {
+		if (!generatorName.contains("-")) // pre-2020.3 compatibility
+			return "forge-" + generatorName;
+		return generatorName;
 	}
 
 	public String getModElementsPackage() {

@@ -34,6 +34,7 @@ import net.mcreator.ui.minecraft.BEBiomeTagsListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
@@ -53,14 +54,16 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private MCItemHolder seaFloorMaterial;
 	private MCItemHolder seaMaterial;
 
-	private final JSpinner seaFloorDepth = new JSpinner(new SpinnerNumberModel(7, 0, 256, 1));
-	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 2.0, 0.1));
-	private final JSpinner downfall = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
-	private final JSpinner replacementAmount = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 1.0, 0.1));
-	private final JSpinner replacementNoiseFrequencyScale = new JSpinner(new SpinnerNumberModel(0.5, 0.0, 100, 0.1));
-	private final JSpinner particleDensity = new JSpinner(new SpinnerNumberModel(0.1, 0.0, 10.0, 0.1));
+	private final JSpinner seaFloorDepth = ComponentFromAnnotation.spinner(BEBiome.class, "seaFloorDepth");
+	private final JSpinner temperature = ComponentFromAnnotation.spinner(BEBiome.class, "temperature");
+	private final JSpinner downfall = ComponentFromAnnotation.spinner(BEBiome.class, "downfall");
+	private final JSpinner replacementAmount = ComponentFromAnnotation.spinner(BEBiome.class, "replacementAmount");
+	private final JSpinner replacementNoiseFrequencyScale = ComponentFromAnnotation.spinner(BEBiome.class,
+			"replacementNoiseFrequencyScale");
+	private final JSpinner particleDensity = ComponentFromAnnotation.spinner(BEBiome.class, "particleDensity");
 
-	private final JMinMaxSpinner snowAccumulation = new JMinMaxSpinner(0.0, 0.0, 0.0, 1.0, 0.125).allowEqualValues();
+	private final JMinMaxSpinner snowAccumulation = ComponentFromAnnotation.minMaxSpinner(BEBiome.class, "minSnow",
+			"maxSnow").allowEqualValues();
 
 	private final JCheckBox spawnParticles = L10N.checkbox("elementgui.common.enable");
 
@@ -71,13 +74,9 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 	private final JColor waterColor = new JColor(mcreator, true, false);
 	private final JColor waterFogColor = new JColor(mcreator, true, false);
 
-	private final JComboBox<String> noiseType = new JComboBox<>(
-			new String[] { "default", "default_mutated", "stone_beach", "deep_ocean", "lowlands", "river", "ocean",
-					"taiga", "mountains", "highlands", "mushroom", "less_extreme", "extreme", "beach", "swamp" });
-	private final JComboBox<String> villageType = new JComboBox<>(
-			new String[] { "default", "desert", "ice", "savanna", "taiga" });
-	private final JComboBox<String> particleToSpawn = new JComboBox<>(
-			new String[] { "ash", "blue_spores", "red_spores", "white_ash" });
+	private final JComboBox<String> noiseType = ComponentFromAnnotation.options(BEBiome.class, "noiseType");
+	private final JComboBox<String> villageType = ComponentFromAnnotation.options(BEBiome.class, "villageType");
+	private final JComboBox<String> particleToSpawn = ComponentFromAnnotation.options(BEBiome.class, "particleToSpawn");
 
 	private final BEBiomeTagsListField biomeTags = new BEBiomeTagsListField(mcreator);
 	private final BEBiomeListField biomeReplacements = new BEBiomeListField(mcreator, false);

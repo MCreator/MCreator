@@ -2,10 +2,10 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 import java.nio.file.Files
 
-def jbr25_win_64 = 'jbrsdk_jcef-25.0.3-windows-x64-b508.16'
-def jbr25_linux_64 = 'jbrsdk_jcef-25.0.3-linux-x64-b508.16'
-def jbr25_mac_x64 = 'jbrsdk_jcef-25.0.3-osx-x64-b508.16'
-def jbr25_mac_aarch64 = 'jbrsdk_jcef-25.0.3-osx-aarch64-b508.16'
+def jbr_win_64 = 'jbrsdk_jcef-25.0.3-windows-x64-b508.16'
+def jbr_linux_64 = 'jbrsdk_jcef-25.0.3-linux-x64-b508.16'
+def jbr_mac_x64 = 'jbrsdk_jcef-25.0.3-osx-x64-b508.16'
+def jbr_mac_aarch64 = 'jbrsdk_jcef-25.0.3-osx-aarch64-b508.16'
 
 // Binaries needed on Windows for export (install them using Gradle since Windows does not have a package manager)
 def nsis_url = 'https://altushost-swe.dl.sourceforge.net/project/nsis/NSIS%203/3.12/nsis-3.12.zip'
@@ -15,8 +15,8 @@ def mkisofs_url = 'https://master.dl.sourceforge.net/project/mkisofs-md5/mkisofs
 tasks.register('downloadJDKWin64') {
     group = 'setup'
     doLast {
-        def link = file('jdk/jbr25_win_64')
-        def jdkDir = file("jdk/${jbr25_win_64}")
+        def link = file('jdk/jbr_win_64')
+        def jdkDir = file("jdk/${jbr_win_64}")
 
         if (link.exists() && !resolvesToJdkLink(link, jdkDir)) {
             removeJdkLink(link)
@@ -26,29 +26,29 @@ tasks.register('downloadJDKWin64') {
             mkdir jdkDir
 
             download.run {
-                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr25_win_64}.zip"
-                dest 'build/tmp/jbr25_win_64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr_win_64}.zip"
+                dest 'build/tmp/jbr_win_64'
                 overwrite true
             }
-            copy { from zipTree('build/tmp/jbr25_win_64') into jdkDir }
-            delete 'build/tmp/jbr25_win_64'
+            copy { from zipTree('build/tmp/jbr_win_64') into jdkDir }
+            delete 'build/tmp/jbr_win_64'
 
-            copy { from file("${jdkDir.path}/${jbr25_win_64}") into jdkDir }
-            delete "${jdkDir.path}/${jbr25_win_64}"
+            copy { from file("${jdkDir.path}/${jbr_win_64}") into jdkDir }
+            delete "${jdkDir.path}/${jbr_win_64}"
 
             // Space saving
             delete fileTree("${jdkDir.path}/jmods") { exclude 'java.base.jmod' }
         }
 
-        ensureJdkLink('jbr25_win_64', jbr25_win_64)
+        ensureJdkLink('jbr_win_64', jbr_win_64)
     }
 }
 
 tasks.register('downloadJDKLinux64') {
     group = 'setup'
     doLast {
-        def link = file('jdk/jbr25_linux_64')
-        def jdkDir = file("jdk/${jbr25_linux_64}")
+        def link = file('jdk/jbr_linux_64')
+        def jdkDir = file("jdk/${jbr_linux_64}")
 
         if (link.exists() && !resolvesToJdkLink(link, jdkDir)) {
             removeJdkLink(link)
@@ -58,29 +58,29 @@ tasks.register('downloadJDKLinux64') {
             mkdir jdkDir
 
             download.run {
-                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr25_linux_64}.tar.gz"
-                dest 'build/tmp/jbr25_linux_64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr_linux_64}.tar.gz"
+                dest 'build/tmp/jbr_linux_64'
                 overwrite true
             }
-            copy { from tarTree(resources.gzip('build/tmp/jbr25_linux_64')) into jdkDir }
-            delete 'build/tmp/jbr25_linux_64'
+            copy { from tarTree(resources.gzip('build/tmp/jbr_linux_64')) into jdkDir }
+            delete 'build/tmp/jbr_linux_64'
 
-            copy { from file("${jdkDir.path}/${jbr25_linux_64}") into jdkDir }
-            delete "${jdkDir.path}/${jbr25_linux_64}"
+            copy { from file("${jdkDir.path}/${jbr_linux_64}") into jdkDir }
+            delete "${jdkDir.path}/${jbr_linux_64}"
 
             // Space saving
             delete fileTree("${jdkDir.path}/jmods") { exclude 'java.base.jmod' }
         }
 
-        ensureJdkLink('jbr25_linux_64', jbr25_linux_64)
+        ensureJdkLink('jbr_linux_64', jbr_linux_64)
     }
 }
 
 tasks.register('downloadJDKMacX64') {
     group = 'setup'
     doLast {
-        def link = file('jdk/jbr25_mac_x64')
-        def jdkDir = file("jdk/${jbr25_mac_x64}")
+        def link = file('jdk/jbr_mac_x64')
+        def jdkDir = file("jdk/${jbr_mac_x64}")
 
         if (link.exists() && !resolvesToJdkLink(link, jdkDir)) {
             removeJdkLink(link)
@@ -90,29 +90,29 @@ tasks.register('downloadJDKMacX64') {
             mkdir jdkDir
 
             download.run {
-                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr25_mac_x64}.tar.gz"
-                dest 'build/tmp/jbr25_mac_x64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr_mac_x64}.tar.gz"
+                dest 'build/tmp/jbr_mac_x64'
                 overwrite true
             }
-            copy { from tarTree(resources.gzip('build/tmp/jbr25_mac_x64')) into jdkDir }
-            delete 'build/tmp/jbr25_mac_x64'
+            copy { from tarTree(resources.gzip('build/tmp/jbr_mac_x64')) into jdkDir }
+            delete 'build/tmp/jbr_mac_x64'
 
-            copy { from file("${jdkDir.path}/${jbr25_mac_x64}") into jdkDir }
-            delete "${jdkDir.path}/${jbr25_mac_x64}/"
+            copy { from file("${jdkDir.path}/${jbr_mac_x64}") into jdkDir }
+            delete "${jdkDir.path}/${jbr_mac_x64}/"
 
             // Space saving
             delete fileTree("${jdkDir.path}/Contents/Home/jmods") { exclude 'java.base.jmod' }
         }
 
-        ensureJdkLink('jbr25_mac_x64', jbr25_mac_x64)
+        ensureJdkLink('jbr_mac_x64', jbr_mac_x64)
     }
 }
 
 tasks.register('downloadJDKMacAarch64') {
     group = 'setup'
     doLast {
-        def link = file('jdk/jbr25_mac_aarch64')
-        def jdkDir = file("jdk/${jbr25_mac_aarch64}")
+        def link = file('jdk/jbr_mac_aarch64')
+        def jdkDir = file("jdk/${jbr_mac_aarch64}")
 
         if (link.exists() && !resolvesToJdkLink(link, jdkDir)) {
             removeJdkLink(link)
@@ -122,21 +122,21 @@ tasks.register('downloadJDKMacAarch64') {
             mkdir jdkDir
 
             download.run {
-                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr25_mac_aarch64}.tar.gz"
-                dest 'build/tmp/jbr25_mac_aarch64'
+                src "https://cache-redirector.jetbrains.com/intellij-jbr/${jbr_mac_aarch64}.tar.gz"
+                dest 'build/tmp/jbr_mac_aarch64'
                 overwrite true
             }
-            copy { from tarTree(resources.gzip('build/tmp/jbr25_mac_aarch64/')) into jdkDir }
-            delete 'build/tmp/jbr25_mac_aarch64'
+            copy { from tarTree(resources.gzip('build/tmp/jbr_mac_aarch64/')) into jdkDir }
+            delete 'build/tmp/jbr_mac_aarch64'
 
-            copy { from file("${jdkDir.path}/${jbr25_mac_aarch64}") into jdkDir }
-            delete "${jdkDir.path}/${jbr25_mac_aarch64}/"
+            copy { from file("${jdkDir.path}/${jbr_mac_aarch64}") into jdkDir }
+            delete "${jdkDir.path}/${jbr_mac_aarch64}/"
 
             // Space saving
             delete fileTree("${jdkDir.path}/Contents/Home/jmods") { exclude 'java.base.jmod' }
         }
 
-        ensureJdkLink('jbr25_mac_aarch64', jbr25_mac_aarch64)
+        ensureJdkLink('jbr_mac_aarch64', jbr_mac_aarch64)
     }
 }
 
@@ -220,7 +220,9 @@ static def isLinkToDifferentPath(File link) {
     if (!link.exists()) return false
 
     try {
-        return link.toPath().toRealPath().normalize() != link.toPath().toAbsolutePath().normalize()
+        def path = link.toPath().toAbsolutePath()
+        def expected = path.parent.toRealPath().resolve(path.fileName)
+        return path.toRealPath() != expected
     } catch (IOException ignored) {
         return false
     }
@@ -266,4 +268,6 @@ def ensureJdkLink(String linkName, String jdkName) {
     } else {
         Files.createSymbolicLink(link.toPath(), jdkDir.toPath().getFileName())
     }
+
+    println("Created link ${link} -> ${jdkDir}")
 }
