@@ -87,8 +87,8 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 					inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
 					if (inputStream == null) {
 						LOG.warn("Resource not found: {}", path);
-						handleRequest.set(false);
-					return false; // resource not found}
+						return false; // resource not found
+					}
 				}
 			}
 		}
