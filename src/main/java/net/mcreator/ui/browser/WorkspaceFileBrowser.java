@@ -104,6 +104,8 @@ public class WorkspaceFileBrowser extends JPanel {
 		}
 	};
 
+	private final Timer searchDebounceTimer = new Timer(200, _ -> updateSearch(true));
+
 	final MCreator mcreator;
 
 	/**
@@ -121,18 +123,20 @@ public class WorkspaceFileBrowser extends JPanel {
 		jtf1.setBackground(Theme.current().getBackgroundColor());
 		ComponentUtils.deriveFont(jtf1, 12);
 
+		searchDebounceTimer.setRepeats(false);
+
 		jtf1.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override public void insertUpdate(DocumentEvent e) {
-				updateSearch(true);
+				searchDebounceTimer.restart();
 			}
 
 			@Override public void removeUpdate(DocumentEvent e) {
-				updateSearch(true);
+				searchDebounceTimer.restart();
 			}
 
 			@Override public void changedUpdate(DocumentEvent e) {
-				updateSearch(true);
+				searchDebounceTimer.restart();
 			}
 		});
 
@@ -183,11 +187,17 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		tree.addTreeExpansionListener(new TreeExpansionListener() {
 			@Override public void treeExpanded(TreeExpansionEvent treeExpansionEvent) {
-				mcreator.getWorkspaceUserSettings().projectBrowserState = SerializableTreeExpansionState.fromTree(tree);
+				saveExpansionState();
 			}
 
 			@Override public void treeCollapsed(TreeExpansionEvent treeExpansionEvent) {
-				mcreator.getWorkspaceUserSettings().projectBrowserState = SerializableTreeExpansionState.fromTree(tree);
+				saveExpansionState();
+			}
+
+			private void saveExpansionState() {
+				if (preSearchState == null)
+					mcreator.getWorkspaceUserSettings().projectBrowserState = SerializableTreeExpansionState.fromTree(
+							tree);
 			}
 		});
 	}
@@ -298,7 +308,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		updateSearch(false);
 	}
 
-	private List<DefaultMutableTreeNode> preSearchState = null;
+	@Nullable private List<DefaultMutableTreeNode> preSearchState = null;
 
 	private synchronized void updateSearch(boolean clearFilter) {
 		if (jtf1.getText().trim().length() >= 3) {

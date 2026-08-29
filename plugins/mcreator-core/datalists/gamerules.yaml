@@ -1,116 +1,174 @@
 - ANNOUNCE_ADVANCEMENTS:
   type: logic
+  readable_name: "Announce advancements"
 - COMMAND_BLOCK_OUTPUT:
   type: logic
+  readable_name: "Broadcast command block output"
 - DISABLE_PLAYER_MOVEMENT_CHECK:
   type: logic
+  readable_name: "Do player movement check"
 - DISABLE_ELYTRA_MOVEMENT_CHECK:
   type: logic
+  readable_name: "Do elytra movement check"
 - DISABLE_RAIDS:
   type: logic
+  readable_name: "Do raids"
 - DO_DAYLIGHT_CYCLE:
   type: logic
+  readable_name: "Advance time of day"
 - DO_ENTITY_DROPS:
   type: logic
+  readable_name: "Drop entity equipment"
 - DO_INSOMNIA:
   type: logic
+  readable_name: "Spawn phantoms"
 - DO_IMMEDIATE_RESPAWN:
   type: logic
+  readable_name: "Respawn immediately"
 - DO_LIMITED_CRAFTING:
   type: logic
+  readable_name: "Require recipe for crafting"
 - DO_MOB_LOOT:
   type: logic
+  readable_name: "Drop mob loot"
 - DO_MOB_SPAWNING:
   type: logic
+  readable_name: "Spawn mobs"
 - DO_TILE_DROPS:
   type: logic
+  readable_name: "Drop blocks"
 - DO_WEATHER_CYCLE:
   type: logic
+  readable_name: "Update weather"
 - DROWNING_DAMAGE:
   type: logic
+  readable_name: "Deal drowning damage"
 - FALL_DAMAGE:
   type: logic
+  readable_name: "Deal fall damage"
 - FIRE_DAMAGE:
   type: logic
+  readable_name: "Deal fire damage"
 - KEEP_INVENTORY:
   type: logic
+  readable_name: "Keep inventory after death"
 - LOG_ADMIN_COMMANDS:
   type: logic
+  readable_name: "Broadcast admin commands"
 - MOB_GRIEFING:
   type: logic
+  readable_name: "Allow destructive mob actions"
 - NATURAL_REGENERATION:
   type: logic
+  readable_name: "Regenerate health"
 - REDUCED_DEBUG_INFO:
   type: logic
+  readable_name: "Reduce debug info"
 - SEND_COMMAND_FEEDBACK:
   type: logic
+  readable_name: "Send command feedback"
 - SHOW_DEATH_MESSAGES:
   type: logic
+  readable_name: "Show death messages"
 - SPECTATORS_GENERATE_CHUNKS:
   type: logic
+  readable_name: "Allow spectators to generate terrain"
 - MAX_COMMAND_CHAIN_LENGTH:
   type: number
+  readable_name: "Command chain size limit"
 - MAX_ENTITY_CRAMMING:
   type: number
+  readable_name: "Entity cramming threshold"
 - RANDOM_TICK_SPEED:
   type: number
+  readable_name: "Random tick speed rate"
 - SPAWN_RADIUS:
   type: number
+  readable_name: "Respawn location radius"
 - DO_PATROL_SPAWNING:
   type: logic
+  readable_name: "Spawn pillager patrols"
 - DO_TRADER_SPAWNING:
   type: logic
+  readable_name: "Spawn Wandering Traders"
 - FORGIVE_DEAD_PLAYERS:
   type: logic
+  readable_name: "Forgive dead players"
 - UNIVERSAL_ANGER:
   type: logic
+  readable_name: "Universal anger"
 - PLAYERS_SLEEPING_PERCENTAGE:
   type: number
+  readable_name: "Sleep percentage"
 - FREEZE_DAMAGE:
   type: logic
+  readable_name: "Deal freeze damage"
 - DO_WARDEN_SPAWNING:
   type: logic
+  readable_name: "Spawn Wardens"
 - BLOCK_EXPLOSION_DROP_DECAY:
   type: logic
+  readable_name: "In block interaction explosions, some blocks won't drop their loot"
 - MOB_EXPLOSION_DROP_DECAY:
   type: logic
+  readable_name: "In mob explosions, some blocks won't drop their loot"
 - TNT_EXPLOSION_DROP_DECAY:
   type: logic
+  readable_name: "In TNT explosions, some blocks won't drop their loot"
 - SNOW_ACCUMULATION_HEIGHT:
   type: number
+  readable_name: "Snow accumulation height"
 - WATER_SOURCE_CONVERSION:
   type: logic
+  readable_name: "Water converts to source"
 - LAVA_SOURCE_CONVERSION:
   type: logic
+  readable_name: "Lava converts to source"
 - GLOBAL_SOUND_EVENTS:
   type: logic
+  readable_name: "Global sound events"
 - DO_VINES_SPREAD:
   type: logic
+  readable_name: "Vines spread"
 - COMMAND_MODIFICATION_BLOCK_LIMIT:
   type: number
+  readable_name: "Command modification block limit"
 - PROJECTILES_CAN_BREAK_BLOCKS:
   type: logic
+  readable_name: "Projectiles can break blocks"
 - MAX_COMMAND_FORK_COUNT:
   type: number
+  readable_name: "Command context limit"
 - PLAYERS_NETHER_PORTAL_DEFAULT_DELAY:
   type: number
+  readable_name: "Player's Nether Portal delay in non-creative mode"
 - PLAYERS_NETHER_PORTAL_CREATIVE_DELAY:
   type: number
+  readable_name: "Player's Nether Portal delay in creative mode"
 - ENDER_PEARLS_VANISH_ON_DEATH:
   type: logic
+  readable_name: "Thrown Ender Pearls vanish on death"
 - TNT_EXPLODES:
   type: logic
+  readable_name: "Allow TNT to be activated and to explode"
 - LOCATOR_BAR:
   type: logic
+  readable_name: "Enable player Locator Bar"
 - ALLOW_ENTERING_NETHER_USING_PORTALS:
   type: logic
+  readable_name: "Allow Nether"
 - COMMAND_BLOCKS_WORK:
   type: logic
+  readable_name: "Enable Command Blocks"
 - SPAWN_MONSTERS:
   type: logic
+  readable_name: "Spawn Monsters"
 - SPAWNER_BLOCKS_WORK:
   type: logic
+  readable_name: "Enable Spawner Blocks"
 - FIRE_SPREAD_RADIUS_AROUND_PLAYER:
   type: number
+  readable_name: "Fire spread radius"
 - PVP:
   type: logic
+  readable_name: "Enable pvp"

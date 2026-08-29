@@ -81,6 +81,7 @@ public class BlocklyPanel extends JPanel implements Closeable {
 				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
 		webView = new WebView("http://mcreator/blockly/blockly.html", isTransparent());
+		webView.addRequestHandler(new BlocklyRequestHandler(mcreator));
 
 		add("Center", webView);
 

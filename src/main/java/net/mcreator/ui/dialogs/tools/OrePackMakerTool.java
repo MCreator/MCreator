@@ -267,7 +267,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.ore"),
-				e -> new OrePackMakerTool(actionRegistry.getMCreator())) {
+				_ -> new OrePackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}

@@ -125,7 +125,7 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.material"),
-				e -> new MaterialPackMakerTool(actionRegistry.getMCreator())) {
+				_ -> new MaterialPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}
