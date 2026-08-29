@@ -35,12 +35,12 @@ java {
 
 idea {
     project {
-        jdkName = 'mcreator_jbr25'
+        jdkName = 'mcreator_jbr'
         languageLevel = 'JDK_25'
     }
 
     module {
-        jdkName = 'mcreator_jbr25'
+        jdkName = 'mcreator_jbr'
         inheritOutputDirs = true
 
         // define exclude dirs
