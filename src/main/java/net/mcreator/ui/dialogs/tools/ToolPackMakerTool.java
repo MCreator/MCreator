@@ -76,7 +76,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
 		props.add(PanelUtils.centerInPanel(base));
 
-		base.addBlockSelectedListener(e -> {
+		base.addBlockSelectedListener(_ -> {
 			try {
 				if (base.getBlock() != null) {
 					color.setColor(ImageUtils.getAverageColor(
@@ -300,7 +300,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.tool"),
-				e -> new ToolPackMakerTool(actionRegistry.getMCreator())) {
+				_ -> new ToolPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
 				return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
