@@ -45,6 +45,7 @@ import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -83,10 +84,25 @@ public record BlocklyVariables(BlocklyToCode generator) {
 			return false;
 		String[] name = field.split(":");
 		if (name.length == 2 && name[0].equals("global")) {
-			VariableType.Scope scope = workspace.getVariableElementByName(name[1]).getScope();
+			VariableElement variable = workspace.getVariableElementByName(name[1]);
+			if (variable == null)
+				return false;
+			VariableType.Scope scope = variable.getScope();
 			return scope == VariableType.Scope.PLAYER_LIFETIME || scope == VariableType.Scope.PLAYER_PERSISTENT;
 		}
 		return false;
+	}
+
+	public static boolean isGlobalVariableForWorkspace(Workspace workspace, String field) {
+		if (field == null)
+			return false;
+		String[] name = field.split(":");
+		return name.length == 2 && name[0].equals("global") && workspace.getVariableElementByName(name[1]) != null;
+	}
+
+	public static boolean isVariableTypeCompatible(VariableType blockType, @Nullable VariableType variableType) {
+		return variableType != null && blockType.getBlocklyVariableType() != null && blockType.getBlocklyVariableType()
+				.equals(variableType.getBlocklyVariableType());
 	}
 
 	public static Set<VariableElement> tryToExtractVariables(String xml) {

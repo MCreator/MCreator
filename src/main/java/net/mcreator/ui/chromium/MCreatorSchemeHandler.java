@@ -20,63 +20,75 @@
 package net.mcreator.ui.chromium;
 
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.cef.browser.CefBrowser;
-import org.cef.browser.CefFrame;
 import org.cef.callback.CefCallback;
+import org.cef.callback.CefResourceReadCallback;
+import org.cef.callback.CefResourceSkipCallback;
 import org.cef.handler.CefResourceHandler;
+import org.cef.misc.BoolRef;
 import org.cef.misc.IntRef;
+import org.cef.misc.LongRef;
 import org.cef.misc.StringRef;
 import org.cef.network.CefRequest;
 import org.cef.network.CefResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Objects;
 
-class CefClassLoaderSchemeHandler implements CefResourceHandler {
+public class MCreatorSchemeHandler implements CefResourceHandler {
 
-	private static final Logger LOG = LogManager.getLogger(CefClassLoaderSchemeHandler.class);
+	private static final Logger LOG = LogManager.getLogger(MCreatorSchemeHandler.class);
+
+	private final List<RequestHandler> requestHandlers;
 
 	private InputStream inputStream;
 	private String contentType;
 
-	private static final String blocklyThemeID;
-
-	static {
-		String _blocklyThemeID = Theme.current().getID();
-		if (PluginLoader.INSTANCE.getResourceAsStream(
-				String.format("themes/%s/styles/blockly.css", Theme.current().getID())) == null) {
-			_blocklyThemeID = "default_dark"; // fallback to the default dark theme
-		}
-		blocklyThemeID = _blocklyThemeID;
-	}
-
-	@SuppressWarnings("unused")
-	public CefClassLoaderSchemeHandler(CefBrowser browser, CefFrame frame, String schemeName, CefRequest request) {
+	public MCreatorSchemeHandler(List<RequestHandler> customRequestHandlers) {
+		requestHandlers = Objects.requireNonNullElseGet(customRequestHandlers, List::of);
 	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
-		String path = request.getURL().replaceFirst("^http://mcreator/", "/")
-				//@formatter:off
-				.replace("__LANG__", L10N.getBlocklyLangName())
-				.replace("__BLOCKLY_THEME_ID__", blocklyThemeID)
-				//@formatter:on
-				;
+		return open(request, new BoolRef(), callback);
+	}
+
+	@Override public boolean open(CefRequest request, BoolRef handleRequest, CefCallback callback) {
+		String path = request.getURL().replaceFirst("^http://mcreator/", "/");
+
+		// Give registered request handlers a chance to rewrite the request path
+		for (RequestHandler handler : requestHandlers) {
+			path = handler.rewritePath(path);
+		}
 
 		if (path.contains("favicon.ico")) {
 			// return empty stream for favicon requests
 			inputStream = InputStream.nullInputStream();
 		} else {
-			inputStream = getClass().getResourceAsStream(path);
+			// First, give registered request handlers a chance to handle the request
+			for (RequestHandler handler : requestHandlers) {
+				try {
+					InputStream handlerStream = handler.handleRequest(path);
+					if (handlerStream != null) {
+						inputStream = handlerStream;
+						break;
+					}
+				} catch (Exception e) {
+					LOG.warn("Error handling request for: {}", path, e);
+				}
+			}
+
 			if (inputStream == null) {
-				// if resource not found, try to load it from the plugins
-				inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
+				inputStream = getClass().getResourceAsStream(path);
 				if (inputStream == null) {
-					LOG.warn("Resource not found: {}", path);
-					return false; // resource not found
+					// if resource not found, try to load it from the plugins
+					inputStream = PluginLoader.INSTANCE.getResourceAsStream(path.substring(1));
+					if (inputStream == null) {
+						LOG.warn("Resource not found: {}", path);
+						return false; // resource not found
+					}
 				}
 			}
 		}
@@ -93,6 +105,10 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 	}
 
 	@Override public boolean readResponse(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefCallback callback) {
+		return read(dataOut, bytesToRead, bytesRead, null);
+	}
+
+	@Override public boolean read(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefResourceReadCallback callback) {
 		try {
 			int n = inputStream.read(dataOut, 0, bytesToRead);
 			if (n == -1) {
@@ -104,6 +120,18 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 		} catch (IOException e) {
 			LOG.warn("Error reading resource: {}", e.getMessage());
 			closeStream();
+			return false;
+		}
+	}
+
+	@Override public boolean skip(long bytesToSkip, LongRef bytesSkipped, CefResourceSkipCallback callback) {
+		try {
+			inputStream.skipNBytes(bytesToSkip);
+			bytesSkipped.set(bytesToSkip);
+			return true;
+		} catch (IOException e) {
+			LOG.warn("Error skipping resource: {}", e.getMessage());
+			bytesSkipped.set(-2);
 			return false;
 		}
 	}
@@ -130,8 +158,8 @@ class CefClassLoaderSchemeHandler implements CefResourceHandler {
 		return switch (extension) {
 			case "ttf" -> "application/octet-stream";
 			case "png" -> "image/png";
-			case "svg" -> "image/svg+xml";
 			case "jpeg" -> "image/jpeg";
+			case "svg" -> "image/svg+xml";
 			case "css" -> "text/css";
 			case "js" -> "text/javascript";
 			case "html" -> "text/html";

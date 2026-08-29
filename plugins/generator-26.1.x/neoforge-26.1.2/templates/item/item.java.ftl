@@ -385,10 +385,10 @@ public class ${name}Item extends Item {
 }
 
 <#macro arrowShootCode>
-	<#assign projectile = data.projectile.getUnmappedValue()>
+	<#local projectile = data.projectile.getUnmappedValue()>
 	ItemStack stack = findAmmo(player);
 	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
-		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
+		<#local projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom()<#if data.rangedItemChargesPower>, pullingPower</#if>);
 		<#elseif projectile.endsWith("Arrow")>
