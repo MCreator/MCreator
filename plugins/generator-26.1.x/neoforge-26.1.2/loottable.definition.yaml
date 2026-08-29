@@ -2,3 +2,7 @@ templates:
   - template: loottable.json.ftl # loaded from datapack generator
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/loot_table/@[getName()].json"
+  - template: loottable/loot_modifier.json.ftl
+    writer: json
+    name: "@MODDATAROOT/loot_modifiers/@registryname.json"
+    condition: hasLootModifier()

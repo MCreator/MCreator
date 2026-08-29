@@ -19,11 +19,11 @@
 package net.mcreator.java;
 
 import net.mcreator.workspace.Workspace;
-import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
+import javax.annotation.Nullable;
 import javax.swing.text.BadLocationException;
 import java.io.File;
 import java.util.Iterator;
@@ -35,7 +35,7 @@ public class DeclarationFinder {
 	public static final Pattern SEPARATORS_AHEAD = Pattern.compile("[^a-zA-Z0-9_$]");
 
 	public static DeclarationFinder.InClassPosition getDeclarationOnPos(Workspace workspace, JavaParser parser,
-			RSyntaxTextArea textArea, JarManager jarManager) {
+			RSyntaxTextArea textArea, @Nullable ProjectJarManager jarManager) {
 
 		int caret = textArea.getCaretPosition();
 
@@ -78,7 +78,7 @@ public class DeclarationFinder {
 	}
 
 	private static InClassPosition checkForPossibleDeclarations(Workspace workspace, JavaParser parser,
-			RSyntaxTextArea textArea, String clickedWord, JarManager jarManager) {
+			RSyntaxTextArea textArea, String clickedWord, @Nullable ProjectJarManager jarManager) {
 		int start, end;
 		int caret = textArea.getCaretPosition();
 		String code = textArea.getText();

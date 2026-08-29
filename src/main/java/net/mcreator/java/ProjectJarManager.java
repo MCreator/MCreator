@@ -25,6 +25,8 @@ import net.mcreator.generator.GeneratorGradleCache;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.gradle.GradleToolchainUtil;
 import net.mcreator.gradle.GradleUtils;
+import net.mcreator.io.FileIO;
+import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,6 +34,7 @@ import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.buildpath.DirSourceLocation;
 import org.fife.rsta.ac.java.buildpath.JarLibraryInfo;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
+import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.gradle.tooling.BuildException;
 import org.gradle.tooling.ModelBuilder;
@@ -45,18 +48,27 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 public class ProjectJarManager extends JarManager {
 
 	private static final Logger LOG = LogManager.getLogger(ProjectJarManager.class);
 
+	private final Generator generator;
+
 	private final List<GeneratorGradleCache.ClasspathEntry> classpath;
 	@Nullable private final File javaHome;
+
+	@Nullable private WorkspaceLibraryInfo workspaceLibraryInfo;
 
 	private JavaReleaseInfo javaReleaseInfo = JavaReleaseInfo.DEFAULT;
 
 	public ProjectJarManager(Generator generator) {
+		this.generator = generator;
+
 		List<GeneratorGradleCache.ClasspathEntry> classPathEntries = new ArrayList<>();
 		File assumedJavaHome = null;
 
@@ -68,7 +80,7 @@ public class ProjectJarManager extends JarManager {
 
 				EclipseProject project = modelBuilder.get();
 
-				processProjectClassPath(generator, project, classPathEntries);
+				processProjectClassPath(project, classPathEntries);
 
 				// Only look up JDK toolchain JAVA_HOME for Java-based projects
 				if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
@@ -85,7 +97,7 @@ public class ProjectJarManager extends JarManager {
 
 		// First, try to load JVM library info
 		try {
-			tryLoadJVMLibraryInfo(generator);
+			tryLoadJVMLibraryInfo();
 		} catch (GradleCacheImportFailedException e) {
 			LOG.error("Failed to load JVM library info", e);
 		}
@@ -93,24 +105,32 @@ public class ProjectJarManager extends JarManager {
 		// After we have collected all classpath entries, load them in the JAR manager
 		for (GeneratorGradleCache.ClasspathEntry classpathEntry : this.classpath) {
 			try {
-				loadExternalDependency(generator.getWorkspace(), classpathEntry);
+				loadExternalDependency(classpathEntry);
 			} catch (GradleCacheImportFailedException ignored) {
 			}
 		}
+
+		// Finally, load compiled classes of the workspace itself
+		refreshWorkspaceClassInfo();
 	}
 
 	public ProjectJarManager(Generator generator, List<GeneratorGradleCache.ClasspathEntry> classPathEntries,
 			@Nullable File javaHome) throws GradleCacheImportFailedException {
+		this.generator = generator;
+
 		this.classpath = classPathEntries;
 		this.javaHome = javaHome;
 
 		// First, try to load JVM library info
-		tryLoadJVMLibraryInfo(generator);
+		tryLoadJVMLibraryInfo();
 
 		// Then, load all the classpath entries
 		for (GeneratorGradleCache.ClasspathEntry classpathEntry : classPathEntries) {
-			loadExternalDependency(generator.getWorkspace(), classpathEntry);
+			loadExternalDependency(classpathEntry);
 		}
+
+		// Finally, load compiled classes of the workspace itself
+		refreshWorkspaceClassInfo();
 	}
 
 	public List<GeneratorGradleCache.ClasspathEntry> getClasspath() {
@@ -125,7 +145,91 @@ public class ProjectJarManager extends JarManager {
 		return javaHome == null ? null : javaReleaseInfo;
 	}
 
-	private void processProjectClassPath(Generator generator, EclipseProject project,
+	public void refreshWorkspaceClassInfo() {
+		if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				!= GeneratorFlavor.BaseLanguage.JAVA)
+			return;
+
+		try {
+			WorkspaceLibraryInfo libraryInfo = new WorkspaceLibraryInfo(generator);
+			addClassFileSource(libraryInfo);
+			this.workspaceLibraryInfo = libraryInfo;
+		} catch (IOException e) {
+			LOG.warn("Failed to load workspace classes", e);
+		}
+	}
+
+	/**
+	 * Makes code completion re-read workspace source files it presents (javadoc, parameter names).
+	 * Unlike {@link #refreshWorkspaceClassInfo()}, the compiled class list is not re-indexed, so
+	 * this is the right call for the case when workspace source files change without a Gradle task
+	 * run, e.g., on code editor save. To be called on the EDT.
+	 */
+	public void refreshWorkspaceSourceInfo() {
+		if (workspaceLibraryInfo != null)
+			workspaceLibraryInfo.refreshSourceLocation();
+	}
+
+	/**
+	 * @return Same as {@link #getClassFileSources()}, but without the {@link WorkspaceLibraryInfo}
+	 * entry: compiled classes of the workspace itself are registered with this jar manager for
+	 * code completion purposes, but they are not an external library of the workspace.
+	 */
+	public List<LibraryInfo> getExternalClassFileSources() {
+		return getClassFileSources().stream().filter(libraryInfo -> !(libraryInfo instanceof WorkspaceLibraryInfo))
+				.toList();
+	}
+
+	/**
+	 * Reads the source code of the given class from the source location registered for it with
+	 * this jar manager. Both ZIP/JAR and directory-based source locations are supported.
+	 * <p>
+	 * Workspace classes are readable even before they are compiled: if the class is not indexed
+	 * (the class list is built from compiled classes), the workspace source location is probed
+	 * on disk directly, so sources of freshly generated classes are found too.
+	 *
+	 * @param classFqdn Fully qualified name of the class to read the source code of.
+	 * @return Source code of the given class, or null if there is no source location for it or
+	 * the source location does not contain it.
+	 */
+	@Nullable public String getSourceCodeForClass(String classFqdn) {
+		SourceLocation sourceLocation = getSourceLocForClass(classFqdn);
+		if (sourceLocation == null && workspaceLibraryInfo != null)
+			sourceLocation = workspaceLibraryInfo.getSourceLocation();
+		if (sourceLocation == null)
+			return null;
+
+		String sourcePath = classFqdn.replace('.', '/') + ".java";
+		File sourceLocationFile = new File(sourceLocation.getLocationAsString());
+
+		if (sourceLocation instanceof ZipSourceLocation) {
+			try (ZipFile zipFile = ZipIO.openZipFile(sourceLocationFile)) {
+				ZipEntry entry = zipFile.getEntry(sourcePath);
+				if (entry == null) { // Sources may be located under a prefix directory inside the archive
+					Enumeration<? extends ZipEntry> entries = zipFile.entries();
+					while (entries.hasMoreElements()) {
+						ZipEntry candidate = entries.nextElement();
+						if (candidate.getName().endsWith(sourcePath)) {
+							entry = candidate;
+							break;
+						}
+					}
+				}
+				if (entry != null)
+					return ZipIO.entryToString(zipFile, entry);
+			} catch (IOException e) {
+				LOG.error("Failed to read source code for {} from {}", classFqdn, sourceLocationFile, e);
+			}
+		} else if (sourceLocation instanceof DirSourceLocation) {
+			File sourceFile = new File(sourceLocationFile, sourcePath);
+			if (sourceFile.isFile())
+				return FileIO.readFileToString(sourceFile);
+		}
+
+		return null;
+	}
+
+	private void processProjectClassPath(EclipseProject project,
 			List<GeneratorGradleCache.ClasspathEntry> classPathEntries) {
 		LOG.debug("Processing classpath for project {}", project.getName());
 
@@ -154,12 +258,13 @@ public class ProjectJarManager extends JarManager {
 		}
 
 		for (EclipseProject childProject : project.getChildren()) {
-			processProjectClassPath(generator, childProject, classPathEntries);
+			processProjectClassPath(childProject, classPathEntries);
 		}
 	}
 
-	private void loadExternalDependency(Workspace workspace, GeneratorGradleCache.ClasspathEntry classpathEntry)
+	private void loadExternalDependency(GeneratorGradleCache.ClasspathEntry classpathEntry)
 			throws GradleCacheImportFailedException {
+		Workspace workspace = generator.getWorkspace();
 		String libString = classpathEntry.getLib(workspace);
 		File libFile = new File(libString);
 		if (!libFile.exists()) {
@@ -167,7 +272,7 @@ public class ProjectJarManager extends JarManager {
 			throw new GradleCacheImportFailedException(new IOException("Failed to load cached library " + libString));
 		}
 
-		JarLibraryInfo libraryInfo = new JarLibraryInfo(libString);
+		JarLibraryInfo libraryInfo = new SafeJarLibraryInfo(libString);
 		String srcString = classpathEntry.getSrc(workspace);
 		if (srcString != null) {
 			File srcFile = new File(srcString);
@@ -186,7 +291,7 @@ public class ProjectJarManager extends JarManager {
 		}
 	}
 
-	private void tryLoadJVMLibraryInfo(Generator generator) throws GradleCacheImportFailedException {
+	private void tryLoadJVMLibraryInfo() throws GradleCacheImportFailedException {
 		if (javaHome == null) {
 			if (generator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 					== GeneratorFlavor.BaseLanguage.JAVA) {
@@ -230,7 +335,7 @@ public class ProjectJarManager extends JarManager {
 		} else if (classesArchive.getName().endsWith(".jmod")) {
 			return new JModLibraryInfo(classesArchive);
 		} else {
-			return new JarLibraryInfo(classesArchive);
+			return new SafeJarLibraryInfo(classesArchive);
 		}
 	}
 

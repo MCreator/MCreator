@@ -26,6 +26,7 @@ import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
+import javax.swing.text.BadLocationException;
 import java.io.File;
 
 public class ReloadCodeAction extends BasicAction {
@@ -42,7 +43,16 @@ public class ReloadCodeAction extends BasicAction {
 								L10N.t("action.ide.reload_code.dialog"), L10N.t("common.confirmation"),
 								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (sel == JOptionPane.OK_OPTION) {
+						int line = codeEditorView.te.getCaretLineNumber();
 						codeEditorView.te.setText(FileIO.readFileToString(curr));
+						try {
+							line = Math.min(line, codeEditorView.te.getLineCount() - 1);
+							if (line >= 0) {
+								codeEditorView.te.setCaretPosition(codeEditorView.te.getLineStartOffset(line));
+								codeEditorView.centerLineInScrollPane();
+							}
+						} catch (BadLocationException ignored) {
+						}
 						codeEditorView.changed = false;
 						if (codeEditorView.changeListener != null)
 							codeEditorView.changeListener.stateChanged(new ChangeEvent(codeEditorView));

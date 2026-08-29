@@ -161,7 +161,7 @@ public final class FileIO {
 						throws IOException {
 					Path targetDir = target.resolve(source.relativize(dir));
 					if (!Files.isDirectory(targetDir)) {
-						Files.copy(dir, targetDir);
+						Files.createDirectories(targetDir);
 					}
 					return FileVisitResult.CONTINUE;
 				}

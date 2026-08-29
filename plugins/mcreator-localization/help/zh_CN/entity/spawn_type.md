@@ -5,4 +5,4 @@
 * 标记为Ambient的生物会在特定的方块外的任意地方生成。 此类别主要应用于无游戏效果的生物，比如蝙蝠。
 * WaterCreature将在水中生成，不受限制
 
-生成类型系统在[此处](https://mcreator.net/wiki/mob-spawning-parameters)有深入介绍
+生成类型系统在[此处](https://mcreator.net/wiki/mob-spawning-parameters)有深入介绍。部分mod如围火无怪，小地图可能依据这个判断是否为怪物

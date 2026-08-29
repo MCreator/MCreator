@@ -118,8 +118,12 @@
             }
         ],
 		</#if>
-        "minecraft:visual/sky_color": ${data.airColor?has_content?then(data.airColor.getRGB(), 7972607)},
-        "minecraft:visual/fog_color": ${data.fogColor?has_content?then(data.fogColor.getRGB(), 12638463)},
+        <#if data.airColor?has_content>
+        "minecraft:visual/sky_color": ${data.airColor.getRGB()},
+        </#if>
+        <#if data.fogColor?has_content>
+        "minecraft:visual/fog_color": ${data.fogColor.getRGB()},
+        </#if>
         "minecraft:visual/water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)}
 	},
 	"spawners": {
@@ -150,17 +154,17 @@
 }
 
 <#function getEntitiesOfType entityList type>
-	<#assign retval = []>
+	<#local retval = []>
 	<#list entityList as entity>
 		<#if entity.spawnType.getUnmappedValue() == type>
-			<#assign retval = retval + [entity]>
+			<#local retval = retval + [entity]>
 		</#if>
 	</#list>
 	<#return retval>
 </#function>
 
 <#macro generateEntityList entityList type>
-	<#assign entities = getEntitiesOfType(entityList, type)>
+	<#local entities = getEntitiesOfType(entityList, type)>
 	<#list entities as entry>
 	<#-- @formatter:off -->
     {

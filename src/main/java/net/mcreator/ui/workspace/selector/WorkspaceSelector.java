@@ -555,7 +555,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				if (news != null) {
 					nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
 							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">"
-							+ StringUtils.abbreviateString(news[0], 41));
+							+ StringUtils.abbreviateString(news[0], 39));
 					nov.addMouseListener(new MouseAdapter() {
 						@Override public void mouseClicked(MouseEvent en) {
 							DesktopUtils.browseSafe(news[1]);
@@ -627,7 +627,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				if (motw != null) {
 					lab3.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
 							+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">"
-							+ StringUtils.abbreviateString(motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
+							+ StringUtils.abbreviateString(motw[0], 30) + "&nbsp;&nbsp;&nbsp;&nbsp;");
 					lab2.setIcon(imageIcon);
 				} else {
 					lab3.setText("");
@@ -642,7 +642,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-365);
+			((ImagePanel) soim).setOffsetY(-320);
 		} else {
 			soim = new JPanel();
 			soim.setBackground(Theme.current().getSecondAltBackgroundColor());
