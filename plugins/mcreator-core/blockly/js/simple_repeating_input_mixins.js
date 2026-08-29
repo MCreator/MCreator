@@ -3,7 +3,7 @@
 // The empty message is localized as "blockly.block.block_type.empty"
 // The input provider is a function that accepts the block being mutated, the input name and the input index
 // If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
-// The empty message/empty input can be avoided by setting addEmptyIfEmpty to false
+// The empty message/empty input can be avoided by setting addEmptyInputIfEmpty to false
 // If updateTitleIfEmpty is set, the block's title label switches to the empty message when there are no inputs
 function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
                                    fieldNames = [], disableIfEmpty, addEmptyInputIfEmpty = true,
@@ -135,7 +135,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 
         // Handle the dummy "empty" input or warning for when there are no proper inputs
         handleEmptyInput_: function (disableIfEmpty, addEmptyInputIfEmpty) {
-            if (disableIfEmpty === undefined && !addEmptyInputIfEmpty) {
+            if (disableIfEmpty === undefined && addEmptyInputIfEmpty) {
                 if (this.inputCount_ && this.getInput('EMPTY')) {
                     this.removeInput('EMPTY');
                 } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
@@ -339,7 +339,7 @@ Blockly.Extensions.registerMutator('player_predicate_mutator', simpleRepeatingIn
         function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck('PlayerPredicateComponent').setAlign(Blockly.ALIGN_RIGHT)
                 .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
-        }, true, [], undefined, true, true),
+        }, true, [], undefined, false, true),
     undefined, ['player_predicate_mutator_input']);
 
 Blockly.Extensions.registerMutator('location_component_mutator', simpleRepeatingInputMixin(
