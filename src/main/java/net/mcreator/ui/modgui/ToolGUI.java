@@ -46,7 +46,10 @@ import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.ConditionalValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -85,6 +88,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JSpinner spearMinimumKnockbackSpeed = ComponentFromAnnotation.spinner(Tool.class, "spearMinimumKnockbackSpeed");
 	private final JSpinner spearMaximumKineticDamageTime = ComponentFromAnnotation.spinner(Tool.class, "spearMaximumKineticDamageTime");
 	private final JSpinner spearMinimumKineticDamageSpeed = ComponentFromAnnotation.spinner(Tool.class, "spearMinimumKineticDamageSpeed");
+	private final JSpinner spearAttackDamageBonus = ComponentFromAnnotation.spinner(Tool.class, "spearAttackDamageBonus");
 
 	private final JComboBox<String> blockDropsTier = ComponentFromAnnotation.options(Tool.class, "blockDropsTier");
 
@@ -140,6 +144,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			JAttributeModifierList.EntryType.ITEM);
 
 	private final ValidationGroup page1group = new ValidationGroup();
+	private final ValidationGroup page2group = new ValidationGroup();
 
 	public ToolGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -199,6 +204,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
 		spearInHandTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		spearInHandTexture.setOpaque(false);
 
 		toolType.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -288,6 +294,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		itemProperties.add(damageOnCrafting);
 
 		JPanel toolPropertiesBase = new JPanel(new BorderLayout());
+		toolPropertiesBase.setOpaque(false);
 
 		JPanel toolProperties = new JPanel(new AdaptiveGridLayout(-1, 1, 0, 2));
 		toolProperties.setOpaque(false);
@@ -371,6 +378,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.label("elementgui.tool.spear_minimum_kinetic_damage_speed")));
 		spearPropertiesPanel.add(spearMinimumKineticDamageSpeed);
 
+		spearPropertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/spear_attack_damage_bonus"),
+				L10N.label("elementgui.tool.spear_attack_damage_bonus")));
+		spearPropertiesPanel.add(spearAttackDamageBonus);
+
 		ComponentUtils.makeSection(spearPropertiesPanel, "Spear properties");
 
 		toolPropertiesBase.add(PanelUtils.northAndCenterElement(toolProperties, spearPropertiesPanel));
@@ -409,9 +420,22 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
 		page1group.addValidationElement(texture);
+		page1group.addValidationElement(renderType);
+		page2group.addValidationElement(name).addValidationElement(spearInHandTexture);
+
+		renderType.setValidator(new ConditionalValidator(() ->
+				toolType.getSelectedItem() != null && toolType.getSelectedItem().equals("Spear")
+					&& renderType.getSelectedItem() != null
+		, () -> renderType.getSelectedItem() != null
+				&& renderType.getSelectedItem().getType() == Model.Type.BUILTIN
+				? ValidationResult.PASSED
+				: new ValidationResult(ValidationResult.Type.ERROR, L10N.t("elementgui.tool.error_spear_unsupported_model"))));
+
+		spearInHandTexture.setValidator(new TextureSelectionButtonValidator(spearInHandTexture, () ->
+				toolType.getSelectedItem() != null && toolType.getSelectedItem().equals("Spear")));
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
-		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(name);
+		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(page2group);
 		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), attributeModifiersPage).lazyValidate(
 				attributeModifiersList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
@@ -518,6 +542,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		spearMinimumKnockbackSpeed.setValue(tool.spearMinimumKnockbackSpeed);
 		spearMaximumKineticDamageTime.setValue(tool.spearMaximumKineticDamageTime);
 		spearMinimumKineticDamageSpeed.setValue(tool.spearMinimumKineticDamageSpeed);
+		spearAttackDamageBonus.setValue(tool.spearAttackDamageBonus);
 		guiTexture.setTexture(tool.guiTexture);
 		toolType.setSelectedItem(tool.toolType);
 		blockDropsTier.setSelectedItem(tool.blockDropsTier);
@@ -602,6 +627,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.spearMinimumKnockbackSpeed = (double) spearMinimumKnockbackSpeed.getValue();
 		tool.spearMaximumKineticDamageTime = (double) spearMaximumKineticDamageTime.getValue();
 		tool.spearMinimumKineticDamageSpeed = (double) spearMinimumKineticDamageSpeed.getValue();
+		tool.spearAttackDamageBonus = (double) spearAttackDamageBonus.getValue();
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		tool.immuneToFire = immuneToFire.isSelected();

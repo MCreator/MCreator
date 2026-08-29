@@ -2578,6 +2578,7 @@ public class TestWorkspaceDataProvider {
 		tool.spearMinimumKnockbackSpeed = getRandomDouble(random, Tool.class, "spearMinimumKnockbackSpeed");
 		tool.spearMaximumKineticDamageTime = getRandomDouble(random, Tool.class, "spearMaximumKineticDamageTime");
 		tool.spearMinimumKineticDamageSpeed = getRandomDouble(random, Tool.class, "spearMinimumKineticDamageSpeed");
+		tool.spearAttackDamageBonus = getRandomDouble(random, Tool.class, "spearAttackDamageBonus");
 
 		if (!emptyLists && "Special".equals(toolType)) {
 			List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());

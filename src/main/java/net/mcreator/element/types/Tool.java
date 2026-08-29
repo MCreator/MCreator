@@ -73,11 +73,12 @@ import java.util.stream.Collectors;
 	@Numeric(init = 0.82, min = 0.01, max = 128000, step = 0.05) public double spearKineticDamageMultiplier;
 	@Numeric(init = 0.65, min = 0.01, max = 128000, step = 0.05) public double spearKineticCooldown;
 	@Numeric(init = 4.0, min = 0.01, max = 128000, step = 0.05) public double spearDismountTime;
-	@Numeric(init = 9.0, min = 0.01, max = 128000.0, step = 0.1) public double spearMinimumDismountSpeed;
-	@Numeric(init = 8.25, min = 0.01, max = 128000.0, step = 0.05) public double spearMaximumKnockbackTime;
-	@Numeric(init = 5.1, min = 0.01, max = 128000.0, step = 0.1) public double spearMinimumKnockbackSpeed;
+	@Numeric(init = 9.0, min = 0.01, max = 128000, step = 0.1) public double spearMinimumDismountSpeed;
+	@Numeric(init = 8.25, min = 0.01, max = 128000, step = 0.05) public double spearMaximumKnockbackTime;
+	@Numeric(init = 5.1, min = 0.01, max = 128000, step = 0.1) public double spearMinimumKnockbackSpeed;
 	@Numeric(init = 12.5, min = 0.01, max = 128000, step = 0.1) public double spearMaximumKineticDamageTime;
 	@Numeric(init = 4.6, min = 0.01, max = 128000, step = 0.1) public double spearMinimumKineticDamageSpeed;
+	@Numeric(init = 0.0, min = 0.0, max = 128000, step = 0.1) public double spearAttackDamageBonus;
 
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
@@ -122,6 +123,17 @@ import java.util.stream.Collectors;
 		this.blockingModelName = "Normal blocking";
 
 		this.blockDropsTier = "WOOD";
+
+		this.spearSpeedModifier = 0.85;
+		this.spearKineticDamageMultiplier = 0.82;
+		this.spearKineticCooldown = 0.65;
+		this.spearDismountTime = 4.0;
+		this.spearMinimumDismountSpeed = 9.0;
+		this.spearMaximumKnockbackTime = 8.25;
+		this.spearMinimumKnockbackSpeed = 5.1;
+		this.spearMaximumKineticDamageTime = 12.5;
+		this.spearMinimumKineticDamageSpeed = 4.6;
+		this.spearAttackDamageBonus = 0.0;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
