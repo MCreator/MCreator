@@ -2,10 +2,11 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 import java.nio.file.Files
 
-def jbr_win_64 = 'jbrsdk_jcef-25.0.3-windows-x64-b508.16'
-def jbr_linux_64 = 'jbrsdk_jcef-25.0.3-linux-x64-b508.16'
-def jbr_mac_x64 = 'jbrsdk_jcef-25.0.3-osx-x64-b508.16'
-def jbr_mac_aarch64 = 'jbrsdk_jcef-25.0.3-osx-aarch64-b508.16'
+// JBR version and build number are defined in gradle.properties
+def jbr_win_64 = "jbrsdk_jcef-${property('jbr.version')}-windows-x64-${property('jbr.build')}"
+def jbr_linux_64 = "jbrsdk_jcef-${property('jbr.version')}-linux-x64-${property('jbr.build')}"
+def jbr_mac_x64 = "jbrsdk_jcef-${property('jbr.version')}-osx-x64-${property('jbr.build')}"
+def jbr_mac_aarch64 = "jbrsdk_jcef-${property('jbr.version')}-osx-aarch64-${property('jbr.build')}"
 
 // Binaries needed on Windows for export (install them using Gradle since Windows does not have a package manager)
 def nsis_url = 'https://altushost-swe.dl.sourceforge.net/project/nsis/NSIS%203/3.12/nsis-3.12.zip'
@@ -203,6 +204,7 @@ tasks.register('initialSetup') {
 if (idea.project != null) {
     idea.project.settings.taskTriggers {
         afterSync initialSetup
+        beforeBuild initialSetup
     }
 }
 
