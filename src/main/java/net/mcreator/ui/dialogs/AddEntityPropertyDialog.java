@@ -47,10 +47,9 @@ public class AddEntityPropertyDialog {
 
 		VTextField name = new VTextField(24);
 		name.setPreferredSize(new Dimension(0, 28));
-		var validator = new CompoundValidator(new JavaMemberNameValidator(name, false),
-				new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
-				name::getText, () -> currentEntries.stream().map(PropertyData::getName)).setIsPresentOnList(false));
-		name.setValidator(validator);
+		name.setValidator(new CompoundValidator(new JavaMemberNameValidator(name, false),
+				new UniqueNameValidator(L10N.t("workspace.variables.variable_name"), name::getText,
+						() -> currentEntries.stream().map(PropertyData::getName)).setIsPresentOnList(false)));
 		name.enableRealtimeValidation();
 
 		JComboBox<String> type = new JComboBox<>(new String[] { "Integer", "Logic", "String" });
