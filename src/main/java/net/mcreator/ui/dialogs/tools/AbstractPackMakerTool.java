@@ -53,7 +53,7 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		this.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools." + localizationKey + "_info")));
 
 		JButton ok = L10N.button("dialog.tools." + localizationKey + "_create");
-		ok.addActionListener(e -> {
+		ok.addActionListener(_ -> {
 			if (validableElements.validateIsErrorFree()) {
 				this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
@@ -73,7 +73,7 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 			}
 		});
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		cancel.addActionListener(e -> this.dispose());
+		cancel.addActionListener(_ -> this.dispose());
 		this.add("South", PanelUtils.join(ok, cancel));
 
 		this.getRootPane().setDefaultButton(ok);
