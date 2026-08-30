@@ -70,6 +70,11 @@ public class ${JavaModName}Menus {
 		}
 	}
 
+	<#-- Implemented by mod blocks bound to a GUI so menus can check at runtime whether the block at the GUI opening position is bound to them -->
+	public interface BoundBlock {
+		Class<? extends AbstractContainerMenu> getBoundMenuClass();
+	}
+
 }
 
 <#-- @formatter:on -->
