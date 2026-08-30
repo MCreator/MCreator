@@ -169,8 +169,12 @@ public class SoundElement implements IElement {
 		}
 
 		public boolean isInline() {
-			return volume == 1 && pitch == 1 && attenuationDistance == 16 && weight == 1 && !category.equals("record")
-					&& !category.equals("music") && beIs3D && beInterruptible;
+			return isInline(category.equals("record") || category.equals("music"));
+		}
+
+		public boolean isInline(boolean isStream) {
+			return volume == 1 && pitch == 1 && attenuationDistance == 16 && weight == 1 && !isStream && beIs3D
+					&& beInterruptible;
 		}
 
 		@Override public String toString() {
@@ -216,11 +220,11 @@ public class SoundElement implements IElement {
 				files.forEach(file -> file.setCategory(str));
 				category = str;
 			} else if (isBedrock) {
-				category = getObjectName(jsonObject, "beCategory", "neutral");
+				category = getObjValue(jsonObject, "beCategory", "neutral");
 			}
 
 			String name = jsonObject.get("name").getAsString();
-			String subtitle = getObjectName(jsonObject, "subtitle");
+			String subtitle = getObjValue(jsonObject, "subtitle");
 
 			return isBedrock ?
 					new BedrockSoundElement(name, category, getBEAttenuationDistance(jsonObject), files, subtitle) :
@@ -240,11 +244,11 @@ public class SoundElement implements IElement {
 			return jsonObject.has(name) ? jsonObject.get(name).getAsFloat() : 0;
 		}
 
-		private static String getObjectName(JsonObject jsonObject, String name) {
-			return getObjectName(jsonObject, name, null);
+		private static String getObjValue(JsonObject jsonObject, String name) {
+			return getObjValue(jsonObject, name, null);
 		}
 
-		private static String getObjectName(JsonObject jsonObject, String name, String defaultValue) {
+		private static String getObjValue(JsonObject jsonObject, String name, String defaultValue) {
 			return jsonObject.has(name) ? jsonObject.get(name).getAsString() : defaultValue;
 		}
 	}

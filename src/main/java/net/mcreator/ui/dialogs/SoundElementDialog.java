@@ -207,8 +207,8 @@ public class SoundElementDialog {
 		}
 
 		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
-		JMinMaxSpinner jMinMaxSpinner = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
-		soundCategory.addActionListener(_ -> jMinMaxSpinner.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
+		JMinMaxSpinner attenuationDistance = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
+		soundCategory.addActionListener(_ -> attenuationDistance.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
 
 		ui.add(L10N.label("dialog.sounds.category"));
 		ui.add(soundCategory);
@@ -217,7 +217,7 @@ public class SoundElementDialog {
 				PanelUtils.join(FlowLayout.LEFT, 0, 0, L10N.label("dialog.sounds.attenuation_distance"),
 						PanelUtils.join(FlowLayout.RIGHT,
 								HelpUtils.helpButton(IHelpContext.NONE.withEntry("sound/attenuation_distance")))));
-		ui.add(jMinMaxSpinner);
+		ui.add(attenuationDistance);
 
 		ui.add(L10N.label("dialog.sounds.subtitle"));
 		ui.add(subtitle);
@@ -228,8 +228,8 @@ public class SoundElementDialog {
 			subtitle.setText(element.getSubtitle());
 			soundsEntries.setEntries(element.getFiles());
 			soundCategory.setSelectedItem(element.getBECategory());
-			jMinMaxSpinner.setMinValue(element.getBEAttenuationDistance().min);
-			jMinMaxSpinner.setMaxValue(element.getBEAttenuationDistance().max);
+			attenuationDistance.setMinValue(element.getBEAttenuationDistance().min);
+			attenuationDistance.setMaxValue(element.getBEAttenuationDistance().max);
 		}
 
 		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils.northAndCenterElement(ui, pane1),
@@ -288,13 +288,13 @@ public class SoundElementDialog {
 						element.setFiles(sounds);
 						element.setBECategory((String) soundCategory.getSelectedItem());
 						element.setBEAttenuationDistance(
-								new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()));
+								new Biome.ClimatePoint(attenuationDistance.getMinValue(), attenuationDistance.getMaxValue()));
 
 						return element;
 					}
 
 					return new BedrockSoundElement(registryname, (String) soundCategory.getSelectedItem(),
-							new Biome.ClimatePoint(jMinMaxSpinner.getMinValue(), jMinMaxSpinner.getMaxValue()), sounds,
+							new Biome.ClimatePoint(attenuationDistance.getMinValue(), attenuationDistance.getMaxValue()), sounds,
 							subtitle.getText());
 				}
 			}
