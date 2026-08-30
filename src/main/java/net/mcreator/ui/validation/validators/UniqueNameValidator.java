@@ -30,8 +30,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * While serving as a wrapper for the main component validator (if specified), a unique name validator also checks
- * if that component provides a non-empty identifier that has no duplicates in the given elements list.
+ * A unique name validator checks if a component provides a non-empty identifier that has no duplicates in the given elements list.
  */
 public class UniqueNameValidator implements Validator {
 
