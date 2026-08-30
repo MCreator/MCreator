@@ -49,7 +49,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -431,8 +431,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				? ValidationResult.PASSED
 				: new ValidationResult(ValidationResult.Type.ERROR, L10N.t("elementgui.tool.error_spear_unsupported_model"))));
 
-		spearInHandTexture.setValidator(new TextureSelectionButtonValidator(spearInHandTexture, () ->
-				toolType.getSelectedItem() != null && toolType.getSelectedItem().equals("Spear")));
+		spearInHandTexture.setValidator(new ConditionalValidator(
+				() -> toolType.getSelectedItem() != null && toolType.getSelectedItem().equals("Spear")
+				, new NonEmptyValidator(spearInHandTexture, L10N.t("elementgui.item.error_spear_in_hand_needs_texture"))
+		));
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(page2group);
