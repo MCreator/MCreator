@@ -37,8 +37,7 @@ public class ModElementNameValidator extends UniqueNameValidator {
 	// Private constructor so we can construct UniqueNameValidator with a reference to usedNames stream
 	private ModElementNameValidator(@Nonnull Workspace workspace, VTextField textField, String name,
 			List<String> usedNames) {
-		super(name, () -> JavaConventions.convertToValidClassName(textField.getText()), usedNames::stream,
-				new JavaMemberNameValidator(textField, true));
+		super(name, () -> JavaConventions.convertToValidClassName(textField.getText()), usedNames::stream);
 		this.usedNames = usedNames;
 
 		setIsPresentOnList(false);

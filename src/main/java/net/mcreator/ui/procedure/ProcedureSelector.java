@@ -37,6 +37,8 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
+import net.mcreator.ui.validation.validators.CompoundValidator;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.util.StringUtils;
@@ -156,7 +158,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
-		procedures.addActionListener(e -> {
+		procedures.addActionListener(_ -> {
 			ProcedureEntry selectedItem = procedures.getSelectedItem();
 			if (selectedItem != null) {
 				if (!selectedItem.correctDependencies) {
@@ -215,7 +217,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		if (allowInlineEditor) {
 			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
-			add.addActionListener(e -> {
+			add.addActionListener(_ -> {
 				String procedureNameString = "";
 				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI) {
 					StringBuilder procedureNameBuilder = new StringBuilder(
@@ -235,8 +237,9 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 						L10N.t("action.procedure.enter_procedure_name"),
 						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidator.Cached() {
 							@Override public Validator createValidator(JComponent component) {
-								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
-										L10N.t("common.mod_element_name"));
+								return new CompoundValidator(new JavaMemberNameValidator((VTextField) component, true),
+										new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
+												L10N.t("common.mod_element_name")));
 							}
 						}, L10N.t("action.procedure.create_procedure"),
 						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString,
@@ -260,7 +263,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			});
 
 			edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
-			edit.addActionListener(e -> {
+			edit.addActionListener(_ -> {
 				if (getSelectedProcedure() != null) {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
 							.getModElementByName(getSelectedProcedure().getName());
