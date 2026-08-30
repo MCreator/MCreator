@@ -37,6 +37,7 @@ import net.mcreator.workspace.Workspace;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MaterialPackMakerTool extends AbstractPackMakerTool {
@@ -89,7 +90,8 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 			Workspace workspace, String name, String type, Color color, double factor) {
 		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color,
 				factor);
-		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
+		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor,
+				new HashMap<>());
 		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
 	}
 
