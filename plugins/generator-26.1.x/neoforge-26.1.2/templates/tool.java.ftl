@@ -116,7 +116,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
 			.setNoCombineRepair()
 			</#if>
-			<#if (data.attributeModifiers?size gt 0) && (data.toolType == "Pickaxe" || data.toolType == "Sword" || data.toolType == "Spear" || data.toolType == "Shears" || data.toolType == "Shield")>
+			<#if (data.attributeModifiers?size gt 0) && (data.toolType == "Pickaxe" || data.toolType == "Sword" || data.toolType == "Shears" || data.toolType == "Shield")>
 			.attributes(<@itemAttributeModifiers (data.toolType == "Pickaxe" || data.toolType == "Sword")/>)
 			</#if>
 		);
@@ -128,7 +128,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		<#if data.usageCount == 0>
 			.set(DataComponents.MAX_DAMAGE, null)
 		</#if>
-		<#if data.attributeModifiers?size gt 0 && (data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe")>
+		<#if data.attributeModifiers?size gt 0 && (data.toolType == "Axe" || data.toolType == "Spear" || data.toolType == "Spade" || data.toolType == "Hoe")>
 			.set(DataComponents.ATTRIBUTE_MODIFIERS, <@itemAttributeModifiers true/>)
 		</#if>
 		);
@@ -295,7 +295,7 @@ public class ${name}Item extends FishingRodItem {
 	<#if data.usageCount == 0>
 		<#return toolType == "Pickaxe" || toolType == "Axe" || toolType == "Sword" || toolType == "Spade" || toolType == "Hoe" || toolType == "MultiTool">
 	<#elseif data.attributeModifiers?size gt 0>
-		<#return toolType == "Axe" || toolType == "Spade" || toolType == "Hoe">
+		<#return toolType == "Axe" || toolType == "Spear" || toolType == "Spade" || toolType == "Hoe">
 	<#else>
 		<#return false>
 	</#if>
