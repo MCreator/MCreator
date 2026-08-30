@@ -25,7 +25,6 @@ import net.mcreator.ui.validation.Validator;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -44,15 +43,13 @@ public class UniqueNameValidator implements Validator {
 	private boolean ignoreCase;
 	private final Collection<String> forbiddenNames;
 
-	private final Validator extraValidator;
-
 	/**
 	 * @param name             The text used to describe the purpose of the holder.
 	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
 	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
 	 */
 	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames) {
-		this(name, uniqueNameGetter, otherNames, Collections.emptyList(), null);
+		this(name, uniqueNameGetter, otherNames, Collections.emptyList());
 	}
 
 	/**
@@ -63,36 +60,12 @@ public class UniqueNameValidator implements Validator {
 	 */
 	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,
 			Collection<String> forbiddenNames) {
-		this(name, uniqueNameGetter, otherNames, forbiddenNames, null);
-	}
-
-	/**
-	 * @param name             The text used to describe the purpose of the holder.
-	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
-	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
-	 * @param extraValidator   The main validator for the holder.
-	 */
-	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,
-			Validator extraValidator) {
-		this(name, uniqueNameGetter, otherNames, Collections.emptyList(), extraValidator);
-	}
-
-	/**
-	 * @param name             The text used to describe the purpose of the holder.
-	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
-	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
-	 * @param forbiddenNames   List of strings that must not be used as a name, e.g. names of built-in properties.
-	 * @param extraValidator   The main validator for the holder.
-	 */
-	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,
-			Collection<String> forbiddenNames, Validator extraValidator) {
 		this.name = name;
 		this.uniqueNameGetter = uniqueNameGetter;
 		this.otherNames = otherNames;
 		this.isPresentOnList = () -> true;
 		this.ignoreCase = false;
 		this.forbiddenNames = forbiddenNames;
-		this.extraValidator = Objects.requireNonNullElse(extraValidator, () -> ValidationResult.PASSED);
 	}
 
 	/**
@@ -128,25 +101,6 @@ public class UniqueNameValidator implements Validator {
 		return this;
 	}
 
-	/**
-	 * Returns a copy of this UniqueNameValidator with main validator changed to the passed one.
-	 *
-	 * @param extraValidator The new main validator for the validated element.
-	 */
-	public UniqueNameValidator wrapValidator(Validator extraValidator) {
-		return new UniqueNameValidator(name, uniqueNameGetter, otherNames, forbiddenNames,
-				extraValidator).setIsPresentOnList(isPresentOnList).setIgnoreCase(ignoreCase);
-	}
-
-	/**
-	 * Returns the main validator for the validated element.
-	 *
-	 * @return The main validator for the validated element.
-	 */
-	public Validator getExtraValidator() {
-		return extraValidator;
-	}
-
 	private Predicate<String> textCheck(String name) {
 		return ignoreCase ? name::equalsIgnoreCase : name::equals;
 	}
@@ -159,7 +113,7 @@ public class UniqueNameValidator implements Validator {
 				|| forbiddenNames.contains(uniqueName))
 			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.unique_name.duplicate", name));
 
-		return extraValidator.validate();
+		return ValidationResult.PASSED;
 	}
 
 }
