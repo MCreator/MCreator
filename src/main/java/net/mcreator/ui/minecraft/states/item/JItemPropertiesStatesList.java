@@ -43,6 +43,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
@@ -87,22 +88,23 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.setOpaque(false);
 
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
-		addProperty.addActionListener(e -> {
+		addProperty.addActionListener(_ -> {
 			String name = VOptionPane.showInputDialog(mcreator, L10N.t("elementgui.item.custom_properties.add.message"),
 					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidator.Cached() {
 						@Override public Validator createValidator(JComponent component) {
-							return new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
-									((VTextField) component)::getText,
-									() -> propertiesList.stream().map(JItemPropertiesListEntry::getPropertyName),
-									builtinPropertyNames, new RegistryNameValidator((VTextField) component,
-									L10N.t("elementgui.item.custom_properties.add.input"))).setIsPresentOnList(false);
+							return new CompoundValidator(new RegistryNameValidator((VTextField) component,
+									L10N.t("elementgui.item.custom_properties.add.input")),
+									new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
+											((VTextField) component)::getText, () -> propertiesList.stream()
+											.map(JItemPropertiesListEntry::getPropertyName),
+											builtinPropertyNames).setIsPresentOnList(false));
 						}
 					});
 			if (name != null)
 				addPropertiesEntry(name);
 		});
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
-		addState.addActionListener(e -> addStatesEntry(true));
+		addState.addActionListener(_ -> addStatesEntry(true));
 
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {

@@ -28,6 +28,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
@@ -46,7 +47,7 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 
 		add.setText(L10N.t("elementgui.structuregen.jigsaw_add_pool"));
-		add.addActionListener(e -> {
+		add.addActionListener(_ -> {
 			JJigsawPool pool = new JJigsawPool(this, gui, entries, entryList);
 			registerEntryUI(pool);
 			pool.addInitialEntry();
@@ -56,9 +57,10 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 	}
 
 	Validator newPoolNameValidator(VTextField nameField) {
-		return new UniqueNameValidator(L10N.t("elementgui.structuregen.jigsaw_pool_name_validator"), nameField::getText,
-				() -> entryList.stream().map(JJigsawPool::getPoolName),
-				new RegistryNameValidator(nameField, L10N.t("elementgui.structuregen.jigsaw_pool_name_validator")));
+		return new CompoundValidator(
+				new RegistryNameValidator(nameField, L10N.t("elementgui.structuregen.jigsaw_pool_name_validator")),
+				new UniqueNameValidator(L10N.t("elementgui.structuregen.jigsaw_pool_name_validator"),
+						nameField::getText, () -> entryList.stream().map(JJigsawPool::getPoolName)));
 	}
 
 	ModElement getModElement() {

@@ -28,6 +28,7 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -50,11 +51,10 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
-		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.checkbox_name_validator"),
-				nameField::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
-				new JavaMemberNameValidator(nameField, false));
-		validator.setIsPresentOnList(checkbox != null);
-		nameField.setValidator(validator);
+		nameField.setValidator(new CompoundValidator(new JavaMemberNameValidator(nameField, false),
+				new UniqueNameValidator(L10N.t("dialog.gui.checkbox_name_validator"), nameField::getText,
+						() -> editor.getComponentList().stream().map(GUIComponent::getName)).setIsPresentOnList(
+						checkbox != null)));
 		nameField.enableRealtimeValidation();
 		grid.add(L10N.label("dialog.gui.checkbox_name"));
 		grid.add(nameField);
@@ -90,8 +90,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 			isCheckedProcedure.setSelectedProcedure(checkbox.isCheckedProcedure);
 		}
 
-		cancel.addActionListener(arg01 -> dispose());
-		ok.addActionListener(arg01 -> {
+		cancel.addActionListener(_ -> dispose());
+		ok.addActionListener(_ -> {
 			if (nameField.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				String checkBoxName = nameField.getText();

@@ -39,6 +39,7 @@ import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
@@ -138,15 +139,17 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		brewingRecipeMaker.setOpaque(false);
 
 		//@formatter:off
-		name.setValidator(new UniqueNameValidator(
+		name.setValidator(
+				new CompoundValidator(
+						new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/')),
+				new UniqueNameValidator(
 			L10N.t("modelement.recipe"),
 			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
 			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.RECIPE).stream()
 				.map(ModElement::getGeneratableElement)
 				.filter(Objects::nonNull)
-				.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name),
-			new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/'))
-		).setIsPresentOnList(this::isEditingMode));
+				.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name))
+						.setIsPresentOnList(this::isEditingMode)));
 		//@formatter:on
 		name.enableRealtimeValidation();
 		name.addItem("crafting_table");

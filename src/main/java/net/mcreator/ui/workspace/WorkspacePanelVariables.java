@@ -33,6 +33,7 @@ import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.DesktopUtils;
@@ -137,10 +138,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
-					UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
-							name::getText, () -> TableUtil.getColumnContents(elements, 0).stream(),
-							new JavaMemberNameValidator(name, false));
-					name.setValidator(validator);
+					name.setValidator(new CompoundValidator(new JavaMemberNameValidator(name, false),
+							new UniqueNameValidator(L10N.t("workspace.variables.variable_name"), name::getText,
+									() -> TableUtil.getColumnContents(elements, 0).stream())));
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
 							return name.getValidationStatus().type() != ValidationResult.Type.ERROR
@@ -207,11 +207,11 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidator.Cached() {
 						@Override public Validator createValidator(JComponent component) {
-							return new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
-									() -> ((VTextField) component).getText(),
-									() -> TableUtil.getColumnContents(elements, 0).stream(),
-									new JavaMemberNameValidator((VTextField) component, false)).setIsPresentOnList(
-									false);
+							return new CompoundValidator(new JavaMemberNameValidator((VTextField) component, false),
+									new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
+											() -> ((VTextField) component).getText(),
+											() -> TableUtil.getColumnContents(elements, 0).stream()).setIsPresentOnList(
+											false));
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
 							workspacePanel.getMCreator().getGeneratorConfiguration()));

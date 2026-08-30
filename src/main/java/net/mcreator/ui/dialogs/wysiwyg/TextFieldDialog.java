@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -43,11 +44,10 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
-		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.textfield_name_validator"),
-				nameField::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
-				new JavaMemberNameValidator(nameField, false));
-		validator.setIsPresentOnList(textField != null);
-		nameField.setValidator(validator);
+		nameField.setValidator(new CompoundValidator(new JavaMemberNameValidator(nameField, false),
+				new UniqueNameValidator(L10N.t("dialog.gui.textfield_name_validator"), nameField::getText,
+						() -> editor.getComponentList().stream().map(GUIComponent::getName)).setIsPresentOnList(
+						textField != null)));
 		nameField.enableRealtimeValidation();
 
 		JTextField deft = new JTextField(20);
@@ -79,8 +79,8 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 			deft.setText(textField.placeholder);
 		}
 
-		cancel.addActionListener(arg01 -> dispose());
-		ok.addActionListener(arg01 -> {
+		cancel.addActionListener(_ -> dispose());
+		ok.addActionListener(_ -> {
 			if (nameField.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				String text = nameField.getText();

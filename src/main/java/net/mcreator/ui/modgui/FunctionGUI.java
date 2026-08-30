@@ -32,6 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
@@ -68,15 +69,14 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		pane3.setOpaque(false);
 
 		//@formatter:off
-		name.setValidator(new UniqueNameValidator(
-			L10N.t("modelement.function"),
-			() -> namespace.getSelectedItem() + ":" + name.getText(),
-			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.FUNCTION).stream()
-				.map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull)
-				.map(ge -> ((Function) ge).namespace + ":" + ((Function) ge).name),
-			new RegistryNameValidator(name, L10N.t("modelement.function")).setValidChars(Arrays.asList('_', '/'))
-		).setIsPresentOnList(this::isEditingMode));
+		name.setValidator(new CompoundValidator(
+				new RegistryNameValidator(name, L10N.t("modelement.function")).setValidChars(Arrays.asList('_', '/')),
+				new UniqueNameValidator(L10N.t("modelement.function"),
+						() -> namespace.getSelectedItem() + ":" + name.getText(),
+						() -> mcreator.getWorkspace().getModElementsByType(ModElementType.FUNCTION).stream()
+								.map(ModElement::getGeneratableElement).filter(Objects::nonNull)
+								.map(ge -> ((Function) ge).namespace + ":" + ((Function) ge).name))
+						.setIsPresentOnList(this::isEditingMode)));
 		//@formatter:on
 		name.enableRealtimeValidation();
 

@@ -36,6 +36,7 @@ import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -110,16 +111,15 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		page1group.addValidationElement(professionTextureFile);
 		page1group.addValidationElement(zombifiedProfessionTextureFile);
 
-		pointOfInterest.setValidator(
+		pointOfInterest.setValidator(new CompoundValidator(
+				new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty()
+						.setEmptyMessage(L10N.t("elementgui.villager_profession.error_profession_needs_block")),
 				new UniqueNameValidator(L10N.t("elementgui.villager_profession.profession_block_validator"),
 						() -> pointOfInterest.getBlock().getUnmappedValue(),
 						() -> ElementUtil.loadAllPOIBlocks(mcreator.getWorkspace()).stream()
 								.map(MItemBlock::getUnmappedValue),
 						ElementUtil.loadBlocks(mcreator.getWorkspace()).stream().filter(MCItem::isPOI)
-								.map(DataListEntry::getName).toList(),
-						new MCItemHolderValidator(pointOfInterest).considerAirAsEmpty().setEmptyMessage(
-								L10N.t("elementgui.villager_profession.error_profession_needs_block"))).setIsPresentOnList(
-						this::isEditingMode));
+								.map(DataListEntry::getName).toList()).setIsPresentOnList(this::isEditingMode)));
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(subpanel)).validate(
 				page1group);

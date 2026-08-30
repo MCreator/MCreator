@@ -50,6 +50,26 @@ public class UniqueNameValidator implements Validator {
 	 * @param name             The text used to describe the purpose of the holder.
 	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
 	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
+	 */
+	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames) {
+		this(name, uniqueNameGetter, otherNames, Collections.emptyList(), null);
+	}
+
+	/**
+	 * @param name             The text used to describe the purpose of the holder.
+	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
+	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
+	 * @param forbiddenNames   List of strings that must not be used as a name, e.g. names of built-in properties.
+	 */
+	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,
+			Collection<String> forbiddenNames) {
+		this(name, uniqueNameGetter, otherNames, forbiddenNames, null);
+	}
+
+	/**
+	 * @param name             The text used to describe the purpose of the holder.
+	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
+	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
 	 * @param extraValidator   The main validator for the holder.
 	 */
 	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,

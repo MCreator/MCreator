@@ -32,6 +32,7 @@ import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
@@ -55,10 +56,11 @@ public class AddBlockPropertyDialog {
 				true);
 
 		VTextField name = new VTextField(24);
-		name.setValidator(new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
-				() -> currentEntries.stream().map(BlockStatePropertyUtils::propertyRegistryName),
-				nonUserProvidedProperties.get(), new RegistryNameValidator(name,
-				L10N.t("elementgui.block.custom_properties.add.input"))).setIsPresentOnList(false));
+		name.setValidator(new CompoundValidator(
+				new RegistryNameValidator(name, L10N.t("elementgui.block.custom_properties.add.input")),
+				new UniqueNameValidator(L10N.t("elementgui.block.custom_properties.add.input"), name::getText,
+						() -> currentEntries.stream().map(BlockStatePropertyUtils::propertyRegistryName),
+						nonUserProvidedProperties.get()).setIsPresentOnList(false)));
 		name.enableRealtimeValidation();
 		JComboBox<String> type = new JComboBox<>(new String[] { "Logic", "Integer", "Enum" });
 

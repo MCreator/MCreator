@@ -34,6 +34,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
@@ -73,15 +74,15 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		pane3.setOpaque(false);
 
 		//@formatter:off
-		name.setValidator(new UniqueNameValidator(
-			L10N.t("modelement.loottable"),
-			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
-			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.LOOTTABLE).stream()
-				.map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull)
-				.map(ge -> ((LootTable) ge).namespace + ":" + ((LootTable) ge).name),
-			new RegistryNameValidator(name, L10N.t("modelement.loottable")).setValidChars(Arrays.asList('_', '/'))
-		).setIsPresentOnList(this::isEditingMode));
+		name.setValidator(new CompoundValidator(
+				new RegistryNameValidator(name, L10N.t("modelement.loottable")).setValidChars(Arrays.asList('_', '/')),
+				new UniqueNameValidator(L10N.t("modelement.loottable"),
+						() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor()
+								.getEditorComponent()).getText(),
+						() -> mcreator.getWorkspace().getModElementsByType(ModElementType.LOOTTABLE).stream()
+								.map(ModElement::getGeneratableElement).filter(Objects::nonNull)
+								.map(ge -> ((LootTable) ge).namespace + ":"
+										+ ((LootTable) ge).name)).setIsPresentOnList(this::isEditingMode)));
 		//@formatter:on
 		name.enableRealtimeValidation();
 		name.setPreferredSize(new Dimension(350, 0));
@@ -128,7 +129,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 			});
 		}
 
-		lootTableToModify.setValidator(new ResourceLocationValidator(L10N.t("modelement.loottable"),
+		lootTableToModify.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.loottable"),
 				lootTableToModify, true).setAllowEmpty(true));
 		lootTableToModify.enableRealtimeValidation();
 		lootTableToModify.setPreferredSize(new Dimension(350, 0));

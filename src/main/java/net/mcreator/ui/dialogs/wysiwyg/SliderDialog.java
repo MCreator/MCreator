@@ -30,6 +30,7 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
@@ -49,18 +50,17 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 		setTitle(L10N.t("dialog.gui.slider_add_title"));
 
 		VTextField sliderMachineName = new VTextField(15);
-		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.slider_name_validator"),
-				sliderMachineName::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
-				new JavaMemberNameValidator(sliderMachineName, false));
-		validator.setIsPresentOnList(slider != null);
-		sliderMachineName.setValidator(validator);
+		sliderMachineName.setValidator(new CompoundValidator(new JavaMemberNameValidator(sliderMachineName, false),
+				new UniqueNameValidator(L10N.t("dialog.gui.slider_name_validator"), sliderMachineName::getText,
+						() -> editor.getComponentList().stream().map(GUIComponent::getName)).setIsPresentOnList(
+						slider != null)));
 		sliderMachineName.enableRealtimeValidation();
 
 		JTextField sliderPrefix = new JTextField(8);
 		JMinMaxSpinner rangeSpinner = new JMinMaxSpinner(0.0, 10.0, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0);
 		rangeSpinner.setPreferredSize(new Dimension(200, 20));
 		JSpinner valueSpinner = new JSpinner(new SpinnerNumberModel(5, -10000.0, 10000.0, 1));
-		valueSpinner.addChangeListener(e -> {
+		valueSpinner.addChangeListener(_ -> {
 			double d = (double) valueSpinner.getValue();
 			if (d < rangeSpinner.getMinValue())
 				valueSpinner.setValue(rangeSpinner.getMinValue());
@@ -68,13 +68,13 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 				valueSpinner.setValue(rangeSpinner.getMaxValue());
 		});
 		JSpinner stepSpinner = new JSpinner(new SpinnerNumberModel(1, -10000.0, 10000.0, 1));
-		stepSpinner.addChangeListener(e -> {
+		stepSpinner.addChangeListener(_ -> {
 			double d = (double) stepSpinner.getValue();
 			if ((rangeSpinner.getMaxValue() - rangeSpinner.getMinValue()) < d)
 				stepSpinner.setValue(rangeSpinner.getMaxValue() - rangeSpinner.getMinValue());
 		});
 
-		rangeSpinner.addChangeListener(e -> {
+		rangeSpinner.addChangeListener(_ -> {
 			double value = (double) valueSpinner.getValue();
 			if (value < rangeSpinner.getMinValue())
 				valueSpinner.setValue(rangeSpinner.getMinValue());
@@ -140,8 +140,8 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 			whenSliderMoves.setSelectedProcedure(slider.whenSliderMoves);
 		}
 
-		cancel.addActionListener(arg01 -> dispose());
-		ok.addActionListener(arg01 -> {
+		cancel.addActionListener(_ -> dispose());
+		ok.addActionListener(_ -> {
 			if (sliderMachineName.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				String sliderName = sliderMachineName.getText();

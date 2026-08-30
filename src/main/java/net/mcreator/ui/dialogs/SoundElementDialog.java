@@ -26,7 +26,9 @@ import net.mcreator.ui.component.FileListField;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.ResourceNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.SoundElement;
 
@@ -48,12 +50,10 @@ public class SoundElementDialog {
 
 		VTextField soundName = new VTextField(26);
 
-		soundName.setValidator(
-				new net.mcreator.ui.validation.validators.UniqueNameValidator(L10N.t("dialog.sounds.name"),
-						() -> RegistryNameFixer.fix(soundName.getText()),
-						() -> mcreator.getWorkspace().getSoundElements().stream().map(SoundElement::getName),
-						new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name"))).setIsPresentOnList(
-						element != null));
+		soundName.setValidator(new CompoundValidator(new ResourceNameValidator(soundName, L10N.t("dialog.sounds.name")),
+				new UniqueNameValidator(L10N.t("dialog.sounds.name"), () -> RegistryNameFixer.fix(soundName.getText()),
+						() -> mcreator.getWorkspace().getSoundElements().stream()
+								.map(SoundElement::getName)).setIsPresentOnList(element != null)));
 		soundName.enableRealtimeValidation();
 
 		JTextField subtitle = new JTextField();

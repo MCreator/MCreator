@@ -26,6 +26,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.annotation.Nullable;
@@ -66,11 +67,11 @@ public class ListEditorDialog {
 
 		JButton add = new JButton(UIRES.get("16px.add"));
 		add.setText(L10N.t("dialog.list_editor.add"));
-		add.addActionListener(e -> new ListEntry(entryList, entries, "", validator, uniqueEntries));
+		add.addActionListener(_ -> new ListEntry(entryList, entries, "", validator, uniqueEntries));
 
 		JButton clear = new JButton(UIRES.get("16px.clear"));
 		clear.setText(L10N.t("dialog.list_editor.clear"));
-		clear.addActionListener(e -> {
+		clear.addActionListener(_ -> {
 			entryList.clear();
 			entries.removeAll();
 			entries.revalidate();
@@ -89,7 +90,7 @@ public class ListEditorDialog {
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		dialog.getRootPane().setDefaultButton(ok);
 
-		ok.addActionListener(e -> {
+		ok.addActionListener(_ -> {
 			if ((validator != null || uniqueEntries) && !new AggregatedValidationResult(
 					entryList.stream().map(s -> s.valueField).toArray(IValidable[]::new)).validateIsErrorFree()) {
 				JOptionPane.showMessageDialog(parent, L10N.t("dialog.list_editor.errors.message"),
@@ -101,7 +102,7 @@ public class ListEditorDialog {
 				dialog.dispose();
 			}
 		});
-		cancel.addActionListener(e -> dialog.dispose());
+		cancel.addActionListener(_ -> dialog.dispose());
 
 		dialog.getContentPane().add(PanelUtils.centerAndSouthElement(listPanel, PanelUtils.join(ok, cancel)));
 		dialog.setSize(470, 350);
@@ -124,8 +125,9 @@ public class ListEditorDialog {
 
 			Validator lev = validator == null ? null : validator.apply(valueField);
 			if (uniqueEntries)
-				lev = new UniqueNameValidator(L10N.t("dialog.list_editor.validator"), valueField::getText,
-						() -> entryList.stream().map(e -> e.valueField.getText()), lev);
+				lev = new CompoundValidator(lev,
+						new UniqueNameValidator(L10N.t("dialog.list_editor.validator"), valueField::getText,
+								() -> entryList.stream().map(e -> e.valueField.getText())));
 
 			valueField.setText(value);
 			if (lev != null) {
@@ -140,7 +142,7 @@ public class ListEditorDialog {
 			JButton remove = new JButton(UIRES.get("18px.remove"));
 			remove.setOpaque(false);
 			remove.setMargin(new Insets(0, 3, 0, 3));
-			remove.addActionListener(e -> {
+			remove.addActionListener(_ -> {
 				entryList.remove(this);
 				parent.remove(container);
 				parent.revalidate();
