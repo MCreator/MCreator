@@ -173,6 +173,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox forceRedstoneConductor = L10N.checkbox("elementgui.common.enable");
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator,
 			DataListLoader.loadDataList("mapcolors"));
 	private final DataListComboBox noteBlockInstrument = new DataListComboBox(mcreator,
@@ -1319,12 +1320,16 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		genPanel.setOpaque(false);
 
-		JPanel redstoneParameters = new JPanel(new GridLayout(2, 2, 0, 2));
+		JPanel redstoneParameters = new JPanel(new GridLayout(3, 2, 0, 2));
 		redstoneParameters.setOpaque(false);
 
 		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/redstone_connect"),
 				L10N.label("elementgui.block.redstone_connect")));
 		redstoneParameters.add(canRedstoneConnect);
+
+		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/force_redstone_conductor"),
+				L10N.label("elementgui.block.force_redstone_conductor")));
+		redstoneParameters.add(forceRedstoneConductor);
 
 		redstoneParameters.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/emits_redstone"),
 				L10N.label("elementgui.block.emits_redstone")));
@@ -1429,10 +1434,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page1group.addValidationElement(signEntityTexture);
 		page1group.addValidationElement(signGUITexture);
 
-		itemTexture.setValidator(new TextureSelectionButtonValidator(itemTexture, () -> {
-			Model model = renderType.getSelectedItem();
-			return (model != null && model.getType() == Model.Type.JAVA) || isAnySign();
-		}));
+		itemTexture.setValidator(
+				new ConditionalValidator(() -> {
+					Model model = renderType.getSelectedItem();
+					return (model != null && model.getType() == Model.Type.JAVA) || isAnySign();
+				}, new NonEmptyValidator(itemTexture, L10N.t("elementgui.block.error_block_needs_item_texture"))));
 
 		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture", this::isAnySign);
 		signGUITexture.requireValue("elementgui.block.error_sign_needs_gui_texture",
@@ -1849,6 +1855,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		isReplaceable.setSelected(block.isReplaceable);
 		canProvidePower.setSelected(block.canProvidePower);
+		forceRedstoneConductor.setSelected(block.forceRedstoneConductor);
 		colorOnMap.setSelectedItem(block.colorOnMap);
 		noteBlockInstrument.setSelectedItem(block.noteBlockInstrument);
 		offsetType.setSelectedItem(block.offsetType);
@@ -2023,6 +2030,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
+		block.forceRedstoneConductor = forceRedstoneConductor.isSelected();
 		block.colorOnMap = new MapColor(modElement.getWorkspace(), colorOnMap.getSelectedItem());
 		block.noteBlockInstrument = new NoteBlockInstrument(modElement.getWorkspace(),
 				noteBlockInstrument.getSelectedItem());

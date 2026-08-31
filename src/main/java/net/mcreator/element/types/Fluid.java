@@ -73,7 +73,7 @@ import java.util.List;
 	@Numeric(init = 1000, min = -100000, max = 100000, step = 1) public int density;
 	@Numeric(init = 1000, min = 0, max = 100000, step = 1) public int viscosity;
 	@Numeric(init = 300, min = 0, max = 100000, step = 1) public int temperature;
-	@Nonnull public String type;
+	@Nonnull @LimitedOptions({ "WATER", "LAVA" }) public String type;
 
 	public boolean generateBucket;
 	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder textureBucket;

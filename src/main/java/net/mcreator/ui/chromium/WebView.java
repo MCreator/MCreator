@@ -37,6 +37,7 @@ import org.cef.callback.CefJSDialogCallback;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.*;
 import org.cef.misc.BoolRef;
+import org.cef.network.CefRequest;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -47,10 +48,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -81,6 +79,8 @@ public class WebView extends JPanel implements Closeable {
 
 	private volatile boolean isClosing = false;
 
+	private final List<RequestHandler> requestHandlers = new ArrayList<>();
+
 	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("WebView-Callback-Thread");
@@ -105,6 +105,31 @@ public class WebView extends JPanel implements Closeable {
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
+
+		// Serve http://mcreator/ resources and block requests to the internet. Resource serving is
+		// bound to the client of this WebView so MCreatorSchemeHandler holds a direct reference to
+		// the MCreator instance of this WebView, valid even for requests in flight while closing
+		this.client.addRequestHandler(new CefRequestHandlerAdapter() {
+			@Override public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request,
+					boolean userGesture, boolean isRedirect) {
+				return !request.getURL().startsWith("http://mcreator/"); // return true to block the request
+			}
+
+			@Override
+			public CefResourceRequestHandler getResourceRequestHandler(CefBrowser browser, CefFrame frame,
+					CefRequest request, boolean isNavigation, boolean isDownload, String requestInitiator,
+					BoolRef disableDefaultHandling) {
+				if (request.getURL().startsWith("http://mcreator/")) {
+					return new CefResourceRequestHandlerAdapter() {
+						@Override public CefResourceHandler getResourceHandler(CefBrowser browser, CefFrame frame,
+								CefRequest request) {
+							return new MCreatorSchemeHandler(requestHandlers);
+						}
+					};
+				}
+				return null;
+			}
+		});
 
 		if (CefUtils.useOSR()) {
 			osrComponent = new JBCefOsrComponent();
@@ -319,6 +344,10 @@ public class WebView extends JPanel implements Closeable {
 			css.append("* { cursor: default !important; }");
 
 		addLoadListener(() -> addCSSToDOM(css.toString()));
+	}
+
+	public void addRequestHandler(RequestHandler handler) {
+		requestHandlers.add(handler);
 	}
 
 	public void forceLoad() {

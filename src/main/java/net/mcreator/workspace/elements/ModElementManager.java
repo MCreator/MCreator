@@ -121,7 +121,7 @@ import java.util.function.Consumer;
 		new File(workspace.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
 	}
 
-	GeneratableElement loadGeneratableElement(ModElement element) {
+	@Nullable GeneratableElement loadGeneratableElement(ModElement element) {
 		// To prevent circular reference (and thus stack overflow), we return Unknown GE if we are loading the
 		// mod element that is being converted as otherwise this will try to start the conversion again
 		if (modElementsInConversion.contains(element))
@@ -156,6 +156,13 @@ import java.util.function.Consumer;
 
 		GeneratableElement generatableElement = fromJSONtoGeneratableElementOrNull(importJSON, element);
 		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
+			// Check if mod element type of deserialized GE matches the mod element type of the mod element
+			if (generatableElement.getClass() != element.getType().getModElementStorageClass()) {
+				LOG.warn("Mod element {} is registered as type {} but its definition file deserialized to {}. "
+								+ "Workspace may be corrupted, skipping this element", element.getName(),
+						element.getType(), generatableElement.getClass().getSimpleName());
+				return null;
+			}
 
 			// Store the mod element in case the conversion was applied
 			if (generatableElement.wasConversionApplied())

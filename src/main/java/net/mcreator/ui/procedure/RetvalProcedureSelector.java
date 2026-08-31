@@ -79,7 +79,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
-		procedures.addActionListener(e -> {
+		procedures.addActionListener(_ -> {
 			ProcedureEntry selectedItem = procedures.getSelectedItem();
 			if (selectedItem != null) {
 				if (!selectedItem.correctDependencies) {
@@ -133,7 +133,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(1, 2, 1, 4)));
 
 			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
-			add.addActionListener(e -> {
+			add.addActionListener(_ -> {
 				String procedureNameString = "";
 				if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI) {
 					StringBuilder procedureName = new StringBuilder(
@@ -178,7 +178,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			});
 
 			edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
-			edit.addActionListener(e -> {
+			edit.addActionListener(_ -> {
 				if (getSelectedProcedure() != null) {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
 							.getModElementByName(getSelectedProcedure().getName());
@@ -241,4 +241,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 	public abstract void setFixedValue(E value);
 
+	@Override public boolean isEmpty() {
+		return fixedValue == null && super.isEmpty();
+	}
 }
