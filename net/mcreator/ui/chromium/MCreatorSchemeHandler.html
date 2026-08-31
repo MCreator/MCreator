@@ -63,8 +63,11 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#processRequest(org.cef.network.CefRequest,org.cef.callback.CefCallback)" tabindex="0">processRequest(CefRequest, CefCallback)</a></li>
+<li><a href="#open(org.cef.network.CefRequest,org.cef.misc.BoolRef,org.cef.callback.CefCallback)" tabindex="0">open(CefRequest, BoolRef, CefCallback)</a></li>
 <li><a href="#getResponseHeaders(org.cef.network.CefResponse,org.cef.misc.IntRef,org.cef.misc.StringRef)" tabindex="0">getResponseHeaders(CefResponse, IntRef, StringRef)</a></li>
 <li><a href="#readResponse(byte%5B%5D,int,org.cef.misc.IntRef,org.cef.callback.CefCallback)" tabindex="0">readResponse(byte[], int, IntRef, CefCallback)</a></li>
+<li><a href="#read(byte%5B%5D,int,org.cef.misc.IntRef,org.cef.callback.CefResourceReadCallback)" tabindex="0">read(byte[], int, IntRef, CefResourceReadCallback)</a></li>
+<li><a href="#skip(long,org.cef.misc.LongRef,org.cef.callback.CefResourceSkipCallback)" tabindex="0">skip(long, LongRef, CefResourceSkipCallback)</a></li>
 <li><a href="#cancel()" tabindex="0">cancel()</a></li>
 </ol>
 </li>
@@ -125,8 +128,19 @@ implements org.cef.handler.CefResourceHandler</span></div>
  org.cef.misc.StringRef&nbsp;redirectUrl)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processRequest(org.cef.network.CefRequest,org.cef.callback.CefCallback)" class="member-name-link">processRequest</a><wbr>(org.cef.network.CefRequest&nbsp;request,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#open(org.cef.network.CefRequest,org.cef.misc.BoolRef,org.cef.callback.CefCallback)" class="member-name-link">open</a><wbr>(org.cef.network.CefRequest&nbsp;request,
+ org.cef.misc.BoolRef&nbsp;handleRequest,
  org.cef.callback.CefCallback&nbsp;callback)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processRequest(org.cef.network.CefRequest,org.cef.callback.CefCallback)" class="member-name-link">processRequest</a><wbr>(org.cef.network.CefRequest&nbsp;request,
+ org.cef.callback.CefCallback&nbsp;callback)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#read(byte%5B%5D,int,org.cef.misc.IntRef,org.cef.callback.CefResourceReadCallback)" class="member-name-link">read</a><wbr>(byte[]&nbsp;dataOut,
+ int&nbsp;bytesToRead,
+ org.cef.misc.IntRef&nbsp;bytesRead,
+ org.cef.callback.CefResourceReadCallback&nbsp;callback)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readResponse(byte%5B%5D,int,org.cef.misc.IntRef,org.cef.callback.CefCallback)" class="member-name-link">readResponse</a><wbr>(byte[]&nbsp;dataOut,
@@ -134,6 +148,11 @@ implements org.cef.handler.CefResourceHandler</span></div>
  org.cef.misc.IntRef&nbsp;bytesRead,
  org.cef.callback.CefCallback&nbsp;callback)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#skip(long,org.cef.misc.LongRef,org.cef.callback.CefResourceSkipCallback)" class="member-name-link">skip</a><wbr>(long&nbsp;bytesToSkip,
+ org.cef.misc.LongRef&nbsp;bytesSkipped,
+ org.cef.callback.CefResourceSkipCallback&nbsp;callback)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -181,6 +200,20 @@ implements org.cef.handler.CefResourceHandler</span></div>
 </section>
 </li>
 <li>
+<section class="detail" id="open(org.cef.network.CefRequest,org.cef.misc.BoolRef,org.cef.callback.CefCallback)">
+<h3>open</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">open</span><wbr><span class="parameters">(org.cef.network.CefRequest&nbsp;request,
+ org.cef.misc.BoolRef&nbsp;handleRequest,
+ org.cef.callback.CefCallback&nbsp;callback)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>open</code>&nbsp;in interface&nbsp;<code>org.cef.handler.CefResourceHandler</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getResponseHeaders(org.cef.network.CefResponse,org.cef.misc.IntRef,org.cef.misc.StringRef)">
 <h3>getResponseHeaders</h3>
 <div class="horizontal-scroll">
@@ -205,6 +238,35 @@ implements org.cef.handler.CefResourceHandler</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>readResponse</code>&nbsp;in interface&nbsp;<code>org.cef.handler.CefResourceHandler</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="read(byte[],int,org.cef.misc.IntRef,org.cef.callback.CefResourceReadCallback)">
+<h3>read</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">read</span><wbr><span class="parameters">(byte[]&nbsp;dataOut,
+ int&nbsp;bytesToRead,
+ org.cef.misc.IntRef&nbsp;bytesRead,
+ org.cef.callback.CefResourceReadCallback&nbsp;callback)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>read</code>&nbsp;in interface&nbsp;<code>org.cef.handler.CefResourceHandler</code></dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="skip(long,org.cef.misc.LongRef,org.cef.callback.CefResourceSkipCallback)">
+<h3>skip</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">skip</span><wbr><span class="parameters">(long&nbsp;bytesToSkip,
+ org.cef.misc.LongRef&nbsp;bytesSkipped,
+ org.cef.callback.CefResourceSkipCallback&nbsp;callback)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code>skip</code>&nbsp;in interface&nbsp;<code>org.cef.handler.CefResourceHandler</code></dd>
 </dl>
 </div>
 </section>

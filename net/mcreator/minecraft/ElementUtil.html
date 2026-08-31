@@ -73,8 +73,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#loadEntityDataListFromCustomEntity(net.mcreator.workspace.Workspace,java.lang.String,java.lang.Class)" tabindex="0">loadEntityDataListFromCustomEntity(Workspace, String, Class)</a></li>
 <li><a href="#loadAllPOIBlocks(net.mcreator.workspace.Workspace)" tabindex="0">loadAllPOIBlocks(Workspace)</a></li>
 <li><a href="#loadBasicGUIs(net.mcreator.workspace.Workspace)" tabindex="0">loadBasicGUIs(Workspace)</a></li>
-<li><a href="#loadAllEquipmentSlots()" tabindex="0">loadAllEquipmentSlots()</a></li>
-<li><a href="#loadAllEquipmentSlots(boolean)" tabindex="0">loadAllEquipmentSlots(boolean)</a></li>
+<li><a href="#loadAllEquipmentSlots(net.mcreator.workspace.Workspace)" tabindex="0">loadAllEquipmentSlots(Workspace)</a></li>
+<li><a href="#loadAllEquipmentSlots(net.mcreator.workspace.Workspace,boolean)" tabindex="0">loadAllEquipmentSlots(Workspace, boolean)</a></li>
 <li><a href="#getDataListAsStringArray(java.lang.String)" tabindex="0">getDataListAsStringArray(String)</a></li>
 <li><a href="#getProceduresOfType(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.VariableType)" tabindex="0">getProceduresOfType(Workspace, VariableType)</a></li>
 <li><a href="#getAllEntriesFor(net.mcreator.workspace.Workspace,java.lang.String)" tabindex="0">getAllEntriesFor(Workspace, String)</a></li>
@@ -181,10 +181,11 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadAllEntities(net.mcreator.workspace.Workspace)" class="member-name-link">loadAllEntities</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadAllEquipmentSlots()" class="member-name-link">loadAllEquipmentSlots</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadAllEquipmentSlots(net.mcreator.workspace.Workspace)" class="member-name-link">loadAllEquipmentSlots</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadAllEquipmentSlots(boolean)" class="member-name-link">loadAllEquipmentSlots</a><wbr>(boolean&nbsp;addDefault)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadAllEquipmentSlots(net.mcreator.workspace.Workspace,boolean)" class="member-name-link">loadAllEquipmentSlots</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ boolean&nbsp;addDefault)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadAllFluids(net.mcreator.workspace.Workspace)" class="member-name-link">loadAllFluids</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
@@ -473,18 +474,21 @@ This will not load blocks without item representation (example fire, water, ...)
 </section>
 </li>
 <li>
-<section class="detail" id="loadAllEquipmentSlots()">
+<section class="detail" id="loadAllEquipmentSlots(net.mcreator.workspace.Workspace)">
 <h3>loadAllEquipmentSlots</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadAllEquipmentSlots</span>()</div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadAllEquipmentSlots</span><wbr><span class="parameters">(@Nonnull
+ <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="loadAllEquipmentSlots(boolean)">
+<section class="detail" id="loadAllEquipmentSlots(net.mcreator.workspace.Workspace,boolean)">
 <h3>loadAllEquipmentSlots</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadAllEquipmentSlots</span><wbr><span class="parameters">(boolean&nbsp;addDefault)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">loadAllEquipmentSlots</span><wbr><span class="parameters">(@Nonnull
+ <a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ boolean&nbsp;addDefault)</span></div>
 </div>
 </section>
 </li>

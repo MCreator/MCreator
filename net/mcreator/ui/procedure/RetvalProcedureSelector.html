@@ -69,6 +69,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#setSelectedProcedure(net.mcreator.element.parts.procedure.Procedure)" tabindex="0">setSelectedProcedure(Procedure)</a></li>
 <li><a href="#getFixedValue()" tabindex="0">getFixedValue()</a></li>
 <li><a href="#setFixedValue(E)" tabindex="0">setFixedValue(E)</a></li>
+<li><a href="#isEmpty()" tabindex="0">isEmpty()</a></li>
 </ol>
 </li>
 </ol>
@@ -94,7 +95,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a>, <a href="../validation/IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a>, <a href="../validation/IOptionalValueContainer.html" title="interface in net.mcreator.ui.validation">IOptionalValueContainer</a>, <a href="../validation/IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
@@ -193,15 +194,18 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="#type-param-T" title="type parameter in RetvalProcedureSelector">T</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getSelectedProcedure()" class="member-name-link">getSelectedProcedure</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setFixedValue(E)" class="member-name-link">setFixedValue</a><wbr>(<a href="#type-param-E" title="type parameter in RetvalProcedureSelector">E</a>&nbsp;value)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setSelectedProcedure(net.mcreator.element.parts.procedure.Procedure)" class="member-name-link">setSelectedProcedure</a><wbr>(<a href="../../element/parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;procedure)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setFixedValue(E)" class="member-name-link">setFixedValue</a><wbr>(<a href="#type-param-E" title="type parameter in RetvalProcedureSelector">E</a>&nbsp;value)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setSelectedProcedure(net.mcreator.element.parts.procedure.Procedure)" class="member-name-link">setSelectedProcedure</a><wbr>(<a href="../../element/parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a>&nbsp;procedure)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -312,6 +316,20 @@ loadScripts(document, 'script');</script>
 <h3 id="setFixedValue(java.lang.Object)">setFixedValue</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFixedValue</span><wbr><span class="parameters">(<a href="#type-param-E" title="type parameter in RetvalProcedureSelector">E</a>&nbsp;value)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isEmpty()">
+<h3>isEmpty</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isEmpty</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../validation/IOptionalValueContainer.html#isEmpty()">isEmpty</a></code>&nbsp;in interface&nbsp;<code><a href="../validation/IOptionalValueContainer.html" title="interface in net.mcreator.ui.validation">IOptionalValueContainer</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="AbstractProcedureSelector.html#isEmpty()">isEmpty</a></code>&nbsp;in class&nbsp;<code><a href="AbstractProcedureSelector.html" title="class in net.mcreator.ui.procedure">AbstractProcedureSelector</a></code></dd>
+</dl>
 </div>
 </section>
 </li>

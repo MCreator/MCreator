@@ -4271,10 +4271,6 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> block</pre>
 </li>
 <li class="block-list">
-<h5>bs</h5>
-<pre><a href="net/mcreator/ui/dialogs/MCItemSelectorDialog.html" title="class in net.mcreator.ui.dialogs">MCItemSelectorDialog</a> bs</pre>
-</li>
-<li class="block-list">
 <h5>currentValidationResult</h5>
 <pre><a href="net/mcreator/ui/validation/ValidationResult.html" title="class in net.mcreator.ui.validation">ValidationResult</a> currentValidationResult</pre>
 </li>
@@ -4293,6 +4289,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>removeButtonHover</h5>
 <pre>boolean removeButtonHover</pre>
+</li>
+<li class="block-list">
+<h5>selectorDialog</h5>
+<pre><a href="net/mcreator/ui/dialogs/MCItemSelectorDialog.html" title="class in net.mcreator.ui.dialogs">MCItemSelectorDialog</a> selectorDialog</pre>
 </li>
 <li class="block-list">
 <h5>showValidation</h5>
@@ -4401,8 +4401,8 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>bt</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> bt</pre>
+<h5>editButton</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> editButton</pre>
 </li>
 <li class="block-list">
 <h5>listeners</h5>
@@ -4413,12 +4413,12 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
 </li>
 <li class="block-list">
-<h5>rm</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> rm</pre>
+<h5>removeButton</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> removeButton</pre>
 </li>
 <li class="block-list">
-<h5>tfe</h5>
-<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> tfe</pre>
+<h5>textField</h5>
+<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> textField</pre>
 </li>
 </ul>
 </section>
@@ -4509,12 +4509,12 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a> selectedTexture</pre>
 </li>
 <li class="block-list">
-<h5>size</h5>
-<pre>int size</pre>
+<h5>selectorDialog</h5>
+<pre><a href="net/mcreator/ui/dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a> selectorDialog</pre>
 </li>
 <li class="block-list">
-<h5>td</h5>
-<pre><a href="net/mcreator/ui/dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a> td</pre>
+<h5>size</h5>
+<pre>int size</pre>
 </li>
 <li class="block-list">
 <h5>textureSelectedListeners</h5>
@@ -4597,6 +4597,42 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 </ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="net/mcreator/ui/minecraft/bedrock/digger/package-summary.html">net.mcreator.ui.minecraft.bedrock.digger</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.bedrock.digger.JDiggerEntry">
+<h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/bedrock/digger/JDiggerEntry.html" title="class in net.mcreator.ui.minecraft.bedrock.digger">net.mcreator.ui.minecraft.bedrock.digger.JDiggerEntry</a></h3>
+<div class="type-signature">class JDiggerEntry extends <a href="net/mcreator/ui/component/entries/JSimpleListEntry.html" title="class in net.mcreator.ui.component.entries">JSimpleListEntry</a>&lt;<a href="net/mcreator/element/types/bedrock/BEItem.DiggerEntry.html" title="class in net.mcreator.element.types.bedrock">BEItem.DiggerEntry</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>block</h5>
+<pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> block</pre>
+</li>
+<li class="block-list">
+<h5>speed</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> speed</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.minecraft.bedrock.digger.JDiggerList">
+<h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/bedrock/digger/JDiggerList.html" title="class in net.mcreator.ui.minecraft.bedrock.digger">net.mcreator.ui.minecraft.bedrock.digger.JDiggerList</a></h3>
+<div class="type-signature">class JDiggerList extends <a href="net/mcreator/ui/component/entries/JSimpleEntriesList.html" title="class in net.mcreator.ui.component.entries">JSimpleEntriesList</a>&lt;<a href="net/mcreator/ui/minecraft/bedrock/digger/JDiggerEntry.html" title="class in net.mcreator.ui.minecraft.bedrock.digger">JDiggerEntry</a>, <a href="net/mcreator/element/types/bedrock/BEItem.DiggerEntry.html" title="class in net.mcreator.element.types.bedrock">BEItem.DiggerEntry</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
 </ul>
@@ -7057,6 +7093,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>fluidRestrictions</h5>
 <pre><a href="net/mcreator/ui/minecraft/FluidListField.html" title="class in net.mcreator.ui.minecraft">FluidListField</a> fluidRestrictions</pre>
+</li>
+<li class="block-list">
+<h5>forceRedstoneConductor</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> forceRedstoneConductor</pre>
 </li>
 <li class="block-list">
 <h5>frequencyOnChunk</h5>
@@ -11052,12 +11092,28 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> damageVsEntity</pre>
 </li>
 <li class="block-list">
+<h5>diggerEntries</h5>
+<pre><a href="net/mcreator/ui/minecraft/bedrock/digger/JDiggerList.html" title="class in net.mcreator.ui.minecraft.bedrock.digger">JDiggerList</a> diggerEntries</pre>
+</li>
+<li class="block-list">
+<h5>diggerUseEfficiency</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> diggerUseEfficiency</pre>
+</li>
+<li class="block-list">
 <h5>enableCreativeTab</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> enableCreativeTab</pre>
 </li>
 <li class="block-list">
 <h5>enableMeleeDamage</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> enableMeleeDamage</pre>
+</li>
+<li class="block-list">
+<h5>enchantmentSlot</h5>
+<pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> enchantmentSlot</pre>
+</li>
+<li class="block-list">
+<h5>enchantmentValue</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> enchantmentValue</pre>
 </li>
 <li class="block-list">
 <h5>entityDispensableOn</h5>
@@ -11094,6 +11150,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>hasGlint</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> hasGlint</pre>
+</li>
+<li class="block-list">
+<h5>isEnchantable</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> isEnchantable</pre>
 </li>
 <li class="block-list">
 <h5>isFood</h5>

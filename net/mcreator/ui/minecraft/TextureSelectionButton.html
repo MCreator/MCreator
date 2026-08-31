@@ -71,6 +71,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#hasTexture()" tabindex="0">hasTexture()</a></li>
 <li><a href="#addTextureSelectedListener(java.awt.event.ActionListener)" tabindex="0">addTextureSelectedListener(ActionListener)</a></li>
 <li><a href="#setFlipUV(boolean)" tabindex="0">setFlipUV(boolean)</a></li>
+<li><a href="#isEmpty()" tabindex="0">isEmpty()</a></li>
 <li><a href="#requireValue()" tabindex="0">requireValue()</a></li>
 <li><a href="#requireValue(java.lang.String)" tabindex="0">requireValue(String)</a></li>
 <li><a href="#paintComponent(java.awt.Graphics)" tabindex="0">paintComponent(Graphics)</a></li>
@@ -102,12 +103,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/ItemSelectable.html" title="class or interface in java.awt" class="external-link">ItemSelectable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/SwingConstants.html" title="class or interface in javax.swing" class="external-link">SwingConstants</a>, <a href="../validation/IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/ItemSelectable.html" title="class or interface in java.awt" class="external-link">ItemSelectable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/SwingConstants.html" title="class or interface in javax.swing" class="external-link">SwingConstants</a>, <a href="../validation/IOptionalValueContainer.html" title="interface in net.mcreator.ui.validation">IOptionalValueContainer</a>, <a href="../validation/IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a></code></dd>
 </dl>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TextureSelectionButton</span>
-<span class="extends-implements">extends <a href="../validation/component/VButton.html" title="class in net.mcreator.ui.validation.component">VButton</a></span></div>
+<span class="extends-implements">extends <a href="../validation/component/VButton.html" title="class in net.mcreator.ui.validation.component">VButton</a>
+implements <a href="../validation/IOptionalValueContainer.html" title="interface in net.mcreator.ui.validation">IOptionalValueContainer</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -170,9 +172,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.dialogs.TypedTextureSelectorDialog)" class="member-name-link">TextureSelectionButton</a><wbr>(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;td)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.dialogs.TypedTextureSelectorDialog)" class="member-name-link">TextureSelectionButton</a><wbr>(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;selectorDialog)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.dialogs.TypedTextureSelectorDialog,int)" class="member-name-link">TextureSelectionButton</a><wbr>(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;td,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.dialogs.TypedTextureSelectorDialog,int)" class="member-name-link">TextureSelectionButton</a><wbr>(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;selectorDialog,
  int&nbsp;size)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -198,27 +200,30 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasTexture()" class="member-name-link">hasTexture</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#paintComponent(java.awt.Graphics)" class="member-name-link">paintComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#requireValue()" class="member-name-link">requireValue</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#requireValue(java.lang.String)" class="member-name-link">requireValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorTranslationKey)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFlipUV(boolean)" class="member-name-link">setFlipUV</a><wbr>(boolean&nbsp;uvFlip)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIcon(javax.swing.Icon)" class="member-name-link">setIcon</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/Icon.html" title="class or interface in javax.swing" class="external-link">Icon</a>&nbsp;icon)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isEmpty()" class="member-name-link">isEmpty</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.element.parts.TextureHolder)" class="member-name-link">setTexture</a><wbr>(<a href="../../element/parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a>&nbsp;texture)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#paintComponent(java.awt.Graphics)" class="member-name-link">paintComponent</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Graphics.html" title="class or interface in java.awt" class="external-link">Graphics</a>&nbsp;g)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.workspace.resources.Texture)" class="member-name-link">setTexture</a><wbr>(<a href="../../workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&nbsp;texture)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#requireValue()" class="member-name-link">requireValue</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#requireValue(java.lang.String)" class="member-name-link">requireValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;errorTranslationKey)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setFlipUV(boolean)" class="member-name-link">setFlipUV</a><wbr>(boolean&nbsp;uvFlip)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setIcon(javax.swing.Icon)" class="member-name-link">setIcon</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/Icon.html" title="class or interface in javax.swing" class="external-link">Icon</a>&nbsp;icon)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.element.parts.TextureHolder)" class="member-name-link">setTexture</a><wbr>(<a href="../../element/parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a>&nbsp;texture)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTexture(net.mcreator.workspace.resources.Texture)" class="member-name-link">setTexture</a><wbr>(<a href="../../workspace/resources/Texture.html" title="class in net.mcreator.workspace.resources">Texture</a>&nbsp;texture)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -261,7 +266,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(net.mcreator.ui.dialogs.TypedTextureSelectorDialog)">
 <h3>TextureSelectionButton</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TextureSelectionButton</span><wbr><span class="parameters">(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;td)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TextureSelectionButton</span><wbr><span class="parameters">(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;selectorDialog)</span></div>
 </div>
 </section>
 </li>
@@ -269,7 +274,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(net.mcreator.ui.dialogs.TypedTextureSelectorDialog,int)">
 <h3>TextureSelectionButton</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TextureSelectionButton</span><wbr><span class="parameters">(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;td,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TextureSelectionButton</span><wbr><span class="parameters">(<a href="../dialogs/TypedTextureSelectorDialog.html" title="class in net.mcreator.ui.dialogs">TypedTextureSelectorDialog</a>&nbsp;selectorDialog,
  int&nbsp;size)</span></div>
 </div>
 </section>
@@ -329,6 +334,18 @@ loadScripts(document, 'script');</script>
 <h3>setFlipUV</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></span>&nbsp;<span class="element-name">setFlipUV</span><wbr><span class="parameters">(boolean&nbsp;uvFlip)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isEmpty()">
+<h3>isEmpty</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isEmpty</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../validation/IOptionalValueContainer.html#isEmpty()">isEmpty</a></code>&nbsp;in interface&nbsp;<code><a href="../validation/IOptionalValueContainer.html" title="interface in net.mcreator.ui.validation">IOptionalValueContainer</a></code></dd>
+</dl>
 </div>
 </section>
 </li>
