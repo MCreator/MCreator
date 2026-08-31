@@ -138,19 +138,15 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		smithingRecipeMaker.setOpaque(false);
 		brewingRecipeMaker.setOpaque(false);
 
-		//@formatter:off
-		name.setValidator(
-				new CompoundValidator(
-						new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/')),
-				new UniqueNameValidator(
-			L10N.t("modelement.recipe"),
-			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
-			() -> mcreator.getWorkspace().getModElementsByType(ModElementType.RECIPE).stream()
-				.map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull)
-				.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name))
-						.setIsPresentOnList(this::isEditingMode)));
-		//@formatter:on
+		name.setValidator(new CompoundValidator(
+				new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/')),
+				new UniqueNameValidator(L10N.t("modelement.recipe"),
+						() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor()
+								.getEditorComponent()).getText(),
+						() -> mcreator.getWorkspace().getModElementsByType(ModElementType.RECIPE).stream()
+								.map(ModElement::getGeneratableElement).filter(Objects::nonNull)
+								.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name)).setIsPresentOnList(
+						this::isEditingMode)));
 		name.enableRealtimeValidation();
 		name.addItem("crafting_table");
 		name.addItem("diamond_block");
