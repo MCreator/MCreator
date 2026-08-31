@@ -124,10 +124,11 @@ public class ListEditorDialog {
 			valueField.setPreferredSize(new Dimension(0, 28));
 
 			Validator lev = validator == null ? null : validator.apply(valueField);
-			if (uniqueEntries)
-				lev = new CompoundValidator(lev,
-						new UniqueNameValidator(L10N.t("dialog.list_editor.validator"), valueField::getText,
-								() -> entryList.stream().map(e -> e.valueField.getText())));
+			if (uniqueEntries) {
+				Validator uniqueNameValidator = new UniqueNameValidator(L10N.t("dialog.list_editor.validator"),
+						valueField::getText, () -> entryList.stream().map(e -> e.valueField.getText()));
+				lev = lev == null ? uniqueNameValidator : new CompoundValidator(lev, uniqueNameValidator);
+			}
 
 			valueField.setText(value);
 			if (lev != null) {

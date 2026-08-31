@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * This validator wraps and checks multiple {@link Validator}s in order, returning the {@link ValidationResult} of highest severity.
- * Null entries are allowed and will be treated as if they passed.
  */
 public class CompoundValidator implements Validator {
 
@@ -40,8 +39,6 @@ public class CompoundValidator implements Validator {
 		ValidationResult result = ValidationResult.PASSED;
 
 		for (Validator validator : validators) {
-			if (validator == null) // Treat null as always pass validator
-				continue;
 			ValidationResult tmpResult = validator.validate();
 			if (tmpResult.type() == ValidationResult.Type.ERROR)
 				return tmpResult; // Return as soon as we find an error
