@@ -31,8 +31,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CompoundValidator;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.workspace.Workspace;
 
@@ -70,9 +68,8 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		props.add(L10N.label("dialog.tools.material_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(new CompoundValidator(new JavaMemberNameValidator(name, true),
-				new ModElementNameValidator(mcreator.getWorkspace(), name,
-						L10N.t("dialog.tools.material_pack_name_validator"))));
+		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
+				L10N.t("dialog.tools.armor_pack_name_validator")));
 
 		validableElements.addValidationElement(name);
 

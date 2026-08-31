@@ -38,8 +38,6 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CompoundValidator;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.views.ArmorImageMakerView;
@@ -100,9 +98,8 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		props.add(L10N.label("dialog.tools.armor_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(new CompoundValidator(new JavaMemberNameValidator(name, true),
-				new ModElementNameValidator(mcreator.getWorkspace(), name,
-						L10N.t("dialog.tools.armor_pack_name_validator"))));
+		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
+				L10N.t("dialog.tools.armor_pack_name_validator")));
 
 		validableElements.addValidationElement(base);
 		validableElements.addValidationElement(name);

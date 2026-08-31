@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.java.JavaConventions;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
 
@@ -29,6 +30,7 @@ import java.util.List;
 public class ModElementNameValidator extends UniqueNameValidator {
 
 	private final List<String> usedNames;
+	private final JavaMemberNameValidator memberNameValidator;
 
 	public ModElementNameValidator(@Nonnull Workspace workspace, VTextField textField, String name) {
 		this(workspace, textField, name, new ArrayList<>());
@@ -39,6 +41,7 @@ public class ModElementNameValidator extends UniqueNameValidator {
 			List<String> usedNames) {
 		super(name, () -> JavaConventions.convertToValidClassName(textField.getText()), usedNames::stream);
 		this.usedNames = usedNames;
+		this.memberNameValidator = new JavaMemberNameValidator(textField, true);
 
 		setIsPresentOnList(false);
 		setIgnoreCase(true);
@@ -51,4 +54,11 @@ public class ModElementNameValidator extends UniqueNameValidator {
 		usedNames.addAll(workspace.getWorkspaceInfo().getUsedElementNames());
 	}
 
+	@Override public ValidationResult validate() {
+		ValidationResult nameValidationResult = memberNameValidator.validate();
+		if (nameValidationResult.type() == ValidationResult.Type.ERROR) {
+			return nameValidationResult;
+		}
+		return super.validate();
+	}
 }

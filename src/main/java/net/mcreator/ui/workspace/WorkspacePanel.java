@@ -53,8 +53,6 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.CompoundValidator;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
@@ -982,9 +980,8 @@ import java.util.regex.Pattern;
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidator.Cached() {
 							@Override public Validator createValidator(JComponent component) {
-								return new CompoundValidator(new JavaMemberNameValidator((VTextField) component, true),
-										new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
-												L10N.t("common.mod_element_name")));
+								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
+										L10N.t("common.mod_element_name"));
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"),
 						mu.getName(), breadcrumb.getInScrollPane(), null);
