@@ -111,18 +111,18 @@
     <#if data.toolType?? && data.toolType?is_string && data.toolType == "Spear">
     "type": "minecraft:select",
     "cases": [
-        {
-            "model": {
-                "type": "minecraft:model",
-                "model": "${modid}:item/${registryname}${suffix}"
-            },
-            "when": [
-                "gui",
-                "ground",
-                "fixed",
-                "on_shelf"
-            ]
-        }
+      {
+        "model": {
+          "type": "minecraft:model",
+          "model": "${modid}:item/${registryname}${suffix}"
+        },
+        "when": [
+          "gui",
+          "ground",
+          "fixed",
+          "on_shelf"
+        ]
+      }
     ],
     "property": "minecraft:display_context",
     "fallback": {
