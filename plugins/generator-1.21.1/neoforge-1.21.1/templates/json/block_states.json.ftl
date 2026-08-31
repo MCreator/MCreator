@@ -63,14 +63,14 @@
 <#macro variant conditionExtra="" additionalData="">
   <#if multipart>
     <#list definedStates as model>
-     <#assign conditions = []>
+     <#local conditions = []>
      <#list conditionExtra?split(",") as pair>
       <#if pair?has_content>
-       <#assign conditions += ['"' + pair?keep_before("=") + '": "' + pair?keep_after("=") + '"']>
+       <#local conditions += ['"' + pair?keep_before("=") + '": "' + pair?keep_after("=") + '"']>
       </#if>
      </#list>
      <#list model.stateMap.keySet() as property>
-      <#assign conditions += ['"' + generator.map(property.getName(), "blockstateproperties", 1) + '": "' + model.stateMap.get(property) + '"']>
+      <#local conditions += ['"' + generator.map(property.getName(), "blockstateproperties", 1) + '": "' + model.stateMap.get(property) + '"']>
      </#list>
      {
       <#if conditions?has_content>"when": { ${conditions?join(", ")} },</#if>
