@@ -129,7 +129,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			.set(DataComponents.MAX_DAMAGE, null)
 		</#if>
 		<#if data.attributeModifiers?size gt 0 && (data.toolType == "Axe" || data.toolType == "Spear" || data.toolType == "Spade" || data.toolType == "Hoe")>
-			.set(DataComponents.ATTRIBUTE_MODIFIERS, <@itemAttributeModifiers true/>)
+			.set(DataComponents.ATTRIBUTE_MODIFIERS, <@itemAttributeModifiers (data.toolType != "Spear")/>)
 		</#if>
 		);
 	}
@@ -214,7 +214,7 @@ public class ${name}Item extends Item {
 			<#if data.repairItems?has_content>
 			.repairable(TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")))
 			</#if>
-			.attributes(<@itemAttributeModifiers true/>)
+			.attributes(<@itemAttributeModifiers (data.toolType != "Spear")/>)
 			<#if data.enchantability != 0>
 			.enchantable(${data.enchantability})
 			</#if>
