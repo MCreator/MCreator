@@ -69,7 +69,7 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		props.add(power);
 
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
-				L10N.t("dialog.tools.armor_pack_name_validator")));
+				L10N.t("dialog.tools.material_pack_name_validator")));
 
 		validableElements.addValidationElement(name);
 

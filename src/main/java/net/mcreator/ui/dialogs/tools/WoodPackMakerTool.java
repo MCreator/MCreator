@@ -81,7 +81,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		props.add(power);
 
 		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
-				L10N.t("dialog.tools.armor_pack_name_validator")));
+				L10N.t("dialog.tools.wood_pack_name_validator")));
 
 		validableElements.addValidationElement(name);
 
