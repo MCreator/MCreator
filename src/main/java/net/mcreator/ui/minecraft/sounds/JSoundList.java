@@ -31,6 +31,8 @@ public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement
 	}
 
 	public boolean areFilesValid() {
+		if(entryList.isEmpty()) return false;
+
 		for (JSoundListEntry entry : entryList) {
 			if (entry.getSingleFileField().isEmpty())
 				return false;
