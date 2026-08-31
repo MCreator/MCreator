@@ -24,7 +24,7 @@
             }
             <#else>
                 <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
-                    <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
+                    <#local ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
                     {
                         "temperature": [${ge.genTemperature.min}, ${ge.genTemperature.max}],
                         "humidity": [${ge.genHumidity.min}, ${ge.genHumidity.max}],
@@ -59,7 +59,7 @@
           "biome": "${biome}",
           "parameters":
 		  <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
-		    <#assign ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
+		    <#local ge = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
             {
                 "temperature": [${ge.genTemperature.min}, ${ge.genTemperature.max}],
                 "humidity": [${ge.genHumidity.min}, ${ge.genHumidity.max}],

@@ -38,9 +38,27 @@
     <category name="${t:blockly.category.logic}" colour="%{BKY_LOGIC_HUE}">
         <block type="logic_negate"/>
         <block type="logic_boolean"/>
-        <block type="logic_binary_ops"/>
-        <block type="math_binary_ops"/>
-        <block type="text_binary_ops"/>
+        <block type="logic_binary_ops">
+            <value name="B">
+                <shadow type="logic_boolean">
+                    <field name="BOOL">TRUE</field>
+                </shadow>
+            </value>
+        </block>b
+        <block type="math_binary_ops">
+            <value name="B">
+                <shadow type="math_number">
+                    <field name="NUM">0</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="text_binary_ops">
+            <value name="B">
+                <shadow type="text">
+                    <field name="TEXT"/>
+                </shadow>
+            </value>
+        </block>
         <custom-logicoperations/>
     </category>
     <category name="${t:blockly.category.math}" colour="%{BKY_MATH_HUE}">

@@ -31,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -57,7 +58,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class JItemListField<T> extends JPanel implements IValidable {
+public abstract class JItemListField<T> extends JPanel implements IValidable, IOptionalValueContainer {
 
 	private final TechnicalButton add = new TechnicalButton(UIRES.get("18px.add"));
 	private final TechnicalButton addexternal = new TechnicalButton(UIRES.get("18px.add_new"));
@@ -122,12 +123,12 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
-		remove.addActionListener(e -> {
+		remove.addActionListener(_ -> {
 			List<T> elements = elementsList.getSelectedValuesList();
 			deleteElements(elements);
 		});
 
-		removeall.addActionListener(e -> {
+		removeall.addActionListener(_ -> {
 			List<T> elements = Collections.list(elementsListModel.elements());
 
 			if (warnOnRemoveAll && !elements.isEmpty()) {
@@ -401,6 +402,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			elementsListModel.addElement(element);
 			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
 		}
+	}
+
+	@Override public boolean isEmpty() {
+		return this.getListElements().isEmpty();
 	}
 
 	public boolean isExclusionMode() {

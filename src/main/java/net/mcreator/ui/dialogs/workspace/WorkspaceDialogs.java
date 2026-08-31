@@ -43,8 +43,8 @@ import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -84,7 +84,7 @@ public class WorkspaceDialogs {
 		JButton ok = L10N.button("dialog.workspace_settings.save_changes");
 		buttons.add(ok);
 		workspaceDialog.add("South", buttons);
-		ok.addActionListener(e -> {
+		ok.addActionListener(_ -> {
 			if (wdp.validationGroup.validateIsErrorFree())
 				workspaceDialog.dispose();
 			else
@@ -95,7 +95,7 @@ public class WorkspaceDialogs {
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		buttons.add(cancel);
-		cancel.addActionListener(e -> {
+		cancel.addActionListener(_ -> {
 			canceled.set(true);
 			workspaceDialog.dispose();
 		});
@@ -270,7 +270,7 @@ public class WorkspaceDialogs {
 			});
 
 			modName.setValidator(new Validator() {
-				private final Validator parent = new TextFieldValidator(modName,
+				private final Validator parent = new NonEmptyValidator(modName,
 						L10N.t("dialog.workspace_settings.mod_name.invalid"));
 
 				@Override public ValidationResult validate() {
@@ -282,7 +282,7 @@ public class WorkspaceDialogs {
 				}
 			});
 
-			version.setValidator(new TextFieldValidator(version, L10N.t("dialog.workspace_settings.version.error")) {
+			version.setValidator(new NonEmptyValidator(version, L10N.t("dialog.workspace_settings.version.error")) {
 				@Override public ValidationResult validate() {
 					try {
 						ModuleDescriptor.Version.parse(version.getText());
@@ -380,7 +380,7 @@ public class WorkspaceDialogs {
 
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));
-			selectGenerator.addActionListener(e -> {
+			selectGenerator.addActionListener(_ -> {
 				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 						(GeneratorConfiguration) generator.getSelectedItem(),
 						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter,
@@ -524,7 +524,7 @@ public class WorkspaceDialogs {
 				JButton explorePlugins = L10N.button("dialog.workspace_settings.explore_plugins");
 				explorePlugins.setIcon(UIRES.get("16px.search"));
 				explorePlugins.addActionListener(
-						e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
+						_ -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 				apiSettings.add("South",
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"),

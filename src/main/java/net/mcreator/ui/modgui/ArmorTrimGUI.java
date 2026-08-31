@@ -31,8 +31,6 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -48,10 +46,12 @@ import java.util.Objects;
 public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
-	private final VTextField name = new VTextField(17);
-	private final MCItemHolder item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems);
+	private final VTextField name = new VTextField(17).requireValue("elementgui.armortrim.error_armor_trim_needs_name")
+			.enableRealtimeValidation();
+	private final MCItemHolder item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems)
+			.requireValue("elementgui.armortrim.error_armor_trim_needs_item");
 	private final TextureComboBox armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR,
-			true).requireValue("elementgui.armortrim.armortrim_needs_texture");
+			true).requireValue("elementgui.armortrim.error_armor_trim_needs_texture");
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
 
@@ -70,8 +70,8 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		mainPanel.setOpaque(false);
 
 		armorTextureFile.setAddPNGExtension(false);
-		armorTextureFile.getComboBox().addActionListener(e -> updateArmorTexturePreview());
-		page1group.addValidationElement(armorTextureFile);
+		armorTextureFile.getComboBox().addActionListener(_ -> updateArmorTexturePreview());
+
 		clo1.setPreferredSize(new Dimension(64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
 		clo2.setPreferredSize(new Dimension(64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
 
@@ -95,12 +95,8 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 				L10N.label("elementgui.armortrim.layer_texture")));
 		mainPanel.add(armorTextureFile);
 
-		item.setValidator(new MCItemHolderValidator(item));
 		page1group.addValidationElement(item);
 		page1group.addValidationElement(armorTextureFile);
-
-		name.enableRealtimeValidation();
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.armortrim.needs_layer_texture")));
 		page1group.addValidationElement(name);
 
 		if (!this.isEditingMode()) {

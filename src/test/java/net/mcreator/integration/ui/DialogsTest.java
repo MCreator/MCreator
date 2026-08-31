@@ -69,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 	}
 
 	@Test public void testWorkspaceSelector() throws Throwable {
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, (file, forceRegenerate) -> {}));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, (_, _) -> {}));
 	}
 
 	@Test public void testNewWorkspaceDialog() throws Throwable {
@@ -222,7 +222,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test suffix"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

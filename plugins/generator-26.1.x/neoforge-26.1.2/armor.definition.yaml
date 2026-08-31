@@ -10,19 +10,19 @@ templates:
 
   - template: json/model_item.json.ftl
     writer: json
-    variables: "sufix=_helmet"
+    variables: "suffix=_helmet"
     name: "@MODASSETSROOT/items/@registryname_helmet.json"
   - template: json/model_item.json.ftl
     writer: json
-    variables: "sufix=_chestplate"
+    variables: "suffix=_chestplate"
     name: "@MODASSETSROOT/items/@registryname_chestplate.json"
   - template: json/model_item.json.ftl
     writer: json
-    variables: "sufix=_leggings"
+    variables: "suffix=_leggings"
     name: "@MODASSETSROOT/items/@registryname_leggings.json"
   - template: json/model_item.json.ftl
     writer: json
-    variables: "sufix=_boots"
+    variables: "suffix=_boots"
     name: "@MODASSETSROOT/items/@registryname_boots.json"
 
 # Helmet item model

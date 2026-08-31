@@ -32,7 +32,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.ProcedureSelectorValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
@@ -73,12 +73,13 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				L10N.t("elementgui.item.custom_property.value"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		value.setValidator(new ProcedureSelectorValidator(value));
+		value.setValidator(new NonEmptyValidator(value,
+				L10N.t("elementgui.item.error_item_property_needs_provider", propertyName)));
 		reloadDataLists(); // we make sure that selector can be properly shown
 		add("Center", value);
 
 		remove.setText(L10N.t("elementgui.item.custom_property.remove"));
-		remove.addActionListener(e -> listPanel.removeProperty(this));
+		remove.addActionListener(_ -> listPanel.removeProperty(this));
 		add("East", PanelUtils.pullElementUp(remove));
 
 		propertiesList.add(this);

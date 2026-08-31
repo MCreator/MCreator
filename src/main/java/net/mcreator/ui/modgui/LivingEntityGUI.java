@@ -535,9 +535,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		hasSpawnEgg.setOpaque(false);
 		disableCollisions.setOpaque(false);
 
-		livingSound.setText("");
-		hurtSound.setText("entity.generic.hurt");
-		deathSound.setText("entity.generic.death");
+		livingSound.setSound("");
+		hurtSound.setSound("entity.generic.hurt");
+		deathSound.setSound("entity.generic.death");
 
 		JPanel subpanel2 = new JPanel(new GridLayout(1, 2, 0, 2));
 		subpanel2.setOpaque(false);
