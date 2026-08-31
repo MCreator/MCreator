@@ -19,41 +19,47 @@
 
 package net.mcreator.workspace.elements;
 
-import net.mcreator.element.types.Biome;
-
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BedrockSoundElement extends SoundElement {
-	static final Biome.ClimatePoint DefaultBEAttenuationDistance = new Biome.ClimatePoint(0, 0);
-
 	private String beCategory;
-	private Biome.ClimatePoint beAttenuationDistance;
+	private float minAttenuationDistance;
+	private float maxAttenuationDistance;
 
 	public BedrockSoundElement(String name, List<Sound> files, @Nullable String subtitle) {
-		this(name, "neutral", DefaultBEAttenuationDistance, files, subtitle);
+		this(name, "neutral", files, 0, 0, subtitle);
 	}
 
-	public BedrockSoundElement(String name, String beCategory, Biome.ClimatePoint beAttenuationDistance, List<Sound> files,
-			@Nullable String subtitle) {
+	public BedrockSoundElement(String name, String beCategory, List<Sound> files, float minAttenuationDistance,
+			float maxAttenuationDistance, @Nullable String subtitle) {
 		super(name, files, subtitle);
 		this.beCategory = beCategory;
-		this.beAttenuationDistance = beAttenuationDistance;
+		this.minAttenuationDistance = minAttenuationDistance;
+		this.maxAttenuationDistance = maxAttenuationDistance;
 	}
 
 	public String getBECategory() {
 		return beCategory;
 	}
 
+	public float getMinAttenuationDistance() {
+		return minAttenuationDistance;
+	}
+
+	public float getMaxAttenuationDistance() {
+		return maxAttenuationDistance;
+	}
+
 	public void setBECategory(String beCategory) {
 		this.beCategory = beCategory;
 	}
 
-	public Biome.ClimatePoint getBEAttenuationDistance() {
-		return beAttenuationDistance;
+	public void setMinAttenuationDistance(float minAttenuationDistance) {
+		this.minAttenuationDistance = minAttenuationDistance;
 	}
 
-	public void setBEAttenuationDistance(Biome.ClimatePoint beAttenuationDistance) {
-		this.beAttenuationDistance = beAttenuationDistance;
+	public void setMaxAttenuationDistance(float maxAttenuationDistance) {
+		this.maxAttenuationDistance = maxAttenuationDistance;
 	}
 }

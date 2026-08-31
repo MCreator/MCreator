@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.element.types.Biome;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.ElementUtil;
@@ -54,7 +53,9 @@ public class SoundElementDialog {
 	@Nullable
 	public static SoundElement soundDialog(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
 		return mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-				== GeneratorFlavor.ADDON ? addBedrockUI(mcreator, (BedrockSoundElement) element, files) : addJavaUI(mcreator, element, files);
+				== GeneratorFlavor.ADDON ?
+				addBedrockUI(mcreator, (BedrockSoundElement) element, files) :
+				addJavaUI(mcreator, element, files);
 	}
 
 	private static SoundElement addJavaUI(MCreator mcreator, @Nullable SoundElement element, @Nullable File[] files) {
@@ -208,15 +209,15 @@ public class SoundElementDialog {
 
 		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
 		JMinMaxSpinner attenuationDistance = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
-		soundCategory.addActionListener(_ -> attenuationDistance.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
+		soundCategory.addActionListener(
+				_ -> attenuationDistance.setEnabled(!soundCategory.getSelectedItem().equals("ui")));
 
 		ui.add(L10N.label("dialog.sounds.category"));
 		ui.add(soundCategory);
 
-		ui.add(
-				PanelUtils.join(FlowLayout.LEFT, 0, 0, L10N.label("dialog.sounds.attenuation_distance"),
-						PanelUtils.join(FlowLayout.RIGHT,
-								HelpUtils.helpButton(IHelpContext.NONE.withEntry("sound/attenuation_distance")))));
+		ui.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, L10N.label("dialog.sounds.attenuation_distance"),
+				PanelUtils.join(FlowLayout.RIGHT,
+						HelpUtils.helpButton(IHelpContext.NONE.withEntry("sound/attenuation_distance")))));
 		ui.add(attenuationDistance);
 
 		ui.add(L10N.label("dialog.sounds.subtitle"));
@@ -228,8 +229,8 @@ public class SoundElementDialog {
 			subtitle.setText(element.getSubtitle());
 			soundsEntries.setEntries(element.getFiles());
 			soundCategory.setSelectedItem(element.getBECategory());
-			attenuationDistance.setMinValue(element.getBEAttenuationDistance().min);
-			attenuationDistance.setMaxValue(element.getBEAttenuationDistance().max);
+			attenuationDistance.setMinValue(element.getMinAttenuationDistance());
+			attenuationDistance.setMaxValue(element.getMaxAttenuationDistance());
 		}
 
 		int option = JOptionPane.showOptionDialog(mcreator, PanelUtils.northAndCenterElement(ui, pane1),
@@ -287,14 +288,14 @@ public class SoundElementDialog {
 						element.setSubtitle(subtitle.getText());
 						element.setFiles(sounds);
 						element.setBECategory((String) soundCategory.getSelectedItem());
-						element.setBEAttenuationDistance(
-								new Biome.ClimatePoint(attenuationDistance.getMinValue(), attenuationDistance.getMaxValue()));
+						element.setMinAttenuationDistance((float) attenuationDistance.getMinValue());
+						element.setMaxAttenuationDistance((float) attenuationDistance.getMaxValue());
 
 						return element;
 					}
 
-					return new BedrockSoundElement(registryname, (String) soundCategory.getSelectedItem(),
-							new Biome.ClimatePoint(attenuationDistance.getMinValue(), attenuationDistance.getMaxValue()), sounds,
+					return new BedrockSoundElement(registryname, (String) soundCategory.getSelectedItem(), sounds,
+							(float) attenuationDistance.getMinValue(), (float) attenuationDistance.getMaxValue(),
 							subtitle.getText());
 				}
 			}

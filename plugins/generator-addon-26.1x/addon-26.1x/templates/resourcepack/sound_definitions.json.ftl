@@ -4,11 +4,11 @@
     <#assign isStream = (category == "record" || category == "music")>
     "${modid}:${sound.getName()}": {
       "category": "${category}",
-      <#if category != "ui" && sound.getBEAttenuationDistance().min != 0>
-      "min_distance": ${sound.getBEAttenuationDistance().min},
+      <#if category != "ui" && sound.getMinAttenuationDistance() != 0>
+      "min_distance": ${sound.getMinAttenuationDistance()},
       </#if>
-      <#if category != "ui" && sound.getBEAttenuationDistance().max != 0>
-      "max_distance": ${sound.getBEAttenuationDistance().max},
+      <#if category != "ui" && sound.getMaxAttenuationDistance() != 0>
+      "max_distance": ${sound.getMaxAttenuationDistance()},
       </#if>
       <#if sound.getSubtitle()?has_content>"subtitle": "subtitles.${sound.getName()}",</#if>
         "sounds": [

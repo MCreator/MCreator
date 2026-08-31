@@ -20,7 +20,6 @@ package net.mcreator.workspace.elements;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
-import net.mcreator.element.types.Biome;
 import net.mcreator.generator.GeneratorFlavor;
 
 import javax.annotation.Nullable;
@@ -78,13 +77,15 @@ public class SoundElement implements IElement {
 	}
 
 	public static class Sound {
-		private String name;
-		private String category;
+		private String fileName;
 		private float volume;
 		private float pitch;
 		private int weight;
+		// Java-only field (per sound instance, Bedrock has one per SoundElement instance)
+		private String category;
 		private int attenuationDistance;
 
+		// Bedrock-only field
 		private boolean beIs3D;
 		private boolean beInterruptible;
 
@@ -94,7 +95,7 @@ public class SoundElement implements IElement {
 
 		public Sound(String name, float volume, float pitch, int weight, int attenuationDistance, String category,
 				boolean beIs3D, boolean beInterruptible) {
-			this.name = name;
+			this.fileName = name;
 			this.volume = volume;
 			this.pitch = pitch;
 			this.weight = weight;
@@ -105,11 +106,11 @@ public class SoundElement implements IElement {
 		}
 
 		public String getName() {
-			return name;
+			return fileName;
 		}
 
 		public void setName(String name) {
-			this.name = name;
+			this.fileName = name;
 		}
 
 		public String getCategory() {
@@ -178,7 +179,7 @@ public class SoundElement implements IElement {
 		}
 
 		@Override public String toString() {
-			return name;
+			return fileName;
 		}
 	}
 
@@ -202,7 +203,7 @@ public class SoundElement implements IElement {
 			}
 
 			// MCreator 2026.2 converter
-			String category = null;
+			String category = "neutral";
 			if (jsonObject.has("category") && jsonObject.get("category").getAsString() instanceof String str) {
 				List<String> oldFiles;
 				if (jsonObject.has("file")) {
@@ -224,28 +225,16 @@ public class SoundElement implements IElement {
 			}
 
 			String name = jsonObject.get("name").getAsString();
-			String subtitle = getObjValue(jsonObject, "subtitle");
+			String subtitle = getObjValue(jsonObject, "subtitle", null);
 
 			return isBedrock ?
-					new BedrockSoundElement(name, category, getBEAttenuationDistance(jsonObject), files, subtitle) :
+					new BedrockSoundElement(name, category, files, getFloatValue(jsonObject, "min"),
+							getFloatValue(jsonObject, "max"), subtitle) :
 					new SoundElement(name, files, subtitle);
-		}
-
-		private static Biome.ClimatePoint getBEAttenuationDistance(JsonObject jsonObject) {
-			if (jsonObject.has("beAttenuationDistance")) {
-				JsonObject obj = jsonObject.getAsJsonObject("beAttenuationDistance");
-				return new Biome.ClimatePoint(getFloatValue(obj, "min"), getFloatValue(obj, "max"));
-			}
-
-			return BedrockSoundElement.DefaultBEAttenuationDistance;
 		}
 
 		private static Float getFloatValue(JsonObject jsonObject, String name) {
 			return jsonObject.has(name) ? jsonObject.get(name).getAsFloat() : 0;
-		}
-
-		private static String getObjValue(JsonObject jsonObject, String name) {
-			return getObjValue(jsonObject, name, null);
 		}
 
 		private static String getObjValue(JsonObject jsonObject, String name, String defaultValue) {
