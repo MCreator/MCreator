@@ -81,6 +81,7 @@ public class ShapeTool extends AbstractModificationTool {
 
 		graphics2D.dispose();
 		canvas.getImageMakerView().getCanvasRenderer().repaint();
+		processing = false;
 		return true;
 	}
 

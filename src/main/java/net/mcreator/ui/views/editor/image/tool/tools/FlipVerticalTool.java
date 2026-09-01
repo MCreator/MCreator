@@ -56,6 +56,7 @@ public class FlipVerticalTool extends AbstractModificationTool {
 				image.setRGB(minX + i, minY + j, temp);
 			}
 		}
+		processing = false;
 		return true;
 	}
 

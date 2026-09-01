@@ -51,7 +51,7 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	protected final VersionManager versionManager;
 
 	private JToggleButton toolPanelButton;
-	protected boolean startSuccess = false, processSuccess = false;
+	protected boolean startSuccess = false, processSuccess = false, processing = false;
 
 	public AbstractTool(String name, String description, ImageIcon icon, Canvas canvas, ColorSelector colorSelector,
 			VersionManager versionManager) {
@@ -147,7 +147,8 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	public abstract boolean process(ZoomedMouseEvent mouseEvent);
 
 	private boolean startProcess(MouseEvent e) {
-		if (SwingUtilities.isLeftMouseButton(e)) {
+		if (SwingUtilities.isLeftMouseButton(e) && !processing) {
+			processing = true;
 			return process((ZoomedMouseEvent) e);
 		}
 		return false;

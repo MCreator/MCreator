@@ -65,8 +65,10 @@ public class FloodFillTool extends AbstractModificationTool {
 				fillArea(layer.getRaster(), layer.getOverlay(), e.getX() - layer.getX(), e.getY() - layer.getY(),
 						colorSelector.getForegroundColor());
 			}
+			processing = false;
 			return true;
 		}
+		processing = false;
 		return false;
 	}
 

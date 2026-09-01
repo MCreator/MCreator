@@ -55,8 +55,10 @@ public class ColorPickerTool extends AbstractTool {
 				colorSelector.setForegroundColor(new Color(c.getRed(), c.getGreen(), c.getBlue(),
 						respectOpacity.isSelected() ? c.getAlpha() : colorSelector.getForegroundColor().getAlpha()));
 			}
+			processing = false;
 			return true;
 		}
+		processing = false;
 		return false;
 	}
 
