@@ -1,0 +1,21 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "itemstack",
+      "check": "MCItem"
+    }
+  ],
+  "output": "Number",
+  "inputsInline": true,
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "be_item",
+    "toolbox_init": [
+      "<value name=\"itemstack\"><block type=\"be_itemstack_dep\"></block></value>"
+    ],
+    "inputs": [
+      "itemstack"
+    ]
+  }
+}
