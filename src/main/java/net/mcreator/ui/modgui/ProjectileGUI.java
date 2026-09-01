@@ -108,7 +108,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		model.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(model, 16);
 
-		actionSound.setText("entity.arrow.shoot");
+		actionSound.setSound("entity.arrow.shoot");
 
 		power.setOpaque(false);
 		igniteFire.setOpaque(false);

@@ -108,6 +108,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		<#list data.modelLayers as layer>
 		this.addLayer(new RenderLayer<${name}Entity, ${model}>(this) {
 			final ResourceLocation LAYER_TEXTURE = ResourceLocation.parse("${modid}:textures/entities/${layer.texture}");
+			<#if layer.model != "Default">
+				final EntityModel LAYER_MODEL = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
+			</#if>
 
 			<@javacompress>
 			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light,
@@ -122,11 +125,10 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 				VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.<#if layer.glow>eyes<#else>entityCutoutNoCull</#if>(LAYER_TEXTURE));
 				<#if layer.model != "Default">
-					EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
-					this.getParentModel().copyPropertiesTo(model);
-					model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-					model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-					model.renderToBuffer(poseStack, vertexConsumer, light,
+					this.getParentModel().copyPropertiesTo(LAYER_MODEL);
+					LAYER_MODEL.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+					LAYER_MODEL.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+					LAYER_MODEL.renderToBuffer(poseStack, vertexConsumer, light,
 						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>);
 				<#else>
 					this.getParentModel().renderToBuffer(poseStack, vertexConsumer, light,

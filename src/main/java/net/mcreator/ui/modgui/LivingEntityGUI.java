@@ -322,7 +322,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		whenMobIsHurt = new ProcedureSelector(this.withEntry("entity/when_hurt"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_is_hurt"), AbstractProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource")).makeReturnValueOptional();
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource/amount:number")).makeReturnValueOptional();
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_right_clicked"),
 				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
@@ -535,9 +535,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		hasSpawnEgg.setOpaque(false);
 		disableCollisions.setOpaque(false);
 
-		livingSound.setText("");
-		hurtSound.setText("entity.generic.hurt");
-		deathSound.setText("entity.generic.death");
+		livingSound.setSound("");
+		hurtSound.setSound("entity.generic.hurt");
+		deathSound.setSound("entity.generic.death");
 
 		JPanel subpanel2 = new JPanel(new GridLayout(1, 2, 0, 2));
 		subpanel2.setOpaque(false);

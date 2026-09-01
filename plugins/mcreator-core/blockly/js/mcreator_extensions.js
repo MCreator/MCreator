@@ -1,7 +1,7 @@
 Blockly.Extensions.register('small_text_tip',
     function () {
         this.appendDummyInput().appendField(
-            new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
+            new Blockly.FieldLabel(translate('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
 // Extension to mark a procedure block as a custom loop
@@ -56,7 +56,11 @@ Blockly.Extensions.registerMutator('variable_entity_input',
     {
         mutationToDom: function () {
             const container = document.createElement('mutation');
-            const isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR'));
+            // Also check the actual block shape: if the referenced variable no longer exists,
+            // isPlayerVariable returns false, but the entity input must be serialized anyway
+            // so blocks attached to it are not lost when the block is restored (e.g. on undo)
+            const isPlayerVar = javabridge.isPlayerVariable(this.getFieldValue('VAR')) ||
+                (this.getInput('entity') != null);
             container.setAttribute('is_player_var', isPlayerVar);
             const hasEntity = (this.getInputTargetBlock('entity') != null);
             container.setAttribute('has_entity', hasEntity);
@@ -75,7 +79,7 @@ Blockly.Extensions.registerMutator('variable_entity_input',
             if (isPlayerVar) {
                 if (!entityInput) {
                     const connection = this.appendValueInput('entity').setCheck('Entity')
-                        .appendField(javabridge.t("blockly.block.var_for_entity")).connection;
+                        .appendField(translate("blockly.block.var_for_entity")).connection;
                     if (addEntityBlock) {
                         const blockXML = Blockly.utils.xml.createElement('block');
                         blockXML.setAttribute('type', 'entity_from_deps');
@@ -169,7 +173,7 @@ Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
             const enabled = !(checkIfWithin(this, function (type) {
                 return type === 'placed_feature_inline';
             }));
-            this.setWarningText(enabled ? null : javabridge.t('blockly.block.placed_feature_inline.disabled_placement'));
+            this.setWarningText(enabled ? null : translate('blockly.block.placed_feature_inline.disabled_placement'));
             if (!this.isInFlyout) {
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
@@ -196,7 +200,7 @@ Blockly.Extensions.registerMixin('controls_flow_in_loop_check_exclude_wait',
             if (!isWithinLoop) {
                 this.setWarningText(Blockly.Msg['CONTROLS_FLOW_STATEMENTS_WARNING']);
             } else if (isWithinWaitBlock) {
-                this.setWarningText(javabridge.t('blockly.block.controls_flow_statements.inside_wait'));
+                this.setWarningText(translate('blockly.block.controls_flow_statements.inside_wait'));
             } else {
                 this.setWarningText(null);
             }
@@ -232,7 +236,7 @@ Blockly.Extensions.registerMixin('disable_repeated_random_xz',
             const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
                 return type === 'placement_in_square' || type === 'placement_count_on_every_layer';
             }));
-            this.setWarningText(enabled ? null : javabridge.t('blockly.block.placement_in_square.warning_repeated'));
+            this.setWarningText(enabled ? null : translate('blockly.block.placement_in_square.warning_repeated'));
             if (!this.isInFlyout) {
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
@@ -266,10 +270,10 @@ Blockly.Extensions.registerMixin('disable_repeated_count_on_every_layer',
             if (enabled) {
                 this.setWarningText(null);
             } else if (isRepeated) {
-                this.setWarningText(javabridge.t('blockly.block.placement_in_square.warning_repeated') +
-                    (isWithinRange ? "" : "\n" + javabridge.t('blockly.extension.placement_count_on_every_layer.count')));
+                this.setWarningText(translate('blockly.block.placement_in_square.warning_repeated') +
+                    (isWithinRange ? "" : "\n" + translate('blockly.extension.placement_count_on_every_layer.count')));
             } else {
-                this.setWarningText(javabridge.t('blockly.extension.placement_count_on_every_layer.count'));
+                this.setWarningText(translate('blockly.extension.placement_count_on_every_layer.count'));
             }
 
             if (!this.isInFlyout) {
@@ -310,7 +314,7 @@ Blockly.Extensions.registerMixin('null_comparison_exclude_primitive_types',
                 isValid = false;
             }
             if (!this.isInFlyout) {
-                this.setWarningText(isValid ? null : javabridge.t('blockly.block.logic_null_comparison.invalid_input'));
+                this.setWarningText(isValid ? null : translate('blockly.block.logic_null_comparison.invalid_input'));
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
@@ -333,7 +337,7 @@ Blockly.Extensions.registerMixin('disable_repeated_enchantment_component',
             const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
                 return type === thisType;
             }));
-            this.setWarningText(enabled ? null : javabridge.t('blockly.block.ench_component.warning_repeated'));
+            this.setWarningText(enabled ? null : translate('blockly.block.ench_component.warning_repeated'));
             if (!this.isInFlyout) {
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
@@ -374,7 +378,7 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
             }
 
             if (!this.isInFlyout) {
-                this.setWarningText(!isValid ? javabridge.t("blockly.extension.disable_duplicate_input_type") : null);
+                this.setWarningText(!isValid ? translate("blockly.extension.disable_duplicate_input_type") : null);
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
@@ -383,6 +387,12 @@ Blockly.Extensions.registerMixin('disable_duplicate_input_type',
             }
         }
     });
+
+function isAirMCItemValue(value) {
+    return value === "Blocks.AIR" ||
+        value === "Blocks.VOID_AIR" ||
+        value === "Blocks.CAVE_AIR";
+}
 
 // Helper function for extensions that validate if Any item in block has at least one item field argument
 Blockly.Extensions.register('empty_any_item_in_validation',
@@ -396,11 +406,18 @@ Blockly.Extensions.register('empty_any_item_in_validation',
             		return;
             }
 
-            const isValid = this.getField("item0") != null;
+            const isValid = this.getFields().every(field => {
+                if (field != null) {
+                    const value = field.getValue();
+                    return value !== "" && !isAirMCItemValue(value);
+                }
+
+                return false;
+            });
 
             if (!this.isInFlyout) {
             	// Add a warning for the first non-valid input
-                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.empty_any_item_in'));
+                this.setWarningText(isValid ? null : translate('blockly.extension.empty_any_item_in'));
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
@@ -410,3 +427,48 @@ Blockly.Extensions.register('empty_any_item_in_validation',
         });
 
     });
+
+// Validates direct mcitem_all / mcitem_allblocks blocks on value inputs are not air.
+// Pass input names to limit validation; omit to check all value inputs on the block.
+function validateMCItemInputsNotAir(...inputNames) {
+    const checkAllInputs = inputNames.length === 0;
+
+    return function () {
+        this.setOnChange(function (changeEvent) {
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+
+            let isValid = true;
+            for (const input of this.inputList) {
+                if (!input.connection)
+                    continue;
+
+                if (!checkAllInputs && !inputNames.includes(input.name))
+                    continue;
+
+                const connectedBlock = input.connection.targetBlock();
+                if (connectedBlock &&
+                    (connectedBlock.type === 'mcitem_all' || connectedBlock.type === 'mcitem_allblocks')) {
+                    if (isAirMCItemValue(connectedBlock.getFieldValue('value'))) {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!this.isInFlyout) {
+                this.setWarningText(isValid ? null : translate('blockly.extension.empty_any_item_in'));
+                const group = Blockly.Events.getGroup();
+                Blockly.Events.setGroup(changeEvent.group);
+                this.setDisabledReason(!isValid, "air_mcitem_input");
+                Blockly.Events.setGroup(group);
+            }
+        });
+    };
+}
+
+Blockly.Extensions.register('air_mcitem_input_validation', validateMCItemInputsNotAir());
