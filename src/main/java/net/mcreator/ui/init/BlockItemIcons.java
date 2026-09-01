@@ -124,6 +124,7 @@ public class BlockItemIcons {
 		put("Normal world gen", 	"GRASS");
 		put("Nether like gen", 		"NETHERRACK");
 		put("End like gen", 		"END_STONE");
+		put("Void gen", 			"VOID_AIR");
 
 		//NewStructureGenGUI
 		put("Surface", 				"GRASS");
