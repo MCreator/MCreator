@@ -22,7 +22,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.Plugin;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -44,7 +43,7 @@ class PluginsPanel {
 	private final DefaultListModel<Plugin> tmodel = new DefaultListModel<>();
 
 	PluginsPanel(PreferencesDialog preferencesDialog) {
-		preferencesDialog.model.addElement(L10N.t("dialog.preferences.page_plugins"));
+		preferencesDialog.addSection(L10N.t("dialog.preferences.page_plugins"));
 
 		JList<Plugin> plugins = new JList<>(tmodel);
 		plugins.setCellRenderer(new PluginsListCellRenderer());
@@ -61,7 +60,7 @@ class PluginsPanel {
 		opts.add(add);
 		opts.add(new JEmptyBox(5, 5));
 
-		add.addActionListener(e -> {
+		add.addActionListener(_ -> {
 			File[] files = FileDialogs.getMultiOpenDialog(preferencesDialog, new String[] { ".zip" });
 			if (files != null && files.length > 0) {
 				Arrays.stream(files).forEach(f -> FileIO.copyFile(f,
@@ -76,7 +75,7 @@ class PluginsPanel {
 		opts.add(explorePlugins);
 		opts.add(new JEmptyBox(5, 5));
 
-		explorePlugins.addActionListener(e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
+		explorePlugins.addActionListener(_ -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 		reloadPluginList();
 
@@ -86,15 +85,10 @@ class PluginsPanel {
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 
-		JCheckBox box = L10N.checkbox("dialog.preferences.java_plugins");
-		box.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get());
-
-		box.addActionListener(e -> PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.set(box.isSelected()));
-
 		openPluginFolder.addActionListener(
-				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
+				_ -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
 
-		sectionPanel.add("Center", PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(opts, box, 10, 10),
+		sectionPanel.add("Center", PanelUtils.northAndCenterElement(opts,
 				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.plugins_list"),
 						new JScrollPane(plugins), 3, 3), 10, 10));
 
@@ -111,14 +105,18 @@ class PluginsPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Plugin> list, Plugin value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground(Theme.current().getForegroundColor());
+			setBackground(
+					isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getBackgroundColor());
+			setOpaque(isSelected);
 
-			setOpaque(false);
-
-			if (value.isBuiltin()) {
-				setForeground(Theme.current().getAltForegroundColor());
+			if (isSelected) {
+				setForeground(Theme.current().getBackgroundColor());
 			} else {
-				setForeground(Theme.current().getForegroundColor());
+				if (value.isBuiltin()) {
+					setForeground(Theme.current().getAltForegroundColor());
+				} else {
+					setForeground(Theme.current().getForegroundColor());
+				}
 			}
 
 			ComponentUtils.deriveFont(this, 12);
@@ -144,7 +142,7 @@ class PluginsPanel {
 			}
 
 			setToolTipText(value.getInfo().getDescription());
-			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			return this;
 		}
 	}

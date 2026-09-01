@@ -67,8 +67,7 @@ import java.util.stream.Stream;
 	private static final Pattern cleanMultiDotsPattern = Pattern.compile("\\.{2,}");
 	private static final Pattern cleanMultiHyphensPattern = Pattern.compile("-{2,}");
 	private static final Pattern cleanMultiPlusesPattern = Pattern.compile("\\+{2,}");
-	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile(
-			"(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
+	private static final Pattern cleanEdgeCharactersPattern = Pattern.compile("(\\.$)|(^\\.)|(-$)|(^-)|(\\+$)|(^\\+)");
 	private static final Pattern semVerPattern = Pattern.compile(
 			"^(?:0|[1-9]\\d*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))+(?:-(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[A-Za-z][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$");
 
@@ -286,9 +285,17 @@ import java.util.stream.Stream;
 	}
 
 	public String getCurrentGenerator() {
-		if (!currentGenerator.contains("-")) // pre 2020.3 compatibility
-			return "forge-" + currentGenerator;
-		return currentGenerator;
+		return normalizeGeneratorName(currentGenerator);
+	}
+
+	/**
+	 * @param generatorName Name of the generator as stored in the workspace file.
+	 * @return Name of the generator in the current generator name format.
+	 */
+	public static String normalizeGeneratorName(String generatorName) {
+		if (!generatorName.contains("-")) // pre-2020.3 compatibility
+			return "forge-" + generatorName;
+		return generatorName;
 	}
 
 	public String getModElementsPackage() {

@@ -208,4 +208,13 @@ public class JBCefOsrComponent extends JPanel {
 		}
 	}
 
+	public void dispose() {
+		myGraphicsConfigurationTimedTaskQueue.dispose();
+
+		if (myResizeTimedTaskQueue != null) {
+			myResizeTimedTaskQueue.dispose();
+			myResizeTimedTaskQueue = null;
+		}
+	}
+
 }

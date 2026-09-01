@@ -1,0 +1,1 @@
+Je höher die Zahl, desto stärker der Schaden, den das Projektil der Einheit trifft.

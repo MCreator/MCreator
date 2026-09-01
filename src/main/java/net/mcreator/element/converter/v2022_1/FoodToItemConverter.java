@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.ItemUseAnimation;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
@@ -71,7 +72,7 @@ public class FoodToItemConverter implements IConverter {
 		if (food.get("resultItem") != null)
 			item.eatResultItem = new MItemBlock(workspace,
 					food.get("resultItem").getAsJsonObject().get("value").getAsString());
-		item.animation = food.get("animation").getAsString();
+		item.animation = new ItemUseAnimation(workspace, food.get("animation").getAsString());
 		if (food.get("hasGlow").getAsBoolean()) {
 			if (food.get("glowCondition") != null)
 				item.glowCondition = new LogicProcedure(

@@ -73,13 +73,13 @@ public class ReferencesFinder {
 					return !Set.of(ref.defaultValues()).contains(t) && element.getName().equals(
 							GeneratorWrapper.getElementPlainName(t));
 				}) ||
-				anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) ->
+				anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class), (_, t) ->
 					element.getName().equals(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))
 				) ||
-				anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) ->
+				anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class), (_, t) ->
 					element.getName().equals(t.getName())
 				) ||
-				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (_, t) ->
 					procedureXmlPattern.matcher(t).find()
 				)
 			)
@@ -215,6 +215,11 @@ public class ReferencesFinder {
 
 	/**
 	 * Checks if values acquired from any valid fields or methods meet the specified condition.
+	 * <p/>
+	 * Additionally, the following conditions are applied to determine whether a field/method is valid and whether its value should be checked:
+	 * - method/field is not static
+	 * - method has no parameters
+	 * - method type/field type is part of the data model or validIf passes
 	 *
 	 * @param source    The object to extract values from.
 	 * @param clazz     The class of values to be checked.
@@ -229,8 +234,7 @@ public class ReferencesFinder {
 			return false;
 
 		for (Field field : source.getClass().getFields()) {
-			if (!Modifier.isStatic(field.getModifiers()) && (clazz.isAssignableFrom(field.getType()) || (validIf != null
-					&& validIf.test(field)))) {
+			if (!Modifier.isStatic(field.getModifiers()) && isMemberEligible(field, field.getType(), validIf)) {
 				try {
 					if (checkValue(field.get(source), field, clazz, validIf, condition))
 						return true;
@@ -239,8 +243,8 @@ public class ReferencesFinder {
 			}
 		}
 		for (Method method : source.getClass().getMethods()) {
-			if (!Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0 && (
-					clazz.isAssignableFrom(method.getReturnType()) || (validIf != null && validIf.test(method)))) {
+			if (!Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0 && isMemberEligible(method,
+					method.getReturnType(), validIf)) {
 				try {
 					if (checkValue(method.invoke(source), method, clazz, validIf, condition))
 						return true;
@@ -250,6 +254,11 @@ public class ReferencesFinder {
 		}
 
 		return false;
+	}
+
+	private static boolean isMemberEligible(AccessibleObject member, Class<?> memberType,
+			@Nullable Predicate<AccessibleObject> validIf) {
+		return validIf != null && validIf.test(member) || GeneratableElement.isDataModelObject(memberType);
 	}
 
 	/**
@@ -271,8 +280,8 @@ public class ReferencesFinder {
 			return false;
 
 		if (clazz.isInstance(value)) { // value of specified type
-			return (GeneratableElement.isDataModelObject(value) || validIf == null || validIf.test(field)) && (
-					condition == null || condition.test(field, (T) value));
+			return (GeneratableElement.isDataModelObject(value.getClass()) || validIf == null || validIf.test(field))
+					&& (condition == null || condition.test(field, (T) value));
 		} else if (value instanceof Iterable<?> list) { // list of values
 			return listHasMatches(list, field, clazz, validIf, condition);
 		} else if (value instanceof Map<?, ?> map) { // map with values
@@ -285,7 +294,7 @@ public class ReferencesFinder {
 					return true;
 			}
 		} else if (GeneratableElement.isDataModelObject(
-				value)) { // value of unknown type but from MCreator system, do recursive check
+				value.getClass())) { // value of unknown type but from MCreator system, do recursive check
 			return anyValueMatches(value, clazz, validIf, condition);
 		}
 

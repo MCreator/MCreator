@@ -74,6 +74,7 @@ public class GeneratorSelector {
 			"generationsteps",
 			"itemproperties",
 			"itemtypes",
+			"itemuseanimations",
 			"keybuttons",
 			"mapcolors",
 			"mobspawntypes",
@@ -99,11 +100,14 @@ public class GeneratorSelector {
 			"triggers"
 		));
 		put(GeneratorFlavor.ADDON, List.of(
+			"be_biomes",
+			"be_biometags",
 			"blocksitems",
 			"entities",
 			"mapcolors",
 			"stepsounds",
 			"tabs",
+			"be_equipmentslots",
 			"scripts",
 			"aitasks",
 			"jstriggers"

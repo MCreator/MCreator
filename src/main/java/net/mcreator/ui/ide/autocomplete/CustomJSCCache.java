@@ -27,7 +27,7 @@ public class CustomJSCCache extends JavaShorthandCompletionCache {
 	public CustomJSCCache(DefaultCompletionProvider templateProvider, DefaultCompletionProvider commentsProvider) {
 		super(templateProvider, commentsProvider);
 		for (String keyword : JavaConventions.JAVA_RESERVED_WORDS)
-			this.addShorthandCompletion(new JavaKeywordCompletition(templateProvider, keyword));
+			this.addShorthandCompletion(new JavaKeywordCompletion(templateProvider, keyword));
 	}
 
 }

@@ -26,12 +26,13 @@ import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
+import javax.annotation.Nonnull;
 import java.awt.*;
 import java.util.Objects;
 
 public class EntityModel extends GUIComponent {
 
-	public Procedure entityModel;
+	@Nonnull public Procedure entityModel;
 	public Procedure displayCondition;
 
 	public int scale;
@@ -39,8 +40,8 @@ public class EntityModel extends GUIComponent {
 
 	public boolean followMouseMovement;
 
-	public EntityModel(int x, int y, Procedure entityModel, Procedure displayCondition, int scale, int rotationX,
-			boolean followMouseMovement) {
+	public EntityModel(int x, int y, @Nonnull Procedure entityModel, Procedure displayCondition, int scale,
+			int rotationX, boolean followMouseMovement) {
 		super(x, y);
 		this.entityModel = entityModel;
 		this.displayCondition = displayCondition;

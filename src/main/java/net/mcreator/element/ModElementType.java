@@ -52,7 +52,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		this(registryName, registryName, shortcut, modElementGUIProvider, modElementStorageClass);
 	}
 
-	public ModElementType(String registryName, String iconSufix, @Nullable Character shortcut,
+	public ModElementType(String registryName, String iconSuffix, @Nullable Character shortcut,
 			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
 		this.registryName = registryName;
 		this.shortcut = shortcut;
@@ -63,7 +63,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
-		this.iconID = "mod_types." + iconSufix;
+		this.iconID = "mod_types." + iconSuffix;
 	}
 
 	public String getRegistryName() {
@@ -75,6 +75,8 @@ public class ModElementType<GE extends GeneratableElement> {
 			return "livingentities";
 		else if (this == SPECIALENTITY)
 			return "specialentities";
+		else if (this == BEENTITY)
+			return "beentities";
 
 		return registryName.toLowerCase(Locale.ENGLISH) + "s";
 	}
@@ -146,6 +148,7 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	public static ModElementType<?> ADVANCEMENT;
 	public static ModElementType<?> ARMOR;
+	public static ModElementType<?> ARMORTRIM;
 	public static ModElementType<?> ATTRIBUTE;
 	public static ModElementType<?> BANNERPATTERN;
 	public static ModElementType<?> BIOME;
@@ -182,8 +185,10 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> VILLAGERTRADE;
 
 	// Bedrock-specific METs
-	public static ModElementType<?> BEITEM;
 	public static ModElementType<?> BEBLOCK;
+	public static ModElementType<?> BEBIOME;
+	public static ModElementType<?> BEENTITY;
+	public static ModElementType<?> BEITEM;
 	public static ModElementType<?> BESCRIPT;
 
 	public static ModElementType<?> UNKNOWN;

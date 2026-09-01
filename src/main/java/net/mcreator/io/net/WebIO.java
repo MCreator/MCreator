@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -41,8 +42,8 @@ public class WebIO {
 		if (MCreatorApplication.isInternet) {
 			try {
 				HttpURLConnection urlConn = (HttpURLConnection) new URI(s).toURL().openConnection();
-				urlConn.setConnectTimeout(4000);
-				urlConn.setReadTimeout(4000);
+				urlConn.setConnectTimeout(2000);
+				urlConn.setReadTimeout(3000);
 				urlConn.setInstanceFollowRedirects(true);
 				urlConn.connect();
 				if (urlConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -72,11 +73,25 @@ public class WebIO {
 			return defaultIcon;
 
 		try {
-			ImageIcon original = new ImageIcon(ImageIO.read(new URI(url).toURL()));
-			if (noStretch)
-				return new ImageIcon(ImageUtils.cover(original.getImage(), new Dimension(x, y)));
-			else
-				return IconUtils.resize(original, x, y);
+			HttpURLConnection urlConn = (HttpURLConnection) new URI(url).toURL().openConnection();
+			urlConn.setConnectTimeout(2000);
+			urlConn.setReadTimeout(4000);
+			urlConn.setInstanceFollowRedirects(true);
+			urlConn.connect();
+			if (urlConn.getResponseCode() != HttpURLConnection.HTTP_OK)
+				return defaultIcon;
+
+			try (InputStream in = urlConn.getInputStream()) {
+				Image image = ImageIO.read(in);
+				if (image == null)
+					return defaultIcon;
+
+				ImageIcon original = new ImageIcon(image);
+				if (noStretch)
+					return new ImageIcon(ImageUtils.cover(original.getImage(), new Dimension(x, y)));
+				else
+					return IconUtils.resize(original, x, y);
+			}
 		} catch (Exception e) {
 			LOG.error("Failed to get icon from URl: {}", url, e);
 		}

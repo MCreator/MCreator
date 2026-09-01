@@ -48,9 +48,9 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 		if (workspacePanel.getMCreator().getGeneratorStats().hasBaseCoverage("model_animations_java"))
 			addToolBarButton("action.workspace.resources.import_java_animation",
 					UIRES.get("16px.importjavamodelanimation"),
-					e -> workspacePanel.getMCreator().getActionRegistry().importJavaModelAnimation.doAction());
+					_ -> workspacePanel.getMCreator().getActionRegistry().importJavaModelAnimation.doAction());
 
-		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+		addToolBarButton("common.search_usages", UIRES.get("16px.search"), _ -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -64,10 +64,10 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 						L10N.t("dialog.search_usages.type.resource.animation"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), _ -> deleteCurrentlySelected());
 
 		addToolBarButton("action.workspace.resources.animations.help", UIRES.get("16px.info"),
-				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/entity-model-animations"));
+				_ -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/entity-model-animations"));
 	}
 
 	@Override protected void deleteCurrentlySelected() {

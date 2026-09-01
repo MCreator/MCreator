@@ -28,6 +28,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
+
 public class NullComparisonBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
@@ -53,6 +55,34 @@ public class NullComparisonBlock implements IBlockGenerator {
 
 	@Override public BlockType getBlockType() {
 		return BlockType.OUTPUT;
+	}
+
+	@Nullable @Override public String[] getBlockJSONDefinitions() {
+		return new String[] { """
+        {
+          "type": "logic_null_comparison",
+          "args0": [
+              {
+                  "type": "input_value",
+                  "name": "value"
+              },
+              {
+                  "type": "field_dropdown",
+                  "name": "operation",
+                  "options": [
+                      ["\\u2260", "!="],
+                      ["=", "=="]
+                  ]
+              }
+          ],
+          "output": "Boolean",
+          "colour": "%{BKY_LOGIC_HUE}",
+          "extensions": ["null_comparison_exclude_primitive_types"]
+        }""" };
+	}
+
+	@Nullable @Override public String getToolboxCategory() {
+		return "advanced";
 	}
 
 }

@@ -18,6 +18,7 @@
 
 package net.mcreator.element;
 
+import net.mcreator.element.types.interfaces.LimitedOptions;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.Locale;
@@ -25,7 +26,7 @@ import java.util.Locale;
 @SuppressWarnings("unused") public abstract class NamespacedGeneratableElement extends GeneratableElement {
 
 	public String name;
-	public String namespace;
+	@LimitedOptions(value = { "mod", "minecraft" }, allowCustom = true) public String namespace;
 
 	public NamespacedGeneratableElement(ModElement element) {
 		super(element);

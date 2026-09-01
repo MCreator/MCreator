@@ -19,12 +19,13 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.Sound;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.StringSelectorDialog;
+import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -41,9 +42,9 @@ import java.util.List;
 
 public class SoundSelector extends JPanel {
 
-	private final VTextField tfe = new VTextField(14);
-	private final JButton bt = new TechnicalButton(UIRES.get("18px.edit"));
-	private final JButton rm = new TechnicalButton(UIRES.get("18px.remove"));
+	private final VTextField textField = new VTextField(14);
+	private final JButton editButton = new TechnicalButton(UIRES.get("18px.edit"));
+	private final JButton removeButton = new TechnicalButton(UIRES.get("18px.remove"));
 	private final List<ActionListener> listeners = new ArrayList<>();
 
 	private final MCreator mcreator;
@@ -54,36 +55,36 @@ public class SoundSelector extends JPanel {
 
 		this.mcreator = frame;
 
-		bt.addActionListener(event -> {
-			String s = StringSelectorDialog.openSelectorDialog(mcreator, ElementUtil::getAllSounds,
+		editButton.addActionListener(_ -> {
+			DataListEntry entry = DataListSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadAllSounds,
 					L10N.t("dialog.selector.sound.title"), L10N.t("dialog.selector.sound.message"));
-			if (s != null)
-				setSound(s);
+			if (entry != null)
+				setSound(entry.getName());
 		});
-		rm.addActionListener(e -> setSound((String) null));
-		tfe.setEditable(false);
-		tfe.setForeground(tfe.getDisabledTextColor());
-		tfe.addMouseListener(new MouseAdapter() {
+		removeButton.addActionListener(_ -> setSound((String) null));
+		textField.setEditable(false);
+		textField.setForeground(textField.getDisabledTextColor());
+		textField.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
-					bt.doClick();
+					editButton.doClick();
 			}
 		});
-		ComponentUtils.deriveFont(tfe, 14);
+		ComponentUtils.deriveFont(textField, 14);
 
-		bt.setOpaque(false);
-		bt.setMargin(new Insets(0, 0, 0, 0));
-		bt.setBorder(BorderFactory.createEmptyBorder());
-		bt.setContentAreaFilled(false);
+		editButton.setOpaque(false);
+		editButton.setMargin(new Insets(0, 0, 0, 0));
+		editButton.setBorder(BorderFactory.createEmptyBorder());
+		editButton.setContentAreaFilled(false);
 
-		rm.setOpaque(false);
-		rm.setMargin(new Insets(0, 0, 0, 0));
-		rm.setBorder(BorderFactory.createEmptyBorder());
-		rm.setContentAreaFilled(false);
+		removeButton.setOpaque(false);
+		removeButton.setMargin(new Insets(0, 0, 0, 0));
+		removeButton.setBorder(BorderFactory.createEmptyBorder());
+		removeButton.setContentAreaFilled(false);
 
-		add("Center", tfe);
+		add("Center", textField);
 
-		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, 2, 0, bt, rm));
+		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, 2, 0, editButton, removeButton));
 		controls.setOpaque(true);
 		controls.setBackground(Theme.current().getBackgroundColor());
 		controls.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 3, getBackground()));
@@ -92,17 +93,17 @@ public class SoundSelector extends JPanel {
 	}
 
 	@Override public void setEnabled(boolean enabled) {
-		tfe.setEnabled(enabled);
-		bt.setEnabled(enabled);
-		rm.setEnabled(enabled && !tfe.getText().isBlank());
+		textField.setEnabled(enabled);
+		editButton.setEnabled(enabled);
+		removeButton.setEnabled(enabled && !textField.getText().isBlank());
 	}
 
 	public VTextField getVTextField() {
-		return tfe;
+		return textField;
 	}
 
 	public Sound getSound() {
-		return new Sound(mcreator.getWorkspace(), tfe.getText());
+		return new Sound(mcreator.getWorkspace(), textField.getText());
 	}
 
 	public void addSoundSelectedListener(ActionListener a) {
@@ -117,25 +118,21 @@ public class SoundSelector extends JPanel {
 	}
 
 	public void setSound(String sound) {
-		tfe.setText(sound);
-		tfe.getValidationStatus();
+		textField.setText(sound);
+		textField.getValidationStatus();
 
-		rm.setEnabled(sound != null && !sound.isEmpty());
+		removeButton.setEnabled(sound != null && !sound.isEmpty());
 
 		listeners.forEach(l -> l.actionPerformed(new ActionEvent("", 0, "")));
 	}
 
-	public void setText(String text) {
-		this.setSound(text);
-	}
-
 	public SoundSelector enableRealTimeValidation() {
-		this.tfe.enableRealtimeValidation();
+		this.textField.enableRealtimeValidation();
 		return this;
 	}
 
 	public SoundSelector requireValue(String errorMessage) {
-		this.tfe.requireValue(errorMessage);
+		this.textField.requireValue(errorMessage);
 		return this;
 	}
 

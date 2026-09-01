@@ -85,7 +85,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 
 		<#if data.type == 1>
 			if (pos != null) {
-				if (extraData.readableBytes() == 1) { // bound to item
+				if (extraData.readableBytes() == 1) { <#-- bound to item, GUI opened by item ME internal logic -->
 					byte hand = extraData.readByte();
 					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
 					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
@@ -94,8 +94,8 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 						this.internal = cap;
 						this.bound = true;
 					}
-				} else if (extraData.readableBytes() > 1) { // bound to entity
-					extraData.readByte(); // drop padding
+				} else if (extraData.readableBytes() > 1) { <#-- bound to entity, GUI opened by entity ME internal logic -->
+					extraData.readByte(); <#-- drop padding byte -->
 					boundEntity = world.getEntity(extraData.readVarInt());
 					if(boundEntity != null) {
 						IItemHandler cap = boundEntity.getCapability(Capabilities.ItemHandler.ENTITY);
@@ -104,11 +104,18 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 							this.bound = true;
 						}
 					}
-				} else { // might be bound to block
+				} else { <#-- might be bound to container block at pos -->
 					boundBlockEntity = this.world.getBlockEntity(pos);
 					if (boundBlockEntity instanceof BaseContainerBlockEntity baseContainerBlockEntity) {
-						this.internal = new InvWrapper(baseContainerBlockEntity);
-						this.bound = true;
+						<#-- Blocks explicitly bound to this GUI bind without container size check, so misconfigured inventory size fails visibly -->
+						if (this.world.getBlockState(pos).getBlock() instanceof ${JavaModName}Menus.BoundBlock boundBlock && boundBlock.getBoundMenuClass() == ${name}Menu.class) {
+							this.internal = new InvWrapper(baseContainerBlockEntity);
+							this.bound = true;
+						<#-- Other containers (e.g. vanilla ones or blocks bound to other GUIs) only bind if slots of this GUI fit in the container (forum/124103) -->
+						} else if (baseContainerBlockEntity.getContainerSize() > ${data.getMaxSlotID()}) {
+							this.internal = new InvWrapper(baseContainerBlockEntity);
+							this.bound = true;
+						}
 					}
 				}
 			}
@@ -158,7 +165,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 							<#elseif component.inputLimit.toString()?has_content>
 								@Override public boolean mayPlace(ItemStack stack) {
 									<#if component.inputLimit.getUnmappedValue().startsWith("TAG:")>
-										<#assign tag = "\"" + component.inputLimit.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":") + "\"">
+										<#assign tag = "\"" + component.inputLimit.asTagEntry() + "\"">
 										return stack.is(ItemTags.create(ResourceLocation.parse(${tag})));
 									<#else>
 										return ${mappedMCItemToItem(component.inputLimit)} == stack.getItem();

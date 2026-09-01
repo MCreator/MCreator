@@ -627,10 +627,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		// if we are in editing mode, changes affecting dimensions using biome may be made
 		if (isEditingMode()) {
-			for (ModElement element : mcreator.getWorkspace().getModElements()) {
-				if (element.getType() != ModElementType.DIMENSION)
-					continue;
-
+			for (ModElement element : mcreator.getWorkspace().getModElementsByType(ModElementType.DIMENSION)) {
 				// if this mod element is not locked and has procedures, we try to update dependencies
 				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 				if (!element.isCodeLocked()) {

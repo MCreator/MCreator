@@ -19,10 +19,10 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.generator.io.GradleTrackingFileIO;
+import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
-import net.mcreator.io.writer.JavaWriter;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
@@ -55,7 +55,7 @@ public class GeneratorFileTasks {
 				File to = new File(
 						GeneratorTokens.replaceTokens(generator.getWorkspace(), (String) ((Map<?, ?>) task).get("to")));
 				if (generator.getWorkspace().getFolderManager().isFileInWorkspace(to) && from.isFile())
-					TrackingFileIO.copyFile(generator, from, to);
+					GradleTrackingFileIO.copyFile(generator, from, to);
 			}
 			case "copy_and_resize_image" -> {
 				File from = new File(GeneratorTokens.replaceTokens(generator.getWorkspace(),
@@ -70,18 +70,14 @@ public class GeneratorFileTasks {
 					try {
 						BufferedImage image = ImageIO.read(from);
 						BufferedImage resized = ImageUtils.toBufferedImage(ImageUtils.resize(image, w, h));
-						ImageIO.write(resized, "png", to);
+						FileIO.writeImageToPNGFile(resized, to);
 					} catch (IOException e) {
 						generator.getLogger().warn("Failed to read image file for resizing", e);
 					}
 				} else if (generator.getWorkspace().getFolderManager().isFileInWorkspace(to)) {
-					try {
-						BufferedImage resized = ImageUtils.toBufferedImage(
-								ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
-						ImageIO.write(resized, "png", to);
-					} catch (IOException e) {
-						generator.getLogger().warn("Failed to read image file for resizing", e);
-					}
+					BufferedImage resized = ImageUtils.toBufferedImage(
+							ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
+					FileIO.writeImageToPNGFile(resized, to);
 				}
 			}
 			case "provide_default_pack_icon" -> {
@@ -92,13 +88,9 @@ public class GeneratorFileTasks {
 				int h = Integer.parseInt(GeneratorTokens.replaceTokens(generator.getWorkspace(),
 						(String) ((Map<?, ?>) task).get("height")));
 				if (generator.getWorkspace().getFolderManager().isFileInWorkspace(to) && !to.isFile()) {
-					try {
-						BufferedImage resized = ImageUtils.toBufferedImage(
-								ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
-						ImageIO.write(resized, "png", to);
-					} catch (IOException e) {
-						generator.getLogger().warn("Failed to read image file for resizing", e);
-					}
+					BufferedImage resized = ImageUtils.toBufferedImage(
+							ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
+					FileIO.writeImageToPNGFile(resized, to);
 				}
 			}
 			case "copy_models" -> {
@@ -109,7 +101,7 @@ public class GeneratorFileTasks {
 					if (((Map<?, ?>) task).get("cleanupBeforeCopy") != null && Boolean.parseBoolean(
 							((Map<?, ?>) task).get("cleanupBeforeCopy").toString())) {
 						// empty directory to remove stale model files
-						TrackingFileIO.emptyDirectory(generator, to);
+						GradleTrackingFileIO.emptyDirectory(generator, to);
 					}
 
 					List<Model> modelList = Model.getModels(generator.getWorkspace());
@@ -120,7 +112,8 @@ public class GeneratorFileTasks {
 							if (model.getType() == Model.Type.OBJ) {
 								Arrays.stream(model.getFiles())
 										.limit(2) // we only copy fist two elements, we skip last one which is texture mapping if it exists
-										.forEach(f -> TrackingFileIO.copyFile(generator, f, new File(to, f.getName())));
+										.forEach(f -> GradleTrackingFileIO.copyFile(generator, f,
+												new File(to, f.getName())));
 							}
 						}
 						break;
@@ -149,7 +142,7 @@ public class GeneratorFileTasks {
 					case "JSON":
 						for (Model model : modelList) {
 							if (model.getType() == Model.Type.JSON) {
-								TrackingFileIO.copyFile(generator, model.getFile(),
+								GradleTrackingFileIO.copyFile(generator, model.getFile(),
 										new File(to, model.getFile().getName()));
 							}
 						}
@@ -159,7 +152,7 @@ public class GeneratorFileTasks {
 							if (model.getType() == Model.Type.JSON) {
 								String jsonorig = FileIO.readFileToString(model.getFile());
 								String notextures = ModelUtils.removeInlineTexturesSectionFromJSONModel(jsonorig);
-								TrackingFileIO.writeFile(generator, notextures,
+								GradleTrackingFileIO.writeFile(generator, notextures,
 										new File(to, model.getFile().getName()));
 							}
 						}
@@ -167,7 +160,7 @@ public class GeneratorFileTasks {
 					case "BEDROCK":
 						for (Model model : modelList) {
 							if (model.getType() == Model.Type.BEDROCK) {
-								TrackingFileIO.copyFile(generator, model.getFile(),
+								GradleTrackingFileIO.copyFile(generator, model.getFile(),
 										new File(to, model.getFile().getName()));
 							}
 						}
@@ -205,7 +198,7 @@ public class GeneratorFileTasks {
 					if (((Map<?, ?>) task).get("cleanupBeforeCopy") != null && Boolean.parseBoolean(
 							((Map<?, ?>) task).get("cleanupBeforeCopy").toString())) {
 						// empty directory to remove stale animation files
-						TrackingFileIO.emptyDirectory(generator, to);
+						GradleTrackingFileIO.emptyDirectory(generator, to);
 					}
 
 					List<Animation> animations = Animation.getAnimations(generator.getWorkspace());

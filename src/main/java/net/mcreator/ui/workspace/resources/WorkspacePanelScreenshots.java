@@ -29,16 +29,37 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.image.ImageUtils;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 
+	private static final int THUMBNAIL_WIDTH = 145;
+	private static final int THUMBNAIL_HEIGHT = 82;
+
+	private final Render render;
+
+	private final ExecutorService thumbnailLoader = Executors.newSingleThreadExecutor(runnable -> {
+		Thread thread = new Thread(runnable, "Screenshot-Thumbnail-Loader");
+		thread.setDaemon(true);
+		return thread;
+	});
+	private Future<?> thumbnailLoadTask;
+
 	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
-		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, File::getName), new Render(),
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, File::getName), this.render = new Render(),
 				JList.HORIZONTAL_WRAP);
 
 		elementList.addMouseListener(new MouseAdapter() {
@@ -49,10 +70,10 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		});
 
 		addToolBarButton("workspace.screenshots.export_selected", UIRES.get("16px.ext"),
-				e -> exportSelectedScreenshots());
+				_ -> exportSelectedScreenshots());
 		addToolBarButton("workspace.screenshots.use_as_background", UIRES.get("16px.textures"),
-				e -> useSelectedAsBackgrounds());
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> {
+				_ -> useSelectedAsBackgrounds());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), _ -> {
 			deleteCurrentlySelected();
 			reloadElements();
 		});
@@ -74,6 +95,36 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 			filterModel.addAll(List.of(screenshots));
 
 		ListUtil.setSelectedValues(elementList, selected);
+
+		reloadThumbnails(screenshots == null ? new File[0] : screenshots);
+	}
+
+	private void reloadThumbnails(File[] screenshots) {
+		if (thumbnailLoadTask != null)
+			thumbnailLoadTask.cancel(true);
+
+		render.thumbnailCache.keySet().retainAll(Set.of(screenshots));
+
+		// Single thread executor makes sure at most one thumbnail load task runs at any given time
+		thumbnailLoadTask = thumbnailLoader.submit(() -> {
+			for (File screenshot : screenshots) {
+				if (Thread.currentThread().isInterrupted())
+					return;
+
+				if (render.thumbnailCache.containsKey(screenshot))
+					continue;
+
+				try {
+					Image image = ImageIO.read(screenshot);
+					if (image != null) {
+						render.thumbnailCache.put(screenshot,
+								new ImageIcon(ImageUtils.resize(image, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)));
+						elementList.repaint();
+					}
+				} catch (IOException _) {
+				}
+			}
+		});
 	}
 
 	private void useSelectedAsBackgrounds() {
@@ -96,6 +147,11 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 
 	static class Render extends JLabel implements ListCellRenderer<File> {
 
+		private final Map<File, ImageIcon> thumbnailCache = new ConcurrentHashMap<>();
+
+		private final ImageIcon placeholder = new ImageIcon(
+				ImageUtils.emptyImageWithSize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, null));
+
 		@Override
 		public JLabel getListCellRendererComponent(JList<? extends File> list, File ma, int index, boolean isSelected,
 				boolean cellHasFocus) {
@@ -108,7 +164,7 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 			setHorizontalTextPosition(CENTER);
 			setHorizontalAlignment(CENTER);
 
-			setIcon(new ImageIcon(ImageUtils.resize(new ImageIcon(ma.getAbsolutePath()).getImage(), 145, 82)));
+			setIcon(thumbnailCache.getOrDefault(ma, placeholder));
 
 			setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 			return this;

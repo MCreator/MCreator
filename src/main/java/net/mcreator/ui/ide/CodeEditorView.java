@@ -20,10 +20,10 @@ package net.mcreator.ui.ide;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import net.mcreator.generator.io.GradleTrackingFileIO;
+import net.mcreator.generator.io.JSONWriter;
+import net.mcreator.generator.io.JSWriter;
 import net.mcreator.io.FileIO;
-import net.mcreator.io.TrackingFileIO;
-import net.mcreator.io.writer.JSONWriter;
-import net.mcreator.io.writer.JSWriter;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.preferences.PreferencesManager;
@@ -34,7 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
-import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
+import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
@@ -76,11 +76,16 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.List;
 
 public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private static final Logger LOG = LogManager.getLogger("Code Editor");
+
+	private static final List<String> SUPPORTED_FILE_EXTENSIONS = List.of("java", "info", "txt", "json", "mcmeta",
+			"lang", "gradle", "ini", "conf", "xml", "properties", "mcfunction", "toml", "js", "yaml", "yml", "md",
+			"cfg", "fsh", "vsh", "csv",
+			"classtweaker"); // classtweaker is Fabric's access transformer format (formerly known as accesswidener)
 
 	public final SearchBar sed;
 	public final ReplaceBar rep;
@@ -357,6 +362,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			jls.install(te);
 
+			JavaLanguageSupportBridge.bridge(te, jls);
+
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
@@ -380,8 +387,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				LOG.error(e1.getMessage(), e1);
 			}
 
-			jcp.setStringCompletionProvider(new StringCompletitionProvider(mcreator.getWorkspace()));
-
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 
@@ -402,6 +407,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 							&& !completionInAction && jls.isAutoActivationEnabled() &&
 							// only smart autocomplete if the char we typed is a letter or digit
 							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
+							// if the popup is already visible, the library refreshes it on caret updates
+							ac != null && !ac.isPopupVisible() &&
 							// only smart autocomplete if we have at least one char already written
 							!jcp.getAlreadyEnteredText(te).isBlank()
 							// only smart autocomplete if we have more than one completion to choose from
@@ -453,7 +460,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					CodeEditorView.this.mouseEvent = mouseEvent;
 					if (jumpToMode && ac != null) {
 						DeclarationFinder.InClassPosition position = DeclarationFinder.getDeclarationOnPos(
-								mcreator.getWorkspace(), parser, te, jls.getJarManager());
+								mcreator.getWorkspace(), parser, te, mcreator.getGenerator().getProjectJarManager());
 						if (position != null) {
 							if (position.classFileNode == null) {
 								te.setCaretPosition(position.caret);
@@ -486,7 +493,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			});
 		} else if (fileName.endsWith(".xml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML));
-		} else if (fileName.endsWith(".lang")) {
+		} else if (fileName.endsWith(".lang") || fileName.endsWith(".properties")) {
 			ThreadUtil.runOnSwingThreadAndWait(
 					() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE));
 		} else if (fileName.endsWith(".gradle")) {
@@ -499,6 +506,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT));
 		} else if (fileName.endsWith(".yaml") || fileName.endsWith(".yml")) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_YAML));
+		} else if (fileName.endsWith(".csv")) {
+			ThreadUtil.runOnSwingThreadAndWait(() -> te.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_CSV));
 		}
 
 		SwingUtilities.invokeLater(this::loadSourceTree);
@@ -596,10 +605,14 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	public void saveCode() {
 		savingMCreatorModElementWarning();
-		TrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
+		GradleTrackingFileIO.writeFile(mcreator.getWorkspace(), te.getText(), fileWorkingOn);
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));
+
+		if (te.getSyntaxEditingStyle().equals(SyntaxConstants.SYNTAX_STYLE_JAVA)) {
+			mcreator.getGenerator().refreshWorkspaceSourceInfo();
+		}
 	}
 
 	public void centerLineInScrollPane() {
@@ -691,9 +704,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 	}
 
 	public static boolean isFileSupported(String fileName) {
-		return Arrays.asList("java", "info", "txt", "json", "mcmeta", "lang", "gradle", "ini", "conf", "xml",
-						"properties", "mcfunction", "toml", "js", "yaml", "yml", "md", "cfg", "fsh", "vsh")
-				.contains(FilenameUtilsPatched.getExtension(fileName));
+		return SUPPORTED_FILE_EXTENSIONS.contains(FilenameUtilsPatched.getExtension(fileName).toLowerCase());
 	}
 
 	public void jumpToLine(int linenum) {

@@ -130,22 +130,25 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		this.addLayer(new RenderLayer<>(this) {
 			final Identifier LAYER_TEXTURE = Identifier.parse("${modid}:textures/entities/${layer.texture}");
 			final RenderType RENDER_TYPE = RenderTypes.<#if layer.glow>eyes<#else>entityCutout</#if>(LAYER_TEXTURE);
+			<#if layer.model != "Default">
+				final EntityModel LAYER_MODEL = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
+			</#if>
 
 			<@javacompress>
 			@Override public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, ${renderState} state, float headYaw, float headPitch) {
 				<#if hasProcedure(layer.condition)>
 				<#assign needsEntityInState = true>
-				Level world = state.getRenderData(ENTITY_KEY).level();
-				double x = state.getRenderData(ENTITY_KEY).getX();
-				double y = state.getRenderData(ENTITY_KEY).getY();
-				double z = state.getRenderData(ENTITY_KEY).getZ();
+				Entity entity = state.getRenderData(ENTITY_KEY);
+				Level world = entity.level();
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
 				if (<@procedureOBJToConditionCode layer.condition/>) {
 				</#if>
 
 				<#if layer.model != "Default">
-					EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
-					model.setupAnim(state);
-					submitNodeCollector.submitModel(model, state, poseStack, RENDER_TYPE, light,
+					LAYER_MODEL.setupAnim(state);
+					submitNodeCollector.submitModel(LAYER_MODEL, state, poseStack, RENDER_TYPE, light,
 						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
 				<#else>
 					submitNodeCollector.submitModel(this.getParentModel(), state, poseStack, RENDER_TYPE, light,
@@ -180,10 +183,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	@Override protected void scale(${renderState} state, PoseStack poseStack) {
 		<#if hasProcedure(data.visualScale)>
 			<#assign needsEntityInState = true>
-			Level world = state.getRenderData(ENTITY_KEY).level();
-			double x = state.getRenderData(ENTITY_KEY).getX();
-			double y = state.getRenderData(ENTITY_KEY).getY();
-			double z = state.getRenderData(ENTITY_KEY).getZ();
+			Entity entity = state.getRenderData(ENTITY_KEY);
+			Level world = entity.level();
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
 			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
 			poseStack.scale(scale, scale, scale);
 		<#elseif data.visualScale?? && data.visualScale.getFixedValue() != 1>
@@ -202,10 +206,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	@Override protected boolean isBodyVisible(${renderState} state) {
 		<#if hasProcedure(data.transparentModelCondition)>
 		<#assign needsEntityInState = true>
-		Level world = state.getRenderData(ENTITY_KEY).level();
-		double x = state.getRenderData(ENTITY_KEY).getX();
-		double y = state.getRenderData(ENTITY_KEY).getY();
-		double z = state.getRenderData(ENTITY_KEY).getZ();
+		Entity entity = state.getRenderData(ENTITY_KEY);
+		Level world = entity.level();
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
 		</#if>
 		return <@procedureOBJToConditionCode data.transparentModelCondition false true/>;
 	}
@@ -215,10 +220,11 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	@Override protected boolean isShaking(${renderState} state) {
 		<#if hasProcedure(data.isShakingCondition)>
 		<#assign needsEntityInState = true>
-		Level world = state.getRenderData(ENTITY_KEY).level();
-		double x = state.getRenderData(ENTITY_KEY).getX();
-		double y = state.getRenderData(ENTITY_KEY).getY();
-		double z = state.getRenderData(ENTITY_KEY).getZ();
+		Entity entity = state.getRenderData(ENTITY_KEY);
+		Level world = entity.level();
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
 		</#if>
 		return <@procedureOBJToConditionCode data.isShakingCondition/>;
 	}
@@ -284,23 +290,31 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 }
 </@javacompress>
 
+<#macro ensureEntityReference>
+	<#if !(entityReferenceCreated!false)>
+		<#assign needsEntityInState = true>
+		${name}Entity entity = state.getRenderData(ENTITY_KEY);
+		<#assign entityReferenceCreated = true>
+	</#if>
+</#macro>
+
 <#macro setupAnim>
 	<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->
 	this.root().getAllParts().forEach(ModelPart::resetPose);
 	</#if>
 	<#list data.animations as animation>
 		<#if !animation.walking>
-			<#assign needsEntityInState = true>
-			this.keyframeAnimation${animation?index}.apply(state.getRenderData(ENTITY_KEY).animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
+			<@ensureEntityReference/>
+			this.keyframeAnimation${animation?index}.apply(entity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 		<#else>
 			<#if hasProcedure(animation.condition)>
-			<#assign needsEntityInState = true>
+			<@ensureEntityReference/>
 			if (<@procedureCode animation.condition, {
-				"x": "state.getRenderData(ENTITY_KEY).getX()",
-				"y": "state.getRenderData(ENTITY_KEY).getY()",
-				"z": "state.getRenderData(ENTITY_KEY).getZ()",
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
 				"entity": "entity",
-				"world": "state.getRenderData(ENTITY_KEY).level()"
+				"world": "entity.level()"
 			}, false/>)
 			</#if>
 			this.keyframeAnimation${animation?index}.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, ${animation.speed}f, ${animation.amplitude}f);

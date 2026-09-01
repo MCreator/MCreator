@@ -1,0 +1,2 @@
+Wenn dieser Parameter aktiviert ist, kann dieses Element in einer Jukebox verwendet werden und spielt den ausgewählten Titel
+beim Einfügen in die Jukebox ab. Sounddatei muss im **mono** OGG Vorbis Format sein.

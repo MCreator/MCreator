@@ -43,7 +43,7 @@ import java.util.Collection;
 	/**
 	 * Special values indicating the element is not assigned.
 	 */
-	String[] defaultValues() default "";
+	String[] defaultValues() default {};
 
 	Class<? extends GeneratableElement>[] acceptedTypes() default {};
 

@@ -70,14 +70,15 @@ import java.util.List;
 		super(element);
 
 		this.rarity = "COMMON";
+		this.creativeTabs = new ArrayList<>();
 	}
 
 	@Override public void finalizeModElementGeneration() {
 		try {
 			File entityTextureLocation = new File(
 					getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-					"entity/" + (isBoatChestVariant() ? "chest_boat/" : "boat/")
-							+ getModElement().getRegistryName() + ".png");
+					"entity/" + (isBoatChestVariant() ? "chest_boat/" : "boat/") + getModElement().getRegistryName()
+							+ ".png");
 			FileIO.copyFile(entityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
 		} catch (Exception e) {
 			LOG.error("Failed to copy special entity texture", e);

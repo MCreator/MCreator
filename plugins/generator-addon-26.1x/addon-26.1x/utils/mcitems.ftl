@@ -46,29 +46,13 @@
     </#if>
 </#function>
 
+<#function mappedMCItemToItemObjectJSON mappedBlock skipDefaultMetadata=false>
+    <#return "\"item\": \"" + mappedMCItemToRegistryNameNoTags(mappedBlock) + "\"">
+</#function>
+
 <#function transformExtension mappedBlock>
     <#assign extension = mappedBlock?keep_after_last(".")>
     <#return (extension?has_content)?then("_" + extension, "")>
-</#function>
-
-<#function mappedMCItemToItemObjectJSON mappedBlock skipDefaultMetadata=false>
-    <#if mappedBlock.toString().startsWith("CUSTOM:")>
-        <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
-        <#if customelement?has_content>
-            <#return "\"item\": \"" + "${modid}:" + customelement + transformExtension(mappedBlock.getUnmappedValue()) + "\"">
-        <#else>
-            <#return "\"item\": \"minecraft:air\"">
-        </#if>
-    <#elseif mappedBlock.toString().startsWith("TAG:")>
-        <#return "\"item\": \"minecraft:air\"">
-    <#else>
-        <#assign mapped = mappedBlock.toString()>
-        <#if mapped.contains(":")>
-            <#return "\"item\": \"" + mapped + "\"">
-        <#else>
-            <#return "\"item\": \"minecraft:" + mapped + "\"">
-        </#if>
-    </#if>
 </#function>
 
 <#function mappedMCItemToRegistryNameNoTags mappedBlock>
@@ -90,5 +74,13 @@
         <#else>
             <#return "minecraft:" + mapped>
         </#if>
+    </#if>
+</#function>
+
+<#function mappedMCItemToRegistryNameOrTag mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return "{\"tags\": \"q.any_tag(\'" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\')\" }">
+    <#else>
+        <#return "\"" + mappedMCItemToRegistryNameNoTags(mappedBlock) + "\"">
     </#if>
 </#function>

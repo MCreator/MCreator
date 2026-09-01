@@ -19,7 +19,9 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
+import net.mcreator.blockly.InternalBlocksLoader;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.DynamicBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.datapack.BlocklyToEnchantmentEffects;
@@ -48,7 +50,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
@@ -71,7 +73,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 	private final JSpinner weight = ComponentFromAnnotation.spinner(Enchantment.class, "weight");
 	private final JSpinner anvilCost = ComponentFromAnnotation.spinner(Enchantment.class, "anvilCost");
 
-	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots());
+	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
 
 	private final JSpinner maxLevel = ComponentFromAnnotation.spinner(Enchantment.class, "maxLevel");
 
@@ -183,7 +185,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 		pane1.add(PanelUtils.totalCenterInPanel(selp));
 
 		supportedItems.setValidator(new CompoundValidator(
-				new ItemListFieldValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),
+				new NonEmptyValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),
 				new ItemListFieldSingleTagValidator(supportedItems)));
 
 		incompatibleEnchantments.setValidator(new ItemListFieldSingleTagValidator(incompatibleEnchantments));
@@ -196,9 +198,11 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 				.getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.ENCHANTMENT_EFFECTS);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
+			InternalBlocksLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
+			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(() -> regenerateBlockAssemblies(true),
+			blocklyPanel.addChangeListener(_ -> new Thread(() -> regenerateBlockAssemblies(true),
 					"EnchantmentEffectsRegenerate").start());
 		});
 		if (!isEditingMode()) {

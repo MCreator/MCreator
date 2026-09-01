@@ -19,6 +19,7 @@
 package net.mcreator.integration.generator;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
@@ -28,9 +29,11 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableType;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.Logger;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -60,6 +63,20 @@ public class GTProcedureTriggers {
 					continue;
 			}
 
+			if (externalTrigger.dependencies_provided != null) {
+				Map<?, ?> typeMappings = workspace.getGenerator().getMappings().getMapping("types");
+				for (Dependency dependency : externalTrigger.dependencies_provided) {
+					VariableType varType = VariableTypeLoader.INSTANCE.fromName(dependency.getRawType());
+					boolean isVariableType = varType != null && varType.getName().equals(dependency.getRawType());
+					if (!isVariableType && (typeMappings == null || !typeMappings.containsKey(
+							dependency.getRawType()))) {
+						fail("[" + generatorName + "] External trigger " + externalTrigger.getID()
+								+ " provides dependency " + dependency.getName() + " with unknown type: "
+								+ dependency.getRawType());
+					}
+				}
+			}
+
 			ModElement modElement = new ModElement(workspace, "TestTrigger" + externalTrigger.getID(),
 					ModElementType.PROCEDURE);
 
@@ -80,9 +97,8 @@ public class GTProcedureTriggers {
 				additionalBlocks++;
 			}
 
-			List<DataListEntry> eventparameters = DataListLoader.loadDataList("eventparameters");
 			GeneratorWrapper generatorWrapper = new GeneratorWrapper(workspace.getGenerator());
-			for (DataListEntry entry : eventparameters) {
+			for (DataListEntry entry : DataListLoader.loadDataList("eventparameters")) {
 				String parameter = entry.getName();
 				String requiredGlobalTrigger = generatorWrapper.map(parameter, "eventparameters", 2);
 				if (requiredGlobalTrigger.equals(externalTrigger.getID())) {

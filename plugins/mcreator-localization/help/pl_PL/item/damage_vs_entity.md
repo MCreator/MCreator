@@ -1,1 +1,1 @@
-Możesz aktywować obrażenia wręcz za pomocą tego parametru i ustawić wartość obrażeń.
+Ten parametr określa, ile obrażeń zadaje Twój przedmiot przeciwko bytom.

@@ -20,15 +20,8 @@
 package net.mcreator.element.types.bedrock;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.EntityEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.parts.TextureHolder;
-import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.NonNullMappable;
-import net.mcreator.element.types.interfaces.IItemWithTexture;
-import net.mcreator.element.types.interfaces.LimitedOptions;
-import net.mcreator.element.types.interfaces.Numeric;
+import net.mcreator.element.parts.*;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -72,9 +65,16 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 	@Numeric(init = 4, min = -1000, max = 1000, step = 1) public int foodNutritionalValue;
 	@Numeric(init = 0.3, min = -1000, max = 1000, step = 0.1) public double foodSaturation;
 	public boolean foodCanAlwaysEat;
-	@ModElementReference public MItemBlock usingConvertsTo;
+	public MItemBlock usingConvertsTo;
 	@LimitedOptions({ "none", "eat", "block", "bow", "crossbow", "drink", "spear", "brush", "spyglass", "camera" })
 	public String animation;
+
+	// Tool
+	public boolean isEnchantable;
+	@NonNullMappable("all") public BEEquipmentSlotEntry enchantmentSlot;
+	@Numeric(init = 0, min = 0, max = 255, step = 1) public int enchantmentValue;
+	public boolean diggerUseEfficiency;
+	@ModElementReference public List<DiggerEntry> diggerEntries;
 
 	@ModElementReference(acceptedTypes = { BEScript.class }) public List<String> localScripts;
 
@@ -94,6 +94,7 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 		blockPlaceableOn = new ArrayList<>();
 		entityDispensableOn = new ArrayList<>();
 		entityPlaceableOn = new ArrayList<>();
+		diggerEntries = new ArrayList<>();
 
 		localScripts = new ArrayList<>();
 	}
@@ -108,6 +109,16 @@ public class BEItem extends GeneratableElement implements IItem, IItemWithTextur
 
 	@Override public List<MCItem> providedMCItems() {
 		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
+	}
+
+	public static class DiggerEntry {
+		@ModElementReference public MItemBlock block;
+		@Numeric(init = 1, min = 0, max = Integer.MAX_VALUE, step = 1) public int speed;
+
+		public DiggerEntry(MItemBlock block, int speed) {
+			this.block = block;
+			this.speed = speed;
+		}
 	}
 
 }

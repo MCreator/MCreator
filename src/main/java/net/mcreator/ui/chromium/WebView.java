@@ -25,7 +25,6 @@ import net.mcreator.ui.chromium.osr.JBCefOsrComponent;
 import net.mcreator.ui.chromium.osr.JBCefOsrHandler;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.laf.themes.ThemeCSS;
-import net.mcreator.util.TestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.CefClient;
@@ -38,6 +37,7 @@ import org.cef.callback.CefJSDialogCallback;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.*;
 import org.cef.misc.BoolRef;
+import org.cef.network.CefRequest;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -48,10 +48,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -64,6 +61,8 @@ public class WebView extends JPanel implements Closeable {
 	private final CefClient client;
 	private final CefMessageRouter router;
 	private final CefBrowser browser;
+
+	@Nullable JBCefOsrComponent osrComponent; // only used if OSR rendering is enabled, otherwise null
 
 	private final Component cefComponent;
 
@@ -80,6 +79,8 @@ public class WebView extends JPanel implements Closeable {
 
 	private volatile boolean isClosing = false;
 
+	private final List<RequestHandler> requestHandlers = new ArrayList<>();
+
 	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("WebView-Callback-Thread");
@@ -95,22 +96,43 @@ public class WebView extends JPanel implements Closeable {
 	});
 
 	public WebView(String url) {
-		this(url, false, false);
+		this(url, false);
 	}
 
 	public WebView(String url, boolean isTransparent) {
-		this(url, isTransparent, false);
-	}
-
-	private WebView(String url, boolean isTransparent, boolean forcePreload) {
 		setLayout(new BorderLayout());
 
 		this.client = CefUtils.createClient();
 		this.router = CefMessageRouter.create();
 		this.client.addMessageRouter(this.router);
 
+		// Serve http://mcreator/ resources and block requests to the internet. Resource serving is
+		// bound to the client of this WebView so MCreatorSchemeHandler holds a direct reference to
+		// the MCreator instance of this WebView, valid even for requests in flight while closing
+		this.client.addRequestHandler(new CefRequestHandlerAdapter() {
+			@Override public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request,
+					boolean userGesture, boolean isRedirect) {
+				return !request.getURL().startsWith("http://mcreator/"); // return true to block the request
+			}
+
+			@Override
+			public CefResourceRequestHandler getResourceRequestHandler(CefBrowser browser, CefFrame frame,
+					CefRequest request, boolean isNavigation, boolean isDownload, String requestInitiator,
+					BoolRef disableDefaultHandling) {
+				if (request.getURL().startsWith("http://mcreator/")) {
+					return new CefResourceRequestHandlerAdapter() {
+						@Override public CefResourceHandler getResourceHandler(CefBrowser browser, CefFrame frame,
+								CefRequest request) {
+							return new MCreatorSchemeHandler(requestHandlers);
+						}
+					};
+				}
+				return null;
+			}
+		});
+
 		if (CefUtils.useOSR()) {
-			JBCefOsrComponent osrComponent = new JBCefOsrComponent();
+			osrComponent = new JBCefOsrComponent();
 			JBCefOsrHandler handler = new JBCefOsrHandler(osrComponent);
 			osrComponent.setRenderHandler(handler);
 			this.browser = new CefBrowserOsrCustom(this.client, url,
@@ -214,13 +236,15 @@ public class WebView extends JPanel implements Closeable {
 					return false;
 				}
 
-				if (!browser.getUIComponent().hasFocus()) {
-					if (OS.isLinux()) {
-						browser.getUIComponent().requestFocus();
-					} else {
-						browser.getUIComponent().requestFocusInWindow();
+				SwingUtilities.invokeLater(() -> {
+					if (!browser.getUIComponent().hasFocus()) {
+						if (OS.isLinux()) {
+							browser.getUIComponent().requestFocus();
+						} else {
+							browser.getUIComponent().requestFocusInWindow();
+						}
 					}
-				}
+				});
 				return false;
 			}
 		});
@@ -320,14 +344,14 @@ public class WebView extends JPanel implements Closeable {
 			css.append("* { cursor: default !important; }");
 
 		addLoadListener(() -> addCSSToDOM(css.toString()));
+	}
 
-		/*
-		 * Immediately create the browser if:
-		 * - forcePreload set in preload() function so when preloading we don't infinitely wait for the browser to appear
-		 * - on tests, the browser is never shown, so we need to preload it so it actually loads content
-		 */
-		if (forcePreload || TestUtil.isTestingEnvironment())
-			this.browser.createImmediately(); // needed so tests that don't render also work
+	public void addRequestHandler(RequestHandler handler) {
+		requestHandlers.add(handler);
+	}
+
+	public void forceLoad() {
+		this.browser.createImmediately(); // needed so tests that don't render also work
 	}
 
 	@Override public void removeNotify() {
@@ -471,6 +495,10 @@ public class WebView extends JPanel implements Closeable {
 
 		client.dispose();
 
+		if (osrComponent != null) {
+			osrComponent.dispose();
+		}
+
 		callbackExecutor.shutdownNow();
 		edtJSWaitThread.shutdownNow();
 
@@ -492,9 +520,10 @@ public class WebView extends JPanel implements Closeable {
 	public static void preload() {
 		LOG.debug("Preloading CEF WebView");
 		CountDownLatch latch = new CountDownLatch(1);
-		WebView preloader = new WebView("about:blank", false, true);
+		WebView preloader = new WebView("about:blank", false);
 		try (preloader) {
 			preloader.addLoadListener(latch::countDown);
+			preloader.forceLoad();
 			if (!latch.await(5, TimeUnit.SECONDS)) {
 				LOG.error("Failed to preload WebView in time");
 			}

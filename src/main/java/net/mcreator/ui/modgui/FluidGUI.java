@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.ParticleEntry;
 import net.mcreator.element.types.Fluid;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -96,7 +97,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			"elementgui.common.rarity_");
 	private StringListProcedureSelector specialInformation;
 
-	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
+	private final JComboBox<String> fluidtype = ComponentFromAnnotation.options(Fluid.class, "type");
 
 	private final JSpinner resistance = ComponentFromAnnotation.spinner(Fluid.class, "resistance");
 	private final JSpinner luminance = ComponentFromAnnotation.spinner(Fluid.class, "luminance");
@@ -106,7 +107,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = ComponentFromAnnotation.spinner(Fluid.class, "flammability");
 	private final JSpinner fireSpreadSpeed = ComponentFromAnnotation.spinner(Fluid.class, "fireSpreadSpeed");
-	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator,
+			DataListLoader.loadDataList("mapcolors"));
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourChanges;

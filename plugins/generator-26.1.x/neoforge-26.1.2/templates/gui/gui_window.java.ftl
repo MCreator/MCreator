@@ -246,8 +246,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		super.init();
 
 		<#list textFields as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
-			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"));
 			${component.getName()}.setMaxLength(8192);
 			${component.getName()}.setResponder(content -> {
 				if (!menuStateUpdateActive)
@@ -292,11 +292,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 				<@buttonOnClick component/>
 			) {
 				@Override public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
-					<#if hasProcedure(component.displayCondition)>
-					int x = ${name}Screen.this.x; <#-- x and y provided by buttons are in-GUI, not in-world coordinates -->
-					int y = ${name}Screen.this.y;
-					if (<@procedureOBJToConditionCode component.displayCondition/>)
-					</#if>
 					guiGraphics.blit(RenderPipelines.GUI_TEXTURED, sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
 				}
 			};
@@ -347,11 +342,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		</#list>
 	}
 
-	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
+	<#if buttons?filter(component -> hasProcedure(component.displayCondition))?size != 0
+		|| imageButtons?filter(component -> hasProcedure(component.displayCondition))?size != 0>
 	@Override protected void containerTick() {
 		super.containerTick();
 
-		<#list data.getComponentsOfType("Button") as component>
+		<#list buttons as component>
+			<#if hasProcedure(component.displayCondition)>
+				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
+			</#if>
+		</#list>
+
+		<#list imageButtons as component>
 			<#if hasProcedure(component.displayCondition)>
 				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
 			</#if>
