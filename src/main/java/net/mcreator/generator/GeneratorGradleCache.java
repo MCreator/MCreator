@@ -26,6 +26,7 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,9 @@ public class GeneratorGradleCache {
 	}
 
 	public Map<String, List<String>> getImportTree() {
-		return importTree;
+		// Not redundant as GSON will return a mutable map, but we want to return an unmodifiable map
+		//noinspection RedundantUnmodifiable
+		return Collections.unmodifiableMap(importTree);
 	}
 
 	public static class ClasspathEntry {
