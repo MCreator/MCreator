@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.util.ListUtils;
@@ -144,6 +145,11 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	}
 
 	public static void addToTextureMap(Map<String, TextureHolder> map, TextureSelectionButton texture, String key) {
+		if (texture.hasTexture())
+			map.put(key, texture.getTextureHolder());
+	}
+
+	public static void addToTextureMap(Map<String, TextureHolder> map, TextureComboBox texture, String key) {
 		if (texture.hasTexture())
 			map.put(key, texture.getTextureHolder());
 	}

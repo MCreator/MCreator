@@ -26,6 +26,7 @@ import net.mcreator.element.types.Armor;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -37,21 +38,28 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
 import net.mcreator.ui.views.ArmorImageMakerView;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ArmorPackMakerTool extends AbstractPackMakerTool {
 
@@ -60,9 +68,18 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 	private final MCItemHolder base;
 
+	private final TextureSelectionButton helmetTexture;
+	private final TextureSelectionButton chestplateTexture;
+	private final TextureSelectionButton leggingsTexture;
+	private final TextureSelectionButton bootsTexture;
+	private final TextureComboBox armorTextureFile;
+
 	private ArmorPackMakerTool(MCreator mcreator) {
 		super(mcreator, "armor_pack", UIRES.get("16px.armorpack").getImage());
 
+		JTabbedPane tabPanel = new JTabbedPane();
+
+		// Main properties page
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		color = new JColor(mcreator, false, false);
@@ -104,7 +121,35 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(base);
 		validableElements.addValidationElement(name);
 
-		this.add("Center", PanelUtils.centerInPanel(props));
+		// Textures page
+		JPanel texturesPanel = new JPanel(new GridLayout(2, 4, 5, 2));
+
+		helmetTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		chestplateTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		leggingsTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		bootsTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true);
+		armorTextureFile.setAddPNGExtension(false);
+
+		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.helmet"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(helmetTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.chestplate"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(chestplateTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.leggings"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(leggingsTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.boots"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(bootsTexture));
+
+		tabPanel.add(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
+		tabPanel.add(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndSouthElement(texturesPanel,
+						PanelUtils.centerAndEastElement(L10N.label("dialog.tools.armor_pack_textures.armor"),
+								armorTextureFile))));
+
+		this.add("Center", PanelUtils.centerInPanel(tabPanel));
 
 		this.setSize(600, 290);
 		this.setLocationRelativeTo(mcreator);
@@ -113,11 +158,12 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 
 	@Override protected void generatePack(MCreator mcreator) {
 		addArmorPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
-				color.getColor(), (Double) power.getValue());
+				color.getColor(), (Double) power.getValue(), makeTextureMap());
 	}
 
 	static void addArmorPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
-			Workspace workspace, String name, MItemBlock base, Color color, double factor) {
+			Workspace workspace, String name, MItemBlock base, Color color, double factor,
+			@Nonnull Map<String, TextureHolder> textureMap) {
 		if (!checkIfNamesAvailable(workspace, name + "Armor", name + "ArmorHelmetRecipe",
 				name + "ArmorChestplateRecipe", name + "ArmorLeggingsRecipe", name + "ArmorBootsRecipe"))
 			return;
@@ -131,7 +177,28 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 				null;
 
 		// generate armor textures
-		ArmorImageMakerView.generateArmorImages(workspace, registryName, "Standard", color, true);
+		Image[] generatedTextures = ArmorImageMakerView.getImages("Standard", color, true);
+		if (!textureMap.containsKey("helmet")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(generatedTextures[2]),
+					mcreator.getFolderManager().getTextureFile(registryName + "_helmet", TextureType.ITEM));
+		}
+		if (!textureMap.containsKey("chestplate")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(generatedTextures[3]),
+					mcreator.getFolderManager().getTextureFile(registryName + "_chestplate", TextureType.ITEM));
+		}
+		if (!textureMap.containsKey("leggings")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(generatedTextures[4]),
+					mcreator.getFolderManager().getTextureFile(registryName + "_leggings", TextureType.ITEM));
+		}
+		if (!textureMap.containsKey("boots")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(generatedTextures[5]),
+					mcreator.getFolderManager().getTextureFile(registryName + "_boots", TextureType.ITEM));
+		}
+		if (!textureMap.containsKey("armor")) {
+			File[] armorTextureFiles = workspace.getFolderManager().getArmorTextureFilesForName(registryName);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(generatedTextures[0]), armorTextureFiles[0]);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(generatedTextures[1]), armorTextureFiles[1]);
+		}
 
 		// generate armor item
 		Armor armor = (Armor) ModElementType.ARMOR.getModElementGUI(mcreator,
@@ -140,11 +207,21 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armor.bodyName = readableName + " Chestplate";
 		armor.leggingsName = readableName + " Leggings";
 		armor.bootsName = readableName + " Boots";
-		armor.textureHelmet = new TextureHolder(workspace, registryName + "_head");
-		armor.textureBody = new TextureHolder(workspace, registryName + "_body");
-		armor.textureLeggings = new TextureHolder(workspace, registryName + "_leggings");
-		armor.textureBoots = new TextureHolder(workspace, registryName + "_boots");
-		armor.armorTextureFile = registryName;
+		armor.textureHelmet = textureMap.containsKey("helmet") ?
+				textureMap.get("helmet") :
+				new TextureHolder(workspace, registryName + "_helmet");
+		armor.textureBody = textureMap.containsKey("chestplate") ?
+				textureMap.get("chestplate") :
+				new TextureHolder(workspace, registryName + "_chestplate");
+		armor.textureLeggings = textureMap.containsKey("leggings") ?
+				textureMap.get("leggings") :
+				new TextureHolder(workspace, registryName + "_leggings");
+		armor.textureBoots = textureMap.containsKey("boots") ?
+				textureMap.get("boots") :
+				new TextureHolder(workspace, registryName + "_boots");
+		armor.armorTextureFile = textureMap.containsKey("armor") ?
+				textureMap.get("armor").getRawTextureName() :
+				registryName;
 		armor.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		armor.maxDamage = (int) Math.round(15 * factor);
 		armor.enchantability = (int) Math.round(9 * factor);
@@ -212,6 +289,18 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armorBootsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".boots");
 		armorBootsRecipe.unlockingItems.add(base);
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, armorBootsRecipe);
+	}
+
+	private Map<String, TextureHolder> makeTextureMap() {
+		HashMap<String, TextureHolder> map = new HashMap<>();
+
+		addToTextureMap(map, helmetTexture, "helmet");
+		addToTextureMap(map, chestplateTexture, "chestplate");
+		addToTextureMap(map, leggingsTexture, "leggings");
+		addToTextureMap(map, bootsTexture, "boots");
+		addToTextureMap(map, armorTextureFile, "armor");
+
+		return map;
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {

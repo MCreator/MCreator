@@ -92,7 +92,8 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 				factor, new HashMap<>());
 		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor,
 				new HashMap<>());
-		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
+		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor,
+				new HashMap<>());
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
