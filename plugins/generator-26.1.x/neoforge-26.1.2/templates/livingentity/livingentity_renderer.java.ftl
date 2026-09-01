@@ -136,7 +136,10 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 			<@javacompress>
 			@Override public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, ${renderState} state, float headYaw, float headPitch) {
-				<#if hasProcedure(layer.condition)>
+				<#if layer.syncedDataCondition??>
+				<#assign needsEntityInState = true>
+				if (state.getRenderData(ENTITY_KEY).getEntityData().get(${name}Entity.DATA_${layer.syncedDataCondition})) {
+				<#elseif hasProcedure(layer.condition)>
 				<#assign needsEntityInState = true>
 				Entity entity = state.getRenderData(ENTITY_KEY);
 				Level world = entity.level();
@@ -155,7 +158,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
 				</#if>
 
-				<#if hasProcedure(layer.condition)>}</#if>
+				<#if layer.syncedDataCondition?? || hasProcedure(layer.condition)>}</#if>
 			}
 			</@javacompress>
 		});
