@@ -43,7 +43,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.ItemListFieldValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -621,7 +621,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalPageGroup.addValidationElement(portalFrame);
 
 		biomesInDimension.setValidator(
-				new ItemListFieldValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
+				new NonEmptyValidator(biomesInDimension, L10N.t("elementgui.dimension.error_select_biome")));
 
 		generationPageGroup.addValidationElement(biomesInDimension);
 		generationPageGroup.addValidationElement(mainFillerBlock);
