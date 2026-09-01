@@ -762,6 +762,11 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		Entity entity = this;
 		return <@procedureOBJToConditionCode data.breatheUnderwater false true/>;
 	}
+
+	<#-- Fix #6456 - NeoForge did not patch canDrownInFluidType yet, so we also need use canBreatheUnderwater -->
+	@Override public boolean canBreatheUnderwater() {
+		return !this.canDrownInFluidType(NeoForgeMod.WATER_TYPE.value());
+	}
 	</#if>
 
 	<#if data.pushedByFluids?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
@@ -901,6 +906,14 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 	}
 	</#if>
 
+	<#if data.spawnThisMob && data.mobSpawningType.getUnmappedValue() == "monster" && data.mobBehaviourType != "Creature">
+	<#-- Fix #6451 - monsters won't spawn in end in 26.1 as it has skylight.
+	     EnderMan fixes this by returning 0 in getWalkTargetValue, but this has other unwanted consequences -->
+	@Override public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+		return this.level().dimension() == Level.OVERWORLD ? super.checkSpawnRules(level, reason) : true;
+	}
+	</#if>
+
 	public static void init(RegisterSpawnPlacementsEvent event) {
 		<#if data.spawnThisMob>
 			<#if data.mobSpawningType.getUnmappedValue() == "creature">
@@ -1023,7 +1036,8 @@ public class ${name}Entity extends ${extendsClass} <#if interfaces?size gt 0>imp
 		builder = builder.add(Attributes.SPAWN_REINFORCEMENTS_CHANCE);
 		</#if>
 
-		<#if aiblocks?seq_contains("follow_item_in_hands")>
+		<#-- TemptGoal reads TEMPT_RANGE, and these vanilla AI bases register it in super.registerGoals() -->
+		<#if ["Chicken", "Cow", "Horse", "Ocelot", "Pig"]?seq_contains(data.aiBase) || aiblocks?seq_contains("follow_item_in_hands")>
 		builder = builder.add(Attributes.TEMPT_RANGE, 10);
 		</#if>
 

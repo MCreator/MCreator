@@ -20,13 +20,13 @@ package net.mcreator.java;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.Workspace;
-import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
 import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
 import org.fife.rsta.ac.java.rjc.ast.NormalClassDeclaration;
 import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
 import org.fife.rsta.ac.java.rjc.lang.Type;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 class DeclarationChecker {
@@ -47,7 +47,8 @@ class DeclarationChecker {
 	}
 
 	static DeclarationFinder.InClassPosition checkForSuperDeclaration(Workspace workspace, String clickedWord,
-			TypeDeclaration classNameInWhichWeAre, CompilationUnit compilationUnit, JarManager jarManager) {
+			TypeDeclaration classNameInWhichWeAre, CompilationUnit compilationUnit,
+			@Nullable ProjectJarManager jarManager) {
 		if ("super".equals(clickedWord) && classNameInWhichWeAre instanceof NormalClassDeclaration) {
 			Type superClassName = ((NormalClassDeclaration) classNameInWhichWeAre).getExtendedType();
 			String fqdnSuperClassName = ClassFinder.tryToFQDNClass(superClassName.getName(true, false),
@@ -65,7 +66,7 @@ class DeclarationChecker {
 	}
 
 	static DeclarationFinder.InClassPosition checkForClassDeclaration(Workspace workspace, String clickedWord,
-			CompilationUnit compilationUnit, JarManager jarManager) {
+			CompilationUnit compilationUnit, @Nullable ProjectJarManager jarManager) {
 		List<ImportDeclaration> imports = compilationUnit.getImports();
 
 		if (clickedWord.contains(".")) {

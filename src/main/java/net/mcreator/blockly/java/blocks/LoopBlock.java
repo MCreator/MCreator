@@ -26,30 +26,20 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class LoopBlock implements IBlockGenerator {
-
-	private int loopIndex = 0;
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element value = XMLUtil.getFirstChildrenWithName(block, "value");
 		Element statement = XMLUtil.getFirstChildrenWithName(block, "statement");
 
-		String blocktype = block.getAttribute("type");
-
 		if (value != null && statement != null) {
-			int index = loopIndex++;
+			int index = getNestingLevel(block);
 
-			if ("controls_while".equals(blocktype)) {
-				master.append("while(");
-				master.processOutputBlockWithoutParentheses(value);
-				master.append(") {");
-			} else if ("controls_repeat_ext".equals(blocktype)) {
-				master.append("for (int index").append(index).append(" = 0; index").append(index).append("<");
-				master.processOutputBlockToInt(value);
-				master.append("; index").append(index).append("++) {");
-			}
-
+			master.append("for (int _i").append(index).append(" = 0; _i").append(index).append("<");
+			master.processOutputBlockToInt(value);
+			master.append("; _i").append(index).append("++) {");
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
 			master.append("}");
 		} else {
@@ -58,8 +48,21 @@ public class LoopBlock implements IBlockGenerator {
 		}
 	}
 
+	private static int getNestingLevel(Element block) {
+		int level = 1;
+		Node node = block;
+		while (node.getParentNode() != null) {
+			Node parent = node.getParentNode();
+			if ("statement".equals(node.getNodeName()) && parent instanceof Element parentElement
+					&& "controls_repeat_ext".equals(parentElement.getAttribute("type")))
+				level++;
+			node = parent;
+		}
+		return level;
+	}
+
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "controls_repeat_ext", "controls_while" };
+		return new String[] { "controls_repeat_ext" };
 	}
 
 	@Override public BlockType getBlockType() {

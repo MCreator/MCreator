@@ -143,6 +143,7 @@ import java.util.stream.Collectors;
 
 	public boolean isReplaceable;
 	public boolean canProvidePower;
+	public boolean forceRedstoneConductor;
 	public NumberProcedure emittedRedstonePower;
 	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;
@@ -533,7 +534,7 @@ import java.util.stream.Collectors;
 	}
 
 	public Set<String> getVibrationalEvents() {
-		return vibrationalEvents.stream().map(e -> e.getMappedValue(1)).collect(Collectors.toSet());
+		return vibrationalEvents.stream().map(GameEventEntry::getUnmappedValue).collect(Collectors.toSet());
 	}
 
 	public int getLeavesParticleColor() {

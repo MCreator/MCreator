@@ -1,0 +1,1 @@
+Jeśli opcja jest włączona, byt będzie w stanie oddychać pod wodą, jak ryby.

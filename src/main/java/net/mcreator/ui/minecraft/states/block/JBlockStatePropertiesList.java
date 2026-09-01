@@ -77,9 +77,9 @@ public class JBlockStatePropertiesList extends JEntriesList {
 		propertyEntries.setOpaque(false);
 
 		addProperty.setText(L10N.t("elementgui.block.custom_properties.add"));
-		addProperty.addActionListener(e -> createPropertiesEntry());
+		addProperty.addActionListener(_ -> createPropertiesEntry());
 		addExisting.setText(L10N.t("elementgui.block.custom_properties.add_existing"));
-		addExisting.addActionListener(e -> addPropertyFromDataList());
+		addExisting.addActionListener(_ -> addPropertyFromDataList());
 
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {
@@ -136,6 +136,13 @@ public class JBlockStatePropertiesList extends JEntriesList {
 		}
 
 		propertiesCapLabel.setText(String.valueOf(propertyCombinations));
+		if (propertyCombinations > MAX_PROPERTY_COMBINATIONS / 2) {
+			addProperty.setEnabled(false);
+			addExisting.setEnabled(false);
+		} else {
+			addProperty.setEnabled(this.isEnabled());
+			addExisting.setEnabled(this.isEnabled());
+		}
 	}
 
 	@Override public void setEnabled(boolean enabled) {

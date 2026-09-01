@@ -706,6 +706,20 @@ public class Generator implements IGenerator, Closeable {
 		ExternalTexture.invalidateCache(workspace);
 	}
 
+	public void refreshWorkspaceClassInfo() {
+		ProjectJarManager projectJarManager = getProjectJarManager();
+		if (projectJarManager != null) {
+			projectJarManager.refreshWorkspaceClassInfo();
+		}
+	}
+
+	public void refreshWorkspaceSourceInfo() {
+		ProjectJarManager projectJarManager = getProjectJarManager();
+		if (projectJarManager != null) {
+			projectJarManager.refreshWorkspaceSourceInfo();
+		}
+	}
+
 	public GeneratorGradleCache getGradleCache() {
 		return generatorGradleCache;
 	}

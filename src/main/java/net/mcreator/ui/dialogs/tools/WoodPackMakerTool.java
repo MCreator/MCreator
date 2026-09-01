@@ -836,7 +836,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
 		return new BasicAction(actionRegistry, L10N.t("action.pack_tools.wood"),
-				e -> new WoodPackMakerTool(actionRegistry.getMCreator())) {
+				_ -> new WoodPackMakerTool(actionRegistry.getMCreator())) {
 			@Override public boolean isEnabled() {
 				return isSupported(actionRegistry.getMCreator().getGeneratorConfiguration());
 			}
