@@ -2165,6 +2165,7 @@ public class TestWorkspaceDataProvider {
 				LivingEntity.AnimationEntry animation = new LivingEntity.AnimationEntry();
 				animation.animation = new Animation(modElement.getWorkspace(), anim);
 				animation.condition = random.nextBoolean() ? null : new Procedure("condition1");
+				animation.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 				animation.speed = 12.3;
 				animation.amplitude = 15.4;
 				animation.walking = _true;
