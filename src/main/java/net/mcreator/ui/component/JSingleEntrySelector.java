@@ -30,6 +30,7 @@ import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -46,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class JSingleEntrySelector<T> extends JPanel implements IValidable {
+public abstract class JSingleEntrySelector<T> extends JPanel implements IValidable, IOptionalValueContainer {
 
 	private final JLabel readableText = new JLabel();
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
@@ -73,14 +74,14 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		edit.setToolTipText(L10N.t("single_entry_selector.edit"));
 		remove.setToolTipText(L10N.t("single_entry_selector.remove"));
 
-		edit.addActionListener(event -> {
+		edit.addActionListener(_ -> {
 			T newEntry = openEntrySelector();
 			if (newEntry != null) {
 				setEntry(newEntry);
 				updateReadableText();
 			}
 		});
-		remove.addActionListener(e -> setEntry(null));
+		remove.addActionListener(_ -> setEntry(null));
 
 		readableText.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		readableText.setHorizontalAlignment(JTextField.CENTER);
@@ -121,7 +122,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		remove.setEnabled(enabled);
 	}
 
-	public boolean isEmpty() {
+	@Override public boolean isEmpty() {
 		return currentEntry == null;
 	}
 

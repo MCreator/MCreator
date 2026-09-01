@@ -30,6 +30,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -44,7 +45,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public abstract class AbstractProcedureSelector extends JPanel implements IValidable {
+public abstract class AbstractProcedureSelector extends JPanel implements IValidable, IOptionalValueContainer {
 
 	private static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 
@@ -72,7 +73,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		this.mcreator = mcreator;
 		this.returnType = returnType;
 
-		this.providedDependencies = Sets.newHashSet(providedDependencies);
+		this.providedDependencies = Sets.newLinkedHashSet(Arrays.asList(providedDependencies));
 
 		setEnabled(isEnabled());
 	}
@@ -186,7 +187,11 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	}
 
 	public void enableRealtimeValidation() {
-		procedures.addActionListener(e -> getValidationStatus());
+		procedures.addActionListener(_ -> getValidationStatus());
+	}
+
+	@Override public boolean isEmpty() {
+		return getSelectedProcedure() == null;
 	}
 
 	@Override public void paint(Graphics g) {
