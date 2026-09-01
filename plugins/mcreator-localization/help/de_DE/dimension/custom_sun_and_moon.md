@@ -2,6 +2,8 @@ Wenn diese Option aktiviert ist, werden die hier ausgewählten Texturen über So
 
 Die Sonnentextur hat keine besonderen Anforderungen, da sie fest vorgegeben ist.
 
+Dieser Parameter funktioniert nicht, wenn der Himmelstyp NONE ausgewählt ist.
+
 Die Mondtextur entspricht dem Format vor Version 26.1. Die Textur muss ein Kachelbild mit zwei Zeilen und vier Spalten (2x4) gleicher Größe sein, wobei jede Kachel eine andere Mondphase darstellt.
 
 Obere Zeile:

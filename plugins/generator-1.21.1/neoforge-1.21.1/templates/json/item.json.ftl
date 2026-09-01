@@ -28,7 +28,7 @@
     <@modelDefinition/>
     </#if>
     <#macro modelDefinition>
-    <#assign hasJavaModel = data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
+    <#local hasJavaModel = data.hasCustomJAVAModel?? && data.hasCustomJAVAModel()>
     <#if hasJavaModel>
     "gui_light": "front",
     </#if>
