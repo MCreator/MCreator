@@ -22,10 +22,11 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.IconUtils;
 
@@ -33,7 +34,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class VTextField extends JTextField implements IValidable {
+public class VTextField extends JTextField implements IValidable, IOptionalValueContainer {
 
 	private Validator validator = null;
 	private ValidationResult currentValidationResult = null;
@@ -77,6 +78,10 @@ public class VTextField extends JTextField implements IValidable {
 			}
 		});
 
+	}
+
+	@Override public boolean isEmpty() {
+		return this.getText().isBlank();
 	}
 
 	private static final ImageIcon INFO_ICON = IconUtils.resize(UIRES.get("18px.info"), 13, 13);
@@ -138,7 +143,7 @@ public class VTextField extends JTextField implements IValidable {
 	}
 
 	public VTextField requireValue(String errorMessageKey) {
-		this.setValidator(new TextFieldValidator(this, L10N.t(errorMessageKey)));
+		this.setValidator(new NonEmptyValidator(this, L10N.t(errorMessageKey)));
 		return this;
 	}
 

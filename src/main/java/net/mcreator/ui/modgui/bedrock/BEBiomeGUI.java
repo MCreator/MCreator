@@ -36,7 +36,7 @@ import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.validators.ItemListFieldValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
@@ -246,7 +246,7 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		effectsPane.add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
 
-		biomeReplacements.setValidator(new ItemListFieldValidator(biomeReplacements,
+		biomeReplacements.setValidator(new NonEmptyValidator(biomeReplacements,
 				L10N.t("elementgui.bebiome.error_must_have_replacement")));
 
 		page2group.addValidationElement(topMaterial);
