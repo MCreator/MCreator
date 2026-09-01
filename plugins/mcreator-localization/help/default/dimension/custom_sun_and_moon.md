@@ -3,6 +3,8 @@ If a custom skybox is enabled, these will be the only sun and moon visible in th
 
 Sun texture does not have any special requirement as it is fixed.
 
+This parameter does not work if sky type NONE is selected.
+
 Moon texture follows the pre-26.1 texture format. The texture must be a tiled image with two rows 
 and four columns (2x4) of equal sizes, where each tile represents a different phase of the moon.
 

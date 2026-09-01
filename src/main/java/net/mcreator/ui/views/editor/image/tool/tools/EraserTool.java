@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
@@ -43,5 +44,12 @@ public class EraserTool extends DrawingTool {
 	@Override public void toolDisabled(ToolActivationEvent e) {
 		layer.setRenderingMode(false);
 		super.toolDisabled(e);
+	}
+
+	@Override public void layerChanged(Layer oldLayer, Layer newLayer) {
+		if (oldLayer != null)
+			oldLayer.setRenderingMode(false);
+		if (newLayer != null)
+			newLayer.setRenderingMode(true);
 	}
 }
