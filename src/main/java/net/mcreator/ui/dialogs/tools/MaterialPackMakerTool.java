@@ -89,7 +89,7 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 	public static void addMaterialPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
 			Workspace workspace, String name, String type, Color color, double factor) {
 		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color,
-				factor);
+				factor, new HashMap<>());
 		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor,
 				new HashMap<>());
 		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor);
