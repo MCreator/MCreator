@@ -80,7 +80,7 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 					.add(${modifier.attribute}, new AttributeModifier(
 							ResourceLocation.fromNamespaceAndPath(${JavaModName}.MODID, "${registryname}_${modifier?index}"),
 							${modifier.amount}, AttributeModifier.Operation.${modifier.operation}),
-							<#if modifier.equipmentSlot == "default">EquipmentSlotGroup.MAINHAND<#else>${modifier.equipmentSlot}</#if>)
+							<#if modifier.equipmentSlot.getUnmappedValue() == "default">EquipmentSlotGroup.MAINHAND<#else>${modifier.equipmentSlot}</#if>)
 					</#list>
 					.build())
 				</#if>
@@ -390,10 +390,10 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 }
 
 <#macro arrowShootCode>
-	<#assign projectile = data.projectile.getUnmappedValue()>
+	<#local projectile = data.projectile.getUnmappedValue()>
 	ItemStack stack = findAmmo(player);
 	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
-		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
+		<#local projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom()<#if data.rangedItemChargesPower>, pullingPower</#if>);
 		<#elseif projectile.endsWith("Arrow")>

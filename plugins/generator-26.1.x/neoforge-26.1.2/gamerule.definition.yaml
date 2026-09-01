@@ -3,7 +3,7 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameGameRules.java"
 
 localizationkeys:
-  - key: gamerule.@modid.@lc1_name
+  - key: gamerule.@modid.@registryname
     mapto: displayName
-  - key: gamerule.@modid.@lc1_name.description
+  - key: gamerule.@modid.@registryname.description
     mapto: description

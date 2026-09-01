@@ -116,12 +116,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	private final JSpinner oreCount = ComponentFromAnnotation.spinner(BEBlock.class, "oreCount");
 	private final MCItemListField blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 
-	private final JComboBox<String> rotationMode = new JComboBox<>(
-			new String[] { L10N.t("elementgui.block.rotation_mode.none"),
-					L10N.t("elementgui.block.rotation_mode.player_y_axis"),
-					L10N.t("elementgui.block.rotation_mode.player_all_axis"),
-					L10N.t("elementgui.block.rotation_mode.block_all_axis"),
-					L10N.t("elementgui.block.rotation_mode.log") });
+	private final JComboBox<String> rotationMode = ComponentFromAnnotation.translatedOptions(BEBlock.class,
+			"rotationMode", "elementgui.block.rotation_mode.");
 
 	private final JComboBox<String> renderMethod = ComponentFromAnnotation.options(BEBlock.class, "renderMethod");
 

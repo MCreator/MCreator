@@ -29,9 +29,11 @@ import net.mcreator.util.locale.UTF8Control;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class L10N {
@@ -39,6 +41,8 @@ public class L10N {
 	private static final Logger LOG = LogManager.getLogger("L10N");
 
 	public static final Locale DEFAULT_LOCALE = Locale.of("en", "US");
+
+	private static final Pattern NEWLINES = Pattern.compile("[\r\n]+");
 
 	private static ResourceBundle rb;
 	private static ResourceBundle rb_en;
@@ -67,6 +71,11 @@ public class L10N {
 		LOG.info("Setting default locale to: {}; OS locale: {}", getLocale(), osLocale);
 		Locale.setDefault(getLocale());
 		JComponent.setDefaultLocale(getLocale());
+
+		// UIDefaults tables cache the default locale at construction time, and LaF is installed before
+		// this method is called, so we need to update their locale for UIManager.getString(...) lookups
+		UIManager.getDefaults().setDefaultLocale(getLocale());
+		UIManager.getLookAndFeelDefaults().setDefaultLocale(getLocale());
 	}
 
 	private static void initLocalesImpl() {
@@ -133,11 +142,35 @@ public class L10N {
 		else if (Locale.of("zh", "CN").equals(locale)) // Chinese Simplified
 			return "zh-hans";
 
-		return getLocaleString().split("_")[0].replace("iw", "he");
+		return getLocaleString().split("_")[0].replace("iw", "he").replace("no", "nb");
 	}
 
 	public static String t(String key, Object... parameters) {
 		return t_impl(rb, key, parameters);
+	}
+
+	/**
+	 * Collects all translations for keys starting with "blockly.". Keys not translated in the current
+	 * locale fall back to the English translation through the resource bundle parent chain.
+	 *
+	 * @return map of blockly.* translation keys to their translations in the current locale
+	 */
+	public static Map<String, String> getBlocklyTranslations() {
+		Map<String, String> translations = new HashMap<>();
+		Set<String> keys = new HashSet<>(rb.keySet());
+		keys.addAll(rb_en.keySet());
+		for (String key : keys) {
+			if (key.startsWith("blockly.")) {
+				try {
+					String value = t(key);
+					if (value != null)
+						translations.put(key, value);
+				} catch (IllegalArgumentException e) {
+					LOG.warn("Failed to format translation for key: {} in locale: {}", key, getLocale(), e);
+				}
+			}
+		}
+		return translations;
 	}
 
 	public static String t_en(String key, Object... parameters) {
@@ -149,7 +182,8 @@ public class L10N {
 			return null;
 
 		if (resourceBundle.containsKey(key)) {
-			return MessageFormat.format(resourceBundle.getString(key), parameters);
+			String value = hardenHTMLString(resourceBundle.getString(key), rb_en.containsKey(key) ? rb_en.getString(key) : null);
+			return MessageFormat.format(value, parameters);
 		} else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
 				".description"))) {
 			return null;
@@ -160,6 +194,31 @@ public class L10N {
 		} else {
 			return key;
 		}
+	}
+
+	/**
+	 * <p>Hardens localized strings against common translation mistakes that break HTML rendering in Swing components:
+	 * leading whitespace before the opening html tag, html tag present in the source string but missing in the
+	 * localized one, and literal newline characters inside HTML strings. Newlines carry no meaning in rendered HTML,
+	 * but cause components such as JOptionPane to split the message into multiple parts, in which case only the
+	 * first part is rendered as HTML.</p>
+	 *
+	 * @param value       The localized string to harden
+	 * @param sourceValue The source (English) string for the same key, or null if not known
+	 * @return Localized string safe to use in Swing components
+	 */
+	private static String hardenHTMLString(String value, @Nullable String sourceValue) {
+		String stripped = value.stripLeading();
+		boolean isHTML = stripped.regionMatches(true, 0, "<html>", 0, 6);
+
+		if (!isHTML && sourceValue != null && sourceValue.regionMatches(true, 0, "<html>", 0, 6)) {
+			// Source string is HTML, so the localized string must be HTML too, otherwise
+			// HTML tags contained in it would render as plain text
+			stripped = "<html>" + stripped;
+			isHTML = true;
+		}
+
+		return isHTML ? NEWLINES.matcher(stripped).replaceAll(" ") : value;
 	}
 
 	public static JLabel label(String key, Object... parameter) {
