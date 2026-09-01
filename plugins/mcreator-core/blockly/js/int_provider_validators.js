@@ -77,15 +77,17 @@ function validateIntProviderInputs(...inputs) {
             }
             let isValid = true;
             // For each passed input, we check if it's within bounds
-            for (let i = 0; i < inputs.length; i++) {
+            let i = 0;
+            while (i < inputs.length) {
                 const countValue = this.getInput(inputs[i][0]).connection.targetBlock();
                 isValid = isIntProviderWithinBounds(countValue, inputs[i][1], inputs[i][2]);
                 if (!isValid)
                     break; // Stop checking as soon as one input isn't valid
+                i++;
             }
             if (!this.isInFlyout) {
                 // Add a warning for the first non-valid input
-                this.setWarningText(isValid ? null : javabridge.t('blockly.extension.' + this.type + '.' + inputs[i][0]));
+                this.setWarningText(isValid ? null : translate('blockly.extension.' + this.type + '.' + inputs[i][0]));
                 const group = Blockly.Events.getGroup();
                 // Makes it so the block change and the disable event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);

@@ -31,6 +31,7 @@ import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -43,8 +44,8 @@ public class MCItemHolder extends JButton implements IValidable {
 	private static final Color warn = new Color(236, 238, 207);
 	private static final Color bg = new Color(140, 140, 140);
 
-	private String block = "";
-	private final MCItemSelectorDialog bs;
+	@Nonnull private String block = "";
+	private final MCItemSelectorDialog selectorDialog;
 
 	private boolean showValidation = true;
 	private boolean removeButtonHover;
@@ -65,11 +66,11 @@ public class MCItemHolder extends JButton implements IValidable {
 	public MCItemHolder(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags,
 			boolean hasPotions) {
 		this.mcreator = mcreator;
-		bs = new MCItemSelectorDialog(mcreator, blocksConsumer, supportTags, hasPotions);
-		bs.setItemSelectedListener(e -> {
-			MCItem bsa = bs.getSelectedMCItem();
-			if (bsa != null) {
-				setBlock(new MItemBlock(mcreator.getWorkspace(), bsa.getName()));
+		selectorDialog = new MCItemSelectorDialog(mcreator, blocksConsumer, supportTags, hasPotions);
+		selectorDialog.setItemSelectedListener(_ -> {
+			MCItem selectedItem = selectorDialog.getSelectedMCItem();
+			if (selectedItem != null) {
+				setBlock(new MItemBlock(mcreator.getWorkspace(), selectedItem.getName()));
 			}
 		});
 		initGUI();
@@ -106,15 +107,15 @@ public class MCItemHolder extends JButton implements IValidable {
 	 * @return true if selector has item defined (air doesn't count as an item)
 	 */
 	public boolean containsItem() {
-		return block != null && !block.isEmpty() && !(block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR")
-				|| block.equals("Blocks.CAVE_AIR"));
+		return !(block.isEmpty() || block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR") || block.equals(
+				"Blocks.CAVE_AIR"));
 	}
 
 	/**
 	 * @return true if selector has item defined (air also counts)
 	 */
 	public boolean containsItemOrAir() {
-		return block != null && !block.isEmpty();
+		return !block.isEmpty();
 	}
 
 	private void initGUI() {
@@ -133,7 +134,7 @@ public class MCItemHolder extends JButton implements IValidable {
 							&& e.getY() > getHeight() - 11) && !block.isEmpty()) {
 						setBlock(null);
 					} else {
-						bs.setVisible(true); // show block selector
+						selectorDialog.setVisible(true); // show block selector
 					}
 					repaint();
 				}

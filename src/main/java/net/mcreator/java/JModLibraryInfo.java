@@ -111,8 +111,11 @@ public class JModLibraryInfo extends LibraryInfo {
 			while (e.hasMoreElements()) {
 				ZipEntry entry = e.nextElement();
 				String entryName = entry.getName();
-				if (entryName.endsWith(".class") && entryName.startsWith("classes/"))
-					root.add(StringUtils.stripStart(entryName, "classes/"));
+				if (entryName.endsWith(".class") && entryName.startsWith("classes/")) {
+					String className = StringUtils.stripStart(entryName, "classes/");
+					if (SafeJarLibraryInfo.isIndexableClassEntry(className))
+						root.add(className);
+				}
 			}
 		}
 		return root;
