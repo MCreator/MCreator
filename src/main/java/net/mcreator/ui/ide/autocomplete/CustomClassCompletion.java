@@ -78,10 +78,17 @@ public class CustomClassCompletion extends BasicCompletion {
 		int start = dot - (alreadyEntered != null ? alreadyEntered.length() : 0);
 
 		String lineText = getCurrentLineText(te);
-		String textBeforeCaret = lineText.substring(0,
-				Math.max(0, lineText.length() - (alreadyEntered != null ? alreadyEntered.length() : 0))).trim();
-		if (textBeforeCaret.endsWith(".") || lineText.startsWith("import ") || lineText.startsWith("package ")) {
-			String toInsert = textBeforeCaret.endsWith(".") ? className : getClassName(true);
+		boolean isPrecededByDot = false;
+		if (start > 0) {
+			try {
+				isPrecededByDot = ".".equals(te.getText(start - 1, 1));
+			} catch (BadLocationException ignored) {
+				return;
+			}
+		}
+
+		if (isPrecededByDot || lineText.startsWith("import ") || lineText.startsWith("package ")) {
+			String toInsert = isPrecededByDot ? className : getClassName(true);
 			te.replaceRange(toInsert, start, dot);
 			return;
 		}
