@@ -316,7 +316,17 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					if (jarManager != null) {
 						Set<Completion> jarComps = new TreeSet<>();
 						jarManager.addCompletions(this, targetName + "." + wordOnly, jarComps);
-						completions.addAll(jarComps);
+						for (Completion c : jarComps) {
+							// Cannot do instanceof due to ClassCompletion being package private
+							if (c.getClass().getSimpleName().equals("ClassCompletion")) {
+								String className = c.getInputText();
+								ClassInfo info = getClassInfo(targetName + "." + className, className);
+								completions.add(new CustomClassCompletion(this, className, targetName,
+										info.isInterface(), info.isEnum()));
+							} else {
+								completions.add(c);
+							}
+						}
 					}
 				}
 			}
