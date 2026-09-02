@@ -46,9 +46,7 @@ public class ResizeCanvasTool extends AbstractTool {
 
 	@Override public boolean process(ZoomedMouseEvent e) {
 		ResizeCanvasDialog dialog = new ResizeCanvasDialog(window, canvas);
-		SwingUtilities.invokeLater(() -> {
-			dialog.setVisible(true);
-		});
+		SwingUtilities.invokeLater(() -> dialog.setVisible(true));
 		return true;
 	}
 

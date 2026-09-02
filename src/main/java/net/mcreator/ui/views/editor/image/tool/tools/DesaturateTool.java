@@ -44,9 +44,7 @@ public class DesaturateTool extends AbstractTool {
 
 	@Override public boolean process(ZoomedMouseEvent mouseEvent) {
 		DesaturateDialog dialog = new DesaturateDialog(window, canvas, layer, versionManager);
-		SwingUtilities.invokeLater(() -> {
-			dialog.setVisible(true);
-		});
+		SwingUtilities.invokeLater(() -> dialog.setVisible(true));
 		return true;
 	}
 

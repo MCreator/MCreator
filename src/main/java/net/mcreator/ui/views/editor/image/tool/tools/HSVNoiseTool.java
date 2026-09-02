@@ -44,9 +44,7 @@ public class HSVNoiseTool extends AbstractTool {
 
 	@Override public boolean process(ZoomedMouseEvent mouseEvent) {
 		HSVNoiseDialog dialog = new HSVNoiseDialog(window, canvas, layer, versionManager);
-		SwingUtilities.invokeLater(() -> {
-			dialog.setVisible(true);
-		});
+		SwingUtilities.invokeLater(() -> dialog.setVisible(true));
 		return true;
 	}
 

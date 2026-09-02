@@ -44,9 +44,7 @@ public class ColorizeTool extends AbstractTool {
 
 	@Override public boolean process(ZoomedMouseEvent mouseEvent) {
 		RecolorDialog dialog = new RecolorDialog(window, canvas, layer, colorSelector, versionManager);
-		SwingUtilities.invokeLater(() -> {
-			dialog.setVisible(true);
-		});
+		SwingUtilities.invokeLater(() -> dialog.setVisible(true));
 		return true;
 	}
 
