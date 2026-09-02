@@ -104,7 +104,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		dispenseResultItemstack = new ProcedureSelector(this.withEntry("item_extension/dispense_result_itemstack"),
 				mcreator, L10N.t("elementgui.item_extension.dispense_result_itemstack"),
 				VariableTypeLoader.BuiltInTypes.ITEMSTACK, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:boolean")).setDefaultName(
+				"x:number/y:number/z:number/world:world/itemstack:itemstack/direction:direction/success:logic")).setDefaultName(
 						L10N.t("elementgui.item_extension.dispense_result_itemstack.default")).makeInline()
 				.makeReturnValueOptional();
 
