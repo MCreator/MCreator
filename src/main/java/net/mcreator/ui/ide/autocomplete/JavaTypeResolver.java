@@ -310,7 +310,7 @@ public class JavaTypeResolver {
 		ClassFile cf = jarManager != null ? memberResolver.getClassFile(jarManager, fqdn) : null;
 		if (cf != null && cf.getParamTypes() != null)
 			return cf.getParamTypes();
-		String src = (currentClassFQDN != null && fqdn.startsWith(currentClassFQDN) && currentCode != null) ?
+		String src = (currentClassFQDN != null && fqdn.equals(currentClassFQDN) && currentCode != null) ?
 				currentCode :
 				sourceResolver.loadSourceCodeForFQDN(fqdn);
 		if (src != null) {
