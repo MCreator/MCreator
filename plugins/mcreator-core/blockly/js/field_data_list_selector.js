@@ -62,7 +62,7 @@ class FieldDataListSelector extends Blockly.Field {
                 let customEntryProviders = typeof this.customEntryProviders === 'function' ?
                     this.customEntryProviders() :
                     this.customEntryProviders;
-                javabridge.openEntrySelector(this.type, this.typeFilter, customEntryProviders, {
+                javabridge.openEntrySelector(this.type, this.typeFilter, customEntryProviders, this.getValue(), {
                     'callback': function (value, readableName) {
                         if (value !== thisField.value_) { // If new value is same as old value, do nothing
                             thisField.cachedReadableName = readableName || value;

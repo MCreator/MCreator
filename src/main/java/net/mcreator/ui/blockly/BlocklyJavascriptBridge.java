@@ -79,10 +79,11 @@ public final class BlocklyJavascriptBridge {
 		});
 	}
 
-	@SuppressWarnings("unused") public void openMCItemSelector(String type, Consumer<String> callback) {
+	@SuppressWarnings("unused") public void openMCItemSelector(String type, String currentValue, Consumer<String> callback) {
 		SwingUtilities.invokeLater(() -> {
 			MCItem selected = MCItemSelectorDialog.openSelectorDialog(mcreator,
-					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems);
+					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems,
+					currentValue == null ? null : new MCItem(new DataListEntry.Dummy(currentValue)));
 			callback.accept(selected == null ? null : selected.getName());
 		});
 	}
@@ -98,13 +99,14 @@ public final class BlocklyJavascriptBridge {
 	 * Opens a data list selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the entries from a given workspace
+	 * @param selectedEntry Current value of this field, which will already be selected when the dialog is opened
 	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
 	private String[] openDataListEntrySelector(Function<Workspace, Collection<DataListEntry>> entryProvider,
-			String type) {
+			String selectedEntry, String type) {
 		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-		DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider,
+		DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider, selectedEntry,
 				L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
 		if (selected != null) {
 			retval[0] = selected.getName();
@@ -117,12 +119,14 @@ public final class BlocklyJavascriptBridge {
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the strings from a given workspace
+	 * @param selectedEntry Current value of this field, which will already be selected when the dialog is opened
 	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
-	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
+	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String selectedEntry,
+			String type) {
 		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-		String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider,
+		String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, selectedEntry,
 				L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
 		if (selected != null) {
 			retval[0] = selected;
@@ -152,17 +156,18 @@ public final class BlocklyJavascriptBridge {
 	 * @param type                 The type of selector to open
 	 * @param typeFilter           If present, only entries whose type matches this parameter are loaded
 	 * @param customEntryProviders If present, the types of the mod elements that provide custom entries
-	 * @param callback             The Javascript object that passes the {"value", "readable name"} pair to the Blockly editor
+	 * @param currentValue         If present, the currently selected item in the entry selector
+	 * @param callback             The JavaScript object that passes the {"value", "readable name"} pair to the Blockly editor
 	 */
 	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, @Nullable String typeFilter,
-			@Nullable String customEntryProviders, Consumer<String[]> callback) {
+			@Nullable String customEntryProviders, @Nullable String currentValue, Consumer<String[]> callback) {
 		SwingUtilities.invokeLater(() -> {
 			String[] retval;
 			if ("global_triggers".equals(type)) {
 				String[] selectedEntry = openDataListEntrySelector(w -> ext_triggers.entrySet().stream()
 						.map(entry -> (DataListEntry) new DataListEntry.Dummy(entry.getKey()) {{
 							setReadableName(entry.getValue());
-						}}).toList(), "global_trigger");
+						}}).toList(), currentValue, "global_trigger");
 
 				// Legacy: for global triggers, "no_ext_trigger" is used to indicate no selected value, whereas normally it is ""
 				if (selectedEntry[0].isEmpty()) {
@@ -172,16 +177,18 @@ public final class BlocklyJavascriptBridge {
 			} else if (type.startsWith("procedure_retval_")) {
 				var variableType = VariableTypeLoader.INSTANCE.fromName(
 						Strings.CS.removeStart(type, "procedure_retval_"));
-				retval = openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType), "procedure");
+				retval = openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType),
+						currentValue, "procedure");
 			} else {
 				String[] arrayList = BlocklyElementUtil.getStringArrayForEntrySelector(mcreator.getWorkspace(), type,
 						customEntryProviders);
 				if (arrayList != null) {
-					retval = openStringEntrySelector(w -> arrayList, getEntrySelectorDialogLangKeyType(type));
+					retval = openStringEntrySelector(w -> arrayList, currentValue,
+							getEntrySelectorDialogLangKeyType(type));
 				} else {
 					retval = openDataListEntrySelector(
 							w -> BlocklyElementUtil.getDataListEntriesForEntrySelector(w, type, typeFilter,
-									customEntryProviders), getEntrySelectorDialogLangKeyType(type));
+									customEntryProviders), currentValue, getEntrySelectorDialogLangKeyType(type));
 				}
 			}
 			callback.accept(retval);
