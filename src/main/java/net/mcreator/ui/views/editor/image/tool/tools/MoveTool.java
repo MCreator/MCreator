@@ -50,10 +50,8 @@ public class MoveTool extends AbstractTool {
 			layer.setY(y);
 			prev = e.getPoint();
 			relocation.setAfter(layer);
-			processing = false;
 			return true;
 		}
-		processing = false;
 		return false;
 	}
 

@@ -47,7 +47,6 @@ public class ResizeTool extends AbstractTool {
 		ResizeDialog dialog = new ResizeDialog(window, canvas, layer, versionManager);
 		SwingUtilities.invokeLater(() -> {
 			dialog.setVisible(true);
-			processing = false;
 		});
 		return true;
 	}

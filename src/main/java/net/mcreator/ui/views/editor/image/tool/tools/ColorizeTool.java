@@ -28,6 +28,7 @@ import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 
 public class ColorizeTool extends AbstractTool {
 
@@ -45,9 +46,10 @@ public class ColorizeTool extends AbstractTool {
 		RecolorDialog dialog = new RecolorDialog(window, canvas, layer, colorSelector, versionManager);
 		SwingUtilities.invokeLater(() -> {
 			dialog.setVisible(true);
-			processing = false;
 		});
 		return true;
 	}
 
+	@Override public void mouseDragged(MouseEvent e) {
+	}
 }

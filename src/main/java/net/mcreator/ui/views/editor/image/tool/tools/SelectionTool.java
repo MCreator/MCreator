@@ -69,10 +69,8 @@ public class SelectionTool extends AbstractTool {
 			case TOP, BOTTOM -> y.y = (int) Math.round(e.getPreciseY());
 			case LEFT, RIGHT -> x.x = (int) Math.round(e.getPreciseX());
 			}
-			processing = false;
 			return true;
 		}
-		processing = false;
 		return false;
 	}
 
