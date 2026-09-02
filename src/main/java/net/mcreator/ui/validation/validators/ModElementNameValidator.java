@@ -56,9 +56,12 @@ public class ModElementNameValidator extends UniqueNameValidator {
 
 	@Override public ValidationResult validate() {
 		ValidationResult nameValidationResult = memberNameValidator.validate();
-		if (nameValidationResult.type() == ValidationResult.Type.ERROR) {
+		if (nameValidationResult.type() == ValidationResult.Type.ERROR) { // No need to check for unique name
 			return nameValidationResult;
 		}
-		return super.validate();
+		ValidationResult uniqueValidationResult = super.validate();
+		return uniqueValidationResult.type() == ValidationResult.Type.PASSED ? // Name validator might return a warning
+				nameValidationResult :
+				uniqueValidationResult;
 	}
 }
