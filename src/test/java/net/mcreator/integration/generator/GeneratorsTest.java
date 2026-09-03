@@ -162,7 +162,7 @@ import static org.junit.jupiter.api.Assertions.*;
 										"Material", "Dust based", Color.red, 1.234, new HashMap<>());
 							if (WoodPackMakerTool.isSupported(generatorConfiguration))
 								WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator.get(), workspace.get(), "Wood",
-										Color.green, Color.red, 0.123);
+										Color.green, Color.red, 0.123, new HashMap<>());
 						}));
 					}
 

@@ -36,6 +36,8 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
@@ -46,10 +48,13 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class WoodPackMakerTool extends AbstractPackMakerTool {
@@ -59,10 +64,34 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 	private final JColor barkColor;
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 
+	// Texture selectors
+	private final TextureSelectionButton logSideTexture;
+	private final TextureSelectionButton logTopTexture;
+	private final TextureSelectionButton strippedLogSideTexture;
+	private final TextureSelectionButton strippedLogTopTexture;
+	private final TextureSelectionButton planksTexture;
+	private final TextureSelectionButton leavesTexture;
+	private final TextureSelectionButton doorTopTexture;
+	private final TextureSelectionButton doorBottomTexture;
+	private final TextureSelectionButton doorItemTexture;
+	private final TextureSelectionButton trapdoorTexture;
+	private final TextureSelectionButton signItemTexture;
+	private final TextureComboBox signEntityTexture;
+	private final TextureSelectionButton hangingSignItemTexture;
+	private final TextureComboBox hangingSignEntityTexture;
+	private final TextureComboBox hangingSignGUITexture;
+	private final TextureSelectionButton boatItemTexture;
+	private final TextureComboBox boatEntityTexture;
+	private final TextureSelectionButton chestBoatItemTexture;
+	private final TextureComboBox chestBoatEntityTexture;
+
 	private WoodPackMakerTool(MCreator mcreator) {
 		super(mcreator, "wood_pack", UIRES.get("16px.woodpack").getImage());
 
-		JPanel props = new JPanel(new GridLayout(5, 2, 5, 2));
+		JTabbedPane tabPanel = new JTabbedPane();
+
+		// Main properties page
+		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		color = new JColor(mcreator, false, false);
 		barkColor = new JColor(mcreator, true, false);
@@ -85,20 +114,89 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 		validableElements.addValidationElement(name);
 
-		this.add("Center", PanelUtils.centerInPanel(props));
+		// Textures page
+		JPanel texturesPanel = new JPanel(new GridLayout(7, 4, 5, 2));
 
-		this.setSize(600, 260);
+		logSideTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		logTopTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		strippedLogSideTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		strippedLogTopTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		planksTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		leavesTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		doorTopTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		doorBottomTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		doorItemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		trapdoorTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		signItemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true).setAddPNGExtension(false);
+		hangingSignItemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		hangingSignEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true).setAddPNGExtension(false);
+		hangingSignGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN, true).setAddPNGExtension(false);
+		boatItemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		boatEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true).setAddPNGExtension(false);
+		chestBoatItemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		chestBoatEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true).setAddPNGExtension(false);
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.log_side"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(logSideTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.log_top"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(logTopTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.stripped_log_side"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(strippedLogSideTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.stripped_log_top"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(strippedLogTopTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.planks"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(planksTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.leaves"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(leavesTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.door_top"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(doorTopTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.door_bottom"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(doorBottomTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.door_item"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(doorItemTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.trapdoor"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(trapdoorTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.sign_item"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(signItemTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.hanging_sign_item"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(hangingSignItemTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.boat_item"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(boatItemTexture));
+
+		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.chest_boat_item"));
+		texturesPanel.add(PanelUtils.totalCenterInPanel(chestBoatItemTexture));
+
+		tabPanel.add(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
+		tabPanel.add(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+
+		this.add("Center", PanelUtils.centerInPanel(tabPanel));
+
+		this.setSize(600, 600);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
 		addWoodPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(), color.getColor(),
-				barkColor.getColor(), (Double) power.getValue());
+				barkColor.getColor(), (Double) power.getValue(), makeTextureMap());
 	}
 
 	public static void addWoodPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
-			Workspace workspace, String name, Color color, Color barkColor, double factor) {
+			Workspace workspace, String name, Color color, Color barkColor, double factor,
+			@Nonnull Map<String, TextureHolder> textureMap) {
 		String registryName = RegistryNameFixer.fromCamelCase(name);
 		String readableName = StringUtils.machineToReadableName(name);
 
@@ -821,6 +919,32 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		chestBoatRecipe.recipeRetstackSize = 1;
 		chestBoatRecipe.unlockingItems.add(new MItemBlock(workspace, "CUSTOM:" + name + "Boat"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, chestBoatRecipe);
+	}
+
+	private Map<String, TextureHolder> makeTextureMap() {
+		HashMap<String, TextureHolder> map = new HashMap<>();
+
+		addToTextureMap(map, logSideTexture, "log_side");
+		addToTextureMap(map, logTopTexture, "log_top");
+		addToTextureMap(map, strippedLogSideTexture, "stripped_log_side");
+		addToTextureMap(map, strippedLogTopTexture, "stripped_log_top");
+		addToTextureMap(map, planksTexture, "planks");
+		addToTextureMap(map, leavesTexture, "leaves");
+		addToTextureMap(map, doorTopTexture, "door_top");
+		addToTextureMap(map, doorBottomTexture, "door_bottom");
+		addToTextureMap(map, doorItemTexture, "door_item");
+		addToTextureMap(map, trapdoorTexture, "trapdoor");
+		addToTextureMap(map, signItemTexture, "sign_item");
+		addToTextureMap(map, signEntityTexture, "sign_entity");
+		addToTextureMap(map, hangingSignItemTexture, "hanging_sign_item");
+		addToTextureMap(map, hangingSignEntityTexture, "hanging_sign_entity");
+		addToTextureMap(map, hangingSignGUITexture, "hanging_sign_gui");
+		addToTextureMap(map, boatItemTexture, "boat_item");
+		addToTextureMap(map, boatEntityTexture, "boat_entity");
+		addToTextureMap(map, chestBoatItemTexture, "chest_boat_item");
+		addToTextureMap(map, chestBoatEntityTexture, "chest_boat_entity");
+
+		return map;
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
