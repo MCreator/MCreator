@@ -32,19 +32,19 @@ public class JavaMemberNameValidator implements Validator {
 
 	private final VTextField textField;
 	private boolean firstLetterUppercase;
-	private final boolean allowInitialUnderscore;
+	private boolean allowInitialUnderscore = true;
 
 	public JavaMemberNameValidator(VTextField textField) {
-		this(textField, true);
-	}
-
-	public JavaMemberNameValidator(VTextField textField, boolean allowInitialUnderscore) {
 		this.textField = textField;
-		this.allowInitialUnderscore = allowInitialUnderscore;
 	}
 
 	public JavaMemberNameValidator firstLetterUppercase() {
 		this.firstLetterUppercase = true;
+		return this;
+	}
+
+	public JavaMemberNameValidator noInitialUnderscore() {
+		this.allowInitialUnderscore = false;
 		return this;
 	}
 

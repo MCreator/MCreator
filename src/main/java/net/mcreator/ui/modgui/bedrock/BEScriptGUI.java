@@ -306,7 +306,8 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false);
+							Validator validator = new JavaMemberNameValidator(
+									(VTextField) component).noInitialUnderscore();
 							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
