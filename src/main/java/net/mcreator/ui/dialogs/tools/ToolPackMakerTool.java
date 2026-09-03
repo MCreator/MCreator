@@ -179,6 +179,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 			ImageIcon pickaxe = baseAndColoredOverlay("tool_base_stick", "tool_pickaxe", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_pickaxe", TextureType.ITEM));
+			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_pickaxe"));
 		}
 
 		// then we generate axe texture
@@ -186,6 +187,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_axe", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_axe", TextureType.ITEM));
+			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_axe"));
 		}
 
 		// then we generate sword texture
@@ -193,6 +195,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_sword", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_sword", TextureType.ITEM));
+			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_sword"));
 		}
 
 		// then we generate shovel texture
@@ -202,6 +205,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 					ImageUtils.colorize(getCachedTexture("tool_shovel_top"), color, true));
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_shovel", TextureType.ITEM));
+			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_shovel"));
 		}
 
 		// then we generate hoe texture
@@ -209,15 +213,14 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_hoe", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_hoe", TextureType.ITEM));
+			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_hoe"));
 		}
 
 		// We use element GUIs to get the default values for the elements
 		Tool pickaxeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false).getElementFromGUI();
 		pickaxeTool.name = readableName + " Pickaxe";
-		pickaxeTool.texture = textureMap.containsKey("pickaxe") ?
-				textureMap.get("pickaxe") :
-				new TextureHolder(workspace, registryName + "_pickaxe");
+		pickaxeTool.texture = textureMap.get("pickaxe");
 		pickaxeTool.toolType = "Pickaxe";
 		pickaxeTool.repairItems = Collections.singletonList(base);
 		pickaxeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
@@ -227,9 +230,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Axe", ModElementType.TOOL), false).getElementFromGUI();
 		axeTool.name = readableName + " Axe";
-		axeTool.texture = textureMap.containsKey("axe") ?
-				textureMap.get("axe") :
-				new TextureHolder(workspace, registryName + "_axe");
+		axeTool.texture = textureMap.get("axe");
 		axeTool.toolType = "Axe";
 		axeTool.repairItems = Collections.singletonList(base);
 		axeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
@@ -240,9 +241,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool swordTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Sword", ModElementType.TOOL), false).getElementFromGUI();
 		swordTool.name = readableName + " Sword";
-		swordTool.texture = textureMap.containsKey("sword") ?
-				textureMap.get("sword") :
-				new TextureHolder(workspace, registryName + "_sword");
+		swordTool.texture = textureMap.get("sword");
 		swordTool.toolType = "Sword";
 		swordTool.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		swordTool.repairItems = Collections.singletonList(base);
@@ -253,9 +252,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool shovelTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false).getElementFromGUI();
 		shovelTool.name = readableName + " Shovel";
-		shovelTool.texture = textureMap.containsKey("shovel") ?
-				textureMap.get("shovel") :
-				new TextureHolder(workspace, registryName + "_shovel");
+		shovelTool.texture = textureMap.get("shovel");
 		shovelTool.toolType = "Spade";
 		shovelTool.repairItems = Collections.singletonList(base);
 		shovelTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
@@ -266,9 +263,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false).getElementFromGUI();
 		hoeTool.name = readableName + " Hoe";
-		hoeTool.texture = textureMap.containsKey("hoe") ?
-				textureMap.get("hoe") :
-				new TextureHolder(workspace, registryName + "_hoe");
+		hoeTool.texture = textureMap.get("hoe");
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
 		hoeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));

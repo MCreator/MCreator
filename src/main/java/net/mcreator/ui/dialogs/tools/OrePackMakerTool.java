@@ -156,6 +156,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			ImageIcon ore = baseAndColoredOverlay("noise5", "ore10", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(ore.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_ore", TextureType.BLOCK));
+			textureMap.put("ore", new TextureHolder(workspace, registryName + "_ore"));
 		}
 
 		// next, ore block texture
@@ -165,6 +166,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 							"oreblock7", "oreblock8"), color, true);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(oreBlock.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_block", TextureType.BLOCK));
+			textureMap.put("block", new TextureHolder(workspace, registryName + "_block"));
 		}
 
 		// next, gem texture
@@ -180,14 +182,13 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 			};
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
 					mcreator.getFolderManager().getTextureFile(gemTextureName, TextureType.ITEM));
+			textureMap.put("item", new TextureHolder(workspace, gemTextureName));
 		}
 
 		Item oreItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
 				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
 		oreItem.name = readableName;
-		oreItem.texture = textureMap.containsKey("item") ?
-				textureMap.get("item") :
-				new TextureHolder(workspace, generatedItemTextureName(registryName, type));
+		oreItem.texture = textureMap.get("item");
 		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, oreItem);
 
@@ -195,9 +196,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Ore", ModElementType.BLOCK), false).getElementFromGUI();
 		oreBlock.name = readableName + " Ore";
-		oreBlock.texture = textureMap.containsKey("ore") ?
-				textureMap.get("ore") :
-				new TextureHolder(workspace, registryName + "_ore");
+		oreBlock.texture = textureMap.get("ore");
 		oreBlock.renderType = 11; // single texture
 		oreBlock.customModelName = "Single texture";
 		oreBlock.soundOnStep = new StepSound(workspace, "STONE");
@@ -233,9 +232,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
 		oreBlockBlock.resistance = 6.0;
-		oreBlockBlock.texture = textureMap.containsKey("block") ?
-				textureMap.get("block") :
-				new TextureHolder(workspace, registryName + "_block");
+		oreBlockBlock.texture = textureMap.get("block");
 		oreBlockBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
 			oreBlockBlock.vanillaToolTier = "STONE";
