@@ -669,7 +669,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		signBlock.blockBase = "Sign";
 		signBlock.texture = textureMap.get("planks");
 		signBlock.itemTexture = textureMap.get("sign_item");
-		signBlock.signEntityTexture = textureMap.get("hanging_sign_entity");
+		signBlock.signEntityTexture = textureMap.get("sign_entity");
 		signBlock.renderType = 11; // single texture
 		signBlock.customModelName = "Single texture";
 		signBlock.maxStackSize = 16;
