@@ -112,7 +112,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPopupMenu createMenu = new JPopupMenu();
 		createMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().createTexture));
 		createMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().createArmorTexture));
-		createMenu.add(hideableMenu(workspacePanel.getMCreator().getActionRegistry().createAnimatedTexture));
 
 		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new", UIRES.get("16px.add"));
 		create.addActionListener(_ -> createMenu.show(create, 5, create.getHeight() + 5));
