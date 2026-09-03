@@ -144,6 +144,11 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 				ImageUtils.colorize(getCachedTexture(overlayLocation), color, true));
 	}
 
+	public static ImageIcon coloredBaseAndOverlay(String baseLocation, Color color, String overlayLocation) {
+		return ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture(baseLocation), color, true),
+				getCachedTexture(overlayLocation));
+	}
+
 	public static void addToTextureMap(Map<String, TextureHolder> map, TextureSelectionButton texture, String key) {
 		if (texture.hasTexture())
 			map.put(key, texture.getTextureHolder());

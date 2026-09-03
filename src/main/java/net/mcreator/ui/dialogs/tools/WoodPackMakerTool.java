@@ -225,142 +225,178 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				null;
 
 		// first we generate wood texture
-		ImageIcon wood = ImageUtils.colorize(
+		ImageIcon logSide = ImageUtils.colorize(
 				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), barkColor,
 				true);
-		String woodTextureName = registryName + "_log";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
-				mcreator.getFolderManager().getTextureFile(woodTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("log_side")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(logSide.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_log", TextureType.BLOCK));
+			textureMap.put("log_side", new TextureHolder(workspace, registryName + "_log"));
+		}
 
 		//then we generate the missing log texture
-		ImageIcon log = ImageUtils.colorize(getCachedTexture("log_top"), color, true);
-		String logTextureName = registryName + "_log_top";
-		if (barkColor != color) { // Redraw the bark rind if bark color is different from default color
-			log = ImageUtils.drawOver(log, ImageUtils.colorize(getCachedTexture("log_top_1"), barkColor, true));
+		ImageIcon logTop = ImageUtils.colorize(getCachedTexture("log_top"), color, true);
+		if (!textureMap.containsKey("log_top")) {
+			if (barkColor != color) { // Redraw the bark rind if bark color is different from default color
+				logTop = ImageUtils.drawOver(logTop, ImageUtils.colorize(getCachedTexture("log_top_1"), barkColor, true));
+			}
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(logTop.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_log_top", TextureType.BLOCK));
+			textureMap.put("log_top", new TextureHolder(workspace, registryName + "_log_top"));
 		}
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
-				mcreator.getFolderManager().getTextureFile(logTextureName, TextureType.BLOCK));
 
 		// then we generate the stripped log side texture
-		ImageIcon strippedLogSide = ImageUtils.colorize(getCachedTexture("stripped_log_side"), strippedColor, true);
-		String strippedLogSideTextureName = "stripped_" + registryName + "_log";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogSide.getImage()),
-				mcreator.getFolderManager().getTextureFile(strippedLogSideTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("stripped_log_side")) {
+			ImageIcon strippedLogSide = ImageUtils.colorize(getCachedTexture("stripped_log_side"), strippedColor, true);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogSide.getImage()),
+					mcreator.getFolderManager().getTextureFile("stripped_" + registryName + "_log", TextureType.BLOCK));
+			textureMap.put("stripped_log_side", new TextureHolder(workspace, "stripped_" + registryName + "_log"));
+		}
 
 		// then we generate the stripped log top texture
-		ImageIcon strippedLogTop = ImageUtils.drawOver(log,
-				ImageUtils.colorize(getCachedTexture("stripped_log_top_outside"), strippedColor, true));
-		String strippedLogTopTextureName = "stripped_" + registryName + "_log_top";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogTop.getImage()),
-				mcreator.getFolderManager().getTextureFile(strippedLogTopTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("stripped_log_top")) {
+			ImageIcon strippedLogTop = ImageUtils.drawOver(logTop,
+					ImageUtils.colorize(getCachedTexture("stripped_log_top_outside"), strippedColor, true));
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogTop.getImage()),
+					mcreator.getFolderManager()
+							.getTextureFile("stripped_" + registryName + "_log_top", TextureType.BLOCK));
+			textureMap.put("stripped_log_top", new TextureHolder(workspace, "stripped_" + registryName + "_log_top"));
+		}
 
 		//then we generate the planks texture
-		ImageIcon planks = ImageUtils.colorize(getCachedTexture("planks_0", "planks_1"), color, true);
-		String planksTextureName = registryName + "_planks";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
-				mcreator.getFolderManager().getTextureFile(planksTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("planks")) {
+			ImageIcon planks = ImageUtils.colorize(getCachedTexture("planks_0", "planks_1"), color, true);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_planks", TextureType.BLOCK));
+			textureMap.put("planks", new TextureHolder(workspace, registryName + "_planks"));
+		}
 
 		//then we generate the leaves texture
-		ImageIcon leaves = ImageUtils.colorize(
-				getCachedTexture("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5", "leaves_new1",
-						"leaves_new2", "leaves2"), color, true);
-		String leavesTextureName = registryName + "_leaves";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
-				mcreator.getFolderManager().getTextureFile(leavesTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("leaves")) {
+			ImageIcon leaves = ImageUtils.colorize(
+					getCachedTexture("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5",
+							"leaves_new1", "leaves_new2", "leaves2"), color, true);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_leaves", TextureType.BLOCK));
+			textureMap.put("leaves", new TextureHolder(workspace, registryName + "_leaves"));
+		}
 
 		// Generate door and trapdoor textures (matching textures have the same suffix)
 		int doorSuffix = new Random().nextInt(2) + 1;
 
-		ImageIcon doorBottom = ImageUtils.colorize(getCachedTexture("door_bottom_" + doorSuffix), color, true);
-		doorBottom = ImageUtils.drawOver(doorBottom, getCachedTexture("door_hinges_bottom"));
-		String doorBottomTextureName = registryName + "_door_bottom";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorBottom.getImage()),
-				mcreator.getFolderManager().getTextureFile(doorBottomTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("door_bottom")) {
+			ImageIcon doorBottom = coloredBaseAndOverlay("door_bottom_" + doorSuffix, color, "door_hinges_bottom");
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorBottom.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_door_bottom", TextureType.BLOCK));
+			textureMap.put("door_bottom", new TextureHolder(workspace, registryName + "_door_bottom"));
+		}
 
-		ImageIcon doorTop = ImageUtils.colorize(getCachedTexture("door_top_" + doorSuffix), color, true);
-		doorTop = ImageUtils.drawOver(doorTop, getCachedTexture("door_hinges_top"));
-		String doorTopTextureName = registryName + "_door_top";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorTop.getImage()),
-				mcreator.getFolderManager().getTextureFile(doorTopTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("door_top")) {
+			ImageIcon doorTop = coloredBaseAndOverlay("door_top_" + doorSuffix, color, "door_hinges_top");
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorTop.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_door_top", TextureType.BLOCK));
+			textureMap.put("door_top", new TextureHolder(workspace, registryName + "_door_top"));
+		}
 
-		ImageIcon doorItem = ImageUtils.colorize(getCachedTexture("door_item_" + doorSuffix), color, true);
-		String doorItemTextureName = registryName + "_door_item";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorItem.getImage()),
-				mcreator.getFolderManager().getTextureFile(doorItemTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("door_item")) {
+			ImageIcon doorItem = ImageUtils.colorize(getCachedTexture("door_item_" + doorSuffix), color, true);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorItem.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_door_item", TextureType.ITEM));
+			textureMap.put("door_item", new TextureHolder(workspace, registryName + "_door_item"));
+	}
 
-		ImageIcon trapdoor = ImageUtils.colorize(getCachedTexture("trapdoor_" + doorSuffix), color, true);
-		String trapdoorTextureName = registryName + "_trapdoor";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(trapdoor.getImage()),
-				mcreator.getFolderManager().getTextureFile(trapdoorTextureName, TextureType.BLOCK));
+		if (!textureMap.containsKey("trapdoor")) {
+			ImageIcon trapdoor = ImageUtils.colorize(getCachedTexture("trapdoor_" + doorSuffix), color, true);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(trapdoor.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_trapdoor", TextureType.BLOCK));
+			textureMap.put("trapdoor", new TextureHolder(workspace, registryName + "_trapdoor"));
+		}
 
 		// Sign textures
-		ImageIcon signItem = ImageUtils.colorize(getCachedTexture("sign_item"), color, true);
-		String signItemTextureName = registryName + "_sign";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signItem.getImage()),
-				mcreator.getFolderManager().getTextureFile(signItemTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("sign_item")) {
+			ImageIcon signItem = ImageUtils.colorize(getCachedTexture("sign_item"), color, true);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signItem.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_sign", TextureType.ITEM));
+			textureMap.put("sign_item", new TextureHolder(workspace, registryName + "_sign"));
+		}
 
-		ImageIcon signEntity = ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture("sign_entity"), color, true),
-				new ImageIcon(ImageUtils.crop(ImageUtils.toBufferedImage(wood.getImage()), new Rectangle(4, 0, 8, 14))),
-				0, 16, 8, 14); // Vanilla signs use part of the log texture for the post
-		String signEntityTextureName = registryName + "_sign";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signEntity.getImage()),
-				mcreator.getFolderManager().getTextureFile(signEntityTextureName, TextureType.ENTITY));
+		if (!textureMap.containsKey("sign_entity")) {
+			ImageIcon signEntity = ImageUtils.drawOver(
+					ImageUtils.colorize(getCachedTexture("sign_entity"), color, true), new ImageIcon(
+							ImageUtils.crop(ImageUtils.toBufferedImage(logSide.getImage()),
+									new Rectangle(4, 0, 8, 14))), 0, 16, 8,
+					14); // Vanilla signs use part of the log texture for the post
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signEntity.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_sign", TextureType.ENTITY));
+			textureMap.put("sign_entity", new TextureHolder(workspace, registryName + "_sign"));
+		}
 
 		// Hanging sign textures
-		ImageIcon hangingSignItem = ImageUtils.drawOver(
-				ImageUtils.colorize(getCachedTexture("hanging_sign_item_base"), color, true),
-				getCachedTexture("hanging_sign_item_overlay"));
-		String hangingSignItemTextureName = registryName + "_hanging_sign";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignItem.getImage()),
-				mcreator.getFolderManager().getTextureFile(hangingSignItemTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("hanging_sign_item")) {
+			ImageIcon hangingSignItem = coloredBaseAndOverlay("hanging_sign_item_base", color,
+					"hanging_sign_item_overlay");
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignItem.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_hanging_sign", TextureType.ITEM));
+			textureMap.put("hanging_sign_item", new TextureHolder(workspace, registryName + "_hanging_sign"));
+		}
 
-		ImageIcon hangingSignEntity = ImageUtils.drawOver(
-				ImageUtils.colorize(getCachedTexture("hanging_sign_entity_base"), color, true),
-				getCachedTexture("hanging_sign_entity_overlay"));
-		String hangingSignEntityTextureName = registryName + "_hanging_sign";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignEntity.getImage()),
-				mcreator.getFolderManager().getTextureFile(hangingSignEntityTextureName, TextureType.ENTITY));
+		if (!textureMap.containsKey("hanging_sign_entity")) {
+			ImageIcon hangingSignEntity = coloredBaseAndOverlay("hanging_sign_entity_base", color,
+					"hanging_sign_entity_overlay");
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignEntity.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_hanging_sign", TextureType.ENTITY));
+			textureMap.put("hanging_sign_entity", new TextureHolder(workspace, registryName + "_hanging_sign"));
+		}
 
-		ImageIcon hangingSignGUI = ImageUtils.drawOver(
-				ImageUtils.colorize(getCachedTexture("hanging_sign_gui_base"), color, true),
-				getCachedTexture("hanging_sign_gui_overlay"));
-		String hangingSignGUITextureName = registryName + "_hanging_sign";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignGUI.getImage()),
-				mcreator.getFolderManager().getTextureFile(hangingSignGUITextureName, TextureType.SCREEN));
+		if (!textureMap.containsKey("hanging_sign_gui")) {
+			ImageIcon hangingSignGUI = coloredBaseAndOverlay("hanging_sign_gui_base", color,
+					"hanging_sign_gui_overlay");
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSignGUI.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_hanging_sign", TextureType.SCREEN));
+			textureMap.put("hanging_sign_gui", new TextureHolder(workspace, registryName + "_hanging_sign"));
+		}
 
 		// Boat textures
 		ImageIcon boatItem = ImageUtils.colorize(getCachedTexture("boat_item"), color, true);
-		String boatItemTextureName = registryName + "_boat";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(boatItem.getImage()),
-				mcreator.getFolderManager().getTextureFile(boatItemTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("boat_item")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(boatItem.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_boat", TextureType.ITEM));
+			textureMap.put("boat_item", new TextureHolder(workspace, registryName + "_boat"));
+		}
 
 		ImageIcon boatEntity = ImageUtils.colorize(getCachedTexture("boat_entity"), color, true);
-		String boatEntityTextureName = registryName + "_boat";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(boatEntity.getImage()),
-				mcreator.getFolderManager().getTextureFile(boatEntityTextureName, TextureType.ENTITY));
+		if (!textureMap.containsKey("boat_entity")) {
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(boatEntity.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_boat", TextureType.ENTITY));
+			textureMap.put("boat_entity", new TextureHolder(workspace, registryName + "_boat"));
+		}
 
-		ImageIcon chestBoatItem = ImageUtils.drawOver(boatItem, getCachedTexture("boat_item_chest_overlay"));
-		String chestBoatItemTextureName = registryName + "_chest_boat";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatItem.getImage()),
-				mcreator.getFolderManager().getTextureFile(chestBoatItemTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("chest_boat_item")) {
+			ImageIcon chestBoatItem = ImageUtils.drawOver(boatItem, getCachedTexture("boat_item_chest_overlay"));
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatItem.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_chest_boat", TextureType.ITEM));
+			textureMap.put("chest_boat_item", new TextureHolder(workspace, registryName + "_chest_boat"));
+		}
 
-		ImageIcon chestBoatEntity = ImageUtils.drawOver(getCachedTexture("boat_entity_chest_overlay"), boatEntity, 0, 0,
-				128, 64);
-		String chestBoatEntityTextureName = registryName + "_chest_boat";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatEntity.getImage()),
-				mcreator.getFolderManager().getTextureFile(chestBoatEntityTextureName, TextureType.ENTITY));
+		if (!textureMap.containsKey("chest_boat_entity")) {
+			ImageIcon chestBoatEntity = ImageUtils.drawOver(getCachedTexture("boat_entity_chest_overlay"), boatEntity,
+					0, 0, 128, 64);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatEntity.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_chest_boat", TextureType.ENTITY));
+			textureMap.put("chest_boat_entity", new TextureHolder(workspace, registryName + "_chest_boat"));
+		}
 
 		// We use element GUIs to get the default values for the elements
 		Block logBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
 		logBlock.name = readableName + " Log";
-		logBlock.texture = new TextureHolder(workspace, logTextureName);
-		logBlock.textureTop = new TextureHolder(workspace, logTextureName);
-		logBlock.textureBack = new TextureHolder(workspace, woodTextureName);
-		logBlock.textureFront = new TextureHolder(workspace, woodTextureName);
-		logBlock.textureLeft = new TextureHolder(workspace, woodTextureName);
-		logBlock.textureRight = new TextureHolder(workspace, woodTextureName);
-		logBlock.particleTexture = new TextureHolder(workspace, woodTextureName);
+		logBlock.texture = textureMap.get("log_top");
+		logBlock.textureTop = textureMap.get("log_top");
+		logBlock.textureBack = textureMap.get("log_side");
+		logBlock.textureFront = textureMap.get("log_side");
+		logBlock.textureLeft = textureMap.get("log_side");
+		logBlock.textureRight = textureMap.get("log_side");
+		logBlock.particleTexture = textureMap.get("log_side");
 		logBlock.renderType = 10; // normal
 		logBlock.customModelName = "Normal";
 		logBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -378,7 +414,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		Block woodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
 		woodBlock.name = readableName + " Wood";
-		woodBlock.texture = new TextureHolder(workspace, woodTextureName);
+		woodBlock.texture = textureMap.get("log_side");
 		woodBlock.renderType = 11; // single texture
 		woodBlock.customModelName = "Single texture";
 		woodBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -396,13 +432,13 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		Block strippedLogBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, "Stripped" + name + "Log", ModElementType.BLOCK), false).getElementFromGUI();
 		strippedLogBlock.name = "Stripped " + readableName + " Log";
-		strippedLogBlock.texture = new TextureHolder(workspace, strippedLogTopTextureName);
-		strippedLogBlock.textureTop = new TextureHolder(workspace, strippedLogTopTextureName);
-		strippedLogBlock.textureBack = new TextureHolder(workspace, strippedLogSideTextureName);
-		strippedLogBlock.textureFront = new TextureHolder(workspace, strippedLogSideTextureName);
-		strippedLogBlock.textureLeft = new TextureHolder(workspace, strippedLogSideTextureName);
-		strippedLogBlock.textureRight = new TextureHolder(workspace, strippedLogSideTextureName);
-		strippedLogBlock.particleTexture = new TextureHolder(workspace, strippedLogSideTextureName);
+		strippedLogBlock.texture = textureMap.get("stripped_log_top");
+		strippedLogBlock.textureTop = textureMap.get("stripped_log_top");
+		strippedLogBlock.textureBack = textureMap.get("stripped_log_side");
+		strippedLogBlock.textureFront = textureMap.get("stripped_log_side");
+		strippedLogBlock.textureLeft = textureMap.get("stripped_log_side");
+		strippedLogBlock.textureRight = textureMap.get("stripped_log_side");
+		strippedLogBlock.particleTexture = textureMap.get("stripped_log_side");
 		strippedLogBlock.renderType = 10; // normal
 		strippedLogBlock.customModelName = "Normal";
 		strippedLogBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -420,7 +456,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		Block strippedWoodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, "Stripped" + name + "Wood", ModElementType.BLOCK), false).getElementFromGUI();
 		strippedWoodBlock.name = "Stripped " + readableName + " Wood";
-		strippedWoodBlock.texture = new TextureHolder(workspace, strippedLogSideTextureName);
+		strippedWoodBlock.texture = textureMap.get("stripped_log_side");
 		strippedWoodBlock.renderType = 11; // single texture
 		strippedWoodBlock.customModelName = "Single texture";
 		strippedWoodBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -446,7 +482,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		Block planksBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Planks", ModElementType.BLOCK), false).getElementFromGUI();
 		planksBlock.name = readableName + " Planks";
-		planksBlock.texture = new TextureHolder(workspace, planksTextureName);
+		planksBlock.texture = textureMap.get("planks");
 		planksBlock.renderType = 11; // single texture
 		planksBlock.customModelName = "Single texture";
 		planksBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -465,7 +501,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		leavesBlock.name = readableName + " Leaves";
 		leavesBlock.blockBase = "Leaves";
 		leavesBlock.hasTransparency = true;
-		leavesBlock.texture = new TextureHolder(workspace, leavesTextureName);
+		leavesBlock.texture = textureMap.get("leaves");
 		leavesBlock.renderType = 11; // single texture
 		leavesBlock.customModelName = "Single texture";
 		leavesBlock.soundOnStep = new StepSound(workspace, "PLANT");
@@ -483,9 +519,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Stairs", ModElementType.BLOCK), false).getElementFromGUI();
 		stairsBlock.name = readableName + " Stairs";
 		stairsBlock.blockBase = "Stairs";
-		stairsBlock.texture = new TextureHolder(workspace, planksTextureName);
-		stairsBlock.textureTop = new TextureHolder(workspace, planksTextureName);
-		stairsBlock.textureFront = new TextureHolder(workspace, planksTextureName);
+		stairsBlock.texture = textureMap.get("planks");
+		stairsBlock.textureTop = textureMap.get("planks");
+		stairsBlock.textureFront = textureMap.get("planks");
 		stairsBlock.renderType = 11; // single texture
 		stairsBlock.customModelName = "Single texture";
 		stairsBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -503,9 +539,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Slab", ModElementType.BLOCK), false).getElementFromGUI();
 		slabBlock.name = readableName + " Slab";
 		slabBlock.blockBase = "Slab";
-		slabBlock.texture = new TextureHolder(workspace, planksTextureName);
-		slabBlock.textureTop = new TextureHolder(workspace, planksTextureName);
-		slabBlock.textureFront = new TextureHolder(workspace, planksTextureName);
+		slabBlock.texture = textureMap.get("planks");
+		slabBlock.textureTop = textureMap.get("planks");
+		slabBlock.textureFront = textureMap.get("planks");
 		slabBlock.renderType = 11; // single texture
 		slabBlock.customModelName = "Single texture";
 		slabBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -523,7 +559,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Fence", ModElementType.BLOCK), false).getElementFromGUI();
 		fenceBlock.name = readableName + " Fence";
 		fenceBlock.blockBase = "Fence";
-		fenceBlock.texture = new TextureHolder(workspace, planksTextureName);
+		fenceBlock.texture = textureMap.get("planks");
 		fenceBlock.renderType = 11; // single texture
 		fenceBlock.customModelName = "Single texture";
 		fenceBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -541,7 +577,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "FenceGate", ModElementType.BLOCK), false).getElementFromGUI();
 		fenceGateBlock.name = readableName + " Fence Gate";
 		fenceGateBlock.blockBase = "FenceGate";
-		fenceGateBlock.texture = new TextureHolder(workspace, planksTextureName);
+		fenceGateBlock.texture = textureMap.get("planks");
 		fenceGateBlock.renderType = 11; // single texture
 		fenceGateBlock.customModelName = "Single texture";
 		fenceGateBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -559,9 +595,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Door", ModElementType.BLOCK), false).getElementFromGUI();
 		doorBlock.name = readableName + " Door";
 		doorBlock.blockBase = "Door";
-		doorBlock.texture = new TextureHolder(workspace, doorBottomTextureName);
-		doorBlock.textureTop = new TextureHolder(workspace, doorTopTextureName);
-		doorBlock.itemTexture = new TextureHolder(workspace, doorItemTextureName);
+		doorBlock.texture = textureMap.get("door_bottom");
+		doorBlock.textureTop = textureMap.get("door_top");
+		doorBlock.itemTexture = textureMap.get("door_item");
 		doorBlock.renderType = 11; // single texture
 		doorBlock.customModelName = "Single texture";
 		doorBlock.hasTransparency = true;
@@ -579,7 +615,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Trapdoor", ModElementType.BLOCK), false).getElementFromGUI();
 		trapdoorBlock.name = readableName + " Trapdoor";
 		trapdoorBlock.blockBase = "TrapDoor";
-		trapdoorBlock.texture = new TextureHolder(workspace, trapdoorTextureName);
+		trapdoorBlock.texture = textureMap.get("trapdoor");
 		trapdoorBlock.renderType = 11; // single texture
 		trapdoorBlock.customModelName = "Single texture";
 		trapdoorBlock.hasTransparency = true;
@@ -597,7 +633,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "PressurePlate", ModElementType.BLOCK), false).getElementFromGUI();
 		pressurePlateBlock.name = readableName + " Pressure Plate";
 		pressurePlateBlock.blockBase = "PressurePlate";
-		pressurePlateBlock.texture = new TextureHolder(workspace, planksTextureName);
+		pressurePlateBlock.texture = textureMap.get("planks");
 		pressurePlateBlock.renderType = 11; // single texture
 		pressurePlateBlock.customModelName = "Single texture";
 		pressurePlateBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -615,7 +651,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Button", ModElementType.BLOCK), false).getElementFromGUI();
 		buttonBlock.name = readableName + " Button";
 		buttonBlock.blockBase = "Button";
-		buttonBlock.texture = new TextureHolder(workspace, planksTextureName);
+		buttonBlock.texture = textureMap.get("planks");
 		buttonBlock.renderType = 11; // single texture
 		buttonBlock.customModelName = "Single texture";
 		buttonBlock.soundOnStep = new StepSound(workspace, "WOOD");
@@ -631,9 +667,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Sign", ModElementType.BLOCK), false).getElementFromGUI();
 		signBlock.name = readableName + " Sign";
 		signBlock.blockBase = "Sign";
-		signBlock.texture = new TextureHolder(workspace, planksTextureName);
-		signBlock.itemTexture = new TextureHolder(workspace, signItemTextureName);
-		signBlock.signEntityTexture = new TextureHolder(workspace, signEntityTextureName);
+		signBlock.texture = textureMap.get("planks");
+		signBlock.itemTexture = textureMap.get("sign_item");
+		signBlock.signEntityTexture = textureMap.get("hanging_sign_entity");
 		signBlock.renderType = 11; // single texture
 		signBlock.customModelName = "Single texture";
 		signBlock.maxStackSize = 16;
@@ -651,10 +687,10 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "HangingSign", ModElementType.BLOCK), false).getElementFromGUI();
 		hangingSignBlock.name = readableName + " Hanging Sign";
 		hangingSignBlock.blockBase = "HangingSign";
-		hangingSignBlock.texture = new TextureHolder(workspace, planksTextureName);
-		hangingSignBlock.itemTexture = new TextureHolder(workspace, hangingSignItemTextureName);
-		hangingSignBlock.signEntityTexture = new TextureHolder(workspace, hangingSignEntityTextureName);
-		hangingSignBlock.signGUITexture = new TextureHolder(workspace, hangingSignGUITextureName);
+		hangingSignBlock.texture = textureMap.get("planks");
+		hangingSignBlock.itemTexture = textureMap.get("hanging_sign_item");
+		hangingSignBlock.signEntityTexture = textureMap.get("hanging_sign_entity");
+		hangingSignBlock.signGUITexture = textureMap.get("hanging_sign_gui");
 		hangingSignBlock.renderType = 11; // single texture
 		hangingSignBlock.customModelName = "Single texture";
 		hangingSignBlock.maxStackSize = 16;
@@ -673,8 +709,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "Boat", ModElementType.SPECIALENTITY), false).getElementFromGUI();
 		boat.name = readableName + " Boat";
 		boat.entityType = "Boat";
-		boat.entityTexture = new TextureHolder(workspace, boatEntityTextureName);
-		boat.itemTexture = new TextureHolder(workspace, boatItemTextureName);
+		boat.entityTexture = textureMap.get("boat_entity");
+		boat.itemTexture = textureMap.get("boat_item");
 		boat.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, boat);
 
@@ -682,8 +718,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				new ModElement(workspace, name + "ChestBoat", ModElementType.SPECIALENTITY), false).getElementFromGUI();
 		chestBoat.name = readableName + " Boat with Chest";
 		chestBoat.entityType = "ChestBoat";
-		chestBoat.entityTexture = new TextureHolder(workspace, chestBoatEntityTextureName);
-		chestBoat.itemTexture = new TextureHolder(workspace, chestBoatItemTextureName);
+		chestBoat.entityTexture = textureMap.get("chest_boat_entity");
+		chestBoat.itemTexture = textureMap.get("chest_boat_item");
 		chestBoat.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		addGeneratableElementToWorkspace(packMaker, workspace, folder, chestBoat);
 
