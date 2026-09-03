@@ -48,7 +48,7 @@ public class AddEntityPropertyDialog {
 		name.setPreferredSize(new Dimension(0, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 				name::getText, () -> currentEntries.stream().map(PropertyData::getName),
-				new JavaMemberNameValidator(name, false));
+				new JavaMemberNameValidator(name));
 		validator.setIsPresentOnList(false);
 		name.setValidator(validator);
 		name.enableRealtimeValidation();
@@ -59,7 +59,7 @@ public class AddEntityPropertyDialog {
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		dialog.getRootPane().setDefaultButton(ok);
 
-		ok.addActionListener(e -> {
+		ok.addActionListener(_ -> {
 			if (name.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				String property = name.getText();
 				if ("Integer".equals(type.getSelectedItem())) {
@@ -72,7 +72,7 @@ public class AddEntityPropertyDialog {
 				dialog.dispose();
 			}
 		});
-		cancel.addActionListener(e -> dialog.dispose());
+		cancel.addActionListener(_ -> dialog.dispose());
 
 		JComponent main = PanelUtils.gridElements(2, 2, 2, 2,
 				L10N.label("elementgui.living_entity.entity_data_entries.add_entry.name"), name,

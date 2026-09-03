@@ -302,11 +302,11 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 		remvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 1));
 		bar.add(remvar);
 
-		addvar.addActionListener(e -> {
+		addvar.addActionListener(_ -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
+							Validator validator = new JavaMemberNameValidator((VTextField) component, false);
 							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
@@ -331,7 +331,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 			}
 		});
 
-		remvar.addActionListener(e -> {
+		remvar.addActionListener(_ -> {
 			List<VariableElement> elements = localVarsList.getSelectedValuesList();
 			if (!elements.isEmpty()) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
