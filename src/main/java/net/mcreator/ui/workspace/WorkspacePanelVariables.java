@@ -207,7 +207,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidator.Cached() {
 						@Override public Validator createValidator(JComponent component) {
-							return new CompoundValidator(new JavaMemberNameValidator((VTextField) component, false),
+							return new CompoundValidator(
+									new JavaMemberNameValidator((VTextField) component, false, true,
+											L10N.t("workspace.variables.variable_name_empty")),
 									new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 											() -> ((VTextField) component).getText(),
 											() -> TableUtil.getColumnContents(elements, 0).stream()).setIsPresentOnList(

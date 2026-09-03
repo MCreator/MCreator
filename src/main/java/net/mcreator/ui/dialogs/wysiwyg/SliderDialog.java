@@ -50,7 +50,8 @@ public class SliderDialog extends AbstractWYSIWYGDialog<Slider> {
 		setTitle(L10N.t("dialog.gui.slider_add_title"));
 
 		VTextField sliderMachineName = new VTextField(15);
-		sliderMachineName.setValidator(new CompoundValidator(new JavaMemberNameValidator(sliderMachineName, false),
+		sliderMachineName.setValidator(new CompoundValidator(
+				new JavaMemberNameValidator(sliderMachineName, false, true, L10N.t("dialog.gui.slider_name_empty")),
 				new UniqueNameValidator(L10N.t("dialog.gui.slider_name_validator"), sliderMachineName::getText,
 						() -> editor.getComponentList().stream().map(GUIComponent::getName)).setIsPresentOnList(
 						slider != null)));

@@ -19,6 +19,7 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.java.JavaConventions;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.workspace.Workspace;
@@ -41,7 +42,8 @@ public class ModElementNameValidator extends UniqueNameValidator {
 			List<String> usedNames) {
 		super(name, () -> JavaConventions.convertToValidClassName(textField.getText()), usedNames::stream);
 		this.usedNames = usedNames;
-		this.memberNameValidator = new JavaMemberNameValidator(textField, true);
+		this.memberNameValidator = new JavaMemberNameValidator(textField, true, true,
+				L10N.t("validators.unique_name.empty", name));
 
 		setIsPresentOnList(false);
 		setIgnoreCase(true);

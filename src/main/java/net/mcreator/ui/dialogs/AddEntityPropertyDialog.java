@@ -47,7 +47,8 @@ public class AddEntityPropertyDialog {
 
 		VTextField name = new VTextField(24);
 		name.setPreferredSize(new Dimension(0, 28));
-		name.setValidator(new CompoundValidator(new JavaMemberNameValidator(name, false),
+		name.setValidator(new CompoundValidator(new JavaMemberNameValidator(name, false, true,
+				L10N.t("elementgui.living_entity.entity_data_entries.add_entry.error_empty_name")),
 				new UniqueNameValidator(L10N.t("workspace.variables.variable_name"), name::getText,
 						() -> currentEntries.stream().map(PropertyData::getName)).setIsPresentOnList(false)));
 		name.enableRealtimeValidation();
