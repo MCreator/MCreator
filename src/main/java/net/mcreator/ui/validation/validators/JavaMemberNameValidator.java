@@ -33,23 +33,30 @@ public class JavaMemberNameValidator implements Validator {
 	private final VTextField textField;
 	private final boolean firstLetterUppercase;
 	private final boolean allowInitialUnderscore;
+	private final String emptyMessage;
 
 	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase) {
-		this(textField, requireFirstLetterUppercase, true);
+		this(textField, requireFirstLetterUppercase, true, L10N.t("validators.java_name.needs_name"));
 	}
 
 	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase,
 			boolean allowInitialUnderscore) {
+		this(textField, requireFirstLetterUppercase, allowInitialUnderscore, L10N.t("validators.java_name.needs_name"));
+	}
+
+	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase,
+			boolean allowInitialUnderscore, String emptyMessage) {
 		this.textField = textField;
 		this.firstLetterUppercase = requireFirstLetterUppercase;
 		this.allowInitialUnderscore = allowInitialUnderscore;
+		this.emptyMessage = emptyMessage;
 	}
 
 	@Override public ValidationResult validate() {
 		String text = textField.getText();
 
 		if (text == null || text.isEmpty())
-			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.needs_name"));
+			return new ValidationResult(ValidationResult.Type.ERROR, emptyMessage);
 
 		if (!allowInitialUnderscore && text.charAt(0) == '_')
 			return new ValidationResult(ValidationResult.Type.ERROR,
