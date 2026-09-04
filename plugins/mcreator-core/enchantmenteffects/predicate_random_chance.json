@@ -11,7 +11,7 @@
   "mcreator": {
     "toolbox_id": "predicates",
     "toolbox_init": [
-      "<value name=\"chance\"><block type=\"math_number\"><field name=\"NUM\">0.5</field></block></value>"
+      "<value name=\"chance\"><block type=\"level_based_value_linear\"><field name=\"base\">0.5</field><field name=\"per_level_above_first\">0.1</field></block></value>"
     ],
     "inputs": [
       "chance"
