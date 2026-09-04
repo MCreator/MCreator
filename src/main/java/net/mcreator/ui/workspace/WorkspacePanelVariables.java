@@ -139,7 +139,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					name.enableRealtimeValidation();
 					UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 							name::getText, () -> TableUtil.getColumnContents(elements, 0).stream(),
-							new JavaMemberNameValidator(name, false));
+							new JavaMemberNameValidator(name));
 					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
@@ -210,7 +210,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 							return new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 									() -> ((VTextField) component).getText(),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
-									new JavaMemberNameValidator((VTextField) component, false)).setIsPresentOnList(
+									new JavaMemberNameValidator((VTextField) component)).setIsPresentOnList(
 									false);
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
