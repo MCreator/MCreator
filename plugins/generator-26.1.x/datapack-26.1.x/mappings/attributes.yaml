@@ -1,0 +1,117 @@
+_default:
+  - Attributes.ARMOR
+  - "armor"
+_mcreator_map_template:
+  - "@JavaModNameAttributes.@REGISTRYNAME"
+  - "@modid:@registryname"
+ARMOR:
+  - Attributes.ARMOR
+  - "armor"
+ARMOR_TOUGHNESS:
+  - Attributes.ARMOR_TOUGHNESS
+  - "armor_toughness"
+ATTACK_DAMAGE:
+  - Attributes.ATTACK_DAMAGE
+  - "attack_damage"
+ATTACK_KNOCKBACK:
+  - Attributes.ATTACK_KNOCKBACK
+  - "attack_knockback"
+ATTACK_SPEED:
+  - Attributes.ATTACK_SPEED
+  - "attack_speed"
+BLOCK_BREAK_SPEED:
+  - Attributes.BLOCK_BREAK_SPEED
+  - "block_break_speed"
+BLOCK_REACH:
+  - Attributes.BLOCK_INTERACTION_RANGE
+  - "block_interaction_range"
+BURNING_TIME:
+  - Attributes.BURNING_TIME
+  - "burning_time"
+CAMERA_DISTANCE:
+  - Attributes.CAMERA_DISTANCE
+  - "camera_distance"
+EXPLOSION_KNOCKBACK_RESISTANCE:
+  - Attributes.EXPLOSION_KNOCKBACK_RESISTANCE
+  - "explosion_knockback_resistance"
+ENTITY_REACH:
+  - Attributes.ENTITY_INTERACTION_RANGE
+  - "entity_interaction_range"
+FALL_DAMAGE_MULTIPLIER:
+  - Attributes.FALL_DAMAGE_MULTIPLIER
+  - "fall_damage_multiplier"
+FLYING_SPEED:
+  - Attributes.FLYING_SPEED
+  - "flying_speed"
+FOLLOW_RANGE:
+  - Attributes.FOLLOW_RANGE
+  - "follow_range"
+ENTITY_GRAVITY:
+  - Attributes.GRAVITY
+  - "gravity"
+JUMP_STRENGTH:
+  - Attributes.JUMP_STRENGTH
+  - "jump_strength"
+KNOCKBACK_RESISTANCE:
+  - Attributes.KNOCKBACK_RESISTANCE
+  - "knockback_resistance"
+LUCK:
+  - Attributes.LUCK
+  - "luck"
+MAX_ABSORPTION:
+  - Attributes.MAX_ABSORPTION
+  - "max_absorption"
+MAX_HEALTH:
+  - Attributes.MAX_HEALTH
+  - "max_health"
+MINING_EFFICIENCY:
+  - Attributes.MINING_EFFICIENCY
+  - "mining_efficiency"
+MOVEMENT_EFFICIENCY:
+  - Attributes.MOVEMENT_EFFICIENCY
+  - "movement_efficiency"
+MOVEMENT_SPEED:
+  - Attributes.MOVEMENT_SPEED
+  - "movement_speed"
+OXYGEN_BONUS:
+  - Attributes.OXYGEN_BONUS
+  - "oxygen_bonus"
+SAFE_FALL_DISTANCE:
+  - Attributes.SAFE_FALL_DISTANCE
+  - "safe_fall_distance"
+SCALE:
+  - Attributes.SCALE
+  - "scale"
+SNEAKING_SPEED:
+  - Attributes.SNEAKING_SPEED
+  - "sneaking_speed"
+SPAWN_REINFORCEMENTS_CHANCE:
+  - Attributes.SPAWN_REINFORCEMENTS_CHANCE
+  - "spawn_reinforcements"
+STEP_HEIGHT:
+  - Attributes.STEP_HEIGHT
+  - "step_height"
+SUBMERGED_MINING_SPEED:
+  - Attributes.SUBMERGED_MINING_SPEED
+  - "submerged_mining_speed"
+SWEEPING_DAMAGE_RATIO:
+  - Attributes.SWEEPING_DAMAGE_RATIO
+  - "sweeping_damage_ratio"
+TEMPT_RANGE:
+  - Attributes.TEMPT_RANGE
+  - "tempt_range"
+WATER_MOVEMENT_EFFICIENCY:
+  - Attributes.WATER_MOVEMENT_EFFICIENCY
+  - "water_movement_efficiency"
+WAYPOINT_TRANSMIT_RANGE:
+  - Attributes.WAYPOINT_TRANSMIT_RANGE
+  - "waypoint_transmit_range"
+WAYPOINT_RECEIVE_RANGE:
+  - Attributes.WAYPOINT_RECEIVE_RANGE
+  - "waypoint_receive_range"
+SWIM_SPEED:
+  - NeoForgeMod.SWIM_SPEED
+  - "neoforge:swim_speed"
+NAMETAG_RENDER_DISTANCE:
+  - NeoForgeMod.NAMETAG_DISTANCE
+  - "neoforge:nametag_distance"
