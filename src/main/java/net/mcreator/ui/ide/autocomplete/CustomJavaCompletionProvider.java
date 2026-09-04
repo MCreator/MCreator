@@ -302,15 +302,17 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String beforeDot = textBeforeWord.substring(0, textBeforeWord.lastIndexOf('.')).trim();
 			String targetName = extractTargetName(beforeDot);
 			if (!targetName.isEmpty()) {
-				CustomFieldCompletion.PrefixContext prefixContext = CustomFieldCompletion.PrefixContext.NONE;
-				if (alreadyEntered.startsWith("Blocks.")) {
-					prefixContext = CustomFieldCompletion.PrefixContext.BLOCKS;
-				} else if (alreadyEntered.startsWith("Items.")) {
-					prefixContext = CustomFieldCompletion.PrefixContext.ITEMS;
+				if (!CustomClassCompletion.IMPORT_OR_PACKAGE_LINE.matcher(textBeforeWord.trim()).matches()) {
+					CustomFieldCompletion.PrefixContext prefixContext = CustomFieldCompletion.PrefixContext.NONE;
+					if (alreadyEntered.startsWith("Blocks.")) {
+						prefixContext = CustomFieldCompletion.PrefixContext.BLOCKS;
+					} else if (alreadyEntered.startsWith("Items.")) {
+						prefixContext = CustomFieldCompletion.PrefixContext.ITEMS;
+					}
+					List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code,
+							codeBeforeCursor, currentClassFQDN);
+					addResolverItems(items, wordOnly, prefixContext, completions);
 				}
-				List<JavaTypeResolver.CompletionItem> items = javaTypeResolver.getCompletionsFor(targetName, code,
-						codeBeforeCursor, currentClassFQDN);
-				addResolverItems(items, wordOnly, prefixContext, completions);
 				if (completions.isEmpty() && workspace != null) {
 					ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 					if (jarManager != null) {

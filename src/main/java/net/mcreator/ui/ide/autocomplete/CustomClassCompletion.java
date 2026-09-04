@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 
 public class CustomClassCompletion extends BasicCompletion {
-	private static final Pattern IMPORT_OR_PACKAGE_LINE = Pattern.compile("^(import|package)\\s+.*");
+	public static final Pattern IMPORT_OR_PACKAGE_LINE = Pattern.compile("^(import|package)\\s+.*");
 
 	private final String className;
 	private final String pkg;
