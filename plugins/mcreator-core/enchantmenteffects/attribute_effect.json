@@ -42,6 +42,9 @@
       ]
     }
   ],
+  "extensions": [
+    "disable_repeated_attribute_effects"
+  ],
   "previousStatement": "AttributeEffect",
   "nextStatement": "AttributeEffect",
   "colour": 15,
