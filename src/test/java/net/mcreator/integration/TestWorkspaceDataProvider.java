@@ -2477,18 +2477,22 @@ public class TestWorkspaceDataProvider {
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 		block.tintType = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Block.class, "tintType"));
 		block.isItemTinted = _true;
+		// Blocks with a JAVA model (render type 4) do not support custom block states, so the generator
+		// ignores block.states defined further below for them. To cover block state generation, some of
+		// the examples defining states must therefore use a non-JAVA model instead
 		block.renderType = emptyLists ?
 				new int[] { 10, block.isBlockTinted() ? 110 : 11, block.isBlockTinted() ? 120 : 12, 14 }[valueIndex] :
-				4;
+				(blockBase == null && valueIndex % 2 == 1 ? 10 : 4);
 		block.customModelName = emptyLists ?
 				new String[] { "Normal", "Single texture", "Cross model", "Grass block" }[valueIndex] :
-				"ModelCustomJavaModel";
+				(block.renderType == 4 ? "ModelCustomJavaModel" : "Normal");
 		block.lightOpacity = block.renderType == 4 ? 0 : new int[] { 0, 2, 0, 3 }[valueIndex];
 		block.hasInventory = _true || block.renderType == 4; // Java models require tile entity
-		block.hasTransparency = block.renderType == 4 || new boolean[] { _true, _true, true,
-				false }[valueIndex]; // third is true because third index for model is cross which requires transparency
+		block.hasTransparency = !emptyLists || new boolean[] { _true, _true, true,
+				false }[valueIndex]; // non-empty examples have non-full-cube bounding boxes for which the GUI enforces transparency
 		block.hasCustomOpacity =
 				block.hasTransparency || valueIndex == 3; // Test custom opacity with non-transparent block
+		block.multipartModel = _true;
 		block.states = new ArrayList<>();
 		if (!emptyLists) {
 			int size2 = random.nextInt(4) + 1;
@@ -2503,6 +2507,8 @@ public class TestWorkspaceDataProvider {
 			for (int i = 0; i < size2; i++) {
 				StateMap stateMap = new StateMap();
 				for (PropertyDataWithValue<?> property : stateProperties) {
+					if (block.multipartModel && random.nextBoolean())
+						continue; // multipart state conditions can use arbitrary property subsets
 					if (property.property() instanceof PropertyData.IntegerType) {
 						stateMap.put(property.property(), random.nextInt(1, 10));
 					} else if (property.property() instanceof PropertyData.LogicType) {
@@ -2524,10 +2530,12 @@ public class TestWorkspaceDataProvider {
 				stateEntry.textureFront = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 				stateEntry.textureRight = new TextureHolder(modElement.getWorkspace(), i == 0 ? "test" : "test" + i);
 
-				stateEntry.particleTexture = new TextureHolder(modElement.getWorkspace(),
-						random.nextBoolean() ? null : "test3");
+				// per-state particle textures are only supported in variants mode, the GUI stores null otherwise
+				stateEntry.particleTexture = block.multipartModel ?
+						null :
+						new TextureHolder(modElement.getWorkspace(), random.nextBoolean() ? null : "test3");
 
-				stateEntry.hasCustomBoundingBox = _true;
+				stateEntry.hasCustomBoundingBox = i != 1; // test states both with and without custom bounding boxes
 				stateEntry.boundingBoxes = new ArrayList<>();
 				if (stateEntry.hasCustomBoundingBox) {
 					int boxes = random.nextInt(4) + 1;
