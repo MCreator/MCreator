@@ -31,8 +31,11 @@ import javax.swing.Icon;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 public class CustomClassCompletion extends BasicCompletion {
+	private static final Pattern IMPORT_OR_PACKAGE_LINE = Pattern.compile("^(import|package)\\s+.*");
+
 	private final String className;
 	private final String pkg;
 	private final boolean isInterface;
@@ -87,7 +90,7 @@ public class CustomClassCompletion extends BasicCompletion {
 			}
 		}
 
-		if (isPrecededByDot || lineText.startsWith("import ") || lineText.startsWith("package ")) {
+		if (isPrecededByDot || IMPORT_OR_PACKAGE_LINE.matcher(lineText).matches()) {
 			String toInsert = isPrecededByDot ? className : getClassName(true);
 			te.replaceRange(toInsert, start, dot);
 			return;
