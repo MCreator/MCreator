@@ -1,0 +1,6 @@
+SWIM_SPEED:
+  - NeoForgeMod.SWIM_SPEED
+  - "neoforge:swim_speed"
+NAMETAG_RENDER_DISTANCE:
+  - NeoForgeMod.NAMETAG_DISTANCE
+  - "neoforge:nametag_distance"

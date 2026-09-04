@@ -97,9 +97,3 @@ SWEEPING_DAMAGE_RATIO:
 WATER_MOVEMENT_EFFICIENCY:
   - Attributes.WATER_MOVEMENT_EFFICIENCY
   - "minecraft:generic.water_movement_efficiency"
-SWIM_SPEED:
-  - NeoForgeMod.SWIM_SPEED
-  - "neoforge:swim_speed"
-NAMETAG_RENDER_DISTANCE:
-  - NeoForgeMod.NAMETAG_DISTANCE
-  - "neoforge:nametag_distance"
