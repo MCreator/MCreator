@@ -1,0 +1,1 @@
+﻿Tato procedura určuje, zda při otevření GUI zaškrtnout toto políčko nebo ne.

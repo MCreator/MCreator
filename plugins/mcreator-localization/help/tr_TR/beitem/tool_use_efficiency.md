@@ -1,0 +1,1 @@
+Eğer doğruysa, "Verimlilik" büyüsü kazılabilir blokların yok olma hızlarını etkileyecektir.
