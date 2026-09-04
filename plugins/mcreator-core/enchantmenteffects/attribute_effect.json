@@ -47,6 +47,7 @@
   ],
   "previousStatement": "AttributeEffect",
   "nextStatement": "AttributeEffect",
+  "inputsInline": true,
   "colour": 15,
   "mcreator": {
     "toolbox_id": "enchantmentcomponents",
