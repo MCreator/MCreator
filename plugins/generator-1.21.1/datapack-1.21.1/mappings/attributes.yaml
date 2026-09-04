@@ -1,0 +1,99 @@
+_default:
+  - Attributes.ARMOR
+  - "minecraft:generic.armor"
+_mcreator_map_template:
+  - "@JavaModNameAttributes.@REGISTRYNAME"
+  - "@modid:@registryname"
+ARMOR:
+  - Attributes.ARMOR
+  - "minecraft:generic.armor"
+ARMOR_TOUGHNESS:
+  - Attributes.ARMOR_TOUGHNESS
+  - "minecraft:generic.armor_toughness"
+ATTACK_DAMAGE:
+  - Attributes.ATTACK_DAMAGE
+  - "minecraft:generic.attack_damage"
+ATTACK_KNOCKBACK:
+  - Attributes.ATTACK_KNOCKBACK
+  - "minecraft:generic.attack_knockback"
+ATTACK_SPEED:
+  - Attributes.ATTACK_SPEED
+  - "minecraft:generic.attack_speed"
+BLOCK_BREAK_SPEED:
+  - Attributes.BLOCK_BREAK_SPEED
+  - "minecraft:player.block_break_speed"
+BLOCK_REACH:
+  - Attributes.BLOCK_INTERACTION_RANGE
+  - "minecraft:player.block_interaction_range"
+BURNING_TIME:
+  - Attributes.BURNING_TIME
+  - "minecraft:generic.burning_time"
+EXPLOSION_KNOCKBACK_RESISTANCE:
+  - Attributes.EXPLOSION_KNOCKBACK_RESISTANCE
+  - "minecraft:generic.explosion_knockback_resistance"
+ENTITY_REACH:
+  - Attributes.ENTITY_INTERACTION_RANGE
+  - "minecraft:player.entity_interaction_range"
+FALL_DAMAGE_MULTIPLIER:
+  - Attributes.FALL_DAMAGE_MULTIPLIER
+  - "minecraft:generic.fall_damage_multiplier"
+FLYING_SPEED:
+  - Attributes.FLYING_SPEED
+  - "minecraft:generic.flying_speed"
+FOLLOW_RANGE:
+  - Attributes.FOLLOW_RANGE
+  - "minecraft:generic.follow_range"
+ENTITY_GRAVITY:
+  - Attributes.GRAVITY
+  - "minecraft:generic.gravity"
+JUMP_STRENGTH:
+  - Attributes.JUMP_STRENGTH
+  - "minecraft:generic.jump_strength"
+KNOCKBACK_RESISTANCE:
+  - Attributes.KNOCKBACK_RESISTANCE
+  - "minecraft:generic.knockback_resistance"
+LUCK:
+  - Attributes.LUCK
+  - "minecraft:generic.luck"
+MAX_ABSORPTION:
+  - Attributes.MAX_ABSORPTION
+  - "minecraft:generic.max_absorption"
+MAX_HEALTH:
+  - Attributes.MAX_HEALTH
+  - "minecraft:generic.max_health"
+MINING_EFFICIENCY:
+  - Attributes.MINING_EFFICIENCY
+  - "minecraft:player.mining_efficiency"
+MOVEMENT_EFFICIENCY:
+  - Attributes.MOVEMENT_EFFICIENCY
+  - "minecraft:generic.movement_efficiency"
+MOVEMENT_SPEED:
+  - Attributes.MOVEMENT_SPEED
+  - "minecraft:generic.movement_speed"
+OXYGEN_BONUS:
+  - Attributes.OXYGEN_BONUS
+  - "minecraft:generic.oxygen_bonus"
+SAFE_FALL_DISTANCE:
+  - Attributes.SAFE_FALL_DISTANCE
+  - "minecraft:generic.safe_fall_distance"
+SCALE:
+  - Attributes.SCALE
+  - "minecraft:generic.scale"
+SNEAKING_SPEED:
+  - Attributes.SNEAKING_SPEED
+  - "minecraft:player.sneaking_speed"
+SPAWN_REINFORCEMENTS_CHANCE:
+  - Attributes.SPAWN_REINFORCEMENTS_CHANCE
+  - "minecraft:zombie.spawn_reinforcements"
+STEP_HEIGHT:
+  - Attributes.STEP_HEIGHT
+  - "minecraft:generic.step_height"
+SUBMERGED_MINING_SPEED:
+  - Attributes.SUBMERGED_MINING_SPEED
+  - "minecraft:player.submerged_mining_speed"
+SWEEPING_DAMAGE_RATIO:
+  - Attributes.SWEEPING_DAMAGE_RATIO
+  - "minecraft:player.sweeping_damage_ratio"
+WATER_MOVEMENT_EFFICIENCY:
+  - Attributes.WATER_MOVEMENT_EFFICIENCY
+  - "minecraft:generic.water_movement_efficiency"

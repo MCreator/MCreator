@@ -1,0 +1,31 @@
+{
+  "args0": [
+    {
+      "type": "input_statement",
+      "name": "attribute_modifiers",
+      "check": "AttributeEffect"
+    }
+  ],
+  "extensions": [
+    "disable_repeated_enchantment_component"
+  ],
+  "previousStatement": "EnchantmentComponent",
+  "nextStatement": "EnchantmentComponent",
+  "colour": 350,
+  "inputsInline": true,
+  "mcreator": {
+    "toolbox_id": "enchantmentcomponents",
+    "toolbox_init": [
+      "<statement name=\"attribute_modifiers\"><block type=\"attribute_effect\">",
+      "<field name=\"id\">name</field><field name=\"operation\">add_value</field>",
+      "~<field name=\"attribute\">ARMOR</field>",
+      "<value name=\"amount\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "</block></statement>"
+    ],
+    "statements": [
+      {
+        "name": "attribute_modifiers"
+      }
+    ]
+  }
+}

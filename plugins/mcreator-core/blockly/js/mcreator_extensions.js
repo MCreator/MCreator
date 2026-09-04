@@ -233,8 +233,8 @@ Blockly.Extensions.registerMixin('disable_repeated_random_xz',
                 || (e.type !== Blockly.Events.BLOCK_MOVE && e.type !== Blockly.Events.BLOCK_CREATE)) {
                 return;
             }
-            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
-                return type === 'placement_in_square' || type === 'placement_count_on_every_layer';
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (block) {
+                return block.type === 'placement_in_square' || block.type === 'placement_count_on_every_layer';
             }));
             this.setWarningText(enabled ? null : translate('blockly.block.placement_in_square.warning_repeated'));
             if (!this.isInFlyout) {
@@ -260,8 +260,8 @@ Blockly.Extensions.registerMixin('disable_repeated_count_on_every_layer',
                 return;
             }
             // First, check if this placement is repeated
-            const isRepeated = checkIfAfter(this.getPreviousBlock(), function (type) {
-                return type === 'placement_in_square' || type === 'placement_count_on_every_layer';
+            const isRepeated = checkIfAfter(this.getPreviousBlock(), function (block) {
+                return block.type === 'placement_in_square' || block.type === 'placement_count_on_every_layer';
             });
             // Then check if the count input is within range
             const isWithinRange = isIntProviderWithinBounds(this.getInput('count').connection.targetBlock(), 0, 256);
@@ -288,7 +288,7 @@ Blockly.Extensions.registerMixin('disable_repeated_count_on_every_layer',
 
 function checkIfAfter(block, predicate) {
     while (block) {
-        if (predicate(block.type)) {
+        if (predicate(block)) {
             return block;
         }
         block = block.getPreviousBlock();
@@ -334,8 +334,8 @@ Blockly.Extensions.registerMixin('disable_repeated_enchantment_component',
                 return;
             }
             const thisType = this.type;
-            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (type) {
-                return type === thisType;
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (block) {
+                return block.type === thisType;
             }));
             this.setWarningText(enabled ? null : translate('blockly.block.ench_component.warning_repeated'));
             if (!this.isInFlyout) {
@@ -343,6 +343,32 @@ Blockly.Extensions.registerMixin('disable_repeated_enchantment_component',
                 // Makes it so the move and the disable event get undone together.
                 Blockly.Events.setGroup(e.group);
                 this.setDisabledReason(!enabled, "repeated_enchantment_component");
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
+
+// Mutator to disable an attribute effect if it has the same id as a previous one
+Blockly.Extensions.registerMixin('disable_repeated_attribute_effects',
+    {
+        onchange: function (e) {
+            // Trigger the change only if a block is changed, moved, deleted or created
+            if (e.type !== Blockly.Events.BLOCK_CHANGE &&
+                e.type !== Blockly.Events.BLOCK_MOVE &&
+                e.type !== Blockly.Events.BLOCK_DELETE &&
+                e.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+            const thisAttributeId = this.getField('id').getValue();
+            const enabled = !(checkIfAfter(this.getPreviousBlock(), function (block) {
+                return block.type === 'attribute_effect' && block.getField('id').getValue() === thisAttributeId;
+            }));
+            this.setWarningText(enabled ? null : translate('blockly.block.attribute_effect.warning_repeated'));
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setDisabledReason(!enabled, "repeated_attribute_effect");
                 Blockly.Events.setGroup(group);
             }
         }
