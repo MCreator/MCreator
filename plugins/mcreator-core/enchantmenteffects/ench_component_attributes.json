@@ -1,0 +1,24 @@
+{
+  "args0": [
+    {
+      "type": "input_statement",
+      "name": "attribute_modifiers",
+      "check": "AttributeEffect"
+    }
+  ],
+  "extensions": [
+    "disable_repeated_enchantment_component"
+  ],
+  "previousStatement": "EnchantmentComponent",
+  "nextStatement": "EnchantmentComponent",
+  "colour": 350,
+  "inputsInline": true,
+  "mcreator": {
+    "toolbox_id": "enchantmentcomponents",
+    "statements": [
+      {
+        "name": "attribute_modifiers"
+      }
+    ]
+  }
+}

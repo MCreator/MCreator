@@ -1,0 +1,62 @@
+{
+  "args0": [
+    {
+      "type": "field_resourcelocation",
+      "name": "id",
+      "text": "name",
+      "allowNamespace": false
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "attribute",
+      "datalist": "attributes",
+      "customEntryProviders": "attribute"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "amount",
+      "check": "Number"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "operation",
+      "options": [
+        [
+          "Addition",
+          "add_value"
+        ],
+        [
+          "Multiply base",
+          "add_multiplied_base"
+        ],
+        [
+          "Multiply total",
+          "add_multiplied_total"
+        ]
+      ]
+    }
+  ],
+  "previousStatement": "AttributeEffect",
+  "nextStatement": "AttributeEffect",
+  "colour": 15,
+  "mcreator": {
+    "toolbox_id": "enchantmentcomponents",
+    "toolbox_init": [
+      "<value name=\"amount\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+    ],
+    "fields": [
+      "id",
+      "attribute",
+      "operation"
+    ],
+    "inputs": [
+      "amount"
+    ]
+  }
+}
