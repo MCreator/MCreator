@@ -29,7 +29,9 @@ import java.awt.image.BufferedImage;
 
 	public String name;
 	public MItemBlock icon;
+
 	public boolean showSearch;
+	public boolean hideTitle;
 
 	private Tab() {
 		this(null);
