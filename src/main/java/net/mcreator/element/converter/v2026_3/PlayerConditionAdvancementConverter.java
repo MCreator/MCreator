@@ -81,7 +81,9 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 
 				Element fieldBiome = XMLUtil.getFirstChildrenWithName(element, "field");
 				String biome = fieldBiome != null ? fieldBiome.getTextContent() : "plains";
-				element.removeChild(fieldBiome);
+				if (fieldBiome != null) {
+					element.removeChild(fieldBiome);
+				}
 
 				Element value = doc.createElement("value");
 				value.setAttribute("name", "player");
