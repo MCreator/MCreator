@@ -352,10 +352,9 @@ public abstract class MCreator extends MCreatorFrame {
 			} catch (Exception ignored) {
 			}
 
-			application.getOpenMCreators().remove(this);
+			application.removeMCreator(this);
 
-			if (application.getOpenMCreators()
-					.isEmpty()) { // no MCreator windows left, close the app, or return to project selector if selected
+			if (application.getOpenMCreatorsCount() == 0) { // no MCreator windows left, close the app, or return to project selector if selected
 				if (returnToProjectSelector)
 					application.showWorkspaceSelector();
 				else
