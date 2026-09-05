@@ -337,7 +337,7 @@ Blockly.Extensions.registerMutator('item_predicate_mutator', simpleRepeatingInpu
 Blockly.Extensions.registerMutator('player_predicate_mutator', simpleRepeatingInputMixin(
         'player_predicate_mutator_container', 'player_predicate_mutator_input', 'predicateComponent',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('PlayerPredicateComponent').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('PlayerPredicateComponent').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
         }, true, [], undefined, false, true),
     undefined, ['player_predicate_mutator_input']);
@@ -345,7 +345,7 @@ Blockly.Extensions.registerMutator('player_predicate_mutator', simpleRepeatingIn
 Blockly.Extensions.registerMutator('location_component_mutator', simpleRepeatingInputMixin(
         'location_component_mutator_container', 'location_component_mutator_input', 'locationComponent',
         function (thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setCheck('LocationParameter').setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendValueInput(inputName + index).setCheck('LocationParameter').setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['location_component_mutator_input']);
@@ -353,7 +353,7 @@ Blockly.Extensions.registerMutator('location_component_mutator', simpleRepeating
 Blockly.Extensions.registerMutator('biome_location_component_mutator', simpleRepeatingInputMixin(
         'biome_location_component_mutator_container', 'biome_location_component_mutator_input', 'biome',
         function (thisBlock, inputName, index) {
-            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.ALIGN_RIGHT)
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.inputs.Align.RIGHT)
                 .appendField(translate('blockly.block.' + thisBlock.type + '.input'))
                 .appendField(new FieldDataListSelector('biomes'), 'biome' + index);
         }, false, ['biome']),
