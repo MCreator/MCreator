@@ -1,0 +1,1 @@
+The type-specific attack speed modifier. This value is scaled by performing the reciprocal of this value, then subtracting 4.

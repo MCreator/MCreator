@@ -39,11 +39,11 @@ package ${package}.item;
 <#if modifiesDefaultComponents(data.toolType)>
 @EventBusSubscriber
 </#if>
-<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
+<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spear" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
-public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool|Pickaxe|Sword", "", "r")}Item {
+public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool|Pickaxe|Sword|Spear", "", "r")}Item {
 
-	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spear" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 	private static final ToolMaterial TOOL_MATERIAL = new ToolMaterial(
 		<#if data.blockDropsTier == "WOOD">BlockTags.INCORRECT_FOR_WOODEN_TOOL
 		<#elseif data.blockDropsTier == "STONE">BlockTags.INCORRECT_FOR_STONE_TOOL
@@ -54,7 +54,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		</#if>,
 		${data.usageCount},
 		${data.efficiency}f,
-		0,
+		<#if data.toolType == "Spear">${data.spearAttackDamageBonus}f<#else>0</#if>,
 		${data.enchantability},
 		TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")) <#-- data.repairItems are put into a tag -->
 	);
@@ -74,6 +74,8 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			.pickaxe(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
 			<#elseif data.toolType == "Sword">
 			.sword(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			<#elseif data.toolType == "Spear">
+			.spear(TOOL_MATERIAL, ${data.spearSpeedModifier}f, ${data.spearKineticDamageMultiplier}f, ${data.spearKineticCooldown}f, ${data.spearDismountTime}f, ${data.spearMinimumDismountSpeed}f, ${data.spearMaximumKnockbackTime}f, ${data.spearMinimumKnockbackSpeed}f, ${data.spearMaximumKineticDamageTime}f, ${data.spearMinimumKineticDamageSpeed}f)
 			<#elseif data.toolType == "MultiTool">
 			.attributes(<@itemAttributeModifiers true/>)
 			<#elseif data.toolType == "Shield">
@@ -126,8 +128,8 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 		<#if data.usageCount == 0>
 			.set(DataComponents.MAX_DAMAGE, null)
 		</#if>
-		<#if data.attributeModifiers?size gt 0 && (data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe")>
-			.set(DataComponents.ATTRIBUTE_MODIFIERS, <@itemAttributeModifiers true/>)
+		<#if data.attributeModifiers?size gt 0 && (data.toolType == "Axe" || data.toolType == "Spear" || data.toolType == "Spade" || data.toolType == "Hoe")>
+			.set(DataComponents.ATTRIBUTE_MODIFIERS, <@itemAttributeModifiers (data.toolType != "Spear")/>)
 		</#if>
 		);
 	}
@@ -212,7 +214,7 @@ public class ${name}Item extends Item {
 			<#if data.repairItems?has_content>
 			.repairable(TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")))
 			</#if>
-			.attributes(<@itemAttributeModifiers true/>)
+			.attributes(<@itemAttributeModifiers (data.toolType != "Spear")/>)
 			<#if data.enchantability != 0>
 			.enchantable(${data.enchantability})
 			</#if>
@@ -293,7 +295,7 @@ public class ${name}Item extends FishingRodItem {
 	<#if data.usageCount == 0>
 		<#return toolType == "Pickaxe" || toolType == "Axe" || toolType == "Sword" || toolType == "Spade" || toolType == "Hoe" || toolType == "MultiTool">
 	<#elseif data.attributeModifiers?size gt 0>
-		<#return toolType == "Axe" || toolType == "Spade" || toolType == "Hoe">
+		<#return toolType == "Axe" || toolType == "Spear" || toolType == "Spade" || toolType == "Hoe">
 	<#else>
 		<#return false>
 	</#if>

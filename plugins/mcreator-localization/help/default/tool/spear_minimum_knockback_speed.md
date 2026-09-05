@@ -1,0 +1,1 @@
+The minimum speed, in blocks per second, required for the attacker using the spear to knockback a hit entity.
