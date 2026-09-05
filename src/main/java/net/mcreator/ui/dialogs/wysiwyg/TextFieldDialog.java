@@ -45,7 +45,7 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 		nameField.setPreferredSize(new Dimension(200, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.textfield_name_validator"),
 				nameField::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
-				new JavaMemberNameValidator(nameField, false));
+				new JavaMemberNameValidator(nameField));
 		validator.setIsPresentOnList(textField != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
@@ -79,8 +79,8 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 			deft.setText(textField.placeholder);
 		}
 
-		cancel.addActionListener(arg01 -> dispose());
-		ok.addActionListener(arg01 -> {
+		cancel.addActionListener(_ -> dispose());
+		ok.addActionListener(_ -> {
 			if (nameField.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				String text = nameField.getText();
