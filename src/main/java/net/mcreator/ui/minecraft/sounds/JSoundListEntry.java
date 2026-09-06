@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.minecraft.sounds;
 
+import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -162,5 +163,11 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 
 	public SingleFileField getSingleFileField() {
 		return singleFileField;
+	}
+
+	@Override protected void entryRemovedByUserHandler() {
+		if(singleFileField.isEnabled()) return;
+
+		GradleTrackingFileIO.deleteFile(mcreator, singleFileField.getEntry());
 	}
 }

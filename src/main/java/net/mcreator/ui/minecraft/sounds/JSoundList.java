@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement.Sound> {
 
@@ -58,7 +59,7 @@ public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement
 				return false;
 		}
 
-		return true;
+		return entryList.stream().filter(e -> e.getSingleFileField().isEnabled()).collect(Collectors.groupingBy(s -> s, Collectors.counting())).values().stream().anyMatch(count -> count >= 2);
 	}
 
 	public List<SingleFileField> getNewFiles() {
