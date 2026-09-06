@@ -88,8 +88,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 	private WoodPackMakerTool(MCreator mcreator) {
 		super(mcreator, "wood_pack", UIRES.get("16px.woodpack").getImage());
 
-		JTabbedPane tabPanel = new JTabbedPane();
-
 		// Main properties page
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
@@ -179,12 +177,12 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.chest_boat_item"));
 		texturesPanel.add(PanelUtils.totalCenterInPanel(chestBoatItemTexture));
 
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
 
-		this.add("Center", PanelUtils.centerInPanel(tabPanel));
+		this.add("Center", tabs);
 
-		this.setSize(600, 600);
+		this.setSize(600, 400);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}
@@ -303,7 +301,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(doorItem.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_door_item", TextureType.ITEM));
 			textureMap.put("door_item", new TextureHolder(workspace, registryName + "_door_item"));
-	}
+		}
 
 		if (!textureMap.containsKey("trapdoor")) {
 			ImageIcon trapdoor = ImageUtils.colorize(getCachedTexture("trapdoor_" + doorSuffix), color, true);

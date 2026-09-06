@@ -68,7 +68,6 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 
 	private OrePackMakerTool(MCreator mcreator) {
 		super(mcreator, "ore_pack", UIRES.get("16px.orepack").getImage());
-		JTabbedPane tabPanel = new JTabbedPane();
 
 		// Main properties page
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
@@ -114,10 +113,10 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		texturesPanel.add(new JLabel());
 		texturesPanel.add(new JLabel());
 
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
 
-		this.add("Center", PanelUtils.centerInPanel(tabPanel));
+		this.add("Center", tabs);
 
 		this.setSize(600, 280);
 		this.setLocationRelativeTo(mcreator);

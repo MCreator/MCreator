@@ -45,6 +45,7 @@ import java.util.List;
 
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
+	protected JTabbedPane tabs = new JTabbedPane();
 	protected ValidationGroup validableElements = new ValidationGroup();
 
 	private final List<GeneratableElement> toGenerate = new ArrayList<>();
@@ -83,6 +84,12 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	}
 
 	protected abstract void generatePack(MCreator mcreator);
+
+	protected void addPage(String name, JPanel panel) {
+		JScrollPane page = new JScrollPane(PanelUtils.pullElementUp(panel));
+		page.getVerticalScrollBar().setUnitIncrement(10);
+		tabs.add(name, page);
+	}
 
 	protected static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
 		List<String> usedElementNames = workspace.getWorkspaceInfo().getUsedElementNames();

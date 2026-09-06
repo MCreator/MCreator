@@ -77,8 +77,6 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 	private ArmorPackMakerTool(MCreator mcreator) {
 		super(mcreator, "armor_pack", UIRES.get("16px.armorpack").getImage());
 
-		JTabbedPane tabPanel = new JTabbedPane();
-
 		// Main properties page
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
@@ -142,15 +140,15 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.boots"));
 		texturesPanel.add(PanelUtils.totalCenterInPanel(bootsTexture));
 
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(
 				PanelUtils.centerAndSouthElement(texturesPanel,
 						PanelUtils.centerAndEastElement(L10N.label("dialog.tools.armor_pack_textures.armor"),
 								armorTexture))));
 
-		this.add("Center", PanelUtils.centerInPanel(tabPanel));
+		this.add("Center", tabs);
 
-		this.setSize(600, 290);
+		this.setSize(600, 300);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}

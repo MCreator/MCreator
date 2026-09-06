@@ -74,8 +74,6 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 	private ToolPackMakerTool(MCreator mcreator) {
 		super(mcreator, "tool_pack", UIRES.get("16px.toolpack").getImage());
 
-		JTabbedPane tabPanel = new JTabbedPane();
-
 		// Main properties page
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
@@ -143,10 +141,10 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.hoe"));
 		texturesPanel.add(PanelUtils.totalCenterInPanel(hoeTexture));
 
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		tabPanel.add(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
 
-		this.add("Center", PanelUtils.centerInPanel(tabPanel));
+		this.add("Center", tabs);
 
 		this.setSize(600, 350);
 		this.setLocationRelativeTo(mcreator);
