@@ -19,6 +19,7 @@
 package net.mcreator.ui.minecraft.sounds;
 
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -26,6 +27,7 @@ import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
@@ -129,7 +131,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	}
 
 	@Override public SoundElement.Sound getEntry() {
-		SoundElement.Sound entry = new SoundElement.Sound(singleFileField.getEntry().getName());
+		SoundElement.Sound entry = new SoundElement.Sound(FilenameUtilsPatched.removeExtension(singleFileField.getEntry().getName()));
 		entry.setCategory((String) soundCategory.getSelectedItem());
 		entry.setVolume((double) volume.getValue());
 		entry.setPitch((double) pitch.getValue());

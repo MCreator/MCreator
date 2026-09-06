@@ -25,7 +25,6 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.JSingleEntrySelector;
-import net.mcreator.ui.component.SingleFileField;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -87,12 +86,9 @@ public class SoundElementDialog {
 		pane1.setOpaque(false);
 		pane1.add(component, BorderLayout.CENTER);
 
-		if (element == null && files != null) {
-			List<SoundElement.Sound> sounds = new ArrayList<>();
-			Arrays.stream(files).filter(Objects::nonNull).filter(e -> e.getName().endsWith(".ogg")).toList()
-					.forEach(file -> sounds.add(new SoundElement.Sound(file.getName())));
-			soundsEntries.setEntries(sounds);
-		}
+		if (element == null && files != null)
+			soundsEntries.addNewFiles(
+					Arrays.stream(files).filter(Objects::nonNull).toList());
 
 		ui.add(L10N.label("dialog.sounds.subtitle"));
 		ui.add(subtitle);
@@ -109,23 +105,23 @@ public class SoundElementDialog {
 				element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
 				element != null ? "Save changes" : "Add sound");
 
-		if (option == 0) {
+		if (option == JOptionPane.OK_OPTION) {
 			if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.sounds.error_validation", soundName.getValidationStatus().message()),
 						L10N.t("dialog.sounds.error_validation_title"), JOptionPane.ERROR_MESSAGE);
 				return element;
 			} else {
-				if (!soundsEntries.areFilesValid()) {
+				if (!soundsEntries.areNewEntriesValid()) {
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_select_valid_file"),
 							L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
 					return element;
 				} else {
-					List<SoundElement.Sound> sounds = soundsEntries.getEntries();
+					List<SoundElement.Sound> sounds = soundsEntries.getNewEntries();
 
-					List<File> listElements = soundsEntries.getFiles().stream().map(JSingleEntrySelector::getEntry)
+					List<File> listElements = soundsEntries.getNewFiles().stream().map(JSingleEntrySelector::getEntry)
 							.toList();
-					List<File> targetFiles = soundsEntries.getFiles().stream().map(JSingleEntrySelector::getEntry)
+					List<File> targetFiles = soundsEntries.getNewFiles().stream().map(JSingleEntrySelector::getEntry)
 							.map(file -> new File(mcreator.getFolderManager().getSoundsDir(),
 									RegistryNameFixer.fix(file.getName()))).toList();
 
@@ -139,16 +135,9 @@ public class SoundElementDialog {
 					}
 
 					for (int i = 0; i < listElements.size(); i++) {
-						SingleFileField field = soundsEntries.getFiles().get(i);
-
-						if (!field.isEnabled()) // skip files already imported into the workspace
-							continue;
-
 						File sourceFile = listElements.get(i);
 						File targetFile = targetFiles.get(i);
-
 						FileIO.copyFile(sourceFile, targetFile);
-						sounds.get(i).setName(FilenameUtilsPatched.removeExtension(targetFile.getName()));
 					}
 
 					String registryname = RegistryNameFixer.fix(soundName.getText());
@@ -200,12 +189,9 @@ public class SoundElementDialog {
 		pane1.setOpaque(false);
 		pane1.add(component, BorderLayout.CENTER);
 
-		if (element == null && files != null) {
-			List<SoundElement.Sound> sounds = new ArrayList<>();
-			Arrays.stream(files).filter(Objects::nonNull).filter(e -> e.getName().endsWith(".ogg")).toList()
-					.forEach(file -> sounds.add(new SoundElement.Sound(file.getName())));
-			soundsEntries.setEntries(sounds);
-		}
+		if (element == null && files != null)
+			soundsEntries.addNewFiles(
+					Arrays.stream(files).filter(Objects::nonNull).toList());
 
 		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
 		JMinMaxSpinner attenuationDistance = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
@@ -238,23 +224,23 @@ public class SoundElementDialog {
 				element != null ? new String[] { "Save changes" } : new String[] { "Add sound", "Cancel" },
 				element != null ? "Save changes" : "Add sound");
 
-		if (option == 0) {
+		if (option == JOptionPane.OK_OPTION) {
 			if (soundName.getValidationStatus().type() == ValidationResult.Type.ERROR) {
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.sounds.error_validation", soundName.getValidationStatus().message()),
 						L10N.t("dialog.sounds.error_validation_title"), JOptionPane.ERROR_MESSAGE);
 				return element;
 			} else {
-				if (!soundsEntries.areFilesValid()) {
+				if (!soundsEntries.areNewEntriesValid()) {
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.sounds.error_select_valid_file"),
 							L10N.t("dialog.sounds.error_select_valid_file_title"), JOptionPane.ERROR_MESSAGE);
 					return element;
 				} else {
 					List<SoundElement.Sound> sounds = soundsEntries.getEntries();
 
-					List<File> listElements = soundsEntries.getFiles().stream().map(JSingleEntrySelector::getEntry)
+					List<File> listElements = soundsEntries.getNewFiles().stream().map(JSingleEntrySelector::getEntry)
 							.toList();
-					List<File> targetFiles = soundsEntries.getFiles().stream().map(JSingleEntrySelector::getEntry)
+					List<File> targetFiles = soundsEntries.getNewFiles().stream().map(JSingleEntrySelector::getEntry)
 							.map(file -> new File(mcreator.getFolderManager().getSoundsDir(),
 									RegistryNameFixer.fix(file.getName()))).toList();
 
@@ -268,16 +254,9 @@ public class SoundElementDialog {
 					}
 
 					for (int i = 0; i < listElements.size(); i++) {
-						SingleFileField field = soundsEntries.getFiles().get(i);
-
-						if (!field.isEnabled()) // skip files already imported into the workspace
-							continue;
-
 						File sourceFile = listElements.get(i);
 						File targetFile = targetFiles.get(i);
-
 						FileIO.copyFile(sourceFile, targetFile);
-						sounds.get(i).setName(FilenameUtilsPatched.removeExtension(targetFile.getName()));
 					}
 
 					String registryname = RegistryNameFixer.fix(soundName.getText());

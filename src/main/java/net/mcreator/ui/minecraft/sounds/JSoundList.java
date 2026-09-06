@@ -7,12 +7,14 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
-import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement.Sound> {
 
@@ -30,20 +32,37 @@ public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement
 						== GeneratorFlavor.ADDON);
 	}
 
-	public boolean areFilesValid() {
-		if(entryList.isEmpty()) return false;
+	public List<SoundElement.Sound> getNewEntries() {
+		return entryList.stream().map(e -> e.getSingleFileField().isEnabled() ? e.getEntry() : null)
+				.filter(Objects::nonNull).toList();
+	}
+
+	public void addNewFiles(List<File> files) {
+		List<SoundElement.Sound> sounds = new ArrayList<>();
+		files.forEach(file -> sounds.add(new SoundElement.Sound(FilenameUtilsPatched.removeExtension(file.getName()))));
+		setEntries(sounds);
+		for (int i = 0; i < entryList.size(); i++) {
+			SingleFileField singleFileField = entryList.get(i).getSingleFileField();
+
+			singleFileField.setEnabled(true);
+			singleFileField.setEntry(files.get(i));
+		}
+	}
+
+	public boolean areNewEntriesValid() {
+		if (entryList.isEmpty())
+			return false;
 
 		for (JSoundListEntry entry : entryList) {
-			if (entry.getSingleFileField().isEmpty())
+			if (entry.getSingleFileField().isEnabled() && entry.getSingleFileField().isEmpty())
 				return false;
 		}
 
 		return true;
 	}
 
-	public List<SingleFileField> getFiles() {
-		List<SingleFileField> files = new ArrayList<>();
-		entryList.forEach(entry -> files.add(entry.getSingleFileField()));
-		return files;
+	public List<SingleFileField> getNewFiles() {
+		return entryList.stream().map(e -> e.getSingleFileField().isEnabled() ? e.getSingleFileField() : null)
+				.filter(Objects::nonNull).toList();
 	}
 }
