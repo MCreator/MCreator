@@ -305,11 +305,7 @@ public class SoundElementDialog {
 	}
 
 	public static void importSound(MCreator mcreator) {
-		SoundElement soundElement = soundDialog(mcreator, null, null);
-		if (soundElement != null) {
-			mcreator.getWorkspace().addSoundElement(soundElement);
-			mcreator.reloadWorkspaceTabContents();
-		}
+		importSound(mcreator, null);
 	}
 
 	public static void importSound(MCreator mcreator, File[] musics) {
