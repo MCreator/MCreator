@@ -72,7 +72,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 	private final TextureSelectionButton chestplateTexture;
 	private final TextureSelectionButton leggingsTexture;
 	private final TextureSelectionButton bootsTexture;
-	private final TextureComboBox armorTextureFile;
+	private final TextureComboBox armorTexture;
 
 	private ArmorPackMakerTool(MCreator mcreator) {
 		super(mcreator, "armor_pack", UIRES.get("16px.armorpack").getImage());
@@ -128,7 +128,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		chestplateTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		leggingsTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		bootsTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
-		armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).setAddPNGExtension(false);
+		armorTexture = new TextureComboBox(mcreator, TextureType.ARMOR, true).setAddPNGExtension(false);
 
 		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.helmet"));
 		texturesPanel.add(PanelUtils.totalCenterInPanel(helmetTexture));
@@ -146,7 +146,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		tabPanel.add(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(
 				PanelUtils.centerAndSouthElement(texturesPanel,
 						PanelUtils.centerAndEastElement(L10N.label("dialog.tools.armor_pack_textures.armor"),
-								armorTextureFile))));
+								armorTexture))));
 
 		this.add("Center", PanelUtils.centerInPanel(tabPanel));
 
@@ -292,7 +292,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		addToTextureMap(map, chestplateTexture, "chestplate");
 		addToTextureMap(map, leggingsTexture, "leggings");
 		addToTextureMap(map, bootsTexture, "boots");
-		addToTextureMap(map, armorTextureFile, "armor");
+		addToTextureMap(map, armorTexture, "armor");
 
 		return map;
 	}
