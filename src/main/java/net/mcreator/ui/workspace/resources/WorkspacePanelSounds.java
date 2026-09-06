@@ -31,6 +31,8 @@ import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -135,9 +137,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 			name.setText(ma.getName());
 
-			List<String> sounds = new ArrayList<>();
-			for (SoundElement.Sound sound : ma.getFiles())
-				sounds.add(sound.getName());
+			List<String> sounds = ma.getFiles().stream().map(SoundElement.Sound::getName).toList();
 
 			if (ma.getSubtitle() != null && !ma.getSubtitle().isEmpty()) {
 				name2.setText(L10N.t("workspace.sounds.files_and_category_and_subtitle", String.join(", ", sounds),
