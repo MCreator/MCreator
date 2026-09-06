@@ -221,7 +221,7 @@ public class SoundElement implements IElement {
 				files.forEach(file -> file.setCategory(str));
 				category = str;
 			} else if (isBedrock) {
-				category = getObjValue(jsonObject, "beCategory", "neutral");
+				category = getObjValue(jsonObject, "beCategory", category);
 			}
 
 			String name = jsonObject.get("name").getAsString();

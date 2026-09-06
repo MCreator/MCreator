@@ -144,7 +144,7 @@ public class JSoundListEntry extends JSimpleListEntry<SoundElement.Sound> {
 	}
 
 	@Override public void setEntry(SoundElement.Sound e) {
-		singleFileField.setEntry(new File(mcreator.getFolderManager().getSoundsDir(), e.toString()));
+		singleFileField.setEntry(new File(mcreator.getFolderManager().getSoundsDir(), e.getName() + ".ogg"));
 		singleFileField.setEnabled(false);
 		soundCategory.setSelectedItem(e.getCategory());
 		volume.setValue((double) e.getVolume());

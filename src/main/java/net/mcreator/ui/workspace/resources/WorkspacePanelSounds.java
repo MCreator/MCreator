@@ -59,6 +59,13 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 			}
 		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), _ -> deleteCurrentlySelected());
+
+		elementList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2)
+					editSelectedSound(elementList.getSelectedValue());
+			}
+		});
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {
