@@ -95,9 +95,9 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 		procedures.addItem(new ProcedureEntry(defaultName, null));
 
-		for (Map.Entry<ModElement, ReloadContext.ContexData> entry : context.data.entrySet()) {
+		for (Map.Entry<ModElement, ReloadContext.ContextData> entry : context.data.entrySet()) {
 			ModElement mod = entry.getKey();
-			ReloadContext.ContexData data = entry.getValue();
+			ReloadContext.ContextData data = entry.getValue();
 
 			boolean missing = data.dependencies().stream().anyMatch(d -> !providedDependencies.contains(d));
 
@@ -242,7 +242,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	public static class ReloadContext {
 
 		// LinkedHashMap to keep the order of ModElement.getComparator
-		private final Map<ModElement, ContexData> data = new LinkedHashMap<>();
+		private final Map<ModElement, ContextData> data = new LinkedHashMap<>();
 
 		public static ReloadContext create(Workspace workspace) {
 			ReloadContext context = new ReloadContext();
@@ -268,13 +268,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;
 
-					context.data.put(mod, new ContexData(realdepsList, returnTypeCurrent));
+					context.data.put(mod, new ContextData(realdepsList, returnTypeCurrent));
 				}
 			}
 			return context;
 		}
 
-		record ContexData(Set<Dependency> dependencies, @Nullable VariableType returnType) {}
+		record ContextData(Set<Dependency> dependencies, @Nullable VariableType returnType) {}
 
 	}
 
