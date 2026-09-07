@@ -94,7 +94,7 @@ public class ReplaceBar extends JPanel {
 		JButton replace = L10N.button("action.replace");
 		JButton replaceAll = L10N.button("action.replace_all");
 
-		replace.addActionListener(actionEvent -> {
+		replace.addActionListener(_ -> {
 			context.setSearchFor(jtf1.getText());
 			context.setReplaceWith(jtf2.getText());
 			context.setMatchCase(cb3.isSelected());
@@ -103,7 +103,7 @@ public class ReplaceBar extends JPanel {
 			SearchEngine.replace(ra, context);
 		});
 
-		replaceAll.addActionListener(actionEvent -> {
+		replaceAll.addActionListener(_ -> {
 			context.setSearchFor(jtf1.getText());
 			context.setReplaceWith(jtf2.getText());
 			context.setMatchCase(cb3.isSelected());

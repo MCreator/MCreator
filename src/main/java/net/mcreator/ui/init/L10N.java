@@ -182,7 +182,8 @@ public class L10N {
 			return null;
 
 		if (resourceBundle.containsKey(key)) {
-			String value = hardenHTMLString(resourceBundle.getString(key), rb_en.containsKey(key) ? rb_en.getString(key) : null);
+			String value = hardenHTMLString(resourceBundle.getString(key),
+					rb_en.containsKey(key) ? rb_en.getString(key) : null);
 			return MessageFormat.format(value, parameters);
 		} else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
 				".description"))) {

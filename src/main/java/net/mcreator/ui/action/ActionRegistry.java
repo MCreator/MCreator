@@ -233,15 +233,15 @@ public class ActionRegistry {
 		this.reloadGradleProject = new ReloadGradleProjectAction(this);
 		this.clearAllGradleCaches = new ClearAllGradleCachesAction(this);
 		this.cancelGradleTaskAction = new CancelGradleTaskAction(this);
-		this.createTexture = new TextureAction(this, L10N.t("action.create_texture"), actionEvent -> {
+		this.createTexture = new TextureAction(this, L10N.t("action.create_texture"), _ -> {
 			NewImageDialog newImageDialog = new NewImageDialog(mcreator);
 			newImageDialog.setVisible(true);
 		}).setIcon(UIRES.get("16px.newtexture"));
 		this.createArmorTexture = new TextureAction(this, L10N.t("action.create_armor_texture"),
-				actionEvent -> new ArmorImageMakerView(mcreator).showView(), TextureType.ARMOR).setIcon(
+				_ -> new ArmorImageMakerView(mcreator).showView(), TextureType.ARMOR).setIcon(
 				UIRES.get("16px.newarmor"));
 		this.createAnimatedTexture = new TextureAction(this, L10N.t("action.create_animated_texture"),
-				actionEvent -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
+				_ -> new AnimationMakerView(mcreator).showView()).setIcon(UIRES.get("16px.newanimation"));
 		this.importBlockTexture = new TextureImportAction(this, L10N.t("action.import_block_texture"),
 				TextureType.BLOCK).setIcon(UIRES.get("16px.importblock"));
 		this.importItemTexture = new TextureImportAction(this, L10N.t("action.import_item_texture"),
@@ -254,7 +254,7 @@ public class ActionRegistry {
 				TextureType.PARTICLE).setIcon(UIRES.get("16px.importparticle"));
 		this.importScreenTexture = new TextureImportAction(this, L10N.t("action.import_screen_texture"),
 				TextureType.SCREEN).setIcon(UIRES.get("16px.importgui"));
-		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), actionEvent -> {
+		this.importArmorTexture = new TextureAction(this, L10N.t("action.import_armor_texture"), _ -> {
 			TextureImportDialogs.importArmor(mcreator);
 			mcreator.reloadWorkspaceTabContents();
 		}, TextureType.ARMOR).setIcon(UIRES.get("16px.importarmor"));

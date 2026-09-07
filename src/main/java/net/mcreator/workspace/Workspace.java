@@ -685,7 +685,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 						WorkspaceSettings.normalizeGeneratorName(generatorName.getAsString()));
 			}
 
-			Gson gson = generatorConfiguration == null ? GENERIC_GSON :
+			Gson gson = generatorConfiguration == null ?
+					GENERIC_GSON :
 					GSON_CACHE.computeIfAbsent(generatorConfiguration,
 							configuration -> WorkspaceFileManager.createGsonBuilder(configuration.getGeneratorFlavor())
 									.create());

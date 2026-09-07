@@ -33,6 +33,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class FileIO {
@@ -294,6 +295,55 @@ public final class FileIO {
 		} else {
 			return new File[] {};
 		}
+	}
+
+	/**
+	 * Deletes the given directory recursively on a best-effort basis. Unlike {@link #deleteDir(File)}, this method
+	 * does not stop at the first file that can not be deleted but continues with the remaining files.
+	 *
+	 * @param dir Directory to delete
+	 * @return List of files and directories that could not be deleted, empty if everything was deleted
+	 */
+	public static List<File> deleteDirBestEffort(File dir) {
+		List<File> failed = new ArrayList<>();
+		if (!dir.exists())
+			return failed;
+
+		try {
+			Files.walkFileTree(dir.toPath(), new SimpleFileVisitor<>() {
+				@Nonnull @Override
+				public FileVisitResult visitFile(@Nonnull Path file, @Nonnull BasicFileAttributes attrs) {
+					deleteQuietly(file);
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Nonnull @Override
+				public FileVisitResult visitFileFailed(@Nonnull Path file, @Nonnull IOException exc) {
+					failed.add(file.toFile());
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Nonnull @Override public FileVisitResult postVisitDirectory(@Nonnull Path directory, IOException exc) {
+					deleteQuietly(directory);
+					return FileVisitResult.CONTINUE;
+				}
+
+				private void deleteQuietly(Path path) {
+					try {
+						Files.delete(path);
+					} catch (DirectoryNotEmptyException ignored) {
+						// files inside this directory failed to delete and are already reported
+					} catch (IOException e) {
+						failed.add(path.toFile());
+					}
+				}
+			});
+		} catch (IOException e) {
+			LOG.warn("Failed to delete directory {}: {}", dir, e.getMessage());
+			failed.add(dir);
+		}
+
+		return failed;
 	}
 
 }

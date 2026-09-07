@@ -665,12 +665,20 @@ public class Generator implements IGenerator, Closeable {
 
 		fileWatcher.close();
 
+		closeGradleProjectConnection();
+	}
+
+	public void closeGradleProjectConnection() {
 		if (gradleProjectConnection != null) {
 			LOG.info("Closing Gradle project connection");
 			gradleProjectConnection.close();
+			gradleProjectConnection = null;
+			gradleFileTracker = null;
 
-			if (gradleConnector != null)
+			if (gradleConnector != null) {
 				gradleConnector.disconnect();
+				gradleConnector = null;
+			}
 		}
 	}
 

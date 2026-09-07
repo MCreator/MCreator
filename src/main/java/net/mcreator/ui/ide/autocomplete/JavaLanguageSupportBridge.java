@@ -50,8 +50,8 @@ public class JavaLanguageSupportBridge extends JavaLanguageSupport {
 	 * @param support  The language support installed on the given text area.
 	 */
 	public static void bridge(RSyntaxTextArea textArea, JavaLanguageSupport support) {
-		LanguageSupportFactory.get().addLanguageSupport(SyntaxConstants.SYNTAX_STYLE_JAVA,
-				JavaLanguageSupportBridge.class.getName());
+		LanguageSupportFactory.get()
+				.addLanguageSupport(SyntaxConstants.SYNTAX_STYLE_JAVA, JavaLanguageSupportBridge.class.getName());
 		textArea.putClientProperty(PER_EDITOR_SUPPORT, support);
 	}
 
