@@ -63,6 +63,12 @@ public class ClearAllGradleCachesAction extends GradleAction {
 				p1.markStateWarning();
 			}
 
+			// Close Gradle connections of all open workspaces so Gradle Tooling API releases the loaded Gradle
+			// distribution and no files in the Gradle home stay locked by MCreator itself. Connections are
+			// reopened automatically by the next Gradle task.
+			for (MCreator m : mcreator.getApplication().getOpenMCreators())
+				m.getGenerator().closeGradleProjectConnection();
+
 			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.cache_cleanup.progress.clearing_gradle_caches_folder"));
 			progressDialog.addProgressUnit(p2);
