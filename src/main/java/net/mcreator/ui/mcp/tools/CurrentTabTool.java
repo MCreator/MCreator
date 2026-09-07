@@ -85,7 +85,7 @@ public class CurrentTabTool extends MCreatorMcpTool<Void> {
 				} catch (Exception e) {
 					fileInfo.put("pathInWorkspace", codeEditorView.fileWorkingOn.getPath());
 				}
-				fileInfo.put("unsavedChanges", codeEditorView.changed);
+				fileInfo.put("unsavedChanges", codeEditorView.wasChanged());
 				response.put("file", fileInfo);
 			} else if (currentTab.getContent() instanceof ImageMakerView imageMakerView) {
 				response.put("tabType", "texture_editor");

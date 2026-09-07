@@ -465,6 +465,10 @@ public final class MCreatorApplication {
 		return openMCreators.size();
 	}
 
+	public Collection<MCreator> getOpenMCreators() {
+		return Collections.unmodifiableCollection(openMCreators);
+	}
+
 	public DiscordClient getDiscordClient() {
 		return discordClient;
 	}
