@@ -30,7 +30,7 @@ import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
 public record HistoryCheckpoint(String hash, String name, int timestamp,
-                                Supplier<Future<List<DiffEntry>>> diffFutureSupplier) {
+								Supplier<Future<List<DiffEntry>>> diffFutureSupplier) {
 
 	public String getTimestampString() {
 		return Instant.ofEpochSecond(timestamp).atZone(ZoneId.systemDefault())

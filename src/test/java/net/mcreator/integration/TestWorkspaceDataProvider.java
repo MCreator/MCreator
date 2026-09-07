@@ -1794,8 +1794,8 @@ public class TestWorkspaceDataProvider {
 			beitem.animation = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
 			beitem.isEnchantable = _true;
-			beitem.enchantmentSlot = new BEEquipmentSlotEntry(modElement.getWorkspace(), getRandomItem(random,
-					ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())));
+			beitem.enchantmentSlot = new BEEquipmentSlotEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())));
 			beitem.enchantmentValue = getRandomInt(random, BEItem.class, "enchantmentValue");
 			beitem.diggerUseEfficiency = _true;
 			beitem.diggerEntries = new ArrayList<>();
@@ -1815,7 +1815,8 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				for (MItemBlock entry : subset(random, blocksAndTagsNoAir.size() / 8, blocksAndTagsNoAir,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()))) {
-					beitem.diggerEntries.add(new BEItem.DiggerEntry(entry, getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
+					beitem.diggerEntries.add(
+							new BEItem.DiggerEntry(entry, getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
 				}
 			}
 			beitem.localScripts = new ArrayList<>();
