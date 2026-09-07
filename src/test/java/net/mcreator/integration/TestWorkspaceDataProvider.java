@@ -1743,7 +1743,9 @@ public class TestWorkspaceDataProvider {
 				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#minecraft:test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
-			feature.featurexml = AnnotationUtils.getBlocklyXMLDefaultValue(Feature.class, "featurexml");
+			feature.featurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+					+ "<block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\">"
+					+ "<value name=\"feature\"><block type=\"feature_no_op\"></block></value></block></xml>";
 			feature.skipPlacement = !_true;
 			return feature;
 		} else if (ModElementType.ATTRIBUTE.equals(modElement.getType())) {
