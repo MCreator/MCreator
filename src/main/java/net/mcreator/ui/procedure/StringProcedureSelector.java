@@ -34,8 +34,6 @@ import javax.swing.text.JTextComponent;
 
 public class StringProcedureSelector extends RetvalProcedureSelector<String, StringProcedure> {
 
-	@Nullable private final JComponent fixedValue;
-
 	// JTextComponent variants
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
@@ -60,8 +58,6 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 			Dependency... providedDependencies) {
 		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, allowInlineEditor,
 				fixedValue, width, providedDependencies);
-
-		this.fixedValue = fixedValue;
 
 		if (fixedValue != null) {
 			fixedValue.setBackground(Theme.current().getBackgroundColor());
@@ -96,8 +92,6 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, allowInlineEditor,
 				fixedValue, width, providedDependencies);
 
-		this.fixedValue = fixedValue;
-
 		if (fixedValue != null) {
 			fixedValue.setEditable(true);
 		}
@@ -122,9 +116,9 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 	@Override public String getFixedValue() {
 		String value = "";
 
-		if (fixedValue instanceof JTextComponent textComponent) {
+		if (fixedValueComponent() instanceof JTextComponent textComponent) {
 			value = textComponent.getText();
-		} else if (fixedValue instanceof JComboBox<?> comboBox) {
+		} else if (fixedValueComponent() instanceof JComboBox<?> comboBox) {
 			value = comboBox.getEditor().getItem().toString();
 		}
 
@@ -132,9 +126,9 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 	}
 
 	@Override public void setFixedValue(String value) {
-		if (fixedValue instanceof JTextComponent textComponent) {
+		if (fixedValueComponent() instanceof JTextComponent textComponent) {
 			textComponent.setText(value);
-		} else if (fixedValue instanceof JComboBox<?> comboBox) {
+		} else if (fixedValueComponent() instanceof JComboBox<?> comboBox) {
 			comboBox.getEditor().setItem(value);
 		}
 	}

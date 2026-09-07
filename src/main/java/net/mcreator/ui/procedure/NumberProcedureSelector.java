@@ -32,8 +32,6 @@ import javax.swing.*;
 
 public class NumberProcedureSelector extends RetvalProcedureSelector<Double, NumberProcedure> {
 
-	@Nullable private final JSpinner fixedValue;
-
 	public NumberProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JSpinner fixedValue,
 			Dependency... providedDependencies) {
 		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, 50,
@@ -55,8 +53,6 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 			boolean allowInlineEditor, @Nullable JSpinner fixedValue, int width, Dependency... providedDependencies) {
 		super(VariableTypeLoader.BuiltInTypes.NUMBER, helpContext, mcreator, eventName, side, allowInlineEditor,
 				fixedValue, width, providedDependencies);
-
-		this.fixedValue = fixedValue;
 	}
 
 	@Override public NumberProcedure getSelectedProcedure() {
@@ -75,11 +71,15 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 		}
 	}
 
+	@Override protected JSpinner fixedValueComponent() {
+		return (JSpinner) super.fixedValueComponent();
+	}
+
 	@Override public Double getFixedValue() {
 		Double value = (double) 0;
 
-		if (fixedValue != null) {
-			Object rawValue = fixedValue.getValue();
+		if (fixedValueComponent() != null) {
+			Object rawValue = fixedValueComponent().getValue();
 			if (rawValue instanceof Double)
 				value = (Double) rawValue;
 			else if (rawValue instanceof Float)
@@ -96,8 +96,8 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 	}
 
 	@Override public void setFixedValue(Double value) {
-		if (fixedValue != null && value != null)
-			fixedValue.setValue(value);
+		if (fixedValueComponent() != null && value != null)
+			fixedValueComponent().setValue(value);
 	}
 
 }

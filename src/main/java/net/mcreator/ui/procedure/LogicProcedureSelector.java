@@ -32,8 +32,6 @@ import javax.swing.*;
 
 public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, LogicProcedure> {
 
-	@Nullable private final JCheckBox fixedValue;
-
 	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JCheckBox fixedValue,
 			Dependency... providedDependencies) {
 		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, 0,
@@ -55,8 +53,6 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 			boolean allowInlineEditor, @Nullable JCheckBox fixedValue, int width, Dependency... providedDependencies) {
 		super(VariableTypeLoader.BuiltInTypes.LOGIC, helpContext, mcreator, eventName, side, allowInlineEditor,
 				fixedValue, width, providedDependencies);
-
-		this.fixedValue = fixedValue;
 	}
 
 	@Override public LogicProcedure getSelectedProcedure() {
@@ -75,14 +71,18 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 		}
 	}
 
+	@Override protected JCheckBox fixedValueComponent() {
+		return (JCheckBox) super.fixedValueComponent();
+	}
+
 	@Override public Boolean getFixedValue() {
-		if (fixedValue != null)
-			return fixedValue.isSelected();
+		if (fixedValueComponent() != null)
+			return fixedValueComponent().isSelected();
 		return false;
 	}
 
 	@Override public void setFixedValue(Boolean value) {
-		if (fixedValue != null && value != null)
-			fixedValue.setSelected(value);
+		if (fixedValueComponent() != null && value != null)
+			fixedValueComponent().setSelected(value);
 	}
 }
