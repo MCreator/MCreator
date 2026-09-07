@@ -35,7 +35,7 @@ import java.io.IOException;
 public class ClearAllGradleCachesAction extends GradleAction {
 
 	public ClearAllGradleCachesAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.gradle.clear_caches"), evt -> {
+		super(actionRegistry, L10N.t("action.gradle.clear_caches"), _ -> {
 			Object[] options = { L10N.t("action.gradle.clear_caches.option.gradle_caches"),
 					L10N.t("action.gradle.clear_caches.option.gradle_folder"),
 					UIManager.getString("OptionPane.cancelButtonText") };
@@ -68,14 +68,14 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			progressDialog.addProgressUnit(p2);
 
 			try {
-				Thread.sleep(2000); // make sure all files are released
+				Thread.sleep(5000); // make sure all files are released
 			} catch (InterruptedException ignored) {
 			}
 
 			if (entireGradleFolder)
-				FileIO.deleteDir(UserFolderManager.getGradleHome());
+				FileIO.deleteDirBestEffort(UserFolderManager.getGradleHome());
 			else
-				FileIO.deleteDir(new File(UserFolderManager.getGradleHome(), "caches"));
+				FileIO.deleteDirBestEffort(new File(UserFolderManager.getGradleHome(), "caches"));
 
 			p2.markStateOk();
 
