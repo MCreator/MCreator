@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +19,30 @@
 
 package net.mcreator.ui.validation.validators;
 
-import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 
-import javax.swing.*;
+public class NonEmptyValidator implements Validator {
 
-public class ProcedureSelectorValidator implements Validator {
+	private final IOptionalValueContainer holder;
+	private final String emptyMessage;
+	private final ValidationResult.Type answer;
 
-	private JToggleButton requirement;
-	private final AbstractProcedureSelector selector;
-
-	public ProcedureSelectorValidator(AbstractProcedureSelector selector) {
-		this.selector = selector;
+	public NonEmptyValidator(IOptionalValueContainer holder, String emptyMessage) {
+		this(holder, emptyMessage, ValidationResult.Type.ERROR);
 	}
 
-	public ProcedureSelectorValidator(AbstractProcedureSelector selector, JToggleButton requirement) {
-		this.selector = selector;
-		this.requirement = requirement;
+	public NonEmptyValidator(IOptionalValueContainer holder, String emptyMessage, ValidationResult.Type answer) {
+		this.holder = holder;
+		this.emptyMessage = emptyMessage;
+		this.answer = answer;
 	}
 
 	@Override public ValidationResult validate() {
-		if (selector.getSelectedProcedure() != null || (requirement != null && !requirement.isSelected()))
+		if (!holder.isEmpty())
 			return ValidationResult.PASSED;
 		else
-			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.select_element"));
+			return new ValidationResult(answer, emptyMessage);
 	}
 }

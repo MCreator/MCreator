@@ -50,7 +50,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.elements.ModElement;
@@ -185,7 +185,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 		pane1.add(PanelUtils.totalCenterInPanel(selp));
 
 		supportedItems.setValidator(new CompoundValidator(
-				new ItemListFieldValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),
+				new NonEmptyValidator(supportedItems, L10N.t("elementgui.enchantment.supported_items.error")),
 				new ItemListFieldSingleTagValidator(supportedItems)));
 
 		incompatibleEnchantments.setValidator(new ItemListFieldSingleTagValidator(incompatibleEnchantments));
@@ -202,7 +202,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(() -> regenerateBlockAssemblies(true),
+			blocklyPanel.addChangeListener(_ -> new Thread(() -> regenerateBlockAssemblies(true),
 					"EnchantmentEffectsRegenerate").start());
 		});
 		if (!isEditingMode()) {

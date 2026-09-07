@@ -28,6 +28,7 @@ import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.TestUtil;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -254,6 +255,12 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public final void addCompileNote(BlocklyCompileNote compileNote) {
 		compileNotes.add(compileNote);
+
+		// Compile errors during tests indicate broken block definitions or test XML, so we fail the tests on them
+		if (TestUtil.isTestingEnvironment() && compileNote.type() == BlocklyCompileNote.Type.ERROR) {
+			LOG.info("Blockly compile error in {} ({}): {}", parent != null ? parent.getName() : "unknown element",
+					editorType.registryName(), compileNote.message());
+		}
 	}
 
 	public final void addDependency(Dependency dependency) {
@@ -325,6 +332,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 					} catch (TemplateGeneratorException e) {
 						throw e;
 					} catch (Exception e) {
+						addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.exception_compiling", e.getMessage())));
+
 						// Any other exception that can occur during block generation
 						throw new TemplateGeneratorException(
 								"Uncaught exception while generating block of type: " + type, e);
@@ -366,6 +376,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				} catch (TemplateGeneratorException e) {
 					throw e;
 				} catch (Exception e) {
+					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.exception_compiling", e.getMessage())));
+
 					// Any other exception that can occur during block generation
 					throw new TemplateGeneratorException("Uncaught exception while generating block of type: " + type,
 							e);

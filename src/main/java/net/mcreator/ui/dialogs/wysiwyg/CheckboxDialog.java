@@ -52,7 +52,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 		nameField.setPreferredSize(new Dimension(200, 28));
 		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.checkbox_name_validator"),
 				nameField::getText, () -> editor.getComponentList().stream().map(GUIComponent::getName),
-				new JavaMemberNameValidator(nameField, false));
+				new JavaMemberNameValidator(nameField));
 		validator.setIsPresentOnList(checkbox != null);
 		nameField.setValidator(validator);
 		nameField.enableRealtimeValidation();
@@ -90,8 +90,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 			isCheckedProcedure.setSelectedProcedure(checkbox.isCheckedProcedure);
 		}
 
-		cancel.addActionListener(arg01 -> dispose());
-		ok.addActionListener(arg01 -> {
+		cancel.addActionListener(_ -> dispose());
+		ok.addActionListener(_ -> {
 			if (nameField.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				String checkBoxName = nameField.getText();

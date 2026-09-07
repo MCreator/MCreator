@@ -1947,7 +1947,6 @@ public class TestWorkspaceDataProvider {
 			beentity.followRangeValue = getRandomInt(random, BEEntity.class, "followRangeValue");
 			beentity.isImmuneToFire = _true;
 			beentity.isPushable = _true;
-			beentity.isPushableByPiston = _true;
 			beentity.spawnNaturally = !_true;
 			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
@@ -2338,6 +2337,7 @@ public class TestWorkspaceDataProvider {
 		block.luminance = new NumberProcedure(emptyLists ? null : "number3", 3);
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
+		block.forceRedstoneConductor = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = new MapColor(modElement.getWorkspace(),

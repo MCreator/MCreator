@@ -23,8 +23,12 @@ import net.mcreator.plugin.PluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cef.callback.CefCallback;
+import org.cef.callback.CefResourceReadCallback;
+import org.cef.callback.CefResourceSkipCallback;
 import org.cef.handler.CefResourceHandler;
+import org.cef.misc.BoolRef;
 import org.cef.misc.IntRef;
+import org.cef.misc.LongRef;
 import org.cef.misc.StringRef;
 import org.cef.network.CefRequest;
 import org.cef.network.CefResponse;
@@ -43,11 +47,17 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 	private InputStream inputStream;
 	private String contentType;
 
+	private volatile boolean cancelled = false;
+
 	public MCreatorSchemeHandler(List<RequestHandler> customRequestHandlers) {
 		requestHandlers = Objects.requireNonNullElseGet(customRequestHandlers, List::of);
 	}
 
 	@Override public boolean processRequest(CefRequest request, CefCallback callback) {
+		return open(request, new BoolRef(), callback);
+	}
+
+	@Override public boolean open(CefRequest request, BoolRef handleRequest, CefCallback callback) {
 		String path = request.getURL().replaceFirst("^http://mcreator/", "/");
 
 		// Give registered request handlers a chance to rewrite the request path
@@ -97,6 +107,13 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 	}
 
 	@Override public boolean readResponse(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefCallback callback) {
+		return read(dataOut, bytesToRead, bytesRead, null);
+	}
+
+	@Override public boolean read(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefResourceReadCallback callback) {
+		if (cancelled)
+			return false;
+
 		try {
 			int n = inputStream.read(dataOut, 0, bytesToRead);
 			if (n == -1) {
@@ -106,13 +123,33 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 			bytesRead.set(n);
 			return true;
 		} catch (IOException e) {
-			LOG.warn("Error reading resource: {}", e.getMessage());
+			if (!cancelled)
+				LOG.warn("Error reading resource: {}", e.getMessage());
 			closeStream();
 			return false;
 		}
 	}
 
+	@Override public boolean skip(long bytesToSkip, LongRef bytesSkipped, CefResourceSkipCallback callback) {
+		if (cancelled) {
+			bytesSkipped.set(-2);
+			return false;
+		}
+
+		try {
+			inputStream.skipNBytes(bytesToSkip);
+			bytesSkipped.set(bytesToSkip);
+			return true;
+		} catch (IOException e) {
+			if (!cancelled)
+				LOG.warn("Error skipping resource: {}", e.getMessage());
+			bytesSkipped.set(-2);
+			return false;
+		}
+	}
+
 	@Override public void cancel() {
+		cancelled = true;
 		closeStream();
 	}
 

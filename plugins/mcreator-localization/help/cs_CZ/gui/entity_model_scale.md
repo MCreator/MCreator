@@ -1,0 +1,1 @@
+Určuje velikost zobrazeného modelu entity.
