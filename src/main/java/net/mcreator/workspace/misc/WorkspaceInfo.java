@@ -292,6 +292,14 @@ import java.util.*;
 		return new MItemBlock(workspace, itemBlock);
 	}
 
+	/**
+	 * @param resourceLocation Resource location that may use the "mod:" namespace alias
+	 * @return Resource location with the "mod:" namespace alias replaced by the actual mod ID
+	 */
+	public String resolveModNamespace(String resourceLocation) {
+		return NameMapper.resolveModNamespace(resourceLocation, workspace);
+	}
+
 	public Workspace getWorkspace() {
 		return workspace;
 	}
