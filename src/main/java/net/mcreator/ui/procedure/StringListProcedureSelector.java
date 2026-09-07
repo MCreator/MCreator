@@ -81,17 +81,19 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 		}
 	}
 
-	@Override protected JStringListField fixedValueComponent() {
+	@Override @Nullable protected JStringListField fixedValueComponent() {
 		return (JStringListField) super.fixedValueComponent();
 	}
 
 	@Override public List<String> getFixedValue() {
-		return fixedValueComponent() != null ? fixedValueComponent().getTextList() : List.of();
+		JStringListField fixedValueComponent =  fixedValueComponent();
+		return fixedValueComponent != null ? fixedValueComponent.getTextList() : List.of();
 	}
 
 	@Override public void setFixedValue(List<String> value) {
-		if (fixedValueComponent() != null && value != null)
-			fixedValueComponent().setTextList(value);
+		JStringListField fixedValueComponent =  fixedValueComponent();
+		if (fixedValueComponent != null && value != null)
+			fixedValueComponent.setTextList(value);
 	}
 
 }

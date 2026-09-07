@@ -115,10 +115,11 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 
 	@Override public String getFixedValue() {
 		String value = "";
+		JComponent fixedValueComponent =  fixedValueComponent();
 
-		if (fixedValueComponent() instanceof JTextComponent textComponent) {
+		if (fixedValueComponent instanceof JTextComponent textComponent) {
 			value = textComponent.getText();
-		} else if (fixedValueComponent() instanceof JComboBox<?> comboBox) {
+		} else if (fixedValueComponent instanceof JComboBox<?> comboBox) {
 			value = comboBox.getEditor().getItem().toString();
 		}
 
@@ -126,9 +127,10 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 	}
 
 	@Override public void setFixedValue(String value) {
-		if (fixedValueComponent() instanceof JTextComponent textComponent) {
+		JComponent fixedValueComponent =  fixedValueComponent();
+		if (fixedValueComponent instanceof JTextComponent textComponent) {
 			textComponent.setText(value);
-		} else if (fixedValueComponent() instanceof JComboBox<?> comboBox) {
+		} else if (fixedValueComponent instanceof JComboBox<?> comboBox) {
 			comboBox.getEditor().setItem(value);
 		}
 	}

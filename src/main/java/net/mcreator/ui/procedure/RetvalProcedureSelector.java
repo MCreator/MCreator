@@ -237,7 +237,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 	@Override public abstract void setSelectedProcedure(Procedure procedure);
 
-	protected JComponent fixedValueComponent() {
+	@Nullable protected JComponent fixedValueComponent() {
 		return fixedValue;
 	}
 

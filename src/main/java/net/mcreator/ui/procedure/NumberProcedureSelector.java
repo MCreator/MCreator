@@ -71,15 +71,16 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 		}
 	}
 
-	@Override protected JSpinner fixedValueComponent() {
+	@Override @Nullable protected JSpinner fixedValueComponent() {
 		return (JSpinner) super.fixedValueComponent();
 	}
 
 	@Override public Double getFixedValue() {
 		Double value = (double) 0;
+		JSpinner fixedValueComponent =  fixedValueComponent();
 
-		if (fixedValueComponent() != null) {
-			Object rawValue = fixedValueComponent().getValue();
+		if (fixedValueComponent != null) {
+			Object rawValue = fixedValueComponent.getValue();
 			if (rawValue instanceof Double)
 				value = (Double) rawValue;
 			else if (rawValue instanceof Float)
@@ -96,8 +97,9 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 	}
 
 	@Override public void setFixedValue(Double value) {
-		if (fixedValueComponent() != null && value != null)
-			fixedValueComponent().setValue(value);
+		JSpinner fixedValueComponent =  fixedValueComponent();
+		if (fixedValueComponent != null && value != null)
+			fixedValueComponent.setValue(value);
 	}
 
 }

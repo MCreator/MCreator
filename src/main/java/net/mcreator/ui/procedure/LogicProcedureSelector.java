@@ -71,18 +71,20 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 		}
 	}
 
-	@Override protected JCheckBox fixedValueComponent() {
+	@Override @Nullable protected JCheckBox fixedValueComponent() {
 		return (JCheckBox) super.fixedValueComponent();
 	}
 
 	@Override public Boolean getFixedValue() {
-		if (fixedValueComponent() != null)
-			return fixedValueComponent().isSelected();
+		JCheckBox fixedValueComponent =  fixedValueComponent();
+		if (fixedValueComponent != null)
+			return fixedValueComponent.isSelected();
 		return false;
 	}
 
 	@Override public void setFixedValue(Boolean value) {
-		if (fixedValueComponent() != null && value != null)
-			fixedValueComponent().setSelected(value);
+		JCheckBox fixedValueComponent =  fixedValueComponent();
+		if (fixedValueComponent != null && value != null)
+			fixedValueComponent.setSelected(value);
 	}
 }
