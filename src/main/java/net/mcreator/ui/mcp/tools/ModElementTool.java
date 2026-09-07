@@ -55,6 +55,11 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 
 	private static final Gson gson = McpJson.lenientGson();
 
+	private static final String CODE_LOCKED_ERROR = """
+			Element code is locked, so its code is not generated from the JSON definition and the definition can not \
+			be edited. Use UNLOCK_CODE action first (this regenerates the code and discards manual code \
+			edits), or edit the element source files directly.""";
+
 	public static class Args {
 		public Action actionType;
 		public String elementName;
@@ -66,7 +71,7 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 		@Nullable public Map<String, Object> elementJSONDefinition;
 
 		public enum Action {
-			READ, ADD, REPLACE, PATCH, REMOVE
+			READ, ADD, REPLACE, PATCH, REMOVE, LOCK_CODE, UNLOCK_CODE
 		}
 	}
 
@@ -81,10 +86,14 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 	@Override public String getDescription() {
 		return """
 				A tool to read mod element (JSON definition and mod element metadata), replace, patch, or add mod elements to the workspace.\
-				Type and JSON used only for adding. Names of mod elements are always CamelCaseNames\
+				Type and JSON used only for adding. Names of mod elements are always CamelCaseName.\
 				REPLACE action edits element by swapping whole JSON definition.\
 				REPLACE and ADD action require full element JSON definition, not just changes.\
-				Patch action merges elementJSONDefinition into the current definition (partial JSON, null removes keys).""";
+				PATCH action merges elementJSONDefinition into the current definition (partial JSON, null removes keys).\
+				LOCK_CODE locks the element code so it is no longer regenerated from the JSON definition and can be edited directly in the source files.
+				Use code locking conservatively and only when no other options to achieve the goal remain.\
+				UNLOCK_CODE unlocks the code and regenerates it from the JSON definition, discarding manual code edits.\
+				REPLACE and PATCH are rejected while the element code is locked.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
@@ -106,12 +115,22 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			Map<String, Object> response = new HashMap<>();
 			response.put("_metadata", modElement);
 			response.put("elementJSONDefinition", definition);
+			response.put("codeLocked", modElement.isCodeLocked());
+			if (modElement.isCodeLocked()) {
+				response.put("codeLockedNote",
+						"Element code is locked: the code is not generated from the JSON definition, so actual code in "
+								+ "source files may not be in sync with the returned JSON definition. Use "
+								+ "UNLOCK_CODE action to regenerate code from the JSON definition.");
+			}
 			return CompletableFuture.completedFuture(ToolResult.object(response));
 		} else if (input.actionType == Args.Action.REPLACE) {
 			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(
 						ToolResult.error("Element not found. Names usually CamelCase"));
+			}
+			if (modElement.isCodeLocked()) {
+				return completedError(CODE_LOCKED_ERROR);
 			}
 			String suggestedJSON = gson.toJson(input.elementJSONDefinition);
 			GeneratableElement original = modElement.getGeneratableElement();
@@ -140,6 +159,9 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			if (modElement == null) {
 				return CompletableFuture.completedFuture(
 						ToolResult.error("Element not found. Names usually CamelCase"));
+			}
+			if (modElement.isCodeLocked()) {
+				return completedError(CODE_LOCKED_ERROR);
 			}
 			if (input.elementJSONDefinition == null || input.elementJSONDefinition.isEmpty()) {
 				return CompletableFuture.completedFuture(
@@ -222,6 +244,49 @@ public class ModElementTool extends MCreatorMcpTool<ModElementTool.Args> {
 			mcreator.getWorkspace().removeModElement(modElement);
 			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
 			return CompletableFuture.completedFuture(ToolResult.text("Element removed"));
+		} else if (input.actionType == Args.Action.LOCK_CODE) {
+			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
+			if (modElement == null) {
+				return completedError("Element not found. Names usually CamelCase");
+			}
+			if (modElement.getType() == ModElementType.CODE) {
+				return completedError("Code mod elements are always locked and can not be locked or unlocked");
+			}
+			if (modElement.isCodeLocked()) {
+				return completedText("Element code is already locked");
+			}
+			modElement.setCodeLock(true);
+			mcreator.getWorkspace().markDirty();
+			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
+			return completedText("Element code locked. Code is no longer generated from the JSON definition and can "
+					+ "be edited directly in the element source files.");
+		} else if (input.actionType == Args.Action.UNLOCK_CODE) {
+			ModElement modElement = mcreator.getWorkspace().getModElementByName(input.elementName);
+			if (modElement == null) {
+				return completedError("Element not found. Names usually CamelCase");
+			}
+			if (modElement.getType() == ModElementType.CODE) {
+				return completedError("Code mod elements are always locked and can not be locked or unlocked");
+			}
+			if (!modElement.isCodeLocked()) {
+				return completedText("Element code is not locked");
+			}
+			modElement.setCodeLock(false);
+			mcreator.getWorkspace().markDirty();
+			try {
+				GeneratableElement generatableElement = modElement.getGeneratableElement();
+				if (generatableElement != null) {
+					mcreator.getGenerator().generateElement(generatableElement, true);
+				}
+			} catch (Exception e) {
+				modElement.setCodeLock(true);
+				ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
+				return completedError(
+						"Failed to regenerate element code: " + e.getMessage() + ". Element code was left locked.", e);
+			}
+			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
+			return completedText(
+					"Element code unlocked and regenerated from the JSON definition. Manual code edits were discarded.");
 		} else {
 			return CompletableFuture.completedFuture(ToolResult.error("Invalid action type"));
 		}
