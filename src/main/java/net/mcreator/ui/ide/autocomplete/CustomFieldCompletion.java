@@ -97,8 +97,7 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 		g.drawString(toString(), x, y);
 		if (isDeprecated) {
 			FontMetrics fm = g.getFontMetrics();
-			String nameStr = getName();
-			int nameWidth = fm.stringWidth(nameStr);
+			int nameWidth = fm.stringWidth(name);
 			int lineY = y + fm.getDescent() - fm.getHeight() / 2;
 			g.drawLine(x, lineY, x + nameWidth - 1, lineY);
 		}
