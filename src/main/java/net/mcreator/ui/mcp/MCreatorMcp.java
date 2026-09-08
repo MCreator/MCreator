@@ -54,6 +54,7 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 		server.registerTool(new TagTool(currentMCreator));
 		server.registerTool(new ReadClassSourceTool(currentMCreator));
 		server.registerTool(new ProjectFilesTool(currentMCreator));
+		server.registerTool(new ProjectFileEditTool(currentMCreator));
 		server.registerTool(new BlocklyBlocksTool(currentMCreator));
 		server.registerTool(new BlocklyTriggersTool(currentMCreator));
 		server.registerTool(new BlocklyTemplatesTool(currentMCreator));

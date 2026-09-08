@@ -19,11 +19,11 @@
 
 package net.mcreator.ui.mcp.tools;
 
-import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
+import net.mcreator.ui.mcp.tools.utils.ProjectFileUtils;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -59,7 +59,8 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 		return """
 				Searches or reads project files inside the source root of the workspace.\
 				 SEARCH recursively lists workspace-relative file paths matching the case-insensitive query substring.\
-				 READ returns the contents of a text file given its workspace-relative path as returned by SEARCH.""";
+				 READ returns the contents of a text file given its workspace-relative path as returned by SEARCH.\
+				 Use project_file_edit tool to create, edit, or delete project files.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
@@ -71,13 +72,11 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 			return completedError("actionType is required");
 		}
 
-		Path workspaceRoot = mcreator.getWorkspace().getWorkspaceFolder().getCanonicalFile().toPath();
-		File commonRoot = GeneratorUtils.getCommonRoot(mcreator.getWorkspace(),
-				mcreator.getGenerator().getGeneratorConfiguration());
-		if (commonRoot == null || !commonRoot.isDirectory()) {
+		Path workspaceRoot = ProjectFileUtils.getWorkspaceRoot(mcreator);
+		Path root = ProjectFileUtils.getCommonRoot(mcreator);
+		if (root == null) {
 			return completedError("Workspace has no source root");
 		}
-		Path root = commonRoot.getCanonicalFile().toPath();
 
 		return switch (input.actionType) {
 			case SEARCH -> search(workspaceRoot, root, input.query);
@@ -93,7 +92,7 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 		String filter = query.trim().toLowerCase(Locale.ROOT);
 		Set<String> paths = new TreeSet<>();
 		for (File file : FileIO.listFilesRecursively(root.toFile())) {
-			String relativePath = workspaceRoot.relativize(file.toPath()).toString().replace(File.separator, "/");
+			String relativePath = ProjectFileUtils.getPathInWorkspace(workspaceRoot, file);
 			if (relativePath.toLowerCase(Locale.ROOT).contains(filter)) {
 				paths.add(relativePath);
 			}
@@ -107,8 +106,8 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 			return completedError("path is required for READ");
 		}
 
-		File file = workspaceRoot.resolve(path.trim()).toFile().getCanonicalFile();
-		if (!file.toPath().startsWith(root)) {
+		File file = ProjectFileUtils.resolveFile(workspaceRoot, root, path);
+		if (file == null) {
 			return completedError("Path is outside of the source root: " + path);
 		}
 		if (!file.isFile()) {
