@@ -376,7 +376,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			} catch (Throwable e) {
 				LOG.error("Failed to uninstall default RSTA completions", e);
 			}
-      
+
 			this.parser = jls.getParser(te);
 			if (this.parser == null) {
 				this.parser = new JavaParser(te);
@@ -412,41 +412,14 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			te.addKeyListener(new KeyAdapter() {
 
-				private volatile boolean completionInAction = false;
-
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
 					if (keyEvent.getKeyCode() == KeyEvent.VK_ESCAPE) {
-						jcp.cancelPendingCompletion();
+						if (jcp != null)
+							jcp.cancelPendingCompletion();
 					} else if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
-					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
-							&& !completionInAction && ac.isAutoActivationEnabled() &&
-							// only smart autocomplete if the char we typed is a letter or digit
-							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
-							// if the popup is already visible, the library refreshes it on caret updates
-							ac != null && !ac.isPopupVisible() &&
-							// only smart autocomplete if we have at least one char already written
-							!jcp.getAlreadyEnteredText(te).isBlank()
-							// only smart autocomplete if we have more than one completion to choose from
-							// (so it is not applied automatically when we don't want to)
-							&& jcp.getCompletions(te).size() > 1) {
-						if (!completionInAction) {
-							new Thread(() -> {
-								if (ac != null) {
-									completionInAction = true;
-									ThreadUtil.runOnSwingThreadAndWait(() -> {
-										try {
-											ac.doCompletion();
-										} catch (Throwable e) {
-											LOG.error("Failed to show autocomplete completion", e);
-										}
-									});
-									completionInAction = false;
-								}
-							}, "AutoComplete").start();
-						}
 					}
 				}
 
