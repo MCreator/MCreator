@@ -27,7 +27,7 @@ import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-import javax.swing.Icon;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import java.util.Iterator;

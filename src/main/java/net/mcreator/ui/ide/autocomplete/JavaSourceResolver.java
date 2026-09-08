@@ -39,15 +39,12 @@ public class JavaSourceResolver {
 	@Nullable private final Workspace workspace;
 
 	// Maps source code hashCode -> map of simple class names to FQDNs parsed from imports
-	@SuppressWarnings("NullableProblems")
 	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
 
 	// Maps source code hashCode -> map of method signatures to Javadoc documentation
-	@SuppressWarnings("NullableProblems")
 	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	// Maps class FQDN -> loaded Java source code string
-	@SuppressWarnings("NullableProblems")
 	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
 	public JavaSourceResolver(@Nullable Workspace workspace) {
