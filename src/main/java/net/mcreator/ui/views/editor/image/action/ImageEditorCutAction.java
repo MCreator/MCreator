@@ -27,7 +27,7 @@ import javax.swing.*;
 
 public class ImageEditorCutAction extends BasicAction {
 	public ImageEditorCutAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.image_editor.cut"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.image_editor.cut"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getClipboardManager().cut();

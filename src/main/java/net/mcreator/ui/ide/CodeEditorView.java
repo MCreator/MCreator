@@ -94,7 +94,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private final JScrollPane treeSP = new JScrollPane();
 	private AbstractSourceTree tree;
-	public ChangeListener changeListener;
+	private ChangeListener changeListener;
 
 	private final RTextScrollPane sp;
 
@@ -109,7 +109,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	public File fileWorkingOn;
 
-	public boolean changed = false;
+	private boolean changed = false;
 
 	private AutoCompletion ac = null;
 
@@ -634,6 +634,29 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		}
 	}
 
+	/**
+	 * Replaces the editor contents with the current contents of the file on disk, keeps the caret line where
+	 * possible and marks the editor as unchanged. Does nothing if the file does not exist.
+	 */
+	public void reloadCode() {
+		if (fileWorkingOn == null || !fileWorkingOn.isFile())
+			return;
+
+		int line = te.getCaretLineNumber();
+		te.setText(FileIO.readFileToString(fileWorkingOn));
+		try {
+			line = Math.min(line, te.getLineCount() - 1);
+			if (line >= 0) {
+				te.setCaretPosition(te.getLineStartOffset(line));
+				centerLineInScrollPane();
+			}
+		} catch (BadLocationException ignored) {
+		}
+		changed = false;
+		if (changeListener != null)
+			changeListener.stateChanged(new ChangeEvent(this));
+	}
+
 	public void centerLineInScrollPane() {
 		Container container = SwingUtilities.getAncestorOfClass(JViewport.class, te);
 
@@ -729,6 +752,10 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	public static boolean isFileSupported(String fileName) {
 		return SUPPORTED_FILE_EXTENSIONS.contains(FilenameUtilsPatched.getExtension(fileName).toLowerCase());
+	}
+
+	public boolean wasChanged() {
+		return changed;
 	}
 
 	public void jumpToLine(int linenum) {

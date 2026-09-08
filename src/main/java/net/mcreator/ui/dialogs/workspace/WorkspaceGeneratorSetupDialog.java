@@ -55,18 +55,6 @@ public class WorkspaceGeneratorSetupDialog {
 
 			m.getGradleConsole().setGradleSetupTaskRunningFlag(true);
 
-			ProgressDialog.ProgressUnit p20 = new ProgressDialog.ProgressUnit(
-					L10N.t("dialog.setup_workspace.step.gradle_daemons"));
-			dial.addProgressUnit(p20);
-
-			try {
-				GradleDaemonUtils.stopAllDaemons(m.getWorkspace());
-				p20.markStateOk();
-			} catch (IOException | InterruptedException e) {
-				LOG.warn("Failed to stop Gradle daemons", e);
-				p20.markStateWarning();
-			}
-
 			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.gradle_project"));
 			dial.addProgressUnit(p2);

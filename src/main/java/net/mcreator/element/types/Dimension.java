@@ -167,9 +167,7 @@ import java.util.List;
 	}
 
 	public boolean hasFixedTimeAndNeedsCustomTimeline() {
-		return hasFixedTime && (useCustomEffects ?
-				"NORMAL".equals(skyType) :
-				"overworld".equals(defaultEffects));
+		return hasFixedTime && (useCustomEffects ? "NORMAL".equals(skyType) : "overworld".equals(defaultEffects));
 	}
 
 	public boolean needsCustomEffectsTimeline() {

@@ -2,7 +2,7 @@
 
 <#function toIdentifier string>
     <#if string?matches('"[^+]*"')>
-        <#return "Identifier.parse(" + string?lower_case + ")">
+        <#return "Identifier.parse(\"" + w.resolveModNamespace(string?lower_case?remove_beginning('"')?remove_ending('"')) + "\")">
     <#else>
         <#return "Identifier.parse((" + string + ").toLowerCase(java.util.Locale.ENGLISH))">
     </#if>

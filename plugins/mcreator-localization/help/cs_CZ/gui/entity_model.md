@@ -1,0 +1,1 @@
+Používá vrácenou hodnotu vybrané procedury k určení modelu, který bude zobrazen. Vrácená hodnota musí být entita.

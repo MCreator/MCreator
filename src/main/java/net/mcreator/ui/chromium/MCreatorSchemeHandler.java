@@ -47,6 +47,8 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 	private InputStream inputStream;
 	private String contentType;
 
+	private volatile boolean cancelled = false;
+
 	public MCreatorSchemeHandler(List<RequestHandler> customRequestHandlers) {
 		requestHandlers = Objects.requireNonNullElseGet(customRequestHandlers, List::of);
 	}
@@ -109,6 +111,9 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 	}
 
 	@Override public boolean read(byte[] dataOut, int bytesToRead, IntRef bytesRead, CefResourceReadCallback callback) {
+		if (cancelled)
+			return false;
+
 		try {
 			int n = inputStream.read(dataOut, 0, bytesToRead);
 			if (n == -1) {
@@ -118,25 +123,33 @@ public class MCreatorSchemeHandler implements CefResourceHandler {
 			bytesRead.set(n);
 			return true;
 		} catch (IOException e) {
-			LOG.warn("Error reading resource: {}", e.getMessage());
+			if (!cancelled)
+				LOG.warn("Error reading resource: {}", e.getMessage());
 			closeStream();
 			return false;
 		}
 	}
 
 	@Override public boolean skip(long bytesToSkip, LongRef bytesSkipped, CefResourceSkipCallback callback) {
+		if (cancelled) {
+			bytesSkipped.set(-2);
+			return false;
+		}
+
 		try {
 			inputStream.skipNBytes(bytesToSkip);
 			bytesSkipped.set(bytesToSkip);
 			return true;
 		} catch (IOException e) {
-			LOG.warn("Error skipping resource: {}", e.getMessage());
+			if (!cancelled)
+				LOG.warn("Error skipping resource: {}", e.getMessage());
 			bytesSkipped.set(-2);
 			return false;
 		}
 	}
 
 	@Override public void cancel() {
+		cancelled = true;
 		closeStream();
 	}
 

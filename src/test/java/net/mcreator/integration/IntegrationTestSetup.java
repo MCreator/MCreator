@@ -79,8 +79,8 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 
 	@Override public void afterEach(@Nonnull ExtensionContext context) {
 		if (failedInOtherThread) {
+			failedInOtherThread = false; // clear flag before failing so only the current test is affected
 			Assertions.fail("Tests failed in another thread, see logs for details");
-			failedInOtherThread = false; // clear flag if we intend to fail more
 		}
 	}
 

@@ -1,0 +1,1 @@
+Pokud je specifikována podmínka, tento entity model bude zobrazen pouze v případě, že tato podmínky projde.

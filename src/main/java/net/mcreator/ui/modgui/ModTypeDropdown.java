@@ -54,7 +54,7 @@ public class ModTypeDropdown extends JPopupMenu {
 			JMenuItem modTypeButton = new JMenuItem(" " + type.getReadableName() + " ");
 
 			modTypeButton.setToolTipText(type.getDescription());
-			modTypeButton.addActionListener(actionEvent -> NewModElementDialog.showNameDialog(mcreator, type));
+			modTypeButton.addActionListener(_ -> NewModElementDialog.showNameDialog(mcreator, type));
 			modTypeButton.setOpaque(false);
 
 			modTypeButton.setBorder(BorderFactory.createEmptyBorder());

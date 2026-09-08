@@ -33,6 +33,11 @@ public class GradleDaemonUtils {
 	private static Process getGradleCompatibleBashProcess(Workspace workspace) throws IOException {
 		ProcessBuilder processBuilder = new ProcessBuilder(OS.getRuntimeProvider());
 		processBuilder.directory(workspace.getWorkspaceFolder());
+
+		// output of the process is never read, so discard it to prevent the process from blocking on a full pipe
+		processBuilder.redirectOutput(ProcessBuilder.Redirect.DISCARD);
+		processBuilder.redirectError(ProcessBuilder.Redirect.DISCARD);
+
 		Map<String, String> environment = processBuilder.environment();
 
 		// avoid global overrides

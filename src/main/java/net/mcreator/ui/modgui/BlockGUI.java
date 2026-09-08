@@ -1424,11 +1424,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page1group.addValidationElement(signEntityTexture);
 		page1group.addValidationElement(signGUITexture);
 
-		itemTexture.setValidator(
-				new ConditionalValidator(() -> {
-					Model model = renderType.getSelectedItem();
-					return (model != null && model.getType() == Model.Type.JAVA) || isAnySign();
-				}, new NonEmptyValidator(itemTexture, L10N.t("elementgui.block.error_block_needs_item_texture"))));
+		itemTexture.setValidator(new ConditionalValidator(() -> {
+			Model model = renderType.getSelectedItem();
+			return (model != null && model.getType() == Model.Type.JAVA) || isAnySign();
+		}, new NonEmptyValidator(itemTexture, L10N.t("elementgui.block.error_block_needs_item_texture"))));
 
 		signEntityTexture.requireValue("elementgui.block.error_sign_needs_entity_texture", this::isAnySign);
 		signGUITexture.requireValue("elementgui.block.error_sign_needs_gui_texture",

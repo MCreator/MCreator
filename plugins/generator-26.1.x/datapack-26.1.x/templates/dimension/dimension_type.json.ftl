@@ -76,7 +76,7 @@
   "has_ender_dragon_fight": false,
   "coordinate_scale": ${data.coordinateScale},
   "ambient_light": ${data.ambientLight},
-  "infiniburn": "#${data.infiniburnTag}",
+  "infiniburn": "#${w.resolveModNamespace(data.infiniburnTag)}",
   <#if data.hasFixedTimeAndNeedsCustomTimeline()>
     "has_fixed_time": true,
     "timelines": "${modid}:${registryname}_fixed",

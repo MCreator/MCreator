@@ -47,7 +47,7 @@ public class NewClassAction extends BasicAction {
 					L10N.t("workspace_file_browser.new_class.class_name.title"), null,
 					new OptionPaneValidator.Cached() {
 						@Override public Validator createValidator(JComponent component) {
-							return new JavaMemberNameValidator((VTextField) component, true);
+							return new JavaMemberNameValidator((VTextField) component).firstLetterUppercase();
 						}
 					});
 

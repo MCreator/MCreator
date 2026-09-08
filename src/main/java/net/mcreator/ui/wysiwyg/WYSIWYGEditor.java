@@ -274,7 +274,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, null);
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-					         InvocationTargetException ex) {
+							 InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 				});
@@ -465,7 +465,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, component).getEditingComponent();
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-					         InvocationTargetException ex) {
+							 InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 					break;
