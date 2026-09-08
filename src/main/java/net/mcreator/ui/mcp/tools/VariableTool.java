@@ -59,9 +59,11 @@ public class VariableTool extends MCreatorMcpTool<VariableTool.Args> {
 	}
 
 	@Override public String getDescription() {
-		return "Adds or removes a workspace variable. Use list query_workspace MOD_VARIABLES to see existing variables. When adding, fill out all fields."
-				+ " initialValue must be true or false for logic variables, a number for number variables, and a direction name for direction variables;"
-				+ " other variable types except string do not support custom initial values, so omit initialValue for them to use the default value.";
+		return """
+				Adds or removes a workspace variable. Use list query_workspace MOD_VARIABLES to see existing variables. When adding, fill out all fields.\
+				initialValue must be true or false for logic variables, a number for number variables, and a direction name for direction variables;\
+				other variable types except string do not support custom initial values, so omit initialValue for them to use the default value.\
+				Local variables in procedures and scripts are defined in Blockly XML (local:<name>) in <variables> header, not here.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
