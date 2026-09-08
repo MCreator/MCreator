@@ -79,12 +79,7 @@ public class CurrentTabTool extends MCreatorMcpTool<Void> {
 				response.put("tabType", "code_editor");
 				Map<String, Object> fileInfo = new HashMap<>();
 				fileInfo.put("fileName", codeEditorView.fileWorkingOn.getName());
-				try {
-					fileInfo.put("pathInWorkspace",
-							mcreator.getFolderManager().getPathInWorkspace(codeEditorView.fileWorkingOn));
-				} catch (Exception e) {
-					fileInfo.put("pathInWorkspace", codeEditorView.fileWorkingOn.getPath());
-				}
+				fileInfo.put("pathInWorkspace", getPathInWorkspace(mcreator, codeEditorView.fileWorkingOn));
 				fileInfo.put("unsavedChanges", codeEditorView.wasChanged());
 				response.put("file", fileInfo);
 			} else if (currentTab.getContent() instanceof ImageMakerView imageMakerView) {
@@ -104,11 +99,7 @@ public class CurrentTabTool extends MCreatorMcpTool<Void> {
 		File imageFile = imageMakerView.getImageFile();
 		if (imageFile != null) {
 			textureInfo.put("fileName", imageFile.getName());
-			try {
-				textureInfo.put("pathInWorkspace", mcreator.getFolderManager().getPathInWorkspace(imageFile));
-			} catch (Exception e) {
-				textureInfo.put("pathInWorkspace", imageFile.getPath());
-			}
+			textureInfo.put("pathInWorkspace", getPathInWorkspace(mcreator, imageFile));
 			String textureType = resolveTextureType(mcreator, imageFile);
 			if (textureType != null) {
 				textureInfo.put("textureType", textureType);
@@ -117,6 +108,16 @@ public class CurrentTabTool extends MCreatorMcpTool<Void> {
 			textureInfo.put("name", imageMakerView.getViewName());
 		}
 		return textureInfo;
+	}
+
+	private static String getPathInWorkspace(MCreator mcreator, File file) {
+		String path;
+		try {
+			path = mcreator.getFolderManager().getPathInWorkspace(file);
+		} catch (Exception e) {
+			path = file.getPath();
+		}
+		return path.replace(File.separator, "/");
 	}
 
 	private static String resolveTextureType(MCreator mcreator, File imageFile) {

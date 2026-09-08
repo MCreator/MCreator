@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.ui.MCreator;
@@ -28,7 +29,9 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -54,7 +57,7 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Searches or reads project files inside the source and resource roots of the workspace.\
+				Searches or reads project files inside the source root of the workspace.\
 				 SEARCH recursively lists workspace-relative file paths matching the case-insensitive query substring.\
 				 READ returns the contents of a text file given its workspace-relative path as returned by SEARCH.""";
 	}
@@ -69,50 +72,44 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 		}
 
 		Path workspaceRoot = mcreator.getWorkspace().getWorkspaceFolder().getCanonicalFile().toPath();
-		List<Path> roots = new ArrayList<>();
-		for (File root : new File[] { mcreator.getGenerator().getSourceRoot(),
-				mcreator.getGenerator().getResourceRoot() }) {
-			if (root != null && root.isDirectory()) {
-				roots.add(root.getCanonicalFile().toPath());
-			}
+		File commonRoot = GeneratorUtils.getCommonRoot(mcreator.getWorkspace(),
+				mcreator.getGenerator().getGeneratorConfiguration());
+		if (commonRoot == null || !commonRoot.isDirectory()) {
+			return completedError("Workspace has no source root");
 		}
-		if (roots.isEmpty()) {
-			return completedError("Workspace has no source or resource root");
-		}
+		Path root = commonRoot.getCanonicalFile().toPath();
 
 		return switch (input.actionType) {
-			case SEARCH -> search(workspaceRoot, roots, input.query);
-			case READ -> read(workspaceRoot, roots, input.path);
+			case SEARCH -> search(workspaceRoot, root, input.query);
+			case READ -> read(workspaceRoot, root, input.path);
 		};
 	}
 
-	private static CompletableFuture<ToolResult> search(Path workspaceRoot, List<Path> roots, @Nullable String query) {
+	private static CompletableFuture<ToolResult> search(Path workspaceRoot, Path root, @Nullable String query) {
 		if (query == null || query.isBlank()) {
 			return completedError("query is required for SEARCH");
 		}
 
 		String filter = query.trim().toLowerCase(Locale.ROOT);
 		Set<String> paths = new TreeSet<>();
-		for (Path root : roots) {
-			for (File file : FileIO.listFilesRecursively(root.toFile())) {
-				String relativePath = workspaceRoot.relativize(file.toPath()).toString().replace(File.separator, "/");
-				if (relativePath.toLowerCase(Locale.ROOT).contains(filter)) {
-					paths.add(relativePath);
-				}
+		for (File file : FileIO.listFilesRecursively(root.toFile())) {
+			String relativePath = workspaceRoot.relativize(file.toPath()).toString().replace(File.separator, "/");
+			if (relativePath.toLowerCase(Locale.ROOT).contains(filter)) {
+				paths.add(relativePath);
 			}
 		}
 		return completed(ToolResult.collection(paths));
 	}
 
-	private static CompletableFuture<ToolResult> read(Path workspaceRoot, List<Path> roots, @Nullable String path)
+	private static CompletableFuture<ToolResult> read(Path workspaceRoot, Path root, @Nullable String path)
 			throws IOException {
 		if (path == null || path.isBlank()) {
 			return completedError("path is required for READ");
 		}
 
 		File file = workspaceRoot.resolve(path.trim()).toFile().getCanonicalFile();
-		if (roots.stream().noneMatch(root -> file.toPath().startsWith(root))) {
-			return completedError("Path is outside of the source and resource roots: " + path);
+		if (!file.toPath().startsWith(root)) {
+			return completedError("Path is outside of the source root: " + path);
 		}
 		if (!file.isFile()) {
 			return completedError("File not found: " + path);
