@@ -69,9 +69,10 @@ public class NotificationsRenderer {
 					actionButtonsPanel.add(new JEmptyBox(5, 5));
 
 				JButton button = new JButton(actionButton.text);
-				button.setMargin(new Insets(0, 5, 0, 5));
+				button.setBackground(Theme.current().getBackgroundColor());
+				button.setBorder(BorderFactory.createEmptyBorder(1, 5, 1, 5));
 				if (actionButton.closePopup())
-					button.addActionListener(e -> closeButton.doClick());
+					button.addActionListener(_ -> closeButton.doClick());
 				button.addActionListener(actionButton.action);
 				actionButtonsPanel.add(button);
 			}
@@ -102,7 +103,7 @@ public class NotificationsRenderer {
 		if (!tips.isEmpty()) {
 			BalloonTip previous = tips.getLast();
 			previous.setVisible(false);
-			closeButton.addActionListener(e -> {
+			closeButton.addActionListener(_ -> {
 				previous.setVisible(true);
 				tips.remove(balloonTip);
 			});
