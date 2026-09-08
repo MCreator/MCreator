@@ -20,6 +20,9 @@
 package net.mcreator.ui.notifications;
 
 import net.mcreator.Launcher;
+import net.mcreator.io.OS;
+import net.mcreator.io.UserFolderManager;
+import net.mcreator.io.WindowsDefenderUtil;
 import net.mcreator.io.net.api.update.UpdateInfo;
 import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
@@ -33,10 +36,13 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
+import net.mcreator.workspace.WorkspaceFolderManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class StartupNotifications {
@@ -52,10 +58,49 @@ public class StartupNotifications {
 
 				// dialog if enabled, otherwise last in chain so this notification is on the top
 				handleUpdatesCore(parent);
+
+				// check for defender exclusions
+				handleWindowsDefender(parent);
 			});
 
 			notificationsHandled = true;
 		}
+	}
+
+	private static <T extends Window & INotificationConsumer> void handleWindowsDefender(T parent) {
+		if (OS.getOS() != OS.WINDOWS || !PreferencesManager.PREFERENCES.hidden.defenderExclusions.get().isEmpty())
+			return;
+
+		new Thread(() -> {
+			if (!WindowsDefenderUtil.isRealTimeProtectionEnabled())
+				return;
+
+			ThreadUtil.runOnSwingThread(() -> parent.addNotification(UIRES.get("18px.warning"),
+					L10N.t("notification.defender_exclusions.msg"),
+					new NotificationsRenderer.ActionButton(L10N.t("notification.defender_exclusions.add"), _ -> {
+						List<File> folders = List.of(UserFolderManager.getFileFromUserFolder("/"),
+								WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot());
+
+						new Thread(() -> {
+							WindowsDefenderUtil.ExclusionResult result = WindowsDefenderUtil.addFolderExclusions(
+									folders);
+							switch (result) {
+							case ADDED -> PreferencesManager.PREFERENCES.hidden.defenderExclusions.set("added");
+							case FAILED -> { // remember the failure so the user is not asked again, warning explains manual steps
+								PreferencesManager.PREFERENCES.hidden.defenderExclusions.set("failed");
+								ThreadUtil.runOnSwingThread(() -> JOptionPane.showMessageDialog(parent,
+										L10N.t("notification.defender_exclusions.failed",
+												folders.stream().map(File::getAbsolutePath)
+														.collect(Collectors.joining("<br>"))),
+										L10N.t("notification.defender_exclusions.title"), JOptionPane.WARNING_MESSAGE));
+							}
+							case DECLINED -> { // user will be asked again on the next launch
+							}
+							}
+						}, "WindowsDefenderExclusions").start();
+					}), new NotificationsRenderer.ActionButton(L10N.t("notification.defender_exclusions.skip"),
+							_ -> PreferencesManager.PREFERENCES.hidden.defenderExclusions.set("skipped"))));
+		}, "WindowsDefenderCheck").start();
 	}
 
 	private static <T extends Window & INotificationConsumer> void handleUpdatesCore(T parent) {
