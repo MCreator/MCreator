@@ -103,7 +103,7 @@ public class JavaMemberResolver {
 			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
 			if (source instanceof JavaClassSource javaClass) {
 				String parentName = javaClass.getSuperType();
-				if (parentName != null && !parentName.isEmpty() && !parentName.equals("java.lang.Object")) {
+				if (parentName != null && !parentName.isEmpty()) {
 					String parentFQDN = typeResolver.resolveSimpleTypeName(parentName, imports, pkg);
 					if (parentFQDN != null) {
 						populateMembersOfFQDN(parentFQDN, null, null, result, added, visited, false);
@@ -150,7 +150,7 @@ public class JavaMemberResolver {
 		}
 
 		// Fallback to source code parsing when no ClassFile is available
-		String srcCode = (currentClassFQDN != null && fqdn.equals(currentClassFQDN) && currentCode != null) ?
+		String srcCode = (fqdn.equals(currentClassFQDN) && currentCode != null) ?
 				currentCode :
 				(workspace != null ? sourceResolver.loadSourceCodeForFQDN(fqdn) : null);
 		if (srcCode != null) {
@@ -240,7 +240,7 @@ public class JavaMemberResolver {
 			}
 		} else {
 			String superClassName = cf.getSuperClassName(true);
-			if (superClassName != null && !superClassName.isEmpty() && !superClassName.equals("java.lang.Object")) {
+			if (superClassName != null && !superClassName.isEmpty()) {
 				populateMembersOfFQDN(superClassName, null, null, result, added, visited, false);
 			}
 			for (int j = 0; j < cf.getImplementedInterfaceCount(); j++) {
