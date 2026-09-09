@@ -305,7 +305,7 @@ public class JavaTypeResolver {
 		return null;
 	}
 
-	private static List<String> parseGenericArgs(String typeWithGenerics) {
+	private List<String> parseGenericArgs(String typeWithGenerics) {
 		if (typeWithGenerics == null || !typeWithGenerics.contains("<") || !typeWithGenerics.endsWith(">"))
 			return Collections.emptyList();
 		String gen = typeWithGenerics.substring(typeWithGenerics.indexOf('<') + 1, typeWithGenerics.length() - 1);
