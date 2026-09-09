@@ -201,6 +201,10 @@ public class JavaTypeResolver {
 		if (typeName == null)
 			return null;
 
+		if (typeName.contains("<")) {
+			typeName = typeName.substring(0, typeName.indexOf('<')).trim();
+		}
+
 		if (imports != null && imports.containsKey(typeName)) {
 			return imports.get(typeName);
 		}
@@ -301,6 +305,39 @@ public class JavaTypeResolver {
 		return null;
 	}
 
+	private static List<String> parseGenericArgs(String typeWithGenerics) {
+		if (typeWithGenerics == null || !typeWithGenerics.contains("<") || !typeWithGenerics.endsWith(">"))
+			return Collections.emptyList();
+		String gen = typeWithGenerics.substring(typeWithGenerics.indexOf('<') + 1, typeWithGenerics.length() - 1);
+		if (gen.isEmpty())
+			return Collections.emptyList();
+		return Arrays.stream(gen.split(","))
+				.map(String::trim)
+				.filter(s -> !s.isEmpty())
+				.toList();
+	}
+
+	@Nullable private JavaType<?> parseSourceType(String fqdn, @Nullable String currentClassFQDN,
+			@Nullable String currentCode) {
+		if (fqdn == null || fqdn.isEmpty())
+			return null;
+		String src = (fqdn.equals(currentClassFQDN) && currentCode != null) ?
+				currentCode :
+				sourceResolver.loadSourceCodeForFQDN(fqdn);
+		if (src == null)
+			return null;
+		try {
+			JavaType<?> type = Roaster.parse(src);
+			if (fqdn.contains(".")) {
+				String declaringClass = fqdn.substring(fqdn.lastIndexOf('.') + 1);
+				type = JavaSourceResolver.findType(type, declaringClass);
+			}
+			return type;
+		} catch (Throwable e) {
+			LOG.debug("Failed to parse source for {}", fqdn, e);
+		}
+		return null;
+	}
 
 	private List<String> getTypeParameters(String fqdn, @Nullable String currentClassFQDN,
 			@Nullable String currentCode) {
@@ -310,24 +347,11 @@ public class JavaTypeResolver {
 		ClassFile cf = jarManager != null ? memberResolver.getClassFile(jarManager, fqdn) : null;
 		if (cf != null && cf.getParamTypes() != null)
 			return cf.getParamTypes();
-		String src = (currentClassFQDN != null && fqdn.equals(currentClassFQDN) && currentCode != null) ?
-				currentCode :
-				sourceResolver.loadSourceCodeForFQDN(fqdn);
-		if (src != null) {
-			try {
-				JavaType<?> type = Roaster.parse(src);
-				if (fqdn.contains(".")) {
-					String declaringClass = fqdn.substring(fqdn.lastIndexOf('.') + 1);
-					type = JavaSourceResolver.findType(type, declaringClass);
-				}
-				if (type instanceof JavaClassSource javaClass) {
-					return javaClass.getTypeVariables().stream().map(Named::getName).toList();
-				} else if (type instanceof JavaInterfaceSource javaInterface) {
-					return javaInterface.getTypeVariables().stream().map(Named::getName).toList();
-				}
-			} catch (Throwable e) {
-				LOG.debug("Failed to parse type parameters for {}", fqdn, e);
-			}
+		JavaType<?> type = parseSourceType(fqdn, currentClassFQDN, currentCode);
+		if (type instanceof JavaClassSource javaClass) {
+			return javaClass.getTypeVariables().stream().map(Named::getName).toList();
+		} else if (type instanceof JavaInterfaceSource javaInterface) {
+			return javaInterface.getTypeVariables().stream().map(Named::getName).toList();
 		}
 		return Collections.emptyList();
 	}
@@ -391,19 +415,18 @@ public class JavaTypeResolver {
 
 		if (base.equals("this") || base.equals("super")) {
 			currentFQDN = currentClassFQDN;
-			if (base.equals("super") && currentFQDN != null) {
-				try {
-					JavaType<?> source = Roaster.parse(code);
-					if (source instanceof JavaClassSource javaClass) {
-						String parentName = javaClass.getSuperType();
-						if (parentName != null && !parentName.isEmpty()) {
-							currentFQDN = resolveSimpleTypeName(parentName, imports, currentPkg);
-						} else {
-							currentFQDN = "java.lang.Object";
-						}
+			if (currentFQDN != null) {
+				String parentName = parseSourceType(currentFQDN, currentClassFQDN, code)
+						instanceof JavaClassSource jcs ? jcs.getSuperType() : null;
+				if (parentName != null && !parentName.isEmpty()) {
+					List<String> genArgs = parseGenericArgs(parentName);
+					if (!genArgs.isEmpty()) {
+						currentGenericArgs = genArgs;
 					}
-				} catch (Throwable e) {
-					LOG.debug("Failed to resolve superclass for super keyword", e);
+					if (base.equals("super")) {
+						currentFQDN = resolveSimpleTypeName(parentName, imports, currentPkg);
+					}
+				} else if (base.equals("super")) {
 					currentFQDN = "java.lang.Object";
 				}
 			}
@@ -427,14 +450,10 @@ public class JavaTypeResolver {
 			}
 
 			if (typeName != null) {
-				if (typeName.contains("<") && typeName.endsWith(">")) {
-					String gen = typeName.substring(typeName.indexOf('<') + 1, typeName.length() - 1);
-					typeName = typeName.substring(0, typeName.indexOf('<')).trim();
-					if (!gen.isEmpty() && currentGenericArgs.isEmpty()) {
-						currentGenericArgs = Arrays.stream(gen.split(","))
-								.map(String::trim)
-								.filter(s -> !s.isEmpty())
-								.toList();
+				if (currentGenericArgs.isEmpty()) {
+					List<String> genArgs = parseGenericArgs(typeName);
+					if (!genArgs.isEmpty()) {
+						currentGenericArgs = genArgs;
 					}
 				}
 				currentFQDN = resolveSimpleTypeName(typeName, imports, currentPkg);
@@ -448,6 +467,18 @@ public class JavaTypeResolver {
 			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, currentClassFQDN, code);
 
 			List<String> typeParams = getTypeParameters(currentFQDN, currentClassFQDN, code);
+			if (currentGenericArgs.isEmpty()) {
+				String superTypeWithGenerics = parseSourceType(currentFQDN, currentClassFQDN, code)
+						instanceof JavaClassSource jcs ? jcs.getSuperType() : null;
+				List<String> superGenArgs = parseGenericArgs(superTypeWithGenerics);
+				if (!superGenArgs.isEmpty()) {
+					currentGenericArgs = superGenArgs;
+					String superFQDN = resolveSimpleTypeName(superTypeWithGenerics, imports, currentPkg);
+					if (superFQDN != null) {
+						typeParams = getTypeParameters(superFQDN, currentClassFQDN, code);
+					}
+				}
+			}
 			int paramIndex = typeParams.indexOf(returnTypeSimple);
 			if (paramIndex >= 0 && paramIndex < currentGenericArgs.size()) {
 				returnTypeSimple = currentGenericArgs.get(paramIndex);
@@ -456,19 +487,8 @@ public class JavaTypeResolver {
 			}
 
 			if (returnTypeSimple != null) {
-				String rawType = returnTypeSimple;
-				currentGenericArgs = Collections.emptyList();
-				if (rawType.contains("<") && rawType.endsWith(">")) {
-					String gen = rawType.substring(rawType.indexOf('<') + 1, rawType.length() - 1);
-					rawType = rawType.substring(0, rawType.indexOf('<')).trim();
-					if (!gen.isEmpty()) {
-						currentGenericArgs = Arrays.stream(gen.split(","))
-								.map(String::trim)
-								.filter(s -> !s.isEmpty())
-								.toList();
-					}
-				}
-				currentFQDN = resolveSimpleTypeName(rawType, imports, currentPkg);
+				currentGenericArgs = parseGenericArgs(returnTypeSimple);
+				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, currentPkg);
 				isStaticContext = false;
 			} else if (getInnerClasses(currentFQDN).contains(member)) {
 				currentFQDN += "." + member;
