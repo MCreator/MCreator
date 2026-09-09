@@ -23,6 +23,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.MCreatorClosedEvent;
 import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
@@ -334,6 +335,9 @@ public abstract class MCreator extends MCreatorFrame {
 			}
 
 			LOG.info("Closing MCreator window ...");
+
+			MCREvent.event(new MCreatorClosedEvent(this));
+
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 
 			workspace.getWorkspaceUserSettings().bottomDockState = CollapsibleDockPanel.State.get(bottomDockRegion);
