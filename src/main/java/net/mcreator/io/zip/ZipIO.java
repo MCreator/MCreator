@@ -58,6 +58,9 @@ public class ZipIO {
 				} else {
 					toPath.toFile().getParentFile().mkdirs();
 					Files.copy(zipFile.getInputStream(entry), toPath, StandardCopyOption.REPLACE_EXISTING);
+					// Restore the original modification time stored in the ZIP entry (see createZipEntry)
+					if (entry.getTime() > 0)
+						toPath.toFile().setLastModified(entry.getTime());
 				}
 			}
 		} catch (IOException e) {
