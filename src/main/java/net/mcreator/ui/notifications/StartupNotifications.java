@@ -78,7 +78,7 @@ public class StartupNotifications {
 			ThreadUtil.runOnSwingThread(() -> parent.addNotification(UIRES.get("18px.warning"),
 					L10N.t("notification.defender_exclusions.msg"),
 					new NotificationsRenderer.ActionButton(L10N.t("notification.defender_exclusions.add"), _ -> {
-						List<File> folders = List.of(UserFolderManager.getFileFromUserFolder("/"),
+						List<File> folders = List.of(UserFolderManager.getGradleHome(),
 								WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot());
 
 						new Thread(() -> {
