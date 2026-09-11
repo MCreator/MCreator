@@ -170,7 +170,7 @@ public class JavaSourceResolver {
 					return found;
 			}
 		}
-		return source;
+		return null;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -185,6 +185,8 @@ public class JavaSourceResolver {
 			if (declaringClass != null && !declaringClass.isEmpty()) {
 				source = findType(source, declaringClass);
 			}
+			if (source == null)
+				return;
 
 			List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ?
 					(List) fhs.getFields() :

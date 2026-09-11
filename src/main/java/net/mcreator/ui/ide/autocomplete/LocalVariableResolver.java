@@ -60,7 +60,11 @@ public final class LocalVariableResolver {
 	private static final Pattern LAMBDA_PARAM_PATTERN = Pattern.compile(
 			"\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*\\)");
 	private static final Pattern VAR_ASSIGN_PATTERN = Pattern.compile(
-			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*(?:new\\s+)?([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
+			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*new\\s+([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
+	private static final Pattern VAR_ASSIGN_CAST_PATTERN = Pattern.compile(
+			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s*\\)");
+	private static final Pattern VAR_ASSIGN_EXPR_PATTERN = Pattern.compile(
+			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*([^;\\r\\n{}]+)");
 
 	private static final Pattern DECL_PATTERN = Pattern.compile(
 			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[])*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
@@ -144,7 +148,33 @@ public final class LocalVariableResolver {
 			if (base.equals(mVar.group(1)))
 				lastType = new VarTypeInfo(mVar.group(2), mVar.group(3));
 		}
+		if (lastType != null)
+			return lastType;
+
+		Matcher mCast = VAR_ASSIGN_CAST_PATTERN.matcher(activeCode);
+		while (mCast.find()) {
+			if (base.equals(mCast.group(1)))
+				lastType = new VarTypeInfo(mCast.group(2), mCast.group(3));
+		}
 		return lastType;
+	}
+
+	public static String findVarAssignmentExpression(String codeBeforeCursor, String base) {
+		if (codeBeforeCursor == null || base == null || base.isEmpty())
+			return null;
+
+		String activeCode = getActiveCode(codeBeforeCursor);
+		Matcher m = VAR_ASSIGN_EXPR_PATTERN.matcher(activeCode);
+		String lastExpr = null;
+		while (m.find()) {
+			if (base.equals(m.group(1))) {
+				String expr = m.group(2).trim();
+				if (!expr.startsWith("new ") && !expr.startsWith("(")) {
+					lastExpr = expr;
+				}
+			}
+		}
+		return lastExpr;
 	}
 
 	private static int findSplitIndex(StringBuilder sb) {

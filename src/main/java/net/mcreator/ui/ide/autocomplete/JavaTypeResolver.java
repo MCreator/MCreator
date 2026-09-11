@@ -95,6 +95,7 @@ public class JavaTypeResolver {
 
 	private Map<String, List<String>> cachedModClasses = null;
 	private long lastModClassesUpdate = 0;
+	private final Set<String> resolvingVars = new HashSet<>();
 
 	public JavaTypeResolver(@Nullable Workspace workspace) {
 		this.workspace = workspace;
@@ -109,6 +110,7 @@ public class JavaTypeResolver {
 		sourceResolver.invalidateCaches();
 		cachedModClasses = null;
 		lastModClassesUpdate = 0;
+		resolvingVars.clear();
 	}
 
 	public JavaSourceResolver getSourceResolver() {
@@ -435,13 +437,31 @@ public class JavaTypeResolver {
 					base);
 
 			if (varInfo == null) {
-				if (!base.isEmpty() && Character.isUpperCase(base.charAt(0))) {
-					typeName = base;
-					isStaticContext = true;
-				} else {
-					String fieldTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, currentClassFQDN, code);
-					if (fieldTypeSimple != null) {
-						typeName = fieldTypeSimple;
+				if (resolvingVars.add(base)) {
+					try {
+						String varExpr = LocalVariableResolver.findVarAssignmentExpression(codeBeforeCursor, base);
+						if (varExpr != null) {
+							ResolutionResult rhsRes = resolveTargetFQDN(varExpr, code, codeBeforeCursor,
+									currentClassFQDN);
+							if (rhsRes != null && rhsRes.fqdn != null) {
+								currentFQDN = rhsRes.fqdn;
+								isStaticContext = rhsRes.isStaticContext;
+							}
+						}
+					} finally {
+						resolvingVars.remove(base);
+					}
+				}
+
+				if (currentFQDN == null) {
+					if (!base.isEmpty() && Character.isUpperCase(base.charAt(0))) {
+						typeName = base;
+						isStaticContext = true;
+					} else {
+						String fieldTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, currentClassFQDN, code);
+						if (fieldTypeSimple != null) {
+							typeName = fieldTypeSimple;
+						}
 					}
 				}
 			} else {
