@@ -465,7 +465,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 					wordOnly))) {
 				if (item.kind().equals("method")) {
 					String template = item.insertText().replaceAll("\\$\\{\\d+:", "\\${");
-					if (!template.contains("${")) {
+					if (!template.contains("${cursor}")) {
 						template = template + "${cursor}";
 					}
 
