@@ -50,6 +50,9 @@ public final class LocalVariableResolver {
 		}
 	}
 
+	private static final Pattern ANNOTATION_PATTERN = Pattern.compile(
+			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]*|\\([^()]*\\))*\\))?");
+
 	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
 			"\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
 	private static final Pattern FOR_PATTERN = Pattern.compile(
@@ -62,13 +65,56 @@ public final class LocalVariableResolver {
 	private static final Pattern DECL_PATTERN = Pattern.compile(
 			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[])*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
 
+	private static String getActiveCode(String codeBeforeCursor) {
+		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
+			return "";
+
+		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
+		strippedCode = ANNOTATION_PATTERN.matcher(strippedCode).replaceAll(" ");
+
+		Deque<ScopeBlock> stack = new ArrayDeque<>();
+		stack.push(new ScopeBlock());
+
+		for (int i = 0; i < strippedCode.length(); i++) {
+			char c = strippedCode.charAt(i);
+			if (c == '{') {
+				String childHeader = "";
+				if (!stack.isEmpty()) {
+					ScopeBlock current = stack.peek();
+					int split = findSplitIndex(current.text);
+					if (split < current.text.length()) {
+						childHeader = current.text.substring(split);
+						current.text.setLength(split);
+					}
+				}
+				stack.push(new ScopeBlock(childHeader));
+			} else if (c == '}') {
+				if (stack.size() > 1) {
+					stack.pop();
+				}
+			} else {
+				if (!stack.isEmpty()) {
+					stack.peek().text.append(c);
+				}
+			}
+		}
+
+		StringBuilder activeCode = new StringBuilder();
+		Iterator<ScopeBlock> it = stack.descendingIterator();
+		while (it.hasNext()) {
+			activeCode.append(it.next().text).append('\n');
+		}
+
+		return activeCode.toString();
+	}
+
 	public static VarTypeInfo findLocalVariableType(String codeBeforeCursor, String base) {
 		if (codeBeforeCursor == null || base == null || base.isEmpty())
 			return null;
 
-		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
+		String activeCode = getActiveCode(codeBeforeCursor);
 
-		Matcher mDecl = TYPE_DECL_PATTERN.matcher(strippedCode);
+		Matcher mDecl = TYPE_DECL_PATTERN.matcher(activeCode);
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
 			if (base.equals(mDecl.group(3)))
@@ -77,7 +123,7 @@ public final class LocalVariableResolver {
 		if (lastType != null)
 			return lastType;
 
-		Matcher mFor = FOR_PATTERN.matcher(strippedCode);
+		Matcher mFor = FOR_PATTERN.matcher(activeCode);
 		while (mFor.find()) {
 			if (base.equals(mFor.group(2)))
 				lastType = new VarTypeInfo(mFor.group(1));
@@ -85,7 +131,7 @@ public final class LocalVariableResolver {
 		if (lastType != null)
 			return lastType;
 
-		Matcher mLambda = LAMBDA_PARAM_PATTERN.matcher(strippedCode);
+		Matcher mLambda = LAMBDA_PARAM_PATTERN.matcher(activeCode);
 		while (mLambda.find()) {
 			if (base.equals(mLambda.group(2)))
 				lastType = new VarTypeInfo(mLambda.group(1));
@@ -93,7 +139,7 @@ public final class LocalVariableResolver {
 		if (lastType != null)
 			return lastType;
 
-		Matcher mVar = VAR_ASSIGN_PATTERN.matcher(strippedCode);
+		Matcher mVar = VAR_ASSIGN_PATTERN.matcher(activeCode);
 		while (mVar.find()) {
 			if (base.equals(mVar.group(1)))
 				lastType = new VarTypeInfo(mVar.group(2), mVar.group(3));
@@ -136,39 +182,7 @@ public final class LocalVariableResolver {
 		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
 			return vars;
 
-		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
-
-		Deque<ScopeBlock> stack = new ArrayDeque<>();
-		stack.push(new ScopeBlock());
-
-		for (int i = 0; i < strippedCode.length(); i++) {
-			char c = strippedCode.charAt(i);
-			if (c == '{') {
-				String childHeader = "";
-				if (!stack.isEmpty()) {
-					ScopeBlock current = stack.peek();
-					int split = findSplitIndex(current.text);
-					if (split < current.text.length()) {
-						childHeader = current.text.substring(split);
-						current.text.setLength(split);
-					}
-				}
-				stack.push(new ScopeBlock(childHeader));
-			} else if (c == '}') {
-				if (stack.size() > 1) {
-					stack.pop();
-				}
-			} else {
-				if (!stack.isEmpty()) {
-					stack.peek().text.append(c);
-				}
-			}
-		}
-
-		StringBuilder activeCode = new StringBuilder();
-		for (ScopeBlock block : stack) {
-			activeCode.append(block.text).append('\n');
-		}
+		String activeCode = getActiveCode(codeBeforeCursor);
 
 		Matcher m = DECL_PATTERN.matcher(activeCode);
 		while (m.find()) {
@@ -177,7 +191,7 @@ public final class LocalVariableResolver {
 			if (type.contains("."))
 				type = type.substring(type.lastIndexOf('.') + 1);
 			if (!JavaConventions.JAVA_RESERVED_WORDS.contains(name)) {
-				vars.putIfAbsent(name, type);
+				vars.put(name, type);
 			}
 		}
 
