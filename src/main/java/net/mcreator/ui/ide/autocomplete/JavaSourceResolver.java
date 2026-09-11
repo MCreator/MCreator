@@ -124,13 +124,18 @@ public class JavaSourceResolver {
 			return cached;
 
 		Map<String, String> imports = new HashMap<>();
+		List<String> wildcardPackages = new ArrayList<>();
 		try {
 			JavaType<?> source = Roaster.parse(code);
 			if (source instanceof Importer<?> importer) {
 				for (Import imp : importer.getImports()) {
 					try {
-						if (imp.isWildcard())
+						if (imp.isWildcard()) {
+							String pkg = imp.getQualifiedName();
+							if (pkg != null && !pkg.isEmpty())
+								wildcardPackages.add(pkg);
 							continue;
+						}
 						String fqdn = imp.getQualifiedName();
 						if (fqdn == null || fqdn.isEmpty())
 							continue;
@@ -147,6 +152,27 @@ public class JavaSourceResolver {
 		} catch (Throwable e) {
 			LOG.debug("Failed to parse imports from source code", e);
 		}
+
+		if (!wildcardPackages.isEmpty() && workspace != null
+				&& workspace.getGenerator().getGradleCache() != null) {
+			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache().getImportTree();
+			if (tree != null) {
+				for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
+					String simpleName = entry.getKey();
+					for (String fqdn : entry.getValue()) {
+						int lastDot = fqdn.lastIndexOf('.');
+						if (lastDot == -1)
+							continue;
+						String pkg = fqdn.substring(0, lastDot);
+						if (wildcardPackages.contains(pkg)) {
+							imports.putIfAbsent(simpleName, fqdn);
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		Map<String, String> unmodifiable = Collections.unmodifiableMap(imports);
 		importsCache.put(hash, unmodifiable);
 		return unmodifiable;
