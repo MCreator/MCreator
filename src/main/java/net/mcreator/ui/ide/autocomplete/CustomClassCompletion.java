@@ -19,10 +19,6 @@
 package net.mcreator.ui.ide.autocomplete;
 
 import org.fife.rsta.ac.java.IconFactory;
-import org.fife.rsta.ac.java.JavaParser;
-import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
-import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
-import org.fife.rsta.ac.java.rjc.ast.Package;
 import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -30,7 +26,6 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
-import java.util.Iterator;
 import java.util.regex.Pattern;
 
 public class CustomClassCompletion extends BasicCompletion {
@@ -76,7 +71,7 @@ public class CustomClassCompletion extends BasicCompletion {
 		return "<html>" + type + name + packageInfo + "</html>";
 	}
 
-	public void insert(RSyntaxTextArea te, JavaParser parser, String alreadyEntered) {
+	public void insert(RSyntaxTextArea te, String alreadyEntered) {
 		int dot = te.getCaretPosition();
 		int start = dot - (alreadyEntered != null ? alreadyEntered.length() : 0);
 
@@ -96,7 +91,7 @@ public class CustomClassCompletion extends BasicCompletion {
 			return;
 		}
 
-		ImportResult result = getShouldAddImport(parser);
+		ImportResult result = getShouldAddImport(te);
 		String textToInsert = result.mustFullyQualify ? getClassName(true) : className;
 
 		te.beginAtomicEdit();
@@ -110,58 +105,76 @@ public class CustomClassCompletion extends BasicCompletion {
 		}
 	}
 
-	private ImportResult getShouldAddImport(JavaParser parser) {
-		CompilationUnit cu = parser.getCompilationUnit();
-		if (cu == null || pkg == null || pkg.isEmpty() || "java.lang".equals(pkg)) {
+	private ImportResult getShouldAddImport(RSyntaxTextArea te) {
+		if (pkg == null || pkg.isEmpty() || "java.lang".equals(pkg)) {
 			return ImportResult.NONE;
 		}
 
 		String outerClassName = className.contains(".") ? className.substring(0, className.indexOf('.')) : className;
 		String fqOuterClassName = pkg + "." + outerClassName;
-		Package pkgDecl = cu.getPackage();
-
-		if (pkgDecl != null && pkg.equals(pkgDecl.getName())) {
-			return ImportResult.NONE;
-		}
 
 		int offset = 0;
+		int pkgEndOffset = -1;
 		boolean alreadyImported = false;
 
-		Iterator<ImportDeclaration> i = cu.getImportIterator();
-		while (i.hasNext()) {
-			ImportDeclaration id = i.next();
-			offset = id.getNameEndOffset() + 1;
+		Element root = te.getDocument().getDefaultRootElement();
+		int lineCount = root.getElementCount();
 
-			if (!id.isStatic()) {
-				if (id.isWildcard()) {
-					String imported = id.getName();
-					int dot = imported.lastIndexOf('.');
-					String importedPkg = dot > -1 ? imported.substring(0, dot) : imported;
-					if (pkg.equals(importedPkg)) {
-						alreadyImported = true;
-						break;
+		for (int i = 0; i < lineCount; i++) {
+			Element elem = root.getElement(i);
+			int start = elem.getStartOffset();
+			int end = elem.getEndOffset();
+			String line;
+			try {
+				line = te.getText(start, end - start).trim();
+			} catch (BadLocationException e) {
+				continue;
+			}
+
+			if (IMPORT_OR_PACKAGE_LINE.matcher(line).matches()) {
+				int semi = line.indexOf(';');
+				if (semi == -1)
+					continue;
+
+				if (line.startsWith("package")) {
+					String pkgName = line.substring(line.indexOf('e') + 1, semi).trim();
+					if (pkg.equals(pkgName)) {
+						return ImportResult.NONE;
 					}
-				} else {
-					String fullyImportedClassName = id.getName();
-					int dot = fullyImportedClassName.lastIndexOf('.');
-					String importedClassName =
-							dot > -1 ? fullyImportedClassName.substring(dot + 1) : fullyImportedClassName;
-					if (outerClassName.equals(importedClassName)) {
-						offset = -1;
-						if (fqOuterClassName.equals(fullyImportedClassName)) {
+					pkgEndOffset = end - 1;
+				} else if (line.startsWith("import")) {
+					offset = end - 1;
+					String imported = line.substring(line.indexOf('t') + 1, semi).trim();
+
+					if (imported.endsWith(".*")) {
+						String importedPkg = imported.substring(0, imported.length() - 2).trim();
+						if (pkg.equals(importedPkg)) {
 							alreadyImported = true;
+							break;
 						}
-						break;
+					} else {
+						int dot = imported.lastIndexOf('.');
+						String importedClassName = dot > -1 ? imported.substring(dot + 1) : imported;
+						if (outerClassName.equals(importedClassName)) {
+							offset = -1;
+							if (fqOuterClassName.equals(imported)) {
+								alreadyImported = true;
+							}
+							break;
+						}
 					}
 				}
+			} else if (line.startsWith("public ") || line.startsWith("class ") || line.startsWith("interface ")
+					|| line.startsWith("enum ") || line.startsWith("@")) {
+				break;
 			}
 		}
 
 		if (!alreadyImported) {
 			if (offset > -1) {
 				StringBuilder importToAdd = new StringBuilder();
-				if (offset == 0 && pkgDecl != null) {
-					offset = pkgDecl.getNameEndOffset() + 1;
+				if (offset == 0 && pkgEndOffset > -1) {
+					offset = pkgEndOffset;
 					importToAdd.append('\n');
 				}
 
