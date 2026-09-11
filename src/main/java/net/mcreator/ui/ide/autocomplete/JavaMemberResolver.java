@@ -83,7 +83,7 @@ public class JavaMemberResolver {
 		if (isCurrentClass && currentCode != null && !currentCode.isEmpty()) {
 			String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
 			sourceResolver.parseSourceCodeCompletions(currentCode, declaringClass, result, added, true, false);
-			populateSuperAndInterfaces(currentCode, fqdn, result, added, visited, false);
+			populateSuperAndInterfaces(currentCode, fqdn, result, added, visited);
 		} else {
 			populateMembersOfFQDN(fqdn, currentClassFQDN, currentCode, result, added, visited, false);
 		}
@@ -95,7 +95,7 @@ public class JavaMemberResolver {
 	}
 
 	private void populateSuperAndInterfaces(String srcCode, String fqdn, List<JavaTypeResolver.CompletionItem> result,
-			Set<String> added, Set<String> visited, boolean interfaceInherited) {
+			Set<String> added, Set<String> visited) {
 		try {
 			JavaType<?> source = Roaster.parse(srcCode);
 			String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
@@ -143,7 +143,7 @@ public class JavaMemberResolver {
 				ClassFile cf = getClassFile(jarManager, fqdn);
 				if (cf != null) {
 					addMembersFromClassFile(cf, declaringClass, result, added, interfaceInherited);
-					recurseHierarchy(cf, result, added, visited, interfaceInherited);
+					recurseHierarchy(cf, result, added, visited);
 					return;
 				}
 			} catch (Throwable e) {
@@ -158,7 +158,7 @@ public class JavaMemberResolver {
 		if (srcCode != null) {
 			sourceResolver.parseSourceCodeCompletions(srcCode, declaringClass, result, added, false,
 					interfaceInherited);
-			populateSuperAndInterfaces(srcCode, fqdn, result, added, visited, interfaceInherited);
+			populateSuperAndInterfaces(srcCode, fqdn, result, added, visited);
 		}
 	}
 
@@ -229,7 +229,7 @@ public class JavaMemberResolver {
 	}
 
 	private void recurseHierarchy(ClassFile cf, List<JavaTypeResolver.CompletionItem> result, Set<String> added,
-			Set<String> visited, boolean interfaceInherited) {
+			Set<String> visited) {
 		boolean isInterface = (cf.getAccessFlags() & AccessFlags.ACC_INTERFACE) != 0;
 
 		if (isInterface) {
