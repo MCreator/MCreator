@@ -290,7 +290,7 @@ public class JavaTypeResolver {
 		return result;
 	}
 
-	private String getReturnTypeOfMember(String fqdn, String member, @Nullable String currentClassFQDN,
+	@Nullable private CompletionItem getMember(String fqdn, String member, @Nullable String currentClassFQDN,
 			@Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty())
 			return null;
@@ -299,9 +299,9 @@ public class JavaTypeResolver {
 		List<CompletionItem> members = memberResolver.getMembersOfFQDN(fqdn, currentClassFQDN, currentCode);
 		for (CompletionItem item : members) {
 			if (item.kind().equals("method") && item.label().startsWith(memberName + "(")) {
-				return item.detail();
+				return item;
 			} else if (item.kind().equals("field") && item.label().equals(memberName)) {
-				return item.detail();
+				return item;
 			}
 		}
 		return null;
@@ -376,6 +376,7 @@ public class JavaTypeResolver {
 		String typeName = null;
 		List<String> currentGenericArgs = Collections.emptyList();
 		String base = chain.getFirst();
+		boolean isCursorStatic = LocalVariableResolver.isStaticContext(codeBeforeCursor);
 
 		String currentPkg = currentClassFQDN != null && currentClassFQDN.contains(".") ?
 				currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) :
@@ -399,9 +400,9 @@ public class JavaTypeResolver {
 				if (classSegmentIndex >= 0) {
 					for (int i = classSegmentIndex + 1; i < segments.length; i++) {
 						String member = segments[i];
-						String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, currentClassFQDN, code);
-						if (returnTypeSimple != null) {
-							currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, currentPkg);
+						CompletionItem memberItem = getMember(currentFQDN, member, currentClassFQDN, code);
+						if (memberItem != null && (!isStaticContext || memberItem.isStatic())) {
+							currentFQDN = resolveSimpleTypeName(memberItem.detail(), imports, currentPkg);
 							isStaticContext = false;
 						} else if (getInnerClasses(currentFQDN).contains(member)) {
 							currentFQDN += "." + member;
@@ -416,7 +417,11 @@ public class JavaTypeResolver {
 		}
 
 		if (base.equals("this") || base.equals("super")) {
+			if (base.equals("super") && isCursorStatic) {
+				return null;
+			}
 			currentFQDN = currentClassFQDN;
+			isStaticContext = isCursorStatic;
 			if (currentFQDN != null) {
 				String parentName = parseSourceType(currentFQDN, currentClassFQDN, code)
 						instanceof JavaClassSource jcs ? jcs.getSuperType() : null;
@@ -458,9 +463,9 @@ public class JavaTypeResolver {
 						typeName = base;
 						isStaticContext = true;
 					} else {
-						String fieldTypeSimple = getReturnTypeOfMember(currentClassFQDN, base, currentClassFQDN, code);
-						if (fieldTypeSimple != null) {
-							typeName = fieldTypeSimple;
+						CompletionItem memberItem = getMember(currentClassFQDN, base, currentClassFQDN, code);
+						if (memberItem != null && (!isCursorStatic || memberItem.isStatic())) {
+							typeName = memberItem.detail();
 						}
 					}
 				}
@@ -484,7 +489,11 @@ public class JavaTypeResolver {
 			if (currentFQDN == null)
 				return null;
 			String member = chain.get(i);
-			String returnTypeSimple = getReturnTypeOfMember(currentFQDN, member, currentClassFQDN, code);
+			CompletionItem memberItem = getMember(currentFQDN, member, currentClassFQDN, code);
+			if (isStaticContext && memberItem != null && !memberItem.isStatic()) {
+				return null;
+			}
+			String returnTypeSimple = memberItem != null ? memberItem.detail() : null;
 
 			List<String> typeParams = getTypeParameters(currentFQDN, currentClassFQDN, code);
 			if (currentGenericArgs.isEmpty()) {

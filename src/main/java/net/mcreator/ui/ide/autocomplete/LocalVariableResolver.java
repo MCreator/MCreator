@@ -40,13 +40,13 @@ public final class LocalVariableResolver {
 		}
 	}
 
-	private record ScopeBlock(StringBuilder text) {
+	private record ScopeBlock(String header, StringBuilder text) {
 		ScopeBlock() {
-			this(new StringBuilder());
+			this("", new StringBuilder());
 		}
 
-		ScopeBlock(String initialText) {
-			this(new StringBuilder(initialText));
+		ScopeBlock(String header) {
+			this(header, new StringBuilder(header));
 		}
 	}
 
@@ -68,11 +68,9 @@ public final class LocalVariableResolver {
 
 	private static final Pattern DECL_PATTERN = Pattern.compile(
 			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[])*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+	private static final Pattern STATIC_PATTERN = Pattern.compile("\\bstatic\\b");
 
-	private static String getActiveCode(String codeBeforeCursor) {
-		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
-			return "";
-
+	private static Deque<ScopeBlock> parseScopes(String codeBeforeCursor) {
 		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
 		strippedCode = ANNOTATION_PATTERN.matcher(strippedCode).replaceAll(" ");
 
@@ -102,11 +100,35 @@ public final class LocalVariableResolver {
 				}
 			}
 		}
+		return stack;
+	}
 
+	public static boolean isStaticContext(String codeBeforeCursor) {
+		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
+			return false;
+		Deque<ScopeBlock> stack = parseScopes(codeBeforeCursor);
+		if (stack.size() > 2) {
+			List<ScopeBlock> list = new ArrayList<>(stack);
+			Collections.reverse(list);
+			return STATIC_PATTERN.matcher(list.get(2).header).find();
+		}
+		return false;
+	}
+
+	private static String getActiveCode(String codeBeforeCursor) {
+		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
+			return "";
+
+		Deque<ScopeBlock> stack = parseScopes(codeBeforeCursor);
 		StringBuilder activeCode = new StringBuilder();
 		Iterator<ScopeBlock> it = stack.descendingIterator();
+		int depth = 0;
 		while (it.hasNext()) {
-			activeCode.append(it.next().text).append('\n');
+			ScopeBlock block = it.next();
+			if (stack.size() > 2 && depth >= 2) {
+				activeCode.append(block.text).append('\n');
+			}
+			depth++;
 		}
 
 		return activeCode.toString();
