@@ -137,10 +137,6 @@ public class PluginLoader extends URLClassLoader {
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-				} else if (plugin.isJavaPlugin()) {
-					LOG.warn("{} is Java plugin, but Java plugins are disabled in preferences", plugin.getID());
-
-					plugin.loaded_failure = "Java plugins disabled";
 				}
 			} catch (Throwable e) {
 				plugin.loaded_failure = "Load error: " + e.getMessage();
