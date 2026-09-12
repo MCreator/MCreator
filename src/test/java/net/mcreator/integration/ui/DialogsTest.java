@@ -32,6 +32,7 @@ import net.mcreator.ui.dialogs.*;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.tools.*;
+import net.mcreator.ui.dialogs.tools.quickrecipestool.QuickRecipesTool;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -146,6 +147,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 				() -> ToolPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> WoodPackMakerTool.getAction(mcreator.getActionRegistry()).doAction());
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> QuickRecipesTool.getAction(mcreator.getActionRegistry()).doAction());
 	}
 
 	@Test public void testWYSIWYGDialogs() throws Throwable {
