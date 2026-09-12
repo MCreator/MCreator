@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs.workspace;
 
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -34,7 +33,6 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 
 public class WorkspaceGeneratorSetupDialog {
 

@@ -125,8 +125,9 @@ public class WindowsDefenderUtil {
 				    Set-Content -LiteralPath %s -Value (@('%d', "$_") -join "`n")
 				    exit %d
 				}
-				""".formatted(quote(getPowerShellPath()), encodeCommand(elevatedScript), quote(normalizePath(resultFile)),
-				EXIT_DECLINED, EXIT_DECLINED, quote(normalizePath(resultFile)), EXIT_LAUNCH_FAILED, EXIT_LAUNCH_FAILED);
+				""".formatted(quote(getPowerShellPath()), encodeCommand(elevatedScript),
+				quote(normalizePath(resultFile)), EXIT_DECLINED, EXIT_DECLINED, quote(normalizePath(resultFile)),
+				EXIT_LAUNCH_FAILED, EXIT_LAUNCH_FAILED);
 
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder(getPowerShellPath(), "-NoProfile", "-NonInteractive",
