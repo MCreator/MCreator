@@ -37,7 +37,6 @@ import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
-import java.beans.Introspector;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -128,27 +127,7 @@ public class PluginLoader extends URLClassLoader {
 				if (plugin.isJavaPlugin()) {
 					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
 							"PluginClassLoader-" + plugin.getID(), new URL[] {},
-							Thread.currentThread().getContextClassLoader()) {
-						@Override protected Class<?> findClass(String name) throws ClassNotFoundException {
-							try {
-								return super.findClass(name);
-							} catch (Exception e) {
-								for (StackTraceElement element : e.getStackTrace()) {
-									if (element.getClassName().equals(Introspector.class.getName())) {
-										// If the class not found was triggered due to Introspector looking for
-										// XXXBeanInfo class or XXXCustomizer class, we can ignore this and
-										// not log error or mark plugin as failed by setting loaded_failure
-										throw e;
-									}
-								}
-
-								plugin.loaded_failure =
-										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
-								LOG.error("Failed to load class {} for plugin {}", name, plugin.getID(), e);
-								throw e;
-							}
-						}
-					};
+							Thread.currentThread().getContextClassLoader());
 
 					javaPluginCL.addURL(plugin.toURL());
 
@@ -163,7 +142,7 @@ public class PluginLoader extends URLClassLoader {
 
 					plugin.loaded_failure = "Java plugins disabled";
 				}
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				plugin.loaded_failure = "Load error: " + e.getMessage();
 				LOG.error("Failed to load plugin {}", plugin.getID(), e);
 			}
