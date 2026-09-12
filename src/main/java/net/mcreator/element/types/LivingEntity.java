@@ -359,6 +359,7 @@ import java.util.stream.Collectors;
 		public double speed;
 
 		public Procedure condition;
+		@Nullable public String syncedDataCondition;
 
 		// Walking animation only
 		public boolean walking;

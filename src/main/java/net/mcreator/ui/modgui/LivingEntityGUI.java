@@ -392,6 +392,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
+		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> animations.entityDataListChanged());
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
@@ -429,7 +430,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		modelLayers = new JModelLayerList(mcreator, this);
 
-		animations = new JEntityAnimationList(mcreator, this);
+		animations = new JEntityAnimationList(mcreator, this, () -> entityDataList.getEntries());
 
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane2 = new JPanel(new BorderLayout(0, 0));
@@ -965,10 +966,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2).validate(mobModelTexture).validate(mobName);
 		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false).lazyValidate(
 				modelLayers::getValidationResult);
+		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
-		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.living_entity.page_vibration"), vibrationPane);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
@@ -1213,9 +1214,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
 		modelLayers.setEntries(livingEntity.modelLayers);
-		animations.setEntries(livingEntity.animations);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
+		animations.setEntries(livingEntity.animations); // load after data entries, because animations can use data entries
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);
 		sensitiveToVibration.setSelected(livingEntity.sensitiveToVibration);

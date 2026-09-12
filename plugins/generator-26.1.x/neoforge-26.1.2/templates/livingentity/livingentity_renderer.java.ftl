@@ -307,7 +307,10 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			<@ensureEntityReference/>
 			this.keyframeAnimation${animation?index}.apply(entity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 		<#else>
-			<#if hasProcedure(animation.condition)>
+			<#if animation.syncedDataCondition??>
+			<@ensureEntityReference/>
+			if (entity.getEntityData().get(${name}Entity.DATA_${animation.syncedDataCondition}))
+			<#elseif hasProcedure(animation.condition)>
 			<@ensureEntityReference/>
 			if (<@procedureCode animation.condition, {
 				"x": "entity.getX()",
