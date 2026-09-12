@@ -1,0 +1,1 @@
+This parameter makes the sound directional, otherwise it will play in stereo.
