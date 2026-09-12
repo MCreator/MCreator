@@ -11,6 +11,11 @@ templates:
       - "renderType #= 0"
       - "toolType %= Fishing rod"
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_spear_in_hand.json.ftl
+    writer: json
+    condition:
+      - "toolType %= Spear"
+    name: "@MODASSETSROOT/models/item/@registryname_in_hand.json"
   - template: json/item_cmodel.json.ftl
     writer: json
     condition: "renderType #= 1"
@@ -49,6 +54,9 @@ tags:
     condition_any:
       - "toolType %= Sword"
       - "toolType %= MultiTool"
+  - tag: ITEMS:minecraft:spears
+    condition_any:
+        - "toolType %= Spear"
   - tag: ITEMS:minecraft:shovels
     condition: "toolType %= Spade"
   - tag: ITEMS:minecraft:hoes

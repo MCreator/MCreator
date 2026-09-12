@@ -1,0 +1,1 @@
+The number of seconds before the player can use the spear again.

@@ -48,12 +48,13 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
 
-	@LimitedOptions({ "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
+	@LimitedOptions({ "Pickaxe", "Axe", "Sword", "Spear", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
 			"MultiTool" }) @Nonnull public String toolType;
 
 	public int renderType;
 	public int blockingRenderType;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
+	@TextureReference(TextureType.ITEM) public TextureHolder spearInHandTexture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
 	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder guiTexture;
@@ -67,6 +68,18 @@ import java.util.stream.Collectors;
 	@Numeric(init = 2, min = 1, max = 128000, step = 1) public int enchantability;
 	@Numeric(init = 4, min = 0, max = 128000, step = 0.1) public double damageVsEntity;
 	@Numeric(init = 100, min = 0, max = 128000, step = 1) public int usageCount;
+
+	@Numeric(init = 0.85, min = 0.01, max = 128000, step = 0.05) public double spearSpeedModifier;
+	@Numeric(init = 0.82, min = 0.01, max = 128000, step = 0.05) public double spearKineticDamageMultiplier;
+	@Numeric(init = 0.65, min = 0.01, max = 128000, step = 0.05) public double spearKineticCooldown;
+	@Numeric(init = 4.0, min = 0.01, max = 128000, step = 0.05) public double spearDismountTime;
+	@Numeric(init = 9.0, min = 0.01, max = 128000, step = 0.1) public double spearMinimumDismountSpeed;
+	@Numeric(init = 8.25, min = 0.01, max = 128000, step = 0.05) public double spearMaximumKnockbackTime;
+	@Numeric(init = 5.1, min = 0.01, max = 128000, step = 0.1) public double spearMinimumKnockbackSpeed;
+	@Numeric(init = 12.5, min = 0.01, max = 128000, step = 0.1) public double spearMaximumKineticDamageTime;
+	@Numeric(init = 4.6, min = 0.01, max = 128000, step = 0.1) public double spearMinimumKineticDamageSpeed;
+	@Numeric(init = 0.0, min = 0.0, max = 128000, step = 0.1) public double spearAttackDamageBonus;
+
 	public LogicProcedure glowCondition;
 	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
@@ -110,6 +123,17 @@ import java.util.stream.Collectors;
 		this.blockingModelName = "Normal blocking";
 
 		this.blockDropsTier = "WOOD";
+
+		this.spearSpeedModifier = 0.85;
+		this.spearKineticDamageMultiplier = 0.82;
+		this.spearKineticCooldown = 0.65;
+		this.spearDismountTime = 4.0;
+		this.spearMinimumDismountSpeed = 9.0;
+		this.spearMaximumKnockbackTime = 8.25;
+		this.spearMinimumKnockbackSpeed = 5.1;
+		this.spearMaximumKineticDamageTime = 12.5;
+		this.spearMinimumKineticDamageSpeed = 4.6;
+		this.spearAttackDamageBonus = 0.0;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

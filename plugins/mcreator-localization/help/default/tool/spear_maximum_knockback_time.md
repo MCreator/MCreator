@@ -1,0 +1,1 @@
+The maximum duration, in seconds that the spear can knockback a hit entity.
