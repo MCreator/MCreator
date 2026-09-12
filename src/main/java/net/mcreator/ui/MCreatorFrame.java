@@ -73,27 +73,12 @@ public abstract class MCreatorFrame extends JFrame
 
 		setLayout(new BorderLayout(0, 0));
 
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension frameSizeToUse = FRAME_SIZES.getLast();
-		for (Dimension size : FRAME_SIZES) {
-			if (screenSize.getWidth() >= size.getWidth() * FRAME_SIZE_PADDING
-					&& screenSize.getHeight() >= size.getHeight() * FRAME_SIZE_PADDING) {
-				frameSizeToUse = size;
-				break;
-			}
-		}
-		setSize(frameSizeToUse);
-
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		if (OS.getOS() == OS.MAC)
 			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
 
-		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
-			setExtendedState(JFrame.MAXIMIZED_BOTH);
-
 		setIconImages(AppIcon.getAppIcons());
-		setLocationRelativeTo(null);
 
 		this.statusBar = new StatusBar(this);
 
@@ -111,6 +96,27 @@ public abstract class MCreatorFrame extends JFrame
 
 		add("Center", mainContent);
 		add("South", statusBar);
+
+		// initial frame size calculation
+		calculateFrameSize(0);
+	}
+
+	protected final void calculateFrameSize(int additionalWidth) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension frameSizeToUse = FRAME_SIZES.getLast();
+		for (Dimension size : FRAME_SIZES) {
+			if (screenSize.getWidth() >= (size.getWidth() + additionalWidth) * FRAME_SIZE_PADDING
+					&& screenSize.getHeight() >= size.getHeight() * FRAME_SIZE_PADDING) {
+				frameSizeToUse = size;
+				break;
+			}
+		}
+		setSize(frameSizeToUse.width + additionalWidth, frameSizeToUse.height);
+
+		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
+			setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+		setLocationRelativeTo(null);
 	}
 
 	protected void setMainContent(JComponent component) {

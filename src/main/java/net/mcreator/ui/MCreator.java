@@ -173,6 +173,10 @@ public abstract class MCreator extends MCreatorFrame {
 		});
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
+
+		// The right dock strip is only visible if a dock was added to the right region (e.g. by a plugin), in which
+		// case the frame is widened by the strip width so the main area keeps the size the frame is sized for
+		calculateFrameSize(dockStripRight.isVisible() ? dockStripRight.getPreferredSize().width : 0);
 	}
 
 	@Nonnull private JToggleButton createConsoleButton() {
