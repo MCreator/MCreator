@@ -34,3 +34,14 @@
     "max": ${ySpread}
   }
 }'></#function>
+
+<#function levelValueToNumProvider blockId blockCode>
+<#if blockId?starts_with("level_based_value")><#return '
+{
+  "type": "minecraft:enchantment_level",
+  "amount": ${blockCode}
+}'>
+<#else>
+	<#return blockCode>
+</#if>
+</#function>
