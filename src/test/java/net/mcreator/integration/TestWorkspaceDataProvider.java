@@ -1816,11 +1816,13 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				beitem.entityPlaceableOn = subset(random, blocks.size() / 8, blocks,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
-				for (MItemBlock entry : subset(random, blocksAndTagsNoAir.size() / 8, blocksAndTagsNoAir,
+				for (MItemBlock entry : subset(random, blocks.size() / 8, blocks,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()))) {
 					beitem.diggerEntries.add(
 							new BEItem.DiggerEntry(entry, getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
 				}
+				beitem.diggerEntries.add(
+						new BEItem.DiggerEntry(new MItemBlock(modElement.getWorkspace(), "TAG:custom_tag"), getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
 			}
 			beitem.localScripts = new ArrayList<>();
 			if (!emptyLists) {
