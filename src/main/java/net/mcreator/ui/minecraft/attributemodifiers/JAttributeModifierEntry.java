@@ -59,7 +59,8 @@ public class JAttributeModifierEntry extends JSimpleListEntry<AttributeModifierE
 		this.workspace = mcreator.getWorkspace();
 		this.entryType = entryType;
 
-		equipmentSlot = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace(), true));
+		equipmentSlot = new DataListComboBox(mcreator,
+				ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace(), true));
 		equipmentSlot.setRenderer(new JComboBox<>().getRenderer());
 
 		attribute = new DataListComboBox(mcreator, ElementUtil.loadAllAttributes(workspace));

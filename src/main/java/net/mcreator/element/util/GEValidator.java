@@ -306,8 +306,8 @@ public class GEValidator {
 	}
 
 	private record CachedField(Field field, boolean notNullable, boolean nullable, @Nullable Numeric numeric,
-	                           @Nullable NonNullMappable nonNullMappable, @Nullable LimitedOptionsCache limitedOptions,
-	                           @Nullable NonNullIf nonNullIf) {
+							   @Nullable NonNullMappable nonNullMappable, @Nullable LimitedOptionsCache limitedOptions,
+							   @Nullable NonNullIf nonNullIf) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
 			this(field, field.isAnnotationPresent(Nonnull.class) || field.isAnnotationPresent(BlocklyXML.class),

@@ -661,16 +661,28 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	@Override public void close() {
-		ExternalTexture.invalidateCache(workspace);
+		try {
+			ExternalTexture.invalidateCache(workspace);
 
-		fileWatcher.close();
+			fileWatcher.close();
 
+			closeGradleProjectConnection();
+		} catch (Exception e) {
+			LOG.error("Failed to close generator", e);
+		}
+	}
+
+	public void closeGradleProjectConnection() {
 		if (gradleProjectConnection != null) {
 			LOG.info("Closing Gradle project connection");
 			gradleProjectConnection.close();
+			gradleProjectConnection = null;
+			gradleFileTracker = null;
 
-			if (gradleConnector != null)
+			if (gradleConnector != null) {
 				gradleConnector.disconnect();
+				gradleConnector = null;
+			}
 		}
 	}
 

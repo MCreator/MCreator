@@ -1,6 +1,6 @@
 <#function toResourceLocation string>
     <#if string?matches('"[^+]*"')>
-        <#return "ResourceLocation.parse(" + string?lower_case + ")">
+        <#return "ResourceLocation.parse(\"" + w.resolveModNamespace(string?lower_case?remove_beginning('"')?remove_ending('"')) + "\")">
     <#else>
         <#return "ResourceLocation.parse((" + string + ").toLowerCase(java.util.Locale.ENGLISH))">
     </#if>
