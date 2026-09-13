@@ -36,18 +36,22 @@ import java.util.function.Predicate;
 
 public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
-	private final JList<MCItem> list = new JList<>(model);
 	private final JTextField jtf = new JTextField(16);
 
 	private ActionListener itemSelectedListener;
 
 	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags) {
-		this(mcreator, supplier, supportTags, false);
+		this(mcreator, supplier, null, supportTags, false);
 	}
 
 	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags,
 			boolean hasPotions) {
-		super(mcreator, supplier::provide);
+		this(mcreator, supplier, null, supportTags, hasPotions);
+	}
+
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, MCItem selectedEntry,
+			boolean supportTags, boolean hasPotions) {
+		super(mcreator, supplier::provide, selectedEntry);
 
 		setTitle(L10N.t("dialog.item_selector.title"));
 		list.setCellRenderer(new Render());
@@ -74,7 +78,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		JButton cancelButton = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 
 		JButton useSelectedButton = L10N.button("dialog.item_selector.use_selected");
-		useSelectedButton.addActionListener(e -> {
+		useSelectedButton.addActionListener(_ -> {
 			dispose();
 			if (itemSelectedListener != null)
 				itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
@@ -83,7 +87,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		if (supportTags) {
 			JButton useTags = L10N.button("dialog.item_selector.use_tag");
 			buttons.add(useTags);
-			useTags.addActionListener(e -> {
+			useTags.addActionListener(_ -> {
 				TagType tagType = TagType.BLOCKS;
 				List<MCItem> items = supplier.provide(mcreator.getWorkspace());
 				for (MCItem item : items) {
@@ -112,30 +116,30 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		list.setLayoutOrientation(JList.VERTICAL_WRAP);
 		list.setVisibleRowCount(0);
 
-		list.addListSelectionListener(event -> {
+		list.addListSelectionListener(_ -> {
 			MCItem bl = list.getSelectedValue();
 			if (bl != null)
 				jtf.setText(bl.getReadableName());
 		});
 
-		cancelButton.addActionListener(event -> {
+		cancelButton.addActionListener(_ -> {
 			list.clearSelection();
 			dispose();
 		});
 
 		JComponent top;
 		JButton all = L10N.button("dialog.item_selector.all");
-		all.addActionListener(event -> filterField.setText(""));
+		all.addActionListener(_ -> filterField.setText(""));
 		JButton blocks = L10N.button("dialog.item_selector.blocks");
-		blocks.addActionListener(event -> filterField.setText("block"));
+		blocks.addActionListener(_ -> filterField.setText("block"));
 		JButton items = L10N.button("dialog.item_selector.items");
-		items.addActionListener(event -> filterField.setText("item"));
+		items.addActionListener(_ -> filterField.setText("item"));
 		JButton mods = L10N.button("dialog.item_selector.custom_elements");
-		mods.addActionListener(event -> filterField.setText("custom"));
+		mods.addActionListener(_ -> filterField.setText("custom"));
 
 		if (hasPotions) {
 			JButton potions = L10N.button("dialog.item_selector.potions");
-			potions.addActionListener(event -> filterField.setText("potion:"));
+			potions.addActionListener(_ -> filterField.setText("potion:"));
 			top = PanelUtils.join(FlowLayout.LEFT, 2, 2, L10N.label("dialog.item_selector.name"), jtf,
 					new JEmptyBox(2, 2), L10N.label("dialog.item_selector.display_filter"), filterField,
 					new JEmptyBox(2, 2), all, blocks, items, potions, mods);
@@ -203,8 +207,8 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		return list.getSelectedValue();
 	}
 
-	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks) {
-		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false);
+	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks, MCItem selectedItem) {
+		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, selectedItem, false, false);
 		bsd.setVisible(true);
 		return bsd.list.getSelectedValue();
 	}
