@@ -32,9 +32,11 @@ import org.fife.rsta.ac.java.classreader.FieldInfo;
 import org.fife.rsta.ac.java.classreader.MethodInfo;
 import org.fife.rsta.ac.java.classreader.Util;
 import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit;
 import org.jboss.forge.roaster.model.JavaType;
+import org.jboss.forge.roaster.model.impl.ImportImpl;
+import org.jboss.forge.roaster.model.impl.JavaSourceImpl;
 import org.jboss.forge.roaster.model.source.Import;
-import org.jboss.forge.roaster.model.source.Importer;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
@@ -104,16 +106,23 @@ public class JavaMemberResolver {
 			source = JavaSourceResolver.findType(source, declaringClass);
 			Map<String, String> imports = sourceResolver.parseImports(srcCode);
 
-			if (source instanceof Importer<?> importer) {
-				// Remove wildcards from AST
-				List<Import> wildcards = importer.getImports().stream().filter(Import::isWildcard).toList();
-				wildcards.forEach(importer::removeImport);
+			if (source instanceof JavaSourceImpl<?> javaSource) {
+				List<Import> wildcards = javaSource.getImports().stream().filter(Import::isWildcard).toList();
 
-				// Inject expanded imports so we don't get screwed by WildcardImportResolver
-				for (String resolvedFQDN : imports.values()) {
-					if (resolvedFQDN != null && !resolvedFQDN.isEmpty() && !importer.hasImport(resolvedFQDN)) {
-						importer.addImport(resolvedFQDN);
+				if (!wildcards.isEmpty()) {
+					// Remove wildcards from AST
+					wildcards.forEach(javaSource::removeImport);
+
+					// Inject expanded imports so we don't get screwed by WildcardImportResolver
+					CompilationUnit cu = (CompilationUnit) javaSource.getInternal();
+					List<Object> importsToAdd = new ArrayList<>();
+					for (String resolvedFQDN : imports.values()) {
+						if (resolvedFQDN != null && !resolvedFQDN.isEmpty() && !javaSource.hasImport(resolvedFQDN)) {
+							Import imprt = new ImportImpl(javaSource).setName(resolvedFQDN);
+							importsToAdd.add(imprt.getInternal());
+						}
 					}
+					cu.imports().addAll(importsToAdd);
 				}
 			}
 

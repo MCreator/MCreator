@@ -28,8 +28,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.Named;
+import org.jboss.forge.roaster.model.impl.ImportImpl;
+import org.jboss.forge.roaster.model.impl.JavaSourceImpl;
 import org.jboss.forge.roaster.model.source.*;
 
 import javax.annotation.Nullable;
@@ -99,7 +102,7 @@ public class JavaTypeResolver {
 
 	public JavaTypeResolver(@Nullable Workspace workspace) {
 		this.workspace = workspace;
-		this.sourceResolver = new JavaSourceResolver(workspace);
+		this.sourceResolver = new JavaSourceResolver(workspace, this);
 		this.memberResolver = new JavaMemberResolver(workspace, sourceResolver, this);
 	}
 
@@ -331,17 +334,24 @@ public class JavaTypeResolver {
 		try {
 			JavaType<?> type = Roaster.parse(src);
 
-			if (type instanceof Importer<?> importer) {
-				// Remove wildcards from AST
-				List<Import> wildcards = importer.getImports().stream().filter(Import::isWildcard).toList();
-				wildcards.forEach(importer::removeImport);
+			if (type instanceof JavaSourceImpl<?> javaSource) {
+				List<Import> wildcards = javaSource.getImports().stream().filter(Import::isWildcard).toList();
 
-				// Inject expanded imports so we don't get screwed by WildcardImportResolver
-				Map<String, String> imports = sourceResolver.parseImports(src);
-				for (String resolvedFQDN : imports.values()) {
-					if (resolvedFQDN != null && !resolvedFQDN.isEmpty() && !importer.hasImport(resolvedFQDN)) {
-						importer.addImport(resolvedFQDN);
+				if (!wildcards.isEmpty()) {
+					// Remove wildcards from AST
+					wildcards.forEach(javaSource::removeImport);
+
+					// Inject expanded imports so we don't get screwed by WildcardImportResolver
+					Map<String, String> imports = sourceResolver.parseImports(src);
+					CompilationUnit cu = (CompilationUnit) javaSource.getInternal();
+					List<Object> importsToAdd = new ArrayList<>();
+					for (String resolvedFQDN : imports.values()) {
+						if (resolvedFQDN != null && !resolvedFQDN.isEmpty() && !javaSource.hasImport(resolvedFQDN)) {
+							Import imprt = new ImportImpl(javaSource).setName(resolvedFQDN);
+							importsToAdd.add(imprt.getInternal());
+						}
 					}
+					cu.imports().addAll(importsToAdd);
 				}
 			}
 

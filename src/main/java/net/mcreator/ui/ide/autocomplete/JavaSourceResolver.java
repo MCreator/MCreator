@@ -37,6 +37,7 @@ public class JavaSourceResolver {
 	private static final Logger LOG = LogManager.getLogger(JavaSourceResolver.class);
 
 	@Nullable private final Workspace workspace;
+	private final JavaTypeResolver typeResolver;
 
 	// Maps source code hashCode -> map of simple class names to FQDNs parsed from imports
 	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
@@ -47,8 +48,9 @@ public class JavaSourceResolver {
 	// Maps class FQDN -> loaded Java source code string
 	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
 
-	public JavaSourceResolver(@Nullable Workspace workspace) {
+	public JavaSourceResolver(@Nullable Workspace workspace, JavaTypeResolver typeResolver) {
 		this.workspace = workspace;
+		this.typeResolver = typeResolver;
 	}
 
 	public void invalidateCaches() {
@@ -153,10 +155,16 @@ public class JavaSourceResolver {
 			LOG.debug("Failed to parse imports from source code", e);
 		}
 
-		if (!wildcardPackages.isEmpty() && workspace != null
-				&& workspace.getGenerator().getGradleCache() != null) {
-			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache().getImportTree();
-			if (tree != null) {
+		if (!wildcardPackages.isEmpty()) {
+			@SuppressWarnings("unchecked") Map<String, List<String>>[] importTrees = new Map[] {
+					(workspace != null && workspace.getGenerator().getGradleCache() != null) ?
+							workspace.getGenerator().getGradleCache().getImportTree() :
+							null, typeResolver.getModClasses() };
+
+			for (Map<String, List<String>> tree : importTrees) {
+				if (tree == null)
+					continue;
+
 				for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
 					String simpleName = entry.getKey();
 					for (String fqdn : entry.getValue()) {
