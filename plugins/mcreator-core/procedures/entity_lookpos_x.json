@@ -25,6 +25,10 @@
         [
           "ANY",
           "ANY"
+        ],
+        [
+          "WATER",
+          "WATER"
         ]
       ]
     },
@@ -43,6 +47,10 @@
         [
           "VISUAL",
           "VISUAL"
+        ],
+        [
+          "FALLDAMAGE_RESETTING",
+          "FALLDAMAGE_RESETTING"
         ]
       ]
     }

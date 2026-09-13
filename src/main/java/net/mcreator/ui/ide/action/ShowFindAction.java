@@ -28,7 +28,7 @@ import javax.swing.*;
 public class ShowFindAction extends BasicAction {
 
 	public ShowFindAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.ide.search_in_code"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.search_in_code"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				codeEditorView.sed.setVisible(true);

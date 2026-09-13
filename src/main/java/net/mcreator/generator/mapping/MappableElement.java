@@ -89,14 +89,11 @@ public abstract class MappableElement implements IWorkspaceDependent {
 	 */
 	@SuppressWarnings("unused") public String asTagEntry() {
 		String retval = getUnmappedValue();
-		if (!retval.startsWith("TAG:")) {
-			LOG.warn("Tried to convert non-tag mappable element to tag: {}", value);
+		if (retval.startsWith("TAG:")) {
+			// Remove the "TAG:" prefix and replace the "mod" namespace alias with the actual mod ID
+			retval = NameMapper.resolveModNamespace(retval.substring(4), Objects.requireNonNull(this.getWorkspace()));
 		} else {
-			retval = retval.substring(4); // Remove the "TAG:" prefix
-			if (retval.startsWith("mod:")) {
-				retval = Objects.requireNonNull(this.getWorkspace()).getWorkspaceSettings().getModID()
-						+ retval.substring(3); // Replace the "mod" prefix with the actual mod ID
-			}
+			LOG.warn("Tried to convert non-tag mappable element to tag: {}", value);
 		}
 
 		return retval;

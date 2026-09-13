@@ -48,8 +48,8 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final VTextField name = new VTextField(17).requireValue("elementgui.armortrim.error_armor_trim_needs_name")
 			.enableRealtimeValidation();
-	private final MCItemHolder item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems)
-			.requireValue("elementgui.armortrim.error_armor_trim_needs_item");
+	private final MCItemHolder item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+			"elementgui.armortrim.error_armor_trim_needs_item");
 	private final TextureComboBox armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR,
 			true).requireValue("elementgui.armortrim.error_armor_trim_needs_texture");
 	private final JLabel clo1 = new JLabel();

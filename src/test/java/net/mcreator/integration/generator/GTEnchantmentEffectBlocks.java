@@ -114,6 +114,16 @@ public class GTEnchantmentEffectBlocks {
 						<value name="requirements"><shadow type="predicate_true"></shadow></value>
 						</block></statement></block></next></block></xml>
 						""".formatted(testXML);
+				// Numbers (level-based values) are tested with the "Block experience" component
+				case "Number" -> enchantment.effectsxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
+						<next><block type="ench_component_block_experience"><statement name="conditionalEffect">
+						<block type="conditional_value_effect"><value name="effect">
+						<block type="value_effect_set"><value name="value">%s</value></block></value>
+						<value name="requirements"><shadow type="predicate_true"></shadow></value>
+						</block></statement></block></next></block></xml>
+						""".formatted(testXML);
 				default -> {
 					LOG.warn("[{}] Skipping output enchantment effect block of unrecognized type: {}", generatorName,
 							effectBlock.getMachineName());

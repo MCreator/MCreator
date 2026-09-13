@@ -27,7 +27,7 @@ import javax.swing.*;
 
 public class ImageEditorPasteAction extends BasicAction {
 	public ImageEditorPasteAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.image_editor.paste"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.image_editor.paste"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getClipboardManager().paste();
