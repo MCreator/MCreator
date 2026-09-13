@@ -332,13 +332,23 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getModElementManager();
 	}
 
-	@Override public void close() {
-		LOG.info("Closing workspace");
+	private transient volatile boolean isClosing = false;
 
-		generator.close();
-		fileManager.close();
-		userSettingsManager.close();
-		historyManager.close();
+	@Override public void close() {
+		if (!isClosing) {
+			isClosing = true;
+
+			LOG.info("Closing workspace");
+
+			generator.close();
+			fileManager.close();
+			userSettingsManager.close();
+			historyManager.close();
+		}
+	}
+
+	public boolean isClosing() {
+		return isClosing;
 	}
 
 	@Override public boolean equals(Object o) {

@@ -349,7 +349,7 @@ public abstract class MCreator extends MCreatorFrame {
 					tab.getTabClosedListener().tabClosed(tab);
 			});
 
-			if (!workspace.getHistoryManager().isBusy()) {
+			if (workspace.getHistoryManager().isBusy() && !workspace.isClosing()) {
 				// Local history is busy, so closing may take a while. Run close on a worker thread behind a
 				// progress dialog so the UI stays responsive while local history finishes its git task
 				ProgressDialog dial = new ProgressDialog(this,
