@@ -46,8 +46,24 @@
     </#if>
 </#function>
 
-<#function mappedMCItemToItemObjectJSON mappedBlock skipDefaultMetadata=false>
+<#function mappedMCItemToItemObjectJSON mappedBlock acceptTags=false>
+    <#if acceptTags>
+        <#local tag = mappedMCItemToBedrockTag(mappedBlock)>
+        <#if tag?has_content>
+            <#return "\"tag\": \"" + tag + "\"">
+        </#if>
+    </#if>
     <#return "\"item\": \"" + mappedMCItemToRegistryNameNoTags(mappedBlock) + "\"">
+</#function>
+
+<#-- Returns Bedrock item tag name for the given element, or empty string if the element is not a tag -->
+<#function mappedMCItemToBedrockTag mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return mappedBlock.asTagEntry()>
+    <#elseif !mappedBlock.getUnmappedValue().startsWith("CUSTOM:") && mappedBlock.toString().startsWith("#")>
+        <#return mappedBlock.toString()?substring(1)>
+    </#if>
+    <#return "">
 </#function>
 
 <#function transformExtension mappedBlock>
@@ -78,9 +94,30 @@
 </#function>
 
 <#function mappedMCItemToRegistryNameOrTag mappedBlock>
-    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "{\"tags\": \"q.any_tag(\'" + mappedBlock.asTagEntry() + "\')\" }">
+    <#local tag = mappedMCItemToBedrockTag(mappedBlock)>
+    <#if tag?has_content>
+        <#return "{\"tags\": \"q.any_tag(\'" + tag + "\')\" }">
     <#else>
         <#return "\"" + mappedMCItemToRegistryNameNoTags(mappedBlock) + "\"">
+    </#if>
+</#function>
+
+<#function recipeUnlockJSON unlockingItems>
+    <#local entries = []>
+    <#list unlockingItems as item>
+        <#local tag = mappedMCItemToBedrockTag(item)>
+        <#if tag?has_content>
+            <#local entries += ["{ \"tag\": \"" + tag + "\" }"]>
+        <#else>
+            <#local name = mappedMCItemToRegistryNameNoTags(item)>
+            <#if name != "minecraft:air">
+                <#local entries += ["{ \"item\": \"" + name + "\" }"]>
+            </#if>
+        </#if>
+    </#list>
+    <#if entries?has_content>
+        <#return "[ " + entries?join(", ") + " ]">
+    <#else>
+        <#return "{ \"context\": \"AlwaysUnlocked\" }">
     </#if>
 </#function>
