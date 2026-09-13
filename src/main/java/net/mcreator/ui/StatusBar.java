@@ -48,6 +48,9 @@ public class StatusBar extends JPanel {
 
 	private final MCreatorFrame mcreatorFrame;
 
+	private final JPanel leftExtras = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+	private final JPanel rightExtras = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
 	public StatusBar(MCreatorFrame mcreatorFrame) {
 		super(new BorderLayout(0, 0));
 
@@ -89,6 +92,9 @@ public class StatusBar extends JPanel {
 		});
 		preferences.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		left.add(preferences);
+
+		left.add(leftExtras);
+
 		left.add(new JEmptyBox(10, 10));
 
 		messages.setForeground(Theme.current().getAltForegroundColor());
@@ -112,6 +118,8 @@ public class StatusBar extends JPanel {
 		right.add(gradleIndicator);
 
 		right.add(new JEmptyBox(5, 5));
+
+		right.add(rightExtras);
 
 		add("East", right);
 
@@ -157,6 +165,16 @@ public class StatusBar extends JPanel {
 
 	public void reloadGradleIndicator() {
 		gradleIndicator.repaint();
+	}
+
+	public void addLeftComponent(JComponent component) {
+		leftExtras.add(new JEmptyBox(9, 3));
+		leftExtras.add(component);
+	}
+
+	public void addRightComponent(JComponent component) {
+		rightExtras.add(new JEmptyBox(9, 3));
+		rightExtras.add(component);
 	}
 
 	private class GradleIndicator extends JComponent {
