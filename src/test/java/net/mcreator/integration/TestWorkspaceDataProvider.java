@@ -459,7 +459,6 @@ public class TestWorkspaceDataProvider {
 		var blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
 		var blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
 		var blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
-		var blocksAndTagsNoAir = filterAir(blocksAndTags);
 		var biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 		var tabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
@@ -1816,13 +1815,15 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				beitem.entityPlaceableOn = subset(random, blocks.size() / 8, blocks,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
-				for (MItemBlock entry : subset(random, blocks.size() / 8, blocks,
+				var blocksNoAir = filterAir(blocks);
+				for (MItemBlock entry : subset(random, blocksNoAir.size() / 8, blocksNoAir,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()))) {
 					beitem.diggerEntries.add(
 							new BEItem.DiggerEntry(entry, getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
 				}
 				beitem.diggerEntries.add(
-						new BEItem.DiggerEntry(new MItemBlock(modElement.getWorkspace(), "TAG:custom_tag"), getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
+						new BEItem.DiggerEntry(new MItemBlock(modElement.getWorkspace(), "TAG:custom_tag"),
+								getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
 			}
 			beitem.localScripts = new ArrayList<>();
 			if (!emptyLists) {
