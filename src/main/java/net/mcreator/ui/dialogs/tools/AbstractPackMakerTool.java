@@ -104,6 +104,9 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 				workspace.getGenerator().generateElement(generatableElement);
 			}
 			workspace.getModElementManager().storeModElement(generatableElement);
+			workspace.getHistoryManager().checkpoint("mod_element_added",
+					generatableElement.getModElement().getType().getReadableName(),
+					generatableElement.getModElement().getName());
 		}
 	}
 

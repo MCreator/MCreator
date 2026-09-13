@@ -623,7 +623,11 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
 				modElement.getType().getRegistryName());
 
-		if (changed && editingMode) {
+		// checkpoint after the element is stored and generated so all its files are part of the checkpoint
+		if (!editingMode) {
+			mcreator.getWorkspace().getHistoryManager()
+					.checkpoint("mod_element_added", modElement.getType().getReadableName(), modElement.getName());
+		} else if (changed) {
 			mcreator.getWorkspace().getHistoryManager().checkpoint("mod_element_edited", modElement.getName());
 		}
 

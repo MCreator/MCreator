@@ -215,8 +215,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
-
-			historyManager.checkpoint("mod_element_added", element.getType().getReadableName(), element.getName());
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing mod element: {} of type {}", element.getName(), element.getTypeString());
