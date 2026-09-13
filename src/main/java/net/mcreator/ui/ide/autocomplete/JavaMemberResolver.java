@@ -33,6 +33,8 @@ import org.fife.rsta.ac.java.classreader.MethodInfo;
 import org.fife.rsta.ac.java.classreader.Util;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
+import org.jboss.forge.roaster.model.source.Import;
+import org.jboss.forge.roaster.model.source.Importer;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
@@ -101,6 +103,20 @@ public class JavaMemberResolver {
 			String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
 			source = JavaSourceResolver.findType(source, declaringClass);
 			Map<String, String> imports = sourceResolver.parseImports(srcCode);
+
+			if (source instanceof Importer<?> importer) {
+				// Remove wildcards from AST
+				List<Import> wildcards = importer.getImports().stream().filter(Import::isWildcard).toList();
+				wildcards.forEach(importer::removeImport);
+
+				// Inject expanded imports so we don't get screwed by WildcardImportResolver
+				for (String resolvedFQDN : imports.values()) {
+					if (resolvedFQDN != null && !resolvedFQDN.isEmpty() && !importer.hasImport(resolvedFQDN)) {
+						importer.addImport(resolvedFQDN);
+					}
+				}
+			}
+
 			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
 			if (source instanceof JavaClassSource javaClass) {
 				String parentName = javaClass.getSuperType();

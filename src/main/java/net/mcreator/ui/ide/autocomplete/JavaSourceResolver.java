@@ -131,7 +131,7 @@ public class JavaSourceResolver {
 				for (Import imp : importer.getImports()) {
 					try {
 						if (imp.isWildcard()) {
-							String pkg = imp.getQualifiedName();
+							String pkg = imp.getPackage();
 							if (pkg != null && !pkg.isEmpty())
 								wildcardPackages.add(pkg);
 							continue;

@@ -330,6 +330,21 @@ public class JavaTypeResolver {
 			return null;
 		try {
 			JavaType<?> type = Roaster.parse(src);
+
+			if (type instanceof Importer<?> importer) {
+				// Remove wildcards from AST
+				List<Import> wildcards = importer.getImports().stream().filter(Import::isWildcard).toList();
+				wildcards.forEach(importer::removeImport);
+
+				// Inject expanded imports so we don't get screwed by WildcardImportResolver
+				Map<String, String> imports = sourceResolver.parseImports(src);
+				for (String resolvedFQDN : imports.values()) {
+					if (resolvedFQDN != null && !resolvedFQDN.isEmpty() && !importer.hasImport(resolvedFQDN)) {
+						importer.addImport(resolvedFQDN);
+					}
+				}
+			}
+
 			if (fqdn.contains(".")) {
 				String declaringClass = fqdn.substring(fqdn.lastIndexOf('.') + 1);
 				type = JavaSourceResolver.findType(type, declaringClass);
