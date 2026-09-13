@@ -52,7 +52,7 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -180,35 +180,37 @@ public class WYSIWYGEditor extends JPanel {
 				}
 			}
 		});
-		list.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE)
-					editor.removeMode();
+
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+				"removeComponent");
+		getActionMap().put("removeComponent", new AbstractAction() {
+			@Override public void actionPerformed(ActionEvent e) {
+				editor.removeMode();
 			}
 		});
 
-		moveComponent.addActionListener(event -> editor.moveMode());
-		removeComponent.addActionListener(e -> editor.removeMode());
+		moveComponent.addActionListener(_ -> editor.moveMode());
+		removeComponent.addActionListener(_ -> editor.removeMode());
 
-		moveComponentUp.addActionListener(e -> {
+		moveComponentUp.addActionListener(_ -> {
 			boolean mu = components.moveUp(list.getSelectedIndex());
 			if (mu)
 				list.setSelectedIndex(list.getSelectedIndex() - 1);
 		});
-		moveComponentDown.addActionListener(e -> {
+		moveComponentDown.addActionListener(_ -> {
 			boolean mu = components.moveDown(list.getSelectedIndex());
 			if (mu)
 				list.setSelectedIndex(list.getSelectedIndex() + 1);
 		});
 
-		lockComponent.addActionListener(e -> {
+		lockComponent.addActionListener(_ -> {
 			GUIComponent component = list.getSelectedValue();
 			component.locked = !component.locked;
 			moveComponent.setEnabled(!component.locked);
 			list.repaint();
 		});
 
-		editComponent.addActionListener(e -> editCurrentlySelectedComponent());
+		editComponent.addActionListener(_ -> editCurrentlySelectedComponent());
 
 		list.setOpaque(false);
 		list.setCellRenderer(new GUIComponentRenderer());
@@ -268,7 +270,7 @@ public class WYSIWYGEditor extends JPanel {
 				JButton componentButton = new JButton(UIRES.get("wysiwyg_editor." + componentRegistration.icon()));
 				componentButton.setToolTipText((L10N.t("elementgui.gui.add_" + componentRegistration.machineName())));
 				componentButton.setMargin(new Insets(0, 0, 0, 0));
-				componentButton.addActionListener(e -> {
+				componentButton.addActionListener(_ -> {
 					try {
 						componentRegistration.editor()
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
@@ -289,22 +291,22 @@ public class WYSIWYGEditor extends JPanel {
 			editor.repaint();
 		});
 
-		sx.addChangeListener(e -> {
+		sx.addChangeListener(_ -> {
 			editor.grid_x_spacing = (int) sx.getValue();
 			editor.repaint();
 		});
 
-		sy.addChangeListener(e -> {
+		sy.addChangeListener(_ -> {
 			editor.grid_y_spacing = (int) sy.getValue();
 			editor.repaint();
 		});
 
-		ox.addChangeListener(e -> {
+		ox.addChangeListener(_ -> {
 			editor.grid_x_offset = (int) ox.getValue();
 			editor.repaint();
 		});
 
-		oy.addChangeListener(e -> {
+		oy.addChangeListener(_ -> {
 			editor.grid_y_offset = (int) oy.getValue();
 			editor.repaint();
 		});
@@ -384,8 +386,8 @@ public class WYSIWYGEditor extends JPanel {
 
 		spa1.addChangeListener(event -> checkAndUpdateGUISize());
 		spa2.addChangeListener(event -> checkAndUpdateGUISize());
-		guiType.addActionListener(e -> checkAndUpdateGUISize());
-		renderBgLayer.addActionListener(e -> checkAndUpdateGUISize());
+		guiType.addActionListener(_ -> checkAndUpdateGUISize());
+		renderBgLayer.addActionListener(_ -> checkAndUpdateGUISize());
 
 		if (isNotOverlayType) {
 			JScrollPane scrollPane = new JScrollPane(adds2);
@@ -405,7 +407,7 @@ public class WYSIWYGEditor extends JPanel {
 
 			ComponentUtils.makeSection(ovst, L10N.t("elementgui.gui.overlay_properties"));
 
-			overlayBaseTexture.getComboBox().addActionListener(e -> editor.repaint());
+			overlayBaseTexture.getComboBox().addActionListener(_ -> editor.repaint());
 
 			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/overlay_target"),
 					L10N.label("elementgui.gui.overlay_target")));
