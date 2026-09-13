@@ -36,7 +36,7 @@ public class JBoundingBoxEntry extends JSimpleListEntry<IBlockWithBoundingBox.Bo
 	private final JSpinner Mz = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
 	private final JCheckBox subtract = new JCheckBox();
 
-	public JBoundingBoxEntry(JPanel parent, List<JBoundingBoxEntry> entryList) {
+	public JBoundingBoxEntry(JPanel parent, List<JBoundingBoxEntry> entryList, boolean allowSubtract) {
 		super(parent, entryList);
 
 		subtract.setOpaque(false);
@@ -57,18 +57,20 @@ public class JBoundingBoxEntry extends JSimpleListEntry<IBlockWithBoundingBox.Bo
 		line.add(L10N.label("elementgui.block.bounding_block_max_z"));
 		line.add(Mz);
 
-		line.add(new JEmptyBox(15, 5));
+		if (allowSubtract) {
+			line.add(new JEmptyBox(15, 5));
 
-		line.add(L10N.label("elementgui.common.subtract"));
-		line.add(subtract);
+			line.add(L10N.label("elementgui.common.subtract"));
+			line.add(subtract);
+		}
 
-		mx.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
-		my.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
-		mz.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
-		Mx.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
-		My.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
-		Mz.addChangeListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
-		subtract.addActionListener(e -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		mx.addChangeListener(_ -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		my.addChangeListener(_ -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		mz.addChangeListener(_ -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		Mx.addChangeListener(_ -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		My.addChangeListener(_ -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		Mz.addChangeListener(_ -> parent.firePropertyChange("boundingBoxChanged", false, true));
+		subtract.addActionListener(_ -> parent.firePropertyChange("boundingBoxChanged", false, true));
 	}
 
 	@Override protected void entryRemovedByUserHandler() {

@@ -195,6 +195,22 @@ public class PreferencesDialog extends MCreatorDialog {
 		sectionsModel.reload();
 	}
 
+	/**
+	 * <p>Adds a custom page to this dialog, shown when the section with the given name is selected. Pages added
+	 * this way are responsible for storing their own values, e.g. by setting values of {@link PreferencesEntry}
+	 * instances of a hidden {@link net.mcreator.preferences.PreferencesSection} and calling {@link #markChanged()}.</p>
+	 *
+	 * <p>Java plugins can add pages from {@link PreferencesDialogEvent.SectionsLoaded}. The page can be opened
+	 * directly by passing its name as the selected tab to {@link #PreferencesDialog(Window, String)}.</p>
+	 *
+	 * @param name Name of the section shown in the list of sections, also used to identify the page
+	 * @param page Component shown when the section is selected
+	 */
+	public void addPage(String name, JComponent page) {
+		addSection(name);
+		preferences.add(page, name);
+	}
+
 	void addTemplateSection(String name) {
 		templatesNode.add(new DefaultMutableTreeNode(name));
 		sectionsModel.reload();
