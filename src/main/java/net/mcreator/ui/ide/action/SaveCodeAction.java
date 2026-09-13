@@ -29,7 +29,7 @@ import javax.swing.*;
 public class SaveCodeAction extends BasicAction {
 
 	public SaveCodeAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.ide.save"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.save"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {

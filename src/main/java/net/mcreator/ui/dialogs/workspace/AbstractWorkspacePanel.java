@@ -105,7 +105,7 @@ public abstract class AbstractWorkspacePanel {
 				WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath() + File.separator
 						+ workspaceDialogPanel.modID.getText());
 
-		selectWorkspaceFolder.addActionListener(actionEvent -> {
+		selectWorkspaceFolder.addActionListener(_ -> {
 			File file = FileDialogs.getWorkspaceDirectorySelectDialog(parent, new File(workspaceFolder.getText()));
 			if (file != null) {
 				workspaceFolder.setText(file.getAbsolutePath());

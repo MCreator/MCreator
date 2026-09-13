@@ -64,11 +64,13 @@ class FieldDataListSelector extends Blockly.Field {
                     this.customEntryProviders;
                 javabridge.openEntrySelector(this.type, this.typeFilter, customEntryProviders, {
                     'callback': function (value, readableName) {
-                        thisField.cachedReadableName = readableName || value;
-                        const group = Blockly.Events.getGroup();
-                        Blockly.Events.setGroup(true);
-                        thisField.setValue(value);
-                        Blockly.Events.setGroup(group);
+                        if (value !== thisField.value_) { // If new value is same as old value, do nothing
+                            thisField.cachedReadableName = readableName || value;
+                            const group = Blockly.Events.getGroup();
+                            Blockly.Events.setGroup(true);
+                            thisField.setValue(value);
+                            Blockly.Events.setGroup(group);
+                        }
                     }
                 });
             } else {

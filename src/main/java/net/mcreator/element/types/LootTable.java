@@ -38,8 +38,7 @@ import java.util.List;
 
 	@ModElementReference public List<Pool> pools;
 
-	@Nullable
-	public String lootTableToModify;
+	@Nullable public String lootTableToModify;
 
 	private LootTable() {
 		this(null);

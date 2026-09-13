@@ -147,6 +147,7 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature"><block type="feature_simple_block">
 							<value name="block">%s</value>
+							<field name="schedule_tick">FALSE</field>
 						</block></value></block></xml>
 						""".formatted(testXML);
 				// Tree decorators are tested with the simple tree feature

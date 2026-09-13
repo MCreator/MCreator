@@ -215,8 +215,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
-
-			historyManager.checkpoint("mod_element_added", element.getType().getReadableName(), element.getName());
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing mod element: {} of type {}", element.getName(), element.getTypeString());
@@ -334,13 +332,23 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getModElementManager();
 	}
 
-	@Override public void close() {
-		LOG.info("Closing workspace");
+	private transient volatile boolean isClosing = false;
 
-		generator.close();
-		fileManager.close();
-		userSettingsManager.close();
-		historyManager.close();
+	@Override public void close() {
+		if (!isClosing) {
+			isClosing = true;
+
+			LOG.info("Closing workspace");
+
+			generator.close();
+			fileManager.close();
+			userSettingsManager.close();
+			historyManager.close();
+		}
+	}
+
+	public boolean isClosing() {
+		return isClosing;
 	}
 
 	@Override public boolean equals(Object o) {
@@ -685,7 +693,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 						WorkspaceSettings.normalizeGeneratorName(generatorName.getAsString()));
 			}
 
-			Gson gson = generatorConfiguration == null ? GENERIC_GSON :
+			Gson gson = generatorConfiguration == null ?
+					GENERIC_GSON :
 					GSON_CACHE.computeIfAbsent(generatorConfiguration,
 							configuration -> WorkspaceFileManager.createGsonBuilder(configuration.getGeneratorFlavor())
 									.create());

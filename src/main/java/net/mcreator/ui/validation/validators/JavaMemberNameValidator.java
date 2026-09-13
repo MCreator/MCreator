@@ -31,18 +31,21 @@ import java.util.Set;
 public class JavaMemberNameValidator implements Validator {
 
 	private final VTextField textField;
-	private final boolean firstLetterUppercase;
-	private final boolean allowInitialUnderscore;
+	private boolean firstLetterUppercase;
+	private boolean allowInitialUnderscore = true;
 
-	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase) {
-		this(textField, requireFirstLetterUppercase, true);
+	public JavaMemberNameValidator(VTextField textField) {
+		this.textField = textField;
 	}
 
-	public JavaMemberNameValidator(VTextField textField, boolean requireFirstLetterUppercase,
-			boolean allowInitialUnderscore) {
-		this.textField = textField;
-		this.firstLetterUppercase = requireFirstLetterUppercase;
-		this.allowInitialUnderscore = allowInitialUnderscore;
+	public JavaMemberNameValidator firstLetterUppercase() {
+		this.firstLetterUppercase = true;
+		return this;
+	}
+
+	public JavaMemberNameValidator noInitialUnderscore() {
+		this.allowInitialUnderscore = false;
+		return this;
 	}
 
 	@Override public ValidationResult validate() {
