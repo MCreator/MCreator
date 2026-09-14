@@ -34,6 +34,7 @@ import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
@@ -155,6 +156,7 @@ public class AnimationMakerView extends ViewBase {
 					SwingUtilities.invokeLater(() -> {
 						prv.setIcon(
 								new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+						timeline.setSelectedIndex(animindex);
 						timeline.repaint();
 					});
 				}
@@ -310,7 +312,7 @@ public class AnimationMakerView extends ViewBase {
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		timeline.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		timeline.setVisibleRowCount(1);
-		timeline.setCellRenderer(new ComboBoxRenderer());
+		timeline.setCellRenderer(new TimelineRenderer());
 		timeline.setOpaque(false);
 		JScrollPane pan = new JScrollPane(timeline);
 		pan.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -557,33 +559,6 @@ public class AnimationMakerView extends ViewBase {
 		}
 	}
 
-	private class ComboBoxRenderer extends JPanel implements ListCellRenderer<AnimationFrame> {
-
-		ComboBoxRenderer() {
-			setOpaque(true);
-		}
-
-		@Override
-		public Component getListCellRendererComponent(JList<? extends AnimationFrame> list, AnimationFrame value,
-				int index, boolean isSelected, boolean cellHasFocus) {
-			removeAll();
-			if (isSelected && index == animindex) {
-				setBackground(new Color(255, 0, 255));
-			} else if (isSelected) {
-				setBackground(Color.red);
-			} else if (index == animindex) {
-				setBackground(Color.blue);
-			} else {
-				setBackground(Color.gray);
-			}
-			setPreferredSize(new Dimension(170, 170));
-			add(new JLabel(new ImageIcon(ImageUtils.resize(value.image, 170))));
-
-			return this;
-		}
-
-	}
-
 	private static ImageIcon makeAnimationIcon(int stevilo, DefaultListModel<AnimationFrame> timelinevector, int size) {
 		BufferedImage resizedImage = new BufferedImage(size, size * stevilo, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = resizedImage.createGraphics();
@@ -593,11 +568,15 @@ public class AnimationMakerView extends ViewBase {
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(resizedImage.getSource()));
 	}
 
-	static class AnimationFrame {
+	public static class AnimationFrame {
 		final Image image;
 
 		AnimationFrame(Image s) {
 			image = s;
+		}
+
+		public Image getImage() {
+			return image;
 		}
 	}
 
