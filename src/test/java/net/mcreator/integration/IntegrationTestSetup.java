@@ -149,7 +149,6 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 
 		// Enable MCP server for tests
 		PreferencesManager.PREFERENCES.integrations.mcpEnable.set(true);
-		PreferencesManager.PREFERENCES.integrations.mcpAutoInstall.set(false);
 
 		// Do not track unit tests
 		GoogleAnalytics.ANALYTICS_ENABLED = false;

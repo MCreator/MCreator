@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.mcp;
 
-import net.mcreator.io.mcp.McpInstallHelper;
 import net.mcreator.io.mcp.transport.HttpMcpTransport;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
@@ -60,11 +59,6 @@ public class MCreatorMcpManager implements Closeable {
 					this::getCurrentMCreator);
 
 			try {
-				if (PreferencesManager.PREFERENCES.integrations.mcpAutoInstall.get()) {
-					McpInstallHelper.installToAll("MCreator",
-							"http://127.0.0.1:" + PreferencesManager.PREFERENCES.integrations.mcpPort.get() + "/mcp");
-				}
-
 				this.mcreatorMcp.start();
 				LOG.debug("MCP server started at port {}", PreferencesManager.PREFERENCES.integrations.mcpPort.get());
 			} catch (IOException e) {
