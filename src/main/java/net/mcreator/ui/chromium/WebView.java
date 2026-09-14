@@ -37,6 +37,7 @@ import org.cef.callback.CefJSDialogCallback;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.*;
 import org.cef.misc.BoolRef;
+import org.cef.misc.EventFlags;
 import org.cef.network.CefRequest;
 
 import javax.annotation.Nullable;
@@ -60,6 +61,9 @@ public class WebView extends JPanel implements Closeable {
 	private static final Logger LOG = LogManager.getLogger(WebView.class);
 
 	private static final int MAX_JS_EXECUTION_TIME = 10; // seconds
+
+	private static final int CEF_FORWARD_DELETE = 0x2E; // Chromium VKEY_DELETE
+	private static final int MAC_FORWARD_DELETE = 0x75; // Carbon kVK_ForwardDelete
 
 	private final CefClient client;
 	private final CefMessageRouter router;
@@ -180,6 +184,35 @@ public class WebView extends JPanel implements Closeable {
 						LOG.warn("Failed to open dev tools", e.getTargetException());
 					} catch (NoSuchMethodException | IllegalAccessException ignored) {
 					}
+					return true;
+				}
+
+				// macOS cmd + delete workaround implementation on top of Chromium.
+				if (OS.isMacintosh() && cefKeyEvent.type == CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
+						&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0 && (
+						cefKeyEvent.windows_key_code == CEF_FORWARD_DELETE
+								|| cefKeyEvent.native_key_code == MAC_FORWARD_DELETE)) {
+					CefFrame frame = browser.getFocusedFrame();
+					if (frame == null)
+						return false;
+					frame.executeJavaScript("""
+							(() => {
+							  const el = document.activeElement;
+							  if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
+							    return;
+							  const {selectionStart, selectionEnd, value} = el;
+							  if (selectionStart === null || selectionEnd === null)
+							    return;
+							  let end = selectionEnd;
+							  if (selectionStart === selectionEnd) {
+							    end = value.indexOf('\\n', selectionStart);
+							    if (end === -1)
+							      end = value.length;
+							  }
+							  el.setRangeText('', selectionStart, end, 'end');
+							  el.dispatchEvent(new Event('input', {bubbles: true}));
+							})();
+							""", "http://mcreator/cmd-delete-shortcut", 0);
 					return true;
 				}
 
