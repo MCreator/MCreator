@@ -91,14 +91,14 @@ public class WebView extends JPanel implements Closeable {
 	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("WebView-Callback-Thread");
-		thread.setUncaughtExceptionHandler((t, e) -> LOG.error("Failed to run WebView callback: {}", e, e));
+		thread.setUncaughtExceptionHandler((_, e) -> LOG.error("Failed to run WebView callback: {}", e, e));
 		return thread;
 	});
 
 	private final ExecutorService edtJSWaitThread = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("EDT-JS-Wait-Thread");
-		thread.setUncaughtExceptionHandler((t, e) -> LOG.error("Failed to wait on JS execution: {}", e, e));
+		thread.setUncaughtExceptionHandler((_, e) -> LOG.error("Failed to wait on JS execution: {}", e, e));
 		return thread;
 	});
 
@@ -189,9 +189,8 @@ public class WebView extends JPanel implements Closeable {
 
 				// macOS cmd + delete workaround implementation on top of Chromium.
 				if (OS.isMacintosh() && cefKeyEvent.type == CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
-						&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0 && (
-						cefKeyEvent.windows_key_code == CEF_FORWARD_DELETE
-								|| cefKeyEvent.native_key_code == MAC_FORWARD_DELETE)) {
+						&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
+						&& (cefKeyEvent.windows_key_code == CEF_FORWARD_DELETE || cefKeyEvent.native_key_code == MAC_FORWARD_DELETE)) {
 					CefFrame frame = browser.getFocusedFrame();
 					if (frame == null)
 						return false;
