@@ -143,10 +143,10 @@ dependencies {
     implementation 'io.beautifier:js-beautify:1.15.4.1'
     implementation 'io.github.furrrlo:unique4j:2.1.0'
     implementation 'io.github.furrrlo:unique4j-unix-socket-channel:2.1.0'
-    implementation 'org.eclipse.jgit:org.eclipse.jgit:7.7.1.202607240634-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:7.8.0.202609011348-r'
     implementation "net.java.dev.jna:jna:5.19.1" // needed by discord-rpc.jar
 
-    implementation "com.github.weisj:jsvg:2.1.0"
+    implementation "com.github.weisj:jsvg:2.2.0"
     implementation "com.formdev:flatlaf:3.7.2:no-natives"
     implementation("com.formdev:flatlaf-extras:3.7.2") {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
