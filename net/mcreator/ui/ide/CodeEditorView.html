@@ -61,10 +61,8 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#sed" tabindex="0">sed</a></li>
 <li><a href="#rep" tabindex="0">rep</a></li>
-<li><a href="#changeListener" tabindex="0">changeListener</a></li>
 <li><a href="#te" tabindex="0">te</a></li>
 <li><a href="#fileWorkingOn" tabindex="0">fileWorkingOn</a></li>
-<li><a href="#changed" tabindex="0">changed</a></li>
 <li><a href="#mouseEvent" tabindex="0">mouseEvent</a></li>
 <li><a href="#readOnly" tabindex="0">readOnly</a></li>
 </ol>
@@ -83,12 +81,14 @@ loadScripts(document, 'script');</script>
 <li><a href="#reformatTheCodeOnly()" tabindex="0">reformatTheCodeOnly()</a></li>
 <li><a href="#reformatTheCodeOrganiseAndFixImports()" tabindex="0">reformatTheCodeOrganiseAndFixImports()</a></li>
 <li><a href="#saveCode()" tabindex="0">saveCode()</a></li>
+<li><a href="#reloadCode()" tabindex="0">reloadCode()</a></li>
 <li><a href="#centerLineInScrollPane()" tabindex="0">centerLineInScrollPane()</a></li>
 <li><a href="#showView()" tabindex="0">showView()</a></li>
 <li><a href="#getCodeCleanup()" tabindex="0">getCodeCleanup()</a></li>
 <li><a href="#getViewName()" tabindex="0">getViewName()</a></li>
 <li><a href="#getViewIcon()" tabindex="0">getViewIcon()</a></li>
 <li><a href="#isFileSupported(java.lang.String)" tabindex="0">isFileSupported(String)</a></li>
+<li><a href="#wasChanged()" tabindex="0">wasChanged()</a></li>
 <li><a href="#jumpToLine(int)" tabindex="0">jumpToLine(int)</a></li>
 <li><a href="#getParser()" tabindex="0">getParser()</a></li>
 <li><a href="#getBreakpointHandler()" tabindex="0">getBreakpointHandler()</a></li>
@@ -164,12 +164,6 @@ implements <a href="../search/ISearchable.html" title="interface in net.mcreator
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#changed" class="member-name-link">changed</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/event/ChangeListener.html" title="class or interface in javax.swing.event" class="external-link">ChangeListener</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#changeListener" class="member-name-link">changeListener</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
 <div class="col-second even-row-color"><code><a href="#fileWorkingOn" class="member-name-link">fileWorkingOn</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
@@ -271,16 +265,25 @@ implements <a href="../search/ISearchable.html" title="interface in net.mcreator
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reformatTheCodeOrganiseAndFixImports()" class="member-name-link">reformatTheCodeOrganiseAndFixImports</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveCode()" class="member-name-link">saveCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadCode()" class="member-name-link">reloadCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Replaces the editor contents with the current contents of the file on disk, keeps the caret line where
+possible and marks the editor as unchanged.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#search(java.lang.String)" class="member-name-link">search</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchTerm)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveCode()" class="member-name-link">saveCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setChangeListener(javax.swing.event.ChangeListener)" class="member-name-link">setChangeListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/event/ChangeListener.html" title="class or interface in javax.swing.event" class="external-link">ChangeListener</a>&nbsp;changeListener)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#search(java.lang.String)" class="member-name-link">search</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchTerm)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../views/ViewBase.html" title="class in net.mcreator.ui.views">ViewBase</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showView()" class="member-name-link">showView</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setChangeListener(javax.swing.event.ChangeListener)" class="member-name-link">setChangeListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/event/ChangeListener.html" title="class or interface in javax.swing.event" class="external-link">ChangeListener</a>&nbsp;changeListener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../views/ViewBase.html" title="class in net.mcreator.ui.views">ViewBase</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#showView()" class="member-name-link">showView</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#wasChanged()" class="member-name-link">wasChanged</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -331,14 +334,6 @@ implements <a href="../search/ISearchable.html" title="interface in net.mcreator
 </section>
 </li>
 <li>
-<section class="detail" id="changeListener">
-<h3>changeListener</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/event/ChangeListener.html" title="class or interface in javax.swing.event" class="external-link">ChangeListener</a></span>&nbsp;<span class="element-name">changeListener</span></div>
-</div>
-</section>
-</li>
-<li>
 <section class="detail" id="te">
 <h3>te</h3>
 <div class="horizontal-scroll">
@@ -351,14 +346,6 @@ implements <a href="../search/ISearchable.html" title="interface in net.mcreator
 <h3>fileWorkingOn</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">fileWorkingOn</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="changed">
-<h3>changed</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">changed</span></div>
 </div>
 </section>
 </li>
@@ -465,6 +452,16 @@ implements <a href="../search/ISearchable.html" title="interface in net.mcreator
 </section>
 </li>
 <li>
+<section class="detail" id="reloadCode()">
+<h3>reloadCode</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadCode</span>()</div>
+<div class="block">Replaces the editor contents with the current contents of the file on disk, keeps the caret line where
+possible and marks the editor as unchanged. Does nothing if the file does not exist.</div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="centerLineInScrollPane()">
 <h3>centerLineInScrollPane</h3>
 <div class="horizontal-scroll">
@@ -521,6 +518,14 @@ implements <a href="../search/ISearchable.html" title="interface in net.mcreator
 <h3>isFileSupported</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isFileSupported</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;fileName)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="wasChanged()">
+<h3>wasChanged</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">wasChanged</span>()</div>
 </div>
 </section>
 </li>
