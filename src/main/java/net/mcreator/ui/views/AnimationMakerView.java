@@ -28,14 +28,13 @@ import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.views.editor.image.animation.AnimationImportUtils;
 import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
@@ -53,7 +52,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -225,77 +223,16 @@ public class AnimationMakerView extends ViewBase {
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
-		JButton add = L10N.button("dialog.animation_maker.add_frames");
-		add.addActionListener(event -> {
-			File[] frames = FileDialogs.getMultiOpenDialog(fra, new String[] { ".png" });
-			if (frames != null) {
-				Arrays.stream(frames).forEach(frame -> {
-					try {
-						timelinevector.addElement(new AnimationFrame(ImageIO.read(frame)));
-					} catch (IOException e) {
-						LOG.error(e.getMessage(), e);
-					}
-				});
-			}
-		});
-		add.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(add);
 
-		JButton add3 = L10N.button("dialog.animation_maker.add_frames_from_template");
-		add3.addActionListener(event -> addFramesFromTemplate());
-		add3.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(add3);
+		JButton importButton = L10N.button("dialog.animation_maker.import_frames");
+		importButton.addActionListener(_ -> AnimationImportUtils.importImagesAsFrames(this));
+		importButton.setIcon(UIRES.get("16px.import"));
+		timelinebar.add(importButton);
 
-		JButton add4 = L10N.button("dialog.animation_maker.add_frames_from_strip");
-		add4.addActionListener(event -> addFramesFromStrip());
-		add4.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(add4);
-
-		JButton add2 = L10N.button("dialog.animation_maker.add_frames_from_gif");
-		add2.addActionListener(event -> {
-			File frame = FileDialogs.getOpenDialog(fra, new String[] { ".gif" });
-			if (frame != null) {
-				ProgressDialog dial = new ProgressDialog(fra, L10N.t("dialog.animation_maker.gif_importing"));
-				Thread t = new Thread(() -> {
-					try {
-						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
-								L10N.t("dialog.animation_maker.gif_reading"));
-						dial.addProgressUnit(p1);
-						Image[] frames = GifUtil.readAnimatedGif(frame);
-						if (frames.length > 0)
-							p1.markStateOk();
-						else {
-							p1.markStateError();
-							dial.hideDialog();
-
-							JOptionPane.showMessageDialog(fra, L10N.t("dialog.animation_maker.gif_format_unsupported"),
-									L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
-
-							return;
-						}
-						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
-								L10N.t("dialog.animation_maker.gif_processing"));
-						dial.addProgressUnit(p2);
-						for (int i = 0; i < frames.length; i++) {
-							int finalI = i;
-							SwingUtilities.invokeLater(
-									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
-							p2.setPercent((int) (i / (float) frames.length * 100));
-						}
-						p2.markStateOk();
-						dial.hideDialog();
-					} catch (Exception e) {
-						dial.hideDialog();
-						LOG.error(e.getMessage(), e);
-					}
-
-				}, "GIFFramesLoader");
-				t.start();
-				dial.setVisible(true);
-			}
-		});
-		add2.setIcon(UIRES.get("18px.add"));
-		timelinebar.add(add2);
+		JButton addFromTemplates = L10N.button("dialog.animation_maker.add_frames_from_template");
+		addFromTemplates.addActionListener(_ -> AnimationImportUtils.addFramesFromTemplate(this));
+		addFromTemplates.setIcon(UIRES.get("18px.add"));
+		timelinebar.add(addFromTemplates);
 
 		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
 		remove.addActionListener(event -> {
@@ -557,6 +494,31 @@ public class AnimationMakerView extends ViewBase {
 		}
 	}
 
+	public void addFrameToTimeline(AnimationFrame frame) {
+		timelinevector.addElement(frame);
+	}
+
+	/**
+	 * <p>This method takes a {@link BufferedImage} that contains multiple frames (a tiled image) and divide each image into their own frame.
+	 * Then, each individual frame is added to the timeline.</p>
+	 *
+	 * @param bufferedImage The tiled {@link BufferedImage} containing all frames
+	 */
+	public void generateTimelineFromBufferedImage(BufferedImage bufferedImage) {
+		int x = Math.min(bufferedImage.getHeight(), bufferedImage.getWidth());
+		try {
+			TiledImageUtils tiledImageUtils = new TiledImageUtils(bufferedImage, x, x);
+			for (int i = 1; i <= tiledImageUtils.getWidthInTiles(); i++) {
+				for (int j = 1; j <= tiledImageUtils.getHeightInTiles(); j++) {
+					addFrameToTimeline(
+							new AnimationFrame(ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage())));
+				}
+			}
+		} catch (InvalidTileSizeException e) {
+			LOG.warn("Invalid tile size", e);
+		}
+	}
+
 	private class ComboBoxRenderer extends JPanel implements ListCellRenderer<AnimationFrame> {
 
 		ComboBoxRenderer() {
@@ -593,10 +555,10 @@ public class AnimationMakerView extends ViewBase {
 		return new ImageIcon(Toolkit.getDefaultToolkit().createImage(resizedImage.getSource()));
 	}
 
-	static class AnimationFrame {
+	public static class AnimationFrame {
 		final Image image;
 
-		AnimationFrame(Image s) {
+		public AnimationFrame(Image s) {
 			image = s;
 		}
 	}
