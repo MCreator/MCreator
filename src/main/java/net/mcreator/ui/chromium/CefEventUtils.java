@@ -19,6 +19,9 @@
 
 package net.mcreator.ui.chromium;
 
+import org.cef.OS;
+import org.cef.browser.CefBrowser;
+import org.cef.browser.CefFrame;
 import org.cef.handler.CefKeyboardHandler;
 import org.cef.misc.EventFlags;
 
@@ -86,4 +89,39 @@ final class CefEventUtils {
 		return cefKeyEvent.windows_key_code == KeyEvent.VK_UP || cefKeyEvent.windows_key_code == KeyEvent.VK_DOWN;
 	}
 
+	public static boolean handleMacShortcuts(CefBrowser browser, CefKeyboardHandler.CefKeyEvent cefKeyEvent) {
+		if (!OS.isMacintosh())
+			return false;
+
+		//  cmd + delete workaround implementation
+		if (cefKeyEvent.type == CefKeyboardHandler.CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
+				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
+				&& cefKeyEvent.windows_key_code == 0x2E) { // Chromium VKEY_DELETE
+			CefFrame frame = browser.getFocusedFrame();
+			if (frame == null)
+				return false;
+			frame.executeJavaScript("""
+					(() => {
+					  const el = document.activeElement;
+					  if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
+					    return;
+					  const {selectionStart, selectionEnd, value} = el;
+					  if (selectionStart === null || selectionEnd === null)
+					    return;
+					  let end = selectionEnd;
+					  if (selectionStart === selectionEnd) {
+					    end = value.indexOf('\\n', selectionStart);
+					    if (end === -1)
+					      end = value.length;
+					  }
+					  el.focus();
+					  el.setSelectionRange(selectionStart, end);
+					  document.execCommand('delete');
+					})();
+					""", "http://mcreator/cmd-delete-shortcut", 0);
+			return true;
+		}
+
+		return false;
+	}
 }
