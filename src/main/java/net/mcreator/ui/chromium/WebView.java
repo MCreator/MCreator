@@ -37,7 +37,6 @@ import org.cef.callback.CefJSDialogCallback;
 import org.cef.callback.CefQueryCallback;
 import org.cef.handler.*;
 import org.cef.misc.BoolRef;
-import org.cef.misc.EventFlags;
 import org.cef.network.CefRequest;
 
 import javax.annotation.Nullable;
@@ -61,8 +60,6 @@ public class WebView extends JPanel implements Closeable {
 	private static final Logger LOG = LogManager.getLogger(WebView.class);
 
 	private static final int MAX_JS_EXECUTION_TIME = 10; // seconds
-
-	private static final int CEF_FORWARD_DELETE = 0x2E; // Chromium VKEY_DELETE
 
 	private final CefClient client;
 	private final CefMessageRouter router;
@@ -187,9 +184,7 @@ public class WebView extends JPanel implements Closeable {
 				}
 
 				// macOS cmd + delete workaround implementation on top of Chromium.
-				if (OS.isMacintosh() && cefKeyEvent.type == CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
-						&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
-						&& cefKeyEvent.windows_key_code == CEF_FORWARD_DELETE) {
+				if (CefEventUtils.isCmdDeleteEvent(cefKeyEvent)) {
 					CefFrame frame = browser.getFocusedFrame();
 					if (frame == null)
 						return false;

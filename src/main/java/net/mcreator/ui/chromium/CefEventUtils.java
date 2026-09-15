@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.chromium;
 
+import org.cef.OS;
 import org.cef.handler.CefKeyboardHandler;
 import org.cef.misc.EventFlags;
 
@@ -84,6 +85,12 @@ final class CefEventUtils {
 
 	public static boolean isUpDownKeyEvent(CefKeyboardHandler.CefKeyEvent cefKeyEvent) {
 		return cefKeyEvent.windows_key_code == KeyEvent.VK_UP || cefKeyEvent.windows_key_code == KeyEvent.VK_DOWN;
+	}
+
+	public static boolean isCmdDeleteEvent(CefKeyboardHandler.CefKeyEvent cefKeyEvent) {
+		return OS.isMacintosh() && cefKeyEvent.type == CefKeyboardHandler.CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
+				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
+				&& cefKeyEvent.windows_key_code == 0x2E; // Chromium VKEY_DELETE
 	}
 
 }
