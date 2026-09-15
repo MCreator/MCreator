@@ -12,7 +12,12 @@
           "places_block": "${modid}:${registryname}",
           "may_replace": [
             <#list data.blocksToReplace as block>
-            "${mappedMCItemToRegistryNameNoTags(block)}"<#if block?has_next>,</#if>
+              <#-- Blocks.STONE was the default value of this field before it was removed from the mappings -->
+              <#if block.getUnmappedValue() == "Blocks.STONE">
+              "minecraft:stone"<#if block?has_next>,</#if>
+              <#else>
+              "${mappedMCItemToRegistryNameNoTags(block)}"<#if block?has_next>,</#if>
+              </#if>
             </#list>
           ]
         }
