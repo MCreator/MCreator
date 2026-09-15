@@ -183,31 +183,8 @@ public class WebView extends JPanel implements Closeable {
 					return true;
 				}
 
-				// macOS cmd + delete workaround implementation on top of Chromium.
-				if (CefEventUtils.isCmdDeleteEvent(cefKeyEvent)) {
-					CefFrame frame = browser.getFocusedFrame();
-					if (frame == null)
-						return false;
-					frame.executeJavaScript("""
-							(() => {
-							  const el = document.activeElement;
-							  if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
-							    return;
-							  const {selectionStart, selectionEnd, value} = el;
-							  if (selectionStart === null || selectionEnd === null)
-							    return;
-							  let end = selectionEnd;
-							  if (selectionStart === selectionEnd) {
-							    end = value.indexOf('\\n', selectionStart);
-							    if (end === -1)
-							      end = value.length;
-							  }
-							  el.setRangeText('', selectionStart, end, 'end');
-							  el.dispatchEvent(new Event('input', {bubbles: true}));
-							})();
-							""", "http://mcreator/cmd-delete-shortcut", 0);
+				if (CefEventUtils.handleMacShortcuts(browser, cefKeyEvent))
 					return true;
-				}
 
 				if (CefUtils.useOSR())
 					return false;
