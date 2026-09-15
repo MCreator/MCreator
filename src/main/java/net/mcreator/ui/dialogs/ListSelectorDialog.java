@@ -40,11 +40,11 @@ import java.util.function.Function;
  * @param <T> The type of elements contained in the list
  */
 public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> {
-	final JList<T> list = new JList<>(model);
+
 	final JLabel message = new JLabel("");
 
-	public ListSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> entryProvider) {
-		super(mcreator, entryProvider);
+	public ListSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> entryProvider, List<T> selectedEntries) {
+		super(mcreator, entryProvider, selectedEntries);
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addMouseListener(new MouseAdapter() {
@@ -56,7 +56,7 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		});
 
 		JButton selectButton = L10N.button("dialog.item_selector.use_selected");
-		selectButton.addActionListener(e -> dispose());
+		selectButton.addActionListener(_ -> dispose());
 
 		message.setBorder(BorderFactory.createEmptyBorder(4, 4, 2, 0));
 
