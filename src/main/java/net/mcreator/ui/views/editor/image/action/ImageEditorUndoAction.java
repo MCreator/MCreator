@@ -28,7 +28,7 @@ import javax.swing.*;
 
 public class ImageEditorUndoAction extends BasicAction {
 	public ImageEditorUndoAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.image_editor.undo"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.image_editor.undo"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getVersionManager().undo();

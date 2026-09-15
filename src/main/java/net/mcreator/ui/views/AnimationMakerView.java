@@ -21,7 +21,6 @@ package net.mcreator.ui.views;
 import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.ResourcePointer;
-import net.mcreator.io.TemplatesLoader;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;

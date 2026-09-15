@@ -37,6 +37,15 @@ public class TestUtil {
 		return failureHandler != null;
 	}
 
+	public static boolean isTestingEnvironmentIgnoreIf(String... ignoreStackClasses) {
+		if (failureHandler == null) {
+			return false;
+		}
+
+		List<String> ignored = Arrays.asList(ignoreStackClasses);
+		return !StackWalker.getInstance().walk(s -> s.anyMatch(f -> ignored.contains(f.getClassName())));
+	}
+
 	public static void failIfTestingEnvironment() {
 		if (failureHandler != null) {
 			failureHandler.run();

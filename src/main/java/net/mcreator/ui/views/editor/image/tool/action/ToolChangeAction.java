@@ -28,7 +28,7 @@ import javax.swing.*;
 public class ToolChangeAction extends BasicAction {
 	public ToolChangeAction(ActionRegistry actionRegistry, String name, String tooltip,
 			Class<? extends AbstractTool> tool) {
-		super(actionRegistry, name, actionEvent -> {
+		super(actionRegistry, name, _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getToolPanel().setToolByClass(tool);

@@ -302,11 +302,12 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 		remvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 1));
 		bar.add(remvar);
 
-		addvar.addActionListener(e -> {
+		addvar.addActionListener(_ -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
+							Validator validator = new JavaMemberNameValidator(
+									(VTextField) component).noInitialUnderscore();
 							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
@@ -331,7 +332,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 			}
 		});
 
-		remvar.addActionListener(e -> {
+		remvar.addActionListener(_ -> {
 			List<VariableElement> elements = localVarsList.getSelectedValuesList();
 			if (!elements.isEmpty()) {
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
@@ -504,21 +505,23 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
+	@Override public void afterGeneratableElementGenerated(boolean forceActions) {
+		super.afterGeneratableElementGenerated(forceActions);
 
 		boolean triggerTypeChanged = triggerTypeBeforeEdit != null && !triggerTypeBeforeEdit.equals(triggerType);
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && triggerTypeChanged)
-			fixScriptReferences(modElement, triggerTypeBeforeEdit);
+		// fixScriptReferences only removes references stale relative to the current trigger type, so forcing it
+		// is safe even when forceActions callers (e.g. MCP) can not tell whether the trigger type changed
+		if (isEditingMode() && (triggerTypeChanged || forceActions))
+			fixScriptReferences(modElement);
 
 		triggerTypeBeforeEdit = triggerType;
 	}
 
-	private void fixScriptReferences(ModElement beScript, String triggerTypeBeforeEdit) {
+	private void fixScriptReferences(ModElement beScript) {
 		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), beScript)) {
-			if (triggerTypeBeforeEdit.equals("block") && element.getType() == ModElementType.BEBLOCK) {
+			if (element.getType() == ModElementType.BEBLOCK && !"block".equals(triggerType)) {
 				if (element.getGeneratableElement() instanceof BEBlock beBlock) {
 					beBlock.localScripts.remove(beScript.getName());
 					LOG.info("Regenerating BEBlock {} because it referenced script {}", element.getName(),
@@ -526,7 +529,7 @@ public class BEScriptGUI extends ModElementGUI<BEScript>
 					mcreator.getGenerator().generateElement(element.getGeneratableElement());
 					mcreator.getWorkspace().getModElementManager().storeModElement(beBlock);
 				}
-			} else if (triggerTypeBeforeEdit.equals("item") && element.getType() == ModElementType.BEITEM) {
+			} else if (element.getType() == ModElementType.BEITEM && !"item".equals(triggerType)) {
 				if (element.getGeneratableElement() instanceof BEItem beItem) {
 					beItem.localScripts.remove(beScript.getName());
 					LOG.info("Regenerating BEItem {} because it referenced script {}", element.getName(),
