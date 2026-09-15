@@ -63,7 +63,6 @@ public class WebView extends JPanel implements Closeable {
 	private static final int MAX_JS_EXECUTION_TIME = 10; // seconds
 
 	private static final int CEF_FORWARD_DELETE = 0x2E; // Chromium VKEY_DELETE
-	private static final int MAC_FORWARD_DELETE = 0x75; // Carbon kVK_ForwardDelete
 
 	private final CefClient client;
 	private final CefMessageRouter router;
@@ -190,7 +189,7 @@ public class WebView extends JPanel implements Closeable {
 				// macOS cmd + delete workaround implementation on top of Chromium.
 				if (OS.isMacintosh() && cefKeyEvent.type == CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
 						&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
-						&& (cefKeyEvent.windows_key_code == CEF_FORWARD_DELETE || cefKeyEvent.native_key_code == MAC_FORWARD_DELETE)) {
+						&& cefKeyEvent.windows_key_code == CEF_FORWARD_DELETE) {
 					CefFrame frame = browser.getFocusedFrame();
 					if (frame == null)
 						return false;
