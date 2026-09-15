@@ -114,8 +114,9 @@ final class CefEventUtils {
 					    if (end === -1)
 					      end = value.length;
 					  }
-					  el.setRangeText('', selectionStart, end, 'end');
-					  el.dispatchEvent(new Event('input', {bubbles: true}));
+					  el.focus();
+					  el.setSelectionRange(selectionStart, end);
+					  document.execCommand('delete');
 					})();
 					""", "http://mcreator/cmd-delete-shortcut", 0);
 			return true;
