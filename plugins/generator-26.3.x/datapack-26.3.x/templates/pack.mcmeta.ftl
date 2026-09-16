@@ -1,7 +1,7 @@
 {
     "pack": {
-        "min_format": 107.1, <#-- https://minecraft.wiki/w/Pack_format -->
-        "max_format": 107.1,
+        "min_format": 121.0, <#-- https://minecraft.wiki/w/Pack_format -->
+        "max_format": 121.0,
         "description": "${JavaConventions.escapeStringForJava(settings.getDescription())!""}"
     }
 }
