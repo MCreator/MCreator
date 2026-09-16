@@ -143,7 +143,7 @@ public class JavaSourceResolver {
 							continue;
 						int lastDot = fqdn.lastIndexOf('.');
 						String simple = lastDot != -1 ? fqdn.substring(lastDot + 1) : fqdn;
-						if (!simple.isEmpty()) {
+						if (!simple.isEmpty() && !"package-info".equals(simple) && !"module-info".equals(simple)) {
 							imports.put(simple, fqdn);
 						}
 					} catch (Throwable t) {
@@ -167,6 +167,9 @@ public class JavaSourceResolver {
 
 				for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
 					String simpleName = entry.getKey();
+					if ("package-info".equals(simpleName) || "module-info".equals(simpleName))
+						continue;
+
 					for (String fqdn : entry.getValue()) {
 						int lastDot = fqdn.lastIndexOf('.');
 						if (lastDot == -1)
