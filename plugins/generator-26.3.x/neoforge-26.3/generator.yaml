@@ -1,9 +1,9 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 26.2.0.6-beta
+buildfileversion: 26.3.0.1-beta
 
 import:
-  - datapack-26.2.x
+  - datapack-26.3.x
 
 # gradle task definitions
 gradle:
@@ -108,8 +108,8 @@ base_templates:
 #      - "${w.hasElementsOfType('specialentity')}"
 
 #java_models:
-#  key: mojmap-26.2.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x]
+#  key: mojmap-26.3.x
+#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x, mojmap-26.2.x]
 #  requested_key_words: [ModelPart, ~ModelRenderer]
 
 #sources_setup_tasks:
