@@ -51,7 +51,7 @@ public final class LocalVariableResolver {
 	}
 
 	private static final Pattern ANNOTATION_PATTERN = Pattern.compile(
-			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]*|\\([^()]*\\))*\\))?");
+			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]|\\([^()]\\))*\\))?");
 
 	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
 			"\\b([A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
