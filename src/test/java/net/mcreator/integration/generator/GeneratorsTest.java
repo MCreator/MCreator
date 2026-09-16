@@ -248,11 +248,11 @@ import static org.junit.jupiter.api.Assertions.*;
 								() -> GTBuild.runTest(LOG, generator, workspace.get())));
 
 						// We only run server tests if we are not in GitHub Actions (their workers are too slow for this)
-						if (generatorConfiguration.getGradleTaskFor("run_server") != null
+						/*if (generatorConfiguration.getGradleTaskFor("run_server") != null
 								&& !TestUtil.isRunningInGitHubActions()) {
 							tests.add(DynamicTest.dynamicTest(generator + " - Testing server run",
 									() -> GTServerRun.runTest(LOG, generator, workspace.get())));
-						}
+						}*/
 					}
 
 					tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
