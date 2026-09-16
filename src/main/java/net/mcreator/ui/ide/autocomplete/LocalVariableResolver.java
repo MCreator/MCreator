@@ -54,15 +54,15 @@ public final class LocalVariableResolver {
 			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]*|\\([^()]*\\))*\\))?");
 
 	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
-			"\\b([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+			"\\b([A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
 	private static final Pattern FOR_PATTERN = Pattern.compile(
-			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
+			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^>]*>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
 	private static final Pattern LAMBDA_PARAM_PATTERN = Pattern.compile(
-			"\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<[^>]*>)?(?:\\[])*\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*\\)");
+			"\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^>]*>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*\\)");
 	private static final Pattern VAR_ASSIGN_PATTERN = Pattern.compile(
 			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*new\\s+([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
 	private static final Pattern VAR_ASSIGN_CAST_PATTERN = Pattern.compile(
-			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?(?:\\[])*\\s*\\)");
+			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<([^>]+)>)?(?:\\[])*)\\s*\\)");
 	private static final Pattern VAR_ASSIGN_EXPR_PATTERN = Pattern.compile(
 			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*([^;\\r\\n{}]+)");
 
@@ -143,8 +143,8 @@ public final class LocalVariableResolver {
 		Matcher mDecl = TYPE_DECL_PATTERN.matcher(activeCode);
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
-			if (base.equals(mDecl.group(3)))
-				lastType = new VarTypeInfo(mDecl.group(1), mDecl.group(2));
+			if (base.equals(mDecl.group(2)))
+				lastType = new VarTypeInfo(mDecl.group(1));
 		}
 		if (lastType != null)
 			return lastType;

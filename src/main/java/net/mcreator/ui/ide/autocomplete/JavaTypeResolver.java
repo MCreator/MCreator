@@ -34,6 +34,7 @@ import org.jboss.forge.roaster.model.Named;
 import org.jboss.forge.roaster.model.impl.ImportImpl;
 import org.jboss.forge.roaster.model.impl.JavaSourceImpl;
 import org.jboss.forge.roaster.model.source.*;
+import org.jboss.forge.roaster.model.util.Types;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -205,23 +206,33 @@ public class JavaTypeResolver {
 	public String resolveSimpleTypeName(String typeName, Map<String, String> imports, String currentPkg) {
 		if (typeName == null)
 			return null;
+		
+		String arrayBrackets = "";
+		if (typeName.endsWith("[]")) {
+			int firstBracket = typeName.indexOf('[');
+			arrayBrackets = typeName.substring(firstBracket);
+			typeName = typeName.substring(0, firstBracket).trim();
+		}
 
 		if (typeName.contains("<")) {
 			typeName = typeName.substring(0, typeName.indexOf('<')).trim();
 		}
 
-		if (imports != null && imports.containsKey(typeName)) {
-			return imports.get(typeName);
+		if (Types.isPrimitive(typeName)) {
+			return typeName + arrayBrackets;
 		}
+
+		if (imports != null && arrayBrackets.isEmpty() && imports.containsKey(typeName))
+			return imports.get(typeName);
 
 		String cacheKey = (currentPkg != null ? currentPkg : "") + ":" + typeName;
 		String cached = simpleTypeCache.getIfPresent(cacheKey);
 		if (cached != null)
-			return cached.isEmpty() ? null : cached;
+			return cached.isEmpty() ? null : (cached + arrayBrackets);
 
 		String resolved = resolveSimpleTypeNameImpl(typeName, imports, currentPkg);
 		simpleTypeCache.put(cacheKey, resolved != null ? resolved : "");
-		return resolved;
+		return resolved != null ? resolved + arrayBrackets : null;
 	}
 
 	private String resolveSimpleTypeNameImpl(String typeName, Map<String, String> imports, String currentPkg) {
@@ -276,9 +287,9 @@ public class JavaTypeResolver {
 		int depth = 0;
 		StringBuilder current = new StringBuilder();
 		for (char c : expression.toCharArray()) {
-			if (c == '(')
+			if (c == '(' || c == '[')
 				depth++;
-			else if (c == ')')
+			else if (c == ')' || c == ']')
 				depth--;
 			else if (c == '.' && depth == 0) {
 				result.add(current.toString().trim());
@@ -463,13 +474,25 @@ public class JavaTypeResolver {
 				}
 			}
 		} else {
+			String realBase = base;
+			int arrayAccessCount = 0;
+			while (realBase.endsWith("]")) {
+				int open = realBase.lastIndexOf('[');
+				if (open != -1) {
+					realBase = realBase.substring(0, open).trim();
+					arrayAccessCount++;
+				} else {
+					break;
+				}
+			}
+			
 			LocalVariableResolver.VarTypeInfo varInfo = LocalVariableResolver.findLocalVariableType(codeBeforeCursor,
-					base);
+					realBase);
 
 			if (varInfo == null) {
-				if (resolvingVars.add(base)) {
+				if (resolvingVars.add(realBase)) {
 					try {
-						String varExpr = LocalVariableResolver.findVarAssignmentExpression(codeBeforeCursor, base);
+						String varExpr = LocalVariableResolver.findVarAssignmentExpression(codeBeforeCursor, realBase);
 						if (varExpr != null) {
 							ResolutionResult rhsRes = resolveTargetFQDN(varExpr, code, codeBeforeCursor,
 									currentClassFQDN);
@@ -479,16 +502,16 @@ public class JavaTypeResolver {
 							}
 						}
 					} finally {
-						resolvingVars.remove(base);
+						resolvingVars.remove(realBase);
 					}
 				}
 
 				if (currentFQDN == null) {
-					if (!base.isEmpty() && Character.isUpperCase(base.charAt(0))) {
-						typeName = base;
+					if (!realBase.isEmpty() && Character.isUpperCase(realBase.charAt(0))) {
+						typeName = realBase;
 						isStaticContext = true;
 					} else {
-						CompletionItem memberItem = getMember(currentClassFQDN, base, currentClassFQDN, code);
+						CompletionItem memberItem = getMember(currentClassFQDN, realBase, currentClassFQDN, code);
 						if (memberItem != null && (!isCursorStatic || memberItem.isStatic())) {
 							typeName = memberItem.detail();
 						}
@@ -507,6 +530,11 @@ public class JavaTypeResolver {
 					}
 				}
 				currentFQDN = resolveSimpleTypeName(typeName, imports, currentPkg);
+				if (arrayAccessCount > 0 && currentFQDN != null) {
+					for (int a = 0; a < arrayAccessCount && currentFQDN.endsWith("[]"); a++) {
+						currentFQDN = currentFQDN.substring(0, currentFQDN.length() - 2);
+					}
+				}
 			}
 		}
 

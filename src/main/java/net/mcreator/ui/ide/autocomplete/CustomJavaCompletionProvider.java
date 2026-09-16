@@ -491,18 +491,27 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private static String extractTargetName(String beforeDot) {
 		String targetName = "";
-		int depth = 0;
+		int parenDepth = 0;
+		int bracketDepth = 0;
 		for (int i = beforeDot.length() - 1; i >= 0; i--) {
 			char c = beforeDot.charAt(i);
 			if (c == ')') {
-				depth++;
+				parenDepth++;
 			} else if (c == '(') {
-				if (depth > 0) {
-					depth--;
+				if (parenDepth > 0) {
+					parenDepth--;
 				} else {
 					break;
 				}
-			} else if (depth == 0) {
+			} else if (c == ']') {
+				bracketDepth++;
+			} else if (c == '[') {
+				if (bracketDepth > 0) {
+					bracketDepth--;
+				} else {
+					break;
+				}
+			} else if (parenDepth == 0 && bracketDepth == 0) {
 				if (!Character.isLetterOrDigit(c) && c != '_' && c != '.') {
 					break;
 				}

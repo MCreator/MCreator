@@ -71,6 +71,17 @@ public class JavaMemberResolver {
 			@Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty())
 			return new ArrayList<>();
+
+		if (fqdn.endsWith("[]")) {
+			List<JavaTypeResolver.CompletionItem> result = new ArrayList<>();
+			Set<String> added = new HashSet<>();
+			Set<String> visited = new HashSet<>();
+
+			JavaTypeResolver.addFieldCompletion("length", "int", false, true, false, "public", fqdn, result, added);
+			populateMembersOfFQDN("java.lang.Object", currentClassFQDN, currentCode, result, added, visited, false);
+			return result;
+		}
+
 		boolean isCurrentClass = fqdn.equals(currentClassFQDN);
 
 		if (!isCurrentClass) {
