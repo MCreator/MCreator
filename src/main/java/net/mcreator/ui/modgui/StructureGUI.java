@@ -45,7 +45,7 @@ import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.validators.CompoundValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
-import net.mcreator.ui.validation.validators.ItemListFieldValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -208,7 +208,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		pane7.add("Center", jigsawPoolsListComp);
 
 		restrictionBiomes.setValidator(new CompoundValidator(
-				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")),
+				new NonEmptyValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")),
 				new ItemListFieldSingleTagValidator(restrictionBiomes)));
 		page1group.addValidationElement(restrictionBiomes);
 

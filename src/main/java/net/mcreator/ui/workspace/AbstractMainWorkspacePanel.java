@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ITextFieldSearchable;
@@ -77,6 +78,14 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 					g.drawString(getSearchPlaceholderText(), 8, 19);
 				}
 			}
+
+			@Override public Dimension getMaximumSize() {
+				return getPreferredSize();
+			}
+
+			@Override public Dimension getMinimumSize() {
+				return new Dimension(270, super.getPreferredSize().height);
+			}
 		};
 		search.addFocusListener(new FocusAdapter() {
 			@Override public void focusGained(FocusEvent e) {
@@ -104,9 +113,13 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 
 		JPanel se = new JPanel(new BorderLayout());
 
-		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		// BoxLayout so the search box can shrink if there is not enough space for its preferred width
+		JPanel leftPan = new JPanel();
+		leftPan.setLayout(new BoxLayout(leftPan, BoxLayout.X_AXIS));
 		leftPan.setOpaque(false);
+		leftPan.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 		leftPan.add(search);
+		leftPan.add(Box.createHorizontalGlue());
 
 		workspaceRightBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 3));
 
@@ -122,7 +135,7 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 
 		se.setOpaque(false);
 
-		se.add("West", leftPan);
+		se.add("Center", leftPan);
 		se.add("East", workspaceRightBar);
 
 		add("North", se);
@@ -257,15 +270,17 @@ public abstract class AbstractMainWorkspacePanel extends JPanel implements IText
 	protected void afterVerticalTabChanged() {
 	}
 
-	public synchronized final void reloadWorkspaceTab() {
-		reloadToolBarComponents();
+	public final void reloadWorkspaceTab() {
+		ThreadUtil.runOnSwingThread(() -> {
+			reloadToolBarComponents();
 
-		if (currentTabPanel != null)
-			currentTabPanel.reloadElements();
+			if (currentTabPanel != null)
+				currentTabPanel.reloadElements();
+		});
 	}
 
-	public synchronized void refilterWorkspaceTab() {
-		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
+	public final void refilterWorkspaceTab() {
+		ThreadUtil.runOnSwingThread(() -> sectionTabs.values().forEach(IReloadableFilterable::refilterElements));
 	}
 
 	@Override public JTextComponent getSearchTextField() {

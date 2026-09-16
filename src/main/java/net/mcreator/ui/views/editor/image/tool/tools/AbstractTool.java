@@ -111,6 +111,15 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 		this.layer = layer;
 	}
 
+	/**
+	 * Called on the currently active tool when the selected layer changes.
+	 *
+	 * @param oldLayer The layer that was selected before the change; can be null
+	 * @param newLayer The newly selected layer
+	 */
+	public void layerChanged(Layer oldLayer, Layer newLayer) {
+	}
+
 	public Layer getLayer() {
 		return layer;
 	}

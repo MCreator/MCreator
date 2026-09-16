@@ -1,4 +1,7 @@
 {
+  "extensions": [
+    "air_mcitem_input_validation"
+  ],
   "args0": [
     {
       "type": "field_number",

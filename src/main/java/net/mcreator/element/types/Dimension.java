@@ -54,7 +54,7 @@ import java.util.List;
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
-	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
+	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen", "Void gen" }) public String worldGenType;
 
 	@NonNullMappable("Blocks.STONE#0") public MItemBlock mainFillerBlock;
 	@NonNullMappable("Blocks.WATER") public MItemBlock fluidBlock;
@@ -68,7 +68,7 @@ import java.util.List;
 	public boolean useCustomEffects;
 	public boolean hasClouds;
 	@Numeric(init = 192, min = -2032, max = 2031, step = 16) public int cloudHeight;
-	@LimitedOptions({ "NONE", "NORMAL", "END" }) public String skyType;
+	@LimitedOptions({ "NORMAL", "NONE", "END" }) public String skyType;
 	@Nullable public Color airColor;
 	public boolean sunHeightAffectsFog;
 	public boolean canRespawnHere;
@@ -146,7 +146,7 @@ import java.util.List;
 		this.creativeTabs = new ArrayList<>();
 		this.defaultEffects = "overworld";
 		this.cloudHeight = 192;
-		this.skyType = "NONE";
+		this.skyType = "NORMAL";
 		this.sunHeightAffectsFog = true;
 		this.igniterRarity = "COMMON";
 		this.biomesInDimension = new ArrayList<>();
@@ -166,8 +166,19 @@ import java.util.List;
 		return onPlayerEntersDimension != null || onPlayerLeavesDimension != null;
 	}
 
+	public boolean hasFixedTimeAndNeedsCustomTimeline() {
+		return hasFixedTime && (useCustomEffects ? "NORMAL".equals(skyType) : "overworld".equals(defaultEffects));
+	}
+
+	public boolean needsCustomEffectsTimeline() {
+		return useCustomEffects && "NORMAL".equals(skyType) && !hasFixedTime;
+	}
+
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
+		if ("Void gen".equals(this.worldGenType)) {
+			return retval;
+		}
 		retval.add(mainFillerBlock.getUnmappedValue());
 		for (BiomeEntry biomeEntry : getUsedBiomes()) {
 			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
@@ -186,9 +197,9 @@ import java.util.List;
 	}
 
 	public List<BiomeEntry> getUsedBiomes() {
-		List<BiomeEntry> usedBiomes = new ArrayList<>();
-		usedBiomes.addAll(biomesInDimension);
-		usedBiomes.addAll(biomesInDimensionCaves);
+		List<BiomeEntry> usedBiomes = new ArrayList<>(biomesInDimension);
+		if ("Normal world gen".equals(worldGenType)) // cave biomes are only supported by normal world gen
+			usedBiomes.addAll(biomesInDimensionCaves);
 		return usedBiomes;
 	}
 

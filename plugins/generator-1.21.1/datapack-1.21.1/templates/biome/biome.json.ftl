@@ -141,17 +141,17 @@
 }
 
 <#function getEntitiesOfType entityList type>
-	<#assign retval = []>
+	<#local retval = []>
 	<#list entityList as entity>
 		<#if entity.spawnType.getUnmappedValue() == type>
-			<#assign retval = retval + [entity]>
+			<#local retval = retval + [entity]>
 		</#if>
 	</#list>
 	<#return retval>
 </#function>
 
 <#macro generateEntityList entityList type>
-	<#assign entities = getEntitiesOfType(entityList, type)>
+	<#local entities = getEntitiesOfType(entityList, type)>
 	<#list entities as entry>
 	<#-- @formatter:off -->
     {

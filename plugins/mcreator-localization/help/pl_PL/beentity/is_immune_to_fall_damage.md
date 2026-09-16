@@ -1,0 +1,1 @@
+Jeśli opcja jest włączona, obiekt nie otrzyma żadnych obrażeń od upadku.

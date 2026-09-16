@@ -1,5 +1,6 @@
 <#-- @formatter:off -->
 <#include "../mcitems_json.ftl">
+<#include "../trees.ftl">
 
 <#assign ct = data.treeType == data.TREES_CUSTOM>
 
@@ -44,7 +45,6 @@
 {
   "type": "minecraft:tree",
   "config": {
-    "force_dirt": false,
     "ignore_vines": true,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
@@ -52,10 +52,7 @@
       "lower_size": ${minimum_size[1]},
       "upper_size": ${minimum_size[2]}
     },
-	"dirt_provider": {
-	  "type": "minecraft:simple_state_provider",
-	  "state": ${mappedMCItemToBlockStateJSON(data.undergroundBlock)}
-	},
+	"below_trunk_provider": <@belowTrunkProvider "FALSE" mappedBlockToBlockStateProvider(mappedMCItemToBlockStateJSON(data.undergroundBlock))/>,
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",
       "state":

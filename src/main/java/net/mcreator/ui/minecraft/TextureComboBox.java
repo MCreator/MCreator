@@ -27,9 +27,12 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.validators.ConditionalValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.ListUtils;
@@ -44,7 +47,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.function.Supplier;
 
-public class TextureComboBox extends JPanel implements IValidable {
+public class TextureComboBox extends JPanel implements IValidable, IOptionalValueContainer {
 
 	private final Texture prototype;
 
@@ -102,22 +105,13 @@ public class TextureComboBox extends JPanel implements IValidable {
 	}
 
 	public TextureComboBox requireValue(String errorTranslationKey) {
-		comboBox.setValidator(() -> {
-			if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().equals(empty))
-				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t(errorTranslationKey));
-			return ValidationResult.PASSED;
-		});
+		comboBox.setValidator(new NonEmptyValidator(this, L10N.t(errorTranslationKey)));
 		return this;
 	}
 
 	public TextureComboBox requireValue(String errorTranslationKey, Supplier<Boolean> validationCondition) {
-		comboBox.setValidator(() -> {
-			if (!validationCondition.get())
-				return ValidationResult.PASSED;
-			if (comboBox.getSelectedItem() == null || comboBox.getSelectedItem().equals(empty))
-				return new ValidationResult(ValidationResult.Type.ERROR, L10N.t(errorTranslationKey));
-			return ValidationResult.PASSED;
-		});
+		comboBox.setValidator(new ConditionalValidator(validationCondition,
+				new NonEmptyValidator(this, L10N.t(errorTranslationKey))));
 		return this;
 	}
 
@@ -181,6 +175,10 @@ public class TextureComboBox extends JPanel implements IValidable {
 
 	public void setAddPNGExtension(boolean addPNGExtension) {
 		this.addPNGExtension = addPNGExtension;
+	}
+
+	@Override public boolean isEmpty() {
+		return !hasTexture();
 	}
 
 	private class Renderer extends JLabel implements ListCellRenderer<Texture> {

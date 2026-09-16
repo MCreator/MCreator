@@ -38,8 +38,8 @@ public class Slider extends SizedComponent {
 	public final String suffix;
 	public final Procedure whenSliderMoves;
 
-	public Slider(int x, int y, int width, int height, @Nonnull String name, double min, double max, double value, double step,
-			String prefix, String suffix, Procedure whenSliderMoves) {
+	public Slider(int x, int y, int width, int height, @Nonnull String name, double min, double max, double value,
+			double step, String prefix, String suffix, Procedure whenSliderMoves) {
 		super(x, y, width, height);
 		this.name = name;
 		this.min = min;

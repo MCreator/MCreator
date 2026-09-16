@@ -8,8 +8,7 @@
     "fluid": "${modid}:${registryname}",
     "textures": {
       "base": "item/bucket",
-      "fluid": "neoforge:item/mask/bucket_fluid",
-      "cover": "neoforge:item/mask/bucket_fluid_cover"
+      "fluid": "neoforge:item/mask/bucket_fluid"
     }
 	</#if>
   }

@@ -12,13 +12,13 @@ templates:
 
 tags:
   - tag: ENTITIES:minecraft:boat
-    condition: "entityType %= Boat"
+    condition: "!isBoatChestVariant()"
   - tag: ENTITIES:c:boats
-    condition: "entityType %= ChestBoat"
+    condition: "isBoatChestVariant()"
   - tag: ITEMS:minecraft:boats
-    condition: "entityType %= Boat"
+    condition: "!isBoatChestVariant()"
   - tag: ITEMS:minecraft:chest_boats
-    condition: "entityType %= ChestBoat"
+    condition: "isBoatChestVariant()"
 
 localizationkeys:
   - key: entity.@modid.@registryname

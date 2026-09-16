@@ -34,7 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
-import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
+import net.mcreator.ui.ide.autocomplete.JavaLanguageSupportBridge;
 import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
@@ -95,7 +95,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	private final JScrollPane treeSP = new JScrollPane();
 	private AbstractSourceTree tree;
-	public ChangeListener changeListener;
+	private ChangeListener changeListener;
 
 	private final RTextScrollPane sp;
 
@@ -110,7 +110,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	public File fileWorkingOn;
 
-	public boolean changed = false;
+	private boolean changed = false;
 
 	private AutoCompletion ac = null;
 
@@ -362,6 +362,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			jls.install(te);
 
+			JavaLanguageSupportBridge.bridge(te, jls);
+
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.AbstractLanguageSupport");
 				Method method = treeNodeClass.getDeclaredMethod("getAutoCompletionFor", RSyntaxTextArea.class);
@@ -369,7 +371,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				ac = (AutoCompletion) method.invoke(jls, te);
 				ac.setAutoCompleteSingleChoices(false);
 			} catch (ClassNotFoundException | SecurityException | InvocationTargetException | IllegalArgumentException |
-			         NoSuchMethodException | IllegalAccessException e1) {
+					 NoSuchMethodException | IllegalAccessException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
 
@@ -384,8 +386,6 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException e1) {
 				LOG.error(e1.getMessage(), e1);
 			}
-
-			jcp.setStringCompletionProvider(new StringCompletitionProvider(mcreator.getWorkspace()));
 
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
@@ -407,6 +407,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 							&& !completionInAction && jls.isAutoActivationEnabled() &&
 							// only smart autocomplete if the char we typed is a letter or digit
 							Character.isLetterOrDigit(keyEvent.getKeyChar()) &&
+							// if the popup is already visible, the library refreshes it on caret updates
+							ac != null && !ac.isPopupVisible() &&
 							// only smart autocomplete if we have at least one char already written
 							!jcp.getAlreadyEnteredText(te).isBlank()
 							// only smart autocomplete if we have more than one completion to choose from
@@ -458,7 +460,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					CodeEditorView.this.mouseEvent = mouseEvent;
 					if (jumpToMode && ac != null) {
 						DeclarationFinder.InClassPosition position = DeclarationFinder.getDeclarationOnPos(
-								mcreator.getWorkspace(), parser, te, jls.getJarManager());
+								mcreator.getWorkspace(), parser, te, mcreator.getGenerator().getProjectJarManager());
 						if (position != null) {
 							if (position.classFileNode == null) {
 								te.setCaretPosition(position.caret);
@@ -607,6 +609,33 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		changed = false;
 		if (changeListener != null)
 			changeListener.stateChanged(new ChangeEvent(this));
+
+		if (te.getSyntaxEditingStyle().equals(SyntaxConstants.SYNTAX_STYLE_JAVA)) {
+			mcreator.getGenerator().refreshWorkspaceSourceInfo();
+		}
+	}
+
+	/**
+	 * Replaces the editor contents with the current contents of the file on disk, keeps the caret line where
+	 * possible and marks the editor as unchanged. Does nothing if the file does not exist.
+	 */
+	public void reloadCode() {
+		if (fileWorkingOn == null || !fileWorkingOn.isFile())
+			return;
+
+		int line = te.getCaretLineNumber();
+		te.setText(FileIO.readFileToString(fileWorkingOn));
+		try {
+			line = Math.min(line, te.getLineCount() - 1);
+			if (line >= 0) {
+				te.setCaretPosition(te.getLineStartOffset(line));
+				centerLineInScrollPane();
+			}
+		} catch (BadLocationException ignored) {
+		}
+		changed = false;
+		if (changeListener != null)
+			changeListener.stateChanged(new ChangeEvent(this));
 	}
 
 	public void centerLineInScrollPane() {
@@ -699,6 +728,10 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 	public static boolean isFileSupported(String fileName) {
 		return SUPPORTED_FILE_EXTENSIONS.contains(FilenameUtilsPatched.getExtension(fileName).toLowerCase());
+	}
+
+	public boolean wasChanged() {
+		return changed;
 	}
 
 	public void jumpToLine(int linenum) {

@@ -429,7 +429,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
+							Validator validator = new JavaMemberNameValidator(
+									(VTextField) component).noInitialUnderscore();
 							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
@@ -447,8 +448,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						}
 					}, VariableTypeLoader.INSTANCE.getLocalVariableTypes(mcreator.getGeneratorConfiguration()));
 			if (element != null) {
-				blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
-				localVars.addElement(element);
+				new Thread(() -> {
+					blocklyPanel.addLocalVariable(element.getName(), element.getType().getBlocklyVariableType());
+					SwingUtilities.invokeLater(() -> localVars.addElement(element));
+				}, "Procedure-Add-Local-Variable").start();
 			}
 		});
 
@@ -458,10 +461,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("elementgui.procedure.confirm_delete_var_msg"),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (n == JOptionPane.YES_OPTION) {
-					for (var element : elements) {
-						blocklyPanel.removeLocalVariable(element.getName());
-						localVars.removeElement(element);
-					}
+					new Thread(() -> {
+						for (var element : elements)
+							blocklyPanel.removeLocalVariable(element.getName());
+						SwingUtilities.invokeLater(() -> {
+							for (var element : elements)
+								localVars.removeElement(element);
+						});
+					}, "Procedure-Remove-Local-Variable").start();
 				}
 			}
 		});
@@ -628,15 +635,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
+	@Override public void afterGeneratableElementGenerated(boolean forceActions) {
+		super.afterGeneratableElementGenerated(forceActions);
 
 		// check if dependency list has changed
 		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
 				new HashSet<>(dependenciesArrayList));
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && dependenciesChanged)
+		if (isEditingMode() && (dependenciesChanged || forceActions))
 			regenerateProcedureCallers(modElement, new Stack<>());
 
 		dependenciesBeforeEdit = dependenciesArrayList;

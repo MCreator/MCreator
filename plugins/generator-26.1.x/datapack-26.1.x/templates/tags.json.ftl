@@ -35,7 +35,7 @@
 }
 
 <#macro tagEntry valueObject name>
-    <#assign value = valueObject.getUnmappedValue()>
+    <#local value = valueObject.getUnmappedValue()>
     <#-- make external entries and tag entries optional -->
     <#if value?starts_with("EXTERNAL:") || value?starts_with("TAG:") || value?starts_with("#")>
 		{

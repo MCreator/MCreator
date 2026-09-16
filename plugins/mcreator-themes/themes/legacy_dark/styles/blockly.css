@@ -110,3 +110,7 @@ body {
     background: var(--backgroundColor);
     color: var(--foregroundColor);
 }
+
+.injectionDiv {
+    --blockly-active-node-color: var(--foregroundColor) !important;
+}

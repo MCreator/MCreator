@@ -1,0 +1,1 @@
+Ez a tárgy szolgál kovácssablonként, amely a kovácsasztalnál felviszi a díszítést a páncélra.

@@ -36,7 +36,8 @@ public class Tooltip extends SizedComponent {
 	public final StringProcedure text;
 	public final Procedure displayCondition;
 
-	public Tooltip(@Nonnull String name, int x, int y, int width, int height, StringProcedure text, Procedure displayCondition) {
+	public Tooltip(@Nonnull String name, int x, int y, int width, int height, StringProcedure text,
+			Procedure displayCondition) {
 		super(x, y, width, height);
 		this.text = text;
 		this.displayCondition = displayCondition;

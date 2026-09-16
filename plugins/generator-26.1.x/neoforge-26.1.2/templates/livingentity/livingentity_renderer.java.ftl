@@ -130,6 +130,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		this.addLayer(new RenderLayer<>(this) {
 			final Identifier LAYER_TEXTURE = Identifier.parse("${modid}:textures/entities/${layer.texture}");
 			final RenderType RENDER_TYPE = RenderTypes.<#if layer.glow>eyes<#else>entityCutout</#if>(LAYER_TEXTURE);
+			<#if layer.model != "Default">
+				final EntityModel LAYER_MODEL = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
+			</#if>
 
 			<@javacompress>
 			@Override public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int light, ${renderState} state, float headYaw, float headPitch) {
@@ -144,9 +147,8 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 				</#if>
 
 				<#if layer.model != "Default">
-					EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
-					model.setupAnim(state);
-					submitNodeCollector.submitModel(model, state, poseStack, RENDER_TYPE, light,
+					LAYER_MODEL.setupAnim(state);
+					submitNodeCollector.submitModel(LAYER_MODEL, state, poseStack, RENDER_TYPE, light,
 						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(state, 0)</#if>, state.outlineColor, null);
 				<#else>
 					submitNodeCollector.submitModel(this.getParentModel(), state, poseStack, RENDER_TYPE, light,
@@ -288,20 +290,25 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 }
 </@javacompress>
 
+<#macro ensureEntityReference>
+	<#if !(entityReferenceCreated!false)>
+		<#assign needsEntityInState = true>
+		${name}Entity entity = state.getRenderData(ENTITY_KEY);
+		<#assign entityReferenceCreated = true>
+	</#if>
+</#macro>
+
 <#macro setupAnim>
 	<#if !humanoid> <#-- HumanoidModel resets its pose in its setupAnim which is called before this one for this special case -->
 	this.root().getAllParts().forEach(ModelPart::resetPose);
 	</#if>
-	<#if data.animations?has_content>
-	${name}Entity entity = state.getRenderData(ENTITY_KEY);
-	</#if>
 	<#list data.animations as animation>
 		<#if !animation.walking>
-			<#assign needsEntityInState = true>
+			<@ensureEntityReference/>
 			this.keyframeAnimation${animation?index}.apply(entity.animationState${animation?index}, state.ageInTicks, ${animation.speed}f);
 		<#else>
 			<#if hasProcedure(animation.condition)>
-			<#assign needsEntityInState = true>
+			<@ensureEntityReference/>
 			if (<@procedureCode animation.condition, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",

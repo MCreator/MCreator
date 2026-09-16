@@ -30,6 +30,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -44,7 +45,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public abstract class AbstractProcedureSelector extends JPanel implements IValidable {
+public abstract class AbstractProcedureSelector extends JPanel implements IValidable, IOptionalValueContainer {
 
 	private static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 
@@ -72,7 +73,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		this.mcreator = mcreator;
 		this.returnType = returnType;
 
-		this.providedDependencies = Sets.newHashSet(providedDependencies);
+		this.providedDependencies = Sets.newLinkedHashSet(Arrays.asList(providedDependencies));
 
 		setEnabled(isEnabled());
 	}
@@ -94,9 +95,9 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 		procedures.addItem(new ProcedureEntry(defaultName, null));
 
-		for (Map.Entry<ModElement, ReloadContext.ContexData> entry : context.data.entrySet()) {
+		for (Map.Entry<ModElement, ReloadContext.ContextData> entry : context.data.entrySet()) {
 			ModElement mod = entry.getKey();
-			ReloadContext.ContexData data = entry.getValue();
+			ReloadContext.ContextData data = entry.getValue();
 
 			boolean missing = data.dependencies().stream().anyMatch(d -> !providedDependencies.contains(d));
 
@@ -186,7 +187,11 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	}
 
 	public void enableRealtimeValidation() {
-		procedures.addActionListener(e -> getValidationStatus());
+		procedures.addActionListener(_ -> getValidationStatus());
+	}
+
+	@Override public boolean isEmpty() {
+		return getSelectedProcedure() == null;
 	}
 
 	@Override public void paint(Graphics g) {
@@ -237,7 +242,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	public static class ReloadContext {
 
 		// LinkedHashMap to keep the order of ModElement.getComparator
-		private final Map<ModElement, ContexData> data = new LinkedHashMap<>();
+		private final Map<ModElement, ContextData> data = new LinkedHashMap<>();
 
 		public static ReloadContext create(Workspace workspace) {
 			ReloadContext context = new ReloadContext();
@@ -263,13 +268,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;
 
-					context.data.put(mod, new ContexData(realdepsList, returnTypeCurrent));
+					context.data.put(mod, new ContextData(realdepsList, returnTypeCurrent));
 				}
 			}
 			return context;
 		}
 
-		record ContexData(Set<Dependency> dependencies, @Nullable VariableType returnType) {}
+		record ContextData(Set<Dependency> dependencies, @Nullable VariableType returnType) {}
 
 	}
 

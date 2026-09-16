@@ -58,8 +58,8 @@ import java.util.List;
 	@NonNullIf("hasFog") public NumberProcedure fogStartDistance;
 	@NonNullIf("hasFog") public NumberProcedure fogEndDistance;
 
-	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-			"Sky", "Fog", "Water fog" }) public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Dry foliage", "Birch foliage", "Spruce foliage",
+			"Default foliage", "Water", "Sky", "Fog", "Water fog" }) public String tintType;
 
 	public boolean canMultiply;
 	@Numeric(init = 5, min = 1, max = 100000, step = 1) public int flowRate;
@@ -73,7 +73,7 @@ import java.util.List;
 	@Numeric(init = 1000, min = -100000, max = 100000, step = 1) public int density;
 	@Numeric(init = 1000, min = 0, max = 100000, step = 1) public int viscosity;
 	@Numeric(init = 300, min = 0, max = 100000, step = 1) public int temperature;
-	@Nonnull public String type;
+	@Nonnull @LimitedOptions({ "WATER", "LAVA" }) public String type;
 
 	public boolean generateBucket;
 	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder textureBucket;

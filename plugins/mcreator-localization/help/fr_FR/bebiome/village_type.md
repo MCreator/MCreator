@@ -1,0 +1,1 @@
+Ce paramètre spécifie quel préréglage de la structure du village sera généré dans votre biome.

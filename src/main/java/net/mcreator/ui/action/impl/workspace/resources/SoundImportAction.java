@@ -28,7 +28,7 @@ public class SoundImportAction extends BasicAction {
 
 	public SoundImportAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.workspace.resources.import_sound"),
-				actionEvent -> SoundElementDialog.importSound(actionRegistry.getMCreator()));
+				_ -> SoundElementDialog.importSound(actionRegistry.getMCreator()));
 
 		setIcon(UIRES.get("16px.importsound"));
 	}

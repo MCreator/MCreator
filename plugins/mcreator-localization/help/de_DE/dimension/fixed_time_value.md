@@ -1,2 +1,3 @@
-Dies ist der Wert (gemessen in Ticks), bei dem die Zeit eingefroren wird.
-Wenn dieser Wert beispielsweise 18000 beträgt, wird die Zeit um Mitternacht eingefroren.
+Dies ist der Wert (gemessen in Ticks), für den die Zeit für visuelle Effekte eingefroren wird.
+
+Wenn dieser Wert 18000 beträgt, werden die visuellen Dimensionseffekte um Mitternacht eingefroren.

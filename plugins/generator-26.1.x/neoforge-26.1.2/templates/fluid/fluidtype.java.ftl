@@ -66,4 +66,11 @@ public class ${name}FluidType extends FluidType {
 		);
 	}
 
+	<#-- Non-waterlike fluid types get no living entity movement by default, so we delegate to
+		 vanilla fluid movement made accessible by the access transformer -->
+	@Override public boolean move(LivingEntity entity, Vec3 movementVector, double gravity) {
+		entity.travelIn${(data.type == "WATER")?then("Water", "Lava")}(movementVector, gravity, entity.getDeltaMovement().y <= 0, entity.getY());
+		return true;
+	}
+
 }</@javacompress>

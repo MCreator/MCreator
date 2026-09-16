@@ -1,0 +1,1 @@
+Ten parametr określa listę biomów, które biom będzie próbować częściowo zastąpić podczas generowania świata. Zauważ, że biomy z tej listy nie są całkowicie nadpisane i nadal będą generować razem z tym biomem.

@@ -40,8 +40,8 @@ public class EntityModel extends GUIComponent {
 
 	public boolean followMouseMovement;
 
-	public EntityModel(int x, int y, @Nonnull Procedure entityModel, Procedure displayCondition, int scale, int rotationX,
-			boolean followMouseMovement) {
+	public EntityModel(int x, int y, @Nonnull Procedure entityModel, Procedure displayCondition, int scale,
+			int rotationX, boolean followMouseMovement) {
 		super(x, y);
 		this.entityModel = entityModel;
 		this.displayCondition = displayCondition;

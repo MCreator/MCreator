@@ -1,0 +1,1 @@
+Cet item sera utilisé comme modèle de forge qui sera appliqué à l'ornement de l'armure dans la table de forge.

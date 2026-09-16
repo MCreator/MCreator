@@ -44,6 +44,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static net.mcreator.ui.minecraft.states.block.BlockStatePropertyUtils.MAX_PROPERTY_COMBINATIONS;
+
 public class AddBlockPropertyDialog {
 
 	@Nullable
@@ -72,24 +74,31 @@ public class AddBlockPropertyDialog {
 				integerBounds));
 		bounds.add("Enum", PanelUtils.gridElements(1, 0, 2, 0, L10N.label("elementgui.block.custom_property.values"),
 				stringBounds));
-		type.addActionListener(e -> cards.show(bounds, (String) type.getSelectedItem()));
+		type.addActionListener(_ -> cards.show(bounds, (String) type.getSelectedItem()));
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		dialog.getRootPane().setDefaultButton(ok);
 
 		AtomicReference<PropertyDataWithValue<?>> result = new AtomicReference<>(null);
-		ok.addActionListener(e -> {
+		ok.addActionListener(_ -> {
 			if (name.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				String propertyName = "CUSTOM:" + name.getText();
 				if ("Logic".equals(type.getSelectedItem())) {
 					result.set(new PropertyDataWithValue<>(new PropertyData.LogicType(propertyName), null));
 					dialog.dispose();
 				} else if ("Integer".equals(type.getSelectedItem())) {
-					result.set(new PropertyDataWithValue<>(
-							new PropertyData.IntegerType(propertyName, integerBounds.getIntMinValue(),
-									integerBounds.getIntMaxValue()), null));
-					dialog.dispose();
+					if (integerBounds.getIntMaxValue() - integerBounds.getIntMinValue() < MAX_PROPERTY_COMBINATIONS) {
+						result.set(new PropertyDataWithValue<>(
+								new PropertyData.IntegerType(propertyName, integerBounds.getIntMinValue(),
+										integerBounds.getIntMaxValue()), null));
+						dialog.dispose();
+					} else {
+						JOptionPane.showMessageDialog(dialog,
+								L10N.t("elementgui.block.custom_properties.add.error_too_many_values"),
+								L10N.t("elementgui.block.custom_properties.add.error_too_many_values.title"),
+								JOptionPane.ERROR_MESSAGE);
+					}
 				} else if ("Enum".equals(type.getSelectedItem())) {
 					List<String> textList = stringBounds.getTextList();
 					if (textList.size() > 1) {
@@ -105,7 +114,7 @@ public class AddBlockPropertyDialog {
 				}
 			}
 		});
-		cancel.addActionListener(e -> dialog.dispose());
+		cancel.addActionListener(_ -> dialog.dispose());
 
 		JPanel main = new JPanel(new GridLayout(0, 1, 0, 2));
 		main.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
@@ -125,7 +134,7 @@ public class AddBlockPropertyDialog {
 	public static PropertyDataWithValue<?> showImportDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
 		DataListEntry property = DataListSelectorDialog.openSelectorDialog(mcreator,
-				w -> DataListLoader.loadDataList("blockstateproperties").stream()
+				_ -> DataListLoader.loadDataList("blockstateproperties").stream()
 						.filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).toList(),
 				L10N.t("elementgui.block.custom_properties.add_existing"),
 				L10N.t("elementgui.block.custom_properties.add_existing.message"));

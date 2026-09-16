@@ -19,6 +19,7 @@
 package net.mcreator.io.net.api.update;
 
 import net.mcreator.Launcher;
+import net.mcreator.io.WindowsPackage;
 import net.mcreator.util.MCreatorVersionNumber;
 
 import java.util.HashMap;
@@ -45,11 +46,19 @@ public class UpdateInfo {
 	}
 
 	public boolean isNewUpdateAvailable() {
+		if (WindowsPackage.isRunningAsMSIX()) {
+			return false; // MSIX updates are handled by the Microsoft Store
+		}
+
 		long newMajor = MCreatorVersionNumber.majorStringToLong(latestMajor);
 		return newMajor > Launcher.version.majorlong;
 	}
 
 	public boolean isNewPatchAvailable() {
+		if (WindowsPackage.isRunningAsMSIX()) {
+			return false; // MSIX updates are handled by the Microsoft Store
+		}
+
 		Release thisRelease = releases.get(Launcher.version.major);
 		if (thisRelease != null) {
 			return Long.parseLong(thisRelease.getLatestBuild()) > Launcher.version.buildlong;

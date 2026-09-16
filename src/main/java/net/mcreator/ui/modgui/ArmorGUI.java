@@ -704,9 +704,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				armsModelPartL.removeAllItems();
 				armsModelPartR.removeAllItems();
 				try {
-					leggingsModelPartL.addItem("");
-					leggingsModelPartR.addItem("");
-
 					ComboBoxUtil.updateComboBoxContents(bodyModelPart,
 							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
 					ComboBoxUtil.updateComboBoxContents(armsModelPartL,
@@ -733,10 +730,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				leggingsModelPartL.removeAllItems();
 				leggingsModelPartR.removeAllItems();
 				try {
-					ComboBoxUtil.updateComboBoxContents(leggingsModelPartL,
-							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
-					ComboBoxUtil.updateComboBoxContents(leggingsModelPartR,
-							JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile())));
+					List<String> parts = JavaModels.getModelParts((JavaClassSource) Roaster.parse(model.getFile()));
+					parts.add("");
+					ComboBoxUtil.updateComboBoxContents(leggingsModelPartL, parts);
+					ComboBoxUtil.updateComboBoxContents(leggingsModelPartR, parts);
 					return;
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);

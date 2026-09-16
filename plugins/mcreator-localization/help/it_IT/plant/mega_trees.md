@@ -1,0 +1,1 @@
+Questi sono gli alberi che possono crescere se gli arboscelli sono in una configurazione 2x2. Utilizzati da mega alberi.

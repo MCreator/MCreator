@@ -82,6 +82,8 @@ tags:
       - isMeat
   - tag: ITEMS:minecraft:enchantable/durability
     condition: "!damageCount #= 0"
+  - tag: ITEMS:minecraft:loom_patterns
+    condition: hasBannerPatterns()
   - tag: ITEMS:minecraft:music_discs
     condition: isMusicDisc
   - tag: ITEMS:minecraft:piglin_loved

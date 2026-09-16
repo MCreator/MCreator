@@ -1,0 +1,1 @@
+Geselecteerde entiteiten zullen dit attribuut aanwezig hebben en instellen op de standaardwaarde wanneer voortgebracht.

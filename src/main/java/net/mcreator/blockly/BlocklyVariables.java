@@ -17,24 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package net.mcreator.blockly;
 
 import net.mcreator.ui.init.L10N;
@@ -45,6 +27,7 @@ import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -83,10 +66,25 @@ public record BlocklyVariables(BlocklyToCode generator) {
 			return false;
 		String[] name = field.split(":");
 		if (name.length == 2 && name[0].equals("global")) {
-			VariableType.Scope scope = workspace.getVariableElementByName(name[1]).getScope();
+			VariableElement variable = workspace.getVariableElementByName(name[1]);
+			if (variable == null)
+				return false;
+			VariableType.Scope scope = variable.getScope();
 			return scope == VariableType.Scope.PLAYER_LIFETIME || scope == VariableType.Scope.PLAYER_PERSISTENT;
 		}
 		return false;
+	}
+
+	public static boolean isGlobalVariableForWorkspace(Workspace workspace, String field) {
+		if (field == null)
+			return false;
+		String[] name = field.split(":");
+		return name.length == 2 && name[0].equals("global") && workspace.getVariableElementByName(name[1]) != null;
+	}
+
+	public static boolean isVariableTypeCompatible(VariableType blockType, @Nullable VariableType variableType) {
+		return variableType != null && blockType.getBlocklyVariableType() != null && blockType.getBlocklyVariableType()
+				.equals(variableType.getBlocklyVariableType());
 	}
 
 	public static Set<VariableElement> tryToExtractVariables(String xml) {

@@ -1,3 +1,7 @@
 private static double getEntitySubmergedHeight(Entity entity) {
-	return Math.max(entity.getFluidHeight(FluidTags.WATER), entity.getFluidHeight(FluidTags.LAVA));
+	for (FluidType fluidType : NeoForgeRegistries.FLUID_TYPES) {
+		if (entity.level().getFluidState(entity.blockPosition()).getFluidType() == fluidType)
+			return entity.getFluidTypeHeight(fluidType);
+	}
+	return 0;
 }

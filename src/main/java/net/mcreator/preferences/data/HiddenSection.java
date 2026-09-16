@@ -35,8 +35,8 @@ public class HiddenSection extends PreferencesSection {
 	public final BooleanEntry fullScreen;
 	public final PreferencesEntry<File> java_home;
 	public final StringEntry uiTheme;
-	public final BooleanEntry enableJavaPlugins;
 	public final StringEntry lastWebsiteNewsRead;
+	public final StringEntry defenderExclusions;
 
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -56,8 +56,9 @@ public class HiddenSection extends PreferencesSection {
 			}
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
-		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
 		lastWebsiteNewsRead = addEntry(new StringEntry("lastWebsiteNewsRead", ""));
+		defenderExclusions = addEntry(new StringEntry("defenderExclusions",
+				"")); // empty if user was not asked yet, otherwise "added", "skipped" or "failed"
 	}
 
 	@Override public boolean isVisible() {

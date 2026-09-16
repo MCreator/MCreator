@@ -1,0 +1,1 @@
+Si activé, l'entité sera en mesure de respirer indéfiniment sous l'eau comme des poissons.

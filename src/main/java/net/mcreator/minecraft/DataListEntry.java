@@ -49,11 +49,14 @@ public class DataListEntry {
 	}
 
 	public void setReadableName(String readableName) {
-		this.readableName = readableName;
+		if (readableName != null && !readableName.isBlank()) {
+			this.readableName = readableName;
+		}
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		if (description != null && !description.isBlank())
+			this.description = description;
 	}
 
 	public void setType(String type) {
@@ -94,9 +97,17 @@ public class DataListEntry {
 		return readableName;
 	}
 
+	@Nullable public String getRawReadableName() {
+		return readableName;
+	}
+
 	public String getDescription() {
 		if (description == null)
 			return "";
+		return description;
+	}
+
+	@Nullable public String getRawDescription() {
 		return description;
 	}
 

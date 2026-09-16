@@ -1,0 +1,2 @@
+Ceci est la quantité de dégâts que l'entité infligera en blessant une autre entité. Les valeurs typiques vont de 3 (ex. Zombie) à 7-21 (Golem de fer).
+Utiliser une valeur négative soignera l'entité attaquée à la place de le blesser.

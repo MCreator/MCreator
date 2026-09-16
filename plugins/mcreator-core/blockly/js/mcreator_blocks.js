@@ -2,7 +2,7 @@
 function registerSimpleMutatorContainer(blockId, localizationKey, colour) {
     Blockly.Blocks[blockId] = {
         init: function () {
-            this.appendDummyInput().appendField(javabridge.t(localizationKey));
+            this.appendDummyInput().appendField(translate(localizationKey));
             this.appendStatementInput('STACK');
             this.setColour(colour);
         }
@@ -13,7 +13,7 @@ function registerSimpleMutatorContainer(blockId, localizationKey, colour) {
 function registerSimpleMutatorInput(blockId, localizationKey, colour, hasFields) {
     Blockly.Blocks[blockId] = {
         init: function () {
-            this.appendDummyInput().appendField(javabridge.t(localizationKey));
+            this.appendDummyInput().appendField(translate(localizationKey));
             this.setPreviousStatement(true);
             this.setNextStatement(true);
             this.setColour(colour);
@@ -26,53 +26,52 @@ function registerSimpleMutatorInput(blockId, localizationKey, colour, hasFields)
 Blockly.Blocks['event_trigger'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.event_trigger.line1"));
+            .appendField(translate("blockly.block.event_trigger.line1"));
         this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.event_trigger.line2"))
+            .appendField(translate("blockly.block.event_trigger.line2"))
             .appendField(new FieldDataListSelector('global_triggers'), 'trigger');
         this.setNextStatement(true);
         this.setStyle('hat_blocks');
         this.setColour(90);
-        this.setTooltip(javabridge.t("blockly.block.event_trigger.tooltip"));
+        this.setTooltip(translate("blockly.block.event_trigger.tooltip"));
     }
 };
 
 Blockly.Blocks['script_trigger'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.script_trigger"))
+            .appendField(translate("blockly.block.script_trigger"))
             .appendField(new FieldDataListSelector('global_triggers'), 'trigger');
         this.setNextStatement(true);
         this.setStyle('hat_blocks');
         this.setColour(90);
-        this.setTooltip(javabridge.t("blockly.block.script_trigger.tooltip"));
+        this.setTooltip(translate("blockly.block.script_trigger.tooltip"));
     }
 };
 
 Blockly.Blocks['aitasks_container'] = {
     init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.aitasks_container"));
-        this.appendDummyInput().appendField(new Blockly.FieldLabel(javabridge.t("blockly.block.aitasks_container.tip"), 'small-text'));
+        this.appendDummyInput().appendField(translate("blockly.block.aitasks_container"));
+        this.appendDummyInput().appendField(new Blockly.FieldLabel(translate("blockly.block.aitasks_container.tip"), 'small-text'));
         this.setStyle('hat_blocks');
         this.setNextStatement(true);
         this.setColour(350);
-        this.setTooltip(javabridge.t("blockly.block.aitasks_container.tooltip"));
+        this.setTooltip(translate("blockly.block.aitasks_container.tooltip"));
     }
 };
 
 Blockly.Blocks['args_start'] = {
     init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.cmdargs_start"));
+        this.appendDummyInput().appendField(translate("blockly.block.cmdargs_start"));
         this.setStyle('hat_blocks');
         this.setNextStatement(true);
         this.setColour(120);
-        this.setTooltip(javabridge.t("blockly.block.cmdargs_start.tooltip"));
     }
 };
 
 Blockly.Blocks['advancement_trigger'] = {
     init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.advancement_trigger"));
+        this.appendDummyInput().appendField(translate("blockly.block.advancement_trigger"));
         this.setStyle('hat_blocks');
         this.setNextStatement(true);
         this.setColour(150);
@@ -81,19 +80,19 @@ Blockly.Blocks['advancement_trigger'] = {
 
 Blockly.Blocks['feature_container'] = {
     init: function () {
-        this.appendValueInput('feature').setCheck('Feature').appendField(javabridge.t("blockly.block.feature_container"));
-        this.appendDummyInput().appendField(new Blockly.FieldLabel(javabridge.t("blockly.block.feature_container.with_placement")));
+        this.appendValueInput('feature').setCheck('Feature').appendField(translate("blockly.block.feature_container"));
+        this.appendDummyInput().appendField(new Blockly.FieldLabel(translate("blockly.block.feature_container.with_placement")));
         this.setStyle('hat_blocks');
         this.setNextStatement(true, 'Placement');
         this.setColour(340);
         this.setInputsInline(false);
-        this.setTooltip(javabridge.t("blockly.block.feature_container.tooltip"));
+        this.setTooltip(translate("blockly.block.feature_container.tooltip"));
     }
 };
 
 Blockly.Blocks['enchantment_effects_start'] = {
     init: function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.block.enchantment_effects_start"));
+        this.appendDummyInput().appendField(translate("blockly.block.enchantment_effects_start"));
         this.setStyle('hat_blocks');
         this.setNextStatement(true, 'EnchantmentComponent');
         this.setColour(150);
@@ -105,7 +104,7 @@ Blockly.Blocks['enchantment_effects_start'] = {
 Blockly.Blocks['controls_while'] = {
     init: function () {
         this.appendValueInput('BOOL').setCheck('Boolean')
-            .appendField(javabridge.t("blockly.block.controls_while"));
+            .appendField(translate("blockly.block.controls_while"));
         this.appendStatementInput('DO')
             .appendField('%{BKY_CONTROLS_REPEAT_INPUT_DO}');
         this.setPreviousStatement(true);
@@ -197,6 +196,15 @@ registerSimpleMutatorInput('item_predicate_mutator_input', 'blockly.block.item_p
 // Mutator blocks for enchantment entry advancement trigger mixin
 registerSimpleMutatorContainer('any_item_mutator_container', 'blockly.block.any_item_mutator.container', 350);
 registerSimpleMutatorInput('any_item_mutator_input', 'blockly.block.any_item_mutator.input', 350);
+
+// Mutator blocks for "Lookup level-based value" mixin
+registerSimpleMutatorContainer(
+    'level_based_value_lookup_mutator_container', 'blockly.block.level_based_value_lookup.container', 230);
+registerSimpleMutatorInput('level_based_value_lookup_mutator_input', 'blockly.block.level_based_value_lookup.input', 230, true);
+
+// Mutator blocks for "All of" enchantment value effect mixin
+registerSimpleMutatorContainer('value_effect_all_of_mutator_container', 'blockly.block.value_effect_all_of.container', 300);
+registerSimpleMutatorInput('value_effect_all_of_mutator_input', 'blockly.block.value_effect_all_of.input', 300);
 
 // Unregister blocks that we will register again later
 delete Blockly.Blocks['controls_flow_statements'];

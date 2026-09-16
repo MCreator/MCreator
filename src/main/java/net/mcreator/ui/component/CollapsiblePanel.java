@@ -23,6 +23,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -31,7 +32,10 @@ import java.awt.event.MouseEvent;
 public class CollapsiblePanel extends JPanel {
 
 	private String title = "";
-	private final TitledBorder border;
+
+	private TitledBorder border;
+	private boolean smallArrows = false;
+
 	protected final JPanel contentHolder = new JPanel(new BorderLayout());
 
 	public CollapsiblePanel(String text, JComponent content) {
@@ -42,9 +46,7 @@ public class CollapsiblePanel extends JPanel {
 		setLayout(new BorderLayout());
 		setOpaque(false);
 
-		setBorder(border = BorderFactory.createTitledBorder(
-				BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()), title,
-				TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, null, Theme.current().getAltForegroundColor()));
+		this.setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()));
 
 		setTitle(text);
 		updateBorderTitle();
@@ -70,8 +72,14 @@ public class CollapsiblePanel extends JPanel {
 		});
 	}
 
+	@Override public void setBorder(Border border) {
+		super.setBorder(this.border = BorderFactory.createTitledBorder(border, title, TitledBorder.LEADING,
+				TitledBorder.DEFAULT_POSITION, null, Theme.current().getAltForegroundColor()));
+	}
+
 	public void setTitle(String title) {
 		firePropertyChange("title", this.title, this.title = title);
+		updateBorderTitle();
 	}
 
 	@Override protected void addImpl(Component comp, Object constraints, int index) {
@@ -100,15 +108,26 @@ public class CollapsiblePanel extends JPanel {
 		setPreferredSize(contentHolder.isVisible() ? null : new Dimension(getPreferredSize().width, 24));
 	}
 
+	public void setSmallArrows(boolean smallArrows) {
+		this.smallArrows = smallArrows;
+		updateBorderTitle();
+	}
+
 	protected void updateBorderTitle() {
 		if (contentHolder.getComponentCount() > 0) {
-			String arrow = !contentHolder.isVisible() ?
-					"[" + L10N.t("components.collapsible_panel.expand") + "]" :
-					"[" + L10N.t("components.collapsible_panel.collapse") + "]";
-			border.setTitle("<html>" + title + " <b>" + arrow);
+			if (smallArrows) {
+				String arrow = !contentHolder.isVisible() ? "▶ " : "▼ ";
+				border.setTitle(arrow + title);
+			} else {
+				String arrow = !contentHolder.isVisible() ?
+						"[" + L10N.t("components.collapsible_panel.expand") + "]" :
+						"[" + L10N.t("components.collapsible_panel.collapse") + "]";
+				border.setTitle("<html>" + title + " <b>" + arrow);
+			}
 		} else {
-			border.setTitle("<html>" + title);
+			border.setTitle(title);
 		}
 		repaint();
 	}
+
 }
