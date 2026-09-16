@@ -108,20 +108,71 @@ final class CefEventUtils {
 					  const {selectionStart, selectionEnd, value} = el;
 					  if (selectionStart === null || selectionEnd === null)
 					    return;
-					  let end = selectionEnd;
-					  if (selectionStart === selectionEnd) {
-					    end = value.indexOf('\\n', selectionStart);
-					    if (end === -1)
-					      end = value.length;
-					  }
+					
+					  const deleteEnd = selectionStart === selectionEnd ? findVisualLineEnd(el, selectionStart) : selectionEnd;
+					
 					  el.focus();
-					  el.setSelectionRange(selectionStart, end);
+					  el.setSelectionRange(selectionStart, deleteEnd);
 					  document.execCommand('delete');
+					
+					  // Find the end of the current visual line
+					  function findVisualLineEnd(el, caretPos) {
+					    const text = el.value;
+					    const hardLineBreak = text.indexOf('\\n', caretPos);
+					    const lineLimit = hardLineBreak === -1 ? text.length : hardLineBreak;
+					
+					    if (el.tagName !== 'TEXTAREA') // input elements don't wrap
+					      return lineLimit;
+					    if (el.wrap === 'off')
+					      return lineLimit;
+					
+					    const mirrorEl = document.createElement('div');
+					    const computedStyle = window.getComputedStyle(el);
+					    for (const property of [
+					      'font', 'letter-spacing', 'word-spacing', 'line-height',
+					      'text-align', 'text-indent', 'text-transform', 'tab-size',
+					      'padding', 'box-sizing'
+					    ]) {
+					      mirrorEl.style.setProperty(property, computedStyle.getPropertyValue(property));
+					    }
+					    Object.assign(mirrorEl.style, {
+					      width: `${el.clientWidth || el.getBoundingClientRect().width}px`,
+					      whiteSpace: 'pre-wrap', overflowWrap: 'break-word',
+					      wordBreak: computedStyle.wordBreak,
+					      position: 'absolute', visibility: 'hidden',
+					      left: '-9999px', top: '0'
+					    });
+					    mirrorEl.textContent = text;
+					    document.body.appendChild(mirrorEl);
+					
+					    const range = document.createRange();
+					    const textNode = mirrorEl.firstChild;
+					    if (!textNode) {
+					      mirrorEl.remove();
+					      return lineLimit;
+					    }
+					    const rowTopAt = (offset) => {
+					      range.setStart(textNode, offset);
+					      range.setEnd(textNode, offset);
+					      return range.getBoundingClientRect().top;
+					    };
+					
+					    const caretRowTop = rowTopAt(caretPos);
+					    let lineEnd = lineLimit;
+					    for (let i = caretPos + 1; i < lineLimit; i++) {
+					      if (Math.abs(rowTopAt(i) - caretRowTop) > 0.5) {
+					        lineEnd = i;
+					        break;
+					      }
+					    }
+					
+					    mirrorEl.remove();
+					    return lineEnd;
+					  }
 					})();
 					""", "http://mcreator/cmd-delete-shortcut", 0);
 			return true;
 		}
-
 		return false;
 	}
 }
