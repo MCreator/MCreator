@@ -514,6 +514,7 @@ public class JavaTypeResolver {
 						CompletionItem memberItem = getMember(currentClassFQDN, realBase, currentClassFQDN, code);
 						if (memberItem != null && (!isCursorStatic || memberItem.isStatic())) {
 							typeName = memberItem.detail();
+							currentGenericArgs = parseGenericArgs(typeName);
 						}
 					}
 				}

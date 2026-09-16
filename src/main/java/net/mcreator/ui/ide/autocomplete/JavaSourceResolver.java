@@ -235,7 +235,7 @@ public class JavaSourceResolver {
 				if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
 					continue;
 
-				String fType = f.getType().getName();
+				String fType = f.getType().toString();
 				String vis = f.isPublic() ?
 						"public" :
 						(f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
@@ -259,7 +259,7 @@ public class JavaSourceResolver {
 						|| mName.equals("catch") || mName.equals("class"))
 					continue;
 
-				String returnType = m.getReturnType() != null ? m.getReturnType().getName() : "void";
+				String returnType = m.getReturnType() != null ? m.getReturnType().toString() : "void";
 				List<? extends ParameterSource<?>> params = m.getParameters();
 				String[] pTypes = new String[params.size()];
 				String[] pNames = new String[params.size()];
