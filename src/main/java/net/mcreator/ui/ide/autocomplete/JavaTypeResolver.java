@@ -142,33 +142,47 @@ public class JavaTypeResolver {
 			return cached;
 
 		List<String> inners = new ArrayList<>();
-		String src = sourceResolver.loadSourceCodeForFQDN(fqdn);
-		if (src != null && !src.isEmpty()) {
-			try {
-				JavaType<?> source = Roaster.parse(src);
-				if (fqdn.contains(".")) {
-					String declaringClass = fqdn.substring(fqdn.lastIndexOf('.') + 1);
-					source = JavaSourceResolver.findType(source, declaringClass);
-				}
-				List<?> nestedList = Collections.emptyList();
-				if (source instanceof JavaClassSource javaClass) {
-					nestedList = javaClass.getNestedTypes();
-				} else if (source instanceof JavaInterfaceSource javaInterface) {
-					nestedList = javaInterface.getNestedTypes();
-				} else if (source instanceof JavaEnumSource javaEnum) {
-					nestedList = javaEnum.getNestedTypes();
-				}
-				for (Object nested : nestedList) {
-					if (nested instanceof JavaSource<?> js) {
-						if (!js.isPrivate()) {
-							inners.add(js.getName());
+
+		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
+			List<String> fromIndex = workspace.getGenerator().getGradleCache().getInnerClassTree().get(fqdn);
+			if (fromIndex != null)
+				inners.addAll(fromIndex);
+		}
+
+		if (inners.isEmpty()) {
+			String className = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
+			List<String> modFqdns = getModClasses().get(className);
+			if (modFqdns != null && modFqdns.contains(fqdn)) {
+				String src = sourceResolver.loadSourceCodeForFQDN(fqdn);
+				if (src != null && !src.isEmpty()) {
+					try {
+						JavaType<?> source = Roaster.parse(src);
+						if (fqdn.contains(".")) {
+							String declaringClass = fqdn.substring(fqdn.lastIndexOf('.') + 1);
+							source = JavaSourceResolver.findType(source, declaringClass);
 						}
+						List<?> nestedList = Collections.emptyList();
+						if (source instanceof JavaClassSource javaClass) {
+							nestedList = javaClass.getNestedTypes();
+						} else if (source instanceof JavaInterfaceSource javaInterface) {
+							nestedList = javaInterface.getNestedTypes();
+						} else if (source instanceof JavaEnumSource javaEnum) {
+							nestedList = javaEnum.getNestedTypes();
+						}
+						for (Object nested : nestedList) {
+							if (nested instanceof JavaSource<?> js) {
+								if (!js.isPrivate()) {
+									inners.add(js.getName());
+								}
+							}
+						}
+					} catch (Throwable e) {
+						LOG.debug("Failed to parse inner classes for {}", fqdn, e);
 					}
 				}
-			} catch (Throwable e) {
-				LOG.debug("Failed to parse inner classes for {}", fqdn, e);
 			}
 		}
+
 		inners = Collections.unmodifiableList(inners);
 		innerClassesCache.put(fqdn, inners);
 		return inners;

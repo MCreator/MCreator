@@ -37,16 +37,20 @@ public class GeneratorGradleCache {
 	@Nullable private final File javaHome;
 	private final List<ClasspathEntry> classpath;
 	private final Map<String, List<String>> importTree;
+	@Nullable private transient Map<String, List<String>> innerClassTree;
 
 	GeneratorGradleCache(Generator generator) {
 		projectJarManager = new ProjectJarManager(generator);
 		this.classpath = projectJarManager.getClasspath();
 		this.importTree = ImportTreeBuilder.generateImportTree(this.projectJarManager);
+		this.innerClassTree = ImportTreeBuilder.generateInnerClassTree(this.projectJarManager);
 		this.javaHome = projectJarManager.getJavaHome();
 	}
 
 	void reinitAfterGSON(Generator generator) throws GradleCacheImportFailedException {
 		projectJarManager = new ProjectJarManager(generator, classpath, javaHome);
+		if (innerClassTree == null)
+			innerClassTree = ImportTreeBuilder.generateInnerClassTree(this.projectJarManager);
 	}
 
 	@Nullable ProjectJarManager getProjectJarManager() {
@@ -57,6 +61,10 @@ public class GeneratorGradleCache {
 		// Not redundant as GSON will return a mutable map, but we want to return an unmodifiable map
 		//noinspection RedundantUnmodifiable
 		return Collections.unmodifiableMap(importTree);
+	}
+
+	public Map<String, List<String>> getInnerClassTree() {
+		return innerClassTree != null ? innerClassTree : Collections.emptyMap();
 	}
 
 	public static class ClasspathEntry {

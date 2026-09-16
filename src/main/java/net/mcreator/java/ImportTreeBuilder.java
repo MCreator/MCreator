@@ -114,6 +114,71 @@ public class ImportTreeBuilder {
 		return Collections.unmodifiableMap(retval);
 	}
 
+	public static Map<String, List<String>> generateInnerClassTree(ProjectJarManager projectJarManager) {
+		Map<String, List<String>> retval = new ConcurrentHashMap<>();
+		List<LibraryInfo> libraryInfos = projectJarManager.getExternalClassFileSources();
+		libraryInfos.parallelStream().forEach(libraryInfo -> {
+			try {
+				boolean isJmod = libraryInfo instanceof JModLibraryInfo;
+				LibraryInfoIterator.iterateLibraryInfo(libraryInfo, entry -> {
+					String entryPath = entry.path();
+
+					if (isJmod) {
+						if (!entryPath.startsWith("classes/"))
+							return;
+						entryPath = entryPath.substring(8);
+					}
+
+					if (!entryPath.endsWith(".class") || !entryPath.contains("$"))
+						return;
+
+					if (entryPath.startsWith("jdk/internal/") || entryPath.startsWith("sun/")
+							|| entryPath.startsWith("com/sun/") || entryPath.startsWith("org/antlr")
+							|| entryPath.startsWith("org/checkerframework") || entryPath.startsWith("META-INF/"))
+						return;
+
+					String fqdn = entryPath.replace('\\', '/');
+					fqdn = fqdn.substring(0, fqdn.length() - 6);
+
+					int dollarIdx = fqdn.lastIndexOf('$');
+					if (dollarIdx < 0)
+						return;
+
+					String innerRaw = fqdn.substring(dollarIdx + 1);
+
+					if (innerRaw.isEmpty() || Character.isDigit(innerRaw.charAt(0)))
+						return;
+
+					try (DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream())) {
+						int magic = dis.readInt();
+						if (magic != 0xCAFEBABE)
+							throw new Exception();
+						dis.readUnsignedShort();
+						dis.readUnsignedShort();
+						skipConstantPool(dis);
+						int accessFlags = dis.readUnsignedShort();
+						if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
+							return;
+						if ((accessFlags & AccessFlag.SYNTHETIC) != 0)
+							return;
+					} catch (Exception e) {
+						LOG.debug("Failed to check access flags of inner class {} - assuming public", entryPath);
+					}
+
+					String fqdnDots = fqdn.replace('/', '.');
+					int outerEnd = fqdnDots.lastIndexOf('$');
+					String outerFqdn = fqdnDots.substring(0, outerEnd).replace('$', '.');
+
+					retval.computeIfAbsent(outerFqdn, _ -> Collections.synchronizedList(new ArrayList<>(2)))
+							.add(innerRaw);
+				}, false);
+			} catch (IOException e) {
+				LOG.warn("Failed to load inner class index", e);
+			}
+		});
+		return Collections.unmodifiableMap(retval);
+	}
+
 	public static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {
 		reloadClassesFromModImpl(generator.getSourceRoot(), generator.getSourceRoot(), store);
 	}
