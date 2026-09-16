@@ -274,6 +274,7 @@ public class JavaMemberResolver {
 					populateMembersOfFQDN(superIf, currentClassFQDN, null, result, added, visited, true);
 				}
 			}
+			populateMembersOfFQDN("java.lang.Object", currentClassFQDN, null, result, added, visited, false);
 		} else {
 			String superClassName = cf.getSuperClassName(true);
 			if (superClassName != null && !superClassName.isEmpty()) {
