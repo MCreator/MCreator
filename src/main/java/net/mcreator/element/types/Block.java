@@ -98,8 +98,8 @@ import java.util.stream.Collectors;
 	public TextureHolder signEntityTexture;
 	@NonNullIf("blockBase %= HangingSign") @TextureReference(TextureType.SCREEN) public TextureHolder signGUITexture;
 
-	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-			"Sky", "Fog", "Water fog" }) public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Dry foliage", "Birch foliage", "Spruce foliage",
+			"Default foliage", "Water", "Sky", "Fog", "Water fog" }) public String tintType;
 	public boolean isItemTinted;
 
 	public boolean hasTransparency;
@@ -143,6 +143,7 @@ import java.util.stream.Collectors;
 
 	public boolean isReplaceable;
 	public boolean canProvidePower;
+	public boolean forceRedstoneConductor;
 	public NumberProcedure emittedRedstonePower;
 	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
 	@NonNullMappable("harp") public NoteBlockInstrument noteBlockInstrument;

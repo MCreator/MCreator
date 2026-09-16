@@ -48,7 +48,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -110,8 +113,9 @@ public class WebView extends JPanel implements Closeable {
 		// bound to the client of this WebView so MCreatorSchemeHandler holds a direct reference to
 		// the MCreator instance of this WebView, valid even for requests in flight while closing
 		this.client.addRequestHandler(new CefRequestHandlerAdapter() {
-			@Override public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request,
-					boolean userGesture, boolean isRedirect) {
+			@Override
+			public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, boolean userGesture,
+					boolean isRedirect) {
 				return !request.getURL().startsWith("http://mcreator/"); // return true to block the request
 			}
 
@@ -121,7 +125,8 @@ public class WebView extends JPanel implements Closeable {
 					BoolRef disableDefaultHandling) {
 				if (request.getURL().startsWith("http://mcreator/")) {
 					return new CefResourceRequestHandlerAdapter() {
-						@Override public CefResourceHandler getResourceHandler(CefBrowser browser, CefFrame frame,
+						@Override
+						public CefResourceHandler getResourceHandler(CefBrowser browser, CefFrame frame,
 								CefRequest request) {
 							return new MCreatorSchemeHandler(requestHandlers);
 						}

@@ -19,6 +19,10 @@ This repository page is for people looking to contribute to MCreator. Visit http
 
 Download MCreator binary distributions on https://mcreator.net/download.
 
+You can also download MCreator from Microsoft Store as a donation to the project and get automatic updates as a bonus.
+
+[<img src="https://get.microsoft.com/images/en-us%20dark.svg" width="180">](https://mcreator.net/msstore)
+
 ## Development
 
 To clone this repository, run `git clone --recursive https://github.com/MCreator/MCreator.git`.

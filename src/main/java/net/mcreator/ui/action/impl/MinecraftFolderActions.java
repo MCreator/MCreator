@@ -32,7 +32,7 @@ public class MinecraftFolderActions {
 
 	public static class OpenJavaEditionFolder extends BasicAction {
 		public OpenJavaEditionFolder(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.open_java_edition_dir"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.open_java_edition_dir"), _ -> {
 				File file = MinecraftFolderUtils.getJavaEditionFolder();
 				if (file != null) {
 					DesktopUtils.openSafe(file);
@@ -48,7 +48,7 @@ public class MinecraftFolderActions {
 
 	public static class OpenBedrockEditionFolder extends BasicAction {
 		public OpenBedrockEditionFolder(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.open_bedrock_edition_dir"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.open_bedrock_edition_dir"), _ -> {
 				File file = MinecraftFolderUtils.getBedrockEditionFolder();
 				if (file != null) {
 					DesktopUtils.openSafe(file);

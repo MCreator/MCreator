@@ -210,7 +210,7 @@ public class ElementOrderEditor {
 				}
 			}
 
-			mcreator.getWorkspace().getHistoryManager().checkpoint("local_history.checkpoint.tab_order_changed");
+			mcreator.getWorkspace().getHistoryManager().checkpoint("tab_order_changed");
 			mcreator.getWorkspace().markDirty();
 		}
 	}

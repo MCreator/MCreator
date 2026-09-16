@@ -1007,6 +1007,8 @@ import java.util.regex.Pattern;
 					mcreator.getGenerator().generateElement(generatableElementDuplicate);
 					mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
 					mcreator.getModElementManager().storeModElement(generatableElementDuplicate);
+					mcreator.getWorkspace().getHistoryManager()
+							.checkpoint("mod_element_added", mu.getType().getReadableName(), modName);
 
 					if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 						List<GeneratorTemplate> originalFiles = mcreator.getGenerator()

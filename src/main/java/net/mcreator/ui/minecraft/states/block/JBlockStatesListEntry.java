@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.SearchableComboBox;
@@ -126,7 +127,7 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		parameters.add("Center", PanelUtils.northAndCenterElement(regularParamsGrid, boundingBoxList, 2, 2));
 
 		CollapsiblePanel collapse = new CollapsiblePanel(L10N.t("elementgui.block.state_collapse"), parameters);
-		collapse.toggleVisibility(userAction);
+		collapse.toggleVisibility(userAction || PreferencesManager.PREFERENCES.ui.expandSectionsByDefault.get());
 		line.add("Center", collapse);
 
 		renderType.addActionListener(e -> {

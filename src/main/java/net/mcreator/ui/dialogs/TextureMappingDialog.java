@@ -27,6 +27,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
+import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
@@ -46,6 +48,8 @@ import java.util.Set;
 public class TextureMappingDialog {
 
 	private Map<String, TexturedModel.TextureMapping> currentState;
+
+	private final Map<String, ValidationGroup> validationGroups = new HashMap<>();
 
 	public TextureMappingDialog(Map<String, TexturedModel.TextureMapping> currentState) {
 		this.currentState = currentState;
@@ -78,14 +82,14 @@ public class TextureMappingDialog {
 			pane.addTab(L10N.t("dialog.textures_mapping.add_new"), null);
 			pane.setTabComponentAt(0, new JLabel(UIRES.get("16px.add")));
 			Set<String> finalTexturesList = texturesList;
-			pane.addChangeListener(e -> {
+			pane.addChangeListener(_ -> {
 				if (pane.getSelectedIndex() == 0) { // new texture mapping
 					pane.setSelectedIndex(1);
 					String mapping = VOptionPane.showInputDialog(mcreator,
 							L10N.t("dialog.textures_mapping.enter_name_message"),
 							L10N.t("dialog.textures_mapping.enter_name_title"), null, new OptionPaneValidator.Cached() {
 								@Override public Validator createValidator(JComponent component) {
-									return new JavaMemberNameValidator((VTextField) component, false);
+									return new JavaMemberNameValidator((VTextField) component);
 								}
 							});
 					if (mapping != null) {
@@ -102,15 +106,15 @@ public class TextureMappingDialog {
 
 		d.add("Center", pane);
 
-		if (currentState.keySet().size() > 5) {
+		if (currentState.size() > 5) {
 			JButton jumpto = L10N.button("dialog.textures_mapping.jump_to");
 			jumpto.setMargin(new Insets(2, 5, 2, 5));
-			jumpto.addActionListener(e -> {
+			jumpto.addActionListener(_ -> {
 				JScrollablePopupMenu popupMenu = new JScrollablePopupMenu();
 				for (int i = 0; i < pane.getTabCount(); i++) {
 					JMenuItem menuItem = new JMenuItem(pane.getTitleAt(i));
 					int finalI = i;
-					menuItem.addActionListener(e1 -> pane.setSelectedIndex(finalI));
+					menuItem.addActionListener(_ -> pane.setSelectedIndex(finalI));
 					popupMenu.add(menuItem);
 				}
 				popupMenu.show(jumpto, 0, jumpto.getHeight());
@@ -129,8 +133,15 @@ public class TextureMappingDialog {
 
 		d.add("South", PanelUtils.join(FlowLayout.CENTER, ok, cancel));
 
-		ok.addActionListener(e -> d.dispose());
-		cancel.addActionListener(e -> {
+		ok.addActionListener(_ -> {
+			if (new AggregatedValidationResult(validationGroups.values()).validateIsErrorFree()) {
+				d.dispose();
+			} else {
+				JOptionPane.showMessageDialog(d, L10N.t("dialog.textures_mapping.errors.message"),
+						L10N.t("dialog.textures_mapping.errors.title"), JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		cancel.addActionListener(_ -> {
 			currentState = null;
 			d.dispose();
 		});
@@ -156,16 +167,21 @@ public class TextureMappingDialog {
 
 		JPanel panel = new JPanel(new GridLayout(entries.size(), 2, 100, 10));
 
+		ValidationGroup validationGroup = new ValidationGroup();
+		validationGroups.put(currentMappingName, validationGroup);
+
 		TextureSelectionButton[] tx = new TextureSelectionButton[entries.size()];
 		int idx = 0;
 		for (Map.Entry<String, TextureHolder> s : entries) {
 			panel.add(L10N.label("dialog.textures_mapping.model_texture_part", s.getKey()));
-			tx[idx] = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+			tx[idx] = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK))
+					.requireValue();
 			if (s.getValue() != null && !s.getValue().isEmpty())
 				tx[idx].setTexture(s.getValue());
+			validationGroup.addValidationElement(tx[idx]);
 			panel.add(PanelUtils.join(tx[idx]));
 			int finalIdx = idx;
-			tx[idx].addTextureSelectedListener(e -> currentState.get(currentMappingName).getTextureMap()
+			tx[idx].addTextureSelectedListener(_ -> currentState.get(currentMappingName).getTextureMap()
 					.put(s.getKey(), tx[finalIdx].getTextureHolder()));
 			idx++;
 		}
@@ -176,7 +192,7 @@ public class TextureMappingDialog {
 		button.setContentAreaFilled(false);
 		button.setBorder(BorderFactory.createEmptyBorder());
 		button.setMargin(new Insets(0, 0, 0, 0));
-		button.addActionListener(e -> {
+		button.addActionListener(_ -> {
 			int n = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.textures_mapping.confirm_deletion_message"),
 					L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 			if (n == 0) {
@@ -185,6 +201,7 @@ public class TextureMappingDialog {
 					if (title.equals(currentMappingName)) {
 						addTo.remove(i);
 						currentState.remove(currentMappingName);
+						validationGroups.remove(currentMappingName);
 						break;
 					}
 				}

@@ -72,6 +72,7 @@
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
     	"water_color": ${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)}
+    	<#if data.dryFoliageColor?has_content>, "dry_foliage_color": ${data.dryFoliageColor.getRGB()}</#if>
     },
   	<#assign hasAmbientSound = data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
   	<#assign hasMoodSound = data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>

@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.tools;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TextureHolder;
@@ -42,9 +43,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class MaterialPackMakerTool extends AbstractPackMakerTool {
 
@@ -176,19 +180,31 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
-		addMaterialPackToWorkspace(this, mcreator, mcreator.getWorkspace(), name.getText(),
+		addMaterialPackToWorkspace(toGenerate, mcreator, mcreator.getWorkspace(), name.getText(),
 				(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(), (Double) power.getValue(),
 				makeTextureMap());
 	}
 
-	public static void addMaterialPackToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+	public static String[] getPackElementNames(String name, String type) {
+		return Stream.of(OrePackMakerTool.getPackElementNames(name, type), ToolPackMakerTool.getPackElementNames(name),
+				ArmorPackMakerTool.getPackElementNames(name)).flatMap(Arrays::stream).toArray(String[]::new);
+	}
+
+	public static boolean addMaterialPackToWorkspace(@Nullable List<GeneratableElement> generationQueue, MCreator mcreator,
 			Workspace workspace, String name, String type, Color color, double factor,
 			@Nonnull Map<String, TextureHolder> textureMap) {
-		MItemBlock gem = OrePackMakerTool.addOrePackToWorkspace(packMaker, mcreator, workspace, name, type, color,
+		// intentionally attempt every sub-pack even if one fails (non-short-circuit &=), so the dialog path
+		// still creates the remaining sub-packs when one is skipped due to a name conflict
+		boolean success = OrePackMakerTool.addOrePackToWorkspace(generationQueue, mcreator, workspace, name, type,
+				color, factor, textureMap);
+
+		MItemBlock gem = new MItemBlock(workspace, "CUSTOM:" + OrePackMakerTool.getOreItemName(name, type));
+		success &= ToolPackMakerTool.addToolPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color,
 				factor, textureMap);
-		ToolPackMakerTool.addToolPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor, textureMap);
-		ArmorPackMakerTool.addArmorPackToWorkspace(packMaker, mcreator, workspace, name, gem, color, factor,
-				textureMap);
+		success &= ArmorPackMakerTool.addArmorPackToWorkspace(generationQueue, mcreator, workspace, name, gem, color,
+				factor, textureMap);
+
+		return success;
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {

@@ -175,7 +175,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			.postProcess((bs, br, bp) -> bp)
 			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
-		<#if data.hasTransparency>
+		<#if data.forceRedstoneConductor>
+			.isRedstoneConductor((bs, br, bp) -> true)
+		<#elseif data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
 		</#if>
 		<#if (!data.isNotColidable && data.offsetType != "NONE")>
@@ -755,6 +757,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					List.of(BlockTintSources.grass())
 				<#elseif data.tintType == "Foliage">
 					List.of(BlockTintSources.foliage())
+				<#elseif data.tintType == "Dry foliage">
+					List.of(BlockTintSources.dryFoliage())
 				<#elseif data.tintType == "Water">
 					List.of(BlockTintSources.water())
 				<#elseif data.tintType == "Sky">

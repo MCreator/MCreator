@@ -67,6 +67,10 @@ body {
     stroke-width: 2px;
 }
 
+.blocklyShadow .blocklyText {
+    fill: #7c7c7c !important;
+}
+
 .small-text {
     font-size: 12px !important;
 }
