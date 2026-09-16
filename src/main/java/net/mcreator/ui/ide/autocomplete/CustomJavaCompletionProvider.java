@@ -74,10 +74,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	@SuppressWarnings("NullableProblems")
 	private final Cache<CompletionCacheKey, List<Completion>> computedCompletionsCache = CacheBuilder.newBuilder()
-			.maximumSize(50).expireAfterWrite(Duration.ofSeconds(5)).build();
+			.maximumSize(500).expireAfterWrite(Duration.ofSeconds(5)).build();
 
 	@SuppressWarnings("NullableProblems")
-	private final Cache<String, List<Completion>> classCompletionsCache = CacheBuilder.newBuilder().maximumSize(100)
+	private final Cache<String, List<Completion>> classCompletionsCache = CacheBuilder.newBuilder().maximumSize(1000)
 			.expireAfterWrite(Duration.ofSeconds(10)).build();
 
 	private record ClassInfo(String pkg, boolean isInterface, boolean isEnum) {

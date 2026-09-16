@@ -91,11 +91,11 @@ public class JavaTypeResolver {
 
 	// Maps "currentPkg:typeName" -> resolved FQDN for simple type name lookup
 	@SuppressWarnings("NullableProblems")
-	private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(500).build();
+	private final Cache<String, String> simpleTypeCache = CacheBuilder.newBuilder().maximumSize(10000).build();
 
 	// Maps class FQDN -> list of inner class simple names
 	@SuppressWarnings("NullableProblems")
-	private final Cache<String, List<String>> innerClassesCache = CacheBuilder.newBuilder().maximumSize(200).build();
+	private final Cache<String, List<String>> innerClassesCache = CacheBuilder.newBuilder().maximumSize(5000).build();
 
 	private Map<String, List<String>> cachedModClasses = null;
 	private long lastModClassesUpdate = 0;

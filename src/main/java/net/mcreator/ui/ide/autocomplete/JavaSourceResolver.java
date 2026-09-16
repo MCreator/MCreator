@@ -40,13 +40,13 @@ public class JavaSourceResolver {
 	private final JavaTypeResolver typeResolver;
 
 	// Maps source code hashCode -> map of simple class names to FQDNs parsed from imports
-	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(50).build();
+	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(1500).build();
 
 	// Maps source code hashCode -> map of method signatures to Javadoc documentation
-	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(100).build();
+	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(1500).build();
 
 	// Maps class FQDN -> loaded Java source code string
-	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(100).build();
+	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(1500).build();
 
 	public JavaSourceResolver(@Nullable Workspace workspace, JavaTypeResolver typeResolver) {
 		this.workspace = workspace;

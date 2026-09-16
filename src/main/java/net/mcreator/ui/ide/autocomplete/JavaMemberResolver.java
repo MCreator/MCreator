@@ -54,7 +54,7 @@ public class JavaMemberResolver {
 	// Maps class FQDN -> cached list of field and method completion items
 	@SuppressWarnings("NullableProblems")
 	private final Cache<String, List<JavaTypeResolver.CompletionItem>> memberCache = CacheBuilder.newBuilder()
-			.maximumSize(500).build();
+			.maximumSize(5000).build();
 
 	public JavaMemberResolver(@Nullable Workspace workspace, JavaSourceResolver sourceResolver,
 			JavaTypeResolver typeResolver) {
