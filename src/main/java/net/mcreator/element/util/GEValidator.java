@@ -318,7 +318,7 @@ public class GEValidator {
 		}
 	}
 
-	private static Object castNumber(Class<?> type, double value) {
+	public static Object castNumber(Class<?> type, double value) {
 		if (type == int.class || type == Integer.class)
 			return (int) value;
 		if (type == long.class || type == Long.class)
