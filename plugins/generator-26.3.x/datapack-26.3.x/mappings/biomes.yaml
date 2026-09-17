@@ -14,6 +14,7 @@ mutated_forest: flower_forest
 birch_forest: birch_forest
 roofed_forest: dark_forest
 pale_garden: pale_garden
+dappled_forest: dappled_forest
 mutated_birch_forest: old_growth_birch_forest
 redwood_taiga: old_growth_pine_taiga
 mutated_redwood_taiga: old_growth_spruce_taiga

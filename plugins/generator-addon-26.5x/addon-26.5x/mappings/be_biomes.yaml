@@ -16,6 +16,7 @@ cold_taiga: minecraft:cold_taiga
 cold_taiga_hills: minecraft:cold_taiga_hills
 cold_taiga_mutated: minecraft:cold_taiga_mutated
 crimson_forest: minecraft:crimson_forest
+dappled_forest: minecraft:dappled_forest
 deep_cold_ocean: minecraft:deep_cold_ocean
 deep_dark: minecraft:deep_dark
 deep_frozen_ocean: minecraft:deep_frozen_ocean
@@ -79,6 +80,7 @@ snowy_slopes: minecraft:snowy_slopes
 soulsand_valley: minecraft:soulsand_valley
 stone_beach: minecraft:stone_beach
 stony_peaks: minecraft:stony_peaks
+sulfur_caves: minecraft:sulfur_caves
 sunflower_plains: minecraft:sunflower_plains
 swampland: minecraft:swampland
 swampland_mutated: minecraft:swampland_mutated

@@ -266,6 +266,30 @@
   "minecraft:swamp": {
     "temperature": [
       -0.45,
+      0.2
+    ],
+    "humidity": [
+      -1,
+      1
+    ],
+    "continentalness": [
+      -0.11,
+      1
+    ],
+    "erosion": [
+      0.55,
+      1
+    ],
+    "weirdness": [
+      -1,
+      -0.9333
+    ],
+    "depth": 0,
+    "offset": 0
+  },
+  "minecraft:mangrove_swamp": {
+    "temperature": [
+      0.2,
       1
     ],
     "humidity": [
@@ -391,30 +415,6 @@
     "humidity": [
       -0.1,
       0.1
-    ],
-    "continentalness": [
-      -0.11,
-      1
-    ],
-    "erosion": [
-      -1,
-      -0.7799
-    ],
-    "weirdness": [
-      -1,
-      -0.9333
-    ],
-    "depth": 0,
-    "offset": 0
-  },
-  "minecraft:cherry_grove": {
-    "temperature": [
-      -1,
-      -0.45
-    ],
-    "humidity": [
-      -1,
-      -0.35
     ],
     "continentalness": [
       -0.11,
@@ -719,6 +719,30 @@
     "depth": 0,
     "offset": 0
   },
+  "minecraft:pale_garden": {
+    "temperature": [
+      -0.15,
+      0.2
+    ],
+    "humidity": [
+      0.3,
+      1
+    ],
+    "continentalness": [
+      0.3,
+      1
+    ],
+    "erosion": [
+      -0.7799,
+      -0.375
+    ],
+    "weirdness": [
+      -1,
+      -0.9333
+    ],
+    "depth": 0,
+    "offset": 0
+  },
   "minecraft:savanna_plateau": {
     "temperature": [
       0.2,
@@ -807,30 +831,6 @@
     "erosion": [
       -1,
       -0.7799
-    ],
-    "weirdness": [
-      -1,
-      -0.9333
-    ],
-    "depth": 0,
-    "offset": 0
-  },
-  "minecraft:eroded_badlands": {
-    "temperature": [
-      0.55,
-      1
-    ],
-    "humidity": [
-      -1,
-      -0.35
-    ],
-    "continentalness": [
-      -0.11,
-      0.3
-    ],
-    "erosion": [
-      -0.7799,
-      -0.375
     ],
     "weirdness": [
       -1,
@@ -1007,6 +1007,30 @@
     "depth": 0,
     "offset": 0
   },
+  "minecraft:dappled_forest": {
+    "temperature": [
+      -0.45,
+      -0.15
+    ],
+    "humidity": [
+      -1,
+      -0.35
+    ],
+    "continentalness": [
+      0.03,
+      1
+    ],
+    "erosion": [
+      -1,
+      -0.375
+    ],
+    "weirdness": [
+      -0.05,
+      0.05
+    ],
+    "depth": 0,
+    "offset": 0
+  },
   "minecraft:old_growth_pine_taiga": {
     "temperature": [
       -0.45,
@@ -1127,6 +1151,30 @@
     "depth": 0,
     "offset": 0
   },
+  "minecraft:eroded_badlands": {
+    "temperature": [
+      0.55,
+      1
+    ],
+    "humidity": [
+      -1,
+      -0.35
+    ],
+    "continentalness": [
+      0.03,
+      1
+    ],
+    "erosion": [
+      -1,
+      -0.375
+    ],
+    "weirdness": [
+      -0.05,
+      0.05
+    ],
+    "depth": 0,
+    "offset": 0
+  },
   "minecraft:windswept_savanna": {
     "temperature": [
       -0.15,
@@ -1147,6 +1195,30 @@
     "weirdness": [
       0.05,
       0.2666
+    ],
+    "depth": 0,
+    "offset": 0
+  },
+  "minecraft:cherry_grove": {
+    "temperature": [
+      -0.45,
+      -0.15
+    ],
+    "humidity": [
+      -1,
+      -0.35
+    ],
+    "continentalness": [
+      0.3,
+      1
+    ],
+    "erosion": [
+      -0.7799,
+      -0.375
+    ],
+    "weirdness": [
+      0.2666,
+      0.4
     ],
     "depth": 0,
     "offset": 0
@@ -1229,54 +1301,6 @@
     ],
     "offset": 0
   },
-  "minecraft:mangrove_swamp": {
-    "temperature": [
-      0.2,
-      1
-    ],
-    "humidity": [
-      -1,
-      1
-    ],
-    "continentalness": [
-      -0.11,
-      1
-    ],
-    "erosion": [
-      0.55,
-      1
-    ],
-    "weirdness": [
-      -1,
-      -0.9333
-    ],
-    "depth": 0,
-    "offset": 0
-  },
-  "minecraft:deep_dark": {
-    "temperature": [
-      -1,
-      1
-    ],
-    "humidity": [
-      -1,
-      1
-    ],
-    "continentalness": [
-      -1,
-      1
-    ],
-    "erosion": [
-      -1,
-      -0.375
-    ],
-    "weirdness": [
-      -1,
-      1
-    ],
-    "depth": 1.1,
-    "offset": 0
-  },
   "minecraft:sulfur_caves": {
     "temperature": [
       -1,
@@ -1304,7 +1328,7 @@
     ],
     "offset": 0
   },
-  "minecraft:pale_garden": {
+  "minecraft:deep_dark": {
     "temperature": [
       -1,
       1
@@ -1318,8 +1342,8 @@
       1
     ],
     "erosion": [
-      -0.375,
-      0.25
+      -1,
+      -0.375
     ],
     "weirdness": [
       -1,

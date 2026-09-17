@@ -8,6 +8,7 @@
 - cherry_grove
 - cold
 - crimson_forest
+- dappled_forest
 - deep
 - deep_dark
 - desert
@@ -20,6 +21,7 @@
 - frozen
 - frozen_peaks
 - grove
+- has_structure_abandoned_camp
 - has_structure_trail_ruins
 - high_seas
 - hills
@@ -43,6 +45,7 @@
 - nether_wastes
 - netherwart_forest
 - no_legacy_worldgen
+- oak_forest
 - ocean
 - overworld
 - overworld_generation
@@ -89,6 +92,7 @@
 - swamp
 - swamp_water_huge_mushroom
 - taiga
+- temperate_ocean
 - the_end
 - warm
 - warped_forest
