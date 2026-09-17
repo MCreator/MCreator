@@ -86,7 +86,7 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	protected abstract void generatePack(MCreator mcreator);
 
 	protected void addPage(String name, JPanel panel) {
-		JScrollPane page = new JScrollPane(PanelUtils.pullElementUp(panel));
+		JScrollPane page = new JScrollPane(PanelUtils.totalCenterInPanel(panel));
 		page.getVerticalScrollBar().setUnitIncrement(10);
 		tabs.add(name, page);
 	}

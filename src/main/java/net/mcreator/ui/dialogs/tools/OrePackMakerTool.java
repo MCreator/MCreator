@@ -96,7 +96,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(name);
 
 		// Textures page
-		JPanel texturesPanel = new JPanel(new GridLayout(2, 4, 5, 2));
+		JPanel texturesPanel = new JPanel(new GridLayout(3, 2, 5, 2));
 
 		oreTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 		blockTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
@@ -111,15 +111,12 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		texturesPanel.add(L10N.label("dialog.tools.ore_pack_textures.item"));
 		texturesPanel.add(PanelUtils.totalCenterInPanel(itemTexture));
 
-		texturesPanel.add(new JLabel());
-		texturesPanel.add(new JLabel());
-
 		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
 		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
 
 		this.add("Center", tabs);
 
-		this.setSize(600, 280);
+		this.setSize(600, 360);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}

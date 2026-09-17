@@ -28,6 +28,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -102,7 +103,9 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(name);
 
 		// Textures page
-		JPanel texturesPanel = new JPanel(new GridLayout(8, 4, 5, 2));
+		JPanel oresSection = new JPanel(new GridLayout(1, 6, 15, 2));
+		JPanel toolsSection = new JPanel(new GridLayout(2, 6, 15, 2));
+		JPanel armorItemsSection = new JPanel(new GridLayout(2, 4, 15, 2));
 
 		oreTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 		blockTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
@@ -121,60 +124,63 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		armorTexture = new TextureComboBox(mcreator, TextureType.ARMOR, true);
 		armorTexture.setAddPNGExtension(false);
 
-		texturesPanel.add(L10N.label("dialog.tools.ore_pack_textures.ore"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(oreTexture));
+		oresSection.add(L10N.label("dialog.tools.ore_pack_textures.ore"));
+		oresSection.add(PanelUtils.totalCenterInPanel(oreTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.ore_pack_textures.block"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(blockTexture));
+		oresSection.add(L10N.label("dialog.tools.ore_pack_textures.block"));
+		oresSection.add(PanelUtils.totalCenterInPanel(blockTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.ore_pack_textures.item"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(itemTexture));
+		oresSection.add(L10N.label("dialog.tools.ore_pack_textures.item"));
+		oresSection.add(PanelUtils.totalCenterInPanel(itemTexture));
 
-		texturesPanel.add(new JLabel());
-		texturesPanel.add(new JLabel());
+		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.pickaxe"));
+		toolsSection.add(PanelUtils.totalCenterInPanel(pickaxeTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.pickaxe"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(pickaxeTexture));
+		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.axe"));
+		toolsSection.add(PanelUtils.totalCenterInPanel(axeTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.axe"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(axeTexture));
+		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.sword"));
+		toolsSection.add(PanelUtils.totalCenterInPanel(swordTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.sword"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(swordTexture));
+		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.shovel"));
+		toolsSection.add(PanelUtils.totalCenterInPanel(shovelTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.shovel"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(shovelTexture));
+		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.hoe"));
+		toolsSection.add(PanelUtils.totalCenterInPanel(hoeTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.hoe"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(hoeTexture));
+		toolsSection.add(new JLabel());
+		toolsSection.add(new JLabel());
 
-		texturesPanel.add(new JLabel());
-		texturesPanel.add(new JLabel());
+		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.helmet"));
+		armorItemsSection.add(PanelUtils.totalCenterInPanel(helmetTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.helmet"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(helmetTexture));
+		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.chestplate"));
+		armorItemsSection.add(PanelUtils.totalCenterInPanel(chestplateTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.chestplate"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(chestplateTexture));
+		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.leggings"));
+		armorItemsSection.add(PanelUtils.totalCenterInPanel(leggingsTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.leggings"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(leggingsTexture));
+		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.boots"));
+		armorItemsSection.add(PanelUtils.totalCenterInPanel(bootsTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.boots"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(bootsTexture));
+		JPanel armorSection = PanelUtils.centerInPanelPadding(PanelUtils.northAndCenterElement(armorItemsSection,
+						PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.armor"), armorTexture)), 10,
+				10);
+		oresSection = PanelUtils.centerInPanelPadding(oresSection, 10, 10);
+		toolsSection = PanelUtils.centerInPanelPadding(toolsSection, 10, 10);
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.armor"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(armorTexture));
+		ComponentUtils.makeSection(oresSection, L10N.t("dialog.tools.material_pack_textures.ores_section"));
+		ComponentUtils.makeSection(toolsSection, L10N.t("dialog.tools.material_pack_textures.tools_section"));
+		ComponentUtils.makeSection(armorSection, L10N.t("dialog.tools.material_pack_textures.armor_section"));
 
-		texturesPanel.add(new JLabel());
-		texturesPanel.add(new JLabel());
-
-		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(PanelUtils.column(15,
+				PanelUtils.centerInPanel(L10N.label("dialog.tools.pack_makers.empty_textures_message")), oresSection,
+				toolsSection, armorSection)));
 
 		this.add("Center", tabs);
 
-		this.setSize(600, 300);
+		this.setSize(700, 500);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}
