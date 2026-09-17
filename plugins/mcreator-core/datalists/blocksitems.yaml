@@ -7222,32 +7222,32 @@
   texture: WATER_BUCKET
 
 - Items.PUFFERFISH_BUCKET:
-  readable_name: "Pufferfish Bucket"
+  readable_name: "Bucket of Pufferfish"
   type: item
   texture: PUFFERFISH_BUCKET
 
 - Items.SALMON_BUCKET:
-  readable_name: "Salmon Bucket"
+  readable_name: "Bucket of Salmon"
   type: item
   texture: SALMON_BUCKET
 
 - Items.COD_BUCKET:
-  readable_name: "Cod Bucket"
+  readable_name: "Bucket of Cod"
   type: item
   texture: COD_BUCKET
 
 - Items.TROPICAL_FISH_BUCKET:
-  readable_name: "Tropical Fish Bucket"
+  readable_name: "Bucket of Tropical Fish"
   type: item
   texture: TROPICAL_FISH_BUCKET
 
 - Items.AXOLOTL_BUCKET:
-  readable_name: "Axolotl Bucket"
+  readable_name: "Bucket of Axolotl"
   type: item
   texture: AXOLOTL_BUCKET
 
 - Items.TADPOLE_BUCKET:
-  readable_name: "Tadpole Bucket"
+  readable_name: "Bucket of Tadpole"
   type: item
   texture: TADPOLE_BUCKET
 
