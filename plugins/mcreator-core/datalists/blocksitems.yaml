@@ -335,7 +335,7 @@
   texture: POINTED_DRIPSTONE
 
 - Blocks.GRASS:
-  readable_name: "Grass"
+  readable_name: "Grass Block"
   type: block
   texture: GRASS
 
