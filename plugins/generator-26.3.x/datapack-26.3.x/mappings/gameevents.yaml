@@ -25,6 +25,7 @@ BLOCK_OPEN:
   - block_open
 BLOCK_PLACE:
   - GameEvent.BLOCK_PLACE
+  - block_place
 BOUNCE:
   - GameEvent.BOUNCE
   - bounce
