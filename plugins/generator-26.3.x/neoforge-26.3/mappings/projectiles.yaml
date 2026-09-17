@@ -1,6 +1,6 @@
 _default:
   - Snowball
-  - EntityType.SNOWBALL
+  - EntityTypes.SNOWBALL
   - Items.SNOWBALL
 _mcreator_map_template:
   - "@NAMEEntity"
@@ -8,45 +8,45 @@ _mcreator_map_template:
   - "@NAMEEntity.PROJECTILE_ITEM.getItem()"
 Arrow:
   - Arrow
-  - EntityType.ARROW
+  - EntityTypes.ARROW
   - Items.ARROW
 DragonFireball:
   - DragonFireball
-  - EntityType.DRAGON_FIREBALL
+  - EntityTypes.DRAGON_FIREBALL
   - Items.FIRE_CHARGE
 Egg:
   - ThrownEgg
-  - EntityType.EGG
+  - EntityTypes.EGG
   - Items.EGG
 EnderPearl:
   - ThrownEnderpearl
-  - EntityType.ENDER_PEARL
+  - EntityTypes.ENDER_PEARL
   - Items.ENDER_PEARL
 ExperienceBottle:
   - ThrownExperienceBottle
-  - EntityType.EXPERIENCE_BOTTLE
+  - EntityTypes.EXPERIENCE_BOTTLE
   - Items.EXPERIENCE_BOTTLE
 LargeFireball:
   - LargeFireball
-  - EntityType.FIREBALL
+  - EntityTypes.FIREBALL
   - Items.FIRE_CHARGE
 LlamaSpit:
   - LlamaSpit
-  - EntityType.LLAMA_SPIT
+  - EntityTypes.LLAMA_SPIT
   - Items.AIR
 SmallFireball:
   - SmallFireball
-  - EntityType.SMALL_FIREBALL
+  - EntityTypes.SMALL_FIREBALL
   - Items.FIRE_CHARGE
 Snowball:
   - Snowball
-  - EntityType.SNOWBALL
+  - EntityTypes.SNOWBALL
   - Items.SNOWBALL
 SpectralArrow:
   - SpectralArrow
-  - EntityType.SPECTRAL_ARROW
+  - EntityTypes.SPECTRAL_ARROW
   - Items.SPECTRAL_ARROW
 WitherSkull:
   - WitherSkull
-  - EntityType.WITHER_SKULL
+  - EntityTypes.WITHER_SKULL
   - Items.WITHER_SKELETON_SKULL
