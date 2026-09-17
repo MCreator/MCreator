@@ -92,7 +92,6 @@ ServerList: DirectJoinServerScreen
 ServerReconfig: ServerReconfigScreen
 ServerLinks: ServerLinksDialogScreen
 Settings: OptionsSubScreen
-ShareToLan: ShareToLanScreen
 SkinReport: SkinReportScreen
 SleepInMultiplayer: InBedChatScreen
 SocialInteractions: SocialInteractionsScreen
@@ -126,3 +125,6 @@ WorldOptions: WorldOptionsScreen
 AbstractGameRules: AbstractGameRulesScreen
 FileFixerProgress: FileFixerProgressScreen
 FileFixerAborted: FileFixerAbortedScreen
+FriendsListConfirm: FriendsListConfirmScreen
+FriendsOverlay: FriendsOverlayScreen
+PrivacyConfirmLink: PrivacyConfirmLinkScreen

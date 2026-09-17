@@ -91,7 +91,6 @@
 - ServerReconfig
 - ServerLinks
 - Settings
-- ShareToLan
 - SkinReport
 - SleepInMultiplayer
 - SocialInteractions
@@ -125,3 +124,6 @@
 - AbstractGameRules
 - FileFixerProgress
 - FileFixerAborted
+- FriendsListConfirm
+- FriendsOverlay
+- PrivacyConfirmLink
