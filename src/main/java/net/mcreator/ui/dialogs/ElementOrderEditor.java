@@ -175,7 +175,7 @@ public class ElementOrderEditor {
 		}
 
 		moveLeft.setEnabled(false);
-		moveRight.setEnabled(customStart.get() == 0); // If custom tabs start later, initial tab is vanilla/external
+		moveRight.setEnabled(customStart.get() == 0 && tabs.getTabCount() > 1); // If custom tabs start later, initial tab is vanilla/external
 		tabs.addChangeListener(e -> {
 			int index = tabs.getSelectedIndex();
 			moveLeft.setEnabled(index > customStart.get());
