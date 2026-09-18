@@ -89,7 +89,7 @@ public class ImportTreeBuilder {
 						dis.readUnsignedShort();// class major
 						skipConstantPool(dis);
 						int accessFlags = dis.readUnsignedShort(); //accessFlags
-						if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
+						if ((accessFlags & AccessFlag.PUBLIC) == 0)
 							return;
 					} catch (Exception e) {
 						LOG.debug("Failed to check access flags of {} - assuming public", entryPath);
@@ -157,7 +157,7 @@ public class ImportTreeBuilder {
 						dis.readUnsignedShort();
 						skipConstantPool(dis);
 						int accessFlags = dis.readUnsignedShort();
-						if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
+						if ((accessFlags & AccessFlag.PUBLIC) == 0)
 							return;
 						if ((accessFlags & AccessFlag.SYNTHETIC) != 0)
 							return;

@@ -37,7 +37,7 @@ public class GeneratorGradleCache {
 	@Nullable private final File javaHome;
 	private final List<ClasspathEntry> classpath;
 	private final Map<String, List<String>> importTree;
-	@Nullable private transient Map<String, List<String>> innerClassTree;
+	private final Map<String, List<String>> innerClassTree;
 
 	GeneratorGradleCache(Generator generator) {
 		projectJarManager = new ProjectJarManager(generator);
@@ -49,8 +49,6 @@ public class GeneratorGradleCache {
 
 	void reinitAfterGSON(Generator generator) throws GradleCacheImportFailedException {
 		projectJarManager = new ProjectJarManager(generator, classpath, javaHome);
-		if (innerClassTree == null)
-			innerClassTree = ImportTreeBuilder.generateInnerClassTree(this.projectJarManager);
 	}
 
 	@Nullable ProjectJarManager getProjectJarManager() {
@@ -64,7 +62,10 @@ public class GeneratorGradleCache {
 	}
 
 	public Map<String, List<String>> getInnerClassTree() {
-		return innerClassTree != null ? innerClassTree : Collections.emptyMap();
+		if (innerClassTree == null)
+			return null;
+		//noinspection RedundantUnmodifiable
+		return Collections.unmodifiableMap(innerClassTree);
 	}
 
 	public static class ClasspathEntry {

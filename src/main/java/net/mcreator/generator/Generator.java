@@ -688,7 +688,7 @@ public class Generator implements IGenerator, Closeable {
 			String cache = FileIO.readFileToString(cacheFile);
 			generatorGradleCache = new GsonBuilder().disableHtmlEscaping().create()
 					.fromJson(cache, GeneratorGradleCache.class);
-			if (generatorGradleCache != null) {
+			if (generatorGradleCache != null && generatorGradleCache.getInnerClassTree() != null) {
 				LOG.info("Gradle cache will be loaded from cache file");
 				generatorGradleCache.reinitAfterGSON(this);
 				return;
