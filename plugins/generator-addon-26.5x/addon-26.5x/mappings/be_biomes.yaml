@@ -1,3 +1,4 @@
+# Source: https://github.com/Mojang/bedrock-samples/blob/main/metadata/vanilladata_modules/mojang-biomes.json
 _default: minecraft:plains
 _mcreator_map_template: "@modid:@registryname"
 _bypass_prefix: "#"

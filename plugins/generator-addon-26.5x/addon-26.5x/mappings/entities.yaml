@@ -1,4 +1,4 @@
-# Source: https://github.com/Mojang/bedrock-samples/tree/main/behavior_pack/entities
+# Source: https://github.com/Mojang/bedrock-samples/blob/main/metadata/vanilladata_modules/mojang-entities.json
 _default: zombie
 _mcreator_map_template: "@modid:@registryname"
 EntityArrow: arrow
