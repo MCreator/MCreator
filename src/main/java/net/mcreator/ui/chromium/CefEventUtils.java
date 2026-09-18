@@ -96,6 +96,7 @@ final class CefEventUtils {
 		//  cmd + delete workaround implementation
 		if (cefKeyEvent.type == CefKeyboardHandler.CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
 				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
+				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_ALT_DOWN) == 0
 				&& cefKeyEvent.windows_key_code == 0x2E) { // Chromium VKEY_DELETE
 			CefFrame frame = browser.getFocusedFrame();
 			if (frame == null)
