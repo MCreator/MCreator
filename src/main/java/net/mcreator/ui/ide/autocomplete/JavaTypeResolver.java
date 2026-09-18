@@ -265,11 +265,9 @@ public class JavaTypeResolver {
 
 		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache().getImportTree();
-			if (tree != null) {
-				List<String> fqdns = tree.get(typeName);
-				if (fqdns != null && !fqdns.isEmpty()) {
-					return fqdns.getFirst();
-				}
+			List<String> fqdns = tree.get(typeName);
+			if (fqdns != null && !fqdns.isEmpty()) {
+				return fqdns.getFirst();
 			}
 		}
 
