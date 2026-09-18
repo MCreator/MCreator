@@ -392,7 +392,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
-		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> {animations.entityDataListChanged();modelLayers.entityDataListChanged();});
+		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> {
+			animations.entityDataListChanged();
+			modelLayers.entityDataListChanged();
+		});
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
@@ -967,7 +970,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false).lazyValidate(
 				modelLayers::getValidationResult);
-		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
@@ -1216,8 +1218,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
-		animations.setEntries(livingEntity.animations); // load after data entries, because animations can use data entries
-		modelLayers.setEntries(livingEntity.modelLayers); // load after data entries, because layers can use data entries
+		animations.setEntries(
+				livingEntity.animations); // load after data entries, because animations can use data entries
+		modelLayers.setEntries(
+				livingEntity.modelLayers); // load after data entries, because layers can use data entries
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);
 		sensitiveToVibration.setSelected(livingEntity.sensitiveToVibration);
