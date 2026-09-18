@@ -155,6 +155,10 @@ EntityCreeper:
   - Creeper
   - EntityTypes.CREEPER
   - creeper
+EntityCushion:
+  - Cushion
+  - EntityTypes.CUSHION
+  - cushion
 EntityDarkOakBoat:
   - Boat
   - EntityTypes.DARK_OAK_BOAT
@@ -188,7 +192,7 @@ EntityElderGuardian:
   - EntityTypes.ELDER_GUARDIAN
   - elder_guardian
 EntityEnderman:
-  - EnderMan
+  - Enderman
   - EntityTypes.ENDERMAN
   - enderman
 EntityEndermite:
@@ -443,6 +447,14 @@ EntityPolarBear:
   - PolarBear
   - EntityTypes.POLAR_BEAR
   - polar_bear
+EntityPoplarBoat:
+  - Boat
+  - EntityTypes.POPLAR_BOAT
+  - poplar_boat
+EntityPoplarChestBoat:
+  - ChestBoat
+  - EntityTypes.POPLAR_CHEST_BOAT
+  - poplar_chest_boat
 EntityPotion:
   - ThrownSplashPotion
   - EntityTypes.SPLASH_POTION

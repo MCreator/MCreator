@@ -81,6 +81,12 @@
 - EntityPaleOakChestBoat:
   readable_name: "Pale Oak Boat with Chest"
   type: spawnable
+- EntityPoplarBoat:
+  readable_name: "Poplar Boat"
+  type: spawnable
+- EntityPoplarChestBoat:
+  readable_name: "Poplar Boat with Chest"
+  type: spawnable
 - EntitySpruceBoat:
   readable_name: "Spruce Boat"
   type: spawnable
@@ -127,6 +133,9 @@
   readable_name: "Creature entity"
 - EntityCreeper:
   readable_name: "Creeper"
+  type: spawnable
+- EntityCushion:
+  readable_name: "Cushion"
   type: spawnable
 - EntityDonkey:
   readable_name: "Donkey"

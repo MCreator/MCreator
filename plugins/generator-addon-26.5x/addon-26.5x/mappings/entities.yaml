@@ -1,4 +1,4 @@
-# Source: https://bedrock.dev/docs/stable/Addons#Entities
+# Source: https://github.com/Mojang/bedrock-samples/tree/main/behavior_pack/entities
 _default: zombie
 _mcreator_map_template: "@modid:@registryname"
 EntityArrow: arrow
@@ -148,3 +148,5 @@ EntityCopperGolem: copper_golem
 EntityNautilus: nautilus
 EntityParched: parched
 EntityZombieNautilus: zombie_nautilus
+EntityCushion: cushion
+EntitySulfurCube: sulfur_cube
