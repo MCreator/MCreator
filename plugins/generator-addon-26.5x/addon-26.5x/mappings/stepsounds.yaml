@@ -1,4 +1,4 @@
-# Source: https://wiki.bedrock.dev/blocks/block-sounds.html
+# Source: https://github.com/Mojang/bedrock-samples/blob/main/resource_pack/sounds.json
 _default: stone
 AMETHYST_BLOCK: amethyst_block
 AMETHYST_CLUSTER: amethyst_cluster
@@ -123,3 +123,11 @@ NETHER_VINE: weeping_vines
 WET_SPONGE: wet_sponge
 WOOD: wood
 CLOTH: cloth
+SULFUR: sulfur
+POTENT_SULFUR: potent_sulfur
+SULFUR_SPIKE: sulfur_spike
+CINNABAR: cinnabar
+POPLAR_LEAVES: poplar_leaves
+RED_SHRUB: red_shrub
+SHELF_MUSHROOM: shelf_mushroom
+STRAW_BED: straw_bed
