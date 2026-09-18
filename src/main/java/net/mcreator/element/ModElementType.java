@@ -52,7 +52,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		this(registryName, registryName, shortcut, modElementGUIProvider, modElementStorageClass);
 	}
 
-	public ModElementType(String registryName, String iconSufix, @Nullable Character shortcut,
+	public ModElementType(String registryName, String iconSuffix, @Nullable Character shortcut,
 			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
 		this.registryName = registryName;
 		this.shortcut = shortcut;
@@ -63,7 +63,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
 
-		this.iconID = "mod_types." + iconSufix;
+		this.iconID = "mod_types." + iconSuffix;
 	}
 
 	public String getRegistryName() {

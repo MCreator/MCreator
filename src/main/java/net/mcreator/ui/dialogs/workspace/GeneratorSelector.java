@@ -107,6 +107,7 @@ public class GeneratorSelector {
 			"mapcolors",
 			"stepsounds",
 			"tabs",
+			"be_equipmentslots",
 			"scripts",
 			"aitasks",
 			"jstriggers"

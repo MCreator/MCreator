@@ -122,3 +122,7 @@ body {
 .thrasos-renderer .blocklyPath {
     stroke: var(--altBackgroundColor);
 }
+
+.injectionDiv {
+    --blockly-active-node-color: var(--foregroundColor) !important;
+}

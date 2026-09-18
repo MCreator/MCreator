@@ -50,6 +50,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 	<#if data.hasInventory>
 		<#assign interfaces += ["EntityBlock"]>
+		<#if data.guiBoundTo?has_content>
+			<#assign interfaces += ["${JavaModName}Menus.BoundBlock"]>
+		</#if>
 	</#if>
 	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["BonemealableBlock"]>
@@ -172,7 +175,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			.postProcess((bs, br, bp) -> bp)
 			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
-		<#if data.hasTransparency>
+		<#if data.forceRedstoneConductor>
+			.isRedstoneConductor((bs, br, bp) -> true)
+		<#elseif data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
 		</#if>
 		<#if (!data.isNotColidable && data.offsetType != "NONE")>
@@ -431,7 +436,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro initCustomBlockStateProperties>
 		<#list filteredCustomProperties as prop>
-			<#assign propName = prop.property().getName()>
+			<#local propName = prop.property().getName()>
 			.setValue(${propName.replace("CUSTOM:", "")?upper_case},
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
 					<#if propName.startsWith("CUSTOM:")>
@@ -689,6 +694,12 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			return tileEntity instanceof MenuProvider menuProvider ? menuProvider : null;
 		}
 
+		<#if data.guiBoundTo?has_content>
+		@Override public Class<? extends AbstractContainerMenu> getBoundMenuClass() {
+			return ${data.guiBoundTo}Menu.class;
+		}
+		</#if>
+
 		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 			return new ${name}BlockEntity(pos, state);
 		}
@@ -746,6 +757,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					List.of(BlockTintSources.grass())
 				<#elseif data.tintType == "Foliage">
 					List.of(BlockTintSources.foliage())
+				<#elseif data.tintType == "Dry foliage">
+					List.of(BlockTintSources.dryFoliage())
 				<#elseif data.tintType == "Water">
 					List.of(BlockTintSources.water())
 				<#elseif data.tintType == "Sky">

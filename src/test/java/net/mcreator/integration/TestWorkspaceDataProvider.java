@@ -23,6 +23,7 @@ import com.google.common.collect.Iterables;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
@@ -493,6 +494,7 @@ public class TestWorkspaceDataProvider {
 				biome.fogColor = Color.yellow;
 				biome.grassColor = Color.green;
 				biome.foliageColor = Color.magenta;
+				biome.dryFoliageColor = Color.orange;
 				biome.waterColor = Color.blue;
 				biome.waterFogColor = Color.cyan;
 			}
@@ -664,7 +666,7 @@ public class TestWorkspaceDataProvider {
 			fluid.onDestroyedByExplosion = new Procedure("procedure6");
 			fluid.flowCondition = new Procedure("condition1");
 			fluid.beforeReplacingBlock = new Procedure("procedure7");
-			fluid.type = _true ? "WATER" : "LAVA";
+			fluid.type = AnnotationUtils.getLimitedOptionsList(Fluid.class, "type").get(_true ? 0 : 1);
 			return fluid;
 		} else if (ModElementType.KEYBIND.equals(modElement.getType())) {
 			KeyBinding keyBinding = new KeyBinding(modElement);
@@ -1091,7 +1093,7 @@ public class TestWorkspaceDataProvider {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
 					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
-							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
+							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace(), true)));
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = random.nextDouble(-5, 5);
 					entry.operation = getRandomItem(random,
@@ -1395,7 +1397,7 @@ public class TestWorkspaceDataProvider {
 				for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 					AttributeModifierEntry entry = new AttributeModifierEntry();
 					entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
-							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
+							getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace(), true)));
 					entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 					entry.amount = getRandomDouble(random, AttributeModifierEntry.class, "amount");
 					entry.operation = getRandomItem(random,
@@ -1514,7 +1516,9 @@ public class TestWorkspaceDataProvider {
 			LootTable lootTable = new LootTable(modElement);
 
 			lootTable.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			lootTable.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
+			lootTable.lootTableToModify = _true ? "minecraft:chests/spawn_bonus_chest" : "";
+			lootTable.namespace = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(NamespacedGeneratableElement.class, "namespace"));
 			lootTable.type = getRandomItem(random, AnnotationUtils.getLimitedOptionsList(LootTable.class, "type"));
 
 			lootTable.pools = new ArrayList<>();
@@ -1566,7 +1570,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.FUNCTION.equals(modElement.getType())) {
 			Function function = new Function(modElement);
 			function.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			function.namespace = getRandomItem(random, new String[] { "minecraft", "mod" });
+			function.namespace = getRandomString(random,
+					AnnotationUtils.getLimitedOptionsList(NamespacedGeneratableElement.class, "namespace"));
 			function.code = "execute as @a at @s run function custom:test\n";
 			return function;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
@@ -1738,7 +1743,9 @@ public class TestWorkspaceDataProvider {
 				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#minecraft:test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
-			feature.featurexml = AnnotationUtils.getBlocklyXMLDefaultValue(Feature.class, "featurexml");
+			feature.featurexml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+					+ "<block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\">"
+					+ "<value name=\"feature\"><block type=\"feature_no_op\"></block></value></block></xml>";
 			feature.skipPlacement = !_true;
 			return feature;
 		} else if (ModElementType.ATTRIBUTE.equals(modElement.getType())) {
@@ -1788,6 +1795,12 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 			beitem.animation = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEItem.class, "animation"));
+			beitem.isEnchantable = _true;
+			beitem.enchantmentSlot = new BEEquipmentSlotEntry(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace())));
+			beitem.enchantmentValue = getRandomInt(random, BEItem.class, "enchantmentValue");
+			beitem.diggerUseEfficiency = _true;
+			beitem.diggerEntries = new ArrayList<>();
 			beitem.blockToPlace = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, filterAir(blocks)).getName());
 			beitem.blockPlaceableOn = new ArrayList<>();
@@ -1802,6 +1815,15 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 				beitem.entityPlaceableOn = subset(random, blocks.size() / 8, blocks,
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
+				var blocksNoAir = filterAir(blocks);
+				for (MItemBlock entry : subset(random, blocksNoAir.size() / 8, blocksNoAir,
+						e -> new MItemBlock(modElement.getWorkspace(), e.getName()))) {
+					beitem.diggerEntries.add(
+							new BEItem.DiggerEntry(entry, getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
+				}
+				beitem.diggerEntries.add(
+						new BEItem.DiggerEntry(new MItemBlock(modElement.getWorkspace(), "TAG:custom_tag"),
+								getRandomInt(random, BEItem.DiggerEntry.class, "speed")));
 			}
 			beitem.localScripts = new ArrayList<>();
 			if (!emptyLists) {
@@ -1851,7 +1873,8 @@ public class TestWorkspaceDataProvider {
 						e -> new MItemBlock(modElement.getWorkspace(), e.getName()));
 			}
 
-			beblock.rotationMode = random.nextInt(0, 5);
+			beblock.rotationMode = random.nextInt(
+					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "rotationMode").size());
 			beblock.renderMethod = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "renderMethod"));
 			beblock.tintMethod = getRandomString(random,
@@ -1931,7 +1954,6 @@ public class TestWorkspaceDataProvider {
 			beentity.followRangeValue = getRandomInt(random, BEEntity.class, "followRangeValue");
 			beentity.isImmuneToFire = _true;
 			beentity.isPushable = _true;
-			beentity.isPushableByPiston = _true;
 			beentity.spawnNaturally = !_true;
 			beentity.populationControl = new MobSpawnType(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes")));
@@ -2151,6 +2173,7 @@ public class TestWorkspaceDataProvider {
 				LivingEntity.AnimationEntry animation = new LivingEntity.AnimationEntry();
 				animation.animation = new Animation(modElement.getWorkspace(), anim);
 				animation.condition = random.nextBoolean() ? null : new Procedure("condition1");
+				animation.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 				animation.speed = 12.3;
 				animation.amplitude = 15.4;
 				animation.walking = _true;
@@ -2324,6 +2347,7 @@ public class TestWorkspaceDataProvider {
 		block.luminance = new NumberProcedure(emptyLists ? null : "number3", 3);
 		block.isReplaceable = !_true;
 		block.canProvidePower = !_true;
+		block.forceRedstoneConductor = !_true;
 		block.emittedRedstonePower = new NumberProcedure(emptyLists ? null : "number1", 8);
 		block.creativePickItem = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocks).getName());
 		block.colorOnMap = new MapColor(modElement.getWorkspace(),
@@ -2581,7 +2605,7 @@ public class TestWorkspaceDataProvider {
 			for (DataListEntry attribute : ElementUtil.loadAllAttributes(modElement.getWorkspace())) {
 				AttributeModifierEntry entry = new AttributeModifierEntry();
 				entry.equipmentSlot = new EquipmentSlotEntry(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.loadAllEquipmentSlots(true)));
+						getRandomItem(random, ElementUtil.loadAllEquipmentSlots(modElement.getWorkspace(), true)));
 				entry.attribute = new AttributeEntry(modElement.getWorkspace(), attribute);
 				entry.amount = getRandomDouble(random, AttributeModifierEntry.class, "amount");
 				entry.operation = getRandomItem(random,

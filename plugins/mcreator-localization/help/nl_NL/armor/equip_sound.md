@@ -1,0 +1,1 @@
+Het geluid wanneer de speler het harnas onderdeel aan doet.

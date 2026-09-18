@@ -342,18 +342,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 		</#list>
 	}
 
-	<#if data.getComponentsOfType("Button")?filter(component -> hasProcedure(component.displayCondition))?size != 0
-		|| data.getComponentsOfType("ImageButton")?filter(component -> hasProcedure(component.displayCondition))?size != 0>
+	<#if buttons?filter(component -> hasProcedure(component.displayCondition))?size != 0
+		|| imageButtons?filter(component -> hasProcedure(component.displayCondition))?size != 0>
 	@Override protected void containerTick() {
 		super.containerTick();
 
-		<#list data.getComponentsOfType("Button") as component>
+		<#list buttons as component>
 			<#if hasProcedure(component.displayCondition)>
 				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
 			</#if>
 		</#list>
 
-		<#list data.getComponentsOfType("ImageButton") as component>
+		<#list imageButtons as component>
 			<#if hasProcedure(component.displayCondition)>
 				this.${component.getName()}.visible = <@procedureOBJToConditionCode component.displayCondition/>;
 			</#if>

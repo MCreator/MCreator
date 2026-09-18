@@ -392,7 +392,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
-		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> modelLayers.entityDataListChanged());
+		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> {animations.entityDataListChanged();modelLayers.entityDataListChanged();});
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
@@ -430,7 +430,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		modelLayers = new JModelLayerList(mcreator, this, () -> entityDataList.getEntries());
 
-		animations = new JEntityAnimationList(mcreator, this);
+		animations = new JEntityAnimationList(mcreator, this, () -> entityDataList.getEntries());
 
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane2 = new JPanel(new BorderLayout(0, 0));
@@ -536,9 +536,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		hasSpawnEgg.setOpaque(false);
 		disableCollisions.setOpaque(false);
 
-		livingSound.setText("");
-		hurtSound.setText("entity.generic.hurt");
-		deathSound.setText("entity.generic.death");
+		livingSound.setSound("");
+		hurtSound.setSound("entity.generic.hurt");
+		deathSound.setSound("entity.generic.death");
 
 		JPanel subpanel2 = new JPanel(new GridLayout(1, 2, 0, 2));
 		subpanel2.setOpaque(false);
@@ -967,6 +967,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false).lazyValidate(
 				modelLayers::getValidationResult);
+		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
@@ -1213,9 +1214,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
-		animations.setEntries(livingEntity.animations);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
+		animations.setEntries(livingEntity.animations); // load after data entries, because animations can use data entries
 		modelLayers.setEntries(livingEntity.modelLayers); // load after data entries, because layers can use data entries
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);

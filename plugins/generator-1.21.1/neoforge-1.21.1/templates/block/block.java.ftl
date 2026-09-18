@@ -53,6 +53,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 	<#if data.hasInventory>
 		<#assign interfaces += ["EntityBlock"]>
+		<#if data.guiBoundTo?has_content>
+			<#assign interfaces += ["${JavaModName}Menus.BoundBlock"]>
+		</#if>
 	</#if>
 	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["BonemealableBlock"]>
@@ -171,7 +174,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			.hasPostProcess((bs, br, bp) -> true)
 			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
-		<#if data.hasTransparency>
+		<#if data.forceRedstoneConductor>
+			.isRedstoneConductor((bs, br, bp) -> true)
+		<#elseif data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
 		</#if>
 		<#if (!data.isNotColidable && data.offsetType != "NONE")>
@@ -418,7 +423,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro initCustomBlockStateProperties>
 		<#list filteredCustomProperties as prop>
-			<#assign propName = prop.property().getName()>
+			<#local propName = prop.property().getName()>
 			.setValue(${propName.replace("CUSTOM:", "")?upper_case},
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
 					<#if propName.startsWith("CUSTOM:")>
@@ -676,6 +681,12 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			return tileEntity instanceof MenuProvider menuProvider ? menuProvider : null;
 		}
 
+		<#if data.guiBoundTo?has_content>
+		@Override public Class<? extends AbstractContainerMenu> getBoundMenuClass() {
+			return ${data.guiBoundTo}Menu.class;
+		}
+		</#if>
+
 		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		    return new ${name}BlockEntity(pos, state);
 		}
@@ -737,6 +748,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
@@ -767,6 +780,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#elseif data.tintType == "Sky">

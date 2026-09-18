@@ -772,6 +772,8 @@ public class GradleConsole extends JPanel implements ISearchable {
 
 				// reload mods view to display errors
 				ref.reloadWorkspaceTabContents();
+
+				ref.getGenerator().refreshWorkspaceClassInfo();
 			}
 		};
 

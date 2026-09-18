@@ -58,9 +58,9 @@
 <#macro variant conditionExtra="" additionalData="">
   <#if stateCombinations?has_content>
   <#list stateCombinations as model>
-   <#assign variantPredicate = "">
+   <#local variantPredicate = "">
    <#list model.stateMap.keySet() as property>
-    <#assign variantPredicate += (generator.map(property.getName(), "blockstateproperties", 1) + "=" + model.stateMap.get(property) + property?has_next?then(",", ""))>
+    <#local variantPredicate += (generator.map(property.getName(), "blockstateproperties", 1) + "=" + model.stateMap.get(property) + property?has_next?then(",", ""))>
    </#list>
    "<#if conditionExtra?has_content>${conditionExtra},</#if>${variantPredicate}": {
     "model": "${modid}:block/${registryname}<#if model.renderType != -1>_${model?index}</#if>"

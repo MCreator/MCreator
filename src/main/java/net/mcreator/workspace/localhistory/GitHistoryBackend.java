@@ -274,17 +274,17 @@ class GitHistoryBackend implements AutoCloseable {
 
 		closed = true;
 
-		// stop executor
-		executor.shutdown();
 		try {
-			if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
-				LOG.warn("Failed to stop Git task executor");
-				executor.shutdownNow();
+			// stop executor
+			executor.shutdown();
+			try {
+				if (!executor.awaitTermination(60, TimeUnit.SECONDS)) {
+					LOG.warn("Failed to stop Git task executor");
+					executor.shutdownNow();
+				}
+			} catch (InterruptedException _) {
 			}
-		} catch (InterruptedException _) {
-		}
 
-		try {
 			git.close();
 		} catch (Exception e) {
 			LOG.warn("Failed to close local history: {}", e.getMessage());

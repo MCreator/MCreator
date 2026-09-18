@@ -1,0 +1,1 @@
+Si esta opción está activada, el bloque se puede fertilizar con polvo de hueso.

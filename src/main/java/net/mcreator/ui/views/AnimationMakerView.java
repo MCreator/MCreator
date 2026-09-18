@@ -21,7 +21,6 @@ package net.mcreator.ui.views;
 import com.google.gson.*;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.ResourcePointer;
-import net.mcreator.io.TemplatesLoader;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
@@ -31,6 +30,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -52,7 +52,9 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -384,7 +386,9 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	private void addFramesFromTemplate() {
-		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.animations", "png");
+		List<ResourcePointer> templatesSorted = new ArrayList<>(
+				ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList());
+		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
 
 		JPanel od = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));

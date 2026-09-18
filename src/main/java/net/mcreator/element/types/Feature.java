@@ -95,10 +95,8 @@ import java.util.List;
 	public boolean hasConfiguredFeature() {
 		if (hasConfiguredFeature == null) {
 			try {
-				var blocklyToFeature = new BlocklyToFeature(this.getModElement().getWorkspace(), this.getModElement(),
-						this.featurexml, this.getModElement().getGenerator()
-						.getTemplateGeneratorFromName(BlocklyEditorType.FEATURE.registryName()));
-				this.hasConfiguredFeature = !blocklyToFeature.getFeatureType().equals("configured_feature_reference");
+				String featureType = BlocklyToFeature.getFeatureTypeFromXML(this.featurexml);
+				this.hasConfiguredFeature = !featureType.equals("configured_feature_reference");
 			} catch (Exception e) {
 				return true; // Exception happened, so we don't cache the result
 			}

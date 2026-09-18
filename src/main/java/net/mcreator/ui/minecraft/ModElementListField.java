@@ -38,7 +38,7 @@ public class ModElementListField extends JItemListField<NonMappableElement> {
 	private final Predicate<ModElement> additionalFilter;
 
 	public ModElementListField(MCreator mcreator, ModElementType<?> type) {
-		this(mcreator, type, me -> true);
+		this(mcreator, type, _ -> true);
 	}
 
 	public ModElementListField(MCreator mcreator, ModElementType<?> type,
