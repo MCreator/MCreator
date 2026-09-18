@@ -38,8 +38,11 @@ public class ImportTreeBuilder {
 
 	private static final Logger LOG = LogManager.getLogger("Import Tree Builder");
 
-	public static Map<String, List<String>> generateImportTree(ProjectJarManager projectJarManager) {
-		Map<String, List<String>> retval = new ConcurrentHashMap<>();
+	public record ImportTrees(Map<String, List<String>> importTree, Map<String, List<String>> innerClassTree) {}
+
+	public static ImportTrees generateImportTrees(ProjectJarManager projectJarManager) {
+		Map<String, List<String>> importTree = new ConcurrentHashMap<>();
+		Map<String, List<String>> innerClassTree = new ConcurrentHashMap<>();
 		// Compiled workspace classes are skipped: mod classes enter the import tree from up-to-date
 		// workspace sources on each import format pass (reloadClassesFromMod), so indexing them
 		// here would add potentially stale duplicates to the cached import tree
@@ -56,8 +59,7 @@ public class ImportTreeBuilder {
 						entryPath = entryPath.substring(8);
 					}
 
-					// only load classes that are not inner
-					if (!entryPath.endsWith(".class") || entryPath.contains("$"))
+					if (!entryPath.endsWith(".class"))
 						return;
 
 					// skip internal JDK APIs
@@ -80,103 +82,75 @@ public class ImportTreeBuilder {
 					if (entryPath.startsWith("META-INF/"))
 						return;
 
-					// check if class is public or protected
-					try (DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream())) {
-						int magic = dis.readInt(); // check magic number
-						if (magic != 0xCAFEBABE)
-							throw new Exception();
-						dis.readUnsignedShort();// class minor
-						dis.readUnsignedShort();// class major
-						skipConstantPool(dis);
-						int accessFlags = dis.readUnsignedShort(); //accessFlags
-						if ((accessFlags & AccessFlag.PUBLIC) == 0)
+					if (!entryPath.contains("$")) {
+						// check if class is public or protected
+						try (DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream())) {
+							int magic = dis.readInt(); // check magic number
+							if (magic != 0xCAFEBABE)
+								throw new Exception();
+							dis.readUnsignedShort();// class minor
+							dis.readUnsignedShort();// class major
+							skipConstantPool(dis);
+							int accessFlags = dis.readUnsignedShort(); //accessFlags
+							if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
+								return;
+						} catch (Exception e) {
+							LOG.debug("Failed to check access flags of {} - assuming public", entryPath);
+						}
+
+						String fqdn = entryPath.replace('\\', '.').replace('/', '.');
+						fqdn = fqdn.substring(0, fqdn.length() - 6);
+						int lastIndxDot = fqdn.lastIndexOf('.');
+						String className = fqdn;
+						String packageName = "";
+						if (lastIndxDot != -1) {
+							packageName = fqdn.substring(0, lastIndxDot);
+							className = fqdn.substring(lastIndxDot + 1);
+						}
+
+						addClassToTree(packageName, className, importTree);
+					} else {
+						String fqdn = entryPath.replace('\\', '/');
+						fqdn = fqdn.substring(0, fqdn.length() - 6);
+
+						int dollarIdx = fqdn.lastIndexOf('$');
+						if (dollarIdx < 0)
 							return;
-					} catch (Exception e) {
-						LOG.debug("Failed to check access flags of {} - assuming public", entryPath);
-					}
 
-					String fqdn = entryPath.replace('\\', '.').replace('/', '.');
-					fqdn = fqdn.substring(0, fqdn.length() - 6);
-					int lastIndxDot = fqdn.lastIndexOf('.');
-					String className = fqdn;
-					String packageName = "";
-					if (lastIndxDot != -1) {
-						packageName = fqdn.substring(0, lastIndxDot);
-						className = fqdn.substring(lastIndxDot + 1);
-					}
+						String innerRaw = fqdn.substring(dollarIdx + 1);
 
-					addClassToTree(packageName, className, retval);
+						if (innerRaw.isEmpty() || Character.isDigit(innerRaw.charAt(0)))
+							return;
+
+						try (DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream())) {
+							int magic = dis.readInt();
+							if (magic != 0xCAFEBABE)
+								throw new Exception();
+							dis.readUnsignedShort();
+							dis.readUnsignedShort();
+							skipConstantPool(dis);
+							int accessFlags = dis.readUnsignedShort();
+							if ((accessFlags & AccessFlag.PUBLIC) == 0)
+								return;
+							if ((accessFlags & AccessFlag.SYNTHETIC) != 0)
+								return;
+						} catch (Exception e) {
+							LOG.debug("Failed to check access flags of inner class {} - assuming public", entryPath);
+						}
+
+						String fqdnDots = fqdn.replace('/', '.');
+						int outerEnd = fqdnDots.lastIndexOf('$');
+						String outerFqdn = fqdnDots.substring(0, outerEnd).replace('$', '.');
+
+						innerClassTree.computeIfAbsent(outerFqdn, _ -> Collections.synchronizedList(new ArrayList<>(2)))
+								.add(innerRaw);
+					}
 				}, false);
 			} catch (IOException e) {
 				LOG.warn("Failed to load import format classes", e);
 			}
 		});
-		return Collections.unmodifiableMap(retval);
-	}
-
-	public static Map<String, List<String>> generateInnerClassTree(ProjectJarManager projectJarManager) {
-		Map<String, List<String>> retval = new ConcurrentHashMap<>();
-		List<LibraryInfo> libraryInfos = projectJarManager.getExternalClassFileSources();
-		libraryInfos.parallelStream().forEach(libraryInfo -> {
-			try {
-				boolean isJmod = libraryInfo instanceof JModLibraryInfo;
-				LibraryInfoIterator.iterateLibraryInfo(libraryInfo, entry -> {
-					String entryPath = entry.path();
-
-					if (isJmod) {
-						if (!entryPath.startsWith("classes/"))
-							return;
-						entryPath = entryPath.substring(8);
-					}
-
-					if (!entryPath.endsWith(".class") || !entryPath.contains("$"))
-						return;
-
-					if (entryPath.startsWith("jdk/internal/") || entryPath.startsWith("sun/")
-							|| entryPath.startsWith("com/sun/") || entryPath.startsWith("org/antlr")
-							|| entryPath.startsWith("org/checkerframework") || entryPath.startsWith("META-INF/"))
-						return;
-
-					String fqdn = entryPath.replace('\\', '/');
-					fqdn = fqdn.substring(0, fqdn.length() - 6);
-
-					int dollarIdx = fqdn.lastIndexOf('$');
-					if (dollarIdx < 0)
-						return;
-
-					String innerRaw = fqdn.substring(dollarIdx + 1);
-
-					if (innerRaw.isEmpty() || Character.isDigit(innerRaw.charAt(0)))
-						return;
-
-					try (DataInputStream dis = new DataInputStream(entry.streamSupplier().getStream())) {
-						int magic = dis.readInt();
-						if (magic != 0xCAFEBABE)
-							throw new Exception();
-						dis.readUnsignedShort();
-						dis.readUnsignedShort();
-						skipConstantPool(dis);
-						int accessFlags = dis.readUnsignedShort();
-						if ((accessFlags & AccessFlag.PUBLIC) == 0)
-							return;
-						if ((accessFlags & AccessFlag.SYNTHETIC) != 0)
-							return;
-					} catch (Exception e) {
-						LOG.debug("Failed to check access flags of inner class {} - assuming public", entryPath);
-					}
-
-					String fqdnDots = fqdn.replace('/', '.');
-					int outerEnd = fqdnDots.lastIndexOf('$');
-					String outerFqdn = fqdnDots.substring(0, outerEnd).replace('$', '.');
-
-					retval.computeIfAbsent(outerFqdn, _ -> Collections.synchronizedList(new ArrayList<>(2)))
-							.add(innerRaw);
-				}, false);
-			} catch (IOException e) {
-				LOG.warn("Failed to load inner class index", e);
-			}
-		});
-		return Collections.unmodifiableMap(retval);
+		return new ImportTrees(Collections.unmodifiableMap(importTree), Collections.unmodifiableMap(innerClassTree));
 	}
 
 	public static void reloadClassesFromMod(Generator generator, Map<String, List<String>> store) {

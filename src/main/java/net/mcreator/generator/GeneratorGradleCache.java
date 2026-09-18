@@ -42,8 +42,9 @@ public class GeneratorGradleCache {
 	GeneratorGradleCache(Generator generator) {
 		projectJarManager = new ProjectJarManager(generator);
 		this.classpath = projectJarManager.getClasspath();
-		this.importTree = ImportTreeBuilder.generateImportTree(this.projectJarManager);
-		this.innerClassTree = ImportTreeBuilder.generateInnerClassTree(this.projectJarManager);
+		ImportTreeBuilder.ImportTrees trees = ImportTreeBuilder.generateImportTrees(this.projectJarManager);
+		this.importTree = trees.importTree();
+		this.innerClassTree = trees.innerClassTree();
 		this.javaHome = projectJarManager.getJavaHome();
 	}
 
@@ -56,15 +57,12 @@ public class GeneratorGradleCache {
 	}
 
 	public Map<String, List<String>> getImportTree() {
-		// Not redundant as GSON will return a mutable map, but we want to return an unmodifiable map
-		//noinspection RedundantUnmodifiable
 		return Collections.unmodifiableMap(importTree);
 	}
 
 	public Map<String, List<String>> getInnerClassTree() {
 		if (innerClassTree == null)
 			return null;
-		//noinspection RedundantUnmodifiable
 		return Collections.unmodifiableMap(innerClassTree);
 	}
 
