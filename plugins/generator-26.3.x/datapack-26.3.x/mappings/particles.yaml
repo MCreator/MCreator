@@ -304,3 +304,21 @@ FIREFLY:
 SULFUR_CUBE_GOO:
   - ParticleTypes.SULFUR_CUBE_GOO
   - "sulfur_cube_goo"
+SULFUR_BUBBLES:
+  - ParticleTypes.SULFUR_BUBBLES
+  - "sulfur_bubbles"
+NOXIOUS_GAS:
+  - ParticleTypes.NOXIOUS_GAS
+  - "noxious_gas"
+NOXIOUS_GAS_CLOUD:
+  - ParticleTypes.NOXIOUS_GAS_CLOUD
+  - "noxious_gas_cloud"
+RED_POPLAR_LEAVES:
+  - ParticleTypes.RED_POPLAR_LEAVES
+  - "red_poplar_leaves"
+ORANGE_POPLAR_LEAVES:
+  - ParticleTypes.ORANGE_POPLAR_LEAVES
+  - "orange_poplar_leaves"
+YELLOW_POPLAR_LEAVES:
+  - ParticleTypes.YELLOW_POPLAR_LEAVES
+  - "yellow_poplar_leaves"
