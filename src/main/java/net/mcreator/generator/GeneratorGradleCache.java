@@ -62,6 +62,8 @@ public class GeneratorGradleCache {
 	}
 
 	public Map<String, List<String>> getInnerClassTree() {
+		if (innerClassTree == null)
+			return null;
 		//noinspection RedundantUnmodifiable
 		return Collections.unmodifiableMap(innerClassTree);
 	}
