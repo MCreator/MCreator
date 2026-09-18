@@ -93,7 +93,7 @@ final class CefEventUtils {
 		if (!OS.isMacintosh())
 			return false;
 
-		//  cmd + delete workaround implementation
+		// cmd + delete workaround implementation
 		if (cefKeyEvent.type == CefKeyboardHandler.CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
 				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
 				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_ALT_DOWN) == 0
