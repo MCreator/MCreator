@@ -101,22 +101,22 @@ final class CefEventUtils {
 			if (frame == null)
 				return false;
 			frame.executeJavaScript("""
-						(() => {
-							const el = document.activeElement;
-							if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
-							  return;
-							if (el.selectionStart === null)
-							  return;                                                                                                                                               \s
-							const sel = window.getSelection();
-							if (el.selectionStart === el.selectionEnd) {
-							  sel.modify('extend', 'forward', 'lineboundary');
-							  if (el.selectionStart === el.selectionEnd)
+					(() => {
+						const el = document.activeElement;
+						if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
+							return;
+						if (el.selectionStart === null)
+							return;
+						const sel = window.getSelection();
+						if (el.selectionStart === el.selectionEnd) {
+							sel.modify('extend', 'forward', 'lineboundary');
+							if (el.selectionStart === el.selectionEnd)
 								sel.modify('extend', 'forward', 'character');
-							  if (el.selectionStart === el.selectionEnd)
+							if (el.selectionStart === el.selectionEnd)
 								return;
-							}
-							document.execCommand('delete');
-						})();
+						}
+						document.execCommand('delete');
+					})();
 					""", "http://mcreator/cmd-delete-shortcut", 0);
 			return true;
 		}
