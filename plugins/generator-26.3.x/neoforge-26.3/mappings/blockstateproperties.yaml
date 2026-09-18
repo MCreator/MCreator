@@ -352,9 +352,9 @@ VERTICAL_DIRECTION:
   - vertical_direction
   - Direction
 DRIPSTONE_THICKNESS:
-  - BlockStateProperties.DRIPSTONE_THICKNESS
+  - BlockStateProperties.SPELEOTHEM_THICKNESS
   - thickness
-  - DripstoneThickness
+  - SpeleothemThickness
 SCULK_SENSOR_PHASE:
   - BlockStateProperties.SCULK_SENSOR_PHASE
   - sculk_sensor_phase
@@ -412,3 +412,7 @@ COPPER_GOLEM_POSE:
   - BlockStateProperties.COPPER_GOLEM_POSE
   - copper_golem_pose
   - CopperGolemStatueBlock.Pose
+POTENT_SULFUR_STATE:
+  - BlockStateProperties.POTENT_SULFUR_STATE
+  - potent_sulfur_state
+  - PotentSulfurState
