@@ -27,6 +27,8 @@ import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.element.TagEvent;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -235,6 +237,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!tag_elements.containsKey(element)) {
 			tag_elements.put(element, new ArrayList<>());
 			markDirty();
+
+			MCREvent.event(new TagEvent.Added(this, element, new ArrayList<>()));
 		} else {
 			LOG.warn("Trying to add existing tag element: {}", element.getName());
 		}
@@ -270,6 +274,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeTagElement(TagElement element) {
+		MCREvent.event(new TagEvent.Removed(this, element, getTagElements().get(element)));
+
 		tag_elements.remove(element);
 
 		File tagFile = TagsUtils.getTagFileFor(this, element);

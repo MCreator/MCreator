@@ -25,6 +25,8 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.element.TagEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JItemListField;
@@ -402,12 +404,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		private final JItemListField<? extends MappableElement> listField;
 
-		private final TagElement tagElement;
+		private final TagElement tagElement, oldTagElement;
 
 		private final Timer timer;
 
 		public ItemListFieldCellEditor(TagElement tagElement) {
 			this.tagElement = tagElement;
+			this.oldTagElement = tagElement;
 
 			this.listField = itemListFieldForRow(workspacePanel.getMCreator());
 			this.listField.disableItemCentering();
@@ -444,6 +447,9 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		@SuppressWarnings("unchecked") @Override public boolean stopCellEditing() {
 			ArrayList<TagElement.Entry> newValue = (ArrayList<TagElement.Entry>) getCellEditorValue();
 			if (newValue != null && !listField.isReadOnly()) {
+				MCREvent.event(new TagEvent.Changed(workspacePanel.getMCreator().getWorkspace(), tagElement, newValue,
+						entriesForTag(tagElement)));
+
 				workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElement, newValue);
 				workspacePanel.getMCreator().getWorkspace().markDirty();
 			}
