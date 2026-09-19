@@ -52,7 +52,7 @@ public class VariableEvent extends MCREvent {
 		/**
 		 * <p>This event is triggered when a new {@link VariableElement} is created and added to the workspace.</p>
 		 *
-		 * @param variable <p>The new variable added to the mcreator.</p>
+		 * @param variable <p>The new variable added to the workspace.</p>
 		 */
 		public AddVariableEvent(MCreator mcreator, VariableElement variable) {
 			super(mcreator, variable);
@@ -81,8 +81,8 @@ public class VariableEvent extends MCREvent {
 	public static class RemoveVariableEvent extends VariableEvent {
 
 		/**
-		 * <p>This event is triggered when a variable is deleted from the mcreator.
-		 * More precisely, the event is triggered right before the variable is actually removed from the mcreator.</p>
+		 * <p>This event is triggered when a variable is deleted from the workspace.
+		 * More precisely, the event is triggered right before the variable is actually removed from the workspace.</p>
 		 *
 		 * @param variable <p>The variable that is about to be removed.</p>
 		 */
