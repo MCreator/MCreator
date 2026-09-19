@@ -281,9 +281,14 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					workspace.addVariableElement(element);
 				} else {
 					element = workspace.getVariableElementByName(newName);
-					oldVariable = element;
 					if (element == null)
 						return;
+
+					// We create a new VariableElement variable to keep the old values for the event
+					oldVariable = new VariableElement(element.getName());
+					oldVariable.setScope(element.getScope());
+					oldVariable.setType(element.getType());
+					oldVariable.setValue(element.getValue());
 				}
 
 				element.setType(type);

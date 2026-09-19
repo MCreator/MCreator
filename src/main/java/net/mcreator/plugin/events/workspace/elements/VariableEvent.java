@@ -23,6 +23,8 @@ import net.mcreator.plugin.MCREvent;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
 
+import javax.annotation.Nullable;
+
 public class VariableEvent extends MCREvent {
 
 	private final Workspace workspace;
@@ -60,7 +62,7 @@ public class VariableEvent extends MCREvent {
 	}
 
 	public static class Changed extends VariableEvent {
-		private final VariableElement oldVariable;
+		@Nullable private final VariableElement oldVariable;
 
 		/**
 		 * <p>This event is triggered when a parameter of the {@link VariableElement} is changed.</p>
@@ -68,12 +70,12 @@ public class VariableEvent extends MCREvent {
 		 * @param variable <p>The updated version of the variable.</p>
 		 * @param oldVariable <p>The variable before it was changed.</p>
 		 */
-		public Changed(Workspace workspace, VariableElement variable, VariableElement oldVariable) {
+		public Changed(Workspace workspace, VariableElement variable, @Nullable VariableElement oldVariable) {
 			super(workspace, variable);
 			this.oldVariable = oldVariable;
 		}
 
-		public VariableElement getOldVariable() {
+		@Nullable public VariableElement getOldVariable() {
 			return oldVariable;
 		}
 	}
