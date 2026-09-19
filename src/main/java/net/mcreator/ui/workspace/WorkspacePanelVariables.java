@@ -219,7 +219,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			if (element != null) {
 				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
-				MCREvent.event(new VariableEvent.Added(workspacePanel.getMCreator(), element));
 			}
 		}));
 
@@ -291,7 +290,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				element.setValue(value);
 				element.setScope(scope);
 
-				MCREvent.event(new VariableEvent.Changed(workspacePanel.getMCreator(), element, oldVariable));
+				MCREvent.event(new VariableEvent.Changed(workspace, element, oldVariable));
 
 				// Remember the new name for future edits
 				oldNames.put(i, newName);
@@ -325,7 +324,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 					.forEach(el -> {
 						VariableElement element = new VariableElement(el);
-						MCREvent.event(new VariableEvent.Removed(workspacePanel.getMCreator(), element));
 						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
 					});
 			reloadElements();

@@ -20,27 +20,27 @@
 package net.mcreator.plugin.events.workspace.elements;
 
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.ui.MCreator;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableElement;
 
 public class VariableEvent extends MCREvent {
 
-	private final MCreator mcreator;
+	private final Workspace workspace;
 	private final VariableElement variable;
 
 	/**
 	 * <p>This event is never called. It only aims to group all events inside a single class.</p>
 	 *
-	 * @param mcreator <p>The {@link MCreator} instance where the event was called.</p>
+	 * @param workspace <p>The {@link Workspace} instance where the event was called.</p>
 	 * @param variable <p>The {@link VariableElement} that triggered the event.</p>
 	 */
-	public VariableEvent(MCreator mcreator, VariableElement variable) {
-		this.mcreator = mcreator;
+	public VariableEvent(Workspace workspace, VariableElement variable) {
+		this.workspace = workspace;
 		this.variable = variable;
 	}
 
-	public MCreator getMCreator() {
-		return mcreator;
+	public Workspace getWorkspace() {
+		return workspace;
 	}
 
 	public VariableElement getVariable() {
@@ -54,8 +54,8 @@ public class VariableEvent extends MCREvent {
 		 *
 		 * @param variable <p>The new variable added to the workspace.</p>
 		 */
-		public Added(MCreator mcreator, VariableElement variable) {
-			super(mcreator, variable);
+		public Added(Workspace workspace, VariableElement variable) {
+			super(workspace, variable);
 		}
 	}
 
@@ -68,8 +68,8 @@ public class VariableEvent extends MCREvent {
 		 * @param variable <p>The updated version of the variable.</p>
 		 * @param oldVariable <p>The variable before it was changed.</p>
 		 */
-		public Changed(MCreator mcreator, VariableElement variable, VariableElement oldVariable) {
-			super(mcreator, variable);
+		public Changed(Workspace workspace, VariableElement variable, VariableElement oldVariable) {
+			super(workspace, variable);
 			this.oldVariable = oldVariable;
 		}
 
@@ -86,8 +86,8 @@ public class VariableEvent extends MCREvent {
 		 *
 		 * @param variable <p>The variable that is about to be removed.</p>
 		 */
-		public Removed(MCreator mcreator, VariableElement variable) {
-			super(mcreator, variable);
+		public Removed(Workspace workspace, VariableElement variable) {
+			super(workspace, variable);
 		}
 	}
 }
