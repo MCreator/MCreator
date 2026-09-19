@@ -20,6 +20,7 @@
 package net.mcreator.ui.views.editor.image.animation;
 
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.util.image.ImageUtils;
 
@@ -30,6 +31,7 @@ public class TimelineRenderer extends JPanel implements ListCellRenderer<Animati
 
 	public TimelineRenderer() {
 		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
+		setPreferredSize(new Dimension(170, 170));
 	}
 
 	@Override
@@ -37,13 +39,12 @@ public class TimelineRenderer extends JPanel implements ListCellRenderer<Animati
 			AnimationMakerView.AnimationFrame value, int index, boolean isSelected, boolean cellHasFocus) {
 		removeAll();
 		if (cellHasFocus) {
-			setBackground(PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get());
+			setBackground(Theme.current().getInterfaceAccentColor());
 		} else if (isSelected) {
 			setBackground(PreferencesManager.PREFERENCES.imageEditor.selectedFramesColor.get());
 		} else {
 			setBackground(Color.gray);
 		}
-		setPreferredSize(new Dimension(170, 170));
 		add(new JLabel(new ImageIcon(ImageUtils.resize(value.getImage(), 170))));
 
 		return this;
