@@ -252,11 +252,11 @@
   texture: SULFUR_SPIKE
 - CINNABAR:
   texture: CINNABAR
-- POPLAR_LEAVES:
-  texture: RED_POPLAR_LEAVES
-- RED_SHRUB:
-  texture: RED_SHRUB
 - SHELF_MUSHROOM:
   texture: SHELF_MUSHROOM
+- POPLAR_LEAVES:
+  texture: RED_POPLAR_LEAVES
 - STRAW_BED:
   texture: STRAW_BED
+- RED_SHRUB:
+  texture: RED_SHRUB
