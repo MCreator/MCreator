@@ -68,6 +68,8 @@ import net.mcreator.element.converter.v2026_2.DimensionCustomTexturesConverter;
 import net.mcreator.element.converter.v2026_2.ItemPredicateAdvancementConverter;
 import net.mcreator.element.converter.v2026_2.LivingEntityToBedrockConverter;
 import net.mcreator.element.converter.v2026_2.VillagerTradeSplitter;
+import net.mcreator.element.converter.v2026_3.BEBlockOreReplacementBlocksFixer;
+import net.mcreator.element.converter.v2026_3.BedrockRecipeWildcardItemsFixer;
 import net.mcreator.element.converter.v2026_3.PlayerConditionAdvancementConverter;
 import net.mcreator.generator.GeneratorFlavor;
 
@@ -208,7 +210,8 @@ public class ConverterRegistry {
 			new GuistateProceduresConverter()
 		));
 		put(ModElementType.RECIPE, List.of(
-			new RecipeTypeConverter()
+			new RecipeTypeConverter(),
+			new BedrockRecipeWildcardItemsFixer()
 		));
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
@@ -242,6 +245,9 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.VILLAGERTRADE, List.of(
 			new VillagerTradeSplitter()
+		));
+		put(ModElementType.BEBLOCK, List.of(
+			new BEBlockOreReplacementBlocksFixer()
 		));
 	}};
 	//@formatter:on

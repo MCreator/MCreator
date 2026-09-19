@@ -210,8 +210,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 							return new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 									() -> ((VTextField) component).getText(),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
-									new JavaMemberNameValidator((VTextField) component)).setIsPresentOnList(
-									false);
+									new JavaMemberNameValidator((VTextField) component)).setIsPresentOnList(false);
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
 							workspacePanel.getMCreator().getGeneratorConfiguration()));

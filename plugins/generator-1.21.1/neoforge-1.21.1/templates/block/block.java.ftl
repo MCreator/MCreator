@@ -260,21 +260,36 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
 		<#if data.rotationMode != 0 || statesWithCustomShape?has_content>
 		private ImmutableMap<BlockState, VoxelShape> makeShapes() {
-			return this.getShapeForEachState(state -> {
-				<#list statesWithCustomShape as state>
-				<#if !state?is_first>else </#if>if (
-    				<#list state.stateMap.keySet() as property>
+			<#macro stateCondition state>
+				<#if state.stateMap.keySet()?has_content>
+					<#list state.stateMap.keySet() as property>
 						<#assign value = state.stateMap.get(property)>
 						<#if property.getClass().getSimpleName().equals("StringType")>
 							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
 						</#if>
-						state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
+					state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
 					</#list>
-				) {
-					return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
-				}
-				</#list>
-				return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+				<#else>true</#if>
+			</#macro>
+
+			return this.getShapeForEachState(state -> {
+				<#if data.multipartModel && statesWithCustomShape?has_content>
+					<#-- multipart: shape is union of shapes of all parts with matching condition,
+					     block states not matched by any part have an empty shape -->
+					VoxelShape shape = Shapes.empty();
+					<#list statesWithCustomShape as state>
+					if (<@stateCondition state/>)
+						shape = Shapes.or(shape, <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>);
+					</#list>
+					return shape;
+				<#else>
+					<#list statesWithCustomShape as state>
+					<#if !state?is_first>else </#if>if (<@stateCondition state/>) {
+						return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
+					}
+					</#list>
+					return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+				</#if>
 			});
 		}
 		</#if>
@@ -748,6 +763,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
@@ -778,6 +795,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#elseif data.tintType == "Sky">
