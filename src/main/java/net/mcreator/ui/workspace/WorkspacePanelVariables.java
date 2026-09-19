@@ -20,6 +20,8 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.elements.VariableEvent;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
@@ -217,6 +219,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			if (element != null) {
 				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
+				MCREvent.event(new VariableEvent.AddVariableEvent(workspacePanel.getMCreator(), element));
 			}
 		}));
 
@@ -267,9 +270,10 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				Object value = model.getValueAt(i, 3);
 				VariableType.Scope scope = (VariableType.Scope) model.getValueAt(i, 2);
 
-				VariableElement element;
+				VariableElement element, oldVariable;
 				if (!newName.equals(oldName)) { // Name changed: remove the old element
 					element = workspace.getVariableElementByName(oldName);
+					oldVariable = workspace.getVariableElementByName(oldName);
 					if (element != null) {
 						workspace.removeVariableElement(element);
 					}
@@ -278,6 +282,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					workspace.addVariableElement(element);
 				} else {
 					element = workspace.getVariableElementByName(newName);
+					oldVariable = element;
 					if (element == null)
 						return;
 				}
@@ -285,6 +290,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				element.setType(type);
 				element.setValue(value);
 				element.setScope(scope);
+
+				MCREvent.event(new VariableEvent.ChangeVariableEvent(workspacePanel.getMCreator(), element, oldVariable));
 
 				// Remember the new name for future edits
 				oldNames.put(i, newName);
@@ -318,6 +325,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 					.forEach(el -> {
 						VariableElement element = new VariableElement(el);
+						MCREvent.event(new VariableEvent.RemoveVariableEvent(workspacePanel.getMCreator(), element));
 						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
 					});
 			reloadElements();
