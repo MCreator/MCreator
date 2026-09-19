@@ -48,7 +48,7 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 	protected List<Supplier<AggregatedValidationResult>> lazyValidators = new ArrayList<>();
 
-	private final List<GeneratableElement> toGenerate = new ArrayList<>();
+	protected final List<GeneratableElement> toGenerate = new ArrayList<>();
 
 	public AbstractPackMakerTool(MCreator mcreator, String localizationKey, Image icon) {
 		super(mcreator, L10N.t("dialog.tools." + localizationKey + "_title"), true);
@@ -96,19 +96,22 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		return true;
 	}
 
-	protected static void addGeneratableElementToWorkspace(@Nullable AbstractPackMakerTool packMakerTool,
+	protected static void addGeneratableElementToWorkspace(@Nullable List<GeneratableElement> generationQueue,
 			Workspace workspace, FolderElement folder, GeneratableElement generatableElement) {
 		if (!workspace.containsModElement(generatableElement.getModElement().getName())) {
 			generatableElement.getModElement().setParentFolder(folder);
 			workspace.getModElementManager().storeModElementPicture(generatableElement);
 			workspace.getWorkspace().addModElement(generatableElement.getModElement());
-			if (packMakerTool != null) {
-				packMakerTool.toGenerate.add(
-						generatableElement); // if inside AbstractPackMakerTool, we can queue generation
+			if (generationQueue != null) {
+				generationQueue.add(
+						generatableElement); // caller will generate queued elements after base regeneration
 			} else {
 				workspace.getGenerator().generateElement(generatableElement);
 			}
 			workspace.getModElementManager().storeModElement(generatableElement);
+			workspace.getHistoryManager().checkpoint("mod_element_added",
+					generatableElement.getModElement().getType().getReadableName(),
+					generatableElement.getModElement().getName());
 		}
 	}
 

@@ -8,7 +8,7 @@
 <#assign features_surface_structures = []>
 <#assign features_strongholds = []>
 <#assign features_underground_ores = []>
-<#assign features_underground_decorations = []>
+<#assign features_underground_decoration = []>
 <#assign features_fluid_springs = []>
 <#assign features_vegetal_decoration = []>
 <#assign features_top_layer_modification = []>
@@ -50,8 +50,8 @@
 				<#assign features_strongholds = features_strongholds + ["minecraft:" + feature_name]>
 			<#elseif feature_stage == "underground_ores">
 				<#assign features_underground_ores = features_underground_ores + ["minecraft:" + feature_name]>
-			<#elseif feature_stage == "underground_decorations">
-				<#assign features_underground_decorations = features_underground_decorations + ["minecraft:" + feature_name]>
+			<#elseif feature_stage == "underground_decoration">
+				<#assign features_underground_decoration = features_underground_decoration + ["minecraft:" + feature_name]>
 			<#elseif feature_stage == "fluid_springs">
 				<#assign features_fluid_springs = features_fluid_springs + ["minecraft:" + feature_name]>
 			<#elseif feature_stage == "vegetal_decoration">
@@ -72,6 +72,7 @@
     	"foliage_color": ${data.foliageColor?has_content?then(data.foliageColor.getRGB(), 10387789)},
     	"grass_color": ${data.grassColor?has_content?then(data.grassColor.getRGB(), 9470285)},
     	"water_color": ${data.waterColor?has_content?then(data.waterColor.getRGB(), 4159204)}
+    	<#if data.dryFoliageColor?has_content>, "dry_foliage_color": ${data.dryFoliageColor.getRGB()}</#if>
     },
   	<#assign hasAmbientSound = data.ambientSound?has_content && data.ambientSound.getMappedValue()?has_content>
   	<#assign hasMoodSound = data.moodSound?has_content && data.moodSound.getMappedValue()?has_content>
@@ -146,7 +147,7 @@
 		<#--SURFACE_STRUCTURES-->[<#list thelper.removeDuplicates(features_surface_structures) as feature>"${feature}"<#sep>,</#list>],
 		<#--STRONGHOLDS-->[<#list thelper.removeDuplicates(features_strongholds) as feature>"${feature}"<#sep>,</#list>],
 		<#--UNDERGROUND_ORES-->[<#list thelper.removeDuplicates(features_underground_ores) as feature>"${feature}"<#sep>,</#list>],
-		<#--UNDERGROUND_DECORATION-->[<#list thelper.removeDuplicates(features_underground_decorations) as feature>"${feature}"<#sep>,</#list>],
+		<#--UNDERGROUND_DECORATION-->[<#list thelper.removeDuplicates(features_underground_decoration) as feature>"${feature}"<#sep>,</#list>],
 		<#--FLUID_SPRINGS-->[<#list thelper.removeDuplicates(features_fluid_springs) as feature>"${feature}"<#sep>,</#list>],
 		<#--VEGETAL_DECORATION-->[<#list thelper.removeDuplicates(features_vegetal_decoration) as feature>"${feature}"<#sep>,</#list>],
 		<#--TOP_LAYER_MODIFICATION-->[<#list thelper.removeDuplicates(features_top_layer_modification) as feature>"${feature}"<#sep>,</#list>]

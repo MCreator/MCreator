@@ -1,11 +1,22 @@
-- any
-- mainhand
-- offhand
-- hand
-- feet
-- legs
-- chest
-- head
-- armor
-- body
-- saddle
+- any:
+  texture: AIR
+- mainhand:
+  texture: IRON_SWORD
+- offhand:
+  texture: SHIELD
+- hand:
+  texture: IRON_SPEAR
+- feet:
+  texture: IRON_BOOTS
+- legs:
+  texture: IRON_LEGGINGS
+- chest:
+  texture: IRON_CHESTPLATE
+- head:
+  texture: IRON_HELMET
+- armor:
+  texture: IRON_ARMOR
+- body:
+  texture: IRON_HORSE_ARMOR
+- saddle:
+  texture: SADDLE

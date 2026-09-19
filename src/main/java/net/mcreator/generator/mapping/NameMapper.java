@@ -42,6 +42,8 @@ public class NameMapper {
 
 	public static final String EXTERNAL_PREFIX = "EXTERNAL:";
 
+	public static final String MOD_NAMESPACE_PREFIX = "mod:";
+
 	private final String mappingSource;
 	private Workspace workspace;
 
@@ -60,6 +62,24 @@ public class NameMapper {
 
 	public String getMappingSource() {
 		return mappingSource;
+	}
+
+	/**
+	 * Replaces the "mod:" namespace alias at the start of the given resource location with the actual mod ID.
+	 * Values not starting with the alias are returned unchanged.
+	 *
+	 * @param resourceLocation Resource location that may use the "mod:" namespace alias
+	 * @param modID            Mod ID to replace the alias with
+	 * @return Resource location with the actual mod ID as the namespace
+	 */
+	public static String resolveModNamespace(@Nullable String resourceLocation, String modID) {
+		if (resourceLocation != null && resourceLocation.startsWith(MOD_NAMESPACE_PREFIX))
+			return modID + ":" + resourceLocation.substring(MOD_NAMESPACE_PREFIX.length());
+		return resourceLocation;
+	}
+
+	public static String resolveModNamespace(@Nullable String resourceLocation, Workspace workspace) {
+		return resolveModNamespace(resourceLocation, workspace.getWorkspaceSettings().getModID());
 	}
 
 	public String getMapping(String origName) {
@@ -84,13 +104,11 @@ public class NameMapper {
 
 		Object skip_prefixes = mapping.get("_bypass_prefix");
 		if (skip_prefixes instanceof String skipPrefix && origName.startsWith(skipPrefix)) {
-			return origName.replace(skipPrefix + "mod:",
-					skipPrefix + workspace.getWorkspaceSettings().getModID() + ":");
+			return skipPrefix + resolveModNamespace(origName.substring(skipPrefix.length()), workspace);
 		} else if (skip_prefixes instanceof List<?> skipPrefixesList) {
 			for (Object skip_prefix : skipPrefixesList) {
 				if (skip_prefix instanceof String skipPrefix && origName.startsWith(skipPrefix))
-					return origName.replace(skipPrefix + "mod:",
-							skipPrefix + workspace.getWorkspaceSettings().getModID() + ":");
+					return skipPrefix + resolveModNamespace(origName.substring(skipPrefix.length()), workspace);
 			}
 		}
 
