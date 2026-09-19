@@ -334,6 +334,146 @@
   type: block
   texture: POINTED_DRIPSTONE
 
+- Blocks.SULFUR:
+  readable_name: "Sulfur"
+  type: block
+  texture: SULFUR
+
+- Blocks.POTENT_SULFUR:
+  readable_name: "Potent Sulfur"
+  type: block
+  texture: POTENT_SULFUR
+
+- Blocks.SULFUR_SLAB:
+  readable_name: "Sulfur Slab"
+  type: block
+  texture: SULFUR_SLAB
+
+- Blocks.SULFUR_STAIRS:
+  readable_name: "Sulfur Stairs"
+  type: block
+  texture: SULFUR_STAIRS
+
+- Blocks.SULFUR_WALL:
+  readable_name: "Sulfur Wall"
+  type: block
+  texture: SULFUR_WALL
+
+- Blocks.POLISHED_SULFUR:
+  readable_name: "Polished Sulfur"
+  type: block
+  texture: POLISHED_SULFUR
+
+- Blocks.POLISHED_SULFUR_SLAB:
+  readable_name: "Polished Sulfur Slab"
+  type: block
+  texture: POLISHED_SULFUR_SLAB
+
+- Blocks.POLISHED_SULFUR_STAIRS:
+  readable_name: "Polished Sulfur Stairs"
+  type: block
+  texture: POLISHED_SULFUR_STAIRS
+
+- Blocks.POLISHED_SULFUR_WALL:
+  readable_name: "Polished Sulfur Wall"
+  type: block
+  texture: POLISHED_SULFUR_WALL
+
+- Blocks.SULFUR_BRICKS:
+  readable_name: "Sulfur Bricks"
+  type: block
+  texture: SULFUR_BRICKS
+
+- Blocks.SULFUR_BRICK_SLAB:
+  readable_name: "Sulfur Brick Slab"
+  type: block
+  texture: SULFUR_BRICK_SLAB
+
+- Blocks.SULFUR_BRICK_STAIRS:
+  readable_name: "Sulfur Brick Stairs"
+  type: block
+  texture: SULFUR_BRICK_STAIRS
+
+- Blocks.SULFUR_BRICK_WALL:
+  readable_name: "Sulfur Brick Wall"
+  type: block
+  texture: SULFUR_BRICK_WALL
+
+- Blocks.CHISELED_SULFUR:
+  readable_name: "Chiseled Sulfur"
+  type: block
+  texture: CHISELED_SULFUR
+
+- Blocks.SULFUR_SPIKE:
+  readable_name: "Sulfur Spike"
+  type: block
+  texture: SULFUR_SPIKE
+
+- Blocks.CINNABAR:
+  readable_name: "Cinnabar"
+  type: block
+  texture: CINNABAR
+
+- Blocks.CINNABAR_SLAB:
+  readable_name: "Cinnabar Slab"
+  type: block
+  texture: CINNABAR_SLAB
+
+- Blocks.CINNABAR_STAIRS:
+  readable_name: "Cinnabar Stairs"
+  type: block
+  texture: CINNABAR_STAIRS
+
+- Blocks.CINNABAR_WALL:
+  readable_name: "Cinnabar Wall"
+  type: block
+  texture: CINNABAR_WALL
+
+- Blocks.POLISHED_CINNABAR:
+  readable_name: "Polished Cinnabar"
+  type: block
+  texture: POLISHED_CINNABAR
+
+- Blocks.POLISHED_CINNABAR_SLAB:
+  readable_name: "Polished Cinnabar Slab"
+  type: block
+  texture: POLISHED_CINNABAR_SLAB
+
+- Blocks.POLISHED_CINNABAR_STAIRS:
+  readable_name: "Polished Cinnabar Stairs"
+  type: block
+  texture: POLISHED_CINNABAR_STAIRS
+
+- Blocks.POLISHED_CINNABAR_WALL:
+  readable_name: "Polished Cinnabar Wall"
+  type: block
+  texture: POLISHED_CINNABAR_WALL
+
+- Blocks.CINNABAR_BRICKS:
+  readable_name: "Cinnabar Bricks"
+  type: block
+  texture: CINNABAR_BRICKS
+
+- Blocks.CINNABAR_BRICK_SLAB:
+  readable_name: "Cinnabar Brick Slab"
+  type: block
+  texture: CINNABAR_BRICK_SLAB
+
+- Blocks.CINNABAR_BRICK_STAIRS:
+  readable_name: "Cinnabar Brick Stairs"
+  type: block
+  texture: CINNABAR_BRICK_STAIRS
+
+- Blocks.CINNABAR_BRICK_WALL:
+  readable_name: "Cinnabar Brick Wall"
+  type: block
+  texture: CINNABAR_BRICK_WALL
+
+- Blocks.CHISELED_CINNABAR:
+  readable_name: "Chiseled Cinnabar"
+  type: block
+  texture: CHISELED_CINNABAR
+
 - Blocks.GRASS:
   readable_name: "Grass Block"
   type: block
@@ -491,11 +631,6 @@
   type: block
   texture: PALE_OAK_PLANKS
 
-- Blocks.POPLAR_PLANKS:
-  readable_name: "Poplar Planks"
-  type: block
-  texture: POPLAR_PLANKS
-
 - Blocks.CRIMSON_PLANKS:
   readable_name: "Crimson Planks"
   type: block
@@ -515,6 +650,11 @@
   readable_name: "Cherry Planks"
   type: block
   texture: CHERRY_PLANKS
+
+- Blocks.POPLAR_PLANKS:
+  readable_name: "Poplar Planks"
+  type: block
+  texture: POPLAR_PLANKS
 
 - Blocks.BAMBOO_PLANKS:
   readable_name: "Bamboo Planks"
@@ -567,11 +707,6 @@
   type: block
   texture: PALE_OAK_SAPLING
 
-- Blocks.POPLAR_SAPLING:
-  readable_name: "Poplar Sapling"
-  type: block
-  texture: POPLAR_SAPLING
-
 - Blocks.MANGROVE_PROPAGULE:
   readable_name: "Mangrove Propagule"
   type: block
@@ -581,6 +716,11 @@
   readable_name: "Cherry Sapling"
   type: block
   texture: CHERRY_SAPLING
+
+- Blocks.POPLAR_SAPLING:
+  readable_name: "Poplar Sapling"
+  type: block
+  texture: POPLAR_SAPLING
 
 - Blocks.REEDS:
   readable_name: "Sugar Cane"
@@ -1195,11 +1335,6 @@
   type: block
   texture: PALE_OAK_LOG
 
-- Blocks.POPLAR_LOG:
-  readable_name: "Poplar Log"
-  type: block
-  texture: POPLAR_LOG
-
 - Blocks.WARPED_STEM:
   readable_name: "Warped Stem"
   type: block
@@ -1219,6 +1354,11 @@
   readable_name: "Cherry Log"
   type: block
   texture: CHERRY_LOG
+
+- Blocks.POPLAR_LOG:
+  readable_name: "Poplar Log"
+  type: block
+  texture: POPLAR_LOG
 
 - Blocks.BAMBOO_BLOCK:
   readable_name: "Block of Bamboo"
@@ -1270,11 +1410,6 @@
   type: block
   texture: STRIPPED_PALE_OAK_LOG
 
-- Blocks.STRIPPED_POPLAR_LOG:
-  readable_name: "Stripped Poplar Log"
-  type: block
-  texture: STRIPPED_POPLAR_LOG
-
 - Blocks.STRIPPED_WARPED_STEM:
   readable_name: "Stripped Warped Stem"
   type: block
@@ -1294,6 +1429,11 @@
   readable_name: "Stripped Cherry Log"
   type: block
   texture: STRIPPED_CHERRY_LOG
+
+- Blocks.STRIPPED_POPLAR_LOG:
+  readable_name: "Stripped Poplar Log"
+  type: block
+  texture: STRIPPED_POPLAR_LOG
 
 - Blocks.STRIPPED_BAMBOO_BLOCK:
   readable_name: "Block of Stripped Bamboo"
@@ -1335,11 +1475,6 @@
   type: block
   texture: PALE_OAK_WOOD
 
-- Blocks.POPLAR_WOOD:
-  readable_name: "Poplar Wood"
-  type: block
-  texture: POPLAR_WOOD
-
 - Blocks.WARPED_HYPHAE:
   readable_name: "Warped Hyphae"
   type: block
@@ -1359,6 +1494,11 @@
   readable_name: "Cherry Wood"
   type: block
   texture: CHERRY_WOOD
+
+- Blocks.POPLAR_WOOD:
+  readable_name: "Poplar Wood"
+  type: block
+  texture: POPLAR_WOOD
 
 - Blocks.STRIPPED_OAK_WOOD:
   readable_name: "Stripped Oak Wood"
@@ -1395,11 +1535,6 @@
   type: block
   texture: STRIPPED_PALE_OAK_WOOD
 
-- Blocks.STRIPPED_POPLAR_WOOD:
-  readable_name: "Stripped Poplar Wood"
-  type: block
-  texture: STRIPPED_POPLAR_WOOD
-
 - Blocks.STRIPPED_WARPED_HYPHAE:
   readable_name: "Stripped Warped Hyphae"
   type: block
@@ -1419,6 +1554,11 @@
   readable_name: "Stripped Cherry Wood"
   type: block
   texture: STRIPPED_CHERRY_WOOD
+
+- Blocks.STRIPPED_POPLAR_WOOD:
+  readable_name: "Stripped Poplar Wood"
+  type: block
+  texture: STRIPPED_POPLAR_WOOD
 
 - Blocks.LEAVES:
   readable_name: "Any Leaves"
@@ -1461,21 +1601,6 @@
   type: block
   texture: PALE_OAK_LEAVES
 
-- Blocks.RED_POPLAR_LEAVES:
-  readable_name: "Red Poplar Leaves"
-  type: block
-  texture: RED_POPLAR_LEAVES
-
-- Blocks.ORANGE_POPLAR_LEAVES:
-  readable_name: "Orange Poplar Leaves"
-  type: block
-  texture: ORANGE_POPLAR_LEAVES
-
-- Blocks.YELLOW_POPLAR_LEAVES:
-  readable_name: "Yellow Poplar Leaves"
-  type: block
-  texture: YELLOW_POPLAR_LEAVES
-
 - Blocks.MANGROVE_LEAVES:
   readable_name: "Mangrove Leaves"
   type: block
@@ -1495,6 +1620,21 @@
   readable_name: "Cherry Leaves"
   type: block
   texture: CHERRY_LEAVES
+
+- Blocks.RED_POPLAR_LEAVES:
+  readable_name: "Red Poplar Leaves"
+  type: block
+  texture: RED_POPLAR_LEAVES
+
+- Blocks.ORANGE_POPLAR_LEAVES:
+  readable_name: "Orange Poplar Leaves"
+  type: block
+  texture: ORANGE_POPLAR_LEAVES
+
+- Blocks.YELLOW_POPLAR_LEAVES:
+  readable_name: "Yellow Poplar Leaves"
+  type: block
+  texture: YELLOW_POPLAR_LEAVES
 
 - Blocks.SPONGE:
   readable_name: "Any Sponge"
@@ -2068,11 +2208,6 @@
   type: block
   texture: PALE_OAK_SHELF
 
-- Blocks.POPLAR_SHELF:
-  readable_name: "Poplar Shelf"
-  type: block
-  texture: POPLAR_SHELF
-
 - Blocks.CRIMSON_SHELF:
   readable_name: "Crimson Shelf"
   type: block
@@ -2092,6 +2227,11 @@
   readable_name: "Cherry Shelf"
   type: block
   texture: CHERRY_SHELF
+
+- Blocks.POPLAR_SHELF:
+  readable_name: "Poplar Shelf"
+  type: block
+  texture: POPLAR_SHELF
 
 - Blocks.BAMBOO_SHELF:
   readable_name: "Bamboo Shelf"
@@ -2384,11 +2524,6 @@
   type: block
   texture: PALE_OAK_STAIRS
 
-- Blocks.POPLAR_STAIRS:
-  readable_name: "Poplar Stairs"
-  type: block
-  texture: POPLAR_STAIRS
-
 - Blocks.CRIMSON_STAIRS:
   readable_name: "Crimson Stairs"
   type: block
@@ -2408,6 +2543,11 @@
   readable_name: "Cherry Stairs"
   type: block
   texture: CHERRY_STAIRS
+
+- Blocks.POPLAR_STAIRS:
+  readable_name: "Poplar Stairs"
+  type: block
+  texture: POPLAR_STAIRS
 
 - Blocks.BAMBOO_STAIRS:
   readable_name: "Bamboo Stairs"
@@ -2559,11 +2699,6 @@
   type: block
   texture: STANDING_PALE_OAK_SIGN
 
-- Blocks.POPLAR_SIGN:
-  readable_name: "Poplar Sign"
-  type: block
-  texture: POPLAR_SIGN
-
 - Blocks.CRIMSON_SIGN:
   readable_name: "Crimson Sign"
   type: block
@@ -2583,6 +2718,11 @@
   readable_name: "Cherry Sign"
   type: block
   texture: STANDING_CHERRY_SIGN
+
+- Blocks.POPLAR_SIGN:
+  readable_name: "Poplar Sign"
+  type: block
+  texture: STANDING_POPLAR_SIGN
 
 - Blocks.BAMBOO_SIGN:
   readable_name: "Bamboo Sign"
@@ -2624,11 +2764,6 @@
   type: block_without_item
   texture: PALE_OAK_WALL_SIGN
 
-- Blocks.POPLAR_WALL_SIGN:
-  readable_name: "Poplar Wall Sign"
-  type: block_without_item
-  texture: POPLAR_WALL_SIGN
-
 - Blocks.CRIMSON_WALL_SIGN:
   readable_name: "Crimson Wall Sign"
   type: block_without_item
@@ -2648,6 +2783,11 @@
   readable_name: "Cherry Wall Sign"
   type: block_without_item
   texture: CHERRY_WALL_SIGN
+
+- Blocks.POPLAR_WALL_SIGN:
+  readable_name: "Poplar Wall Sign"
+  type: block_without_item
+  texture: POPLAR_WALL_SIGN
 
 - Blocks.BAMBOO_WALL_SIGN:
   readable_name: "Bamboo Wall Sign"
@@ -2689,11 +2829,6 @@
   type: block
   texture: PALE_OAK_HANGING_SIGN
 
-- Blocks.POPLAR_HANGING_SIGN:
-  readable_name: "Poplar Hanging Sign"
-  type: block
-  texture: POPLAR_HANGING_SIGN
-
 - Blocks.CRIMSON_HANGING_SIGN:
   readable_name: "Crimson Hanging Sign"
   type: block
@@ -2713,6 +2848,11 @@
   readable_name: "Cherry Hanging Sign"
   type: block
   texture: CHERRY_HANGING_SIGN
+
+- Blocks.POPLAR_HANGING_SIGN:
+  readable_name: "Poplar Hanging Sign"
+  type: block
+  texture: POPLAR_HANGING_SIGN
 
 - Blocks.BAMBOO_HANGING_SIGN:
   readable_name: "Bamboo Hanging Sign"
@@ -2754,11 +2894,6 @@
   type: block_without_item
   texture: PALE_OAK_WALL_HANGING_SIGN
 
-- Blocks.POPLAR_WALL_HANGING_SIGN:
-  readable_name: "Poplar Wall Hanging Sign"
-  type: block_without_item
-  texture: POPLAR_WALL_HANGING_SIGN
-
 - Blocks.CRIMSON_WALL_HANGING_SIGN:
   readable_name: "Crimson Wall Hanging Sign"
   type: block_without_item
@@ -2778,6 +2913,11 @@
   readable_name: "Cherry Wall Hanging Sign"
   type: block_without_item
   texture: CHERRY_WALL_HANGING_SIGN
+
+- Blocks.POPLAR_WALL_HANGING_SIGN:
+  readable_name: "Poplar Wall Hanging Sign"
+  type: block_without_item
+  texture: POPLAR_WALL_HANGING_SIGN
 
 - Blocks.BAMBOO_WALL_HANGING_SIGN:
   readable_name: "Bamboo Wall Hanging Sign"
@@ -2819,11 +2959,6 @@
   type: block
   texture: PALE_OAK_DOOR
 
-- Blocks.POPLAR_DOOR:
-  readable_name: "Poplar Door"
-  type: block
-  texture: POPLAR_DOOR
-
 - Blocks.CRIMSON_DOOR:
   readable_name: "Crimson Door"
   type: block
@@ -2843,6 +2978,11 @@
   readable_name: "Cherry Door"
   type: block
   texture: CHERRY_DOOR
+
+- Blocks.POPLAR_DOOR:
+  readable_name: "Poplar Door"
+  type: block
+  texture: POPLAR_DOOR
 
 - Blocks.BAMBOO_DOOR:
   readable_name: "Bamboo Door"
@@ -2929,11 +3069,6 @@
   type: block
   texture: PALE_OAK_TRAPDOOR
 
-- Blocks.POPLAR_TRAPDOOR:
-  readable_name: "Poplar Trapdoor"
-  type: block
-  texture: POPLAR_TRAPDOOR
-
 - Blocks.CRIMSON_TRAPDOOR:
   readable_name: "Crimson Trapdoor"
   type: block
@@ -2953,6 +3088,11 @@
   readable_name: "Cherry Trapdoor"
   type: block
   texture: CHERRY_TRAPDOOR
+
+- Blocks.POPLAR_TRAPDOOR:
+  readable_name: "Poplar Trapdoor"
+  type: block
+  texture: POPLAR_TRAPDOOR
 
 - Blocks.BAMBOO_TRAPDOOR:
   readable_name: "Bamboo Trapdoor"
@@ -3139,11 +3279,6 @@
   type: block
   texture: PALE_OAK_BUTTON
 
-- Blocks.POPLAR_BUTTON:
-  readable_name: "Poplar Button"
-  type: block
-  texture: POPLAR_BUTTON
-
 - Blocks.CRIMSON_BUTTON:
   readable_name: "Crimson Button"
   type: block
@@ -3163,6 +3298,11 @@
   readable_name: "Cherry Button"
   type: block
   texture: CHERRY_BUTTON
+
+- Blocks.POPLAR_BUTTON:
+  readable_name: "Poplar Button"
+  type: block
+  texture: POPLAR_BUTTON
 
 - Blocks.BAMBOO_BUTTON:
   readable_name: "Bamboo Button"
@@ -3204,11 +3344,6 @@
   type: block
   texture: PALE_OAK_PRESSURE_PLATE
 
-- Blocks.POPLAR_PRESSURE_PLATE:
-  readable_name: "Poplar Pressure Plate"
-  type: block
-  texture: POPLAR_PRESSURE_PLATE
-
 - Blocks.CRIMSON_PRESSURE_PLATE:
   readable_name: "Crimson Pressure Plate"
   type: block
@@ -3228,6 +3363,11 @@
   readable_name: "Cherry Pressure Plate"
   type: block
   texture: CHERRY_PRESSURE_PLATE
+
+- Blocks.POPLAR_PRESSURE_PLATE:
+  readable_name: "Poplar Pressure Plate"
+  type: block
+  texture: POPLAR_PRESSURE_PLATE
 
 - Blocks.BAMBOO_PRESSURE_PLATE:
   readable_name: "Bamboo Pressure Plate"
@@ -3520,11 +3660,6 @@
   type: block
   texture: PALE_OAK_FENCE
 
-- Blocks.POPLAR_FENCE:
-  readable_name: "Poplar Fence"
-  type: block
-  texture: POPLAR_FENCE
-
 - Blocks.CRIMSON_FENCE:
   readable_name: "Crimson Fence"
   type: block
@@ -3544,6 +3679,11 @@
   readable_name: "Cherry Fence"
   type: block
   texture: CHERRY_FENCE
+
+- Blocks.POPLAR_FENCE:
+  readable_name: "Poplar Fence"
+  type: block
+  texture: POPLAR_FENCE
 
 - Blocks.BAMBOO_FENCE:
   readable_name: "Bamboo Fence"
@@ -3585,11 +3725,6 @@
   type: block
   texture: PALE_OAK_FENCE_GATE
 
-- Blocks.POPLAR_FENCE_GATE:
-  readable_name: "Poplar Fence Gate"
-  type: block
-  texture: POPLAR_FENCE_GATE
-
 - Blocks.CRIMSON_FENCE_GATE:
   readable_name: "Crimson Fence Gate"
   type: block
@@ -3609,6 +3744,11 @@
   readable_name: "Cherry Fence Gate"
   type: block
   texture: CHERRY_FENCE_GATE
+
+- Blocks.POPLAR_FENCE_GATE:
+  readable_name: "Poplar Fence Gate"
+  type: block
+  texture: POPLAR_FENCE_GATE
 
 - Blocks.BAMBOO_FENCE_GATE:
   readable_name: "Bamboo Fence Gate"
@@ -3941,146 +4081,6 @@
   type: block
   texture: CHISELED_RESIN_BRICKS
 
-- Blocks.CINNABAR:
-  readable_name: "Cinnabar"
-  type: block
-  texture: CINNABAR
-
-- Blocks.CINNABAR_STAIRS:
-  readable_name: "Cinnabar Stairs"
-  type: block
-  texture: CINNABAR_STAIRS
-
-- Blocks.CINNABAR_SLAB:
-  readable_name: "Cinnabar Slab"
-  type: block
-  texture: CINNABAR_SLAB
-
-- Blocks.CINNABAR_WALL:
-  readable_name: "Cinnabar Wall"
-  type: block
-  texture: CINNABAR_WALL
-
-- Blocks.CHISELED_CINNABAR:
-  readable_name: "Chiseled Cinnabar"
-  type: block
-  texture: CHISELED_CINNABAR
-
-- Blocks.POLISHED_CINNABAR:
-  readable_name: "Polished Cinnabar"
-  type: block
-  texture: POLISHED_CINNABAR
-
-- Blocks.POLISHED_CINNABAR_STAIRS:
-  readable_name: "Polished Cinnabar Stairs"
-  type: block
-  texture: POLISHED_CINNABAR_STAIRS
-
-- Blocks.POLISHED_CINNABAR_SLAB:
-  readable_name: "Polished Cinnabar Slab"
-  type: block
-  texture: POLISHED_CINNABAR_SLAB
-
-- Blocks.POLISHED_CINNABAR_WALL:
-  readable_name: "Polished Cinnabar Wall"
-  type: block
-  texture: POLISHED_CINNABAR_WALL
-
-- Blocks.CINNABAR_BRICKS:
-  readable_name: "Cinnabar Bricks"
-  type: block
-  texture: CINNABAR_BRICKS
-
-- Blocks.CINNABAR_BRICK_STAIRS:
-  readable_name: "Cinnabar Brick Stairs"
-  type: block
-  texture: CINNABAR_BRICK_STAIRS
-
-- Blocks.CINNABAR_BRICK_SLAB:
-  readable_name: "Cinnabar Brick Slab"
-  type: block
-  texture: CINNABAR_BRICK_SLAB
-
-- Blocks.CINNABAR_BRICK_WALL:
-  readable_name: "Cinnabar Brick Wall"
-  type: block
-  texture: CINNABAR_BRICK_WALL
-
-- Blocks.SULFUR:
-  readable_name: "Sulfur"
-  type: block
-  texture: SULFUR
-
-- Blocks.SULFUR_STAIRS:
-  readable_name: "Sulfur Stairs"
-  type: block
-  texture: SULFUR_STAIRS
-
-- Blocks.SULFUR_SLAB:
-  readable_name: "Sulfur Slab"
-  type: block
-  texture: SULFUR_SLAB
-
-- Blocks.SULFUR_WALL:
-  readable_name: "Sulfur Wall"
-  type: block
-  texture: SULFUR_WALL
-
-- Blocks.CHISELED_SULFUR:
-  readable_name: "Chiseled Sulfur"
-  type: block
-  texture: CHISELED_SULFUR
-
-- Blocks.POLISHED_SULFUR:
-  readable_name: "Polished Sulfur"
-  type: block
-  texture: POLISHED_SULFUR
-
-- Blocks.POLISHED_SULFUR_STAIRS:
-  readable_name: "Polished Sulfur Stairs"
-  type: block
-  texture: POLISHED_SULFUR_STAIRS
-
-- Blocks.POLISHED_SULFUR_SLAB:
-  readable_name: "Polished Sulfur Slab"
-  type: block
-  texture: POLISHED_SULFUR_SLAB
-
-- Blocks.POLISHED_SULFUR_WALL:
-  readable_name: "Polished Sulfur Wall"
-  type: block
-  texture: POLISHED_SULFUR_WALL
-
-- Blocks.SULFUR_BRICKS:
-  readable_name: "Sulfur Bricks"
-  type: block
-  texture: SULFUR_BRICKS
-
-- Blocks.SULFUR_BRICK_STAIRS:
-  readable_name: "Sulfur Brick Stairs"
-  type: block
-  texture: SULFUR_BRICK_STAIRS
-
-- Blocks.SULFUR_BRICK_SLAB:
-  readable_name: "Sulfur Brick Slab"
-  type: block
-  texture: SULFUR_BRICK_SLAB
-
-- Blocks.SULFUR_BRICK_WALL:
-  readable_name: "Sulfur Brick Wall"
-  type: block
-  texture: SULFUR_BRICK_WALL
-
-- Blocks.SULFUR_SPIKE:
-  readable_name: "Sulfur Spike"
-  type: block
-  texture: SULFUR_SPIKE
-
-- Blocks.POTENT_SULFUR:
-  readable_name: "Potent Sulfur"
-  type: block
-  texture: POTENT_SULFUR
-
 - Blocks.ENCHANTING_TABLE:
   readable_name: "Enchanting Table"
   type: block
@@ -4277,11 +4277,6 @@
   type: block
   texture: PALE_OAK_SLAB
 
-- Blocks.POPLAR_SLAB:
-  readable_name: "Poplar Slab"
-  type: block
-  texture: POPLAR_SLAB
-
 - Blocks.CRIMSON_SLAB:
   readable_name: "Crimson Slab"
   type: block
@@ -4301,6 +4296,11 @@
   readable_name: "Cherry Slab"
   type: block
   texture: CHERRY_SLAB
+
+- Blocks.POPLAR_SLAB:
+  readable_name: "Poplar Slab"
+  type: block
+  texture: POPLAR_SLAB
 
 - Blocks.BAMBOO_SLAB:
   readable_name: "Bamboo Slab"
@@ -4457,11 +4457,6 @@
   type: block_without_item
   texture: POTTED_PALE_OAK_SAPLING
 
-- Blocks.POTTED_POPLAR_SAPLING:
-  readable_name: "Potted Poplar Sapling"
-  type: block_without_item
-  texture: POTTED_POPLAR_SAPLING
-
 - Blocks.POTTED_MANGROVE_PROPAGULE:
   readable_name: "Potted Mangrove Propagule"
   type: block_without_item
@@ -4601,6 +4596,11 @@
   readable_name: "Potted Cherry Sapling"
   type: block_without_item
   texture: POTTED_CHERRY_SAPLING
+
+- Blocks.POTTED_POPLAR_SAPLING:
+  readable_name: "Potted Poplar Sapling"
+  type: block_without_item
+  texture: POTTED_POPLAR_SAPLING
 
 - Blocks.POTTED_TORCHFLOWER:
   readable_name: "Potted Torchflower"
@@ -6980,50 +6980,35 @@
   type: item
   texture: FILLED_MAP
 
-- Items.ABANDONED_CAMP_MAP:
-  readable_name: "Abandoned Camp Map"
+- Items.OCEAN_MONUMENT_MAP:
+  readable_name: "Ocean Monument Map"
   type: item
-  texture: ABANDONED_CAMP_MAP
+  texture: OCEAN_MONUMENT_MAP
 
-- Items.BURIED_ANCIENT_CITY_MAP:
-  readable_name: "Buried Ancient City Map"
+- Items.WOODLAND_MANSION_MAP:
+  readable_name: "Woodland Mansion Map"
   type: item
-  texture: BURIED_ANCIENT_CITY_MAP
-
-- Items.BURIED_MINESHAFT_MAP:
-  readable_name: "Buried Mineshaft Map"
-  type: item
-  texture: BURIED_MINESHAFT_MAP
-
-- Items.BURIED_TREASURE_MAP:
-  readable_name: "Buried Treasure Map"
-  type: item
-  texture: BURIED_TREASURE_MAP
+  texture: WOODLAND_MANSION_MAP
 
 - Items.BURIED_TRIAL_CHAMBERS_MAP:
   readable_name: "Buried Trial Chambers Map"
   type: item
   texture: BURIED_TRIAL_CHAMBERS_MAP
 
-- Items.DESERT_PYRAMID_MAP:
-  readable_name: "Desert Pyramid Map"
-  type: item
-  texture: DESERT_PYRAMID_MAP
-
-- Items.DESERT_VILLAGE_MAP:
-  readable_name: "Desert Village Map"
-  type: item
-  texture: DESERT_VILLAGE_MAP
-
 - Items.JUNGLE_PYRAMID_MAP:
   readable_name: "Jungle Pyramid Map"
   type: item
   texture: JUNGLE_PYRAMID_MAP
 
-- Items.OCEAN_MONUMENT_MAP:
-  readable_name: "Ocean Monument Map"
+- Items.SWAMP_HUT_MAP:
+  readable_name: "Swamp Hut Map"
   type: item
-  texture: OCEAN_MONUMENT_MAP
+  texture: SWAMP_HUT_MAP
+
+- Items.DESERT_VILLAGE_MAP:
+  readable_name: "Desert Village Map"
+  type: item
+  texture: DESERT_VILLAGE_MAP
 
 - Items.PLAINS_VILLAGE_MAP:
   readable_name: "Plains Village Map"
@@ -7040,25 +7025,40 @@
   type: item
   texture: SNOWY_VILLAGE_MAP
 
-- Items.SWAMP_HUT_MAP:
-  readable_name: "Swamp Hut Map"
-  type: item
-  texture: SWAMP_HUT_MAP
-
 - Items.TAIGA_VILLAGE_MAP:
   readable_name: "Taiga Village Map"
   type: item
   texture: TAIGA_VILLAGE_MAP
 
+- Items.BURIED_TREASURE_MAP:
+  readable_name: "Buried Treasure Map"
+  type: item
+  texture: BURIED_TREASURE_MAP
+
+- Items.BURIED_ANCIENT_CITY_MAP:
+  readable_name: "Buried Ancient City Map"
+  type: item
+  texture: BURIED_ANCIENT_CITY_MAP
+
+- Items.BURIED_MINESHAFT_MAP:
+  readable_name: "Buried Mineshaft Map"
+  type: item
+  texture: BURIED_MINESHAFT_MAP
+
+- Items.DESERT_PYRAMID_MAP:
+  readable_name: "Desert Pyramid Map"
+  type: item
+  texture: DESERT_PYRAMID_MAP
+
+- Items.ABANDONED_CAMP_MAP:
+  readable_name: "Abandoned Camp Map"
+  type: item
+  texture: ABANDONED_CAMP_MAP
+
 - Items.WARM_OCEAN_RUINS_MAP:
   readable_name: "Warm Ocean Ruins Map"
   type: item
   texture: WARM_OCEAN_RUINS_MAP
-
-- Items.WOODLAND_MANSION_MAP:
-  readable_name: "Woodland Mansion Map"
-  type: item
-  texture: WOODLAND_MANSION_MAP
 
 - Items.BRUSH:
   readable_name: "Brush"
@@ -7731,11 +7731,6 @@
   type: item
   texture: PALE_OAK_SIGN
 
-- Items.POPLAR_SIGN:
-  readable_name: "Poplar Sign"
-  type: item
-  texture: POPLAR_SIGN
-
 - Items.CRIMSON_SIGN:
   readable_name: "Crimson Sign"
   type: item
@@ -7755,6 +7750,11 @@
   readable_name: "Cherry Sign"
   type: item
   texture: CHERRY_SIGN
+
+- Items.POPLAR_SIGN:
+  readable_name: "Poplar Sign"
+  type: item
+  texture: POPLAR_SIGN
 
 - Items.BAMBOO_SIGN:
   readable_name: "Bamboo Sign"
@@ -7796,11 +7796,6 @@
   type: item
   texture: PALE_OAK_HANGING_SIGN_ITEM
 
-- Items.POPLAR_HANGING_SIGN:
-  readable_name: "Poplar Hanging Sign"
-  type: item
-  texture: POPLAR_HANGING_SIGN
-
 - Items.CRIMSON_HANGING_SIGN:
   readable_name: "Crimson Hanging Sign"
   type: item
@@ -7820,6 +7815,11 @@
   readable_name: "Cherry Hanging Sign"
   type: item
   texture: CHERRY_HANGING_SIGN_ITEM
+
+- Items.POPLAR_HANGING_SIGN:
+  readable_name: "Poplar Hanging Sign"
+  type: item
+  texture: POPLAR_HANGING_SIGN_ITEM
 
 - Items.BAMBOO_HANGING_SIGN:
   readable_name: "Bamboo Hanging Sign"
@@ -7861,11 +7861,6 @@
   type: item
   texture: PALE_OAK_DOOR
 
-- Items.POPLAR_DOOR:
-  readable_name: "Poplar Door"
-  type: item
-  texture: POPLAR_DOOR
-
 - Items.IRON_DOOR:
   readable_name: "Iron Door"
   type: item
@@ -7890,6 +7885,11 @@
   readable_name: "Cherry Door"
   type: item
   texture: CHERRY_DOOR
+
+- Items.POPLAR_DOOR:
+  readable_name: "Poplar Door"
+  type: item
+  texture: POPLAR_DOOR
 
 - Items.BAMBOO_DOOR:
   readable_name: "Bamboo Door"
@@ -8021,11 +8021,6 @@
   type: item
   texture: PALE_OAK_BOAT
 
-- Items.POPLAR_BOAT:
-  readable_name: "Poplar Boat"
-  type: item
-  texture: POPLAR_BOAT
-
 - Items.MANGROVE_BOAT:
   readable_name: "Mangrove Boat"
   type: item
@@ -8035,6 +8030,11 @@
   readable_name: "Cherry Boat"
   type: item
   texture: CHERRY_BOAT
+
+- Items.POPLAR_BOAT:
+  readable_name: "Poplar Boat"
+  type: item
+  texture: POPLAR_BOAT
 
 - Items.BAMBOO_RAFT:
   readable_name: "Bamboo Raft"
@@ -8076,11 +8076,6 @@
   type: item
   texture: PALE_OAK_CHEST_BOAT
 
-- Items.POPLAR_CHEST_BOAT:
-  readable_name: "Poplar Boat with Chest"
-  type: item
-  texture: POPLAR_CHEST_BOAT
-
 - Items.MANGROVE_CHEST_BOAT:
   readable_name: "Mangrove Boat with Chest"
   type: item
@@ -8090,6 +8085,11 @@
   readable_name: "Cherry Boat with Chest"
   type: item
   texture: CHERRY_CHEST_BOAT
+
+- Items.POPLAR_CHEST_BOAT:
+  readable_name: "Poplar Boat with Chest"
+  type: item
+  texture: POPLAR_CHEST_BOAT
 
 - Items.BAMBOO_CHEST_RAFT:
   readable_name: "Bamboo Raft with Chest"
@@ -8322,6 +8322,76 @@
   type: item
   texture: BLACK_HARNESS
 
+- Items.BRICK:
+  readable_name: "Brick"
+  type: item
+  texture: BRICK
+
+- Items.NETHERBRICK:
+  readable_name: "Nether Brick"
+  type: item
+  texture: NETHERBRICK
+
+- Items.RESIN_BRICK:
+  readable_name: "Resin Brick"
+  type: item
+  texture: RESIN_BRICK
+
+- Items.CLAY_BALL:
+  readable_name: "Clay"
+  type: item
+  texture: CLAY_BALL
+
+- Items.REEDS:
+  readable_name: "Reeds"
+  type: item
+  texture: REEDS
+
+- Items.PAPER:
+  readable_name: "Paper"
+  type: item
+  texture: PAPER
+
+- Items.DRIED_KELP:
+  readable_name: "Dried Kelp"
+  type: item
+  texture: DRIED_KELP
+
+- Items.SLIME_BALL:
+  readable_name: "Slimeball"
+  type: item
+  texture: SLIME_BALL
+
+- Items.EGG:
+  readable_name: "Egg"
+  type: item
+  texture: EGG
+
+- Items.BLUE_EGG:
+  readable_name: "Blue Egg"
+  type: item
+  texture: BLUE_EGG
+
+- Items.BROWN_EGG:
+  readable_name: "Brown Egg"
+  type: item
+  texture: BROWN_EGG
+
+- Items.GLOWSTONE_DUST:
+  readable_name: "Glowstone Dust"
+  type: item
+  texture: GLOWSTONE_DUST
+
+- Items.BONE:
+  readable_name: "Bone"
+  type: item
+  texture: BONE
+
+- Items.DYE#15:
+  readable_name: "Bone Meal"
+  type: item
+  texture: DYE#15
+
 - Items.WHITE_CUSHION:
   readable_name: "White Cushion"
   type: item
@@ -8401,76 +8471,6 @@
   readable_name: "Black Cushion"
   type: item
   texture: BLACK_CUSHION
-
-- Items.BRICK:
-  readable_name: "Brick"
-  type: item
-  texture: BRICK
-
-- Items.NETHERBRICK:
-  readable_name: "Nether Brick"
-  type: item
-  texture: NETHERBRICK
-
-- Items.RESIN_BRICK:
-  readable_name: "Resin Brick"
-  type: item
-  texture: RESIN_BRICK
-
-- Items.CLAY_BALL:
-  readable_name: "Clay"
-  type: item
-  texture: CLAY_BALL
-
-- Items.REEDS:
-  readable_name: "Reeds"
-  type: item
-  texture: REEDS
-
-- Items.PAPER:
-  readable_name: "Paper"
-  type: item
-  texture: PAPER
-
-- Items.DRIED_KELP:
-  readable_name: "Dried Kelp"
-  type: item
-  texture: DRIED_KELP
-
-- Items.SLIME_BALL:
-  readable_name: "Slimeball"
-  type: item
-  texture: SLIME_BALL
-
-- Items.EGG:
-  readable_name: "Egg"
-  type: item
-  texture: EGG
-
-- Items.BLUE_EGG:
-  readable_name: "Blue Egg"
-  type: item
-  texture: BLUE_EGG
-
-- Items.BROWN_EGG:
-  readable_name: "Brown Egg"
-  type: item
-  texture: BROWN_EGG
-
-- Items.GLOWSTONE_DUST:
-  readable_name: "Glowstone Dust"
-  type: item
-  texture: GLOWSTONE_DUST
-
-- Items.BONE:
-  readable_name: "Bone"
-  type: item
-  texture: BONE
-
-- Items.DYE#15:
-  readable_name: "Bone Meal"
-  type: item
-  texture: DYE#15
 
 - Items.SUGAR:
   readable_name: "Sugar"
@@ -8867,6 +8867,11 @@
   readable_name: "Slime Spawn Egg"
   type: item
   texture: SPAWN_EGG#55
+
+- Items.SULFUR_CUBE_SPAWN_EGG:
+  readable_name: "Sulfur Cube Spawn Egg"
+  type: item
+  texture: SULFUR_CUBE_SPAWN_EGG
 
 - Items.SPAWN_EGG#56:
   readable_name: "Ghast Spawn Egg"
@@ -9278,11 +9283,6 @@
   type: item
   texture: PARCHED_SPAWN_EGG
 
-- Items.SULFUR_CUBE_SPAWN_EGG:
-  readable_name: "Sulfur Cube Spawn Egg"
-  type: item
-  texture: SULFUR_CUBE_SPAWN_EGG
-
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
   type: item
@@ -9388,12 +9388,6 @@
   texture: MUSIC_DISC_LAVA_CHICKEN
   description: "Hyper Potions - Lava Chicken"
 
-- Items.MUSIC_DISC_BOUNCE:
-  readable_name: "Music Disc"
-  type: item
-  texture: MUSIC_DISC_BOUNCE
-  description: "fingerspit - Bounce"
-
 - Items.RECORD_MALL:
   readable_name: "Music Disc"
   type: item
@@ -9459,6 +9453,12 @@
   description: "Aaron Cherof - Relic"
   type: item
   texture: MUSIC_DISC_RELIC
+
+- Items.MUSIC_DISC_BOUNCE:
+  readable_name: "Music Disc"
+  type: item
+  texture: MUSIC_DISC_BOUNCE
+  description: "fingerspit - Bounce"
 
 - Items.DISC_FRAGMENT_5:
   readable_name: "Disc Fragment 5"
