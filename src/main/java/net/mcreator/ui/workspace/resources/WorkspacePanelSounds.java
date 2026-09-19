@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.workspace.resources;
 
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.element.SoundElementEvent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.SoundElementDialog;
@@ -62,9 +64,14 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 	private void editSelectedSound(SoundElement selectedValue) {
 		if (selectedValue != null) {
+			// We create a new SoundElement variable to keep the old values for the event because selectedValue gets changed inside the dialog
+			SoundElement oldValue = new SoundElement(selectedValue.getName(), selectedValue.getFiles(), selectedValue.getCategory(), selectedValue.getSubtitle());
+
 			SoundElementDialog.soundDialog(workspacePanel.getMCreator(), selectedValue, null);
 			workspacePanel.getMCreator().getWorkspace().markDirty();
 			reloadElements();
+
+			MCREvent.event(new SoundElementEvent.Changed(workspacePanel.getMCreator().getWorkspace(), selectedValue, oldValue));
 		}
 	}
 
