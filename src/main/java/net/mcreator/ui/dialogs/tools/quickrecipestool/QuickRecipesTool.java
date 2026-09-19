@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.dialogs.tools.quickrecipestool;
 
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Recipe;
@@ -38,6 +39,7 @@ import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -65,11 +67,11 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 
 	@Override protected void generatePack(MCreator mcreator) {
 		recipes.getEntries().forEach(
-				recipe -> addRecipeToWorkspace(this, mcreator, mcreator.getWorkspace(), recipe.name, recipe.template,
+				recipe -> addRecipeToWorkspace(toGenerate, mcreator, mcreator.getWorkspace(), recipe.name, recipe.template,
 						recipe.input, recipe.result));
 	}
 
-	public static void addRecipeToWorkspace(@Nullable AbstractPackMakerTool packMaker, MCreator mcreator,
+	public static void addRecipeToWorkspace(@Nullable List<GeneratableElement> generationQueue, MCreator mcreator,
 			Workspace workspace, String name, String template, MItemBlock input, MItemBlock result) {
 
 		if (!checkIfNamesAvailable(workspace, name))
@@ -85,7 +87,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 		Recipe recipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name, ModElementType.RECIPE), false).getElementFromGUI();
 
-		recipe.recipeType = Objects.requireNonNullElse(recipeTemplate.recipeType, "Crafting");
+		recipe.recipeType = recipeTemplate.recipeType;
 		recipe.unlockingItems.add(input);
 		recipe.recipeRetstackSize = recipeTemplate.stackSize;
 
@@ -119,7 +121,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 			break;
 		}
 
-		addGeneratableElementToWorkspace(packMaker, workspace, folder, recipe);
+		addGeneratableElementToWorkspace(generationQueue, workspace, folder, recipe);
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {

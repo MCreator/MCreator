@@ -63,10 +63,10 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 			names.addAll(mcreator.getWorkspace().getModElements().stream()
 					.filter(me -> me.getType() == ModElementType.RECIPE)
 					.map(me -> (NamespacedGeneratableElement) me.getGeneratableElement()).filter(Objects::nonNull)
-					.map(NamespacedGeneratableElement::getResourceLocation).toList());
+					.map(NamespacedGeneratableElement::getNameRaw).toList());
 			names.addAll(entryList.stream().map(e -> e.getEntry().name).toList());
 			return names.stream();
-		}, new ModElementNameValidator(mcreator.getWorkspace(), name, name.getText())));
+		}, new ModElementNameValidator(mcreator.getWorkspace(), name, L10N.t("dialog.tools.quick_recipes.name_validator"))));
 		//@formatter:on
 
 		name.enableRealtimeValidation();
