@@ -82,12 +82,6 @@ public class TagEvent extends MCREvent {
 		public Changed(Workspace workspace, TagElement tagElement, ArrayList<TagElement.Entry> tagValue, ArrayList<TagElement.Entry> oldTagValue) {
 			super(workspace, tagElement, tagValue);
 			this.oldTagValue = oldTagValue;
-
-			oldTagValue.forEach(e -> {
-				System.out.println(e.name());
-				System.out.println(e.isManaged());
-				System.out.println(e.owner());
-			});
 		}
 
 		public ArrayList<TagElement.Entry> getOldTagValue() {
