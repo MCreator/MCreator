@@ -47,19 +47,19 @@ public class VariableEvent extends MCREvent {
 		return variable;
 	}
 
-	public static class AddVariableEvent extends VariableEvent {
+	public static class Added extends VariableEvent {
 
 		/**
 		 * <p>This event is triggered when a new {@link VariableElement} is created and added to the workspace.</p>
 		 *
 		 * @param variable <p>The new variable added to the workspace.</p>
 		 */
-		public AddVariableEvent(MCreator mcreator, VariableElement variable) {
+		public Added(MCreator mcreator, VariableElement variable) {
 			super(mcreator, variable);
 		}
 	}
 
-	public static class ChangeVariableEvent extends VariableEvent {
+	public static class Changed extends VariableEvent {
 		private final VariableElement oldVariable;
 
 		/**
@@ -68,7 +68,7 @@ public class VariableEvent extends MCREvent {
 		 * @param variable <p>The updated version of the variable.</p>
 		 * @param oldVariable <p>The variable before it was changed.</p>
 		 */
-		public ChangeVariableEvent(MCreator mcreator, VariableElement variable, VariableElement oldVariable) {
+		public Changed(MCreator mcreator, VariableElement variable, VariableElement oldVariable) {
 			super(mcreator, variable);
 			this.oldVariable = oldVariable;
 		}
@@ -78,7 +78,7 @@ public class VariableEvent extends MCREvent {
 		}
 	}
 
-	public static class RemoveVariableEvent extends VariableEvent {
+	public static class Removed extends VariableEvent {
 
 		/**
 		 * <p>This event is triggered when a variable is deleted from the workspace.
@@ -86,7 +86,7 @@ public class VariableEvent extends MCREvent {
 		 *
 		 * @param variable <p>The variable that is about to be removed.</p>
 		 */
-		public RemoveVariableEvent(MCreator mcreator, VariableElement variable) {
+		public Removed(MCreator mcreator, VariableElement variable) {
 			super(mcreator, variable);
 		}
 	}
