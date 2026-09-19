@@ -1,0 +1,47 @@
+{
+  "args0": [
+    {
+      "type": "field_resourcelocation",
+      "name": "clock",
+      "text": "minecraft:overworld"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "period",
+      "value": 24000,
+      "min": 1,
+      "precision": 1
+    },
+    {
+      "type": "input_value",
+      "name": "min",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "max",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": false,
+  "output": "Predicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "predicates",
+    "toolbox_init": [
+      "<value name=\"min\"><block type=\"math_number\"><field name=\"NUM\">1000</field></block></value>",
+      "<value name=\"max\"><block type=\"math_number\"><field name=\"NUM\">13000</field></block></value>"
+    ],
+    "inputs": [
+      "min",
+      "max"
+    ],
+    "fields": [
+      "clock",
+      "period"
+    ]
+  }
+}
