@@ -149,6 +149,6 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 90;
+		return 91;
 	}
 }
