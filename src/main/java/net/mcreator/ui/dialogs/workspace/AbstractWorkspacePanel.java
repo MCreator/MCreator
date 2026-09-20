@@ -21,11 +21,13 @@ package net.mcreator.ui.dialogs.workspace;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
@@ -55,9 +57,21 @@ public abstract class AbstractWorkspacePanel {
 
 	private final GeneratorFlavor generatorFlavor;
 
-	private final JPanel panel = new JPanel();
+	private final JPanel panel = new JPanel() {
+		@Override public Dimension getPreferredSize() {
+			Dimension size = super.getPreferredSize();
+			// Reserve space for collapsed advanced elements so the dialog does not need to resize when expanded
+			if (advancedPanel != null && !advancedElements.getParent().isVisible())
+				return new Dimension(size.width, size.height + advancedElements.getPreferredSize().height);
+			return size;
+		}
+	};
 	private final JPanel topPanel = new JPanel();
+	private final JPanel formElements = new JPanel();
+	private final JPanel advancedElements = new JPanel();
 	private final JPanel notices = new JPanel();
+
+	private CollapsiblePanel advancedPanel = null;
 
 	public AbstractWorkspacePanel(Window parent, GeneratorFlavor generatorFlavor) {
 		panel.setLayout(new BorderLayout(0, 120));
@@ -65,7 +79,11 @@ public abstract class AbstractWorkspacePanel {
 		panel.add(notices, BorderLayout.SOUTH);
 
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+		formElements.setLayout(new BoxLayout(formElements, BoxLayout.Y_AXIS));
+		advancedElements.setLayout(new BoxLayout(advancedElements, BoxLayout.Y_AXIS));
 		notices.setLayout(new BoxLayout(notices, BoxLayout.Y_AXIS));
+
+		topPanel.add(formElements);
 
 		this.generatorFlavor = generatorFlavor;
 
@@ -176,7 +194,18 @@ public abstract class AbstractWorkspacePanel {
 	}
 
 	public void addFormElement(Component component) {
-		topPanel.add(component);
+		formElements.add(component);
+	}
+
+	public void addAdvancedFormElement(Component component) {
+		if (advancedPanel == null) {
+			advancedElements.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
+			advancedPanel = new CollapsiblePanel(L10N.t("dialog.new_workspace.advanced"), advancedElements);
+			advancedPanel.setSmallArrows(true);
+			topPanel.add(new JEmptyBox(30, 30));
+			topPanel.add(advancedPanel);
+		}
+		advancedElements.add(component);
 	}
 
 	public void addNotice(ImageIcon icon, String textKey) {
@@ -196,8 +225,22 @@ public abstract class AbstractWorkspacePanel {
 		if (validationGroup.validateIsErrorFree()) {
 			return workspaceDialogPanel.getWorkspaceSettings(null);
 		} else {
+			// Make sure the user can see the fields with errors
+			if (advancedPanel != null && hasValidationErrors(advancedElements))
+				advancedPanel.toggleVisibility(true);
 			return null;
 		}
+	}
+
+	private static boolean hasValidationErrors(Container container) {
+		for (Component component : container.getComponents()) {
+			if (component instanceof IValidable validable
+					&& validable.getValidationStatus().type() == ValidationResult.Type.ERROR)
+				return true;
+			else if (component instanceof Container child && hasValidationErrors(child))
+				return true;
+		}
+		return false;
 	}
 
 	public AggregatedValidationResult getValidationResult() {
