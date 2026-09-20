@@ -46,8 +46,6 @@ public class CollapsiblePanel extends JPanel {
 		setLayout(new BorderLayout());
 		setOpaque(false);
 
-		this.setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()));
-
 		setTitle(text);
 		updateBorderTitle();
 
@@ -104,6 +102,14 @@ public class CollapsiblePanel extends JPanel {
 
 	public void toggleVisibility(boolean visible) {
 		contentHolder.setVisible(visible);
+
+		if (visible) {
+			this.setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()));
+		} else {
+			this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 1, 1, 1),
+					BorderFactory.createMatteBorder(4, 0, 0, 0, Theme.current().getAltBackgroundColor())));
+		}
+
 		updateBorderTitle();
 		setPreferredSize(contentHolder.isVisible() ? null : new Dimension(getPreferredSize().width, 24));
 	}
