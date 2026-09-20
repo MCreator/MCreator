@@ -129,7 +129,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 							.getAsJsonObject();
 					List<IBlockWithBoundingBox.BoxEntry> boxEntries =
 							model.getType() == Model.Type.BEDROCK ? boxesFromBedrockModel(modelJSON) :
-									boxesFromJavaModel(modelJSON);
+									boxesFromJSONModel(modelJSON);
 					if (boxEntries != null)
 						setEntries(boxEntries);
 				} catch (Exception e) {
@@ -142,7 +142,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 		}
 	}
 
-	@Nullable private static List<IBlockWithBoundingBox.BoxEntry> boxesFromJavaModel(JsonObject modelJSON) {
+	@Nullable private static List<IBlockWithBoundingBox.BoxEntry> boxesFromJSONModel(JsonObject modelJSON) {
 		if (!modelJSON.has("elements"))
 			return null;
 
