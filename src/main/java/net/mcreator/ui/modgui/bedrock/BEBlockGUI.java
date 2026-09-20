@@ -46,7 +46,6 @@ import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
-import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -113,17 +112,11 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	private final JComboBox<String> tintMethod = ComponentFromAnnotation.options(BEBlock.class, "tintMethod");
 
-	// Bedrock only accepts boxes inside the block footprint horizontally and up to 24 units high
-	private static final double BEDROCK_BOX_MIN = 0;
-	private static final double BEDROCK_BOX_MAX_XZ = 16;
-	private static final double BEDROCK_BOX_MAX_Y = 24;
-
 	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
 	private JBoundingBoxList boundingBoxList;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
-	private final ValidationGroup boundingBoxGroup = new ValidationGroup();
 
 	private final ModElementListField localScripts = new ModElementListField(mcreator, ModElementType.BESCRIPT,
 			me -> "block".equals(me.getMetadata("type")));
@@ -288,10 +281,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		localScripts.setPreferredSize(new Dimension(640, 34));
 
-		// Bedrock has no subtract boxes; "generate from model" reads the selected Bedrock geometry
-		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem, false);
-		boundingBoxList.setValidator(this::validateBedrockBoundingBoxes);
-		boundingBoxGroup.addValidationElement(boundingBoxList);
+		// "generate from model" reads the selected Bedrock geometry
+		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
 		JPanel boundingBoxNorthPanel = new JPanel(new GridLayout(2, 2, 10, 2));
 		boundingBoxNorthPanel.setOpaque(false);
@@ -312,7 +303,7 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		addPage(L10N.t("elementgui.common.page_visual"), visualPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
-		addPage(L10N.t("elementgui.common.page_bounding_boxes"), boundingBoxPanel).validate(boundingBoxGroup);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), boundingBoxPanel);
 		addPage(L10N.t("elementgui.common.page_generation"), generationPanel);
 		addPage(L10N.t("elementgui.common.page_scripts"), scriptsPanel);
 
@@ -323,20 +314,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		updateTextureOptions();
 		updateCreativeTab();
 		refreshSpawnProperties();
-	}
-
-	private ValidationResult validateBedrockBoundingBoxes() {
-		for (IBlockWithBoundingBox.BoxEntry box : boundingBoxList.getEntries()) {
-			if (!box.isNotEmpty())
-				continue;
-			if (Math.min(box.mx, box.Mx) < BEDROCK_BOX_MIN || Math.max(box.mx, box.Mx) > BEDROCK_BOX_MAX_XZ
-					|| Math.min(box.mz, box.Mz) < BEDROCK_BOX_MIN || Math.max(box.mz, box.Mz) > BEDROCK_BOX_MAX_XZ
-					|| Math.min(box.my, box.My) < BEDROCK_BOX_MIN || Math.max(box.my, box.My) > BEDROCK_BOX_MAX_Y) {
-				return new ValidationResult(ValidationResult.Type.ERROR,
-						L10N.t("elementgui.beblock.error_bounding_box_out_of_range"));
-			}
-		}
-		return ValidationResult.PASSED;
 	}
 
 	private void updateTextureOptions() {

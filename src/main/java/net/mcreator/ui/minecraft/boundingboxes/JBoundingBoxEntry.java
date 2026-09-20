@@ -19,6 +19,7 @@
 package net.mcreator.ui.minecraft.boundingboxes;
 
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.init.L10N;
@@ -28,16 +29,33 @@ import java.util.List;
 
 public class JBoundingBoxEntry extends JSimpleListEntry<IBlockWithBoundingBox.BoxEntry> {
 
-	private final JSpinner mx = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
-	private final JSpinner my = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
-	private final JSpinner mz = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
-	private final JSpinner Mx = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
-	private final JSpinner My = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
-	private final JSpinner Mz = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
+	private final JSpinner mx;
+	private final JSpinner my;
+	private final JSpinner mz;
+	private final JSpinner Mx;
+	private final JSpinner My;
+	private final JSpinner Mz;
 	private final JCheckBox subtract = new JCheckBox();
 
-	public JBoundingBoxEntry(JPanel parent, List<JBoundingBoxEntry> entryList, boolean allowSubtract) {
+	public JBoundingBoxEntry(JPanel parent, List<JBoundingBoxEntry> entryList, GeneratorFlavor generatorFlavor) {
 		super(parent, entryList);
+
+		if (generatorFlavor.getGamePlatform() != GeneratorFlavor.GamePlatform.BEDROCKEDITION) {
+			mx = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
+			my = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
+			mz = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
+			Mx = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
+			My = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
+			Mz = new JSpinner(new SpinnerNumberModel(16, -100, 100, 0.1));
+		} else {
+			// Bedrock only accepts boxes inside the block footprint horizontally and up to 24 units high
+			mx = new JSpinner(new SpinnerNumberModel(0, 0, 16, 0.1));
+			my = new JSpinner(new SpinnerNumberModel(0, 0, 24, 0.1));
+			mz = new JSpinner(new SpinnerNumberModel(0, 0, 16, 0.1));
+			Mx = new JSpinner(new SpinnerNumberModel(16, 0, 16, 0.1));
+			My = new JSpinner(new SpinnerNumberModel(16, 0, 24, 0.1));
+			Mz = new JSpinner(new SpinnerNumberModel(16, 0, 16, 0.1));
+		}
 
 		subtract.setOpaque(false);
 
@@ -57,7 +75,7 @@ public class JBoundingBoxEntry extends JSimpleListEntry<IBlockWithBoundingBox.Bo
 		line.add(L10N.label("elementgui.block.bounding_block_max_z"));
 		line.add(Mz);
 
-		if (allowSubtract) {
+		if (generatorFlavor.getGamePlatform() != GeneratorFlavor.GamePlatform.BEDROCKEDITION) {
 			line.add(new JEmptyBox(15, 5));
 
 			line.add(L10N.label("elementgui.common.subtract"));

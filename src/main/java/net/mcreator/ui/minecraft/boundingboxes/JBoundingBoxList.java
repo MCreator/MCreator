@@ -30,9 +30,6 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.validation.IValidable;
-import net.mcreator.ui.validation.ValidationResult;
-import net.mcreator.ui.validation.Validator;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,34 +41,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlockWithBoundingBox.BoxEntry>
-		implements IValidable {
+public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlockWithBoundingBox.BoxEntry> {
 
 	private static final Logger LOG = LogManager.getLogger(JBoundingBoxList.class);
 
 	@Nullable private final Supplier<Model> modelProvider;
-	private final boolean allowSubtract;
 
 	private final TechnicalButton genFromModel = L10N.technicalbutton("elementgui.common.gen_from_block_model");
 
-	@Nullable private Validator validator;
+	private final MCreator mcreator;
 
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, @Nullable Supplier<Model> modelProvider) {
-		this(mcreator, gui, modelProvider, true);
-	}
-
-	/**
-	 * @param modelProvider Provider of the block model used by the "generate from model" button, or null to hide it.
-	 * @param allowSubtract Whether entries can be marked as subtract (negative) boxes.
-	 */
-	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, @Nullable Supplier<Model> modelProvider,
-			boolean allowSubtract) {
 		super(mcreator, gui);
 		this.modelProvider = modelProvider;
-		this.allowSubtract = allowSubtract;
+		this.mcreator = mcreator;
 
 		if (modelProvider != null) {
-			genFromModel.addActionListener(e -> generateBoundingBoxFromModel());
+			genFromModel.addActionListener(_ -> generateBoundingBoxFromModel());
 			topbar.add(genFromModel);
 			modelChanged();
 		}
@@ -96,19 +82,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 
 	@Override
 	protected JBoundingBoxEntry newEntry(JPanel parent, List<JBoundingBoxEntry> entryList, boolean userAction) {
-		return new JBoundingBoxEntry(parent, entryList, allowSubtract);
-	}
-
-	@Override public ValidationResult getValidationStatus() {
-		return validator == null ? ValidationResult.PASSED : validator.validateIfEnabled(this);
-	}
-
-	@Override public void setValidator(@Nullable Validator validator) {
-		this.validator = validator;
-	}
-
-	@Nullable @Override public Validator getValidator() {
-		return validator;
+		return new JBoundingBoxEntry(parent, entryList, mcreator.getGeneratorConfiguration().getGeneratorFlavor());
 	}
 
 	public void modelChanged() {
@@ -127,9 +101,9 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 				try {
 					JsonObject modelJSON = JsonParser.parseString(FileIO.readFileToString(model.getFile()))
 							.getAsJsonObject();
-					List<IBlockWithBoundingBox.BoxEntry> boxEntries =
-							model.getType() == Model.Type.BEDROCK ? boxesFromBedrockModel(modelJSON) :
-									boxesFromJSONModel(modelJSON);
+					List<IBlockWithBoundingBox.BoxEntry> boxEntries = model.getType() == Model.Type.BEDROCK ?
+							boxesFromBedrockModel(modelJSON) :
+							boxesFromJSONModel(modelJSON);
 					if (boxEntries != null)
 						setEntries(boxEntries);
 				} catch (Exception e) {
