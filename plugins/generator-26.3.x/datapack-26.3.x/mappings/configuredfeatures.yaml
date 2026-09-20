@@ -29,6 +29,12 @@ cherry_bees_005: cherry_bees_005
 chorus_plant: chorus_plant
 clay_pool_with_dripleaves: clay_pool_with_dripleaves
 clay_with_dripleaves: clay_with_dripleaves
+coral/block_decoration: coral/block_decoration
+coral/tube_block: coral/tube_block
+coral/brain_block: coral/brain_block
+coral/bubble_block: coral/bubble_block
+coral/fire_block: coral/fire_block
+coral/horn_block: coral/horn_block
 crimson_forest_vegetation: crimson_forest_vegetation
 crimson_forest_vegetation_bonemeal: nylium_bonemeal # Legacy mapping
 crimson_fungus: crimson_fungus
