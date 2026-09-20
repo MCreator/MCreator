@@ -167,6 +167,9 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public boolean canPlaceItemThroughFace(int index, ItemStack itemstack, @Nullable Direction direction) {
+		<#-- Vanilla automation (hoppers, droppers, crafters) only checks item max stack size when merging into a slot, not inventory slot stack size -->
+		if (this.getItem(index).getCount() >= this.getMaxStackSize(itemstack))
+			return false;
 		return this.canPlaceItem(index, itemstack)
 		<#if hasProcedure(data.inventoryAutomationPlaceCondition)>&&
 			<@procedureCode data.inventoryAutomationPlaceCondition, {
