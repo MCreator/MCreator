@@ -51,10 +51,13 @@ end_gateway_delayed: end_gateway_delayed
 end_gateway_return: end_gateway_return
 end_island: end_island
 end_platform: end_platform
+end_podium_active: end_podium_active
+end_podium_inactive: end_podium_inactive
 end_spike: end_spike
 fallen_birch_tree: fallen_birch_tree
 fallen_jungle_tree: fallen_jungle_tree
 fallen_oak_tree: fallen_oak_tree
+fallen_poplar_tree: fallen_poplar_tree
 fallen_spruce_tree: fallen_spruce_tree
 fallen_super_birch_tree: fallen_super_birch_tree
 fancy_oak: fancy_oak
@@ -116,6 +119,8 @@ oak_bees_0002: oak_bees_0002_leaf_litter
 oak_bees_002: oak_bees_002
 oak_bees_005: oak_bees_005
 oak_leaf_litter: oak_leaf_litter
+orange_poplar: orange_poplar
+orange_poplar_leaf_litter: orange_poplar_leaf_litter
 ore_ancient_debris_large: ore_ancient_debris_large
 ore_ancient_debris_small: ore_ancient_debris_small
 ore_andesite: ore_andesite
@@ -167,6 +172,9 @@ pine: pine
 pointed_dripstone: pointed_dripstone
 patch_pumpkin: pumpkin
 patch_red_mushroom: red_mushroom
+red_poplar: red_poplar
+red_poplar_leaf_litter: red_poplar_leaf_litter
+red_shrub: red_shrub
 rooted_azalea_tree: rooted_azalea_tree
 rooted_sulfur_spring: rooted_sulfur_spring
 sculk_patch_ancient_city: sculk_patch_ancient_city
@@ -201,6 +209,7 @@ tall_mangrove: tall_mangrove
 trees_badlands: trees_badlands
 trees_birch: trees_birch
 trees_birch_and_oak: trees_birch_and_oak_leaf_litter
+trees_dappled_forest: trees_dappled_forest
 trees_flower_forest: trees_flower_forest
 trees_grove: trees_grove
 trees_jungle: trees_jungle
@@ -226,3 +235,5 @@ warped_fungus_planted: warped_fungus_planted
 patch_waterlily: waterlily
 weeping_vines: weeping_vines
 wildflower: wildflower
+yellow_poplar: yellow_poplar
+yellow_poplar_leaf_litter: yellow_poplar_leaf_litter
