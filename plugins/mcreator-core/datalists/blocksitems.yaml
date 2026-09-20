@@ -335,7 +335,7 @@
   texture: POINTED_DRIPSTONE
 
 - Blocks.GRASS:
-  readable_name: "Grass"
+  readable_name: "Grass Block"
   type: block
   texture: GRASS
 
@@ -7222,32 +7222,32 @@
   texture: WATER_BUCKET
 
 - Items.PUFFERFISH_BUCKET:
-  readable_name: "Pufferfish Bucket"
+  readable_name: "Bucket of Pufferfish"
   type: item
   texture: PUFFERFISH_BUCKET
 
 - Items.SALMON_BUCKET:
-  readable_name: "Salmon Bucket"
+  readable_name: "Bucket of Salmon"
   type: item
   texture: SALMON_BUCKET
 
 - Items.COD_BUCKET:
-  readable_name: "Cod Bucket"
+  readable_name: "Bucket of Cod"
   type: item
   texture: COD_BUCKET
 
 - Items.TROPICAL_FISH_BUCKET:
-  readable_name: "Tropical Fish Bucket"
+  readable_name: "Bucket of Tropical Fish"
   type: item
   texture: TROPICAL_FISH_BUCKET
 
 - Items.AXOLOTL_BUCKET:
-  readable_name: "Axolotl Bucket"
+  readable_name: "Bucket of Axolotl"
   type: item
   texture: AXOLOTL_BUCKET
 
 - Items.TADPOLE_BUCKET:
-  readable_name: "Tadpole Bucket"
+  readable_name: "Bucket of Tadpole"
   type: item
   texture: TADPOLE_BUCKET
 
@@ -8571,25 +8571,25 @@
   readable_name: "Music Disc"
   type: item
   texture: RECORD_CREATOR
-  description: "Creator"
+  description: "Lena Raine - Creator"
 
 - Items.RECORD_CREATOR_MUSIC_BOX:
   readable_name: "Music Disc"
   type: item
   texture: RECORD_CREATOR_MUSIC_BOX
-  description: "Creator Music Box"
+  description: "Lena Raine - Creator (Music Box)"
 
 - Items.RECORD_PRECIPICE:
   readable_name: "Music Disc"
   type: item
   texture: RECORD_PRECIPICE
-  description: "Precipice"
+  description: "Aaron Cherof - Precipice"
 
 - Items.MUSIC_DISC_TEARS:
   readable_name: "Music Disc"
   type: item
   texture: MUSIC_DISC_TEARS
-  description: "Tears"
+  description: "Amos Roddy - Tears"
 
 - Items.RECORD_FAR:
   readable_name: "Music Disc"
@@ -8601,7 +8601,7 @@
   readable_name: "Music Disc"
   type: item
   texture: MUSIC_DISC_LAVA_CHICKEN
-  description: "Lava Chicken"
+  description: "Hyper Potions - Lava Chicken"
 
 - Items.RECORD_MALL:
   readable_name: "Music Disc"

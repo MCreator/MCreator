@@ -71,7 +71,7 @@ public class JavaMemberNameValidator implements Validator {
 			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.invalid_name"));
 		} else if (JavaConventions.isStringReservedJavaWord(text)) {
 			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.reserved_keywords"));
-		} else if (common_names.contains(text)) {
+		} else if (VANILLA_NAMES.contains(text)) {
 			return new ValidationResult(ValidationResult.Type.ERROR, L10N.t("validators.java_name.vanilla_names"));
 		} else if (JavaConventions.containsInvalidJavaNameCharacters(text)) {
 			return new ValidationResult(ValidationResult.Type.ERROR,
@@ -85,7 +85,7 @@ public class JavaMemberNameValidator implements Validator {
 		}
 	}
 
-	private static final Set<String> common_names = Set.of("Axe", "Pickaxe", "Spade", "Hoe", "Shovel", "Sword",
+	public static final Set<String> VANILLA_NAMES = Set.of("Axe", "Pickaxe", "Spade", "Hoe", "Shovel", "Sword",
 			"Shears", "FishingRod", "Compass", "Clock", "Shield", "Overworld", "Nether", "World", "Living", "Mob",
 			"Monster", "Animal", "End", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door",
 			"FenceGate", "Creature", "Item", "Block", "BoneMeal", "Diamond", "Ore", "Gem", "Gold", "Iron", "Stack",

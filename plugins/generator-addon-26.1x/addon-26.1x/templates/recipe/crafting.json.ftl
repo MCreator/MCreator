@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 {
-  "format_version": "1.12",
+  "format_version": "1.20.10",
     <#if data.recipeShapeless>
         "minecraft:recipe_shapeless": {
             "description": {
@@ -9,11 +9,12 @@
             },
             "groups": [ "<#if data.group?has_content>${data.group}<#else>${modid}</#if>" ],
             "tags": [ "crafting_table" ],
+            "unlock": ${recipeUnlockJSON(data.unlockingItems)},
             "ingredients": [
               <#assign ingredients = "">
               <#list data.recipeSlots as element>
                   <#if !element.isEmpty()>
-                      <#assign ingredients += "{${mappedMCItemToItemObjectJSON(element)}},">
+                      <#assign ingredients += "{${mappedMCItemToItemObjectJSON(element, true)}},">
                   </#if>
               </#list>
                 ${ingredients[0..(ingredients?last_index_of(',') - 1)]}
@@ -30,6 +31,7 @@
             },
             "groups": [ "<#if data.group?has_content>${data.group}<#else>${modid}</#if>" ],
             "tags": [ "crafting_table" ],
+            "unlock": ${recipeUnlockJSON(data.unlockingItems)},
             <#assign recipeArray = data.getOptimisedRecipe()>
             <#assign patternKeys = data.getPatternKeys()>
             "pattern": [
@@ -39,7 +41,7 @@
             ],
             "key": {
             <#list patternKeys.keySet() as item>
-                "${patternKeys.get(item)}": {${mappedMCItemToItemObjectJSON(item)}}<#sep>,
+                "${patternKeys.get(item)}": {${mappedMCItemToItemObjectJSON(item, true)}}<#sep>,
             </#list>
             },
             "result": {
