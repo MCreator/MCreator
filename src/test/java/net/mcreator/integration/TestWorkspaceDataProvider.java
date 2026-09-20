@@ -2512,6 +2512,14 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 
+			// Variants mode does not support empty state conditions, so make sure at least one property of
+			// the types the state maps below are populated from (logic or integer) is always used
+			if (!block.multipartModel && stateProperties.stream().noneMatch(
+					e -> e.property() instanceof PropertyData.LogicType
+							|| e.property() instanceof PropertyData.IntegerType)) {
+				stateProperties.add(block.customProperties.getFirst()); // CUSTOM:bool_prop
+			}
+
 			for (int i = 0; i < size2; i++) {
 				StateMap stateMap = new StateMap();
 				for (PropertyDataWithValue<?> property : stateProperties) {
