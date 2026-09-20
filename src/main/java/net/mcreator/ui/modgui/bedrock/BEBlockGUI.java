@@ -61,9 +61,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
@@ -261,7 +261,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
 				L10N.label("elementgui.block.gen_replace_blocks")));
-		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE")));
+		blocksToReplace.setListElements(
+				Stream.of("Blocks.STONE#0", "Blocks.STONE#1", "Blocks.STONE#3", "Blocks.STONE#5", "Blocks.TUFF",
+						"Blocks.DEEPSLATE").map(e -> new MItemBlock(mcreator.getWorkspace(), e)).toList());
 		genPanel.add(blocksToReplace);
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_chunk_count"),

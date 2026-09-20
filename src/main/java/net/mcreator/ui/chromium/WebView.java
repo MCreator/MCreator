@@ -87,14 +87,14 @@ public class WebView extends JPanel implements Closeable {
 	private final ExecutorService callbackExecutor = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("WebView-Callback-Thread");
-		thread.setUncaughtExceptionHandler((t, e) -> LOG.error("Failed to run WebView callback: {}", e, e));
+		thread.setUncaughtExceptionHandler((_, e) -> LOG.error("Failed to run WebView callback: {}", e, e));
 		return thread;
 	});
 
 	private final ExecutorService edtJSWaitThread = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable);
 		thread.setName("EDT-JS-Wait-Thread");
-		thread.setUncaughtExceptionHandler((t, e) -> LOG.error("Failed to wait on JS execution: {}", e, e));
+		thread.setUncaughtExceptionHandler((_, e) -> LOG.error("Failed to wait on JS execution: {}", e, e));
 		return thread;
 	});
 
@@ -182,6 +182,9 @@ public class WebView extends JPanel implements Closeable {
 					}
 					return true;
 				}
+
+				if (CefEventUtils.handleMacShortcuts(browser, cefKeyEvent))
+					return true;
 
 				if (CefUtils.useOSR())
 					return false;

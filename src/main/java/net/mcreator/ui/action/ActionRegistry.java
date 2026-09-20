@@ -270,7 +270,7 @@ public class ActionRegistry {
 		this.importOBJModel = new ModelImportActions.OBJ(this);
 		this.importJavaModelAnimation = new AnimationImportActions.JAVA(this);
 		this.closeWorkspace = new BasicAction(this, L10N.t("action.workspace.close"),
-				e -> mcreator.closeThisMCreator(mcreator.getApplication().getOpenMCreators().size() <= 1));
+				e -> mcreator.closeThisMCreator(mcreator.getApplication().getOpenMCreatorsCount() <= 1));
 		this.regenerateCode = new RegenerateCodeAction(this);
 		this.exportWorkspaceToZIP = new ExportWorkspaceToZIPAction(this);
 		this.exportWorkspaceToZIPWithRunDir = new ExportWorkspaceToZIPAction.WithRunDir(this);
