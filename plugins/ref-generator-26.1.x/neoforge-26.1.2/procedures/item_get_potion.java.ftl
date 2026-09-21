@@ -1,0 +1,1 @@
+/*@ItemStack*/(PotionContents.createItemStack(Items.${field$type}, ${generator.map(field$potion, "potions")}))
