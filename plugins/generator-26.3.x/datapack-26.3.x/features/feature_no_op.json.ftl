@@ -1,1 +1,1 @@
-{}
+<#-- This feature has no configuration -->
