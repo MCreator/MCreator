@@ -64,6 +64,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
+<li><a href="#entryRemovedByUserHandler()" tabindex="0">entryRemovedByUserHandler()</a></li>
 <li><a href="#setEntryEnabled(boolean)" tabindex="0">setEntryEnabled(boolean)</a></li>
 <li><a href="#getEntry()" tabindex="0">getEntry()</a></li>
 <li><a href="#setEntry(net.mcreator.ui.minecraft.states.PropertyDataWithValue)" tabindex="0">setEntry(PropertyDataWithValue)</a></li>
@@ -173,21 +174,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a><wbr>&lt;?&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntry()" class="member-name-link">getEntry</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEntry(net.mcreator.ui.minecraft.states.PropertyDataWithValue)" class="member-name-link">setEntry</a><wbr>(<a href="../PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a>&lt;?&gt;&nbsp;entry)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEntryEnabled(boolean)" class="member-name-link">setEntryEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#entryRemovedByUserHandler()" class="member-name-link">entryRemovedByUserHandler</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a><wbr>&lt;?&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntry()" class="member-name-link">getEntry</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEntry(net.mcreator.ui.minecraft.states.PropertyDataWithValue)" class="member-name-link">setEntry</a><wbr>(<a href="../PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a>&lt;?&gt;&nbsp;entry)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEntryEnabled(boolean)" class="member-name-link">setEntryEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.component.entries.JSimpleListEntry">Methods inherited from class&nbsp;<a href="../../../component/entries/JSimpleListEntry.html#method-summary" title="class in net.mcreator.ui.component.entries">JSimpleListEntry</a></h3>
-<code><a href="../../../component/entries/JSimpleListEntry.html#enableMoveDownButton()" title="enableMoveDownButton()">enableMoveDownButton</a>, <a href="../../../component/entries/JSimpleListEntry.html#entryRemovedByUserHandler()" title="entryRemovedByUserHandler()">entryRemovedByUserHandler</a>, <a href="../../../component/entries/JSimpleListEntry.html#getContainerPanel()" title="getContainerPanel()">getContainerPanel</a>, <a href="../../../component/entries/JSimpleListEntry.html#reloadDataLists()" title="reloadDataLists()">reloadDataLists</a>, <a href="../../../component/entries/JSimpleListEntry.html#setEnabled(boolean)" title="setEnabled(boolean)">setEnabled</a>, <a href="../../../component/entries/JSimpleListEntry.html#updateMoveButtons()" title="updateMoveButtons()">updateMoveButtons</a></code></div>
+<code><a href="../../../component/entries/JSimpleListEntry.html#enableMoveDownButton()" title="enableMoveDownButton()">enableMoveDownButton</a>, <a href="../../../component/entries/JSimpleListEntry.html#getContainerPanel()" title="getContainerPanel()">getContainerPanel</a>, <a href="../../../component/entries/JSimpleListEntry.html#reloadDataLists()" title="reloadDataLists()">reloadDataLists</a>, <a href="../../../component/entries/JSimpleListEntry.html#setEnabled(boolean)" title="setEnabled(boolean)">setEnabled</a>, <a href="../../../component/entries/JSimpleListEntry.html#updateMoveButtons()" title="updateMoveButtons()">updateMoveButtons</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-javax.swing.JPanel">Methods inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html#method-summary" title="class or interface in javax.swing" class="external-link">JPanel</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html#getAccessibleContext()" title="class or interface in javax.swing" class="external-link">getAccessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html#getUI()" title="class or interface in javax.swing" class="external-link">getUI</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html#getUIClassID()" title="class or interface in javax.swing" class="external-link">getUIClassID</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html#paramString()" title="class or interface in javax.swing" class="external-link">paramString</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html#setUI(javax.swing.plaf.PanelUI)" title="class or interface in javax.swing" class="external-link">setUI</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html#updateUI()" title="class or interface in javax.swing" class="external-link">updateUI</a></code></div>
@@ -233,6 +237,18 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="entryRemovedByUserHandler()">
+<h3>entryRemovedByUserHandler</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">entryRemovedByUserHandler</span>()</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../../component/entries/JSimpleListEntry.html#entryRemovedByUserHandler()">entryRemovedByUserHandler</a></code>&nbsp;in class&nbsp;<code><a href="../../../component/entries/JSimpleListEntry.html" title="class in net.mcreator.ui.component.entries">JSimpleListEntry</a>&lt;<a href="../PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a>&lt;?&gt;&gt;</code></dd>
+</dl>
+</div>
+</section>
+</li>
 <li>
 <section class="detail" id="setEntryEnabled(boolean)">
 <h3>setEntryEnabled</h3>

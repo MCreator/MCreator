@@ -60,6 +60,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
 <li><a href="#validableElements" tabindex="0">validableElements</a></li>
+<li><a href="#toGenerate" tabindex="0">toGenerate</a></li>
 </ol>
 </li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
@@ -71,7 +72,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#generatePack(net.mcreator.ui.MCreator)" tabindex="0">generatePack(MCreator)</a></li>
 <li><a href="#checkIfNamesAvailable(net.mcreator.workspace.Workspace,java.lang.String...)" tabindex="0">checkIfNamesAvailable(Workspace, String...)</a></li>
-<li><a href="#addGeneratableElementToWorkspace(net.mcreator.ui.dialogs.tools.AbstractPackMakerTool,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)" tabindex="0">addGeneratableElementToWorkspace(AbstractPackMakerTool, Workspace, FolderElement, GeneratableElement)</a></li>
+<li><a href="#addGeneratableElementToWorkspace(java.util.List,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)" tabindex="0">addGeneratableElementToWorkspace(List, Workspace, FolderElement, GeneratableElement)</a></li>
 <li><a href="#addTagEntries(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String,java.lang.String...)" tabindex="0">addTagEntries(Workspace, TagType, String, String...)</a></li>
 <li><a href="#getCachedTexture(java.lang.String)" tabindex="0">getCachedTexture(String)</a></li>
 <li><a href="#getCachedTexture(java.lang.String...)" tabindex="0">getCachedTexture(String...)</a></li>
@@ -154,9 +155,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="../../validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a></code></div>
-<div class="col-second even-row-color"><code><a href="#validableElements" class="member-name-link">validableElements</a></code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#toGenerate" class="member-name-link">toGenerate</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="../../validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#validableElements" class="member-name-link">validableElements</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JDialog">Fields inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#field-summary" title="class or interface in javax.swing" class="external-link">JDialog</a></h3>
@@ -202,7 +206,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>protected static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#addGeneratableElementToWorkspace(net.mcreator.ui.dialogs.tools.AbstractPackMakerTool,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)" class="member-name-link">addGeneratableElementToWorkspace</a><wbr>(<a href="AbstractPackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a>&nbsp;packMakerTool,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#addGeneratableElementToWorkspace(java.util.List,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)" class="member-name-link">addGeneratableElementToWorkspace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;generationQueue,
  <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="../../../workspace/elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a>&nbsp;folder,
  <a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</code></div>
@@ -269,6 +273,14 @@ loadScripts(document, 'script');</script>
 </div>
 </section>
 </li>
+<li>
+<section class="detail" id="toGenerate">
+<h3>toGenerate</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;</span>&nbsp;<span class="element-name">toGenerate</span></div>
+</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -313,11 +325,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addGeneratableElementToWorkspace(net.mcreator.ui.dialogs.tools.AbstractPackMakerTool,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)">
+<section class="detail" id="addGeneratableElementToWorkspace(java.util.List,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)">
 <h3>addGeneratableElementToWorkspace</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addGeneratableElementToWorkspace</span><wbr><span class="parameters">(@Nullable
- <a href="AbstractPackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a>&nbsp;packMakerTool,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;generationQueue,
  <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="../../../workspace/elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a>&nbsp;folder,
  <a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</span></div>

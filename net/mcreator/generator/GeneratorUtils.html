@@ -64,6 +64,7 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#getSourceRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" tabindex="0">getSourceRoot(Workspace, GeneratorConfiguration)</a></li>
 <li><a href="#getResourceRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" tabindex="0">getResourceRoot(Workspace, GeneratorConfiguration)</a></li>
+<li><a href="#getCommonRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" tabindex="0">getCommonRoot(Workspace, GeneratorConfiguration)</a></li>
 <li><a href="#getModAssetsRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" tabindex="0">getModAssetsRoot(Workspace, GeneratorConfiguration)</a></li>
 <li><a href="#getModDataRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" tabindex="0">getModDataRoot(Workspace, GeneratorConfiguration)</a></li>
 <li><a href="#getSpecificRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration,java.lang.String)" tabindex="0">getSpecificRoot(Workspace, GeneratorConfiguration, String)</a></li>
@@ -113,26 +114,32 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModAssetsRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getModAssetsRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getCommonRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getCommonRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Returns the nearest directory that contains both the source root and the resource root of the workspace.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModDataRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getModDataRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModAssetsRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getModAssetsRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getResourceRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getResourceRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getModDataRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getModDataRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSourceRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getSourceRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getResourceRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getResourceRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSpecificRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration,java.lang.String)" class="member-name-link">getSpecificRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSourceRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getSourceRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSpecificRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration,java.lang.String)" class="member-name-link">getSpecificRoot</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;root)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -181,6 +188,22 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getResourceRoot</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getCommonRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)">
+<h3>getCommonRoot</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getCommonRoot</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</span></div>
+<div class="block">Returns the nearest directory that contains both the source root and the resource root of the workspace.
+For generators that share a single root for both, this is that root itself.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the common root of source and resource roots, or null if they do not share an ancestor</dd>
+</dl>
 </div>
 </section>
 </li>

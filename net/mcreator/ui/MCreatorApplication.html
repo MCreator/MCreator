@@ -71,9 +71,11 @@ loadScripts(document, 'script');</script>
 <li><a href="#openWorkspaceInMCreator(java.io.File)" tabindex="0">openWorkspaceInMCreator(File)</a></li>
 <li><a href="#openWorkspaceInMCreator(java.io.File,boolean)" tabindex="0">openWorkspaceInMCreator(File, boolean)</a></li>
 <li><a href="#closeApplication()" tabindex="0">closeApplication()</a></li>
+<li><a href="#getOpenMCreatorsCount()" tabindex="0">getOpenMCreatorsCount()</a></li>
 <li><a href="#getOpenMCreators()" tabindex="0">getOpenMCreators()</a></li>
 <li><a href="#getDiscordClient()" tabindex="0">getDiscordClient()</a></li>
 <li><a href="#getTaskbarIntegration()" tabindex="0">getTaskbarIntegration()</a></li>
+<li><a href="#getMCreatorMcp()" tabindex="0">getMCreatorMcp()</a></li>
 </ol>
 </li>
 </ol>
@@ -142,8 +144,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="component/util/DiscordClient.html" title="class in net.mcreator.ui.component.util">DiscordClient</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDiscordClient()" class="member-name-link">getDiscordClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMCreators()" class="member-name-link">getOpenMCreators</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="mcp/MCreatorMcp.html" title="class in net.mcreator.ui.mcp">MCreatorMcp</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCreatorMcp()" class="member-name-link">getMCreatorMcp</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMCreators()" class="member-name-link">getOpenMCreators</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMCreatorsCount()" class="member-name-link">getOpenMCreatorsCount</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="TaskbarIntegration.html" title="class in net.mcreator.ui">TaskbarIntegration</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTaskbarIntegration()" class="member-name-link">getTaskbarIntegration</a>()</code></div>
@@ -286,10 +294,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getOpenMCreatorsCount()">
+<h3>getOpenMCreatorsCount</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getOpenMCreatorsCount</span>()</div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getOpenMCreators()">
 <h3>getOpenMCreators</h3>
 <div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&gt;</span>&nbsp;<span class="element-name">getOpenMCreators</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="MCreator.html" title="class in net.mcreator.ui">MCreator</a>&gt;</span>&nbsp;<span class="element-name">getOpenMCreators</span>()</div>
 </div>
 </section>
 </li>
@@ -306,6 +322,15 @@ loadScripts(document, 'script');</script>
 <h3>getTaskbarIntegration</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="TaskbarIntegration.html" title="class in net.mcreator.ui">TaskbarIntegration</a></span>&nbsp;<span class="element-name">getTaskbarIntegration</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getMCreatorMcp()">
+<h3>getMCreatorMcp</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="mcp/MCreatorMcp.html" title="class in net.mcreator.ui.mcp">MCreatorMcp</a></span>&nbsp;<span class="element-name">getMCreatorMcp</span>()</div>
 </div>
 </section>
 </li>

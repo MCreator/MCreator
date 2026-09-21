@@ -64,6 +64,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#validateAndTryToCorrect(net.mcreator.element.GeneratableElement,java.util.function.Consumer)" tabindex="0">validateAndTryToCorrect(GeneratableElement, Consumer)</a></li>
+<li><a href="#castNumber(java.lang.Class,double)" tabindex="0">castNumber(Class, double)</a></li>
 </ol>
 </li>
 </ol>
@@ -127,10 +128,14 @@ correct invalid values when possible based on attached annotations.</div>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateAndTryToCorrect(net.mcreator.element.GeneratableElement,java.util.function.Consumer)" class="member-name-link">validateAndTryToCorrect</a><wbr>(<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#castNumber(java.lang.Class,double)" class="member-name-link">castNumber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type,
+ double&nbsp;value)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#validateAndTryToCorrect(net.mcreator.element.GeneratableElement,java.util.function.Consumer)" class="member-name-link">validateAndTryToCorrect</a><wbr>(<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;validationLog)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Validates the given generatable element and recursively checks all nested
 custom objects, collections, maps, and arrays using reflection.</div>
 </div>
@@ -190,6 +195,15 @@ Supported validation annotations:
 <dt>Throws:</dt>
 <dd><code><a href="GEValidator.ValidationException.html" title="class in net.mcreator.element.util">GEValidator.ValidationException</a></code> - if validation fails in non-recoverable way or reflective access fails</dd>
 </dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="castNumber(java.lang.Class,double)">
+<h3>castNumber</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span>&nbsp;<span class="element-name">castNumber</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;?&gt;&nbsp;type,
+ double&nbsp;value)</span></div>
 </div>
 </section>
 </li>

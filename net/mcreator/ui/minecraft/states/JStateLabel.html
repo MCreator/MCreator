@@ -60,6 +60,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#field-detail" tabindex="0">Field Details</a>
 <ol class="toc-list">
 <li><a href="#allowEmpty" tabindex="0">allowEmpty</a></li>
+<li><a href="#allowDuplicates" tabindex="0">allowDuplicates</a></li>
 <li><a href="#numberMatchType" tabindex="0">numberMatchType</a></li>
 </ol>
 </li>
@@ -73,6 +74,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#setEnabled(boolean)" tabindex="0">setEnabled(boolean)</a></li>
 <li><a href="#editState()" tabindex="0">editState()</a></li>
 <li><a href="#setAllowEmpty(boolean)" tabindex="0">setAllowEmpty(boolean)</a></li>
+<li><a href="#setAllowDuplicates(boolean)" tabindex="0">setAllowDuplicates(boolean)</a></li>
 <li><a href="#setNumberMatchType(net.mcreator.ui.minecraft.states.JStateLabel.NumberMatchType)" tabindex="0">setNumberMatchType(JStateLabel.NumberMatchType)</a></li>
 <li><a href="#getStateMap()" tabindex="0">getStateMap()</a></li>
 <li><a href="#setStateMap(net.mcreator.ui.minecraft.states.StateMap)" tabindex="0">setStateMap(StateMap)</a></li>
@@ -155,11 +157,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#allowEmpty" class="member-name-link">allowEmpty</a></code></div>
+<div class="col-second even-row-color"><code><a href="#allowDuplicates" class="member-name-link">allowDuplicates</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="JStateLabel.NumberMatchType.html" title="enum class in net.mcreator.ui.minecraft.states">JStateLabel.NumberMatchType</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#numberMatchType" class="member-name-link">numberMatchType</a></code></div>
+<div class="col-first odd-row-color"><code>protected boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#allowEmpty" class="member-name-link">allowEmpty</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="JStateLabel.NumberMatchType.html" title="enum class in net.mcreator.ui.minecraft.states">JStateLabel.NumberMatchType</a></code></div>
+<div class="col-second even-row-color"><code><a href="#numberMatchType" class="member-name-link">numberMatchType</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JComponent">Fields inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JComponent.html#field-summary" title="class or interface in javax.swing" class="external-link">JComponent</a></h3>
@@ -209,17 +214,20 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;value)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JStateLabel.html" title="class in net.mcreator.ui.minecraft.states">JStateLabel</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAllowEmpty(boolean)" class="member-name-link">setAllowEmpty</a><wbr>(boolean&nbsp;allowEmpty)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAllowDuplicates(boolean)" class="member-name-link">setAllowDuplicates</a><wbr>(boolean&nbsp;allowDuplicates)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JStateLabel.html" title="class in net.mcreator.ui.minecraft.states">JStateLabel</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAllowEmpty(boolean)" class="member-name-link">setAllowEmpty</a><wbr>(boolean&nbsp;allowEmpty)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JStateLabel.html" title="class in net.mcreator.ui.minecraft.states">JStateLabel</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNumberMatchType(net.mcreator.ui.minecraft.states.JStateLabel.NumberMatchType)" class="member-name-link">setNumberMatchType</a><wbr>(<a href="JStateLabel.NumberMatchType.html" title="enum class in net.mcreator.ui.minecraft.states">JStateLabel.NumberMatchType</a>&nbsp;numberMatchType)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStateMap(net.mcreator.ui.minecraft.states.StateMap)" class="member-name-link">setStateMap</a><wbr>(<a href="StateMap.html" title="class in net.mcreator.ui.minecraft.states">StateMap</a>&nbsp;stateMap)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="JStateLabel.html" title="class in net.mcreator.ui.minecraft.states">JStateLabel</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNumberMatchType(net.mcreator.ui.minecraft.states.JStateLabel.NumberMatchType)" class="member-name-link">setNumberMatchType</a><wbr>(<a href="JStateLabel.NumberMatchType.html" title="enum class in net.mcreator.ui.minecraft.states">JStateLabel.NumberMatchType</a>&nbsp;numberMatchType)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStateMap(net.mcreator.ui.minecraft.states.StateMap)" class="member-name-link">setStateMap</a><wbr>(<a href="StateMap.html" title="class in net.mcreator.ui.minecraft.states">StateMap</a>&nbsp;stateMap)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -254,6 +262,14 @@ loadScripts(document, 'script');</script>
 <h3>allowEmpty</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">allowEmpty</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="allowDuplicates">
+<h3>allowDuplicates</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">allowDuplicates</span></div>
 </div>
 </section>
 </li>
@@ -316,6 +332,14 @@ loadScripts(document, 'script');</script>
 <h3>setAllowEmpty</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JStateLabel.html" title="class in net.mcreator.ui.minecraft.states">JStateLabel</a></span>&nbsp;<span class="element-name">setAllowEmpty</span><wbr><span class="parameters">(boolean&nbsp;allowEmpty)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setAllowDuplicates(boolean)">
+<h3>setAllowDuplicates</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="JStateLabel.html" title="class in net.mcreator.ui.minecraft.states">JStateLabel</a></span>&nbsp;<span class="element-name">setAllowDuplicates</span><wbr><span class="parameters">(boolean&nbsp;allowDuplicates)</span></div>
 </div>
 </section>
 </li>

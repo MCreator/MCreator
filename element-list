@@ -34,6 +34,7 @@ net.mcreator.element.converter.v2025_2
 net.mcreator.element.converter.v2025_4
 net.mcreator.element.converter.v2026_1
 net.mcreator.element.converter.v2026_2
+net.mcreator.element.converter.v2026_3
 net.mcreator.element.parts
 net.mcreator.element.parts.gui
 net.mcreator.element.parts.procedure
@@ -52,6 +53,10 @@ net.mcreator.generator.template.base
 net.mcreator.generator.usercode
 net.mcreator.gradle
 net.mcreator.io
+net.mcreator.io.mcp
+net.mcreator.io.mcp.protocol
+net.mcreator.io.mcp.tool
+net.mcreator.io.mcp.transport
 net.mcreator.io.net
 net.mcreator.io.net.analytics
 net.mcreator.io.net.api
@@ -109,6 +114,10 @@ net.mcreator.ui.laf.renderer
 net.mcreator.ui.laf.renderer.elementlist
 net.mcreator.ui.laf.renderer.elementlist.special
 net.mcreator.ui.laf.themes
+net.mcreator.ui.mcp
+net.mcreator.ui.mcp.tools
+net.mcreator.ui.mcp.tools.schema
+net.mcreator.ui.mcp.tools.utils
 net.mcreator.ui.minecraft
 net.mcreator.ui.minecraft.attributemodifiers
 net.mcreator.ui.minecraft.bedrock.digger

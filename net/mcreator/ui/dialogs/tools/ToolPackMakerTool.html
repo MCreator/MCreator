@@ -59,6 +59,9 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#generatePack(net.mcreator.ui.MCreator)" tabindex="0">generatePack(MCreator)</a></li>
+<li><a href="#getPackElementNames(java.lang.String)" tabindex="0">getPackElementNames(String)</a></li>
+<li><a href="#addToolPackToWorkspace(java.util.List,net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,net.mcreator.element.parts.MItemBlock,java.awt.Color,double)" tabindex="0">addToolPackToWorkspace(List, MCreator, Workspace, String, MItemBlock, Color, double)</a></li>
+<li><a href="#isSupported(net.mcreator.generator.GeneratorConfiguration)" tabindex="0">isSupported(GeneratorConfiguration)</a></li>
 <li><a href="#getAction(net.mcreator.ui.action.ActionRegistry)" tabindex="0">getAction(ActionRegistry)</a></li>
 </ol>
 </li>
@@ -134,7 +137,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.ui.dialogs.tools.AbstractPackMakerTool">Fields inherited from class&nbsp;<a href="AbstractPackMakerTool.html#field-summary" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a></h3>
-<code><a href="AbstractPackMakerTool.html#validableElements">validableElements</a></code></div>
+<code><a href="AbstractPackMakerTool.html#toGenerate">toGenerate</a>, <a href="AbstractPackMakerTool.html#validableElements">validableElements</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JDialog">Fields inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#field-summary" title="class or interface in javax.swing" class="external-link">JDialog</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#accessibleContext" title="class or interface in javax.swing" class="external-link">accessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#rootPane" title="class or interface in javax.swing" class="external-link">rootPane</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#rootPaneCheckingEnabled" title="class or interface in javax.swing" class="external-link">rootPaneCheckingEnabled</a></code></div>
@@ -163,18 +166,33 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generatePack(net.mcreator.ui.MCreator)" class="member-name-link">generatePack</a><wbr>(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getAction(net.mcreator.ui.action.ActionRegistry)" class="member-name-link">getAction</a><wbr>(<a href="../../action/ActionRegistry.html" title="class in net.mcreator.ui.action">ActionRegistry</a>&nbsp;actionRegistry)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#addToolPackToWorkspace(java.util.List,net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,net.mcreator.element.parts.MItemBlock,java.awt.Color,double)" class="member-name-link">addToolPackToWorkspace</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;generationQueue,
+ <a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="../../../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;base,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
+ double&nbsp;factor)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generatePack(net.mcreator.ui.MCreator)" class="member-name-link">generatePack</a><wbr>(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getAction(net.mcreator.ui.action.ActionRegistry)" class="member-name-link">getAction</a><wbr>(<a href="../../action/ActionRegistry.html" title="class in net.mcreator.ui.action">ActionRegistry</a>&nbsp;actionRegistry)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getPackElementNames(java.lang.String)" class="member-name-link">getPackElementNames</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isSupported(net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">isSupported</a><wbr>(<a href="../../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;gc)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.dialogs.tools.AbstractPackMakerTool">Methods inherited from class&nbsp;<a href="AbstractPackMakerTool.html#method-summary" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a></h3>
-<code><a href="AbstractPackMakerTool.html#addGeneratableElementToWorkspace(net.mcreator.ui.dialogs.tools.AbstractPackMakerTool,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)" title="addGeneratableElementToWorkspace(AbstractPackMakerTool, Workspace, FolderElement, GeneratableElement)">addGeneratableElementToWorkspace</a>, <a href="AbstractPackMakerTool.html#addTagEntries(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String,java.lang.String...)" title="addTagEntries(Workspace, TagType, String, String...)">addTagEntries</a>, <a href="AbstractPackMakerTool.html#checkIfNamesAvailable(net.mcreator.workspace.Workspace,java.lang.String...)" title="checkIfNamesAvailable(Workspace, String...)">checkIfNamesAvailable</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String)" title="getCachedTexture(String)">getCachedTexture</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String...)" title="getCachedTexture(String...)">getCachedTexture</a></code></div>
+<code><a href="AbstractPackMakerTool.html#addGeneratableElementToWorkspace(java.util.List,net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.FolderElement,net.mcreator.element.GeneratableElement)" title="addGeneratableElementToWorkspace(List, Workspace, FolderElement, GeneratableElement)">addGeneratableElementToWorkspace</a>, <a href="AbstractPackMakerTool.html#addTagEntries(net.mcreator.workspace.Workspace,net.mcreator.minecraft.TagType,java.lang.String,java.lang.String...)" title="addTagEntries(Workspace, TagType, String, String...)">addTagEntries</a>, <a href="AbstractPackMakerTool.html#checkIfNamesAvailable(net.mcreator.workspace.Workspace,java.lang.String...)" title="checkIfNamesAvailable(Workspace, String...)">checkIfNamesAvailable</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String)" title="getCachedTexture(String)">getCachedTexture</a>, <a href="AbstractPackMakerTool.html#getCachedTexture(java.lang.String...)" title="getCachedTexture(String...)">getCachedTexture</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.dialogs.MCreatorDialog">Methods inherited from class&nbsp;<a href="../MCreatorDialog.html#method-summary" title="class in net.mcreator.ui.dialogs">MCreatorDialog</a></h3>
 <code><a href="../MCreatorDialog.html#setClosable(boolean)" title="setClosable(boolean)">setClosable</a>, <a href="../MCreatorDialog.html#setSize(int,int)" title="setSize(int, int)">setSize</a></code></div>
@@ -216,6 +234,37 @@ loadScripts(document, 'script');</script>
 <dt>Specified by:</dt>
 <dd><code><a href="AbstractPackMakerTool.html#generatePack(net.mcreator.ui.MCreator)">generatePack</a></code>&nbsp;in class&nbsp;<code><a href="AbstractPackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools">AbstractPackMakerTool</a></code></dd>
 </dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getPackElementNames(java.lang.String)">
+<h3>getPackElementNames</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">getPackElementNames</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="addToolPackToWorkspace(java.util.List,net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,net.mcreator.element.parts.MItemBlock,java.awt.Color,double)">
+<h3>addToolPackToWorkspace</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">addToolPackToWorkspace</span><wbr><span class="parameters">(@Nullable
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&nbsp;generationQueue,
+ <a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="../../../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;base,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a>&nbsp;color,
+ double&nbsp;factor)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="isSupported(net.mcreator.generator.GeneratorConfiguration)">
+<h3>isSupported</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isSupported</span><wbr><span class="parameters">(<a href="../../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;gc)</span></div>
 </div>
 </section>
 </li>
