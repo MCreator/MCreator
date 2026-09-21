@@ -36,7 +36,7 @@ coral/bubble_block: coral/bubble_block
 coral/fire_block: coral/fire_block
 coral/horn_block: coral/horn_block
 crimson_forest_vegetation: crimson_forest_vegetation
-crimson_forest_vegetation_bonemeal: nylium_bonemeal # Legacy mapping
+crimson_forest_vegetation_bonemeal: crimson_forest_vegetation # Legacy mapping
 crimson_fungus: crimson_fungus
 crimson_fungus_planted: crimson_fungus_planted
 patch_crimson_roots: crimson_roots
@@ -119,7 +119,8 @@ moss_patch_ceiling: moss_patch_ceiling
 moss_vegetation: moss_vegetation
 mushroom_island_vegetation: mushroom_island_vegetation
 nether_sprouts: nether_sprouts
-nether_sprouts_bonemeal: nylium_bonemeal # Legacy mapping
+nether_sprouts_bonemeal: nether_sprouts # Legacy mapping
+nylium_bonemeal: nylium_bonemeal
 oak: oak
 oak_bees_0002: oak_bees_0002_leaf_litter
 oak_bees_002: oak_bees_002
@@ -229,13 +230,13 @@ trees_taiga: trees_taiga
 trees_water: trees_water
 trees_windswept_hills: trees_windswept_hills
 twisting_vines: twisting_vines
-twisting_vines_bonemeal: nylium_bonemeal # Legacy mapping
+twisting_vines_bonemeal: twisting_vines # Legacy mapping
 underwater_magma: underwater_magma
 vines: vines
 void_start_platform: void_start_platform
 warm_ocean_vegetation: warm_ocean_vegetation
 warped_forest_vegetation: warped_forest_vegetation
-warped_forest_vegetation_bonemeal: nylium_bonemeal # Legacy mapping
+warped_forest_vegetation_bonemeal: warped_forest_vegetation # Legacy mapping
 warped_fungus: warped_fungus
 warped_fungus_planted: warped_fungus_planted
 patch_waterlily: waterlily
