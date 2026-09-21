@@ -29,8 +29,14 @@ cherry_bees_005: cherry_bees_005
 chorus_plant: chorus_plant
 clay_pool_with_dripleaves: clay_pool_with_dripleaves
 clay_with_dripleaves: clay_with_dripleaves
+coral/block_decoration: coral/block_decoration
+coral/tube_block: coral/tube_block
+coral/brain_block: coral/brain_block
+coral/bubble_block: coral/bubble_block
+coral/fire_block: coral/fire_block
+coral/horn_block: coral/horn_block
 crimson_forest_vegetation: crimson_forest_vegetation
-crimson_forest_vegetation_bonemeal: crimson_forest_vegetation_bonemeal
+crimson_forest_vegetation_bonemeal: crimson_forest_vegetation # Legacy mapping
 crimson_fungus: crimson_fungus
 crimson_fungus_planted: crimson_fungus_planted
 patch_crimson_roots: crimson_roots
@@ -51,10 +57,13 @@ end_gateway_delayed: end_gateway_delayed
 end_gateway_return: end_gateway_return
 end_island: end_island
 end_platform: end_platform
+end_podium_active: end_podium_active
+end_podium_inactive: end_podium_inactive
 end_spike: end_spike
 fallen_birch_tree: fallen_birch_tree
 fallen_jungle_tree: fallen_jungle_tree
 fallen_oak_tree: fallen_oak_tree
+fallen_poplar_tree: fallen_poplar_tree
 fallen_spruce_tree: fallen_spruce_tree
 fallen_super_birch_tree: fallen_super_birch_tree
 fancy_oak: fancy_oak
@@ -110,12 +119,15 @@ moss_patch_ceiling: moss_patch_ceiling
 moss_vegetation: moss_vegetation
 mushroom_island_vegetation: mushroom_island_vegetation
 nether_sprouts: nether_sprouts
-nether_sprouts_bonemeal: nether_sprouts_bonemeal
+nether_sprouts_bonemeal: nether_sprouts # Legacy mapping
+nylium_bonemeal: nylium_bonemeal
 oak: oak
 oak_bees_0002: oak_bees_0002_leaf_litter
 oak_bees_002: oak_bees_002
 oak_bees_005: oak_bees_005
 oak_leaf_litter: oak_leaf_litter
+orange_poplar: orange_poplar
+orange_poplar_leaf_litter: orange_poplar_leaf_litter
 ore_ancient_debris_large: ore_ancient_debris_large
 ore_ancient_debris_small: ore_ancient_debris_small
 ore_andesite: ore_andesite
@@ -167,6 +179,9 @@ pine: pine
 pointed_dripstone: pointed_dripstone
 patch_pumpkin: pumpkin
 patch_red_mushroom: red_mushroom
+red_poplar: red_poplar
+red_poplar_leaf_litter: red_poplar_leaf_litter
+red_shrub: red_shrub
 rooted_azalea_tree: rooted_azalea_tree
 rooted_sulfur_spring: rooted_sulfur_spring
 sculk_patch_ancient_city: sculk_patch_ancient_city
@@ -201,6 +216,7 @@ tall_mangrove: tall_mangrove
 trees_badlands: trees_badlands
 trees_birch: trees_birch
 trees_birch_and_oak: trees_birch_and_oak_leaf_litter
+trees_dappled_forest: trees_dappled_forest
 trees_flower_forest: trees_flower_forest
 trees_grove: trees_grove
 trees_jungle: trees_jungle
@@ -214,15 +230,17 @@ trees_taiga: trees_taiga
 trees_water: trees_water
 trees_windswept_hills: trees_windswept_hills
 twisting_vines: twisting_vines
-twisting_vines_bonemeal: twisting_vines_bonemeal
+twisting_vines_bonemeal: twisting_vines # Legacy mapping
 underwater_magma: underwater_magma
 vines: vines
 void_start_platform: void_start_platform
 warm_ocean_vegetation: warm_ocean_vegetation
 warped_forest_vegetation: warped_forest_vegetation
-warped_forest_vegetation_bonemeal: warped_forest_vegetation_bonemeal
+warped_forest_vegetation_bonemeal: warped_forest_vegetation # Legacy mapping
 warped_fungus: warped_fungus
 warped_fungus_planted: warped_fungus_planted
 patch_waterlily: waterlily
 weeping_vines: weeping_vines
 wildflower: wildflower
+yellow_poplar: yellow_poplar
+yellow_poplar_leaf_litter: yellow_poplar_leaf_litter
