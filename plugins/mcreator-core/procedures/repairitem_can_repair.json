@@ -2,12 +2,12 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "item",
+      "name": "repairitem",
       "check": "MCItem"
     },
     {
       "type": "input_value",
-      "name": "repairitem",
+      "name": "item",
       "check": "MCItem"
     }
   ],
@@ -21,8 +21,8 @@
       "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
     ],
     "inputs": [
-      "item",
-      "repairitem"
+      "repairitem",
+      "item"
     ]
   }
 }
