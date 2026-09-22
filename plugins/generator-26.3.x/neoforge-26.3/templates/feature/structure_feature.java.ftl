@@ -49,14 +49,14 @@ public record StructureFeature(Identifier structure, boolean randomRotation, boo
 	}
 
 	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
-		Rotation rotation = this.randomRotation() ? Rotation.getRandom(random) : Rotation.NONE;
-		Mirror mirror = this.randomMirror() ? Mirror.values()[random.nextInt(2)] : Mirror.NONE;
+		Rotation rotation = this.randomRotation ? Rotation.getRandom(random) : Rotation.NONE;
+		Mirror mirror = this.randomMirror ? Mirror.values()[random.nextInt(2)] : Mirror.NONE;
 		// Load the structure template
 		StructureTemplateManager structureManager = worldGenLevel.getLevel().getServer().getStructureTemplateManager();
-		StructureTemplate template = structureManager.getOrCreate(this.structure());
+		StructureTemplate template = structureManager.getOrCreate(this.structure);
 		StructurePlaceSettings placeSettings = new StructurePlaceSettings().setRotation(rotation).setMirror(mirror).setRandom(random).setIgnoreEntities(false)
-				.addProcessor(new BlockIgnoreProcessor(this.ignoredBlocks().stream().map(Holder::value).toList()));
-		BlockPos placePos = origin.offset(StructureTemplate.calculateRelativePosition(placeSettings, new BlockPos(this.offset().getX(), this.offset().getY(), this.offset().getZ())));
+				.addProcessor(new BlockIgnoreProcessor(this.ignoredBlocks.stream().map(Holder::value).toList()));
+		BlockPos placePos = origin.offset(StructureTemplate.calculateRelativePosition(placeSettings, new BlockPos(this.offset.getX(), this.offset.getY(), this.offset.getZ())));
 		template.placeInWorld(worldGenLevel, placePos, placePos, placeSettings, random, 2);
 		return true;
 	}
