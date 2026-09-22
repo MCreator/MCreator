@@ -1,48 +1,144 @@
-_default: Potions.WATER
-_mcreator_map_template: "@JavaModNamePotions.@REGISTRYNAME"
-WATER: Potions.WATER
-MUNDANE: Potions.MUNDANE
-THICK: Potions.THICK
-AWKWARD: Potions.AWKWARD
-NIGHT_VISION: Potions.NIGHT_VISION
-LONG_NIGHT_VISION: Potions.LONG_NIGHT_VISION
-INVISIBILITY: Potions.INVISIBILITY
-LONG_INVISIBILITY: Potions.LONG_INVISIBILITY
-LEAPING: Potions.LEAPING
-LONG_LEAPING: Potions.LONG_LEAPING
-STRONG_LEAPING: Potions.STRONG_LEAPING
-FIRE_RESISTANCE: Potions.FIRE_RESISTANCE
-LONG_FIRE_RESISTANCE: Potions.LONG_FIRE_RESISTANCE
-SWIFTNESS: Potions.SWIFTNESS
-LONG_SWIFTNESS: Potions.LONG_SWIFTNESS
-STRONG_SWIFTNESS: Potions.STRONG_SWIFTNESS
-SLOWNESS: Potions.SLOWNESS
-LONG_SLOWNESS: Potions.LONG_SLOWNESS
-STRONG_SLOWNESS: Potions.STRONG_SLOWNESS
-TURTLE_MASTER: Potions.TURTLE_MASTER
-LONG_TURTLE_MASTER: Potions.LONG_TURTLE_MASTER
-STRONG_TURTLE_MASTER: Potions.STRONG_TURTLE_MASTER
-WATER_BREATHING: Potions.WATER_BREATHING
-LONG_WATER_BREATHING: Potions.LONG_WATER_BREATHING
-HEALING: Potions.HEALING
-STRONG_HEALING: Potions.STRONG_HEALING
-HARMING: Potions.HARMING
-STRONG_HARMING: Potions.STRONG_HARMING
-POISON: Potions.POISON
-LONG_POISON: Potions.LONG_POISON
-STRONG_POISON: Potions.STRONG_POISON
-REGENERATION: Potions.REGENERATION
-LONG_REGENERATION: Potions.LONG_REGENERATION
-STRONG_REGENERATION: Potions.STRONG_REGENERATION
-STRENGTH: Potions.STRENGTH
-LONG_STRENGTH: Potions.LONG_STRENGTH
-STRONG_STRENGTH: Potions.STRONG_STRENGTH
-WEAKNESS: Potions.WEAKNESS
-LONG_WEAKNESS: Potions.LONG_WEAKNESS
-LUCK: Potions.LUCK
-SLOW_FALLING: Potions.SLOW_FALLING
-LONG_SLOW_FALLING: Potions.LONG_SLOW_FALLING
-WIND_CHARGED: Potions.WIND_CHARGED
-WEAVING: Potions.WEAVING
-OOZING: Potions.OOZING
-INFESTED: Potions.INFESTED
+_default:
+  - Potions.WATER
+  - "minecraft:water"
+_mcreator_map_template:
+  - "@JavaModNamePotions.@REGISTRYNAME"
+  - "@modid:@registryname"
+WATER:
+  - Potions.WATER
+  - "minecraft:water"
+MUNDANE:
+  - Potions.MUNDANE
+  - "minecraft:mundane"
+THICK:
+  - Potions.THICK
+  - "minecraft:thick"
+AWKWARD:
+  - Potions.AWKWARD
+  - "minecraft:awkward"
+NIGHT_VISION:
+  - Potions.NIGHT_VISION
+  - "minecraft:night_vision"
+LONG_NIGHT_VISION:
+  - Potions.LONG_NIGHT_VISION
+  - "minecraft:long_night_vision"
+INVISIBILITY:
+  - Potions.INVISIBILITY
+  - "minecraft:invisibility"
+LONG_INVISIBILITY:
+  - Potions.LONG_INVISIBILITY
+  - "minecraft:long_invisibility"
+LEAPING:
+  - Potions.LEAPING
+  - "minecraft:leaping"
+LONG_LEAPING:
+  - Potions.LONG_LEAPING
+  - "minecraft:long_leaping"
+STRONG_LEAPING:
+  - Potions.STRONG_LEAPING
+  - "minecraft:strong_leaping"
+FIRE_RESISTANCE:
+  - Potions.FIRE_RESISTANCE
+  - "minecraft:fire_resistance"
+LONG_FIRE_RESISTANCE:
+  - Potions.LONG_FIRE_RESISTANCE
+  - "minecraft:long_fire_resistance"
+SWIFTNESS:
+  - Potions.SWIFTNESS
+  - "minecraft:swiftness"
+LONG_SWIFTNESS:
+  - Potions.LONG_SWIFTNESS
+  - "minecraft:long_swiftness"
+STRONG_SWIFTNESS:
+  - Potions.STRONG_SWIFTNESS
+  - "minecraft:strong_swiftness"
+SLOWNESS:
+  - Potions.SLOWNESS
+  - "minecraft:slowness"
+LONG_SLOWNESS:
+  - Potions.LONG_SLOWNESS
+  - "minecraft:long_slowness"
+STRONG_SLOWNESS:
+  - Potions.STRONG_SLOWNESS
+  - "minecraft:strong_slowness"
+TURTLE_MASTER:
+  - Potions.TURTLE_MASTER
+  - "minecraft:turtle_master"
+LONG_TURTLE_MASTER:
+  - Potions.LONG_TURTLE_MASTER
+  - "minecraft:long_turtle_master"
+STRONG_TURTLE_MASTER:
+  - Potions.STRONG_TURTLE_MASTER
+  - "minecraft:strong_turtle_master"
+WATER_BREATHING:
+  - Potions.WATER_BREATHING
+  - "minecraft:water_breathing"
+LONG_WATER_BREATHING:
+  - Potions.LONG_WATER_BREATHING
+  - "minecraft:long_water_breathing"
+HEALING:
+  - Potions.HEALING
+  - "minecraft:healing"
+STRONG_HEALING:
+  - Potions.STRONG_HEALING
+  - "minecraft:strong_healing"
+HARMING:
+  - Potions.HARMING
+  - "minecraft:harming"
+STRONG_HARMING:
+  - Potions.STRONG_HARMING
+  - "minecraft:strong_harming"
+POISON:
+  - Potions.POISON
+  - "minecraft:poison"
+LONG_POISON:
+  - Potions.LONG_POISON
+  - "minecraft:long_poison"
+STRONG_POISON:
+  - Potions.STRONG_POISON
+  - "minecraft:strong_poison"
+REGENERATION:
+  - Potions.REGENERATION
+  - "minecraft:regeneration"
+LONG_REGENERATION:
+  - Potions.LONG_REGENERATION
+  - "minecraft:long_regeneration"
+STRONG_REGENERATION:
+  - Potions.STRONG_REGENERATION
+  - "minecraft:strong_regeneration"
+STRENGTH:
+  - Potions.STRENGTH
+  - "minecraft:strength"
+LONG_STRENGTH:
+  - Potions.LONG_STRENGTH
+  - "minecraft:long_strength"
+STRONG_STRENGTH:
+  - Potions.STRONG_STRENGTH
+  - "minecraft:strong_strength"
+WEAKNESS:
+  - Potions.WEAKNESS
+  - "minecraft:weakness"
+LONG_WEAKNESS:
+  - Potions.LONG_WEAKNESS
+  - "minecraft:long_weakness"
+LUCK:
+  - Potions.LUCK
+  - "minecraft:luck"
+SLOW_FALLING:
+  - Potions.SLOW_FALLING
+  - "minecraft:slow_falling"
+LONG_SLOW_FALLING:
+  - Potions.LONG_SLOW_FALLING
+  - "minecraft:long_slow_falling"
+WIND_CHARGED:
+  - Potions.WIND_CHARGED
+  - "minecraft:wind_charged"
+WEAVING:
+  - Potions.WEAVING
+  - "minecraft:weaving"
+OOZING:
+  - Potions.OOZING
+  - "minecraft:oozing"
+INFESTED:
+  - Potions.INFESTED
+  - "minecraft:infested"
