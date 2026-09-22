@@ -40,17 +40,15 @@ public class ResourcepackWorkspacePanel extends AbstractWorkspacePanel {
 
 		addFormElement(new JEmptyBox(10, 10));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.modid"),
-				workspaceDialogPanel.modID));
-
-		addFormElement(new JEmptyBox(10, 10));
-
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		addFormElement(new JEmptyBox(30, 30));
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.modid"),
+				workspaceDialogPanel.modID));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.folder"),
+		addAdvancedFormElement(new JEmptyBox(30, 30));
+
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.resourcepack.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
 		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.resourcepack.notice");

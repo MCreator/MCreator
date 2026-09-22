@@ -30,7 +30,9 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -39,7 +41,9 @@ public final class HistoryManager implements AutoCloseable {
 	private static final Logger LOG = LogManager.getLogger(HistoryManager.class);
 
 	@Nullable private final GitHistoryBackend backend;
-	private final List<HistoryEvent> pendingEvents = new ArrayList<>();
+
+	// Accessed from the caller thread (add, snapshot) and from the Git thread (remove after commit)
+	private final List<HistoryEvent> pendingEvents = new CopyOnWriteArrayList<>();
 	private long lastCheckpointMillis = System.currentTimeMillis();
 
 	private final Workspace workspace;
@@ -131,11 +135,20 @@ public final class HistoryManager implements AutoCloseable {
 	}
 
 	private void flushPendingEventsIntoCheckpoint(boolean writeSynchronously) {
-		if (backend == null || pendingEvents.isEmpty()) {
+		// If backend is busy, keep events pending and skip the workspace save, next checkpoint will retry the flush
+		if (backend == null || backend.isBusy()) {
 			return;
 		}
 
-		List<HistoryEvent> eventsToCommit = new ArrayList<>(pendingEvents.reversed());
+		// Snapshot of pending events, newest first
+		List<HistoryEvent> eventsToCommit = new ArrayList<>(pendingEvents);
+		if (eventsToCommit.isEmpty()) {
+			return;
+		}
+		Collections.reverse(eventsToCommit);
+
+		// Reset interval on every attempt so a skipped or failed checkpoint does not retrigger flush on each event
+		lastCheckpointMillis = System.currentTimeMillis();
 
 		String commitMessage;
 		if (eventsToCommit.size() == 1) {
@@ -150,17 +163,15 @@ public final class HistoryManager implements AutoCloseable {
 		workspace.getFileManager().saveWorkspaceDirectlyAndWait();
 
 		backend.saveCheckpoint(commitMessage, commitResult -> {
-			if (commitResult == GitHistoryBackend.CommitResult.SUCCESS) {
-				lastCheckpointMillis = System.currentTimeMillis();
-				if (checkpointListener != null) {
-					checkpointListener.run();
-				}
+			if (commitResult == GitHistoryBackend.CommitResult.SUCCESS && checkpointListener != null) {
+				checkpointListener.run();
 			}
 
 			// Clear events in every case (except if git was busy), as even if saveCheckpoint returned false,
 			// this means no changes were needed to be committed, meaning events did not change any files
 			if (commitResult != GitHistoryBackend.CommitResult.SKIPPED_GIT_BUSY) {
-				pendingEvents.removeAll(eventsToCommit);
+				// remove(Object) drops the first equal occurrence, which is the committed (oldest) one
+				eventsToCommit.forEach(pendingEvents::remove);
 			}
 		}, writeSynchronously);
 	}

@@ -38,17 +38,15 @@ public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 
 		addFormElement(new JEmptyBox(10, 10));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.addon_id"),
-				workspaceDialogPanel.modID));
-
-		addFormElement(new JEmptyBox(10, 10));
-
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		addFormElement(new JEmptyBox(30, 30));
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.addon_id"),
+				workspaceDialogPanel.modID));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
+		addAdvancedFormElement(new JEmptyBox(30, 30));
+
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
 		addNotice(UIRES.get("18px.warning"), "dialog.new_workspace.addon.notice1");

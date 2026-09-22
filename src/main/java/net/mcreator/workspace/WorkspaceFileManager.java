@@ -104,9 +104,13 @@ public final class WorkspaceFileManager implements Closeable {
 	}
 
 	@Override public void close() {
-		lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
-		dataSaveExecutor.shutdown(); // prevent new tasks from being scheduled
-		saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
+		try {
+			lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
+			dataSaveExecutor.shutdown(); // prevent new tasks from being scheduled
+			saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
+		} catch (Exception e) {
+			LOG.error("Failed to save workspace on close", e);
+		}
 	}
 
 	public void saveWorkspaceDirectlyAndWait() {

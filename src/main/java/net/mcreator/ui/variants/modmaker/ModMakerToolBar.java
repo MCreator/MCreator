@@ -48,7 +48,6 @@ class ModMakerToolBar extends MainToolBar {
 		hideableButton(add(mcreator.getActionRegistry().importJavaModel));
 		hideableButton(add(mcreator.getActionRegistry().importJavaModelAnimation));
 		hideableButton(add(mcreator.getActionRegistry().importJSONModel));
-		hideableButton(add(mcreator.getActionRegistry().importOBJModel));
 		hideableButton(add(mcreator.getActionRegistry().importBedrockModel));
 
 		addSeparator(new Dimension(10, 4));
@@ -59,11 +58,6 @@ class ModMakerToolBar extends MainToolBar {
 
 	@Override protected void assembleRightSection(MCreator mcreator) {
 		add(mcreator.getActionRegistry().workspaceSettings);
-
-		addSeparator(new Dimension(10, 4));
-
-		add(mcreator.getActionRegistry().regenerateCode);
-		add(mcreator.getActionRegistry().buildWorkspace);
 
 		addSeparator(new Dimension(10, 4));
 

@@ -147,6 +147,9 @@ public class IntegrationTestSetup implements BeforeAllCallback, AfterEachCallbac
 		// Disable local history for tests
 		PreferencesManager.PREFERENCES.backups.enableLocalHistory.set(false);
 
+		// Enable MCP server for tests
+		PreferencesManager.PREFERENCES.integrations.mcpEnable.set(true);
+
 		// Do not track unit tests
 		GoogleAnalytics.ANALYTICS_ENABLED = false;
 
