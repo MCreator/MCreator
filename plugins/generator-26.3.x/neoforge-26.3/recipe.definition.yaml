@@ -27,9 +27,26 @@ templates:
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
     condition: "recipeType %= Smithing"
-  - template: recipe/brewingrecipe.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/recipe/brewing/@NAMEBrewingRecipe.java"
-    condition: "recipeType %= Brewing"
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/@[getName()].json"
+    condition: "isBrewingWithItemInput()"
+  # If the brewing input is a potion, generate a file for each potion item
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "inputitem=minecraft:potion"
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/@[getName()].json"
+    condition: "isBrewingWithPotionInput()"
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "inputitem=minecraft:splash_potion"
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/splash_@[getName()].json"
+    condition: "isBrewingWithPotionInput()"
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "inputitem=minecraft:lingering_potion"
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/lingering_@[getName()].json"
+    condition: "isBrewingWithPotionInput()"
 
   - template: recipe/unlocking_advancement.json.ftl # loaded from datapack generator
     writer: json

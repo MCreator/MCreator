@@ -4,7 +4,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "${data.getNamespace()}:${data.getName()}"
+        "recipes": "${data.getNamespace()}:${data.getName()}"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
