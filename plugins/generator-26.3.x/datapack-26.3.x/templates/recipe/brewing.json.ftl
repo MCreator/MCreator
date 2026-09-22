@@ -9,11 +9,11 @@
       "potions": "${generator.map(data.brewingInputStack?replace("POTION:",""), "potions", 1)}"
     }
     <#else>
-    "item": "${mappedMCItemToRegistryName(data.brewingInputStack)}"
+    "item": "${mappedMCItemToRegistryName(data.brewingInputStack, true)}"
     </#if>
   },
   "reagent": {
-    "item": "${mappedMCItemToRegistryName(data.brewingIngredientStack)}"
+    "item": "${mappedMCItemToRegistryName(data.brewingIngredientStack, true)}"
   },
   "output": {
     <#if data.brewingReturnStack?starts_with("POTION:")>
