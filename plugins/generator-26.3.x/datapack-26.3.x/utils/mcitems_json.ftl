@@ -1,8 +1,10 @@
 <#function mappedBlockToBlockStateProvider mappedBlock>
     <#if mappedBlock?trim?starts_with("/*@BlockStateProvider*/")>
         <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
-    <#else>
-        <#return '{"type": "minecraft:simple_state_provider", "state": ' + mappedBlock + '}'>
+    <#elseif mappedBlock?trim?starts_with('"')> <#-- Direct ID references for default blockstates must be wrapped in a blockstate object -->
+    	<#return '{"id":' + mappedBlock + '}'>
+    <#else> <#-- Blockstate objects can be used directly instead of simple state providers -->
+        <#return mappedBlock>
     </#if>
 </#function>
 

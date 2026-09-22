@@ -2,10 +2,6 @@ feature_lake:
   - LakeFeature
   - LakeFeature.Configuration
   - "minecraft:lake"
-feature_simple_block:
-  - SimpleBlockFeature
-  - SimpleBlockConfiguration
-  - "minecraft:simple_block"
 feature_block_pile:
   - BlockPileFeature
   - BlockPileConfiguration
