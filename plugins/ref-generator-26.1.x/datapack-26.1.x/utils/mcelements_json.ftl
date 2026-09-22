@@ -10,7 +10,7 @@
 	<#if featureType == "configured_feature_reference"> <#-- No processing needed -->
 		<#return featureConfig>
 	<#else> <#-- Convert into an inlined configured feature object -->
-		<#return '{"type": "' + generator.map(featureType, "features", 2)?replace("@modid",modid) + '", "config": ' + featureConfig + '}'>
+		<#return '{"type": "' + generator.map(featureType, "features", 1)?replace("@modid",modid) + '", "config": ' + featureConfig + '}'>
 	</#if>
 </#function>
 

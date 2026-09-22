@@ -3,7 +3,7 @@
   "type": "${modid}:${registryname}",
   "feature": {
   </#if>
-  "type": "${generator.map(featuretype, "features", 2)?replace("@modid",modid)}"
+  "type": "${generator.map(featuretype, "features", 1)?replace("@modid",modid)}"
   ${configurationcode}
   <#if data.hasGenerationConditions()>}</#if>
 }
