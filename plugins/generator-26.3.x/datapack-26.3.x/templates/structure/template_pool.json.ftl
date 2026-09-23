@@ -1,10 +1,8 @@
 <#include "../mcitems_json.ftl">
 {
   <#if data.poolName??>
-  "name": "${modid}:${registryname}_${data.poolName}",
   "fallback": "${data.fallbackPool?has_content?then(w.resolveModNamespace(data.fallbackPool), "minecraft:empty")}",
   <#else>
-  "name": "${modid}:${registryname}",
   "fallback": "minecraft:empty",
   </#if>
   "elements": [
@@ -22,9 +20,7 @@
               "processor_type": "minecraft:block_ignore",
               "blocks": [
                 <#list part.ignoredBlocks as block>
-                {
-                  "Name": "${mappedMCItemToRegistryName(block)}"
-                }<#sep>,
+                "${mappedMCItemToRegistryName(block)}"<#sep>,
                 </#list>
               ]
             }
