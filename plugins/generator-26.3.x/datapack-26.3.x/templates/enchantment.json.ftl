@@ -53,12 +53,12 @@
           }
         },
         "requirements": {
-          "condition": "minecraft:damage_source_properties",
+          "type": "minecraft:damage_source_properties",
           "predicate": {
             "tags": [
               {
                 "expected": false,
-                "id": "minecraft:bypasses_invulnerability"
+                "id": "#minecraft:bypasses_invulnerability"
               }
             ]
           }

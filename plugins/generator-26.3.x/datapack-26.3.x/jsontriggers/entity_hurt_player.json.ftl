@@ -7,7 +7,7 @@
         "max": ${input$maxDamage}
       },
       "source_entity": {
-        "type": "${generator.map(field$sourceentity, "entities", 2)}"
+        "minecraft:entity_type": "${generator.map(field$sourceentity, "entities", 2)}"
       },
       "blocked": ${field$blocked}
     }

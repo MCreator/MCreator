@@ -79,11 +79,8 @@ package ${package}.init;
 	<#list keybinds as keybind>
 	public static final KeyMapping ${keybind.getModElement().getRegistryNameUpper()} = new KeyMapping(
 			"key.${modid}.${keybind.getModElement().getRegistryName()}",
-			<#if keybind.triggerKey?starts_with("MOUSE")>
-				InputConstants.Type.MOUSE, GLFW.GLFW_${keybind.triggerKey},
-			<#else>
-				GLFW.GLFW_KEY_${keybind.triggerKey},
-			</#if>
+			<#if keybind.triggerKey?starts_with("MOUSE")>InputConstants.Type.MOUSE,</#if>
+			${keybind.triggerKey},
 			${categoryToObject(keybind.keyBindingCategoryKey)})
 				<#if hasProcedure(keybind.onKeyReleased) || hasProcedure(keybind.onKeyPressed)>
 				{
@@ -136,7 +133,7 @@ package ${package}.init;
 	@EventBusSubscriber(Dist.CLIENT) public static class KeyEventListener {
 
 		@SubscribeEvent public static void onClientTick(ClientTickEvent.Post event) {
-			if (Minecraft.getInstance().screen == null) {
+			if (Minecraft.getInstance().gui.screen() == null) {
 			<#list keybinds as keybind>
 				<#if hasProcedure(keybind.onKeyPressed) || hasProcedure(keybind.onKeyReleased)>
 					${keybind.getModElement().getRegistryNameUpper()}.consumeClick();

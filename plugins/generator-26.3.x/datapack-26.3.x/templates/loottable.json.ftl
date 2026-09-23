@@ -11,6 +11,7 @@
       "rolls": ${pool.minrolls},
       <#else>
       "rolls": {
+        "type": "minecraft:uniform",
         "min": ${pool.minrolls},
         "max": ${pool.maxrolls}
       },
@@ -20,6 +21,7 @@
         "bonus_rolls": ${pool.minbonusrolls},
         <#else>
         "bonus_rolls": {
+          "type": "minecraft:uniform",
           "min": ${pool.minbonusrolls},
           "max": ${pool.maxbonusrolls}
         },
@@ -37,9 +39,8 @@
           </#if>
           "weight": ${entry.weight},
           <#if entry.silkTouchMode == 1 && hasToolContext()>
-          "conditions": [
-            {
-              "condition": "minecraft:match_tool",
+          "condition": {
+              "type": "minecraft:match_tool",
               "predicate": {
                 "predicates": {
                   "minecraft:enchantments": [
@@ -52,14 +53,12 @@
                   ]
                 }
               }
-            }
-          ],
+          },
           <#elseif entry.silkTouchMode == 2 && hasToolContext()>
-          "conditions": [
-            {
-              "condition": "minecraft:inverted",
+          "condition": {
+              "type": "minecraft:inverted",
               "term": {
-                "condition": "minecraft:match_tool",
+                "type": "minecraft:match_tool",
                 "predicate": {
                   "predicates": {
                     "minecraft:enchantments": [
@@ -73,16 +72,16 @@
                   }
                 }
               }
-            }
-          ],
+          },
           </#if>
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:set_count",
+              "type": "minecraft:set_count",
               <#if entry.minCount == entry.maxCount>
               "count": ${entry.minCount}
               <#else>
               "count": {
+                "type": "minecraft:uniform",
                 "min": ${entry.minCount},
                 "max": ${entry.maxCount}
               }
@@ -90,11 +89,12 @@
             }
             <#if entry.minEnchantmentLevel != 0 || entry.maxEnchantmentLevel != 0>
             ,{
-              "function": "minecraft:enchant_with_levels",
+              "type": "minecraft:enchant_with_levels",
               <#if entry.minEnchantmentLevel == entry.maxEnchantmentLevel>
               "levels": ${entry.minEnchantmentLevel}
               <#else>
               "levels": {
+                "type": "minecraft:uniform",
                 "min": ${entry.minEnchantmentLevel},
                 "max": ${entry.maxEnchantmentLevel}
               }
@@ -103,12 +103,12 @@
             </#if>
             <#if entry.explosionDecay>
             ,{
-              "function": "minecraft:explosion_decay"
+              "type": "minecraft:explosion_decay"
             }
             </#if>
             <#if entry.affectedByFortune && hasToolContext()>
             ,{
-              "function": "minecraft:apply_bonus",
+              "type": "minecraft:apply_bonus",
               "enchantment": "minecraft:fortune",
               "formula": "minecraft:ore_drops"
             }

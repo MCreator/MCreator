@@ -42,6 +42,9 @@ public class GTAITaskBlocks {
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
 
+		var blocksAndItems = ElementUtil.loadBlocksAndItems(workspace);
+		var blocks = ElementUtil.loadBlocks(workspace);
+
 		for (ToolboxBlock aiTask : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks()
 				.values()) {
 			StringBuilder additionalXML = new StringBuilder();
@@ -63,13 +66,11 @@ public class GTAITaskBlocks {
 			// Set block selectors to some value
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
 					"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
-							random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()
-							+ "</field></block>");
+							random, blocksAndItems).getName() + "</field></block>");
 
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
-							+ TestWorkspaceDataProvider.getRandomMCItem(random,
-							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
+							+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName() + "</field></block>");
 
 			// add additional xml to the AI task block definition
 			testXML = testXML.replace("<block type=\"" + aiTask.getMachineName() + "\">",

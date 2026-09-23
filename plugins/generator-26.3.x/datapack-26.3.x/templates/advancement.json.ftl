@@ -1,9 +1,11 @@
 <#-- @formatter:off -->
 <#include "mcitems_json.ftl">
+<#-- Visible root advancements must have a background and non-root ones must not, so both depend on the same check -->
+<#assign hasParent = data.parent?has_content && data.parent != "none" && !data.parent.toString().contains("@")>
 {
     <#if !data.disableDisplay>
         "display": {
-          <#if data.parent == "none" && !data.parent.toString().contains("@")>
+          <#if !hasParent>
               <#if !data.background?has_content || data.background == "Default">
                   "background": "minecraft:block/stone",
               <#else>
@@ -58,7 +60,7 @@
         </#if>
     }
     </#if>
-    <#if data.parent?has_content && data.parent != "none" && !data.parent.toString().contains("@")>,
+    <#if hasParent>,
     "parent": "${data.parent}"
     </#if>
 }
