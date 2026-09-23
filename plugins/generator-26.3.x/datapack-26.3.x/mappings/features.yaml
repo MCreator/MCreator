@@ -1,9 +1,3 @@
-_default:
-  - NoOpFeature
-  - "minecraft:no_op"
-feature_no_op:
-  - NoOpFeature
-  - "minecraft:no_op"
-feature_simple_block:
-  - SimpleBlockFeature
-  - "minecraft:simple_block"
+_default: minecraft:no_op
+feature_no_op: minecraft:no_op
+feature_simple_block: minecraft:simple_block

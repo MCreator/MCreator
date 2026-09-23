@@ -1,4 +1,2 @@
 # Custom NBT-based feature, not present in vanilla
-feature_custom_structure:
-  - StructureFeature
-  - "@modid:structure_feature"
+feature_custom_structure: "@modid:structure_feature"
