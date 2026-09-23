@@ -2844,7 +2844,7 @@ public class TestWorkspaceDataProvider {
 
 	public static MCItem getRandomMCItem(Random random, List<MCItem> list) {
 		if (list.isEmpty())
-			return new MCItem(new DataListEntry.Dummy("STONE"));
+			return new MCItem(new DataListEntry.Dummy("Blocks.STONE"));
 
 		int listSize = list.size();
 		int randomIndex = random.nextInt(listSize);
