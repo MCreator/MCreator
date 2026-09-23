@@ -48,7 +48,7 @@ sounds_dir: "@MODASSETSROOT/sounds"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
-#other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
 vanilla_resources_jar: "minecraft-patched-.*.jar"
