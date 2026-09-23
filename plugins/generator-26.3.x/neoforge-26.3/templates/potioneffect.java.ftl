@@ -37,7 +37,7 @@ package ${package}.potion;
 <#if data.hasCustomRenderer() || data.isCuredbyHoney>
 @EventBusSubscriber
 </#if>
-public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
+public class ${name}MobEffect extends <#if data.isInstant>Instantaneous</#if>MobEffect {
 
 	public ${name}MobEffect() {
 		super(MobEffectCategory.${data.mobEffectCategory}, ${data.color.getRGB()}<#if data.hasCustomParticle()>, mobEffectInstance -> ${data.particle}</#if>);
@@ -53,7 +53,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
-			@Override public void applyInstantenousEffect(ServerLevel level, Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
+			@Override public void applyInstantaneousEffect(ServerLevel level, Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
 				<@procedureCode data.onStarted, {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
@@ -139,7 +139,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				return false;
 			}
 
-			@Override public boolean renderInventoryText(MobEffectInstance instance, AbstractContainerScreen<?> screen, GuiGraphicsExtractor guiGraphics, int x, int y, int blitOffset) {
+			public boolean extractInventoryText(MobEffectInstance instance, AbstractContainerScreen<?> screen, GuiGraphicsExtractor graphics, int x, int y, int canvasWidth, int color) {
 				return false;
 			}
 			</#if>
