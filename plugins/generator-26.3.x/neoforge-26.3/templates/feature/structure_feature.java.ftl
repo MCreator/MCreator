@@ -43,12 +43,11 @@ public record StructureFeature(Identifier structure, boolean randomRotation, boo
 		Vec3i.offsetCodec(48).optionalFieldOf("offset", Vec3i.ZERO).forGetter(StructureFeature::offset)
 	).apply(builder, StructureFeature::new));
 
-	@Override
-	public MapCodec<StructureFeature> codec() {
+	@Override public MapCodec<StructureFeature> codec() {
 		return CODEC;
 	}
 
-	public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
+	@Override public boolean place(WorldGenLevel worldGenLevel, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
 		Rotation rotation = this.randomRotation ? Rotation.getRandom(random) : Rotation.NONE;
 		Mirror mirror = this.randomMirror ? Mirror.values()[random.nextInt(2)] : Mirror.NONE;
 		// Load the structure template

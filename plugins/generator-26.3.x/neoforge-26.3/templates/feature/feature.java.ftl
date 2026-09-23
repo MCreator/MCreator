@@ -39,19 +39,16 @@ public record ${name}Feature(Holder<Feature> feature) implements Feature {
 			builder -> builder.group(Feature.CODEC.fieldOf("feature").forGetter(${name}Feature::feature))
 			.apply(builder, ${name}Feature::new));
 
-	@Override
-	public MapCodec<${name}Feature> codec() {
+	@Override public MapCodec<${name}Feature> codec() {
 		return CODEC;
 	}
 
-	@Override
-	public Stream<Holder<Feature>> getSubFeatures() {
+	@Override public Stream<Holder<Feature>> getSubFeatures() {
 		return Stream.of(this.feature);
 	}
 
-	public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
+	@Override public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
 		<#if hasProcedure(data.generateCondition)>
-		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
 		int x = origin.getX();
 		int y = origin.getY();
 		int z = origin.getZ();
