@@ -1,2 +1,2 @@
 <#include "mcitems_json.ftl">
-"${mappedMCItemToRegistryName(w.itemBlock(field$block))}"
+"${mappedMCItemToRegistryName(w.itemBlock(block))}"
