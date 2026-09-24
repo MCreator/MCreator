@@ -29,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../mcitems.ftl">
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
@@ -56,14 +55,14 @@ import com.mojang.datafixers.util.Pair;
 	}
 
 	@SubscribeEvent public static void onServerAboutToStart(ServerAboutToStartEvent event) {
-		HolderGetter<Biome> biomes = event.getServer().registryAccess().lookupOrThrow(Registries.BIOME);
+		HolderGetter<MaterialRule> materialRules = event.getServer().registryAccess().lookupOrThrow(Registries.MATERIAL_RULE);
 		Registry<LevelStem> levelStemTypeRegistry = event.getServer().registryAccess().lookupOrThrow(Registries.LEVEL_STEM);
 		for (LevelStem levelStem : levelStemTypeRegistry.stream().toList()) {
 			Holder<DimensionType> dimensionType = levelStem.type();
 			if (dimensionType.is(BuiltinDimensionTypes.NETHER) || dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) {
 				if(levelStem.generator() instanceof NoiseBasedChunkGenerator noiseGenerator) {
 					if ((Object) noiseGenerator.generatorSettings().value() instanceof ${JavaModName}NoiseGeneratorSettings settings) {
-						settings.set${modid}References(dimensionType, biomes);
+						settings.set${modid}References(dimensionType, materialRules);
 					} else {
 						${JavaModName}.LOGGER.error("NoiseGeneratorSettings mixin of ${modid} was not applied, custom biomes may not generate properly");
 					}
@@ -72,16 +71,33 @@ import com.mojang.datafixers.util.Pair;
 		}
 	}
 
-	public static MaterialRule adaptMaterialRule(MaterialRule currentRuleSource, Holder<DimensionType> dimensionType, HolderGetter<Biome> biomes) {
+	public static MaterialRule adaptMaterialRule(MaterialRule currentRuleSource, Holder<DimensionType> dimensionType, HolderGetter<MaterialRule> materialRules) {
+		List<MaterialRule> customMaterialRules = new ArrayList<>();
+
 		<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-		if (dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) return injectOverworldMaterialRules(currentRuleSource, biomes);
+		if (dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) {
+			<#list spawn_overworld_caves as biome>
+			customMaterialRules.add(MaterialRules.getRule(materialRules, ResourceKey.create(Registries.MATERIAL_RULE, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}_any_surface"))));
+			</#list>
+			<#list spawn_overworld as biome>
+			customMaterialRules.add(MaterialRules.getRule(materialRules, ResourceKey.create(Registries.MATERIAL_RULE, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}_surface"))));
+			</#list>
+		}
 		</#if>
 
 		<#if spawn_nether?has_content>
-		if (dimensionType.is(BuiltinDimensionTypes.NETHER)) return injectNetherMaterialRules(currentRuleSource, biomes);
+		if (dimensionType.is(BuiltinDimensionTypes.NETHER)) {
+			<#list spawn_nether as biome>
+			customMaterialRules.add(MaterialRules.getRule(materialRules, ResourceKey.create(Registries.MATERIAL_RULE, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}_any_surface"))));
+			</#list>
+		}
 		</#if>
 
-		return currentRuleSource;
+		if (customMaterialRules.isEmpty())
+			return currentRuleSource;
+
+		customMaterialRules.add(currentRuleSource);
+		return MaterialRules.sequence(customMaterialRules);
 	}
 
 	public static <T> Climate.ParameterList<T> adaptPresetParameterList(Identifier idArg, Climate.ParameterList<T> originalList, Function<ResourceKey<Biome>, T> lookup) {
@@ -100,36 +116,6 @@ import com.mojang.datafixers.util.Pair;
 	}
 
 	<#if spawn_overworld?has_content || spawn_overworld_caves?has_content>
-	private static MaterialRule injectOverworldMaterialRules(MaterialRule currentRuleSource, HolderGetter<Biome> biomes) {
-		List<MaterialRule> customMaterialRules = new ArrayList<>();
-
-		<#list spawn_overworld_caves as biome>
-		customMaterialRules.add(anyMaterialRule(biomes,
-			ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
-			${mappedBlockToBlockStateCode(biome.groundBlock)},
-			${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-			${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-		));
-		</#list>
-
-		<#list spawn_overworld as biome>
-		customMaterialRules.add(preliminaryMaterialRule(biomes,
-			ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
-			${mappedBlockToBlockStateCode(biome.groundBlock)},
-			${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-			${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-		));
-		</#list>
-
-		if (currentRuleSource instanceof SequenceRule sequenceRule) {
-			customMaterialRules.addAll(sequenceRule.sequence());
-			return MaterialRules.sequence(customMaterialRules);
-		} else {
-			customMaterialRules.add(currentRuleSource);
-			return MaterialRules.sequence(customMaterialRules);
-		}
-	}
-
 	public static <T> Climate.ParameterList<T> modifyOverworldParameterPoints(Climate.ParameterList<T> originalList, Function<ResourceKey<Biome>, T> lookup) {
 		List<Pair<Climate.ParameterPoint, T>> parameters = new ArrayList<>(originalList.values());
 
@@ -180,27 +166,6 @@ import com.mojang.datafixers.util.Pair;
 	</#if>
 
 	<#if spawn_nether?has_content>
-	private static MaterialRule injectNetherMaterialRules(MaterialRule currentRuleSource, HolderGetter<Biome> biomes) {
-		List<MaterialRule> customMaterialRules = new ArrayList<>();
-
-		<#list spawn_nether as biome>
-		customMaterialRules.add(anyMaterialRule(biomes,
-			ResourceKey.create(Registries.BIOME, Identifier.fromNamespaceAndPath("${modid}", "${biome.getModElement().getRegistryName()}")),
-			${mappedBlockToBlockStateCode(biome.groundBlock)},
-			${mappedBlockToBlockStateCode(biome.undergroundBlock)},
-			${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-		));
-		</#list>
-
-		if (currentRuleSource instanceof SequenceRule sequenceRule) {
-			customMaterialRules.addAll(sequenceRule.sequence());
-			return MaterialRules.sequence(customMaterialRules);
-		} else {
-			customMaterialRules.add(currentRuleSource);
-			return MaterialRules.sequence(customMaterialRules);
-		}
-	}
-
 	public static <T> Climate.ParameterList<T> modifyNetherParameterPoints(Climate.ParameterList<T> originalList, Function<ResourceKey<Biome>, T> lookup) {
 		List<Pair<Climate.ParameterPoint, T>> parameters = new ArrayList<>(originalList.values());
 
@@ -235,54 +200,8 @@ import com.mojang.datafixers.util.Pair;
 	}
 	</#if>
 
-	<#if spawn_overworld?has_content>
-	private static MaterialRule preliminaryMaterialRule(HolderGetter<Biome> biomes, ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
-		return MaterialRules.ifTrue(MaterialRules.isBiome(biomes, biomeKey),
-			MaterialRules.ifTrue(MaterialRules.abovePreliminarySurface(),
-				MaterialRules.sequence(
-					MaterialRules.ifTrue(MaterialRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-						MaterialRules.sequence(
-							MaterialRules.ifTrue(MaterialRules.waterBlockCheck(-1, 0),
-								MaterialRules.state(groundBlock)
-							),
-							MaterialRules.state(underwaterBlock)
-						)
-					),
-					MaterialRules.ifTrue(MaterialRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
-						MaterialRules.state(undergroundBlock)
-					)
-				)
-			)
-		);
-	}
-	</#if>
-
-	<#if spawn_nether?has_content || spawn_overworld_caves?has_content>
-	private static MaterialRule anyMaterialRule(HolderGetter<Biome> biomes, ResourceKey<Biome> biomeKey, BlockState groundBlock, BlockState undergroundBlock, BlockState underwaterBlock) {
-		return MaterialRules.ifTrue(MaterialRules.isBiome(biomes, biomeKey),
-			MaterialRules.ifTrue(MaterialRules.yBlockCheck(VerticalAnchor.aboveBottom(5), 0),
-				MaterialRules.ifTrue(MaterialRules.not(MaterialRules.yBlockCheck(VerticalAnchor.belowTop(5), 0)),
-					MaterialRules.sequence(
-						MaterialRules.ifTrue(MaterialRules.stoneDepthCheck(0, false, 0, CaveSurface.FLOOR),
-							MaterialRules.sequence(
-								MaterialRules.ifTrue(MaterialRules.waterBlockCheck(-1, 0),
-									MaterialRules.state(groundBlock)
-								),
-								MaterialRules.state(underwaterBlock)
-							)
-						),
-						MaterialRules.ifTrue(MaterialRules.stoneDepthCheck(0, true, 0, CaveSurface.FLOOR),
-							MaterialRules.state(undergroundBlock)
-						)
-					)
-				)
-			)
-		);
-	}
-	</#if>
-
 	public interface ${JavaModName}NoiseGeneratorSettings {
-		void set${modid}References(Holder<DimensionType> dimensionType, HolderGetter<Biome> biomes);
+		void set${modid}References(Holder<DimensionType> dimensionType, HolderGetter<MaterialRule> materialRules);
 	}
 
 }

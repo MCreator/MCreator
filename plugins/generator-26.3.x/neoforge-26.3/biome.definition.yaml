@@ -2,6 +2,7 @@ templates:
   - template: biome/biome.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
+
   - template: biome/configured_tree.json.ftl # loaded from datapack generator
     writer: json
     condition: hasTrees()
@@ -10,6 +11,19 @@ templates:
     writer: json
     condition: hasTrees()
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
+
+  - template: biome/material_rule.json.ftl # loaded from datapack generator
+    writer: json
+    condition: spawnBiome
+    name: "@MODDATAROOT/worldgen/material_rule/@registryname_surface.json"
+  - template: biome/material_rule.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "any=true"
+    condition_any:
+      - spawnInCaves
+      - spawnBiomeNether
+    name: "@MODDATAROOT/worldgen/material_rule/@registryname_any_surface.json"
+
   - template: biome/tree_fruits_decorator.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMEFruitDecorator.java"
     condition: hasFruits()

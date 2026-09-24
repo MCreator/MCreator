@@ -37,20 +37,20 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(NoiseGeneratorSettings.class) public class NoiseGeneratorSettingsMixin implements ${JavaModName}Biomes.${JavaModName}NoiseGeneratorSettings {
 
 	@Unique private Holder<DimensionType> ${modid}_dimensionTypeReference;
-	@Unique private HolderGetter<Biome> ${modid}_biomeLookup;
+	@Unique private HolderGetter<MaterialRule> ${modid}_materialRuleLookup;
 
 	@WrapMethod(method = "materialRule")
 	public Holder<MaterialRule> materialRule(Operation<Holder<MaterialRule>> original) {
 		Holder<MaterialRule> retval = original.call();
 		if (this.${modid}_dimensionTypeReference != null) {
-			retval = Holder.direct(${JavaModName}Biomes.adaptMaterialRule(retval.value(), this.${modid}_dimensionTypeReference, this.${modid}_biomeLookup));
+			retval = Holder.direct(${JavaModName}Biomes.adaptMaterialRule(retval.value(), this.${modid}_dimensionTypeReference, this.${modid}_materialRuleLookup));
 		}
 		return retval;
 	}
 
-	@Override public void set${modid}References(Holder<DimensionType> dimensionType, HolderGetter<Biome> biomes) {
+	@Override public void set${modid}References(Holder<DimensionType> dimensionType, HolderGetter<MaterialRule> materialRules) {
 		this.${modid}_dimensionTypeReference = dimensionType;
-		this.${modid}_biomeLookup = biomes;
+		this.${modid}_materialRuleLookup = materialRules;
 	}
 
 }
