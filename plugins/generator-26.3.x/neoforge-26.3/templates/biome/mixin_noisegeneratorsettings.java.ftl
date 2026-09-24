@@ -34,19 +34,23 @@ package ${package}.mixin;
 
 import org.spongepowered.asm.mixin.Unique;
 
-<#-- Workaround until https://report.bugs.mojang.com/servicedesk/customer/portal/2/MC-308004 is fixed.
-	 Without rising quota, the game will crash when loading saves with custom biome parameter point lists. -->
-@Mixin(LevelStorageSource.class) public class LevelStorageSourceMixin {
+@Mixin(NoiseGeneratorSettings.class) public class NoiseGeneratorSettingsMixin implements ${JavaModName}Biomes.${JavaModName}NoiseGeneratorSettings {
 
-	@ModifyArg(
-		method = "readExistingSavedData",
-		at = @At(
-			value = "INVOKE",
-			target = "Lnet/minecraft/nbt/NbtIo;readCompressed(Ljava/nio/file/Path;Lnet/minecraft/nbt/NbtAccounter;)Lnet/minecraft/nbt/CompoundTag;"
-		),
-		index = 1
-	) private static NbtAccounter increaseSavedDataQuota(NbtAccounter originalAccounter) {
-		return NbtAccounter.uncompressedQuota();
+	@Unique private Holder<DimensionType> ${modid}_dimensionTypeReference;
+	@Unique private HolderGetter<MaterialRule> ${modid}_materialRuleLookup;
+
+	@WrapMethod(method = "materialRule")
+	public Holder<MaterialRule> materialRule(Operation<Holder<MaterialRule>> original) {
+		Holder<MaterialRule> retval = original.call();
+		if (this.${modid}_dimensionTypeReference != null) {
+			retval = Holder.direct(${JavaModName}Biomes.adaptMaterialRule(retval.value(), this.${modid}_dimensionTypeReference, this.${modid}_materialRuleLookup));
+		}
+		return retval;
+	}
+
+	@Override public void set${modid}References(Holder<DimensionType> dimensionType, HolderGetter<MaterialRule> materialRules) {
+		this.${modid}_dimensionTypeReference = dimensionType;
+		this.${modid}_materialRuleLookup = materialRules;
 	}
 
 }

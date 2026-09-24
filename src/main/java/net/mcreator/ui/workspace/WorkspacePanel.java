@@ -1490,7 +1490,10 @@ import java.util.regex.Pattern;
 				}
 
 				Texture icon = CustomTexture.fromName(mcreator.getWorkspace(), TextureType.OTHER,
-						mcreator.getWorkspaceSettings().getModPicture());
+						mcreator.getWorkspaceSettings().getModIcon());
+				if (icon == null) // fall back to the mod banner if no dedicated icon is set
+					icon = CustomTexture.fromName(mcreator.getWorkspace(), TextureType.OTHER,
+							mcreator.getWorkspaceSettings().getModPicture());
 
 				if (icon != null) {
 					ImageIcon imageIcon = icon.getTextureIcon(mcreator.getWorkspace());

@@ -18,7 +18,8 @@ private static String executeCommandGetResult(LevelAccessor world, Vec3 pos, Str
 				return false;
 			}
 		};
-		level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(dataConsumer, pos, Vec2.ZERO, level, LevelBasedPermissionSet.OWNER, "", Component.literal(""), level.getServer(), null), command);
+		level.getServer().getCommands().performPrefixedCommand(new CommandSourceStack(dataConsumer, pos, Vec2.ZERO, level,
+				LevelBasedPermissionSet.OWNER, Component.literal(""), level.getServer()), command);
 	}
 	return result.toString();
 }

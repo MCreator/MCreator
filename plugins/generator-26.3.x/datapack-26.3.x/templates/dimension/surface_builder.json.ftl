@@ -80,12 +80,12 @@
                 },
                 "then_run": {
                   "type": "minecraft:block",
-                  "result_state": ${mappedMCItemToBlockStateJSON(groundBlockWithProperties)}
+                  "result_state": "${mappedMCItemToRegistryName(groundBlockWithProperties)}"
                 }
               },
               {
                 "type": "minecraft:block",
-                "result_state": ${mappedMCItemToBlockStateJSON(underwaterBlockWithProperties)}
+                "result_state": "${mappedMCItemToRegistryName(underwaterBlockWithProperties)}"
               }
             ]
           }
@@ -101,7 +101,7 @@
           },
           "then_run": {
             "type": "minecraft:block",
-            "result_state": ${mappedMCItemToBlockStateJSON(undergroundBlockWithProperties)}
+            "result_state": "${mappedMCItemToRegistryName(undergroundBlockWithProperties)}"
           }
         }
       ]
@@ -144,12 +144,12 @@
               },
               "then_run": {
                 "type": "minecraft:block",
-                "result_state": ${mappedMCItemToBlockStateJSON(groundBlockWithProperties)}
+                "result_state": "${mappedMCItemToRegistryName(groundBlockWithProperties)}"
               }
             },
             {
               "type": "minecraft:block",
-              "result_state": ${mappedMCItemToBlockStateJSON(underwaterBlockWithProperties)}
+              "result_state": "${mappedMCItemToRegistryName(underwaterBlockWithProperties)}"
             }
           ]
         }
@@ -165,7 +165,7 @@
         },
         "then_run": {
           "type": "minecraft:block",
-          "result_state": ${mappedMCItemToBlockStateJSON(undergroundBlockWithProperties)}
+          "result_state": "${mappedMCItemToRegistryName(undergroundBlockWithProperties)}"
         }
       }
     ]

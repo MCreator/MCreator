@@ -1,10 +1,12 @@
 <#function mappedBlockToBlockStateProvider mappedBlock>
     <#if mappedBlock?trim?starts_with("/*@BlockStateProvider*/")>
         <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
-    <#elseif mappedBlock?trim?starts_with('"')> <#-- Direct ID references for default blockstates must be wrapped in a blockstate object -->
-    	<#return '{"id":' + mappedBlock + '}'>
-    <#else> <#-- Blockstate objects can be used directly instead of simple state providers -->
+    <#elseif mappedBlock?trim?starts_with("{")> <#-- Blockstate objects can be used directly instead of simple state providers -->
         <#return mappedBlock>
+    <#elseif mappedBlock?trim?starts_with('"')> <#-- Direct ID references for default blockstates must be wrapped in a blockstate object -->
+        <#return '{"id": ' + mappedBlock + '}'>
+    <#else> <#-- Unquoted registry name, add quotes -->
+        <#return '{"id": "' + mappedBlock + '"}'>
     </#if>
 </#function>
 

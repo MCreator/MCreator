@@ -5,7 +5,7 @@ templates:
   - template: biome/configured_tree.json.ftl
     writer: json
     condition: hasTrees()
-    name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
+    name: "@MODDATAROOT/worldgen/feature/@registryname_tree.json"
   - template: biome/placed_tree.json.ftl
     writer: json
     condition: hasTrees()

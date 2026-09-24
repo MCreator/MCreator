@@ -125,19 +125,21 @@
         <#if data.fogColor?has_content>
         "minecraft:visual/fog_color": ${data.fogColor.getRGB()},
         </#if>
-        "minecraft:visual/water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)}
+        "minecraft:visual/water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)},
+        "minecraft:gameplay/natural_mob_spawns": {
+          "spawns_by_category": {
+            "monster": [<@generateEntityList data.spawnEntries "monster"/>],
+            "creature": [<@generateEntityList data.spawnEntries "creature"/>],
+            "ambient": [<@generateEntityList data.spawnEntries "ambient"/>],
+            "axolotls": [<@generateEntityList data.spawnEntries "axolotls"/>],
+            "underground_water_creature": [<@generateEntityList data.spawnEntries "undergroundWaterCreature"/>],
+            "water_creature": [<@generateEntityList data.spawnEntries "waterCreature"/>],
+            "water_ambient": [<@generateEntityList data.spawnEntries "waterAmbient"/>],
+            "misc": [<@generateEntityList data.spawnEntries "misc"/>]
+          },
+          "spawn_costs": {}
+        }
 	},
-	"spawners": {
-		"monster": [<@generateEntityList data.spawnEntries "monster"/>],
-		"creature": [<@generateEntityList data.spawnEntries "creature"/>],
-		"ambient": [<@generateEntityList data.spawnEntries "ambient"/>],
-      	"axolotls": [<@generateEntityList data.spawnEntries "axolotls"/>],
-      	"underground_water_creature": [<@generateEntityList data.spawnEntries "undergroundWaterCreature"/>],
-      	"water_creature": [<@generateEntityList data.spawnEntries "waterCreature"/>],
-		"water_ambient": [<@generateEntityList data.spawnEntries "waterAmbient"/>],
-		"misc": [<@generateEntityList data.spawnEntries "misc"/>]
-	},
-	"spawn_costs": {},
     "carvers": [<#list features_carvers as feature>"${feature}"<#sep>,</#list>],
     "features": [
     	<#--RAW_GENERATION-->[<#list thelper.removeDuplicates(features_raw_generation) as feature>"${feature}"<#sep>,</#list>],
@@ -171,8 +173,15 @@
     {
       	"type": "${entry.entity.getMappedValue(2)}",
 		"weight": ${entry.weight},
-		"minCount": ${entry.minGroup},
-		"maxCount": ${entry.maxGroup}
+		<#if entry.minGroup == entry.maxGroup>
+		"count": ${entry.minGroup}
+		<#else>
+		"count": {
+			"type": "minecraft:uniform",
+			"min_inclusive": ${entry.minGroup},
+			"max_inclusive": ${entry.maxGroup}
+		}
+		</#if>
 	}<#if entry?has_next>,</#if>
 	<#-- @formatter:on -->
     </#list>

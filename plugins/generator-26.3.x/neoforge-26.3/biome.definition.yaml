@@ -2,14 +2,28 @@ templates:
   - template: biome/biome.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
+
   - template: biome/configured_tree.json.ftl # loaded from datapack generator
     writer: json
     condition: hasTrees()
-    name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
+    name: "@MODDATAROOT/worldgen/feature/@registryname_tree.json"
   - template: biome/placed_tree.json.ftl # loaded from datapack generator
     writer: json
     condition: hasTrees()
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
+
+  - template: biome/material_rule.json.ftl # loaded from datapack generator
+    writer: json
+    condition: spawnBiome
+    name: "@MODDATAROOT/worldgen/material_rule/@registryname_surface.json"
+  - template: biome/material_rule.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "any=true"
+    condition_any:
+      - spawnInCaves
+      - spawnBiomeNether
+    name: "@MODDATAROOT/worldgen/material_rule/@registryname_any_surface.json"
+
   - template: biome/tree_fruits_decorator.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMEFruitDecorator.java"
     condition: hasFruits()
@@ -33,10 +47,6 @@ global_templates:
     writer: java
     condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/BiomeSourcePresetMixin.java"
-  - template: biome/mixin_levelstoragesource.java.ftl
-    writer: java
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/LevelStorageSourceMixin.java"
 
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft
