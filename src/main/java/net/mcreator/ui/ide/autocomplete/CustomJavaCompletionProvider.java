@@ -20,6 +20,7 @@ package net.mcreator.ui.ide.autocomplete;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import net.mcreator.java.JavaCodeScanner;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.ProjectJarManager;
@@ -490,11 +491,12 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	private static String extractTargetName(String beforeDot) {
+		String beforeDotStripped = JavaCodeScanner.maskStringsAndComments(beforeDot);
 		String targetName = "";
 		int parenDepth = 0;
 		int bracketDepth = 0;
-		for (int i = beforeDot.length() - 1; i >= 0; i--) {
-			char c = beforeDot.charAt(i);
+		for (int i = beforeDotStripped.length() - 1; i >= 0; i--) {
+			char c = beforeDotStripped.charAt(i);
 			if (c == ')') {
 				parenDepth++;
 			} else if (c == '(') {
