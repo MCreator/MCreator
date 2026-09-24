@@ -63,7 +63,7 @@ public class ${JavaModName}Attributes {
 					.collect(Collectors.toList()).forEach(entity -> event.add(entity, ${attribute.getModElement().getRegistryNameUpper()}));
 				</#if>
 				<#if attribute.addToPlayers>
-					event.add(EntityType.PLAYER, ${attribute.getModElement().getRegistryNameUpper()});
+					event.add(EntityTypes.PLAYER, ${attribute.getModElement().getRegistryNameUpper()});
 				</#if>
 			</#if>
 		</#list>
