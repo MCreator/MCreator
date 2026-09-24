@@ -1,8 +1,8 @@
-@Nullable private static Entity createStaticEntity(EntityType<?> entityType, Level level) {
-	if (entityType != null) {
+@Nullable private static Entity createStaticEntity(EntityType<?> entityType, LevelAccessor world) {
+	if (entityType != null && world instanceof Level level) {
 		Entity entity = entityType.create(level, EntitySpawnReason.EVENT);
-		if (entity != null)
-			entity.setId(level.getRandom().nextInt());
+		if (entity != null && level.isClientSide())
+			entity.setId(-1);
 
 		return entity;
 	}
