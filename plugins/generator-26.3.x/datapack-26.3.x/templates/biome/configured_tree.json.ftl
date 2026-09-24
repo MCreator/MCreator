@@ -11,8 +11,8 @@
     <#assign default_log = "minecraft:jungle_log">
     <#assign default_leaves = "minecraft:jungle_leaves">
 <#elseif data.vanillaTreeType == "Savanna trees">
-	<#assign minimum_size = [1, 0, 2]>
-	<#assign foliage_placer = ["minecraft:acacia_foliage_placer", 2, 0]>
+    <#assign minimum_size = [1, 0, 2]>
+    <#assign foliage_placer = ["minecraft:acacia_foliage_placer", 2, 0]>
     <#assign trunk_placer = ["minecraft:forking_trunk_placer", ct?then([data.minHeight, 32]?min, 5), 2, 2]>
     <#assign default_log = "minecraft:acacia_log">
     <#assign default_leaves = "minecraft:acacia_leaves">
@@ -44,82 +44,72 @@
 
 {
   "type": "minecraft:tree",
-  "config": {
-    "ignore_vines": true,
-    "minimum_size": {
-      "type": "minecraft:two_layers_feature_size",
-      "limit": ${minimum_size[0]},
-      "lower_size": ${minimum_size[1]},
-      "upper_size": ${minimum_size[2]}
-    },
-	"below_trunk_provider": <@belowTrunkProvider "FALSE" mappedBlockToBlockStateProvider(mappedMCItemToBlockStateJSON(data.undergroundBlock))/>,
-    "trunk_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state":
-      <#if ct>
-          ${mappedMCItemToBlockStateJSON(data.treeStem)}
-      <#else>
-        {
-          "Name": "${default_log}",
-          "Properties": {
-            "axis": "y"
-          }
+  "ignore_vines": true,
+  "minimum_size": {
+    "type": "minecraft:two_layers_feature_size",
+    "limit": ${minimum_size[0]},
+    "lower_size": ${minimum_size[1]},
+    "upper_size": ${minimum_size[2]}
+  },
+  "below_trunk_provider": <@belowTrunkProvider "FALSE" mappedBlockToBlockStateProvider(mappedMCItemToRegistryName(data.undergroundBlock))/>,
+  "trunk_provider": {
+    <#if ct>
+        "id": "${mappedMCItemToRegistryName(data.treeStem)}"
+    <#else>
+        "id": "${default_log}",
+        "properties": {
+          "axis": "y"
         }
-      </#if>
-    },
-    "foliage_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state":
-      <#if ct>
-        ${mappedMCItemToBlockStateJSON(data.treeBranch)}
-      <#else>
-        {
-          "Name": "${default_leaves}",
-          "Properties": {
-            "distance": "7",
-            "persistent": "false",
-            "waterlogged": "false"
-           }
-        }
-      </#if>
-    },
-    "trunk_placer": {
-      "type": "${trunk_placer[0]}",
-      "base_height": ${trunk_placer[1]},
-      "height_rand_a": ${trunk_placer[2]},
-      "height_rand_b": ${trunk_placer[3]}
-    },
-    "foliage_placer": {
-      "type": "${foliage_placer[0]}",
-      "radius": ${foliage_placer[1]},
-      "offset": ${foliage_placer[2]}
-      <#if foliage_placer?size == 4>,
-	    "height": ${foliage_placer[3]}
-      <#elseif foliage_placer?size == 5>,
-        "crown_height": {
-          "type": "uniform",
-          "min_inclusive": ${foliage_placer[3]},
-          "max_inclusive": ${foliage_placer[4]}
-        }
-	  </#if>
-    },
-    "decorators": [
-    <#if data.hasVines() || data.hasFruits()>
-      <#if data.hasFruits()>
-        {
-          "type": "${modid}:${registryname}_tree_fruit_decorator"
-        }<#if data.hasVines()>,</#if>
-      </#if>
-      <#if data.hasVines()>
-        {
-          "type": "${modid}:${registryname}_tree_trunk_decorator"
-        },
-        {
-          "type": "${modid}:${registryname}_tree_leave_decorator"
-        }
-	  </#if>
     </#if>
-    ]
-  }
+  },
+  "foliage_provider": {
+    <#if ct>
+        "id": "${mappedMCItemToRegistryName(data.treeBranch)}"
+    <#else>
+        "id": "${default_leaves}",
+        "properties": {
+          "distance": "7",
+          "persistent": "false",
+          "waterlogged": "false"
+        }
+    </#if>
+  },
+  "trunk_placer": {
+    "type": "${trunk_placer[0]}",
+    "base_height": ${trunk_placer[1]},
+    "height_rand_a": ${trunk_placer[2]},
+    "height_rand_b": ${trunk_placer[3]}
+  },
+  "foliage_placer": {
+    "type": "${foliage_placer[0]}",
+    "radius": ${foliage_placer[1]},
+    "offset": ${foliage_placer[2]}
+    <#if foliage_placer?size == 4>,
+      "height": ${foliage_placer[3]}
+    <#elseif foliage_placer?size == 5>,
+      "crown_height": {
+        "type": "uniform",
+        "min_inclusive": ${foliage_placer[3]},
+        "max_inclusive": ${foliage_placer[4]}
+      }
+    </#if>
+  },
+  "decorators": [
+  <#if data.hasVines() || data.hasFruits()>
+    <#if data.hasFruits()>
+      {
+        "type": "${modid}:${registryname}_tree_fruit_decorator"
+      }<#if data.hasVines()>,</#if>
+    </#if>
+    <#if data.hasVines()>
+      {
+        "type": "${modid}:${registryname}_tree_trunk_decorator"
+      },
+      {
+        "type": "${modid}:${registryname}_tree_leave_decorator"
+      }
+    </#if>
+  </#if>
+  ]
 }
 <#-- @formatter:on -->

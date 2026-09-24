@@ -1,15 +1,38 @@
 templates:
-  - template: biome/biome.json.ftl
+  - template: biome/biome.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
-  - template: biome/configured_tree.json.ftl
+  - template: biome/configured_tree.json.ftl # loaded from datapack generator
     writer: json
     condition: hasTrees()
-    name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
-  - template: biome/placed_tree.json.ftl
+    name: "@MODDATAROOT/worldgen/feature/@registryname_tree.json"
+  - template: biome/placed_tree.json.ftl # loaded from datapack generator
     writer: json
     condition: hasTrees()
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
+  - template: biome/tree_fruits_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMEFruitDecorator.java"
+    condition: hasFruits()
+  - template: biome/tree_leave_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMELeaveDecorator.java"
+    condition: hasVines()
+  - template: biome/tree_trunk_decorator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/treedecorators/@NAMETrunkDecorator.java"
+    condition: hasVines()
+
+global_templates:
+  - template: elementinits/biomes.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
+  - template: biome/mixin_noisegeneratorsettings.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/NoiseGeneratorSettingsMixin.java"
+  - template: biome/mixin_biomesourcepreset.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/mixin/BiomeSourcePresetMixin.java"
 
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft
@@ -74,8 +97,6 @@ tags:
     condition: "spawnRuinedPortal %= OCEAN"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_nether
     condition: "spawnRuinedPortal %= NETHER"
-
-field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
 
 localizationkeys:
   - key: biome.@modid.@registryname
