@@ -54,7 +54,7 @@ public final class LocalVariableResolver {
 			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]|\\([^()]\\))*\\))?");
 
 	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
-			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^>]+>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^>]+>)?(?:\\[]|\\.\\.\\.)*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
 	private static final Pattern FOR_PATTERN = Pattern.compile(
 			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^>]*>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
 	private static final Pattern LAMBDA_PARAM_PATTERN = Pattern.compile(
@@ -67,8 +67,12 @@ public final class LocalVariableResolver {
 			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*([^;\\r\\n{}]+)");
 
 	private static final Pattern DECL_PATTERN = Pattern.compile(
-			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[])*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
 	private static final Pattern STATIC_PATTERN = Pattern.compile("\\bstatic\\b");
+
+	private static String normalizeVarargs(String type) {
+		return type != null ? type.replace("...", "[]") : null;
+	}
 
 	private static Deque<ScopeBlock> parseScopes(String codeBeforeCursor) {
 		String strippedCode = JavaCodeScanner.maskStringsAndComments(codeBeforeCursor);
@@ -144,7 +148,7 @@ public final class LocalVariableResolver {
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
 			if (base.equals(mDecl.group(2)))
-				lastType = new VarTypeInfo(mDecl.group(1));
+				lastType = new VarTypeInfo(normalizeVarargs(mDecl.group(1)));
 		}
 		if (lastType != null)
 			return lastType;
@@ -238,7 +242,7 @@ public final class LocalVariableResolver {
 
 		Matcher m = DECL_PATTERN.matcher(activeCode);
 		while (m.find()) {
-			String type = m.group(1);
+			String type = normalizeVarargs(m.group(1));
 			String name = m.group(2);
 			if (type.contains("."))
 				type = type.substring(type.lastIndexOf('.') + 1);
