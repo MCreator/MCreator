@@ -199,7 +199,7 @@ public class JavaMemberResolver {
 	}
 
 	private String toSimpleType(String fqdnType) {
-		return fqdnType == null ? null : fqdnType.replaceAll("([a-zA-Z_$][a-zA-Z0-9_$]*\\.)+", "");
+		return fqdnType == null ? null : fqdnType.replaceAll("([a-zA-Z_$][a-zA-Z0-9_$]*\\.)+", "").replace('$', '.');
 	}
 
 	private void addMembersFromClassFile(ClassFile cf, String declaringClass, @Nullable String currentClassFQDN,
