@@ -139,7 +139,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantaneous</#if>Mob
 				return false;
 			}
 
-			public boolean extractInventoryText(MobEffectInstance instance, AbstractContainerScreen<?> screen, GuiGraphicsExtractor graphics, int x, int y, int canvasWidth, int color) {
+			@Override public boolean extractInventoryText(MobEffectInstance instance, AbstractContainerScreen<?> screen, GuiGraphicsExtractor graphics, int x, int y, int canvasWidth, int color) {
 				return false;
 			}
 			</#if>
