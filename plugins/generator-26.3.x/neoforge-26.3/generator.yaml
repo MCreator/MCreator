@@ -134,9 +134,6 @@ language_file:
   langfile_name: "@langname.json"
 
 resources_setup_tasks:
-  - task: copy_file
-    from: "@MODASSETSROOT/textures/@modpicture.png"
-    to: "@RESROOT/logo.png"
   - task: copy_models
     type: OBJ_referencetextures
     to: "@MODASSETSROOT/models/item"

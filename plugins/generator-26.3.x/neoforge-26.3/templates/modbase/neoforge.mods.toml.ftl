@@ -13,7 +13,10 @@ updateJSONURL="${JavaConventions.escapeStringForJava(settings.getUpdateURL())}"
 displayURL="${JavaConventions.escapeStringForJava(settings.getWebsiteURL())}"
 </#if>
 <#if settings.getModPicture()?has_content>
-bannerFile="logo.png"
+bannerFile="${settings.getModID()}:textures/${settings.getModPicture()}.png"
+</#if>
+<#if settings.getModIcon()?has_content>
+iconFile="${settings.getModID()}:textures/${settings.getModIcon()}.png"
 </#if>
 <#if settings.getCredits()?has_content>
 credits="${JavaConventions.escapeStringForJava(settings.getCredits())}"

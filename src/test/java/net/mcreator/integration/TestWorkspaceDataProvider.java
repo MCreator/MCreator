@@ -3101,6 +3101,7 @@ public class TestWorkspaceDataProvider {
 		workspaceSettings.setWebsiteURL("https://mcreator.net/");
 		workspaceSettings.setUpdateURL("");
 		workspaceSettings.setModPicture("example");
+		workspaceSettings.setModIcon("other0");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
