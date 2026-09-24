@@ -553,6 +553,18 @@ public class JavaTypeResolver {
 			if (currentFQDN == null)
 				return null;
 			String member = chain.get(i);
+
+			int chainArrayAccessCount = 0;
+			while (member.endsWith("]")) {
+				int open = member.lastIndexOf('[');
+				if (open != -1) {
+					member = member.substring(0, open).trim();
+					chainArrayAccessCount++;
+				} else {
+					break;
+				}
+			}
+
 			CompletionItem memberItem = getMember(currentFQDN, member, currentClassFQDN, code);
 			if (isStaticContext && memberItem != null && !memberItem.isStatic()) {
 				return null;
@@ -583,6 +595,11 @@ public class JavaTypeResolver {
 				currentGenericArgs = parseGenericArgs(returnTypeSimple);
 				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, currentPkg);
 				isStaticContext = false;
+				if (chainArrayAccessCount > 0 && currentFQDN != null) {
+					for (int a = 0; a < chainArrayAccessCount && currentFQDN.endsWith("[]"); a++) {
+						currentFQDN = currentFQDN.substring(0, currentFQDN.length() - 2);
+					}
+				}
 			} else if (getInnerClasses(currentFQDN).contains(member)) {
 				currentFQDN += "." + member;
 				isStaticContext = true;
