@@ -97,6 +97,10 @@ public class JavaTypeResolver {
 	@SuppressWarnings("NullableProblems")
 	private final Cache<String, List<String>> innerClassesCache = CacheBuilder.newBuilder().maximumSize(5000).build();
 
+	// Maps source code hashCode -> list of inner class simple names for the code open in editor
+	@SuppressWarnings("NullableProblems")
+	private final Cache<Integer, List<String>> editorInnerClassesCache = CacheBuilder.newBuilder().maximumSize(1).build();
+
 	private Map<String, List<String>> cachedModClasses = null;
 	private long lastModClassesUpdate = 0;
 	private final Set<String> resolvingVars = new HashSet<>();
@@ -108,10 +112,11 @@ public class JavaTypeResolver {
 	}
 
 	public synchronized void invalidateCaches() {
+		sourceResolver.invalidateCaches();
 		memberResolver.invalidateCaches();
 		simpleTypeCache.invalidateAll();
 		innerClassesCache.invalidateAll();
-		sourceResolver.invalidateCaches();
+		editorInnerClassesCache.invalidateAll();
 		cachedModClasses = null;
 		lastModClassesUpdate = 0;
 		resolvingVars.clear();
@@ -148,11 +153,15 @@ public class JavaTypeResolver {
 			List<String> cached = innerClassesCache.getIfPresent(fqdn);
 			if (cached != null)
 				return cached;
+		} else if (currentCode != null) {
+			List<String> cached = editorInnerClassesCache.getIfPresent(currentCode.hashCode());
+			if (cached != null)
+				return cached;
 		}
 
 		List<String> inners = new ArrayList<>();
 
-		// Skip cache for active current class to avoid stale hits
+		// Skip main cache for active current class to avoid stale hits
 		if (!isCurrentClass && workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			List<String> fromIndex = workspace.getGenerator().getGradleCache().getInnerClassTree().get(fqdn);
 			if (fromIndex != null)
@@ -199,6 +208,8 @@ public class JavaTypeResolver {
 		inners = Collections.unmodifiableList(inners);
 		if (!isCurrentClass) {
 			innerClassesCache.put(fqdn, inners);
+		} else if (currentCode != null) {
+			editorInnerClassesCache.put(currentCode.hashCode(), inners);
 		}
 		return inners;
 	}
@@ -232,7 +243,8 @@ public class JavaTypeResolver {
 		return result;
 	}
 
-	public String resolveSimpleTypeName(String typeName, Map<String, String> imports, String currentPkg) {
+	public String resolveSimpleTypeName(String typeName, Map<String, String> imports, String currentPkg,
+			@Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (typeName == null)
 			return null;
 		
@@ -255,18 +267,27 @@ public class JavaTypeResolver {
 			return imports.get(typeName);
 
 		String cacheKey = (currentPkg != null ? currentPkg : "") + ":" + typeName;
-		String cached = simpleTypeCache.getIfPresent(cacheKey);
-		if (cached != null)
-			return cached.isEmpty() ? null : (cached + arrayBrackets);
+		if (currentClassFQDN == null) {
+			String cached = simpleTypeCache.getIfPresent(cacheKey);
+			if (cached != null)
+				return cached.isEmpty() ? null : (cached + arrayBrackets);
+		}
 
-		String resolved = resolveSimpleTypeNameImpl(typeName, imports, currentPkg);
-		simpleTypeCache.put(cacheKey, resolved != null ? resolved : "");
+		String resolved = resolveSimpleTypeNameImpl(typeName, imports, currentPkg, currentClassFQDN, currentCode);
+		if (currentClassFQDN == null) {
+			simpleTypeCache.put(cacheKey, resolved != null ? resolved : "");
+		}
 		return resolved != null ? resolved + arrayBrackets : null;
 	}
 
-	private String resolveSimpleTypeNameImpl(String typeName, Map<String, String> imports, String currentPkg) {
+	private String resolveSimpleTypeNameImpl(String typeName, Map<String, String> imports, String currentPkg,
+			@Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (imports != null && imports.containsKey(typeName)) {
 			return imports.get(typeName);
+		}
+
+		if (currentClassFQDN != null && getInnerClasses(currentClassFQDN, currentClassFQDN, currentCode).contains(typeName)) {
+			return currentClassFQDN + "." + typeName;
 		}
 
 		if (currentPkg != null && !currentPkg.isEmpty()) {
@@ -299,7 +320,7 @@ public class JavaTypeResolver {
 		if (typeName.contains(".")) {
 			int dot = typeName.indexOf('.');
 			String outer = typeName.substring(0, dot);
-			String resolvedOuter = resolveSimpleTypeName(outer, imports, currentPkg);
+			String resolvedOuter = resolveSimpleTypeName(outer, imports, currentPkg, currentClassFQDN, currentCode);
 			if (resolvedOuter != null) {
 				return resolvedOuter + typeName.substring(dot);
 			}
@@ -465,7 +486,7 @@ public class JavaTypeResolver {
 						String member = segments[i];
 						CompletionItem memberItem = getMember(currentFQDN, member, currentClassFQDN, code);
 						if (memberItem != null && (!isStaticContext || memberItem.isStatic())) {
-							currentFQDN = resolveSimpleTypeName(memberItem.detail(), imports, currentPkg);
+							currentFQDN = resolveSimpleTypeName(memberItem.detail(), imports, currentPkg, currentClassFQDN, code);
 							isStaticContext = false;
 						} else if (getInnerClasses(currentFQDN, currentClassFQDN, code).contains(member)) {
 							currentFQDN += "." + member;
@@ -494,7 +515,7 @@ public class JavaTypeResolver {
 						currentGenericArgs = genArgs;
 					}
 					if (base.equals("super")) {
-						currentFQDN = resolveSimpleTypeName(parentName, imports, currentPkg);
+						currentFQDN = resolveSimpleTypeName(parentName, imports, currentPkg, currentClassFQDN, code);
 					}
 				} else if (base.equals("super")) {
 					currentFQDN = "java.lang.Object";
@@ -555,7 +576,7 @@ public class JavaTypeResolver {
 						currentGenericArgs = genArgs;
 					}
 				}
-				currentFQDN = resolveSimpleTypeName(typeName, imports, currentPkg);
+				currentFQDN = resolveSimpleTypeName(typeName, imports, currentPkg, currentClassFQDN, code);
 				if (arrayAccessCount > 0 && currentFQDN != null) {
 					for (int a = 0; a < arrayAccessCount && currentFQDN.endsWith("[]"); a++) {
 						currentFQDN = currentFQDN.substring(0, currentFQDN.length() - 2);
@@ -593,7 +614,7 @@ public class JavaTypeResolver {
 				List<String> superGenArgs = parseGenericArgs(superTypeWithGenerics);
 				if (!superGenArgs.isEmpty()) {
 					currentGenericArgs = superGenArgs;
-					String superFQDN = resolveSimpleTypeName(superTypeWithGenerics, imports, currentPkg);
+					String superFQDN = resolveSimpleTypeName(superTypeWithGenerics, imports, currentPkg, currentClassFQDN, code);
 					if (superFQDN != null) {
 						typeParams = getTypeParameters(superFQDN, currentClassFQDN, code);
 					}
@@ -608,7 +629,7 @@ public class JavaTypeResolver {
 
 			if (returnTypeSimple != null) {
 				currentGenericArgs = parseGenericArgs(returnTypeSimple);
-				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, currentPkg);
+				currentFQDN = resolveSimpleTypeName(returnTypeSimple, imports, currentPkg, currentClassFQDN, code);
 				isStaticContext = false;
 				if (chainArrayAccessCount > 0 && currentFQDN != null) {
 					for (int a = 0; a < chainArrayAccessCount && currentFQDN.endsWith("[]"); a++) {
