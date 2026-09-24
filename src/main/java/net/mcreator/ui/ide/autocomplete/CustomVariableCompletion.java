@@ -32,7 +32,7 @@ public class CustomVariableCompletion extends BasicCompletion {
 		super(provider, name, buildDefinedName(type), name);
 		this.name = name;
 		this.type = type;
-		setRelevance(1);
+		setRelevance(150);
 	}
 
 	private static String buildDefinedName(String type) {
