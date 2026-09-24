@@ -519,15 +519,13 @@ public class JavaTypeResolver {
 				}
 
 				if (currentFQDN == null) {
-					if (!realBase.isEmpty() && Character.isUpperCase(realBase.charAt(0))) {
+					CompletionItem memberItem = getMember(currentClassFQDN, realBase, currentClassFQDN, code);
+					if (memberItem != null && (!isCursorStatic || memberItem.isStatic())) {
+						typeName = memberItem.detail();
+						currentGenericArgs = parseGenericArgs(typeName);
+					} else if (!realBase.isEmpty() && Character.isUpperCase(realBase.charAt(0))) {
 						typeName = realBase;
 						isStaticContext = true;
-					} else {
-						CompletionItem memberItem = getMember(currentClassFQDN, realBase, currentClassFQDN, code);
-						if (memberItem != null && (!isCursorStatic || memberItem.isStatic())) {
-							typeName = memberItem.detail();
-							currentGenericArgs = parseGenericArgs(typeName);
-						}
 					}
 				}
 			} else {
