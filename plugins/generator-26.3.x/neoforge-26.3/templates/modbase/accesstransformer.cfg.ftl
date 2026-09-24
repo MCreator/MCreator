@@ -15,6 +15,9 @@ public-f net.minecraft.world.level.levelgen.feature.TreeFeature place(Lnet/minec
 
 <#if w.hasElementsOfType("armor")>
 public-f net.minecraft.client.model.Model renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
+public net.minecraft.client.renderer.feature.FeatureRenderDispatcher featureRenderers
+public net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer currentGroup
+public net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer getVertexBuilder(Lnet/minecraft/client/renderer/rendertype/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;
 </#if>
 
 <#if w.hasElementsOfType("fluid")>

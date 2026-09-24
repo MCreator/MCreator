@@ -41,13 +41,13 @@ mod_data_root: "@RESROOT/data/@modid"
 # specific resource folders
 sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structure"
-#block_textures_dir: "@MODASSETSROOT/textures/block"
-#item_textures_dir: "@MODASSETSROOT/textures/item"
-#entity_textures_dir: "@MODASSETSROOT/textures/entities"
+block_textures_dir: "@MODASSETSROOT/textures/block"
+item_textures_dir: "@MODASSETSROOT/textures/item"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
 effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
-#armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 # vanilla resources
@@ -75,22 +75,22 @@ base_templates:
   - template: modbase/variableslist.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
     condition: hasVariables()
-#  - template: elementinits/tabs.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
-#    condition: hasItemsInTabs()
-#  - template: modbase/accesstransformer.cfg.ftl
-#    usercodeComment: "#"
-#    writer: file
-#    name: "@RESROOT/META-INF/accesstransformer.cfg"
-#    condition_any:
+  - template: elementinits/tabs.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
+    condition: hasItemsInTabs()
+  - template: modbase/accesstransformer.cfg.ftl
+    usercodeComment: "#"
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"
+    condition_any:
 #      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
 #      - "${w.hasElementsOfType('feature')}"
-#      - "${w.hasElementsOfType('armor')}"
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition_any:
-#      - hasJavaModels()
-#      - "${w.hasElementsOfType('specialentity')}"
+      - "${w.hasElementsOfType('armor')}"
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition_any:
+      - hasJavaModels()
+      - "${w.hasElementsOfType('specialentity')}"
 #  - template: modbase/enumextensions.json.ftl
 #    writer: json
 #    name: "@RESROOT/META-INF/enumextensions.json"
@@ -107,17 +107,17 @@ base_templates:
 #      - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
 #      - "${w.hasElementsOfType('specialentity')}"
 
-#java_models:
-#  key: mojmap-26.3.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x, mojmap-26.2.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
+java_models:
+  key: mojmap-26.3.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x, mojmap-26.2.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    cleanupBeforeCopy: true
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    cleanupBeforeCopy: true
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 #  - task: copy_model_animations
 #    type: JAVA_viatemplate
 #    cleanupBeforeCopy: true
@@ -137,9 +137,9 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-#  - task: copy_models
-#    type: OBJ_referencetextures
-#    to: "@MODASSETSROOT/models/item"
-#  - task: copy_models
-#    type: JSON_noinlinetextures
-#    to: "@MODASSETSROOT/models/custom"
+  - task: copy_models
+    type: OBJ_referencetextures
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"
