@@ -135,15 +135,25 @@ public class JavaTypeResolver {
 	}
 
 	public List<String> getInnerClasses(String fqdn) {
+		return getInnerClasses(fqdn, null, null);
+	}
+
+	public List<String> getInnerClasses(String fqdn, @Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty())
 			return Collections.emptyList();
-		List<String> cached = innerClassesCache.getIfPresent(fqdn);
-		if (cached != null)
-			return cached;
+
+		boolean isCurrentClass = fqdn.equals(currentClassFQDN);
+
+		if (!isCurrentClass) {
+			List<String> cached = innerClassesCache.getIfPresent(fqdn);
+			if (cached != null)
+				return cached;
+		}
 
 		List<String> inners = new ArrayList<>();
 
-		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
+		// Skip cache for active current class to avoid stale hits
+		if (!isCurrentClass && workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			List<String> fromIndex = workspace.getGenerator().getGradleCache().getInnerClassTree().get(fqdn);
 			if (fromIndex != null)
 				inners.addAll(fromIndex);
@@ -152,8 +162,11 @@ public class JavaTypeResolver {
 		if (inners.isEmpty()) {
 			String className = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
 			List<String> modFqdns = getModClasses().get(className);
-			if (modFqdns != null && modFqdns.contains(fqdn)) {
-				String src = sourceResolver.loadSourceCodeForFQDN(fqdn);
+			if (isCurrentClass || (modFqdns != null && modFqdns.contains(fqdn))) {
+				// Use active unsaved code if parsing current class
+				String src = (isCurrentClass && currentCode != null) ?
+						currentCode :
+						sourceResolver.loadSourceCodeForFQDN(fqdn);
 				if (src != null && !src.isEmpty()) {
 					try {
 						JavaType<?> source = Roaster.parse(src);
@@ -184,7 +197,9 @@ public class JavaTypeResolver {
 		}
 
 		inners = Collections.unmodifiableList(inners);
-		innerClassesCache.put(fqdn, inners);
+		if (!isCurrentClass) {
+			innerClassesCache.put(fqdn, inners);
+		}
 		return inners;
 	}
 
@@ -208,7 +223,7 @@ public class JavaTypeResolver {
 
 		if (res.isStaticContext) {
 			String declaringClass = res.fqdn.contains(".") ? res.fqdn.substring(res.fqdn.lastIndexOf('.') + 1) : res.fqdn;
-			for (String inner : getInnerClasses(res.fqdn)) {
+			for (String inner : getInnerClasses(res.fqdn, currentClassFQDN, code)) {
 				result.add(new CompletionItem(inner, inner, "field", res.fqdn + "." + inner, declaringClass,
 						"public", null, false, true, true, false, false, null, null, null));
 			}
@@ -452,7 +467,7 @@ public class JavaTypeResolver {
 						if (memberItem != null && (!isStaticContext || memberItem.isStatic())) {
 							currentFQDN = resolveSimpleTypeName(memberItem.detail(), imports, currentPkg);
 							isStaticContext = false;
-						} else if (getInnerClasses(currentFQDN).contains(member)) {
+						} else if (getInnerClasses(currentFQDN, currentClassFQDN, code).contains(member)) {
 							currentFQDN += "." + member;
 							isStaticContext = true;
 						} else {
@@ -600,7 +615,7 @@ public class JavaTypeResolver {
 						currentFQDN = currentFQDN.substring(0, currentFQDN.length() - 2);
 					}
 				}
-			} else if (getInnerClasses(currentFQDN).contains(member)) {
+			} else if (getInnerClasses(currentFQDN, currentClassFQDN, code).contains(member)) {
 				currentFQDN += "." + member;
 				isStaticContext = true;
 				currentGenericArgs = Collections.emptyList();
