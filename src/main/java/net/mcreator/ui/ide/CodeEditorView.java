@@ -689,11 +689,17 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 				int res = JOptionPane.showOptionDialog(mcreator, L10N.t("ide.warnings.file_not_saved",
 								((CodeEditorView) tab.getContent()).fileWorkingOn.getName()), L10N.t("common.warning"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+				if (this.jcp != null && (res == 1 || res == 0)) {
+					this.jcp.invalidateCaches();
+				}
 				if (res == 0) {
 					((CodeEditorView) tab.getContent()).saveCode();
 					return true;
 				} else
 					return res == 1;
+			}
+			if (this.jcp != null) {
+				this.jcp.invalidateCaches();
 			}
 			return true;
 		});
