@@ -7,3 +7,5 @@ feature_huge_red_mushroom: minecraft:huge_red_mushroom
 feature_forest_rock: minecraft:block_blob
 feature_bamboo: minecraft:bamboo
 feature_underwater_magma: minecraft:underwater_magma
+feature_geode_simple: minecraft:geode
+feature_spring: minecraft:spring_feature
