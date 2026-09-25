@@ -52,4 +52,10 @@
       "type": "minecraft:beardifier"
     }
   }
-}
+},
+"debug_functions": [
+  {
+    "function": "minecraft:end/islands",
+    "label": "IS"
+  }
+]

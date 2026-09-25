@@ -62,4 +62,24 @@
       "type": "minecraft:beardifier"
     }
   }
-}
+},
+"debug_functions": [
+  {
+    "function": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:nether/temperature",
+      "xz_scale": 0.25,
+      "y_scale": 0
+    },
+    "label": "T"
+  },
+  {
+    "function": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:nether/vegetation",
+      "xz_scale": 0.25,
+      "y_scale": 0
+    },
+    "label": "V"
+  }
+]

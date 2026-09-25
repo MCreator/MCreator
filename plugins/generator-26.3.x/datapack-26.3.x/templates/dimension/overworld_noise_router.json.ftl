@@ -141,4 +141,52 @@
       "type": "minecraft:beardifier"
     }
   }
-}
+},
+"debug_functions": [
+  {
+    "function": "minecraft:overworld/temperature",
+    "label": "T"
+  },
+  {
+    "function": "minecraft:overworld/vegetation",
+    "label": "V"
+  },
+  {
+    "function": "minecraft:overworld/continents",
+    "label": "C"
+  },
+  {
+    "function": "minecraft:overworld/erosion",
+    "label": "E"
+  },
+  {
+    "function": "minecraft:overworld/depth",
+    "label": "D"
+  },
+  {
+    "function": "minecraft:overworld/ridges",
+    "label": "W"
+  },
+  {
+    "function": {
+      "type": "minecraft:mul",
+      "left": {
+        "type": "minecraft:add",
+        "left": {
+          "type": "minecraft:abs",
+          "input": {
+            "type": "minecraft:add",
+            "left": {
+              "type": "minecraft:abs",
+              "input": "minecraft:overworld/ridges"
+            },
+            "right": -0.6666667
+          }
+        },
+        "right": -0.33333334
+      },
+      "right": -3.0
+    },
+    "label": "PV"
+  }
+]
