@@ -21,7 +21,7 @@ private static String executeCommandGetResult(Entity entity, String command) {
 		entity.level().getServer().getCommands().performPrefixedCommand(new CommandSourceStack(
 				dataConsumer, entity.position(), entity.getRotationVector(),
 				entity.level() instanceof ServerLevel ? (ServerLevel) entity.level() : null, LevelBasedPermissionSet.OWNER,
-				entity.getName().getString(), entity.getDisplayName(), entity.level().getServer(), entity
+				entity.level().getServer(), entity
 		), command);
 	}
 	return result.toString();
