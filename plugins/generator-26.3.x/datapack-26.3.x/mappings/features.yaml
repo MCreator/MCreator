@@ -1,0 +1,3 @@
+_default: minecraft:no_op
+feature_no_op: minecraft:no_op
+feature_simple_block: minecraft:simple_block

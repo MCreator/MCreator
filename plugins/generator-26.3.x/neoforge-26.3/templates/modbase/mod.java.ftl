@@ -28,7 +28,7 @@ import org.apache.logging.log4j.Logger;
 		<#if types["base:entities"]??>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
-		<#if types["base:features"]??>${JavaModName}Features.REGISTRY.register(modEventBus);</#if>
+		<#if types["base:features"]??>${JavaModName}FeatureTypes.REGISTRY.register(modEventBus);</#if>
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(modEventBus);</#if>
 		<#if types["potions"]??>${JavaModName}Potions.REGISTRY.register(modEventBus);</#if>
 		<#if types["potioneffects"]??>${JavaModName}MobEffects.REGISTRY.register(modEventBus);</#if>

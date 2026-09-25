@@ -33,26 +33,30 @@
 
 package ${package}.world.features;
 
-<#assign configuration = generator.map(featuretype, "features", 1)>
-
 <@javacompress>
-public class ${name}Feature extends ${generator.map(featuretype, "features")} {
+public record ${name}Feature(Holder<Feature> feature) implements Feature {
+	public static final MapCodec<${name}Feature> CODEC = RecordCodecBuilder.mapCodec(
+			builder -> builder.group(Feature.CODEC.fieldOf("feature").forGetter(${name}Feature::feature))
+			.apply(builder, ${name}Feature::new));
 
-	public ${name}Feature() {
-		super(${configuration}.CODEC);
+	@Override public MapCodec<${name}Feature> codec() {
+		return CODEC;
 	}
 
-	public boolean place(FeaturePlaceContext<${configuration}> context) {
+	@Override public Stream<Holder<Feature>> getSubFeatures() {
+		return Stream.of(this.feature);
+	}
+
+	@Override public boolean place(WorldGenLevel world, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
 		<#if hasProcedure(data.generateCondition)>
-		<#-- #4781 - we need to use WorldGenLevel instead of Level, or one can run incompatible procedures in condition -->
-		WorldGenLevel world = context.level();
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
+		int x = origin.getX();
+		int y = origin.getY();
+		int z = origin.getZ();
 		if (!<@procedureOBJToConditionCode data.generateCondition/>)
 			return false;
 		</#if>
 
-		return super.place(context);
+		Feature toPlace = this.feature.value();
+		return toPlace.place(world, chunkGenerator, random, origin);
 	}
 }</@javacompress>

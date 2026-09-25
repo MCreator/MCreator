@@ -1,5 +1,5 @@
 /*@BlockStateProvider*/{
-  "type": "minecraft:weighted_state_provider",
+  "type": "minecraft:weighted",
   "entries": [
     <#list input_list$entry as entry>
     {

@@ -36,13 +36,13 @@
 
 package ${package}.init;
 
-public class ${JavaModName}Features {
+public class ${JavaModName}FeatureTypes {
 
-	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(Registries.FEATURE, ${JavaModName}.MODID);
+	public static final DeferredRegister<MapCodec<? extends Feature>> REGISTRY = DeferredRegister.create(Registries.FEATURE_TYPE, ${JavaModName}.MODID);
 
 	<#list features as feature>
-	public static final DeferredHolder<Feature<?>, Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::new);
+	public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<? extends Feature>> ${feature.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("${feature.getModElement().getRegistryName()}", () -> ${feature.getModElement().getName()}Feature.CODEC);
 	</#list>
 
 }
