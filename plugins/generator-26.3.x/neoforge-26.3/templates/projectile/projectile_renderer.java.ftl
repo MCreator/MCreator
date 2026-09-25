@@ -46,10 +46,10 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity, LivingEntityR
 
 	@Override public void submit(LivingEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
 		poseStack.pushPose();
-		poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot - 90));
-		poseStack.mulPose(Axis.ZP.rotationDegrees(90 + state.xRot));
+		poseStack.rotateDegrees(Axis.YP, state.yRot - 90);
+		poseStack.rotateDegrees(Axis.ZP, 90 + state.xRot);
 		model.setupAnim(state);
-		submitNodeCollector.submitModel(this.model, state, poseStack, texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
+		submitNodeCollector.submitModel(this.model, state, poseStack, texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
 		poseStack.popPose();
 
 		super.submit(state, poseStack, submitNodeCollector, camera);
