@@ -11,21 +11,15 @@
       "sea_level": ${data.seaLevel},
       "legacy_random_source": false,
       "disable_mob_generation": false,
-      "aquifers_enabled": false,
-      "ore_veins_enabled": false,
-      "default_block": {
-        "Name": "minecraft:air"
-      },
-      "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
+      "default_block": "minecraft:air",
+      "default_fluid": "${mappedMCItemToRegistryName(data.fluidBlock)}",
       "spawn_target": [],
       "noise": {
         "min_y": 0,
-        "height": 256,
-        "size_horizontal": 1,
-        "size_vertical": 2
+        "height": 256
       },
       <#include "void_noise_router.json.ftl">,
-      "surface_rule": {
+      "material_rule": {
          "type": "minecraft:sequence",
          "sequence": []
       }
