@@ -25,6 +25,7 @@ import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.StepSound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.bedrock.BEBlock;
+import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
@@ -41,6 +42,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -57,6 +59,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -109,6 +112,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 	private final JComboBox<String> tintMethod = ComponentFromAnnotation.options(BEBlock.class, "tintMethod");
 
+	private final JCheckBox isNotColidable = L10N.checkbox("elementgui.common.enable");
+	private JBoundingBoxList boundingBoxList;
+
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page2group = new ValidationGroup();
 
@@ -130,12 +136,17 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		generationPanel.setOpaque(false);
 		JPanel scriptsPanel = new JPanel(new BorderLayout(10, 10));
 		scriptsPanel.setOpaque(false);
+		JPanel boundingBoxPanel = new JPanel(new BorderLayout(10, 10));
+		boundingBoxPanel.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
 		page1group.addValidationElement(textures);
 
 		ComponentUtils.deriveFont(renderType, 16);
-		renderType.addActionListener(_ -> updateTextureOptions());
+		renderType.addActionListener(_ -> {
+			updateTextureOptions();
+			boundingBoxList.modelChanged();
+		});
 		renderType.setPreferredSize(new Dimension(280, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
@@ -270,8 +281,29 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		localScripts.setPreferredSize(new Dimension(640, 34));
 
+		// "generate from model" reads the selected Bedrock geometry
+		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
+
+		JPanel boundingBoxNorthPanel = new JPanel(new GridLayout(2, 2, 10, 2));
+		boundingBoxNorthPanel.setOpaque(false);
+		boundingBoxNorthPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/bounding_box"),
+				L10N.label("elementgui.beblock.bounding_box_limits")));
+		boundingBoxNorthPanel.add(new JLabel());
+		boundingBoxNorthPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_walk_through"),
+				L10N.label("elementgui.block.can_walk_through")));
+		boundingBoxNorthPanel.add(isNotColidable);
+		isNotColidable.setOpaque(false);
+
+		boundingBoxPanel.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, boundingBoxNorthPanel),
+				boundingBoxList));
+		boundingBoxPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		if (!isEditingMode()) // add first bounding box
+			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+
 		addPage(L10N.t("elementgui.common.page_visual"), visualPanel).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_properties"), propertiesPanel).validate(page1group);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), boundingBoxPanel);
 		addPage(L10N.t("elementgui.common.page_generation"), generationPanel);
 		addPage(L10N.t("elementgui.common.page_scripts"), scriptsPanel);
 
@@ -335,6 +367,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		flammability.setValue(block.flammability);
 		flammableDestroyChance.setValue(block.flammableDestroyChance);
 
+		isNotColidable.setSelected(block.isNotColidable);
+		boundingBoxList.setEntries(block.boundingBoxes);
+
 		generateFeature.setSelected(block.generateFeature);
 		generationShape.setSelectedItem(block.generationShape);
 		blocksToReplace.setListElements(block.blocksToReplace);
@@ -388,6 +423,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.flammability = (int) flammability.getValue();
 		block.flammableDestroyChance = (int) flammableDestroyChance.getValue();
 		block.friction = (double) friction.getValue();
+
+		block.isNotColidable = isNotColidable.isSelected();
+		block.boundingBoxes = boundingBoxList.getEntries();
 
 		block.generateFeature = generateFeature.isSelected();
 		block.generationShape = generationShape.getSelectedItem();
