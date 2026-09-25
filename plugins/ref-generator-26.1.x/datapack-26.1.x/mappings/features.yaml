@@ -2,18 +2,6 @@ feature_lake:
   - LakeFeature
   - LakeFeature.Configuration
   - "minecraft:lake"
-feature_block_pile:
-  - BlockPileFeature
-  - BlockPileConfiguration
-  - "minecraft:block_pile"
-feature_huge_brown_mushroom:
-  - HugeBrownMushroomFeature
-  - HugeMushroomFeatureConfiguration
-  - "minecraft:huge_brown_mushroom"
-feature_huge_red_mushroom:
-  - HugeRedMushroomFeature
-  - HugeMushroomFeatureConfiguration
-  - "minecraft:huge_red_mushroom"
 feature_coral_claw:
   - CoralClawFeature
   - NoneFeatureConfiguration
@@ -26,10 +14,6 @@ feature_coral_tree:
   - CoralTreeFeature
   - NoneFeatureConfiguration
   - "minecraft:coral_tree"
-feature_forest_rock:
-  - BlockBlobFeature
-  - BlockBlobConfiguration
-  - "minecraft:block_blob"
 feature_ore:
   - OreFeature
   - OreConfiguration
@@ -58,10 +42,6 @@ feature_seagrass:
   - SeagrassFeature
   - ProbabilityFeatureConfiguration
   - "minecraft:seagrass"
-feature_bamboo:
-  - BambooFeature
-  - ProbabilityFeatureConfiguration
-  - "minecraft:bamboo"
 feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
@@ -86,10 +66,6 @@ feature_spring:
   - SpringFeature
   - SpringConfiguration
   - "minecraft:spring_feature"
-feature_underwater_magma:
-  - UnderwaterMagmaFeature
-  - UnderwaterMagmaConfiguration
-  - "minecraft:underwater_magma"
 feature_random_patch_simple: # This feature type no longer exists, we use simple random selector as a workaround
   - SimpleRandomSelectorFeature
   - SimpleRandomFeatureConfiguration
