@@ -44,6 +44,8 @@ public class GTFeatureBlocks {
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE);
 
+		var blocks = ElementUtil.loadBlocks(workspace);
+
 		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
@@ -66,8 +68,7 @@ public class GTFeatureBlocks {
 			testXML = testXML.replace(
 					"<block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block>",
 					"<block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\">"
-							+ TestWorkspaceDataProvider.getRandomMCItem(random,
-							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
+							+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName() + "</field></block>");
 
 			testXML = testXML.replace("<block type=\"" + featureBlock.getMachineName() + "\">",
 					"<block type=\"" + featureBlock.getMachineName() + "\">" + additionalXML);
