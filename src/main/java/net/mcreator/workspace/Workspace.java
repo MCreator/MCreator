@@ -27,6 +27,8 @@ import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.element.SoundElementEvent;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -243,6 +245,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	public void addSoundElement(SoundElement element) {
 		if (!sound_elements.contains(element)) {
 			sound_elements.add(element);
+			MCREvent.event(new SoundElementEvent.Added(this, element));
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing sound element: {}", element.getName());
@@ -281,6 +284,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeSoundElement(SoundElement element) {
+		MCREvent.event(new SoundElementEvent.Removed(this, element));
 		element.getFiles().forEach(file -> GradleTrackingFileIO.deleteFile(this,
 				new File(fileManager.getFolderManager().getSoundsDir(), file + ".ogg")));
 		sound_elements.remove(element);
