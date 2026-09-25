@@ -23,22 +23,20 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.mcreator.io.mcp.protocol.JsonRpcException;
-import net.mcreator.io.mcp.protocol.JsonRpcRequest;
-import net.mcreator.io.mcp.protocol.JsonRpcResponse;
-import net.mcreator.io.mcp.protocol.JsonSchemaGenerator;
-import net.mcreator.io.mcp.protocol.McpSchema;
+import net.mcreator.io.mcp.protocol.*;
 import net.mcreator.io.mcp.tool.IMcpTool;
 import net.mcreator.io.mcp.transport.McpTransport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
+import java.util.function.Consumer;
 
 public class McpServer {
 
@@ -53,6 +51,7 @@ public class McpServer {
 	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	private final Map<String, IMcpTool> tools = new HashMap<>();
+	private final List<ToolCallListener> toolCallListeners = new CopyOnWriteArrayList<>();
 
 	public McpServer(String name, String version, McpTransport transport) {
 		this.name = name;
@@ -212,7 +211,30 @@ public class McpServer {
 		JsonObject arguments = req.arguments() != null && req.arguments().isJsonObject() ?
 				req.arguments().getAsJsonObject() :
 				new JsonObject();
-		return tool.invoke(arguments);
+
+		notifyToolCallListeners(listener -> listener.onToolCall(tool, arguments));
+
+		CompletableFuture<McpSchema.CallToolResponse> resultFuture;
+		try {
+			resultFuture = tool.invoke(arguments);
+		} catch (Exception e) {
+			notifyToolCallListeners(listener -> listener.onToolResult(tool, arguments, null, e));
+			throw e;
+		}
+
+		return resultFuture.whenComplete((result, error) -> notifyToolCallListeners(
+				listener -> listener.onToolResult(tool, arguments, error == null ? gson.toJsonTree(result) : null,
+						error)));
+	}
+
+	private void notifyToolCallListeners(Consumer<ToolCallListener> notification) {
+		for (ToolCallListener listener : toolCallListeners) {
+			try {
+				notification.accept(listener);
+			} catch (Exception e) {
+				LOG.warn("Tool call listener {} failed", listener.getClass().getName(), e);
+			}
+		}
 	}
 
 	private static JsonRpcResponse.JsonRpcError toJsonRpcError(Throwable e) {
@@ -222,6 +244,39 @@ public class McpServer {
 			return new JsonRpcResponse.JsonRpcError(jsonRpcException.getCode(), jsonRpcException.getMessage());
 		return new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INTERNAL_ERROR,
 				"Internal error: " + e.getMessage());
+	}
+
+	public void addToolCallListener(ToolCallListener listener) {
+		toolCallListeners.add(listener);
+	}
+
+	/**
+	 * Observes tool calls handled by this server. Listeners are invoked on the tool executor thread,
+	 * so they should return quickly and must not throw.
+	 */
+	public interface ToolCallListener {
+
+		/**
+		 * Called before the tool is invoked.
+		 *
+		 * @param tool      Tool being invoked
+		 * @param arguments Raw JSON arguments passed to the tool
+		 */
+		default void onToolCall(IMcpTool tool, JsonObject arguments) {
+		}
+
+		/**
+		 * Called after the tool invocation completes.
+		 *
+		 * @param tool      Tool that was invoked
+		 * @param arguments Raw JSON arguments passed to the tool
+		 * @param result    Raw JSON result of the tool, null if the invocation failed
+		 * @param error     Failure cause, null if the invocation completed
+		 */
+		default void onToolResult(IMcpTool tool, JsonObject arguments, @Nullable JsonElement result,
+				@Nullable Throwable error) {
+		}
+
 	}
 
 }
