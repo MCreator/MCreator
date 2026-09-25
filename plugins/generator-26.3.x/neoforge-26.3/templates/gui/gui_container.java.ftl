@@ -264,7 +264,6 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 
 		<#-- #47997 -->
 		@Override ${mcc.getMethod("net.minecraft.world.inventory.AbstractContainerMenu", "moveItemStackTo", "ItemStack", "int", "int", "boolean")
-			.replace("slot.setChanged();", "slot.set(target);")
 			.replace("!target.isEmpty()", "slot.mayPlace(target) && !target.isEmpty()")}
 
 		@Override public void removed(Player playerIn) {
@@ -282,7 +281,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 								if(j == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.drop(ItemUtil.getStack(internal, j), false);
+						playerIn.drop(ItemUtil.getStack(internal, j), false, Prediction.SERVER_ONLY);
 						setItemInSlot(j, ItemResource.EMPTY, 0);
 					}
 				} else {
@@ -292,7 +291,7 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 								if(i == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.getInventory().placeItemBackInInventory(ItemUtil.getStack(internal, i));
+						playerIn.getInventory().placeItemBackInInventory(ItemUtil.getStack(internal, i), Prediction.SERVER_ONLY);
 						setItemInSlot(i, ItemResource.EMPTY, 0);
 					}
 				}

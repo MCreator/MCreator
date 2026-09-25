@@ -77,7 +77,7 @@ package ${package}.network;
 		context.enqueueWork(() -> {
 			if (context.player().containerMenu instanceof ${JavaModName}Menus.MenuAccessor menu) {
 				menu.getMenuState().put(message.elementType + ":" + message.name, message.elementState);
-				if (context.flow() == PacketFlow.CLIENTBOUND && Minecraft.getInstance().screen instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
+				if (context.flow() == PacketFlow.CLIENTBOUND && Minecraft.getInstance().gui.screen() instanceof ${JavaModName}Screens.ScreenAccessor accessor) {
 					accessor.updateMenuState(message.elementType, message.name, message.elementState);
 				}
 			}
