@@ -9,12 +9,14 @@ Moon texture follows the pre-26.1 texture format. The texture must be a tiled im
 and four columns (2x4) of equal sizes, where each tile represents a different phase of the moon.
 
 Top row:
+
 1. Full Moon
 2. Waning Gibbous
 3. Last Quarter (also called Third Quarter)
 4. Waning Crescent
 
 Bottom row:
+
 5. New Moon
 6. Waxing Crescent
 7. First Quarter

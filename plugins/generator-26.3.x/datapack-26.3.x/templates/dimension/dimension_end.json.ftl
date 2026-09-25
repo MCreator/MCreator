@@ -12,20 +12,15 @@
       "sea_level": ${data.seaLevel},
       "legacy_random_source": true,
       "disable_mob_generation": false,
-      "aquifers_enabled": false,
-      "ore_veins_enabled": false,
-      "default_block": ${mappedMCItemToBlockStateJSON(data.mainFillerBlock)},
-      "default_fluid": ${mappedMCItemToBlockStateJSON(data.fluidBlock)},
+      "default_block": "${mappedMCItemToRegistryName(data.mainFillerBlock)}",
+      "default_fluid": "${mappedMCItemToRegistryName(data.fluidBlock)}",
       "spawn_target": [],
       "noise": {
         "min_y": 0,
-        "height": 128,
-        "size_horizontal": ${data.horizontalNoiseSize},
-        "size_vertical": ${data.verticalNoiseSize},
-        "island_noise_override": true
+        "height": 128
       },
       <#include "end_noise_router.json.ftl">,
-      "surface_rule": {
+      "material_rule": {
          "type": "minecraft:sequence",
          "sequence": [
            <#list w.filterBrokenReferences(data.biomesInDimension) as biome>

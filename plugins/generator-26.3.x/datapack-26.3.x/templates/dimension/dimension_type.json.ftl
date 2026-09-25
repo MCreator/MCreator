@@ -27,7 +27,7 @@
     "minecraft:gameplay/bed_rule": {
       "can_set_spawn": "never",
       "can_sleep": "never",
-      "explodes": true
+      "destroy_on_use": true
     },
     </#if>
     <#if data.hasClouds>

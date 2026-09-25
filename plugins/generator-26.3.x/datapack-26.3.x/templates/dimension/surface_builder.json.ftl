@@ -1,6 +1,8 @@
 <#-- @formatter:off -->
 <#include "../mcitems_json.ftl">
 
+<#-- Vanilla nether and end biomes and badlands have their surface rules inlined in the vanilla material rule files, so they are approximated here.
+     All other vanilla biomes are delegated to the vanilla per-biome surface dispatch rules. -->
 <#macro vanilla biome coverAny=false>
   <#if biome?contains("badlands")>
     <@vanillaSB biome w.itemBlock("Blocks.SAND#1") w.itemBlock("Blocks.HARDENED_CLAY") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen" || coverAny/>
@@ -8,29 +10,58 @@
     <@vanillaSB biome w.itemBlock("Blocks.BLACKSTONE") w.itemBlock("Blocks.BASALT") w.itemBlock("Blocks.MAGMA") data.worldGenType != "Normal world gen" || coverAny/>
   <#elseif biome == "crimson_forest">
     <@vanillaSB biome w.itemBlock("Blocks.CRIMSON_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHER_WART_BLOCK") data.worldGenType != "Normal world gen" || coverAny/>
-  <#elseif biome?contains("desert") || biome?contains("beaches")>
-    <@vanillaSB biome w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.SAND#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen" || coverAny/>
   <#elseif biome?contains("end")>
     <@vanillaSB biome w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") data.worldGenType != "Normal world gen" || coverAny/>
-  <#elseif biome == "deep_dark">
-    <@vanillaSB biome w.itemBlock("Blocks.SCULK") w.itemBlock("Blocks.DEEPSLATE") w.itemBlock("Blocks.DEEPSLATE") data.worldGenType != "Normal world gen" || coverAny/>
-  <#elseif biome?contains("mushroom_field")>
-    <@vanillaSB biome w.itemBlock("Blocks.MYCELIUM") w.itemBlock("Blocks.DIRT#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen" || coverAny/>
   <#elseif biome == "nether">
     <@vanillaSB biome w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK") data.worldGenType != "Normal world gen" || coverAny/>
   <#elseif biome == "soul_sand_valley">
     <@vanillaSB biome w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND") data.worldGenType != "Normal world gen" || coverAny/>
-  <#elseif biome == "stone_beach">
-    <@vanillaSB biome w.itemBlock("Blocks.STONE#0") w.itemBlock("Blocks.STONE#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen" || coverAny/>
   <#elseif biome == "warped_forest">
     <@vanillaSB biome w.itemBlock("Blocks.WARPED_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.WARPED_WART_BLOCK") data.worldGenType != "Normal world gen" || coverAny/>
-  <#elseif biome == "lush_caves">
-    <@vanillaSB biome w.itemBlock("Blocks.CLAY") w.itemBlock("Blocks.MOSS_BLOCK") w.itemBlock("Blocks.CLAY") data.worldGenType != "Normal world gen" || coverAny/>
-  <#elseif biome == "dripstone_caves">
-    <@vanillaSB biome w.itemBlock("Blocks.STONE#0") w.itemBlock("Blocks.DRIPSTONE_BLOCK") w.itemBlock("Blocks.DRIPSTONE_BLOCK") data.worldGenType != "Normal world gen" || coverAny/>
   <#else>
-    <@vanillaSB biome w.itemBlock("Blocks.GRASS") w.itemBlock("Blocks.DIRT#0") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen" || coverAny/>
+    <@vanillaRef biome data.worldGenType != "Normal world gen" || coverAny/>
   </#if>
+</#macro>
+
+<#macro vanillaRef biome coverAny=false>
+{
+  "type": "minecraft:condition",
+  "if_true": {
+    "type": "minecraft:biome",
+    "biome_is": [
+      "${biome}"
+    ]
+  },
+  "then_run": {
+    <#if !coverAny>
+    "type": "minecraft:condition",
+    "if_true": {
+      "type": "minecraft:above_preliminary_surface"
+    },
+    "then_run": {
+    </#if>
+      "type": "minecraft:sequence",
+      "sequence": [
+        {
+          "type": "minecraft:condition",
+          "if_true": "minecraft:on_floor",
+          "then_run": {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:not_underwater",
+            "then_run": "minecraft:overworld/biome_surface"
+          }
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": "minecraft:under_floor",
+          "then_run": "minecraft:overworld/under_biome_surface"
+        }
+      ]
+    <#if !coverAny>
+    }
+    </#if>
+  }
+}
 </#macro>
 
 <#macro vanillaSB biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties=undergroundBlockWithProperties coverAny=false>
