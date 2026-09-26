@@ -199,6 +199,15 @@ public class JavaSourceResolver {
 		return unmodifiable;
 	}
 
+	public String resolveFQDN(String rawType, Map<String, String> imports) {
+		if (rawType == null || rawType.isEmpty())
+			return rawType;
+		if (rawType.contains("."))
+			return rawType;
+		String resolved = imports.get(rawType);
+		return resolved != null ? resolved : rawType;
+	}
+
 	public static JavaType<?> findType(JavaType<?> source, String name) {
 		if (source == null || name == null || name.equals(source.getName()))
 			return source;
@@ -235,6 +244,8 @@ public class JavaSourceResolver {
 			if (source == null)
 				return;
 
+			Map<String, String> imports = parseImports(srcCode);
+
 			List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ?
 					(List) fhs.getFields() :
 					Collections.emptyList();
@@ -245,7 +256,7 @@ public class JavaSourceResolver {
 				if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
 					continue;
 
-				String fType = f.getType().toString();
+				String fType = resolveFQDN(f.getType() != null ? f.getType().getName() : "Object", imports);
 				String vis = f.isPublic() ?
 						"public" :
 						(f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
@@ -258,7 +269,6 @@ public class JavaSourceResolver {
 					(List) mhs.getMethods() :
 					Collections.emptyList();
 
-			Map<String, String> imports = parseImports(srcCode);
 			for (MethodSource<?> m : methods) {
 				if ((!includePrivate && m.isPrivate()) || m.isConstructor() || m.getName().startsWith("<"))
 					continue;
@@ -270,7 +280,7 @@ public class JavaSourceResolver {
 						|| mName.equals("catch") || mName.equals("class"))
 					continue;
 
-				String returnType = m.getReturnType() != null ? m.getReturnType().toString() : "void";
+				String returnType = resolveFQDN(m.getReturnType() != null ? m.getReturnType().getName() : "void", imports);
 				List<? extends ParameterSource<?>> params = m.getParameters();
 				String[] pTypes = new String[params.size()];
 				String[] pNames = new String[params.size()];
@@ -280,9 +290,7 @@ public class JavaSourceResolver {
 					ParameterSource<?> param = params.get(p);
 					pTypes[p] = param.getType().getName();
 					pNames[p] = param.getName();
-					String rawType = pTypes[p];
-					String resolvedFQDN = imports.get(rawType);
-					fqdnPTypes[p] = resolvedFQDN != null ? resolvedFQDN : rawType;
+					fqdnPTypes[p] = resolveFQDN(pTypes[p], imports);
 				}
 
 				String vis = m.isPublic() ?
