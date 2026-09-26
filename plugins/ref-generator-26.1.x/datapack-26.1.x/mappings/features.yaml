@@ -14,18 +14,6 @@ feature_coral_tree:
   - CoralTreeFeature
   - NoneFeatureConfiguration
   - "minecraft:coral_tree"
-feature_ore:
-  - OreFeature
-  - OreConfiguration
-  - "minecraft:ore"
-feature_scattered_ore:
-  - ScatteredOreFeature
-  - OreConfiguration
-  - "minecraft:scattered_ore"
-feature_replace_single_block:
-  - ReplaceBlockFeature
-  - ReplaceBlockConfiguration
-  - "minecraft:replace_single_block"
 feature_huge_fungus:
   - HugeFungusFeature
   - HugeFungusConfiguration

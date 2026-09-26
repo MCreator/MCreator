@@ -9,3 +9,6 @@ feature_bamboo: minecraft:bamboo
 feature_underwater_magma: minecraft:underwater_magma
 feature_geode_simple: minecraft:geode
 feature_spring: minecraft:spring_feature
+feature_ore: minecraft:ore
+feature_scattered_ore: minecraft:scattered_ore
+feature_replace_single_block: minecraft:replace_single_block
