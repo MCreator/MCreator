@@ -18,10 +18,6 @@ feature_huge_fungus:
   - HugeFungusFeature
   - HugeFungusConfiguration
   - "minecraft:huge_fungus"
-feature_seagrass:
-  - SeagrassFeature
-  - ProbabilityFeatureConfiguration
-  - "minecraft:seagrass"
 feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
