@@ -148,6 +148,8 @@ public class JavaMemberResolver {
 					}
 				}
 				for (String ifName : javaClass.getInterfaces()) {
+					// getInterfaces returns FQDNs, and they're ALWAYS incorrect if import for them is not present
+					ifName = ifName.substring(ifName.lastIndexOf('.') + 1);
 					String ifFQDN = typeResolver.resolveSimpleTypeName(ifName, imports, pkg, currentClassFQDN, srcCode);
 					if (ifFQDN != null) {
 						populateMembersOfFQDN(ifFQDN, currentClassFQDN, null, result, added, visited, true);
@@ -155,6 +157,8 @@ public class JavaMemberResolver {
 				}
 			} else if (source instanceof JavaInterfaceSource javaInterface) {
 				for (String ifName : javaInterface.getInterfaces()) {
+					// getInterfaces returns FQDNs, and they're ALWAYS incorrect if import for them is not present
+					ifName = ifName.substring(ifName.lastIndexOf('.') + 1);
 					String ifFQDN = typeResolver.resolveSimpleTypeName(ifName, imports, pkg, currentClassFQDN, srcCode);
 					if (ifFQDN != null) {
 						populateMembersOfFQDN(ifFQDN, currentClassFQDN, null, result, added, visited, true);
