@@ -408,6 +408,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 
 			AutocompleteStyle.installStyle(ac, te);
 
+			this.jcp.warmUp(te);
+
 			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
 			te.addKeyListener(new KeyAdapter() {
@@ -706,6 +708,7 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 		fileTab.setTabShownListener(tab -> {
 			if (this.jcp != null) {
 				this.jcp.invalidateCaches();
+				this.jcp.warmUp(te);
 			}
 		});
 

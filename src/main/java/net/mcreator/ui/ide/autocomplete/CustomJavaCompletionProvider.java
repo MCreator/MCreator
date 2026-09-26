@@ -134,6 +134,15 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		this.ac = ac;
 	}
 
+	public void warmUp(RSyntaxTextArea textArea) {
+		try {
+			getCompletionsImpl(textArea);
+		} catch (Throwable ignored) {
+		} finally {
+			cancelPendingCompletion();
+		}
+	}
+
 	public void cancelPendingCompletion() {
 		currentRequestId.incrementAndGet();
 		cancelledByUser = true;
