@@ -6,11 +6,6 @@ public net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList$Preset
 public net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType <init>(Lcom/mojang/serialization/MapCodec;)V
 </#if>
 
-<#if w.hasElementsOfType("feature")>
-public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V
-public-f net.minecraft.world.level.levelgen.feature.TreeFeature place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z
-</#if>
-
 <#if w.hasElementsOfType("armor")>
 public-f net.minecraft.client.model.Model renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
 public net.minecraft.client.renderer.feature.FeatureRenderDispatcher featureRenderers
