@@ -100,10 +100,10 @@ package ${package}.client.renderer.item;
 		</#if>
 		model.setupAnim(renderState);
 
-		submitNodeCollector.submitModel(this.model, renderState, poseStack, texture, lightCoords, overlayCoords, outlineColor, null);
+		submitNodeCollector.submitModel(this.model, renderState, poseStack, texture, lightCoords, overlayCoords, outlineColor);
 
 		if (glint) {
-			submitNodeCollector.submitModel(this.model, renderState, poseStack, RenderTypes.entityGlint(), lightCoords, overlayCoords, -1, null);
+			submitNodeCollector.order(1).submitModel(this.model, renderState, poseStack, RenderTypes.patternedShieldGlint(), lightCoords, overlayCoords, 0);
 		}
 
 		poseStack.popPose();
