@@ -33,8 +33,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StringSelectorDialog extends ListSelectorDialog<String> {
-	public StringSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider) {
-		super(mcreator, entryProvider.andThen(Arrays::asList));
+	public StringSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+			List<String> selectedEntries) {
+		super(mcreator, entryProvider.andThen(Arrays::asList), selectedEntries);
 		list.setCellRenderer(new StringListCellRenderer());
 	}
 
@@ -44,7 +45,13 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 
 	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
 			String title, String message) {
-		var stringSelector = new StringSelectorDialog(mcreator, entryProvider);
+		return openSelectorDialog(mcreator, entryProvider, null, title, message);
+	}
+
+	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+			String selectedEntry, String title, String message) {
+		var stringSelector = new StringSelectorDialog(mcreator, entryProvider,
+				selectedEntry == null ? null : List.of(selectedEntry));
 		stringSelector.setMessage(message);
 		stringSelector.setTitle(title);
 		stringSelector.setVisible(true);
@@ -53,7 +60,12 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 
 	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
 			String title, String message) {
-		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider);
+		return openMultiSelectorDialog(mcreator, entryProvider, null, title, message);
+	}
+
+	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+			List<String> selectedEntries, String title, String message) {
+		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider, selectedEntries);
 		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		dataListSelector.setTitle(title);
