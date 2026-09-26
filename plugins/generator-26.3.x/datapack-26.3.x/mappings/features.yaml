@@ -12,3 +12,5 @@ feature_spring: minecraft:spring_feature
 feature_ore: minecraft:ore
 feature_scattered_ore: minecraft:scattered_ore
 feature_replace_single_block: minecraft:replace_single_block
+feature_delta: minecraft:delta_feature
+feature_replace_sphere: minecraft:netherrack_replace_blobs
