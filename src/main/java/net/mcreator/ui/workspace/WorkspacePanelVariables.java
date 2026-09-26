@@ -20,6 +20,8 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.elements.VariableEvent;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
@@ -267,9 +269,10 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				Object value = model.getValueAt(i, 3);
 				VariableType.Scope scope = (VariableType.Scope) model.getValueAt(i, 2);
 
-				VariableElement element;
+				VariableElement element, oldVariable;
 				if (!newName.equals(oldName)) { // Name changed: remove the old element
 					element = workspace.getVariableElementByName(oldName);
+					oldVariable = workspace.getVariableElementByName(oldName);
 					if (element != null) {
 						workspace.removeVariableElement(element);
 					}
@@ -280,11 +283,19 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					element = workspace.getVariableElementByName(newName);
 					if (element == null)
 						return;
+
+					// We create a new VariableElement variable to keep the old values for the event
+					oldVariable = new VariableElement(element.getName());
+					oldVariable.setScope(element.getScope());
+					oldVariable.setType(element.getType());
+					oldVariable.setValue(element.getValue());
 				}
 
 				element.setType(type);
 				element.setValue(value);
 				element.setScope(scope);
+
+				MCREvent.event(new VariableEvent.Changed(workspace, element, oldVariable));
 
 				// Remember the new name for future edits
 				oldNames.put(i, newName);

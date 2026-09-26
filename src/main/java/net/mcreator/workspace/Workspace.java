@@ -27,6 +27,8 @@ import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.elements.VariableEvent;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
@@ -224,6 +226,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	public void addVariableElement(VariableElement element) {
 		if (!variable_elements.contains(element)) {
 			variable_elements.add(element);
+			MCREvent.event(new VariableEvent.Added(this, element));
 
 			markDirty();
 		} else {
@@ -265,6 +268,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public void removeVariableElement(VariableElement element) {
+		MCREvent.event(new VariableEvent.Removed(this, element));
 		variable_elements.remove(element);
 		markDirty();
 	}
