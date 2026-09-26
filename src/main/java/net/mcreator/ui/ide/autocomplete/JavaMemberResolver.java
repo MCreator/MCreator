@@ -77,7 +77,8 @@ public class JavaMemberResolver {
 			Set<String> added = new HashSet<>();
 			Set<String> visited = new HashSet<>();
 
-			JavaTypeResolver.addFieldCompletion("length", "int", false, true, false, "public", fqdn, result, added);
+			JavaTypeResolver.addFieldCompletion("length", "int", false, true, false, "public", fqdn, null, result,
+					added);
 			populateMembersOfFQDN("java.lang.Object", currentClassFQDN, currentCode, result, added, visited, false);
 			return result;
 		}
@@ -277,8 +278,9 @@ public class JavaMemberResolver {
 				continue;
 
 			String vis = Util.isPublic(flags) ? "public" : (Util.isProtected(flags) ? "protected" : "package");
+			String doc = docs.get("#" + fName);
 			JavaTypeResolver.addFieldCompletion(fName, toSimpleType(fi.getTypeString(true)), fi.isStatic(),
-					fi.isFinal(), fi.isDeprecated(), vis, declaringClass, result, added);
+					fi.isFinal(), fi.isDeprecated(), vis, declaringClass, doc, result, added);
 		}
 	}
 

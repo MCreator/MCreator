@@ -494,8 +494,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				} else {
 					completions.add(
 							new CustomFieldCompletion(this, item.insertText(), item.detail(), item.declaringClass(),
-									item.visibility(), item.isStatic(), item.isFinal(), item.isDeprecated(),
-									prefixContext));
+									item.docSummary(), item.visibility(), item.isStatic(), item.isFinal(),
+									item.isDeprecated(), prefixContext));
 				}
 			}
 		}

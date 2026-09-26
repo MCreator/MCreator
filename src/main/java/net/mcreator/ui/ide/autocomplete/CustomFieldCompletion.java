@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
+import net.mcreator.util.JavadocUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.fife.rsta.ac.java.DecoratableIcon;
 import org.fife.rsta.ac.java.IconFactory;
@@ -47,17 +48,20 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 	private final String name;
 	private final String type;
 	private final String declaringClass;
+	private final String docSummary;
 	private final String visibility;
 	private final boolean isStatic;
 	private final boolean isFinal;
 	private final boolean isDeprecated;
 
 	public CustomFieldCompletion(CompletionProvider provider, String name, String type, String declaringClass,
-			String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated, PrefixContext prefixContext) {
+			String docSummary, String visibility, boolean isStatic, boolean isFinal, boolean isDeprecated,
+			PrefixContext prefixContext) {
 		super(provider, buildPrefixedName(name, prefixContext), type);
 		this.name = name;
 		this.type = type;
 		this.declaringClass = declaringClass;
+		this.docSummary = docSummary;
 		this.visibility = visibility;
 		this.isStatic = isStatic;
 		this.isFinal = isFinal;
@@ -104,7 +108,12 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 	}
 
 	@Override public String getSummary() {
-		return "<html>" + StringEscapeUtils.escapeHtml3(type) + " " + StringEscapeUtils.escapeHtml3(name) + "</html>";
+		String safeName = StringEscapeUtils.escapeHtml3(name);
+		String safeType = StringEscapeUtils.escapeHtml3(type);
+		String formatted = JavadocUtils.formatJavadoc(docSummary);
+		if (formatted == null)
+			return "<html><b>" + safeName + "</b><hr>" + safeType + " " + safeName + "</html>";
+		return "<html><b>" + safeName + "</b><hr>" + formatted + "</html>";
 	}
 
 	@Override public String toString() {

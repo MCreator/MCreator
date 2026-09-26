@@ -109,6 +109,16 @@ public class JavaSourceResolver {
 					}
 				}
 			}
+			if (source instanceof FieldHolderSource<?> fhs) {
+				for (FieldSource<?> f : fhs.getFields()) {
+					if (f.getJavaDoc() != null) {
+						String text = f.getJavaDoc().getFullText();
+						if (text != null && !text.trim().isEmpty()) {
+							docs.put("#" + f.getName(), text.trim());
+						}
+					}
+				}
+			}
 		} catch (Throwable e) {
 			LOG.debug("Failed to parse method docs from source code", e);
 		}
@@ -239,8 +249,9 @@ public class JavaSourceResolver {
 				String vis = f.isPublic() ?
 						"public" :
 						(f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
+				String docSummary = f.getJavaDoc() != null ? f.getJavaDoc().getFullText() : null;
 				JavaTypeResolver.addFieldCompletion(fName, fType, f.isStatic(), f.isFinal(),
-						f.hasAnnotation(Deprecated.class), vis, declaringClass, result, added);
+						f.hasAnnotation(Deprecated.class), vis, declaringClass, docSummary, result, added);
 			}
 
 			List<MethodSource<?>> methods = source instanceof MethodHolderSource<?> mhs ?

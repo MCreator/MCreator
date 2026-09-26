@@ -76,12 +76,12 @@ public class JavaTypeResolver {
 	}
 
 	public static void addFieldCompletion(String fName, String fType, boolean isStatic, boolean isFinal,
-			boolean isDeprecated, String visibility, String declaringClass, List<CompletionItem> result,
-			Set<String> added) {
+			boolean isDeprecated, String visibility, String declaringClass, String docSummary,
+			List<CompletionItem> result, Set<String> added) {
 		if (added.add(fName)) {
 			result.add(
-					new CompletionItem(fName, fName, "field", fType, declaringClass, visibility, null, false, isStatic,
-							isFinal, false, isDeprecated, null, null, null));
+					new CompletionItem(fName, fName, "field", fType, declaringClass, visibility, docSummary, false,
+							isStatic, isFinal, false, isDeprecated, null, null, null));
 		}
 	}
 
