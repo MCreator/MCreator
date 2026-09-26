@@ -54,7 +54,7 @@ public final class LocalVariableResolver {
 			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]|\\([^()]\\))*\\))?");
 
 	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
-			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^>]+>)?(?:\\[]|\\.\\.\\.)*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^>]+>)?(?:\\[]|\\.\\.\\.)*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
 	private static final Pattern FOR_PATTERN = Pattern.compile(
 			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^>]*>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
 	private static final Pattern LAMBDA_PARAM_PATTERN = Pattern.compile(
@@ -67,7 +67,7 @@ public final class LocalVariableResolver {
 			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*([^;\\r\\n{}]+)");
 
 	private static final Pattern DECL_PATTERN = Pattern.compile(
-			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*(?:<[^>]+>)?)(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b");
+			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^>]+>)?(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
 	private static final Pattern STATIC_PATTERN = Pattern.compile("\\bstatic\\b");
 
 	private static String normalizeVarargs(String type) {
