@@ -59,8 +59,8 @@ public class CustomFieldCompletion extends VariableCompletion implements JavaSou
 			PrefixContext prefixContext) {
 		super(provider, buildPrefixedName(name, prefixContext), type);
 		this.name = name;
-		this.type = type;
-		this.declaringClass = declaringClass;
+		this.type = JavaMemberResolver.toSimpleType(type);
+		this.declaringClass = JavaMemberResolver.toSimpleType(declaringClass);
 		this.docSummary = docSummary;
 		this.visibility = visibility;
 		this.isStatic = isStatic;

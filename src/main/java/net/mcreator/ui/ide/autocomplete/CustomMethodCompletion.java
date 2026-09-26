@@ -50,8 +50,8 @@ public class CustomMethodCompletion extends TemplateCompletion implements JavaSo
 			boolean isAbstract, boolean isDeprecated, List<String> paramTypes, List<String> paramNames) {
 		super(provider, name, name, template, null, null);
 		this.label = label;
-		this.returnType = returnType;
-		this.declaringClass = declaringClass;
+		this.returnType = JavaMemberResolver.toSimpleType(returnType);
+		this.declaringClass = JavaMemberResolver.toSimpleType(declaringClass);
 		this.docSummary = docSummary;
 		this.visibility = visibility;
 		this.isStatic = isStatic;

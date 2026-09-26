@@ -207,7 +207,7 @@ public class JavaMemberResolver {
 		}
 	}
 
-	private String toSimpleType(String fqdnType) {
+	public static String toSimpleType(String fqdnType) {
 		return fqdnType == null ? null : fqdnType.replaceAll("([a-zA-Z_$][a-zA-Z0-9_$]*\\.)+", "").replace('$', '.');
 	}
 
@@ -259,7 +259,7 @@ public class JavaMemberResolver {
 			}
 
 			String doc = lookupDoc(docs, mName, pTypes, pCount);
-			JavaTypeResolver.addMethodCompletion(mName, toSimpleType(mi.getReturnTypeString(true)), pTypes, pNames,
+			JavaTypeResolver.addMethodCompletion(mName, mi.getReturnTypeString(true), pTypes, pNames,
 					fqdnPTypes, mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result,
 					added);
 		}
@@ -279,7 +279,7 @@ public class JavaMemberResolver {
 
 			String vis = Util.isPublic(flags) ? "public" : (Util.isProtected(flags) ? "protected" : "package");
 			String doc = docs.get("#" + fName);
-			JavaTypeResolver.addFieldCompletion(fName, toSimpleType(fi.getTypeString(true)), fi.isStatic(),
+			JavaTypeResolver.addFieldCompletion(fName, fi.getTypeString(true), fi.isStatic(),
 					fi.isFinal(), fi.isDeprecated(), vis, declaringClass, doc, result, added);
 		}
 	}
