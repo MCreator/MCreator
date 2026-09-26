@@ -1,0 +1,1 @@
+(${input$seenBy} instanceof LivingEntity _livEnt${cbi} && _livEnt${cbi}.hasLineOfSight(${input$entity}))

@@ -1,0 +1,46 @@
+templates:
+  - template: villagerprofession/profession_hat.mcmeta.ftl
+    writer: json
+    condition: isHatEnabled()
+    name: "@MODASSETSROOT/textures/entity/villager/profession/@registryname.png.mcmeta"
+  - template: villagerprofession/trade_set.json.ftl
+    writer: json
+    variables: "level=1"
+    name: "@MODDATAROOT/trade_set/@registryname/level_1.json"
+  - template: villagerprofession/trade_set.json.ftl
+    writer: json
+    variables: "level=2"
+    name: "@MODDATAROOT/trade_set/@registryname/level_2.json"
+  - template: villagerprofession/trade_set.json.ftl
+    writer: json
+    variables: "level=3"
+    name: "@MODDATAROOT/trade_set/@registryname/level_3.json"
+  - template: villagerprofession/trade_set.json.ftl
+    writer: json
+    variables: "level=4"
+    name: "@MODDATAROOT/trade_set/@registryname/level_4.json"
+  - template: villagerprofession/trade_set.json.ftl
+    writer: json
+    variables: "level=5"
+    name: "@MODDATAROOT/trade_set/@registryname/level_5.json"
+
+global_templates:
+  - template: elementinits/villagerprofessions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameVillagerProfessions.java"
+
+tags:
+  - tag: POINTS_OF_INTEREST:minecraft:acquirable_job_site
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_1
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_2
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_3
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_4
+    noentry: true
+  - tag: VILLAGER_TRADES:@modid:@registryname/level_5
+    noentry: true
+
+localizationkeys:
+  - key: entity.villager.@modid.@registryname
+    mapto: displayName

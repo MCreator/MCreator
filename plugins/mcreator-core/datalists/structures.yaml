@@ -66,3 +66,39 @@
   readable_name: "Trail Ruins"
 - trial_chambers:
   readable_name: "Trial Chambers"
+- abandoned_camp_bamboo_jungle:
+  readable_name: "Abandoned Camp Bamboo Jungle"
+- abandoned_camp_birch_forest:
+  readable_name: "Abandoned Camp Birch Forest"
+- abandoned_camp_cherry_grove:
+  readable_name: "Abandoned Camp Cherry Grove"
+- abandoned_camp_dappled_forest:
+  readable_name: "Abandoned Camp Dappled Forest"
+- abandoned_camp_flower_forest:
+  readable_name: "Abandoned Camp Flower Forest"
+- abandoned_camp_forest:
+  readable_name: "Abandoned Camp Forest"
+- abandoned_camp_meadow:
+  readable_name: "Abandoned Camp Meadow"
+- abandoned_camp_old_growth_birch_forest:
+  readable_name: "Abandoned Camp Old Growth Birch Forest"
+- abandoned_camp_old_growth_pine_taiga:
+  readable_name: "Abandoned Camp Old Growth Pine Taiga"
+- abandoned_camp_old_growth_spruce_taiga:
+  readable_name: "Abandoned Camp Old Growth Spruce Taiga"
+- abandoned_camp_pale_garden:
+  readable_name: "Abandoned Camp Pale Garden"
+- abandoned_camp_savanna:
+  readable_name: "Abandoned Camp Savanna"
+- abandoned_camp_snowy_taiga:
+  readable_name: "Abandoned Camp Snowy Taiga"
+- abandoned_camp_sparse_jungle:
+  readable_name: "Abandoned Camp Sparse Jungle"
+- abandoned_camp_swamp:
+  readable_name: "Abandoned Camp Swamp"
+- abandoned_camp_taiga:
+  readable_name: "Abandoned Camp Taiga"
+- abandoned_camp_windswept_forest:
+  readable_name: "Abandoned Camp Windswept Forest"
+- abandoned_camp_wooded_badlands:
+  readable_name: "Abandoned Camp Wooded Badlands"

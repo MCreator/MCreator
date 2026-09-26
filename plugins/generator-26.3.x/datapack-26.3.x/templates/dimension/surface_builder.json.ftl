@@ -1,0 +1,206 @@
+<#-- @formatter:off -->
+<#include "../mcitems_json.ftl">
+
+<#-- Vanilla nether and end biomes and badlands have their surface rules inlined in the vanilla material rule files, so they are approximated here.
+     All other vanilla biomes are delegated to the vanilla per-biome surface dispatch rules. -->
+<#macro vanilla biome coverAny=false>
+  <#if biome?contains("badlands")>
+    <@vanillaSB biome w.itemBlock("Blocks.SAND#1") w.itemBlock("Blocks.HARDENED_CLAY") w.itemBlock("Blocks.GRAVEL") data.worldGenType != "Normal world gen" || coverAny/>
+  <#elseif biome == "basalt_deltas">
+    <@vanillaSB biome w.itemBlock("Blocks.BLACKSTONE") w.itemBlock("Blocks.BASALT") w.itemBlock("Blocks.MAGMA") data.worldGenType != "Normal world gen" || coverAny/>
+  <#elseif biome == "crimson_forest">
+    <@vanillaSB biome w.itemBlock("Blocks.CRIMSON_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHER_WART_BLOCK") data.worldGenType != "Normal world gen" || coverAny/>
+  <#elseif biome?contains("end")>
+    <@vanillaSB biome w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") w.itemBlock("Blocks.END_STONE") data.worldGenType != "Normal world gen" || coverAny/>
+  <#elseif biome == "nether">
+    <@vanillaSB biome w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.NETHERRACK") data.worldGenType != "Normal world gen" || coverAny/>
+  <#elseif biome == "soul_sand_valley">
+    <@vanillaSB biome w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND") w.itemBlock("Blocks.SOUL_SAND") data.worldGenType != "Normal world gen" || coverAny/>
+  <#elseif biome == "warped_forest">
+    <@vanillaSB biome w.itemBlock("Blocks.WARPED_NYLIUM") w.itemBlock("Blocks.NETHERRACK") w.itemBlock("Blocks.WARPED_WART_BLOCK") data.worldGenType != "Normal world gen" || coverAny/>
+  <#else>
+    <@vanillaRef biome data.worldGenType != "Normal world gen" || coverAny/>
+  </#if>
+</#macro>
+
+<#macro vanillaRef biome coverAny=false>
+{
+  "type": "minecraft:condition",
+  "if_true": {
+    "type": "minecraft:biome",
+    "biome_is": [
+      "${biome}"
+    ]
+  },
+  "then_run": {
+    <#if !coverAny>
+    "type": "minecraft:condition",
+    "if_true": {
+      "type": "minecraft:above_preliminary_surface"
+    },
+    "then_run": {
+    </#if>
+      "type": "minecraft:sequence",
+      "sequence": [
+        {
+          "type": "minecraft:condition",
+          "if_true": "minecraft:on_floor",
+          "then_run": {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:not_underwater",
+            "then_run": "minecraft:overworld/biome_surface"
+          }
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": "minecraft:under_floor",
+          "then_run": "minecraft:overworld/under_biome_surface"
+        }
+      ]
+    <#if !coverAny>
+    }
+    </#if>
+  }
+}
+</#macro>
+
+<#macro vanillaSB biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties=undergroundBlockWithProperties coverAny=false>
+  <#if coverAny>
+    <@defaultAny biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties />
+  <#else>
+    <@default biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties />
+  </#if>
+</#macro>
+
+<#macro default biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties=undergroundBlockWithProperties>
+{
+  "type": "minecraft:condition",
+  "if_true": {
+    "type": "minecraft:biome",
+    "biome_is": [
+      "${biome}"
+    ]
+  },
+  "then_run": {
+    "type": "minecraft:condition",
+    "if_true": {
+      "type": "minecraft:above_preliminary_surface"
+    },
+    "then_run": {
+      "type": "minecraft:sequence",
+      "sequence": [
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:stone_depth",
+            "surface_type": "floor",
+            "add_surface_depth": false,
+            "secondary_depth_range": 0,
+            "offset": 0
+          },
+          "then_run": {
+            "type": "minecraft:sequence",
+            "sequence": [
+              {
+                "type": "minecraft:condition",
+                "if_true": {
+                  "type": "minecraft:water",
+                  "offset": -1,
+                  "surface_depth_multiplier": 0,
+                  "add_stone_depth": false
+                },
+                "then_run": {
+                  "type": "minecraft:block",
+                  "result_state": "${mappedMCItemToRegistryName(groundBlockWithProperties)}"
+                }
+              },
+              {
+                "type": "minecraft:block",
+                "result_state": "${mappedMCItemToRegistryName(underwaterBlockWithProperties)}"
+              }
+            ]
+          }
+        },
+        {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:stone_depth",
+            "surface_type": "floor",
+            "add_surface_depth": true,
+            "secondary_depth_range": 0,
+            "offset": 0
+          },
+          "then_run": {
+            "type": "minecraft:block",
+            "result_state": "${mappedMCItemToRegistryName(undergroundBlockWithProperties)}"
+          }
+        }
+      ]
+    }
+  }
+}
+</#macro>
+
+<#macro defaultAny biome groundBlockWithProperties undergroundBlockWithProperties underwaterBlockWithProperties=undergroundBlockWithProperties>
+{
+  "type": "minecraft:condition",
+  "if_true": {
+    "type": "minecraft:biome",
+    "biome_is": [
+      "${biome}"
+    ]
+  },
+  "then_run": {
+    "type": "minecraft:sequence",
+    "sequence": [
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:stone_depth",
+          "surface_type": "floor",
+          "add_surface_depth": false,
+          "secondary_depth_range": 0,
+          "offset": 0
+        },
+        "then_run": {
+          "type": "minecraft:sequence",
+          "sequence": [
+            {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:water",
+                "offset": -1,
+                "surface_depth_multiplier": 0,
+                "add_stone_depth": false
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": "${mappedMCItemToRegistryName(groundBlockWithProperties)}"
+              }
+            },
+            {
+              "type": "minecraft:block",
+              "result_state": "${mappedMCItemToRegistryName(underwaterBlockWithProperties)}"
+            }
+          ]
+        }
+      },
+      {
+        "type": "minecraft:condition",
+        "if_true": {
+          "type": "minecraft:stone_depth",
+          "surface_type": "floor",
+          "add_surface_depth": true,
+          "secondary_depth_range": 0,
+          "offset": 0
+        },
+        "then_run": {
+          "type": "minecraft:block",
+          "result_state": "${mappedMCItemToRegistryName(undergroundBlockWithProperties)}"
+        }
+      }
+    ]
+  }
+}
+</#macro>
+<#-- @formatter:on -->

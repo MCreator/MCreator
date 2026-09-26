@@ -1,0 +1,1 @@
+${input$entity}.setInvulnerableTime(${opt.toInt(input$invulnerableTime)});

@@ -1,0 +1,1 @@
+if (${input$entity} instanceof Player _player) _player.getFoodData().setFoodLevel(${opt.toInt(input$foodlevel)});

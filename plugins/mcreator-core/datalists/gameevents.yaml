@@ -16,6 +16,8 @@
   readable_name: Block Open
 - BLOCK_PLACE:
   readable_name: Block Place
+- BOUNCE:
+  readable_name: Bounce
 - CONTAINER_CLOSE:
   readable_name: Container Close
 - CONTAINER_OPEN:
