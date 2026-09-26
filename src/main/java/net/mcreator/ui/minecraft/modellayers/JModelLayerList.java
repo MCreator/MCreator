@@ -25,15 +25,21 @@ import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class JModelLayerList extends JSimpleEntriesList<JModelLayerListEntry, LivingEntity.ModelLayerEntry> {
 
-	public JModelLayerList(MCreator mcreator, IHelpContext gui) {
+	private final Supplier<List<PropertyDataWithValue<?>>> entityDataListProvider;
+
+	public JModelLayerList(MCreator mcreator, IHelpContext gui,
+			Supplier<List<PropertyDataWithValue<?>>> entityDataListProvider) {
 		super(mcreator, gui);
+		this.entityDataListProvider = entityDataListProvider;
 
 		add.setText(L10N.t("elementgui.living_entity.add_model_layer"));
 
@@ -42,7 +48,11 @@ public class JModelLayerList extends JSimpleEntriesList<JModelLayerListEntry, Li
 
 	@Override
 	protected JModelLayerListEntry newEntry(JPanel parent, List<JModelLayerListEntry> entryList, boolean userAction) {
-		return new JModelLayerListEntry(mcreator, gui, parent, entryList);
+		return new JModelLayerListEntry(mcreator, gui, parent, entryList, entityDataListProvider);
+	}
+
+	public void entityDataListChanged() {
+		entryList.forEach(JModelLayerListEntry::entityDataListChanged);
 	}
 
 	public AggregatedValidationResult getValidationResult() {
