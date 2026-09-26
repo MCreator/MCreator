@@ -1,3 +1,11 @@
 _default: minecraft:no_op
 feature_no_op: minecraft:no_op
 feature_simple_block: minecraft:simple_block
+feature_block_pile: minecraft:block_pile
+feature_huge_brown_mushroom: minecraft:huge_brown_mushroom
+feature_huge_red_mushroom: minecraft:huge_red_mushroom
+feature_forest_rock: minecraft:block_blob
+feature_bamboo: minecraft:bamboo
+feature_underwater_magma: minecraft:underwater_magma
+feature_geode_simple: minecraft:geode
+feature_spring: minecraft:spring_feature
