@@ -54,23 +54,22 @@ this.goalSelector.addGoal(${cbi+1}, new Goal() {
 	}
 
 	@Override public void tick() {
-		LivingEntity livingentity = ${name}Entity.this.getTarget();
-		boolean inRange = ${name}Entity.this.distanceToSqr(livingentity) <= ${field$range?number * field$range?number}
-			&& ${name}Entity.this.getSensing().hasLineOfSight(livingentity);
-		${name}Entity.this.getLookControl().setLookAt(livingentity, 30, 30);
+		LivingEntity entity = ${name}Entity.this.getTarget();
+		boolean inRange = ${name}Entity.this.distanceToSqr(entity) <= ${field$range?number * field$range?number}
+			&& ${name}Entity.this.getSensing().hasLineOfSight(entity);
+		${name}Entity.this.getLookControl().setLookAt(entity, 30, 30);
 		if (inRange) {
 			${name}Entity.this.getNavigation().stop();
 		} else {
-			${name}Entity.this.getNavigation().moveTo(livingentity, ${field$speed});
+			${name}Entity.this.getNavigation().moveTo(entity, ${field$speed});
 		}
 		if (--this.cooldown <= 0 && inRange) {
 			this.cooldown = ${field$interval};
 			<#if hasProcedure(attackProcedure)>
-			double x = ${name}Entity.this.getX();
-			double y = ${name}Entity.this.getY();
-			double z = ${name}Entity.this.getZ();
-			Entity entity = ${name}Entity.this;
-			Entity sourceentity = livingentity;
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			Entity sourceentity = ${name}Entity.this;
 			Level world = ${name}Entity.this.level();
 			<@procedureOBJToCode attackProcedure/>
 			</#if>
