@@ -54,6 +54,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private static final Logger LOG = LogManager.getLogger(CustomJavaCompletionProvider.class);
 
 	private static final int COMPLETION_TIMEOUT_MS = 25;
+	private static final int MAX_COMPLETIONS = 125;
 
 	private static final ExecutorService COMPLETION_EXECUTOR = Executors.newFixedThreadPool(
 			Math.max(2, Runtime.getRuntime().availableProcessors()), r -> {
@@ -341,6 +342,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 			// Shorthand completions (templates and keywords)
 			for (Completion c : shorthandCache.getShorthandCompletions()) {
+				if (completions.size() >= MAX_COMPLETIONS)
+					break;
 				if (matchesFilter(c.getInputText(), wordOnly)) {
 					completions.add(c);
 				}
@@ -349,6 +352,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			// Local symbols (method parameters and local variables in current method scope)
 			Map<String, String> localVars = LocalVariableResolver.getLocalVariables(codeBeforeCursor);
 			for (Map.Entry<String, String> entry : localVars.entrySet()) {
+				if (completions.size() >= MAX_COMPLETIONS)
+					break;
 				String varName = entry.getKey();
 				if (matchesFilter(varName, wordOnly) && !varName.equals(wordOnly)) {
 					completions.add(new CustomVariableCompletion(this, varName, entry.getValue()));
@@ -373,7 +378,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				Map<String, String> imports = javaTypeResolver.getSourceResolver().parseImports(code);
 				List<Completion> cachedClassComps = classCompletionsCache.getIfPresent(wordOnly);
 				if (cachedClassComps != null) {
-					completions.addAll(cachedClassComps);
+					for (Completion c : cachedClassComps) {
+						if (completions.size() >= MAX_COMPLETIONS)
+							break;
+						completions.add(c);
+					}
 				} else {
 					List<Completion> classComps = new ArrayList<>();
 					addClassCompletions(wordOnly, classComps, imports);
@@ -418,11 +427,15 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private void addClassCompletionsFromTree(Map<String, List<String>> tree, String wordOnly, Set<String> addedFQDNs,
 			List<Completion> completions, Map<String, String> imports) {
 		for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
+			if (completions.size() >= MAX_COMPLETIONS)
+				return;
 			String className = entry.getKey();
 			if (matchesFilter(className, wordOnly)) {
 				List<String> fqdns = entry.getValue();
 				if (fqdns != null && !fqdns.isEmpty()) {
 					for (String fqdn : fqdns) {
+						if (completions.size() >= MAX_COMPLETIONS)
+							return;
 						if (addedFQDNs.add(fqdn)) {
 							ClassInfo info = getClassInfo(fqdn, className);
 							CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
@@ -442,6 +455,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private void addInnerClassCompletions(String fqdn, String className, Set<String> addedFQDNs,
 			List<Completion> completions, Map<String, String> imports) {
 		for (String inner : javaTypeResolver.getInnerClasses(fqdn)) {
+			if (completions.size() >= MAX_COMPLETIONS)
+				return;
 			String innerClassName = className + "." + inner;
 			String innerFQDN = fqdn + "." + inner;
 			if (addedFQDNs.add(innerFQDN)) {
@@ -459,6 +474,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly,
 			CustomFieldCompletion.PrefixContext prefixContext, List<Completion> completions) {
 		for (JavaTypeResolver.CompletionItem item : items) {
+			if (completions.size() >= MAX_COMPLETIONS)
+				return;
 			String methodName = item.label().contains("(") ?
 					item.label().substring(0, item.label().indexOf('(')) :
 					item.label();
