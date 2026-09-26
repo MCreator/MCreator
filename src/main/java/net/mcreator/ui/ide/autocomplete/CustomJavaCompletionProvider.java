@@ -262,8 +262,8 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				null;
 
 		CompletableFuture<List<Completion>> future = CompletableFuture.supplyAsync(
-				() -> computeCompletions(code, codeBeforeCursor, alreadyEntered, wordOnly, textBeforeWord,
-						isDotContext, currentClassFQDN), COMPLETION_EXECUTOR);
+				() -> computeCompletions(code, codeBeforeCursor, alreadyEntered, wordOnly, textBeforeWord, isDotContext,
+						currentClassFQDN), COMPLETION_EXECUTOR);
 
 		future.whenComplete((result, ex) -> {
 			if (ex != null) {
@@ -330,12 +330,15 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 						Set<Completion> jarComps = new TreeSet<>();
 						jarManager.addCompletions(this, targetName + "." + wordOnly, jarComps);
 						for (Completion c : jarComps) {
+							if (completions.size() >= MAX_COMPLETIONS)
+								break;
 							// Cannot do instanceof due to ClassCompletion being package private
 							if (c.getClass().getSimpleName().equals("ClassCompletion")) {
 								String className = c.getInputText();
 								ClassInfo info = getClassInfo(targetName + "." + className, className);
-								completions.add(new CustomClassCompletion(this, className, targetName,
-										info.isInterface(), info.isEnum()));
+								completions.add(
+										new CustomClassCompletion(this, className, targetName, info.isInterface(),
+												info.isEnum()));
 							} else {
 								completions.add(c);
 							}
@@ -402,12 +405,22 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 
 		List<Completion> result = new ArrayList<>(completions);
+		final int typedLen = wordOnly.length();
 		result.sort((c1, c2) -> {
 			int r1 = c1.getRelevance();
 			int r2 = c2.getRelevance();
 			if (r1 != r2)
 				return Integer.compare(r2, r1);
-			int cmp = c1.toString().compareTo(c2.toString());
+
+			String s1 = c1.getInputText() != null ? c1.getInputText() : c1.toString();
+			String s2 = c2.getInputText() != null ? c2.getInputText() : c2.toString();
+
+			int lenDiff1 = Math.abs(s1.length() - typedLen);
+			int lenDiff2 = Math.abs(s2.length() - typedLen);
+			if (lenDiff1 != lenDiff2)
+				return Integer.compare(lenDiff1, lenDiff2);
+
+			int cmp = s1.compareTo(s2);
 			if (cmp != 0)
 				return cmp;
 			return Integer.compare(System.identityHashCode(c1), System.identityHashCode(c2));
@@ -435,26 +448,39 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private void addClassCompletionsFromTree(Map<String, List<String>> tree, String wordOnly, Set<String> addedFQDNs,
 			List<Completion> completions, Map<String, String> imports) {
-		for (Map.Entry<String, List<String>> entry : tree.entrySet()) {
+		List<String> matchingKeys = new ArrayList<>();
+		for (String className : tree.keySet()) {
+			if (matchesFilter(className, wordOnly)) {
+				matchingKeys.add(className);
+			}
+		}
+
+		final int typedLen = wordOnly.length();
+		matchingKeys.sort((k1, k2) -> {
+			int lenDiff1 = Math.abs(k1.length() - typedLen);
+			int lenDiff2 = Math.abs(k2.length() - typedLen);
+			if (lenDiff1 != lenDiff2)
+				return Integer.compare(lenDiff1, lenDiff2);
+			return k1.compareToIgnoreCase(k2);
+		});
+
+		for (String className : matchingKeys) {
 			if (completions.size() >= MAX_COMPLETIONS)
 				return;
-			String className = entry.getKey();
-			if (matchesFilter(className, wordOnly)) {
-				List<String> fqdns = entry.getValue();
-				if (fqdns != null && !fqdns.isEmpty()) {
-					for (String fqdn : fqdns) {
-						if (completions.size() >= MAX_COMPLETIONS)
-							return;
-						if (addedFQDNs.add(fqdn)) {
-							ClassInfo info = getClassInfo(fqdn, className);
-							CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
-									info.isInterface, info.isEnum);
-							if (imports != null && fqdn.equals(imports.get(className))) {
-								ccc.setRelevance(3);
-							}
-							completions.add(ccc);
-							addInnerClassCompletions(fqdn, className, addedFQDNs, completions, imports);
+			List<String> fqdns = tree.get(className);
+			if (fqdns != null && !fqdns.isEmpty()) {
+				for (String fqdn : fqdns) {
+					if (completions.size() >= MAX_COMPLETIONS)
+						return;
+					if (addedFQDNs.add(fqdn)) {
+						ClassInfo info = getClassInfo(fqdn, className);
+						CustomClassCompletion ccc = new CustomClassCompletion(this, className, info.pkg,
+								info.isInterface, info.isEnum);
+						if (imports != null && fqdn.equals(imports.get(className))) {
+							ccc.setRelevance(3);
 						}
+						completions.add(ccc);
+						addInnerClassCompletions(fqdn, className, addedFQDNs, completions, imports);
 					}
 				}
 			}
@@ -470,9 +496,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			String innerFQDN = fqdn + "." + inner;
 			if (addedFQDNs.add(innerFQDN)) {
 				ClassInfo info = getClassInfo(innerFQDN, innerClassName);
-				CustomClassCompletion ccc = new CustomClassCompletion(this, innerClassName, info.pkg,
-						info.isInterface, info.isEnum);
-				if (imports != null && (innerFQDN.equals(imports.get(innerClassName)) || fqdn.equals(imports.get(className)))) {
+				CustomClassCompletion ccc = new CustomClassCompletion(this, innerClassName, info.pkg, info.isInterface,
+						info.isEnum);
+				if (imports != null && (innerFQDN.equals(imports.get(innerClassName)) || fqdn.equals(
+						imports.get(className)))) {
 					ccc.setRelevance(3);
 				}
 				completions.add(ccc);
@@ -482,30 +509,49 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 
 	private void addResolverItems(List<JavaTypeResolver.CompletionItem> items, String wordOnly,
 			CustomFieldCompletion.PrefixContext prefixContext, List<Completion> completions) {
+		List<JavaTypeResolver.CompletionItem> matching = new ArrayList<>();
 		for (JavaTypeResolver.CompletionItem item : items) {
-			if (completions.size() >= MAX_COMPLETIONS)
-				return;
 			String methodName = item.label().contains("(") ?
 					item.label().substring(0, item.label().indexOf('(')) :
 					item.label();
 			if (matchesFilter(methodName, wordOnly) || (item.kind().equals("field") && matchesFilter(item.insertText(),
 					wordOnly))) {
-				if (item.kind().equals("method")) {
-					String template = item.insertText().replaceAll("\\$\\{\\d+:", "\\${");
-					if (!template.contains("${cursor}")) {
-						template = template + "${cursor}";
-					}
+				matching.add(item);
+			}
+		}
 
-					String prefix = prefixContext.getPrefix();
-					completions.add(new CustomMethodCompletion(this, prefix + methodName, item.label(), item.detail(),
-							item.declaringClass(), prefix + template, item.docSummary(), item.visibility(), item.isStatic(),
-							item.isAbstract(), item.isDeprecated(), item.paramTypes(), item.paramNames()));
-				} else {
-					completions.add(
-							new CustomFieldCompletion(this, item.insertText(), item.detail(), item.declaringClass(),
-									item.docSummary(), item.visibility(), item.isStatic(), item.isFinal(),
-									item.isDeprecated(), prefixContext));
+		final int typedLen = wordOnly.length();
+		matching.sort((i1, i2) -> {
+			String name1 = i1.label().contains("(") ? i1.label().substring(0, i1.label().indexOf('(')) : i1.label();
+			String name2 = i2.label().contains("(") ? i2.label().substring(0, i2.label().indexOf('(')) : i2.label();
+			int lenDiff1 = Math.abs(name1.length() - typedLen);
+			int lenDiff2 = Math.abs(name2.length() - typedLen);
+			if (lenDiff1 != lenDiff2)
+				return Integer.compare(lenDiff1, lenDiff2);
+			return name1.compareToIgnoreCase(name2);
+		});
+
+		for (JavaTypeResolver.CompletionItem item : matching) {
+			if (completions.size() >= MAX_COMPLETIONS)
+				return;
+			String methodName = item.label().contains("(") ?
+					item.label().substring(0, item.label().indexOf('(')) :
+					item.label();
+
+			if (item.kind().equals("method")) {
+				String template = item.insertText().replaceAll("\\$\\{\\d+:", "\\${");
+				if (!template.contains("${cursor}")) {
+					template = template + "${cursor}";
 				}
+
+				String prefix = prefixContext.getPrefix();
+				completions.add(new CustomMethodCompletion(this, prefix + methodName, item.label(), item.detail(),
+						item.declaringClass(), prefix + template, item.docSummary(), item.visibility(), item.isStatic(),
+						item.isAbstract(), item.isDeprecated(), item.paramTypes(), item.paramNames()));
+			} else {
+				completions.add(new CustomFieldCompletion(this, item.insertText(), item.detail(), item.declaringClass(),
+						item.docSummary(), item.visibility(), item.isStatic(), item.isFinal(), item.isDeprecated(),
+						prefixContext));
 			}
 		}
 	}
