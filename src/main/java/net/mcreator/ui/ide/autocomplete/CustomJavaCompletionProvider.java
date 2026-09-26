@@ -54,7 +54,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private static final Logger LOG = LogManager.getLogger(CustomJavaCompletionProvider.class);
 
 	private static final int COMPLETION_TIMEOUT_MS = 25;
-	private static final int MAX_COMPLETIONS = 125;
+	private static final int MAX_COMPLETIONS = 150;
 
 	private static final ExecutorService COMPLETION_EXECUTOR = Executors.newFixedThreadPool(
 			Math.max(2, Runtime.getRuntime().availableProcessors()), r -> {
