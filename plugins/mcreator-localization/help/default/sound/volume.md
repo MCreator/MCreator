@@ -1,0 +1,1 @@
+This parameter defines the volume at which the sound should be played.
