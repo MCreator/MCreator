@@ -4,6 +4,11 @@
       "type": "field_resourcelocation",
       "name": "recipe",
       "text": "minecraft:acacia_boat"
+    },
+    {
+      "type": "input_value",
+      "name": "player",
+      "check": "PlayerCondition"
     }
   ],
   "inputsInline": true,
@@ -13,8 +18,14 @@
   "mcreator": {
     "group": "recipes",
     "toolbox_id": "items",
+    "toolbox_init": [
+      "<value name=\"player\"><block type=\"player_condition_predicate\"><mutation inputs=\"0\"></mutation></block></value>"
+    ],
     "fields": [
       "recipe"
+    ],
+    "inputs": [
+      "player"
     ]
   }
 }
