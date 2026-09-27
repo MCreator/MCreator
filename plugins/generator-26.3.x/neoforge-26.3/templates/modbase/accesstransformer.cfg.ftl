@@ -24,6 +24,11 @@ public net.minecraft.world.entity.animal.nautilus.AbstractNautilus travelInWater
 public net.minecraft.world.entity.animal.turtle.Turtle travelInWater(Lnet/minecraft/world/phys/Vec3;DZD)V
 public net.minecraft.world.entity.monster.Guardian travelInWater(Lnet/minecraft/world/phys/Vec3;DZD)V
 public net.minecraft.world.entity.monster.zombie.Drowned travelInWater(Lnet/minecraft/world/phys/Vec3;DZD)V
+public net.minecraft.world.level.material.FlowingFluid canMaybePassThrough(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/FluidState;)Z
+public net.minecraft.world.level.material.FlowingFluid canHoldSpecificFluid(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/Fluid;)Z
+public net.minecraft.world.level.material.FlowingFluid sourceNeighborCount(Lnet/minecraft/world/level/LevelReader;Lnet/minecraft/core/BlockPos;)I
+public net.minecraft.world.level.material.FlowingFluid isWaterHole(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z
+public net.minecraft.world.level.material.FlowingFluid spreadToSides(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/material/FluidState;Lnet/minecraft/world/level/block/state/BlockState;)V
 </#if>
 
 # Start of user code block custom ATs

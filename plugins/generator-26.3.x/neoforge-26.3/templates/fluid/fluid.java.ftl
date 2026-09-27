@@ -58,12 +58,58 @@ public abstract class ${name}Fluid extends BaseFlowingFluid {
 	</#if>
 
 	<#if hasProcedure(data.flowCondition)>
-	@Override protected void spread(ServerLevel world, BlockPos fromPos, BlockState blockstate, FluidState fluidIn) {
-		int x = fromPos.getX();
-		int y = fromPos.getY();
-		int z = fromPos.getZ();
-		if(<@procedureOBJToConditionCode data.flowCondition/>)
-			super.spread(world, fromPos, blockstate, fluidIn);
+	@Override protected void spread(ServerLevel world, BlockPos pos, BlockState blockstate, FluidState fluidState) {
+		if (!fluidState.isEmpty()) {
+			BlockPos belowPos = pos.below();
+			BlockState intostate = world.getBlockState(belowPos);
+			FluidState belowFluid = intostate.getFluidState();
+			Direction direction = Direction.DOWN;
+			if (this.canMaybePassThrough(world, pos, blockstate, direction, belowPos, intostate, belowFluid)) {
+				FluidState newBelowFluid = this.getNewLiquid(world, belowPos, intostate);
+				Fluid newBelowFluidType = newBelowFluid.getType();
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				if (<@procedureOBJToConditionCode data.flowCondition/>
+					&& belowFluid.canBeReplacedWith(world, belowPos, newBelowFluidType, direction)
+					&& canHoldSpecificFluid(world, belowPos, intostate, newBelowFluidType)) {
+					this.spreadTo(world, belowPos, intostate, direction, newBelowFluid);
+					if (this.sourceNeighborCount(world, pos) >= 3) {
+						this.spreadToSides(world, pos, fluidState, blockstate);
+					}
+
+					return;
+				}
+			}
+
+			if (fluidState.isSource() || !this.isWaterHole(world, pos, blockstate, belowPos, intostate)) {
+				this.spreadToSides(world, pos, fluidState, blockstate);
+			}
+		}
+	}
+
+	@Override public void spreadToSides(ServerLevel world, BlockPos pos, FluidState fluidState, BlockState blockstate) {
+		int neighbor = fluidState.getAmount() - this.getDropOff(world);
+		if (fluidState.getValue(FALLING)) {
+			neighbor = 7;
+		}
+
+		if (neighbor > 0) {
+			Map<Direction, FluidState> spreads = this.getSpread(world, pos, blockstate);
+
+			for (Map.Entry<Direction, FluidState> entry : spreads.entrySet()) {
+				Direction spread = entry.getKey();
+				FluidState newNeighborFluid = entry.getValue();
+				BlockPos neighborPos = pos.relative(spread);
+				BlockState intostate = world.getBlockState(neighborPos);
+				Direction direction = entry.getKey();
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				if (<@procedureOBJToConditionCode data.flowCondition/>)
+					this.spreadTo(world, neighborPos, intostate, spread, newNeighborFluid);
+			}
+		}
 	}
 	</#if>
 
