@@ -47,4 +47,8 @@ import net.mcreator.workspace.elements.ModElement;
 	public ItemExtension(ModElement element) {
 		super(element);
 	}
+
+	public boolean hasFuelPowerProcedure() {
+		return enableFuel && fuelPower.getName() != null;
+	}
 }

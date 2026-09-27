@@ -53,8 +53,9 @@ package ${package}.init;
 		</@javacompress>
 	}
 
+	<#if itemextensions?filter(e -> e.hasFuelPowerProcedure())?size != 0>
 	public static int getProcedureBurnTime(AbstractFurnaceBlockEntity furnace, ItemStack itemstack) {
-		<#list itemextensions?filter(e -> e.enableFuel) as extension>
+		<#list itemextensions?filter(e -> e.hasFuelPowerProcedure()) as extension>
 		<#if hasProcedure(extension.fuelPower) || hasProcedure(extension.fuelSuccessCondition)>
 		if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}) {
 			<#if hasProcedure(extension.fuelSuccessCondition)>
@@ -73,5 +74,6 @@ package ${package}.init;
 		</#list>
 		return -1;
 	}
+	</#if>
 }
 <#-- @formatter:on -->
