@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.*;
+import org.jboss.forge.roaster.model.util.Types;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -202,10 +203,11 @@ public class JavaSourceResolver {
 	public String resolveFQDN(String rawType, Map<String, String> imports) {
 		if (rawType == null || rawType.isEmpty())
 			return rawType;
-		if (rawType.contains("."))
+		String stripped = Types.stripGenerics(rawType);
+		if (stripped.contains("."))
 			return rawType;
-		String resolved = imports.get(rawType);
-		return resolved != null ? resolved : rawType;
+		String resolved = imports.get(stripped);
+		return resolved != null ? resolved + Types.getGenerics(rawType) : rawType;
 	}
 
 	public static JavaType<?> findType(JavaType<?> source, String name) {
@@ -256,7 +258,7 @@ public class JavaSourceResolver {
 				if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
 					continue;
 
-				String fType = resolveFQDN(f.getType() != null ? f.getType().getName() : "Object", imports);
+				String fType = resolveFQDN(f.getType() != null ? f.getType().toString() : "Object", imports);
 				String vis = f.isPublic() ?
 						"public" :
 						(f.isProtected() ? "protected" : (f.isPrivate() ? "private" : "package"));
@@ -280,7 +282,7 @@ public class JavaSourceResolver {
 						|| mName.equals("catch") || mName.equals("class"))
 					continue;
 
-				String returnType = resolveFQDN(m.getReturnType() != null ? m.getReturnType().getName() : "void", imports);
+				String returnType = resolveFQDN(m.getReturnType() != null ? m.getReturnType().toString() : "void", imports);
 				List<? extends ParameterSource<?>> params = m.getParameters();
 				String[] pTypes = new String[params.size()];
 				String[] pNames = new String[params.size()];
