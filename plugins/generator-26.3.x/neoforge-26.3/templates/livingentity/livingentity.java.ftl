@@ -41,7 +41,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 <#assign interfaces = []>
 
 <#if data.aiBase != "(none)">
-	<#assign extendsClass = data.aiBase?replace("Enderman", "EnderMan")>
+	<#assign extendsClass = data.aiBase>
 <#else>
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>

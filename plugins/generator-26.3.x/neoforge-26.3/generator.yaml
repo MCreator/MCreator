@@ -91,11 +91,11 @@ base_templates:
     condition_any:
       - hasJavaModels()
       - "${w.hasElementsOfType('specialentity')}"
-#  - template: modbase/enumextensions.json.ftl
-#    writer: json
-#    name: "@RESROOT/META-INF/enumextensions.json"
-#    condition_any:
-#      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
+  - template: modbase/enumextensions.json.ftl
+    writer: json
+    name: "@RESROOT/META-INF/enumextensions.json"
+    condition_any:
+      - "${w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == \"Raider\")?size != 0}"
   - template: modbase/mixin.json.ftl
     writer: json
     condition_any:
@@ -108,8 +108,8 @@ base_templates:
 #      - "${w.hasElementsOfType('specialentity')}"
 
 java_models:
-  key: mojmap-26.3.x
-  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x, mojmap-26.2.x]
+  key: mojmap-26.1.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x]
   requested_key_words: [ModelPart, ~ModelRenderer]
 
 sources_setup_tasks:
