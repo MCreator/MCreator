@@ -41,18 +41,22 @@ package ${package}.init;
 
 @EventBusSubscriber public class ${JavaModName}Fuels {
 
-	@SubscribeEvent public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
 		<@javacompress>
-		ItemStack itemstack = event.getItemStack();
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
-			if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
-			<#if hasProcedure(extension.fuelSuccessCondition)>&& <@procedureOBJToConditionCode extension.fuelSuccessCondition/></#if>)
-				<#if hasProcedure(extension.fuelPower)>
-					event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
-				<#else>
-					event.setBurnTime(${extension.fuelPower.getFixedValue()});
-				</#if>
-			<#sep>else
+		event.modify(${mappedMCItemToItem(extension.item)}, (builder, _, item) -> {
+			<#if hasProcedure(extension.fuelSuccessCondition)>
+			if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>) {
+				builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
+					new ResolvableInt.Constant((int) <#if hasProcedure(extension.fuelPower)><@procedureOBJToNumberCode extension.fuelPower/><#else>${extension.fuelPower.getFixedValue()}</#if>),
+					new ResolvableFloat.Constant(1.0f)));
+			}
+			<#else>
+			builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
+				new ResolvableInt.Constant((int) <#if hasProcedure(extension.fuelPower)><@procedureOBJToNumberCode extension.fuelPower/><#else>${extension.fuelPower.getFixedValue()}</#if>),
+				new ResolvableFloat.Constant(1.0f)));
+			</#if>
+		});
 		</#list>
 		</@javacompress>
 	}
