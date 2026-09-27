@@ -45,20 +45,33 @@ package ${package}.init;
 		<@javacompress>
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
 		event.modify(${mappedMCItemToItem(extension.item)}, (builder, _, item) -> {
-			<#if hasProcedure(extension.fuelSuccessCondition)>
-			if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>) {
-				builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
-					new ResolvableInt.Constant((int) <#if hasProcedure(extension.fuelPower)><@procedureOBJToNumberCode extension.fuelPower/><#else>${extension.fuelPower.getFixedValue()}</#if>),
-					new ResolvableFloat.Constant(1.0f)));
-			}
-			<#else>
 			builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
-				new ResolvableInt.Constant((int) <#if hasProcedure(extension.fuelPower)><@procedureOBJToNumberCode extension.fuelPower/><#else>${extension.fuelPower.getFixedValue()}</#if>),
+				new ResolvableInt.Constant(${extension.fuelPower.getFixedValue()}),
 				new ResolvableFloat.Constant(1.0f)));
-			</#if>
 		});
 		</#list>
 		</@javacompress>
+	}
+
+	public static int getProcedureBurnTime(AbstractFurnaceBlockEntity furnace, ItemStack itemstack) {
+		<#list itemextensions?filter(e -> e.enableFuel) as extension>
+		<#if hasProcedure(extension.fuelPower) || hasProcedure(extension.fuelSuccessCondition)>
+		if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}) {
+			<#if hasProcedure(extension.fuelSuccessCondition)>
+			if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>) {
+			</#if>
+			int burnTime = (int) <#if hasProcedure(extension.fuelPower)><@procedureOBJToNumberCode extension.fuelPower/><#else>${extension.fuelPower.getFixedValue()}</#if>;
+			if (furnace instanceof BlastFurnaceBlockEntity || furnace instanceof SmokerBlockEntity)
+				burnTime /= 2;
+			return burnTime;
+			<#if hasProcedure(extension.fuelSuccessCondition)>
+			}
+			return 0;
+			</#if>
+		}
+		</#if>
+		</#list>
+		return -1;
 	}
 }
 <#-- @formatter:on -->
