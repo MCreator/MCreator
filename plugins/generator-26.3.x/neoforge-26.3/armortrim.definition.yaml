@@ -5,11 +5,12 @@ templates:
   - template: armortrim/smithing_recipe.json.ftl
     writer: json
     name: "@MODDATAROOT/recipe/@registryname_armor_trim_smithing_template_smithing_trim.json"
-
-global_templates:
-  - template: armortrim/trims_atlas.json.ftl
+  - template: armortrim/trim_palette.mcmeta.ftl
     writer: json
-    name: "@RESROOT/assets/minecraft/atlases/armor_trims.json"
+    name: "@MODASSETSROOT/textures/trims/entity/humanoid/@registryname.png.mcmeta"
+  - template: armortrim/trim_palette.mcmeta.ftl
+    writer: json
+    name: "@MODASSETSROOT/textures/trims/entity/humanoid_leggings/@registryname.png.mcmeta"
 
 localizationkeys:
   - key: trim_pattern.@modid.@registryname
