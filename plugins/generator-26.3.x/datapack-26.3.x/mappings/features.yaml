@@ -19,3 +19,5 @@ feature_simple_random_selector: minecraft:simple_random_selector
 
 # Legacy features
 feature_seagrass: minecraft:weighted_random_selector
+feature_random_patch_simple: minecraft:simple_random_selector
+feature_random_patch: minecraft:simple_random_selector

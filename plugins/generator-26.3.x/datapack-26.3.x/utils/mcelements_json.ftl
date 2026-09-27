@@ -32,11 +32,11 @@
     "plateau": 0,
     "min": -${ySpread},
     "max": ${ySpread}
-  }
+  },
   "z": {
     "type": "minecraft:trapezoid",
     "plateau": 0,
     "min": -${xzSpread},
     "max": ${xzSpread}
-  },
+  }
 }'></#function>
