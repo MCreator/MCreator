@@ -2,9 +2,6 @@
 <#if w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
   <#assign mixins = mixins + ['NoiseGeneratorSettingsMixin', 'BiomeSourcePresetMixin']>
 </#if>
-<#if w.getGElementsOfType('itemextension')?filter(e -> e.hasFuelPowerProcedure())?size != 0>
-  <#assign mixins = mixins + ['${JavaModName}FuelsMixin']>
-</#if>
 
 {
   "required": true,
