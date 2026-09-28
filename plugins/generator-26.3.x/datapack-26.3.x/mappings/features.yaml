@@ -14,6 +14,16 @@ feature_scattered_ore: minecraft:scattered_ore
 feature_replace_single_block: minecraft:replace_single_block
 feature_delta: minecraft:delta_feature
 feature_replace_sphere: minecraft:netherrack_replace_blobs
+feature_random_selector: minecraft:random_selector
+feature_simple_random_selector: minecraft:simple_random_selector
+feature_tree_simple: minecraft:tree
+feature_tree_spruce: minecraft:tree
+feature_tree_pine: minecraft:tree
+feature_tree_azalea: minecraft:tree
+feature_tree_cherry: minecraft:tree
+feature_tree_mangrove: minecraft:tree
 
 # Legacy features
 feature_seagrass: minecraft:weighted_random_selector
+feature_random_patch_simple: minecraft:simple_random_selector
+feature_random_patch: minecraft:simple_random_selector

@@ -66,27 +66,27 @@ package ${package}.client.fluid;
 					}
 
 					@Override public int colorInWorld(FluidState state, BlockState blockState, BlockAndTintGetter world, BlockPos pos) {
-						return <#if data.tintType == "Grass">
-							BiomeColors.getAverageGrassColor(world, pos)
+						<#if data.tintType == "Grass">
+						return BiomeColors.getAverageGrassColor(world, pos) | 0xFF000000;
 						<#elseif data.tintType == "Foliage">
-							BiomeColors.getAverageFoliageColor(world, pos)
+						return BiomeColors.getAverageFoliageColor(world, pos) | 0xFF000000;
 						<#elseif data.tintType == "Dry foliage">
-							BiomeColors.getAverageDryFoliageColor(world, pos)
+						return BiomeColors.getAverageDryFoliageColor(world, pos) | 0xFF000000;
 						<#elseif data.tintType == "Default foliage">
-							FoliageColor.FOLIAGE_DEFAULT
+						return FoliageColor.FOLIAGE_DEFAULT | 0xFF000000;
 						<#elseif data.tintType == "Birch foliage">
-							FoliageColor.FOLIAGE_BIRCH
+						return FoliageColor.FOLIAGE_BIRCH | 0xFF000000;
 						<#elseif data.tintType == "Spruce foliage">
-							FoliageColor.FOLIAGE_EVERGREEN
+						return FoliageColor.FOLIAGE_EVERGREEN | 0xFF000000;
 						<#elseif data.tintType == "Water">
-							BiomeColors.getAverageWaterColor(world, pos)
+						return BiomeColors.getAverageWaterColor(world, pos) | 0xFF000000;
 						<#elseif data.tintType == "Sky">
-							Minecraft.getInstance().gameRenderer.getMainCamera().attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, 0)
+						return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, 0));
 						<#elseif data.tintType == "Fog">
-							Minecraft.getInstance().gameRenderer.getMainCamera().attributeProbe().getValue(EnvironmentAttributes.FOG_COLOR, 0)
+						return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.FOG_COLOR, 0));
 						<#else>
-							Minecraft.getInstance().gameRenderer.getMainCamera().attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_COLOR, 0)
-						</#if> | 0xFF000000;
+						return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_COLOR, 0));
+						</#if>
 					}
 				}
 				<#else>

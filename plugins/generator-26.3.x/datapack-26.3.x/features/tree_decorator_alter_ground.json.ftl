@@ -2,7 +2,7 @@
 {
   "type": "minecraft:alter_ground",
   "provider": {
-    "type": "minecraft:rule_based_state_provider",
+    "type": "minecraft:rule_based",
     "rules": [
       {
         "if_true": {
