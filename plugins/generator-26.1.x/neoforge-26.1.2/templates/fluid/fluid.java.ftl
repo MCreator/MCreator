@@ -58,12 +58,14 @@ public abstract class ${name}Fluid extends BaseFlowingFluid {
 	</#if>
 
 	<#if hasProcedure(data.flowCondition)>
-	@Override protected void spread(ServerLevel world, BlockPos fromPos, BlockState blockstate, FluidState fluidIn) {
+	@Override protected void spreadTo(LevelAccessor world, BlockPos toPos, BlockState intostate, Direction direction, FluidState target) {
+		BlockPos fromPos = toPos.relative(direction.getOpposite());
+		BlockState blockstate = world.getBlockState(fromPos);
 		int x = fromPos.getX();
 		int y = fromPos.getY();
 		int z = fromPos.getZ();
-		if(<@procedureOBJToConditionCode data.flowCondition/>)
-			super.spread(world, fromPos, blockstate, fluidIn);
+		if (<@procedureOBJToConditionCode data.flowCondition/>)
+			super.spreadTo(world, toPos, intostate, direction, target);
 	}
 	</#if>
 
