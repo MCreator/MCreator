@@ -578,6 +578,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/workspace/resources/AbstractResourcePanel.html#addToolBarButton(java.lang.String,javax.swing.ImageIcon,java.awt.event.MouseListener)" class="member-name-link">addToolBarButton(String, ImageIcon, MouseListener)</a> - Method in class net.mcreator.ui.workspace.resources.<a href="net/mcreator/ui/workspace/resources/AbstractResourcePanel.html" title="class in net.mcreator.ui.workspace.resources">AbstractResourcePanel</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/io/mcp/McpServer.html#addToolCallListener(net.mcreator.io.mcp.McpServer.ToolCallListener)" class="member-name-link">addToolCallListener(McpServer.ToolCallListener)</a> - Method in class net.mcreator.io.mcp.<a href="net/mcreator/io/mcp/McpServer.html" title="class in net.mcreator.io.mcp">McpServer</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/dialogs/tools/ToolPackMakerTool.html#addToolPackToWorkspace(java.util.List,net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace,java.lang.String,net.mcreator.element.parts.MItemBlock,java.awt.Color,double)" class="member-name-link">addToolPackToWorkspace(List, MCreator, Workspace, String, MItemBlock, Color, double)</a> - Static method in class net.mcreator.ui.dialogs.tools.<a href="net/mcreator/ui/dialogs/tools/ToolPackMakerTool.html" title="class in net.mcreator.ui.dialogs.tools">ToolPackMakerTool</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/Attribute.html#addToPlayers" class="member-name-link">addToPlayers</a> - Variable in class net.mcreator.element.types.<a href="net/mcreator/element/types/Attribute.html" title="class in net.mcreator.element.types">Attribute</a></dt>
@@ -840,6 +842,12 @@ to the section panel when clicked.</div>
 <dt><a href="net/mcreator/plugin/events/ApplicationClosedEvent.html#%3Cinit%3E(net.mcreator.ui.MCreatorApplication)" class="member-name-link">ApplicationClosedEvent(MCreatorApplication)</a> - Constructor for class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/ApplicationClosedEvent.html" title="class in net.mcreator.plugin.events">ApplicationClosedEvent</a></dt>
 <dd>
 <div class="block">An event triggered when MCreator is about to exit.</div>
+</dd>
+<dt><a href="net/mcreator/plugin/events/ApplicationFullyLoadedEvent.html" class="type-name-link" title="class in net.mcreator.plugin.events">ApplicationFullyLoadedEvent</a> - Class in <a href="net/mcreator/plugin/events/package-summary.html">net.mcreator.plugin.events</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/plugin/events/ApplicationFullyLoadedEvent.html#%3Cinit%3E(net.mcreator.ui.MCreatorApplication)" class="member-name-link">ApplicationFullyLoadedEvent(MCreatorApplication)</a> - Constructor for class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/ApplicationFullyLoadedEvent.html" title="class in net.mcreator.plugin.events">ApplicationFullyLoadedEvent</a></dt>
+<dd>
+<div class="block">An event triggered when the application loader has finished.</div>
 </dd>
 <dt><a href="net/mcreator/plugin/events/ApplicationLoadedEvent.html" class="type-name-link" title="class in net.mcreator.plugin.events">ApplicationLoadedEvent</a> - Class in <a href="net/mcreator/plugin/events/package-summary.html">net.mcreator.plugin.events</a></dt>
 <dd>&nbsp;</dd>
@@ -8091,11 +8099,15 @@ given start block under which to look for next elements</div>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/plugin/events/ApplicationClosedEvent.html#getMCreatorApplication()" class="member-name-link">getMCreatorApplication()</a> - Method in class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/ApplicationClosedEvent.html" title="class in net.mcreator.plugin.events">ApplicationClosedEvent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/plugin/events/ApplicationFullyLoadedEvent.html#getMCreatorApplication()" class="member-name-link">getMCreatorApplication()</a> - Method in class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/ApplicationFullyLoadedEvent.html" title="class in net.mcreator.plugin.events">ApplicationFullyLoadedEvent</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/plugin/events/ApplicationLoadedEvent.html#getMCreatorApplication()" class="member-name-link">getMCreatorApplication()</a> - Method in class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/ApplicationLoadedEvent.html" title="class in net.mcreator.plugin.events">ApplicationLoadedEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/workspace/settings/WorkspaceSettings.html#getMCreatorDependencies()" class="member-name-link">getMCreatorDependencies()</a> - Method in class net.mcreator.workspace.settings.<a href="net/mcreator/workspace/settings/WorkspaceSettings.html" title="class in net.mcreator.workspace.settings">WorkspaceSettings</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/workspace/settings/WorkspaceSettings.html#getMCreatorDependenciesRaw()" class="member-name-link">getMCreatorDependenciesRaw()</a> - Method in class net.mcreator.workspace.settings.<a href="net/mcreator/workspace/settings/WorkspaceSettings.html" title="class in net.mcreator.workspace.settings">WorkspaceSettings</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/plugin/events/MCreatorMcpLoadedEvent.html#getMCreatorMcp()" class="member-name-link">getMCreatorMcp()</a> - Method in class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/MCreatorMcpLoadedEvent.html" title="class in net.mcreator.plugin.events">MCreatorMcpLoadedEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/MCreatorApplication.html#getMCreatorMcp()" class="member-name-link">getMCreatorMcp()</a> - Method in class net.mcreator.ui.<a href="net/mcreator/ui/MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a></dt>
 <dd>&nbsp;</dd>
@@ -14035,6 +14047,10 @@ character literals, and comments (including their delimiters) is replaced with a
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/io/mcp/McpServer.html#%3Cinit%3E(java.lang.String,java.lang.String,net.mcreator.io.mcp.transport.McpTransport)" class="member-name-link">McpServer(String, String, McpTransport)</a> - Constructor for class net.mcreator.io.mcp.<a href="net/mcreator/io/mcp/McpServer.html" title="class in net.mcreator.io.mcp">McpServer</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/io/mcp/McpServer.ToolCallListener.html" class="type-name-link" title="interface in net.mcreator.io.mcp">McpServer.ToolCallListener</a> - Interface in <a href="net/mcreator/io/mcp/package-summary.html">net.mcreator.io.mcp</a></dt>
+<dd>
+<div class="block">Observes tool calls handled by this server.</div>
+</dd>
 <dt><a href="net/mcreator/io/mcp/tool/McpTool.html" class="type-name-link" title="class in net.mcreator.io.mcp.tool">McpTool&lt;I&gt;</a> - Class in <a href="net/mcreator/io/mcp/tool/package-summary.html">net.mcreator.io.mcp.tool</a></dt>
 <dd>
 <div class="block">Base class for MCP tools with a typed input model.</div>
@@ -14114,6 +14130,12 @@ is being closed.</div>
 </dd>
 <dt><a href="net/mcreator/ui/mcp/MCreatorMcp.html#%3Cinit%3E(net.mcreator.io.mcp.transport.McpTransport,java.util.function.Supplier)" class="member-name-link">MCreatorMcp(McpTransport, Supplier)</a> - Constructor for record class net.mcreator.ui.mcp.<a href="net/mcreator/ui/mcp/MCreatorMcp.html" title="class in net.mcreator.ui.mcp">MCreatorMcp</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/plugin/events/MCreatorMcpLoadedEvent.html" class="type-name-link" title="class in net.mcreator.plugin.events">MCreatorMcpLoadedEvent</a> - Class in <a href="net/mcreator/plugin/events/package-summary.html">net.mcreator.plugin.events</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/plugin/events/MCreatorMcpLoadedEvent.html#%3Cinit%3E(net.mcreator.ui.mcp.MCreatorMcp)" class="member-name-link">MCreatorMcpLoadedEvent(MCreatorMcp)</a> - Constructor for class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/MCreatorMcpLoadedEvent.html" title="class in net.mcreator.plugin.events">MCreatorMcpLoadedEvent</a></dt>
+<dd>
+<div class="block">An event triggered after built-in MCP tools have been registered and before the MCP server is started.</div>
+</dd>
 <dt><a href="net/mcreator/ui/mcp/MCreatorMcpManager.html" class="type-name-link" title="class in net.mcreator.ui.mcp">MCreatorMcpManager</a> - Class in <a href="net/mcreator/ui/mcp/package-summary.html">net.mcreator.ui.mcp</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/mcp/MCreatorMcpManager.html#%3Cinit%3E()" class="member-name-link">MCreatorMcpManager()</a> - Constructor for class net.mcreator.ui.mcp.<a href="net/mcreator/ui/mcp/MCreatorMcpManager.html" title="class in net.mcreator.ui.mcp">MCreatorMcpManager</a></dt>
@@ -15922,6 +15944,14 @@ and NOT already included as names of objects like <a href="net/mcreator/generato
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/element/types/SpecialEntity.html#onTickUpdate" class="member-name-link">onTickUpdate</a> - Variable in class net.mcreator.element.types.<a href="net/mcreator/element/types/SpecialEntity.html" title="class in net.mcreator.element.types">SpecialEntity</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/io/mcp/McpServer.ToolCallListener.html#onToolCall(net.mcreator.io.mcp.tool.IMcpTool,com.google.gson.JsonObject)" class="member-name-link">onToolCall(IMcpTool, JsonObject)</a> - Method in interface net.mcreator.io.mcp.<a href="net/mcreator/io/mcp/McpServer.ToolCallListener.html" title="interface in net.mcreator.io.mcp">McpServer.ToolCallListener</a></dt>
+<dd>
+<div class="block">Called before the tool is invoked.</div>
+</dd>
+<dt><a href="net/mcreator/io/mcp/McpServer.ToolCallListener.html#onToolResult(net.mcreator.io.mcp.tool.IMcpTool,com.google.gson.JsonObject,com.google.gson.JsonElement,java.lang.Throwable)" class="member-name-link">onToolResult(IMcpTool, JsonObject, JsonElement, Throwable)</a> - Method in interface net.mcreator.io.mcp.<a href="net/mcreator/io/mcp/McpServer.ToolCallListener.html" title="interface in net.mcreator.io.mcp">McpServer.ToolCallListener</a></dt>
+<dd>
+<div class="block">Called after the tool invocation completes.</div>
+</dd>
 <dt><a href="net/mcreator/ui/modgui/ModElementGUI.html#onViewClosed()" class="member-name-link">onViewClosed()</a> - Method in class net.mcreator.ui.modgui.<a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/laf/OpaqueFlatSplitPaneUI.html" class="type-name-link" title="class in net.mcreator.ui.laf">OpaqueFlatSplitPaneUI</a> - Class in <a href="net/mcreator/ui/laf/package-summary.html">net.mcreator.ui.laf</a></dt>
@@ -17606,6 +17636,8 @@ minimum and maximum values for number properties, list of allowed values for str
 <dt><a href="net/mcreator/ui/mcp/MCreatorMcpManager.html#registerMCreator(net.mcreator.ui.MCreator)" class="member-name-link">registerMCreator(MCreator)</a> - Method in class net.mcreator.ui.mcp.<a href="net/mcreator/ui/mcp/MCreatorMcpManager.html" title="class in net.mcreator.ui.mcp">MCreatorMcpManager</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/io/mcp/McpServer.html#registerTool(net.mcreator.io.mcp.tool.IMcpTool)" class="member-name-link">registerTool(IMcpTool)</a> - Method in class net.mcreator.io.mcp.<a href="net/mcreator/io/mcp/McpServer.html" title="class in net.mcreator.io.mcp">McpServer</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/plugin/events/MCreatorMcpLoadedEvent.html#registerTool(net.mcreator.io.mcp.tool.IMcpTool)" class="member-name-link">registerTool(IMcpTool)</a> - Method in class net.mcreator.plugin.events.<a href="net/mcreator/plugin/events/MCreatorMcpLoadedEvent.html" title="class in net.mcreator.plugin.events">MCreatorMcpLoadedEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/minecraft/states/PropertyData.html#registerType(java.lang.String,java.lang.Class)" class="member-name-link">registerType(String, Class)</a> - Static method in class net.mcreator.ui.minecraft.states.<a href="net/mcreator/ui/minecraft/states/PropertyData.html" title="class in net.mcreator.ui.minecraft.states">PropertyData</a></dt>
 <dd>&nbsp;</dd>
