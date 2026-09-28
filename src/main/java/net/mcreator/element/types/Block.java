@@ -341,6 +341,10 @@ import java.util.stream.Collectors;
 		return "Sign".equals(blockBase) || "HangingSign".equals(blockBase);
 	}
 
+	public boolean hasStrippingResult() {
+		return strippingResult != null && !strippingResult.isEmpty();
+	}
+
 	public boolean shouldOpenGUIOnRightClick() {
 		return guiBoundTo != null && openGUIOnRightClick;
 	}

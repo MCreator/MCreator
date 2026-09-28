@@ -38,11 +38,7 @@ package ${package}.init;
 
 <#assign hasTintedBlocks = false>
 <#list blocks as block>
-	<#if block.getModElement().getTypeString() == "block">
-		<#if block.tintType != "No tint">
-			<#assign hasTintedBlocks = true>
-		</#if>
-	<#elseif block.getModElement().getTypeString() == "plant">
+	<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
 		<#if block.tintType != "No tint">
 			<#assign hasTintedBlocks = true>
 		</#if>
@@ -102,9 +98,8 @@ package ${package}.init;
 		return REGISTRY.registerBlock(name, supplier);
 	}
 
-	<#if hasTintedBlocks || (signs?size != 0)>
+	<#if hasTintedBlocks>
 	@EventBusSubscriber(Dist.CLIENT) public static class BlocksClientSideHandler {
-		<#if hasTintedBlocks>
 		@SubscribeEvent public static void blockColorLoad(RegisterColorHandlersEvent.BlockTintSources event) {
 			<#list blocks as block>
 				<#if block.getModElement().getTypeString() == "block" || block.getModElement().getTypeString() == "plant">
@@ -114,22 +109,13 @@ package ${package}.init;
 				</#if>
 			</#list>
 		}
-		</#if>
-
-		<#if signs?size != 0>
-		@SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
-			<#list signs as block>
-				Sheets.addWoodType(${JavaModName}WoodTypes.${block.getModElement().getRegistryNameUpper()}_WOOD_TYPE);
-			</#list>
-		}
-		</#if>
 	}
 	</#if>
 
 	<#if signs?size != 0>
 	@SubscribeEvent public static void registerSigns(BlockEntityTypeAddBlocksEvent event) {
 		<#list signs as block>
-			event.modify(BlockEntityType.<#if block.blockBase == "HangingSign">HANGING_</#if>SIGN,
+			event.modify(BlockEntityTypes.<#if block.blockBase == "HangingSign">HANGING_</#if>SIGN,
 					${block.getModElement().getRegistryNameUpper()}.get(), ${block.getWallRegistryNameUpper()}.get());
 		</#list>
 	}
