@@ -46,19 +46,15 @@ package ${package}.init;
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
 		event.modify(${mappedMCItemToItem(extension.item)}, (builder, _, item) -> {
 			builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
-			<#if hasProcedure(extension.fuelPower) && (hasProcedure(extension.fuelPower) || hasProcedure(extension.fuelSuccessCondition))>
 				ResolvableInt.fromKey(ResourceKey.create(Registries.CONTEXT_INT_PROVIDER,
 					Identifier.fromNamespaceAndPath("${modid}", "fuel/${extension.getModElement().getRegistryName()}"))),
-				<#else>
-				new ResolvableInt.Constant(${extension.fuelPower.getFixedValue()}),
-				</#if>
 				ResolvableFloat.fromKey(ContextFloatProviders.COOKING_DEFAULT_SPEED_MULTIPLIER)));
 		});
 		</#list>
 		</@javacompress>
 	}
 
-	<#if itemextensions?filter(e -> hasProcedure(e.fuelPower))?size != 0>
+	<#if itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition))?size != 0>
 	@SubscribeEvent public static void registerContextIntProvider(RegisterEvent event) {
 		event.register(Registries.CONTEXT_INT_PROVIDER_TYPE, Identifier.fromNamespaceAndPath("${modid}", "procedure_fuel"), () -> ProcedureFuelProvider.CODEC);
 	}
@@ -74,8 +70,10 @@ package ${package}.init;
 
 		@Override public int getIntUnsafe(LootContext context) {
 			ItemStack itemstack = (ItemStack) context.getOptional(NeoForgeLootContextParams.QUERIED_STACK);
+			if (itemstack == null)
+				itemstack = ItemStack.EMPTY;
 			<@javacompress>
-			<#list itemextensions?filter(e -> hasProcedure(e.fuelPower)) as extension>
+			<#list itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition)) as extension>
 			if (itemExtension.equals("${extension.getModElement().getRegistryName()}")) {
 				<#if hasProcedure(extension.fuelSuccessCondition)>
 				if (!(<@procedureToRetvalCode name=extension.fuelSuccessCondition.getName() dependencies=extension.fuelSuccessCondition.getDependencies(generator.getWorkspace()) customVals={"x":"context.getOptional(LootContextParams.ORIGIN).x()", "y":"context.getOptional(LootContextParams.ORIGIN).y()", "z":"context.getOptional(LootContextParams.ORIGIN).z()", "itemstack":"itemstack"}/>))

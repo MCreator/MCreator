@@ -26,6 +26,9 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.elements.ModElement;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+
 @SuppressWarnings("unused") public class ItemExtension extends GeneratableElement {
 
 	public MItemBlock item;
@@ -48,7 +51,11 @@ import net.mcreator.workspace.elements.ModElement;
 		super(element);
 	}
 
-	public boolean hasFuelPowerProcedure() {
-		return enableFuel && fuelPower.getName() != null;
+	public boolean hasFuelProcedure() {
+		if (!enableFuel || getModElement() == null)
+			return false;
+		return Stream.of(fuelPower, fuelSuccessCondition).filter(Objects::nonNull).map(Procedure::getName).anyMatch(
+				name -> name != null && !name.isEmpty() && !"null".equals(name) && getModElement().getWorkspace()
+						.getWorkspaceInfo().hasModElement(name));
 	}
 }

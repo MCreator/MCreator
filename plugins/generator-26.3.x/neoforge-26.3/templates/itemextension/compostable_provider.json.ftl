@@ -49,11 +49,11 @@
 		"distribution": [
 			{
 				"data": 1,
-				"weight": ${data.compostLayerChance * 100}
+				"weight": ${data.compostLayerChance*10000?round}
 			},
 			{
 				"data": 0,
-				"weight": ${(1 - data.compostLayerChance) * 100}
+				"weight": ${(1 - data.compostLayerChance)*10000?round}
 			}
 		]
 	}

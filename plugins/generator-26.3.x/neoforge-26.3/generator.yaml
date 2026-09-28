@@ -100,7 +100,6 @@ base_templates:
     writer: json
     condition_any:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-      - "${w.getGElementsOfType('itemextension')?filter(e -> e.enableFuel)?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
   - template: elementinits/dispensebehaviors.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
