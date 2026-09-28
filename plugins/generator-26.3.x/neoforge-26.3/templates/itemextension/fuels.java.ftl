@@ -46,33 +46,54 @@ package ${package}.init;
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
 		event.modify(${mappedMCItemToItem(extension.item)}, (builder, _, item) -> {
 			builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
+			<#if hasProcedure(extension.fuelPower) && (hasProcedure(extension.fuelPower) || hasProcedure(extension.fuelSuccessCondition))>
+				ResolvableInt.fromKey(ResourceKey.create(Registries.CONTEXT_INT_PROVIDER,
+					Identifier.fromNamespaceAndPath("${modid}", "fuel/${extension.getModElement().getRegistryName()}"))),
+				<#else>
 				new ResolvableInt.Constant(${extension.fuelPower.getFixedValue()}),
-				new ResolvableFloat.Constant(1.0f)));
+				</#if>
+				ResolvableFloat.fromKey(ContextFloatProviders.COOKING_DEFAULT_SPEED_MULTIPLIER)));
 		});
 		</#list>
 		</@javacompress>
 	}
 
-	<#if itemextensions?filter(e -> e.hasFuelPowerProcedure())?size != 0>
-	public static int getProcedureBurnTime(AbstractFurnaceBlockEntity furnace, ItemStack itemstack) {
-		<#list itemextensions?filter(e -> e.hasFuelPowerProcedure()) as extension>
-		<#if hasProcedure(extension.fuelPower) || hasProcedure(extension.fuelSuccessCondition)>
-		if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}) {
-			<#if hasProcedure(extension.fuelSuccessCondition)>
-			if (<@procedureOBJToConditionCode extension.fuelSuccessCondition/>) {
-			</#if>
-			int burnTime = (int) <#if hasProcedure(extension.fuelPower)><@procedureOBJToNumberCode extension.fuelPower/><#else>${extension.fuelPower.getFixedValue()}</#if>;
-			if (furnace instanceof BlastFurnaceBlockEntity || furnace instanceof SmokerBlockEntity)
-				burnTime /= 2;
-			return burnTime;
-			<#if hasProcedure(extension.fuelSuccessCondition)>
-			}
-			return 0;
-			</#if>
+	<#if itemextensions?filter(e -> hasProcedure(e.fuelPower))?size != 0>
+	@SubscribeEvent public static void registerContextIntProvider(RegisterEvent event) {
+		event.register(Registries.CONTEXT_INT_PROVIDER_TYPE, Identifier.fromNamespaceAndPath("${modid}", "procedure_fuel"), () -> ProcedureFuelProvider.CODEC);
+	}
+
+	public static final class ProcedureFuelProvider implements ContextIntProvider {
+		private final String itemExtension;
+
+		public static final MapCodec<ProcedureFuelProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Codec.STRING.fieldOf("item_extension").forGetter(provider -> provider.itemExtension)).apply(instance, ProcedureFuelProvider::new));
+
+		public ProcedureFuelProvider(String item) {
+			this.itemExtension = item;
 		}
-		</#if>
-		</#list>
-		return -1;
+
+		@Override public int getIntUnsafe(LootContext context) {
+			ItemStack itemstack = (ItemStack) context.getOptional(NeoForgeLootContextParams.QUERIED_STACK);
+			<@javacompress>
+			<#list itemextensions?filter(e -> hasProcedure(e.fuelPower)) as extension>
+			if (itemExtension.equals("${extension.getModElement().getRegistryName()}")) {
+				<#if hasProcedure(extension.fuelSuccessCondition)>
+				if (!(<@procedureToRetvalCode name=extension.fuelSuccessCondition.getName() dependencies=extension.fuelSuccessCondition.getDependencies(generator.getWorkspace()) customVals={"x":"context.getOptional(LootContextParams.ORIGIN).x()", "y":"context.getOptional(LootContextParams.ORIGIN).y()", "z":"context.getOptional(LootContextParams.ORIGIN).z()", "itemstack":"itemstack"}/>))
+					return 0;
+				</#if>
+				return (int) <#if hasProcedure(extension.fuelPower)><@procedureToRetvalCode name=extension.fuelPower.getName() dependencies=extension.fuelPower.getDependencies(generator.getWorkspace()) customVals={"x":"context.getOptional(LootContextParams.ORIGIN).x()", "y":"context.getOptional(LootContextParams.ORIGIN).y()", "z":"context.getOptional(LootContextParams.ORIGIN).z()", "itemstack":"itemstack"}/><#else>${extension.fuelPower.getFixedValue()}</#if>;
+			}
+			</#list>
+			</@javacompress>
+			return 0;
+		}
+
+		@Override public MapCodec<ProcedureFuelProvider> codec() {
+			return CODEC;
+		}
+
+		@Override public void validate(ValidationContext context) {
+		}
 	}
 	</#if>
 }

@@ -13,5 +13,9 @@ templates:
     writer: json
     condition: "${data.compostLayerChance gt 0}"
     name: "@MODDATAROOT/context_int_provider/compostable/@registryname.json"
+  - template: itemextension/fuel_provider.json.ftl
+    writer: json
+    condition: "${data.hasFuelPowerProcedure()}"
+    name: "@MODDATAROOT/context_int_provider/fuel/@registryname.json"
 
   # Dispense behaviors are controlled by generator.yaml
