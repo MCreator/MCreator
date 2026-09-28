@@ -58,7 +58,7 @@ public abstract class ${name}Fluid extends BaseFlowingFluid {
 	</#if>
 
 	<#if hasProcedure(data.flowCondition)>
-	@Override protected void spreadTo(LevelAccessor world, BlockPos toPos, BlockState  intostate, Direction direction, FluidState target) {
+	@Override protected void spreadTo(LevelAccessor world, BlockPos toPos, BlockState intostate, Direction direction, FluidState target) {
 		BlockPos fromPos = toPos.relative(direction.getOpposite());
 		BlockState blockstate = world.getBlockState(fromPos);
 		int x = fromPos.getX();
