@@ -1,6 +1,6 @@
 {
 	"type": "minecraft:div",
-	"left": <#if w.hasProcedure(data.fuelPower) || w.hasProcedure(data.fuelSuccessCondition)>{
+	"left": <#if data.hasFuelProcedure()>{
 		"type": "${modid}:fuel_power_procedural_provider",
 		"item_extension": "${data.getModElement().getRegistryName()}"
 	}<#else>${data.fuelPower.getFixedValue()}</#if>,
