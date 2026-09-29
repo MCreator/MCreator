@@ -4,6 +4,13 @@ feature_simple_block: minecraft:simple_block
 feature_block_pile: minecraft:block_pile
 feature_huge_brown_mushroom: minecraft:huge_brown_mushroom
 feature_huge_red_mushroom: minecraft:huge_red_mushroom
+feature_huge_fungus: minecraft:huge_fungus
+feature_block_column_simple: minecraft:block_column
+feature_block_column: minecraft:block_column
+feature_disk_simple: minecraft:disk
+feature_disk: minecraft:disk
+feature_vegetation_patch: minecraft:vegetation_patch
+feature_waterlogged_vegetation_patch: minecraft:waterlogged_vegetation_patch
 feature_forest_rock: minecraft:block_blob
 feature_bamboo: minecraft:bamboo
 feature_underwater_magma: minecraft:underwater_magma
