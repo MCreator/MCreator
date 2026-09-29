@@ -25,6 +25,7 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.IMultipleNames;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -43,6 +44,7 @@ import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -230,6 +232,10 @@ import java.util.*;
 
 	public boolean hasModElement(String elementName) {
 		return workspace.containsModElement(GeneratorWrapper.getElementPlainName(elementName));
+	}
+
+	public boolean hasProcedure(@Nullable Procedure procedure) {
+		return Procedure.hasProcedure(procedure, workspace);
 	}
 
 	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(Collection<T> input) {
