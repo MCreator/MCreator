@@ -47,17 +47,4 @@ import net.mcreator.workspace.elements.ModElement;
 	public ItemExtension(ModElement element) {
 		super(element);
 	}
-
-	public boolean hasFuelProcedure() {
-		if (!enableFuel)
-			return false;
-		if (fuelPower != null && ((fuelPower.getName() != null && !"null".equals(fuelPower.getName())
-				&& getModElement().getWorkspace().getWorkspaceInfo().hasModElement(fuelPower.getName()))))
-			return true;
-		if (fuelSuccessCondition != null && ((fuelSuccessCondition.getName() != null && !"null".equals(
-				fuelSuccessCondition.getName()) && getModElement().getWorkspace().getWorkspaceInfo()
-				.hasModElement(fuelSuccessCondition.getName()))))
-			return true;
-		return false;
-	}
 }

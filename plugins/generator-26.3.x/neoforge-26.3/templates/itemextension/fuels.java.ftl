@@ -56,7 +56,7 @@ package ${package}.init;
 
 	<#if itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition))?size != 0>
 	@SubscribeEvent public static void registerContextIntProvider(RegisterEvent event) {
-		event.register(Registries.CONTEXT_INT_PROVIDER_TYPE, Identifier.fromNamespaceAndPath("${modid}", "procedure_fuel"), () -> ProcedureFuelProvider.CODEC);
+		event.register(Registries.CONTEXT_INT_PROVIDER_TYPE, Identifier.fromNamespaceAndPath("${modid}", "fuel_power_procedural_provider"), () -> ProcedureFuelProvider.CODEC);
 	}
 
 	public static final class ProcedureFuelProvider implements ContextIntProvider {
@@ -76,10 +76,16 @@ package ${package}.init;
 			<#list itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition)) as extension>
 			if (itemExtension.equals("${extension.getModElement().getRegistryName()}")) {
 				<#if hasProcedure(extension.fuelSuccessCondition)>
-				if (!(<@procedureToRetvalCode name=extension.fuelSuccessCondition.getName() dependencies=extension.fuelSuccessCondition.getDependencies(generator.getWorkspace()) customVals={"x":"context.getOptional(LootContextParams.ORIGIN).x()", "y":"context.getOptional(LootContextParams.ORIGIN).y()", "z":"context.getOptional(LootContextParams.ORIGIN).z()", "itemstack":"itemstack"}/>))
+				<#assign customVals = {
+					"x" : "context.getOptional(LootContextParams.ORIGIN).x()",
+					"y" : "context.getOptional(LootContextParams.ORIGIN).y()",
+					"z" : "context.getOptional(LootContextParams.ORIGIN).z()",
+					"itemstack" : "itemstack"
+				}>
+				if (!(<@procedureToRetvalCode name=extension.fuelSuccessCondition.getName() dependencies=extension.fuelSuccessCondition.getDependencies(generator.getWorkspace()) customVals=customVals/>))
 					return 0;
 				</#if>
-				return (int) <#if hasProcedure(extension.fuelPower)><@procedureToRetvalCode name=extension.fuelPower.getName() dependencies=extension.fuelPower.getDependencies(generator.getWorkspace()) customVals={"x":"context.getOptional(LootContextParams.ORIGIN).x()", "y":"context.getOptional(LootContextParams.ORIGIN).y()", "z":"context.getOptional(LootContextParams.ORIGIN).z()", "itemstack":"itemstack"}/><#else>${extension.fuelPower.getFixedValue()}</#if>;
+				return (int) <#if hasProcedure(extension.fuelPower)><@procedureToRetvalCode name=extension.fuelPower.getName() dependencies=extension.fuelPower.getDependencies(generator.getWorkspace()) customVals=customVals/><#else>${extension.fuelPower.getFixedValue()}</#if>;
 			}
 			</#list>
 			</@javacompress>
