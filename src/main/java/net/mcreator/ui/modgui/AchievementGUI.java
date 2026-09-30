@@ -111,7 +111,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	@Override protected void initGUI() {
 		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
-				"elementgui.advancement.error_advancement_needs_icon");
+				"elementgui.advancement.error_advancement_needs_icon", true);
 
 		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
