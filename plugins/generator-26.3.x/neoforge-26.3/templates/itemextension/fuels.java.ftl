@@ -75,13 +75,13 @@ package ${package}.init;
 			<@javacompress>
 			<#list itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition)) as extension>
 			if (itemExtension.equals("${extension.getModElement().getRegistryName()}")) {
-				<#if hasProcedure(extension.fuelSuccessCondition)>
 				<#assign customVals = {
 					"x" : "context.getOptional(LootContextParams.ORIGIN).x()",
 					"y" : "context.getOptional(LootContextParams.ORIGIN).y()",
 					"z" : "context.getOptional(LootContextParams.ORIGIN).z()",
 					"itemstack" : "itemstack"
 				}>
+				<#if hasProcedure(extension.fuelSuccessCondition)>
 				if (!(<@procedureToRetvalCode name=extension.fuelSuccessCondition.getName() dependencies=extension.fuelSuccessCondition.getDependencies(generator.getWorkspace()) customVals=customVals/>))
 					return 0;
 				</#if>
