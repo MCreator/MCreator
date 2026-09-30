@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 26.3.0.22-beta
+buildfileversion: 26.3.0.38-beta
 
 import:
   - datapack-26.3.x
@@ -31,6 +31,7 @@ import_formatter:
     MapColor: net.minecraft.world.level.material
     AttributeModifier: net.minecraft.world.entity.ai.attributes
     Consumer: java.util.function
+    VertexFormat: com.mojang.renderpearl.api.vertex
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
