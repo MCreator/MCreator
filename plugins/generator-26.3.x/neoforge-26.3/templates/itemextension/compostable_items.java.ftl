@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@
 <#-- @formatter:off -->
 
 <#include "../mcitems.ftl">
-<#include "../procedures.java.ftl">
 
 /*
  *	MCreator note: This file will be REGENERATED on each build.
@@ -39,20 +38,16 @@
 
 package ${package}.init;
 
-@EventBusSubscriber public class ${JavaModName}Fuels {
+@EventBusSubscriber public class ${JavaModName}Compostables {
 
-	@SubscribeEvent public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
 		<@javacompress>
-		ItemStack itemstack = event.getItemStack();
-		<#list itemextensions?filter(e -> e.enableFuel) as extension>
-			if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
-			<#if hasProcedure(extension.fuelSuccessCondition)>&& <@procedureOBJToConditionCode extension.fuelSuccessCondition/></#if>)
-				<#if hasProcedure(extension.fuelPower)>
-					event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
-				<#else>
-					event.setBurnTime(${extension.fuelPower.getFixedValue()});
-				</#if>
-			<#sep>else
+		<#list itemextensions?filter(e -> e.compostLayerChance gt 0) as extension>
+		event.modify(${mappedMCItemToItem(extension.item)},
+			(builder, _, _) -> builder.set(DataComponents.COMPOSTABLE,
+					new Compostable(ResourceKey.create(
+						Registries.CONTEXT_INT_PROVIDER,
+						Identifier.fromNamespaceAndPath("${modid}", "compostable/${extension.getModElement().getRegistryName()}")))));
 		</#list>
 		</@javacompress>
 	}
