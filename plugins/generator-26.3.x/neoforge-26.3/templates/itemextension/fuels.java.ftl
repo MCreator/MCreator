@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2024, Pylo, opensource contributors
+ # Copyright (C) 2020-2026, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -39,30 +39,32 @@
 
 package ${package}.init;
 
+<#assign proceduralFuels = itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition))>
+
 @EventBusSubscriber public class ${JavaModName}Fuels {
 
 	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
 		<@javacompress>
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
-		event.modify(${mappedMCItemToItem(extension.item)}, (builder, _, item) -> {
-			builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
-				ResolvableInt.fromKey(ResourceKey.create(Registries.CONTEXT_INT_PROVIDER,
-					Identifier.fromNamespaceAndPath("${modid}", "fuel/${extension.getModElement().getRegistryName()}"))),
-				ResolvableFloat.fromKey(ContextFloatProviders.COOKING_DEFAULT_SPEED_MULTIPLIER)));
-		});
+		event.modify(${mappedMCItemToItem(extension.item)}, (builder, _, _) -> builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
+			ResourceKey.create(Registries.CONTEXT_INT_PROVIDER, Identifier.fromNamespaceAndPath("${modid}", "fuel/${extension.getModElement().getRegistryName()}")),
+			ContextFloatProviders.COOKING_DEFAULT_SPEED_MULTIPLIER)));
 		</#list>
 		</@javacompress>
 	}
 
-	<#if itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition))?size != 0>
+	<#if proceduralFuels?size != 0>
 	@SubscribeEvent public static void registerContextIntProvider(RegisterEvent event) {
-		event.register(Registries.CONTEXT_INT_PROVIDER_TYPE, Identifier.fromNamespaceAndPath("${modid}", "fuel_power_procedural_provider"), () -> ProcedureFuelProvider.CODEC);
+		event.register(Registries.CONTEXT_INT_PROVIDER_TYPE,
+				Identifier.fromNamespaceAndPath("${modid}", "fuel_power_procedural_provider"), () -> ProcedureFuelProvider.CODEC);
 	}
 
 	public static final class ProcedureFuelProvider implements ContextIntProvider {
 		private final String itemExtension;
 
-		public static final MapCodec<ProcedureFuelProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Codec.STRING.fieldOf("item_extension").forGetter(provider -> provider.itemExtension)).apply(instance, ProcedureFuelProvider::new));
+		public static final MapCodec<ProcedureFuelProvider> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Codec.STRING.fieldOf("item_extension")
+				.forGetter(provider -> provider.itemExtension)).apply(instance, ProcedureFuelProvider::new)
+		);
 
 		public ProcedureFuelProvider(String item) {
 			this.itemExtension = item;
@@ -73,20 +75,14 @@ package ${package}.init;
 			if (itemstack == null)
 				itemstack = ItemStack.EMPTY;
 			<@javacompress>
-			<#list itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition)) as extension>
-			if (itemExtension.equals("${extension.getModElement().getRegistryName()}")) {
-				<#assign customVals = {
-					"x" : "context.getOptional(LootContextParams.ORIGIN).x()",
-					"y" : "context.getOptional(LootContextParams.ORIGIN).y()",
-					"z" : "context.getOptional(LootContextParams.ORIGIN).z()",
-					"itemstack" : "itemstack"
-				}>
-				<#if hasProcedure(extension.fuelSuccessCondition)>
-				if (!(<@procedureToRetvalCode name=extension.fuelSuccessCondition.getName() dependencies=extension.fuelSuccessCondition.getDependencies(generator.getWorkspace()) customVals=customVals/>))
+			<#list proceduralFuels as e>
+			if (itemExtension.equals("${e.getModElement().getRegistryName()}")) {
+				<#if hasProcedure(e.fuelSuccessCondition)>
+				if (<@procedureOBJToConditionCode object=e.fuelSuccessCondition invertCondition=true/>)
 					return 0;
 				</#if>
-				return (int) <#if hasProcedure(extension.fuelPower)><@procedureToRetvalCode name=extension.fuelPower.getName() dependencies=extension.fuelPower.getDependencies(generator.getWorkspace()) customVals=customVals/><#else>${extension.fuelPower.getFixedValue()}</#if>;
-			}
+				return (int) <#if hasProcedure(e.fuelPower)><@procedureOBJToNumberCode e.fuelPower/><#else>${e.fuelPower.getFixedValue()}</#if>;
+			}<#sep> else
 			</#list>
 			</@javacompress>
 			return 0;
