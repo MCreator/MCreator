@@ -336,6 +336,7 @@ import java.util.stream.Collectors;
 		public boolean disableHurtOverlay;
 		public boolean glow;
 		public Procedure condition;
+		@Nullable public String syncedDataCondition;
 
 		@Nullable transient Workspace workspace;
 

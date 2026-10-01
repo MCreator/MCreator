@@ -392,7 +392,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
-		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> animations.entityDataListChanged());
+		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> {
+			animations.entityDataListChanged();
+			modelLayers.entityDataListChanged();
+		});
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
@@ -428,7 +431,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		equipmentOffHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		rangedAttackItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		modelLayers = new JModelLayerList(mcreator, this);
+		modelLayers = new JModelLayerList(mcreator, this, () -> entityDataList.getEntries());
 
 		animations = new JEntityAnimationList(mcreator, this, () -> entityDataList.getEntries());
 
@@ -964,9 +967,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane1.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2).validate(mobModelTexture).validate(mobName);
+		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false).lazyValidate(
 				modelLayers::getValidationResult);
-		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
@@ -1213,10 +1216,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
-		modelLayers.setEntries(livingEntity.modelLayers);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
-		animations.setEntries(livingEntity.animations); // load after data entries, because animations can use data entries
+		animations.setEntries(
+				livingEntity.animations); // load after data entries, because animations can use data entries
+		modelLayers.setEntries(
+				livingEntity.modelLayers); // load after data entries, because layers can use data entries
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);
 		sensitiveToVibration.setSelected(livingEntity.sensitiveToVibration);
