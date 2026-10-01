@@ -65,11 +65,18 @@ public abstract class ${name}Item extends Item {
 		super(properties);
 	}
 
+	<#if data.maxDamage == 0>
+	protected static Item.Properties humanoidArmor(Item.Properties properties, ArmorType type) {
+		return properties.stacksTo(1).attributes(ARMOR_MATERIAL.createAttributes(type)).enchantable(ARMOR_MATERIAL.enchantmentValue()).repairable(ARMOR_MATERIAL.repairIngredient())
+			.component(DataComponents.EQUIPPABLE, Equippable.builder(type.getSlot()).setEquipSound(ARMOR_MATERIAL.equipSound()).setAsset(ARMOR_MATERIAL.assetId()).build());
+	}
+	</#if>
+
 	<#if data.enableHelmet>
 	public static class Helmet extends ${name}Item {
 
 		public Helmet(Item.Properties properties) {
-			super(properties<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.HELMET)
+			super(<#if data.maxDamage != 0>properties.humanoidArmor(ARMOR_MATERIAL<#else>humanoidArmor(properties</#if>, ArmorType.HELMET)<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[0]) "helmet" "EquipmentSlotGroup.HEAD" data.damageValueHelmet/>);
 		}
 
@@ -87,7 +94,7 @@ public abstract class ${name}Item extends Item {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate(Item.Properties properties) {
-			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE)
+			super(<#if data.maxDamage != 0>properties.humanoidArmor(ARMOR_MATERIAL<#else>humanoidArmor(properties</#if>, ArmorType.CHESTPLATE)<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[1]) "chestplate" "EquipmentSlotGroup.CHEST" data.damageValueBody/>);
 		}
 
@@ -105,7 +112,7 @@ public abstract class ${name}Item extends Item {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings(Item.Properties properties) {
-			super(properties<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.LEGGINGS)
+			super(<#if data.maxDamage != 0>properties.humanoidArmor(ARMOR_MATERIAL<#else>humanoidArmor(properties</#if>, ArmorType.LEGGINGS)<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[2]) "leggings" "EquipmentSlotGroup.LEGS" data.damageValueLeggings/>);
 		}
 
@@ -123,7 +130,7 @@ public abstract class ${name}Item extends Item {
 	public static class Boots extends ${name}Item {
 
 		public Boots(Item.Properties properties) {
-			super(properties<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.BOOTS)
+			super(<#if data.maxDamage != 0>properties.humanoidArmor(ARMOR_MATERIAL<#else>humanoidArmor(properties</#if>, ArmorType.BOOTS)<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[3]) "boots" "EquipmentSlotGroup.FEET" data.damageValueBoots/>);
 		}
 
