@@ -473,18 +473,39 @@ templates:
       - "blockBase %= Sign"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
-  - template: json/block_states.json.ftl
+  - template: json/txblock/sign_states.json.ftl
     condition: "blockBase %= Sign"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/block_states.json.ftl # Wall sign blockstates definition
+  - template: json/txblock/wall_sign_states.json.ftl # Wall sign blockstates definition
     condition: "blockBase %= Sign"
     writer: json
     name: "@MODASSETSROOT/blockstates/@[getWallRegistryName()].json"
-  - template: json/block_model_particle.json.ftl
+  - template: json/txblock/sign_model.json.ftl
     condition: "blockBase %= Sign"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname.json"
+    variables: "model=template_sign_rot_0"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_0.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    variables: "model=template_sign_rot_1"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_1.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    variables: "model=template_sign_rot_2"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_2.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= Sign"
+    writer: json
+    variables: "model=template_sign_rot_3"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_3.json"
+  - template: json/txblock/sign_model.json.ftl # Wall sign model
+    condition: "blockBase %= Sign"
+    writer: json
+    variables: "model=template_wall_sign"
+    name: "@MODASSETSROOT/models/block/@[getWallRegistryName()].json"
 
   # TX: Hanging Sign templates
   - template: block/block.java.ftl # Wall hanging sign class
@@ -497,18 +518,59 @@ templates:
       - "blockBase %= HangingSign"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
-  - template: json/block_states.json.ftl
+  - template: json/txblock/hanging_sign_states.json.ftl
     condition: "blockBase %= HangingSign"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/block_states.json.ftl # Wall hanging sign blockstates definition
+  - template: json/txblock/wall_sign_states.json.ftl # Wall hanging sign blockstates definition
     condition: "blockBase %= HangingSign"
     writer: json
     name: "@MODASSETSROOT/blockstates/@[getWallRegistryName()].json"
-  - template: json/block_model_particle.json.ftl
+  - template: json/txblock/sign_model.json.ftl
     condition: "blockBase %= HangingSign"
     writer: json
-    name: "@MODASSETSROOT/models/block/@registryname.json"
+    variables: "model=template_hanging_sign_rot_0"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_0.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_hanging_sign_rot_1"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_1.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_hanging_sign_rot_2"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_2.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_hanging_sign_rot_3"
+    name: "@MODASSETSROOT/models/block/@registryname_rot_3.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_attached_hanging_sign_rot_0"
+    name: "@MODASSETSROOT/models/block/@registryname_attached_rot_0.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_attached_hanging_sign_rot_1"
+    name: "@MODASSETSROOT/models/block/@registryname_attached_rot_1.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_attached_hanging_sign_rot_2"
+    name: "@MODASSETSROOT/models/block/@registryname_attached_rot_2.json"
+  - template: json/txblock/sign_model.json.ftl
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_attached_hanging_sign_rot_3"
+    name: "@MODASSETSROOT/models/block/@registryname_attached_rot_3.json"
+  - template: json/txblock/sign_model.json.ftl # Wall hanging sign model
+    condition: "blockBase %= HangingSign"
+    writer: json
+    variables: "model=template_wall_hanging_sign"
+    name: "@MODASSETSROOT/models/block/@[getWallRegistryName()].json"
 
 global_templates:
   - template: elementinits/woodtypes.java.ftl
