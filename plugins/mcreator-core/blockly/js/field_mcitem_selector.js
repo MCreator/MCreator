@@ -51,7 +51,7 @@ class FieldMCItemSelector extends Blockly.FieldImage {
             if (this.lastClickTime !== -1 && ((new Date().getTime() - this.lastClickTime) < 500)) {
                 e.stopPropagation(); // fix so the block does not "stick" to the mouse when the field is clicked
                 let thisField = this; // reference to this field, to use in the callback function
-                javabridge.openMCItemSelector(this.supported_mcitems, {
+                javabridge.openMCItemSelector(this.supported_mcitems, this.value_, {
                     'callback': function (selected) {
                         const group = Blockly.Events.getGroup();
                         Blockly.Events.setGroup(true);
