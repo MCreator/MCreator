@@ -106,7 +106,7 @@ base_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameDispenseBehaviors.java"
     condition_any:
       - "${w.getGElementsOfType('itemextension')?filter(e -> e.hasDispenseBehavior)?size != 0}"
-#      - "${w.hasElementsOfType('specialentity')}"
+      - "${w.hasElementsOfType('specialentity')}"
 
 java_models:
   key: mojmap-26.1.x
