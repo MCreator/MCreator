@@ -30,10 +30,10 @@ public class CoralFeaturesRemover implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Feature feature = (Feature) input;
-		feature.featurexml = feature.featurexml.replace("<block type=\"feature_coral_claw\">",
-						"<block type=\"feature_no_op\">")
-				.replace("<block type=\"feature_coral_mushroom\">", "<block type=\"feature_no_op\">")
-				.replace("<block type=\"feature_coral_tree\">", "<block type=\"feature_no_op\">");
+		feature.featurexml = feature.featurexml.replace("<block type=\"feature_coral_claw\"",
+						"<block type=\"feature_no_op\"")
+				.replace("<block type=\"feature_coral_mushroom\"", "<block type=\"feature_no_op\"")
+				.replace("<block type=\"feature_coral_tree\"", "<block type=\"feature_no_op\"");
 		return feature;
 	}
 
