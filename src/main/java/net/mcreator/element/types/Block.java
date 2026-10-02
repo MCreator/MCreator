@@ -30,6 +30,7 @@ import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.minecraft.SignTextureConverter;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -49,6 +50,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -293,20 +295,41 @@ import java.util.stream.Collectors;
 
 	@Override public void finalizeModElementGeneration() {
 		if (isSign()) {
-			try {
-				File entityTextureLocation = new File(
-						getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-						("Sign".equals(blockBase) ? "entity/signs/" : "entity/signs/hanging/")
-								+ getModElement().getRegistryName() + ".png");
-				FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
-			} catch (Exception e) {
-				LOG.error("Failed to copy sign entity texture", e);
+			File texturesFolder = getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER);
+			String registryName = getModElement().getRegistryName();
+			// Since Minecraft 26.3, signs are rendered as block models with a 32x32 block texture and the standing
+			// sign edit screen uses a separate GUI texture, so the entity texture is converted to these formats
+			if (ModuleDescriptor.Version.parse(
+							getModElement().getGeneratorConfiguration().getGeneratorMinecraftVersion())
+					.compareTo(ModuleDescriptor.Version.parse("26.3")) >= 0) {
+				try {
+					BufferedImage entityTexture = ImageIO.read(signEntityTexture.toFile(TextureType.ENTITY));
+					if ("Sign".equals(blockBase)) {
+						FileIO.writeImageToPNGFile(SignTextureConverter.toSignBlockTexture(entityTexture),
+								new File(texturesFolder, "block/signs/" + registryName + ".png"));
+						FileIO.writeImageToPNGFile(SignTextureConverter.toSignGUITexture(entityTexture),
+								new File(texturesFolder, "gui/signs/" + registryName + ".png"));
+					} else {
+						FileIO.writeImageToPNGFile(SignTextureConverter.toHangingSignBlockTexture(entityTexture),
+								new File(texturesFolder, "block/signs/hanging/" + registryName + ".png"));
+					}
+				} catch (Exception e) {
+					LOG.error("Failed to convert sign entity texture", e);
+				}
+			} else {
+				try {
+					File entityTextureLocation = new File(texturesFolder,
+							("Sign".equals(blockBase) ? "entity/signs/" : "entity/signs/hanging/") + registryName
+									+ ".png");
+					FileIO.copyFile(signEntityTexture.toFile(TextureType.ENTITY), entityTextureLocation);
+				} catch (Exception e) {
+					LOG.error("Failed to copy sign entity texture", e);
+				}
 			}
+
 			if ("HangingSign".equals(blockBase)) {
 				try {
-					File GUITextureLocation = new File(
-							getModElement().getFolderManager().getTexturesFolder(TextureType.OTHER),
-							"gui/hanging_signs/" + getModElement().getRegistryName() + ".png");
+					File GUITextureLocation = new File(texturesFolder, "gui/hanging_signs/" + registryName + ".png");
 					FileIO.copyFile(signGUITexture.toFile(TextureType.SCREEN), GUITextureLocation);
 				} catch (Exception e) {
 					LOG.error("Failed to copy sign GUI texture", e);
@@ -339,6 +362,10 @@ import java.util.stream.Collectors;
 
 	public boolean isSign() {
 		return "Sign".equals(blockBase) || "HangingSign".equals(blockBase);
+	}
+
+	public boolean hasStrippingResult() {
+		return strippingResult != null && !strippingResult.isEmpty();
 	}
 
 	public boolean shouldOpenGUIOnRightClick() {
