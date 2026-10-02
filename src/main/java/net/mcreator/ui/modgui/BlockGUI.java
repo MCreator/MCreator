@@ -478,6 +478,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 					isNotColidable.setSelected(false);
 					reactionToPushing.setSelectedItem("NORMAL");
 					ignitedByLava.setSelected(false);
+					creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 				}
 
 				String selectedBlockBase = blockBase.getSelectedItem();
@@ -503,6 +504,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 						hasTransparency.setSelected(true);
 						ignitedByLava.setSelected(true);
+						creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "DECORATIONS")));
 					}
 				}
 				case "TrapDoor" -> {
@@ -559,6 +561,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						hasTransparency.setSelected(true);
 						isNotColidable.setSelected(true);
 						maxStackSize.setValue(16);
+						creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TRANSPORTATION")));
 					}
 				}
 				case null, default -> {
@@ -1471,6 +1474,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 		}
 
 		updateSoundType();
