@@ -83,32 +83,32 @@ package ${package}.client.renderer.block;
 				Direction facing = state.getValue(${name}Block.FACING);
 				switch (facing) {
 					case NORTH -> {}
-					case EAST -> poseStack.mulPose(Axis.YP.rotationDegrees(90));
-					case WEST -> poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-					case SOUTH -> poseStack.mulPose(Axis.YP.rotationDegrees(180));
+					case EAST -> poseStack.rotate(Axis.YP.rotationDegrees(90));
+					case WEST -> poseStack.rotate(Axis.YP.rotationDegrees(-90));
+					case SOUTH -> poseStack.rotate(Axis.YP.rotationDegrees(180));
 					<#if data.rotationMode == 2 || data.rotationMode == 4>
-						case UP -> poseStack.mulPose(Axis.XN.rotationDegrees(90));
-						case DOWN -> poseStack.mulPose(Axis.XN.rotationDegrees(-90));
+						case UP -> poseStack.rotate(Axis.XN.rotationDegrees(90));
+						case DOWN -> poseStack.rotate(Axis.XN.rotationDegrees(-90));
 					</#if>
 				}
 				<#if data.enablePitch && (data.rotationMode == 1 || data.rotationMode == 3)>
 				switch (state.getValue(${name}Block.FACE)) {
 					case FLOOR -> {}
-					case WALL -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
-					case CEILING -> poseStack.mulPose(Axis.XP.rotationDegrees(180));
+					case WALL -> poseStack.rotate(Axis.XP.rotationDegrees(90));
+					case CEILING -> poseStack.rotate(Axis.XP.rotationDegrees(180));
 				};
 				</#if>
 			<#else>
 				switch (state.getValue(${name}Block.AXIS)) {
-					case X -> poseStack.mulPose(Axis.ZN.rotationDegrees(90));
+					case X -> poseStack.rotate(Axis.ZN.rotationDegrees(90));
 					case Y -> {}
-					case Z -> poseStack.mulPose(Axis.XP.rotationDegrees(90));
+					case Z -> poseStack.rotate(Axis.XP.rotationDegrees(90));
 				}
 			</#if>
 		</#if>
 		poseStack.translate(0, -1, 0);
 		model.setupBlockEntityAnim(renderState.blockEntity, renderState.entityRenderState);
-		submitNodeCollector.submitModel(this.model, renderState.entityRenderState, poseStack, RenderTypes.entityCutout(texture), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
+		submitNodeCollector.submitModel(this.model, renderState.entityRenderState, poseStack, RenderTypes.entityCutout(texture), renderState.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 		poseStack.popPose();
 		</@javacompress>
 	}

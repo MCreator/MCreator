@@ -189,7 +189,7 @@ public class ${JavaModName}Items {
 	}
 
 	private static DeferredItem<Item> signBlock(DeferredHolder<Block, Block> block, DeferredHolder<Block, Block> wallBlock, Item.Properties properties) {
-		return REGISTRY.registerItem(block.getId().getPath(), prop -> new SignItem(block.get(), wallBlock.get(), prop), () -> properties);
+		return REGISTRY.registerItem(block.getId().getPath(), prop -> new StandingAndWallBlockItem(block.get(), wallBlock.get(), Direction.DOWN, prop), () -> properties);
 	}
 	</#if>
 
