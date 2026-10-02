@@ -24,16 +24,49 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Feature;
 import net.mcreator.workspace.Workspace;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 public class CoralFeaturesRemover implements IConverter {
 
 	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
+	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
+			throws Exception {
 		Feature feature = (Feature) input;
-		feature.featurexml = feature.featurexml.replace("<block type=\"feature_coral_claw\"",
-						"<block type=\"feature_no_op\"")
-				.replace("<block type=\"feature_coral_mushroom\"", "<block type=\"feature_no_op\"")
-				.replace("<block type=\"feature_coral_tree\"", "<block type=\"feature_no_op\"");
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newDefaultInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		Document doc = dBuilder.parse(new InputSource(new StringReader(feature.featurexml)));
+		doc.getDocumentElement().normalize();
+
+		NodeList nodeList = doc.getElementsByTagName("block");
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Element element = (Element) nodeList.item(i);
+			if ("feature_coral_claw".equals(element.getAttribute("type")) || "feature_coral_mushroom".equals(
+					element.getAttribute("type")) || "feature_coral_tree".equals(element.getAttribute("type"))) {
+				// Replace the block type with "feature_no_op"
+				element.setAttribute("type", "feature_no_op");
+			}
+		}
+
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		StringWriter writer = new StringWriter();
+		transformer.transform(new DOMSource(doc), new StreamResult(writer));
+
+		feature.featurexml = writer.getBuffer().toString();
+
 		return feature;
 	}
 
