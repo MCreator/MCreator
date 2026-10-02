@@ -253,6 +253,24 @@ import java.util.regex.Pattern;
 		return null;
 	}
 
+	/**
+	 * @param fieldName Field name to get provided dependencies of
+	 * @return Dependencies provided to the procedure selected in this field, in the "name:type/name:type" format.
+	 * Null if the field does not exist or does not specify dependencies.
+	 */
+	@Nullable public String getFieldDependencies(String fieldName) {
+		if (blocklyJSON.getAsJsonObject().has("args0")) {
+			JsonArray args0 = blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+			for (int i = 0; i < args0.size(); i++) {
+				JsonObject arg = args0.get(i).getAsJsonObject();
+				if (arg.has("name") && arg.get("name").getAsString().equals(fieldName) && arg.has("dependencies")) {
+					return arg.get("dependencies").getAsString();
+				}
+			}
+		}
+		return null;
+	}
+
 	String getGroupEstimate() {
 		if (this.group != null)
 			return this.group;

@@ -20,6 +20,7 @@ package net.mcreator.generator.blockly;
 
 import net.mcreator.blockly.*;
 import net.mcreator.blockly.data.*;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGenerator;
@@ -111,6 +112,23 @@ public class BlocklyBlockCodeGenerator {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 											L10N.t("blockly.errors.invalid_reference", fieldName, type,
 													fieldValue.replaceFirst("CUSTOM:", ""))));
+								}
+							}
+						} else if ("procedure".equals(toolboxBlock.getFieldDataList(fieldName))) {
+							Procedure procedure = new Procedure(fieldValue);
+							List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
+							if (!procedure.exists) {
+								master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+										L10N.t("blockly.errors.invalid_reference", fieldName, type, fieldValue)));
+							} else if (toolboxBlock.getFieldDependencies(fieldName) != null) {
+								List<Dependency> provided = List.of(
+										Dependency.fromString(toolboxBlock.getFieldDependencies(fieldName)));
+								String missing = dependencies.stream().filter(d -> !provided.contains(d))
+										.map(Dependency::name).collect(Collectors.joining(", "));
+								if (!missing.isEmpty()) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											L10N.t("blockly.errors.call_procedure_missing_deps", fieldValue,
+													missing)));
 								}
 							}
 						}
