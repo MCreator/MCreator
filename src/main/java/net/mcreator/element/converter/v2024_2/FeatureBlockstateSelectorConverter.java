@@ -30,8 +30,11 @@ public class FeatureBlockstateSelectorConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Feature feature = (Feature) input;
-		feature.featurexml = feature.featurexml.replace("<block type=\"mcitem_allblocks\"><field name=\"value\">",
-				"<block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\">");
+		// Block tag may have additional attributes (e.g. collapsed) before or after the type attribute,
+		// as XML re-serialized by earlier DOM-based converters has attributes sorted alphabetically
+		feature.featurexml = feature.featurexml.replaceAll(
+				"<block([^>]*) type=\"mcitem_allblocks\"([^>]*)><field name=\"value\"",
+				"<block$1 type=\"blockstate_selector\"$2><mutation inputs=\"0\"/><field name=\"block\"");
 		return feature;
 	}
 
