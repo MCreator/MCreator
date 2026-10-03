@@ -688,6 +688,7 @@ public class TestWorkspaceDataProvider {
 			tab.name = modElement.getName();
 			tab.icon = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 			tab.showSearch = _true;
+			tab.hideTitle = _true;
 			return tab;
 		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
 			Overlay overlay = new Overlay(modElement);
