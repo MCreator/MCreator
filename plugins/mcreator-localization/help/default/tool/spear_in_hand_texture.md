@@ -1,0 +1,1 @@
+Texture of the spear in the player's hand.
