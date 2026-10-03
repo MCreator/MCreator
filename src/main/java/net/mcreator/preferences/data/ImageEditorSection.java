@@ -21,15 +21,23 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.ColorEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
+
+import java.awt.*;
 
 public class ImageEditorSection extends PreferencesSection {
 
 	public final BooleanEntry storeMetadata;
+	public final ColorEntry selectedFramesColor;
+	public final IntegerEntry frameBorderThickness;
 
 	ImageEditorSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
 		storeMetadata = addEntry(new BooleanEntry("storeMetadata", true));
+		selectedFramesColor = addEntry(new ColorEntry("selectedFramesColor", new Color(75, 85, 197)));
+		frameBorderThickness = addEntry( new IntegerEntry("frameBorderThickness", 10, 0, 20));
 	}
 
 	@Override public String getSectionKey() {
