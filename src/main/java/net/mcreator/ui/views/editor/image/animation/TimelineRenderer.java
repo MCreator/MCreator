@@ -29,7 +29,7 @@ import java.awt.*;
 
 public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
 
-	private static final int BORDER_THICKNESS = PreferencesManager.PREFERENCES.imageEditor.frameBorderThickness.get();
+	private final int BORDER_THICKNESS = PreferencesManager.PREFERENCES.imageEditor.frameBorderThickness.get();
 
 	public TimelineRenderer() {
 		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
