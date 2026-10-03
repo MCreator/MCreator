@@ -1,6 +1,6 @@
 <#include "mcitems_json.ftl">
 <#function hasToolContext>
-  <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic">
+  <#return data.type == "Block" || data.type == "Fishing" || data.type == "Generic" || data.type == "Archaeology">
 </#function>
 {
   "type": "minecraft:${data.type?lower_case?replace(" ", "_")}",
@@ -39,39 +39,11 @@
           </#if>
           "weight": ${entry.weight},
           <#if entry.silkTouchMode == 1 && hasToolContext()>
-          "condition": {
-              "type": "minecraft:match_tool",
-              "predicate": {
-                "predicates": {
-                  "minecraft:enchantments": [
-                    {
-                      "enchantments": "minecraft:silk_touch",
-                      "levels": {
-                        "min": 1
-                      }
-                    }
-                  ]
-                }
-              }
-          },
+          "condition": "minecraft:tool/can_silk_touch",
           <#elseif entry.silkTouchMode == 2 && hasToolContext()>
           "condition": {
-              "type": "minecraft:inverted",
-              "term": {
-                "type": "minecraft:match_tool",
-                "predicate": {
-                  "predicates": {
-                    "minecraft:enchantments": [
-                      {
-                        "enchantments": "minecraft:silk_touch",
-                        "levels": {
-                          "min": 1
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
+            "type": "minecraft:inverted",
+            "term": "minecraft:tool/can_silk_touch"
           },
           </#if>
           "modifier": [
