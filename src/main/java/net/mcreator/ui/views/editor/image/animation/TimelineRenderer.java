@@ -29,10 +29,14 @@ import java.awt.*;
 
 public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
 
+	private static final int BORDER_THICKNESS = PreferencesManager.PREFERENCES.imageEditor.frameBorderThickness.get();
+
 	public TimelineRenderer() {
 		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
 		setPreferredSize(new Dimension(170, 170));
 		setOpaque(true);
+		setHorizontalAlignment(JLabel.CENTER);
+		setVerticalAlignment(JLabel.CENTER);
 	}
 
 	@Override
@@ -45,7 +49,7 @@ public class TimelineRenderer extends JLabel implements ListCellRenderer<Animati
 		} else {
 			setBackground(Color.gray);
 		}
-		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 170)));
+		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 170 - (BORDER_THICKNESS * 2))));
 
 		return this;
 	}
