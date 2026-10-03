@@ -31,6 +31,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
@@ -92,12 +93,13 @@ import java.util.List;
 	}
 
 	public boolean hasButtonEvents() {
+		Workspace workspace = getModElement().getWorkspace();
 		for (GUIComponent component : components) {
 			if (component instanceof Button button) {
-				if (button.onClick != null && button.onClick.getName() != null)
+				if (Procedure.hasProcedure(button.onClick, workspace))
 					return true;
 			} else if (component instanceof ImageButton imageButton) {
-				if (imageButton.onClick != null && imageButton.onClick.getName() != null)
+				if (Procedure.hasProcedure(imageButton.onClick, workspace))
 					return true;
 			}
 		}
@@ -105,9 +107,10 @@ import java.util.List;
 	}
 
 	public boolean hasSliderEvents() {
+		Workspace workspace = getModElement().getWorkspace();
 		for (GUIComponent component : components) {
 			if (component instanceof Slider slider) {
-				if (slider.whenSliderMoves != null && slider.whenSliderMoves.getName() != null)
+				if (Procedure.hasProcedure(slider.whenSliderMoves, workspace))
 					return true;
 			}
 		}
@@ -115,13 +118,11 @@ import java.util.List;
 	}
 
 	public boolean hasSlotEvents() {
+		Workspace workspace = getModElement().getWorkspace();
 		for (GUIComponent component : components)
-			if (component instanceof Slot)
-				if ((((Slot) component).onSlotChanged != null && ((Slot) component).onSlotChanged.getName() != null)
-						|| (((Slot) component).onTakenFromSlot != null
-						&& ((Slot) component).onTakenFromSlot.getName() != null) || (
-						((Slot) component).onStackTransfer != null
-								&& ((Slot) component).onStackTransfer.getName() != null))
+			if (component instanceof Slot slot)
+				if (Procedure.hasProcedure(slot.onSlotChanged, workspace) || Procedure.hasProcedure(
+						slot.onTakenFromSlot, workspace) || Procedure.hasProcedure(slot.onStackTransfer, workspace))
 					return true;
 		return false;
 	}
