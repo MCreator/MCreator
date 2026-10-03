@@ -26,12 +26,17 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.IntSupplier;
 
 public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
 
 	private final int BORDER_THICKNESS = PreferencesManager.PREFERENCES.imageEditor.frameBorderThickness.get();
 
-	public TimelineRenderer() {
+	private final IntSupplier currentFrameSupplier;
+
+	public TimelineRenderer(IntSupplier currentFrameSupplier) {
+		this.currentFrameSupplier = currentFrameSupplier;
+
 		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
 		setPreferredSize(new Dimension(170, 170));
 		setOpaque(true);
@@ -42,7 +47,7 @@ public class TimelineRenderer extends JLabel implements ListCellRenderer<Animati
 	@Override
 	public Component getListCellRendererComponent(JList<? extends AnimationMakerView.AnimationFrame> list,
 			AnimationMakerView.AnimationFrame value, int index, boolean isSelected, boolean cellHasFocus) {
-		if (cellHasFocus) {
+		if (index == currentFrameSupplier.getAsInt()) {
 			setBackground(Theme.current().getInterfaceAccentColor());
 		} else if (isSelected) {
 			setBackground(PreferencesManager.PREFERENCES.imageEditor.selectedFramesColor.get());

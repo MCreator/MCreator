@@ -156,7 +156,6 @@ public class AnimationMakerView extends ViewBase {
 					SwingUtilities.invokeLater(() -> {
 						prv.setIcon(
 								new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
-						timeline.setSelectedIndex(animindex);
 						timeline.repaint();
 					});
 				}
@@ -312,7 +311,7 @@ public class AnimationMakerView extends ViewBase {
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		timeline.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		timeline.setVisibleRowCount(1);
-		timeline.setCellRenderer(new TimelineRenderer());
+		timeline.setCellRenderer(new TimelineRenderer(() -> animindex));
 		timeline.setOpaque(false);
 		JScrollPane pan = new JScrollPane(timeline);
 		pan.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
