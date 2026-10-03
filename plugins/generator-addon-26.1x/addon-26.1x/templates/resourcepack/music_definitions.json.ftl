@@ -1,5 +1,5 @@
 {
-  <#list sounds?filter(e -> e.getCategory() == "music") as sound>
+  <#list sounds?filter(e -> e.getBECategory() == "music") as sound>
   	"${modid}:${sound.getName()}": {
 	  "event_name": "${modid}:${sound.getName()}",
 	  "min_delay": 60,

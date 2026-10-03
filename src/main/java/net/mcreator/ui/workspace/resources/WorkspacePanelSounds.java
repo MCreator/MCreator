@@ -31,6 +31,9 @@ import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +61,13 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 			}
 		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), _ -> deleteCurrentlySelected());
+
+		elementList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2)
+					editSelectedSound(elementList.getSelectedValue());
+			}
+		});
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {
@@ -127,13 +137,13 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 			name.setText(ma.getName());
 
+			List<String> sounds = ma.getFiles().stream().map(SoundElement.Sound::getName).toList();
+
 			if (ma.getSubtitle() != null && !ma.getSubtitle().isEmpty()) {
-				name2.setText(
-						L10N.t("workspace.sounds.files_and_category_and_subtitle", String.join(", ", ma.getFiles()),
-								ma.getCategory(), ma.getSubtitle()));
+				name2.setText(L10N.t("workspace.sounds.files_and_category_and_subtitle", String.join(", ", sounds),
+						ma.getSubtitle()));
 			} else {
-				name2.setText(L10N.t("workspace.sounds.files_and_category", String.join(", ", ma.getFiles()),
-						ma.getCategory()));
+				name2.setText(L10N.t("workspace.sounds.files_and_category", String.join(", ", sounds)));
 			}
 
 			return this;
