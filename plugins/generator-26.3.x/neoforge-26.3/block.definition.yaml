@@ -576,10 +576,6 @@ global_templates:
   - template: elementinits/woodtypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWoodTypes.java"
     condition: "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
-  - template: block/transformables.json.ftl
-    writer: json
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.hasStrippingResult())?size != 0}"
-    name: "@RESROOT/data/neoforge/data_maps/block/transformables.json"
 
 list_templates:
   - name: "Block states"

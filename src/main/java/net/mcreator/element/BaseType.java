@@ -29,7 +29,8 @@ public enum BaseType {
 	ITEM,
 	ENTITY,
 	FEATURE,
-	CONFIGUREDFEATURE;
+	CONFIGUREDFEATURE,
+	TRANSFORMABLE;
 	// @formatter:on
 
 	public String getPluralName() {

@@ -1,7 +1,7 @@
 <#include "../mcitems.ftl">
 {
   "values": {
-    <#list blocks?filter(e -> e.hasStrippingResult()) as block>
+    <#list transformables as block>
     "${modid}:${block.getModElement().getRegistryName()}": {
       "transformer": "minecraft:axe",
       "transform_data": {
