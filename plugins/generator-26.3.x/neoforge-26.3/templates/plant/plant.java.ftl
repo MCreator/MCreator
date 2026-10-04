@@ -98,7 +98,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		.strength(${data.hardness}f, ${data.resistance}f)
 		</#if>
 		<#if data.emissiveRendering>
-		.postProcess((bs, br, bp) -> bp).emissiveRendering((bs, br, bp) -> true)
+		.postProcess((bs, br, bp) -> bp).emissiveRendering(bs -> true)
 		</#if>
 		<#if data.speedFactor != 1.0>
 		.speedFactor(${data.speedFactor}f)
@@ -124,7 +124,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		<#if data.offsetType != "NONE">
 		.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
 		</#if>
-		.pushReaction(PushReaction.DESTROY)
+		.pushReaction(PushReaction.POPPED)
 		);
 
 		<#if data.isWaterloggable()>
@@ -177,15 +177,6 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return ${data.fireSpreadSpeed};
-	}
-	</#if>
-
-	<#if data.strippingResult?? && !data.strippingResult.isEmpty()>
-	@Override public BlockState getToolModifiedState(BlockState blockstate, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-		if (ItemAbilities.AXE_STRIP == itemAbility && context.getItemInHand().canPerformAction(itemAbility)) {
-			return ${mappedBlockToBlock(data.strippingResult)}.withPropertiesOf(blockstate);
-		}
-		return super.getToolModifiedState(blockstate, context, itemAbility, simulate);
 	}
 	</#if>
 
@@ -391,21 +382,21 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 					List.of(new BlockTintSource() {
 						@Override public int color(BlockState state) { return 8562943; }
 						@Override public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-							return Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, 0);
+							return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, 0));
 						}
 					})
 				<#elseif data.tintType == "Fog">
 					List.of(new BlockTintSource() {
 						@Override public int color(BlockState state) { return 12638463; }
 						@Override public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-							return Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.FOG_COLOR, 0);
+							return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.FOG_COLOR, 0));
 						}
 					})
 				<#else>
 					List.of(new BlockTintSource() {
 						@Override public int color(BlockState state) { return 329011; }
 						@Override public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-							return Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_COLOR, 0);
+							return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_COLOR, 0));
 						}
 					})
 				</#if>,
