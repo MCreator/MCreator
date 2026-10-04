@@ -14,7 +14,7 @@ templates:
   - template: plant/configured_plantgen.json.ftl
     writer: json
     condition: generateFeature
-    name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
+    name: "@MODDATAROOT/worldgen/feature/@registryname.json"
   - template: plant/placed_plantgen.json.ftl
     writer: json
     condition: generateFeature

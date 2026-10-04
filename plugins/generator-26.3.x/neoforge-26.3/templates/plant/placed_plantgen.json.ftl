@@ -47,18 +47,24 @@
       "count": ${data.patchSize}
     },
     {
-      "type": "minecraft:random_offset",
-      "xz_spread": {
+      "type": "minecraft:offset",
+      "x": {
         "type": "minecraft:trapezoid",
         "plateau": 0,
         "min": -7,
         "max": 7
       },
-      "y_spread": {
+      "y": {
         "type": "minecraft:trapezoid",
         "plateau": 0,
         "min": -3,
         "max": 3
+      },
+      "z": {
+        "type": "minecraft:trapezoid",
+        "plateau": 0,
+        "min": -7,
+        "max": 7
       }
     },
     {
@@ -73,9 +79,7 @@
           },
           {
             "type": "minecraft:would_survive",
-            "state": {
-              "Name": "${modid}:${registryname}"
-            }
+            "state": "${modid}:${registryname}"
           }
         ]
         <#else>
