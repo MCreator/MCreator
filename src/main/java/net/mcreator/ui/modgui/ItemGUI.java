@@ -650,7 +650,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
-			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "MATERIALS")));
 		}
 	}
 

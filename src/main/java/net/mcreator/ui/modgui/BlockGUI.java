@@ -467,6 +467,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				if ((int) maxStackSize.getValue() == 16) {
 					maxStackSize.setValue(64);
 				}
+				// Reset creative tab to "Building blocks"
+				creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 			}
 
 			if (hasBlockBase) {
@@ -478,7 +480,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 					isNotColidable.setSelected(false);
 					reactionToPushing.setSelectedItem("NORMAL");
 					ignitedByLava.setSelected(false);
-					creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 				}
 
 				String selectedBlockBase = blockBase.getSelectedItem();
