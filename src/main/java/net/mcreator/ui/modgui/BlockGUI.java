@@ -571,6 +571,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 								|| "EndRod".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
 						}
+						if ("EndRod".equals(selectedBlockBase)) {
+							creativeTabs.setListElements(
+									List.of(new TabEntry(mcreator.getWorkspace(), "TRANSPORTATION")));
+						}
 					}
 				}
 				}
