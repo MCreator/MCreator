@@ -40,7 +40,6 @@ package ${package}.client.renderer.item;
 	private final ItemStack transformSource;
 
 	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
-	private final long start;
 
 	private final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
 
@@ -48,8 +47,6 @@ package ${package}.client.renderer.item;
 		super(blockEntityRenderDispatcher, entityModelSet);
 		this.entityModelSet = entityModelSet;
 		this.transformSource = new ItemStack(${JavaModName}Items.${REGISTRYNAME}.get());
-
-		this.start = System.currentTimeMillis();
 
 		<#if data.hasCustomJAVAModel()>
 			<#if data.animations?has_content>
@@ -66,6 +63,8 @@ package ${package}.client.renderer.item;
 	}
 
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+		Minecraft mc = Minecraft.getInstance();
+
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
 		</#if>
@@ -76,7 +75,7 @@ package ${package}.client.renderer.item;
 			<#if model.hasCustomJAVAModel()>
 			if (<#list model.stateMap.entrySet() as entry>
 					ItemProperties.getProperty(itemstack, ResourceLocation.parse("${generator.map(entry.getKey().getPrefixedName(registryname + "_"), "itemproperties")}"))
-						.call(itemstack, Minecraft.getInstance().level, Minecraft.getInstance().player, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
+						.call(itemstack, mc.level, mc.player, 0) >= ${entry.getValue()?is_boolean?then(entry.getValue()?then("1", "0"), entry.getValue())}
 				<#sep> && </#list>) {
 				model = models.get(${model?index + 1});
 				texture = ResourceLocation.parse("${model.texture.format("%s:textures/item/%s")}.png");
@@ -86,16 +85,17 @@ package ${package}.client.renderer.item;
 		if (model == null) return;
 
 		poseStack.pushPose();
-		Minecraft.getInstance().getItemRenderer().getModel(this.transformSource, null, null, 0).applyTransform(displayContext, poseStack, isLeftHand(displayContext));
+		mc.getItemRenderer().getModel(this.transformSource, null, null, 0).applyTransform(displayContext, poseStack, isLeftHand(displayContext));
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
+		float ageInTicks = (float) mc.level.getGameTime() + mc.getTimer().getGameTimeDeltaPartialTick(false);
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
-			animatedModel.setupItemStackAnim(itemstack, (System.currentTimeMillis() - start) / 50.0f);
+			animatedModel.setupItemStackAnim(itemstack, ageInTicks);
 		else
 		</#if>
-		model.setupAnim(null, 0, 0, (System.currentTimeMillis() - start) / 50.0f, 0, 0);
+		model.setupAnim(null, 0, 0, ageInTicks, 0, 0);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
@@ -116,16 +116,17 @@ package ${package}.client.renderer.item;
 	}
 
 	private void updateRenderState(ItemStack itemstack) {
-		int tickCount = (int) (System.currentTimeMillis() - start) / 50;
+		Minecraft mc = Minecraft.getInstance();
+		int tickCount = (int) mc.level.getGameTime();
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
 				getAnimationState(itemstack).get(${animation?index}).animateWhen(<@procedureCode animation.condition, {
 					"itemstack": "itemstack",
-					"x": "Minecraft.getInstance().player.getX()",
-					"y": "Minecraft.getInstance().player.getY()",
-					"z": "Minecraft.getInstance().player.getZ()",
-					"entity": "Minecraft.getInstance().player",
-					"world": "Minecraft.getInstance().level"
+					"x": "mc.player.getX()",
+					"y": "mc.player.getY()",
+					"z": "mc.player.getZ()",
+					"entity": "mc.player",
+					"world": "mc.level"
 				}, false/>, tickCount);
 			<#else>
 				getAnimationState(itemstack).get(${animation?index}).animateWhen(true, tickCount);
