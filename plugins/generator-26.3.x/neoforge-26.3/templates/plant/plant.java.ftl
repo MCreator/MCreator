@@ -448,7 +448,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		<@toWeightedList tree tree2 secondaryChance/>,
 		<@toWeightedList megaTree megaTree2 secondaryChance/>,
 		<@toWeightedList flowerTree flowerTree2 secondaryChance/>,
-		null);
+		<#if tree?has_content>getFeatureKey("${tree}")<#elseif tree2?has_content>getFeatureKey("${tree2}")<#else>null</#if>);
 </#macro>
 
 <#macro toWeightedList tree="" tree2="" secondaryChance=0>
