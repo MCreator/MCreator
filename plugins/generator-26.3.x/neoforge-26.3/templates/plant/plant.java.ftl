@@ -57,7 +57,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	</#if>
 
 	<#if data.plantType == "sapling">
-	public static final TreeGrower TREE_GROWER = <@toTreeGrower (data.secondaryTreeChance*100) data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
+	public static final TreeGrower TREE_GROWER = <@toTreeGrower (data.secondaryTreeChance*100)?int data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
 	</#if>
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
