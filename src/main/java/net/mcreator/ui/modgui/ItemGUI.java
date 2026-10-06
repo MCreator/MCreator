@@ -310,7 +310,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(14, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(11, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -358,18 +358,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.can_destroy_any_block")));
 		subpane2.add(destroyAnyBlock);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
-				L10N.label("elementgui.item.container_item")));
-		subpane2.add(stayInGridWhenCrafting);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.item.container_item_damage")));
-		subpane2.add(damageOnCrafting);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"),
-				L10N.label("elementgui.item.recipe_remainder")));
-		subpane2.add(PanelUtils.centerInPanel(recipeRemainder));
-
 		enchantability.setOpaque(false);
 		useDuration.setOpaque(false);
 		toolType.setOpaque(false);
@@ -378,9 +366,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		immuneToFire.setOpaque(false);
 		isPiglinCurrency.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
-		stayInGridWhenCrafting.setOpaque(false);
-		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
-		damageOnCrafting.setOpaque(false);
 
 		updateDamageDependantSettings();
 
@@ -608,10 +593,30 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateMeleePanel();
 
+		JPanel craftingPanel = new JPanel(new GridLayout(3, 2, 35, 2));
+		craftingPanel.setOpaque(false);
+		ComponentUtils.makeSection(craftingPanel, L10N.t("elementgui.item.crafting_properties"));
+
+		craftingPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
+				L10N.label("elementgui.item.container_item")));
+		craftingPanel.add(stayInGridWhenCrafting);
+
+		craftingPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
+				L10N.label("elementgui.item.container_item_damage")));
+		craftingPanel.add(damageOnCrafting);
+
+		craftingPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/recipe_remainder"),
+				L10N.label("elementgui.item.recipe_remainder")));
+		craftingPanel.add(PanelUtils.centerInPanel(recipeRemainder));
+
+		stayInGridWhenCrafting.setOpaque(false);
+		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
+		damageOnCrafting.setOpaque(false);
+
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.pullElementUp(
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
-				PanelUtils.pullElementUp(meleePanel), 5, 5)));
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(meleePanel, craftingPanel)), 5, 5)));
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/attribute_modifiers"),
