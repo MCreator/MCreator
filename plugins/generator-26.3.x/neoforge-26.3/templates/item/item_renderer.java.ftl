@@ -85,8 +85,8 @@ package ${package}.client.renderer.item;
 	@Override public void submit(ItemStack itemstack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean glint, int outlineColor) {
 		Minecraft mc = Minecraft.getInstance();
 
-		if (this.start == -1)
-			this.start = Minecraft.getInstance().level.getGameTime();
+		if (this.start == -1 || this.start > mc.level.getGameTime())
+			this.start = mc.level.getGameTime();
 
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);

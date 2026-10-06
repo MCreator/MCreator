@@ -66,7 +66,7 @@ package ${package}.client.renderer.item;
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		Minecraft mc = Minecraft.getInstance();
 
-		if (this.start == -1)
+		if (this.start == -1 || this.start > mc.level.getGameTime())
 			this.start = mc.level.getGameTime();
 
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
