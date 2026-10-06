@@ -36,6 +36,7 @@
 
 package ${package}.block;
 
+import net.minecraft.util.random.Weighted;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <@javacompress>
@@ -56,7 +57,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	</#if>
 
 	<#if data.plantType == "sapling">
-	public static final TreeGrower TREE_GROWER = <@toTreeGrower data.secondaryTreeChance data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
+	public static final TreeGrower TREE_GROWER = <@toTreeGrower (data.secondaryTreeChance*100)?int data.megaTrees[0] data.megaTrees[1] data.trees[0] data.trees[1] data.flowerTrees[0] data.flowerTrees[1]/>
 	</#if>
 
 	<#if data.customBoundingBox && data.boundingBoxes??>
@@ -98,7 +99,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		.strength(${data.hardness}f, ${data.resistance}f)
 		</#if>
 		<#if data.emissiveRendering>
-		.postProcess((bs, br, bp) -> bp).emissiveRendering((bs, br, bp) -> true)
+		.postProcess((bs, br, bp) -> bp).emissiveRendering(bs -> true)
 		</#if>
 		<#if data.speedFactor != 1.0>
 		.speedFactor(${data.speedFactor}f)
@@ -124,7 +125,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 		<#if data.offsetType != "NONE">
 		.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
 		</#if>
-		.pushReaction(PushReaction.DESTROY)
+		.pushReaction(PushReaction.POPPED)
 		);
 
 		<#if data.isWaterloggable()>
@@ -177,15 +178,6 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
 		return ${data.fireSpreadSpeed};
-	}
-	</#if>
-
-	<#if data.strippingResult?? && !data.strippingResult.isEmpty()>
-	@Override public BlockState getToolModifiedState(BlockState blockstate, UseOnContext context, ItemAbility itemAbility, boolean simulate) {
-		if (ItemAbilities.AXE_STRIP == itemAbility && context.getItemInHand().canPerformAction(itemAbility)) {
-			return ${mappedBlockToBlock(data.strippingResult)}.withPropertiesOf(blockstate);
-		}
-		return super.getToolModifiedState(blockstate, context, itemAbility, simulate);
 	}
 	</#if>
 
@@ -353,8 +345,8 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	</#if>
 
 	<#if data.plantType == "sapling">
-	private static ResourceKey<ConfiguredFeature<?, ?>> getFeatureKey(String feature) {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, Identifier.parse(feature));
+	private static ResourceKey<Feature> getFeatureKey(String feature) {
+		return ResourceKey.create(Registries.FEATURE, Identifier.parse(feature));
 	}
 	</#if>
 
@@ -391,21 +383,21 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 					List.of(new BlockTintSource() {
 						@Override public int color(BlockState state) { return 8562943; }
 						@Override public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-							return Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, 0);
+							return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, 0));
 						}
 					})
 				<#elseif data.tintType == "Fog">
 					List.of(new BlockTintSource() {
 						@Override public int color(BlockState state) { return 12638463; }
 						@Override public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-							return Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.FOG_COLOR, 0);
+							return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.FOG_COLOR, 0));
 						}
 					})
 				<#else>
 					List.of(new BlockTintSource() {
 						@Override public int color(BlockState state) { return 329011; }
 						@Override public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-							return Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_COLOR, 0);
+							return ARGB.colorFromVector3f(Minecraft.getInstance().gameRenderer.mainCamera().attributeProbe().getValue(EnvironmentAttributes.WATER_FOG_COLOR, 0));
 						}
 					})
 				</#if>,
@@ -452,21 +444,22 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 </#macro>
 
 <#macro toTreeGrower secondaryChance megaTree="" megaTree2="" tree="" tree2="" flowerTree="" flowerTree2="">
-	<#if (megaTree2?has_content || tree2?has_content || flowerTree2?has_content) && secondaryChance != 0>
-	new TreeGrower("${registryname}", ${secondaryChance}f,
-		<@toOptionalTree megaTree/>, <@toOptionalTree megaTree2/>, <@toOptionalTree tree/>,
-		<@toOptionalTree tree2/>, <@toOptionalTree flowerTree/>, <@toOptionalTree flowerTree2/>
-	);
-	<#else>
-	new TreeGrower("${registryname}", <@toOptionalTree megaTree/>, <@toOptionalTree tree/>, <@toOptionalTree flowerTree/>);
-	</#if>
+	new TreeGrower("${registryname}",
+		<@toWeightedList tree tree2 secondaryChance/>,
+		<@toWeightedList megaTree megaTree2 secondaryChance/>,
+		<@toWeightedList flowerTree flowerTree2 secondaryChance/>,
+		<#if tree?has_content>getFeatureKey("${tree}")<#elseif tree2?has_content && secondaryChance != 0>getFeatureKey("${tree2}")<#else>null</#if>);
 </#macro>
 
-<#macro toOptionalTree tree="">
-	<#if tree?has_content>
-	Optional.of(getFeatureKey("${tree}"))
-	<#else>
-	Optional.empty()
+<#macro toWeightedList tree="" tree2="" secondaryChance=0>
+	<#if tree == "" && (tree2 == "" || secondaryChance == 0)> <#-- Neither trees are defined -->
+	WeightedList.of()
+	<#elseif tree?has_content> <#-- Primary tree is defined -->
+		<#if tree2?has_content && secondaryChance != 0>WeightedList.of(new Weighted<>(getFeatureKey("${tree}"), ${100 - secondaryChance}), new Weighted<>(getFeatureKey("${tree2}"), ${secondaryChance}))
+		<#else>WeightedList.of(getFeatureKey("${tree}"))
+		</#if>
+	<#else> <#-- Only secondary tree is defined -->
+	WeightedList.of(getFeatureKey("${tree2}"))
 	</#if>
 </#macro>
 

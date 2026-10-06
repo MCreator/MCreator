@@ -555,6 +555,12 @@ import java.util.stream.Collectors;
 						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
 		}
 
+		if (hasStrippingResult() &&
+				ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+						.compareTo(ModuleDescriptor.Version.parse("26.3")) >= 0) {
+			baseTypes.add(BaseType.TRANSFORMABLE);
+		}
+
 		if (hasInventory)
 			baseTypes.add(BaseType.BLOCKENTITY);
 
