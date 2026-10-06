@@ -40,6 +40,7 @@ package ${package}.client.renderer.item;
 	private final ItemStack transformSource;
 
 	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
+	private long start = -1;
 
 	private final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
 
@@ -65,6 +66,9 @@ package ${package}.client.renderer.item;
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		Minecraft mc = Minecraft.getInstance();
 
+		if (this.start == -1)
+			this.start = mc.level.getGameTime();
+
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
 		</#if>
@@ -89,13 +93,12 @@ package ${package}.client.renderer.item;
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
-		float ageInTicks = (float) mc.level.getGameTime() + mc.getTimer().getGameTimeDeltaPartialTick(false);
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
-			animatedModel.setupItemStackAnim(itemstack, ageInTicks);
+			animatedModel.setupItemStackAnim(itemstack, (mc.level.getGameTime() - start) + mc.getTimer().getGameTimeDeltaPartialTick(false));
 		else
 		</#if>
-		model.setupAnim(null, 0, 0, ageInTicks, 0, 0);
+		model.setupAnim(null, 0, 0, (mc.level.getGameTime() - start) + mc.getTimer().getGameTimeDeltaPartialTick(false), 0, 0);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
@@ -117,7 +120,7 @@ package ${package}.client.renderer.item;
 
 	private void updateRenderState(ItemStack itemstack) {
 		Minecraft mc = Minecraft.getInstance();
-		int tickCount = (int) mc.level.getGameTime();
+		int tickCount = (int) (mc.level.getGameTime() - start);
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
 				getAnimationState(itemstack).get(${animation?index}).animateWhen(<@procedureCode animation.condition, {
