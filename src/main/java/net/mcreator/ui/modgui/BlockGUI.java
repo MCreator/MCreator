@@ -467,6 +467,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				if ((int) maxStackSize.getValue() == 16) {
 					maxStackSize.setValue(64);
 				}
+				// Reset creative tab to "Building blocks"
+				creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 			}
 
 			if (hasBlockBase) {
@@ -503,6 +505,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 						hasTransparency.setSelected(true);
 						ignitedByLava.setSelected(true);
+						creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "DECORATIONS")));
 					}
 				}
 				case "TrapDoor" -> {
@@ -559,6 +562,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						hasTransparency.setSelected(true);
 						isNotColidable.setSelected(true);
 						maxStackSize.setValue(16);
+						creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TRANSPORTATION")));
 					}
 				}
 				case null, default -> {
@@ -566,6 +570,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 						if ("Wall".equals(selectedBlockBase) || "FenceGate".equals(selectedBlockBase)
 								|| "EndRod".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
+						}
+						if ("EndRod".equals(selectedBlockBase)) {
+							creativeTabs.setListElements(
+									List.of(new TabEntry(mcreator.getWorkspace(), "TRANSPORTATION")));
 						}
 					}
 				}
@@ -1471,6 +1479,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 		}
 
 		updateSoundType();

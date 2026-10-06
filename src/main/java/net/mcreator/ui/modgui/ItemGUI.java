@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.ItemUseAnimation;
 import net.mcreator.element.parts.ProjectileEntry;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
 import net.mcreator.generator.mapping.NonMappableElement;
@@ -63,6 +64,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -675,18 +677,15 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 	private void updateFoodPanel() {
-		if (isFood.isSelected()) {
-			nutritionalValue.setEnabled(true);
-			saturation.setEnabled(true);
-			isMeat.setEnabled(true);
-			isAlwaysEdible.setEnabled(true);
-			eatResultItem.setEnabled(true);
-		} else {
-			nutritionalValue.setEnabled(false);
-			saturation.setEnabled(false);
-			isMeat.setEnabled(false);
-			isAlwaysEdible.setEnabled(false);
-			eatResultItem.setEnabled(false);
+		boolean foodSelected = isFood.isSelected();
+		nutritionalValue.setEnabled(foodSelected);
+		saturation.setEnabled(foodSelected);
+		isMeat.setEnabled(foodSelected);
+		isAlwaysEdible.setEnabled(foodSelected);
+		eatResultItem.setEnabled(foodSelected);
+		if (!isEditingMode()) {
+			creativeTabs.setListElements(
+					List.of(new TabEntry(mcreator.getWorkspace(), foodSelected ? "FOOD" : "MATERIALS")));
 		}
 	}
 
