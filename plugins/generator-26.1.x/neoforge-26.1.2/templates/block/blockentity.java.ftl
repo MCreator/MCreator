@@ -49,11 +49,22 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		<#list data.animations as animation>
 		public final AnimationState animationState${animation?index} = new AnimationState();
 		</#list>
+
+		private long tickCountStart = -1;
 	</#if>
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
+
+	<#if data.renderType() == 4>
+	public int getTickCount() {
+		long gameTime = this.level.getGameTime();
+		if (this.tickCountStart == -1)
+			this.tickCountStart = gameTime;
+		return (int) (gameTime - this.tickCountStart);
+	}
+	</#if>
 
 	<#if !data.inventoryDropWhenDestroyed>
 	@Override public void preRemoveSideEffects(BlockPos blockpos, BlockState blockstate) {

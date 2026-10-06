@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly.java.blocks;
+package net.mcreator.blockly.javascript.blocks;
 
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
@@ -26,7 +27,6 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 public class LoopBlock implements IBlockGenerator {
 
@@ -35,10 +35,10 @@ public class LoopBlock implements IBlockGenerator {
 		Element statement = XMLUtil.getFirstChildrenWithName(block, "statement");
 
 		if (value != null && statement != null) {
-			int index = getNestingLevel(block);
+			int index = net.mcreator.blockly.java.blocks.LoopBlock.getNestingLevel(block);
 
-			master.append("for (int _i").append(index).append(" = 0; _i").append(index).append("<");
-			master.processOutputBlockToInt(value);
+			master.append("for (let _i").append(index).append(" = 0; _i").append(index).append("<");
+			master.processOutputBlockWithoutParentheses(value);
 			master.append("; _i").append(index).append("++) {");
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
 			master.append("}");
@@ -46,19 +46,6 @@ public class LoopBlock implements IBlockGenerator {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_loop")));
 		}
-	}
-
-	public static int getNestingLevel(Element block) {
-		int level = 1;
-		Node node = block;
-		while (node.getParentNode() != null) {
-			Node parent = node.getParentNode();
-			if ("statement".equals(node.getNodeName()) && parent instanceof Element parentElement
-					&& "controls_repeat_ext".equals(parentElement.getAttribute("type")))
-				level++;
-			node = parent;
-		}
-		return level;
 	}
 
 	@Override public String[] getSupportedBlocks() {
