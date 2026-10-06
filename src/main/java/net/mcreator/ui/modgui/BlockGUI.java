@@ -821,8 +821,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
-
-		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -977,16 +976,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.soundtypes.step_sound")));
 		soundProperties.add(stepSound);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
-				L10N.label("elementgui.common.tick_rate")));
-		advancedProperties.add(tickRate);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_randomly"),
-				L10N.label("elementgui.block.tick_randomly")));
-		advancedProperties.add(tickRandomly);
-
-		tickRandomly.addActionListener(_ -> tickRate.setEnabled(!tickRandomly.isSelected()));
-
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
 				L10N.label("elementgui.block.color_on_map")));
 		advancedProperties.add(colorOnMap);
@@ -1097,7 +1086,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onEntityFallsOn);
 		events.add(new JEmptyBox());
 
-		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
+		JPanel tickingSettings = new JPanel(new GridLayout(2, 2, 10, 2));
+		tickingSettings.setOpaque(false);
+
+		tickingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
+				L10N.label("elementgui.common.tick_rate")));
+		tickingSettings.add(tickRate);
+
+		tickingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_randomly"),
+				L10N.label("elementgui.block.tick_randomly")));
+		tickingSettings.add(tickRandomly);
+
+		tickRandomly.addActionListener(_ -> tickRate.setEnabled(!tickRandomly.isSelected()));
+
+		pane4.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, tickingSettings), events)));
 
 		pane4.setOpaque(false);
 
