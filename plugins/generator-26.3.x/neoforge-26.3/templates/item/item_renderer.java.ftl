@@ -73,6 +73,7 @@ package ${package}.client.renderer.item;
 	private final ItemDisplayContext displayContext;
 
 	private final LivingEntityRenderState renderState;
+	private long previousTime = -1;
 	private long start = -1;
 
 	private ${name}ItemRenderer(EntityModel<LivingEntityRenderState> model, Identifier texture, ItemDisplayContext displayContext) {
@@ -85,8 +86,10 @@ package ${package}.client.renderer.item;
 	@Override public void submit(ItemStack itemstack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean glint, int outlineColor) {
 		Minecraft mc = Minecraft.getInstance();
 
-		if (this.start == -1 || this.start > mc.level.getGameTime())
-			this.start = mc.level.getGameTime();
+		long gameTime = mc.level.getGameTime();
+		if (this.start == -1 || Math.abs(gameTime - previousTime) > 100)
+			this.start = gameTime;
+		this.previousTime = gameTime;
 
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
@@ -96,7 +99,7 @@ package ${package}.client.renderer.item;
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 
-		renderState.ageInTicks = (mc.level.getGameTime() - start) + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
+		renderState.ageInTicks = (gameTime - start) + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
 			animatedModel.setupItemStackAnim(this, itemstack, renderState);

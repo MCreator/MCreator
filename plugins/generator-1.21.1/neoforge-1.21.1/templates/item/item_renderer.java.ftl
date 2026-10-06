@@ -40,6 +40,7 @@ package ${package}.client.renderer.item;
 	private final ItemStack transformSource;
 
 	private final Map<Integer, EntityModel<?>> models = new HashMap<>();
+	private long previousTime = -1;
 	private long start = -1;
 
 	private final ResourceLocation DEFAULT_TEXTURE = ResourceLocation.parse("${data.texture.format("%s:textures/item/%s")}.png");
@@ -66,8 +67,10 @@ package ${package}.client.renderer.item;
 	@Override public void renderByItem(ItemStack itemstack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		Minecraft mc = Minecraft.getInstance();
 
-		if (this.start == -1 || this.start > mc.level.getGameTime())
-			this.start = mc.level.getGameTime();
+		long gameTime = mc.level.getGameTime();
+		if (this.start == -1 || Math.abs(gameTime - previousTime) > 100)
+			this.start = gameTime;
+		this.previousTime = gameTime;
 
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
@@ -95,10 +98,10 @@ package ${package}.client.renderer.item;
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
-			animatedModel.setupItemStackAnim(itemstack, (mc.level.getGameTime() - start) + mc.getTimer().getGameTimeDeltaPartialTick(false));
+			animatedModel.setupItemStackAnim(itemstack, (gameTime - start) + mc.getTimer().getGameTimeDeltaPartialTick(false));
 		else
 		</#if>
-		model.setupAnim(null, 0, 0, (mc.level.getGameTime() - start) + mc.getTimer().getGameTimeDeltaPartialTick(false), 0, 0);
+		model.setupAnim(null, 0, 0, (gameTime - start) + mc.getTimer().getGameTimeDeltaPartialTick(false), 0, 0);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
