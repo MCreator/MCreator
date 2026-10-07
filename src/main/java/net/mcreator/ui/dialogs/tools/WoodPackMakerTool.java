@@ -114,8 +114,6 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(name);
 
 		// Textures page
-		JPanel texturesPanel = new JPanel(new GridLayout(7, 4, 5, 2));
-
 		logSideTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 		logTopTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 		strippedLogSideTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
@@ -136,54 +134,57 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		chestBoatItemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		chestBoatEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true).setAddPNGExtension(false);
 
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.log_side"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(logSideTexture));
+		JPanel mainTextures = new JPanel(new GridLayout(6, 2, 50, 5));
 
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.log_top"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(logTopTexture));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.log_side"),
+				PanelUtils.totalCenterInPanel(logSideTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.log_top"),
+				PanelUtils.totalCenterInPanel(logTopTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.stripped_log_side"),
+				PanelUtils.totalCenterInPanel(strippedLogSideTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.stripped_log_top"),
+				PanelUtils.totalCenterInPanel(strippedLogTopTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.planks"),
+				PanelUtils.totalCenterInPanel(planksTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.leaves"),
+				PanelUtils.totalCenterInPanel(leavesTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.door_top"),
+				PanelUtils.totalCenterInPanel(doorTopTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.door_bottom"),
+				PanelUtils.totalCenterInPanel(doorBottomTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.door_item"),
+				PanelUtils.totalCenterInPanel(doorItemTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.trapdoor"),
+				PanelUtils.totalCenterInPanel(trapdoorTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.sign_item"),
+				PanelUtils.totalCenterInPanel(signItemTexture)));
+		mainTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.hanging_sign_item"),
+				PanelUtils.totalCenterInPanel(hangingSignItemTexture)));
 
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.stripped_log_side"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(strippedLogSideTexture));
+		JPanel signComboBoxes = PanelUtils.twoColumnsPanel(3, 0.15,
+				L10N.label("dialog.tools.wood_pack_textures.sign_entity"), signEntityTexture,
+				L10N.label("dialog.tools.wood_pack_textures.hanging_sign_entity"), hangingSignEntityTexture,
+				L10N.label("dialog.tools.wood_pack_textures.hanging_sign_gui"), hangingSignGUITexture);
 
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.stripped_log_top"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(strippedLogTopTexture));
+		JPanel boatItemTextures = new JPanel(new GridLayout(1, 2, 50, 5));
 
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.planks"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(planksTexture));
+		boatItemTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.boat_item"),
+				PanelUtils.totalCenterInPanel(boatItemTexture)));
+		boatItemTextures.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.wood_pack_textures.chest_boat_item"),
+				PanelUtils.totalCenterInPanel(chestBoatItemTexture)));
 
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.leaves"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(leavesTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.door_top"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(doorTopTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.door_bottom"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(doorBottomTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.door_item"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(doorItemTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.trapdoor"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(trapdoorTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.sign_item"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(signItemTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.hanging_sign_item"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(hangingSignItemTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.boat_item"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(boatItemTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.chest_boat_item"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(chestBoatItemTexture));
+		JPanel boatComboBoxes = PanelUtils.twoColumnsPanel(3, 0.15,
+				L10N.label("dialog.tools.wood_pack_textures.boat_entity"), boatEntityTexture,
+				L10N.label("dialog.tools.wood_pack_textures.chest_boat_entity"), chestBoatEntityTexture);
 
 		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
-		addPage(L10N.t("dialog.tools.pack_makers.textures"), texturesPanel);
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.column(15,
+				PanelUtils.centerInPanel(L10N.label("dialog.tools.pack_makers.empty_textures_message")),
+				PanelUtils.column(5, mainTextures, signComboBoxes, boatItemTextures, boatComboBoxes)));
 
 		this.add("Center", tabs);
 
-		this.setSize(600, 400);
+		this.setSize(700, 500);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}

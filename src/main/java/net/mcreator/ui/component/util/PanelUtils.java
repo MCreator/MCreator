@@ -91,6 +91,23 @@ public class PanelUtils {
 		return column;
 	}
 
+	public static JPanel twoColumnsPanel(int vGap,double firstColumnWeight, Component... components) {
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(vGap, 0, vGap, 0);
+
+		for (int i = 0; i < components.length; i++) {
+			c.gridx = i % 2;
+			c.gridy = i / 2;
+			c.weightx = (c.gridx == 0 ? firstColumnWeight : 1 - firstColumnWeight);
+
+			panel.add(components[i], c);
+		}
+
+		return panel;
+	}
+
 	public static JPanel centerInPanel(Component component) {
 		return join(component);
 	}
