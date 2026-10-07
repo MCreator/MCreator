@@ -91,7 +91,7 @@ public class PanelUtils {
 		return column;
 	}
 
-	public static JPanel twoColumnsPanel(int vGap,double firstColumnWeight, Component... components) {
+	public static JPanel twoColumnsPanel(int vGap, double firstColumnWeight, Component... components) {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
