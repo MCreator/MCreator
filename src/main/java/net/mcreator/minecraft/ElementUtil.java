@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.ListUtils;
@@ -211,15 +212,18 @@ public class ElementUtil {
 		return blocks;
 	}
 
-	public static List<DataListEntry> loadAllEquipmentSlots() {
-		return loadAllEquipmentSlots(false);
+	public static List<DataListEntry> loadAllEquipmentSlots(@Nonnull Workspace workspace) {
+		return loadAllEquipmentSlots(workspace, false);
 	}
 
-	public static List<DataListEntry> loadAllEquipmentSlots(boolean addDefault) {
-		return addDefault ?
-				ListUtils.merge(List.of(new DataListEntry.Dummy("default")),
-						DataListLoader.loadDataList("equipmentslots")) :
-				List.copyOf(DataListLoader.loadDataList("equipmentslots"));
+	public static List<DataListEntry> loadAllEquipmentSlots(@Nonnull Workspace workspace, boolean addDefault) {
+		if (workspace.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON)
+			return List.copyOf(DataListLoader.loadDataList("be_equipmentslots"));
+		else
+			return addDefault ?
+					ListUtils.merge(List.of(new DataListEntry.Dummy("default")),
+							DataListLoader.loadDataList("equipmentslots")) :
+					List.copyOf(DataListLoader.loadDataList("equipmentslots"));
 	}
 
 	public static String[] getDataListAsStringArray(String dataList) {
@@ -333,8 +337,10 @@ public class ElementUtil {
 		var provider = customEntryProviders.get(datalist);
 		if (provider != null) {
 			result.addAll(provider.apply(workspace));
+			result.sort(DataListEntry.getComparator(workspace, result)); // sort custom elements
 		}
 
+		// vanilla entries keep the datalist order and are not sorted (same as block and items lists)
 		provider = vanillaEntryProviders.get(datalist);
 		if (provider != null) {
 			result.addAll(provider.apply(workspace));
@@ -346,7 +352,6 @@ public class ElementUtil {
 			}
 		}
 
-		result.sort(DataListEntry.getComparator(workspace, result));
 		return result;
 	}
 

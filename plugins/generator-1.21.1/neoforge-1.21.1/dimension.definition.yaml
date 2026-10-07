@@ -30,6 +30,10 @@ templates:
     writer: json
     condition: "worldGenType %= End like gen"
     name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: dimension/dimension_void.json.ftl # loaded from datapack generator
+    writer: json
+    condition: "worldGenType %= Void gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
 
   - template: json/dimension_portal.json.ftl
     writer: json

@@ -19,18 +19,14 @@
 
 package net.mcreator.blockly.java;
 
+import net.mcreator.java.JavaCodeScanner;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 
-/*
- Warning: currently this parser does not support multiline comments, if multiline
- comment contains single quote, the following members are not extracted.
- */
 public class ProcedureCodeOptimizer {
-	enum ParseState {
-		INSIDE_INLINE_COMMENT, INSIDE_COMMENT_BLOCK, AFTER_COMMENT_BLOCK, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE, OUTSIDE
-	}
+
+	private static final String[] MARKERS = { "/*@BlockState*/", "/*@ItemStack*/", "/*@int*/", "/*@float*/" };
 
 	/**
 	 * This method attempts to remove the parentheses surrounding the given code, if they are paired.
@@ -55,18 +51,12 @@ public class ProcedureCodeOptimizer {
 	public static String removeParentheses(String code, @Nullable String blacklist) {
 		String toClean = code.strip();
 		String prefix = "";
-		if (toClean.startsWith("/*@BlockState*/")) {
-			prefix = "/*@BlockState*/";
-			toClean = toClean.substring(15);
-		} else if (code.startsWith("/*@ItemStack*/")) {
-			prefix = "/*@ItemStack*/";
-			toClean = toClean.substring(14);
-		} else if (code.startsWith("/*@int*/")) {
-			prefix = "/*@int*/";
-			toClean = toClean.substring(8);
-		} else if (code.startsWith("/*@float*/")) {
-			prefix = "/*@float*/";
-			toClean = toClean.substring(10);
+		for (String marker : MARKERS) {
+			if (toClean.startsWith(marker)) {
+				prefix = marker;
+				toClean = toClean.substring(marker.length());
+				break;
+			}
 		}
 		return canRemoveParentheses(toClean, blacklist) ? prefix + toClean.substring(1, toClean.length() - 1) : code;
 	}
@@ -80,68 +70,24 @@ public class ProcedureCodeOptimizer {
 	 * @return true if the parentheses can be removed
 	 */
 	private static boolean canRemoveParentheses(String toCheck, @Nullable String blacklist) {
-		if (toCheck.startsWith("(") && toCheck.endsWith(")")) {
-			var state = ParseState.OUTSIDE;
-			int parentheses = 1;
-			char prevChar = '(';
-			int backSlashCounter = 0;
-			var topLevelChars = new StringBuilder();
-			for (int i = 1; i < toCheck.length() - 1; i++) {
-				char c = toCheck.charAt(i);
-				switch (state) {
-				case OUTSIDE, AFTER_COMMENT_BLOCK:
-					// Comments cannot start right after a comment block was closed
-					if (state != ParseState.AFTER_COMMENT_BLOCK && c == '/' && prevChar == '/') {
-						state = ParseState.INSIDE_INLINE_COMMENT;
-						if (blacklist != null && parentheses == 1) // The previous character was part of the comment
-							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
-					} else if (state != ParseState.AFTER_COMMENT_BLOCK && c == '*' && prevChar == '/') {
-						state = ParseState.INSIDE_COMMENT_BLOCK;
-						if (blacklist != null && parentheses == 1) // The previous character was part of the comment
-							topLevelChars.deleteCharAt(topLevelChars.length() - 1);
-					} else if (c == '"') {
-						state = ParseState.INSIDE_STRING;
-					} else if (c == '(') {
-						parentheses++;
-					} else if (c == ')' && --parentheses == 0) {
-						return false; // The first "(" isn't paired with the last ")", we can't remove them
-					} else if (blacklist != null && parentheses == 1) {
-						topLevelChars.append(c);
-					}
-					if (state == ParseState.AFTER_COMMENT_BLOCK) {
-						state = ParseState.OUTSIDE;
-					}
-					break;
-				case INSIDE_INLINE_COMMENT:
-					if (c == '\n' || c == '\r') {
-						state = ParseState.OUTSIDE;
-					}
-					break;
-				case INSIDE_STRING_ESCAPE_SEQUENCE:
-					if (c == '\\') {
-						backSlashCounter++;
-						break;
-					}
-					state = ParseState.INSIDE_STRING;
-				case INSIDE_STRING:
-					if (c == '\\') {
-						state = ParseState.INSIDE_STRING_ESCAPE_SEQUENCE;
-						backSlashCounter = 0;
-					} else if (c == '"' && (prevChar != '\\' || backSlashCounter % 2 != 0)) {
-						state = ParseState.OUTSIDE;
-					}
-					break;
-				case INSIDE_COMMENT_BLOCK:
-					if (c == '/' && prevChar == '*') {
-						state = ParseState.AFTER_COMMENT_BLOCK;
-					}
-					break;
-				}
-				prevChar = c;
+		if (!toCheck.startsWith("(") || !toCheck.endsWith(")"))
+			return false;
+
+		var topLevelChars = new StringBuilder();
+		int[] parentheses = { 1 };
+		boolean balanced = JavaCodeScanner.scan(toCheck.substring(1, toCheck.length() - 1), (_, c, region) -> {
+			if (region != JavaCodeScanner.Region.CODE)
+				return true; // ignore contents of strings, char literals, and comments
+			if (c == '(') {
+				parentheses[0]++;
+			} else if (c == ')' && --parentheses[0] == 0) {
+				return false; // The first "(" isn't paired with the last ")", we can't remove them
+			} else if (blacklist != null && parentheses[0] == 1) {
+				topLevelChars.append(c);
 			}
-			return StringUtils.containsNone(topLevelChars, blacklist);
-		}
-		return false;
+			return true;
+		});
+		return balanced && StringUtils.containsNone(topLevelChars, blacklist);
 	}
 
 	/**
@@ -196,6 +142,8 @@ public class ProcedureCodeOptimizer {
 	 * @return The code without blockstate/itemstack markers
 	 */
 	public static String removeMarkers(String code) {
-		return code.replaceAll("(/\\*@BlockState\\*/|/\\*@ItemStack\\*/|/\\*@int\\*/|/\\*@float\\*/)", "");
+		for (String marker : MARKERS)
+			code = code.replace(marker, "");
+		return code;
 	}
 }

@@ -85,12 +85,16 @@ public class ModulesFileLibraryInfo extends LibraryInfo {
 				// We need to strip the first two elements (/modules/module.name/)
 				if (path.getNameCount() > 2) {
 					String relativePath = path.subpath(2, path.getNameCount()).toString();
+					String lookupName = relativePath.replace('\\', '/');
+
+					if (!SafeJarLibraryInfo.isIndexableClassEntry(lookupName))
+						return;
 
 					// Populate the RSTA tree
 					root.add(relativePath);
 
 					// Populate our lookup cache for createClassFile
-					classPathCache.put(relativePath.replace('\\', '/'), path);
+					classPathCache.put(lookupName, path);
 				}
 			});
 		}

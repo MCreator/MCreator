@@ -67,6 +67,10 @@ body {
     stroke-width: 2px;
 }
 
+.blocklyShadow .blocklyText {
+    fill: #7c7c7c !important;
+}
+
 .small-text {
     font-size: 12px !important;
 }
@@ -97,4 +101,24 @@ body.transparent .blocklySvg {
 
 body.transparent .blocklyMainBackground {
     fill: transparent !important;
+}
+
+.blocklyToolboxCategoryIcon {
+    background-image: none !important;
+}
+
+.blocklyToolbox:focus-visible,
+.blocklyToolbox :focus-visible {
+    outline: none;
+}
+
+.blocklyWorkspaceFocusRing,
+.blocklyWorkspaceSelectionRing {
+    stroke: none !important;
+}
+
+.blocklyKeyboardNavigation .blocklyFlyout:has(.blocklyActiveFocus),
+.blocklyKeyboardNavigation .blocklyToolbox:has(.blocklyActiveFocus),
+.blocklyKeyboardNavigation .blocklyActiveFocus:is(.blocklyFlyout, .blocklyToolbox) {
+    outline: none !important;
 }

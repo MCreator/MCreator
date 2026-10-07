@@ -35,8 +35,6 @@ import java.util.List;
 
 public class StringListProcedureSelector extends RetvalProcedureSelector<List<String>, StringListProcedure> {
 
-	@Nullable private final JStringListField fixedValue;
-
 	public StringListProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
 			@Nullable JStringListField fixedValue, Dependency... providedDependencies) {
 		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, 200,
@@ -59,8 +57,6 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 			Dependency... providedDependencies) {
 		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, allowInlineEditor,
 				fixedValue, width, providedDependencies);
-
-		this.fixedValue = fixedValue;
 
 		if (fixedValue != null) {
 			fixedValue.setBackground(Theme.current().getBackgroundColor());
@@ -85,13 +81,19 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 		}
 	}
 
+	@Override @Nullable protected JStringListField fixedValueComponent() {
+		return (JStringListField) super.fixedValueComponent();
+	}
+
 	@Override public List<String> getFixedValue() {
-		return fixedValue != null ? fixedValue.getTextList() : List.of();
+		JStringListField fixedValueComponent = fixedValueComponent();
+		return fixedValueComponent != null ? fixedValueComponent.getTextList() : List.of();
 	}
 
 	@Override public void setFixedValue(List<String> value) {
-		if (fixedValue != null && value != null)
-			fixedValue.setTextList(value);
+		JStringListField fixedValueComponent = fixedValueComponent();
+		if (fixedValueComponent != null && value != null)
+			fixedValueComponent.setTextList(value);
 	}
 
 }

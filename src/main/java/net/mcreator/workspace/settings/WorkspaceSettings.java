@@ -48,6 +48,7 @@ import java.util.stream.Stream;
 	private String updateURL;
 
 	private String modPicture = null;
+	private String modIcon = null;
 
 	public Set<String> requiredMods = new HashSet<>();
 	public Set<String> dependencies = new HashSet<>();
@@ -82,6 +83,7 @@ import java.util.stream.Stream;
 		this.serverSideOnly = other.serverSideOnly;
 		this.updateURL = other.updateURL;
 		this.modPicture = other.modPicture;
+		this.modIcon = other.modIcon;
 		this.requiredMods = other.requiredMods;
 		this.dependencies = other.dependencies;
 		this.dependants = other.dependants;
@@ -131,6 +133,10 @@ import java.util.stream.Stream;
 
 	public void setModPicture(String modPicture) {
 		this.modPicture = modPicture;
+	}
+
+	public void setModIcon(String modIcon) {
+		this.modIcon = modIcon;
 	}
 
 	public void setRequiredMods(Set<String> requiredMods) {
@@ -280,14 +286,26 @@ import java.util.stream.Stream;
 		return modPicture;
 	}
 
+	public String getModIcon() {
+		return modIcon;
+	}
+
 	public void setCurrentGenerator(String currentGeneratorName) {
 		this.currentGenerator = currentGeneratorName;
 	}
 
 	public String getCurrentGenerator() {
-		if (!currentGenerator.contains("-")) // pre 2020.3 compatibility
-			return "forge-" + currentGenerator;
-		return currentGenerator;
+		return normalizeGeneratorName(currentGenerator);
+	}
+
+	/**
+	 * @param generatorName Name of the generator as stored in the workspace file.
+	 * @return Name of the generator in the current generator name format.
+	 */
+	public static String normalizeGeneratorName(String generatorName) {
+		if (!generatorName.contains("-")) // pre-2020.3 compatibility
+			return "forge-" + generatorName;
+		return generatorName;
 	}
 
 	public String getModElementsPackage() {

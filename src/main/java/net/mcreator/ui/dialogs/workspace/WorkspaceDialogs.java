@@ -43,8 +43,8 @@ import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -84,7 +84,7 @@ public class WorkspaceDialogs {
 		JButton ok = L10N.button("dialog.workspace_settings.save_changes");
 		buttons.add(ok);
 		workspaceDialog.add("South", buttons);
-		ok.addActionListener(e -> {
+		ok.addActionListener(_ -> {
 			if (wdp.validationGroup.validateIsErrorFree())
 				workspaceDialog.dispose();
 			else
@@ -95,7 +95,7 @@ public class WorkspaceDialogs {
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		buttons.add(cancel);
-		cancel.addActionListener(e -> {
+		cancel.addActionListener(_ -> {
 			canceled.set(true);
 			workspaceDialog.dispose();
 		});
@@ -163,6 +163,7 @@ public class WorkspaceDialogs {
 		final VTextField websiteURL = new VTextField(24);
 
 		final JComboBox<String> modPicture = new JComboBox<>();
+		final JComboBox<String> modIcon = new JComboBox<>();
 		final JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		final JTextField updateJSON = new JTextField(24);
 		final JStringListField requiredMods;
@@ -270,7 +271,7 @@ public class WorkspaceDialogs {
 			});
 
 			modName.setValidator(new Validator() {
-				private final Validator parent = new TextFieldValidator(modName,
+				private final Validator parent = new NonEmptyValidator(modName,
 						L10N.t("dialog.workspace_settings.mod_name.invalid"));
 
 				@Override public ValidationResult validate() {
@@ -282,7 +283,7 @@ public class WorkspaceDialogs {
 				}
 			});
 
-			version.setValidator(new TextFieldValidator(version, L10N.t("dialog.workspace_settings.version.error")) {
+			version.setValidator(new NonEmptyValidator(version, L10N.t("dialog.workspace_settings.version.error")) {
 				@Override public ValidationResult validate() {
 					try {
 						ModuleDescriptor.Version.parse(version.getText());
@@ -353,11 +354,14 @@ public class WorkspaceDialogs {
 			validationGroup.addValidationElement(version);
 
 			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
+			modIcon.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
 				List<File> other = workspace.getFolderManager().getTexturesList(TextureType.OTHER);
 				for (File element : other) {
-					if (element.getName().endsWith(".png"))
+					if (element.getName().endsWith(".png")) {
 						modPicture.addItem(FilenameUtilsPatched.removeExtension(element.getName()));
+						modIcon.addItem(FilenameUtilsPatched.removeExtension(element.getName()));
+					}
 				}
 			}
 
@@ -380,7 +384,7 @@ public class WorkspaceDialogs {
 
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));
-			selectGenerator.addActionListener(e -> {
+			selectGenerator.addActionListener(_ -> {
 				GeneratorConfiguration gc = GeneratorSelector.getGeneratorSelector(parent,
 						(GeneratorConfiguration) generator.getSelectedItem(),
 						workspace != null ? workspace.getGeneratorConfiguration().getGeneratorFlavor() : flavorFilter,
@@ -418,7 +422,7 @@ public class WorkspaceDialogs {
 
 			_basicSettings.add(new JEmptyBox(5, 5));
 
-			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 7 : 2, 2, 5, 2));
+			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 8 : 2, 2, 5, 2));
 			descriptionSettings.setBorder(BorderFactory.createTitledBorder(
 					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.details")));
@@ -437,8 +441,10 @@ public class WorkspaceDialogs {
 				descriptionSettings.add(websiteURL);
 				descriptionSettings.add(L10N.label("dialog.workspace_settings.credits"));
 				descriptionSettings.add(credits);
-				descriptionSettings.add(L10N.label("dialog.workspace_settings.picture"));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.banner"));
 				descriptionSettings.add(modPicture);
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.icon"));
+				descriptionSettings.add(modIcon);
 				descriptionSettings.add(L10N.label("dialog.workspace_settings.license"));
 				descriptionSettings.add(license);
 
@@ -524,7 +530,7 @@ public class WorkspaceDialogs {
 				JButton explorePlugins = L10N.button("dialog.workspace_settings.explore_plugins");
 				explorePlugins.setIcon(UIRES.get("16px.search"));
 				explorePlugins.addActionListener(
-						e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
+						_ -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/plugins"));
 
 				apiSettings.add("South",
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"),
@@ -571,6 +577,9 @@ public class WorkspaceDialogs {
 				modPicture.setSelectedItem(workspace.getWorkspaceSettings().getModPicture() == null ?
 						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
+				modIcon.setSelectedItem(workspace.getWorkspaceSettings().getModIcon() == null ?
+						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
+						workspace.getWorkspaceSettings().getModIcon());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
@@ -605,6 +614,10 @@ public class WorkspaceDialogs {
 					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
 					null :
 					(String) modPicture.getSelectedItem());
+			retVal.setModIcon(Objects.equals(modIcon.getSelectedItem(),
+					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
+					null :
+					(String) modIcon.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());

@@ -59,7 +59,7 @@ Blockly.Variables.allUsedVarModels = function () {
 
 Blockly.ContextMenuRegistry.registry.register({
     displayText: function () {
-        return javabridge.t("blockly.context_menu.cleanup_unused_blocks");
+        return translate("blockly.context_menu.cleanup_unused_blocks");
     },
     preconditionFn: function (scope) {
         if (scope.workspace.getTopBlocks().length > 1) {

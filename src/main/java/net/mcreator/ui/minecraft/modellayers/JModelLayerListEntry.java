@@ -73,6 +73,7 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
+		model.setPrototypeDisplayValue(new Model.BuiltInModel("XXXXXXXXXXXXXXXXXX"));
 		model.setRenderer(new ModelComboBoxRenderer());
 
 		line.add(L10N.label("elementgui.living_entity.layer_model"));

@@ -20,6 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.minecraft.ElementUtil;
@@ -47,6 +48,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.module.ModuleDescriptor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -72,7 +74,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final JSpinner xpReward = ComponentFromAnnotation.spinner(Recipe.class, "xpReward");
 	private final JSpinner cookingTime = ComponentFromAnnotation.spinner(Recipe.class, "cookingTime");
 
-	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });
+	private final JComboBox<String> namespace = ComponentFromAnnotation.options(NamespacedGeneratableElement.class,
+			"namespace");
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -330,10 +333,15 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			groupPanel.setVisible(isRecipeCrafting || isCookingRecipe);
 
 			if (!isEditingMode() && isCookingRecipe) {
-				if (recipeTypeValue.equals("Smelting")) {
-					cookingTime.setValue(200);
-				} else if (recipeTypeValue.equals("Campfire cooking")) {
+				if (recipeTypeValue.equals("Campfire cooking")) {
 					cookingTime.setValue(600);
+				}
+				// In 26.3 and above, blasting/smoking recipes should have the same cooking time as their normal counterpart
+				else if (recipeTypeValue.equals("Smelting") || ModuleDescriptor.Version.parse(
+						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+								.getGeneratorMinecraftVersion()).compareTo(ModuleDescriptor.Version.parse("26.3"))
+						>= 0) {
+					cookingTime.setValue(200);
 				} else {
 					cookingTime.setValue(100);
 				}

@@ -35,14 +35,24 @@ public class ImageMakerTexturesCache {
 
 	public static final Map<ResourcePointer, ImageIcon> CACHE = new ConcurrentHashMap<>();
 
+	public static final Map<ResourcePointer, ImageIcon> CACHE_ANIMATION = new ConcurrentHashMap<>();
+
 	public static void init() {
 		List<ResourcePointer> templatesSorted = TemplatesLoader.loadTemplates("textures.texturemaker", "png");
+		List<ResourcePointer> animationsSorted = TemplatesLoader.loadTemplates("textures.animations", "png");
 		ImageIO.setUseCache(false); // we use custom image cache for this
 		templatesSorted.forEach(resourcePointer -> {
 			try {
 				CACHE.put(resourcePointer, new ImageIcon(ImageIO.read(resourcePointer.getStream())));
 			} catch (Exception e) {
 				LOG.warn("Failed to load texture from templates: {}", resourcePointer.identifier);
+			}
+		});
+		animationsSorted.forEach(resourcePointer -> {
+			try {
+				CACHE_ANIMATION.put(resourcePointer, new ImageIcon(ImageIO.read(resourcePointer.getStream())));
+			} catch (Exception e) {
+				LOG.warn("Failed to load animation strip from templates: {}", resourcePointer.identifier);
 			}
 		});
 		ImageIO.setUseCache(true);

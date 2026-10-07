@@ -41,7 +41,7 @@ public class StructureImportActions {
 
 	public static class ImportStructure extends BasicAction {
 		public ImportStructure(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.resources.import_structure"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_structure"), _ -> {
 				File[] schs = FileDialogs.getMultiOpenDialog(actionRegistry.getMCreator(), new String[] {
 						"." + actionRegistry.getMCreator().getGeneratorConfiguration().getStructureExtension() });
 				if (schs != null)
@@ -64,7 +64,7 @@ public class StructureImportActions {
 
 	public static class ImportStructureFromMinecraft extends BasicAction {
 		public ImportStructureFromMinecraft(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.resources.import_structure_from_minecraft"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_structure_from_minecraft"), _ -> {
 				List<Structure> mcstucts = new ArrayList<>();
 				File[] saves = new File(actionRegistry.getMCreator().getFolderManager().getClientRunDir(),
 						"saves/").listFiles();

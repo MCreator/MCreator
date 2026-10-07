@@ -19,6 +19,9 @@
 
 package net.mcreator.ui.chromium;
 
+import org.cef.OS;
+import org.cef.browser.CefBrowser;
+import org.cef.browser.CefFrame;
 import org.cef.handler.CefKeyboardHandler;
 import org.cef.misc.EventFlags;
 
@@ -86,4 +89,39 @@ final class CefEventUtils {
 		return cefKeyEvent.windows_key_code == KeyEvent.VK_UP || cefKeyEvent.windows_key_code == KeyEvent.VK_DOWN;
 	}
 
+	public static boolean handleMacShortcuts(CefBrowser browser, CefKeyboardHandler.CefKeyEvent cefKeyEvent) {
+		if (!OS.isMacintosh())
+			return false;
+
+		// cmd + delete workaround implementation
+		if (cefKeyEvent.type == CefKeyboardHandler.CefKeyEvent.EventType.KEYEVENT_RAWKEYDOWN
+				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_COMMAND_DOWN) != 0
+				&& (cefKeyEvent.modifiers & EventFlags.EVENTFLAG_ALT_DOWN) == 0
+				&& cefKeyEvent.windows_key_code == 0x2E) { // Chromium VKEY_DELETE
+			CefFrame frame = browser.getFocusedFrame();
+			if (frame == null)
+				return false;
+			frame.executeJavaScript("""
+					(() => {
+						const el = document.activeElement;
+						if (!(el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement))
+							return;
+						if (el.selectionStart === null)
+							return;
+						const sel = window.getSelection();
+						if (el.selectionStart === el.selectionEnd) {
+							sel.modify('extend', 'forward', 'lineboundary');
+							if (el.selectionStart === el.selectionEnd)
+								sel.modify('extend', 'forward', 'character');
+							if (el.selectionStart === el.selectionEnd)
+								return;
+						}
+						document.execCommand('delete');
+					})();
+					""", "http://mcreator/cmd-delete-shortcut", 0);
+			return true;
+		}
+
+		return false;
+	}
 }

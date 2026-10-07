@@ -106,11 +106,18 @@ public class ${name}Menu extends AbstractContainerMenu implements ${JavaModName}
 							this.bound = true;
 						}
 					}
-				} else { <#-- if we find container block at pos, we bind to it in all cases -->
+				} else { <#-- might be bound to container block at pos -->
 					boundBlockEntity = this.world.getBlockEntity(pos);
 					if (boundBlockEntity instanceof BaseContainerBlockEntity baseContainerBlockEntity) {
-						this.internal = VanillaContainerWrapper.of(baseContainerBlockEntity);
-						this.bound = true;
+						<#-- Blocks explicitly bound to this GUI bind without container size check, so misconfigured inventory size fails visibly -->
+						if (this.world.getBlockState(pos).getBlock() instanceof ${JavaModName}Menus.BoundBlock boundBlock && boundBlock.getBoundMenuClass() == ${name}Menu.class) {
+							this.internal = VanillaContainerWrapper.of(baseContainerBlockEntity);
+							this.bound = true;
+						<#-- Other containers (e.g. vanilla ones or blocks bound to other GUIs) only bind if slots of this GUI fit in the container (forum/124103) -->
+						} else if (baseContainerBlockEntity.getContainerSize() > ${data.getMaxSlotID()}) {
+							this.internal = VanillaContainerWrapper.of(baseContainerBlockEntity);
+							this.bound = true;
+						}
 					}
 				}
 			}

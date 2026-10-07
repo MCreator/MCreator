@@ -53,7 +53,7 @@ package ${package}.client.renderer.block;
 		state.blockEntity = blockEntity;
 		state.blockState = blockEntity.getBlockState();
 
-		int tickCount = (int) blockEntity.getLevel().getGameTime();
+		int tickCount = blockEntity.getTickCount();
 		state.entityRenderState.ageInTicks = tickCount + partialTicks;
 
 		<#list data.animations as animation>

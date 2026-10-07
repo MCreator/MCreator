@@ -24,13 +24,13 @@ class FieldDataListSelector extends Blockly.Field {
         this.setTooltip(function () {
             return thisField.getValue() ?
                 thisField.readableName :
-                javabridge.t('blockly.field_data_list_selector.tooltip.empty');
+                translate('blockly.field_data_list_selector.tooltip.empty');
         });
     };
 
     // Get the default text for when no value is selected
     static getDefaultText() {
-        return javabridge.t('blockly.extension.data_list_selector.no_entry');
+        return translate('blockly.extension.data_list_selector.no_entry');
     };
 
     // Configure the field given a map of settings
@@ -64,12 +64,13 @@ class FieldDataListSelector extends Blockly.Field {
                     this.customEntryProviders;
                 javabridge.openEntrySelector(this.type, this.typeFilter, customEntryProviders, {
                     'callback': function (value, readableName) {
-                        thisField.cachedReadableName = readableName || value;
-                        const group = Blockly.Events.getGroup();
-                        Blockly.Events.setGroup(true);
-                        thisField.setValue(value);
-                        Blockly.Events.setGroup(group);
-                        javabridge.triggerEvent();
+                        if (value !== thisField.value_) { // If new value is same as old value, do nothing
+                            thisField.cachedReadableName = readableName || value;
+                            const group = Blockly.Events.getGroup();
+                            Blockly.Events.setGroup(true);
+                            thisField.setValue(value);
+                            Blockly.Events.setGroup(group);
+                        }
                     }
                 });
             } else {
