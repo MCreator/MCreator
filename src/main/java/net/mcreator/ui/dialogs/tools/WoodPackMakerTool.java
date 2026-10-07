@@ -178,8 +178,8 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		texturesPanel.add(L10N.label("dialog.tools.wood_pack_textures.chest_boat_item"));
 		texturesPanel.add(PanelUtils.totalCenterInPanel(chestBoatItemTexture));
 
-		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), texturesPanel);
 
 		this.add("Center", tabs);
 
