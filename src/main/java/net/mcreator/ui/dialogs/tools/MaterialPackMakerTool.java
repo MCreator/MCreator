@@ -103,9 +103,9 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(name);
 
 		// Textures page
-		JPanel oresSection = new JPanel(new GridLayout(1, 6, 15, 2));
-		JPanel toolsSection = new JPanel(new GridLayout(2, 6, 15, 2));
-		JPanel armorItemsSection = new JPanel(new GridLayout(2, 4, 15, 2));
+		JPanel oresSection = new JPanel(new GridLayout(1, 3, 50, 5));
+		JPanel toolsSection = new JPanel(new GridLayout(2, 3, 50, 5));
+		JPanel armorItemsSection = new JPanel(new GridLayout(2, 2, 75, 5));
 
 		oreTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 		blockTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
@@ -124,59 +124,48 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		armorTexture = new TextureComboBox(mcreator, TextureType.ARMOR, true);
 		armorTexture.setAddPNGExtension(false);
 
-		oresSection.add(L10N.label("dialog.tools.ore_pack_textures.ore"));
-		oresSection.add(PanelUtils.totalCenterInPanel(oreTexture));
+		oresSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.ore_pack_textures.ore"),
+				PanelUtils.totalCenterInPanel(oreTexture)));
+		oresSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.ore_pack_textures.block"),
+				PanelUtils.totalCenterInPanel(blockTexture)));
+		oresSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.ore_pack_textures.item"),
+				PanelUtils.totalCenterInPanel(itemTexture)));
 
-		oresSection.add(L10N.label("dialog.tools.ore_pack_textures.block"));
-		oresSection.add(PanelUtils.totalCenterInPanel(blockTexture));
-
-		oresSection.add(L10N.label("dialog.tools.ore_pack_textures.item"));
-		oresSection.add(PanelUtils.totalCenterInPanel(itemTexture));
-
-		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.pickaxe"));
-		toolsSection.add(PanelUtils.totalCenterInPanel(pickaxeTexture));
-
-		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.axe"));
-		toolsSection.add(PanelUtils.totalCenterInPanel(axeTexture));
-
-		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.sword"));
-		toolsSection.add(PanelUtils.totalCenterInPanel(swordTexture));
-
-		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.shovel"));
-		toolsSection.add(PanelUtils.totalCenterInPanel(shovelTexture));
-
-		toolsSection.add(L10N.label("dialog.tools.tool_pack_textures.hoe"));
-		toolsSection.add(PanelUtils.totalCenterInPanel(hoeTexture));
-
-		toolsSection.add(new JLabel());
+		toolsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.pickaxe"),
+				PanelUtils.totalCenterInPanel(pickaxeTexture)));
+		toolsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.axe"),
+				PanelUtils.totalCenterInPanel(axeTexture)));
+		toolsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.sword"),
+				PanelUtils.totalCenterInPanel(swordTexture)));
+		toolsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.shovel"),
+				PanelUtils.totalCenterInPanel(shovelTexture)));
+		toolsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.hoe"),
+				PanelUtils.totalCenterInPanel(hoeTexture)));
 		toolsSection.add(new JLabel());
 
-		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.helmet"));
-		armorItemsSection.add(PanelUtils.totalCenterInPanel(helmetTexture));
+		armorItemsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.helmet"),
+				PanelUtils.totalCenterInPanel(helmetTexture)));
+		armorItemsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.chestplate"),
+				PanelUtils.totalCenterInPanel(chestplateTexture)));
+		armorItemsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.leggings"),
+				PanelUtils.totalCenterInPanel(leggingsTexture)));
+		armorItemsSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.boots"),
+				PanelUtils.totalCenterInPanel(bootsTexture)));
 
-		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.chestplate"));
-		armorItemsSection.add(PanelUtils.totalCenterInPanel(chestplateTexture));
-
-		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.leggings"));
-		armorItemsSection.add(PanelUtils.totalCenterInPanel(leggingsTexture));
-
-		armorItemsSection.add(L10N.label("dialog.tools.armor_pack_textures.boots"));
-		armorItemsSection.add(PanelUtils.totalCenterInPanel(bootsTexture));
-
-		JPanel armorSection = PanelUtils.centerInPanelPadding(PanelUtils.northAndCenterElement(armorItemsSection,
-						PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.armor"), armorTexture)), 10,
-				10);
+		JPanel armorSection = PanelUtils.column(5, PanelUtils.totalCenterInPanel(armorItemsSection),
+				PanelUtils.row(25, L10N.label("dialog.tools.armor_pack_textures.armor"), armorTexture));
 		oresSection = PanelUtils.centerInPanelPadding(oresSection, 10, 10);
 		toolsSection = PanelUtils.centerInPanelPadding(toolsSection, 10, 10);
+		armorSection = PanelUtils.centerInPanelPadding(armorSection, 10, 10);
 
 		ComponentUtils.makeSection(oresSection, L10N.t("dialog.tools.material_pack_textures.ores_section"));
 		ComponentUtils.makeSection(toolsSection, L10N.t("dialog.tools.material_pack_textures.tools_section"));
 		ComponentUtils.makeSection(armorSection, L10N.t("dialog.tools.material_pack_textures.armor_section"));
 
 		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
-		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(PanelUtils.column(15,
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.column(15,
 				PanelUtils.centerInPanel(L10N.label("dialog.tools.pack_makers.empty_textures_message")), oresSection,
-				toolsSection, armorSection)));
+				toolsSection, armorSection));
 
 		this.add("Center", tabs);
 

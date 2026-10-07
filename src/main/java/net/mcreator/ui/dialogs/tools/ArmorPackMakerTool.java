@@ -121,7 +121,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(name);
 
 		// Textures page
-		JPanel texturesPanel = new JPanel(new GridLayout(2, 4, 5, 2));
+		JPanel texturesPanel = new JPanel(new GridLayout(2, 2, 75, 5));
 
 		helmetTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		chestplateTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
@@ -129,27 +129,26 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		bootsTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		armorTexture = new TextureComboBox(mcreator, TextureType.ARMOR, true).setAddPNGExtension(false);
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.helmet"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(helmetTexture));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.helmet"),
+				PanelUtils.totalCenterInPanel(helmetTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.chestplate"),
+				PanelUtils.totalCenterInPanel(chestplateTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.leggings"),
+				PanelUtils.totalCenterInPanel(leggingsTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.armor_pack_textures.boots"),
+				PanelUtils.totalCenterInPanel(bootsTexture)));
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.chestplate"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(chestplateTexture));
+		JPanel itemsAndArmorTexturesPanel = PanelUtils.column(5, PanelUtils.totalCenterInPanel(texturesPanel),
+				PanelUtils.row(25, L10N.label("dialog.tools.armor_pack_textures.armor"), armorTexture));
 
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.leggings"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(leggingsTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.armor_pack_textures.boots"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(bootsTexture));
-
-		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(
-				PanelUtils.centerAndSouthElement(texturesPanel,
-						PanelUtils.centerAndEastElement(L10N.label("dialog.tools.armor_pack_textures.armor"),
-								armorTexture))));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.column(15,
+				PanelUtils.centerInPanel(L10N.label("dialog.tools.pack_makers.empty_textures_message")),
+				itemsAndArmorTexturesPanel));
 
 		this.add("Center", tabs);
 
-		this.setSize(600, 300);
+		this.setSize(600, 420);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}

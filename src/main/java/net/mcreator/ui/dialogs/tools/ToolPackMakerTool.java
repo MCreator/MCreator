@@ -119,7 +119,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(base);
 
 		// Textures page
-		JPanel texturesPanel = new JPanel(new GridLayout(3, 4, 5, 2));
+		JPanel texturesPanel = new JPanel(new GridLayout(3, 2, 50, 5));
 
 		pickaxeTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		axeTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
@@ -127,27 +127,26 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		shovelTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		hoeTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.pickaxe"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(pickaxeTexture));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.pickaxe"),
+				PanelUtils.totalCenterInPanel(pickaxeTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.axe"),
+				PanelUtils.totalCenterInPanel(axeTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.sword"),
+				PanelUtils.totalCenterInPanel(swordTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.shovel"),
+				PanelUtils.totalCenterInPanel(shovelTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.hoe"),
+				PanelUtils.totalCenterInPanel(hoeTexture)));
+		texturesPanel.add(new JLabel());
 
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.axe"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(axeTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.sword"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(swordTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.shovel"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(shovelTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.tool_pack_textures.hoe"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(hoeTexture));
-
-		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.column(15,
+				PanelUtils.centerInPanel(L10N.label("dialog.tools.pack_makers.empty_textures_message")),
+				texturesPanel));
 
 		this.add("Center", tabs);
 
-		this.setSize(600, 350);
+		this.setSize(600, 420);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}

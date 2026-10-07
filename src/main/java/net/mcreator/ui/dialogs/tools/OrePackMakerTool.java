@@ -96,27 +96,28 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(name);
 
 		// Textures page
-		JPanel texturesPanel = new JPanel(new GridLayout(3, 2, 5, 2));
+		JPanel texturesPanel = new JPanel(new GridLayout(2, 2, 50, 5));
 
 		oreTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 		blockTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 		itemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 
-		texturesPanel.add(L10N.label("dialog.tools.ore_pack_textures.ore"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(oreTexture));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.ore_pack_textures.ore"),
+				PanelUtils.totalCenterInPanel(oreTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.ore_pack_textures.block"),
+				PanelUtils.totalCenterInPanel(blockTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.ore_pack_textures.item"),
+				PanelUtils.totalCenterInPanel(itemTexture)));
+		texturesPanel.add(new JLabel());
 
-		texturesPanel.add(L10N.label("dialog.tools.ore_pack_textures.block"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(blockTexture));
-
-		texturesPanel.add(L10N.label("dialog.tools.ore_pack_textures.item"));
-		texturesPanel.add(PanelUtils.totalCenterInPanel(itemTexture));
-
-		addPage(L10N.t("dialog.tools.pack_makers.properties"), PanelUtils.totalCenterInPanel(props));
-		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.totalCenterInPanel(texturesPanel));
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.column(15,
+				PanelUtils.centerInPanel(L10N.label("dialog.tools.pack_makers.empty_textures_message")),
+				texturesPanel));
 
 		this.add("Center", tabs);
 
-		this.setSize(600, 360);
+		this.setSize(600, 400);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}
