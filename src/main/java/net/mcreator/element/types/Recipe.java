@@ -191,4 +191,12 @@ import java.util.*;
 		return !unlockingItems.isEmpty() && !"Brewing".equals(recipeType);
 	}
 
+	public boolean isBrewingWithPotionInput() {
+		return "Brewing".equals(recipeType) && brewingInputStack.getUnmappedValue().startsWith("POTION:");
+	}
+
+	public boolean isBrewingWithItemInput() {
+		return "Brewing".equals(recipeType) && !brewingInputStack.getUnmappedValue().startsWith("POTION:");
+	}
+
 }

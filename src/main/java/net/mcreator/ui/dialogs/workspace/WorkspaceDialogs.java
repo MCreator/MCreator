@@ -163,6 +163,7 @@ public class WorkspaceDialogs {
 		final VTextField websiteURL = new VTextField(24);
 
 		final JComboBox<String> modPicture = new JComboBox<>();
+		final JComboBox<String> modIcon = new JComboBox<>();
 		final JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		final JTextField updateJSON = new JTextField(24);
 		final JStringListField requiredMods;
@@ -353,11 +354,14 @@ public class WorkspaceDialogs {
 			validationGroup.addValidationElement(version);
 
 			modPicture.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
+			modIcon.addItem(L10N.t("dialog.workspace.settings.workspace_nopic_default"));
 			if (workspace != null) {
 				List<File> other = workspace.getFolderManager().getTexturesList(TextureType.OTHER);
 				for (File element : other) {
-					if (element.getName().endsWith(".png"))
+					if (element.getName().endsWith(".png")) {
 						modPicture.addItem(FilenameUtilsPatched.removeExtension(element.getName()));
+						modIcon.addItem(FilenameUtilsPatched.removeExtension(element.getName()));
+					}
 				}
 			}
 
@@ -418,7 +422,7 @@ public class WorkspaceDialogs {
 
 			_basicSettings.add(new JEmptyBox(5, 5));
 
-			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 7 : 2, 2, 5, 2));
+			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 8 : 2, 2, 5, 2));
 			descriptionSettings.setBorder(BorderFactory.createTitledBorder(
 					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.details")));
@@ -437,8 +441,10 @@ public class WorkspaceDialogs {
 				descriptionSettings.add(websiteURL);
 				descriptionSettings.add(L10N.label("dialog.workspace_settings.credits"));
 				descriptionSettings.add(credits);
-				descriptionSettings.add(L10N.label("dialog.workspace_settings.picture"));
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.banner"));
 				descriptionSettings.add(modPicture);
+				descriptionSettings.add(L10N.label("dialog.workspace_settings.icon"));
+				descriptionSettings.add(modIcon);
 				descriptionSettings.add(L10N.label("dialog.workspace_settings.license"));
 				descriptionSettings.add(license);
 
@@ -571,6 +577,9 @@ public class WorkspaceDialogs {
 				modPicture.setSelectedItem(workspace.getWorkspaceSettings().getModPicture() == null ?
 						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
+				modIcon.setSelectedItem(workspace.getWorkspaceSettings().getModIcon() == null ?
+						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
+						workspace.getWorkspaceSettings().getModIcon());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
@@ -605,6 +614,10 @@ public class WorkspaceDialogs {
 					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
 					null :
 					(String) modPicture.getSelectedItem());
+			retVal.setModIcon(Objects.equals(modIcon.getSelectedItem(),
+					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
+					null :
+					(String) modIcon.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());

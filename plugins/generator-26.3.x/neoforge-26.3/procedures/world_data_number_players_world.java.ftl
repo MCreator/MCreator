@@ -1,0 +1,1 @@
+/*@int*/(world.players().size())
