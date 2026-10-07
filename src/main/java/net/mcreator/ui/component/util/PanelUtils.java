@@ -93,6 +93,7 @@ public class PanelUtils {
 
 	public static JPanel twoColumnsPanel(int vGap, double firstColumnWeight, Component... components) {
 		JPanel panel = new JPanel(new GridBagLayout());
+		panel.setOpaque(false);
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets(vGap, 0, vGap, 0);
