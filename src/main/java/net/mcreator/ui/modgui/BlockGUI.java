@@ -1072,7 +1072,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onRightClicked);
 		events.add(onBlockAdded);
 		events.add(onNeighbourBlockChanges);
-		events.add(onTickUpdate);
 		events.add(onDestroyedByPlayer);
 		events.add(onDestroyedByExplosion);
 		events.add(onStartToDestroy);
@@ -1082,7 +1081,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onBlockPlayedBy);
 		events.add(onRedstoneOn);
 		events.add(onRedstoneOff);
-		events.add(onRandomUpdateEvent);
 		events.add(onEntityFallsOn);
 		events.add(new JEmptyBox());
 
@@ -1099,8 +1097,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		tickRandomly.addActionListener(_ -> tickRate.setEnabled(!tickRandomly.isSelected()));
 
-		pane4.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, tickingSettings), events)));
+		JComponent tickSection = PanelUtils.gridElements(1, 2, 5, 5, PanelUtils.join(FlowLayout.LEFT, tickingSettings),
+				PanelUtils.gridElements(1, 2, 5, 5, onTickUpdate, onRandomUpdateEvent));
+
+		pane4.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(tickSection, events, 0, 35)));
 
 		pane4.setOpaque(false);
 
