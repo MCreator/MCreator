@@ -189,7 +189,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_axe", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_axe", TextureType.ITEM));
-			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_axe"));
+			textureMap.put("axe", new TextureHolder(workspace, registryName + "_axe"));
 		}
 
 		// then we generate sword texture
@@ -197,7 +197,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_sword", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_sword", TextureType.ITEM));
-			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_sword"));
+			textureMap.put("sword", new TextureHolder(workspace, registryName + "_sword"));
 		}
 
 		// then we generate shovel texture
@@ -207,7 +207,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 					ImageUtils.colorize(getCachedTexture("tool_shovel_top"), color, true));
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_shovel", TextureType.ITEM));
-			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_shovel"));
+			textureMap.put("shovel", new TextureHolder(workspace, registryName + "_shovel"));
 		}
 
 		// then we generate hoe texture
@@ -215,7 +215,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_hoe", color);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_hoe", TextureType.ITEM));
-			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_hoe"));
+			textureMap.put("hoe", new TextureHolder(workspace, registryName + "_hoe"));
 		}
 
 		// We use element GUIs to get the default values for the elements
