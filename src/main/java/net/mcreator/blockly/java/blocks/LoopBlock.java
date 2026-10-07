@@ -48,7 +48,7 @@ public class LoopBlock implements IBlockGenerator {
 		}
 	}
 
-	private static int getNestingLevel(Element block) {
+	public static int getNestingLevel(Element block) {
 		int level = 1;
 		Node node = block;
 		while (node.getParentNode() != null) {

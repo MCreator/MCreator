@@ -49,11 +49,22 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		<#list data.animations as animation>
 		public final AnimationState animationState${animation?index} = new AnimationState();
 		</#list>
+
+		private long tickCountStart = -1;
 	</#if>
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${REGISTRYNAME}.get(), position, state);
 	}
+
+	<#if data.renderType() == 4>
+	public int getTickCount() {
+		long gameTime = this.level.getGameTime();
+		if (this.tickCountStart == -1)
+			this.tickCountStart = gameTime;
+		return (int) (gameTime - this.tickCountStart);
+	}
+	</#if>
 
 	<#if !data.inventoryDropWhenDestroyed>
 	@Override public void preRemoveSideEffects(BlockPos blockpos, BlockState blockstate) {
@@ -163,6 +174,9 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 	}
 
 	@Override public boolean canPlaceItemThroughFace(int index, ItemStack itemstack, @Nullable Direction direction) {
+		<#-- Vanilla automation (hoppers, droppers, crafters) only checks item max stack size when merging into a slot, not inventory slot stack size -->
+		if (this.getItem(index).getCount() >= this.getMaxStackSize(itemstack))
+			return false;
 		return this.canPlaceItem(index, itemstack)
 		<#if hasProcedure(data.inventoryAutomationPlaceCondition)>&&
 			<@procedureCode data.inventoryAutomationPlaceCondition, {

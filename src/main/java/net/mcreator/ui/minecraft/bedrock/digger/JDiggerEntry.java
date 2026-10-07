@@ -44,7 +44,7 @@ public class JDiggerEntry extends JSimpleListEntry<BEItem.DiggerEntry> {
 			List<? extends JSimpleListEntry<BEItem.DiggerEntry>> entryList) {
 		super(parent, entryList);
 
-		block = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndTags, true);
+		block = new MCItemHolder(mcreator, ElementUtil::loadBlocks, true);
 
 		line.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 

@@ -22,6 +22,8 @@ package net.mcreator.ui.mcp;
 import net.mcreator.Launcher;
 import net.mcreator.io.mcp.McpServer;
 import net.mcreator.io.mcp.transport.McpTransport;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.MCreatorMcpLoadedEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.tools.*;
 
@@ -33,8 +35,15 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 
 	public MCreatorMcp(McpTransport transport, Supplier<MCreator> currentMCreator) {
 		this(new McpServer("MCreator", Launcher.version.full, transport), currentMCreator);
+	}
+
+	public MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) {
+		this.server = server;
+		this.currentMCreator = currentMCreator;
 
 		registerTools();
+
+		MCREvent.event(new MCreatorMcpLoadedEvent(this));
 	}
 
 	public void start() throws IOException {

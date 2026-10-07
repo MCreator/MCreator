@@ -1,4 +1,4 @@
-Leer lassen, um immer die Standard-Artikeldarstellung zu verwenden.
+Leer lassen, um immer das Standard-Gegenstandsrendering zu verwenden.
 
 Wenn ausgewählt, wird diese Textur in GUIs (Hotbar, Inventuren), wenn weggelassen,
 und in Item-Frames statt des vollständig gerenderten Modells angezeigt.
