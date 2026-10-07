@@ -1,0 +1,1 @@
+(${input$entity} instanceof TamableAnimal _tamEnt${cbi} && _tamEnt${cbi}.isTame())

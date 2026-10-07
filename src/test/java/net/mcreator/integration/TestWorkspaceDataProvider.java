@@ -2527,6 +2527,14 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 
+			// Variants mode does not support empty state conditions, so make sure at least one property of
+			// the types the state maps below are populated from (logic or integer) is always used
+			if (!block.multipartModel && stateProperties.stream().noneMatch(
+					e -> e.property() instanceof PropertyData.LogicType
+							|| e.property() instanceof PropertyData.IntegerType)) {
+				stateProperties.add(block.customProperties.getFirst()); // CUSTOM:bool_prop
+			}
+
 			for (int i = 0; i < size2; i++) {
 				StateMap stateMap = new StateMap();
 				for (PropertyDataWithValue<?> property : stateProperties) {
@@ -2782,7 +2790,7 @@ public class TestWorkspaceDataProvider {
 		achievement.achievementName = "Test Achievement";
 		achievement.achievementDescription = "Description of it";
 		achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
-				getRandomMCItem(random, blocksAndItems).getName());
+				getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 		achievement.achievementType = ListUtils.getRandomItem(random,
 				AnnotationUtils.getLimitedOptionsList(Achievement.class, "achievementType"));
 		achievement.parent = new AchievementEntry(modElement.getWorkspace(),
@@ -2851,7 +2859,7 @@ public class TestWorkspaceDataProvider {
 
 	public static MCItem getRandomMCItem(Random random, List<MCItem> list) {
 		if (list.isEmpty())
-			return new MCItem(new DataListEntry.Dummy("STONE"));
+			return new MCItem(new DataListEntry.Dummy("Blocks.STONE"));
 
 		int listSize = list.size();
 		int randomIndex = random.nextInt(listSize);
@@ -3108,6 +3116,7 @@ public class TestWorkspaceDataProvider {
 		workspaceSettings.setWebsiteURL("https://mcreator.net/");
 		workspaceSettings.setUpdateURL("");
 		workspaceSettings.setModPicture("example");
+		workspaceSettings.setModIcon("other0");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
 

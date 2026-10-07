@@ -28,6 +28,8 @@
   readable_name: "Snowy Taiga Mountains"
 - crimson_forest:
   readable_name: "Crimson Forest"
+- dappled_forest:
+  readable_name: "Dappled Forest"
 - deep_cold_ocean:
   readable_name: "Deep Cold Ocean"
 - deep_dark:
@@ -154,6 +156,8 @@
   readable_name: "Stony Shore"
 - stony_peaks:
   readable_name: "Stony Peaks"
+- sulfur_caves:
+  readable_name: "Sulfur Caves"
 - sunflower_plains:
   readable_name: "Sunflower Plains"
 - swampland:
