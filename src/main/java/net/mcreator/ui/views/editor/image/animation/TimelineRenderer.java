@@ -30,8 +30,6 @@ import java.util.function.IntSupplier;
 
 public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
 
-	private final int BORDER_THICKNESS = PreferencesManager.PREFERENCES.imageEditor.frameBorderThickness.get();
-
 	private final IntSupplier currentFrameSupplier;
 
 	public TimelineRenderer(IntSupplier currentFrameSupplier) {
@@ -54,7 +52,7 @@ public class TimelineRenderer extends JLabel implements ListCellRenderer<Animati
 		} else {
 			setBackground(Color.gray);
 		}
-		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 170 - (BORDER_THICKNESS * 2))));
+		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 150)));
 
 		return this;
 	}

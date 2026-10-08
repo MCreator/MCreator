@@ -30,14 +30,12 @@ public class ImageEditorSection extends PreferencesSection {
 
 	public final BooleanEntry storeMetadata;
 	public final ColorEntry selectedFramesColor;
-	public final IntegerEntry frameBorderThickness;
 
 	ImageEditorSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
 		storeMetadata = addEntry(new BooleanEntry("storeMetadata", true));
 		selectedFramesColor = addEntry(new ColorEntry("selectedFramesColor", new Color(75, 85, 197)));
-		frameBorderThickness = addEntry( new IntegerEntry("frameBorderThickness", 10, 0, 20));
 	}
 
 	@Override public String getSectionKey() {
