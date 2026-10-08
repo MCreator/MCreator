@@ -28,6 +28,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,7 +50,8 @@ public class TranslatedComboBox extends VComboBox<String> {
 		map.forEach((key, _) -> super.addItem(key));
 
 		if (translationPrefix != null) {
-			setRenderer(new ItemTexturesComboBoxRenderer(translationPrefix));
+			setRenderer(new ItemTexturesComboBoxRenderer(
+					value -> L10N.t(translationPrefix + value.replace(' ', '_').toLowerCase(Locale.ROOT))));
 		} else {
 			setRenderer(new BasicComboBoxRenderer() {
 				@Override
