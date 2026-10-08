@@ -201,7 +201,6 @@ public abstract class AbstractWorkspacePanel {
 		if (advancedPanel == null) {
 			advancedElements.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
 			advancedPanel = new CollapsiblePanel(L10N.t("dialog.new_workspace.advanced"), advancedElements);
-			advancedPanel.setSmallArrows(true);
 			topPanel.add(new JEmptyBox(30, 30));
 			topPanel.add(advancedPanel);
 		}

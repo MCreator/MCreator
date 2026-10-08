@@ -26,26 +26,32 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.IntSupplier;
 
-public class TimelineRenderer extends JPanel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
+public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
 
-	public TimelineRenderer() {
-		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
+	private final IntSupplier currentFrameSupplier;
+
+	public TimelineRenderer(IntSupplier currentFrameSupplier) {
+		this.currentFrameSupplier = currentFrameSupplier;
+
 		setPreferredSize(new Dimension(170, 170));
+		setOpaque(true);
+		setHorizontalAlignment(JLabel.CENTER);
+		setVerticalAlignment(JLabel.CENTER);
 	}
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends AnimationMakerView.AnimationFrame> list,
 			AnimationMakerView.AnimationFrame value, int index, boolean isSelected, boolean cellHasFocus) {
-		removeAll();
-		if (cellHasFocus) {
+		if (index == currentFrameSupplier.getAsInt()) {
 			setBackground(Theme.current().getInterfaceAccentColor());
 		} else if (isSelected) {
-			setBackground(PreferencesManager.PREFERENCES.imageEditor.selectedFramesColor.get());
+			setBackground(new Color(75, 85, 197));
 		} else {
 			setBackground(Color.gray);
 		}
-		add(new JLabel(new ImageIcon(ImageUtils.resize(value.getImage(), 170))));
+		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 150)));
 
 		return this;
 	}

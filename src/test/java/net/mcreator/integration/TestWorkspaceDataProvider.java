@@ -2775,7 +2775,7 @@ public class TestWorkspaceDataProvider {
 		achievement.achievementName = "Test Achievement";
 		achievement.achievementDescription = "Description of it";
 		achievement.achievementIcon = new MItemBlock(modElement.getWorkspace(),
-				getRandomMCItem(random, blocksAndItems).getName());
+				getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 		achievement.achievementType = ListUtils.getRandomItem(random,
 				AnnotationUtils.getLimitedOptionsList(Achievement.class, "achievementType"));
 		achievement.parent = new AchievementEntry(modElement.getWorkspace(),
@@ -2844,7 +2844,7 @@ public class TestWorkspaceDataProvider {
 
 	public static MCItem getRandomMCItem(Random random, List<MCItem> list) {
 		if (list.isEmpty())
-			return new MCItem(new DataListEntry.Dummy("STONE"));
+			return new MCItem(new DataListEntry.Dummy("Blocks.STONE"));
 
 		int listSize = list.size();
 		int randomIndex = random.nextInt(listSize);
@@ -3101,6 +3101,7 @@ public class TestWorkspaceDataProvider {
 		workspaceSettings.setWebsiteURL("https://mcreator.net/");
 		workspaceSettings.setUpdateURL("");
 		workspaceSettings.setModPicture("example");
+		workspaceSettings.setModIcon("other0");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
