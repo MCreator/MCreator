@@ -1412,8 +1412,15 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItems).getName());
 
 			itemExtension.enableFuel = !emptyLists;
+			itemExtension.fuelNumberProvider = _true ?
+					null :
+					new NumberProviderEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+							ElementUtil.getAllEntriesFor(modElement.getWorkspace(), "furnace_fuel_providers")));
 			itemExtension.fuelPower = new NumberProcedure(_true ? "number3" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
+			itemExtension.compostableNumberProvider = emptyLists ? null :
+					new NumberProviderEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
+							ElementUtil.getAllEntriesFor(modElement.getWorkspace(), "compostable_providers")));
 			itemExtension.compostLayerChance = getRandomDouble(random, ItemExtension.class, "compostLayerChance");
 			itemExtension.hasDispenseBehavior = emptyLists;
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
