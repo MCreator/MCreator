@@ -73,17 +73,18 @@ package ${package}.client.renderer.item;
 	private final ItemDisplayContext displayContext;
 
 	private final LivingEntityRenderState renderState;
-	private final long start;
+	private final Map<Level, Long> start = new WeakHashMap<>();
 
 	private ${name}ItemRenderer(EntityModel<LivingEntityRenderState> model, Identifier texture, ItemDisplayContext displayContext) {
 		this.model = model;
 		this.texture = texture;
 		this.displayContext = displayContext;
 		this.renderState = new LivingEntityRenderState();
-		this.start = System.currentTimeMillis();
 	}
 
 	@Override public void submit(ItemStack itemstack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean glint, int outlineColor) {
+		Minecraft mc = Minecraft.getInstance();
+
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
 		</#if>
@@ -92,7 +93,7 @@ package ${package}.client.renderer.item;
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 
-		renderState.ageInTicks = (System.currentTimeMillis() - start) / 50.0f;
+		renderState.ageInTicks = (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
 			animatedModel.setupItemStackAnim(this, itemstack, renderState);
@@ -150,16 +151,17 @@ package ${package}.client.renderer.item;
 	}
 
 	private void updateRenderState(ItemStack itemstack) {
-		int tickCount = (int) (System.currentTimeMillis() - start) / 50;
+		Minecraft mc = Minecraft.getInstance();
+		int tickCount = (int) (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime));
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
 				getAnimationState(itemstack).get(${animation?index}).animateWhen(<@procedureCode animation.condition, {
 				"itemstack": "itemstack",
-				"x": "Minecraft.getInstance().player.getX()",
-				"y": "Minecraft.getInstance().player.getY()",
-				"z": "Minecraft.getInstance().player.getZ()",
-				"entity": "Minecraft.getInstance().player",
-				"world": "Minecraft.getInstance().level"
+				"x": "mc.player.getX()",
+				"y": "mc.player.getY()",
+				"z": "mc.player.getZ()",
+				"entity": "mc.player",
+				"world": "mc.level"
 				}, false/>, tickCount);
 			<#else>
 				getAnimationState(itemstack).get(${animation?index}).animateWhen(true, tickCount);
