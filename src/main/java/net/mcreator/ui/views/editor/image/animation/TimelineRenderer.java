@@ -35,7 +35,6 @@ public class TimelineRenderer extends JLabel implements ListCellRenderer<Animati
 	public TimelineRenderer(IntSupplier currentFrameSupplier) {
 		this.currentFrameSupplier = currentFrameSupplier;
 
-		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
 		setPreferredSize(new Dimension(170, 170));
 		setOpaque(true);
 		setHorizontalAlignment(JLabel.CENTER);
@@ -48,7 +47,7 @@ public class TimelineRenderer extends JLabel implements ListCellRenderer<Animati
 		if (index == currentFrameSupplier.getAsInt()) {
 			setBackground(Theme.current().getInterfaceAccentColor());
 		} else if (isSelected) {
-			setBackground(PreferencesManager.PREFERENCES.imageEditor.selectedFramesColor.get());
+			setBackground(new Color(75, 85, 197));
 		} else {
 			setBackground(Color.gray);
 		}
