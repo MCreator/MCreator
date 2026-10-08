@@ -271,6 +271,12 @@ public class ElementUtil {
 		put("projectiles_arrow",
 				workspace -> DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow"))
 						.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
+		put("compostable_providers",
+				workspace -> DataListLoader.loadDataList("numberproviders").stream().filter(typeMatches("compostable"))
+						.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
+		put("furnace_fuel_providers",
+				workspace -> DataListLoader.loadDataList("numberproviders").stream().filter(typeMatches("furnace_fuel"))
+						.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
 	}};
 
 	private static final Map<String, Function<Workspace, Collection<DataListEntry>>> customEntryProviders = new HashMap<>() {{
