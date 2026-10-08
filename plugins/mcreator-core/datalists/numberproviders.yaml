@@ -1,69 +1,92 @@
 - compostable/low:
   type: compostable
   texture: LEAVES#0
+  readable_name: "Low (0.35)"
 - compostable/low_medium:
   type: compostable
   texture: CACTUS
+  readable_name: "Medium-Low (0.5)"
 - compostable/medium_high:
   type: compostable
   texture: RED_FLOWER#0
+  readable_name: "Medium-High (0.65)"
 - compostable/high:
   type: compostable
   texture: BREAD
+  readable_name: "High (0.85)"
 - compostable/always_add_one:
   type: compostable
   texture: PUMPKIN_PIE
+  readable_name: "Always (1)"
 - cooking/time_bamboo:
   type: furnace_fuel
   texture: BAMBOO
+  readable_name: "Bamboo (50)"
 - cooking/time_wool_slabs:
   type: furnace_fuel
   texture: WHITE_WOOL_SLAB
+  readable_name: "Wool Slabs (50)"
 - cooking/time_wool_carpets:
   type: furnace_fuel
   texture: CARPET#0
+  readable_name: "Wool Carpets (67)"
 - cooking/time_dry_plants:
   type: furnace_fuel
   texture: SAPLING#0
+  readable_name: "Dry Plants (100)"
 - cooking/time_wood_items_extra_small:
   type: furnace_fuel
   texture: BOWL
+  readable_name: "Extra-small wood items (100)"
 - cooking/time_wool:
   type: furnace_fuel
   texture: WOOL#0
+  readable_name: "Wool (100)"
 - cooking/time_wood_slabs:
   type: furnace_fuel
   texture: WOODEN_SLAB#0
+  readable_name: "Wood Slabs (150)"
 - cooking/time_wood_items_large:
   type: furnace_fuel
   texture: WOODEN_PICKAXE
+  readable_name: "Large wood items (200)"
 - cooking/time_wood_items_small:
   type: furnace_fuel
   texture: BOW
+  readable_name: "Small wood items (300)"
 - cooking/time_roots:
   type: furnace_fuel
   texture: MANGROVE_ROOTS
+  readable_name: "Roots (300)"
 - cooking/time_wood_blocks:
   type: furnace_fuel
   texture: PLANKS#0
+  readable_name: "Wood Blocks (300)"
 - cooking/time_hanging_signs:
   type: furnace_fuel
   texture: OAK_HANGING_SIGN_ITEM
+  readable_name: "Hanging Signs (800)"
 - cooking/time_boats:
   type: furnace_fuel
   texture: BOAT
+  readable_name: "Boats (1200)"
 - cooking/time_coal:
   type: furnace_fuel
   texture: COAL#0
+  readable_name: "Coal (1600)"
 - cooking/time_blaze_rod:
   type: furnace_fuel
   texture: BLAZE_ROD
+  readable_name: "Blaze Rod (2400)"
 - cooking/time_dried_kelp_block:
   type: furnace_fuel
   texture: DRIED_KELP_BLOCK
+  readable_name: "Dried Kelp Block (4001)"
 - cooking/time_coal_block:
   type: furnace_fuel
   texture: COAL_BLOCK
+  readable_name: "Coal Block (16000)"
 - cooking/time_lava_bucket:
   type: furnace_fuel
   texture: LAVA_BUCKET
+  readable_name: "Lava Bucket (20000)"
