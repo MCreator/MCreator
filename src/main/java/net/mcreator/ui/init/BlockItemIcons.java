@@ -145,6 +145,13 @@ public class BlockItemIcons {
 		// Random model offset type
 		put("XZ", "RED_FLOWER#0");
 		put("XYZ", "TALLGRASS#2");
+
+		// Push reaction
+		put("NORMAL", "STONE#0");
+		put("DESTROY", "SAPLING#0");
+		put("BLOCK", "ANVIL");
+		put("IGNORE", "ARMOR_STAND");
+		put("PUSH_ONLY", "WHITE_GLAZED_TERRACOTTA");
 	}};
 	//@formatter:on
 
