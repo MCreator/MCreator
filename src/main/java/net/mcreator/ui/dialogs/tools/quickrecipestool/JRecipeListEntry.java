@@ -20,7 +20,9 @@
 package net.mcreator.ui.dialogs.tools.quickrecipestool;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -31,12 +33,12 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 
@@ -56,12 +58,14 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 		line.add(L10N.label("dialog.tools.quick_recipes.name"));
 		name.setPreferredSize(new Dimension(300, 30));
 		//@formatter:off
-		name.setValidator(new UniqueNameValidator(L10N.t("modelement.recipe"), name::getText, () -> {
+		name.setValidator(new UniqueNameValidator(L10N.t("modelement.recipe"), () -> mcreator.getWorkspaceSettings().getModID() + ":" +
+				RegistryNameFixer.fromCamelCase(name.getText()), () -> {
 			List<String> names = new ArrayList<>();
 			names.addAll(mcreator.getWorkspace().getModElements().stream()
 					.filter(me -> me.getType() == ModElementType.RECIPE)
-					.map(ModElement::getName).toList());
-			names.addAll(entryList.stream().map(e -> e.getEntry().name).toList());
+					.map(me -> (NamespacedGeneratableElement) me.getGeneratableElement()).filter(Objects::nonNull)
+					.map(NamespacedGeneratableElement::getResourceLocation).toList());
+			names.addAll(entryList.stream().map(e->mcreator.getWorkspaceSettings().getModID() + ":" + RegistryNameFixer.fromCamelCase(e.getEntry().name)).toList());
 			return names.stream();
 		}, new ModElementNameValidator(mcreator.getWorkspace(), name, L10N.t("dialog.tools.quick_recipes.name_validator"))));
 		//@formatter:on
