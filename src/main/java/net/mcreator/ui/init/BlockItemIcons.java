@@ -141,6 +141,10 @@ public class BlockItemIcons {
 
 		//Other
 		put("Not specified", 		"BLANK");
+
+		// Random model offset type
+		put("XZ", "RED_FLOWER#0");
+		put("XYZ", "TALLGRASS#2");
 	}};
 	//@formatter:on
 

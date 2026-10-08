@@ -745,6 +745,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
 				L10N.label("elementgui.common.offset_type")));
+		offsetType.setRenderer(new ItemTexturesComboBoxRenderer());
 		visualRenderingSettings.add(offsetType);
 
 		ComponentUtils.deriveFont(renderType, 16);
