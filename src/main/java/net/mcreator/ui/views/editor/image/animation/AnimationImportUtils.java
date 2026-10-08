@@ -117,6 +117,10 @@ import java.util.List;
 	public static void importImagesAsFrames(AnimationMakerView timeline) {
 		File[] files = FileDialogs.getMultiOpenDialog(timeline.getMCreator(),
 				new String[] { ".png", ".gif" });
+
+		if (files == null)
+			return;
+
 		for (File file : files) {
 			if (file != null) {
 				if (file.getName().endsWith(".gif")) {
@@ -147,7 +151,7 @@ import java.util.List;
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
 		preview.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
+				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), L10N.t("dialog.animation_maker.preview"), 0, 0,
 						timeline.getFont().deriveFont(12.0f), Color.gray));
 
 		JCheckBox colorize = new JCheckBox();
