@@ -93,8 +93,7 @@ public class RecipeTemplatesLoader {
 			}
 
 			if (recipeType.equals("Crafting") && (inputSlots == null || inputSlots.length == 0)) {
-				throw new IllegalArgumentException(
-						"Crafting recipe type requires at least one input slot");
+				throw new IllegalArgumentException("Crafting recipe type requires at least one input slot");
 			}
 
 			if (recipeType.equals("Crafting") && Arrays.stream(inputSlots)
