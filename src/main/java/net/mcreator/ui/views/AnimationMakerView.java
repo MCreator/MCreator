@@ -226,7 +226,7 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton importButton = L10N.button("dialog.animation_maker.import_frames");
 		importButton.addActionListener(_ -> AnimationImportUtils.importImagesAsFrames(this));
-		importButton.setIcon(UIRES.get("16px.import"));
+		importButton.setIcon(UIRES.get("18px.import"));
 		timelinebar.add(importButton);
 
 		JButton addFromTemplates = L10N.button("dialog.animation_maker.add_frames_from_template");
