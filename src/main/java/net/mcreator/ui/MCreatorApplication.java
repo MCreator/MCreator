@@ -330,7 +330,8 @@ public final class MCreatorApplication {
 						mcreator.setVisible(true);
 						mcreator.requestFocusInWindow();
 						mcreator.toFront();
-						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
+						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN,
+								mcreator.getWorkspaceSettings().getCurrentGenerator());
 						openResult.set(mcreator);
 					} else { // already open, just focus it
 						LOG.info("Trying to open already open workspace, bringing it to the front.");

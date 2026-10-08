@@ -25,6 +25,7 @@ import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -115,6 +116,10 @@ public class GoogleAnalytics {
 	}
 
 	public void trackPageSync(String page) {
+		trackPageSync(page, null);
+	}
+
+	public void trackPageSync(String page, @Nullable String generator) {
 		try {
 			currentPageHash = String.valueOf(random.nextInt() & Integer.MAX_VALUE);
 			previousPage = currentPage;
@@ -122,33 +127,43 @@ public class GoogleAnalytics {
 
 			Map<String, Object> payload = new LinkedHashMap<>();
 			payload.put("en", "page_view");
+			payload.put("ep.generator", generator); // null values are skipped by getGATrackURL
 
 			if (processRequestURL(getGATrackURL(payload)))
-				LOG.info("Tracked page: {}", page);
+				LOG.info("Tracked page: {}, generator: {}", page, generator);
 		} catch (Exception e) {
 			LOG.warn("Failed to track page: {}", page, e);
 		}
 	}
 
-	private void trackEventSync(String name, String context) {
+	private void trackEventSync(String name, @Nullable String context, @Nullable String generator) {
 		try {
 			Map<String, Object> payload = new LinkedHashMap<>();
 			payload.put("en", name);
-			payload.put("ep.ctx", context);
+			payload.put("ep.ctx", context); // null values are skipped by getGATrackURL
+			payload.put("ep.generator", generator);
 
 			if (processRequestURL(getGATrackURL(payload)))
-				LOG.info("Tracked event: {}, context: {}", name, context);
+				LOG.info("Tracked event: {}, context: {}, generator: {}", name, context, generator);
 		} catch (Exception e) {
 			LOG.warn("Failed to track event: {}, context: {}, error: {}", name, context, e.getMessage());
 		}
 	}
 
 	public void trackPage(String page) {
-		requestExecutor.submit(() -> trackPageSync(page));
+		trackPage(page, null);
+	}
+
+	public void trackPage(String page, @Nullable String generator) {
+		requestExecutor.submit(() -> trackPageSync(page, generator));
 	}
 
 	public void trackEvent(String name, String context) {
-		requestExecutor.submit(() -> trackEventSync(name, context));
+		trackEvent(name, context, null);
+	}
+
+	public void trackEvent(String name, @Nullable String context, @Nullable String generator) {
+		requestExecutor.submit(() -> trackEventSync(name, context, generator));
 	}
 
 	private boolean processRequestURL(String requesturl) throws IOException, URISyntaxException {

@@ -621,7 +621,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-				modElement.getType().getRegistryName());
+				modElement.getType().getRegistryName(), mcreator.getWorkspaceSettings().getCurrentGenerator());
 
 		// checkpoint after the element is stored and generated so all its files are part of the checkpoint
 		if (!editingMode) {
