@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs.workspace;
 
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
-import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleResultCode;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -34,7 +33,6 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.io.IOException;
 
 public class WorkspaceGeneratorSetupDialog {
 
@@ -54,18 +52,6 @@ public class WorkspaceGeneratorSetupDialog {
 			p1.markStateOk();
 
 			m.getGradleConsole().setGradleSetupTaskRunningFlag(true);
-
-			ProgressDialog.ProgressUnit p20 = new ProgressDialog.ProgressUnit(
-					L10N.t("dialog.setup_workspace.step.gradle_daemons"));
-			dial.addProgressUnit(p20);
-
-			try {
-				GradleDaemonUtils.stopAllDaemons(m.getWorkspace());
-				p20.markStateOk();
-			} catch (IOException | InterruptedException e) {
-				LOG.warn("Failed to stop Gradle daemons", e);
-				p20.markStateWarning();
-			}
 
 			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.gradle_project"));

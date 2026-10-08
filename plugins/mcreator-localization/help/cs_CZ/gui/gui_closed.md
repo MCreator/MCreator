@@ -1,0 +1,1 @@
+Spustí proceduru při zavření tohoto GUI.

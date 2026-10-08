@@ -38,22 +38,20 @@ public class FabricWorkspacePanel extends AbstractWorkspacePanel {
 
 		addFormElement(new JEmptyBox(10, 10));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.modid"),
-				workspaceDialogPanel.modID));
-
-		addFormElement(new JEmptyBox(10, 10));
-
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		addFormElement(new JEmptyBox(30, 30));
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.modid"),
+				workspaceDialogPanel.modID));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.package"),
+		addAdvancedFormElement(new JEmptyBox(10, 10));
+
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.package"),
 				workspaceDialogPanel.packageName));
 
-		addFormElement(new JEmptyBox(30, 30));
+		addAdvancedFormElement(new JEmptyBox(30, 30));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.folder"),
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.fabric.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
 		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.fabric.notice");

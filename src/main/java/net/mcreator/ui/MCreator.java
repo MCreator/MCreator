@@ -23,6 +23,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.MCreatorClosedEvent;
 import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
@@ -31,6 +32,7 @@ import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
@@ -172,6 +174,10 @@ public abstract class MCreator extends MCreatorFrame {
 		});
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
+
+		// The right dock strip is only visible if a dock was added to the right region (e.g. by a plugin), in which
+		// case the frame is widened by the strip width so the main area keeps the size the frame is sized for
+		calculateFrameSize(dockStripRight.isVisible() ? dockStripRight.getPreferredSize().width : 0);
 	}
 
 	@Nonnull private JToggleButton createConsoleButton() {
@@ -328,12 +334,10 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 
 		if (safetoexit) {
-			if (workspace.getHistoryManager().isBusy()) {
-				JOptionPane.showMessageDialog(this, L10N.t("action.workspace.close_while_history_busy_message"),
-						L10N.t("action.workspace.close_while_history_busy_title"), JOptionPane.WARNING_MESSAGE);
-			}
-
 			LOG.info("Closing MCreator window ...");
+
+			MCREvent.event(new MCreatorClosedEvent(this));
+
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 
 			workspace.getWorkspaceUserSettings().bottomDockState = CollapsibleDockPanel.State.get(bottomDockRegion);
@@ -345,17 +349,39 @@ public abstract class MCreator extends MCreatorFrame {
 					tab.getTabClosedListener().tabClosed(tab);
 			});
 
-			workspace.close();
+			if (workspace.getHistoryManager().isBusy() && !workspace.isClosing()) {
+				// Local history is busy, so closing may take a while. Run close on a worker thread behind a
+				// progress dialog so the UI stays responsive while local history finishes its git task
+				ProgressDialog dial = new ProgressDialog(this,
+						L10N.t("action.workspace.close_while_history_busy_title"));
+				ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit(
+						L10N.t("action.workspace.close_while_history_busy_message"));
+				dial.addProgressUnit(unit);
+				Thread thread = new Thread(() -> {
+					try {
+						workspace.close();
+						unit.markStateOk();
+					} catch (Exception e) {
+						LOG.error("Failed to close workspace", e);
+						unit.markStateError();
+					} finally {
+						dial.hideDialog();
+					}
+				}, "WorkspaceCloser");
+				thread.start();
+				dial.setVisible(true); // blocks in a nested event loop until hideDialog() disposes the dialog
+			} else {
+				workspace.close();
+			}
 
 			try { // in case the window was already disposed by some other source to prevent crashes here
 				dispose(); // close the window
 			} catch (Exception ignored) {
 			}
 
-			application.getOpenMCreators().remove(this);
+			application.removeMCreator(this);
 
-			if (application.getOpenMCreators()
-					.isEmpty()) { // no MCreator windows left, close the app, or return to project selector if selected
+			if (application.getOpenMCreatorsCount() == 0) { // no MCreator windows left, close the app, or return to project selector if selected
 				if (returnToProjectSelector)
 					application.showWorkspaceSelector();
 				else

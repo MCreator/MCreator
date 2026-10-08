@@ -1,0 +1,36 @@
+list_templates:
+  - name: "Trade definitions"
+    listData: data.trades
+    forEach:
+      - template: villager_trade.json.ftl # loaded from datapack generator
+        writer: json
+        name: "@MODDATAROOT/villager_trade/@[professionFolder()]/@[item.level]/@registryname_@itemindex.json"
+
+tags:
+  # Wandering trader tags
+  - tag: VILLAGER_TRADES:minecraft:wandering_trader/common
+    condition: isWanderingTrader()
+    entryprovider: level1Trades()
+  - tag: VILLAGER_TRADES:minecraft:wandering_trader/uncommon
+    condition: isWanderingTrader()
+    entryprovider: level2Trades()
+  - tag: VILLAGER_TRADES:minecraft:wandering_trader/buying
+    condition: isWanderingTrader()
+    entryprovider: level3Trades()
+
+  # Default villager tags
+  - tag: VILLAGER_TRADES:@[villagerProfession]/level_1
+    condition: "!isWanderingTrader()"
+    entryprovider: level1Trades()
+  - tag: VILLAGER_TRADES:@[villagerProfession]/level_2
+    condition: "!isWanderingTrader()"
+    entryprovider: level2Trades()
+  - tag: VILLAGER_TRADES:@[villagerProfession]/level_3
+    condition: "!isWanderingTrader()"
+    entryprovider: level3Trades()
+  - tag: VILLAGER_TRADES:@[villagerProfession]/level_4
+    condition: "!isWanderingTrader()"
+    entryprovider: level4Trades()
+  - tag: VILLAGER_TRADES:@[villagerProfession]/level_5
+    condition: "!isWanderingTrader()"
+    entryprovider: level5Trades()

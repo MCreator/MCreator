@@ -1,0 +1,45 @@
+templates:
+  - template: gui/gui_container.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/inventory/@NAMEMenu.java"
+  - template: gui/gui_window.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/client/gui/@NAMEScreen.java"
+  - template: gui/gui_msg_button.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMEButtonMessage.java"
+    condition: hasButtonEvents()
+  - template: gui/gui_msg_slot.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMESlotMessage.java"
+    condition: hasSlotEvents()
+  - template: gui/gui_msg_slider.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@NAMESliderMessage.java"
+    condition: hasSliderEvents()
+
+global_templates:
+  - template: elementinits/menus.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameMenus.java"
+  - template: elementinits/screens.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameScreens.java"
+  - template: gui/gui_msg_menustate.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/MenuStateUpdateMessage.java"
+
+localizationkeys:
+  - fromlist: data.getFixedTextLabels()
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: getRenderText()
+  - fromlist: data.getFixedTooltips()
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: getRenderText()
+  - fromlist: data.getComponentsOfType('TextField')
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: placeholder
+  - fromlist: data.getComponentsOfType('Button')
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: text
+  - fromlist: data.getComponentsOfType('Checkbox')
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: text
+  - fromlist: data.getComponentsOfType('Slider')
+    key: gui.@modid.@registryname.@[getName()]_prefix
+    mapto: prefix
+  - fromlist: data.getComponentsOfType('Slider')
+    key: gui.@modid.@registryname.@[getName()]_suffix
+    mapto: suffix

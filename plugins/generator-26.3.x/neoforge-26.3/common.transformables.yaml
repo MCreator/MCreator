@@ -1,0 +1,4 @@
+global_templates:
+  - template: elementinits/transformables.json.ftl
+    writer: json
+    name: "@RESROOT/data/neoforge/data_maps/block/transformables.json"

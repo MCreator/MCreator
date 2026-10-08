@@ -17,8 +17,8 @@
   "mcreator": {
     "toolbox_id": "logicoperations",
     "toolbox_init": [
-      "~<value name=\"a\"><block type=\"entity_from_deps\"></block></value>",
-      "~<value name=\"b\"><block type=\"source_entity_from_deps\"></block></value>"
+      "~<value name=\"a\"><block type=\"source_entity_from_deps\"></block></value>",
+      "<value name=\"b\"><shadow type=\"entity_from_deps\"></shadow></value>"
     ],
     "inputs": [
       "a",

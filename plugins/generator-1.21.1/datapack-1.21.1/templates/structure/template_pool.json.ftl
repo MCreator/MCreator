@@ -2,7 +2,7 @@
 {
   <#if data.poolName??>
   "name": "${modid}:${registryname}_${data.poolName}",
-  "fallback": "${data.fallbackPool?has_content?then(data.fallbackPool, "minecraft:empty")}",
+  "fallback": "${data.fallbackPool?has_content?then(w.resolveModNamespace(data.fallbackPool), "minecraft:empty")}",
   <#else>
   "name": "${modid}:${registryname}",
   "fallback": "minecraft:empty",
