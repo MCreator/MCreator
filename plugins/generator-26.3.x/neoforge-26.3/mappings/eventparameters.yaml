@@ -1,0 +1,43 @@
+_default: null
+# number parameters
+INCOMING_DAMAGE_AMOUNT:
+  - LivingIncomingDamageEvent # the event class
+  - setAmount # the method name #float
+  - entity_attacked # global trigger name
+FALL_DISTANCE:
+  - LivingFallEvent
+  - setDistance #float
+  - entity_falls
+FALL_DAMAGE_MULTIPLIER:
+  - LivingFallEvent
+  - setDamageMultiplier #float
+  - entity_falls
+CRITICAL_DAMAGE_MULTIPLIER:
+  - CriticalHitEvent
+  - setDamageMultiplier #float
+  - player_critical_hit
+INVULNERABILITY_TICKS:
+  - LivingIncomingDamageEvent
+  - setInvulnerabilityTicks #int
+  - entity_attacked
+DROPPED_EXPERIENCE:
+  - LivingExperienceDropEvent
+  - setDroppedExperience #int
+  - entity_dropxp
+# logic parameters
+DISABLE_SWEEP:
+  - CriticalHitEvent
+  - setDisableSweep
+  - player_critical_hit
+CRITICAL_HIT_RESULT:
+  - CriticalHitEvent
+  - setCriticalHit
+  - player_critical_hit
+GRIEF_RESULT:
+  - EntityMobGriefingEvent
+  - setCanGrief
+  - entity_grief
+SHIELD_BLOCKED:
+  - LivingShieldBlockEvent
+  - setBlocked
+  - entity_blocks

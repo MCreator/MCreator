@@ -1,0 +1,54 @@
+templates:
+  - template: recipe/smelting.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
+    condition: "recipeType %= Smelting"
+  - template: recipe/blasting.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
+    condition: "recipeType %= Blasting"
+  - template: recipe/campfire_cooking.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
+    condition: "recipeType %= Campfire cooking"
+  - template: recipe/smoking.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
+    condition: "recipeType %= Smoking"
+  - template: recipe/crafting.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
+    condition: "recipeType %= Crafting"
+  - template: recipe/stonecutting.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
+    condition: "recipeType %= Stone cutting"
+  - template: recipe/smithing.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/@[getName()].json"
+    condition: "recipeType %= Smithing"
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/@[getName()].json"
+    condition: "isBrewingWithItemInput()"
+  # If the brewing input is a potion, generate a file for each potion item
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "inputitem=minecraft:potion"
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/@[getName()].json"
+    condition: "isBrewingWithPotionInput()"
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "inputitem=minecraft:splash_potion"
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/splash_@[getName()].json"
+    condition: "isBrewingWithPotionInput()"
+  - template: recipe/brewing.json.ftl # loaded from datapack generator
+    writer: json
+    variables: "inputitem=minecraft:lingering_potion"
+    name: "@RESROOT/data/@[getNamespace()]/recipe/brewing/lingering_@[getName()].json"
+    condition: "isBrewingWithPotionInput()"
+
+  - template: recipe/unlocking_advancement.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/advancement/recipes/@registryname.json"
+    condition: "hasAdvancement()"

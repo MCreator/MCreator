@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.ParticleEntry;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
@@ -58,6 +59,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Objects;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
@@ -451,6 +453,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 			bucketName.setText(readableNameFromModElement + " Bucket");
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
 		}
 	}
 

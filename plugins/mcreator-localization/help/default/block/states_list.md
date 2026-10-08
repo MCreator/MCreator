@@ -4,7 +4,8 @@ Using this system, you can create blocks that change depending on their
 block state property values.
 
 If a certain block state property is used in state condition, it needs to be used in 
-all state conditions.
+all state conditions. This restriction does not apply if the multipart model definition
+is used, in which case state conditions can use any combination of properties.
 
 If block rotation is enabled, MCreator will automatically generate all the necessary state combinations to handle rotations.
 
