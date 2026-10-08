@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.views.editor.image.animation;
 
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.util.image.ImageUtils;
