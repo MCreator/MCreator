@@ -39,11 +39,11 @@ package ${package}.item;
 <#if modifiesDefaultComponents(data.toolType)>
 @EventBusSubscriber
 </#if>
-<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
+<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spear" || data.toolType == "Spade"
 		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType == "Shield">${data.toolType}Item<#else>Item</#if> {
 
-	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
+	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spear" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 	private static final ToolMaterial TOOL_MATERIAL = new ToolMaterial(
 		<#if data.blockDropsTier == "WOOD">BlockTags.INCORRECT_FOR_WOODEN_TOOL
 		<#elseif data.blockDropsTier == "STONE">BlockTags.INCORRECT_FOR_STONE_TOOL
@@ -54,7 +54,7 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 		</#if>,
 		${data.usageCount},
 		${data.efficiency}f,
-		0,
+		<#if data.toolType == "Spear">${data.spearAttackDamageBonus}f<#else>0</#if>,
 		${data.enchantability},
 		TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")) <#-- data.repairItems are put into a tag -->
 	);
@@ -77,6 +77,8 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 			.hoe(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
 			<#elseif data.toolType == "Sword">
 			.sword(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			<#elseif data.toolType == "Spear">
+			.spear(TOOL_MATERIAL, ${data.spearSpeedModifier}f, ${data.spearKineticDamageMultiplier}f, ${data.spearKineticCooldown}f, ${data.spearDismountTime}f, ${data.spearMinimumDismountSpeed}f, ${data.spearMaximumKnockbackTime}f, ${data.spearMinimumKnockbackSpeed}f, ${data.spearMaximumKineticDamageTime}f, ${data.spearMinimumKineticDamageSpeed}f)
 			<#elseif data.toolType == "MultiTool">
 			.attributes(<@itemAttributeModifiers true/>)
 			<#elseif data.toolType == "Shield">
@@ -307,7 +309,7 @@ public class ${name}Item extends FishingRodItem {
 </@javacompress>
 
 <#function modifiesDefaultComponents toolType>
-	<#return data.usageCount == 0 && (toolType == "Pickaxe" || toolType == "Axe" || toolType == "Sword" || toolType == "Spade" || toolType == "Hoe" || toolType == "MultiTool")>
+	<#return data.usageCount == 0 && (toolType == "Pickaxe" || toolType == "Axe" || toolType == "Sword" || toolType == "Spear" || toolType == "Spade" || toolType == "Hoe" || toolType == "MultiTool")>
 </#function>
 
 <#macro itemAttributeModifiers includeMeleeAttributes=false>
