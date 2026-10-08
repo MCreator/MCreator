@@ -18,7 +18,7 @@
     "toolbox_id": "be_block",
     "toolbox_init": [
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"tagName\"><block type=\"text\"><field name=\"TEXT\">tagName</field></block></value>"
+      "<value name=\"tagName\"><block type=\"text\"><field name=\"TEXT\">minecraft:is_pickaxe_item_destructible</field></block></value>"
     ],
     "inputs": [
       "block",
