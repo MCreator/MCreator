@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.ui.dialogs.tools.quickrecipestool.QuickRecipesTool;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.IntegerRange;
 import org.apache.logging.log4j.LogManager;
@@ -67,7 +66,8 @@ public class RecipeTemplatesLoader {
 				LOG.error("Recipe template {} contains one or many invalid parameters. It will be skipped. {}", name,
 						e.getMessage());
 			} catch (Exception e) {
-				LOG.error("Recipe template {} contains an unknown problem. It will be skipped. {}", name, e.getMessage());
+				LOG.error("Recipe template {} contains an unknown problem. It will be skipped. {}", name,
+						e.getMessage());
 			}
 		}
 	}
@@ -93,7 +93,8 @@ public class RecipeTemplatesLoader {
 			}
 
 			if (recipeType.equals("Crafting") && inputSlots == null) {
-				throw new IllegalArgumentException("Crafting recipe type requires at least one input slot" + recipeType);
+				throw new IllegalArgumentException(
+						"Crafting recipe type requires at least one input slot" + recipeType);
 			}
 
 			if (recipeType.equals("Crafting") && Arrays.stream(inputSlots)
