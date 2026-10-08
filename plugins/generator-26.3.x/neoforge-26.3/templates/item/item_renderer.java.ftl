@@ -73,7 +73,7 @@ package ${package}.client.renderer.item;
 	private final ItemDisplayContext displayContext;
 
 	private final LivingEntityRenderState renderState;
-	private final Map<Level, Long> start = new WeakHashMap<>();
+	private static final Map<Level, Long> start = new WeakHashMap<>();
 
 	private ${name}ItemRenderer(EntityModel<LivingEntityRenderState> model, Identifier texture, ItemDisplayContext displayContext) {
 		this.model = model;
