@@ -41,6 +41,9 @@ public class RecipeTemplatesLoader {
 
 	private static final LinkedHashMap<String, RecipeTemplate> recipeTemplates = new LinkedHashMap<>();
 
+	public static final List<String> SUPPORTED_RECIPE_TYPES = List.of("Crafting", "Blasting", "Campfire cooking",
+			"Smelting", "Smoking", "Stone cutting");
+
 	public static void init() {
 		LOG.debug("Loading recipe templates");
 
@@ -85,7 +88,7 @@ public class RecipeTemplatesLoader {
 		@Nullable public String craftingBookCategory;
 
 		public void selfValidate() throws IllegalArgumentException {
-			if (recipeType == null || !QuickRecipesTool.SUPPORTED_RECIPE_TYPES.contains(recipeType)) {
+			if (recipeType == null || !SUPPORTED_RECIPE_TYPES.contains(recipeType)) {
 				throw new IllegalArgumentException("Invalid recipe type: " + recipeType);
 			}
 

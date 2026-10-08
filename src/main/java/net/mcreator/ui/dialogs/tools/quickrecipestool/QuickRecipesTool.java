@@ -46,9 +46,6 @@ import java.util.Objects;
 
 public class QuickRecipesTool extends AbstractPackMakerTool {
 
-	public static final List<String> SUPPORTED_RECIPE_TYPES = List.of("Crafting", "Blasting", "Campfire cooking",
-			"Smelting", "Smoking", "Stone cutting");
-
 	private final JRecipeList recipes;
 
 	private QuickRecipesTool(MCreator mcreator) {
