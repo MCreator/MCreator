@@ -1,7 +1,7 @@
 - compostable/low:
   type: compostable
   texture: LEAVES#0
-  readable_name: "Low (0.35)"
+  readable_name: "Low (0.3)"
 - compostable/low_medium:
   type: compostable
   texture: CACTUS
