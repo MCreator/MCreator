@@ -29,13 +29,16 @@ import java.util.function.IntSupplier;
 
 public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
 
+	private static final int borderThickness = 2;
+
+	private static final Color currentFrameColor = new Color(75, 85, 197);
+
 	private final IntSupplier currentFrameSupplier;
 
 	public TimelineRenderer(IntSupplier currentFrameSupplier) {
 		this.currentFrameSupplier = currentFrameSupplier;
 
 		setPreferredSize(new Dimension(170, 170));
-		setOpaque(true);
 		setHorizontalAlignment(JLabel.CENTER);
 		setVerticalAlignment(JLabel.CENTER);
 	}
@@ -44,13 +47,20 @@ public class TimelineRenderer extends JLabel implements ListCellRenderer<Animati
 	public Component getListCellRendererComponent(JList<? extends AnimationMakerView.AnimationFrame> list,
 			AnimationMakerView.AnimationFrame value, int index, boolean isSelected, boolean cellHasFocus) {
 		if (index == currentFrameSupplier.getAsInt()) {
-			setBackground(Theme.current().getInterfaceAccentColor());
-		} else if (isSelected) {
-			setBackground(new Color(75, 85, 197));
+			setOpaque(true);
+			setBackground(currentFrameColor);
 		} else {
-			setBackground(Color.gray);
+			setOpaque(false);
 		}
-		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 150)));
+
+		if (isSelected) {
+			setBorder(BorderFactory.createLineBorder(Theme.current().getInterfaceAccentColor(), borderThickness));
+		} else {
+			setBorder(BorderFactory.createEmptyBorder(borderThickness, borderThickness, borderThickness,
+					borderThickness));
+		}
+
+		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 170 - borderThickness * 2)));
 
 		return this;
 	}
