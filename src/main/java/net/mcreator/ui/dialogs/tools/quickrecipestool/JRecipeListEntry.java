@@ -20,7 +20,6 @@
 package net.mcreator.ui.dialogs.tools.quickrecipestool;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleListEntry;
@@ -30,15 +29,14 @@ import net.mcreator.ui.init.RecipeTemplatesLoader;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.MCItemHolderValidator;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 
@@ -51,9 +49,9 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 
 		template = new JComboBox<>(RecipeTemplatesLoader.getTemplateNames());
 		input = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItemsAndTags, true).requireValue(
-				"dialog.tools.quick_recipes.input_validator");
+				"dialog.tools.quick_recipes.input_validator", true);
 		result = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems, false).requireValue(
-				"dialog.tools.quick_recipes.result_validator");
+				"dialog.tools.quick_recipes.result_validator", true);
 
 		line.add(L10N.label("dialog.tools.quick_recipes.name"));
 		name.setPreferredSize(new Dimension(300, 30));
@@ -62,8 +60,7 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 			List<String> names = new ArrayList<>();
 			names.addAll(mcreator.getWorkspace().getModElements().stream()
 					.filter(me -> me.getType() == ModElementType.RECIPE)
-					.map(me -> (NamespacedGeneratableElement) me.getGeneratableElement()).filter(Objects::nonNull)
-					.map(NamespacedGeneratableElement::getNameRaw).toList());
+					.map(ModElement::getName).toList());
 			names.addAll(entryList.stream().map(e -> e.getEntry().name).toList());
 			return names.stream();
 		}, new ModElementNameValidator(mcreator.getWorkspace(), name, L10N.t("dialog.tools.quick_recipes.name_validator"))));
@@ -77,11 +74,9 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 		line.add(template);
 
 		line.add(L10N.label("dialog.tools.quick_recipes.input"));
-		input.setValidator(new MCItemHolderValidator(input).considerAirAsEmpty());
 		line.add(PanelUtils.totalCenterInPanel(input));
 
 		line.add(L10N.label("dialog.tools.quick_recipes.result"));
-		result.setValidator(new MCItemHolderValidator(result).considerAirAsEmpty());
 		line.add(PanelUtils.totalCenterInPanel(result));
 	}
 

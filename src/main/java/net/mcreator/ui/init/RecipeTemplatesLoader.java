@@ -32,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -62,6 +63,8 @@ public class RecipeTemplatesLoader {
 			} catch (IllegalArgumentException e) {
 				LOG.error("Recipe template {} contains one or many invalid parameters. It will be skipped. {}", name,
 						e.getMessage());
+			} catch (Exception e) {
+				LOG.error("Recipe template {} contains an unknown problem. It will be skipped. {}", name, e.getMessage());
 			}
 		}
 	}
@@ -84,6 +87,10 @@ public class RecipeTemplatesLoader {
 		public void selfValidate() throws IllegalArgumentException {
 			if (recipeType == null || !QuickRecipesTool.SUPPORTED_RECIPE_TYPES.contains(recipeType)) {
 				throw new IllegalArgumentException("Invalid recipe type: " + recipeType);
+			}
+
+			if (recipeType.equals("Crafting") && inputSlots == null) {
+				throw new IllegalArgumentException("Crafting recipe type requires at least one input slot" + recipeType);
 			}
 
 			if (recipeType.equals("Crafting") && Arrays.stream(inputSlots)
