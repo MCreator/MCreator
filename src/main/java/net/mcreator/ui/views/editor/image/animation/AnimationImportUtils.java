@@ -76,7 +76,7 @@ import java.util.List;
 										width).getIcon(1, 1), colors.getColor(), !lockSaturation.isSelected()).getImage(),
 						128)));
 			} catch (InvalidTileSizeException | IOException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Impossible to process the animation template", e);
 			}
 		};
 
@@ -109,7 +109,7 @@ import java.util.List;
 								!lockSaturation.isSelected()).getImage());
 				timeline.generateTimelineFromBufferedImage(finalImage);
 			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Impossible to process the animation template", e);
 			}
 		}
 	}
@@ -133,7 +133,7 @@ import java.util.List;
 									file.getName());
 						}
 					} catch (InvalidTileSizeException | IOException e) {
-						LOG.error(e.getMessage(), e);
+						LOG.error("Impossible to process the animation template", e);
 					}
 				}
 			}
@@ -141,7 +141,7 @@ import java.util.List;
 	}
 
 	public static void colorizeFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
-			ImageIcon previewIcon, String name) throws IOException {
+			ImageIcon previewIcon, String name) {
 		JPanel optionsPanel = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 
@@ -251,7 +251,7 @@ import java.util.List;
 					dial.hideDialog();
 				} catch (Exception e) {
 					dial.hideDialog();
-					LOG.error(e.getMessage(), e);
+					LOG.error("An error occurred while processing the GIF", e);
 				}
 
 			}, "GIFFramesLoader");
