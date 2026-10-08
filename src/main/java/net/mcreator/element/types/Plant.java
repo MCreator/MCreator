@@ -264,6 +264,10 @@ import java.util.stream.Collectors;
 		return maxStackSize != 64 || !rarity.equals("COMMON") || immuneToFire;
 	}
 
+	public boolean hasStrippingResult() {
+		return strippingResult != null && !strippingResult.isEmpty();
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
 
@@ -279,6 +283,12 @@ import java.util.stream.Collectors;
 							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
 				baseTypes.add(
 						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
+		}
+
+		if (hasStrippingResult() &&
+				ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+						.compareTo(ModuleDescriptor.Version.parse("26.3")) >= 0) {
+			baseTypes.add(BaseType.TRANSFORMABLE);
 		}
 
 		if (hasTileEntity)
