@@ -1,0 +1,18 @@
+templates:
+  - template: structure/structure_set.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/worldgen/structure_set/@registryname.json"
+  - template: structure/structure.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/worldgen/structure/@registryname.json"
+  - template: structure/template_pool.json.ftl # loaded from datapack generator
+    writer: json
+    name: "@MODDATAROOT/worldgen/template_pool/@registryname.json"
+
+list_templates:
+  - name: "Jigsaw pools"
+    listData: data.jigsawPools
+    forEach:
+      - template: structure/template_pool.json.ftl # loaded from datapack generator
+        writer: json
+        name: "@MODDATAROOT/worldgen/template_pool/@registryname_@[item.poolName].json"

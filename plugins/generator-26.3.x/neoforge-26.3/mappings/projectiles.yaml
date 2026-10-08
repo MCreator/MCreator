@@ -1,0 +1,52 @@
+_default:
+  - Snowball
+  - EntityTypes.SNOWBALL
+  - Items.SNOWBALL
+_mcreator_map_template:
+  - "@NAMEEntity"
+  - "@JavaModNameEntities.@REGISTRYNAME.get()"
+  - "@NAMEEntity.PROJECTILE_ITEM.getItem()"
+Arrow:
+  - Arrow
+  - EntityTypes.ARROW
+  - Items.ARROW
+DragonFireball:
+  - DragonFireball
+  - EntityTypes.DRAGON_FIREBALL
+  - Items.FIRE_CHARGE
+Egg:
+  - ThrownEgg
+  - EntityTypes.EGG
+  - Items.EGG
+EnderPearl:
+  - ThrownEnderpearl
+  - EntityTypes.ENDER_PEARL
+  - Items.ENDER_PEARL
+ExperienceBottle:
+  - ThrownExperienceBottle
+  - EntityTypes.EXPERIENCE_BOTTLE
+  - Items.EXPERIENCE_BOTTLE
+LargeFireball:
+  - LargeFireball
+  - EntityTypes.FIREBALL
+  - Items.FIRE_CHARGE
+LlamaSpit:
+  - LlamaSpit
+  - EntityTypes.LLAMA_SPIT
+  - Items.AIR
+SmallFireball:
+  - SmallFireball
+  - EntityTypes.SMALL_FIREBALL
+  - Items.FIRE_CHARGE
+Snowball:
+  - Snowball
+  - EntityTypes.SNOWBALL
+  - Items.SNOWBALL
+SpectralArrow:
+  - SpectralArrow
+  - EntityTypes.SPECTRAL_ARROW
+  - Items.SPECTRAL_ARROW
+WitherSkull:
+  - WitherSkull
+  - EntityTypes.WITHER_SKULL
+  - Items.WITHER_SKELETON_SKULL

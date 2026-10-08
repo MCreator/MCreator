@@ -39,6 +39,9 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 
 		add.setText(L10N.t("elementgui.living_entity.entity_data_entries.add_entry"));
 
+		entries.addPropertyChangeListener("entityDataEntryRemoved",
+				_ -> firePropertyChange("entityDataEntryRemoved", false, true));
+
 		ComponentUtils.borderWrap(this);
 	}
 

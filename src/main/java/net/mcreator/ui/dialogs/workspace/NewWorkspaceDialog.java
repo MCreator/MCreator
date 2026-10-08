@@ -104,7 +104,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		buttons.setBorder(BorderFactory.createEmptyBorder(8, 0, 8, 0));
 		add("South", buttons);
 
-		ok.addActionListener(e -> {
+		ok.addActionListener(_ -> {
 			WorkspaceSettings workspaceSettings = current.getWorkspaceSettings();
 			if (workspaceSettings != null) {
 				if (w instanceof WorkspaceSelector workspaceSelector) {
@@ -165,65 +165,74 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		styleButton(neoforge);
 		buttonGroup.add(neoforge);
-		neoforge.addActionListener(e -> {
+		neoforge.addActionListener(_ -> {
 			current = neoforgeWorkspacePanel;
 			cardLayout.show(workspacePanels, "neoforge");
+			this.current.focusMainField();
 		});
 
 		styleButton(fabric);
 		buttonGroup.add(fabric);
-		fabric.addActionListener(e -> {
+		fabric.addActionListener(_ -> {
 			current = fabricWorkspacePanel;
 			cardLayout.show(workspacePanels, "fabric");
+			this.current.focusMainField();
 		});
 
 		styleButton(forge);
 		buttonGroup.add(forge);
-		forge.addActionListener(e -> {
+		forge.addActionListener(_ -> {
 			current = forgeWorkspacePanel;
 			cardLayout.show(workspacePanels, "forge");
+			this.current.focusMainField();
 		});
 
 		styleButton(quilt);
 		buttonGroup.add(quilt);
-		quilt.addActionListener(e -> {
+		quilt.addActionListener(_ -> {
 			current = quiltWorkspacePanel;
 			cardLayout.show(workspacePanels, "quilt");
+			this.current.focusMainField();
 		});
 
 		styleButton(spigot);
 		buttonGroup.add(spigot);
-		spigot.addActionListener(e -> {
+		spigot.addActionListener(_ -> {
 			current = spigotWorkspacePanel;
 			cardLayout.show(workspacePanels, "spigot");
+			this.current.focusMainField();
 		});
 
 		styleButton(paper);
 		buttonGroup.add(paper);
-		paper.addActionListener(e -> {
+		paper.addActionListener(_ -> {
 			current = paperWorkspacePanel;
 			cardLayout.show(workspacePanels, "paper");
+			this.current.focusMainField();
 		});
 
 		styleButton(datapack);
 		buttonGroup.add(datapack);
-		datapack.addActionListener(e -> {
+		datapack.addActionListener(_ -> {
 			current = datapackWorkspacePanel;
 			cardLayout.show(workspacePanels, "datapack");
+			this.current.focusMainField();
 		});
 
 		styleButton(resourcepack);
 		buttonGroup.add(resourcepack);
-		resourcepack.addActionListener(e -> {
+		resourcepack.addActionListener(_ -> {
 			current = resourcepackWorkspacePanel;
 			cardLayout.show(workspacePanels, "resourcepack");
+			this.current.focusMainField();
 		});
 
 		styleButton(addon);
 		buttonGroup.add(addon);
-		addon.addActionListener(e -> {
+		addon.addActionListener(_ -> {
 			current = addonWorkspacePanel;
 			cardLayout.show(workspacePanels, "addon");
+			this.current.focusMainField();
 		});
 
 		workspaceType.add(separator("dialog.new_workspace.je_mod"));
@@ -311,7 +320,6 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		} else {
 			selectType(GeneratorFlavor.FORGE);
 		}
-		this.current.focusMainField();
 
 		setVisible(true);
 	}
