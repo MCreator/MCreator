@@ -1,0 +1,69 @@
+- compostable/low:
+  type: compostable
+  texture: LEAVES#0
+- compostable/low_medium:
+  type: compostable
+  texture: CACTUS
+- compostable/medium_high:
+  type: compostable
+  texture: RED_FLOWER#0
+- compostable/high:
+  type: compostable
+  texture: BREAD
+- compostable/always_add_one:
+  type: compostable
+  texture: PUMPKIN_PIE
+- cooking/time_bamboo:
+  type: furnace_fuel
+  texture: BAMBOO
+- cooking/time_wool_slabs:
+  type: furnace_fuel
+  texture: WHITE_WOOL_SLAB
+- cooking/time_wool_carpets:
+  type: furnace_fuel
+  texture: CARPET#0
+- cooking/time_dry_plants:
+  type: furnace_fuel
+  texture: SAPLING#0
+- cooking/time_wood_items_extra_small:
+  type: furnace_fuel
+  texture: BOWL
+- cooking/time_wool:
+  type: furnace_fuel
+  texture: WOOL#0
+- cooking/time_wood_slabs:
+  type: furnace_fuel
+  texture: WOODEN_SLAB#0
+- cooking/time_wood_items_large:
+  type: furnace_fuel
+  texture: WOODEN_PICKAXE
+- cooking/time_wood_items_small:
+  type: furnace_fuel
+  texture: BOW
+- cooking/time_roots:
+  type: furnace_fuel
+  texture: MANGROVE_ROOTS
+- cooking/time_wood_blocks:
+  type: furnace_fuel
+  texture: PLANKS#0
+- cooking/time_hanging_signs:
+  type: furnace_fuel
+  texture: OAK_HANGING_SIGN_ITEM
+- cooking/time_boats:
+  type: furnace_fuel
+  texture: BOAT
+- cooking/time_coal:
+  type: furnace_fuel
+  texture: COAL#0
+- cooking/time_blaze_rod:
+  type: furnace_fuel
+  texture: BLAZE_ROD
+- cooking/time_dried_kelp_block:
+  type: furnace_fuel
+  texture: DRIED_KELP_BLOCK
+- cooking/time_coal_block:
+  type: furnace_fuel
+  texture: COAL_BLOCK
+- cooking/time_lava_bucket:
+  type: furnace_fuel
+  texture: LAVA_BUCKET
