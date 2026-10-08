@@ -62,6 +62,8 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 
 	private String defaultText = "";
 
+	private final JPanel trailingComponent = new JPanel();
+
 	public JSingleEntrySelector(MCreator mcreator) {
 		this.mcreator = mcreator;
 
@@ -107,8 +109,10 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getAltBackgroundColor()));
 		buttons.setOpaque(true);
 
+		trailingComponent.setOpaque(false);
+
 		add(readableText, BorderLayout.CENTER);
-		add(buttons, BorderLayout.EAST);
+		add(PanelUtils.westAndCenterElement(trailingComponent, buttons), BorderLayout.EAST);
 	}
 
 	public void setDefaultText(String text) {
@@ -184,6 +188,10 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 
 	public void addEntrySelectedListener(ActionListener a) {
 		listeners.add(a);
+	}
+
+	protected void addTrailingComponent(JComponent component) {
+		trailingComponent.add(component);
 	}
 
 	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
