@@ -35,10 +35,14 @@ import java.util.stream.Collectors;
 public class ComponentFromAnnotation {
 
 	public static TranslatedComboBox translatedOptions(Class<?> type, String field, String translationPrefix) {
+		return translatedOptions(type, field, translationPrefix, false);
+	}
+
+	public static TranslatedComboBox translatedOptions(Class<?> type, String field, String translationPrefix, boolean showIcons) {
 		TranslatedComboBox retval = new TranslatedComboBox(AnnotationUtils.getLimitedOptionsList(type, field).stream()
 				.collect(Collectors.toMap(o -> o,
 						o -> L10N.t(translationPrefix + o.replace(' ', '_').toLowerCase(Locale.ROOT)), (_, b) -> b,
-						LinkedHashMap::new)));
+						LinkedHashMap::new)), showIcons ? translationPrefix : null);
 		retval.putClientProperty("MCreator.fieldName", field);
 		return retval;
 	}

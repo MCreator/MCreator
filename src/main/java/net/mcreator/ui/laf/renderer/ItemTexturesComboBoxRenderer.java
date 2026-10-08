@@ -19,15 +19,25 @@
 package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.ui.init.BlockItemIcons;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Locale;
 
 public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRenderer<String> {
 
+	private final String translationKey;
+
 	public ItemTexturesComboBoxRenderer() {
+		this(null);
+	}
+
+	public ItemTexturesComboBoxRenderer(String translationKey) {
+		this.translationKey = translationKey;
+
 		setOpaque(true);
 		setHorizontalAlignment(CENTER);
 		setVerticalAlignment(CENTER);
@@ -45,7 +55,9 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 			setForeground(list.getForeground());
 		}
 
-		setText(value);
+		setText(translationKey != null ?
+				L10N.t(translationKey + value.replace(' ', '_').toLowerCase(Locale.ROOT)) :
+				value);
 
 		if (value.equals("Special") || value.equals("MultiTool")) {
 			setIcon(IconUtils.resize(UIRES.get("mod"), 30, 30));

@@ -20,8 +20,10 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.validation.component.VComboBox;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
@@ -32,24 +34,33 @@ import java.util.Objects;
 public class TranslatedComboBox extends VComboBox<String> {
 
 	@SafeVarargs public TranslatedComboBox(Map.Entry<String, String>... entries) {
+		this(null, entries);
+	}
+
+	@SafeVarargs public TranslatedComboBox(@Nullable String translationPrefix, Map.Entry<String, String>... entries) {
 		final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 		for (Map.Entry<String, String> entry : entries) {
 			map.put(entry.getKey(), L10N.t(entry.getValue()));
 		}
-		this(map);
+		this(map, translationPrefix);
 	}
 
-	public TranslatedComboBox(LinkedHashMap<String, String> map) {
+	public TranslatedComboBox(LinkedHashMap<String, String> map, @Nullable String translationPrefix) {
 		map.forEach((key, _) -> super.addItem(key));
-		setRenderer(new BasicComboBoxRenderer() {
-			@Override
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-					boolean cellHasFocus) {
-				String translatedEntryString = map.get(value.toString());
-				return super.getListCellRendererComponent(list,
-						Objects.requireNonNullElse(translatedEntryString, value), index, isSelected, cellHasFocus);
-			}
-		});
+
+		if (translationPrefix != null) {
+			setRenderer(new ItemTexturesComboBoxRenderer(translationPrefix));
+		} else {
+			setRenderer(new BasicComboBoxRenderer() {
+				@Override
+				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+						boolean cellHasFocus) {
+					String translatedEntryString = map.get(value.toString());
+					return super.getListCellRendererComponent(list,
+							Objects.requireNonNullElse(translatedEntryString, value), index, isSelected, cellHasFocus);
+				}
+			});
+		}
 	}
 
 	@Override public void addItem(String item) {
