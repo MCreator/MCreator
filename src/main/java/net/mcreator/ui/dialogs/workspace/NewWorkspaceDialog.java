@@ -110,10 +110,10 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 				if (w instanceof WorkspaceSelector workspaceSelector) {
 					if (workspaceSelector.getApplication() != null)
 						workspaceSelector.getApplication().getAnalytics()
-								.trackEvent(AnalyticsConstants.EVENT_NEW_WORKSPACE,
+								.trackEvent(AnalyticsConstants.EVENT_NEW_WORKSPACE, null,
 										workspaceSettings.getCurrentGenerator());
 				} else if (w instanceof MCreator mcreator) {
-					mcreator.getApplication().getAnalytics().trackEvent(AnalyticsConstants.EVENT_NEW_WORKSPACE,
+					mcreator.getApplication().getAnalytics().trackEvent(AnalyticsConstants.EVENT_NEW_WORKSPACE, null,
 							workspaceSettings.getCurrentGenerator());
 				}
 
