@@ -39,7 +39,7 @@
 
 package ${package}.init;
 
-<#assign proceduralFuels = itemextensions?filter(e -> hasProcedure(e.fuelPower) || hasProcedure(e.fuelSuccessCondition))>
+<#assign proceduralFuels = itemextensions?filter(e -> e.isProceduralFuel())>
 
 @EventBusSubscriber public class ${JavaModName}Fuels {
 
@@ -47,8 +47,11 @@ package ${package}.init;
 		<@javacompress>
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
 		event.modify(${mappedMCItemToItem(extension.item)}, (builder, _, _) -> builder.set(DataComponents.COOKING_FUEL, new CookingFuel(
-			ResourceKey.create(Registries.CONTEXT_INT_PROVIDER, Identifier.fromNamespaceAndPath("${modid}", "fuel/${extension.getModElement().getRegistryName()}")),
-			ContextFloatProviders.COOKING_DEFAULT_SPEED_MULTIPLIER)));
+			<#if extension.fuelNumberProvider??>
+			${extension.fuelNumberProvider}
+			<#else>
+			ResourceKey.create(Registries.CONTEXT_INT_PROVIDER, Identifier.fromNamespaceAndPath("${modid}", "fuel/${extension.getModElement().getRegistryName()}"))
+			</#if>, ContextFloatProviders.COOKING_DEFAULT_SPEED_MULTIPLIER)));
 		</#list>
 		</@javacompress>
 	}

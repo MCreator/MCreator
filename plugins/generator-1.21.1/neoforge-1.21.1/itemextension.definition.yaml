@@ -5,6 +5,6 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"
   - template: json/compostable_items.json.ftl
     writer: json
-    condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.compostLayerChance gt 0)?size != 0}"
+    condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.isCompostable())?size != 0}"
     name: "@RESROOT/data/neoforge/data_maps/item/compostables.json"
   # Dispense behaviors are controlled by generator.yaml

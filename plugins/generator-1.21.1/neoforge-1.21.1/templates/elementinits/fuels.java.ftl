@@ -45,13 +45,18 @@ package ${package}.init;
 		<@javacompress>
 		ItemStack itemstack = event.getItemStack();
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
-			if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
-			<#if hasProcedure(extension.fuelSuccessCondition)>&& <@procedureOBJToConditionCode extension.fuelSuccessCondition/></#if>)
-				<#if hasProcedure(extension.fuelPower)>
-					event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
-				<#else>
-					event.setBurnTime(${extension.fuelPower.getFixedValue()});
-				</#if>
+			<#if extension.fuelNumberProvider??>
+				if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)})
+					event.setBurnTime(${extension.fuelNumberProvider});
+			<#else>
+				if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
+					<#if hasProcedure(extension.fuelSuccessCondition)>&& <@procedureOBJToConditionCode extension.fuelSuccessCondition/></#if>)
+					<#if hasProcedure(extension.fuelPower)>
+						event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
+					<#else>
+						event.setBurnTime(${extension.fuelPower.getFixedValue()});
+					</#if>
+			</#if>
 			<#sep>else
 		</#list>
 		</@javacompress>
