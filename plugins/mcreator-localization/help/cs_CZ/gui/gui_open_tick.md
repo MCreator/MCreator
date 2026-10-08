@@ -1,0 +1,1 @@
+Spustí proceduru každý tick, co je toto GUI otevřeno.

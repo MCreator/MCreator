@@ -165,7 +165,7 @@ public class InternalBlocksLoader {
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.JavaCodeProceduralBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.FlowControlBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.WhileBlock());
-		blockGenerators.add(new net.mcreator.blockly.java.blocks.LoopBlock());
+		blockGenerators.add(new net.mcreator.blockly.javascript.blocks.LoopBlock());
 		blockGenerators.add(new net.mcreator.blockly.java.blocks.TernaryOperatorBlock());
 		blockGenerators.add(new net.mcreator.blockly.javascript.blocks.SetVariableBlock());
 

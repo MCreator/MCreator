@@ -296,14 +296,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		ComponentUtils.deriveFont(bootsModelTexture, 16);
 
 		helmetModel.setRenderer(new ModelComboBoxRenderer());
+		helmetModel.setPrototypeDisplayValue(new Model.BuiltInModel("XXXXXXXXXXXXXXXXXXX"));
 		ComponentUtils.deriveFont(helmetModel, 16);
 		ComponentUtils.deriveFont(helmetModelPart, 16);
 
 		bodyModel.setRenderer(new ModelComboBoxRenderer());
+		bodyModel.setPrototypeDisplayValue(new Model.BuiltInModel("XXXXXXXXXXXXXXXXXXX"));
 		ComponentUtils.deriveFont(bodyModel, 16);
 		ComponentUtils.deriveFont(bodyModelPart, 16);
 
 		leggingsModel.setRenderer(new ModelComboBoxRenderer());
+		leggingsModel.setPrototypeDisplayValue(new Model.BuiltInModel("XXXXXXXXXXXXXXXXXXX"));
 		ComponentUtils.deriveFont(leggingsModel, 16);
 		ComponentUtils.deriveFont(leggingsModelPartL, 16);
 		ComponentUtils.deriveFont(leggingsModelPartR, 16);
@@ -312,6 +315,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		ComponentUtils.deriveFont(armsModelPartR, 16);
 
 		bootsModel.setRenderer(new ModelComboBoxRenderer());
+		bootsModel.setPrototypeDisplayValue(new Model.BuiltInModel("XXXXXXXXXXXXXXXXXXX"));
 		ComponentUtils.deriveFont(bootsModel, 16);
 		ComponentUtils.deriveFont(bootsModelPartL, 16);
 		ComponentUtils.deriveFont(bootsModelPartR, 16);

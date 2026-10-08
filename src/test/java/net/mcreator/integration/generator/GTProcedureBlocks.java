@@ -48,6 +48,8 @@ public class GTProcedureBlocks {
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE);
 
+		var blocks = ElementUtil.loadBlocks(workspace);
+
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
@@ -113,19 +115,18 @@ public class GTProcedureBlocks {
 			testXML = testXML.replace("<block type=\"itemstack_to_mcitem\"></block>",
 					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>");
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
-					"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>")
+							"<block type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></block>")
 					.replace("<shadow type=\"mcitem_all\"><field name=\"value\"></field></shadow>",
-					"<shadow type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></shadow>");
+							"<shadow type=\"variables_get_itemstack\"><field name=\"VAR\">local:stackvar</field></shadow>");
 
 			// set MCItem blocks to some value
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
-							+ TestWorkspaceDataProvider.getRandomMCItem(random, ElementUtil.loadBlocks(workspace))
-							.getName() + "</field></block>")
+							"<block type=\"mcitem_allblocks\"><field name=\"value\">"
+									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName() + "</field></block>")
 					.replace("<shadow type=\"mcitem_allblocks\"><field name=\"value\"></field></shadow>",
 							"<shadow type=\"mcitem_allblocks\"><field name=\"value\">"
-									+ TestWorkspaceDataProvider.getRandomMCItem(random, ElementUtil.loadBlocks(workspace))
-									.getName() + "</field></shadow>");
+									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName()
+									+ "</field></shadow>");
 
 			prepareTestCase(workspace, generatorName, procedureBlock.getMachineName(), testXML,
 					procedureBlock.getType(), procedureBlock.getOutputType());

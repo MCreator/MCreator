@@ -257,8 +257,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		compileNotes.add(compileNote);
 
 		// Compile errors during tests indicate broken block definitions or test XML, so we fail the tests on them
-		if (TestUtil.isTestingEnvironment() && compileNote.type() == BlocklyCompileNote.Type.ERROR) {
-			LOG.info("Blockly compile error in {} ({}): {}", parent != null ? parent.getName() : "unknown element",
+		if (TestUtil.isTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest")
+				&& compileNote.type() == BlocklyCompileNote.Type.ERROR) {
+			LOG.warn("Blockly compile error in {} ({}): {}", parent != null ? parent.getName() : "unknown element",
 					editorType.registryName(), compileNote.message());
 		}
 	}

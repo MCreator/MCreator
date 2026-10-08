@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.states.block;
 
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.SearchableComboBox;
@@ -126,7 +127,7 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		parameters.add("Center", PanelUtils.northAndCenterElement(regularParamsGrid, boundingBoxList, 2, 2));
 
 		CollapsiblePanel collapse = new CollapsiblePanel(L10N.t("elementgui.block.state_collapse"), parameters);
-		collapse.toggleVisibility(userAction);
+		collapse.toggleVisibility(userAction || PreferencesManager.PREFERENCES.ui.expandSectionsByDefault.get());
 		line.add("Center", collapse);
 
 		renderType.addActionListener(e -> {
@@ -139,7 +140,14 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 			boundingBoxList.modelChanged();
 		});
 
+		setMultipartModel(blockStatesList.isMultipartModel());
+
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+	}
+
+	void setMultipartModel(boolean multipartModel) {
+		stateLabel.setAllowEmpty(multipartModel).setAllowDuplicates(multipartModel);
+		particleTexture.setEnabled(!multipartModel);
 	}
 
 	@Override public void reloadDataLists() {
@@ -172,7 +180,8 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		retVal.textureRight = textures.getTextureRight();
 		retVal.textureBack = textures.getTextureBack();
 
-		retVal.particleTexture = particleTexture.getTextureHolder();
+		// multipart parts always use the default block particle texture
+		retVal.particleTexture = blockStatesList.isMultipartModel() ? null : particleTexture.getTextureHolder();
 
 		retVal.hasCustomBoundingBox = hasCustomBoundingBox.isSelected();
 		retVal.boundingBoxes = boundingBoxList.getEntries();
