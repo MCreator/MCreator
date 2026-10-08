@@ -162,7 +162,7 @@ public class AnimationMakerView extends ViewBase {
 
 				try {
 					//noinspection BusyWait
-					Thread.sleep(((Integer) bd1.getValue()) * (50));
+					Thread.sleep(((Integer) bd1.getValue()) * (50L));
 				} catch (InterruptedException ignored) {
 				}
 			}
@@ -170,7 +170,7 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton play = new JButton("");
 		play.setIcon(UIRES.get("16px.play"));
-		play.addActionListener(event -> {
+		play.addActionListener(_ -> {
 			if (!animator.isAlive())
 				animator.start();
 			else
@@ -179,12 +179,12 @@ public class AnimationMakerView extends ViewBase {
 		controls.add(play);
 
 		JButton pause = new JButton("");
-		pause.addActionListener(event -> playanim = false);
+		pause.addActionListener(_ -> playanim = false);
 		pause.setIcon(UIRES.get("16px.pause"));
 		controls.add(pause);
 
 		JButton stop = new JButton("");
-		stop.addActionListener(event -> {
+		stop.addActionListener(_ -> {
 			animindex = 0;
 			playanim = false;
 			timeline.repaint();
@@ -195,7 +195,7 @@ public class AnimationMakerView extends ViewBase {
 		controls.addSeparator();
 
 		JButton next = L10N.button("dialog.animation_maker.next_frame");
-		next.addActionListener(event -> {
+		next.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex++;
 				if (animindex >= timelinevector.getSize())
@@ -208,7 +208,7 @@ public class AnimationMakerView extends ViewBase {
 		controls.add(next);
 
 		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
-		prev.addActionListener(event -> {
+		prev.addActionListener(_ -> {
 			if (!timelinevector.isEmpty()) {
 				animindex--;
 				if (animindex < 0)
@@ -227,7 +227,7 @@ public class AnimationMakerView extends ViewBase {
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
 		JButton add = L10N.button("dialog.animation_maker.add_frames");
-		add.addActionListener(event -> {
+		add.addActionListener(_ -> {
 			File[] frames = FileDialogs.getMultiOpenDialog(fra, new String[] { ".png" });
 			if (frames != null) {
 				Arrays.stream(frames).forEach(frame -> {
@@ -243,17 +243,17 @@ public class AnimationMakerView extends ViewBase {
 		timelinebar.add(add);
 
 		JButton add3 = L10N.button("dialog.animation_maker.add_frames_from_template");
-		add3.addActionListener(event -> addFramesFromTemplate());
+		add3.addActionListener(_ -> addFramesFromTemplate());
 		add3.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add3);
 
 		JButton add4 = L10N.button("dialog.animation_maker.add_frames_from_strip");
-		add4.addActionListener(event -> addFramesFromStrip());
+		add4.addActionListener(_ -> addFramesFromStrip());
 		add4.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(add4);
 
 		JButton add2 = L10N.button("dialog.animation_maker.add_frames_from_gif");
-		add2.addActionListener(event -> {
+		add2.addActionListener(_ -> {
 			File frame = FileDialogs.getOpenDialog(fra, new String[] { ".gif" });
 			if (frame != null) {
 				ProgressDialog dial = new ProgressDialog(fra, L10N.t("dialog.animation_maker.gif_importing"));
@@ -299,7 +299,7 @@ public class AnimationMakerView extends ViewBase {
 		timelinebar.add(add2);
 
 		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
-		remove.addActionListener(event -> {
+		remove.addActionListener(_ -> {
 			if (timeline.getSelectedValue() != null)
 				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
 		});
@@ -333,7 +333,7 @@ public class AnimationMakerView extends ViewBase {
 		add("North", ComponentUtils.applyPadding(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
 				true, true, false, true));
-		save.addActionListener(event -> use());
+		save.addActionListener(_ -> use());
 
 		add("Center", editor);
 	}
@@ -408,7 +408,7 @@ public class AnimationMakerView extends ViewBase {
 
 		JColor colors = new JColor(mcreator, false, true);
 		JCheckBox cbox = new JCheckBox();
-		ActionListener al = event -> {
+		ActionListener al = _ -> {
 			try {
 				width = ImageIO.read(templatesSorted.get(types.getSelectedIndex()).getStream()).getWidth();
 				preview.setIcon(new ImageIcon(ImageUtils.resize(ImageUtils.colorize(
@@ -475,7 +475,7 @@ public class AnimationMakerView extends ViewBase {
 
 		AtomicReference<TiledImageUtils> tilImgUtl = new AtomicReference<>();
 
-		selectFile.addActionListener(event -> {
+		selectFile.addActionListener(_ -> {
 			f.set(FileDialogs.getOpenDialog(mcreator, new String[] { ".png" }));
 			try {
 				if (f.get() != null) {
@@ -496,7 +496,7 @@ public class AnimationMakerView extends ViewBase {
 			}
 		});
 
-		ActionListener al = e -> {
+		ActionListener al = _ -> {
 			if (f.get() != null && tilImgUtl.get() != null)
 				if (cbox2.isSelected())
 					preview.setIcon(new ImageIcon(ImageUtils.resize(
