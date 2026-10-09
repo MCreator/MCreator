@@ -39,7 +39,7 @@
 
 package ${package}.init;
 
-<#assign proceduralFuels = itemextensions?filter(e -> e.isProceduralFuel())>
+<#assign proceduralFuels = itemextensions?filter(e -> e.hasFuelProcedure())>
 
 @EventBusSubscriber public class ${JavaModName}Fuels {
 

@@ -55,7 +55,7 @@ import javax.annotation.Nullable;
 	}
 
 	public boolean hasFuelProcedure() {
-		if (!enableFuel)
+		if (!enableFuel || (fuelNumberProvider != null))
 			return false;
 		Workspace workspace = getModElement().getWorkspace();
 		return Procedure.hasProcedure(fuelPower, workspace) || Procedure.hasProcedure(fuelSuccessCondition, workspace);
@@ -63,12 +63,6 @@ import javax.annotation.Nullable;
 
 	public boolean generateFuelProvider() {
 		return enableFuel && fuelNumberProvider == null;
-	}
-
-	public boolean isProceduralFuel() {
-		Workspace workspace = this.getModElement().getWorkspace();
-		return generateFuelProvider() && (Procedure.hasProcedure(fuelPower, workspace) || Procedure.hasProcedure(
-				fuelSuccessCondition, workspace));
 	}
 
 	public boolean isCompostable() {
