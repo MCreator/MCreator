@@ -20,6 +20,7 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.L10N;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -32,8 +33,10 @@ public abstract class JSingleEntrySelectorWithFixedValue<T, E> extends JSingleEn
 		super(mcreator);
 		this.fixedValueComponent = fixedValueComponent;
 
-		if (fixedValueComponent != null)
+		if (fixedValueComponent != null) {
 			addTrailingComponent(fixedValueComponent);
+			setDefaultText(L10N.t("elementgui.common.use_fixed_value"));
+		}
 	}
 
 	@Override public void setEntry(T entry) {

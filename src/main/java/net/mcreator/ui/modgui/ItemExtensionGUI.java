@@ -98,7 +98,6 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		// Compostable
 		compostLayerChance = new SingleNumberProviderEntryField(mcreator, "compostable_providers",
 				ComponentFromAnnotation.spinner(ItemExtension.class, "compostLayerChance"));
-		compostLayerChance.setDefaultText(L10N.t("elementgui.common.use_fixed_value"));
 
 		JComponent compostPanel = PanelUtils.gridElements(1, 2, 0, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
