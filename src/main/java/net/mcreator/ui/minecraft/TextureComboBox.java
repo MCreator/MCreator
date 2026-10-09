@@ -173,8 +173,9 @@ public class TextureComboBox extends JPanel implements IValidable, IOptionalValu
 		return comboBox;
 	}
 
-	public void setAddPNGExtension(boolean addPNGExtension) {
+	public TextureComboBox setAddPNGExtension(boolean addPNGExtension) {
 		this.addPNGExtension = addPNGExtension;
+		return this;
 	}
 
 	@Override public boolean isEmpty() {

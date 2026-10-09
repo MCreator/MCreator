@@ -159,10 +159,10 @@ import static org.junit.jupiter.api.Assertions.*;
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing pack maker tools", () -> {
 							if (MaterialPackMakerTool.isSupported(generatorConfiguration))
 								MaterialPackMakerTool.addMaterialPackToWorkspace(null, mcreator.get(), workspace.get(),
-										"Material", "Dust based", Color.red, 1.234);
+										"Material", "Dust based", Color.red, 1.234, new HashMap<>());
 							if (WoodPackMakerTool.isSupported(generatorConfiguration))
 								WoodPackMakerTool.addWoodPackToWorkspace(null, mcreator.get(), workspace.get(), "Wood",
-										Color.green, Color.red, 0.123);
+										Color.green, Color.red, 0.123, new HashMap<>());
 						}));
 					}
 

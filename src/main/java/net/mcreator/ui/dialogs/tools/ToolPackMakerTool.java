@@ -39,6 +39,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.variants.modmaker.ModMaker;
@@ -49,11 +50,14 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ToolPackMakerTool extends AbstractPackMakerTool {
 
@@ -62,9 +66,16 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 	private final JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 	private final MCItemHolder base;
 
+	private final TextureSelectionButton pickaxeTexture;
+	private final TextureSelectionButton axeTexture;
+	private final TextureSelectionButton swordTexture;
+	private final TextureSelectionButton shovelTexture;
+	private final TextureSelectionButton hoeTexture;
+
 	private ToolPackMakerTool(MCreator mcreator) {
 		super(mcreator, "tool_pack", UIRES.get("16px.toolpack").getImage());
 
+		// Main properties page
 		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		color = new JColor(mcreator, false, false);
@@ -107,16 +118,42 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		validableElements.addValidationElement(name);
 		validableElements.addValidationElement(base);
 
-		this.add("Center", PanelUtils.centerInPanel(props));
+		// Textures page
+		JPanel texturesPanel = new JPanel(new GridLayout(3, 2, 50, 5));
 
-		this.setSize(600, 290);
+		pickaxeTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		axeTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		swordTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		shovelTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+		hoeTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
+
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.pickaxe"),
+				PanelUtils.totalCenterInPanel(pickaxeTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.axe"),
+				PanelUtils.totalCenterInPanel(axeTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.sword"),
+				PanelUtils.totalCenterInPanel(swordTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.shovel"),
+				PanelUtils.totalCenterInPanel(shovelTexture)));
+		texturesPanel.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.tool_pack_textures.hoe"),
+				PanelUtils.totalCenterInPanel(hoeTexture)));
+		texturesPanel.add(new JLabel());
+
+		addPage(L10N.t("dialog.tools.pack_makers.properties"), props);
+		addPage(L10N.t("dialog.tools.pack_makers.textures"), PanelUtils.column(15,
+				PanelUtils.centerInPanel(L10N.label("dialog.tools.pack_makers.empty_textures_message")),
+				texturesPanel));
+
+		this.add("Center", tabs);
+
+		this.setSize(600, 420);
 		this.setLocationRelativeTo(mcreator);
 		this.setVisible(true);
 	}
 
 	@Override protected void generatePack(MCreator mcreator) {
 		addToolPackToWorkspace(toGenerate, mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
-				color.getColor(), (Double) power.getValue());
+				color.getColor(), (Double) power.getValue(), makeTextureMap());
 	}
 
 	public static String[] getPackElementNames(String name) {
@@ -126,7 +163,8 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	public static boolean addToolPackToWorkspace(@Nullable List<GeneratableElement> generationQueue, MCreator mcreator,
-			Workspace workspace, String name, MItemBlock base, Color color, double factor) {
+			Workspace workspace, String name, MItemBlock base, Color color, double factor,
+			@Nonnull Map<String, TextureHolder> textureMap) {
 		if (!checkIfNamesAvailable(workspace, getPackElementNames(name)))
 			return false;
 
@@ -139,46 +177,52 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 				null;
 
 		// first we generate pickaxe texture
-		ImageIcon pickaxe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
-				ImageUtils.colorize(getCachedTexture("tool_pickaxe"), color, true));
-		String pickaxeTextureName = registryName + "_pickaxe";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
-				mcreator.getFolderManager().getTextureFile(pickaxeTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("pickaxe")) {
+			ImageIcon pickaxe = baseAndColoredOverlay("tool_base_stick", "tool_pickaxe", color);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(pickaxe.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_pickaxe", TextureType.ITEM));
+			textureMap.put("pickaxe", new TextureHolder(workspace, registryName + "_pickaxe"));
+		}
 
 		// then we generate axe texture
-		ImageIcon axe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
-				ImageUtils.colorize(getCachedTexture("tool_axe"), color, true));
-		String axeTextureName = registryName + "_axe";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
-				mcreator.getFolderManager().getTextureFile(axeTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("axe")) {
+			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_axe", color);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_axe", TextureType.ITEM));
+			textureMap.put("axe", new TextureHolder(workspace, registryName + "_axe"));
+		}
 
 		// then we generate sword texture
-		ImageIcon sword = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
-				ImageUtils.colorize(getCachedTexture("tool_sword"), color, true));
-		String swordTextureName = registryName + "_sword";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sword.getImage()),
-				mcreator.getFolderManager().getTextureFile(swordTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("sword")) {
+			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_sword", color);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_sword", TextureType.ITEM));
+			textureMap.put("sword", new TextureHolder(workspace, registryName + "_sword"));
+		}
 
 		// then we generate shovel texture
-		ImageIcon shovel = ImageUtils.drawOver(
-				ImageUtils.drawOver(getCachedTexture("tool_base_stick"), getCachedTexture("tool_shovel_grip")),
-				ImageUtils.colorize(getCachedTexture("tool_shovel_top"), color, true));
-		String shovelTextureName = registryName + "_shovel";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
-				mcreator.getFolderManager().getTextureFile(shovelTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("shovel")) {
+			ImageIcon shovel = ImageUtils.drawOver(
+					ImageUtils.drawOver(getCachedTexture("tool_base_stick"), getCachedTexture("tool_shovel_grip")),
+					ImageUtils.colorize(getCachedTexture("tool_shovel_top"), color, true));
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(shovel.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_shovel", TextureType.ITEM));
+			textureMap.put("shovel", new TextureHolder(workspace, registryName + "_shovel"));
+		}
 
 		// then we generate hoe texture
-		ImageIcon hoe = ImageUtils.drawOver(getCachedTexture("tool_base_stick"),
-				ImageUtils.colorize(getCachedTexture("tool_hoe"), color, true));
-		String hoeTextureName = registryName + "_hoe";
-		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
-				mcreator.getFolderManager().getTextureFile(hoeTextureName, TextureType.ITEM));
+		if (!textureMap.containsKey("hoe")) {
+			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_hoe", color);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
+					mcreator.getFolderManager().getTextureFile(registryName + "_hoe", TextureType.ITEM));
+			textureMap.put("hoe", new TextureHolder(workspace, registryName + "_hoe"));
+		}
 
 		// We use element GUIs to get the default values for the elements
 		Tool pickaxeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Pickaxe", ModElementType.TOOL), false).getElementFromGUI();
 		pickaxeTool.name = readableName + " Pickaxe";
-		pickaxeTool.texture = new TextureHolder(workspace, pickaxeTextureName);
+		pickaxeTool.texture = textureMap.get("pickaxe");
 		pickaxeTool.toolType = "Pickaxe";
 		pickaxeTool.repairItems = Collections.singletonList(base);
 		pickaxeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
@@ -188,7 +232,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Axe", ModElementType.TOOL), false).getElementFromGUI();
 		axeTool.name = readableName + " Axe";
-		axeTool.texture = new TextureHolder(workspace, axeTextureName);
+		axeTool.texture = textureMap.get("axe");
 		axeTool.toolType = "Axe";
 		axeTool.repairItems = Collections.singletonList(base);
 		axeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
@@ -199,7 +243,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool swordTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Sword", ModElementType.TOOL), false).getElementFromGUI();
 		swordTool.name = readableName + " Sword";
-		swordTool.texture = new TextureHolder(workspace, swordTextureName);
+		swordTool.texture = textureMap.get("sword");
 		swordTool.toolType = "Sword";
 		swordTool.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		swordTool.repairItems = Collections.singletonList(base);
@@ -210,7 +254,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool shovelTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Shovel", ModElementType.TOOL), false).getElementFromGUI();
 		shovelTool.name = readableName + " Shovel";
-		shovelTool.texture = new TextureHolder(workspace, shovelTextureName);
+		shovelTool.texture = textureMap.get("shovel");
 		shovelTool.toolType = "Spade";
 		shovelTool.repairItems = Collections.singletonList(base);
 		shovelTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
@@ -221,7 +265,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "Hoe", ModElementType.TOOL), false).getElementFromGUI();
 		hoeTool.name = readableName + " Hoe";
-		hoeTool.texture = new TextureHolder(workspace, hoeTextureName);
+		hoeTool.texture = textureMap.get("hoe");
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
 		hoeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
@@ -303,6 +347,18 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 		tool.usageCount = (int) Math.round(250 * Math.pow(factor, 1.4));
 		tool.attackSpeed = (double) Math.round(3.0f * factor);
 		addGeneratableElementToWorkspace(generationQueue, mcreator.getWorkspace(), folder, tool);
+	}
+
+	private Map<String, TextureHolder> makeTextureMap() {
+		HashMap<String, TextureHolder> map = new HashMap<>();
+
+		addToTextureMap(map, pickaxeTexture, "pickaxe");
+		addToTextureMap(map, axeTexture, "axe");
+		addToTextureMap(map, swordTexture, "sword");
+		addToTextureMap(map, shovelTexture, "shovel");
+		addToTextureMap(map, hoeTexture, "hoe");
+
+		return map;
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {

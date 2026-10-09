@@ -20,6 +20,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -27,8 +28,11 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.TextureComboBox;
+import net.mcreator.ui.minecraft.TextureSelectionButton;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -36,12 +40,12 @@ import net.mcreator.workspace.elements.TagElement;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 
 public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
+	protected JTabbedPane tabs = new JTabbedPane();
 	protected ValidationGroup validableElements = new ValidationGroup();
 
 	protected final List<GeneratableElement> toGenerate = new ArrayList<>();
@@ -80,6 +84,12 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 	}
 
 	protected abstract void generatePack(MCreator mcreator);
+
+	protected void addPage(String name, JPanel panel) {
+		JScrollPane page = new JScrollPane(PanelUtils.totalCenterInPanel(panel));
+		page.getVerticalScrollBar().setUnitIncrement(10);
+		tabs.add(name, page);
+	}
 
 	protected static boolean checkIfNamesAvailable(Workspace workspace, String... names) {
 		List<String> usedElementNames = workspace.getWorkspaceInfo().getUsedElementNames();
@@ -137,5 +147,25 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 
 	public static ImageIcon getCachedTexture(String... locations) {
 		return getCachedTexture(ListUtils.getRandomItem(Arrays.asList(locations)));
+	}
+
+	public static ImageIcon baseAndColoredOverlay(String baseLocation, String overlayLocation, Color color) {
+		return ImageUtils.drawOver(getCachedTexture(baseLocation),
+				ImageUtils.colorize(getCachedTexture(overlayLocation), color, true));
+	}
+
+	public static ImageIcon coloredBaseAndOverlay(String baseLocation, Color color, String overlayLocation) {
+		return ImageUtils.drawOver(ImageUtils.colorize(getCachedTexture(baseLocation), color, true),
+				getCachedTexture(overlayLocation));
+	}
+
+	public static void addToTextureMap(Map<String, TextureHolder> map, TextureSelectionButton texture, String key) {
+		if (texture.hasTexture())
+			map.put(key, texture.getTextureHolder());
+	}
+
+	public static void addToTextureMap(Map<String, TextureHolder> map, TextureComboBox texture, String key) {
+		if (texture.hasTexture())
+			map.put(key, texture.getTextureHolder());
 	}
 }
