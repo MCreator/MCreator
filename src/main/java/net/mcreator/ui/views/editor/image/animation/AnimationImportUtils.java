@@ -133,7 +133,7 @@ import java.util.List;
 							timeline.addFrameToTimeline(new AnimationMakerView.AnimationFrame(image));
 						} else { // This is a strip texture, so we offer the user to colorize the strip before importing it
 							int x = Math.min(image.getHeight(), image.getWidth());
-							colorizeFramesDialog(timeline, image, new TiledImageUtils(image, x, x).getIcon(1, 1),
+							colorizeImportedFramesDialog(timeline, image, new TiledImageUtils(image, x, x).getIcon(1, 1),
 									file.getName());
 						}
 					} catch (InvalidTileSizeException | IOException e) {
@@ -144,7 +144,7 @@ import java.util.List;
 		}
 	}
 
-	public static void colorizeFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
+	public static void colorizeImportedFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
 			ImageIcon previewIcon, String name) {
 		JPanel optionsPanel = new JPanel(new BorderLayout());
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
