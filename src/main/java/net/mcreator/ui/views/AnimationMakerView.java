@@ -224,18 +224,18 @@ public class AnimationMakerView extends ViewBase {
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
 
-		JButton importButton = L10N.button("dialog.animation_maker.import_frames");
-		importButton.addActionListener(_ -> AnimationImportUtils.importImagesAsFrames(this));
-		importButton.setIcon(UIRES.get("18px.import"));
-		timelinebar.add(importButton);
-
 		JButton addFromTemplates = L10N.button("dialog.animation_maker.add_frames_from_template");
 		addFromTemplates.addActionListener(_ -> AnimationImportUtils.addFramesFromTemplate(this));
 		addFromTemplates.setIcon(UIRES.get("18px.add"));
 		timelinebar.add(addFromTemplates);
 
+		JButton importButton = L10N.button("dialog.animation_maker.import_frames");
+		importButton.addActionListener(_ -> AnimationImportUtils.importImagesAsFrames(this));
+		importButton.setIcon(UIRES.get("18px.import"));
+		timelinebar.add(importButton);
+
 		JButton remove = L10N.button("dialog.animation_maker.remove_selected_frames");
-		remove.addActionListener(event -> {
+		remove.addActionListener(_ -> {
 			if (timeline.getSelectedValue() != null)
 				timeline.getSelectedValuesList().forEach(timelinevector::removeElement);
 		});
