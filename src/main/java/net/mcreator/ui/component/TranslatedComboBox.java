@@ -23,35 +23,32 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.validation.component.VComboBox;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 public class TranslatedComboBox extends VComboBox<String> {
 
 	@SafeVarargs public TranslatedComboBox(Map.Entry<String, String>... entries) {
-		this(null, entries);
+		this(false, entries);
 	}
 
-	@SafeVarargs public TranslatedComboBox(@Nullable String translationPrefix, Map.Entry<String, String>... entries) {
+	@SafeVarargs public TranslatedComboBox(boolean showIcons, Map.Entry<String, String>... entries) {
 		final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 		for (Map.Entry<String, String> entry : entries) {
 			map.put(entry.getKey(), L10N.t(entry.getValue()));
 		}
-		this(map, translationPrefix);
+		this(map, showIcons);
 	}
 
-	public TranslatedComboBox(LinkedHashMap<String, String> map, @Nullable String translationPrefix) {
+	public TranslatedComboBox(LinkedHashMap<String, String> map, boolean showIcons) {
 		map.forEach((key, _) -> super.addItem(key));
 
-		if (translationPrefix != null) {
-			setRenderer(new ItemTexturesComboBoxRenderer(
-					value -> L10N.t(translationPrefix + value.replace(' ', '_').toLowerCase(Locale.ROOT))));
+		if (showIcons) {
+			setRenderer(new ItemTexturesComboBoxRenderer(value -> Objects.requireNonNullElse(map.get(value), value)));
 		} else {
 			setRenderer(new BasicComboBoxRenderer() {
 				@Override

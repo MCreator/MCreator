@@ -42,7 +42,7 @@ public class ComponentFromAnnotation {
 		TranslatedComboBox retval = new TranslatedComboBox(AnnotationUtils.getLimitedOptionsList(type, field).stream()
 				.collect(Collectors.toMap(o -> o,
 						o -> L10N.t(translationPrefix + o.replace(' ', '_').toLowerCase(Locale.ROOT)), (_, b) -> b,
-						LinkedHashMap::new)), showIcons ? translationPrefix : null);
+						LinkedHashMap::new)), showIcons);
 		retval.putClientProperty("MCreator.fieldName", field);
 		return retval;
 	}

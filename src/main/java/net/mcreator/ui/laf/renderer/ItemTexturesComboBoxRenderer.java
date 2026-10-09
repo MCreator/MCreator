@@ -32,7 +32,7 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 	@Nullable private final Function<String, String> textMapper;
 
 	public ItemTexturesComboBoxRenderer() {
-		this(value -> value);
+		this(null);
 	}
 
 	public ItemTexturesComboBoxRenderer(@Nullable Function<String, String> textMapper) {
