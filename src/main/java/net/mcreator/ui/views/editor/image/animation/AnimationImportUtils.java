@@ -56,7 +56,7 @@ import java.util.List;
 				ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
 
-		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout(0, 10));
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 
 		JLabel preview = new JLabel();
@@ -86,7 +86,7 @@ import java.util.List;
 		lockSaturation.addActionListener(al);
 		colors.addColorSelectedListener(al);
 
-		panel.add("North", L10N.label("dialog.animation_maker.strip_color_choice"));
+		panel.add("North", L10N.label("dialog.animation_maker.template_color_choice"));
 		panel.add("Center", centerPanel);
 		panel.add("South", PanelUtils.centerInPanel(preview));
 
