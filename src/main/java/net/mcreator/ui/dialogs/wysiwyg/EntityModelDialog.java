@@ -29,7 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.ValidationResult;
-import net.mcreator.ui.validation.validators.ProcedureSelectorValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -56,7 +56,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				VariableTypeLoader.BuiltInTypes.ENTITY,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		entityModel.refreshList(context);
-		entityModel.setValidator(new ProcedureSelectorValidator(entityModel));
+		entityModel.setValidator(
+				new NonEmptyValidator(entityModel, L10N.t("elementgui.gui.error_entity_model_needs_provider")));
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/entity_model_display_condition"), editor.mcreator,
@@ -116,8 +117,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			anchor.setSelectedItem(model.anchorPoint);
 		}
 
-		cancel.addActionListener(e -> dispose());
-		ok.addActionListener(e -> {
+		cancel.addActionListener(_ -> dispose());
+		ok.addActionListener(_ -> {
 			if (entityModel.getValidationStatus().type() != ValidationResult.Type.ERROR) {
 				dispose();
 				if (model == null) {

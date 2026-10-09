@@ -93,7 +93,7 @@
 </#macro>
 
 <#function hasProcedure object="">
-    <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null" && w.hasModElement(object.getName())>
+    <#return object?has_content && w.hasProcedure(object)>
 </#function>
 
 <#function hasReturnValueOf object="" type="">

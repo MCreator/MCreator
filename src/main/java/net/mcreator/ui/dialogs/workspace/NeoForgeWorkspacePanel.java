@@ -39,22 +39,20 @@ public class NeoForgeWorkspacePanel extends AbstractWorkspacePanel {
 
 		addFormElement(new JEmptyBox(10, 10));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.modid"),
-				workspaceDialogPanel.modID));
-
-		addFormElement(new JEmptyBox(10, 10));
-
 		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.generator"),
 				workspaceDialogPanel.generatorSelector));
 
-		addFormElement(new JEmptyBox(30, 30));
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.modid"),
+				workspaceDialogPanel.modID));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.package"),
+		addAdvancedFormElement(new JEmptyBox(10, 10));
+
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.package"),
 				workspaceDialogPanel.packageName));
 
-		addFormElement(new JEmptyBox(30, 30));
+		addAdvancedFormElement(new JEmptyBox(30, 30));
 
-		addFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.folder"),
+		addAdvancedFormElement(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
 		addNotice(UIRES.get("18px.info"), "dialog.new_workspace.neoforge.notice");

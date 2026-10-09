@@ -79,7 +79,6 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	@Numeric(init = 64, min = 0, max = 10000, step = 1) public int followRangeValue;
 	public boolean isImmuneToFire;
 	public boolean isPushable;
-	public boolean isPushableByPiston;
 
 	public boolean spawnNaturally;
 	@NonNullIf("spawnNaturally") public MobSpawnType populationControl;

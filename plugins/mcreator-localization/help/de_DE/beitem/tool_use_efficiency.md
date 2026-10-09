@@ -1,0 +1,1 @@
+Falls aktiviert, wird die Verzauberung "Effizienz" die Zerstörungsgeschwindigkeit der grabbaren Blöcke beeinflussen.

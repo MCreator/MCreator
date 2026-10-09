@@ -22,8 +22,9 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.component.VButton;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
@@ -36,7 +37,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextureSelectionButton extends VButton {
+public class TextureSelectionButton extends VButton implements IOptionalValueContainer {
 
 	@Nullable private Texture selectedTexture = null;
 
@@ -138,13 +139,17 @@ public class TextureSelectionButton extends VButton {
 		return this;
 	}
 
+	@Override public boolean isEmpty() {
+		return !hasTexture();
+	}
+
 	public TextureSelectionButton requireValue() {
-		this.setValidator(new TextureSelectionButtonValidator(this));
+		this.setValidator(new NonEmptyValidator(this, L10N.t("validator.texture_needed")));
 		return this;
 	}
 
 	public TextureSelectionButton requireValue(String errorTranslationKey) {
-		this.setValidator(new TextureSelectionButtonValidator(this).setEmptyMessage(L10N.t(errorTranslationKey)));
+		this.setValidator(new NonEmptyValidator(this, L10N.t(errorTranslationKey)));
 		return this;
 	}
 
