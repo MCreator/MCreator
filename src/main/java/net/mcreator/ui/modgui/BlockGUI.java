@@ -196,7 +196,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptions(Block.class,
+	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptionsWithIcons(Block.class,
 			"reactionToPushing", "elementgui.block.reaction_to_push.", true);
 
 	private final JComboBox<String> offsetType = ComponentFromAnnotation.options(Block.class, "offsetType");
