@@ -5,15 +5,15 @@
 - compostable/low_medium:
   type: compostable
   texture: CACTUS
-  readable_name: "Medium-Low (0.5)"
-- compostable/medium_high:
+  readable_name: "Low-Medium (0.5)"
+- compostable/medium:
   type: compostable
   texture: RED_FLOWER#0
-  readable_name: "Medium-High (0.65)"
-- compostable/high:
+  readable_name: "Medium (0.65)"
+- compostable/medium_high:
   type: compostable
   texture: BREAD
-  readable_name: "High (0.85)"
+  readable_name: "Medium-High (0.85)"
 - compostable/always_add_one:
   type: compostable
   texture: PUMPKIN_PIE

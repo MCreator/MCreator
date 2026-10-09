@@ -1,7 +1,7 @@
 compostable/low: ContextIntProviders.COMPOSTABLE_LOW
 compostable/low_medium: ContextIntProviders.COMPOSTABLE_LOW_MEDIUM
-compostable/medium_high: ContextIntProviders.COMPOSTABLE_MEDIUM
-compostable/high: ContextIntProviders.COMPOSTABLE_MEDIUM_HIGH
+compostable/medium: ContextIntProviders.COMPOSTABLE_MEDIUM
+compostable/medium_high: ContextIntProviders.COMPOSTABLE_MEDIUM_HIGH
 compostable/always_add_one: ContextIntProviders.COMPOSTABLE_ALWAYS_ADD_ONE
 cooking/time_bamboo: ContextIntProviders.COOKING_TIME_BAMBOO
 cooking/time_wool_slabs: ContextIntProviders.COOKING_TIME_WOOL_SLABS

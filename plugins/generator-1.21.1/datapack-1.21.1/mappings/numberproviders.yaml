@@ -1,7 +1,7 @@
 compostable/low: 0.3
 compostable/low_medium: 0.5
-compostable/medium_high: 0.65
-compostable/high: 0.85
+compostable/medium: 0.65
+compostable/medium_high: 0.85
 compostable/always_add_one: 1
 cooking/time_bamboo: 50
 cooking/time_wool_slabs: 50
