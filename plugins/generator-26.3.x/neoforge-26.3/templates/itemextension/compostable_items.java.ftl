@@ -42,12 +42,15 @@ package ${package}.init;
 
 	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
 		<@javacompress>
-		<#list itemextensions?filter(e -> e.compostLayerChance gt 0) as extension>
+		<#list itemextensions?filter(e -> e.isCompostable()) as extension>
 		event.modify(${mappedMCItemToItem(extension.item)},
 			(builder, _, _) -> builder.set(DataComponents.COMPOSTABLE,
-					new Compostable(ResourceKey.create(
-						Registries.CONTEXT_INT_PROVIDER,
-						Identifier.fromNamespaceAndPath("${modid}", "compostable/${extension.getModElement().getRegistryName()}")))));
+					new Compostable(
+					<#if extension.compostableNumberProvider??>
+					${extension.compostableNumberProvider}
+					<#else>
+					ResourceKey.create(Registries.CONTEXT_INT_PROVIDER, Identifier.fromNamespaceAndPath("${modid}", "compostable/${extension.getModElement().getRegistryName()}"))
+					</#if>)));
 		</#list>
 		</@javacompress>
 	}
