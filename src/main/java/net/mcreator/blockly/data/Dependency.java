@@ -150,7 +150,11 @@ public record Dependency(String name, String type) implements Comparable<Depende
 		};
 	}
 
-	public static Dependency[] fromString(String input) {
+	public static Dependency[] fromString(@Nullable String input) {
+		if (input == null || input.isEmpty()) {
+			return new Dependency[0];
+		}
+
 		List<Dependency> retval = new ArrayList<>();
 		String[] deps = input.split("/");
 		for (String dep : deps) {
