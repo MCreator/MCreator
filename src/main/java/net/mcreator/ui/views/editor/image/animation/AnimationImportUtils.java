@@ -146,7 +146,7 @@ import java.util.List;
 
 	public static void colorizeImportedFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
 			ImageIcon previewIcon, String name) {
-		JPanel optionsPanel = new JPanel(new BorderLayout());
+		JPanel optionsPanel = new JPanel(new BorderLayout(0, 10));
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
