@@ -121,6 +121,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 	}
 
 	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
 		readableText.setEnabled(enabled);
 		edit.setEnabled(enabled);
 		remove.setEnabled(enabled);
