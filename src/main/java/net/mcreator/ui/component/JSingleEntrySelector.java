@@ -62,7 +62,7 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 
 	private String defaultText = "";
 
-	private final JPanel trailingComponent = new JPanel();
+	private final JPanel trailingComponent = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 5));
 
 	public JSingleEntrySelector(MCreator mcreator) {
 		this.mcreator = mcreator;
