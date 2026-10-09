@@ -39,10 +39,9 @@ import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.lang.module.ModuleDescriptor;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class QuickRecipesTool extends AbstractPackMakerTool {
 
@@ -64,8 +63,8 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 
 	@Override protected void generatePack(MCreator mcreator) {
 		recipes.getEntries().forEach(
-				recipe -> addRecipeToWorkspace(toGenerate, mcreator, mcreator.getWorkspace(), recipe.name, recipe.template,
-						recipe.input, recipe.result));
+				recipe -> addRecipeToWorkspace(toGenerate, mcreator, mcreator.getWorkspace(), recipe.name,
+						recipe.template, recipe.input, recipe.result));
 	}
 
 	public static void addRecipeToWorkspace(@Nullable List<GeneratableElement> generationQueue, MCreator mcreator,
@@ -88,6 +87,15 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 		recipe.unlockingItems.add(input);
 		recipe.recipeRetstackSize = recipeTemplate.stackSize;
 
+		// In 26.3 and above, blasting/smoking recipes should have the same cooking time as their normal counterpart
+		if (ModuleDescriptor.Version.parse(
+						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorMinecraftVersion())
+				.compareTo(ModuleDescriptor.Version.parse("26.3")) >= 0) {
+			recipe.cookingTime = 200;
+		} else {
+			recipe.cookingTime = 100;
+		}
+
 		switch (recipeTemplate.recipeType) {
 		case "Crafting":
 			Arrays.stream(recipeTemplate.inputSlots).forEach(slot -> recipe.recipeSlots[slot] = input);
@@ -103,10 +111,12 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 		case "Campfire cooking":
 			recipe.campfireCookingInputStack = input;
 			recipe.campfireCookingReturnStack = result;
+			recipe.cookingTime = 600;
 			break;
 		case "Smelting":
 			recipe.smeltingInputStack = input;
 			recipe.smeltingReturnStack = result;
+			recipe.cookingTime = 200;
 			break;
 		case "Smoking":
 			recipe.smokingInputStack = input;
