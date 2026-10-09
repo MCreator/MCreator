@@ -197,7 +197,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
 	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptionsWithIcons(Block.class,
-			"reactionToPushing", "elementgui.block.reaction_to_push.", true);
+			"reactionToPushing", "elementgui.block.reaction_to_push.");
 
 	private final JComboBox<String> offsetType = ComponentFromAnnotation.options(Block.class, "offsetType");
 	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
