@@ -18,8 +18,8 @@ class FieldMCItemSelector extends Blockly.FieldImage {
         let thisField = this;
         this.setTooltip(function () {
             return thisField.getValue() || (thisField.supported_mcitems === 'allblocks' ?
-                javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block') :
-                javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block_item'));
+                translate('blockly.field_mcitem_selector.tooltip.empty_block') :
+                translate('blockly.field_mcitem_selector.tooltip.empty_block_item'));
         });
     };
 
@@ -57,7 +57,6 @@ class FieldMCItemSelector extends Blockly.FieldImage {
                         Blockly.Events.setGroup(true);
                         thisField.setValue(selected || '');
                         Blockly.Events.setGroup(group);
-                        javabridge.triggerEvent();
                     }
                 });
                 this.lastClickTime = -1;
@@ -70,7 +69,7 @@ class FieldMCItemSelector extends Blockly.FieldImage {
     // Update the value and the image of this field
     doValueUpdate_(newValue) {
         this.value_ = newValue;
-        this.src_ = javabridge.getMCItemURI(newValue);
+        this.src_ = 'http://mcreator/blockly/mcitem/' + encodeURIComponent(newValue || '') + '.png';
         if (this.imageElement) {
             this.imageElement.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.src_ || '');
         }

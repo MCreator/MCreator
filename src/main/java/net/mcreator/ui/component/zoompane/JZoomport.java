@@ -49,6 +49,7 @@ public class JZoomport extends JComponent {
 		this.toZoom = toZoom;
 
 		setOpaque(false);
+		setFocusable(true);
 
 		registerChildListeners();
 
@@ -106,6 +107,8 @@ public class JZoomport extends JComponent {
 			}
 
 			@Override public void mousePressed(MouseEvent e) {
+				// Take focus on click like a view inside JScrollPane would, so key events reach the zoomed component
+				requestFocusInWindow();
 				updateCursor(e);
 				prevDragLocation = e.getLocationOnScreen();
 			}
@@ -146,6 +149,25 @@ public class JZoomport extends JComponent {
 
 	private boolean isEventValid(MouseEvent e, JZoomport zoomport) {
 		return e != null && zoomport.getToZoom() != null;
+	}
+
+	/**
+	 * The zoomed component is not part of the Swing component hierarchy, so its key bindings would never be
+	 * consulted. This forwards WHEN_FOCUSED bindings of the zoomed component when this zoomport has focus,
+	 * similar to how a view inside JScrollPane receives them directly.
+	 */
+	@Override protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+		if (super.processKeyBinding(ks, e, condition, pressed))
+			return true;
+
+		if (condition == WHEN_FOCUSED && toZoom != null && toZoom.isEnabled()) {
+			Object actionKey = toZoom.getInputMap(WHEN_FOCUSED).get(ks);
+			Action action = actionKey == null ? null : toZoom.getActionMap().get(actionKey);
+			if (action != null)
+				return SwingUtilities.notifyAction(action, ks, e, toZoom, e.getModifiersEx());
+		}
+
+		return false;
 	}
 
 	private void registerChildListeners() {

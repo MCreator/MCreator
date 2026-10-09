@@ -21,6 +21,7 @@ package net.mcreator.workspace;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.Strictness;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceSavedEvent;
@@ -33,6 +34,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.nio.file.Files;
@@ -48,10 +50,15 @@ public final class WorkspaceFileManager implements Closeable {
 
 	private final Logger LOG;
 
-	public static final Gson gson = new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
-			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
-			.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
-			.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
+	public static final Gson gson = createGsonBuilder(null).registerTypeAdapter(Workspace.class,
+			new Workspace.WorkspaceDeserializer()).create();
+
+	static GsonBuilder createGsonBuilder(@Nullable GeneratorFlavor ignoredGeneratorFlavor) {
+		return new GsonBuilder().setStrictness(Strictness.LENIENT).setPrettyPrinting()
+				.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
+				.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
+				.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer());
+	}
 
 	private DataSavedListener dataSavedListener;
 
@@ -74,7 +81,7 @@ public final class WorkspaceFileManager implements Closeable {
 
 		this.dataSaveExecutor = Executors.newScheduledThreadPool(1, runnable -> {
 			Thread thread = new Thread(runnable);
-			thread.setName("Workspace-File-Manager" );
+			thread.setName("Workspace-File-Manager");
 			thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
 			return thread;
 		});
@@ -97,13 +104,17 @@ public final class WorkspaceFileManager implements Closeable {
 	}
 
 	@Override public void close() {
-		lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
-		dataSaveExecutor.shutdown(); // prevent new tasks from being scheduled
-		saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
+		try {
+			lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
+			dataSaveExecutor.shutdown(); // prevent new tasks from being scheduled
+			saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
+		} catch (Exception e) {
+			LOG.error("Failed to save workspace on close", e);
+		}
 	}
 
 	public void saveWorkspaceDirectlyAndWait() {
-		LOG.info("Saving the workspace by direct request" );
+		LOG.info("Saving the workspace by direct request");
 
 		// set changed flag so the saving happens in all cases (this is a direct save request)
 		workspace.markDirty();
@@ -131,7 +142,7 @@ public final class WorkspaceFileManager implements Closeable {
 
 			// We do an "atomic" write to the FS
 			File outFile = workspaceFile;
-			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock" );
+			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock");
 			FileIO.writeStringToFile(workspacestring, tmpFile);
 			try {
 				Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.ATOMIC_MOVE);
@@ -154,9 +165,9 @@ public final class WorkspaceFileManager implements Closeable {
 
 			MCREvent.event(new WorkspaceSavedEvent.AfterSaving(workspace));
 
-			LOG.debug("Workspace stored on the FS" );
+			LOG.debug("Workspace stored on the FS");
 		} else {
-			LOG.error("Skipping workspace save. Workspace is defined but we failed to serialize it!" );
+			LOG.error("Skipping workspace save. Workspace is defined but we failed to serialize it!");
 		}
 	}
 
@@ -185,7 +196,7 @@ public final class WorkspaceFileManager implements Closeable {
 		// if workspace file exists, so we can back it up, we back it up
 		if (workspaceFile.isFile()) {
 			File backupFile = new File(folderManager.getWorkspaceBackupsCacheDir(),
-					workspaceFile.getName() + "-backup_" + new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date()));
+					workspaceFile.getName() + "-backup_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
 			FileIO.copyFile(workspaceFile, backupFile);
 		}
 	}

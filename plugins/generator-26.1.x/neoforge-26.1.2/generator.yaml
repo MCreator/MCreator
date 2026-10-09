@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
-status: stable
-buildfileversion: 26.1.2.71
+status: lts
+buildfileversion: 26.1.2.95
 
 import:
   - datapack-26.1.x
@@ -86,6 +86,7 @@ base_templates:
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
       - "${w.hasElementsOfType('feature')}"
       - "${w.hasElementsOfType('armor')}"
+      - "${w.hasElementsOfType('fluid')}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition_any:
@@ -109,7 +110,7 @@ base_templates:
 
 java_models:
   key: mojmap-26.1.x
-  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x]
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x]
   requested_key_words: [ModelPart, ~ModelRenderer]
 
 sources_setup_tasks:

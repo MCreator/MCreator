@@ -24,10 +24,16 @@ import net.mcreator.workspace.elements.VariableType;
 public class BlocklyJavascriptTemplates {
 
 	public static String variableListExtension(VariableType variableType) {
+		// If the referenced workspace variable does not exist (anymore), keep the block shape as-is
+		// so a potential entity input and blocks attached to it are preserved (e.g. when the block
+		// is restored on undo after the variable it references was deleted)
+		// Reason for the early return if statement in JS code
 		return """
 				Blockly.Extensions.register('%s_variables', function () {
 					this.getInput("var").appendField(new Blockly.FieldDropdown(getVariablesOfType("%s")), 'VAR');
 					this.getField('VAR').setValidator(function (variable) {
+						if (variable.startsWith('global:') && !javabridge.globalVariableExists(variable))
+							return;
 						var isPlayerVar = javabridge.isPlayerVariable(variable);
 						this.getSourceBlock().updateShape_(isPlayerVar, true);
 					});

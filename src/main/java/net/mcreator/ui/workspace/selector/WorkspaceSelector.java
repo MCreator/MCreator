@@ -232,30 +232,32 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 		recentsList.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
+				RecentWorkspaceEntry selected = recentsList.getSelectedValue();
+				if (selected == null)
+					return;
+
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					Object[] options = { L10N.t("dialog.workspace_selector.delete_workspace.recent_list"),
 							L10N.t("dialog.workspace_selector.delete_workspace.workspace"), L10N.t("common.cancel") };
 					int n = JOptionPane.showOptionDialog(WorkspaceSelector.this,
-							L10N.t("dialog.workspace_selector.delete_workspace.message",
-									recentsList.getSelectedValue().getName()),
+							L10N.t("dialog.workspace_selector.delete_workspace.message", selected.getName()),
 							L10N.t("dialog.workspace_selector.delete_workspace.title"),
 							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 					if (n == 0) {
-						removeRecentWorkspace(recentsList.getSelectedValue());
+						removeRecentWorkspace(selected);
 						reloadRecents();
 					} else if (n == 1) {
 						int m = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
-								L10N.t("dialog.workspace_selector.delete_workspace.confirmation",
-										recentsList.getSelectedValue().getName()), L10N.t("common.confirmation"),
-								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+								L10N.t("dialog.workspace_selector.delete_workspace.confirmation", selected.getName()),
+								L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 						if (m == JOptionPane.YES_OPTION) {
-							FileIO.moveToTrash(recentsList.getSelectedValue().getPath().getParentFile());
+							FileIO.moveToTrash(selected.getPath().getParentFile());
 							reloadRecents();
 						}
 					}
 				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+					workspaceOpenListener.workspaceOpened(selected.getPath());
 				}
 			}
 		});
@@ -493,8 +495,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 
 		if (recentWorkspaces != null && !recentWorkspaces.getList().isEmpty()) {
+			RecentWorkspaceEntry selected = recentsList.getSelectedValue();
 			defaultListModel.removeAllElements();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
+			if (selected != null)
+				recentsList.setSelectedValue(selected, false);
 			recentPanes.show(recentPanel, "recents");
 		} else if (recentWorkspaces == null) {
 			recentPanes.show(recentPanel, "norecentsloaded");
@@ -642,7 +647,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-365);
+			((ImagePanel) soim).setOffsetY(-320);
 		} else {
 			soim = new JPanel();
 			soim.setBackground(Theme.current().getSecondAltBackgroundColor());

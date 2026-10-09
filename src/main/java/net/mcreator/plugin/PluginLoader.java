@@ -37,7 +37,6 @@ import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
-import java.beans.Introspector;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -70,6 +69,10 @@ public class PluginLoader extends URLClassLoader {
 	// list of plugins that failed to load and are thus not present on plugins list
 	private final Set<PluginLoadFailure> failedPlugins;
 
+	// list of plugins skipped due to MCreator version mismatch, only reported as failures if no other
+	// plugin with the same ID was loaded successfully (same plugin bundled for multiple MCreator versions)
+	private final Set<PluginLoadFailure> incompatiblePlugins;
+
 	private final Set<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
@@ -87,6 +90,7 @@ public class PluginLoader extends URLClassLoader {
 		this.plugins = new LinkedHashSet<>();
 		this.javaPlugins = new LinkedHashSet<>();
 		this.failedPlugins = new LinkedHashSet<>();
+		this.incompatiblePlugins = new LinkedHashSet<>();
 		this.pluginUpdates = new LinkedHashSet<>();
 		this.pluginsModules = new LinkedHashSet<>();
 
@@ -120,30 +124,10 @@ public class PluginLoader extends URLClassLoader {
 						plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.isJavaPlugin()) {
+				if (plugin.isJavaPlugin()) {
 					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
 							"PluginClassLoader-" + plugin.getID(), new URL[] {},
-							Thread.currentThread().getContextClassLoader()) {
-						@Override protected Class<?> findClass(String name) throws ClassNotFoundException {
-							try {
-								return super.findClass(name);
-							} catch (Exception e) {
-								for (StackTraceElement element : e.getStackTrace()) {
-									if (element.getClassName().equals(Introspector.class.getName())) {
-										// If the class not found was triggered due to Introspector looking for
-										// XXXBeanInfo class or XXXCustomizer class, we can ignore this and
-										// not log error or mark plugin as failed by setting loaded_failure
-										throw e;
-									}
-								}
-
-								plugin.loaded_failure =
-										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
-								LOG.error("Failed to load class {} for plugin {}", name, plugin.getID(), e);
-								throw e;
-							}
-						}
-					};
+							Thread.currentThread().getContextClassLoader());
 
 					javaPluginCL.addURL(plugin.toURL());
 
@@ -153,12 +137,8 @@ public class PluginLoader extends URLClassLoader {
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-				} else if (plugin.isJavaPlugin()) {
-					LOG.warn("{} is Java plugin, but Java plugins are disabled in preferences", plugin.getID());
-
-					plugin.loaded_failure = "Java plugins disabled";
 				}
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				plugin.loaded_failure = "Load error: " + e.getMessage();
 				LOG.error("Failed to load plugin {}", plugin.getID(), e);
 			}
@@ -313,7 +293,7 @@ public class PluginLoader extends URLClassLoader {
 			LOG.warn("Plugin {} is not compatible with this MCreator version!", plugin.getID());
 			if (System.getenv("MCREATOR_PLUGINS_DEV")
 					== null) { // Only prevent the loading of incompatible plugins if MCREATOR_PLUGINS_DEV is not set
-				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
+				incompatiblePlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
 				return null;
 			}
 		}
@@ -350,6 +330,13 @@ public class PluginLoader extends URLClassLoader {
 
 	public Collection<PluginLoadFailure> getFailedPlugins() {
 		Set<PluginLoadFailure> failedPluginsAggregated = new HashSet<>(this.failedPlugins);
+
+		Set<String> loadedPluginIDs = plugins.stream().filter(Plugin::isLoaded).map(Plugin::getID)
+				.collect(Collectors.toSet());
+
+		// Version mismatch is not an error if another plugin with the same ID was loaded successfully
+		this.incompatiblePlugins.stream().filter(failure -> !loadedPluginIDs.contains(failure.pluginID()))
+				.forEach(failedPluginsAggregated::add);
 
 		for (Plugin plugin : plugins) {
 			if (!plugin.isLoaded())

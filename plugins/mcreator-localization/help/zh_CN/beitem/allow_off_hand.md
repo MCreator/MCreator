@@ -1,4 +1,3 @@
-If enabled, the item will be usable in the off-hand (the second hand).
-如果启用，此物品将能够在副手被使用。
+启用后，此物品将能够在副手（第二只手）被使用。
 
-相比较于Java版本，只有一部分原版物品比如盾牌和图腾启用该选项。
+相较于Java版，只有一部分原版物品启用此选项，如盾牌和不死图腾。

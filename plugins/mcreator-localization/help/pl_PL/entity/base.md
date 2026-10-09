@@ -1,4 +1,4 @@
-AI standardowe bytu do stworzenia takiego bytu jak te standardowe.
+AI jednostki Vanilla do stworzenia jednostki jak Vanilla one.
 
 Zastąpi również niektóre parametry, takie jak łupy.
 

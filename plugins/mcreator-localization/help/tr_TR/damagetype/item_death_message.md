@@ -1,4 +1,4 @@
-Bu mesaj, oluşturduğunuz canlı tarafından bir oyuncu öldürüldüğünde sohbet kısmında görüntülenecekir. Ayrıca canlının elinde bulunan nesneye göre mesajı özelleştirebilirsiniz.
+Bu mesaj, oluşturduğun canlı tarafından bir oyuncu öldürüldüğünde sohbet kısmında görüntülenecekir. Ayrıca canlının elinde bulunan nesneye göre mesajı özelleştirebilirsin.
 
 Mesajda aşağıdaki belirteçleri (değişkenleri) kullanabilirsiniz:
 

@@ -22,8 +22,9 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.component.VButton;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
+import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
@@ -36,35 +37,35 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextureSelectionButton extends VButton {
+public class TextureSelectionButton extends VButton implements IOptionalValueContainer {
 
 	@Nullable private Texture selectedTexture = null;
 
-	private final TypedTextureSelectorDialog td;
+	private final TypedTextureSelectorDialog selectorDialog;
 	private final int size;
 	private boolean removeButtonHover;
 	private boolean uvFlip;
 
 	private final List<ActionListener> textureSelectedListeners = new ArrayList<>();
 
-	public TextureSelectionButton(TypedTextureSelectorDialog td) {
-		this(td, 64);
+	public TextureSelectionButton(TypedTextureSelectorDialog selectorDialog) {
+		this(selectorDialog, 64);
 	}
 
-	public TextureSelectionButton(TypedTextureSelectorDialog td, int size) {
+	public TextureSelectionButton(TypedTextureSelectorDialog selectorDialog, int size) {
 		super("");
-		this.td = td;
+		this.selectorDialog = selectorDialog;
 		this.size = size;
 
 		setMargin(new Insets(0, 0, 0, 0));
 		setPreferredSize(new Dimension(this.size, this.size));
-		td.getConfirmButton().addActionListener(event -> {
-			Texture texture = td.list.getSelectedValue();
+		selectorDialog.getConfirmButton().addActionListener(_ -> {
+			Texture texture = selectorDialog.list.getSelectedValue();
 			if (texture != null) {
 				setTexture(texture);
 				textureSelectedListeners.forEach(listener -> listener.actionPerformed(new ActionEvent(this, 0, "")));
 			}
-			td.dispose();
+			selectorDialog.dispose();
 		});
 
 		addMouseListener(new MouseAdapter() {
@@ -79,7 +80,7 @@ public class TextureSelectionButton extends VButton {
 						textureSelectedListeners.forEach(
 								listener -> listener.actionPerformed(new ActionEvent(this, 0, "")));
 					} else {
-						td.setVisible(true);
+						selectorDialog.setVisible(true);
 					}
 					repaint();
 				}
@@ -103,11 +104,12 @@ public class TextureSelectionButton extends VButton {
 	protected void setTexture(@Nullable Texture texture) {
 		if (texture != null) {
 			if (texture instanceof CustomTexture customTexture && !customTexture.getTextureFile()
-					.isFile()) // only set texture if if exists
+					.isFile()) // only set texture if it exists
 				return;
 			selectedTexture = texture;
 			setIcon(new ImageIcon(
-					ImageUtils.resize(texture.getTextureIcon(td.getMCreator().getWorkspace()).getImage(), this.size)));
+					ImageUtils.resize(texture.getTextureIcon(selectorDialog.getMCreator().getWorkspace()).getImage(),
+							this.size)));
 			getValidationStatus();
 			setToolTipText(selectedTexture.getTextureName());
 		}
@@ -115,12 +117,12 @@ public class TextureSelectionButton extends VButton {
 
 	public void setTexture(@Nullable TextureHolder texture) {
 		if (texture != null) {
-			setTexture(texture.toTexture(td.getTextureType()));
+			setTexture(texture.toTexture(selectorDialog.getTextureType()));
 		}
 	}
 
 	public TextureHolder getTextureHolder() {
-		return new TextureHolder(td.getMCreator().getWorkspace(), selectedTexture);
+		return new TextureHolder(selectorDialog.getMCreator().getWorkspace(), selectedTexture);
 	}
 
 	public boolean hasTexture() {
@@ -137,13 +139,17 @@ public class TextureSelectionButton extends VButton {
 		return this;
 	}
 
+	@Override public boolean isEmpty() {
+		return !hasTexture();
+	}
+
 	public TextureSelectionButton requireValue() {
-		this.setValidator(new TextureSelectionButtonValidator(this));
+		this.setValidator(new NonEmptyValidator(this, L10N.t("validator.texture_needed")));
 		return this;
 	}
 
 	public TextureSelectionButton requireValue(String errorTranslationKey) {
-		this.setValidator(new TextureSelectionButtonValidator(this).setEmptyMessage(L10N.t(errorTranslationKey)));
+		this.setValidator(new NonEmptyValidator(this, L10N.t(errorTranslationKey)));
 		return this;
 	}
 

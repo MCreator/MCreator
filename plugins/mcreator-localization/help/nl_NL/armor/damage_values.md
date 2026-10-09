@@ -1,0 +1,1 @@
+Deze nummers bepalen hoe goed de schade aan de entiteit zal worden verminderd door een bepaald harnas onderdeel.

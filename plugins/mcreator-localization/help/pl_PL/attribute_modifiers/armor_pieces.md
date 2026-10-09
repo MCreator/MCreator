@@ -1,0 +1,1 @@
+Ten modyfikator atrybutu jest stosowany tylko do wybranych części zbroi.

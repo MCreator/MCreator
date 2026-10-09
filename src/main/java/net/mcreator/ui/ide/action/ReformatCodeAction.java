@@ -29,7 +29,7 @@ import javax.swing.*;
 public class ReformatCodeAction extends BasicAction {
 
 	public ReformatCodeAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.ide.refomat_code_only"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.refomat_code_only"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				if (!codeEditorView.readOnly) {

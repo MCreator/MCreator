@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,89 +22,45 @@ package net.mcreator.java;
 import java.util.HashSet;
 import java.util.Set;
 
-/*
- Warning: currently this parser does not support multiline comments, if multiline
- comment contains single quote, the following members are not extracted.
- */
-class JavaMemberExtractor {
+public class JavaMemberExtractor {
 
-	enum ParseState {
-		IDLE, INSIDE_INLINE_COMMENT, INSIDE_BLOCK_COMMENT, AFTER_COMMENT_BLOCK, INSIDE_MEMBER_NAME, INSIDE_STRING, INSIDE_STRING_ESCAPE_SEQUENCE
-	}
-
-	static Set<String> getMemberList(String code) {
+	/**
+	 * Extracts unqualified identifiers referenced in the given code: identifiers that are not reserved
+	 * words and are not preceded by a dot. Identifiers reached through qualification (members of other
+	 * objects, segments of fully qualified names) resolve through their qualifier and are skipped.
+	 * String literals, text blocks, character literals, and comments are ignored.
+	 *
+	 * @param code The Java code to extract members from
+	 * @return Set of members found in the code
+	 */
+	public static Set<String> getMemberList(String code) {
 		Set<String> memberList = new HashSet<>();
 
-		ParseState currentState = ParseState.IDLE;
-		ParseState prevState = ParseState.IDLE;
+		String masked = JavaCodeScanner.maskStringsAndComments(code);
 
 		StringBuilder memberName = new StringBuilder();
-
-		int backShlashesCounter = 0;
 		char prevChar = ' ';
-		for (int i = 0; i < code.length(); i++) {
-			char c = code.charAt(i);
-			switch (currentState) {
-			case IDLE, INSIDE_MEMBER_NAME, AFTER_COMMENT_BLOCK:
-				// Comments cannot start right after a comment block was closed
-				if (currentState != ParseState.AFTER_COMMENT_BLOCK && c == '/' && prevChar == '/') {
-					currentState = ParseState.INSIDE_INLINE_COMMENT;
-				} else if (currentState != ParseState.AFTER_COMMENT_BLOCK && c == '*' && prevChar == '/') {
-					currentState = ParseState.INSIDE_BLOCK_COMMENT;
-				} else if (c == '"') {
-					currentState = ParseState.INSIDE_STRING;
-				} else if (currentState == ParseState.IDLE && Character.isJavaIdentifierStart(c)
-						&& !Character.isJavaIdentifierPart(prevChar) && prevChar != '.') {
-					currentState = ParseState.INSIDE_MEMBER_NAME;
+		for (int i = 0; i < masked.length(); i++) {
+			char c = masked.charAt(i);
+			if (memberName.isEmpty()) {
+				if (Character.isJavaIdentifierStart(c) && !Character.isJavaIdentifierPart(prevChar) && prevChar != '.')
 					memberName.append(c);
-				} else if (currentState == ParseState.INSIDE_MEMBER_NAME && Character.isJavaIdentifierPart(c)) {
-					memberName.append(c);
-				} else {
-					currentState = ParseState.IDLE;
-				}
-				break;
-			case INSIDE_INLINE_COMMENT:
-				if (c == '\n' || c == '\r') {
-					currentState = ParseState.IDLE;
-				}
-				break;
-			case INSIDE_STRING_ESCAPE_SEQUENCE:
-				if (c == '\\') { // more escape characters, could be \\\
-					backShlashesCounter++;
-					break;
-				} else {
-					currentState = ParseState.INSIDE_STRING; // we are back in string, don't break switch as we need to parse string below
-				}
-			case INSIDE_STRING:
-				if (c == '\\') {
-					currentState = ParseState.INSIDE_STRING_ESCAPE_SEQUENCE;
-					backShlashesCounter = 0; // this back slash is not counted in
-				} else if (c == '"' && (prevChar != '\\' || backShlashesCounter % 2 != 0)) {
-					// " is end of string, except if there is \ before (escaped double quote)
-					// or if before last \ was even number of \\, so escape is for previous \, not for "
-					currentState = ParseState.IDLE;
-				}
-				break;
-			case INSIDE_BLOCK_COMMENT:
-				if (c == '/' && prevChar == '*') {
-					currentState = ParseState.AFTER_COMMENT_BLOCK;
-				}
-				break;
-			}
-
-			if (prevState == ParseState.INSIDE_MEMBER_NAME && currentState != ParseState.INSIDE_MEMBER_NAME) {
-				String member = memberName.toString();
-				if (!JavaConventions.JAVA_RESERVED_WORDS.contains(member)) {
-					memberList.add(member);
-				}
+			} else if (Character.isJavaIdentifierPart(c)) {
+				memberName.append(c);
+			} else {
+				addMember(memberList, memberName.toString());
 				memberName.setLength(0);
 			}
-
 			prevChar = c;
-			prevState = currentState;
 		}
+		addMember(memberList, memberName.toString());
 
 		return memberList;
+	}
+
+	private static void addMember(Set<String> memberList, String member) {
+		if (!member.isEmpty() && !JavaConventions.JAVA_RESERVED_WORDS.contains(member))
+			memberList.add(member);
 	}
 
 }

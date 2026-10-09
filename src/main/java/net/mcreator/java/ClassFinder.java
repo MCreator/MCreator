@@ -19,26 +19,20 @@
 package net.mcreator.java;
 
 import net.mcreator.io.FileIO;
-import net.mcreator.io.zip.ZipIO;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.fife.rsta.ac.java.JarManager;
 import org.fife.rsta.ac.java.JavaParser;
-import org.fife.rsta.ac.java.buildpath.SourceLocation;
-import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
 import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
 import org.fife.rsta.ac.java.rjc.ast.NormalClassDeclaration;
 import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class ClassFinder {
 
@@ -56,7 +50,7 @@ public class ClassFinder {
 	}
 
 	public static DeclarationFinder.InClassPosition fqdnToInClassPosition(Workspace workspace, String classIn,
-			String packagefqdn, JarManager jarManager) {
+			String packagefqdn, @Nullable ProjectJarManager jarManager) {
 		DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
 		String classFQDN;
 
@@ -85,49 +79,35 @@ public class ClassFinder {
 			return position;
 		}
 
-		// next we try to find the declaration using JarManager to check
+		if (jarManager == null)
+			return null;
+
+		// next we try to find the declaration using the jar manager to check
 		// if the class we are looking for is loaded with source
-		SourceLocation sourceLocation = jarManager.getSourceLocForClass(classFQDN);
-		DeclarationFinder.InClassPosition position1 = sourceLocationToInClassPosition(sourceLocation, classFQDN);
+		DeclarationFinder.InClassPosition position1 = sourceCodeToInClassPosition(
+				jarManager.getSourceCodeForClass(classFQDN), classFQDN);
 		if (position1 != null)
 			return position1;
 
-		// next we try to find the declaration using JarManager to check
+		// next we try to find the declaration using the jar manager to check
 		// if the class we are looking for is loaded with source
 		// this time in default java lang package
-		sourceLocation = jarManager.getSourceLocForClass("java.lang." + classIn);
-		position1 = sourceLocationToInClassPosition(sourceLocation, "java.lang." + classIn);
+		position1 = sourceCodeToInClassPosition(jarManager.getSourceCodeForClass("java.lang." + classIn),
+				"java.lang." + classIn);
 
 		return position1; // position1 can be null if position was not found
 	}
 
-	private static DeclarationFinder.InClassPosition sourceLocationToInClassPosition(SourceLocation sourceLocation,
+	private static DeclarationFinder.InClassPosition sourceCodeToInClassPosition(@Nullable String code,
 			String classfqdn) {
-		if (sourceLocation != null) {
-			if (sourceLocation instanceof ZipSourceLocation) {
-				// since we check for ZipSourceLocation, we can always use ZipIO directly
-				try (ZipFile zipFile = ZipIO.openZipFile(new File(sourceLocation.getLocationAsString()))) {
-					String entryName = classfqdn.replaceAll("\\.", "/");
-					entryName = entryName + ".java";
+		if (code == null)
+			return null;
 
-					Enumeration<? extends ZipEntry> entries = zipFile.entries();
-					while (entries.hasMoreElements()) {
-						ZipEntry entry = entries.nextElement();
-						if (entry.getName().endsWith(entryName)) {
-							String code = ZipIO.entryToString(zipFile, entry);
-							DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
-							position.classFileNode = tmpFileFromCode(classfqdn, code);
-							position.openInReadOnly = true;
-							position.virtualFile = new File(classfqdn.replaceAll("\\.", "/") + ".java");
-							return position;
-						}
-					}
-				} catch (IOException e) {
-					LOG.error(e.getMessage(), e);
-				}
-			}
-		}
-		return null;
+		DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
+		position.classFileNode = tmpFileFromCode(classfqdn, code);
+		position.openInReadOnly = true;
+		position.virtualFile = new File(classfqdn.replaceAll("\\.", "/") + ".java");
+		return position;
 	}
 
 	private static File tmpFileFromCode(String classfqdn, String code) {

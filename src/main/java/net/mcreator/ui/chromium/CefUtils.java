@@ -37,8 +37,6 @@ import org.cef.callback.CefRunContextMenuCallback;
 import org.cef.handler.CefAppHandlerAdapter;
 import org.cef.handler.CefContextMenuHandler;
 import org.cef.handler.CefDisplayHandlerAdapter;
-import org.cef.handler.CefRequestHandlerAdapter;
-import org.cef.network.CefRequest;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -180,6 +178,17 @@ public class CefUtils {
 				config.getAppArgsAsList().add("--disable-gpu-compositing");
 			}
 
+			if (OS.isLinux()) {
+				// Since Chromium 141, CEF auto-selects the Wayland Ozone backend on Wayland sessions and then
+				// defaults to GTK4 on GNOME. AWT loads GTK3, and GTK3 + GTK4 can not coexist in one process
+				// (results in a hang on startup). Force the X11 backend (AWT runs on XWayland anyway) like
+				// IntelliJ does, and pin GTK3 for the case DISPLAY is not set
+				if (System.getenv("DISPLAY") != null && !System.getenv("DISPLAY").isBlank()) {
+					config.getAppArgsAsList().add("--ozone-platform=x11");
+				}
+				config.getAppArgsAsList().add("--gtk-version=3");
+			}
+
 			config.getAppArgsAsList().add("--disable-features=" + String.join(",", disabledFeatures));
 
 			LOG.debug("JCEF arguments: {}", config.getAppArgsAsList());
@@ -211,10 +220,6 @@ public class CefUtils {
 
 			String[] args = appArgs.toArray(new String[0]);
 			CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
-				@Override public void onContextInitialized() {
-					cefApp.registerSchemeHandlerFactory("http", "mcreator", CefClassLoaderSchemeHandler::new);
-				}
-
 				@Override public boolean onBeforeTerminate() {
 					return true; // Do not let JCEF terminate itself
 				}
@@ -309,15 +314,6 @@ public class CefUtils {
 			}
 
 			@Override public void onContextMenuDismissed(CefBrowser browser, CefFrame frame) {
-			}
-		});
-
-		// Disable access to the internet
-		cefClient.addRequestHandler(new CefRequestHandlerAdapter() {
-			@Override
-			public boolean onBeforeBrowse(CefBrowser browser, CefFrame frame, CefRequest request, boolean userGesture,
-					boolean isRedirect) {
-				return !request.getURL().startsWith("http://mcreator/"); // return true to block the request
 			}
 		});
 

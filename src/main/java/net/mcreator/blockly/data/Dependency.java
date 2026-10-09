@@ -21,6 +21,7 @@ package net.mcreator.blockly.data;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -154,9 +155,20 @@ public record Dependency(String name, String type) implements Comparable<Depende
 		String[] deps = input.split("/");
 		for (String dep : deps) {
 			String[] depdata = dep.split(":");
+			validateForTests(depdata[1]);
 			retval.add(new Dependency(depdata[0], depdata[1]));
 		}
 		return retval.toArray(new Dependency[0]);
+	}
+
+	private static void validateForTests(String type) {
+		if (!TestUtil.isTestingEnvironment())
+			return;
+
+		VariableType varType = VariableTypeLoader.INSTANCE.fromName(type);
+		// fromName also matches Blockly type names (e.g. "boolean" -> logic), so require the exact name
+		if (varType != null ? !varType.getName().equals(type) : getColor(type).equals(Color.white))
+			TestUtil.failIfTestingEnvironment();
 	}
 
 	public static class BlocklyDependency {

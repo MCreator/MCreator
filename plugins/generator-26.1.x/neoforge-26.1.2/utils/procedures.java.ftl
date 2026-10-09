@@ -1,11 +1,11 @@
 <#-- @formatter:off -->
 <#macro procedureDependenciesCode requiredDependencies dependencies={}>
 <@javacompress>
-    <#assign deps_filtered = [] />
+    <#local deps_filtered = [] />
     <#list requiredDependencies as dependency>
         <#list dependencies as name, value>
             <#if dependency.getName() == name>
-                <#assign deps_filtered += [value] />
+                <#local deps_filtered += [value] />
             </#if>
         </#list>
     </#list>
@@ -28,13 +28,13 @@
 </#macro>
 
 <#macro procedureToRetvalCode name dependencies customVals={}>
-    <#assign depsBuilder = []>
+    <#local depsBuilder = []>
 
     <#list dependencies as dependency>
         <#if !customVals[dependency.getName()]?has_content>
-            <#assign depsBuilder += [dependency.getName()]>
+            <#local depsBuilder += [dependency.getName()]>
         <#else>
-            <#assign depsBuilder += [customVals[dependency.getName()]]>
+            <#local depsBuilder += [customVals[dependency.getName()]]>
         </#if>
     </#list>
 
@@ -93,7 +93,7 @@
 </#macro>
 
 <#function hasProcedure object="">
-    <#return object?? && object?has_content && object.getName()?has_content && object.getName() != "null" && w.hasModElement(object.getName())>
+    <#return object?has_content && w.hasProcedure(object)>
 </#function>
 
 <#function hasReturnValueOf object="" type="">

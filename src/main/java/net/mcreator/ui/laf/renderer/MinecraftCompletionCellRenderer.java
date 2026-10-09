@@ -48,8 +48,15 @@ public class MinecraftCompletionCellRenderer extends JavaCellRenderer {
 
 		if (tc != null) {
 			Completion c = (Completion) value;
-			if (c.getProvider().getAlreadyEnteredText(tc).contains("Blocks.")) {
-				ImageIcon imageIcon = BlockItemIcons.getIconForItem(c.getInputText());
+			String alreadyEntered = c.getProvider().getAlreadyEnteredText(tc);
+			if (alreadyEntered.contains("Blocks.") || alreadyEntered.contains("Items.")) {
+				String itemName = c.getInputText();
+				if (itemName.startsWith("Blocks.")) {
+					itemName = itemName.substring("Blocks.".length());
+				} else if (itemName.startsWith("Items.")) {
+					itemName = itemName.substring("Items.".length());
+				}
+				ImageIcon imageIcon = BlockItemIcons.getIconFor(itemName);
 				if (imageIcon != null && imageIcon.getImage() != null)
 					setIcon(new ImageIcon(ImageUtils.resize(imageIcon.getImage(), 16)));
 			}

@@ -53,6 +53,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	</#if>
 	<#if data.hasInventory>
 		<#assign interfaces += ["EntityBlock"]>
+		<#if data.guiBoundTo?has_content>
+			<#assign interfaces += ["${JavaModName}Menus.BoundBlock"]>
+		</#if>
 	</#if>
 	<#if data.isBonemealable && !(data.blockBase?has_content && data.blockBase == "TrapDoor")>
 		<#assign interfaces += ["BonemealableBlock"]>
@@ -171,7 +174,9 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			.hasPostProcess((bs, br, bp) -> true)
 			.emissiveRendering((bs, br, bp) -> true)
 		</#if>
-		<#if data.hasTransparency>
+		<#if data.forceRedstoneConductor>
+			.isRedstoneConductor((bs, br, bp) -> true)
+		<#elseif data.hasTransparency>
 			.isRedstoneConductor((bs, br, bp) -> false)
 		</#if>
 		<#if (!data.isNotColidable && data.offsetType != "NONE")>
@@ -255,21 +260,36 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	<#if defaultStateCustomShape || statesWithCustomShape?has_content>
 		<#if data.rotationMode != 0 || statesWithCustomShape?has_content>
 		private ImmutableMap<BlockState, VoxelShape> makeShapes() {
-			return this.getShapeForEachState(state -> {
-				<#list statesWithCustomShape as state>
-				<#if !state?is_first>else </#if>if (
-    				<#list state.stateMap.keySet() as property>
+			<#macro stateCondition state>
+				<#if state.stateMap.keySet()?has_content>
+					<#list state.stateMap.keySet() as property>
 						<#assign value = state.stateMap.get(property)>
 						<#if property.getClass().getSimpleName().equals("StringType")>
 							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
 						</#if>
-						state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
+					state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
 					</#list>
-				) {
-					return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
-				}
-				</#list>
-				return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+				<#else>true</#if>
+			</#macro>
+
+			return this.getShapeForEachState(state -> {
+				<#if data.multipartModel && statesWithCustomShape?has_content>
+					<#-- multipart: shape is union of shapes of all parts with matching condition,
+					     block states not matched by any part have an empty shape -->
+					VoxelShape shape = Shapes.empty();
+					<#list statesWithCustomShape as state>
+					if (<@stateCondition state/>)
+						shape = Shapes.or(shape, <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>);
+					</#list>
+					return shape;
+				<#else>
+					<#list statesWithCustomShape as state>
+					<#if !state?is_first>else </#if>if (<@stateCondition state/>) {
+						return <@boundingBoxWithRotation state data.rotationMode data.enablePitch/>;
+					}
+					</#list>
+					return <@boundingBoxWithRotation data data.rotationMode data.enablePitch/>;
+				</#if>
 			});
 		}
 		</#if>
@@ -312,7 +332,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 	}
 	</#if>
 
-	<#if data.connectedSides>
+	<#-- Connected sides skip all faces touching the same block, which only renders correctly on full cube geometry -->
+	<#if data.connectedSides && (!data.blockBase?has_content || data.blockBase == "Leaves")>
 	@Override public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
 		return adjacentBlockState.getBlock() == this ? true : super.skipRendering(state, adjacentBlockState, side);
 	}
@@ -417,7 +438,7 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 
 	<#macro initCustomBlockStateProperties>
 		<#list filteredCustomProperties as prop>
-			<#assign propName = prop.property().getName()>
+			<#local propName = prop.property().getName()>
 			.setValue(${propName.replace("CUSTOM:", "")?upper_case},
 				<#if prop.property().getClass().getSimpleName().equals("StringType")>
 					<#if propName.startsWith("CUSTOM:")>
@@ -675,6 +696,12 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 			return tileEntity instanceof MenuProvider menuProvider ? menuProvider : null;
 		}
 
+		<#if data.guiBoundTo?has_content>
+		@Override public Class<? extends AbstractContainerMenu> getBoundMenuClass() {
+			return ${data.guiBoundTo}Menu.class;
+		}
+		</#if>
+
 		@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		    return new ${name}BlockEntity(pos, state);
 		}
@@ -736,6 +763,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#else>
 					return world != null && pos != null ?
 					<#if data.tintType == "Grass">
@@ -766,6 +795,8 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					return FoliageColor.getBirchColor();
 				<#elseif data.tintType == "Spruce foliage">
 					return FoliageColor.getEvergreenColor();
+				<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+					return 10710342;
 				<#elseif data.tintType == "Water">
 					return 3694022;
 				<#elseif data.tintType == "Sky">

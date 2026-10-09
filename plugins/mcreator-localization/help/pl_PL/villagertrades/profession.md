@@ -1,0 +1,1 @@
+Ten parametr sprawdza, który zawód osadnika może oferować wymiany

@@ -1,0 +1,1 @@
+Ten parametr kontroluje podstawowe zachowanie i model Twojego bytu.

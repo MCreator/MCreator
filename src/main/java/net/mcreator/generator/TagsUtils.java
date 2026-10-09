@@ -39,29 +39,33 @@ public class TagsUtils {
 	private static final Logger LOG = LogManager.getLogger(TagsUtils.class);
 
 	public static void generateTagsFiles(Generator generator, Workspace workspace, Map<?, ?> tagsSpecification) {
-		workspace.getTagElements().entrySet().parallelStream().forEach(tag -> {
-			File tagFile = getTagFileFor(workspace, tag.getKey());
+		Collection<GeneratorFile> toGenerate = new ArrayList<>();
+		for (Map.Entry<TagElement, ArrayList<TagElement.Entry>> entry : workspace.getTagElements().entrySet()) {
+			TagElement key = entry.getKey();
+			File tagFile = getTagFileFor(workspace, key);
 			if (tagFile != null) {
 				try {
 					// In case duplicates somehow exist, here is the last chance to remove them
-					Set<String> uniqueEntries = tag.getValue().stream().map(TagElement.Entry::name)
+					Set<String> uniqueEntries = entry.getValue().stream().map(TagElement.Entry::name)
 							.collect(Collectors.toSet()); // use toSet, we loose order, but should not matter
 
 					Map<String, Object> datamodel = new HashMap<>();
-					datamodel.put("tag", tag.getKey());
-					datamodel.put("type", tag.getKey().type().name().toLowerCase(Locale.ENGLISH));
-					datamodel.put("elements", uniqueEntries.stream()
-							.map(e -> tag.getKey().type().getMappableElementProvider().apply(workspace, e)).toList());
+					datamodel.put("tag", key);
+					datamodel.put("type", key.type().name().toLowerCase(Locale.ENGLISH));
+					datamodel.put("elements",
+							uniqueEntries.stream().map(e -> key.type().getMappableElementProvider().apply(workspace, e))
+									.toList());
 					String json = generator.getTemplateGeneratorFromName("templates")
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
 
 					GeneratorTemplate template = GeneratorTemplate.fromFile(tagFile, tagsSpecification);
-					generator.generateFiles(List.of(template.toGeneratorFile(json)), true);
+					toGenerate.add(template.toGeneratorFile(json));
 				} catch (TemplateGeneratorException e) {
-					generator.getLogger().error("Failed to generate code for tag: {}", tag.getKey(), e);
+					generator.getLogger().error("Failed to generate code for tag: {}", key, e);
 				}
 			}
-		});
+		}
+		generator.generateFiles(toGenerate, true);
 	}
 
 	@Nullable public static File getTagFileFor(Workspace workspace, TagElement tagElement) {
@@ -168,9 +172,12 @@ public class TagsUtils {
 
 		if (delete) {
 			// only delete the entry if it is present in the list as managed
-			if (entries != null && entries.contains(entry)) {
-				generator.getWorkspace().getTagElements().get(tag).remove(entry);
-				removeTagElementIfSafe(generator.getWorkspace(), tag);
+			if (entries != null) {
+				int index = entries.indexOf(entry);
+				if (index != -1 && entries.get(index).isManaged()) {
+					entries.remove(index);
+					removeTagElementIfSafe(generator.getWorkspace(), tag);
+				}
 			}
 		} else {
 			if (entries == null) { // tag does not exist yet, create it

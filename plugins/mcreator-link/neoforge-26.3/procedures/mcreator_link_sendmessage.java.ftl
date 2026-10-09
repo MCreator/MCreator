@@ -1,0 +1,1 @@
+CurrentDevice.sendMessage(${input$message});

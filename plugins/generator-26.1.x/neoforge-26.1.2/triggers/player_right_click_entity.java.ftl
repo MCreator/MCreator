@@ -15,4 +15,7 @@
 			}/>
 		</#assign>
 		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
+		<#-- fix #6700, consume the interaction on the client if canceled so the off hand is not tried after the main hand -->
+		if (event.isCanceled() && event.getLevel().isClientSide())
+			event.setCancellationResult(InteractionResult.CONSUME);
 	}

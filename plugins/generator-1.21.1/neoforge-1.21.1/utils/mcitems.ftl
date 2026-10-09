@@ -4,7 +4,7 @@
     <#if mappedBlock?trim?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","")>
     <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlockStateCode(outputs?keep_before("/*@:*/"))
             + ":" + mappedBlockToBlockStateCode(outputs?keep_after("/*@:*/")) + ")">
     <#else>
@@ -16,7 +16,7 @@
     <#if mappedBlock?trim?starts_with("/*@BlockState*/")>
         <#return mappedBlock?replace("/*@BlockState*/","") + ".getBlock()">
     <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedBlockToBlock(outputs?keep_before("/*@:*/"))
             + ":" + mappedBlockToBlock(outputs?keep_after("/*@:*/")) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
@@ -30,7 +30,7 @@
     <#if mappedBlock?trim?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "")>
     <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItemStackCode(outputs?keep_before("/*@:*/"), amount)
             + ":" + mappedMCItemToItemStackCode(outputs?keep_after("/*@:*/"), amount) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
@@ -52,7 +52,7 @@
     <#if mappedBlock?trim?starts_with("/*@ItemStack*/")>
         <#return mappedBlock?replace("/*@ItemStack*/", "") + ".getItem()">
     <#elseif mappedBlock?contains("/*@?*/")>
-        <#assign outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
+        <#local outputs = mappedBlock?keep_after("/*@?*/")?keep_before_last(")")>
         <#return mappedBlock?keep_before("/*@?*/") + "?" + mappedMCItemToItem(outputs?keep_before("/*@:*/"))
             + ":" + mappedMCItemToItem(outputs?keep_after("/*@:*/")) + ")">
     <#elseif mappedBlock?starts_with("CUSTOM:")>
@@ -78,32 +78,32 @@
     <#elseif mappedBlocks?size == 1>
         <#return mappedMCItemToIngredient(mappedBlocks?first)>
     <#else>
-        <#assign itemsOnly = true>
+        <#local itemsOnly = true>
 
         <#list mappedBlocks as mappedBlock>
             <#if mappedBlock.getUnmappedValue().startsWith("TAG:") || mappedBlock.getMappedValue(1).startsWith("#")>
-                <#assign itemsOnly = false>
+                <#local itemsOnly = false>
                 <#break>
             </#if>
         </#list>
 
         <#if itemsOnly>
-            <#assign retval = "Ingredient.of(">
+            <#local retval = "Ingredient.of(">
             <#list mappedBlocks as mappedBlock>
-                <#assign retval += mappedMCItemToItemStackCode(mappedBlock, 1)>
+                <#local retval += mappedMCItemToItemStackCode(mappedBlock, 1)>
 
                 <#if mappedBlock?has_next>
-                    <#assign retval += ",">
+                    <#local retval += ",">
                 </#if>
             </#list>
             <#return retval + ")">
         <#else>
-            <#assign retval = "CompoundIngredient.of(">
+            <#local retval = "CompoundIngredient.of(">
             <#list mappedBlocks as mappedBlock>
-                <#assign retval += mappedMCItemToIngredient(mappedBlock)>
+                <#local retval += mappedMCItemToIngredient(mappedBlock)>
 
                 <#if mappedBlock?has_next>
-                    <#assign retval += ",">
+                    <#local retval += ",">
                 </#if>
             </#list>
             <#return retval + ")">
@@ -112,42 +112,42 @@
 </#function>
 
 <#function containsAnyOfBlocks elements blockToCheck>
-    <#assign blocks = []>
-    <#assign tags = []>
-    <#assign retval = "">
+    <#local blocks = []>
+    <#local tags = []>
+    <#local retval = "">
 
     <#list elements as block>
         <#if block.getUnmappedValue().startsWith("TAG:")>
-            <#assign tags += [block.asTagEntry()]>
+            <#local tags += [block.asTagEntry()]>
         <#elseif block.getMappedValue(1).startsWith("#")>
-            <#assign tags += [block.getMappedValue(1).replace("#", "")]>
+            <#local tags += [block.getMappedValue(1).replace("#", "")]>
         <#else>
-            <#assign blocks += [mappedBlockToBlock(block)]>
+            <#local blocks += [mappedBlockToBlock(block)]>
         </#if>
     </#list>
 
     <#if !blocks?has_content && !tags?has_content>
         <#return "false">
     <#elseif blocks?has_content>
-    	<#assign retval += "List.of(">
+    	<#local retval += "List.of(">
         <#list blocks as block>
-        	<#assign retval += block>
-			<#if block?has_next><#assign retval += ","></#if>
+        	<#local retval += block>
+			<#if block?has_next><#local retval += ","></#if>
         </#list>
-        <#assign retval += ").contains("+ blockToCheck + ".getBlock())">
+        <#local retval += ").contains("+ blockToCheck + ".getBlock())">
 
         <#if tags?has_content>
-        	<#assign retval += "||">
+        	<#local retval += "||">
         </#if>
     </#if>
 
     <#if tags?has_content>
-    	<#assign retval += "Stream.of(">
+    	<#local retval += "Stream.of(">
         <#list tags as tag>
-        	<#assign retval += "BlockTags.create(ResourceLocation.parse(\"" + tag + "\"))">
-            <#if tag?has_next><#assign retval += ","></#if>
+        	<#local retval += "BlockTags.create(ResourceLocation.parse(\"" + tag + "\"))">
+            <#if tag?has_next><#local retval += ","></#if>
         </#list>
-        <#assign retval += ").anyMatch(" + blockToCheck + "::is)">
+        <#local retval += ").anyMatch(" + blockToCheck + "::is)">
     </#if>
 
     <#return retval>

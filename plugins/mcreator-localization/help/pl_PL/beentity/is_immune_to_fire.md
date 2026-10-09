@@ -1,0 +1,1 @@
+Jeśli opcja jest włączona, byt nie otrzyma żadnych obrażeń od ognia.
