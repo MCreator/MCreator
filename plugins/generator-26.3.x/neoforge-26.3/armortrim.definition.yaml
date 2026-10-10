@@ -1,0 +1,17 @@
+templates:
+  - template: armortrim/trim_pattern.json.ftl
+    writer: json
+    name: "@MODDATAROOT/trim_pattern/@registryname.json"
+  - template: armortrim/smithing_recipe.json.ftl
+    writer: json
+    name: "@MODDATAROOT/recipe/@registryname_armor_trim_smithing_template_smithing_trim.json"
+  - template: armortrim/trim_palette.mcmeta.ftl
+    writer: json
+    name: "@MODASSETSROOT/textures/trims/entity/humanoid/@registryname.png.mcmeta"
+  - template: armortrim/trim_palette.mcmeta.ftl
+    writer: json
+    name: "@MODASSETSROOT/textures/trims/entity/humanoid_leggings/@registryname.png.mcmeta"
+
+localizationkeys:
+  - key: trim_pattern.@modid.@registryname
+    mapto: name

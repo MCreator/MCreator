@@ -4654,7 +4654,7 @@ Items.DISC_FRAGMENT_5:
   - "disc_fragment_5"
 Items.SKULL:
   - Items.SKELETON_SKULL
-  - "#c:skulls"
+  - "#minecraft:skulls"
 Items.SKULL#0:
   - Items.SKELETON_SKULL
   - "skeleton_skull"

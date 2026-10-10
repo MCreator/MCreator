@@ -92,7 +92,6 @@ ServerList: DirectJoinServerScreen
 ServerReconfig: ServerReconfigScreen
 ServerLinks: ServerLinksScreen
 Settings: OptionsSubScreen
-ShareToLan: ShareToLanScreen
 SkinReport: SkinReportScreen
 SleepInMultiplayer: InBedChatScreen
 SocialInteractions: SocialInteractionsScreen

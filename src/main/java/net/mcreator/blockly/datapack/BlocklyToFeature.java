@@ -19,6 +19,7 @@
 
 package net.mcreator.blockly.datapack;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
@@ -31,7 +32,10 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
 import java.util.List;
 
 public class BlocklyToFeature extends BlocklyToCode {
@@ -79,4 +83,24 @@ public class BlocklyToFeature extends BlocklyToCode {
 	public boolean isPlacementEmpty() {
 		return isPlacementEmpty;
 	}
+
+	public static String getFeatureTypeFromXML(String sourceXML) throws Exception {
+		Document doc = DocumentBuilderFactory.newDefaultInstance().newDocumentBuilder()
+				.parse(new InputSource(new StringReader(sourceXML)));
+		doc.getDocumentElement().normalize();
+
+		String featureType = "";
+		Element startBlock = BlocklyBlockUtil.getStartBlock(doc, BlocklyEditorType.FEATURE.startBlockName());
+		if (startBlock != null) {
+			Element feature = XMLUtil.getFirstChildrenWithName(startBlock, "value");
+			if (feature != null) {
+				Element featureBlock = XMLUtil.getFirstChildrenWithName(feature, "block");
+				if (featureBlock != null)
+					featureType = featureBlock.getAttribute("type");
+			}
+		}
+
+		return featureType;
+	}
+
 }

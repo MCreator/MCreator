@@ -70,7 +70,7 @@ public class ModelImportActions {
 
 	public static class JAVA extends BasicAction {
 		public JAVA(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.resources.import_java_model"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_java_model"), _ -> {
 				if (actionRegistry.getMCreator().getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
 					JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 							L10N.t("dialog.workspace.resources.import_java_model.version_notice.message"),
@@ -224,7 +224,7 @@ public class ModelImportActions {
 
 	public static class JSON extends BasicAction {
 		public JSON(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.resources.import_json_model"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_json_model"), _ -> {
 				File json = FileDialogs.getOpenDialog(actionRegistry.getMCreator(), new String[] { ".json" });
 				if (json != null)
 					importJSONModel(actionRegistry.getMCreator(), json);
@@ -257,7 +257,7 @@ public class ModelImportActions {
 
 	public static class BEDROCK extends BasicAction {
 		public BEDROCK(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.resources.import_bedrock_model"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_bedrock_model"), _ -> {
 				MCreator mcreator = actionRegistry.getMCreator();
 				File json = FileDialogs.getOpenDialog(mcreator, new String[] { ".json" });
 				if (json != null) {
@@ -304,7 +304,7 @@ public class ModelImportActions {
 
 	public static class OBJ extends BasicAction {
 		public OBJ(ActionRegistry actionRegistry) {
-			super(actionRegistry, L10N.t("action.workspace.resources.import_obj_mtl_model"), actionEvent -> {
+			super(actionRegistry, L10N.t("action.workspace.resources.import_obj_mtl_model"), _ -> {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.workspace.resources.import_obj_mtl_model.message"),
 						L10N.t("dialog.workspace.resources.import_obj_mtl_model.title"),

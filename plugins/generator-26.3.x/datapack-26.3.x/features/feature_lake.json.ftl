@@ -1,0 +1,20 @@
+<#include "mcitems_json.ftl">
+"fluid": ${mappedBlockToBlockStateProvider(input$fluid)},
+"barrier": ${mappedBlockToBlockStateProvider(input$border)},
+"can_place_feature": {
+  "type": "minecraft:true"
+},
+"can_replace_with_air_or_fluid": {
+  "type": "minecraft:not",
+  "predicate": {
+    "type": "minecraft:matching_block_tag",
+    "tag": "minecraft:features_cannot_replace"
+  }
+},
+"can_replace_with_barrier": {
+  "type": "minecraft:not",
+  "predicate": {
+    "type": "minecraft:matching_block_tag",
+    "tag": "minecraft:lava_pool_stone_cannot_replace"
+  }
+}

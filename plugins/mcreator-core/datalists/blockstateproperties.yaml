@@ -868,3 +868,14 @@
       - log
       - fail
       - accept
+- POTENT_SULFUR_STATE:
+  readable_name: POTENT_SULFUR_STATE
+  type: Enum
+  other:
+    registry_name: potent_sulfur_state
+    values:
+      - dry
+      - wet
+      - dormant
+      - erupting
+      - continuous

@@ -1,5 +1,5 @@
 name: NeoForge for @minecraft (@buildfileversion)
-status: stable
+status: lts
 buildfileversion: 26.1.2.95
 
 import:
@@ -110,7 +110,7 @@ base_templates:
 
 java_models:
   key: mojmap-26.1.x
-  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x]
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x, mojmap-1.20.x, mojmap-1.21.x, mojmap-26.1.x]
   requested_key_words: [ModelPart, ~ModelRenderer]
 
 sources_setup_tasks:
