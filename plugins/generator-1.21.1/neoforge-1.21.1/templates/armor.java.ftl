@@ -241,7 +241,7 @@ import net.minecraft.client.model.Model;
 	public static class Helmet extends ${name}Item {
 
 		public Helmet() {
-			super(ArmorItem.Type.HELMET, new Item.Properties()<#if data.maxDamage != 0>.durability(ArmorItem.Type.HELMET.getDurability(${data.maxDamage}))<#else>.stacksTo(1)</#if><#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+			super(ArmorItem.Type.HELMET, <@itemProperties "HELMET" data.helmetImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[0]) "helmet" "EquipmentSlotGroup.HEAD" data.damageValueHelmet/>);
 		}
 
@@ -267,7 +267,7 @@ import net.minecraft.client.model.Model;
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate() {
-			super(ArmorItem.Type.CHESTPLATE, new Item.Properties()<#if data.maxDamage != 0>.durability(ArmorItem.Type.CHESTPLATE.getDurability(${data.maxDamage}))<#else>.stacksTo(1)</#if><#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+			super(ArmorItem.Type.CHESTPLATE, <@itemProperties "CHESTPLATE" data.bodyImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[1]) "chestplate" "EquipmentSlotGroup.CHEST" data.damageValueBody/>);
 		}
 
@@ -293,7 +293,7 @@ import net.minecraft.client.model.Model;
 	public static class Leggings extends ${name}Item {
 
 		public Leggings() {
-			super(ArmorItem.Type.LEGGINGS, new Item.Properties()<#if data.maxDamage != 0>.durability(ArmorItem.Type.LEGGINGS.getDurability(${data.maxDamage}))<#else>.stacksTo(1)</#if><#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+			super(ArmorItem.Type.LEGGINGS, <@itemProperties "LEGGINGS" data.leggingsImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[2]) "leggings" "EquipmentSlotGroup.LEGS" data.damageValueLeggings/>);
 		}
 
@@ -319,7 +319,7 @@ import net.minecraft.client.model.Model;
 	public static class Boots extends ${name}Item {
 
 		public Boots() {
-			super(ArmorItem.Type.BOOTS, new Item.Properties()<#if data.maxDamage != 0>.durability(ArmorItem.Type.BOOTS.getDurability(${data.maxDamage}))<#else>.stacksTo(1)</#if><#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+			super(ArmorItem.Type.BOOTS, <@itemProperties "BOOTS" data.bootsImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[3]) "boots" "EquipmentSlotGroup.FEET" data.damageValueBoots/>);
 		}
 
@@ -344,6 +344,11 @@ import net.minecraft.client.model.Model;
 }
 </@javacompress>
 <#-- @formatter:on -->
+
+<#macro itemProperties armorPart immuneToFire>
+new Item.Properties()<#if immuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+<#if data.maxDamage != 0>.durability(ArmorItem.Type.${armorPart}.getDurability(${data.maxDamage}))<#else>.stacksTo(1)</#if>
+</#macro>
 
 <#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>
 <#if modifiers?size != 0>

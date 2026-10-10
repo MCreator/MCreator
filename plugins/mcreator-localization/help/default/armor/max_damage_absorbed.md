@@ -14,4 +14,4 @@ Vanilla armor uses the following factors:
 * Diamond armor: 33
 * Netherite armor: 37
 
-Set this value to 0 to disable use count mechanic on the given armor.
+Set this to 0 to make the armor unbreakable (no durability).
