@@ -32,12 +32,15 @@
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
 <#include "../triggers.java.ftl">
-
+<#assign modifiesDefaultComponents = (data.maxDamage == 0 && (data.enableHelmet || data.enableBody || data.enableLeggings || data.enableBoots))>
 package ${package}.item;
 
 import java.util.Map;
 
 <@javacompress>
+<#if modifiesDefaultComponents>
+@EventBusSubscriber
+</#if>
 public abstract class ${name}Item extends Item {
 
 	public static ArmorMaterial ARMOR_MATERIAL = new ArmorMaterial(
@@ -65,11 +68,20 @@ public abstract class ${name}Item extends Item {
 		super(properties);
 	}
 
+	<#if modifiesDefaultComponents>
+	@SubscribeEvent public static void handleToolDamage(ModifyDefaultComponentsEvent event) {
+		<#if data.enableHelmet>event.modify(${JavaModName}Items.${REGISTRYNAME}_HELMET.get(), (builder, _, _) -> builder.set(DataComponents.MAX_DAMAGE, null));</#if>
+		<#if data.enableBody>event.modify(${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get(), (builder, _, _) -> builder.set(DataComponents.MAX_DAMAGE, null));</#if>
+		<#if data.enableLeggings>event.modify(${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get(), (builder, _, _) -> builder.set(DataComponents.MAX_DAMAGE, null));</#if>
+		<#if data.enableBoots>event.modify(${JavaModName}Items.${REGISTRYNAME}_BOOTS.get(), (builder, _, _) -> builder.set(DataComponents.MAX_DAMAGE, null));</#if>
+	}
+	</#if>
+
 	<#if data.enableHelmet>
 	public static class Helmet extends ${name}Item {
 
 		public Helmet(Item.Properties properties) {
-			super(properties<#if data.helmetImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.HELMET)
+			super(<@itemProperties "HELMET" data.helmetImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[0]) "helmet" "EquipmentSlotGroup.HEAD" data.damageValueHelmet/>);
 		}
 
@@ -87,7 +99,7 @@ public abstract class ${name}Item extends Item {
 	public static class Chestplate extends ${name}Item {
 
 		public Chestplate(Item.Properties properties) {
-			super(properties<#if data.bodyImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.CHESTPLATE)
+			super(<@itemProperties "CHESTPLATE" data.bodyImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[1]) "chestplate" "EquipmentSlotGroup.CHEST" data.damageValueBody/>);
 		}
 
@@ -105,7 +117,7 @@ public abstract class ${name}Item extends Item {
 	public static class Leggings extends ${name}Item {
 
 		public Leggings(Item.Properties properties) {
-			super(properties<#if data.leggingsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.LEGGINGS)
+			super(<@itemProperties "LEGGINGS" data.leggingsImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[2]) "leggings" "EquipmentSlotGroup.LEGS" data.damageValueLeggings/>);
 		}
 
@@ -123,7 +135,7 @@ public abstract class ${name}Item extends Item {
 	public static class Boots extends ${name}Item {
 
 		public Boots(Item.Properties properties) {
-			super(properties<#if data.bootsImmuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>.humanoidArmor(ARMOR_MATERIAL, ArmorType.BOOTS)
+			super(<@itemProperties "BOOTS" data.bootsImmuneToFire/>
 					<@itemAttributeModifiers data.attributeModifiers?filter(e -> e.armorPieces[3]) "boots" "EquipmentSlotGroup.FEET" data.damageValueBoots/>);
 		}
 
@@ -140,6 +152,16 @@ public abstract class ${name}Item extends Item {
 }
 </@javacompress>
 <#-- @formatter:on -->
+
+<#macro itemProperties armorPart immuneToFire>
+properties.humanoidArmor(ARMOR_MATERIAL, ArmorType.${armorPart})
+<#if immuneToFire>
+.fireResistant()
+</#if>
+<#if data.rarity != "COMMON">
+.rarity(Rarity.${data.rarity})
+</#if>
+</#macro>
 
 <#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>
 <#if modifiers?size != 0>
