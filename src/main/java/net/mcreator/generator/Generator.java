@@ -472,7 +472,7 @@ public class Generator implements IGenerator, Closeable {
 				retval.add(BaseType.of(baseType.toString()));
 			}
 		}
-		return retval;
+		return Collections.unmodifiableSet(retval);
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModElementGeneratorTemplatesList(GeneratableElement generatableElement) {
