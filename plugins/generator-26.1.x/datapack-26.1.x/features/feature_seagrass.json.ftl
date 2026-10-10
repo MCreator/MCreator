@@ -1,3 +1,0 @@
-{
-  "probability": ${field$probability}
-}

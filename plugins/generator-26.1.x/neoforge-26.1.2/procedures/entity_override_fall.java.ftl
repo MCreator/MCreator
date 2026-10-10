@@ -1,1 +1,0 @@
-${input$entity}.fallDistance = ${input$height};
