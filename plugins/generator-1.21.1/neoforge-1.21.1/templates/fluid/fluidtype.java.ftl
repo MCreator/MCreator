@@ -125,6 +125,8 @@ package ${package}.fluid.types;
 						-8345771
 					<#elseif data.tintType == "Spruce foliage">
 						-10380959
+					<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+						10710342
 					<#elseif data.tintType == "Water">
 						-13083194
 					<#elseif data.tintType == "Sky">
@@ -148,6 +150,8 @@ package ${package}.fluid.types;
 						FoliageColor.getBirchColor()
 					<#elseif data.tintType == "Spruce foliage">
 						FoliageColor.getEvergreenColor()
+					<#elseif data.tintType == "Dry foliage"> <#-- This tint type doesn't exist in 1.21.1, we use a constant value instead-->
+						10710342
 					<#elseif data.tintType == "Water">
 						BiomeColors.getAverageWaterColor(world, pos)
 					<#elseif data.tintType == "Sky">

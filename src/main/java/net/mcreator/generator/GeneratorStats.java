@@ -37,6 +37,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GeneratorStats {
 
@@ -198,9 +199,9 @@ public class GeneratorStats {
 
 		Set<String> supportedBlocks = new HashSet<>();
 		for (String path : genConfig.getGeneratorPaths(type.registryName())) {
-			supportedBlocks.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet()));
+			supportedBlocks.addAll(listRootTemplates(path).map(FilenameUtilsPatched::getBaseName)
+					.map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
+					.collect(Collectors.toSet()));
 		}
 
 		generatorBlocklyBlocks.put(type, supportedBlocks);
@@ -224,9 +225,8 @@ public class GeneratorStats {
 
 		Set<String> supportedTriggers = generatorBlocklyTriggers.computeIfAbsent(type, k -> new HashSet<>());
 		for (String path : genConfig.getGeneratorPaths(loader.getResourceFolder())) {
-			supportedTriggers.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.collect(Collectors.toSet()));
+			supportedTriggers.addAll(listRootTemplates(path).map(FilenameUtilsPatched::getBaseName)
+					.map(FilenameUtilsPatched::getBaseName).collect(Collectors.toSet()));
 		}
 
 		// Determine which triggers from defined triggers we are missing
@@ -236,6 +236,19 @@ public class GeneratorStats {
 		double supportedPercent =
 				(definedTriggers.size() - missingTriggers.size()) / (double) definedTriggers.size() * 100;
 		coverageInfo.put(loader.getResourceFolder(), Math.min(supportedPercent, 100));
+	}
+
+	/**
+	 * Lists template files located directly in the given generator folder. Templates in subfolders are helper
+	 * templates included by other templates and do not represent blocks on their own, so they are skipped.
+	 *
+	 * @param path Generator folder path, e.g. "neoforge-26.3/procedures"
+	 * @return Stream of resource paths of templates found directly in the given folder
+	 */
+	private static Stream<String> listRootTemplates(String path) {
+		String prefix = path + "/";
+		return PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
+				.filter(e -> e.startsWith(prefix) && e.indexOf('/', prefix.length()) < 0);
 	}
 
 	public Map<BlocklyEditorType, Set<String>> getGeneratorBlocklyBlocks() {

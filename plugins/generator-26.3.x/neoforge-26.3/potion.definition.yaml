@@ -1,0 +1,23 @@
+templates:
+  - template: potion/potion_recipe.json.ftl
+    writer: json
+    variables: "base=potion"
+    name: "@MODDATAROOT/recipe/brewing/potion_@registryname_gunpowder.json"
+  - template: potion/potion_recipe.json.ftl
+    writer: json
+    variables: "base=splash_potion"
+    name: "@MODDATAROOT/recipe/brewing/splash_potion_@registryname_dragon_breath.json"
+
+global_templates:
+  - template: elementinits/potions.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNamePotions.java"
+
+localizationkeys:
+  - key: item.minecraft.potion.effect.@registryname
+    mapto: potionName
+  - key: item.minecraft.splash_potion.effect.@registryname
+    mapto: splashName
+  - key: item.minecraft.lingering_potion.effect.@registryname
+    mapto: lingeringName
+  - key: item.minecraft.tipped_arrow.effect.@registryname
+    mapto: arrowName

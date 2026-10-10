@@ -19,27 +19,57 @@
 
 package net.mcreator.element;
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public enum BaseType {
+public final class BaseType {
+
+	private static final Map<String, BaseType> REGISTRY = new LinkedHashMap<>();
 
 	// @formatter:off
-	BLOCK,
-	BLOCKENTITY,
-	ITEM,
-	ENTITY,
-	FEATURE,
-	CONFIGUREDFEATURE;
+	public static final BaseType BLOCK = of("block");
+	public static final BaseType BLOCKENTITY = of("blockentity");
+	public static final BaseType ITEM = of("item");
+	public static final BaseType ENTITY = of("entity");
+	public static final BaseType FEATURE = of("feature");
+	public static final BaseType CONFIGUREDFEATURE = of("configuredfeature");
+	public static final BaseType TRANSFORMABLE = of("transformable");
 	// @formatter:on
 
+	private final String name;
+
+	private BaseType(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Returns the base type with the given name, registering it if it does not exist yet.
+	 * Instances are interned, so base types can be compared by identity.
+	 */
+	public static synchronized BaseType of(String name) {
+		return REGISTRY.computeIfAbsent(name.toLowerCase(Locale.ENGLISH), BaseType::new);
+	}
+
+	public static synchronized Collection<BaseType> values() {
+		return List.copyOf(REGISTRY.values());
+	}
+
+	public String getName() {
+		return name;
+	}
+
 	public String getPluralName() {
-		if (this == ENTITY)
-			return "entities";
+		if (name.endsWith("y"))
+			return name.substring(0, name.length() - 1) + "ies";
 
-		if (this == BLOCKENTITY)
-			return "blockentities";
+		return name + "s";
+	}
 
-		return name().toLowerCase(Locale.ENGLISH) + "s";
+	@Override public String toString() {
+		return name;
 	}
 
 }
