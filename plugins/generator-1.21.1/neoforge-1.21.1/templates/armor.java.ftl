@@ -346,8 +346,18 @@ import net.minecraft.client.model.Model;
 <#-- @formatter:on -->
 
 <#macro itemProperties armorPart immuneToFire>
-new Item.Properties()<#if immuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
-<#if data.maxDamage != 0>.durability(ArmorItem.Type.${armorPart}.getDurability(${data.maxDamage}))<#else>.stacksTo(1)</#if>
+new Item.Properties()
+<#if immuneToFire>
+.fireResistant()
+</#if>
+<#if data.rarity != "COMMON">
+.rarity(Rarity.${data.rarity})
+</#if>
+<#if data.maxDamage != 0>
+.durability(ArmorItem.Type.${armorPart}.getDurability(${data.maxDamage}))
+<#else>
+.stacksTo(1)
+</#if>
 </#macro>
 
 <#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>

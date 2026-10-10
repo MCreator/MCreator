@@ -155,7 +155,12 @@ public abstract class ${name}Item extends Item {
 
 <#macro itemProperties armorPart immuneToFire>
 properties.humanoidArmor(ARMOR_MATERIAL, ArmorType.${armorPart})
-<#if immuneToFire>.fireResistant()</#if><#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
+<#if immuneToFire>
+.fireResistant()
+</#if>
+<#if data.rarity != "COMMON">
+.rarity(Rarity.${data.rarity})
+</#if>
 </#macro>
 
 <#macro itemAttributeModifiers modifiers armorPart defaultEquipSlot defense>
