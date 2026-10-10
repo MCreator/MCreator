@@ -1,1 +1,0 @@
-.then(Commands.argument("${field$name}", IdentifierArgument.id()).suggests(${generator.map(field$suggestion, "suggestionproviders")})${statement$args})
