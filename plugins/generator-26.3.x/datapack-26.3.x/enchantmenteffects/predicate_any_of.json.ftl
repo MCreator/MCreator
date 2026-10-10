@@ -1,5 +1,5 @@
 {
-  "condition": "minecraft:any_of",
+  "type": "minecraft:any_of",
   "terms": [
   <#list input_list$condition as condition>
     ${condition}
