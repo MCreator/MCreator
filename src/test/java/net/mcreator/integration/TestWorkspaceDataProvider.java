@@ -40,6 +40,7 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
@@ -61,10 +62,7 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.SoundElement;
-import net.mcreator.workspace.elements.TagElement;
-import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Range;
@@ -208,8 +206,15 @@ public class TestWorkspaceDataProvider {
 
 	private static void fillWorkspaceWithResourcesAndData(Workspace workspace) {
 		if (workspace.getGeneratorStats().hasBaseCoverage("sounds")) {
+			boolean isBedrock =
+					workspace.getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON;
 			for (int i = 1; i <= 3; i++) {
-				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
+				SoundElement sound;
+				if (isBedrock) {
+					sound = new BedrockSoundElement("test" + i, List.of(new SoundElement.Sound("test" + i)), null);
+				} else {
+					sound = new SoundElement("test" + i, List.of(new SoundElement.Sound("test" + i)), null);
+				}
 				workspace.addSoundElement(sound);
 			}
 		}
