@@ -95,6 +95,7 @@ import java.util.function.Consumer;
 		}
 
 		cache.put(element.getModElement(), element);
+		element.getModElement().invalidateCache(); // stored element may differ from the one caches were built from
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
 				new File(workspace.getFolderManager().getModElementsDir(),
