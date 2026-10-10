@@ -375,13 +375,11 @@ public class Generator implements IGenerator, Closeable {
 
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
 		for (GeneratableElement generatableElement : generatableElements) {
-			if (generatableElement instanceof ICommonType commonType) {
-				for (BaseType baseType : commonType.getBaseTypesProvided()) {
-					if (!baseTypeListMap.containsKey(baseType))
-						baseTypeListMap.put(baseType, new ArrayList<>());
+			for (BaseType baseType : getBaseTypesProvided(generatableElement)) {
+				if (!baseTypeListMap.containsKey(baseType))
+					baseTypeListMap.put(baseType, new ArrayList<>());
 
-					baseTypeListMap.get(baseType).add(generatableElement);
-				}
+				baseTypeListMap.get(baseType).add(generatableElement);
 			}
 		}
 
@@ -452,6 +450,29 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		return new ArrayList<>(files);
+	}
+
+	public Collection<BaseType> getBaseTypesProvided(GeneratableElement generatableElement) {
+		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
+				.getModElementDefinition(generatableElement.getModElement().getType());
+
+		List<?> baseTypes = map != null ? (List<?>) map.get("base_types") : null;
+		// TODO: temporary solution for base types, remove ICommonType once all mod elements are migrated to yaml
+		if (baseTypes == null) // definition does not declare base types, fall back to the element itself
+			return generatableElement instanceof ICommonType commonType ?
+					commonType.getBaseTypesProvided() :
+					Collections.emptyList();
+
+		Set<BaseType> retval = new LinkedHashSet<>();
+		for (Object baseType : baseTypes) {
+			if (baseType instanceof Map<?, ?> definition) {
+				if (!TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, definition, generatableElement))
+					retval.add(BaseType.of(definition.get("type").toString()));
+			} else {
+				retval.add(BaseType.of(baseType.toString()));
+			}
+		}
+		return retval;
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModElementGeneratorTemplatesList(GeneratableElement generatableElement) {
