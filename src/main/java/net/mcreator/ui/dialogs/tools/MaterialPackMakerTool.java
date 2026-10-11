@@ -121,8 +121,7 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 		chestplateTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		leggingsTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
 		bootsTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64);
-		armorTexture = new TextureComboBox(mcreator, TextureType.ARMOR, true);
-		armorTexture.setAddPNGExtension(false);
+		armorTexture = new TextureComboBox(mcreator, TextureType.ARMOR, true).setAddPNGExtension(false);
 
 		oresSection.add(PanelUtils.gridElements(1, 2, L10N.label("dialog.tools.ore_pack_textures.ore"),
 				PanelUtils.totalCenterInPanel(oreTexture)));
