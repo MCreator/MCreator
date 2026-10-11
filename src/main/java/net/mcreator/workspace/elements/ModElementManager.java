@@ -238,9 +238,6 @@ import java.util.function.Consumer;
 					element.getModElement().getName() + ".png");
 			if (modImage != null) {
 				FileIO.writeImageToPNGFile(modImage, modImageFile);
-				Image image = new ImageIcon(modImage).getImage();
-				if (image != null)
-					image.flush();
 			} else if (modImageFile.isFile()) {
 				// If there is no preview image generated, we revert back to default one
 				modImageFile.delete();
