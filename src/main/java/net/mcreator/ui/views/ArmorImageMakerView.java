@@ -138,8 +138,8 @@ public class ArmorImageMakerView extends ViewBase {
 		File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName(namec);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), armorPars[0]);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image2), armorPars[1]);
-		use(workspace, images[2], namec + "_head");
-		use(workspace, images[3], namec + "_body");
+		use(workspace, images[2], namec + "_helmet");
+		use(workspace, images[3], namec + "_chestplate");
 		use(workspace, images[4], namec + "_leggings");
 		use(workspace, images[5], namec + "_boots");
 	}
