@@ -168,4 +168,9 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 		if (texture.hasTexture())
 			map.put(key, texture.getTextureHolder());
 	}
+
+	public static TextureHolder getOrDefault(Map<String, TextureHolder> map, String mapEntry, Workspace workspace,
+			String registryName) {
+		return map.containsKey(mapEntry) ? map.get(mapEntry) : new TextureHolder(workspace, registryName);
+	}
 }
