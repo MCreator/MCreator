@@ -1,0 +1,1 @@
+CurrentDevice.pinMode((int)${input$pin},PinMode.${field$mode});

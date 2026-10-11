@@ -1,0 +1,44 @@
+defaultvalue: false
+scopes:
+  local:
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
+    get: ${name}
+    set: ${name} = ${opt.removeParentheses(value)};
+  global_session:
+    init: public static boolean ${var.getName()} = ${var.getValue()};
+    get: ${JavaModName}Variables.${name}
+    set: ${JavaModName}Variables.${name} = ${opt.removeParentheses(value)};
+  global_world:
+    init: public boolean ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = nbt.getBooleanOr("${var.getName()}", false);
+    write: nbt.putBoolean("${var.getName()}", ${var.getName()});
+    get: ${JavaModName}Variables.WorldVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
+      <@tail>${JavaModName}Variables.WorldVariables.get(world).markSyncDirty();</@tail>
+  global_map:
+    init: public boolean ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = nbt.getBooleanOr("${var.getName()}", false);
+    write: nbt.putBoolean("${var.getName()}", ${var.getName()});
+    get: ${JavaModName}Variables.MapVariables.get(world).${name}
+    set: |
+      ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
+      <@tail>${JavaModName}Variables.MapVariables.get(world).markSyncDirty();</@tail>
+  player_lifetime:
+    init: public boolean ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = input.getBooleanOr("${var.getName()}", false);
+    write: output.putBoolean("${var.getName()}", ${var.getName()});
+    get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
+    set: |
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>
+  player_persistent:
+    init: public boolean ${var.getName()} = ${var.getValue()};
+    read: ${var.getName()} = input.getBooleanOr("${var.getName()}", false);
+    write: output.putBoolean("${var.getName()}", ${var.getName()});
+    get: ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
+    set: |
+      <@head>{${JavaModName}Variables.PlayerVariables _vars = ${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES);</@head>
+      _vars.${name} = ${opt.removeParentheses(value)};
+      <@tail>_vars.markSyncDirty();}</@tail>

@@ -1,0 +1,36 @@
+_default:
+  - EquipmentSlotGroup.ANY
+  - any
+any:
+  - EquipmentSlotGroup.ANY
+  - any
+mainhand:
+  - EquipmentSlotGroup.MAINHAND
+  - mainhand
+offhand:
+  - EquipmentSlotGroup.OFFHAND
+  - offhand
+hand:
+  - EquipmentSlotGroup.HAND
+  - hand
+feet:
+  - EquipmentSlotGroup.FEET
+  - feet
+legs:
+  - EquipmentSlotGroup.LEGS
+  - legs
+chest:
+  - EquipmentSlotGroup.CHEST
+  - chest
+head:
+  - EquipmentSlotGroup.HEAD
+  - head
+armor:
+  - EquipmentSlotGroup.ARMOR
+  - armor
+body:
+  - EquipmentSlotGroup.BODY
+  - body
+saddle:
+  - EquipmentSlotGroup.SADDLE
+  - saddle

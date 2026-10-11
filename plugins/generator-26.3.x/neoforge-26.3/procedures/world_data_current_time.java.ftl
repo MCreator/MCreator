@@ -1,0 +1,1 @@
+/*@float*/(world instanceof Level _level${cbi} ? _level${cbi}.getDefaultClockTime() : 0)

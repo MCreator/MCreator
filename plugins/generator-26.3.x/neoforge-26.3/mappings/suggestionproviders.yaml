@@ -1,0 +1,7 @@
+_default: SuggestionProviders.cast(SuggestionProviders.AVAILABLE_SOUNDS)
+AVAILABLE_SOUNDS: SuggestionProviders.cast(SuggestionProviders.AVAILABLE_SOUNDS)
+SUMMONABLE_ENTITIES: SuggestionProviders.cast(SuggestionProviders.SUMMONABLE_ENTITIES)
+SUGGEST_BOSS_BAR: BossBarCommands.SUGGEST_BOSS_BAR
+SUGGEST_FUNCTION: FunctionCommand.SUGGEST_FUNCTION
+SUGGEST_LOOT_TABLE: (context, builder) -> SharedSuggestionProvider.listSuggestions(context, builder, Registries.LOOT_TABLE, SharedSuggestionProvider.ElementSuggestionType.ELEMENTS)
+SUGGEST_SCORE_HOLDERS: ScoreHolderArgument.SUGGEST_SCORE_HOLDERS

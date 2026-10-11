@@ -1,0 +1,1 @@
+InteractionResult.${field$type}

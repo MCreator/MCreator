@@ -75,7 +75,7 @@ import java.util.*;
 	}
 
 	public boolean hasElementsOfBaseType(String baseTypeString) {
-		BaseType baseType = BaseType.valueOf(baseTypeString.toUpperCase(Locale.ENGLISH));
+		BaseType baseType = BaseType.of(baseTypeString);
 		for (ModElement modElement : workspace.getModElements()) {
 			// getBaseTypesProvided is not thread safe, so we can't use parallelStream here
 			if (modElement.getBaseTypesProvided().contains(baseType))

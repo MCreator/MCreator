@@ -1,0 +1,5 @@
+global_templates:
+  - template: elementinits/entities.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEntities.java"
+  - template: elementinits/entityrenderers.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameEntityRenderers.java"

@@ -1,0 +1,1 @@
+/*@int*/(${input$entity} instanceof LivingEntity _entUseTicks${cbi} ? _entUseTicks${cbi}.getTicksUsingItem() : 0)
