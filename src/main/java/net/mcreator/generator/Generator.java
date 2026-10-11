@@ -376,8 +376,7 @@ public class Generator implements IGenerator, Closeable {
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new LinkedHashMap<>();
 		for (GeneratableElement generatableElement : generatableElements) {
 			for (BaseType baseType : getBaseTypesProvided(generatableElement)) {
-				
-					baseTypeListMap.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
+				baseTypeListMap.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
 			}
 		}
 		for (Map.Entry<BaseType, List<GeneratableElement>> entry : baseTypeListMap.entrySet()) {
