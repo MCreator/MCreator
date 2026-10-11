@@ -13,8 +13,9 @@ Obere Zeile:
 3. Letztes Viertel (auch drittes Viertel genannt)
 4. Abnehmende Mondsichel
 
-Untere Zeile:
+Untere Reihe:
+
 5. Neumond
-6. Zunehmende Sichel
+6. Zunehmender Sichelmond
 7. Erstes Viertel
 8. Zunehmender Dreiviertelmond
