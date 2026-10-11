@@ -65,17 +65,21 @@ public class McpSchema {
 		}
 	}
 
-	public record Content(String type, String text, Annotations annotations) {
+	public record Content(String type, String text, String data, String mimeType, Annotations annotations) {
 		public Content(String type, String text) {
-			this(type, text, null);
+			this(type, text, null, null, null);
 		}
 
 		public static Content text(String text) {
-			return new Content("text", text, null);
+			return new Content("text", text, null, null, null);
 		}
 
 		public static Content text(String text, Annotations annotations) {
-			return new Content("text", text, annotations);
+			return new Content("text", text, null, null, annotations);
+		}
+
+		public static Content image(String dataBase64, String mimeType) {
+			return new Content("image", null, dataBase64, mimeType, null);
 		}
 	}
 

@@ -178,6 +178,17 @@ public class CefUtils {
 				config.getAppArgsAsList().add("--disable-gpu-compositing");
 			}
 
+			if (OS.isLinux()) {
+				// Since Chromium 141, CEF auto-selects the Wayland Ozone backend on Wayland sessions and then
+				// defaults to GTK4 on GNOME. AWT loads GTK3, and GTK3 + GTK4 can not coexist in one process
+				// (results in a hang on startup). Force the X11 backend (AWT runs on XWayland anyway) like
+				// IntelliJ does, and pin GTK3 for the case DISPLAY is not set
+				if (System.getenv("DISPLAY") != null && !System.getenv("DISPLAY").isBlank()) {
+					config.getAppArgsAsList().add("--ozone-platform=x11");
+				}
+				config.getAppArgsAsList().add("--gtk-version=3");
+			}
+
 			config.getAppArgsAsList().add("--disable-features=" + String.join(",", disabledFeatures));
 
 			LOG.debug("JCEF arguments: {}", config.getAppArgsAsList());

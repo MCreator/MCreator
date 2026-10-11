@@ -196,7 +196,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptions(Block.class,
+	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptionsWithIcons(Block.class,
 			"reactionToPushing", "elementgui.block.reaction_to_push.");
 
 	private final JComboBox<String> offsetType = ComponentFromAnnotation.options(Block.class, "offsetType");
@@ -467,6 +467,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 				if ((int) maxStackSize.getValue() == 16) {
 					maxStackSize.setValue(64);
 				}
+				// Reset creative tab to "Building blocks"
+				creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 			}
 
 			if (hasBlockBase) {
@@ -503,6 +505,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						reactionToPushing.setSelectedItem("DESTROY");
 						hasTransparency.setSelected(true);
 						ignitedByLava.setSelected(true);
+						creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "DECORATIONS")));
 					}
 				}
 				case "TrapDoor" -> {
@@ -559,6 +562,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 						hasTransparency.setSelected(true);
 						isNotColidable.setSelected(true);
 						maxStackSize.setValue(16);
+						creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TRANSPORTATION")));
 					}
 				}
 				case null, default -> {
@@ -566,6 +570,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 						if ("Wall".equals(selectedBlockBase) || "FenceGate".equals(selectedBlockBase)
 								|| "EndRod".equals(selectedBlockBase)) {
 							hasTransparency.setSelected(true);
+						}
+						if ("EndRod".equals(selectedBlockBase)) {
+							creativeTabs.setListElements(
+									List.of(new TabEntry(mcreator.getWorkspace(), "TRANSPORTATION")));
 						}
 					}
 				}
@@ -737,6 +745,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
 				L10N.label("elementgui.common.offset_type")));
+		offsetType.setRenderer(new ItemTexturesComboBoxRenderer());
 		visualRenderingSettings.add(offsetType);
 
 		ComponentUtils.deriveFont(renderType, 16);
@@ -821,8 +830,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel selp = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel selp3 = new JPanel(new GridLayout(8, 2, 0, 2));
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
-
-		JPanel advancedProperties = new JPanel(new GridLayout(14, 2, 0, 2));
+		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		hasGravity.setOpaque(false);
 		tickRandomly.setOpaque(false);
@@ -977,16 +985,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.label("elementgui.common.soundtypes.step_sound")));
 		soundProperties.add(stepSound);
 
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
-				L10N.label("elementgui.common.tick_rate")));
-		advancedProperties.add(tickRate);
-
-		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_randomly"),
-				L10N.label("elementgui.block.tick_randomly")));
-		advancedProperties.add(tickRandomly);
-
-		tickRandomly.addActionListener(_ -> tickRate.setEnabled(!tickRandomly.isSelected()));
-
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/color_on_map"),
 				L10N.label("elementgui.block.color_on_map")));
 		advancedProperties.add(colorOnMap);
@@ -1083,7 +1081,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onRightClicked);
 		events.add(onBlockAdded);
 		events.add(onNeighbourBlockChanges);
-		events.add(onTickUpdate);
 		events.add(onDestroyedByPlayer);
 		events.add(onDestroyedByExplosion);
 		events.add(onStartToDestroy);
@@ -1093,11 +1090,27 @@ public class BlockGUI extends ModElementGUI<Block> {
 		events.add(onBlockPlayedBy);
 		events.add(onRedstoneOn);
 		events.add(onRedstoneOff);
-		events.add(onRandomUpdateEvent);
 		events.add(onEntityFallsOn);
 		events.add(new JEmptyBox());
 
-		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
+		JPanel tickingSettings = new JPanel(new GridLayout(2, 2, 10, 2));
+		tickingSettings.setOpaque(false);
+
+		tickingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
+				L10N.label("elementgui.common.tick_rate")));
+		tickingSettings.add(tickRate);
+
+		tickingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_randomly"),
+				L10N.label("elementgui.block.tick_randomly")));
+		tickingSettings.add(tickRandomly);
+
+		tickRandomly.addActionListener(_ -> tickRate.setEnabled(!tickRandomly.isSelected()));
+
+		JComponent tickSection = PanelUtils.gridElements(1, 2, 5, 5, PanelUtils.join(FlowLayout.LEFT, tickingSettings),
+				PanelUtils.gridElements(1, 2, 5, 5, onTickUpdate, onRandomUpdateEvent));
+
+		pane4.add("Center",
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(tickSection, events, 0, 35)));
 
 		pane4.setOpaque(false);
 
@@ -1471,6 +1484,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "BUILDING_BLOCKS")));
 		}
 
 		updateSoundType();
