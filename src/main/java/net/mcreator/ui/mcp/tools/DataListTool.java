@@ -24,6 +24,7 @@ import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyElementUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
@@ -114,9 +115,11 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 		return retval;
 	}
 
-	public record DataListEntryInfo(String name, @Nullable String readableName, @Nullable String description) {
+	public record DataListEntryInfo(String name, @Nullable String readableName, @Nullable String description,
+									@Nullable Boolean wildcard) {
 		public DataListEntryInfo(DataListEntry entry) {
-			this(entry.getName(), entry.getRawReadableName(), entry.getRawDescription());
+			this(entry.getName(), entry.getRawReadableName(), entry.getRawDescription(),
+					entry instanceof MCItem mcItem && !mcItem.hasNoSubtypes() ? true : null);
 		}
 
 		@Nonnull @Override public String toString() {

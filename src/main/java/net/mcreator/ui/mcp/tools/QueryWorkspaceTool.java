@@ -71,7 +71,10 @@ public class QueryWorkspaceTool extends MCreatorMcpTool<QueryWorkspaceTool.Args>
 	}
 
 	@Override public String getDescription() {
-		return "Provides list of specified workspace elements or resources. Use those lists as hard source of truth.";
+		return """
+				Provides list of specified workspace elements or resources. Use those lists as hard source of truth.
+				Block/item entries marked with wildcard: true act like tags (match any subtype) and are only valid \
+				for inputs and predicates that accept tags, not for placement or output.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
