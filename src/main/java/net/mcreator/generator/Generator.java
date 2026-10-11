@@ -356,45 +356,39 @@ public class Generator implements IGenerator, Closeable {
 		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
 				.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 
-		// Add mod element type specific global files (eg. registries for mod elements)
-		for (ModElementType<?> type : generatorConfiguration.getGeneratorStats().getSupportedModElementTypes()) {
+		// Check used mod element types and generate their templates
+		Map<ModElementType<?>, List<GeneratableElement>> modElementTypeListMap = new LinkedHashMap<>();
+		for (GeneratableElement generatableElement : generatableElements) {
+			modElementTypeListMap.computeIfAbsent(generatableElement.getModElement().getType(), _ -> new ArrayList<>())
+					.add(generatableElement);
+		}
+		for (Map.Entry<ModElementType<?>, List<GeneratableElement>> entry : modElementTypeListMap.entrySet()) {
+			ModElementType<?> type = entry.getKey();
+			List<GeneratableElement> groupedElements = entry.getValue();
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, templateID);
 
-			List<GeneratableElement> filteredGeneratableElements = generatableElements.stream()
-					.filter(e -> e.getModElement().getType() == type).toList();
-
-			if (!filteredGeneratableElements.isEmpty()) {
-				globalTemplatesList.forEach(
-						e -> e.addDataModelEntry(type.getPluralName(), filteredGeneratableElements));
-
-				files.addAll(globalTemplatesList);
-
-				typesReport.put(type.getPluralName(), filteredGeneratableElements.size());
-			} // No need to delete elements here as previous stale files will be removed by used files metadata systems
+			globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getPluralName(), groupedElements));
+			files.addAll(globalTemplatesList);
+			typesReport.put(type.getPluralName(), groupedElements.size());
 		}
 
-		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
+		// Check used base types and generate their templates
+		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new LinkedHashMap<>();
 		for (GeneratableElement generatableElement : generatableElements) {
 			for (BaseType baseType : getBaseTypesProvided(generatableElement)) {
-				if (!baseTypeListMap.containsKey(baseType))
-					baseTypeListMap.put(baseType, new ArrayList<>());
-
-				baseTypeListMap.get(baseType).add(generatableElement);
+				
+					baseTypeListMap.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
 			}
 		}
-
-		for (BaseType baseType : BaseType.values()) {
+		for (Map.Entry<BaseType, List<GeneratableElement>> entry : baseTypeListMap.entrySet()) {
+			BaseType baseType = entry.getKey();
+			List<GeneratableElement> groupedElements = entry.getValue();
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForDefinition(
 					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType), templateID);
 
-			if (baseTypeListMap.containsKey(baseType) && !baseTypeListMap.get(baseType).isEmpty()) {
-				globalTemplatesList.forEach(
-						e -> e.addDataModelEntry(baseType.getPluralName(), baseTypeListMap.get(baseType)));
-
-				files.addAll(globalTemplatesList);
-
-				typesReport.put("base:" + baseType.getPluralName(), baseTypeListMap.get(baseType).size());
-			} // No need to delete elements here as previous stale files will be removed by used files metadata systems
+			globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.getPluralName(), groupedElements));
+			files.addAll(globalTemplatesList);
+			typesReport.put("base:" + baseType.getPluralName(), groupedElements.size());
 		}
 
 		// Finally, add global base templates at the end
