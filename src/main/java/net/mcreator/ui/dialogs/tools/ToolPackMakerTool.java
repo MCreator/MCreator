@@ -194,8 +194,8 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 
 		// then we generate sword texture
 		if (!textureMap.containsKey("sword")) {
-			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_sword", color);
-			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
+			ImageIcon sword = baseAndColoredOverlay("tool_base_stick", "tool_sword", color);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sword.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_sword", TextureType.ITEM));
 			textureMap.put("sword", new TextureHolder(workspace, registryName + "_sword"));
 		}
@@ -212,8 +212,8 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 
 		// then we generate hoe texture
 		if (!textureMap.containsKey("hoe")) {
-			ImageIcon axe = baseAndColoredOverlay("tool_base_stick", "tool_hoe", color);
-			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(axe.getImage()),
+			ImageIcon hoe = baseAndColoredOverlay("tool_base_stick", "tool_hoe", color);
+			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hoe.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_hoe", TextureType.ITEM));
 			textureMap.put("hoe", new TextureHolder(workspace, registryName + "_hoe"));
 		}
