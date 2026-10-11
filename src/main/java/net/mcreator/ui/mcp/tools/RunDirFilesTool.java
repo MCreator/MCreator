@@ -19,8 +19,10 @@
 
 package net.mcreator.ui.mcp.tools;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.mcp.tool.ToolResult;
+import net.mcreator.minecraft.MinecraftFolderUtils;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.mcp.tools.utils.ProjectFileUtils;
@@ -58,8 +60,9 @@ public class RunDirFilesTool extends MCreatorMcpTool<RunDirFilesTool.Args> {
 	@Override public String getDescription() {
 		return """
 				Searches or reads files inside the Minecraft run directory of the workspace (logs, crash reports, configs, ...).\
-				 SEARCH recursively lists workspace-relative file paths, optionally filtered by the case-insensitive query substring.\
-				 READ returns the contents of a text file given its workspace-relative path as returned by SEARCH.\
+				 For add-on workspaces, Bedrock Edition game and logs folders are searched instead.\
+				 SEARCH recursively lists file paths, optionally filtered by the case-insensitive query substring.\
+				 READ returns the contents of a text file given its path as returned by SEARCH.\
 				 Use lastNCharsToRead to only read the end of large files such as logs.""";
 	}
 
@@ -73,7 +76,7 @@ public class RunDirFilesTool extends MCreatorMcpTool<RunDirFilesTool.Args> {
 		}
 
 		Path workspaceRoot = ProjectFileUtils.getWorkspaceRoot(mcreator);
-		Set<Path> roots = getRunDirs(mcreator.getFolderManager());
+		Set<Path> roots = getRoots(mcreator);
 		if (roots.isEmpty()) {
 			return completedError("Run directory does not exist yet, run the client or server first");
 		}
@@ -84,11 +87,19 @@ public class RunDirFilesTool extends MCreatorMcpTool<RunDirFilesTool.Args> {
 		};
 	}
 
-	private static Set<Path> getRunDirs(WorkspaceFolderManager folderManager) throws IOException {
+	private static Set<Path> getRoots(MCreator mcreator) throws IOException {
+		WorkspaceFolderManager folderManager = mcreator.getFolderManager();
+		List<File> candidates = new ArrayList<>(
+				List.of(folderManager.getClientRunDir(), folderManager.getServerRunDir()));
+		if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON) {
+			candidates.add(MinecraftFolderUtils.getBedrockEditionFolder());
+			candidates.add(MinecraftFolderUtils.getBedrockEditionLogsFolder());
+		}
+
 		Set<Path> roots = new LinkedHashSet<>();
-		for (File runDir : List.of(folderManager.getClientRunDir(), folderManager.getServerRunDir())) {
-			if (runDir.isDirectory())
-				roots.add(runDir.getCanonicalFile().toPath());
+		for (File candidate : candidates) {
+			if (candidate != null && candidate.isDirectory())
+				roots.add(candidate.getCanonicalFile().toPath());
 		}
 		return roots;
 	}
@@ -98,9 +109,9 @@ public class RunDirFilesTool extends MCreatorMcpTool<RunDirFilesTool.Args> {
 		Set<String> paths = new TreeSet<>();
 		for (Path root : roots) {
 			for (File file : FileIO.listFilesRecursively(root.toFile())) {
-				String relativePath = ProjectFileUtils.getPathInWorkspace(workspaceRoot, file);
-				if (relativePath.toLowerCase(Locale.ROOT).contains(filter)) {
-					paths.add(relativePath);
+				String path = getPath(workspaceRoot, file);
+				if (path.toLowerCase(Locale.ROOT).contains(filter)) {
+					paths.add(path);
 				}
 			}
 		}
@@ -131,6 +142,15 @@ public class RunDirFilesTool extends MCreatorMcpTool<RunDirFilesTool.Args> {
 			content = content.substring(Math.max(0, content.length() - lastNCharsToRead));
 		}
 		return completed(ToolResult.text(content));
+	}
+
+	/**
+	 * @return workspace-relative path for files in the workspace, absolute path for Bedrock Edition folders
+	 */
+	private static String getPath(Path workspaceRoot, File file) {
+		if (file.toPath().startsWith(workspaceRoot))
+			return ProjectFileUtils.getPathInWorkspace(workspaceRoot, file);
+		return file.getAbsolutePath();
 	}
 
 }
