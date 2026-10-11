@@ -1,1 +1,1 @@
-Die Menge an Schaden, den der Kreaturen-Kreaturen, wenn er angreift, zufügt.
+Die Menge an Schaden, den die Kreatur Entitäten beim Angriff zufügt.

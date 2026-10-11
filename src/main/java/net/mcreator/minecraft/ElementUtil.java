@@ -337,8 +337,10 @@ public class ElementUtil {
 		var provider = customEntryProviders.get(datalist);
 		if (provider != null) {
 			result.addAll(provider.apply(workspace));
+			result.sort(DataListEntry.getComparator(workspace, result)); // sort custom elements
 		}
 
+		// vanilla entries keep the datalist order and are not sorted (same as block and items lists)
 		provider = vanillaEntryProviders.get(datalist);
 		if (provider != null) {
 			result.addAll(provider.apply(workspace));
@@ -350,7 +352,6 @@ public class ElementUtil {
 			}
 		}
 
-		result.sort(DataListEntry.getComparator(workspace, result));
 		return result;
 	}
 

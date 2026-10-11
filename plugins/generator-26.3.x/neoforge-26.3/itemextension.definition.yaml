@@ -1,0 +1,21 @@
+global_templates:
+  - template: itemextension/fuels.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.enableFuel)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"
+  - template: itemextension/compostable_items.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.compostLayerChance gt 0)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameCompostables.java"
+
+templates:
+  - template: itemextension/compostable_provider.json.ftl
+    writer: json
+    condition: "${data.compostLayerChance gt 0}"
+    name: "@MODDATAROOT/context_int_provider/compostable/@registryname.json"
+  - template: itemextension/fuel_provider.json.ftl
+    writer: json
+    condition: "${data.enableFuel}"
+    name: "@MODDATAROOT/context_int_provider/fuel/@registryname.json"
+
+  # Dispense behaviors are controlled by generator.yaml

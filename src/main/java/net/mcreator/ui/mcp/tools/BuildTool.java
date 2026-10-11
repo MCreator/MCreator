@@ -157,7 +157,7 @@ public class BuildTool extends MCreatorMcpTool<BuildTool.Args> {
 		return ToolResult.object(resultMap);
 	}
 
-	private static boolean isGradleBusy(MCreator mcreator) {
+	static boolean isGradleBusy(MCreator mcreator) {
 		GradleConsole gradleConsole = mcreator.getGradleConsole();
 		return gradleConsole.getStatus() == GradleConsole.RUNNING || gradleConsole.isGradleSetupTaskRunning();
 	}

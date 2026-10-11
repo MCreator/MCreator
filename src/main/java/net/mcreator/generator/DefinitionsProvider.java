@@ -28,8 +28,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,12 +39,14 @@ public class DefinitionsProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Definition Loader");
 
+	private final String generatorName;
+
 	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
 	private final Map<BaseType, Map<?, ?>> global_cache = new ConcurrentHashMap<>();
 
 	public DefinitionsProvider(GeneratorConfiguration generatorConfiguration) {
-		final String generatorName = generatorConfiguration.getGeneratorName();
+		this.generatorName = generatorConfiguration.getGeneratorName();
 
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
 			try {
@@ -59,31 +62,30 @@ public class DefinitionsProvider {
 			}
 		}
 
+		// Preload global definitions for base types known at generator construction time
 		for (BaseType type : BaseType.values()) {
-			try {
-				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
-						generatorName + "/common." + type.getPluralName() + ".yaml",
-						new AdaptiveYamlMergePolicy("name"));
-				if (result.isEmpty()) // definition not specified
-					continue;
-
-				global_cache.put(type, new ConcurrentHashMap<>(result)); // add definition to the cache
-			} catch (YamlEngineException | IOException e) {
-				LOG.info("[{}] Error: {}", generatorName, e.getMessage());
-			}
+			global_cache.put(type, getDefinitionFor(type));
 		}
 	}
 
-	public Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
+	@Nullable public Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
 		return cache.get(elementType);
 	}
 
-	public Map<?, ?> getBaseTypeDefinition(BaseType baseType) {
-		return global_cache.get(baseType);
+	@Nonnull public Map<?, ?> getBaseTypeDefinition(BaseType baseType) {
+		return global_cache.computeIfAbsent(baseType, this::getDefinitionFor);
 	}
 
-	public Map<ModElementType<?>, Map<?, ?>> getModElementDefinitions() {
-		return Collections.unmodifiableMap(cache);
+	@Nonnull private Map<?, ?> getDefinitionFor(BaseType baseType) {
+		try {
+			Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
+					generatorName + "/common." + baseType.getPluralName() + ".yaml",
+					new AdaptiveYamlMergePolicy("name"));
+			return result.isEmpty() ? Map.of() : new ConcurrentHashMap<>(result);
+		} catch (YamlEngineException | IOException e) {
+			LOG.info("[{}] Error: {}", generatorName, e.getMessage());
+			return Map.of();
+		}
 	}
 
 }

@@ -45,6 +45,9 @@ public class GTScriptBlocks {
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.SCRIPT);
 
+		var blocksAndItems = ElementUtil.loadBlocksAndItems(workspace);
+		var blocks = ElementUtil.loadBlocks(workspace);
+
 		for (ToolboxBlock scriptBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.SCRIPT)
 				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
@@ -93,20 +96,19 @@ public class GTScriptBlocks {
 			// set MCItem blocks to some value
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
 							"<block type=\"mcitem_all\"><field name=\"value\">"
-									+ TestWorkspaceDataProvider.getRandomMCItem(random,
-									ElementUtil.loadBlocksAndItems(workspace)).getName() + "</field></block>")
+									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocksAndItems).getName()
+									+ "</field></block>")
 					.replace("<shadow type=\"mcitem_all\"><field name=\"value\"></field></shadow>",
 							"<shadow type=\"mcitem_all\"><field name=\"value\">"
-									+ TestWorkspaceDataProvider.getRandomMCItem(random,
-									ElementUtil.loadBlocksAndItems(workspace)).getName() + "</field></shadow>")
+									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocksAndItems).getName()
+									+ "</field></shadow>")
 					.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 							"<block type=\"mcitem_allblocks\"><field name=\"value\">"
-									+ TestWorkspaceDataProvider.getRandomMCItem(random, ElementUtil.loadBlocks(workspace))
-									.getName() + "</field></block>")
+									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName() + "</field></block>")
 					.replace("<shadow type=\"mcitem_allblocks\"><field name=\"value\"></field></shadow>",
 							"<shadow type=\"mcitem_allblocks\"><field name=\"value\">"
-									+ TestWorkspaceDataProvider.getRandomMCItem(random,
-									ElementUtil.loadBlocks(workspace)).getName() + "</field></shadow>");
+									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName()
+									+ "</field></shadow>");
 
 			prepareTestCase(workspace, generatorName, scriptBlock.getMachineName(), testXML, scriptBlock.getType(),
 					scriptBlock.getOutputType());
