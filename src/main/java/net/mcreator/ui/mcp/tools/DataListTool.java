@@ -116,7 +116,7 @@ public class DataListTool extends MCreatorMcpTool<DataListTool.Args> {
 	}
 
 	public record DataListEntryInfo(String name, @Nullable String readableName, @Nullable String description,
-									@Nullable Boolean wildcard) {
+									@Nullable Boolean matchesAnySubtype) {
 		public DataListEntryInfo(DataListEntry entry) {
 			this(entry.getName(), entry.getRawReadableName(), entry.getRawDescription(),
 					entry instanceof MCItem mcItem && !mcItem.hasNoSubtypes() ? true : null);
