@@ -1,1 +1,0 @@
-(${input$vector1}.equals(${input$vector2}))

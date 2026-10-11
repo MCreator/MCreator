@@ -151,8 +151,7 @@ public class RegenerateCodeAction extends GradleAction {
 					generatableElement.getModElement().reinit(mcreator.getWorkspace());
 
 					// preload/update MCItem cache and MCItem icons
-					generatableElement.getModElement().getMCItems()
-							.forEach(mcItem -> mcItem.getIcon().getImage().flush());
+					generatableElement.getModElement().getMCItems();
 
 					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {

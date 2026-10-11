@@ -74,7 +74,8 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 						new String[] { "." + exportExtension });
 				if (exportTargetFile != null) {
 					actionRegistry.getMCreator().getApplication().getAnalytics()
-							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, "build");
+							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, "build",
+									actionRegistry.getMCreator().getWorkspaceSettings().getCurrentGenerator());
 
 					FileIO.copyFile(exportFileObject, exportTargetFile);
 				}
