@@ -227,7 +227,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 				modMaker.getWorkspacePanel().currentFolder :
 				null;
 
-		// first we generate wood texture
+		// first we generate log side texture (also used by sign entity texture if not provided)
 		ImageIcon logSide = ImageUtils.colorize(
 				getCachedTexture("log_side_1", "log_side_2", "log_side_3", "log_side_4", "log_side_5"), barkColor,
 				true);
@@ -236,7 +236,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 					mcreator.getFolderManager().getTextureFile(registryName + "_log", TextureType.BLOCK));
 		}
 
-		//then we generate the missing log texture
+		// then we generate the log top texture (also used by stripped log top texture if not provided)
 		ImageIcon logTop = ImageUtils.colorize(getCachedTexture("log_top"), color, true);
 		if (!textureMap.containsKey("log_top")) {
 			if (barkColor != color) { // Redraw the bark rind if bark color is different from default color
@@ -255,21 +255,24 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 		// then we generate the stripped log top texture
 		if (!textureMap.containsKey("stripped_log_top")) {
-			ImageIcon strippedLogTop = ImageUtils.drawOver(logTop,
+			ImageIcon strippedLogTopBase = textureMap.containsKey("log_top") ?
+					textureMap.get("log_top").getImageIcon(TextureType.BLOCK) :
+					logTop;
+			ImageIcon strippedLogTop = ImageUtils.drawOver(strippedLogTopBase,
 					ImageUtils.colorize(getCachedTexture("stripped_log_top_outside"), strippedColor, true));
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogTop.getImage()),
 					mcreator.getFolderManager()
 							.getTextureFile("stripped_" + registryName + "_log_top", TextureType.BLOCK));
 		}
 
-		//then we generate the planks texture
+		// then we generate the planks texture
 		if (!textureMap.containsKey("planks")) {
 			ImageIcon planks = ImageUtils.colorize(getCachedTexture("planks_0", "planks_1"), color, true);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(planks.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_planks", TextureType.BLOCK));
 		}
 
-		//then we generate the leaves texture
+		// then we generate the leaves texture
 		if (!textureMap.containsKey("leaves")) {
 			ImageIcon leaves = ImageUtils.colorize(
 					getCachedTexture("leaves_0", "leaves_1", "leaves_2", "leaves_3", "leaves_4", "leaves_5",
@@ -313,9 +316,12 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		}
 
 		if (!textureMap.containsKey("sign_entity")) {
+			ImageIcon signPostBase = textureMap.containsKey("log_side") ?
+					textureMap.get("log_side").getImageIcon(TextureType.BLOCK) :
+					logSide;
 			ImageIcon signEntity = ImageUtils.drawOver(
 					ImageUtils.colorize(getCachedTexture("sign_entity"), color, true), new ImageIcon(
-							ImageUtils.crop(ImageUtils.toBufferedImage(logSide.getImage()),
+							ImageUtils.crop(ImageUtils.toBufferedImage(signPostBase.getImage()),
 									new Rectangle(4, 0, 8, 14))), 0, 16, 8,
 					14); // Vanilla signs use part of the log texture for the post
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(signEntity.getImage()),
@@ -364,8 +370,11 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		}
 
 		if (!textureMap.containsKey("chest_boat_entity")) {
-			ImageIcon chestBoatEntity = ImageUtils.drawOver(getCachedTexture("boat_entity_chest_overlay"), boatEntity,
-					0, 0, 128, 64);
+			ImageIcon chestBoatBase = textureMap.containsKey("boat_entity") ?
+					textureMap.get("boat_entity").getImageIcon(TextureType.ENTITY) :
+					boatEntity;
+			ImageIcon chestBoatEntity = ImageUtils.drawOver(getCachedTexture("boat_entity_chest_overlay"),
+					chestBoatBase, 0, 0, 128, 64);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatEntity.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_chest_boat", TextureType.ENTITY));
 		}
