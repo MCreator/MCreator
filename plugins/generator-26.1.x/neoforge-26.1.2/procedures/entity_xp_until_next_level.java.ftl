@@ -1,1 +1,0 @@
-/*@int*/(${input$entity} instanceof Player _plr ? _plr.getXpNeededForNextLevel() : 0)
