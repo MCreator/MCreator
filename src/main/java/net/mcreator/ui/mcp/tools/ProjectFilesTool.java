@@ -57,7 +57,7 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Searches or reads project files inside the source root of the workspace.\
+				Searches or reads project files inside the source/resource root of the workspace.\
 				 SEARCH recursively lists workspace-relative file paths matching the case-insensitive query substring.\
 				 READ returns the contents of a text file given its workspace-relative path as returned by SEARCH.\
 				 Use project_file_edit tool to create, edit, or delete project files.""";
