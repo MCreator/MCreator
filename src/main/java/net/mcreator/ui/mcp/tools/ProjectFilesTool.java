@@ -28,6 +28,7 @@ import net.mcreator.ui.mcp.tools.utils.ProjectFileUtils;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 		return """
 				Searches or reads project files inside the source/resource root of the workspace.\
 				 SEARCH recursively lists workspace-relative file paths matching the case-insensitive query substring.\
-				 READ returns the contents of a text file given its workspace-relative path as returned by SEARCH.\
+				 READ returns the contents of a text file or PNG image given its workspace-relative path as returned by SEARCH.\
 				 Use project_file_edit tool to create, edit, or delete project files.""";
 	}
 
@@ -112,6 +113,10 @@ public class ProjectFilesTool extends MCreatorMcpTool<ProjectFilesTool.Args> {
 		}
 		if (!file.isFile()) {
 			return completedError("File not found: " + path);
+		}
+
+		if (file.getName().endsWith(".png")) {
+			return completed(ToolResult.image(Files.readAllBytes(file.toPath()), "image/png"));
 		}
 
 		return completed(ToolResult.text(FileIO.readFileToString(file)));
