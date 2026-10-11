@@ -53,6 +53,7 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 	private void registerTools() {
 		server.registerTool(new QueryWorkspaceTool(currentMCreator));
 		server.registerTool(new BuildTool(currentMCreator));
+		server.registerTool(new RunClientTool(currentMCreator));
 		server.registerTool(new ReadConsoleTool(currentMCreator));
 		server.registerTool(new ModElementTool(currentMCreator));
 		server.registerTool(new HelpTipsTool(currentMCreator));
