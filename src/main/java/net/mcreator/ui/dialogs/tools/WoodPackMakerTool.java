@@ -373,9 +373,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		// Get repeated textures
 		TextureHolder logTopTexture = getOrDefault(textureMap, "log_top", workspace, registryName + "_log_top");
 		TextureHolder logSideTexture = getOrDefault(textureMap, "log_side", workspace, registryName + "_log");
-		TextureHolder strippedLogTopTexture = getOrDefault(textureMap, "log_top", workspace,
+		TextureHolder strippedLogTopTexture = getOrDefault(textureMap, "stripped_log_top", workspace,
 				"stripped_" + registryName + "_log_top");
-		TextureHolder strippedLogSideTexture = getOrDefault(textureMap, "log_side", workspace,
+		TextureHolder strippedLogSideTexture = getOrDefault(textureMap, "stripped_log_side", workspace,
 				"stripped_" + registryName + "_log");
 		TextureHolder planksTexture = getOrDefault(textureMap, "planks", workspace, registryName + "_planks");
 
