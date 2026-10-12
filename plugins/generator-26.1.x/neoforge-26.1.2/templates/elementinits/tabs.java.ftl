@@ -63,7 +63,6 @@ public class ${JavaModName}Tabs {
 							</#list>
 						})
 						<#if tab.showSearch>.withSearchBar()</#if>
-						<#if tab.hideTitle>.hideTitle()</#if>
 						<#if prevTab??>.withTabsBefore(${prevTab}.getId())</#if>
 						.build()
 				);
