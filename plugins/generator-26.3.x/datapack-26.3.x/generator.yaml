@@ -1,6 +1,6 @@
 name: Data Pack for Java Edition @minecraft
 status: stable
-buildfileversion: 26.3.0.48-beta
+buildfileversion: 26.3.0.76
 
 # gradle task definitions
 gradle:
