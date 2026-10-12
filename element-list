@@ -153,6 +153,7 @@ net.mcreator.ui.variants.resourcepackmaker
 net.mcreator.ui.views
 net.mcreator.ui.views.editor.image
 net.mcreator.ui.views.editor.image.action
+net.mcreator.ui.views.editor.image.animation
 net.mcreator.ui.views.editor.image.canvas
 net.mcreator.ui.views.editor.image.clipboard
 net.mcreator.ui.views.editor.image.clipboard.transferables

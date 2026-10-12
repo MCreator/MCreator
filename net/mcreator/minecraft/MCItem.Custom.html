@@ -66,6 +66,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
+<li><a href="#getIcon()" tabindex="0">getIcon()</a></li>
 <li><a href="#isSupportedInWorkspace(net.mcreator.workspace.Workspace)" tabindex="0">isSupportedInWorkspace(Workspace)</a></li>
 </ol>
 </li>
@@ -114,7 +115,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.minecraft.MCItem">Fields inherited from class&nbsp;<a href="MCItem.html#field-summary" title="class in net.mcreator.minecraft">MCItem</a></h3>
-<code><a href="MCItem.html#DEFAULT_ICON">DEFAULT_ICON</a>, <a href="MCItem.html#EMPTY_ICON">EMPTY_ICON</a>, <a href="MCItem.html#EXTERNAL_ICON">EXTERNAL_ICON</a>, <a href="MCItem.html#icon">icon</a>, <a href="MCItem.html#TAG_ICON">TAG_ICON</a></code></div>
+<code><a href="MCItem.html#DEFAULT_ICON">DEFAULT_ICON</a>, <a href="MCItem.html#EMPTY_ICON">EMPTY_ICON</a>, <a href="MCItem.html#EXTERNAL_ICON">EXTERNAL_ICON</a>, <a href="MCItem.html#TAG_ICON">TAG_ICON</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.minecraft.DataListEntry">Fields inherited from class&nbsp;<a href="DataListEntry.html#field-summary" title="class in net.mcreator.minecraft">DataListEntry</a></h3>
 <code><a href="DataListEntry.html#required_apis">required_apis</a></code></div>
@@ -151,15 +152,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSupportedInWorkspace(net.mcreator.workspace.Workspace)" class="member-name-link">isSupportedInWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIcon()" class="member-name-link">getIcon</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSupportedInWorkspace(net.mcreator.workspace.Workspace)" class="member-name-link">isSupportedInWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.minecraft.MCItem">Methods inherited from class&nbsp;<a href="MCItem.html#method-summary" title="class in net.mcreator.minecraft">MCItem</a></h3>
-<code><a href="MCItem.html#getBlockIconBasedOnName(net.mcreator.workspace.Workspace,java.lang.String)" title="getBlockIconBasedOnName(Workspace, String)">getBlockIconBasedOnName</a>, <a href="MCItem.html#getIcon()" title="getIcon()">getIcon</a>, <a href="MCItem.html#hasNoSubtypes()" title="hasNoSubtypes()">hasNoSubtypes</a>, <a href="MCItem.html#isPOI()" title="isPOI()">isPOI</a>, <a href="MCItem.html#setIcon(javax.swing.ImageIcon)" title="setIcon(ImageIcon)">setIcon</a>, <a href="MCItem.html#setSubtypes(boolean)" title="setSubtypes(boolean)">setSubtypes</a></code></div>
+<code><a href="MCItem.html#getBlockIconBasedOnName(net.mcreator.workspace.Workspace,java.lang.String)" title="getBlockIconBasedOnName(Workspace, String)">getBlockIconBasedOnName</a>, <a href="MCItem.html#hasNoSubtypes()" title="hasNoSubtypes()">hasNoSubtypes</a>, <a href="MCItem.html#isPOI()" title="isPOI()">isPOI</a>, <a href="MCItem.html#setIcon(javax.swing.ImageIcon)" title="setIcon(ImageIcon)">setIcon</a>, <a href="MCItem.html#setSubtypes(boolean)" title="setSubtypes(boolean)">setSubtypes</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.minecraft.DataListEntry">Methods inherited from class&nbsp;<a href="DataListEntry.html#method-summary" title="class in net.mcreator.minecraft">DataListEntry</a></h3>
 <code><a href="DataListEntry.html#addSupportedGenerator(net.mcreator.generator.GeneratorConfiguration)" title="addSupportedGenerator(GeneratorConfiguration)">addSupportedGenerator</a>, <a href="DataListEntry.html#equals(java.lang.Object)" title="equals(Object)">equals</a>, <a href="DataListEntry.html#getComparator(net.mcreator.workspace.Workspace,java.util.List)" title="getComparator(Workspace, List)">getComparator</a>, <a href="DataListEntry.html#getDescription()" title="getDescription()">getDescription</a>, <a href="DataListEntry.html#getName()" title="getName()">getName</a>, <a href="DataListEntry.html#getOther()" title="getOther()">getOther</a>, <a href="DataListEntry.html#getRawDescription()" title="getRawDescription()">getRawDescription</a>, <a href="DataListEntry.html#getRawReadableName()" title="getRawReadableName()">getRawReadableName</a>, <a href="DataListEntry.html#getReadableName()" title="getReadableName()">getReadableName</a>, <a href="DataListEntry.html#getRequiredAPIs()" title="getRequiredAPIs()">getRequiredAPIs</a>, <a href="DataListEntry.html#getTexture()" title="getTexture()">getTexture</a>, <a href="DataListEntry.html#getType()" title="getType()">getType</a>, <a href="DataListEntry.html#hashCode()" title="hashCode()">hashCode</a>, <a href="DataListEntry.html#setDescription(java.lang.String)" title="setDescription(String)">setDescription</a>, <a href="DataListEntry.html#setOther(java.lang.Object)" title="setOther(Object)">setOther</a>, <a href="DataListEntry.html#setReadableName(java.lang.String)" title="setReadableName(String)">setReadableName</a>, <a href="DataListEntry.html#setRequiredAPIs(java.util.List)" title="setRequiredAPIs(List)">setRequiredAPIs</a>, <a href="DataListEntry.html#setTexture(java.lang.String)" title="setTexture(String)">setTexture</a>, <a href="DataListEntry.html#setType(java.lang.String)" title="setType(String)">setType</a>, <a href="DataListEntry.html#toString()" title="toString()">toString</a></code></div>
@@ -207,6 +211,18 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="getIcon()">
+<h3>getIcon</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></span>&nbsp;<span class="element-name">getIcon</span>()</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="MCItem.html#getIcon()">getIcon</a></code>&nbsp;in class&nbsp;<code><a href="MCItem.html" title="class in net.mcreator.minecraft">MCItem</a></code></dd>
+</dl>
+</div>
+</section>
+</li>
 <li>
 <section class="detail" id="isSupportedInWorkspace(net.mcreator.workspace.Workspace)">
 <h3>isSupportedInWorkspace</h3>
