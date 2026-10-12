@@ -150,17 +150,11 @@ import java.util.List;
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
 		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 				L10N.t("dialog.animation_maker.preview"), 0, 0, timeline.getFont().deriveFont(12.0f), Color.gray));
+		preview.setIcon(new ImageIcon(ImageUtils.resize(previewIcon.getImage(), 128)));
 
 		JCheckBox colorize = new JCheckBox();
 		JColor colors = new JColor(timeline.getMCreator(), false, true);
 		JCheckBox lockSaturation = new JCheckBox();
-
-		if (colorize.isSelected())
-			preview.setIcon(new ImageIcon(ImageUtils.resize(
-					ImageUtils.colorize(previewIcon, colors.getColor(), !lockSaturation.isSelected()).getImage(),
-					128)));
-		else
-			preview.setIcon(new ImageIcon(ImageUtils.resize(previewIcon.getImage(), 128)));
 
 		ActionListener al = _ -> {
 			if (colorize.isSelected()) {
