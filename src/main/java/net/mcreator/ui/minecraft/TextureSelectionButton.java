@@ -23,7 +23,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -39,7 +38,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TextureSelectionButton extends VButton implements IOptionalValueContainer {
+public class TextureSelectionButton extends VButton implements ITextureContainer {
 
 	@Nullable private Texture selectedTexture = null;
 
@@ -121,17 +120,21 @@ public class TextureSelectionButton extends VButton implements IOptionalValueCon
 		}
 	}
 
-	public void setTexture(@Nullable TextureHolder texture) {
+	@Override public void setTexture(@Nullable TextureHolder texture) {
 		if (texture != null) {
 			setTexture(texture.toTexture(selectorDialog.getTextureType()));
 		}
 	}
 
-	public TextureHolder getTextureHolder() {
+	@Override public TextureHolder getTextureHolder() {
 		return new TextureHolder(selectorDialog.getMCreator().getWorkspace(), selectedTexture);
 	}
 
-	public boolean hasTexture() {
+	@Override public Texture getTexture() {
+		return selectedTexture;
+	}
+
+	@Override public boolean hasTexture() {
 		return selectedTexture != null && !selectedTexture.getTextureName().isEmpty();
 	}
 
@@ -143,10 +146,6 @@ public class TextureSelectionButton extends VButton implements IOptionalValueCon
 		this.uvFlip = uvFlip;
 		repaint();
 		return this;
-	}
-
-	@Override public boolean isEmpty() {
-		return !hasTexture();
 	}
 
 	public TextureSelectionButton requireValue() {
