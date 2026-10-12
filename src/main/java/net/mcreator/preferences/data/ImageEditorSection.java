@@ -21,16 +21,12 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.ColorEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.preferences.entries.StringEntry;
-
-import java.awt.*;
 
 public class ImageEditorSection extends PreferencesSection {
 
 	public final BooleanEntry storeMetadata;
-	public final ColorEntry selectedFramesColor;
 	public final IntegerEntry defaultPercentageTimeline;
 	public final StringEntry selectedFrameAtOpening;
 	public final StringEntry singleFrameDeletionBehaviour;
@@ -40,7 +36,6 @@ public class ImageEditorSection extends PreferencesSection {
 		super(preferencesIdentifier);
 
 		storeMetadata = addEntry(new BooleanEntry("storeMetadata", true));
-		selectedFramesColor = addEntry(new ColorEntry("selectedFramesColor", new Color(75, 85, 197)));
 		defaultPercentageTimeline = addEntry(new IntegerEntry("defaultPercentageTimeline", 24, 0, 50));
 		selectedFrameAtOpening = addEntry(new StringEntry("selectedFrameAtOpening", "First frame", "First frame", "Last frame"));
 		singleFrameDeletionBehaviour = addEntry(new StringEntry("singleFrameDeletionBehaviour", "Empty frame", "Empty frame", "Keep existing frame"));
