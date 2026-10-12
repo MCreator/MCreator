@@ -8,11 +8,10 @@ templates:
     writer: json
     name: "@MODASSETSROOT/items/@registryname.json"
 
-# Dispense behaviors are controlled by generator.yaml
-
 base_types:
   - item
   - entity
+  - dispensebehavior
 
 tags:
   - tag: ENTITIES:minecraft:boat
