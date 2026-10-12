@@ -36,6 +36,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
@@ -126,8 +127,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
 	private final JLabel plantTypeIndicator = new JLabel();
 
-	private static final Model cross = new Model.BuiltInModel("Cross model");
-	private static final Model crop = new Model.BuiltInModel("Crop model");
+	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model crop = new Model.BuiltInModel("Crop model");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = ComponentFromAnnotation.spinner(Plant.class, "growapableMaxHeight");
 
@@ -330,6 +331,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
 				L10N.label("elementgui.common.offset_type")));
+		offsetType.setRenderer(new ItemTexturesComboBoxRenderer());
 		rent.add(offsetType);
 
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));

@@ -27,7 +27,7 @@ import javax.swing.*;
 
 public class ImageEditorCopyAction extends BasicAction {
 	public ImageEditorCopyAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.image_editor.copy"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.image_editor.copy"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getClipboardManager().copy();

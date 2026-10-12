@@ -95,6 +95,7 @@ import java.util.function.Consumer;
 		}
 
 		cache.put(element.getModElement(), element);
+		element.getModElement().invalidateCache(); // stored element may differ from the one caches were built from
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
 				new File(workspace.getFolderManager().getModElementsDir(),
@@ -159,8 +160,8 @@ import java.util.function.Consumer;
 			// Check if mod element type of deserialized GE matches the mod element type of the mod element
 			if (generatableElement.getClass() != element.getType().getModElementStorageClass()) {
 				LOG.warn("Mod element {} is registered as type {} but its definition file deserialized to {}. "
-								+ "Workspace may be corrupted, skipping this element", element.getName(),
-						element.getType(), generatableElement.getClass().getSimpleName());
+								+ "Workspace may be corrupted, skipping this element", element.getName(), element.getType(),
+						generatableElement.getClass().getSimpleName());
 				return null;
 			}
 
@@ -237,9 +238,6 @@ import java.util.function.Consumer;
 					element.getModElement().getName() + ".png");
 			if (modImage != null) {
 				FileIO.writeImageToPNGFile(modImage, modImageFile);
-				Image image = new ImageIcon(modImage).getImage();
-				if (image != null)
-					image.flush();
 			} else if (modImageFile.isFile()) {
 				// If there is no preview image generated, we revert back to default one
 				modImageFile.delete();

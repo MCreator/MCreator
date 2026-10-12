@@ -55,8 +55,8 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-			"Sky", "Fog", "Water fog" }) public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Dry foliage", "Birch foliage", "Spruce foliage",
+			"Default foliage", "Water", "Sky", "Fog", "Water fog" }) public String tintType;
 	public boolean isItemTinted;
 
 	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
@@ -264,6 +264,10 @@ import java.util.stream.Collectors;
 		return maxStackSize != 64 || !rarity.equals("COMMON") || immuneToFire;
 	}
 
+	public boolean hasStrippingResult() {
+		return strippingResult != null && !strippingResult.isEmpty();
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
 
@@ -279,6 +283,12 @@ import java.util.stream.Collectors;
 							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
 				baseTypes.add(
 						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
+		}
+
+		if (hasStrippingResult() &&
+				ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
+						.compareTo(ModuleDescriptor.Version.parse("26.3")) >= 0) {
+			baseTypes.add(BaseType.TRANSFORMABLE);
 		}
 
 		if (hasTileEntity)

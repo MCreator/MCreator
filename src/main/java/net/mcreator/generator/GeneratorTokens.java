@@ -63,6 +63,7 @@ public class GeneratorTokens {
 				.replace("@modid", workspaceSettings.getModID())
 				.replace("@JavaModName", workspaceSettings.getJavaModName())
 				.replace("@modpicture", workspaceSettings.getModPicture() != null ? workspaceSettings.getModPicture() : "")
+				.replace("@modicon", workspaceSettings.getModIcon() != null ? workspaceSettings.getModIcon() : "")
 				.replace("@BASEPACKAGEPATH", workspaceSettings.getModElementsPackage().replace(".", "/"))
 				.replace("@BASEPACKAGE", workspaceSettings.getModElementsPackage());
 		//@formatter:on

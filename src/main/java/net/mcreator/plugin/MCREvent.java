@@ -32,7 +32,20 @@ public abstract class MCREvent {
 	public static <T extends MCREvent> void event(T event) {
 		PluginLoader.INSTANCE.getJavaPlugins()
 				.forEach(javaPlugin -> javaPlugin.getListeners().get(event.getClass()).forEach(listener -> {
-					Future<?> result = javaPlugin.getEventQueue().submit(() -> listener.eventTriggered(event));
+					Future<?> result = javaPlugin.getEventQueue().submit(() -> {
+						try {
+							listener.eventTriggered(event);
+						} catch (LinkageError e) {
+							javaPlugin.getPlugin().loaded_failure =
+									"Runtime error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
+							LOG.error("Plugin {} failed to handle event {}", javaPlugin.getPlugin().getID(),
+									event.getClass().getSimpleName(), e);
+						} catch (Exception e) {
+							LOG.error("Plugin {} failed to handle event {}", javaPlugin.getPlugin().getID(),
+									event.getClass().getSimpleName(), e);
+						}
+					});
+
 					if (event.isSynchronous()) { // Wait for synchronous events to finish
 						try {
 							result.get(event.getTimeout(), TimeUnit.MILLISECONDS);

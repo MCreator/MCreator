@@ -97,7 +97,8 @@ public class GeneratorSelector {
 			"aitasks",
 			"features",
 			"cmdargs",
-			"triggers"
+			"triggers",
+			"enchantmenteffects"
 		));
 		put(GeneratorFlavor.ADDON, List.of(
 			"be_biomes",

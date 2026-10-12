@@ -326,8 +326,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	}
 
 	private ArrayList<TagElement.Entry> entriesForTag(TagElement tagElement) {
-		return workspacePanel.getMCreator().getWorkspace().getTagElements()
-				.getOrDefault(tagElement, new ArrayList<>());
+		return workspacePanel.getMCreator().getWorkspace().getTagElements().getOrDefault(tagElement, new ArrayList<>());
 	}
 
 	@Override public boolean isSupportedInWorkspace() {

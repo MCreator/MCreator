@@ -1,0 +1,1 @@
+Pokud je specifikována podmínka, tlačítko bude viditelné pouze v případě, že podmínky projdou.

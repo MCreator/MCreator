@@ -81,6 +81,10 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 				PanelUtils.join(FlowLayout.LEFT, defValuePane)));
 	}
 
+	@Override protected void entryRemovedByUserHandler() {
+		parent.firePropertyChange("entityDataEntryRemoved", false, true);
+	}
+
 	@Override protected void setEntryEnabled(boolean enabled) {
 		if (defaultValue != null)
 			defaultValue.setEnabled(enabled);
