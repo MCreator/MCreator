@@ -235,7 +235,7 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 		oreBlockBlock.soundOnStep = new StepSound(workspace, "METAL");
 		oreBlockBlock.hardness = 5.0;
 		oreBlockBlock.resistance = 6.0;
-		oreBlockBlock.texture = getOrDefault(textureMap, "ore", workspace, registryName + "_block");
+		oreBlockBlock.texture = getOrDefault(textureMap, "block", workspace, registryName + "_block");
 		oreBlockBlock.destroyTool = "pickaxe";
 		if (factor < 1) {
 			oreBlockBlock.vanillaToolTier = "STONE";

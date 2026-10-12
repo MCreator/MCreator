@@ -212,7 +212,7 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armor.textureBody = getOrDefault(textureMap, "chestplate", workspace, registryName + "_chestplate");
 		armor.textureLeggings = getOrDefault(textureMap, "leggings", workspace, registryName + "_leggings");
 		armor.textureBoots = getOrDefault(textureMap, "boots", workspace, registryName + "_boots");
-		armor.armorTextureFile = getOrDefault(textureMap, "boots", workspace, registryName).getRawTextureName();
+		armor.armorTextureFile = getOrDefault(textureMap, "armor", workspace, registryName).getRawTextureName();
 		armor.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		armor.maxDamage = (int) Math.round(15 * factor);
 		armor.enchantability = (int) Math.round(9 * factor);
