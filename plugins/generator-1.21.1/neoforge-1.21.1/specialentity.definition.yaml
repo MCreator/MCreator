@@ -5,6 +5,7 @@ templates:
 
 base_types:
   - item
+  - enumextension
   - dispensebehavior
 
 global_templates:

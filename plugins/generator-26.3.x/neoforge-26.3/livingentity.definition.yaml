@@ -23,6 +23,8 @@ base_types:
   - entity
   - type: item
     condition: hasSpawnEgg
+  - type: enumextension
+    condition: "mobBehaviourType %= Raider"
 
 global_templates:
   - template: livingentity/monster_room_mobs.json.ftl
