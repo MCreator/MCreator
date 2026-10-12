@@ -39,7 +39,6 @@ public class AnimationSettings extends JPanel {
 		interpolate.setOpaque(false);
 		add(interpolate);
 
-		ComponentUtils.makeSection(this, L10N.t("dialog.animation_maker.settings"));
 	}
 
 	public int getFrameDuration() {

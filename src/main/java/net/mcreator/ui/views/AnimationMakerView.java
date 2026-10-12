@@ -134,7 +134,10 @@ public class AnimationMakerView extends ViewBase {
 
 		animationSettings = new AnimationSettings();
 
-		editor.add("Center", PanelUtils.centerAndEastElement(preview2, PanelUtils.centerInPanel(animationSettings)));
+		JPanel borderedAnimationSettings = PanelUtils.centerInPanel(animationSettings);
+		ComponentUtils.makeSection(borderedAnimationSettings, L10N.t("dialog.animation_maker.settings"));
+
+		editor.add("Center", PanelUtils.centerAndEastElement(preview2, PanelUtils.pullElementUp(borderedAnimationSettings)));
 
 		animator = new Thread(() -> {
 			active = true;
