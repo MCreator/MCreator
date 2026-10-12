@@ -22,7 +22,6 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.validation.ITextureContainer;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.util.image.IconUtils;

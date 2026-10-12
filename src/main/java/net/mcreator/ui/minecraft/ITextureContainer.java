@@ -17,9 +17,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.validation;
+package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.ui.validation.IOptionalValueContainer;
 import net.mcreator.workspace.resources.Texture;
 
 import javax.annotation.Nullable;
