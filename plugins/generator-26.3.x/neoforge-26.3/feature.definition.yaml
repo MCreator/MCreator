@@ -15,6 +15,12 @@ templates:
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
     condition: hasPlacedFeature()
 
+base_types:
+  - type: configuredfeature
+    condition: hasConfiguredFeature()
+  - type: feature
+    condition: hasGenerationConditions()
+
 # Template for custom structure feature
 global_templates:
   - template: feature/structure_feature.java.ftl

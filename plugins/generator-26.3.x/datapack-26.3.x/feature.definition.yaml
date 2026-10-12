@@ -8,4 +8,8 @@ templates:
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
     condition: hasPlacedFeature()
 
+base_types:
+  - type: configuredfeature
+    condition: hasConfiguredFeature()
+
 field_exclusions: [generationStep, restrictionBiomes, generateCondition]
