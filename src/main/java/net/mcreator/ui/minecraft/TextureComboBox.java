@@ -27,10 +27,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.validation.IOptionalValueContainer;
-import net.mcreator.ui.validation.IValidable;
-import net.mcreator.ui.validation.ValidationResult;
-import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.*;
 import net.mcreator.ui.validation.validators.ConditionalValidator;
 import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -47,7 +44,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.function.Supplier;
 
-public class TextureComboBox extends JPanel implements IValidable, IOptionalValueContainer {
+public class TextureComboBox extends JPanel implements IValidable, ITextureContainer {
 
 	private final Texture prototype;
 
@@ -132,7 +129,7 @@ public class TextureComboBox extends JPanel implements IValidable, IOptionalValu
 		}
 	}
 
-	public void setTexture(@Nullable TextureHolder textureHolder) {
+	@Override public void setTexture(@Nullable TextureHolder textureHolder) {
 		if (textureHolder != null) {
 			setTextureFromTextureName(textureHolder.getRawTextureName());
 		}
@@ -145,15 +142,15 @@ public class TextureComboBox extends JPanel implements IValidable, IOptionalValu
 		return selected.getTextureName() + (addPNGExtension ? ".png" : "");
 	}
 
-	public TextureHolder getTextureHolder() {
+	@Override public TextureHolder getTextureHolder() {
 		return new TextureHolder(mcreator.getWorkspace(), getTextureName());
 	}
 
-	public boolean hasTexture() {
+	@Override public boolean hasTexture() {
 		return getTexture() != null && !getTexture().equals(empty);
 	}
 
-	public Texture getTexture() {
+	@Override public Texture getTexture() {
 		return comboBox.getSelectedItem();
 	}
 
@@ -175,10 +172,6 @@ public class TextureComboBox extends JPanel implements IValidable, IOptionalValu
 
 	public void setAddPNGExtension(boolean addPNGExtension) {
 		this.addPNGExtension = addPNGExtension;
-	}
-
-	@Override public boolean isEmpty() {
-		return !hasTexture();
 	}
 
 	private class Renderer extends JLabel implements ListCellRenderer<Texture> {
