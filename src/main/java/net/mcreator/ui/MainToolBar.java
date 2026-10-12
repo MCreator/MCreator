@@ -43,7 +43,7 @@ public abstract class MainToolBar extends JToolBar {
 		pluginToolbarRight.setMargin(new Insets(0, 0, 0, 0));
 		pluginToolbarRight.setFloatable(false);
 
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(2, 4));
 
 		assembleLeftSection(mcreator);
 
@@ -57,7 +57,7 @@ public abstract class MainToolBar extends JToolBar {
 
 		assembleRightSection(mcreator);
 
-		add(new JEmptyBox(4, 4));
+		add(new JEmptyBox(5, 4));
 	}
 
 	protected abstract void assembleLeftSection(MCreator mcreator);

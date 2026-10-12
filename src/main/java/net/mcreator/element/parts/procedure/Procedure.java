@@ -51,6 +51,14 @@ import java.util.List;
 		return name;
 	}
 
+	/**
+	 * @return true if the given procedure reference is defined and points to a (procedure) mod element that exists in the workspace
+	 */
+	public static boolean hasProcedure(@Nullable Procedure procedure, Workspace workspace) {
+		return procedure != null && procedure.name != null && !procedure.name.isEmpty() && !"null".equals(
+				procedure.name) && workspace.containsModElement(procedure.name);
+	}
+
 	public List<Dependency> getDependencies(Workspace workspace) {
 		ModElement modElement = workspace.getModElementByName(name);
 		if (modElement != null) {

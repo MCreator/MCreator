@@ -120,7 +120,13 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		// reload ME icon
 		reloadElementIcon();
 
-		// revalidate MCItems cache so it is reloaded on next request
+		invalidateCache();
+	}
+
+	/**
+	 * Invalidates caches derived from the generatable element so they are reloaded on next request
+	 */
+	public void invalidateCache() {
 		mcItems = null;
 	}
 

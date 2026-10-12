@@ -22,12 +22,22 @@ import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.IconUtils;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Function;
 
 public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRenderer<String> {
 
+	@Nullable private final Function<String, String> textMapper;
+
 	public ItemTexturesComboBoxRenderer() {
+		this(null);
+	}
+
+	public ItemTexturesComboBoxRenderer(@Nullable Function<String, String> textMapper) {
+		this.textMapper = textMapper;
+
 		setOpaque(true);
 		setHorizontalAlignment(CENTER);
 		setVerticalAlignment(CENTER);
@@ -45,7 +55,10 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 			setForeground(list.getForeground());
 		}
 
-		setText(value);
+		if (textMapper != null)
+			setText(textMapper.apply(value));
+		else
+			setText(value);
 
 		if (value.equals("Special") || value.equals("MultiTool")) {
 			setIcon(IconUtils.resize(UIRES.get("mod"), 30, 30));

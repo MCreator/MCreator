@@ -133,7 +133,8 @@ public class CreateArmorTextureTool extends MCreatorMcpTool<CreateArmorTextureTo
 			response.put("template", template);
 			response.put("armorLayerTextures", List.of(armorLayers[0].getName(), armorLayers[1].getName()));
 			response.put("itemTextures",
-					List.of(fixedName + "_head", fixedName + "_body", fixedName + "_leggings", fixedName + "_boots"));
+					List.of(fixedName + "_helmet", fixedName + "_chestplate", fixedName + "_leggings",
+							fixedName + "_boots"));
 			return ToolResult.object(response);
 		} catch (Exception e) {
 			return ToolResult.error("Failed to create armor texture: " + e.getMessage(), e);
