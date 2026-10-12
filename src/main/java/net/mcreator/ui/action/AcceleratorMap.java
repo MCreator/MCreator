@@ -50,6 +50,8 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.buildGradleOnly, KeyStroke.getKeyStroke(KeyEvent.VK_B,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK));
+		actionKeyStrokeMap.put(actionRegistry.regenerateCode, KeyStroke.getKeyStroke(KeyEvent.VK_B,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.ALT_DOWN_MASK));
 		actionKeyStrokeMap.put(actionRegistry.runServer, KeyStroke.getKeyStroke(KeyEvent.VK_S,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.ALT_DOWN_MASK));
 		actionKeyStrokeMap.put(actionRegistry.runClient, KeyStroke.getKeyStroke(KeyEvent.VK_C,
