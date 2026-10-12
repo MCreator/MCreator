@@ -34,6 +34,7 @@ import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.views.editor.image.animation.AnimationSettings;
 import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.GifUtil;
@@ -67,7 +68,6 @@ public class AnimationMakerView extends ViewBase {
 
 	private final DefaultListModel<AnimationMakerView.AnimationFrame> timelinevector = new DefaultListModel<>();
 	private final JList<AnimationMakerView.AnimationFrame> timeline = new JList<>(timelinevector);
-	private final JSpinner bd1 = new JSpinner(new SpinnerNumberModel(2, 1, 10000, 1));
 
 	private int animindex = 0;
 	private boolean playanim = true;
@@ -77,7 +77,7 @@ public class AnimationMakerView extends ViewBase {
 	private int width = 16;
 	private boolean active;
 
-	private final JCheckBox interpolate = new JCheckBox();
+	private final AnimationSettings animationSettings;
 
 	private int zoom = 400;
 
@@ -132,19 +132,9 @@ public class AnimationMakerView extends ViewBase {
 		preview2.setOpaque(false);
 		preview2.add(prvmg);
 
-		interpolate.setOpaque(false);
+		animationSettings = new AnimationSettings();
 
-		JPanel settings = new JPanel(new GridLayout(2, 2, 15, 20));
-		settings.setOpaque(false);
-		settings.add(L10N.label("dialog.animation_maker.frame_duration"));
-		settings.add(bd1);
-		settings.add(L10N.label("dialog.animation_maker.interpolate_frame"));
-		settings.add(interpolate);
-
-		JComponent stp = PanelUtils.centerInPanel(settings);
-		ComponentUtils.makeSection(stp, L10N.t("dialog.animation_maker.settings"));
-
-		editor.add("Center", PanelUtils.centerAndEastElement(preview2, stp));
+		editor.add("Center", PanelUtils.centerAndEastElement(preview2, PanelUtils.centerInPanel(animationSettings)));
 
 		animator = new Thread(() -> {
 			active = true;
@@ -162,7 +152,7 @@ public class AnimationMakerView extends ViewBase {
 
 				try {
 					//noinspection BusyWait
-					Thread.sleep(((Integer) bd1.getValue()) * (50L));
+					Thread.sleep(animationSettings.getFrameDuration() * (50L));
 				} catch (InterruptedException ignored) {
 				}
 			}
@@ -378,8 +368,8 @@ public class AnimationMakerView extends ViewBase {
 					};
 				}
 				Image image = makeAnimationIcon(timelinevector.getSize(), timelinevector, sizetwocubes).getImage();
-				String mcmetacode = generateAnimationMcmeta((Integer) bd1.getValue(), timelinevector.size(),
-						interpolate.isSelected());
+				String mcmetacode = generateAnimationMcmeta(animationSettings.getFrameDuration(), timelinevector.size(),
+						animationSettings.doesInterpolate());
 				FileIO.writeStringToFile(mcmetacode, new File(exportFile.getAbsolutePath() + ".mcmeta"));
 				FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
 			}
