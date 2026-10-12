@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.generator.io.JSWriter;
@@ -450,11 +449,8 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		List<?> baseTypes = map != null ? (List<?>) map.get("base_types") : null;
-		// TODO: temporary solution for base types, remove ICommonType once all mod elements are migrated to yaml
-		if (baseTypes == null) // definition does not declare base types, fall back to the element itself
-			return generatableElement instanceof ICommonType commonType ?
-					commonType.getBaseTypesProvided() :
-					Collections.emptyList();
+		if (baseTypes == null) // definition does not declare base types
+			return Collections.emptyList();
 
 		Set<BaseType> retval = new LinkedHashSet<>();
 		for (Object baseType : baseTypes) {
