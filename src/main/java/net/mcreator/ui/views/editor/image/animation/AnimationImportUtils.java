@@ -76,7 +76,7 @@ import java.util.List;
 										width).getIcon(1, 1), colors.getColor(), !lockSaturation.isSelected()).getImage(),
 						128)));
 			} catch (InvalidTileSizeException | IOException e) {
-				LOG.error("Impossible to process the animation template", e);
+				LOG.error("An error occurred while processing the animation template", e);
 			}
 		};
 
@@ -108,7 +108,7 @@ import java.util.List;
 								!lockSaturation.isSelected()).getImage());
 				timeline.generateTimelineFromBufferedImage(finalImage);
 			} catch (IOException e) {
-				LOG.error("Impossible to process the animation template", e);
+				LOG.error("Impossible to generate the timeline from the selected animation template", e);
 			}
 		}
 	}
@@ -135,7 +135,7 @@ import java.util.List;
 									new TiledImageUtils(image, x, x).getIcon(1, 1), file.getName());
 						}
 					} catch (InvalidTileSizeException | IOException e) {
-						LOG.error("Impossible to process the animation template", e);
+						LOG.error("Impossible to process imported images", e);
 					}
 				}
 			}

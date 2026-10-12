@@ -59,7 +59,6 @@ public class AnimationMakerView extends ViewBase {
 
 	private final Thread animator;
 
-	private int width = 16;
 	private boolean active;
 
 	private final JCheckBox interpolate = new JCheckBox();
