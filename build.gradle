@@ -114,7 +114,7 @@ dependencies {
 
     // from maven
     implementation "commons-io:commons-io:2.22.0"
-    implementation "org.apache.commons:commons-lang3:3.20.0"
+    implementation "org.apache.commons:commons-lang3:3.21.0"
     implementation "org.apache.commons:commons-text:1.15.0"
     implementation "org.apache.logging.log4j:log4j-core:2.26.1"
     implementation "org.freemarker:freemarker:2.3.35"
@@ -124,7 +124,7 @@ dependencies {
     implementation "com.github.sps.junidecode:junidecode:0.3"
     implementation "org.jboss.forge.roaster:roaster-api:2.31.1.Final"
     implementation "org.jboss.forge.roaster:roaster-jdt:2.31.1.Final"
-    implementation "org.snakeyaml:snakeyaml-engine:3.1.1"
+    implementation "org.snakeyaml:snakeyaml-engine:3.2"
     implementation "org.reflections:reflections:0.10.2"
     implementation "com.google.guava:guava:33.7.1-jre"
     implementation "de.javagl:obj:0.4.0"
