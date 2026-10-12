@@ -265,8 +265,12 @@ public class ${getClassName()}Block extends ${getBlockClass(data.blockBase)}
 					<#list state.stateMap.keySet() as property>
 						<#assign value = state.stateMap.get(property)>
 						<#if property.getClass().getSimpleName().equals("StringType")>
-							<#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
-						</#if>
+                             <#if property.getName().startsWith("CUSTOM:")>
+                                <#assign value = StringUtils.snakeToCamel(property.getName().replace("CUSTOM:", "")) + "Property." + value?upper_case>
+                             <#else>
+                                <#assign value = generator.map(property.getName(), "blockstateproperties", 2) + "." + value?upper_case>
+                             </#if>
+                         </#if>
 					state.getValue(${property.getName().replace("CUSTOM:", "")?upper_case}) == ${value}<#sep>&&
 					</#list>
 				<#else>true</#if>
