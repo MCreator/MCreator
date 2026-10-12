@@ -40,6 +40,9 @@ public class TemplateExpressionParser {
 
 	public static boolean shouldSkipTemplateBasedOnCondition(@Nonnull Generator generator, @Nonnull Map<?, ?> template,
 			@Nullable Object conditionDataProvider) {
+		if (conditionDataProvider == null) // if no conditionDataProvider element is found, there is nothing to do
+			return false;
+
 		Operator operator = Operator.AND;
 		Object conditionRaw = template.get("condition");
 		if (conditionRaw == null) {
@@ -48,9 +51,6 @@ public class TemplateExpressionParser {
 		}
 
 		if (conditionRaw == null) // we check for condition value if present
-			return false;
-
-		if (conditionDataProvider == null) // if no conditionDataProvider element is found, there is nothing to do
 			return false;
 
 		// get list of all conditions that need to be met for template to be included

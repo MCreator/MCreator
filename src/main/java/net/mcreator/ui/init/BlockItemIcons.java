@@ -82,7 +82,7 @@ public class BlockItemIcons {
 		put("Fishing rod",			"FISHING_ROD");
 
 		//Tool tiers
-		put("NONE", 				"BARRIER");
+		// put("NONE", 				"BARRIER");
 		put("WOOD", 				"OAK_WOOD");
 		put("STONE", 				"STONE#0");
 		put("IRON", 				"IRON_INGOT");
@@ -124,6 +124,7 @@ public class BlockItemIcons {
 		put("Normal world gen", 	"GRASS");
 		put("Nether like gen", 		"NETHERRACK");
 		put("End like gen", 		"END_STONE");
+		put("Void gen", 			"VOID_AIR");
 
 		//NewStructureGenGUI
 		put("Surface", 				"GRASS");
@@ -138,8 +139,21 @@ public class BlockItemIcons {
 		put("none",					"BARRIER");
 		put("spear",				"ARROW");
 
+		// Random model offset type
+		// put("NONE", 				"BARRIER");
+		put("XZ", 					"RED_FLOWER#0");
+		put("XYZ", 					"TALLGRASS#2");
+
+		// Push reaction
+		put("NORMAL", 				"STONE#0");
+		put("DESTROY", 				"SAPLING#0");
+		put("BLOCK", 				"ANVIL");
+		put("IGNORE", 				"ARMOR_STAND");
+		put("PUSH_ONLY", 			"WHITE_GLAZED_TERRACOTTA");
+
 		//Other
 		put("Not specified", 		"BLANK");
+		put("NONE", 				"BARRIER");
 	}};
 	//@formatter:on
 

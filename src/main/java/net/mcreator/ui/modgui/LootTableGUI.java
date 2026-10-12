@@ -30,8 +30,8 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
 import net.mcreator.ui.minecraft.loottable.LootTablePreview;
-import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -53,7 +53,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 
 	private final JComboBox<String> namespace = ComponentFromAnnotation.options(NamespacedGeneratableElement.class,
 			"namespace");
-  
+
 	private final VComboBox<String> name = new VComboBox<>();
 
 	private final JComboBox<String> type = ComponentFromAnnotation.options(LootTable.class, "type");
@@ -128,8 +128,9 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 			});
 		}
 
-		lootTableToModify.setValidator(new ResourceLocationValidator(L10N.t("modelement.loottable"),
-				lootTableToModify, true).setAllowEmpty(true));
+		lootTableToModify.setValidator(
+				new ResourceLocationValidator(L10N.t("modelement.loottable"), lootTableToModify, true).setAllowEmpty(
+						true));
 		lootTableToModify.enableRealtimeValidation();
 		lootTableToModify.setPreferredSize(new Dimension(350, 0));
 		page1group.addValidationElement(lootTableToModify);

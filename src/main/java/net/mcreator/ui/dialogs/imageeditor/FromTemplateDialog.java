@@ -39,6 +39,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -46,7 +47,6 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-import java.util.Timer;
 import java.util.stream.Collectors;
 
 public class FromTemplateDialog extends MCreatorDialog {
@@ -130,37 +130,37 @@ public class FromTemplateDialog extends MCreatorDialog {
 		JButton bt3 = new JButton("...");
 		JButton bt4 = new JButton("...");
 
-		ang1.addChangeListener(event -> refreshIcon());
-		ang2.addChangeListener(event -> refreshIcon());
-		ang3.addChangeListener(event -> refreshIcon());
+		ang1.addChangeListener(_ -> refreshIcon());
+		ang2.addChangeListener(_ -> refreshIcon());
+		ang3.addChangeListener(_ -> refreshIcon());
 
-		bt.addActionListener(event -> is.setVisible(true));
-		is.naprej.addActionListener(arg01 -> {
+		bt.addActionListener(_ -> is.setVisible(true));
+		is.naprej.addActionListener(_ -> {
 			is.dispose();
 			cbs.setSelectedItem(is.list.getSelectedValue());
 		});
 
-		bt2.addActionListener(event -> is2.setVisible(true));
-		is2.naprej.addActionListener(arg01 -> {
+		bt2.addActionListener(_ -> is2.setVisible(true));
+		is2.naprej.addActionListener(_ -> {
 			is2.dispose();
 			cbs2.setSelectedItem(is2.list.getSelectedValue());
 		});
 
-		bt3.addActionListener(event -> is3.setVisible(true));
-		is3.naprej.addActionListener(arg01 -> {
+		bt3.addActionListener(_ -> is3.setVisible(true));
+		is3.naprej.addActionListener(_ -> {
 			is3.dispose();
 			cbs3.setSelectedItem(is3.list.getSelectedValue());
 		});
 
-		bt4.addActionListener(event -> is4.setVisible(true));
-		is4.naprej.addActionListener(arg01 -> {
+		bt4.addActionListener(_ -> is4.setVisible(true));
+		is4.naprej.addActionListener(_ -> {
 			is4.dispose();
 			cbs4.setSelectedItem(is4.list.getSelectedValue());
 		});
 
-		type1.addActionListener(event -> refreshIcon());
-		type2.addActionListener(event -> refreshIcon());
-		type3.addActionListener(event -> refreshIcon());
+		type1.addActionListener(_ -> refreshIcon());
+		type2.addActionListener(_ -> refreshIcon());
+		type3.addActionListener(_ -> refreshIcon());
 
 		JPanel pas = new JPanel(new GridLayout(4, 1, 5, 2));
 		pas.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("dialog.imageeditor.template_layer_one"),
@@ -175,14 +175,14 @@ public class FromTemplateDialog extends MCreatorDialog {
 				PanelUtils.centerAndEastElement(cbs4, bt4, 2, 0), col4, type3,
 				L10N.label("dialog.imageeditor.template_rotation"), ang3));
 
-		col1.addColorSelectedListener(event -> refreshIcon());
-		col2.addColorSelectedListener(event -> refreshIcon());
-		col4.addColorSelectedListener(event -> refreshIcon());
+		col1.addColorSelectedListener(_ -> refreshIcon());
+		col2.addColorSelectedListener(_ -> refreshIcon());
+		col4.addColorSelectedListener(_ -> refreshIcon());
 
-		cbs.addActionListener(event -> refreshIcon());
-		cbs2.addActionListener(event -> refreshIcon());
-		cbs3.addActionListener(event -> refreshIcon());
-		cbs4.addActionListener(event -> refreshIcon());
+		cbs.addActionListener(_ -> refreshIcon());
+		cbs2.addActionListener(_ -> refreshIcon());
+		cbs3.addActionListener(_ -> refreshIcon());
+		cbs4.addActionListener(_ -> refreshIcon());
 
 		editp.add("South", PanelUtils.centerInPanel(pas));
 
@@ -199,26 +199,21 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		settings.add(editp, BorderLayout.CENTER);
 
-		Timer timer = new java.util.Timer();
-		final TimerTask[] task = new TimerTask[1];
+		Timer randomizeTimer = new Timer(250, _ -> {
+			if (templateSelector.getSelectedItem() != null)
+				generateFromTemplate((String) templateSelector.getSelectedItem());
+			else
+				generateFromTemplate("Random");
+		});
+		randomizeTimer.setInitialDelay(0);
 
 		randomize.addMouseListener(new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent mouseEvent) {
-				super.mousePressed(mouseEvent);
-				task[0] = new TimerTask() {
-					@Override public void run() {
-						if (templateSelector.getSelectedItem() != null)
-							generateFromTemplate((String) templateSelector.getSelectedItem());
-						else
-							generateFromTemplate("Random");
-					}
-				};
-				timer.scheduleAtFixedRate(task[0], 0, 250);
+				randomizeTimer.start();
 			}
 
 			@Override public void mouseReleased(MouseEvent mouseEvent) {
-				super.mouseReleased(mouseEvent);
-				task[0].cancel();
+				randomizeTimer.stop();
 			}
 		});
 
@@ -230,9 +225,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		getRootPane().setDefaultButton(ok);
 
-		cancel.addActionListener(e -> dispose());
+		cancel.addActionListener(_ -> dispose());
 
-		merge.addActionListener(e -> {
+		merge.addActionListener(_ -> {
 			Layer first = new Layer(16, 16, 0, 0, L10N.t("dialog.imageeditor.template_merged_layer"),
 					refreshIcon().getImage());
 			canvas.add(first);

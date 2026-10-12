@@ -35,7 +35,7 @@ import java.io.IOException;
 public class ClearAllGradleCachesAction extends GradleAction {
 
 	public ClearAllGradleCachesAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.gradle.clear_caches"), evt -> {
+		super(actionRegistry, L10N.t("action.gradle.clear_caches"), _ -> {
 			Object[] options = { L10N.t("action.gradle.clear_caches.option.gradle_caches"),
 					L10N.t("action.gradle.clear_caches.option.gradle_folder"),
 					UIManager.getString("OptionPane.cancelButtonText") };
@@ -63,19 +63,25 @@ public class ClearAllGradleCachesAction extends GradleAction {
 				p1.markStateWarning();
 			}
 
+			// Close Gradle connections of all open workspaces so Gradle Tooling API releases the loaded Gradle
+			// distribution and no files in the Gradle home stay locked by MCreator itself. Connections are
+			// reopened automatically by the next Gradle task.
+			for (MCreator m : mcreator.getApplication().getOpenMCreators())
+				m.getGenerator().closeGradleProjectConnection();
+
 			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.cache_cleanup.progress.clearing_gradle_caches_folder"));
 			progressDialog.addProgressUnit(p2);
 
 			try {
-				Thread.sleep(2000); // make sure all files are released
+				Thread.sleep(5000); // make sure all files are released
 			} catch (InterruptedException ignored) {
 			}
 
 			if (entireGradleFolder)
-				FileIO.deleteDir(UserFolderManager.getGradleHome());
+				FileIO.deleteDirBestEffort(UserFolderManager.getGradleHome());
 			else
-				FileIO.deleteDir(new File(UserFolderManager.getGradleHome(), "caches"));
+				FileIO.deleteDirBestEffort(new File(UserFolderManager.getGradleHome(), "caches"));
 
 			p2.markStateOk();
 

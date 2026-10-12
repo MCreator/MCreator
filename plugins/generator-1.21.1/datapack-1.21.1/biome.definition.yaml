@@ -75,7 +75,7 @@ tags:
   - tag: BIOMES:minecraft:has_structure/ruined_portal_nether
     condition: "spawnRuinedPortal %= NETHER"
 
-field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
+field_exclusions: [name, dryFoliageColor, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
 
 localizationkeys:
   - key: biome.@modid.@registryname

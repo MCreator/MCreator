@@ -1,0 +1,1 @@
+Dieser Parameter steuert die Farbe des trockenen Blattweks (z.B. Laubhaufen) in diesem Biom.
