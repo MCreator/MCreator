@@ -97,9 +97,8 @@ import java.util.List;
 		centerPanel.add(L10N.label("dialog.animation_maker.saturation_lightness_lock"));
 		centerPanel.add(lockSaturation);
 
-		if (JOptionPane.showOptionDialog(timeline, panel,
-				L10N.t("dialog.animation_maker.add_frames_from_template"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null,
+		if (JOptionPane.showOptionDialog(timeline, panel, L10N.t("dialog.animation_maker.add_frames_from_template"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
 				new String[] { L10N.t("common.add"), UIManager.getString("OptionPane.cancelButtonText") },
 				L10N.t("common.add")) == 0) {
 			try {
@@ -115,8 +114,7 @@ import java.util.List;
 	}
 
 	public static void importImagesAsFrames(AnimationMakerView timeline) {
-		File[] files = FileDialogs.getMultiOpenDialog(timeline.getMCreator(),
-				new String[] { ".png", ".gif" });
+		File[] files = FileDialogs.getMultiOpenDialog(timeline.getMCreator(), new String[] { ".png", ".gif" });
 
 		if (files == null)
 			return;
@@ -133,8 +131,8 @@ import java.util.List;
 							timeline.addFrameToTimeline(new AnimationMakerView.AnimationFrame(image));
 						} else { // This is a strip texture, so we offer the user to colorize the strip before importing it
 							int x = Math.min(image.getHeight(), image.getWidth());
-							colorizeImportedFramesDialog(timeline, image, new TiledImageUtils(image, x, x).getIcon(1, 1),
-									file.getName());
+							colorizeImportedFramesDialog(timeline, image,
+									new TiledImageUtils(image, x, x).getIcon(1, 1), file.getName());
 						}
 					} catch (InvalidTileSizeException | IOException e) {
 						LOG.error("Impossible to process the animation template", e);
@@ -150,9 +148,8 @@ import java.util.List;
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
-		preview.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), L10N.t("dialog.animation_maker.preview"), 0, 0,
-						timeline.getFont().deriveFont(12.0f), Color.gray));
+		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+				L10N.t("dialog.animation_maker.preview"), 0, 0, timeline.getFont().deriveFont(12.0f), Color.gray));
 
 		JCheckBox colorize = new JCheckBox();
 		JColor colors = new JColor(timeline.getMCreator(), false, true);
@@ -236,9 +233,8 @@ import java.util.List;
 						p1.markStateError();
 						dial.hideDialog();
 
-						JOptionPane.showMessageDialog(timeline,
-								L10N.t("dialog.animation_maker.gif_format_unsupported"), L10N.t("common.warning"),
-								JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(timeline, L10N.t("dialog.animation_maker.gif_format_unsupported"),
+								L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
 
 						return;
 					}
