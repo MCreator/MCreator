@@ -15,6 +15,10 @@ templates:
     name: "@SRCROOT/feature_rules/@modid_@registryname_ore_feature_rule.json"
     condition: generateFeature
 
+base_types:
+  - block
+  - item
+
 localizationkeys:
   - key: tile.@modid:@registryname.name
     mapto: name
