@@ -24,7 +24,7 @@ import net.mcreator.element.BaseType;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public interface IBlock extends IItem, ICommonType {
+@SuppressWarnings("unused") public interface IBlock extends IMCItemProvider, ICommonType {
 
 	@Override default Collection<BaseType> getBaseTypesProvided() {
 		return List.of(BaseType.BLOCK, BaseType.ITEM);
