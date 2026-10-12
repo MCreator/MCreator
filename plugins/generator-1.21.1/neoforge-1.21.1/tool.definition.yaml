@@ -24,6 +24,9 @@ templates:
     condition: "toolType %= Shield"
     name: "@MODASSETSROOT/models/item/@registryname_0.json"
 
+base_types:
+  - item
+
 tags:
   - tag: ITEMS:minecraft:pickaxes
     condition_any:

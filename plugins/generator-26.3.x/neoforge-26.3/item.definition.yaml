@@ -43,6 +43,9 @@ templates:
     writer: json
     name: "@MODASSETSROOT/items/@registryname.json"
 
+base_types:
+  - item
+
 global_templates:
   - template: item/overrides_model.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/item/LegacyOverrideSelectItemModel.java"
