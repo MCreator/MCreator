@@ -236,8 +236,12 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 * Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe
 	 */
 	@Nonnull public synchronized List<MCItem> getMCItems() {
+		return getMCItems(this.getGeneratableElement());
+	}
+
+	@Nonnull public List<MCItem> getMCItems(GeneratableElement generatableElement) {
 		if (mcItems == null) {
-			mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
+			mcItems = generatableElement instanceof IMCItemProvider provider ?
 					provider.providedMCItems() :
 					Collections.emptyList();
 		}
@@ -284,8 +288,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 * Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe
 	 */
 	public synchronized Collection<BaseType> getBaseTypesProvided() {
+		return getBaseTypesProvided(this.getGeneratableElement());
+	}
+
+	public Collection<BaseType> getBaseTypesProvided(GeneratableElement generatableElement) {
 		if (baseTypes == null) {
-			GeneratableElement generatableElement = this.getGeneratableElement();
 			baseTypes = generatableElement != null ?
 					getGenerator().getBaseTypesProvided(generatableElement) :
 					Collections.emptyList();

@@ -374,7 +374,7 @@ public class Generator implements IGenerator, Closeable {
 		// Check used base types and generate their templates
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new LinkedHashMap<>();
 		for (GeneratableElement generatableElement : generatableElements) {
-			for (BaseType baseType : getBaseTypesProvided(generatableElement)) {
+			for (BaseType baseType : generatableElement.getModElement().getBaseTypesProvided(generatableElement)) {
 				baseTypeListMap.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
 			}
 		}
@@ -444,6 +444,9 @@ public class Generator implements IGenerator, Closeable {
 		return new ArrayList<>(files);
 	}
 
+	/**
+	 * Result of this method is not cached. For performance reasons, use @see {@link ModElement#getBaseTypesProvided()} instead if possible
+	 */
 	public Collection<BaseType> getBaseTypesProvided(GeneratableElement generatableElement) {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
