@@ -375,6 +375,10 @@ public class Canvas extends ArrayListListModel<Layer> {
 		imageMakerView.getCanvasRenderer().repaint();
 	}
 
+	public void setAsDisplayedCanvas() {
+		imageMakerView.setDisplayedCanvas(this);
+	}
+
 	public ImageMakerView getImageMakerView() {
 		return imageMakerView;
 	}

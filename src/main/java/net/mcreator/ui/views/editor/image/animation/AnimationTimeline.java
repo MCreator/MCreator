@@ -262,7 +262,7 @@ public class AnimationTimeline extends JPanel {
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		timeline.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		timeline.setVisibleRowCount(1);
-		timeline.setCellRenderer(new TimelineRenderer(this));
+		timeline.setCellRenderer(new TimelineRenderer(() -> animindex));
 
 		JScrollPane pan = new JScrollPane(timeline);
 		pan.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
