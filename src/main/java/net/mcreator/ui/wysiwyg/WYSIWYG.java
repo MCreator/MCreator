@@ -354,7 +354,6 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 					wysiwygEditor.editCurrentlySelectedComponent();
 				} else {
 					wysiwygEditor.list.setSelectedValue(component, true);
-					wysiwygEditor.list.requestFocus();
 				}
 			} else {
 				wysiwygEditor.list.clearSelection();

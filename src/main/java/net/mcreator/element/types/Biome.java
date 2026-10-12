@@ -49,6 +49,7 @@ import java.util.List;
 	@Nullable public Color fogColor;
 	@Nullable public Color grassColor;
 	@Nullable public Color foliageColor;
+	@Nullable public Color dryFoliageColor;
 	@Nullable public Color waterColor;
 	@Nullable public Color waterFogColor;
 

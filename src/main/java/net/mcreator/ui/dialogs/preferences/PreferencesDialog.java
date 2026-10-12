@@ -38,7 +38,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
@@ -54,6 +56,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	private final CardLayout preferencesLayout = new CardLayout();
 
 	private final Map<PreferencesEntry<?>, JComponent> entries = new HashMap<>();
+	private final List<Runnable> pageSavers = new ArrayList<>();
 
 	private final JButton apply = L10N.button("action.common.apply");
 
@@ -195,6 +198,25 @@ public class PreferencesDialog extends MCreatorDialog {
 		sectionsModel.reload();
 	}
 
+	/**
+	 * <p>Adds a custom page to this dialog, shown when the section with the given name is selected. Pages added
+	 * this way store their own values, e.g. in {@link PreferencesEntry} instances of a hidden
+	 * {@link net.mcreator.preferences.PreferencesSection}, and call {@link #markChanged()} when the user changes
+	 * something.</p>
+	 *
+	 * <p>Java plugins can add pages from {@link PreferencesDialogEvent.SectionsLoaded}. The page can be opened
+	 * directly by passing its name as the selected tab to {@link #PreferencesDialog(Window, String)}.</p>
+	 *
+	 * @param name   Name of the section shown in the list of sections, also used to identify the page
+	 * @param page   Component shown when the section is selected
+	 * @param onSave Called when preferences are saved, before they are written to the preferences file
+	 */
+	public void addPage(String name, JComponent page, Runnable onSave) {
+		addSection(name);
+		preferences.add(page, name);
+		pageSavers.add(onSave);
+	}
+
 	void addTemplateSection(String name) {
 		templatesNode.add(new DefaultMutableTreeNode(name));
 		sectionsModel.reload();
@@ -255,6 +277,7 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void savePreferences() {
+		pageSavers.forEach(Runnable::run);
 		PreferencesManager.getPreferencesRegistry().forEach((_, preferences) -> preferences.forEach(entry -> {
 			if (entries.containsKey(entry))
 				entry.setValueFromComponent(entries.get(entry));

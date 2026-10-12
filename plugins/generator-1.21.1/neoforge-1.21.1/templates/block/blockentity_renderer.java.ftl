@@ -45,7 +45,7 @@ package ${package}.client.renderer.block;
 
 	<#if data.animations?has_content>
 	private void updateRenderState(${name}BlockEntity blockEntity) {
-		int tickCount = (int) blockEntity.getLevel().getGameTime();
+		int tickCount = blockEntity.getTickCount();
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
 				blockEntity.animationState${animation?index}.animateWhen(<@procedureCode animation.condition, {
@@ -102,7 +102,7 @@ package ${package}.client.renderer.block;
 		</#if>
 		poseStack.translate(0, -1, 0);
 		VertexConsumer builder = renderer.getBuffer(RenderType.entityCutout(texture));
-		model.setupBlockEntityAnim(blockEntity, blockEntity.getLevel().getGameTime() + partialTick);
+		model.setupBlockEntityAnim(blockEntity, blockEntity.getTickCount() + partialTick);
 		model.renderToBuffer(poseStack, builder, light, overlayLight);
 		poseStack.popPose();
 		</@javacompress>

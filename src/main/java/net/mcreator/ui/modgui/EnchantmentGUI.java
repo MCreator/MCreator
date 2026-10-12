@@ -73,7 +73,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 	private final JSpinner weight = ComponentFromAnnotation.spinner(Enchantment.class, "weight");
 	private final JSpinner anvilCost = ComponentFromAnnotation.spinner(Enchantment.class, "anvilCost");
 
-	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
+	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator,
+			ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
 
 	private final JSpinner maxLevel = ComponentFromAnnotation.spinner(Enchantment.class, "maxLevel");
 
@@ -202,8 +203,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(_ -> new Thread(() -> regenerateBlockAssemblies(true),
-					"EnchantmentEffectsRegenerate").start());
+			blocklyPanel.addChangeListener(
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "EnchantmentEffectsRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(Enchantment.XML_BASE);

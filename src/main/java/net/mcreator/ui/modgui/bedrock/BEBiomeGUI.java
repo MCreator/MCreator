@@ -246,8 +246,8 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 		effectsPane.add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.westAndEastElement(sounds, PanelUtils.pullElementUp(particles))));
 
-		biomeReplacements.setValidator(new NonEmptyValidator(biomeReplacements,
-				L10N.t("elementgui.bebiome.error_must_have_replacement")));
+		biomeReplacements.setValidator(
+				new NonEmptyValidator(biomeReplacements, L10N.t("elementgui.bebiome.error_must_have_replacement")));
 
 		page2group.addValidationElement(topMaterial);
 		page2group.addValidationElement(midMaterial);

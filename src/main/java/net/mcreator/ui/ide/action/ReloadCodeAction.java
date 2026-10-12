@@ -18,44 +18,29 @@
 
 package net.mcreator.ui.ide.action;
 
-import net.mcreator.io.FileIO;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.text.BadLocationException;
 import java.io.File;
 
 public class ReloadCodeAction extends BasicAction {
 
 	public ReloadCodeAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.ide.reload_code"), actionEvent -> {
+		super(actionRegistry, L10N.t("action.ide.reload_code"), _ -> {
 			JComponent pan = actionRegistry.getMCreator().getTabs().getCurrentTab().getContent();
 			if (pan instanceof CodeEditorView codeEditorView) {
 				File curr = codeEditorView.fileWorkingOn;
 				if (curr.isFile()) {
 					int sel = JOptionPane.OK_OPTION;
-					if (codeEditorView.changed)
+					if (codeEditorView.wasChanged())
 						sel = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(),
 								L10N.t("action.ide.reload_code.dialog"), L10N.t("common.confirmation"),
 								JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (sel == JOptionPane.OK_OPTION) {
-						int line = codeEditorView.te.getCaretLineNumber();
-						codeEditorView.te.setText(FileIO.readFileToString(curr));
-						try {
-							line = Math.min(line, codeEditorView.te.getLineCount() - 1);
-							if (line >= 0) {
-								codeEditorView.te.setCaretPosition(codeEditorView.te.getLineStartOffset(line));
-								codeEditorView.centerLineInScrollPane();
-							}
-						} catch (BadLocationException ignored) {
-						}
-						codeEditorView.changed = false;
-						if (codeEditorView.changeListener != null)
-							codeEditorView.changeListener.stateChanged(new ChangeEvent(codeEditorView));
+						codeEditorView.reloadCode();
 					}
 				}
 			}

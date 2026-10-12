@@ -19,36 +19,48 @@
 
 package net.mcreator.ui.views.editor.image.animation;
 
-import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.IntSupplier;
 
-public class TimelineRenderer extends JPanel implements ListCellRenderer<Canvas> {
+public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
 
-	private final AnimationTimeline timeline;
+	private static final int borderThickness = 2;
 
-	public TimelineRenderer(AnimationTimeline timeline) {
-		this.timeline = timeline;
-		setLayout(new BorderLayout()); // Allow to remove the default offset of the image
+	private static final Color currentFrameColor = new Color(75, 85, 197);
+
+	private final IntSupplier currentFrameSupplier;
+
+	public TimelineRenderer(IntSupplier currentFrameSupplier) {
+		this.currentFrameSupplier = currentFrameSupplier;
+
+		setPreferredSize(new Dimension(170, 170));
+		setHorizontalAlignment(JLabel.CENTER);
+		setVerticalAlignment(JLabel.CENTER);
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends Canvas> list,
-			Canvas value, int index, boolean isSelected, boolean cellHasFocus) {
-		removeAll();
-		if (cellHasFocus) {
-			setBackground(PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get());
-			timeline.getImageMakerView().setDisplayedCanvas(value);
-		} else if (isSelected) {
-			setBackground(PreferencesManager.PREFERENCES.imageEditor.selectedFramesColor.get());
+	public Component getListCellRendererComponent(JList<? extends AnimationMakerView.AnimationFrame> list,
+			AnimationMakerView.AnimationFrame value, int index, boolean isSelected, boolean cellHasFocus) {
+		if (index == currentFrameSupplier.getAsInt()) {
+			setOpaque(true);
+			setBackground(currentFrameColor);
 		} else {
-			setBackground(Color.gray);
+			setOpaque(false);
 		}
-		setPreferredSize(new Dimension(170, 170));
-		add(new JLabel(new ImageIcon(ImageUtils.resize(value.render(), 170))));
+
+		if (isSelected) {
+			setBorder(BorderFactory.createLineBorder(Theme.current().getInterfaceAccentColor(), borderThickness));
+		} else {
+			setBorder(BorderFactory.createEmptyBorder(borderThickness, borderThickness, borderThickness,
+					borderThickness));
+		}
+
+		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 170 - borderThickness * 2)));
 
 		return this;
 	}

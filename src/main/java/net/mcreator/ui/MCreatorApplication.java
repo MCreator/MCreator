@@ -32,6 +32,8 @@ import net.mcreator.io.net.api.MCreatorNetWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ApplicationClosedEvent;
+import net.mcreator.plugin.events.ApplicationFullyLoadedEvent;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.plugin.modapis.ModAPIManager;
@@ -45,6 +47,8 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.themes.ThemeManager;
+import net.mcreator.ui.mcp.MCreatorMcp;
+import net.mcreator.ui.mcp.MCreatorMcpManager;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -58,6 +62,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -86,6 +91,7 @@ public final class MCreatorApplication {
 	private GoogleAnalytics analytics;
 	private DiscordClient discordClient;
 	private TaskbarIntegration taskbarIntegration;
+	private MCreatorMcpManager mcreatorMcp;
 
 	private final SingleAppHandler singleAppHandler;
 
@@ -214,6 +220,8 @@ public final class MCreatorApplication {
 
 			discordClient = new DiscordClient();
 
+			mcreatorMcp = new MCreatorMcpManager();
+
 			// Do not externalize this text
 			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
 
@@ -245,6 +253,8 @@ public final class MCreatorApplication {
 					showWorkspaceSelector();
 				}
 			});
+
+			MCREvent.event(new ApplicationFullyLoadedEvent(this));
 
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
@@ -316,11 +326,12 @@ public final class MCreatorApplication {
 					MCreator mcreator = MCreator.create(this, workspace);
 					if (!this.openMCreators.contains(mcreator)) {
 						this.workspaceSelector.setVisible(false);
-						this.openMCreators.add(mcreator);
+						this.addMCreator(mcreator);
 						mcreator.setVisible(true);
 						mcreator.requestFocusInWindow();
 						mcreator.toFront();
-						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
+						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN,
+								mcreator.getWorkspaceSettings().getCurrentGenerator());
 						openResult.set(mcreator);
 					} else { // already open, just focus it
 						LOG.info("Trying to open already open workspace, bringing it to the front.");
@@ -402,6 +413,8 @@ public final class MCreatorApplication {
 		if (canNotClose.get())
 			return; // if we fail to close all windows, we cancel the application close
 
+		MCREvent.event(new ApplicationClosedEvent(this));
+
 		LOG.debug("Performing exit tasks");
 		PreferencesManager.savePreferences(); // store any potential preferences changes
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
@@ -445,8 +458,22 @@ public final class MCreatorApplication {
 		return workspaceSelector.getRecentWorkspaces().getList();
 	}
 
-	public List<MCreator> getOpenMCreators() {
-		return openMCreators;
+	private void addMCreator(MCreator mcreator) {
+		openMCreators.add(mcreator);
+		mcreatorMcp.registerMCreator(mcreator);
+	}
+
+	void removeMCreator(MCreator mcreator) {
+		mcreatorMcp.unregisterMCreator(mcreator);
+		openMCreators.remove(mcreator);
+	}
+
+	public int getOpenMCreatorsCount() {
+		return openMCreators.size();
+	}
+
+	public Collection<MCreator> getOpenMCreators() {
+		return Collections.unmodifiableCollection(openMCreators);
 	}
 
 	public DiscordClient getDiscordClient() {
@@ -455,6 +482,10 @@ public final class MCreatorApplication {
 
 	public TaskbarIntegration getTaskbarIntegration() {
 		return taskbarIntegration;
+	}
+
+	@Nullable public MCreatorMcp getMCreatorMcp() {
+		return mcreatorMcp.getMCP();
 	}
 
 }
