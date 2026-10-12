@@ -364,7 +364,10 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		}
 
 		if (!textureMap.containsKey("chest_boat_item")) {
-			ImageIcon chestBoatItem = ImageUtils.drawOver(boatItem, getCachedTexture("boat_item_chest_overlay"));
+			ImageIcon boatBase = textureMap.containsKey("boat_item") ?
+					textureMap.get("boat_item").getImageIcon(TextureType.ITEM) :
+					boatEntity;
+			ImageIcon chestBoatItem = ImageUtils.drawOver(boatBase, getCachedTexture("boat_item_chest_overlay"));
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatItem.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_chest_boat", TextureType.ITEM));
 		}
