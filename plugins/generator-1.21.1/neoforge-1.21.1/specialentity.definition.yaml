@@ -3,6 +3,9 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
+base_types:
+  - item
+
 global_templates:
   - template: elementinits/boattypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBoatTypes.java"

@@ -19,6 +19,11 @@ templates:
     condition: spawnThisMob
     name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
 
+base_types:
+  - entity
+  - type: item
+    condition: hasSpawnEgg
+
 global_templates:
   - template: livingentity/monster_room_mobs.json.ftl
     writer: json

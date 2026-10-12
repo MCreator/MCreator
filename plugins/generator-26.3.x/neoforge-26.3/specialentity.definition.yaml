@@ -10,6 +10,10 @@ templates:
 
 # Dispense behaviors are controlled by generator.yaml
 
+base_types:
+  - item
+  - entity
+
 tags:
   - tag: ENTITIES:minecraft:boat
     condition: "!isBoatChestVariant()"
