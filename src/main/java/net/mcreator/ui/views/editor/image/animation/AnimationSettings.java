@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.views.editor.image.animation;
 
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
@@ -32,13 +31,11 @@ public class AnimationSettings extends JPanel {
 
 	public AnimationSettings() {
 		setLayout(new GridLayout(2, 2, 15, 20));
-		setOpaque(false);
 		add(L10N.label("dialog.animation_maker.frame_duration"));
 		add(frameDuration);
 		add(L10N.label("dialog.animation_maker.interpolate_frame"));
 		interpolate.setOpaque(false);
 		add(interpolate);
-
 	}
 
 	public int getFrameDuration() {

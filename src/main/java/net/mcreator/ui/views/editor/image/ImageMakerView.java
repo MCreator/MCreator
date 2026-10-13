@@ -173,7 +173,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		rightSplitPane.setOpaque(false);
 		paletteLayerSplitPane.setOpaque(false);
 
-		leftSplitPane.setLeftComponent(PanelUtils.centerAndSouthElement(toolPanel, animationSettings));
+		JTabbedPane leftTabbedPane = new JTabbedPane();
+		leftTabbedPane.add(L10N.t("dialog.image_maker.tools"), toolPanel);
+		animationSettings.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+		leftTabbedPane.add(L10N.t("dialog.animation_maker.settings"), PanelUtils.pullElementUp(animationSettings));
+
+		leftSplitPane.setLeftComponent(leftTabbedPane);
 		leftSplitPane.setRightComponent(rightSplitPane);
 		leftSplitPane.setOneTouchExpandable(true);
 
@@ -508,7 +513,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				palettePanel.reloadPalette();
 
 				if (firstTime) {
-					leftSplitPane.setDividerLocation(0.16);
+					leftSplitPane.setDividerLocation(0.20);
 					rightSplitPane.setDividerLocation(0.79);
 					southSplitPane.setDividerLocation(
 							(100 - PreferencesManager.PREFERENCES.imageEditor.defaultPercentageTimeline.get()) / 100d);
