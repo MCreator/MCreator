@@ -277,6 +277,9 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 
 	<#if hasProcedure(data.onFinishUsingItem) || data.hasEatResultItem()>
 		@Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
+			<#if hasProcedure(data.onFinishUsingItem)>
+			ItemStack usedItemstack = itemstack.copy();
+			</#if>
 			ItemStack retval =
 				<#if data.hasEatResultItem()>
 					${mappedMCItemToItemStackCode(data.eatResultItem, 1)};
@@ -284,10 +287,14 @@ public class ${name}Item extends <#if data.hasBannerPatterns()>BannerPattern</#i
 			super.finishUsingItem(itemstack, world, entity);
 
 			<#if hasProcedure(data.onFinishUsingItem)>
-				double x = entity.getX();
-				double y = entity.getY();
-				double z = entity.getZ();
-				<@procedureOBJToCode data.onFinishUsingItem/>
+				<@procedureCode data.onFinishUsingItem, {
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
+					"world": "world",
+					"entity": "entity",
+					"itemstack": "usedItemstack"
+				}/>
 			</#if>
 
 			<#if data.hasEatResultItem()>
