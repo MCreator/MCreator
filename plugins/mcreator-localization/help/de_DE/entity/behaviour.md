@@ -1,4 +1,4 @@
-Lebende Entität, die auf den Mob gesetzt wird, wird in der Lage sein anzugreifen, während eine lebende Entität, die auf Kreatur gesetzt wird, passiv ist.
+Lebende Entität, die auf Mob gestellt gesetzt wird, wird in der Lage sein anzugreifen, während eine lebende Entität, die auf Kreatur gesetzt wird, passiv ist.
 
 Ein Raider ist ein Monster, das bei einem Überfall erzeugt wird.
 

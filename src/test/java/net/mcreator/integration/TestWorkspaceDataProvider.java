@@ -2517,11 +2517,8 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 
-			// Variants mode does not support empty state conditions, so make sure at least one property of
-			// the types the state maps below are populated from (logic or integer) is always used
-			if (!block.multipartModel && stateProperties.stream().noneMatch(
-					e -> e.property() instanceof PropertyData.LogicType
-							|| e.property() instanceof PropertyData.IntegerType)) {
+			// Variants mode does not support empty state conditions, so make sure at least one property is always used
+			if (!block.multipartModel && stateProperties.isEmpty()) {
 				stateProperties.add(block.customProperties.getFirst()); // CUSTOM:bool_prop
 			}
 
@@ -2534,6 +2531,8 @@ public class TestWorkspaceDataProvider {
 						stateMap.put(property.property(), random.nextInt(1, 10));
 					} else if (property.property() instanceof PropertyData.LogicType) {
 						stateMap.put(property.property(), random.nextBoolean());
+					} else if (property.property() instanceof PropertyData.StringType stringType) {
+						stateMap.put(property.property(), getRandomItem(random, stringType.getArrayData()));
 					}
 				}
 

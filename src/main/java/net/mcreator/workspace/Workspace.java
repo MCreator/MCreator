@@ -426,6 +426,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		this.generator.close();
 		this.generator = new Generator(this); // reload generator
+
+		// mod element caches can depend on the generator, so we invalidate them
+		this.getModElements().forEach(ModElement::invalidateCache);
 	}
 
 	public void bindToNewWorkspaceFile(File newWorkspaceFile) {
