@@ -2147,6 +2147,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
+			modelLayer.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
@@ -2155,6 +2156,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
+			modelLayer.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
