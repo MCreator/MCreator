@@ -1859,6 +1859,21 @@ public class TestWorkspaceDataProvider {
 			beblock.lightEmission = getRandomInt(random, BEBlock.class, "lightEmission");
 			beblock.colorOnMap = new MapColor(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
+			beblock.isNotColidable = _true;
+			beblock.boundingBoxes = new ArrayList<>();
+			if (!emptyLists) {
+				int boxes = random.nextInt(4) + 1;
+				for (int i = 0; i < boxes; i++) {
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					beblock.boundingBoxes.add(box);
+				}
+			}
 			beblock.generateFeature = _true;
 			beblock.generationShape = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "generationShape"));
