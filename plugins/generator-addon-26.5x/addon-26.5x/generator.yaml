@@ -34,12 +34,6 @@ base_templates:
   - template: resourcepack/music_definitions.json.ftl
     writer: json
     name: "@RESROOT/sounds/music_definitions.json"
-  - template: resourcepack/blocks.json.ftl
-    writer: json
-    name: "@RESROOT/blocks.json"
-  - template: resourcepack/terrain_texture.json.ftl
-    writer: json
-    name: "@RESROOT/textures/terrain_texture.json"
   - template: scripts_base.js.ftl
     name: "@SRCROOT/scripts/@modid_scripts.js"
     writer: js

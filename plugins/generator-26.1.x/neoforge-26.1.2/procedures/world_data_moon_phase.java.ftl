@@ -1,1 +1,0 @@
-/*@int*/(world.environmentAttributes().getValue(EnvironmentAttributes.MOON_PHASE, BlockPos.ZERO).index())
