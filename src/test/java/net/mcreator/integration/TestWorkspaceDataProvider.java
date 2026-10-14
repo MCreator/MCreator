@@ -40,7 +40,6 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.integration.generator.GTProcedureBlocks;
@@ -349,8 +348,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:item"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.ITEM)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleitem1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleitem2"));
 				}
@@ -362,8 +360,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:block"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.BLOCK)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleblock1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleblock2"));
 				}
@@ -375,8 +372,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:creeper"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:zombie"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:entity"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.LIVINGENTITY)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplelivingentity1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplelivingentity2"));
 				}
@@ -387,8 +383,7 @@ public class TestWorkspaceDataProvider {
 			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("biomes", 0d) != 0) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:plains"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:biome"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.BIOME)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplebiome1"));
 				}
 			}
@@ -399,8 +394,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stronghold"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:mineshaft"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:structure"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.STRUCTURE)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplestructure1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplestructure2"));
 				}
@@ -410,8 +404,7 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("damagesources", 0d) != 0) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:damage_type"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.DAMAGETYPE)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampledamagetype1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampledamagetype2"));
 				}
@@ -421,8 +414,7 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("enchantments", 0d) != 0) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:enchantment"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.ENCHANTMENT)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleenchantment1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleenchantment2"));
 				}
@@ -438,8 +430,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-					== GeneratorStats.CoverageStatus.FULL) {
+			if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.FUNCTION)) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("ExampleFunction1"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("ExampleFunction2"));
 			}

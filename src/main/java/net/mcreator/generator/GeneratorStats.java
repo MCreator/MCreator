@@ -283,6 +283,10 @@ public class GeneratorStats {
 		return true;
 	}
 
+	public boolean isModElementTypeFullyCovered(ModElementType<?> type) {
+		return modElementTypeCoverageInfo.get(type) == CoverageStatus.FULL;
+	}
+
 	public List<ModElementType<?>> getSupportedModElementTypes() {
 		return modElementTypeCoverageInfo.entrySet().stream().filter(e -> e.getValue() != CoverageStatus.NONE)
 				.map(Map.Entry::getKey).sorted(Comparator.comparing(ModElementType::getReadableName))
