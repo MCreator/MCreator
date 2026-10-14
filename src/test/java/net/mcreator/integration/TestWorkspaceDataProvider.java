@@ -2904,8 +2904,7 @@ public class TestWorkspaceDataProvider {
 
 	public static void provideAndGenerateSampleElements(Random random, Workspace workspace) {
 		// add sample procedures (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.PROCEDURE)) {
 			for (int i = 1; i <= 15; i++) {
 				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE);
 				if (i == 1) {
@@ -3040,8 +3039,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		// add sample recipes (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.RECIPE)) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleRecipe" + i, ModElementType.RECIPE);
 
@@ -3059,8 +3057,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		// add sample functions (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FUNCTION)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.FUNCTION)) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleFunction" + i, ModElementType.FUNCTION);
 
@@ -3074,8 +3071,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		// add sample loot tables (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LOOTTABLE)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.LOOTTABLE)) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
 
