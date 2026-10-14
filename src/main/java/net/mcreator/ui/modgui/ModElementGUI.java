@@ -582,7 +582,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.getWorkspace().addModElement(modElement);
 		} else {
 			modElement.reloadElementIcon();
-			modElement.getMCItems().forEach(mcItem -> mcItem.getIcon().getImage().flush()); // update MCItem icons
 		}
 
 		// make sure workspace will also be saved

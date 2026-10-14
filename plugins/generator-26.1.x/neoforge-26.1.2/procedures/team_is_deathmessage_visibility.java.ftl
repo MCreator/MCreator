@@ -1,1 +1,0 @@
-(world instanceof Level _level${cbi} && _level${cbi}.getScoreboard().getPlayerTeam(${input$name}) != null && _level${cbi}.getScoreboard().getPlayerTeam(${input$name}).getDeathMessageVisibility() == Team.Visibility.${field$visibility})
