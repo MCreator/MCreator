@@ -1074,7 +1074,7 @@ public class TestWorkspaceDataProvider {
 			armor.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Armor.class, "rarity"));
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armor_texture";
-			armor.maxDamage = getRandomInt(random, Armor.class, "maxDamage");
+			armor.maxDamage = _true ? getRandomInt(random, Armor.class, "maxDamage") : 0;
 			armor.damageValueHelmet = getRandomInt(random, Armor.class, "damageValueHelmet");
 			armor.damageValueBody = getRandomInt(random, Armor.class, "damageValueBody");
 			armor.damageValueLeggings = getRandomInt(random, Armor.class, "damageValueLeggings");
