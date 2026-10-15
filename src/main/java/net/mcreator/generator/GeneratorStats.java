@@ -108,8 +108,8 @@ public class GeneratorStats {
 		}
 
 		// load dummy values
-		BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> coverageInfo.put(name.registryName(), 0d));
-		BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders().forEach((key, value) -> {
+		BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, _) -> coverageInfo.put(name.registryName(), 0d));
+		BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders().forEach((key, _) -> {
 			ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
 			coverageInfo.put(loader.getResourceFolder(), 0d);
 		});
@@ -117,9 +117,9 @@ public class GeneratorStats {
 		// lazy load actual values
 		new Thread(() -> {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders()
-					.forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
+					.forEach((name, _) -> addBlocklyFolder(generatorConfiguration, name));
 			BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders()
-					.forEach((key, value) -> addBlocklyTriggerFolder(generatorConfiguration, key));
+					.forEach((key, _) -> addBlocklyTriggerFolder(generatorConfiguration, key));
 		}, "GeneratorStats-Loader").start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
@@ -223,7 +223,7 @@ public class GeneratorStats {
 		if (definedTriggers.isEmpty())
 			return;
 
-		Set<String> supportedTriggers = generatorBlocklyTriggers.computeIfAbsent(type, k -> new HashSet<>());
+		Set<String> supportedTriggers = generatorBlocklyTriggers.computeIfAbsent(type, _ -> new HashSet<>());
 		for (String path : genConfig.getGeneratorPaths(loader.getResourceFolder())) {
 			supportedTriggers.addAll(listRootTemplates(path).map(FilenameUtilsPatched::getBaseName)
 					.map(FilenameUtilsPatched::getBaseName).collect(Collectors.toSet()));
@@ -269,6 +269,22 @@ public class GeneratorStats {
 
 	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
 		return modElementTypeCoverageInfo;
+	}
+
+	public boolean isModElementTypeCovered(ModElementType<?> type) {
+		return modElementTypeCoverageInfo.get(type) != CoverageStatus.NONE;
+	}
+
+	public boolean areModElementTypesCovered(ModElementType<?>... types) {
+		for (var type : types) {
+			if (!isModElementTypeCovered(type))
+				return false;
+		}
+		return true;
+	}
+
+	public boolean isModElementTypeFullyCovered(ModElementType<?> type) {
+		return modElementTypeCoverageInfo.get(type) == CoverageStatus.FULL;
 	}
 
 	public List<ModElementType<?>> getSupportedModElementTypes() {

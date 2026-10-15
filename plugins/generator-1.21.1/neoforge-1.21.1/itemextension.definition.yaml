@@ -1,3 +1,7 @@
+base_types:
+  - type: dispensebehavior
+    condition: hasDispenseBehavior
+
 global_templates:
   - template: elementinits/fuels.java.ftl
     writer: java
@@ -7,4 +11,3 @@ global_templates:
     writer: json
     condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.isCompostable())?size != 0}"
     name: "@RESROOT/data/neoforge/data_maps/item/compostables.json"
-  # Dispense behaviors are controlled by generator.yaml

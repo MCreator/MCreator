@@ -22,13 +22,10 @@ package net.mcreator.element.types;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.datapack.BlocklyToFeature;
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.GenerationStep;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -38,12 +35,10 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nullable;
-import java.lang.module.ModuleDescriptor;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
+@SuppressWarnings("unused") public class Feature extends GeneratableElement {
 
 	private static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
@@ -111,23 +106,6 @@ import java.util.List;
 
 	public boolean hasPlacedFeature() {
 		return !skipPlacement;
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>();
-
-		if (hasConfiguredFeature())
-			baseTypes.add(BaseType.CONFIGUREDFEATURE);
-
-		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC ||
-				ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
-						.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
-			baseTypes.add(
-					BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
-		else if (hasGenerationConditions())
-			baseTypes.add(BaseType.FEATURE);
-
-		return baseTypes;
 	}
 
 }
