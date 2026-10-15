@@ -659,9 +659,6 @@ public class JavaTypeResolver {
 			for (int p = 0; p < typeParams.size() && p < currentGenericArgs.size(); p++)
 				typeArguments.put(typeParams.get(p), currentGenericArgs.get(p));
 			returnTypeSimple = sourceResolver.resolveFQDN(returnTypeSimple, typeArguments);
-			if (returnTypeSimple != null && returnTypeSimple.length() == 1 && currentGenericArgs.size() == 1) {
-				returnTypeSimple = currentGenericArgs.getFirst();
-			}
 
 			if (returnTypeSimple != null) {
 				currentGenericArgs = parseGenericArgs(returnTypeSimple);
