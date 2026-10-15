@@ -29,7 +29,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.AST;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.ASTNode;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.ASTParser;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.AnonymousClassDeclaration;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.NodeFinder;
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.internal.compiler.ast.MessageSend;
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.internal.core.util.CodeSnippetParsingUtil;
 import org.jboss.forge.roaster.model.JavaType;
@@ -525,20 +532,37 @@ public class JavaTypeResolver {
 		}
 
 		if (base.equals("this") || base.equals("super")) {
+			JavaType<?> currentType = parseSourceType(currentClassFQDN, currentClassFQDN, code);
+			String anonymousType = null;
+			ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+			parser.setSource(code.toCharArray());
+			parser.setCompilerOptions(JDTOptions.getJDTOptions());
+			parser.setStatementsRecovery(true);
+			ASTNode node = NodeFinder.perform(parser.createAST(null), Math.max(0, codeBeforeCursor.length() - 1), 0);
+			while (node != null && !(node instanceof AbstractTypeDeclaration)) {
+				if (node instanceof AnonymousClassDeclaration
+						&& node.getParent() instanceof ClassInstanceCreation creation) {
+					anonymousType = creation.getType().toString();
+					break;
+				}
+				node = node.getParent();
+			}
+			if (anonymousType != null)
+				isCursorStatic = false;
 			if (base.equals("super") && isCursorStatic) {
 				return null;
 			}
 			currentFQDN = currentClassFQDN;
 			isStaticContext = isCursorStatic;
 			if (currentFQDN != null) {
-				String parentName = parseSourceType(currentFQDN, currentClassFQDN, code)
-						instanceof JavaClassSource jcs ? jcs.getSuperType() : null;
+				String parentName = anonymousType != null ? anonymousType :
+						currentType instanceof JavaClassSource jcs ? jcs.getSuperType() : null;
 				if (parentName != null && !parentName.isEmpty()) {
 					List<String> genArgs = parseGenericArgs(parentName);
 					if (!genArgs.isEmpty()) {
 						currentGenericArgs = genArgs;
 					}
-					if (base.equals("super")) {
+					if (base.equals("super") || anonymousType != null) {
 						currentFQDN = resolveSimpleTypeName(parentName, imports, currentPkg, currentClassFQDN, code);
 					}
 				} else if (base.equals("super")) {
