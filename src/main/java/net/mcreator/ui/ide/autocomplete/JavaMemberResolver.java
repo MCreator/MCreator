@@ -33,12 +33,13 @@ import org.fife.rsta.ac.java.classreader.MethodInfo;
 import org.fife.rsta.ac.java.classreader.Util;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit;
+import org.jboss.forge.roaster.model.InterfaceCapable;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.impl.ImportImpl;
 import org.jboss.forge.roaster.model.impl.JavaSourceImpl;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
-import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
+import org.jboss.forge.roaster.model.source.JavaEnumSource;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -150,16 +151,11 @@ public class JavaMemberResolver {
 						populateMembersOfFQDN(parentFQDN, currentClassFQDN, null, result, added, visited, false);
 					}
 				}
-				for (String ifName : javaClass.getInterfaces()) {
-					// getInterfaces returns FQDNs, and they're ALWAYS incorrect if import for them is not present
-					ifName = ifName.replaceAll("^[a-z0-9_.]*\\.(?=[A-Z])", "");
-					String ifFQDN = typeResolver.resolveSimpleTypeName(ifName, imports, pkg, currentClassFQDN, srcCode);
-					if (ifFQDN != null) {
-						populateMembersOfFQDN(ifFQDN, currentClassFQDN, null, result, added, visited, true);
-					}
-				}
-			} else if (source instanceof JavaInterfaceSource javaInterface) {
-				for (String ifName : javaInterface.getInterfaces()) {
+			} else if (source instanceof JavaEnumSource) {
+				populateMembersOfFQDN("java.lang.Enum", currentClassFQDN, null, result, added, visited, false);
+			}
+			if (source instanceof InterfaceCapable interfaces) {
+				for (String ifName : interfaces.getInterfaces()) {
 					// getInterfaces returns FQDNs, and they're ALWAYS incorrect if import for them is not present
 					ifName = ifName.replaceAll("^[a-z0-9_.]*\\.(?=[A-Z])", "");
 					String ifFQDN = typeResolver.resolveSimpleTypeName(ifName, imports, pkg, currentClassFQDN, srcCode);

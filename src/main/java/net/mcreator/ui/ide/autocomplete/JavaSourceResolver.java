@@ -273,6 +273,20 @@ public class JavaSourceResolver {
 			boolean isInterface = source instanceof JavaInterfaceSource;
 			Map<String, String> imports = parseImports(srcCode);
 
+			if (source instanceof JavaEnumSource javaEnum) {
+				String enumType = javaEnum.getCanonicalName();
+				for (EnumConstantSource constant : javaEnum.getEnumConstants()) {
+					String doc = constant.getJavaDoc() != null ? constant.getJavaDoc().getFullText() : null;
+					JavaTypeResolver.addFieldCompletion(constant.getName(), enumType, true, true,
+							constant.hasAnnotation(Deprecated.class), "public", declaringClass, doc, result, added);
+				}
+				JavaTypeResolver.addMethodCompletion("values", enumType + "[]", new String[0], new String[0], null,
+						true, false, false, "public", declaringClass, null, result, added);
+				JavaTypeResolver.addMethodCompletion("valueOf", enumType, new String[] { "String" },
+						new String[] { "name" }, new String[] { "java.lang.String" }, true, false, false,
+						"public", declaringClass, null, result, added);
+			}
+
 			List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ?
 					(List) fhs.getFields() :
 					Collections.emptyList();
