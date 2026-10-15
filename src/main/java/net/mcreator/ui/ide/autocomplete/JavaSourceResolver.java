@@ -49,8 +49,8 @@ public class JavaSourceResolver {
 	// Maps source code hashCode -> map of simple class names to FQDNs parsed from imports
 	private final Cache<Integer, Map<String, String>> importsCache = CacheBuilder.newBuilder().maximumSize(1500).build();
 
-	// Maps source code hashCode -> map of method signatures to Javadoc documentation
-	private final Cache<Integer, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(1500).build();
+	// Maps source code hashCode and declaring class -> map of method signatures to Javadoc documentation
+	private final Cache<String, Map<String, String>> docsCache = CacheBuilder.newBuilder().maximumSize(1500).build();
 
 	// Maps class FQDN -> loaded Java source code string
 	private final Cache<String, String> sourceCache = CacheBuilder.newBuilder().maximumSize(1500).build();
@@ -107,17 +107,17 @@ public class JavaSourceResolver {
 		return fqdn != null ? fqdn.substring(0, Math.max(0, fqdn.lastIndexOf('.'))) : "";
 	}
 
-	public Map<String, String> getMethodDocsFromSource(String srcCode) {
+	public Map<String, String> getMethodDocsFromSource(String srcCode, String declaringClass) {
 		if (srcCode == null || srcCode.isEmpty())
 			return Collections.emptyMap();
-		int hash = srcCode.hashCode();
-		Map<String, String> cached = docsCache.getIfPresent(hash);
+		String key = srcCode.hashCode() + ":" + declaringClass;
+		Map<String, String> cached = docsCache.getIfPresent(key);
 		if (cached != null)
 			return cached;
 
 		Map<String, String> docs = new HashMap<>();
 		try {
-			JavaType<?> source = Roaster.parse(srcCode);
+			JavaType<?> source = findType(Roaster.parse(srcCode), declaringClass);
 			if (source instanceof MethodHolderSource<?> mhs) {
 				for (MethodSource<?> m : mhs.getMethods()) {
 					if (m.getJavaDoc() != null) {
@@ -149,7 +149,7 @@ public class JavaSourceResolver {
 			LOG.debug("Failed to parse method docs from source code", e);
 		}
 		Map<String, String> unmodifiable = Collections.unmodifiableMap(docs);
-		docsCache.put(hash, unmodifiable);
+		docsCache.put(key, unmodifiable);
 		return unmodifiable;
 	}
 

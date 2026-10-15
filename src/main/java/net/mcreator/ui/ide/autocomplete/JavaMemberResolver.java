@@ -227,7 +227,7 @@ public class JavaMemberResolver {
 		boolean samePackage = targetPackage.equals(currentPackage);
 
 		String srcCode = sourceResolver.loadSourceCodeForFQDN(fqdn);
-		Map<String, String> docs = sourceResolver.getMethodDocsFromSource(srcCode);
+		Map<String, String> docs = sourceResolver.getMethodDocsFromSource(srcCode, declaringClass);
 
 		for (int i = 0; i < cf.getMethodCount(); i++) {
 			MethodInfo mi = cf.getMethodInfo(i);
