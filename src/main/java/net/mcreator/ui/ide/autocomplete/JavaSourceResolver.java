@@ -293,6 +293,10 @@ public class JavaSourceResolver {
 					pTypes[p] = param.getType().getName();
 					pNames[p] = param.getName();
 					fqdnPTypes[p] = resolveFQDN(pTypes[p], imports);
+					if (param.isVarArgs()) {
+						pTypes[p] += "...";
+						fqdnPTypes[p] += "...";
+					}
 				}
 
 				String vis = m.isPublic() ?

@@ -22,6 +22,7 @@ package net.mcreator.ui.ide.autocomplete;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.mcreator.java.ImportTreeBuilder;
+import net.mcreator.java.JavaCodeScanner;
 import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -29,11 +30,14 @@ import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.internal.compiler.ast.MessageSend;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.internal.core.util.CodeSnippetParsingUtil;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.Named;
 import org.jboss.forge.roaster.model.impl.ImportImpl;
 import org.jboss.forge.roaster.model.impl.JavaSourceImpl;
 import org.jboss.forge.roaster.model.source.*;
+import org.jboss.forge.roaster.model.util.JDTOptions;
 import org.jboss.forge.roaster.model.util.Types;
 
 import javax.annotation.Nullable;
@@ -334,7 +338,9 @@ public class JavaTypeResolver {
 		List<String> result = new ArrayList<>();
 		int depth = 0;
 		StringBuilder current = new StringBuilder();
-		for (char c : expression.toCharArray()) {
+		String masked = JavaCodeScanner.maskStringsAndComments(expression);
+		for (int i = 0; i < masked.length(); i++) {
+			char c = masked.charAt(i);
 			if (c == '(' || c == '[')
 				depth++;
 			else if (c == ')' || c == ']')
@@ -344,7 +350,7 @@ public class JavaTypeResolver {
 				current.setLength(0);
 				continue;
 			}
-			current.append(c);
+			current.append(expression.charAt(i));
 		}
 		if (!current.isEmpty()) {
 			result.add(current.toString().trim());
@@ -356,17 +362,35 @@ public class JavaTypeResolver {
 			@Nullable String currentCode) {
 		if (fqdn == null || fqdn.isEmpty())
 			return null;
-		String memberName = member.contains("(") ? member.substring(0, member.indexOf('(')) : member;
+		boolean methodCall = member.contains("(");
+		String memberName = methodCall ? member.substring(0, member.indexOf('(')).trim() : member;
+		int argumentCount = methodCall ? getArgumentCount(member) : -1;
 
 		List<CompletionItem> members = memberResolver.getMembersOfFQDN(fqdn, currentClassFQDN, currentCode);
+		CompletionItem varargsMatch = null;
 		for (CompletionItem item : members) {
-			if (item.kind().equals("method") && item.label().startsWith(memberName + "(")) {
-				return item;
-			} else if (item.kind().equals("field") && item.label().equals(memberName)) {
+			if (methodCall && item.kind().equals("method") && item.label().startsWith(memberName + "(")
+					&& item.paramTypes() != null && argumentCount >= 0) {
+				List<String> params = item.paramTypes();
+				if (!params.isEmpty() && params.getLast().endsWith("...")) {
+					if (argumentCount >= params.size() - 1 && varargsMatch == null)
+						varargsMatch = item;
+				} else if (params.size() == argumentCount) {
+					return item;
+				}
+			} else if (!methodCall && item.kind().equals("field") && item.label().equals(memberName)) {
 				return item;
 			}
 		}
-		return null;
+		return varargsMatch;
+	}
+
+	private int getArgumentCount(String member) {
+		var expression = new CodeSnippetParsingUtil().parseExpression(member.toCharArray(),
+				JDTOptions.getJDTOptions(), false);
+		if (expression instanceof MessageSend invocation)
+			return invocation.arguments == null ? 0 : invocation.arguments.length;
+		return -1;
 	}
 
 	private List<String> parseGenericArgs(String typeWithGenerics) {
@@ -469,7 +493,7 @@ public class JavaTypeResolver {
 		if (targetName.contains(".")) {
 			ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
 			if (jarManager != null) {
-				String[] segments = targetName.split("\\.");
+				String[] segments = chain.toArray(String[]::new);
 				String fqdnCandidate = "";
 				int classSegmentIndex = -1;
 				for (int s = 0; s < segments.length; s++) {

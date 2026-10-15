@@ -233,7 +233,8 @@ public class JavaMemberResolver {
 			MethodInfo mi = cf.getMethodInfo(i);
 			int flags = mi.getAccessFlags();
 
-			if (Util.isPrivate(flags) || (flags & 0x0040) != 0 || (flags & AccessFlags.ACC_SYNTHETIC) != 0)
+			if (Util.isPrivate(flags) || (flags & AccessFlags.ACC_VOLATILE) != 0
+					|| (flags & AccessFlags.ACC_SYNTHETIC) != 0)
 				continue;
 			if (interfaceInherited && mi.isStatic())
 				continue;
@@ -259,6 +260,11 @@ public class JavaMemberResolver {
 			}
 
 			String doc = lookupDoc(docs, mName, pTypes, pCount);
+			if ((flags & AccessFlags.ACC_TRANSIENT) != 0 && pCount > 0) {
+				int last = pCount - 1;
+				pTypes[last] = pTypes[last].replaceFirst("\\[\\]$", "...");
+				fqdnPTypes[last] = fqdnPTypes[last].replaceFirst("\\[\\]$", "...");
+			}
 			JavaTypeResolver.addMethodCompletion(mName, mi.getReturnTypeString(true), pTypes, pNames,
 					fqdnPTypes, mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result,
 					added);
