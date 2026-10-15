@@ -1,5 +1,5 @@
-<#assign raiders = w.getGElementsOfType("livingentity")?filter(e -> e.mobBehaviourType == "Raider")>
-<#assign boats = w.getGElementsOfType("specialentity")>
+<#assign raiders = enumextensions?filter(e -> e.getModElement().getTypeString() == "livingentity")>
+<#assign boats = enumextensions?filter(e -> e.getModElement().getTypeString() == "specialentity")>
 {
   "entries": [
     <#list raiders as raider>

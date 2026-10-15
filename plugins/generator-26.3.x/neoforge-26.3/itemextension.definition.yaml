@@ -1,3 +1,7 @@
+base_types:
+  - type: dispensebehavior
+    condition: hasDispenseBehavior
+
 global_templates:
   - template: itemextension/fuels.java.ftl
     writer: java
@@ -17,5 +21,3 @@ templates:
     writer: json
     condition: "${data.enableFuel}"
     name: "@MODDATAROOT/context_int_provider/fuel/@registryname.json"
-
-  # Dispense behaviors are controlled by generator.yaml

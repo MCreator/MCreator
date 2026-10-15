@@ -3,6 +3,9 @@ templates:
     writer: json
     name: "@SRCROOT/items/@registryname.json"
 
+base_types:
+  - item
+
 localizationkeys:
   - key: item.@modid:@registryname
     mapto: name
