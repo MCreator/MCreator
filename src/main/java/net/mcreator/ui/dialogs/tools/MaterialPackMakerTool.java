@@ -23,7 +23,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
@@ -202,16 +201,9 @@ public class MaterialPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
-		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ARMOR)
-				!= GeneratorStats.CoverageStatus.NONE;
+		return gc.getGeneratorStats()
+				.areModElementTypesCovered(ModElementType.RECIPE, ModElementType.ITEM, ModElementType.BLOCK,
+						ModElementType.TOOL, ModElementType.ARMOR);
 	}
 
 	private Map<String, TextureHolder> makeTextureMap() {

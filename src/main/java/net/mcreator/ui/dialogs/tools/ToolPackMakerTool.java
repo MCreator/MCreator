@@ -26,7 +26,6 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.Tool;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -357,10 +356,7 @@ public class ToolPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
-		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TOOL)
-				!= GeneratorStats.CoverageStatus.NONE;
+		return gc.getGeneratorStats().areModElementTypesCovered(ModElementType.RECIPE, ModElementType.TOOL);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {

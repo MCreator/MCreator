@@ -41,7 +41,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 
 @EventBusSubscriber public class ${JavaModName}Trades {
 
-	<#if w.getGElementsOfType("villagertrade")?filter(e -> e.isWanderingTrader())?size != 0>
+	<#if villagertrades?filter(e -> e.isWanderingTrader())?size != 0>
 	@SubscribeEvent public static void registerWanderingTrades(WandererTradesEvent event) {
 		<@javacompress>
 		<#list villagertrades?filter(e -> e.isWanderingTrader()) as villagertrade>
@@ -60,7 +60,7 @@ import net.minecraft.world.entity.npc.VillagerTrades;
 	}
 	</#if>
 
-	<#if w.getGElementsOfType("villagertrade")?filter(e -> !e.isWanderingTrader())?size != 0>
+	<#if villagertrades?filter(e -> !e.isWanderingTrader())?size != 0>
 	@SubscribeEvent public static void registerTrades(VillagerTradesEvent event) {
 		<@javacompress>
 		<#list villagertrades?filter(e -> !e.isWanderingTrader()) as villagertrade>

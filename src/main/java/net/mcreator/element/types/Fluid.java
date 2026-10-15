@@ -18,7 +18,6 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
@@ -145,15 +144,6 @@ import java.util.List;
 
 	@Override public String getRenderType() {
 		return "translucent";
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
-
-		if (generateBucket)
-			baseTypes.add(BaseType.ITEM);
-
-		return baseTypes;
 	}
 
 	@Override public List<MCItem> providedMCItems() {

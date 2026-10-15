@@ -8,7 +8,7 @@ public net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList$Preset
 public net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType <init>(Lcom/mojang/serialization/MapCodec;)V
 </#if>
 
-<#if w.hasElementsOfType("feature")>
+<#if types["features"]??>
 public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z
 </#if>

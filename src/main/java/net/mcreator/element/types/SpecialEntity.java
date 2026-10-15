@@ -19,12 +19,10 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.element.types.interfaces.LimitedOptions;
@@ -43,11 +41,10 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public class SpecialEntity extends GeneratableElement
-		implements ICommonType, ITabContainedElement, IMCItemProvider {
+		implements ITabContainedElement, IMCItemProvider {
 
 	private static final Logger LOG = LogManager.getLogger(SpecialEntity.class);
 
@@ -87,17 +84,6 @@ import java.util.List;
 
 	@Override public BufferedImage generateModElementPicture() {
 		return ImageUtils.resizeAndCrop(itemTexture.getImage(TextureType.ITEM), 32);
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>();
-		baseTypes.add(BaseType.ITEM);
-
-		// 1.21-1.21.1 uses enum extensions for custom boats so they do not require the creation of a new entity type
-		if (!getModElement().getGenerator().getGeneratorMinecraftVersion().equals("1.21.1"))
-			baseTypes.add(BaseType.ENTITY);
-
-		return baseTypes;
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
