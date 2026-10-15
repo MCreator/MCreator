@@ -255,9 +255,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 
 		// then we generate the stripped log top texture
 		if (!textureMap.containsKey("stripped_log_top")) {
-			ImageIcon strippedLogTopBase = textureMap.containsKey("log_top") ?
-					textureMap.get("log_top").getImageIcon(TextureType.BLOCK) :
-					logTop;
+			ImageIcon strippedLogTopBase = getTextureBase(textureMap, "log_top", TextureType.BLOCK, 16, 16, logTop);
 			ImageIcon strippedLogTop = ImageUtils.drawOver(strippedLogTopBase,
 					ImageUtils.colorize(getCachedTexture("stripped_log_top_outside"), strippedColor, true));
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(strippedLogTop.getImage()),
@@ -316,9 +314,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		}
 
 		if (!textureMap.containsKey("sign_entity")) {
-			ImageIcon signPostBase = textureMap.containsKey("log_side") ?
-					textureMap.get("log_side").getImageIcon(TextureType.BLOCK) :
-					logSide;
+			ImageIcon signPostBase = getTextureBase(textureMap, "log_side", TextureType.BLOCK, 16, 16, logSide);
 			ImageIcon signEntity = ImageUtils.drawOver(
 					ImageUtils.colorize(getCachedTexture("sign_entity"), color, true), new ImageIcon(
 							ImageUtils.crop(ImageUtils.toBufferedImage(signPostBase.getImage()),
@@ -364,18 +360,15 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		}
 
 		if (!textureMap.containsKey("chest_boat_item")) {
-			ImageIcon boatBase = textureMap.containsKey("boat_item") ?
-					textureMap.get("boat_item").getImageIcon(TextureType.ITEM) :
-					boatItem;
+			ImageIcon boatBase = getTextureBase(textureMap, "boat_item", TextureType.ITEM, 16, 16, boatItem);
 			ImageIcon chestBoatItem = ImageUtils.drawOver(boatBase, getCachedTexture("boat_item_chest_overlay"));
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatItem.getImage()),
 					mcreator.getFolderManager().getTextureFile(registryName + "_chest_boat", TextureType.ITEM));
 		}
 
 		if (!textureMap.containsKey("chest_boat_entity")) {
-			ImageIcon chestBoatBase = textureMap.containsKey("boat_entity") ?
-					textureMap.get("boat_entity").getImageIcon(TextureType.ENTITY) :
-					boatEntity;
+			ImageIcon chestBoatBase = getTextureBase(textureMap, "boat_entity", TextureType.ENTITY, 128, 64,
+					boatEntity);
 			ImageIcon chestBoatEntity = ImageUtils.drawOver(getCachedTexture("boat_entity_chest_overlay"),
 					chestBoatBase, 0, 0, 128, 64);
 			FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(chestBoatEntity.getImage()),
@@ -993,6 +986,13 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 		addToTextureMap(map, chestBoatEntityTexture, "chest_boat_entity");
 
 		return map;
+	}
+
+	private static ImageIcon getTextureBase(Map<String, TextureHolder> textureMap, String textureKey, TextureType type,
+			int width, int height, ImageIcon fallback) {
+		if (!textureMap.containsKey(textureKey))
+			return fallback;
+		return new ImageIcon(ImageUtils.resize(textureMap.get(textureKey).getImage(type), width, height));
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
