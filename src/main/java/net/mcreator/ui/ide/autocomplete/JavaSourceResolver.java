@@ -33,10 +33,14 @@ import org.jboss.forge.roaster.model.util.Types;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JavaSourceResolver {
 
 	private static final Logger LOG = LogManager.getLogger(JavaSourceResolver.class);
+	private static final Pattern SIMPLE_TYPE_PATTERN = Pattern.compile(
+			"(?<![\\p{javaJavaIdentifierPart}.])\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*");
 
 	@Nullable private final Workspace workspace;
 	private final JavaTypeResolver typeResolver;
@@ -221,13 +225,10 @@ public class JavaSourceResolver {
 	}
 
 	public String resolveFQDN(String rawType, Map<String, String> imports) {
-		if (rawType == null || rawType.isEmpty())
+		if (rawType == null || rawType.isEmpty() || imports == null || imports.isEmpty())
 			return rawType;
-		String stripped = Types.stripGenerics(rawType);
-		if (stripped.contains("."))
-			return rawType;
-		String resolved = imports.get(stripped);
-		return resolved != null ? resolved + Types.getGenerics(rawType) : rawType;
+		return SIMPLE_TYPE_PATTERN.matcher(rawType).replaceAll(
+				match -> Matcher.quoteReplacement(imports.getOrDefault(match.group(), match.group())));
 	}
 
 	public static JavaType<?> findType(JavaType<?> source, String name) {
@@ -319,7 +320,7 @@ public class JavaSourceResolver {
 					ParameterSource<?> param = params.get(p);
 					pTypes[p] = param.getType().getName();
 					pNames[p] = param.getName();
-					fqdnPTypes[p] = resolveFQDN(pTypes[p], imports);
+					fqdnPTypes[p] = resolveFQDN(Types.rebuildGenericNameWithArrays(pTypes[p], param.getType()), imports);
 					if (param.isVarArgs()) {
 						pTypes[p] += "...";
 						fqdnPTypes[p] += "...";

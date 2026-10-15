@@ -258,16 +258,13 @@ public class JavaTypeResolver {
 			@Nullable String currentClassFQDN, @Nullable String currentCode) {
 		if (typeName == null)
 			return null;
-		
+		typeName = Types.stripGenerics(typeName).trim();
+
 		String arrayBrackets = "";
 		if (typeName.endsWith("[]")) {
 			int firstBracket = typeName.indexOf('[');
 			arrayBrackets = typeName.substring(firstBracket);
 			typeName = typeName.substring(0, firstBracket).trim();
-		}
-
-		if (typeName.contains("<")) {
-			typeName = typeName.substring(0, typeName.indexOf('<')).trim();
 		}
 
 		if (Types.isPrimitive(typeName)) {
@@ -401,15 +398,7 @@ public class JavaTypeResolver {
 	}
 
 	private List<String> parseGenericArgs(String typeWithGenerics) {
-		if (typeWithGenerics == null || !typeWithGenerics.contains("<") || !typeWithGenerics.endsWith(">"))
-			return Collections.emptyList();
-		String gen = typeWithGenerics.substring(typeWithGenerics.indexOf('<') + 1, typeWithGenerics.length() - 1);
-		if (gen.isEmpty())
-			return Collections.emptyList();
-		return Arrays.stream(gen.split(","))
-				.map(String::trim)
-				.filter(s -> !s.isEmpty())
-				.toList();
+		return typeWithGenerics != null ? List.of(Types.splitGenerics(typeWithGenerics)) : Collections.emptyList();
 	}
 
 	@Nullable private JavaType<?> parseSourceType(String fqdn, @Nullable String currentClassFQDN,
