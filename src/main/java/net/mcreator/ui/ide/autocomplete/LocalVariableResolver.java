@@ -21,6 +21,7 @@ package net.mcreator.ui.ide.autocomplete;
 
 import net.mcreator.java.JavaCodeScanner;
 import net.mcreator.java.JavaConventions;
+import org.jboss.forge.roaster.model.util.Types;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -31,7 +32,7 @@ public final class LocalVariableResolver {
 	public record VarTypeInfo(String rawType, List<String> genericArgs) {
 		public VarTypeInfo(String rawType, String genericArg) {
 			this(rawType, genericArg != null && !genericArg.isEmpty() ?
-					Arrays.stream(genericArg.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList() :
+					List.of(Types.splitGenerics("<" + genericArg + ">")) :
 					Collections.emptyList());
 		}
 
@@ -54,20 +55,20 @@ public final class LocalVariableResolver {
 			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]|\\([^()]\\))*\\))?");
 
 	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
-			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^>]+>)?(?:\\[]|\\.\\.\\.)*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
+			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^;={}()]*?>)?(?:\\[]|\\.\\.\\.)*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
 	private static final Pattern FOR_PATTERN = Pattern.compile(
-			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^>]*>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
+			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^;={}()]*?>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
 	private static final Pattern LAMBDA_PARAM_PATTERN = Pattern.compile(
-			"\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^>]*>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*\\)");
+			"\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^;={}()]*?>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*\\)");
 	private static final Pattern VAR_ASSIGN_PATTERN = Pattern.compile(
-			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*new\\s+([A-Z][A-Za-z0-9_.]*)(?:<([^>]+)>)?");
+			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*new\\s+([A-Z][A-Za-z0-9_.]*)(?:<([^;={}()]*?)>)?\\s*\\(");
 	private static final Pattern VAR_ASSIGN_CAST_PATTERN = Pattern.compile(
-			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<([^>]+)>)?(?:\\[])*)\\s*\\)");
+			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<([^;={}()]*?)>)?(?:\\[])*)\\s*\\)");
 	private static final Pattern VAR_ASSIGN_EXPR_PATTERN = Pattern.compile(
 			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*([^;\\r\\n{}]+)");
 
 	private static final Pattern DECL_PATTERN = Pattern.compile(
-			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^>]+>)?(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
+			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^;={}()]*?>)?(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
 	private static final Pattern STATIC_PATTERN = Pattern.compile("\\bstatic\\b");
 
 	private static String normalizeVarargs(String type) {
@@ -242,10 +243,8 @@ public final class LocalVariableResolver {
 
 		Matcher m = DECL_PATTERN.matcher(activeCode);
 		while (m.find()) {
-			String type = normalizeVarargs(m.group(1));
+			String type = JavaMemberResolver.toSimpleType(normalizeVarargs(m.group(1)));
 			String name = m.group(2);
-			if (type.contains("."))
-				type = type.substring(type.lastIndexOf('.') + 1);
 			if (!JavaConventions.JAVA_RESERVED_WORDS.contains(name)) {
 				vars.put(name, type);
 			}
