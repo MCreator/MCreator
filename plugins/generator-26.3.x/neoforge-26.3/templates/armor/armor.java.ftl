@@ -69,7 +69,7 @@ public abstract class ${name}Item extends Item {
 	}
 
 	<#if modifiesDefaultComponents>
-	@SubscribeEvent public static void handleToolDamage(ModifyDefaultComponentsEvent event) {
+	@SubscribeEvent public static void modifyDamageComponent(ModifyDefaultComponentsEvent event) {
 		<#if data.enableHelmet>event.modify(${JavaModName}Items.${REGISTRYNAME}_HELMET.get(), (builder, _, _) -> builder.set(DataComponents.MAX_DAMAGE, null));</#if>
 		<#if data.enableBody>event.modify(${JavaModName}Items.${REGISTRYNAME}_CHESTPLATE.get(), (builder, _, _) -> builder.set(DataComponents.MAX_DAMAGE, null));</#if>
 		<#if data.enableLeggings>event.modify(${JavaModName}Items.${REGISTRYNAME}_LEGGINGS.get(), (builder, _, _) -> builder.set(DataComponents.MAX_DAMAGE, null));</#if>
