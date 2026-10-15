@@ -145,8 +145,8 @@ public class ArmorPackMakerTool extends AbstractPackMakerTool {
 		armor.bodyName = readableName + " Chestplate";
 		armor.leggingsName = readableName + " Leggings";
 		armor.bootsName = readableName + " Boots";
-		armor.textureHelmet = new TextureHolder(workspace, registryName + "_head");
-		armor.textureBody = new TextureHolder(workspace, registryName + "_body");
+		armor.textureHelmet = new TextureHolder(workspace, registryName + "_helmet");
+		armor.textureBody = new TextureHolder(workspace, registryName + "_chestplate");
 		armor.textureLeggings = new TextureHolder(workspace, registryName + "_leggings");
 		armor.textureBoots = new TextureHolder(workspace, registryName + "_boots");
 		armor.armorTextureFile = registryName;
