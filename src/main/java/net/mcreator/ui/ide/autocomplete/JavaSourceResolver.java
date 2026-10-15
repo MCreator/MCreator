@@ -27,6 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.jboss.forge.roaster.Roaster;
+import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.*;
 import org.jboss.forge.roaster.model.util.Types;
@@ -298,7 +299,8 @@ public class JavaSourceResolver {
 					Collections.emptyList();
 
 			for (MethodSource<?> m : methods) {
-				if ((!includePrivate && m.isPrivate()) || m.isConstructor() || m.getName().startsWith("<"))
+				if ((!includePrivate && m.isPrivate()) || m.isConstructor() || m.getName().startsWith("<")
+						|| (m.getInternal() instanceof MethodDeclaration method && method.getReturnType2() == null))
 					continue;
 				if (!includePrivate && !samePackage && !isInterface && !m.isPublic() && !m.isProtected())
 					continue;
