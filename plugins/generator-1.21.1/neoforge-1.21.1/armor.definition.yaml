@@ -122,6 +122,9 @@ templates:
     variables: "item=boots"
     name: "@MODASSETSROOT/models/item/@registryname_boots.json"
 
+base_types:
+  - item
+
 tags:
   - tag: ITEMS:minecraft:head_armor
     condition: enableHelmet
