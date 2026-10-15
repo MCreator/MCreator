@@ -55,7 +55,7 @@ public final class LocalVariableResolver {
 			"@(?:[a-zA-Z_$][a-zA-Z0-9_$]*\\.)*[a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*\\((?:[^()]|\\([^()]\\))*\\))?");
 
 	private static final Pattern TYPE_DECL_PATTERN = Pattern.compile(
-			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^;={}()]*?>)?(?:\\[]|\\.\\.\\.)*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
+			"\\b((?:boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^;={}()]*?>)?(?:\\[]|\\.\\.\\.)*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*,\\s*[a-zA-Z_$][a-zA-Z0-9_$]*\\b(?=\\s*(?:[,;=]|$)))*)\\b(?!\\s*\\()");
 	private static final Pattern FOR_PATTERN = Pattern.compile(
 			"for\\s*\\(\\s*([A-Z][A-Za-z0-9_.]*(?:<[^;={}()]*?>)?(?:\\[])*)\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*:");
 	private static final Pattern LAMBDA_PARAM_PATTERN = Pattern.compile(
@@ -68,7 +68,7 @@ public final class LocalVariableResolver {
 			"\\bvar\\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\\s*=\\s*([^;\\r\\n{}]+)");
 
 	private static final Pattern DECL_PATTERN = Pattern.compile(
-			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^;={}()]*?>)?(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*)\\b(?!\\s*\\()");
+			"\\b((?:var|boolean|byte|char|short|int|long|float|double|[A-Z][A-Za-z0-9_.]*)(?:<[^;={}()]*?>)?(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*,\\s*[a-zA-Z_$][a-zA-Z0-9_$]*\\b(?=\\s*(?:[,;=]|$)))*)\\b(?!\\s*\\()");
 	private static final Pattern STATIC_PATTERN = Pattern.compile("\\bstatic\\b");
 
 	private static String normalizeVarargs(String type) {
@@ -148,7 +148,7 @@ public final class LocalVariableResolver {
 		Matcher mDecl = TYPE_DECL_PATTERN.matcher(activeCode);
 		VarTypeInfo lastType = null;
 		while (mDecl.find()) {
-			if (base.equals(mDecl.group(2)))
+			if (Arrays.asList(mDecl.group(2).split("\\s*,\\s*")).contains(base))
 				lastType = new VarTypeInfo(normalizeVarargs(mDecl.group(1)));
 		}
 		if (lastType != null)
@@ -244,9 +244,10 @@ public final class LocalVariableResolver {
 		Matcher m = DECL_PATTERN.matcher(activeCode);
 		while (m.find()) {
 			String type = JavaMemberResolver.toSimpleType(normalizeVarargs(m.group(1)));
-			String name = m.group(2);
-			if (!JavaConventions.JAVA_RESERVED_WORDS.contains(name)) {
-				vars.put(name, type);
+			for (String name : m.group(2).split("\\s*,\\s*")) {
+				if (!JavaConventions.JAVA_RESERVED_WORDS.contains(name)) {
+					vars.put(name, type);
+				}
 			}
 		}
 
