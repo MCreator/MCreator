@@ -25,6 +25,7 @@ import net.mcreator.java.ProjectJarManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.JavaType;
 import org.jboss.forge.roaster.model.source.*;
@@ -80,6 +81,25 @@ public class JavaSourceResolver {
 		sourceCache.put(fqdn, srcCode != null ? srcCode : "");
 
 		return srcCode;
+	}
+
+	public String getPackageName(@Nullable String fqdn, @Nullable String code) {
+		try {
+			String srcCode = code != null ? code : loadSourceCodeForFQDN(fqdn);
+			if (srcCode != null)
+				return Objects.toString(Roaster.parse(srcCode).getPackage(), "");
+			ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
+			ClassFile cf = jarManager != null && fqdn != null ? JavaMemberResolver.getClassFile(jarManager, fqdn) : null;
+			if (cf != null) {
+				// ClassFile.getPackageName() includes enclosing classes for nested types.
+				String qualifiedName = cf.getClassName(true);
+				int packageEnd = qualifiedName.length() - cf.getClassName(false).length() - 1;
+				return qualifiedName.substring(0, Math.max(0, packageEnd));
+			}
+		} catch (Throwable e) {
+			LOG.debug("Failed to resolve package for {}", fqdn, e);
+		}
+		return fqdn != null ? fqdn.substring(0, Math.max(0, fqdn.lastIndexOf('.'))) : "";
 	}
 
 	public Map<String, String> getMethodDocsFromSource(String srcCode) {
@@ -246,8 +266,7 @@ public class JavaSourceResolver {
 			if (source == null)
 				return;
 
-			String currentPackage = currentClassFQDN != null && currentClassFQDN.contains(".") ?
-					currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) : "";
+			String currentPackage = getPackageName(currentClassFQDN, null);
 			boolean samePackage = Objects.toString(source.getPackage(), "").equals(currentPackage);
 			boolean isInterface = source instanceof JavaInterfaceSource;
 			Map<String, String> imports = parseImports(srcCode);

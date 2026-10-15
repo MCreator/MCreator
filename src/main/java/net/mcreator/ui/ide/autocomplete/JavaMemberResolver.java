@@ -141,7 +141,7 @@ public class JavaMemberResolver {
 				}
 			}
 
-			String pkg = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
+			String pkg = Objects.toString(source.getPackage(), "");
 			if (source instanceof JavaClassSource javaClass) {
 				String parentName = javaClass.getSuperType();
 				if (parentName != null && !parentName.isEmpty()) {
@@ -226,9 +226,8 @@ public class JavaMemberResolver {
 		}
 
 		String fqdn = cf.getClassName(true);
-		String targetPackage = fqdn.contains(".") ? fqdn.substring(0, fqdn.lastIndexOf('.')) : "";
-		String currentPackage = (currentClassFQDN != null && currentClassFQDN.contains("."))
-				? currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) : "";
+		String targetPackage = sourceResolver.getPackageName(fqdn, null);
+		String currentPackage = sourceResolver.getPackageName(currentClassFQDN, null);
 		boolean samePackage = targetPackage.equals(currentPackage);
 
 		String srcCode = sourceResolver.loadSourceCodeForFQDN(fqdn);
@@ -321,7 +320,7 @@ public class JavaMemberResolver {
 		}
 	}
 
-	@Nullable public ClassFile getClassFile(ProjectJarManager jarManager, String fqdn) {
+	@Nullable public static ClassFile getClassFile(ProjectJarManager jarManager, String fqdn) {
 		ClassFile cf = jarManager.getClassEntry(fqdn);
 		if (cf != null)
 			return cf;

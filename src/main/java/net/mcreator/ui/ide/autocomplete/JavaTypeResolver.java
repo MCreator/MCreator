@@ -461,7 +461,7 @@ public class JavaTypeResolver {
 		if (fqdn == null || fqdn.isEmpty())
 			return Collections.emptyList();
 		ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
-		ClassFile cf = jarManager != null ? memberResolver.getClassFile(jarManager, fqdn) : null;
+		ClassFile cf = jarManager != null ? JavaMemberResolver.getClassFile(jarManager, fqdn) : null;
 		if (cf != null && cf.getParamTypes() != null)
 			return cf.getParamTypes();
 		JavaType<?> type = parseSourceType(fqdn, currentClassFQDN, currentCode);
@@ -493,9 +493,7 @@ public class JavaTypeResolver {
 		String base = chain.getFirst();
 		boolean isCursorStatic = LocalVariableResolver.isStaticContext(codeBeforeCursor);
 
-		String currentPkg = currentClassFQDN != null && currentClassFQDN.contains(".") ?
-				currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) :
-				"";
+		String currentPkg = sourceResolver.getPackageName(currentClassFQDN, code);
 
 		if (targetName.contains(".")) {
 			ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
