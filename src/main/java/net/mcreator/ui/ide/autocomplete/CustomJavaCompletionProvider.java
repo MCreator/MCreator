@@ -38,6 +38,7 @@ import org.fife.ui.rsyntaxtextarea.Token;
 
 import org.jboss.forge.roaster.model.source.*;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -66,6 +67,7 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	private final Workspace workspace;
 	private final JavaParser parser;
 	private final JavaTypeResolver javaTypeResolver;
+	private final CompletionProvider docCommentProvider;
 	private final ShorthandCompletionCache shorthandCache;
 	private AutoCompletion ac;
 
@@ -120,9 +122,10 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		return classInfoCache.computeIfAbsent(fqdn, _ -> ClassInfo.of(workspace, fqdn, className));
 	}
 
-	public CustomJavaCompletionProvider(Workspace workspace, JavaParser parser) {
+	public CustomJavaCompletionProvider(Workspace workspace, JavaParser parser, CompletionProvider docCommentProvider) {
 		this.workspace = workspace;
 		this.parser = parser;
+		this.docCommentProvider = docCommentProvider;
 		this.javaTypeResolver = new JavaTypeResolver(workspace);
 		this.shorthandCache = new CustomJSCCache(this, new DefaultCompletionProvider());
 		setAutoActivationRules(!"Trigger on dot".equals(PreferencesManager.PREFERENCES.ide.autocompleteMode.get()),
@@ -158,14 +161,14 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 		}
 	}
 
-	private boolean isInsideCommentOrString(JTextComponent comp) {
+	@Nullable private CompletionProvider getProviderFor(JTextComponent comp) {
 		if (!(comp instanceof RSyntaxTextArea rsta))
-			return false;
+			return this;
 		RSyntaxDocument doc = (RSyntaxDocument) rsta.getDocument();
 		int line = rsta.getCaretLineNumber();
 		Token t = doc.getTokenListForLine(line);
 		if (t == null)
-			return false;
+			return this;
 		int dot = rsta.getCaretPosition();
 		Token curToken = RSyntaxUtilities.getTokenAtOffset(t, dot);
 		int type;
@@ -182,20 +185,22 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				type = doc.getClosestStandardTokenTypeForInternalType(type);
 			}
 		}
+		if (type == Token.COMMENT_DOCUMENTATION || type == Token.COMMENT_KEYWORD || type == Token.COMMENT_MARKUP)
+			return docCommentProvider;
 		return (type >= Token.COMMENT_EOL && type <= Token.COMMENT_MARKUP) || type == Token.LITERAL_STRING_DOUBLE_QUOTE
 				|| type == Token.ERROR_STRING_DOUBLE || type == Token.LITERAL_CHAR || type == Token.ERROR_CHAR
-				|| type == Token.LITERAL_BACKQUOTE;
+				|| type == Token.LITERAL_BACKQUOTE ? null : this;
 	}
 
 	@Override public boolean isAutoActivateOkay(JTextComponent tc) {
-		if (isInsideCommentOrString(tc))
-			return false;
-		return super.isAutoActivateOkay(tc);
+		CompletionProvider provider = getProviderFor(tc);
+		return provider == this ? super.isAutoActivateOkay(tc) : provider != null && provider.isAutoActivateOkay(tc);
 	}
 
 	@Override public String getAlreadyEnteredText(JTextComponent comp) {
-		if (isInsideCommentOrString(comp))
-			return "";
+		CompletionProvider provider = getProviderFor(comp);
+		if (provider != this)
+			return provider != null ? provider.getAlreadyEnteredText(comp) : "";
 		String word = super.getAlreadyEnteredText(comp);
 		if (word == null)
 			word = "";
@@ -213,9 +218,12 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 	}
 
 	@Override protected List<Completion> getCompletionsImpl(JTextComponent comp) {
-		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get() || isInsideCommentOrString(comp)) {
+		if (!PreferencesManager.PREFERENCES.ide.autocomplete.get()) {
 			return Collections.emptyList();
 		}
+		CompletionProvider provider = getProviderFor(comp);
+		if (provider != this)
+			return provider != null ? provider.getCompletions(comp) : Collections.emptyList();
 
 		Document doc = comp.getDocument();
 		int caretPos = comp.getCaretPosition();

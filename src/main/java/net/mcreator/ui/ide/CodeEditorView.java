@@ -388,7 +388,8 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 					LOG.error("Failed initial parse for JavaParser", e);
 				}
 			}
-			this.jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser);
+			this.jcp = new CustomJavaCompletionProvider(mcreator.getWorkspace(), parser,
+					jls.getCompletionProvider(te).getDocCommentCompletionProvider());
 			ac = new AutoCompletion(this.jcp) {
 				@Override protected void insertCompletion(Completion c, boolean typedParamListStartChar) {
 					if (c instanceof CustomClassCompletion cc) {
