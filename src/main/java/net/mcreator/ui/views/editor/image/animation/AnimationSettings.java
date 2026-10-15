@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.views.editor.image.animation;
 
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;

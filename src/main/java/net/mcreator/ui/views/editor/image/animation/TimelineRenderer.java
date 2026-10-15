@@ -20,18 +20,19 @@
 package net.mcreator.ui.views.editor.image.animation;
 
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.views.AnimationMakerView;
+import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.function.IntSupplier;
 
-public class TimelineRenderer extends JLabel implements ListCellRenderer<AnimationMakerView.AnimationFrame> {
+public class TimelineRenderer extends JLabel implements ListCellRenderer<Canvas> {
 
 	private static final int borderThickness = 2;
 
 	private static final Color currentFrameColor = new Color(75, 85, 197);
+	private static final Color defaultFrameBackgroundColor = Color.gray;
 
 	private final IntSupplier currentFrameSupplier;
 
@@ -41,26 +42,27 @@ public class TimelineRenderer extends JLabel implements ListCellRenderer<Animati
 		setPreferredSize(new Dimension(170, 170));
 		setHorizontalAlignment(JLabel.CENTER);
 		setVerticalAlignment(JLabel.CENTER);
+		setOpaque(true);
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends AnimationMakerView.AnimationFrame> list,
-			AnimationMakerView.AnimationFrame value, int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList<? extends Canvas> list, Canvas value, int index,
+			boolean isSelected, boolean cellHasFocus) {
 		if (index == currentFrameSupplier.getAsInt()) {
-			setOpaque(true);
 			setBackground(currentFrameColor);
 		} else {
-			setOpaque(false);
+			setBackground(defaultFrameBackgroundColor);
 		}
 
 		if (isSelected) {
 			setBorder(BorderFactory.createLineBorder(Theme.current().getInterfaceAccentColor(), borderThickness));
+			value.setAsDisplayedCanvas();
 		} else {
 			setBorder(BorderFactory.createEmptyBorder(borderThickness, borderThickness, borderThickness,
 					borderThickness));
 		}
 
-		setIcon(new ImageIcon(ImageUtils.resize(value.getImage(), 170 - borderThickness * 2)));
+		setIcon(new ImageIcon(ImageUtils.resize(value.render(), 170 - borderThickness * 2)));
 
 		return this;
 	}
