@@ -1,0 +1,32 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "tagName",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": "%{BKY_TEXTS_HUE}",
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"tagName\"><block type=\"text\"></block></value>"
+    ],
+    "inputs": [
+      "entity",
+      "tagName"
+    ],
+    "warnings": [
+      "no_side_sync"
+    ]
+  }
+}

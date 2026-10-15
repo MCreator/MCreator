@@ -1,0 +1,1 @@
+${input$entity}.getPersistentData().remove(${input$tagName});
