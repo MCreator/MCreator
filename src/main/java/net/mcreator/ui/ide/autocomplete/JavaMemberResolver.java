@@ -40,6 +40,7 @@ import org.jboss.forge.roaster.model.impl.JavaSourceImpl;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.JavaEnumSource;
+import org.jboss.forge.roaster.model.source.JavaInterfaceSource;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -163,6 +164,9 @@ public class JavaMemberResolver {
 						populateMembersOfFQDN(ifFQDN, currentClassFQDN, null, result, added, visited, true);
 					}
 				}
+			}
+			if (source instanceof JavaInterfaceSource) {
+				populateMembersOfFQDN("java.lang.Object", currentClassFQDN, null, result, added, visited, false);
 			}
 		} catch (Throwable e) {
 			LOG.debug("Failed to parse super type / interfaces for {}", fqdn, e);
