@@ -356,9 +356,11 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 			}
 		} else {
 			// Method/field completions for "this"
-			List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
-					codeBeforeCursor, currentClassFQDN);
-			addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
+			if (!CustomClassCompletion.IMPORT_OR_PACKAGE_LINE.matcher(textBeforeWord.stripLeading()).matches()) {
+				List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
+						codeBeforeCursor, currentClassFQDN);
+				addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
+			}
 
 			// Shorthand completions (templates and keywords)
 			for (Completion c : shorthandCache.getShorthandCompletions()) {
