@@ -31,6 +31,7 @@ import org.fife.rsta.ac.java.classreader.ClassFile;
 import org.fife.rsta.ac.java.classreader.FieldInfo;
 import org.fife.rsta.ac.java.classreader.MethodInfo;
 import org.fife.rsta.ac.java.classreader.Util;
+import org.fife.rsta.ac.java.classreader.attributes.Signature;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster._shade.org.eclipse.jdt.core.dom.CompilationUnit;
 import org.jboss.forge.roaster.model.InterfaceCapable;
@@ -289,7 +290,14 @@ public class JavaMemberResolver {
 
 			String vis = Util.isPublic(flags) ? "public" : (Util.isProtected(flags) ? "protected" : "package");
 			String doc = docs.get("#" + fName);
-			JavaTypeResolver.addFieldCompletion(fName, fi.getTypeString(true), fi.isStatic(),
+			String fieldType = fi.getTypeString(true);
+			for (int j = 0; j < fi.getAttributeCount(); j++) {
+				if (fi.getAttribute(j) instanceof Signature signature) {
+					fieldType = org.jboss.forge.roaster._shade.org.eclipse.jdt.core.Signature
+							.toString(signature.getSignature()).replace('/', '.');
+				}
+			}
+			JavaTypeResolver.addFieldCompletion(fName, fieldType, fi.isStatic(),
 					fi.isFinal(), fi.isDeprecated(), vis, declaringClass, doc, result, added);
 		}
 	}

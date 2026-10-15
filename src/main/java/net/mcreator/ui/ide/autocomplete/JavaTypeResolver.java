@@ -643,7 +643,7 @@ public class JavaTypeResolver {
 			String returnTypeSimple = memberItem != null ? memberItem.detail() : null;
 
 			List<String> typeParams = getTypeParameters(currentFQDN, currentClassFQDN, code);
-			if (currentGenericArgs.isEmpty()) {
+			if (currentGenericArgs.isEmpty() || typeParams.isEmpty()) {
 				String superTypeWithGenerics = parseSourceType(currentFQDN, currentClassFQDN, code)
 						instanceof JavaClassSource jcs ? jcs.getSuperType() : null;
 				List<String> superGenArgs = parseGenericArgs(superTypeWithGenerics);
