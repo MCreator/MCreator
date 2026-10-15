@@ -355,13 +355,6 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				}
 			}
 		} else {
-			// Method/field completions for "this"
-			if (!CustomClassCompletion.IMPORT_OR_PACKAGE_LINE.matcher(textBeforeWord.stripLeading()).matches()) {
-				List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
-						codeBeforeCursor, currentClassFQDN);
-				addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
-			}
-
 			// Shorthand completions (templates and keywords)
 			for (Completion c : shorthandCache.getShorthandCompletions()) {
 				if (completions.size() >= MAX_COMPLETIONS)
@@ -380,6 +373,13 @@ public class CustomJavaCompletionProvider extends DefaultCompletionProvider {
 				if (matchesFilter(varName, wordOnly) && !varName.equals(wordOnly)) {
 					completions.add(new CustomVariableCompletion(this, varName, entry.getValue()));
 				}
+			}
+
+			// Method/field completions for "this"
+			if (!CustomClassCompletion.IMPORT_OR_PACKAGE_LINE.matcher(textBeforeWord.stripLeading()).matches()) {
+				List<JavaTypeResolver.CompletionItem> thisItems = javaTypeResolver.getCompletionsFor("this", code,
+						codeBeforeCursor, currentClassFQDN);
+				addResolverItems(thisItems, wordOnly, CustomFieldCompletion.PrefixContext.NONE, completions);
 			}
 
 			// External classes & workspace classes
