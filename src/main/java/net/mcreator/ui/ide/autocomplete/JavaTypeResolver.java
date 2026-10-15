@@ -655,10 +655,11 @@ public class JavaTypeResolver {
 					}
 				}
 			}
-			int paramIndex = typeParams.indexOf(returnTypeSimple);
-			if (paramIndex >= 0 && paramIndex < currentGenericArgs.size()) {
-				returnTypeSimple = currentGenericArgs.get(paramIndex);
-			} else if (returnTypeSimple != null && returnTypeSimple.length() == 1 && currentGenericArgs.size() == 1) {
+			Map<String, String> typeArguments = new HashMap<>();
+			for (int p = 0; p < typeParams.size() && p < currentGenericArgs.size(); p++)
+				typeArguments.put(typeParams.get(p), currentGenericArgs.get(p));
+			returnTypeSimple = sourceResolver.resolveFQDN(returnTypeSimple, typeArguments);
+			if (returnTypeSimple != null && returnTypeSimple.length() == 1 && currentGenericArgs.size() == 1) {
 				returnTypeSimple = currentGenericArgs.getFirst();
 			}
 
