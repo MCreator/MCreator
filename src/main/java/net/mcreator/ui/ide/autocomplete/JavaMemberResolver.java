@@ -51,7 +51,7 @@ public class JavaMemberResolver {
 	private final JavaSourceResolver sourceResolver;
 	private final JavaTypeResolver typeResolver;
 
-	// Maps class FQDN -> cached list of field and method completion items
+	// Maps class FQDN and accessing class -> cached list of field and method completion items
 	@SuppressWarnings("NullableProblems")
 	private final Cache<String, List<JavaTypeResolver.CompletionItem>> memberCache = CacheBuilder.newBuilder()
 			.maximumSize(5000).build();
@@ -85,9 +85,10 @@ public class JavaMemberResolver {
 
 		boolean isCurrentClassOrInner = fqdn.equals(currentClassFQDN)
 				|| (currentClassFQDN != null && fqdn.startsWith(currentClassFQDN + "."));
+		String cacheKey = fqdn + ":" + currentClassFQDN;
 
 		if (!isCurrentClassOrInner) {
-			List<JavaTypeResolver.CompletionItem> cached = memberCache.getIfPresent(fqdn);
+			List<JavaTypeResolver.CompletionItem> cached = memberCache.getIfPresent(cacheKey);
 			if (cached != null) {
 				return new ArrayList<>(cached);
 			}
@@ -99,14 +100,15 @@ public class JavaMemberResolver {
 
 		if (isCurrentClassOrInner && currentCode != null && !currentCode.isEmpty()) {
 			String declaringClass = fqdn.contains(".") ? fqdn.substring(fqdn.lastIndexOf('.') + 1) : fqdn;
-			sourceResolver.parseSourceCodeCompletions(currentCode, declaringClass, result, added, true, false);
+			sourceResolver.parseSourceCodeCompletions(currentCode, declaringClass, result, added, true, false,
+					currentClassFQDN);
 			populateSuperAndInterfaces(currentCode, fqdn, currentClassFQDN, result, added, visited);
 		} else {
 			populateMembersOfFQDN(fqdn, currentClassFQDN, currentCode, result, added, visited, false);
 		}
 
 		if (!isCurrentClassOrInner) {
-			memberCache.put(fqdn, List.copyOf(result));
+			memberCache.put(cacheKey, List.copyOf(result));
 		}
 		return result;
 	}
@@ -182,8 +184,11 @@ public class JavaMemberResolver {
 
 		boolean isCurrentClassOrInner = fqdn.equals(currentClassFQDN)
 				|| (currentClassFQDN != null && fqdn.startsWith(currentClassFQDN + "."));
+		boolean isWorkspaceClass = typeResolver.getModClasses().values().stream().flatMap(Collection::stream)
+				.map(name -> name.startsWith(".") ? name.substring(1) : name)
+				.anyMatch(name -> fqdn.equals(name) || fqdn.startsWith(name + ".") || fqdn.startsWith(name + "$"));
 
-		if (!isCurrentClassOrInner && jarManager != null) {
+		if (!isCurrentClassOrInner && !isWorkspaceClass && jarManager != null) {
 			try {
 				ClassFile cf = getClassFile(jarManager, fqdn);
 				if (cf != null) {
@@ -202,7 +207,7 @@ public class JavaMemberResolver {
 				(workspace != null ? sourceResolver.loadSourceCodeForFQDN(fqdn) : null);
 		if (srcCode != null) {
 			sourceResolver.parseSourceCodeCompletions(srcCode, declaringClass, result, added, false,
-					interfaceInherited);
+					interfaceInherited, currentClassFQDN);
 			populateSuperAndInterfaces(srcCode, fqdn, currentClassFQDN, result, added, visited);
 		}
 	}
@@ -262,8 +267,8 @@ public class JavaMemberResolver {
 			String doc = lookupDoc(docs, mName, pTypes, pCount);
 			if ((flags & AccessFlags.ACC_TRANSIENT) != 0 && pCount > 0) {
 				int last = pCount - 1;
-				pTypes[last] = pTypes[last].replaceFirst("\\[\\]$", "...");
-				fqdnPTypes[last] = fqdnPTypes[last].replaceFirst("\\[\\]$", "...");
+				pTypes[last] = pTypes[last].replaceFirst("\\[]$", "...");
+				fqdnPTypes[last] = fqdnPTypes[last].replaceFirst("\\[]$", "...");
 			}
 			JavaTypeResolver.addMethodCompletion(mName, mi.getReturnTypeString(true), pTypes, pNames,
 					fqdnPTypes, mi.isStatic(), mi.isAbstract(), mi.isDeprecated(), vis, declaringClass, doc, result,

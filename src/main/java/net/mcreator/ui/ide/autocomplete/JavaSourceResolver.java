@@ -234,7 +234,7 @@ public class JavaSourceResolver {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void parseSourceCodeCompletions(String srcCode, String declaringClass,
 			List<JavaTypeResolver.CompletionItem> result, Set<String> added, boolean includePrivate,
-			boolean interfaceInherited) {
+			boolean interfaceInherited, @Nullable String currentClassFQDN) {
 		if (srcCode == null || srcCode.isEmpty())
 			return;
 
@@ -246,6 +246,10 @@ public class JavaSourceResolver {
 			if (source == null)
 				return;
 
+			String currentPackage = currentClassFQDN != null && currentClassFQDN.contains(".") ?
+					currentClassFQDN.substring(0, currentClassFQDN.lastIndexOf('.')) : "";
+			boolean samePackage = Objects.toString(source.getPackage(), "").equals(currentPackage);
+			boolean isInterface = source instanceof JavaInterfaceSource;
 			Map<String, String> imports = parseImports(srcCode);
 
 			List<FieldSource<?>> fields = source instanceof FieldHolderSource<?> fhs ?
@@ -253,6 +257,8 @@ public class JavaSourceResolver {
 					Collections.emptyList();
 			for (FieldSource<?> f : fields) {
 				if (!includePrivate && f.isPrivate())
+					continue;
+				if (!includePrivate && !samePackage && !isInterface && !f.isPublic() && !f.isProtected())
 					continue;
 				String fName = f.getName();
 				if (fName.equals("class") || fName.equals("interface") || fName.equals("enum"))
@@ -273,6 +279,8 @@ public class JavaSourceResolver {
 
 			for (MethodSource<?> m : methods) {
 				if ((!includePrivate && m.isPrivate()) || m.isConstructor() || m.getName().startsWith("<"))
+					continue;
+				if (!includePrivate && !samePackage && !isInterface && !m.isPublic() && !m.isProtected())
 					continue;
 				if (interfaceInherited && m.isStatic())
 					continue;
