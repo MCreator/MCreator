@@ -51,6 +51,8 @@ import javax.annotation.Nullable;
 
 	public ItemExtension(ModElement element) {
 		super(element);
+
+		this.compostLayerChance = new NumberProviderWithFixedValue(null, 0);
 	}
 
 	public boolean hasFuelProcedure() {
