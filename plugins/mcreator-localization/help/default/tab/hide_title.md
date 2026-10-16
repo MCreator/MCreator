@@ -1,1 +1,1 @@
-Check this box to hide the tab title.
+Check this box to hide the title in the creative tab.
