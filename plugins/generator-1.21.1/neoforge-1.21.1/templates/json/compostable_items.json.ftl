@@ -3,7 +3,7 @@
   "values": {
     <#list itemextensions?filter(e -> e.isCompostable()) as extension>
     "${mappedMCItemToRegistryName(extension.item)}": {
-      "chance": <#if extension.compostableNumberProvider??>${extension.compostableNumberProvider}<#else>${extension.compostLayerChance}</#if>
+      "chance": <#if extension.compostLayerChance.entry()??>${extension.compostLayerChance.entry()}<#else>${extension.compostLayerChance.fixedValue()}</#if>
     }
     <#sep>,</#list>
   }

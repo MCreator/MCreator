@@ -46,8 +46,8 @@ package ${package}.init;
 		event.modify(${mappedMCItemToItem(extension.item)},
 			(builder, _, _) -> builder.set(DataComponents.COMPOSTABLE,
 					new Compostable(
-					<#if extension.compostableNumberProvider??>
-					${extension.compostableNumberProvider}
+					<#if extension.compostLayerChance.entry()??>
+					${extension.compostLayerChance.entry()}
 					<#else>
 					ResourceKey.create(Registries.CONTEXT_INT_PROVIDER, Identifier.fromNamespaceAndPath("${modid}", "compostable/${extension.getModElement().getRegistryName()}"))
 					</#if>)));

@@ -22,9 +22,9 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.NumberProviderEntry;
+import net.mcreator.element.parts.NumberProviderWithFixedValue;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -43,8 +43,7 @@ import javax.annotation.Nullable;
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
 
-	@Nullable public NumberProviderEntry compostableNumberProvider;
-	@Numeric(init = 0, min = 0, max = 1, step = 0.01) public double compostLayerChance;
+	public NumberProviderWithFixedValue compostLayerChance;
 
 	private ItemExtension() {
 		this(null);
@@ -66,10 +65,10 @@ import javax.annotation.Nullable;
 	}
 
 	public boolean isCompostable() {
-		return compostableNumberProvider != null || compostLayerChance > 0;
+		return compostLayerChance.entry() != null || compostLayerChance.fixedValue() > 0;
 	}
 
 	public boolean generateCompostableProvider() {
-		return compostableNumberProvider == null && compostLayerChance > 0;
+		return compostLayerChance.entry() == null && compostLayerChance.fixedValue() > 0;
 	}
 }

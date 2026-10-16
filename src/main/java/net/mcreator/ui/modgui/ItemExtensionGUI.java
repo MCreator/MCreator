@@ -31,7 +31,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SingleNumberProviderEntryField;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -97,7 +96,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 		// Compostable
 		compostLayerChance = new SingleNumberProviderEntryField(mcreator, "compostable_providers",
-				ComponentFromAnnotation.spinner(ItemExtension.class, "compostLayerChance"));
+				new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01)));
 
 		JComponent compostPanel = PanelUtils.gridElements(1, 2, 0, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
@@ -187,8 +186,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		hasDispenseBehavior.setSelected(itemExtension.hasDispenseBehavior);
 		dispenseSuccessCondition.setSelectedProcedure(itemExtension.dispenseSuccessCondition);
 		dispenseResultItemstack.setSelectedProcedure(itemExtension.dispenseResultItemstack);
-		compostLayerChance.setEntry(itemExtension.compostableNumberProvider);
-		compostLayerChance.setFixedValue(itemExtension.compostLayerChance);
+		compostLayerChance.setValuePair(itemExtension.compostLayerChance);
 
 		updateFuelElements();
 		updateDispenseElements();
@@ -204,8 +202,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		itemExtension.hasDispenseBehavior = hasDispenseBehavior.isSelected();
 		itemExtension.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
 		itemExtension.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
-		itemExtension.compostableNumberProvider = compostLayerChance.getEntry();
-		itemExtension.compostLayerChance = (double) compostLayerChance.getFixedValue();
+		itemExtension.compostLayerChance = compostLayerChance.getValuePair();
 		return itemExtension;
 	}
 
