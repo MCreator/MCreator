@@ -21,17 +21,21 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.NumberProviderEntry;
+import net.mcreator.element.parts.NumberProviderOrFixedValue;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+
+import javax.annotation.Nullable;
 
 @SuppressWarnings("unused") public class ItemExtension extends GeneratableElement {
 
 	public MItemBlock item;
 
 	public boolean enableFuel;
+	@Nullable public NumberProviderEntry fuelNumberProvider;
 	public NumberProcedure fuelPower;
 	public Procedure fuelSuccessCondition;
 
@@ -39,7 +43,7 @@ import net.mcreator.workspace.elements.ModElement;
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
 
-	@Numeric(init = 0, min = 0, max = 1, step = 0.01) public double compostLayerChance;
+	public NumberProviderOrFixedValue compostLayerChance;
 
 	private ItemExtension() {
 		this(null);
@@ -47,12 +51,26 @@ import net.mcreator.workspace.elements.ModElement;
 
 	public ItemExtension(ModElement element) {
 		super(element);
+
+		this.compostLayerChance = new NumberProviderOrFixedValue(null, 0);
 	}
 
 	public boolean hasFuelProcedure() {
-		if (!enableFuel)
+		if (!enableFuel || (fuelNumberProvider != null))
 			return false;
 		Workspace workspace = getModElement().getWorkspace();
 		return Procedure.hasProcedure(fuelPower, workspace) || Procedure.hasProcedure(fuelSuccessCondition, workspace);
+	}
+
+	public boolean generateFuelProvider() {
+		return enableFuel && fuelNumberProvider == null;
+	}
+
+	public boolean isCompostable() {
+		return compostLayerChance.entry() != null || compostLayerChance.fixedValue() > 0;
+	}
+
+	public boolean generateCompostableProvider() {
+		return compostLayerChance.entry() == null && compostLayerChance.fixedValue() > 0;
 	}
 }

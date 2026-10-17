@@ -30,7 +30,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.MCItemHolder;
-import net.mcreator.ui.modgui.util.ComponentFromAnnotation;
+import net.mcreator.ui.minecraft.SingleNumberProviderEntryField;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -49,11 +49,11 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 			"elementgui.item_extension.error_extension_needs_item");
 
 	private final JCheckBox enableFuel = L10N.checkbox("elementgui.common.enable");
+	private SingleNumberProviderEntryField fuelNumberProvider;
 	private ProcedureSelector fuelSuccessCondition;
 	private NumberProcedureSelector fuelPower;
 
-	private final JSpinner compostLayerChance = ComponentFromAnnotation.spinner(ItemExtension.class,
-			"compostLayerChance");
+	private SingleNumberProviderEntryField compostLayerChance;
 
 	private final JCheckBox hasDispenseBehavior = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector dispenseSuccessCondition;
@@ -72,6 +72,10 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		enableFuel.setOpaque(false);
 		enableFuel.addActionListener(_ -> updateFuelElements());
 
+		fuelNumberProvider = new SingleNumberProviderEntryField(mcreator, "furnace_fuel_providers", null);
+		fuelNumberProvider.setDefaultText(L10N.t("elementgui.common.use_custom_value"));
+		fuelNumberProvider.addEntrySelectedListener(_ -> updateFuelElements());
+
 		fuelPower = new NumberProcedureSelector(null, mcreator,
 				new JSpinner(new SpinnerNumberModel(1600, 0, Integer.MAX_VALUE, 1)), 75,
 				Dependency.fromString("itemstack:itemstack"));
@@ -80,16 +84,20 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				L10N.t("elementgui.item_extension.fuel_success_condition"), ProcedureSelector.Side.BOTH, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString("itemstack:itemstack")).makeInline();
 
-		JComponent fuelTopPanel = PanelUtils.gridElements(2, 2, 0, 2,
+		JComponent fuelTopPanel = PanelUtils.gridElements(3, 2, 0, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/enable_fuel"),
 						L10N.label("elementgui.item_extension.enable_fuel")), enableFuel,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/burn_time"),
-						L10N.label("elementgui.item_extension.burn_time")), fuelPower);
+						L10N.label("elementgui.item_extension.burn_time")), fuelNumberProvider, new JLabel(),
+				fuelPower);
 
 		JComponent fuelPanel = PanelUtils.northAndCenterElement(fuelTopPanel, fuelSuccessCondition, 0, 2);
 		ComponentUtils.makeSection(fuelPanel, L10N.t("elementgui.item_extension.fuel_properties"));
 
 		// Compostable
+		compostLayerChance = new SingleNumberProviderEntryField(mcreator, "compostable_providers",
+				new JSpinner(new SpinnerNumberModel(0, 0, 1, 0.01)));
+
 		JComponent compostPanel = PanelUtils.gridElements(1, 2, 0, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/layer_chance"),
 						L10N.label("elementgui.item_extension.layer_chance")), compostLayerChance);
@@ -162,19 +170,23 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 	}
 
 	private void updateFuelElements() {
-		fuelPower.setEnabled(enableFuel.isSelected());
-		fuelSuccessCondition.setEnabled(enableFuel.isSelected());
+		boolean isFuelEnabled = enableFuel.isSelected();
+
+		fuelNumberProvider.setEnabled(isFuelEnabled);
+		fuelPower.setEnabled(isFuelEnabled && fuelNumberProvider.isEmpty());
+		fuelSuccessCondition.setEnabled(isFuelEnabled && fuelNumberProvider.isEmpty());
 	}
 
 	@Override protected void openInEditingMode(ItemExtension itemExtension) {
 		item.setBlock(itemExtension.item);
 		enableFuel.setSelected(itemExtension.enableFuel);
+		fuelNumberProvider.setEntry(itemExtension.fuelNumberProvider);
 		fuelPower.setSelectedProcedure(itemExtension.fuelPower);
 		fuelSuccessCondition.setSelectedProcedure(itemExtension.fuelSuccessCondition);
 		hasDispenseBehavior.setSelected(itemExtension.hasDispenseBehavior);
 		dispenseSuccessCondition.setSelectedProcedure(itemExtension.dispenseSuccessCondition);
 		dispenseResultItemstack.setSelectedProcedure(itemExtension.dispenseResultItemstack);
-		compostLayerChance.setValue(itemExtension.compostLayerChance);
+		compostLayerChance.setValuePair(itemExtension.compostLayerChance);
 
 		updateFuelElements();
 		updateDispenseElements();
@@ -184,12 +196,13 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		ItemExtension itemExtension = new ItemExtension(modElement);
 		itemExtension.item = item.getBlock();
 		itemExtension.enableFuel = enableFuel.isSelected();
+		itemExtension.fuelNumberProvider = fuelNumberProvider.getEntry();
 		itemExtension.fuelPower = fuelPower.getSelectedProcedure();
 		itemExtension.fuelSuccessCondition = fuelSuccessCondition.getSelectedProcedure();
 		itemExtension.hasDispenseBehavior = hasDispenseBehavior.isSelected();
 		itemExtension.dispenseSuccessCondition = dispenseSuccessCondition.getSelectedProcedure();
 		itemExtension.dispenseResultItemstack = dispenseResultItemstack.getSelectedProcedure();
-		itemExtension.compostLayerChance = (double) compostLayerChance.getValue();
+		itemExtension.compostLayerChance = compostLayerChance.getValuePair();
 		return itemExtension;
 	}
 
