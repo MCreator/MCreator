@@ -73,7 +73,7 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		enableFuel.addActionListener(_ -> updateFuelElements());
 
 		fuelNumberProvider = new SingleNumberProviderEntryField(mcreator, "furnace_fuel_providers", null);
-		fuelNumberProvider.setDefaultText(L10N.t("elementgui.common.use_procedure_value"));
+		fuelNumberProvider.setDefaultText(L10N.t("elementgui.common.use_custom_value"));
 		fuelNumberProvider.addEntrySelectedListener(_ -> updateFuelElements());
 
 		fuelPower = new NumberProcedureSelector(null, mcreator,
