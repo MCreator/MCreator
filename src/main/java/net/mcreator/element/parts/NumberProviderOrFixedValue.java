@@ -30,9 +30,6 @@ import java.lang.reflect.Type;
 
 	public static class GSONAdapter
 			implements JsonSerializer<NumberProviderOrFixedValue>, JsonDeserializer<NumberProviderOrFixedValue> {
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting()
-				.setStrictness(Strictness.LENIENT).create();
-
 		@Override
 		public NumberProviderOrFixedValue deserialize(JsonElement json, Type typeOfT,
 				JsonDeserializationContext context) throws JsonParseException {
@@ -40,22 +37,20 @@ import java.lang.reflect.Type;
 				return new NumberProviderOrFixedValue(null, json.getAsDouble());
 			} else if (json.isJsonObject()) {
 				JsonObject jsonObj = json.getAsJsonObject();
-				JsonObject entryObj = new JsonObject();
-				entryObj.addProperty("value", jsonObj.get("entry").getAsString());
-				return new NumberProviderOrFixedValue(gson.fromJson(entryObj, NumberProviderEntry.class),
+				return new NumberProviderOrFixedValue(
+						context.deserialize(jsonObj.get("entry"), NumberProviderEntry.class),
 						jsonObj.get("fixedValue").getAsDouble());
 			}
 			throw new JsonParseException("Invalid number provider with fixed value JSON format");
 		}
 
 		@Override
-		public JsonElement serialize(NumberProviderOrFixedValue src, Type typeOfSrc,
-				JsonSerializationContext context) {
+		public JsonElement serialize(NumberProviderOrFixedValue src, Type typeOfSrc, JsonSerializationContext context) {
 			if (src.entry == null) { // Directly store the fixed value
 				return new JsonPrimitive(src.fixedValue);
 			} else {
 				JsonObject obj = new JsonObject();
-				obj.add("entry", gson.toJsonTree(src.entry).getAsJsonObject().get("value")); // Flatten to a string
+				obj.add("entry", context.serialize(src.entry)); // Flatten to a string
 				obj.add("fixedValue", new JsonPrimitive(src.fixedValue));
 				return obj;
 			}
