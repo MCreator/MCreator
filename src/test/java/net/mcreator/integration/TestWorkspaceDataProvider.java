@@ -1409,7 +1409,7 @@ public class TestWorkspaceDataProvider {
 							ElementUtil.getAllEntriesFor(modElement.getWorkspace(), "furnace_fuel_providers")));
 			itemExtension.fuelPower = new NumberProcedure(_true ? "number3" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
-			itemExtension.compostLayerChance = new NumberProviderWithFixedValue(emptyLists ?
+			itemExtension.compostLayerChance = new NumberProviderOrFixedValue(emptyLists ?
 					null :
 					new NumberProviderEntry(modElement.getWorkspace(), getRandomDataListEntry(random,
 							ElementUtil.getAllEntriesFor(modElement.getWorkspace(), "compostable_providers"))),

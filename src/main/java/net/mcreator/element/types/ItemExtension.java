@@ -22,7 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.NumberProviderEntry;
-import net.mcreator.element.parts.NumberProviderWithFixedValue;
+import net.mcreator.element.parts.NumberProviderOrFixedValue;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.workspace.Workspace;
@@ -43,7 +43,7 @@ import javax.annotation.Nullable;
 	public Procedure dispenseSuccessCondition;
 	public Procedure dispenseResultItemstack;
 
-	public NumberProviderWithFixedValue compostLayerChance;
+	public NumberProviderOrFixedValue compostLayerChance;
 
 	private ItemExtension() {
 		this(null);
@@ -52,7 +52,7 @@ import javax.annotation.Nullable;
 	public ItemExtension(ModElement element) {
 		super(element);
 
-		this.compostLayerChance = new NumberProviderWithFixedValue(null, 0);
+		this.compostLayerChance = new NumberProviderOrFixedValue(null, 0);
 	}
 
 	public boolean hasFuelProcedure() {

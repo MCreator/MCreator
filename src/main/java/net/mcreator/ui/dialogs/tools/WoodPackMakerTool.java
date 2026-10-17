@@ -597,7 +597,7 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 						new ModElement(workspace, name + "LeavesComposting", ModElementType.ITEMEXTENSION), false)
 				.getElementFromGUI();
 		leavesComposting.item = new MItemBlock(workspace, "CUSTOM:" + name + "Leaves");
-		leavesComposting.compostLayerChance = new NumberProviderWithFixedValue(null, 0.3);
+		leavesComposting.compostLayerChance = new NumberProviderOrFixedValue(null, 0.3);
 		addGeneratableElementToWorkspace(generationQueue, workspace, folder, leavesComposting);
 
 		// Tags

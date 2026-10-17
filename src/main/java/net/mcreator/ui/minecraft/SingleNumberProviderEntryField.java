@@ -20,7 +20,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.NumberProviderEntry;
-import net.mcreator.element.parts.NumberProviderWithFixedValue;
+import net.mcreator.element.parts.NumberProviderOrFixedValue;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JSingleEntrySelectorWithFixedValue;
@@ -61,12 +61,12 @@ public class SingleNumberProviderEntryField extends JSingleEntrySelectorWithFixe
 		}
 	}
 
-	public NumberProviderWithFixedValue getValuePair() {
+	public NumberProviderOrFixedValue getValuePair() {
 		Number fixedValue = getFixedValue();
-		return new NumberProviderWithFixedValue(this.getEntry(), fixedValue == null ? 0 : (double) fixedValue);
+		return new NumberProviderOrFixedValue(this.getEntry(), fixedValue == null ? 0 : fixedValue.doubleValue());
 	}
 
-	public void setValuePair(NumberProviderWithFixedValue value) {
+	public void setValuePair(NumberProviderOrFixedValue value) {
 		this.setEntry(value.entry());
 		this.setFixedValue(value.fixedValue());
 	}
