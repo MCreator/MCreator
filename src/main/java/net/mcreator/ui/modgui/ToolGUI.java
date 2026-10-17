@@ -381,7 +381,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 			switch ((String) toolType.getSelectedItem()) {
 			case "Special" -> dropTierPanel.setVisible(false);
-			case "Fishing rod", "Shield" -> {
+			case "Fishing rod", "Shield", "Mace" -> {
 				dropTierPanel.setVisible(false);
 				additionalDropCondition.setVisible(false);
 				efficiencyPanel.setVisible(false);
