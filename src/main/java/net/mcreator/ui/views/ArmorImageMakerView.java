@@ -144,7 +144,7 @@ public class ArmorImageMakerView extends ViewBase {
 		use(workspace, images[5], namec + "_boots");
 	}
 
-	private static Image[] getImages(String type, Color color, boolean colType) {
+	public static Image[] getImages(String type, Color color, boolean colType) {
 		Image[] images = new Image[6];
 		try {
 			images[0] = ImageUtils.colorize(ArmorMakerTexturesCache.getIcon(type, LAYER1), color, colType).getImage();
