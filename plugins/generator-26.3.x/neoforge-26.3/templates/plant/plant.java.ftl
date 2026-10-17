@@ -254,7 +254,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 					return this.mayPlaceOn(groundState, worldIn, blockpos)
 			</#if>;
 		}
-	<#elseif !(data.growapableSpawnType.getUnmappedValue() == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
+	<#elseif (data.growapableSpawnType.getUnmappedValue() != "Plains") || (data.plantType == "growapable")><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
 		private boolean canPlantTypeSurvive(BlockState state, LevelReader world, BlockPos pos) {
 			${data.growapableSpawnType}
 		}

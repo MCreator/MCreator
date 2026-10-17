@@ -22,7 +22,6 @@ package net.mcreator.element.types.bedrock;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.MobSpawnType;
@@ -45,9 +44,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
-import java.util.List;
 
-public class BEEntity extends GeneratableElement implements IEntityWithModel, ICommonType, IMCItemProvider {
+public class BEEntity extends GeneratableElement implements IEntityWithModel, IMCItemProvider {
 
 	private static final String XML_BASE = """
 			<xml xmlns="https://developers.google.com/blockly/xml">

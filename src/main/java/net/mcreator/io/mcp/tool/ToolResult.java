@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.mcreator.io.mcp.protocol.McpSchema;
 
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,6 +43,11 @@ public final class ToolResult {
 
 	public static ToolResult text(String text, McpSchema.Annotations annotations) {
 		return new ToolResult(new McpSchema.CallToolResponse(List.of(McpSchema.Content.text(text, annotations))));
+	}
+
+	public static ToolResult image(byte[] data, String mimeType) {
+		return new ToolResult(new McpSchema.CallToolResponse(
+				List.of(McpSchema.Content.image(Base64.getEncoder().encodeToString(data), mimeType))));
 	}
 
 	public static ToolResult object(Object structured) {

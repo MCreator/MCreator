@@ -25,7 +25,6 @@ import com.google.gson.Strictness;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
@@ -81,8 +80,8 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		procedures.setEnabled(enabled);
-		add.setEnabled(enabled && mcreator.getWorkspace().getGeneratorStats().getModElementTypeCoverageInfo()
-				.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE);
+		add.setEnabled(enabled && mcreator.getWorkspace().getGeneratorStats()
+				.isModElementTypeCovered(ModElementType.PROCEDURE));
 		edit.setEnabled(enabled && getSelectedProcedure() != null);
 	}
 

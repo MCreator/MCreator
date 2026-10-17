@@ -86,6 +86,12 @@ public class GTEnchantmentEffectBlocks {
 						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
 						<next><block type="ench_component_block_experience"><statement name="conditionalEffect">
 						%s</statement></block></next></block></xml>""".formatted(testXML);
+				// Attribute effects are tested with the "Attributes" component
+				case "AttributeEffect" -> enchantment.effectsxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="enchantment_effects_start" deletable="false" x="40" y="40">
+						<next><block type="ench_component_attributes"><statement name="attribute_modifiers">
+						%s</statement></block></next></block></xml>""".formatted(testXML);
 				default -> {
 					LOG.warn("[{}] Skipping procedural enchantment effect block of unrecognized type: {}",
 							generatorName, effectBlock.getMachineName());
