@@ -251,8 +251,8 @@ public class ${name}Item extends Item {
 
 	<@commonMethods/>
 }
-<#elseif data.toolType=="Fishing rod">
-public class ${name}Item extends FishingRodItem {
+<#elseif data.toolType=="Fishing rod" || data.toolType=="Mace">
+public class ${name}Item extends <#if data.toolType == "Fishing rod">FishingRod<#else>Mace</#if>Item {
 
 	public ${name}Item(Item.Properties properties) {
 		super(properties

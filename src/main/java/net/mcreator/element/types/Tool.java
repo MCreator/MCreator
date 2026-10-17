@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IMCItemProvider, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
 
-	@LimitedOptions({ "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
+	@LimitedOptions({ "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Mace", "Special",
 			"MultiTool" }) @Nonnull public String toolType;
 
 	public int renderType;
