@@ -44,6 +44,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
+import java.util.List;
 
 public class BEEntity extends GeneratableElement implements IEntityWithModel, IMCItemProvider {
 
@@ -115,13 +116,6 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IM
 
 	public boolean hasCustomModel() {
 		return Arrays.stream(BEEntityGUI.builtinmobmodels).map(Model::getReadableName).noneMatch(modelName::equals);
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		if (hasSpawnEgg)
-			return List.of(BaseType.ITEM, BaseType.ENTITY);
-		else
-			return List.of(BaseType.ENTITY);
 	}
 
 	public boolean hasDrop() {
