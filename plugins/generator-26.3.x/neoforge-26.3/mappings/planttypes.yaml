@@ -1,17 +1,17 @@
 _default: ""
-Plains: "return state.is(BlockTags.DIRT) || state.getBlock() == Blocks.FARMLAND;"
-Desert: "return state.is(BlockTags.SAND) || state.is(BlockTags.TERRACOTTA);"
+Plains: "return state.is(BlockTags.SUPPORTS_VEGETATION);"
+Desert: "return state.is(BlockTags.SUPPORTS_DRY_VEGETATION);"
 Cave: "return state.isFaceSturdy(world, pos, Direction.UP);"
-Water: "return (state.is(Blocks.WATER) || state.getBlock() instanceof IceBlock) && world.getFluidState(pos.relative(Direction.UP)).isEmpty();"
-Nether: "return state.getBlock() == Blocks.SOUL_SAND;"
-Crop: "return state.is(Blocks.FARMLAND);"
+Water: "return (world.getFluidState(pos).is(FluidTags.SUPPORTS_LILY_PAD) || state.is(BlockTags.SUPPORTS_LILY_PAD)) && world.getFluidState(pos.relative(Direction.UP)).isEmpty();"
+Nether: "return state.is(BlockTags.SUPPORTS_NETHER_WART);"
+Crop: "return state.is(BlockTags.SUPPORTS_CROPS);"
 Beach: |
-  boolean isBeach = state.is(BlockTags.DIRT) || state.is(BlockTags.SAND);
-  boolean hasWater = false;
-  for (Direction face : Direction.Plane.HORIZONTAL) {
-      BlockState adjacentBlockState = world.getBlockState(pos.relative(face));
-      var adjacentFluidState = world.getFluidState(pos.relative(face));
-      hasWater = hasWater || adjacentBlockState.is(Blocks.FROSTED_ICE) || adjacentFluidState.is(FluidTags.WATER);
-      if (hasWater) break;
+  if (state.is(BlockTags.SUPPORTS_SUGAR_CANE)) {
+      for (Direction face : Direction.Plane.HORIZONTAL) {
+          BlockState adjacentBlockState = world.getBlockState(pos.relative(face));
+          var adjacentFluidState = world.getFluidState(pos.relative(face));
+          if (adjacentBlockState.is(BlockTags.SUPPORTS_SUGAR_CANE_ADJACENTLY) || adjacentFluidState.is(FluidTags.SUPPORTS_SUGAR_CANE_ADJACENTLY))
+              return true;
+      }
   }
-  return isBeach && hasWater;
+  return false;

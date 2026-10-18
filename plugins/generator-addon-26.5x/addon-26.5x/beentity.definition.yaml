@@ -52,6 +52,15 @@ templates:
     writer: json
     condition: "modelName %= Silverfish"
     name: "@RESROOT/entity/@registryname.entity.json"
+  - template: resourcepack/entity/custom.json.ftl
+    writer: json
+    condition: hasCustomModel()
+    name: "@RESROOT/entity/@registryname.entity.json"
+
+base_types:
+  - entity
+  - type: item
+    condition: hasSpawnEgg
 
 localizationkeys:
   - key: item.spawn_egg.entity.@modid:@registryname.name

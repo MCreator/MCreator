@@ -258,6 +258,7 @@ public class ${name}Item extends Item {
 
 	<#if hasProcedure(data.onFinishUsingItem)>
 		@Override public ItemStack finishUsingItem(ItemStack itemstack, Level world, LivingEntity entity) {
+			ItemStack usedItemstack = itemstack.copy();
 			ItemStack retval = super.finishUsingItem(itemstack, world, entity);
 			<@procedureCode data.onFinishUsingItem, {
 				"x": "entity.getX()",
@@ -265,7 +266,7 @@ public class ${name}Item extends Item {
 				"z": "entity.getZ()",
 				"world": "world",
 				"entity": "entity",
-				"itemstack": "itemstack"
+				"itemstack": "usedItemstack"
 			}/>
 			return retval;
 		}
