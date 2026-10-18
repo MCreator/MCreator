@@ -40,7 +40,7 @@ package ${package}.item;
 @EventBusSubscriber
 </#if>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
-		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
+		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Mace" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
 
 	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
@@ -85,23 +85,35 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	};
 	</#if>
 
+	<#if data.toolType == "Mace">
+	@Override public int getEnchantmentValue() {
+    	return ${data.enchantability};
+    }
+	</#if>
+
 	public ${name}Item () {
 		super(
 			<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 			TOOL_TIER,
 			</#if>
 			new Item.Properties()
-				<#if data.toolType == "Shears" || data.toolType == "Shield">
+				<#if data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Mace">
 					<#if data.usageCount != 0>
 					.durability(${data.usageCount})
 					<#else>
 					.stacksTo(1)
 					</#if>
 				</#if>
+				<#if data.toolType == "Mace">
+				.component(DataComponents.TOOL, MaceItem.createToolProperties())
+				.attributes(MaceItem.createAttributes())
+				</#if>
 				<#if data.toolType == "MultiTool" || data.attributeModifiers?size gt 0>
 				.attributes(<@itemAttributeModifiers (data.toolType != "Shield" && data.toolType != "Shears")/>)
 				<#elseif data.toolType == "Sword">
 				.attributes(SwordItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
+				<#elseif data.toolType == "Mace"> <#-- Mace uses attributes for the attack speed and the attack damage parameters -->
+				.attributes(<@itemAttributeModifiers true/>)
 				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
 				</#if>
@@ -129,7 +141,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 	}
 	</#if>
 
-	<#if (data.toolType == "Shield" || data.toolType == "Shears") && data.repairItems?has_content>
+	<#if (data.toolType == "Shield" || data.toolType == "Shears" || data.toolType == "Mace") && data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
 		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
 	}
@@ -233,8 +245,8 @@ public class ${name}Item extends Item {
 
 	<@commonMethods/>
 }
-<#elseif data.toolType=="Fishing rod" || data.toolType=="Mace">
-public class ${name}Item extends <#if data.toolType == "Fishing rod">FishingRod<#else>Mace</#if>Item {
+<#elseif data.toolType=="Fishing rod">
+public class ${name}Item extends FishingRodItem {
 
 	public ${name}Item() {
 		super(new Item.Properties()

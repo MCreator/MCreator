@@ -40,8 +40,8 @@ package ${package}.item;
 @EventBusSubscriber
 </#if>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
-		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
-public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType == "Shield">${data.toolType}Item<#else>Item</#if> {
+		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Mace" || data.toolType == "MultiTool">
+public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Mace">${data.toolType}Item<#else>Item</#if> {
 
 	<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 	private static final ToolMaterial TOOL_MATERIAL = new ToolMaterial(
@@ -77,6 +77,10 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 			.hoe(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
 			<#elseif data.toolType == "Sword">
 			.sword(TOOL_MATERIAL, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f)
+			<#elseif data.toolType == "Mace">
+			.component(DataComponents.TOOL, MaceItem.createToolProperties())
+			.component(DataComponents.WEAPON, new Weapon(1))
+			.attributes(MaceItem.createAttributes())
 			<#elseif data.toolType == "MultiTool">
 			.attributes(<@itemAttributeModifiers true/>)
 			<#elseif data.toolType == "Shield">
@@ -117,7 +121,7 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
 			.setNoCombineRepair()
 			</#if>
-			<#if (data.attributeModifiers?size gt 0) && data.toolType != "MultiTool">
+			<#if (data.attributeModifiers?size gt 0) && data.toolType != "MultiTool" || data.toolType == "Mace">
 			.attributes(<@itemAttributeModifiers (data.toolType != "Shears" && data.toolType != "Shield")/>)
 			</#if>
 		);
@@ -251,8 +255,8 @@ public class ${name}Item extends Item {
 
 	<@commonMethods/>
 }
-<#elseif data.toolType=="Fishing rod" || data.toolType=="Mace">
-public class ${name}Item extends <#if data.toolType == "Fishing rod">FishingRod<#else>Mace</#if>Item {
+<#elseif data.toolType=="Fishing rod">
+public class ${name}Item extends FishingRodItem {
 
 	public ${name}Item(Item.Properties properties) {
 		super(properties
