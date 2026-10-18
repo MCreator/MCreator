@@ -33,7 +33,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BEItem extends GeneratableElement implements IItem, IItemWithTexture {
+public class BEItem extends GeneratableElement implements IMCItemProvider, IItemWithTexture {
 
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;
 

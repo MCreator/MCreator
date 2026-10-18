@@ -1,4 +1,4 @@
-<#assign raiders = w.getGElementsOfType("livingentity")?filter(e -> e.mobBehaviourType == "Raider")>
+<#assign raiders = enumextensions?filter(e -> e.getModElement().getTypeString() == "livingentity")>
 {
   "entries": [
     <#list raiders as raider>

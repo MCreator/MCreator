@@ -15,6 +15,18 @@ templates:
     name: "@SRCROOT/feature_rules/@modid_@registryname_ore_feature_rule.json"
     condition: generateFeature
 
+base_types:
+  - block
+  - item
+
+global_templates:
+  - template: resourcepack/blocks.json.ftl
+    writer: json
+    name: "@RESROOT/blocks.json"
+  - template: resourcepack/terrain_texture.json.ftl
+    writer: json
+    name: "@RESROOT/textures/terrain_texture.json"
+
 localizationkeys:
   - key: tile.@modid:@registryname.name
     mapto: name

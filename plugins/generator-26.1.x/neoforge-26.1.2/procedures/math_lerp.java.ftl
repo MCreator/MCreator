@@ -1,1 +1,0 @@
-(Mth.lerp(${opt.removeParentheses(input$t)}, ${opt.removeParentheses(input$a)}, ${opt.removeParentheses(input$b)}))

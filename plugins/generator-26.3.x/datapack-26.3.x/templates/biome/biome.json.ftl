@@ -110,14 +110,17 @@
         },
 		</#if>
 	  	<#if data.spawnParticles>
-		"minecraft:visual/ambient_particles": [
+		"minecraft:visual/ambient_particles": {
+          "modifier": "append",
+          "argument": [
             {
-                "particle": {
-                    "type": "${data.particleToSpawn.getMappedValue(1)}"
-                },
-                "probability": ${data.particlesProbability / 100}
+              "particle": {
+                "type": "${data.particleToSpawn.getMappedValue(1)}"
+              },
+              "probability": ${data.particlesProbability / 100}
             }
-        ],
+          ]
+        },
 		</#if>
         <#if data.airColor?has_content>
         "minecraft:visual/sky_color": ${data.airColor.getRGB()},
@@ -127,17 +130,20 @@
         </#if>
         "minecraft:visual/water_fog_color": ${data.waterFogColor?has_content?then(data.waterFogColor.getRGB(), 329011)},
         "minecraft:gameplay/natural_mob_spawns": {
-          "spawns_by_category": {
-            "monster": [<@generateEntityList data.spawnEntries "monster"/>],
-            "creature": [<@generateEntityList data.spawnEntries "creature"/>],
-            "ambient": [<@generateEntityList data.spawnEntries "ambient"/>],
-            "axolotls": [<@generateEntityList data.spawnEntries "axolotls"/>],
-            "underground_water_creature": [<@generateEntityList data.spawnEntries "undergroundWaterCreature"/>],
-            "water_creature": [<@generateEntityList data.spawnEntries "waterCreature"/>],
-            "water_ambient": [<@generateEntityList data.spawnEntries "waterAmbient"/>],
-            "misc": [<@generateEntityList data.spawnEntries "misc"/>]
-          },
-          "spawn_costs": {}
+          "modifier": "overlay",
+          "argument": {
+            "spawns_by_category": {
+              "monster": [<@generateEntityList data.spawnEntries "monster"/>],
+              "creature": [<@generateEntityList data.spawnEntries "creature"/>],
+              "ambient": [<@generateEntityList data.spawnEntries "ambient"/>],
+              "axolotls": [<@generateEntityList data.spawnEntries "axolotls"/>],
+              "underground_water_creature": [<@generateEntityList data.spawnEntries "undergroundWaterCreature"/>],
+              "water_creature": [<@generateEntityList data.spawnEntries "waterCreature"/>],
+              "water_ambient": [<@generateEntityList data.spawnEntries "waterAmbient"/>],
+              "misc": [<@generateEntityList data.spawnEntries "misc"/>]
+            },
+            "spawn_costs": {}
+          }
         }
 	},
     "carvers": [<#list features_carvers as feature>"${feature}"<#sep>,</#list>],

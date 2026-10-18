@@ -25,7 +25,6 @@ import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Item;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -257,12 +256,8 @@ public class OrePackMakerTool extends AbstractPackMakerTool {
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
-		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-				!= GeneratorStats.CoverageStatus.NONE;
+		return gc.getGeneratorStats()
+				.areModElementTypesCovered(ModElementType.RECIPE, ModElementType.ITEM, ModElementType.BLOCK);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {

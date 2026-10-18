@@ -21,7 +21,6 @@ package net.mcreator.element.types;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
@@ -64,7 +63,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
-		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
+		implements IEntityWithModel, ITabContainedElement, IMCItemProvider {
 
 	private static final String XML_BASE = """
 			<xml xmlns="https://developers.google.com/blockly/xml">
@@ -252,13 +251,6 @@ import java.util.stream.Collectors;
 				&& !mobModelName.equals("Zombie")) // legacy check as zombie was supported in the past
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), mobModelName, modelType);
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		if (hasSpawnEgg)
-			return List.of(BaseType.ITEM, BaseType.ENTITY);
-		else
-			return List.of(BaseType.ENTITY);
 	}
 
 	@Override public List<TabEntry> getCreativeTabs() {

@@ -3,6 +3,6 @@ Diese Meldung wird in den meisten Fällen im Chat angezeigt, wenn ein Spieler du
 Du kannst die folgenden Token in dieser Nachricht benutzen:
 
 - '<player>': der Name des getöteten Spielers
-- '<attacker>': der Name der Kreatur, die den Schaden zufügte
+- '<attacker>': der Name der Entität, die den Schaden zufügte
 
 HINWEIS: Verwende das zweite Token nur dann, wenn der Schaden immer durch eine Kreatur verursacht wird.

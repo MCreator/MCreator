@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.generator.io.JSWriter;
@@ -375,10 +374,8 @@ public class Generator implements IGenerator, Closeable {
 		// Check used base types and generate their templates
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new LinkedHashMap<>();
 		for (GeneratableElement generatableElement : generatableElements) {
-			if (generatableElement instanceof ICommonType commonType) {
-				for (BaseType baseType : commonType.getBaseTypesProvided()) {
-					baseTypeListMap.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
-				}
+			for (BaseType baseType : generatableElement.getModElement().getBaseTypesProvided(generatableElement)) {
+				baseTypeListMap.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
 			}
 		}
 		for (Map.Entry<BaseType, List<GeneratableElement>> entry : baseTypeListMap.entrySet()) {
@@ -445,6 +442,29 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		return new ArrayList<>(files);
+	}
+
+	/**
+	 * Result of this method is not cached. For performance reasons, use @see {@link ModElement#getBaseTypesProvided()} instead if possible
+	 */
+	public Collection<BaseType> getBaseTypesProvided(GeneratableElement generatableElement) {
+		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
+				.getModElementDefinition(generatableElement.getModElement().getType());
+
+		List<?> baseTypes = map != null ? (List<?>) map.get("base_types") : null;
+		if (baseTypes == null) // definition does not declare base types
+			return Collections.emptyList();
+
+		Set<BaseType> retval = new LinkedHashSet<>();
+		for (Object baseType : baseTypes) {
+			if (baseType instanceof Map<?, ?> definition) {
+				if (!TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(this, definition, generatableElement))
+					retval.add(BaseType.of(definition.get("type").toString()));
+			} else {
+				retval.add(BaseType.of(baseType.toString()));
+			}
+		}
+		return Collections.unmodifiableSet(retval);
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModElementGeneratorTemplatesList(GeneratableElement generatableElement) {
