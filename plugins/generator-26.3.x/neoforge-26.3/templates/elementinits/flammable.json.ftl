@@ -1,4 +1,3 @@
-<#include "../mcitems.ftl">
 {
   "values": {
     <#list flammables as block>
