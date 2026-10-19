@@ -87,7 +87,6 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#getEntityModel()" tabindex="0">getEntityModel()</a></li>
 <li><a href="#generateModElementPicture()" tabindex="0">generateModElementPicture()</a></li>
-<li><a href="#getBaseTypesProvided()" tabindex="0">getBaseTypesProvided()</a></li>
 </ol>
 </li>
 </ol>
@@ -105,13 +104,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a>, <a href="interfaces/IEntityWithModel.html" title="interface in net.mcreator.element.types.interfaces">IEntityWithModel</a></code></dd>
+<dd><code><a href="interfaces/IEntityWithModel.html" title="interface in net.mcreator.element.types.interfaces">IEntityWithModel</a></code></dd>
 </dl>
 <hr>
 <div class="horizontal-scroll">
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Projectile</span>
 <span class="extends-implements">extends <a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>
-implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mcreator.element.types.interfaces">IEntityWithModel</a>, <a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></span></div>
+implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mcreator.element.types.interfaces">IEntityWithModel</a></span></div>
 </div>
 </section>
 <section class="summary">
@@ -218,12 +217,9 @@ implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mc
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateModElementPicture()" class="member-name-link">generateModElementPicture</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="../BaseType.html" title="class in net.mcreator.element">BaseType</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBaseTypesProvided()" class="member-name-link">getBaseTypesProvided</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityModel()" class="member-name-link">getEntityModel</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityModel()" class="member-name-link">getEntityModel</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -430,18 +426,6 @@ implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mc
 <dd><code><a href="../GeneratableElement.html#generateModElementPicture()">generateModElementPicture</a></code>&nbsp;in class&nbsp;<code><a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></dd>
 <dt>Returns:</dt>
 <dd>BufferedImage of mod element preview or null if default mod element icon should be used</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getBaseTypesProvided()">
-<h3>getBaseTypesProvided</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../BaseType.html" title="class in net.mcreator.element">BaseType</a>&gt;</span>&nbsp;<span class="element-name">getBaseTypesProvided</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="interfaces/ICommonType.html#getBaseTypesProvided()">getBaseTypesProvided</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code></dd>
 </dl>
 </div>
 </section>

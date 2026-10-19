@@ -86,12 +86,14 @@ loadScripts(document, 'script');</script>
 <li><a href="#isCodeLocked()" tabindex="0">isCodeLocked()</a></li>
 <li><a href="#setCodeLock(boolean)" tabindex="0">setCodeLock(boolean)</a></li>
 <li><a href="#getMCItems()" tabindex="0">getMCItems()</a></li>
+<li><a href="#getMCItems(net.mcreator.element.GeneratableElement)" tabindex="0">getMCItems(GeneratableElement)</a></li>
 <li><a href="#getRegistryName()" tabindex="0">getRegistryName()</a></li>
 <li><a href="#getRegistryNameUpper()" tabindex="0">getRegistryNameUpper()</a></li>
 <li><a href="#setRegistryName(java.lang.String)" tabindex="0">setRegistryName(String)</a></li>
 <li><a href="#getFolderPath()" tabindex="0">getFolderPath()</a></li>
 <li><a href="#setParentFolder(net.mcreator.workspace.elements.FolderElement)" tabindex="0">setParentFolder(FolderElement)</a></li>
 <li><a href="#getBaseTypesProvided()" tabindex="0">getBaseTypesProvided()</a></li>
+<li><a href="#getBaseTypesProvided(net.mcreator.element.GeneratableElement)" tabindex="0">getBaseTypesProvided(GeneratableElement)</a></li>
 <li><a href="#loadDataFrom(net.mcreator.workspace.elements.ModElement)" tabindex="0">loadDataFrom(ModElement)</a></li>
 <li><a href="#getComparator(net.mcreator.workspace.Workspace,java.util.List)" tabindex="0">getComparator(Workspace, List)</a></li>
 </ol>
@@ -189,26 +191,32 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Comparator.html" title="class or interface in java.util" class="external-link">Comparator</a><wbr>&lt;<a href="ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getComparator(net.mcreator.workspace.Workspace,java.util.List)" class="member-name-link">getComparator</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;?&gt;&nbsp;originalOrder)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementIcon()" class="member-name-link">getElementIcon</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolderPath()" class="member-name-link">getFolderPath</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a><wbr>&lt;<a href="../../element/BaseType.html" title="class in net.mcreator.element">BaseType</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBaseTypesProvided(net.mcreator.element.GeneratableElement)" class="member-name-link">getBaseTypesProvided</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGeneratableElement()" class="member-name-link">getGeneratableElement</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Comparator.html" title="class or interface in java.util" class="external-link">Comparator</a><wbr>&lt;<a href="ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getComparator(net.mcreator.workspace.Workspace,java.util.List)" class="member-name-link">getComparator</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;?&gt;&nbsp;originalOrder)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementIcon()" class="member-name-link">getElementIcon</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolderPath()" class="member-name-link">getFolderPath</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGeneratableElement()" class="member-name-link">getGeneratableElement</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Warning: this method uses ModElementManager and is thus not thread safe</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCItems()" class="member-name-link">getMCItems</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCItems()" class="member-name-link">getMCItems</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCItems(net.mcreator.element.GeneratableElement)" class="member-name-link">getMCItems</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadata(java.lang.String)" class="member-name-link">getMetadata</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -553,6 +561,15 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 </section>
 </li>
 <li>
+<section class="detail" id="getMCItems(net.mcreator.element.GeneratableElement)">
+<h3>getMCItems</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="annotations">@Nonnull
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">getMCItems</span><wbr><span class="parameters">(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</span></div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getRegistryName()">
 <h3>getRegistryName</h3>
 <div class="horizontal-scroll">
@@ -600,6 +617,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../../element/BaseType.html" title="class in net.mcreator.element">BaseType</a>&gt;</span>&nbsp;<span class="element-name">getBaseTypesProvided</span>()</div>
 <div class="block">Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getBaseTypesProvided(net.mcreator.element.GeneratableElement)">
+<h3>getBaseTypesProvided</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../../element/BaseType.html" title="class in net.mcreator.element">BaseType</a>&gt;</span>&nbsp;<span class="element-name">getBaseTypesProvided</span><wbr><span class="parameters">(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</span></div>
 </div>
 </section>
 </li>

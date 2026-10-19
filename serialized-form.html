@@ -5162,6 +5162,19 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="net.mcreator.ui.minecraft.modellayers.JModelLayerList">
 <h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/modellayers/JModelLayerList.html" title="class in net.mcreator.ui.minecraft.modellayers">net.mcreator.ui.minecraft.modellayers.JModelLayerList</a></h3>
 <div class="type-signature">class JModelLayerList extends <a href="net/mcreator/ui/component/entries/JSimpleEntriesList.html" title="class in net.mcreator.ui.component.entries">JSimpleEntriesList</a>&lt;<a href="net/mcreator/ui/minecraft/modellayers/JModelLayerListEntry.html" title="class in net.mcreator.ui.minecraft.modellayers">JModelLayerListEntry</a>, <a href="net/mcreator/element/types/LivingEntity.ModelLayerEntry.html" title="class in net.mcreator.element.types">LivingEntity.ModelLayerEntry</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>entityDataListProvider</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/minecraft/states/PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a>&lt;?&gt;&gt;&gt; entityDataListProvider</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
 </section>
 </li>
 <li>
@@ -5178,12 +5191,20 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> condition</pre>
 </li>
 <li class="block-list">
+<h5>conditionSource</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; conditionSource</pre>
+</li>
+<li class="block-list">
 <h5>default_model</h5>
 <pre><a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a> default_model</pre>
 </li>
 <li class="block-list">
 <h5>disableHurtOverlay</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> disableHurtOverlay</pre>
+</li>
+<li class="block-list">
+<h5>entityDataListProvider</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/minecraft/states/PropertyDataWithValue.html" title="class in net.mcreator.ui.minecraft.states">PropertyDataWithValue</a>&lt;?&gt;&gt;&gt; entityDataListProvider</pre>
 </li>
 <li class="block-list">
 <h5>glow</h5>
@@ -10489,6 +10510,10 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
+<h5>hideTitle</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> hideTitle</pre>
+</li>
+<li class="block-list">
 <h5>icon</h5>
 <pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> icon</pre>
 </li>
@@ -11067,7 +11092,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="block-list">
 <h5>entityModel</h5>
-<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; entityModel</pre>
+<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;<a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt; entityModel</pre>
 </li>
 <li class="block-list">
 <h5>entityName</h5>
@@ -11822,20 +11847,16 @@ loadScripts(document, 'script');</script>
 <pre>boolean active</pre>
 </li>
 <li class="block-list">
+<h5>animationSettings</h5>
+<pre><a href="net/mcreator/ui/views/editor/image/animation/AnimationSettings.html" title="class in net.mcreator.ui.views.editor.image.animation">AnimationSettings</a> animationSettings</pre>
+</li>
+<li class="block-list">
 <h5>animator</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Thread.html" title="class or interface in java.lang" class="external-link">Thread</a> animator</pre>
 </li>
 <li class="block-list">
 <h5>animindex</h5>
 <pre>int animindex</pre>
-</li>
-<li class="block-list">
-<h5>bd1</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> bd1</pre>
-</li>
-<li class="block-list">
-<h5>interpolate</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> interpolate</pre>
 </li>
 <li class="block-list">
 <h5>playanim</h5>
@@ -12145,6 +12166,29 @@ loadScripts(document, 'script');</script>
 <section class="serialized-package-container">
 <h2 title="Package">Package&nbsp;<a href="net/mcreator/ui/views/editor/image/animation/package-summary.html">net.mcreator.ui.views.editor.image.animation</a></h2>
 <ul class="block-list">
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.animation.AnimationSettings">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/animation/AnimationSettings.html" title="class in net.mcreator.ui.views.editor.image.animation">net.mcreator.ui.views.editor.image.animation.AnimationSettings</a></h3>
+<div class="type-signature">class AnimationSettings extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>frameDuration</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> frameDuration</pre>
+</li>
+<li class="block-list">
+<h5>interpolate</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> interpolate</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.animation.TimelineRenderer">
 <h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/animation/TimelineRenderer.html" title="class in net.mcreator.ui.views.editor.image.animation">net.mcreator.ui.views.editor.image.animation.TimelineRenderer</a></h3>

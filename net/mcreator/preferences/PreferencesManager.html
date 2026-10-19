@@ -272,7 +272,9 @@ loadScripts(document, 'script');</script>
 <h3>savePreferences</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">savePreferences</span>()</div>
-<div class="block"><p>Save preferences of all identifiers registered inside PREFERENCES_REGISTRY.</p></div>
+<div class="block"><p>Save preferences of all identifiers registered inside PREFERENCES_REGISTRY. Values are merged into the
+loaded preferences file so entries not registered in this session (e.g. entries of other MCreator versions
+or of plugins that are not loaded) are preserved.</p></div>
 </div>
 </section>
 </li>
