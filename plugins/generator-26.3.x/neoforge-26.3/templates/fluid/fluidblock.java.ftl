@@ -55,18 +55,6 @@ public class ${name}Block extends LiquidBlock {
 		);
 	}
 
-	<#if data.flammability != 0>
-	@Override public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return ${data.flammability};
-	}
-	</#if>
-
-	<#if data.fireSpreadSpeed != 0>
-	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return ${data.fireSpreadSpeed};
-	}
-	</#if>
-
 	<#if data.lightOpacity == 0>
 	@Override public boolean propagatesSkylightDown(BlockState state) {
 		return true;

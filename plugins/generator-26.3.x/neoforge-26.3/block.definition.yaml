@@ -624,6 +624,8 @@ base_types:
     condition: hasStrippingResult()
   - type: blockentity
     condition: hasInventory
+  - type: flammable
+    condition: isFlammable()
 
 global_templates:
   - template: elementinits/woodtypes.java.ftl

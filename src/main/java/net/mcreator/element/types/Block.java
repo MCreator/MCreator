@@ -378,6 +378,10 @@ import java.util.stream.Collectors;
 		return disableOffset || offsetType.equals("NONE");
 	}
 
+	public boolean isFlammable() {
+		return (this.fireSpreadSpeed > 0) || (this.flammability > 0);
+	}
+
 	@Override public MItemBlock getDefaultDrop() {
 		if (dropAmount == 0) {
 			return new MItemBlock(getModElement().getWorkspace(), "Blocks.AIR");
