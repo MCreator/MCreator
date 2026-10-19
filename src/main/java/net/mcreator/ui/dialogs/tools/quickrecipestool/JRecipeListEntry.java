@@ -58,8 +58,12 @@ public class JRecipeListEntry extends JSimpleListEntry<RecipeListEntry> {
 		line.add(L10N.label("dialog.tools.quick_recipes.name"));
 		name.setPreferredSize(new Dimension(300, 30));
 		//@formatter:off
-		name.setValidator(new UniqueNameValidator(L10N.t("modelement.recipe"), () -> mcreator.getWorkspaceSettings().getModID() + ":" +
-				RegistryNameFixer.fromCamelCase(name.getText()), () -> {
+		name.setValidator(new UniqueNameValidator(L10N.t("modelement.recipe"), () -> {
+			if (!name.getText().isEmpty())
+				return mcreator.getWorkspaceSettings().getModID() + ":" + RegistryNameFixer.fromCamelCase(name.getText());
+			else
+				return "";
+		}, () -> {
 			List<String> names = new ArrayList<>();
 			names.addAll(mcreator.getWorkspace().getModElements().stream()
 					.filter(me -> me.getType() == ModElementType.RECIPE)
