@@ -79,6 +79,7 @@ public class GeneratorSelector {
 			"mapcolors",
 			"mobspawntypes",
 			"noteblockinstruments",
+			"numberproviders",
 			"particles",
 			"pathnodetypes",
 			"planttypes",
