@@ -15,9 +15,9 @@ global_templates:
 templates:
   - template: itemextension/compostable_provider.json.ftl
     writer: json
-    condition: generateCompostableProvider()
+    condition: generateCustomCompostableProvider()
     name: "@MODDATAROOT/context_int_provider/compostable/@registryname.json"
   - template: itemextension/fuel_provider.json.ftl
     writer: json
-    condition: generateFuelProvider()
+    condition: generateCustomFuelProvider()
     name: "@MODDATAROOT/context_int_provider/fuel/@registryname.json"

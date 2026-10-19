@@ -62,7 +62,7 @@ import javax.annotation.Nullable;
 		return Procedure.hasProcedure(fuelPower, workspace) || Procedure.hasProcedure(fuelSuccessCondition, workspace);
 	}
 
-	public boolean generateFuelProvider() {
+	public boolean generateCustomFuelProvider() {
 		return enableFuel && fuelNumberProvider == null;
 	}
 
@@ -70,7 +70,7 @@ import javax.annotation.Nullable;
 		return compostLayerChance.entry() != null || compostLayerChance.fixedValue() > 0;
 	}
 
-	public boolean generateCompostableProvider() {
+	public boolean generateCustomCompostableProvider() {
 		return compostLayerChance.entry() == null && compostLayerChance.fixedValue() > 0;
 	}
 }
