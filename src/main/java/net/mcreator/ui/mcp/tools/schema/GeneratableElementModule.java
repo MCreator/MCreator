@@ -25,6 +25,8 @@ import com.github.victools.jsonschema.generator.*;
 import com.github.victools.jsonschema.generator.Module;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.NumberProviderEntry;
+import net.mcreator.element.parts.NumberProviderOrFixedValue;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.procedure.*;
@@ -88,6 +90,8 @@ public class GeneratableElementModule implements Module {
 			return this.createRetvalProcedureDefinition(type, context);
 		} else if (Procedure.class.isAssignableFrom(erasedType)) {
 			return this.createDataListDefinition(context, "procedure");
+		} else if (erasedType == NumberProviderOrFixedValue.class) {
+			return this.createNumberProviderOrFixedValueDefinition(context);
 		} else if (MappableElement.class.isAssignableFrom(erasedType)) {
 			return this.createDataListDefinition(context,
 					guessDataListName((Class<? extends MappableElement>) erasedType));
@@ -155,6 +159,31 @@ public class GeneratableElementModule implements Module {
 		return config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE), "object")
 				.set(context.getKeyword(SchemaKeyword.TAG_PROPERTIES), properties)
 				.set(context.getKeyword(SchemaKeyword.TAG_REQUIRED), required);
+	}
+
+	private CustomDefinition createNumberProviderOrFixedValueDefinition(SchemaGenerationContext context) {
+		SchemaGeneratorConfig config = context.getGeneratorConfig();
+		TypeContext typeContext = context.getTypeContext();
+		ResolvedType fixedValueType = typeContext.resolve(Double.class);
+
+		ObjectNode properties = config.createObjectNode();
+		properties.set("entry", context.createDefinition(typeContext.resolve(NumberProviderEntry.class)));
+		properties.set("fixedValue", context.createDefinition(fixedValueType));
+
+		ArrayNode required = config.createArrayNode();
+		required.add("fixedValue");
+
+		ObjectNode objectForm = config.createObjectNode().put(context.getKeyword(SchemaKeyword.TAG_TYPE), "object")
+				.set(context.getKeyword(SchemaKeyword.TAG_PROPERTIES), properties)
+				.set(context.getKeyword(SchemaKeyword.TAG_REQUIRED), required);
+
+		ArrayNode oneOf = config.createArrayNode();
+		oneOf.add(context.createDefinition(fixedValueType));
+		oneOf.add(objectForm);
+
+		ObjectNode schema = config.createObjectNode().set(context.getKeyword(SchemaKeyword.TAG_ONEOF), oneOf);
+		return new CustomDefinition(schema, CustomDefinition.DefinitionType.INLINE,
+				CustomDefinition.AttributeInclusion.YES);
 	}
 
 	@Nullable private ResolvedType resolveRetvalFixedValueType(ResolvedType type, SchemaGenerationContext context) {
