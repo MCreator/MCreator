@@ -214,6 +214,10 @@ import java.util.stream.Collectors;
 		return isWaterloggable;
 	}
 
+	public boolean isFlammable() {
+		return (this.fireSpreadSpeed > 0) || (this.flammability > 0);
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
