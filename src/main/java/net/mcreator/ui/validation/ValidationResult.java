@@ -24,6 +24,7 @@ import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public record ValidationResult(Type type, String message, boolean isBlocklyResult) {
 
@@ -39,6 +40,8 @@ public record ValidationResult(Type type, String message, boolean isBlocklyResul
 		WARNING(new Color(0xf0c948), UIRES.get("18px.warning")),
 		ERROR(new Color(0xe04442), UIRES.get("18px.remove"));
 		//@formatter:on
+
+		private static final ConcurrentHashMap<String, ImageIcon> ICONS_CACHE = new ConcurrentHashMap<>();
 
 		private final Color color;
 		private final ImageIcon icon;
@@ -57,7 +60,7 @@ public record ValidationResult(Type type, String message, boolean isBlocklyResul
 		}
 
 		public ImageIcon icon(int size) {
-			return IconUtils.resize(icon, size);
+			return ICONS_CACHE.computeIfAbsent(this.toString() + size, _ -> IconUtils.resize(icon, size));
 		}
 	}
 }
