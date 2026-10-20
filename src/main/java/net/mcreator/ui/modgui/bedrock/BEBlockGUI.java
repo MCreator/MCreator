@@ -77,10 +77,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	public static final Model[] builtinitemmodels = new Model[] { normal, cross, singleTexture };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 
-	private final TextureSelectionButton destructionParticles = new TextureSelectionButton(
+	private final TextureSelectionButton destructionParticleCount = new TextureSelectionButton(
 			new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
-	private final JComboBox<String> particleTintMethod = ComponentFromAnnotation.options(BEBlock.class,
-			"particleTintMethod");
+	private final JComboBox<String> destructionParticleTintMethod = ComponentFromAnnotation.options(BEBlock.class,
+			"destructionParticleTintMethod");
 	private final JSpinner particleCount = ComponentFromAnnotation.spinner(BEBlock.class, "particleCount");
 	private final JCheckBox flowerPottable = L10N.checkbox("elementgui.common.enable");
 	private final TextureSelectionButton pottedTexture = new TextureSelectionButton(
@@ -197,13 +197,13 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/particle_texture"),
 				L10N.label("elementgui.block.particle_texture")));
-		destructionParticles.addTextureSelectedListener(_ -> updateParticleOptions());
-		destructionParticles.setOpaque(true);
-		renderSettings.add(PanelUtils.centerInPanel(destructionParticles));
+		destructionParticleCount.addTextureSelectedListener(_ -> updateParticleOptions());
+		destructionParticleCount.setOpaque(true);
+		renderSettings.add(PanelUtils.centerInPanel(destructionParticleCount));
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/tint_method"),
 				L10N.label("elementgui.beblock.particle_tint_method")));
-		renderSettings.add(particleTintMethod);
+		renderSettings.add(destructionParticleTintMethod);
 
 		renderSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("beblock/particle_count"),
 				L10N.label("elementgui.beblock.particle_count")));
@@ -370,11 +370,11 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 	}
 
 	private void updateParticleOptions() {
-		if (destructionParticles.hasTexture()) {
-			particleTintMethod.setEnabled(true);
+		if (destructionParticleCount.hasTexture()) {
+			destructionParticleTintMethod.setEnabled(true);
 			particleCount.setEnabled(true);
 		} else {
-			particleTintMethod.setEnabled(false);
+			destructionParticleTintMethod.setEnabled(false);
 			particleCount.setEnabled(false);
 		}
 	}
@@ -422,8 +422,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		if (model != null)
 			renderType.setSelectedItem(model);
 
-		destructionParticles.setTexture(block.destructionParticles);
-		particleTintMethod.setSelectedItem(block.particleTintMethod);
+		destructionParticleCount.setTexture(block.destructionParticleCount);
+		destructionParticleTintMethod.setSelectedItem(block.destructionParticleTintMethod);
 		particleCount.setValue(block.particleCount);
 		flowerPottable.setSelected(block.flowerPottable);
 		pottedTexture.setTexture(block.pottedTexture);
@@ -491,8 +491,8 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		block.customModelName = model.getReadableName();
 		block.pottedTexture = pottedTexture.getTextureHolder();
 
-		block.destructionParticles = destructionParticles.getTextureHolder();
-		block.particleTintMethod = (String) particleTintMethod.getSelectedItem();
+		block.destructionParticleCount = destructionParticleCount.getTextureHolder();
+		block.destructionParticleTintMethod = (String) destructionParticleTintMethod.getSelectedItem();
 		block.particleCount = (int) particleCount.getValue();
 		block.flowerPottable = flowerPottable.isSelected();
 

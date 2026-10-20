@@ -53,8 +53,8 @@
       <#if data.hasParticleTexture()>
       "minecraft:destruction_particles": {
         "texture": "${modid}_${registryname}_destruction_particles"
-        <#if data.particleTintMethod != "(none)">,
-        "tint_method": "${data.particleTintMethod}"
+        <#if data.destructionParticleTintMethod != "(none)">,
+        "tint_method": "${data.destructionParticleTintMethod}"
         </#if>
         <#if data.particleCount != 100>,
         "particle_count": ${data.particleCount}

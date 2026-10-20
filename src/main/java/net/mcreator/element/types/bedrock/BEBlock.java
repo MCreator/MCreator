@@ -50,9 +50,9 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 
 	public int renderType;
 	@Nonnull public String customModelName;
-	@TextureReference(TextureType.BLOCK) public TextureHolder destructionParticles;
+	@TextureReference(TextureType.BLOCK) public TextureHolder destructionParticleCount;
 	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
-			"water" }) public String particleTintMethod;
+			"water" }) public String destructionParticleTintMethod;
 	@Numeric(init = 100, min = 0, max = 255, step = 1) public int particleCount;
 	public boolean flowerPottable;
 	@Nullable @TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
@@ -112,7 +112,7 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 		tintMethod = "(none)";
 		pottedModelName = "Same as original";
 		pottedRenderType = 10;
-		particleTintMethod = "(none)";
+		destructionParticleTintMethod = "(none)";
 		particleCount = 100;
 
 		boundingBoxes = new ArrayList<>(List.of(new BoxEntry()));
@@ -246,6 +246,6 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 	}
 
 	public boolean hasParticleTexture() {
-		return destructionParticles != null && !destructionParticles.isEmpty();
+		return destructionParticleCount != null && !destructionParticleCount.isEmpty();
 	}
 }

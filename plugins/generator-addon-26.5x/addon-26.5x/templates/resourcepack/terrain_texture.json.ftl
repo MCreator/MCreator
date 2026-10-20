@@ -20,7 +20,7 @@
     "${modid}_${registryname}_potted": { "textures": [ "textures/blocks/${ge.pottedTexture()}" ] }
     </#if>
     <#if block.hasParticleTexture()>,
-    "${modid}_${registryname}_destruction_particles": { "textures": [ "textures/blocks/${block.destructionParticles}" ] }
+    "${modid}_${registryname}_destruction_particles": { "textures": [ "textures/blocks/${block.destructionParticleCount}" ] }
     </#if>
     <#sep>,
     </#list>
