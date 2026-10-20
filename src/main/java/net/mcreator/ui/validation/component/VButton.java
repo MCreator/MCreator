@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.validation.component;
 
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -35,12 +34,9 @@ public class VButton extends JButton implements IValidable {
 	@Override public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		if (validator != null && currentValidationResult != null) {
-			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
-				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 16, getHeight() - 16, 16, 16, null);
-			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
-				g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 16, getHeight() - 16, 16, 16, null);
-			}
+		if (validator != null && currentValidationResult != null
+				&& currentValidationResult.type() != ValidationResult.Type.PASSED) {
+			currentValidationResult.type().icon(16).paintIcon(this, g, getWidth() - 16, getHeight() - 16);
 		}
 
 	}

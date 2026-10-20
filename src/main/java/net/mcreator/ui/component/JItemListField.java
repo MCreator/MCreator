@@ -417,22 +417,12 @@ public abstract class JItemListField<T> extends JPanel implements IValidable, IO
 		include.setSelected(!isExcluded);
 	}
 
-	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
-	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
-	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
-
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
 			g.setColor(currentValidationResult.type().getColor());
-			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
-				WARNING_ICON.paintIcon(this, g, 0, 0);
-			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
-				ERROR_ICON.paintIcon(this, g, 0, 0);
-			} else if (currentValidationResult.type() == ValidationResult.Type.PASSED) {
-				OK_ICON.paintIcon(this, g, 0, 0);
-			}
+			currentValidationResult.type().icon(13).paintIcon(this, g, 0, 0);
 
 			if (currentValidationResult.type() != ValidationResult.Type.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
