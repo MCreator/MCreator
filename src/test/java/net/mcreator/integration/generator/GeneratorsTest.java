@@ -99,7 +99,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 		return fileNamesSorted.stream()
 				.map(generatorFile -> Generator.GENERATOR_CACHE.get(generatorFile.replace("/generator.yaml", "")))
-				.filter(Objects::nonNull).filter(config -> config.getGeneratorName().contains("neoforge")).map(generatorConfiguration -> {
+				.filter(Objects::nonNull).map(generatorConfiguration -> {
 					String generator = generatorConfiguration.getGeneratorName();
 
 					List<DynamicTest> tests = new ArrayList<>();
