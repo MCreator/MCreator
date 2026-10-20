@@ -75,7 +75,7 @@ public class BlockItemIcons {
 		put("Pickaxe", 				"IRON_PICKAXE");
 		put("Axe", 					"IRON_AXE");
 		put("Sword", 				"IRON_SWORD");
-		put("Mace",                 "MACE");
+		put("Mace",					"MACE");
 		put("Spade", 				"IRON_SHOVEL");
 		put("Hoe", 					"IRON_HOE");
 		put("Shield",				"SHIELD");

@@ -80,7 +80,9 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 			<#elseif data.toolType == "Mace">
 			.component(DataComponents.TOOL, MaceItem.createToolProperties())
 			.component(DataComponents.WEAPON, new Weapon(1))
-			.attributes(MaceItem.createAttributes())
+			<#if data.repairItems?has_content>
+			.repairable(TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")))
+			</#if>
 			<#elseif data.toolType == "MultiTool">
 			.attributes(<@itemAttributeModifiers true/>)
 			<#elseif data.toolType == "Shield">
@@ -102,7 +104,7 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 				.repairable(TagKey.create(Registries.ITEM, Identifier.parse("${modid}:${registryname}_repair_items")))
 				</#if>
 			</#if>
-			<#if data.toolType == "Shears" || data.toolType == "Shield">
+			<#if data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "Mace">
 				<#if data.usageCount != 0>
 				.durability(${data.usageCount})
 				<#else>
@@ -115,7 +117,7 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 			<#if data.immuneToFire>
 			.fireResistant()
 			</#if>
-			<#if data.enchantability != 0 && data.toolType=="Shears">
+			<#if data.enchantability != 0 && (data.toolType=="Shears" || data.toolType=="Mace")>
 			.enchantable(${data.enchantability})
 			</#if>
 			<#if data.stayInGridWhenCrafting && data.usageCount != 0>

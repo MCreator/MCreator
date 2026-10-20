@@ -87,8 +87,8 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 	<#if data.toolType == "Mace">
 	@Override public int getEnchantmentValue() {
-    	return ${data.enchantability};
-    }
+		return ${data.enchantability};
+	}
 	</#if>
 
 	public ${name}Item () {
@@ -106,7 +106,6 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				</#if>
 				<#if data.toolType == "Mace">
 				.component(DataComponents.TOOL, MaceItem.createToolProperties())
-				.attributes(MaceItem.createAttributes())
 				</#if>
 				<#if data.toolType == "MultiTool" || data.attributeModifiers?size gt 0>
 				.attributes(<@itemAttributeModifiers (data.toolType != "Shield" && data.toolType != "Shears")/>)
