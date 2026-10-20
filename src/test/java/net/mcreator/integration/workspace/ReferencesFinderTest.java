@@ -20,12 +20,14 @@
 package net.mcreator.integration.workspace;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Achievement;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.LocalizationUtils;
 import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -42,6 +44,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -203,6 +206,25 @@ import static org.junit.jupiter.api.Assertions.*;
 		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
 		variableName = "blockstate3";
 		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
+	}
+
+	@Test void testBrokenReferencesSearch() {
+		assertEquals(Map.of(), ReferencesFinder.searchBrokenReferences(workspace));
+
+		ModElement modElement = new ModElement(workspace, "BrokenAchievement", ModElementType.ADVANCEMENT);
+		Achievement achievement = TestWorkspaceDataProvider.getAdvancementExample(modElement, new Random(), true, true,
+				ElementUtil.loadBlocksAndItems(workspace));
+		achievement.rewardLoot = List.of("MissingLootTable");
+		achievement.rewardFunction = "MissingFunction";
+		achievement.triggerxml = "<xml><field name=\"item\">CUSTOM:MissingItem.block</field></xml>";
+		workspace.addModElement(modElement);
+		workspace.getModElementManager().storeModElement(achievement);
+
+		Map<ModElement, Set<String>> broken = ReferencesFinder.searchBrokenReferences(workspace);
+		assertEquals(Set.of(modElement), broken.keySet());
+		assertEquals(Set.of("MissingLootTable", "MissingFunction", "MissingItem"), broken.get(modElement));
+
+		workspace.removeModElement(modElement);
 	}
 
 	@Test void testLocalizationKeyUsagesSearch() {
