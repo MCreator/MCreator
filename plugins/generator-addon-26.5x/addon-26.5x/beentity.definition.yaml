@@ -59,8 +59,6 @@ templates:
 
 base_types:
   - entity
-  - type: item
-    condition: hasSpawnEgg
 
 localizationkeys:
   - key: item.spawn_egg.entity.@modid:@registryname.name

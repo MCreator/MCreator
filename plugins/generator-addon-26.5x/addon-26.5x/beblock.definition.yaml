@@ -17,7 +17,6 @@ templates:
 
 base_types:
   - block
-  - item
 
 global_templates:
   - template: resourcepack/blocks.json.ftl
