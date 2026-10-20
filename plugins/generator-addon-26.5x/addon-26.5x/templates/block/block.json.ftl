@@ -29,18 +29,7 @@
     },
     "components": {
       "minecraft:geometry": <@regular_model/>,
-      "minecraft:material_instances": {
-        <#if data.hasOneTexture()>
-		"*": <@material_face "" data.renderType() == 11 data.renderType() == 11/>
-		<#else>
-        "up": <@material_face "up"/>,
-        "down": <@material_face "down"/>,
-        "north": <@material_face "north"/>,
-        "south": <@material_face "south"/>,
-        "east": <@material_face "east"/>,
-        "west": <@material_face "west"/>
-		</#if>
-      },
+      <@material_instances/>,
       <#-- Boxes are emitted in the base orientation; minecraft:transformation permutations rotate them with the geometry -->
       <#if data.isNotColidable>
       "minecraft:collision_box": false,
@@ -67,19 +56,21 @@
 		  "minecraft:embedded_visual": {
 		    "geometry":
 		      <#if data.hasCustomPottedModel()>
-		      "geometry.${data.getPottedModel().getReadableName()}"
+		      "geometry.${data.getPottedModel().getReadableName()}",
+		      <@material_instances true/>
 		      <#elseif data.pottedRenderType() == 11>
-		      "minecraft:geometry.cross"
+		      "minecraft:geometry.cross",
+		      <@material_instances true/>
 		      <#elseif data.pottedRenderType() == 12>
-		      "minecraft:geometry.full_block"
+		      "minecraft:geometry.full_block",
+		      <@material_instances true/>
 		      <#elseif data.hasCustomModel()>
-		      "geometry.${data.getModel().getReadableName()}"
+		      "geometry.${data.getModel().getReadableName()}",
+		      <@material_instances true/>
 		      <#else>
-		      <@regular_model/>
-		      </#if>,
-	    	  "material_instances": {
-	  	       "*": <@material_face "potted" data.pottedRenderType() == 11 data.pottedRenderType() == 11/>
-		      }
+		      <@regular_model/>,
+		      <@material_instances/>
+		      </#if>
 	      },
        </#if>
       </#if>
@@ -229,6 +220,23 @@
   <#else>
   "minecraft:geometry.full_block"
   </#if>
+</#macro>
+
+<#macro material_instances isPotted=false>
+"minecraft:material_instancess": {
+	<#if data.hasOneTexture()>
+	"*": <@material_face "", data.renderType() == 11, data.renderType() == 11/>
+	<#elseif isPotted>
+	"*": <@material_face "potted", data.pottedRenderType() == 11, data.pottedRenderType() == 11/>
+	<#else>
+	"up": <@material_face "up"/>,
+	"down": <@material_face "down"/>,
+	"north": <@material_face "north"/>,
+	"south": <@material_face "south"/>,
+	"east": <@material_face "east"/>,
+	"west": <@material_face "west"/>
+	</#if>
+}
 </#macro>
 
 <#macro material_face suffix="" disableAmbientOcclusion=false disableFaceDimming=false>
