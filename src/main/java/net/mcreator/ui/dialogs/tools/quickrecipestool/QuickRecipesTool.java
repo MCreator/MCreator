@@ -23,7 +23,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Recipe;
-import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
@@ -101,8 +100,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 		switch (recipeTemplate.recipeType) {
 		case "Crafting":
 			Arrays.stream(recipeTemplate.inputSlots).forEach(slot -> recipe.recipeSlots[slot] = input);
-			if (AnnotationUtils.getLimitedOptionsList(Recipe.class, "craftingBookCategory").contains(recipeTemplate.craftingBookCategory))
-				recipe.craftingBookCategory = recipeTemplate.craftingBookCategory;
+			recipe.craftingBookCategory = recipeTemplate.craftingBookCategory;
 			recipe.recipeReturnStack = result;
 			recipe.recipeShapeless = recipeTemplate.isShapeless;
 			break;

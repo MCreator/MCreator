@@ -21,6 +21,8 @@ package net.mcreator.ui.init;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import net.mcreator.element.types.Recipe;
+import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.commons.io.FilenameUtils;
@@ -99,6 +101,18 @@ public class RecipeTemplatesLoader {
 			if (recipeType.equals("Crafting") && Arrays.stream(inputSlots)
 					.anyMatch(i -> !IntegerRange.of(0, 8).contains(i))) {
 				throw new IllegalArgumentException("One or many slots are outside the valid range (0-8)");
+			}
+
+			if (recipeType.equals("Crafting") && (craftingBookCategory == null || craftingBookCategory.isBlank())) {
+				throw new IllegalArgumentException("craftingBookCategory is null or empty");
+			}
+
+			if (recipeType.equals("Crafting") && !AnnotationUtils.getLimitedOptionsList(Recipe.class,
+					"craftingBookCategory").contains(craftingBookCategory)) {
+				throw new IllegalArgumentException(
+						"craftingBookCategory is set to an invalid value. Possible values are: "
+								+ AnnotationUtils.getLimitedOptionsList(Recipe.class, "craftingBookCategory")
+								+ ". Current value is: " + craftingBookCategory);
 			}
 
 			if (!IntegerRange.of(1, 99).contains(stackSize)) {
