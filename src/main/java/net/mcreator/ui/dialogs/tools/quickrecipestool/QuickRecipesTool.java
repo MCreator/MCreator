@@ -87,6 +87,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 		recipe.recipeType = recipeTemplate.recipeType;
 		recipe.unlockingItems.add(input);
 		recipe.recipeRetstackSize = recipeTemplate.stackSize;
+		recipe.xpReward = 1.0;
 
 		// In 26.3 and above, blasting/smoking recipes should have the same cooking time as their normal counterpart
 		if (ModuleDescriptor.Version.parse(
