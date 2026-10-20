@@ -17,7 +17,7 @@
   	"${modid}_${registryname}_east": { "textures": [ "textures/blocks/${block.textureRight()}" ] }
   	</#if>
   	<#if block.flowerPottable && (block.hasPottedVisuals())>,
-    "${modid}_${registryname}_potted": { "textures": [ "textures/blocks/${ge.pottedTexture()}" ] }
+    "${modid}_${registryname}_potted": { "textures": [ "textures/blocks/${block.pottedTexture()}" ] }
     </#if>
     <#if block.hasParticleTexture()>,
     "${modid}_${registryname}_destruction_particles": { "textures": [ "textures/blocks/${block.destructionParticleCount}" ] }
