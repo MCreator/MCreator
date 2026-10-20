@@ -16,7 +16,7 @@
   	"${modid}_${registryname}_west": { "textures": [ "textures/blocks/${block.textureLeft()}" ] },
   	"${modid}_${registryname}_east": { "textures": [ "textures/blocks/${block.textureRight()}" ] }
   	</#if>
-  	<#if block.flowerPottable && (block.hasCustomPottedModel() || block.pottedRenderType() == 11 || block.pottedRenderType() == 12 || block.hasPottedTexture())>,
+  	<#if block.flowerPottable && (block.hasPottedVisuals())>,
     "${modid}_${registryname}_potted": { "textures": [ "textures/blocks/${ge.pottedTexture()}" ] }
     </#if>
     <#if block.hasParticleTexture()>,

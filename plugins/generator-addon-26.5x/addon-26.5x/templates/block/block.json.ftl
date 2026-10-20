@@ -63,7 +63,7 @@
       </#if>
       <#if data.flowerPottable>
       "minecraft:flower_pottable": {},
-       <#if data.hasCustomPottedModel() || data.pottedRenderType() == 11 || data.pottedRenderType() == 12 || data.hasPottedTexture()>
+       <#if data.hasPottedVisuals()>
 		  "minecraft:embedded_visual": {
 		    "geometry":
 		      <#if data.hasCustomPottedModel()>

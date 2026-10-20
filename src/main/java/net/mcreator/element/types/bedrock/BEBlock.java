@@ -248,4 +248,8 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 	public boolean hasParticleTexture() {
 		return destructionParticleCount != null && !destructionParticleCount.isEmpty();
 	}
+
+	public boolean hasPottedVisuals() {
+		return hasCustomPottedModel() || pottedRenderType() == 11 || pottedRenderType() == 12 || hasPottedTexture();
+	}
 }
