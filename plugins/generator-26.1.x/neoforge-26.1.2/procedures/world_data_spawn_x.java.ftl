@@ -1,1 +1,0 @@
-/*@int*/(world.getLevelData().getRespawnData().pos().getX())

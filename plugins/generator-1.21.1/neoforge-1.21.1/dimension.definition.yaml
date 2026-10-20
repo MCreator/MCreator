@@ -52,6 +52,12 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
     condition: hasIgniter()
 
+base_types:
+  - type: block
+    condition: enablePortal
+  - type: item
+    condition: hasIgniter()
+
 global_templates:
   - template: dimension/skybox.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/@JavaModNameSkyboxRenderer.java"

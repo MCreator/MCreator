@@ -178,12 +178,9 @@ public class MCItemHolder extends JButton implements IValidable {
 				g.drawImage(removeIcon.getImage(), 0, getHeight() - 11, 11, 11, null);
 			}
 
-			if (validator != null && currentValidationResult != null) {
-				if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
-					g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
-				} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
-					g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
-				}
+			if (validator != null && currentValidationResult != null
+					&& currentValidationResult.type() != ValidationResult.Type.PASSED) {
+				currentValidationResult.type().icon(11).paintIcon(this, g, getWidth() - 11, getHeight() - 11);
 			}
 
 		}

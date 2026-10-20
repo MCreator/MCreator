@@ -11,18 +11,22 @@ templates:
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_helmet"
+    condition: enableHelmet
     name: "@MODASSETSROOT/items/@registryname_helmet.json"
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_chestplate"
+    condition: enableBody
     name: "@MODASSETSROOT/items/@registryname_chestplate.json"
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_leggings"
+    condition: enableLeggings
     name: "@MODASSETSROOT/items/@registryname_leggings.json"
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_boots"
+    condition: enableBoots
     name: "@MODASSETSROOT/items/@registryname_boots.json"
 
 # Helmet item model
@@ -144,6 +148,9 @@ templates:
       - "bootsItemRenderType #= 2"
     variables: "item=boots"
     name: "@MODASSETSROOT/models/item/@registryname_boots.json"
+
+base_types:
+  - item
 
 tags:
   - tag: ITEMS:minecraft:head_armor

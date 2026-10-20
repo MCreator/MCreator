@@ -50,6 +50,8 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -166,6 +168,22 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 				private void triggerSearch() {
 					searchDebounceTimer.restart();
+				}
+			});
+			search.addKeyListener(new KeyAdapter() {
+				@Override public void keyPressed(KeyEvent e) {
+					if (!results.isVisible())
+						return;
+					switch (e.getKeyCode()) {
+					case KeyEvent.VK_DOWN -> moveResultSelection(1);
+					case KeyEvent.VK_UP -> moveResultSelection(-1);
+					case KeyEvent.VK_ESCAPE -> results.setVisible(false);
+					case KeyEvent.VK_ENTER -> {
+						JMenuItem armedResult = armedResult();
+						if (armedResult != null)
+							armedResult.doClick();
+					}
+					}
 				}
 			});
 
@@ -308,12 +326,25 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 				results.setFocusable(false);
 				results.show(search, 0, 24);
+				MenuSelectionManager.defaultManager().setSelectedPath(new MenuElement[] { results });
 			} else {
 				results.setVisible(false);
 			}
 		} else {
 			results.setVisible(false);
 		}
+	}
+
+	private JMenuItem armedResult() {
+		MenuElement[] path = MenuSelectionManager.defaultManager().getSelectedPath();
+		return path.length > 1 && path[0] == results && path[1] instanceof JMenuItem item ? item : null;
+	}
+
+	private void moveResultSelection(int delta) {
+		List<MenuElement> items = Arrays.asList(results.getSubElements());
+		JMenuItem item = (JMenuItem) items.get(Math.clamp(items.indexOf(armedResult()) + delta, 0, items.size() - 1));
+		MenuSelectionManager.defaultManager().setSelectedPath(new MenuElement[] { results, item });
+		results.scrollRectToVisible(item.getBounds());
 	}
 
 	public void setTemplateLibButtonWidth(int w) {

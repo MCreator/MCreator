@@ -4,23 +4,23 @@
   "padding": 8,
   "num_mip_levels": 0,
   "texture_data": {
-  <#list w.getElementsOfType("beblock") as mod>
-  	<#assign ge = mod.getGeneratableElement()>
-  	<#if ge.hasOneTexture()>
-  	"${modid}_${mod.getRegistryName()}": { "textures": [ "textures/blocks/${ge.texture}" ] }
+  <#list beblocks as block>
+  	<#assign registryname = block.getModElement().getRegistryName()>
+  	<#if block.hasOneTexture()>
+  	"${modid}_${registryname}": { "textures": [ "textures/blocks/${block.texture}" ] }
   	<#else>
-  	"${modid}_${mod.getRegistryName()}_up": { "textures": [ "textures/blocks/${ge.textureTop()}" ] },
-  	"${modid}_${mod.getRegistryName()}_down": { "textures": [ "textures/blocks/${ge.texture}" ] },
-  	"${modid}_${mod.getRegistryName()}_south": { "textures": [ "textures/blocks/${ge.textureFront()}" ] },
-  	"${modid}_${mod.getRegistryName()}_north": { "textures": [ "textures/blocks/${ge.textureBack()}" ] },
-  	"${modid}_${mod.getRegistryName()}_west": { "textures": [ "textures/blocks/${ge.textureLeft()}" ] },
-  	"${modid}_${mod.getRegistryName()}_east": { "textures": [ "textures/blocks/${ge.textureRight()}" ] }
+  	"${modid}_${registryname}_up": { "textures": [ "textures/blocks/${block.textureTop()}" ] },
+  	"${modid}_${registryname}_down": { "textures": [ "textures/blocks/${block.texture}" ] },
+  	"${modid}_${registryname}_south": { "textures": [ "textures/blocks/${block.textureFront()}" ] },
+  	"${modid}_${registryname}_north": { "textures": [ "textures/blocks/${block.textureBack()}" ] },
+  	"${modid}_${registryname}_west": { "textures": [ "textures/blocks/${block.textureLeft()}" ] },
+  	"${modid}_${registryname}_east": { "textures": [ "textures/blocks/${block.textureRight()}" ] }
   	</#if>
-  	<#if ge.flowerPottable && (ge.hasCustomPottedModel() || ge.pottedRenderType() == 11 || ge.pottedRenderType() == 12 || ge.hasPottedTexture())>,
-    "${modid}_${mod.getRegistryName()}_potted": { "textures": [ "textures/blocks/${ge.pottedTexture()}" ] }
+  	<#if block.flowerPottable && (block.hasCustomPottedModel() || block.pottedRenderType() == 11 || block.pottedRenderType() == 12 || block.hasPottedTexture())>,
+    "${modid}_${registryname}_potted": { "textures": [ "textures/blocks/${ge.pottedTexture()}" ] }
     </#if>
-    <#if ge.hasParticleTexture()>,
-    "${modid}_${mod.getRegistryName()}_destruction_particles": { "textures": [ "textures/blocks/${ge.destructionParticles}" ] }
+    <#if block.hasParticleTexture()>,
+    "${modid}_${registryname}_destruction_particles": { "textures": [ "textures/blocks/${block.destructionParticles}" ] }
     </#if>
     <#sep>,
     </#list>

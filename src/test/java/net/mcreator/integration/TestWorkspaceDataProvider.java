@@ -40,7 +40,6 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.integration.generator.GTProcedureBlocks;
@@ -339,6 +338,16 @@ public class TestWorkspaceDataProvider {
 				throw new RuntimeException(e);
 			}
 		}
+
+		if (workspace.getGeneratorStats().hasBaseCoverage("model_bedrock")) {
+			try {
+				FileIO.writeStringToFile(
+						IOUtils.resourceToString("/entitymodel-bedrock.geo.json", StandardCharsets.UTF_8),
+						new File(workspace.getFolderManager().getModelsDir(), "custom_bedrock_model.geo.json"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	public static void fillWorkspaceWithSampleTags(Workspace workspace) {
@@ -349,8 +358,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:item"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEM)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.ITEM)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleitem1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleitem2"));
 				}
@@ -362,8 +370,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stone"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:dirt"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:block"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.BLOCK)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleblock1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleblock2"));
 				}
@@ -375,8 +382,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:creeper"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:zombie"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:entity"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.LIVINGENTITY)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplelivingentity1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplelivingentity2"));
 				}
@@ -387,8 +393,7 @@ public class TestWorkspaceDataProvider {
 			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("biomes", 0d) != 0) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:plains"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:biome"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BIOME)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.BIOME)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplebiome1"));
 				}
 			}
@@ -399,8 +404,7 @@ public class TestWorkspaceDataProvider {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("minecraft:stronghold"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("minecraft:mineshaft"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:structure"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.STRUCTURE)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.STRUCTURE)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Examplestructure1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Examplestructure2"));
 				}
@@ -410,8 +414,7 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("damagesources", 0d) != 0) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:damage_type"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.DAMAGETYPE)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.DAMAGETYPE)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampledamagetype1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampledamagetype2"));
 				}
@@ -421,8 +424,7 @@ public class TestWorkspaceDataProvider {
 			workspace.addTagElement(tag);
 			if (workspace.getGeneratorStats().getCoverageInfo().getOrDefault("enchantments", 0d) != 0) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("EXTERNAL:externalmod:enchantment"));
-				if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-						== GeneratorStats.CoverageStatus.FULL) {
+				if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.ENCHANTMENT)) {
 					workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("CUSTOM:Exampleenchantment1"));
 					workspace.getTagElements().get(tag).add(TagElement.Entry.managed("CUSTOM:Exampleenchantment2"));
 				}
@@ -438,8 +440,7 @@ public class TestWorkspaceDataProvider {
 
 			tag = new TagElement(TagType.FUNCTIONS, "minecraft:test");
 			workspace.addTagElement(tag);
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ENCHANTMENT)
-					== GeneratorStats.CoverageStatus.FULL) {
+			if (workspace.getGeneratorStats().isModElementTypeFullyCovered(ModElementType.FUNCTION)) {
 				workspace.getTagElements().get(tag).add(TagElement.Entry.unmanaged("ExampleFunction1"));
 				workspace.getTagElements().get(tag).add(TagElement.Entry.managed("ExampleFunction2"));
 			}
@@ -688,6 +689,7 @@ public class TestWorkspaceDataProvider {
 			tab.name = modElement.getName();
 			tab.icon = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 			tab.showSearch = _true;
+			tab.hideTitle = _true;
 			return tab;
 		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
 			Overlay overlay = new Overlay(modElement);
@@ -1867,6 +1869,21 @@ public class TestWorkspaceDataProvider {
 			beblock.lightEmission = getRandomInt(random, BEBlock.class, "lightEmission");
 			beblock.colorOnMap = new MapColor(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
+			beblock.isNotColidable = _true;
+			beblock.boundingBoxes = new ArrayList<>();
+			if (!emptyLists) {
+				int boxes = random.nextInt(4) + 1;
+				for (int i = 0; i < boxes; i++) {
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					beblock.boundingBoxes.add(box);
+				}
+			}
 			beblock.generateFeature = _true;
 			beblock.generationShape = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "generationShape"));
@@ -1944,9 +1961,11 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BEENTITY.equals(modElement.getType())) {
 			BEEntity beentity = new BEEntity(modElement);
 			beentity.entityName = modElement.getName();
-			beentity.modelName = getRandomString(random,
-					List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
-							"Villager"));
+			beentity.modelName = emptyLists ?
+					"custom_bedrock_model" :
+					getRandomString(random,
+							List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime",
+									"Spider", "Villager"));
 			beentity.modelTexture = "entity_texture_1.png";
 			beentity.collisionBoxHeight = getRandomDouble(random, BEEntity.class, "collisionBoxHeight");
 			beentity.collisionBoxWidth = getRandomDouble(random, BEEntity.class, "collisionBoxWidth");
@@ -2155,6 +2174,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
+			modelLayer.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
@@ -2163,6 +2183,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
+			modelLayer.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
@@ -2520,11 +2541,8 @@ public class TestWorkspaceDataProvider {
 				}
 			}
 
-			// Variants mode does not support empty state conditions, so make sure at least one property of
-			// the types the state maps below are populated from (logic or integer) is always used
-			if (!block.multipartModel && stateProperties.stream().noneMatch(
-					e -> e.property() instanceof PropertyData.LogicType
-							|| e.property() instanceof PropertyData.IntegerType)) {
+			// Variants mode does not support empty state conditions, so make sure at least one property is always used
+			if (!block.multipartModel && stateProperties.isEmpty()) {
 				stateProperties.add(block.customProperties.getFirst()); // CUSTOM:bool_prop
 			}
 
@@ -2537,6 +2555,8 @@ public class TestWorkspaceDataProvider {
 						stateMap.put(property.property(), random.nextInt(1, 10));
 					} else if (property.property() instanceof PropertyData.LogicType) {
 						stateMap.put(property.property(), random.nextBoolean());
+					} else if (property.property() instanceof PropertyData.StringType stringType) {
+						stateMap.put(property.property(), getRandomItem(random, stringType.getArrayData()));
 					}
 				}
 
@@ -2913,8 +2933,7 @@ public class TestWorkspaceDataProvider {
 
 	public static void provideAndGenerateSampleElements(Random random, Workspace workspace) {
 		// add sample procedures (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.PROCEDURE)) {
 			for (int i = 1; i <= 15; i++) {
 				ModElement me = new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE);
 				if (i == 1) {
@@ -3049,8 +3068,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		// add sample recipes (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.RECIPE)) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleRecipe" + i, ModElementType.RECIPE);
 
@@ -3068,8 +3086,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		// add sample functions (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FUNCTION)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.FUNCTION)) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleFunction" + i, ModElementType.FUNCTION);
 
@@ -3083,8 +3100,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		// add sample loot tables (used by test mod elements) if supported
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LOOTTABLE)
-				!= GeneratorStats.CoverageStatus.NONE) {
+		if (workspace.getGeneratorStats().isModElementTypeCovered(ModElementType.LOOTTABLE)) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
 

@@ -4,6 +4,12 @@
       "type": "input_statement",
       "name": "conditionalEffect",
       "check": "ConditionalValueEffect"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/ench_component.png",
+      "width": 8,
+      "height": 36
     }
   ],
   "extensions": [

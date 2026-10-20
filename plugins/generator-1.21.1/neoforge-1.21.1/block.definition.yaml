@@ -506,11 +506,6 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
-global_templates:
-  - template: elementinits/woodtypes.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWoodTypes.java"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
-
 list_templates:
   - name: "Block states"
     listData: data.getDefinedStates()
@@ -552,6 +547,20 @@ list_templates:
         condition: "renderType #= 3"
         writer: json
         name: "@MODASSETSROOT/models/block/@registryname_@itemindex.json"
+
+base_types:
+  - block
+  - type: item
+    condition: hasBlockItem
+  - type: configuredfeature
+    condition: generateFeature
+  - type: blockentity
+    condition: hasInventory
+
+global_templates:
+  - template: elementinits/woodtypes.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWoodTypes.java"
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
 
 block_base_properties:
   Stairs: [ facing, half, shape, waterlogged ]

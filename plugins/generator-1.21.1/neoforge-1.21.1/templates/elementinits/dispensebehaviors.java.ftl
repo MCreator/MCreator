@@ -39,8 +39,8 @@
 
 package ${package}.init;
 
-<#assign itemextensions = w.getGElementsOfType("itemextension")?filter(e -> e.hasDispenseBehavior)>
-<#assign specialentities = w.getGElementsOfType("specialentity")>
+<#assign itemextensions = dispensebehaviors?filter(e -> e.getModElement().getTypeString() == "itemextension")>
+<#assign specialentities = dispensebehaviors?filter(e -> e.getModElement().getTypeString() == "specialentity")>
 <@javacompress>
 @EventBusSubscriber public class ${JavaModName}DispenseBehaviors {
 

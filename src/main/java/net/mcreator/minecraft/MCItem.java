@@ -51,7 +51,7 @@ public class MCItem extends DataListEntry {
 	public static final ImageIcon TAG_ICON = UIRES.get("tag");
 	public static final ImageIcon EXTERNAL_ICON = UIRES.get("mod_external");
 
-	protected ImageIcon icon;
+	private ImageIcon icon;
 
 	private boolean hasSubtypes;
 
@@ -97,7 +97,7 @@ public class MCItem extends DataListEntry {
 		return false;
 	}
 
-	public static ImageIcon getBlockIconBasedOnName(Workspace workspace, String name) {
+	@Nonnull public static ImageIcon getBlockIconBasedOnName(Workspace workspace, String name) {
 		if (name == null || name.isBlank())
 			return EMPTY_ICON;
 
@@ -180,12 +180,16 @@ public class MCItem extends DataListEntry {
 
 	public static final class Custom extends MCItem {
 
+		private transient final Workspace workspace;
+
 		public Custom(ModElement element, String fieldName, String type) {
 			this(element, fieldName, type, null);
 		}
 
 		public Custom(ModElement element, String fieldName, String type, @Nullable String descriptor) {
 			super(NameMapper.MCREATOR_PREFIX + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
+
+			this.workspace = element.getWorkspace();
 
 			if (descriptor != null) {
 				setReadableName(
@@ -195,9 +199,18 @@ public class MCItem extends DataListEntry {
 				setReadableName(element.getName() + " - " + element.getType().getReadableName());
 			}
 
-			setIcon(getBlockIconBasedOnName(element.getWorkspace(), getName()));
 			setType(type);
 			setDescription(element.getType().getDescription());
+		}
+
+		// Lazy load the icon based on the element's name and workspace
+		@Override public ImageIcon getIcon() {
+			ImageIcon icon = super.getIcon();
+			if (icon == null) {
+				icon = getBlockIconBasedOnName(workspace, getName());
+				setIcon(icon);
+			}
+			return icon;
 		}
 
 		@Override public boolean isSupportedInWorkspace(Workspace workspace) {
@@ -210,7 +223,7 @@ public class MCItem extends DataListEntry {
 		public Tag(@Nonnull Workspace workspace, String name) {
 			super("TAG:" + name);
 			setType("tag");
-			icon = MCItem.getBlockIconBasedOnName(workspace, "TAG:" + name);
+			setIcon(getBlockIconBasedOnName(workspace, "TAG:" + name));
 		}
 
 		@Override public boolean isSupportedInWorkspace(Workspace workspace) {
@@ -223,7 +236,7 @@ public class MCItem extends DataListEntry {
 		public Potion(@Nonnull Workspace workspace, DataListEntry potion) {
 			super("POTION:" + potion.getName());
 			setType("potion");
-			icon = MCItem.getBlockIconBasedOnName(workspace, "POTION:" + potion.getName());
+			setIcon(getBlockIconBasedOnName(workspace, "POTION:" + potion.getName()));
 		}
 
 		@Override public boolean isSupportedInWorkspace(Workspace workspace) {
