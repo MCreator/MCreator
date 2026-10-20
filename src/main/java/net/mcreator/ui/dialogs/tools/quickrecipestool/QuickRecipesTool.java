@@ -112,6 +112,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 			recipe.campfireCookingInputStack = input;
 			recipe.campfireCookingReturnStack = result;
 			recipe.cookingTime = 600;
+			recipe.cookingBookCategory = "FOOD";
 			break;
 		case "Smelting":
 			recipe.smeltingInputStack = input;
