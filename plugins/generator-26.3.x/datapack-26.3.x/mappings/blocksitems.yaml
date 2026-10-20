@@ -5786,3 +5786,11 @@ Items.PARCHED_SPAWN_EGG:
 Items.SULFUR_CUBE_SPAWN_EGG:
   - Items.SULFUR_CUBE_SPAWN_EGG
   - "sulfur_cube_spawn_egg"
+
+# Legacy entries
+Blocks.FLOWING_WATER:
+  - Blocks.WATER
+  - "water"
+Blocks.FLOWING_LAVA:
+  - Blocks.LAVA
+  - "lava"

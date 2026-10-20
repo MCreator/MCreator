@@ -4763,3 +4763,11 @@ Items.OMINOUS_BOTTLE:
 Items.BREEZE_ROD:
   - Items.BREEZE_ROD
   - "breeze_rod"
+
+# Legacy entries
+Blocks.FLOWING_WATER:
+  - Blocks.WATER
+  - "water"
+Blocks.FLOWING_LAVA:
+  - Blocks.LAVA
+  - "lava"
