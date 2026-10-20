@@ -66,6 +66,12 @@ tags:
     condition: "toolType %= Fishing rod"
   - tag: ITEMS:minecraft:enchantable/mace
     condition: "toolType %= Mace"
+  - tag: ITEMS:minecraft:enchantable/weapon
+    condition: "toolType %= Mace"
+  - tag: ITEMS:minecraft:enchantable/fire_aspect
+    condition: "toolType %= Mace"
+  - tag: ITEMS:minecraft:enchantable/durability
+    condition: "toolType %= Mace"
   - tag: ITEMS:@modid:@registryname_repair_items
     entryprovider: getRepairItemsAsStringList()
 

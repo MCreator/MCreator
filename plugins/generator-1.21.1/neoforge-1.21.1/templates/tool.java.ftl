@@ -107,12 +107,10 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.toolType == "Mace">
 				.component(DataComponents.TOOL, MaceItem.createToolProperties())
 				</#if>
-				<#if data.toolType == "MultiTool" || data.attributeModifiers?size gt 0>
+				<#if data.toolType == "MultiTool" || data.toolType == "Mace" || data.attributeModifiers?size gt 0>
 				.attributes(<@itemAttributeModifiers (data.toolType != "Shield" && data.toolType != "Shears")/>)
 				<#elseif data.toolType == "Sword">
 				.attributes(SwordItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
-				<#elseif data.toolType == "Mace"> <#-- Mace uses attributes for the attack speed and the attack damage parameters -->
-				.attributes(<@itemAttributeModifiers true/>)
 				<#elseif data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Spade" || data.toolType == "Hoe" || data.toolType == "MultiTool">
 				.attributes(DiggerItem.createAttributes(TOOL_TIER, ${data.damageVsEntity - 1}f, ${data.attackSpeed - 4}f))
 				</#if>

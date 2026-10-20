@@ -123,7 +123,7 @@ public class ${name}Item extends <#if data.toolType == "Shears" || data.toolType
 			<#if data.stayInGridWhenCrafting && data.usageCount != 0>
 			.setNoCombineRepair()
 			</#if>
-			<#if (data.attributeModifiers?size gt 0) && data.toolType != "MultiTool" || data.toolType == "Mace">
+			<#if ((data.attributeModifiers?size gt 0) && data.toolType != "MultiTool") || data.toolType == "Mace">
 			.attributes(<@itemAttributeModifiers (data.toolType != "Shears" && data.toolType != "Shield")/>)
 			</#if>
 		);
