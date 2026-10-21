@@ -140,7 +140,7 @@ import java.util.List;
 								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size", file.getName()),
 								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size.title"),
 								JOptionPane.ERROR_MESSAGE);
-					} catch (IOException e) {
+					} catch (IOException | NullPointerException e) {
 						LOG.error("File {} could not be read as an image", file.getName(), e);
 						JOptionPane.showMessageDialog(timeline.getMCreator(),
 								L10N.t("dialog.animation_maker.import_frames.invalid_image", file.getName()),
