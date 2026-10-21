@@ -64,12 +64,9 @@
 		      <#elseif data.pottedRenderType() == 12>
 		      "minecraft:geometry.full_block",
 		      <@material_instances true/>
-		      <#elseif data.hasCustomModel()>
-		      "geometry.${data.getModel().getReadableName()}",
-		      <@material_instances true/>
 		      <#else>
 		      <@regular_model/>,
-		      <@material_instances/>
+		      <@material_instances data.hasCustomModel()/>
 		      </#if>
 	      },
        </#if>
