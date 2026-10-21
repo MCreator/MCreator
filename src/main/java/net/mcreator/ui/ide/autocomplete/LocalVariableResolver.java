@@ -70,6 +70,10 @@ public final class LocalVariableResolver {
 	private static final Pattern DECL_PATTERN = Pattern.compile(
 			"\\b((?:var|boolean|byte|char|short|int|long|float|double|(?:[a-z_$][A-Za-z0-9_$]*\\.)*[A-Z][A-Za-z0-9_.]*)(?:<[^;={}()]*?>)?(?:\\[]|\\.\\.\\.)*)\\s+(?!(?:boolean|byte|char|short|int|long|float|double|void|class|interface|enum|record|extends|implements|throws|return|new|public|private|protected|static|final|abstract|default)\\b)([a-zA-Z_$][a-zA-Z0-9_$]*(?:\\s*,\\s*[a-zA-Z_$][a-zA-Z0-9_$]*\\b(?=\\s*(?:[,;=]|$)))*)\\b(?!\\s*\\()");
 	private static final Pattern STATIC_PATTERN = Pattern.compile("\\bstatic\\b");
+	private static final Pattern ANONYMOUS_CLASS_HEADER_PATTERN = Pattern.compile(
+			"\\bnew\\s+([a-zA-Z_$][\\w$.]*(?:\\s*<[^(){};]*>)?)\\s*\\((?:[^()]|\\((?:[^()]|\\([^()]*\\))*\\))*\\)\\s*$");
+	private static final Pattern TYPE_HEADER_PATTERN = Pattern.compile(
+			"(?<!\\.)\\b(?:class|interface|enum|record)\\s+[a-zA-Z_$][\\w$]*[^;{}]*$");
 
 	private static String normalizeVarargs(String type) {
 		return type != null ? type.replace("...", "[]") : null;
@@ -118,6 +122,21 @@ public final class LocalVariableResolver {
 			return STATIC_PATTERN.matcher(list.get(2).header).find();
 		}
 		return false;
+	}
+
+	public static String findEnclosingAnonymousType(String codeBeforeCursor) {
+		if (codeBeforeCursor == null || codeBeforeCursor.isEmpty())
+			return null;
+		List<ScopeBlock> scopes = new ArrayList<>(parseScopes(codeBeforeCursor));
+		for (int i = 0; i < scopes.size() - 1; i++) {
+			String preceding = scopes.get(i + 1).text + scopes.get(i).header;
+			Matcher m = ANONYMOUS_CLASS_HEADER_PATTERN.matcher(preceding);
+			if (m.find())
+				return m.group(1).replaceAll("\\s+", "");
+			if (TYPE_HEADER_PATTERN.matcher(preceding).find())
+				return null;
+		}
+		return null;
 	}
 
 	private static String getActiveCode(String codeBeforeCursor) {
