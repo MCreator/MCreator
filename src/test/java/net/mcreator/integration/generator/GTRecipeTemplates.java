@@ -20,6 +20,7 @@
 package net.mcreator.integration.generator;
 
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
@@ -37,33 +38,18 @@ public class GTRecipeTemplates {
 	public static void runTest(Logger LOG, String generatorName, Random random, MCreator mcreator,
 			Workspace workspace) {
 		int suffix = 0;
-		List<MCItem> blocksAndItemsAndTagsNoAir = filterAir(ElementUtil.loadBlocksAndItemsAndTags(workspace));
+		List<MCItem> blocksAndItemsAndTagsNoAir = TestWorkspaceDataProvider.filterAir(ElementUtil.loadBlocksAndItemsAndTags(workspace));
 
 		for (String templateName : RecipeTemplatesLoader.getTemplateNames()) {
 			LOG.info("[{}] Testing recipe template {} ", generatorName, templateName);
 
-			MItemBlock input = new MItemBlock(workspace, getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
+			MItemBlock input = new MItemBlock(workspace, TestWorkspaceDataProvider.getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			MItemBlock result = new MItemBlock(workspace,
-					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
+					TestWorkspaceDataProvider.getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 
 			QuickRecipesTool.addRecipeToWorkspace(null, mcreator, workspace, "RecipeTemplate" + suffix, templateName,
 					input, result);
 			suffix++;
 		}
-	}
-
-	private static List<MCItem> filterAir(List<MCItem> source) {
-		return source.stream()
-				.filter(e -> !(e.getName().equals("Blocks.AIR") || e.getName().equals("Blocks.VOID_AIR") || e.getName()
-						.equals("Blocks.CAVE_AIR"))).toList();
-	}
-
-	private static MCItem getRandomMCItem(Random random, List<MCItem> list) {
-		if (list.isEmpty())
-			return new MCItem(new DataListEntry.Dummy("Blocks.STONE"));
-
-		int listSize = list.size();
-		int randomIndex = random.nextInt(listSize);
-		return list.get(randomIndex);
 	}
 }
