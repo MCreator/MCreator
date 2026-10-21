@@ -103,11 +103,13 @@ public class CollapsiblePanel extends JPanel {
 	public void toggleVisibility(boolean visible) {
 		contentHolder.setVisible(visible);
 
-		if (visible) {
-			this.setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()));
-		} else {
-			this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 1, 1, 1),
-					BorderFactory.createMatteBorder(4, 0, 0, 0, Theme.current().getAltBackgroundColor())));
+		if (!smallArrows) {
+			if (visible) {
+				this.setBorder(BorderFactory.createMatteBorder(4, 1, 1, 1, Theme.current().getAltBackgroundColor()));
+			} else {
+				this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 1, 1, 1),
+						BorderFactory.createMatteBorder(4, 0, 0, 0, Theme.current().getAltBackgroundColor())));
+			}
 		}
 
 		updateBorderTitle();

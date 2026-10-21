@@ -49,12 +49,15 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 
 	private final TechnicalButton genFromModel = L10N.technicalbutton("elementgui.common.gen_from_block_model");
 
+	private final MCreator mcreator;
+
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, @Nullable Supplier<Model> modelProvider) {
 		super(mcreator, gui);
 		this.modelProvider = modelProvider;
+		this.mcreator = mcreator;
 
 		if (modelProvider != null) {
-			genFromModel.addActionListener(e -> generateBoundingBoxFromModel());
+			genFromModel.addActionListener(_ -> generateBoundingBoxFromModel());
 			topbar.add(genFromModel);
 			modelChanged();
 		}
@@ -62,7 +65,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 		add.setText(L10N.t("elementgui.common.add_bounding_box"));
 
 		entries.addPropertyChangeListener("boundingBoxChanged",
-				e -> firePropertyChange("boundingBoxChanged", false, true));
+				_ -> firePropertyChange("boundingBoxChanged", false, true));
 
 		ComponentUtils.makeSection(this, L10N.t("elementgui.common.bounding_box_entries"));
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
@@ -79,41 +82,30 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 
 	@Override
 	protected JBoundingBoxEntry newEntry(JPanel parent, List<JBoundingBoxEntry> entryList, boolean userAction) {
-		return new JBoundingBoxEntry(parent, entryList);
+		return new JBoundingBoxEntry(parent, entryList, mcreator.getGeneratorConfiguration().getGeneratorFlavor());
 	}
 
 	public void modelChanged() {
 		if (modelProvider != null)
-			genFromModel.setVisible(modelProvider.get() != null && modelProvider.get().getType() == Model.Type.JSON);
+			genFromModel.setVisible(modelProvider.get() != null && supportsGenerateFromModel(modelProvider.get()));
+	}
+
+	private static boolean supportsGenerateFromModel(Model model) {
+		return model.getType() == Model.Type.JSON || model.getType() == Model.Type.BEDROCK;
 	}
 
 	private void generateBoundingBoxFromModel() {
 		if (modelProvider != null) {
 			Model model = modelProvider.get();
-			if (model != null && model.getType() == Model.Type.JSON) {
+			if (model != null && supportsGenerateFromModel(model)) {
 				try {
 					JsonObject modelJSON = JsonParser.parseString(FileIO.readFileToString(model.getFile()))
 							.getAsJsonObject();
-					if (modelJSON.has("elements")) {
-						List<IBlockWithBoundingBox.BoxEntry> boxEntries = new ArrayList<>();
-
-						for (JsonElement element : modelJSON.get("elements").getAsJsonArray()) {
-							JsonArray from = element.getAsJsonObject().get("from").getAsJsonArray();
-							JsonArray to = element.getAsJsonObject().get("to").getAsJsonArray();
-
-							IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
-							box.mx = from.get(0).getAsDouble();
-							box.my = from.get(1).getAsDouble();
-							box.mz = from.get(2).getAsDouble();
-							box.Mx = to.get(0).getAsDouble();
-							box.My = to.get(1).getAsDouble();
-							box.Mz = to.get(2).getAsDouble();
-
-							boxEntries.add(box);
-						}
-
+					List<IBlockWithBoundingBox.BoxEntry> boxEntries = model.getType() == Model.Type.BEDROCK ?
+							boxesFromBedrockModel(modelJSON) :
+							boxesFromJSONModel(modelJSON);
+					if (boxEntries != null)
 						setEntries(boxEntries);
-					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(mcreator,
 							L10N.t("elementgui.common.gen_from_block_model_failed.message"),
@@ -122,6 +114,67 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 				}
 			}
 		}
+	}
+
+	@Nullable private static List<IBlockWithBoundingBox.BoxEntry> boxesFromJSONModel(JsonObject modelJSON) {
+		if (!modelJSON.has("elements"))
+			return null;
+
+		List<IBlockWithBoundingBox.BoxEntry> boxEntries = new ArrayList<>();
+		for (JsonElement element : modelJSON.get("elements").getAsJsonArray()) {
+			JsonArray from = element.getAsJsonObject().get("from").getAsJsonArray();
+			JsonArray to = element.getAsJsonObject().get("to").getAsJsonArray();
+
+			IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+			box.mx = from.get(0).getAsDouble();
+			box.my = from.get(1).getAsDouble();
+			box.mz = from.get(2).getAsDouble();
+			box.Mx = to.get(0).getAsDouble();
+			box.My = to.get(1).getAsDouble();
+			box.Mz = to.get(2).getAsDouble();
+
+			boxEntries.add(box);
+		}
+		return boxEntries;
+	}
+
+	/**
+	 * Bedrock geometry cubes are placed relative to the bottom center of the block with the X axis pointing west,
+	 * while bounding boxes are relative to the bottom north-west corner with the X axis pointing east.
+	 * Cube and bone rotations are ignored, the same way element rotations of Java models are ignored.
+	 * Only the first geometry of the file is used, which is what the block references.
+	 */
+	@Nullable private static List<IBlockWithBoundingBox.BoxEntry> boxesFromBedrockModel(JsonObject modelJSON) {
+		if (!modelJSON.has("minecraft:geometry") || modelJSON.getAsJsonArray("minecraft:geometry").isEmpty())
+			return null;
+
+		JsonObject geometry = modelJSON.getAsJsonArray("minecraft:geometry").get(0).getAsJsonObject();
+		if (!geometry.has("bones"))
+			return null;
+
+		List<IBlockWithBoundingBox.BoxEntry> boxEntries = new ArrayList<>();
+		for (JsonElement bone : geometry.getAsJsonArray("bones")) {
+			if (!bone.getAsJsonObject().has("cubes"))
+				continue;
+
+			for (JsonElement cubeElement : bone.getAsJsonObject().getAsJsonArray("cubes")) {
+				JsonObject cube = cubeElement.getAsJsonObject();
+				JsonArray origin = cube.getAsJsonArray("origin");
+				JsonArray size = cube.getAsJsonArray("size");
+				double inflate = cube.has("inflate") ? cube.get("inflate").getAsDouble() : 0;
+
+				IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+				box.mx = 8 - (origin.get(0).getAsDouble() + size.get(0).getAsDouble()) - inflate;
+				box.Mx = 8 - origin.get(0).getAsDouble() + inflate;
+				box.my = origin.get(1).getAsDouble() - inflate;
+				box.My = origin.get(1).getAsDouble() + size.get(1).getAsDouble() + inflate;
+				box.mz = origin.get(2).getAsDouble() + 8 - inflate;
+				box.Mz = origin.get(2).getAsDouble() + size.get(2).getAsDouble() + 8 + inflate;
+
+				boxEntries.add(box);
+			}
+		}
+		return boxEntries;
 	}
 
 	public boolean isFullCube() {

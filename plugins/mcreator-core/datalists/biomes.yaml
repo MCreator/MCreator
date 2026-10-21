@@ -112,6 +112,8 @@
   readable_name: "Lush caves"
 - deep_dark:
   readable_name: "Deep dark"
+- sulfur_caves:
+  readable_name: "Sulfur caves"
 - meadow:
   readable_name: "Meadow"
 - cherry_grove:
@@ -128,3 +130,5 @@
   readable_name: "Stony peaks"
 - pale_garden:
   readable_name: "Pale garden"
+- dappled_forest:
+  readable_name: "Dappled forest"

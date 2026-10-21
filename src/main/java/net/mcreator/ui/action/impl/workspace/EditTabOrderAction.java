@@ -20,7 +20,6 @@ package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.dialogs.ElementOrderEditor;
@@ -31,13 +30,12 @@ public class EditTabOrderAction extends BasicAction {
 
 	public EditTabOrderAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.workspace.edit_creative_tab_order"),
-				e -> ElementOrderEditor.openElementOrderEditor(actionRegistry.getMCreator()));
+				_ -> ElementOrderEditor.openElementOrderEditor(actionRegistry.getMCreator()));
 		setIcon(UIRES.get("16px.editorder"));
 	}
 
 	@Override public boolean isEnabled() {
 		GeneratorConfiguration gc = actionRegistry.getMCreator().getGeneratorConfiguration();
-		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAB)
-				!= GeneratorStats.CoverageStatus.NONE;
+		return gc.getGeneratorStats().isModElementTypeCovered(ModElementType.TAB);
 	}
 }

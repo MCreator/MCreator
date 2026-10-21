@@ -24,7 +24,6 @@ import com.google.gson.Strictness;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.io.JavaWriter;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
@@ -132,7 +131,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						// Attach a blank file watcher to also test its operation
 						workspace.get().getGenerator().getFileWatcher()
 								.watchFolder(GeneratorUtils.getResourceRoot(workspace.get(), generatorConfiguration));
-						workspace.get().getGenerator().getFileWatcher().addListener(changedFiles -> {
+						workspace.get().getGenerator().getFileWatcher().addListener(_ -> {
 						});
 					}));
 
@@ -166,8 +165,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						}));
 					}
 
-					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
-							.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE) {
+					if (generatorConfiguration.getGeneratorStats().isModElementTypeCovered(ModElementType.PROCEDURE)) {
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure triggers",
 								() -> GTProcedureTriggers.runTest(LOG, generator, workspace.get())));
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure blocks",
@@ -180,8 +178,7 @@ import static org.junit.jupiter.api.Assertions.*;
 						}
 					}
 
-					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
-							.get(ModElementType.BESCRIPT) != GeneratorStats.CoverageStatus.NONE) {
+					if (generatorConfiguration.getGeneratorStats().isModElementTypeCovered(ModElementType.BESCRIPT)) {
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing script triggers",
 								() -> GTScriptTriggers.runTest(LOG, generator, workspace.get())));
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing script blocks",
@@ -194,28 +191,23 @@ import static org.junit.jupiter.api.Assertions.*;
 						}
 					}
 
-					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
-							.get(ModElementType.ADVANCEMENT) != GeneratorStats.CoverageStatus.NONE)
+					if (generatorConfiguration.getGeneratorStats().isModElementTypeCovered(ModElementType.ADVANCEMENT))
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing JSON trigger blocks",
 								() -> GTJSONTriggersBlocks.runTest(LOG, generator, random, workspace.get())));
 
-					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
-							.get(ModElementType.COMMAND) != GeneratorStats.CoverageStatus.NONE)
+					if (generatorConfiguration.getGeneratorStats().isModElementTypeCovered(ModElementType.COMMAND))
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing command argument blocks",
 								() -> GTCommandArgBlocks.runTest(LOG, generator, random, workspace.get())));
 
-					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
-							.get(ModElementType.FEATURE) != GeneratorStats.CoverageStatus.NONE)
+					if (generatorConfiguration.getGeneratorStats().isModElementTypeCovered(ModElementType.FEATURE))
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing feature blocks",
 								() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace.get())));
 
-					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
-							.get(ModElementType.ENCHANTMENT) != GeneratorStats.CoverageStatus.NONE)
+					if (generatorConfiguration.getGeneratorStats().isModElementTypeCovered(ModElementType.ENCHANTMENT))
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing enchantment effect blocks",
 								() -> GTEnchantmentEffectBlocks.runTest(LOG, generator, random, workspace.get())));
 
-					if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo()
-							.get(ModElementType.LIVINGENTITY) != GeneratorStats.CoverageStatus.NONE)
+					if (generatorConfiguration.getGeneratorStats().isModElementTypeCovered(ModElementType.LIVINGENTITY))
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
 								() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace.get())));
 

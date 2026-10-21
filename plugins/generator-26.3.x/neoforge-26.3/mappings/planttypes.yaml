@@ -1,0 +1,17 @@
+_default: ""
+Plains: "return state.is(BlockTags.SUPPORTS_VEGETATION);"
+Desert: "return state.is(BlockTags.SUPPORTS_DRY_VEGETATION);"
+Cave: "return state.isFaceSturdy(world, pos, Direction.UP);"
+Water: "return (world.getFluidState(pos).is(FluidTags.SUPPORTS_LILY_PAD) || state.is(BlockTags.SUPPORTS_LILY_PAD)) && world.getFluidState(pos.relative(Direction.UP)).isEmpty();"
+Nether: "return state.is(BlockTags.SUPPORTS_NETHER_WART);"
+Crop: "return state.is(BlockTags.SUPPORTS_CROPS);"
+Beach: |
+  if (state.is(BlockTags.SUPPORTS_SUGAR_CANE)) {
+      for (Direction face : Direction.Plane.HORIZONTAL) {
+          BlockState adjacentBlockState = world.getBlockState(pos.relative(face));
+          var adjacentFluidState = world.getFluidState(pos.relative(face));
+          if (adjacentBlockState.is(BlockTags.SUPPORTS_SUGAR_CANE_ADJACENTLY) || adjacentFluidState.is(FluidTags.SUPPORTS_SUGAR_CANE_ADJACENTLY))
+              return true;
+      }
+  }
+  return false;

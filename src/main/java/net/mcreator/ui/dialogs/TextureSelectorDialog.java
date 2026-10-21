@@ -31,6 +31,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Locale;
 
 public class TextureSelectorDialog extends MCreatorDialog {
@@ -43,14 +44,14 @@ public class TextureSelectorDialog extends MCreatorDialog {
 
 	private final JTextField filterField = new JTextField(20);
 
-	public TextureSelectorDialog(Iterable<ResourcePointer> block, JFrame f) {
+	public TextureSelectorDialog(Collection<ResourcePointer> block, JFrame f) {
 		super(f, L10N.t("dialog.textures_selector.title_window"), true);
 
 		list.setCellRenderer(new Render());
 
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 
-		block.forEach(model::addElement);
+		model.addAll(block);
 
 		JPanel buttons = new JPanel();
 		JButton naprej2 = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -141,6 +142,11 @@ public class TextureSelectorDialog extends MCreatorDialog {
 
 		@Override public void addElement(ResourcePointer o) {
 			items.add(o);
+			refilter();
+		}
+
+		@Override public void addAll(Collection<? extends ResourcePointer> collection) {
+			items.addAll(collection);
 			refilter();
 		}
 

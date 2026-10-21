@@ -129,27 +129,23 @@ public class PreferencesManager {
 	}
 
 	/**
-	 * <p>Save preferences of all identifiers registered inside PREFERENCES_REGISTRY.</p>
+	 * <p>Save preferences of all identifiers registered inside PREFERENCES_REGISTRY. Values are merged into the
+	 * loaded preferences file so entries not registered in this session (e.g. entries of other MCreator versions
+	 * or of plugins that are not loaded) are preserved.</p>
 	 */
 	public static void savePreferences() {
-		PreferencesFileCache allPreferences = new PreferencesFileCache();
+		PreferencesFileCache allPreferences =
+				preferencesFileCache != null ? preferencesFileCache : new PreferencesFileCache();
 
-		PREFERENCES_REGISTRY.forEach((identifier, preferences) -> {
-			PreferencesFileCacheIdentifierGroup identifierPrefs = new PreferencesFileCacheIdentifierGroup();
-			preferences.forEach(entry -> {
-				// We check if the section doesn't exist to add it
-				if (!identifierPrefs.containsKey(entry.getSectionKey()))
-					identifierPrefs.put(entry.getSectionKey(), new JsonObject());
-
-				identifierPrefs.get(entry.getSectionKey()).add(entry.getID(), entry.getSerializedValue());
-
-				if (!allPreferences.containsKey(identifier)) {
-					allPreferences.put(identifier, identifierPrefs);
-				} else {
-					allPreferences.get(identifier).putAll(identifierPrefs);
-				}
-			});
-		});
+		for (Map.Entry<String, List<PreferencesEntry<?>>> e : PREFERENCES_REGISTRY.entrySet()) {
+			String identifier = e.getKey();
+			List<PreferencesEntry<?>> preferences = e.getValue();
+			for (PreferencesEntry<?> entry : preferences) {
+				allPreferences.computeIfAbsent(identifier, _ -> new PreferencesFileCacheIdentifierGroup())
+						.computeIfAbsent(entry.getSectionKey(), _ -> new JsonObject())
+						.add(entry.getID(), entry.getSerializedValue());
+			}
+		}
 
 		FileIO.writeStringToFile(gson.toJson(preferencesFileCache = allPreferences), PREFERENCES_FILE);
 	}
