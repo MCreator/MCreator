@@ -134,8 +134,18 @@ import java.util.List;
 							colorizeImportedFramesDialog(timeline, image,
 									new TiledImageUtils(image, x, x).getIcon(1, 1), file.getName());
 						}
-					} catch (InvalidTileSizeException | IOException e) {
-						LOG.error("Impossible to process imported images", e);
+					} catch (InvalidTileSizeException e) {
+						LOG.error("Images from file {} have an invalid tile size", file.getName(), e);
+						JOptionPane.showMessageDialog(timeline.getMCreator(),
+								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size", file.getName()),
+								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size.title"),
+								JOptionPane.ERROR_MESSAGE);
+					} catch (IOException e) {
+						LOG.error("File {} could not be read as an image", file.getName(), e);
+						JOptionPane.showMessageDialog(timeline.getMCreator(),
+								L10N.t("dialog.animation_maker.import_frames.invalid_image", file.getName()),
+								L10N.t("dialog.animation_maker.import_frames.invalid_image.title"),
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
