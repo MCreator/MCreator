@@ -65,6 +65,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 	private final JCheckBox enableCreativeTab = new JCheckBox();
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator,
 			ElementUtil.loadAllTabs(mcreator.getWorkspace()));
+	private final JCheckBox isFireResistant = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner maxDurability = ComponentFromAnnotation.spinner(BEItem.class, "maxDurability");
 	private final JSpinner useDuration = ComponentFromAnnotation.spinner(BEItem.class, "useDuration");
 	private final JSpinner movementModifier = ComponentFromAnnotation.spinner(BEItem.class, "movementModifier");
@@ -124,7 +125,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
-		JPanel basicProperties = new JPanel(new GridLayout(8, 2, 30, 2));
+		JPanel basicProperties = new JPanel(new GridLayout(9, 2, 30, 2));
 		basicProperties.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
@@ -145,6 +146,11 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.beitem.hand_equipped")));
 		handEquipped.setOpaque(false);
 		basicProperties.add(handEquipped);
+
+		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
+				L10N.label("elementgui.item.is_immune_to_fire")));
+		isFireResistant.setOpaque(false);
+		basicProperties.add(isFireResistant);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
 				L10N.label("elementgui.beitem.creative_tab")));
@@ -427,6 +433,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		enchantmentValue.setValue(item.enchantmentValue);
 		diggerUseEfficiency.setSelected(item.diggerUseEfficiency);
 		diggerEntries.setEntries(item.diggerEntries);
+		isFireResistant.setSelected(item.isFireResistant);
 
 		localScripts.setListElements(item.localScripts.stream().map(NonMappableElement::new).toList());
 
@@ -473,6 +480,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		item.enchantmentValue = (int) enchantmentValue.getValue();
 		item.diggerUseEfficiency = diggerUseEfficiency.isSelected();
 		item.diggerEntries = diggerEntries.getEntries();
+		item.isFireResistant = isFireResistant.isSelected();
 
 		item.localScripts = localScripts.getListElements().stream().map(NonMappableElement::getUnmappedValue)
 				.collect(Collectors.toList());

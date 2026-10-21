@@ -2,7 +2,7 @@
 <#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 <#include "mcitems.ftl">
 {
-  "format_version": "1.21.90",
+  "format_version": "1.21.110",
   "minecraft:item": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -15,6 +15,9 @@
       <#if data.hasGlint>"minecraft:glint": true,</#if>
       <#if data.allowOffHand>"minecraft:allow_off_hand": true,</#if>
       <#if data.handEquipped>"minecraft:hand_equipped": true,</#if>
+      <#if data.isFireResistant>"minecraft:fire_resistant": {
+      	value: true
+      },</#if>
       <#if !data.shouldDespawn>"minecraft:should_despawn": false,</#if>
       <#if data.stackedByData>"minecraft:stacked_by_data": true,</#if>
       <#if data.rarity != "common">"minecraft:rarity": "${data.rarity}",</#if>
