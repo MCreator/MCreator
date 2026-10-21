@@ -97,11 +97,10 @@ public class ReferencesFinder {
 	 * @return Map of mod elements with broken references to the names of referenced mod elements that do not exist.
 	 */
 	public static Map<ModElement, Set<String>> searchBrokenReferences(Workspace workspace) {
-		final Pattern customXmlPattern = Pattern.compile(">" + NameMapper.MCREATOR_PREFIX + "([^<]+)</field>");
-		// Sounds and animations are workspace resources referenced with the same prefix, so these are not mod element references
-		final Set<String> resources = new HashSet<>();
-		workspace.getSoundElements().forEach(sound -> resources.add(sound.getName()));
-		Animation.getAnimations(workspace).forEach(animation -> resources.add(animation.getName()));
+		// Matches field values with the CUSTOM: prefix and captures the value without the prefix, e.g. <field name="block">CUSTOM:Name.block</field>
+		// Sound fields are skipped as sounds are workspace resources that are referenced with the same prefix
+		final Pattern customXmlPattern = Pattern.compile(
+				"<field name=\"(?!sound\")[^\"]*\">" + NameMapper.MCREATOR_PREFIX + "([^<]+)</field>");
 		Map<ModElement, Set<String>> retval = new ConcurrentHashMap<>();
 		getGeneratableElements(workspace).parallelStream().forEach(ge -> {
 			Set<String> broken = new HashSet<>();
@@ -120,10 +119,8 @@ public class ReferencesFinder {
 			);
 			anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (_, t) -> {
 				Matcher matcher = customXmlPattern.matcher(t);
-				while (matcher.find()) {
-					if (!resources.contains(matcher.group(1)))
-						collectIfBroken(workspace, matcher.group(1), broken);
-				}
+				while (matcher.find())
+					collectIfBroken(workspace, matcher.group(1), broken);
 				return false;
 			});
 			if (!broken.isEmpty())
