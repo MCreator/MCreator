@@ -134,11 +134,11 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 	}
 
 	private void updateNameAndDefaultValue() {
-		// In 1.21.11 and higher, names were changed from camelCase to snake_case
+		// In 1.21.11 and higher, game rules are registry entries and use the mod element registry name
 		if (ModuleDescriptor.Version.parse(
 						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration().getGeneratorMinecraftVersion())
 				.compareTo(ModuleDescriptor.Version.parse("1.21.11")) >= 0) {
-			name.setText(StringUtils.camelToSnake(modElement.getName()).toLowerCase());
+			name.setText(modElement.getRegistryName());
 		} else {
 			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
 		}

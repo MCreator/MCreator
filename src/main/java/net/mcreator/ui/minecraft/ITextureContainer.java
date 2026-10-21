@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2026, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types.interfaces;
+package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.BaseType;
+import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.ui.validation.IOptionalValueContainer;
+import net.mcreator.workspace.resources.Texture;
 
-import java.util.Collection;
+import javax.annotation.Nullable;
 
-public interface ICommonType {
+public interface ITextureContainer extends IOptionalValueContainer {
+	boolean hasTexture();
 
-	Collection<BaseType> getBaseTypesProvided();
+	Texture getTexture();
 
+	TextureHolder getTextureHolder();
+
+	void setTexture(@Nullable TextureHolder textureHolder);
+
+	@Override default boolean isEmpty() {
+		return !hasTexture();
+	}
 }

@@ -63,6 +63,9 @@ list_templates:
         condition: hasCustomOBJModel()
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
+base_types:
+  - item
+
 tags:
   - tag: ITEMS:minecraft:meat
     condition:

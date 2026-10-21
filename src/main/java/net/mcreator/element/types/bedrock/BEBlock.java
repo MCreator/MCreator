@@ -32,12 +32,14 @@ import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class BEBlock extends GeneratableElement implements IBlock {
+public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBoundingBox {
 
 	@TextureReference(TextureType.BLOCK) public TextureHolder texture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder textureTop;
@@ -63,6 +65,9 @@ public class BEBlock extends GeneratableElement implements IBlock {
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammability;
 	@Numeric(init = 0, min = 0, max = 1024, step = 1) public int flammableDestroyChance;
 	@NonNullMappable("DEFAULT") public MapColor colorOnMap;
+
+	public boolean isNotColidable;
+	public List<BoxEntry> boundingBoxes;
 
 	public boolean generateFeature;
 	@LimitedOptions({ "uniform", "triangle" }) public String generationShape;
@@ -98,6 +103,8 @@ public class BEBlock extends GeneratableElement implements IBlock {
 		renderMethod = "opaque";
 		tintMethod = "(none)";
 
+		boundingBoxes = new ArrayList<>(List.of(new BoxEntry()));
+
 		generationShape = "uniform";
 
 		blocksToReplace = new ArrayList<>();
@@ -110,6 +117,32 @@ public class BEBlock extends GeneratableElement implements IBlock {
 
 	public boolean hasCustomDrop() {
 		return !customDrop.isEmpty();
+	}
+
+	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
+		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
+	}
+
+	/**
+	 * Bedrock supports a single selection box, so the union of all positive bounding boxes is used.
+	 * Selection boxes are limited to 16 units in height.
+	 *
+	 * @return The selection box or null if there are no positive bounding boxes
+	 */
+	@Nullable public BoxEntry getSelectionBox() {
+		List<BoxEntry> boxes = positiveBoundingBoxes();
+		if (boxes.isEmpty())
+			return null;
+
+		BoxEntry selectionBox = new BoxEntry();
+		selectionBox.mx = boxes.stream().mapToDouble(box -> Math.min(box.mx, box.Mx)).min().orElseThrow();
+		selectionBox.my = boxes.stream().mapToDouble(box -> Math.min(box.my, box.My)).min().orElseThrow();
+		selectionBox.mz = boxes.stream().mapToDouble(box -> Math.min(box.mz, box.Mz)).min().orElseThrow();
+		selectionBox.Mx = boxes.stream().mapToDouble(box -> Math.max(box.mx, box.Mx)).max().orElseThrow();
+		selectionBox.My = Math.min(boxes.stream().mapToDouble(box -> Math.max(box.my, box.My)).max().orElseThrow(),
+				16);
+		selectionBox.Mz = boxes.stream().mapToDouble(box -> Math.max(box.mz, box.Mz)).max().orElseThrow();
+		return selectionBox;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
