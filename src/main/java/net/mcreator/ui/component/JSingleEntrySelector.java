@@ -195,20 +195,12 @@ public abstract class JSingleEntrySelector<T> extends JPanel implements IValidab
 		trailingComponent.add(component);
 	}
 
-	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
-	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
-	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
-
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
 			g.setColor(currentValidationResult.type().getColor());
-			switch (currentValidationResult.type()) {
-			case WARNING -> WARNING_ICON.paintIcon(this, g, 0, 0);
-			case ERROR -> ERROR_ICON.paintIcon(this, g, 0, 0);
-			case PASSED -> OK_ICON.paintIcon(this, g, 0, 0);
-			}
+			currentValidationResult.type().icon(13).paintIcon(this, g, 0, 0);
 
 			if (currentValidationResult.type() != ValidationResult.Type.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);

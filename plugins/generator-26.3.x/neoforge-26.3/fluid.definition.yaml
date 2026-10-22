@@ -29,6 +29,8 @@ base_types:
   - block
   - type: item
     condition: generateBucket
+  - type: flammable
+    condition: isFlammable()
 
 global_templates:
   - template: elementinits/fluids.java.ftl

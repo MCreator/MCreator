@@ -142,6 +142,10 @@ import java.util.List;
 		return isFluidTinted();
 	}
 
+	public boolean isFlammable() {
+		return (this.fireSpreadSpeed > 0) || (this.flammability > 0);
+	}
+
 	@Override public String getRenderType() {
 		return "translucent";
 	}
