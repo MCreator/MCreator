@@ -45,6 +45,29 @@ public class PanelUtils {
 		return p;
 	}
 
+	public static JPanel row(Component... components) {
+		JPanel row = new JPanel();
+		row.setOpaque(false);
+		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+		for (Component c : components) {
+			row.add(c);
+		}
+		return row;
+	}
+
+	public static JPanel row(int spacing, Component... components) {
+		JPanel row = new JPanel();
+		row.setOpaque(false);
+		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+		for (int i = 0; i < components.length; i++) {
+			row.add(components[i]);
+			if (i < components.length - 1) {
+				row.add(Box.createHorizontalStrut(spacing));
+			}
+		}
+		return row;
+	}
+
 	public static JPanel column(Component... components) {
 		JPanel column = new JPanel();
 		column.setOpaque(false);
@@ -66,6 +89,24 @@ public class PanelUtils {
 			}
 		}
 		return column;
+	}
+
+	public static JPanel twoColumnsPanel(int vGap, double firstColumnWeight, Component... components) {
+		JPanel panel = new JPanel(new GridBagLayout());
+		panel.setOpaque(false);
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(vGap, 0, vGap, 0);
+
+		for (int i = 0; i < components.length; i++) {
+			c.gridx = i % 2;
+			c.gridy = i / 2;
+			c.weightx = (c.gridx == 0 ? firstColumnWeight : 1 - firstColumnWeight);
+
+			panel.add(components[i], c);
+		}
+
+		return panel;
 	}
 
 	public static JPanel centerInPanel(Component component) {

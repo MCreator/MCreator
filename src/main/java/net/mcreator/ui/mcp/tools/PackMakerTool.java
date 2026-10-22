@@ -190,15 +190,15 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 			AtomicBoolean created = new AtomicBoolean(false);
 			ThreadUtil.runOnSwingThreadAndWait(() -> created.set(switch (input.packType) {
 				case MATERIAL -> MaterialPackMakerTool.addMaterialPackToWorkspace(packElements, mcreator,
-						mcreator.getWorkspace(), name, materialType, color, powerFactor);
+						mcreator.getWorkspace(), name, materialType, color, powerFactor, new HashMap<>());
 				case ORE -> OrePackMakerTool.addOrePackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
-						name, materialType, color, powerFactor);
+						name, materialType, color, powerFactor, new HashMap<>());
 				case TOOL -> ToolPackMakerTool.addToolPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
-						name, baseItem, color, powerFactor);
+						name, baseItem, color, powerFactor, new HashMap<>());
 				case ARMOR -> ArmorPackMakerTool.addArmorPackToWorkspace(packElements, mcreator,
-						mcreator.getWorkspace(), name, baseItem, color, powerFactor);
+						mcreator.getWorkspace(), name, baseItem, color, powerFactor, new HashMap<>());
 				case WOOD -> WoodPackMakerTool.addWoodPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
-						name, color, barkColor, powerFactor);
+						name, color, barkColor, powerFactor, new HashMap<>());
 			}));
 
 			if (!created.get()) {
