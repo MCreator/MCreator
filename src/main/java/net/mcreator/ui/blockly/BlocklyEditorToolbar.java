@@ -309,14 +309,14 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 						menuItem.addActionListener(_ -> {
 							search.setText(null);
 							results.setVisible(false);
-							blocklyPanel.requestFocus();
+							blocklyPanel.focusBlockly();
 
 							new Thread(() -> {
 								if (block.getToolboxXML() != null) {
-									blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
+									blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>", true);
 								} else {
 									blocklyPanel.addBlocksFromXML(
-											"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
+											"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>", true);
 								}
 							}, "Blockly-Blocks-Adder").start();
 						});
@@ -326,6 +326,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 				results.setFocusable(false);
 				results.show(search, 0, 24);
+				results.pack(); // show is a no-op if already visible, so make sure the new items get laid out
 				MenuSelectionManager.defaultManager().setSelectedPath(new MenuElement[] { results });
 			} else {
 				results.setVisible(false);
