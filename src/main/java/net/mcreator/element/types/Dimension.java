@@ -18,7 +18,6 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -46,7 +45,7 @@ import java.util.*;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
+		implements ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
 		IMultipleNames {
 
 	private static final Logger LOG = LogManager.getLogger(Dimension.class);
@@ -269,15 +268,6 @@ import java.util.List;
 
 	@Override public List<TabEntry> getCreativeTabs() {
 		return creativeTabs;
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>();
-		if (enablePortal)
-			baseTypes.add(BaseType.BLOCK);
-		if (this.hasIgniter())
-			baseTypes.add(BaseType.ITEM);
-		return baseTypes;
 	}
 
 	@Override public List<MCItem> providedMCItems() {

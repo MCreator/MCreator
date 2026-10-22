@@ -23,7 +23,6 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
@@ -57,6 +56,10 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	// MCItem representations of this element
 	// it is transient, so it does not get serialized
 	private transient List<MCItem> mcItems = null;
+
+	// Base types this element provides
+	// it is transient, so it does not get serialized
+	private transient Collection<BaseType> baseTypes = null;
 
 	// current mod icon if not obtained from mcitem - used for recipes
 	// it is transient, so it does not get serialized
@@ -128,6 +131,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 */
 	public void invalidateCache() {
 		mcItems = null;
+		baseTypes = null;
 	}
 
 	public void reloadElementIcon() {
@@ -232,8 +236,12 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 * Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe
 	 */
 	@Nonnull public synchronized List<MCItem> getMCItems() {
+		return getMCItems(this.getGeneratableElement());
+	}
+
+	@Nonnull public List<MCItem> getMCItems(GeneratableElement generatableElement) {
 		if (mcItems == null) {
-			mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
+			mcItems = generatableElement instanceof IMCItemProvider provider ?
 					provider.providedMCItems() :
 					Collections.emptyList();
 		}
@@ -279,10 +287,18 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	/**
 	 * Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe
 	 */
-	public Collection<BaseType> getBaseTypesProvided() {
-		return this.getGeneratableElement() instanceof ICommonType iCommonType ?
-				iCommonType.getBaseTypesProvided() :
-				Collections.emptyList();
+	public synchronized Collection<BaseType> getBaseTypesProvided() {
+		return getBaseTypesProvided(this.getGeneratableElement());
+	}
+
+	public Collection<BaseType> getBaseTypesProvided(GeneratableElement generatableElement) {
+		if (baseTypes == null) {
+			baseTypes = generatableElement != null ?
+					getGenerator().getBaseTypesProvided(generatableElement) :
+					Collections.emptyList();
+		}
+
+		return baseTypes;
 	}
 
 	/**

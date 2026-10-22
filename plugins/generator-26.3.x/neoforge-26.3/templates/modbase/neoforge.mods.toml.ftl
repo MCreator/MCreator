@@ -30,7 +30,7 @@ description="${JavaConventions.escapeStringForJava(settings.getDescription())}"
 <#if settings.isServerSideOnly()>
 displayTest="IGNORE_SERVER_VERSION"
 </#if>
-<#if w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == "Raider")?size != 0>
+<#if types["base:enumextensions"]??>
 enumExtensions="META-INF/enumextensions.json"
 </#if>
 

@@ -1,7 +1,7 @@
 <#include "mcitems_json.ftl">
 <#include "mcelements.ftl">
 {
-  "surface": ${field$surface},
+  "surface": "${field$surface}",
   "xz_radius": ${input$xz_radius},
   "vertical_range": ${field$vertical_range},
   "vegetation_feature": ${toPlacedFeature(input_id$vegetation_feature, input$vegetation_feature)},

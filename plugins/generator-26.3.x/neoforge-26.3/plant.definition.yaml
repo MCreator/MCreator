@@ -88,6 +88,19 @@ templates:
     condition: "plantType %= double"
     name: "@MODASSETSROOT/blockstates/@registryname.json"
 
+base_types:
+  - block
+  - type: item
+    condition: hasBlockItem
+  - type: configuredfeature
+    condition: generateFeature
+  - type: transformable
+    condition: hasStrippingResult()
+  - type: blockentity
+    condition: hasTileEntity
+  - type: flammable
+    condition: isFlammable()
+
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: name

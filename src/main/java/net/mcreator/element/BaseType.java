@@ -29,14 +29,11 @@ public final class BaseType {
 
 	private static final Map<String, BaseType> REGISTRY = new LinkedHashMap<>();
 
+	// Base types referenced from the Java code, all other base types are defined by the generators
 	// @formatter:off
 	public static final BaseType BLOCK = of("block");
-	public static final BaseType BLOCKENTITY = of("blockentity");
-	public static final BaseType ITEM = of("item");
 	public static final BaseType ENTITY = of("entity");
-	public static final BaseType FEATURE = of("feature");
 	public static final BaseType CONFIGUREDFEATURE = of("configuredfeature");
-	public static final BaseType TRANSFORMABLE = of("transformable");
 	// @formatter:on
 
 	private final String name;

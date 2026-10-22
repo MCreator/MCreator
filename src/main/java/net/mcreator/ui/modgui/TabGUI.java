@@ -43,7 +43,9 @@ public class TabGUI extends ModElementGUI<Tab> {
 	private final VTextField name = new VTextField(20).requireValue("elementgui.tab.error_needs_name")
 			.enableRealtimeValidation();
 	private MCItemHolder icon;
+
 	private final JCheckBox showSearch = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hideTitle = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -58,7 +60,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 				"elementgui.tab.error_tab_needs_icon");
 
 		JPanel pane3 = new JPanel(new BorderLayout());
-		JPanel selp = new JPanel(new GridLayout(3, 2, 100, 1));
+		JPanel selp = new JPanel(new GridLayout(4, 2, 100, 1));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -72,7 +74,12 @@ public class TabGUI extends ModElementGUI<Tab> {
 				L10N.label("elementgui.tab.search_bar")));
 		selp.add(showSearch);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tab/hide_title"),
+				L10N.label("elementgui.tab.hide_title")));
+		selp.add(hideTitle);
+
 		showSearch.setOpaque(false);
+		hideTitle.setOpaque(false);
 
 		selp.setOpaque(false);
 
@@ -104,6 +111,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 		name.setText(tab.name);
 		icon.setBlock(tab.icon);
 		showSearch.setSelected(tab.showSearch);
+		hideTitle.setSelected(tab.hideTitle);
 	}
 
 	@Override public Tab getElementFromGUI() {
@@ -111,6 +119,7 @@ public class TabGUI extends ModElementGUI<Tab> {
 		tab.name = name.getText();
 		tab.icon = icon.getBlock();
 		tab.showSearch = showSearch.isSelected();
+		tab.hideTitle = hideTitle.isSelected();
 		return tab;
 	}
 

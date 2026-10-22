@@ -25,6 +25,13 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
 
+base_types:
+  - block
+  - type: item
+    condition: generateBucket
+  - type: flammable
+    condition: isFlammable()
+
 global_templates:
   - template: elementinits/fluids.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFluids.java"

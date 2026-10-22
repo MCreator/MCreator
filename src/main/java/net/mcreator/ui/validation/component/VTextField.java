@@ -84,10 +84,7 @@ public class VTextField extends JTextField implements IValidable, IOptionalValue
 		return this.getText().isBlank();
 	}
 
-	private static final ImageIcon INFO_ICON = IconUtils.resize(UIRES.get("18px.info"), 13, 13);
-	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
-	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
-	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
+	private static final ImageIcon INFO_ICON = IconUtils.resize(UIRES.get("18px.info"), 13);
 
 	@Override public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -116,12 +113,8 @@ public class VTextField extends JTextField implements IValidable, IOptionalValue
 
 		if (currentValidationResult != null) {
 			g.setColor(currentValidationResult.type().getColor());
-			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
-				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 14);
-			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
-				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 14);
-			} else if (currentValidationResult.type() == ValidationResult.Type.PASSED && showPassed) {
-				OK_ICON.paintIcon(this, g, getWidth() - 14, 14);
+			if (currentValidationResult.type() != ValidationResult.Type.PASSED || showPassed) {
+				currentValidationResult.type().icon(13).paintIcon(this, g, getWidth() - 14, 14);
 			}
 
 			if (currentValidationResult.type() != ValidationResult.Type.PASSED) {

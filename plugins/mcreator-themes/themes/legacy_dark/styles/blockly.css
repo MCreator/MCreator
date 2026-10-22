@@ -82,6 +82,16 @@ body {
     color: var(--foregroundColor);
 }
 
+.blocklyToast {
+    background-color: var(--backgroundColor);
+    color: var(--foregroundColor);
+    border-color: var(--altBackgroundColor);
+}
+
+.blocklyToast .blocklyToastCloseButton {
+    color: var(--foregroundColor);
+}
+
 .blocklyWidgetDiv .blocklyMenu {
     background: var(--backgroundColor) !important;
     border-color: var(--altBackgroundColor) !important;
