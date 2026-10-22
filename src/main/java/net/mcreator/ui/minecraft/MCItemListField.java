@@ -26,7 +26,9 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.util.image.IconUtils;
 
 import javax.annotation.Nullable;
@@ -115,6 +117,12 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 
 			if (!isSelected && value.isManaged()) {
 				setBackground(Theme.current().getAltBackgroundColor());
+			}
+
+			if (isBrokenReference(value)) {
+				setBackground(ValidationResult.Type.ERROR.getColor());
+				setToolTipText(L10N.t("itemlistfield.broken_reference",
+						value.getUnmappedValue().replace(NameMapper.MCREATOR_PREFIX, "")));
 			}
 
 			return this;

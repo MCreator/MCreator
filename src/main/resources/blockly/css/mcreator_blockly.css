@@ -79,6 +79,14 @@ body {
     border-radius: 0;
 }
 
+.blocklyToast {
+    font-size: 13px;
+    padding: 6px 10px;
+    gap: 8px;
+    line-height: 1.3;
+    border-width: 1px;
+}
+
 .condition-label {
     font-size: 13px !important;
 }

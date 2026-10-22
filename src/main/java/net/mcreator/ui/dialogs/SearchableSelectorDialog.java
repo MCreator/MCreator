@@ -28,6 +28,7 @@ import javax.swing.event.DocumentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -99,6 +100,11 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 			refilter();
 		}
 
+		@Override public void addAll(Collection<? extends T> collection) {
+			entries.addAll(collection);
+			refilter();
+		}
+
 		@Override public void removeAllElements() {
 			super.removeAllElements();
 			entries.clear();
@@ -131,6 +137,6 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 
 	void reloadElements() {
 		model.removeAllElements();
-		provider.apply(this.mcreator.getWorkspace()).forEach(model::addElement);
+		model.addAll(provider.apply(this.mcreator.getWorkspace()));
 	}
 }
