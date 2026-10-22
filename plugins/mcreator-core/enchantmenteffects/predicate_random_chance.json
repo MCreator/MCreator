@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "chance",
+      "check": "Number"
+    }
+  ],
+  "output": "Predicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "predicates",
+    "toolbox_init": [
+      "<value name=\"chance\"><block type=\"level_based_value_linear\"><field name=\"base\">0.5</field><field name=\"per_level_above_first\">0.1</field></block></value>"
+    ],
+    "inputs": [
+      "chance"
+    ]
+  }
+}
