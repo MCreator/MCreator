@@ -197,6 +197,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
+	public List<?> getAccessTransformers() {
+		return generatorConfig.get("accesstransformer") instanceof List<?> entries ? entries : Collections.emptyList();
+	}
+
 	public Collection<String> getGeneratorPaths(String subpath) {
 		List<String> paths = new ArrayList<>();
 		// load generator first as the current generator has the highest priority

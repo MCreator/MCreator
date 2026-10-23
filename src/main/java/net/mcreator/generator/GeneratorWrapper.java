@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unused") public class GeneratorWrapper {
 
@@ -44,6 +46,15 @@ import java.util.stream.Collectors;
 
 	public String getGeneratorMinecraftVersion() {
 		return generator.getGeneratorMinecraftVersion();
+	}
+
+	public List<String> getAccessTransformers() {
+		return generator.getGeneratorConfiguration().getAccessTransformers().stream().map(e -> (Map<?, ?>) e)
+				.filter(e -> !TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, e,
+						getWorkspace().getWorkspaceInfo()))
+				.flatMap(e -> e.get("entries") instanceof List<?> entries ?
+						entries.stream().map(Object::toString) :
+						Stream.of(e.get("entries").toString())).toList();
 	}
 
 	public String map(String rawName, String mappingMap) {
