@@ -43,7 +43,7 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		list.setCellRenderer(new DataListCellRenderer());
 	}
 
-	@Override Predicate<DataListEntry> getFilter(String term) {
+	@Override protected Predicate<DataListEntry> getFilter(String term) {
 		return e -> e.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 

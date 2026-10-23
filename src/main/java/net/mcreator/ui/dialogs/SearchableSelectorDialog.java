@@ -148,15 +148,15 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	 * @param term The text contained in the search bar
 	 * @return The predicate that will be used to filter the elements
 	 */
-	abstract Predicate<T> getFilter(String term);
+	protected abstract Predicate<T> getFilter(String term);
 
-	void reloadElements() {
+	private void reloadElements() {
 		model.removeAllElements();
 		model.addAll(provider.apply(this.mcreator.getWorkspace()));
 		selectEntries();
 	}
 
-	protected void selectEntries() {
+	private void selectEntries() {
 		if (!initialSelection.isEmpty()) {
 			List<Integer> indicesToSelect = new ArrayList<>();
 			for (int i = 0; i < list.getModel().getSize(); i++) {

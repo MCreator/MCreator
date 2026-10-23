@@ -39,7 +39,7 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 		list.setCellRenderer(new StringListCellRenderer());
 	}
 
-	@Override Predicate<String> getFilter(String term) {
+	@Override protected Predicate<String> getFilter(String term) {
 		return s -> s.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
