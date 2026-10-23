@@ -41,14 +41,14 @@ import java.util.function.Predicate;
  * @param <T> The type of the elements in this selector dialog
  */
 public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
-	final MCreator mcreator;
-	final Function<Workspace, List<T>> provider;
-	final @Nonnull List<T> initialSelection;
+	protected final MCreator mcreator;
+	private final Function<Workspace, List<T>> provider;
+	private final @Nonnull List<T> initialSelection;
 
-	final FilterModel model = new FilterModel();
-	final JTextField filterField = new JTextField(14);
+	protected final FilterModel model = new FilterModel();
+	protected final JTextField filterField = new JTextField(14);
 
-	final JList<T> list = new JList<>(model);
+	protected final JList<T> list = new JList<>(model);
 
 	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider) {
 		this(mcreator, provider, Collections.emptyList());
@@ -89,11 +89,11 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		});
 	}
 
-	class FilterModel extends DefaultListModel<T> {
+	protected class FilterModel extends DefaultListModel<T> {
 		final ArrayList<T> entries;
 		final ArrayList<T> filterEntries;
 
-		FilterModel() {
+		protected FilterModel() {
 			super();
 			entries = new ArrayList<>();
 			filterEntries = new ArrayList<>();
