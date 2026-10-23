@@ -43,8 +43,8 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 
 	final JLabel message = new JLabel("");
 
-	public ListSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> entryProvider, List<T> selectedEntries) {
-		super(mcreator, entryProvider, selectedEntries);
+	public ListSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> entryProvider, List<T> initialSelection) {
+		super(mcreator, entryProvider, initialSelection);
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.addMouseListener(new MouseAdapter() {

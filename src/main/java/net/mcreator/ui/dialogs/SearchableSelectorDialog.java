@@ -43,7 +43,7 @@ import java.util.function.Predicate;
 public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	final MCreator mcreator;
 	final Function<Workspace, List<T>> provider;
-	final @Nonnull List<T> selectedEntries;
+	final @Nonnull List<T> initialSelection;
 
 	final FilterModel model = new FilterModel();
 	final JTextField filterField = new JTextField(14);
@@ -54,15 +54,16 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		this(mcreator, provider, Collections.emptyList());
 	}
 
-	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider, T selectedEntry) {
-		this(mcreator, provider, selectedEntry == null ? null : List.of(selectedEntry));
+	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider, T initialSelection) {
+		this(mcreator, provider, initialSelection == null ? null : List.of(initialSelection));
 	}
 
-	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider, List<T> selectedEntries) {
+	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider,
+			List<T> initialSelection) {
 		super(mcreator);
 		this.mcreator = mcreator;
 		this.provider = provider;
-		this.selectedEntries = selectedEntries == null ? Collections.emptyList() : selectedEntries;
+		this.initialSelection = initialSelection == null ? Collections.emptyList() : initialSelection;
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
@@ -156,10 +157,10 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	}
 
 	protected void selectEntries() {
-		if (!selectedEntries.isEmpty()) {
+		if (!initialSelection.isEmpty()) {
 			List<Integer> indicesToSelect = new ArrayList<>();
 			for (int i = 0; i < list.getModel().getSize(); i++) {
-				if (selectedEntries.contains(list.getModel().getElementAt(i)))
+				if (initialSelection.contains(list.getModel().getElementAt(i)))
 					indicesToSelect.add(i);
 			}
 			if (!indicesToSelect.isEmpty()) {

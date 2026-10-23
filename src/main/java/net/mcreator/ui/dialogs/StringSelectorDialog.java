@@ -34,8 +34,8 @@ import java.util.function.Predicate;
 
 public class StringSelectorDialog extends ListSelectorDialog<String> {
 	public StringSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
-			List<String> selectedEntries) {
-		super(mcreator, entryProvider.andThen(Arrays::asList), selectedEntries);
+			List<String> initialSelection) {
+		super(mcreator, entryProvider.andThen(Arrays::asList), initialSelection);
 		list.setCellRenderer(new StringListCellRenderer());
 	}
 
@@ -49,9 +49,9 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 	}
 
 	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
-			String selectedEntry, String title, String message) {
+			String initialSelection, String title, String message) {
 		var stringSelector = new StringSelectorDialog(mcreator, entryProvider,
-				selectedEntry == null ? null : List.of(selectedEntry));
+				initialSelection == null ? null : List.of(initialSelection));
 		stringSelector.setMessage(message);
 		stringSelector.setTitle(title);
 		stringSelector.setVisible(true);
@@ -64,8 +64,8 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 	}
 
 	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
-			List<String> selectedEntries, String title, String message) {
-		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider, selectedEntries);
+			List<String> initialSelection, String title, String message) {
+		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider, initialSelection);
 		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		dataListSelector.setTitle(title);

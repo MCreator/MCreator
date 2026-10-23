@@ -49,9 +49,9 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		this(mcreator, supplier, null, supportTags, hasPotions);
 	}
 
-	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, MCItem selectedEntry,
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, MCItem initialSelection,
 			boolean supportTags, boolean hasPotions) {
-		super(mcreator, supplier::provide, selectedEntry);
+		super(mcreator, supplier::provide, initialSelection);
 
 		setTitle(L10N.t("dialog.item_selector.title"));
 		list.setCellRenderer(new Render());
@@ -207,8 +207,8 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		return list.getSelectedValue();
 	}
 
-	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks, MCItem selectedItem) {
-		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, selectedItem, false, false);
+	public static MCItem openSelectorDialog(MCreator parent, MCItem.ListProvider blocks, MCItem initialSelection) {
+		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, initialSelection, false, false);
 		bsd.setVisible(true);
 		return bsd.list.getSelectedValue();
 	}
