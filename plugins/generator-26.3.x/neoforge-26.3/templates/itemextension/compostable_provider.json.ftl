@@ -1,4 +1,4 @@
-<#if data.compostLayerChance == 1>
+<#if data.compostLayerChance.fixedValue() == 1>
 1
 <#else>
 {
@@ -20,11 +20,11 @@
 		"distribution": [
 			{
 				"data": 1,
-				"weight": ${(data.compostLayerChance*10000)?round}
+				"weight": ${(data.compostLayerChance.fixedValue()*10000)?round}
 			},
 			{
 				"data": 0,
-				"weight": ${((1 - data.compostLayerChance)*10000)?round}
+				"weight": ${((1 - data.compostLayerChance.fixedValue())*10000)?round}
 			}
 		]
 	}
