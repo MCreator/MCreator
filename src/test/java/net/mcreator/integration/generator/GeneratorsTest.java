@@ -35,6 +35,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.tools.MaterialPackMakerTool;
 import net.mcreator.ui.dialogs.tools.WoodPackMakerTool;
+import net.mcreator.ui.dialogs.tools.quickrecipestool.QuickRecipesTool;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.TestUtil;
@@ -153,6 +154,13 @@ import static org.junit.jupiter.api.Assertions.*;
 						// Fill workspace with sample tags after the elements the tags reference actually exist
 						TestWorkspaceDataProvider.fillWorkspaceWithSampleTags(workspace.get());
 					}));
+
+					if (QuickRecipesTool.isSupported(generatorConfiguration)) {
+						tests.add(DynamicTest.dynamicTest(generator + " - Testing recipe templates generation",
+								() -> GTRecipeTemplates.runTest(LOG, generator, random, mcreator.get(),
+										workspace.get())));
+					}
+
 					if (MaterialPackMakerTool.isSupported(generatorConfiguration) || WoodPackMakerTool.isSupported(
 							generatorConfiguration)) {
 						tests.add(DynamicTest.dynamicTest(generator + " - Testing pack maker tools", () -> {
