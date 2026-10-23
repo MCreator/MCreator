@@ -1832,6 +1832,7 @@ public class TestWorkspaceDataProvider {
 				beitem.localScripts.add("Examplebescript1");
 				beitem.localScripts.add("Examplebescript3");
 			}
+			beitem.isFireResistant = _true;
 			return beitem;
 		} else if (ModElementType.BEBLOCK.equals(modElement.getType())) {
 			BEBlock beblock = new BEBlock(modElement);
