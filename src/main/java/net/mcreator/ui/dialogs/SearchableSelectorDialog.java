@@ -26,8 +26,8 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -80,9 +80,9 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 			}
 		});
 
-		addWindowListener(new WindowAdapter() {
-			@Override public void windowOpened(WindowEvent e) {
-				super.windowOpened(e);
+		addComponentListener(new ComponentAdapter() {
+			@Override public void componentShown(ComponentEvent e) {
+				super.componentShown(e);
 				reloadElements();
 			}
 		});
