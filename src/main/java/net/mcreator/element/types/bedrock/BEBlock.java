@@ -50,6 +50,14 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 
 	public int renderType;
 	@Nonnull public String customModelName;
+	@TextureReference(TextureType.BLOCK) public TextureHolder destructionParticleCount;
+	@LimitedOptions({ "(none)", "birch_foliage", "default_foliage", "dry_foliage", "evergreen_foliage", "grass",
+			"water" }) public String destructionParticleTintMethod;
+	@Numeric(init = 100, min = 0, max = 255, step = 1) public int particleCount;
+	public boolean flowerPottable;
+	@Nullable @TextureReference(TextureType.BLOCK) public TextureHolder pottedTexture;
+	public int pottedRenderType;
+	public String pottedModelName;
 
 	public String name;
 	public boolean enableCreativeTab;
@@ -102,6 +110,10 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 
 		renderMethod = "opaque";
 		tintMethod = "(none)";
+		pottedModelName = "Same as original";
+		pottedRenderType = 10;
+		destructionParticleTintMethod = "(none)";
+		particleCount = 100;
 
 		boundingBoxes = new ArrayList<>(List.of(new BoxEntry()));
 
@@ -113,6 +125,10 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 
 	public int renderType() {
 		return renderType;
+	}
+
+	public int pottedRenderType() {
+		return pottedRenderType;
 	}
 
 	public boolean hasCustomDrop() {
@@ -178,8 +194,19 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
+	public Model getPottedModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (pottedRenderType == 2)
+			modelType = Model.Type.BEDROCK;
+		return Model.getModelByParams(getModElement().getWorkspace(), pottedModelName, modelType);
+	}
+
 	public boolean hasCustomModel() {
 		return renderType == 2;
+	}
+
+	public boolean hasCustomPottedModel() {
+		return pottedRenderType == 2;
 	}
 
 	public boolean hasOneTexture() {
@@ -208,5 +235,21 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 
 	public TextureHolder textureBack() {
 		return textureBack == null || textureBack.isEmpty() ? texture : textureBack;
+	}
+
+	public TextureHolder pottedTexture() {
+		return pottedTexture == null || pottedTexture.isEmpty() ? texture : pottedTexture;
+	}
+
+	public boolean hasPottedTexture() {
+		return pottedTexture != null && !pottedTexture.isEmpty();
+	}
+
+	public boolean hasParticleTexture() {
+		return destructionParticleCount != null && !destructionParticleCount.isEmpty();
+	}
+
+	public boolean hasPottedVisuals() {
+		return hasCustomPottedModel() || pottedRenderType() == 11 || pottedRenderType() == 12 || hasPottedTexture();
 	}
 }
