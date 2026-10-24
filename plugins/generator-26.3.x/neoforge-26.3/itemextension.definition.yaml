@@ -15,9 +15,9 @@ global_templates:
 templates:
   - template: itemextension/compostable_provider.json.ftl
     writer: json
-    condition: "${data.compostLayerChance gt 0}"
+    condition: "compostLayerChance #> 0"
     name: "@MODDATAROOT/context_int_provider/compostable/@registryname.json"
   - template: itemextension/fuel_provider.json.ftl
     writer: json
-    condition: "${data.enableFuel}"
+    condition: enableFuel
     name: "@MODDATAROOT/context_int_provider/fuel/@registryname.json"

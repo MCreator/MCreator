@@ -979,16 +979,14 @@ import java.util.regex.Pattern;
 
 	private void searchModElementsUsages() {
 		List<IElement> selectedElements = list.getSelectedValuesList();
+		List<ModElement> selectedModElements = selectedElements.stream().filter(i -> i instanceof ModElement)
+				.map(i -> (ModElement) i).toList();
 
-		if (selectedElements.stream().anyMatch(i -> i instanceof ModElement)) {
+		if (!selectedModElements.isEmpty()) {
 			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = new HashSet<>();
-			for (IElement el : selectedElements) {
-				if (el instanceof ModElement mod) {
-					references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-				}
-			}
+			Set<ModElement> references = ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(),
+					selectedModElements);
 
 			mcreator.setCursor(Cursor.getDefaultCursor());
 			SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
@@ -1114,18 +1112,15 @@ import java.util.regex.Pattern;
 
 	private void deleteCurrentlySelectedModElement() {
 		List<IElement> selectedElements = list.getSelectedValuesList();
+		List<ModElement> selectedModElements = selectedElements.stream().filter(i -> i instanceof ModElement)
+				.map(i -> (ModElement) i).toList();
 
 		if (but3.isEnabled()) {
 			if (!selectedElements.isEmpty()) {
 				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				Set<ModElement> references = new HashSet<>();
-				for (IElement el : selectedElements) {
-					if (el instanceof ModElement mod)
-						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-				}
-				selectedElements.stream() // exclude usages by other mod elements being removed
-						.filter(e -> e instanceof ModElement).map(e -> (ModElement) e).forEach(references::remove);
+				Set<ModElement> references = ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(),
+						selectedModElements);
 
 				mcreator.setCursor(Cursor.getDefaultCursor());
 

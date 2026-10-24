@@ -52,7 +52,14 @@ public class TextureMappingDialog {
 	private final Map<String, ValidationGroup> validationGroups = new HashMap<>();
 
 	public TextureMappingDialog(Map<String, TexturedModel.TextureMapping> currentState) {
-		this.currentState = currentState;
+		if (currentState != null) {
+			// the dialog edits the state in place, so work on a copy as the passed map may be shared (e.g. cached)
+			this.currentState = new HashMap<>();
+			currentState.forEach((name, mapping) -> this.currentState.put(name,
+					new TexturedModel.TextureMapping(mapping.name(), new HashMap<>(mapping.getTextureMap()))));
+		} else {
+			this.currentState = null;
+		}
 	}
 
 	public Map<String, TexturedModel.TextureMapping> openMappingDialog(MCreator mcreator, Set<String> texturesList,

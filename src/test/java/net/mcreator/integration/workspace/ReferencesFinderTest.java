@@ -32,7 +32,6 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
@@ -44,6 +43,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -108,17 +108,16 @@ import static org.junit.jupiter.api.Assertions.*;
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleblock")));
 
-		modElement = workspace.getModElementByName("procedure1");
-		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
-		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampledimension")));
-
-		modElement = workspace.getModElementByName("procedure10");
-		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
-		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
-
 		modElement = workspace.getModElementByName("ExampleLootTable1");
 		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleachievement")));
+
+		// Test multi-element reference check
+		references = ReferencesFinder.searchModElementUsages(workspace,
+				List.of(Objects.requireNonNull(workspace.getModElementByName("procedure1")),
+						Objects.requireNonNull(workspace.getModElementByName("procedure10"))));
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampledimension")));
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
 	}
 
 	@Test void testTextureUsagesSearch() {
@@ -170,6 +169,14 @@ import static org.junit.jupiter.api.Assertions.*;
 		texture = workspace.getFolderManager().getTextureFile("armor_texture", section);
 		assertFalse(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplearmor")));
+
+		// Test multi-texture reference check
+		section = TextureType.ITEM;
+		Set<ModElement> multi = ReferencesFinder.searchTextureUsages(workspace,
+				List.of(workspace.getFolderManager().getTextureFile("test", section),
+						workspace.getFolderManager().getTextureFile("itest", section)), section);
+		assertTrue(multi.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
+		assertTrue(multi.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleblock")));
 	}
 
 	@Test void testModelUsagesSearch() {
@@ -182,30 +189,29 @@ import static org.junit.jupiter.api.Assertions.*;
 		model = new Model.BuiltInModel("Default");
 		assertTrue(ReferencesFinder.searchModelUsages(workspace, model).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Exampleprojectile")));
+
+		// Test multi-model reference check
+		Set<ModElement> multi = ReferencesFinder.searchModelUsages(workspace,
+				List.of(new Model.BuiltInModel("Normal"), new Model.BuiltInModel("Cross model")));
+		assertTrue(multi.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampletool")));
+		assertTrue(multi.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleplant")));
 	}
 
 	@Test void testSoundUsagesSearch() {
-		SoundElement sound = ListUtils.getRandomItem(List.copyOf(workspace.getSoundElements()));
-		ReferencesFinder.searchSoundUsages(workspace, sound);
+		ReferencesFinder.searchSoundUsages(workspace,
+				List.of(ListUtils.getRandomItem(List.copyOf(workspace.getSoundElements())),
+						ListUtils.getRandomItem(List.copyOf(workspace.getSoundElements()))));
 	}
 
 	@Test void testStructureUsagesSearch() {
-		String structure = "test";
-		assertTrue(ReferencesFinder.searchStructureUsages(workspace, structure).stream().map(ModElement::getName)
-				.anyMatch(e -> e.contains("Examplestructure")));
-
-		structure = "test2";
-		assertTrue(ReferencesFinder.searchStructureUsages(workspace, structure).stream().map(ModElement::getName)
-				.anyMatch(e -> e.contains("Examplestructure")));
+		assertTrue(ReferencesFinder.searchStructureUsages(workspace, List.of("test", "test2")).stream()
+				.map(ModElement::getName).anyMatch(e -> e.contains("Examplestructure")));
 	}
 
 	@Test void testGlobalVariableUsagesSearch() {
-		String variableName = "logic2";
-		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
-		variableName = "direction4";
-		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
-		variableName = "blockstate3";
-		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
+		assertTrue(
+				ReferencesFinder.searchGlobalVariableUsages(workspace, List.of("logic2", "direction4", "blockstate3"))
+						.isEmpty());
 	}
 
 	@Test void testBrokenReferencesSearch() {
@@ -228,8 +234,8 @@ import static org.junit.jupiter.api.Assertions.*;
 	}
 
 	@Test void testLocalizationKeyUsagesSearch() {
-		String localizationKey = ListUtils.getRandomItem(
-				workspace.getLanguageMap().get("en_us").keySet().toArray(String[]::new));
-		assertFalse(ReferencesFinder.searchLocalizationKeyUsages(workspace, localizationKey).isEmpty());
+		String[] keys = workspace.getLanguageMap().get("en_us").keySet().stream().limit(5).toArray(String[]::new);
+		assertFalse(ReferencesFinder.searchLocalizationKeyUsages(workspace,
+				List.of(ListUtils.getRandomItem(keys), ListUtils.getRandomItem(keys))).isEmpty());
 	}
 }
