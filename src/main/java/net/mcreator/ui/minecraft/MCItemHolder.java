@@ -19,6 +19,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
@@ -41,11 +42,10 @@ import java.util.List;
 
 public class MCItemHolder extends JButton implements IValidable {
 
-	private static final Color err = new Color(204, 166, 175);
-	private static final Color warn = new Color(236, 238, 207);
 	private static final Color bg = new Color(140, 140, 140);
 
 	@Nonnull private String block = "";
+	private boolean validReference = true;
 	private final MCItemSelectorDialog selectorDialog;
 
 	private boolean showValidation = true;
@@ -87,36 +87,39 @@ public class MCItemHolder extends JButton implements IValidable {
 	}
 
 	public void setBlock(MItemBlock mItemBlock) {
-		if (mItemBlock != null && mItemBlock.isValidReference()) {
+		// Broken references are kept so they can be shown, but are treated as empty by the getters
+		if (mItemBlock != null && mItemBlock.getUnmappedValue() != null && !mItemBlock.getUnmappedValue().isEmpty()) {
 			setIcon(new ImageIcon(ImageUtils.resizeAA(
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), mItemBlock.getUnmappedValue()).getImage(),
 					25)));
 			this.block = mItemBlock.getUnmappedValue();
+			this.validReference = mItemBlock.isValidReference();
 		} else {
 			setIcon(new EmptyIcon(25, 25));
 			block = "";
+			validReference = true;
 		}
 		listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 		getValidationStatus();
 	}
 
 	public MItemBlock getBlock() {
-		return new MItemBlock(mcreator.getWorkspace(), block);
+		return new MItemBlock(mcreator.getWorkspace(), validReference ? block : "");
 	}
 
 	/**
 	 * @return true if selector has item defined (air doesn't count as an item)
 	 */
 	public boolean containsItem() {
-		return !(block.isEmpty() || block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR") || block.equals(
-				"Blocks.CAVE_AIR"));
+		return validReference && !(block.isEmpty() || block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR")
+				|| block.equals("Blocks.CAVE_AIR"));
 	}
 
 	/**
 	 * @return true if selector has item defined (air also counts)
 	 */
 	public boolean containsItemOrAir() {
-		return !block.isEmpty();
+		return validReference && !block.isEmpty();
 	}
 
 	private void initGUI() {
@@ -164,7 +167,9 @@ public class MCItemHolder extends JButton implements IValidable {
 
 		if (showValidation && validator != null && currentValidationResult != null
 				&& currentValidationResult.type() != ValidationResult.Type.PASSED)
-			g.setColor(currentValidationResult.type() == ValidationResult.Type.ERROR ? err : warn);
+			g.setColor(currentValidationResult.type().getColor());
+		else if (!validReference)
+			g.setColor(ValidationResult.Type.ERROR.getColor());
 		else
 			g.setColor(isEnabled() ? bg : bg.brighter());
 
@@ -212,7 +217,10 @@ public class MCItemHolder extends JButton implements IValidable {
 	private void updateTooltipText() {
 		boolean hasValidationMessage =
 				currentValidationResult != null && currentValidationResult.type() != ValidationResult.Type.PASSED;
-		if (!block.isEmpty()) {
+		if (!validReference) {
+			this.setToolTipText(L10N.t("mcitemholder.broken_reference", block.replace(NameMapper.MCREATOR_PREFIX, ""))
+					+ (hasValidationMessage ? "\n" + currentValidationResult.message() : ""));
+		} else if (!block.isEmpty()) {
 			this.setToolTipText(getBlock().getMappedValue() + (hasValidationMessage ?
 					"\n" + currentValidationResult.message() :
 					""));

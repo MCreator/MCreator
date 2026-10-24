@@ -107,7 +107,7 @@ public class TexturedModel extends Model {
 	}
 
 	@Override public String toString() {
-		return readableName + " - " + textureMapping.name;
+		return textureMapping != null ? readableName + " - " + textureMapping.name : readableName;
 	}
 
 	@Override @Nonnull public String getReadableName() {
@@ -115,19 +115,6 @@ public class TexturedModel extends Model {
 			return readableName + ":" + textureMapping.name;
 		else
 			return super.getReadableName();
-	}
-
-	@Override public boolean equals(Object obj) {
-		if (obj == null)
-			return false;
-		if (obj instanceof TexturedModel)
-			return ((Model) obj).getReadableName().equals(this.getReadableName()) && ((Model) obj).type == this.type
-					&& ((TexturedModel) obj).textureMapping.name.equals(this.textureMapping.name);
-		return false;
-	}
-
-	@Override public int hashCode() {
-		return (this.getReadableName() + this.type.name() + this.textureMapping.name).hashCode();
 	}
 
 	private record TextureMappings(Map<String, TextureMapping> mappings) {}
