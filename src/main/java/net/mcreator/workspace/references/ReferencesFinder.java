@@ -77,7 +77,7 @@ public class ReferencesFinder {
 			return Set.of();
 
 		final Set<String> elementNames = elements.stream().map(ModElement::getName).collect(Collectors.toSet());
-		final Pattern procedureXmlPattern = Pattern.compile(">(?:CUSTOM:)?(" + String.join("|", elementNames) + ")([.:]\\w+?)?</field>");
+		final Pattern procedureXmlPattern = Pattern.compile(">(?:CUSTOM:)?(" + joinQuoted(elementNames) + ")([.:]\\w+?)?</field>");
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
@@ -158,7 +158,6 @@ public class ReferencesFinder {
 		return searchModelUsages(workspace, List.of(model));
 	}
 
-	// TODO: use this
 	public static Set<ModElement> searchModelUsages(Workspace workspace, Collection<Model> models) {
 		if (models.isEmpty())
 			return Set.of();
@@ -177,71 +176,98 @@ public class ReferencesFinder {
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
-	public static Set<ModElement> searchAnimationUsages(Workspace workspace, Animation animation) {
+	public static Set<ModElement> searchAnimationUsages(Workspace workspace, Collection<Animation> animations) {
+		if (animations.isEmpty())
+			return Set.of();
+
+		final Set<String> animationNames = animations.stream().map(Animation::getName).collect(Collectors.toSet());
 		return getGeneratableElements(workspace).parallelStream()
 				.filter(ge ->
 						anyValueMatches(ge, net.mcreator.element.parts.Animation.class, e -> {
 									ResourceReference ref = e.getAnnotation(ResourceReference.class);
 									return ref != null && ref.value().equals("animation");
-								}, (_, t) -> animation.getName().equals(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())))
+								}, (_, t) -> animationNames.contains(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())))
 				)
 				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
-	public static Set<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
+	public static Set<ModElement> searchSoundUsages(Workspace workspace, Collection<SoundElement> sounds) {
+		if (sounds.isEmpty())
+			return Set.of();
+
+		final Set<String> soundNames = sounds.stream().map(SoundElement::getName).collect(Collectors.toSet());
+		final Pattern soundXmlPattern = Pattern.compile(">CUSTOM:(" + joinQuoted(soundNames) + ")</field>");
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				anyValueMatches(ge, Sound.class, e -> {
 						ResourceReference ref = e.getAnnotation(ResourceReference.class);
 						return ref != null && ref.value().equals("sound");
 					}, (_, t) ->
-					t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())
+					soundNames.contains(t.getUnmappedValue().replaceFirst("CUSTOM:", ""))
 				) ||
-				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
-					t.contains(">CUSTOM:" + sound.getName() + "</field>")
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (_, t) ->
+					soundXmlPattern.matcher(t).find()
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
-	public static Set<ModElement> searchStructureUsages(Workspace workspace, String structure) {
+	public static Set<ModElement> searchStructureUsages(Workspace workspace, Collection<String> structures) {
+		if (structures.isEmpty())
+			return Set.of();
+
+		final Set<String> structureSet = new HashSet<>(structures);
+		final Pattern structureXmlPattern = Pattern.compile(">(" + joinQuoted(structureSet) + ")</field>");
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				anyValueMatches(ge, String.class, e -> {
 						ResourceReference ref = e.getAnnotation(ResourceReference.class);
 						return ref != null && ref.value().equals("structure");
 					}, (_, t) ->
-					t.equals(structure)
+					structureSet.contains(t)
 				) ||
-				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
-					t.contains(">" + structure + "</field>")
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (_, t) ->
+					structureXmlPattern.matcher(t).find()
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
-	public static Set<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
+	public static Set<ModElement> searchGlobalVariableUsages(Workspace workspace, Collection<String> variableNames) {
+		if (variableNames.isEmpty())
+			return Set.of();
+
+		final Pattern variableXmlPattern = Pattern.compile("<field name=\"VAR\">global:(" + joinQuoted(variableNames) + ")</field>");
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
-				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
-					t.contains("<field name=\"VAR\">global:" + variableName + "</field>")
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (_, t) ->
+					variableXmlPattern.matcher(t).find()
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
-	public static Set<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
+	public static Set<ModElement> searchLocalizationKeyUsages(Workspace workspace, Collection<String> localizationKeys) {
+		if (localizationKeys.isEmpty())
+			return Set.of();
+
+		final Set<String> keySet = new HashSet<>(localizationKeys);
+		final Pattern keyXmlPattern = Pattern.compile(">(" + joinQuoted(keySet) + ")</field>");
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
-				(ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) ||
-				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
-					t.contains(">" + localizationKey + "</field>")
+				(ge != null && !Collections.disjoint(workspace.getGenerator().getElementLocalizationKeys(ge), keySet)) ||
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (_, t) ->
+					keyXmlPattern.matcher(t).find()
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	//@formatter:on
+
+	private static String joinQuoted(Collection<String> values) {
+		return values.stream().map(Pattern::quote).collect(Collectors.joining("|"));
+	}
 
 	/**
 	 * Checks if values acquired from any valid fields or methods meet the specified condition.
