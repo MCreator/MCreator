@@ -101,6 +101,16 @@ public class TemplateExpressionParser {
 				int field = (int) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
 				int value = Integer.parseInt(condition.substring(indexOf + 2).trim());
 				result = value == field;
+			} else if ((indexOf = condition.indexOf("#>")) >= 0) { // check if value > other value
+				double field = ((Number) getValueFrom(condition.substring(0, indexOf),
+						conditionDataProvider)).doubleValue();
+				double value = Double.parseDouble(condition.substring(indexOf + 2).trim());
+				result = field > value;
+			} else if ((indexOf = condition.indexOf("#<")) >= 0) { // check if value < other value
+				double field = ((Number) getValueFrom(condition.substring(0, indexOf),
+						conditionDataProvider)).doubleValue();
+				double value = Double.parseDouble(condition.substring(indexOf + 2).trim());
+				result = field < value;
 			} else if ((indexOf = condition.indexOf("%=")) >= 0) { // compare strings
 				String field = (String) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
 				String value = condition.substring(indexOf + 2).trim();
