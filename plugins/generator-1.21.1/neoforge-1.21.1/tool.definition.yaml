@@ -11,6 +11,12 @@ templates:
       - "renderType #= 0"
       - "toolType %= Fishing rod"
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/handheld_mace.json.ftl
+    writer: json
+    condition:
+      - "renderType #= 0"
+      - "toolType %= Mace"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel.json.ftl
     writer: json
     condition: "renderType #= 1"
@@ -47,6 +53,14 @@ tags:
     condition: "toolType %= Hoe"
   - tag: ITEMS:minecraft:enchantable/fishing
     condition: "toolType %= Fishing rod"
+  - tag: ITEMS:minecraft:enchantable/mace
+    condition: "toolType %= Mace"
+  - tag: ITEMS:minecraft:enchantable/weapon
+    condition: "toolType %= Mace"
+  - tag: ITEMS:minecraft:enchantable/fire_aspect
+    condition: "toolType %= Mace"
+  - tag: ITEMS:minecraft:enchantable/durability
+    condition: "toolType %= Mace"
 
 localizationkeys:
   - key: item.@modid.@registryname
