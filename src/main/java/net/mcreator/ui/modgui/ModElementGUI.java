@@ -55,6 +55,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -258,7 +259,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				buttonGroup.add(page);
 
 				int finalIdx = idx;
-				page.addActionListener(_ -> split.setPage(finalIdx));
+				// ItemListener instead of ActionListener so programmatic selection (e.g. arrow key
+				// navigation between toggle buttons in a ButtonGroup) also switches the page
+				page.addItemListener(e -> {
+					if (e.getStateChange() == ItemEvent.SELECTED)
+						split.setPage(finalIdx);
+				});
 
 				pageEntry.setShowThisPageAction(page::doClick);
 
