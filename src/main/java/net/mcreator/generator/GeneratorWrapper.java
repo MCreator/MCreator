@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.util.TraceUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -44,6 +45,10 @@ import java.util.stream.Collectors;
 
 	public String getGeneratorMinecraftVersion() {
 		return generator.getGeneratorMinecraftVersion();
+	}
+
+	public List<String> getFragments(String type) throws TemplateGeneratorException {
+		return FragmentsUtils.getFragments(generator, type);
 	}
 
 	public String map(String rawName, String mappingMap) {
