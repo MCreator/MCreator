@@ -59,9 +59,8 @@ public class FragmentsUtils {
 			if (fragmentDefinitions.isEmpty())
 				continue;
 
-			List<GeneratableElement> elements = workspace.getModElements().stream()
-					.filter(e -> modElementType.equals(e.getType())).map(ModElement::getGeneratableElement)
-					.filter(Objects::nonNull).toList();
+			List<GeneratableElement> elements = workspace.getModElementsByType(modElementType).stream()
+					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 			if (!elements.isEmpty())
 				collectFragments(generator, fragmentDefinitions, Map.of(modElementType.getPluralName(), elements),
 						fragments);
