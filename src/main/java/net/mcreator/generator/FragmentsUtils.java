@@ -35,10 +35,10 @@ public class FragmentsUtils {
 
 	/**
 	 * Collects and renders fragments of the given type. Fragments are defined in "fragments" lists of mod element
-	 * type definitions, base type definitions and generator configuration. Each fragment defines "type" and
-	 * "template" and can optionally define template condition and variables. Only fragments from definitions of
-	 * types present in the workspace are considered and these fragments get the list of elements of their type in
-	 * the data model, same as global templates do. Fragments that render to blank output are omitted.
+	 * type definitions and generator configuration. Each fragment defines "type" and either "template" to render or
+	 * literal "content", and can optionally define template condition and variables. Only fragments from
+	 * definitions of types present in the workspace are considered and these fragments get the list of elements of
+	 * their type in the data model, same as global templates do. Fragments that render to blank output are omitted.
 	 *
 	 * @param generator Generator to collect fragments for
 	 * @param type      Type of fragments to collect
@@ -90,8 +90,10 @@ public class FragmentsUtils {
 					generator.getWorkspace().getWorkspaceInfo()))
 				continue;
 
-			String code = templateGenerator.generateBaseFromTemplate((String) fragment.get("template"),
-					new HashMap<>(dataModel), (String) fragment.get("variables"));
+			String code = fragment.get("template") != null ?
+					templateGenerator.generateBaseFromTemplate((String) fragment.get("template"),
+							new HashMap<>(dataModel), (String) fragment.get("variables")) :
+					Objects.toString(fragment.get("content"), "");
 			if (!code.isBlank())
 				fragments.add(code);
 		}
