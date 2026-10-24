@@ -91,7 +91,7 @@ base_templates:
       - "${w.hasElementsOfType('specialentity')}"
   - template: modbase/mixin.json.ftl
     writer: json
-    condition: "${generator.getFragments('mixins')?size != 0}"
+    condition: "${generator.getFragments('mixin')?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
 
 java_models:

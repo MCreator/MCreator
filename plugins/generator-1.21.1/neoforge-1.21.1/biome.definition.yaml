@@ -37,19 +37,16 @@ global_templates:
 fragments:
   - type: accesstransformer
     condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-    content: |-
-      public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
-      public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
-      public net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList$Preset$SourceProvider
+    content:
+      - public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
+      - public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
+      - public net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList$Preset$SourceProvider
   - type: accesstransformer
     condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasVines() || e.hasFruits())?size != 0}"
     content: public net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType <init>(Lcom/mojang/serialization/MapCodec;)V
-  - type: mixins
+  - type: mixin
     condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-    content: NoiseGeneratorSettingsMixin
-  - type: mixins
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-    content: BiomeSourcePresetMixin
+    content: [ NoiseGeneratorSettingsMixin, BiomeSourcePresetMixin ]
 
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft

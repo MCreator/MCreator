@@ -89,7 +89,7 @@ base_templates:
     condition: hasJavaModels()
   - template: modbase/mixin.json.ftl
     writer: json
-    condition: "${generator.getFragments('mixins')?size != 0}"
+    condition: "${generator.getFragments('mixin')?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
 
 sources_setup_tasks:

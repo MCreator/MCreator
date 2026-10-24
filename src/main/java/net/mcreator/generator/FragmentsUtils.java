@@ -36,7 +36,8 @@ public class FragmentsUtils {
 	/**
 	 * Collects and renders fragments of the given type. Fragments are defined in "fragments" lists of mod element
 	 * type definitions and generator configuration. Each fragment defines "type" and either "template" to render or
-	 * literal "content", and can optionally define template condition and variables. Only fragments from
+	 * literal "content" (a string or a list of strings, each list entry is a separate fragment), and can optionally
+	 * define template condition and variables. Only fragments from
 	 * definitions of types present in the workspace are considered and these fragments get the list of elements of
 	 * their type in the data model, same as global templates do. Fragments that render to blank output are omitted.
 	 *
@@ -89,12 +90,16 @@ public class FragmentsUtils {
 					generator.getWorkspace().getWorkspaceInfo()))
 				continue;
 
-			String code = fragment.get("template") != null ?
-					templateGenerator.generateBaseFromTemplate((String) fragment.get("template"),
-							new HashMap<>(dataModel), (String) fragment.get("variables")) :
-					Objects.toString(fragment.get("content"), "");
-			if (!code.isBlank())
-				fragments.add(code);
+			if (fragment.get("template") != null) {
+				String code = templateGenerator.generateBaseFromTemplate((String) fragment.get("template"),
+						new HashMap<>(dataModel), (String) fragment.get("variables"));
+				if (!code.isBlank())
+					fragments.add(code);
+			} else if (fragment.get("content") instanceof List<?> content) {
+				content.forEach(e -> fragments.add(e.toString()));
+			} else if (fragment.get("content") != null) {
+				fragments.add(fragment.get("content").toString());
+			}
 		}
 	}
 
