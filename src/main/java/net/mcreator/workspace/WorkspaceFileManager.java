@@ -30,6 +30,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.elements.TagElement;
+import net.mcreator.workspace.resources.ModelManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,6 +70,7 @@ public final class WorkspaceFileManager implements Closeable {
 	private final Workspace workspace;
 	private final WorkspaceFolderManager folderManager;
 	private final ModElementManager modElementManager;
+	private final ModelManager modelManager;
 
 	WorkspaceFileManager(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
 		this.workspaceFile = workspaceFile;
@@ -78,6 +80,7 @@ public final class WorkspaceFileManager implements Closeable {
 
 		this.folderManager = new WorkspaceFolderManager(workspaceFile, workspace);
 		this.modElementManager = new ModElementManager(workspace);
+		this.modelManager = new ModelManager(workspace);
 
 		this.dataSaveExecutor = Executors.newScheduledThreadPool(1, runnable -> {
 			Thread thread = new Thread(runnable);
@@ -101,6 +104,10 @@ public final class WorkspaceFileManager implements Closeable {
 
 	public ModElementManager getModElementManager() {
 		return modElementManager;
+	}
+
+	public ModelManager getModelManager() {
+		return modelManager;
 	}
 
 	@Override public void close() {

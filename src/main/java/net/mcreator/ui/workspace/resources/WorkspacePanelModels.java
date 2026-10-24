@@ -142,7 +142,10 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 			if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
 					L10N.t("dialog.search_usages.type.resource.model"), references)) {
-				elements.forEach(model -> Arrays.stream(model.getFiles()).forEach(File::delete));
+				elements.forEach(model -> {
+					Arrays.stream(model.getFiles()).forEach(File::delete);
+					workspacePanel.getMCreator().getWorkspace().getModelManager().invalidateCache(model.getFile());
+				});
 				reloadElements();
 			}
 		}
@@ -186,6 +189,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 					FileIO.writeStringToFile(data,
 							new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
 									model.getFile().getName() + ".textures"));
+					workspacePanel.getMCreator().getWorkspace().getModelManager().invalidateCache(model.getFile());
 				}
 			} else {
 				JOptionPane.showMessageDialog(workspacePanel.getMCreator(),

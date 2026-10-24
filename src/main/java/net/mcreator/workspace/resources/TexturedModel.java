@@ -81,6 +81,10 @@ public class TexturedModel extends Model {
 	}
 
 	public static Map<String, TextureMapping> getTextureMappingsForModel(Workspace workspace, Model model) {
+		return workspace.getModelManager().getTextureMappingsForModel(model);
+	}
+
+	static Map<String, TextureMapping> loadTextureMappingsForModel(Workspace workspace, Model model) {
 		try {
 			if (model.type == Type.JSON && model.getFiles().length == 2) {
 				TextureMappings mappings = gson.fromJson(FileIO.readFileToString(model.getFiles()[1]),
