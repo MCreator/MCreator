@@ -20,6 +20,7 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -137,6 +138,10 @@ public class MCItemHolder extends JButton implements IValidable {
 							&& e.getY() > getHeight() - 11) && !block.isEmpty()) {
 						setBlock(null);
 					} else {
+						// We reuse the same selector dialog, so we need to update the initial selection before opening it
+						if (!block.isEmpty()) {
+							selectorDialog.setInitialSelection(List.of(new MCItem(new DataListEntry.Dummy(block))));
+						}
 						selectorDialog.setVisible(true); // show block selector
 					}
 					repaint();
