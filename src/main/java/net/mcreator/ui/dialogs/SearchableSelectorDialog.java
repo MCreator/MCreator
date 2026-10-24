@@ -43,7 +43,7 @@ import java.util.function.Predicate;
 public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	protected final MCreator mcreator;
 	private final Function<Workspace, List<T>> provider;
-	private final @Nonnull List<T> initialSelection;
+	private @Nonnull List<T> initialSelection;
 
 	protected final FilterModel model = new FilterModel();
 	protected final JTextField filterField = new JTextField(14);
@@ -87,6 +87,10 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 				reloadElements();
 			}
 		});
+	}
+
+	public void setInitialSelection(List<T> toSelect) {
+		this.initialSelection = toSelect == null ? Collections.emptyList() : toSelect;
 	}
 
 	protected class FilterModel extends DefaultListModel<T> {
