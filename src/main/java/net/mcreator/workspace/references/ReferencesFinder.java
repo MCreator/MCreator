@@ -70,7 +70,7 @@ public class ReferencesFinder {
 	 * @param workspace Workspace to look for usages in.
 	 * @param elements  Collection of mod elements to look for usages of.
 	 * @return Set of mod elements that reference any of the provided mod elements in their generatable element.
-	 * 		   The set does not include the provided mod elements themselves.
+	 * The set does not include the provided mod elements themselves.
 	 */
 	public static Set<ModElement> searchModElementUsages(Workspace workspace, Collection<ModElement> elements) {
 		if (elements.isEmpty())
