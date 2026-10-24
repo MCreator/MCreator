@@ -42,6 +42,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -105,17 +106,16 @@ import static org.junit.jupiter.api.Assertions.*;
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleblock")));
 
-		modElement = workspace.getModElementByName("procedure1");
-		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
-		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampledimension")));
-
-		modElement = workspace.getModElementByName("procedure10");
-		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
-		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
-
 		modElement = workspace.getModElementByName("ExampleLootTable1");
 		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleachievement")));
+
+		// Test multi-element reference check
+		references = ReferencesFinder.searchModElementUsages(workspace,
+				List.of(Objects.requireNonNull(workspace.getModElementByName("procedure1")),
+						Objects.requireNonNull(workspace.getModElementByName("procedure10"))));
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampledimension")));
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
 	}
 
 	@Test void testTextureUsagesSearch() {
@@ -167,6 +167,14 @@ import static org.junit.jupiter.api.Assertions.*;
 		texture = workspace.getFolderManager().getTextureFile("armor_texture", section);
 		assertFalse(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplearmor")));
+
+		// Test multi-texture reference check
+		section = TextureType.ITEM;
+		Set<ModElement> multi = ReferencesFinder.searchTextureUsages(workspace,
+				List.of(workspace.getFolderManager().getTextureFile("test", section),
+						workspace.getFolderManager().getTextureFile("itest", section)), section);
+		assertTrue(multi.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
+		assertTrue(multi.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleblock")));
 	}
 
 	@Test void testModelUsagesSearch() {
