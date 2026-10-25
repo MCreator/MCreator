@@ -36,9 +36,9 @@
 
 package ${package}.init;
 
-<#assign blockentitiesWithInventory = w.getGElementsOfType("block")?filter(e -> e.hasInventory)>
+<#assign blocksWithBlockEntity = types.blocks![]>
 
-<#if blockentitiesWithInventory?size != 0>
+<#if blocksWithBlockEntity?size != 0>
 @EventBusSubscriber
 </#if>
 public class ${JavaModName}BlockEntities {
@@ -58,10 +58,10 @@ public class ${JavaModName}BlockEntities {
 		return REGISTRY.register(registryname, () -> new BlockEntityType(supplier, block.get()));
 	}
 
-	<#if blockentitiesWithInventory?size != 0>
+	<#if blocksWithBlockEntity?size != 0>
 	<@javacompress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		<#list blockentitiesWithInventory as blockentity>
+		<#list blocksWithBlockEntity as blockentity>
 			event.registerBlockEntity(Capabilities.Item.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), WorldlyContainerWrapper::new);
 			<#if blockentity.hasEnergyStorage>
 			event.registerBlockEntity(Capabilities.Energy.BLOCK, ${blockentity.getModElement().getRegistryNameUpper()}.get(), (blockEntity, side) -> blockEntity.getEnergyStorage());

@@ -41,11 +41,11 @@ package ${package}.init;
 <#assign hasDoubleBlocks = false>
 <#assign hasSigns = false>
 <#assign hasHangingSigns = false>
-<#assign hasItemsWithCustomProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
-<#assign hasItemsWithLeftHandedProperty = w.getGElementsOfType("item")?filter(e -> e.states
+<#assign hasItemsWithCustomProperties = (types.items![])?filter(e -> e.customProperties?has_content)?size != 0>
+<#assign hasItemsWithLeftHandedProperty = (types.items![])?filter(e -> e.states
 	?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
-<#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
-<#assign buckets = w.getGElementsOfType("fluid")?filter(e -> e.generateBucket)>
+<#assign itemsWithInventory = (types.items![])?filter(e -> e.hasInventory())>
+<#assign buckets = types.fluids![]>
 
 <#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>

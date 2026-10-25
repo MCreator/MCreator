@@ -41,10 +41,9 @@ package ${package}.init;
 <#assign hasDoubleBlocks = false>
 <#assign hasSigns = false>
 <#assign hasHangingSigns = false>
-<#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
-	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
-<#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
-<#assign buckets = w.getGElementsOfType("fluid")?filter(e -> e.generateBucket)>
+<#assign hasItemsWithProperties = (types.items![])?filter(e -> e.customProperties?has_content)?size != 0 || (types.tools![])?filter(e -> e.toolType == "Shield")?size != 0>
+<#assign itemsWithInventory = (types.items![])?filter(e -> e.hasInventory())>
+<#assign buckets = types.fluids![]>
 
 <#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
