@@ -165,6 +165,7 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	}
 
 	private void selectEntries() {
+		list.clearSelection();
 		if (!initialSelection.isEmpty()) {
 			List<Integer> indicesToSelect = new ArrayList<>();
 			for (int i = 0; i < list.getModel().getSize(); i++) {
@@ -175,8 +176,8 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 				list.setSelectedIndices(indicesToSelect.stream().mapToInt(i -> i).toArray());
 				list.ensureIndexIsVisible(indicesToSelect.getFirst());
 			}
-		} else {
-			list.setSelectedValue(null, true);
 		}
+		if (list.isSelectionEmpty())
+			list.ensureIndexIsVisible(0); // nothing to show, scroll back to the top
 	}
 }
