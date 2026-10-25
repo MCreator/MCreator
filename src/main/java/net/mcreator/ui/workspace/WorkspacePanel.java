@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.google.common.base.Suppliers;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -81,6 +82,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1096,14 +1098,23 @@ import java.util.regex.Pattern;
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
 				.getModElementListTemplates(mu.getGeneratableElement());
 
+		// elements are grouped by base type in one pass, and only if a base type definition asks for them
+		Supplier<Map<BaseType, List<GeneratableElement>>> elementsByBaseType = Suppliers.memoize(() -> {
+			Map<BaseType, List<GeneratableElement>> map = new HashMap<>();
+			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+				GeneratableElement generatableElement = element.getGeneratableElement();
+				if (generatableElement != null)
+					for (BaseType baseType : element.getBaseTypesProvided(generatableElement))
+						map.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
+			}
+			return map;
+		});
+
 		for (BaseType baseType : mu.getBaseTypesProvided()) {
 			modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 					mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 							.getBaseTypeDefinition(baseType), baseType.getPluralName(),
-					() -> mcreator.getWorkspace().getModElements().stream()
-							.filter(e -> e.getBaseTypesProvided().contains(baseType))
-							.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList(),
-					new AtomicInteger()));
+					() -> elementsByBaseType.get().getOrDefault(baseType, List.of()), new AtomicInteger()));
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
