@@ -1,19 +1,19 @@
-<#if (types.biomes![])?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
+<#if types.biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
 public net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList$Preset$SourceProvider
 </#if>
 
-<#if (types.biomes![])?filter(e -> e.hasVines() || e.hasFruits())?size != 0>
+<#if types.biomes?filter(e -> e.hasVines() || e.hasFruits())?size != 0>
 public net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType <init>(Lcom/mojang/serialization/MapCodec;)V
 </#if>
 
-<#if types.armors??>
+<#if types.armors?has_content>
 public-f net.minecraft.client.model.Model renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
 public net.minecraft.client.renderer.feature.FeatureRenderDispatcher featureRenderers
 public net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer currentGroup
 public net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer getVertexBuilder(Lnet/minecraft/client/renderer/rendertype/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;
 </#if>
 
-<#if types.fluids??>
+<#if types.fluids?has_content>
 public net.minecraft.world.entity.LivingEntity travelInWater(Lnet/minecraft/world/phys/Vec3;DZD)V
 public net.minecraft.world.entity.LivingEntity travelInLava(Lnet/minecraft/world/phys/Vec3;DZD)V
 public net.minecraft.world.entity.animal.axolotl.Axolotl travelInWater(Lnet/minecraft/world/phys/Vec3;DZD)V

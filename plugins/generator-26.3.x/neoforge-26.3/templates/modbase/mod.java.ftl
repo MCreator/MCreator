@@ -22,25 +22,25 @@ import org.apache.logging.log4j.Logger;
 
 		<@javacompress>
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
-		<#if types.base_blocks??>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
-		<#if types.base_blockentities??>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
-		<#if types.base_items??>${JavaModName}Items.REGISTRY.register(modEventBus);</#if>
-		<#if types.base_entities??>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
+		<#if types.base_blocks?has_content>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
+		<#if types.base_blockentities?has_content>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
+		<#if types.base_items?has_content>${JavaModName}Items.REGISTRY.register(modEventBus);</#if>
+		<#if types.base_entities?has_content>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
-		<#if types.base_features??>${JavaModName}FeatureTypes.REGISTRY.register(modEventBus);</#if>
-		<#if (types.features![])?filter(e -> e.getModElement().getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(modEventBus);</#if>
-		<#if types.potions??>${JavaModName}Potions.REGISTRY.register(modEventBus);</#if>
-		<#if types.potioneffects??>${JavaModName}MobEffects.REGISTRY.register(modEventBus);</#if>
-		<#if types.guis??>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
-		<#if types.particles??>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
-		<#if types.villagerprofessions??>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
-		<#if types.gamerules??>${JavaModName}GameRules.REGISTRY.register(modEventBus);</#if>
-		<#if types.fluids??>
+		<#if types.base_features?has_content>${JavaModName}FeatureTypes.REGISTRY.register(modEventBus);</#if>
+		<#if types.features?filter(e -> e.getModElement().getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(modEventBus);</#if>
+		<#if types.potions?has_content>${JavaModName}Potions.REGISTRY.register(modEventBus);</#if>
+		<#if types.potioneffects?has_content>${JavaModName}MobEffects.REGISTRY.register(modEventBus);</#if>
+		<#if types.guis?has_content>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
+		<#if types.particles?has_content>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
+		<#if types.villagerprofessions?has_content>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
+		<#if types.gamerules?has_content>${JavaModName}GameRules.REGISTRY.register(modEventBus);</#if>
+		<#if types.fluids?has_content>
 			${JavaModName}Fluids.REGISTRY.register(modEventBus);
 			${JavaModName}FluidTypes.REGISTRY.register(modEventBus);
 		</#if>
-		<#if types.attributes??>${JavaModName}Attributes.REGISTRY.register(modEventBus);</#if>
+		<#if types.attributes?has_content>${JavaModName}Attributes.REGISTRY.register(modEventBus);</#if>
 		</@javacompress>
 
 		// Start of user code block mod init

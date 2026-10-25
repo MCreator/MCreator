@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-<#assign specialentities = types.specialentities![]>
+<#assign specialentities = types.specialentities>
 @EventBusSubscriber(Dist.CLIENT) public class ${JavaModName}Models {
 	<#list specialentities as entity>
 	public static final ModelLayerLocation ${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION =

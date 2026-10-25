@@ -41,10 +41,10 @@ package ${package}.init;
 <#assign hasDoubleBlocks = false>
 <#assign hasSigns = false>
 <#assign hasHangingSigns = false>
-<#assign hasItemsWithCustomProperties = (types.items![])?filter(e -> e.customProperties?has_content)?size != 0>
-<#assign hasItemsWithLeftHandedProperty = (types.items![])?filter(e -> e.states?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
-<#assign itemsWithInventory = (types.items![])?filter(e -> e.hasInventory())>
-<#assign buckets = types.fluids![]>
+<#assign hasItemsWithCustomProperties = types.items?filter(e -> e.customProperties?has_content)?size != 0>
+<#assign hasItemsWithLeftHandedProperty = types.items?filter(e -> e.states?filter(e -> e.stateMap.keySet()?filter(e -> e.getName() == "lefthanded")?size != 0)?size != 0)?size != 0>
+<#assign itemsWithInventory = types.items?filter(e -> e.hasInventory())>
+<#assign buckets = types.fluids>
 
 <#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>

@@ -36,7 +36,7 @@
 
 package ${package}.init;
 
-<#assign blocksWithBlockEntity = types.blocks![]>
+<#assign blocksWithBlockEntity = types.blocks>
 
 <#if blocksWithBlockEntity?size != 0>
 @EventBusSubscriber

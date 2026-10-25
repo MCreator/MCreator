@@ -84,15 +84,15 @@ base_templates:
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
-      - "${(types.biomes![])?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
-      - "${types.features??}"
+      - "${types.biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
+      - "${types.features?has_content}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
   - template: modbase/mixin.json.ftl
     writer: json
     condition_any:
-      - "${(types.biomes![])?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+      - "${types.biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
 
 sources_setup_tasks:

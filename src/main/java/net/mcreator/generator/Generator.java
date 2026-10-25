@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.generator.io.JSWriter;
@@ -350,8 +351,8 @@ public class Generator implements IGenerator, Closeable {
 
 		List<GeneratorTemplate> files = new ArrayList<>();
 
-		// Used mod element types and base types mapped to their elements, only types with elements are present
-		Map<String, List<GeneratableElement>> types = new LinkedHashMap<>();
+		// Mod element types and base types mapped to their elements (empty list for types not used in the workspace)
+		Map<String, List<GeneratableElement>> types = emptyTypesMap(true);
 
 		// Pre-precess GEs
 		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
@@ -410,11 +411,14 @@ public class Generator implements IGenerator, Closeable {
 		if (templates != null && !templates.isEmpty()) {
 			List<GeneratableElement> elementsList = elements.get();
 
-			// Elements grouped by their mod element type, only types with elements are present
-			Map<String, List<GeneratableElement>> types = new LinkedHashMap<>();
+			// Elements grouped by their mod element type (empty list for types without elements)
+			Map<String, List<GeneratableElement>> types = emptyTypesMap(false);
 			for (GeneratableElement element : elementsList) {
-				types.computeIfAbsent(element.getModElement().getType().getPluralName(), _ -> new ArrayList<>())
-						.add(element);
+				String key = element.getModElement().getType().getPluralName();
+				List<GeneratableElement> typeElements = types.get(key);
+				if (typeElements == null || typeElements.isEmpty())
+					types.put(key, typeElements = new ArrayList<>());
+				typeElements.add(element);
 			}
 
 			return processTemplateDefinitionsToGeneratorTemplates(templates, templateID,
@@ -423,6 +427,21 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		return new ArrayList<>();
+	}
+
+	/**
+	 * @param includeBaseTypes true to also include base types under base_ prefixed keys
+	 * @return All registered mod element types (and base types) mapped by their plural name to an empty list, so
+	 * templates and conditions can use types.&lt;pluralname&gt; for any type without checking for its presence
+	 */
+	private static Map<String, List<GeneratableElement>> emptyTypesMap(boolean includeBaseTypes) {
+		Map<String, List<GeneratableElement>> types = new LinkedHashMap<>();
+		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes())
+			types.put(type.getPluralName(), Collections.emptyList());
+		if (includeBaseTypes)
+			for (BaseType baseType : BaseType.values())
+				types.put("base_" + baseType.getPluralName(), Collections.emptyList());
+		return types;
 	}
 
 	private List<GeneratorTemplate> processTemplateDefinitionsToGeneratorTemplates(@Nonnull List<?> templates,

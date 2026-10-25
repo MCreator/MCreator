@@ -1,5 +1,5 @@
 <#assign mixins = []>
-<#if (types.biomes![])?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
+<#if types.biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
   <#assign mixins = mixins + ['NoiseGeneratorSettingsMixin', 'BiomeSourcePresetMixin']>
 </#if>
 
