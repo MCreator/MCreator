@@ -81,13 +81,26 @@ public class SearchUsagesDialog {
 	 * @param brokenReferences Map of mod elements with broken references to the names of missing mod elements.
 	 */
 	public static void showBrokenReferencesDialog(MCreator mcreator, Map<ModElement, Set<String>> brokenReferences) {
+		showBrokenReferencesDialog(mcreator, brokenReferences, true);
+	}
+
+	/**
+	 * @param mcreator         Workspace window calling this method.
+	 * @param brokenReferences Map of mod elements with broken references to the names of missing mod elements.
+	 * @param notifyIfEmpty    Whether to show a message if there are no broken references.
+	 */
+	public static void showBrokenReferencesDialog(MCreator mcreator, Map<ModElement, Set<String>> brokenReferences,
+			boolean notifyIfEmpty) {
 		if (brokenReferences.isEmpty()) {
-			JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.search_usages.broken_references.empty"),
-					L10N.t("dialog.search_usages.title"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
-					null, new Object[] { L10N.t("common.close") }, L10N.t("common.close"));
+			if (notifyIfEmpty)
+				JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.search_usages.broken_references.empty"),
+						L10N.t("dialog.search_usages.title"), JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null, new Object[] { L10N.t("common.close") },
+						L10N.t("common.close"));
 		} else {
 			showListDialog(mcreator, L10N.t("dialog.search_usages.broken_references.list"), brokenReferences.keySet(),
-					false, me -> L10N.t("dialog.search_usages.broken_references.tooltip",
+					false, me -> L10N.t("dialog.search_usages.broken_references.count", brokenReferences.get(me).size()),
+					me -> L10N.t("dialog.search_usages.broken_references.tooltip",
 							brokenReferences.get(me).stream().sorted().collect(Collectors.joining("<br>"))));
 		}
 	}
@@ -126,19 +139,21 @@ public class SearchUsagesDialog {
 		} else {
 			message = L10N.t("dialog.search_usages.list", queryType);
 		}
-		return showListDialog(mcreator, message, references, deletionRequested, null);
+		return showListDialog(mcreator, message, references, deletionRequested, null, null);
 	}
 
 	/**
-	 * @param mcreator          Workspace window calling this method.
-	 * @param message           Message to show above the list of mod elements.
-	 * @param references        List of referencing/dependent mod elements.
-	 * @param deletionRequested Whether user wants to delete selected elements or just view their usages.
-	 * @param tooltipProvider   Optional provider of tooltips for mod elements in the list.
+	 * @param mcreator            Workspace window calling this method.
+	 * @param message             Message to show above the list of mod elements.
+	 * @param references          List of referencing/dependent mod elements.
+	 * @param deletionRequested   Whether user wants to delete selected elements or just view their usages.
+	 * @param descriptionProvider Optional provider of descriptions shown below mod element names in the list.
+	 * @param tooltipProvider     Optional provider of tooltips for mod elements in the list.
 	 * @return Whether elements deletion was requested and the user confirmed deletion.
 	 */
 	private static boolean showListDialog(MCreator mcreator, String message, Collection<ModElement> references,
-			boolean deletionRequested, @Nullable Function<ModElement, String> tooltipProvider) {
+			boolean deletionRequested, @Nullable Function<ModElement, String> descriptionProvider,
+			@Nullable Function<ModElement, String> tooltipProvider) {
 		AtomicBoolean retVal = new AtomicBoolean(false);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title"), true);
 
@@ -151,7 +166,7 @@ public class SearchUsagesDialog {
 		refList.setFixedCellWidth(200);
 		refList.setVisibleRowCount(-1);
 		refList.setBackground(Theme.current().getSecondAltBackgroundColor());
-		refList.setCellRenderer(new CompactModElementListCellRenderer());
+		refList.setCellRenderer(new CompactModElementListCellRenderer(descriptionProvider));
 		if (tooltipProvider != null) { // JList shows tooltips set on the renderer components
 			ListCellRenderer<? super ModElement> renderer = refList.getCellRenderer();
 			refList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
