@@ -121,6 +121,18 @@ body {
     color: var(--foregroundColor);
 }
 
+.blocklyMultilineHint {
+    background-color: var(--backgroundColor);
+    color: var(--altForegroundColor);
+    border-top-color: var(--altBackgroundColor);
+}
+
+.blocklyMultilineHintKey {
+    background-color: var(--altBackgroundColor);
+    border-color: var(--secondAltBackgroundColor);
+    color: var(--foregroundColor);
+}
+
 .injectionDiv {
     --blockly-active-node-color: var(--foregroundColor) !important;
 }
