@@ -350,7 +350,8 @@ public class Generator implements IGenerator, Closeable {
 
 		List<GeneratorTemplate> files = new ArrayList<>();
 
-		Map<String, Integer> typesReport = new HashMap<>();
+		// Used mod element types and base types mapped to their elements, only types with elements are present
+		Map<String, List<GeneratableElement>> types = new LinkedHashMap<>();
 
 		// Pre-precess GEs
 		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
@@ -366,7 +367,7 @@ public class Generator implements IGenerator, Closeable {
 			ModElementType<?> type = entry.getKey();
 			List<GeneratableElement> groupedElements = entry.getValue();
 			files.addAll(getGlobalTemplatesListForModElementType(type, () -> groupedElements, templateID));
-			typesReport.put(type.getPluralName(), groupedElements.size());
+			types.put(type.getPluralName(), groupedElements);
 		}
 
 		// Check used base types and generate their templates
@@ -382,13 +383,13 @@ public class Generator implements IGenerator, Closeable {
 			files.addAll(getGlobalTemplatesListForDefinition(
 					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType),
 					baseType.getPluralName(), () -> groupedElements, templateID));
-			typesReport.put("base:" + baseType.getPluralName(), groupedElements.size());
+			types.put("base:" + baseType.getPluralName(), groupedElements);
 		}
 
 		// Finally, add global base templates at the end
 		files.addAll(processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(),
 				templateID, TemplateExpressionParser.CompoundConditionData.of(workspace.getWorkspaceInfo())
-						.with("types", typesReport)));
+						.with("types", types)));
 
 		return files;
 	}
@@ -406,10 +407,20 @@ public class Generator implements IGenerator, Closeable {
 			return new ArrayList<>();
 
 		List<?> templates = (List<?>) map.get("global_templates");
-		if (templates != null && !templates.isEmpty())
+		if (templates != null && !templates.isEmpty()) {
+			List<GeneratableElement> elementsList = elements.get();
+
+			// Elements grouped by their mod element type, only types with elements are present
+			Map<String, List<GeneratableElement>> types = new LinkedHashMap<>();
+			for (GeneratableElement element : elementsList) {
+				types.computeIfAbsent(element.getModElement().getType().getPluralName(), _ -> new ArrayList<>())
+						.add(element);
+			}
+
 			return processTemplateDefinitionsToGeneratorTemplates(templates, templateID,
 					TemplateExpressionParser.CompoundConditionData.of(workspace.getWorkspaceInfo())
-							.with(elementsKey, elements.get()));
+							.with(elementsKey, elementsList).with("types", types));
+		}
 
 		return new ArrayList<>();
 	}
