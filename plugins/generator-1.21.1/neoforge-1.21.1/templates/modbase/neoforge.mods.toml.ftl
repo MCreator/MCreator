@@ -27,7 +27,7 @@ description="${JavaConventions.escapeStringForJava(settings.getDescription())}"
 <#if settings.isServerSideOnly()>
 displayTest="IGNORE_SERVER_VERSION"
 </#if>
-<#if types["base:enumextensions"]??>
+<#if types.base_enumextensions??>
 enumExtensions="META-INF/enumextensions.json"
 </#if>
 

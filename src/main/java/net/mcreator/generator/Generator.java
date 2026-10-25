@@ -383,7 +383,7 @@ public class Generator implements IGenerator, Closeable {
 			files.addAll(getGlobalTemplatesListForDefinition(
 					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType),
 					baseType.getPluralName(), () -> groupedElements, templateID));
-			types.put("base:" + baseType.getPluralName(), groupedElements);
+			types.put("base_" + baseType.getPluralName(), groupedElements);
 		}
 
 		// Finally, add global base templates at the end
