@@ -43,12 +43,11 @@ package ${package}.init;
 <#assign hasHangingSigns = false>
 <#assign hasItemsWithProperties = types.items?filter(e -> e.customProperties?has_content)?size != 0 || types.tools?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = types.items?filter(e -> e.hasInventory())>
-<#assign buckets = types.fluids>
 
 <#assign chunks = items?chunk(2500)>
 <#assign has_chunks = chunks?size gt 1>
 
-<#if itemsWithInventory?size != 0 || buckets?size != 0>
+<#if itemsWithInventory?size != 0 || types.fluids?size != 0>
 @EventBusSubscriber
 </#if>
 public class ${JavaModName}Items {
@@ -148,7 +147,7 @@ public class ${JavaModName}Items {
 	// Start of user code block custom items
 	// End of user code block custom items
 
-	<#if itemsWithInventory?size != 0 || buckets?size != 0>
+	<#if itemsWithInventory?size != 0 || types.fluids?size != 0>
 	<@javacompress>
 	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		<#list itemsWithInventory as item>
@@ -158,7 +157,7 @@ public class ${JavaModName}Items {
 				${item.getModElement().getRegistryNameUpper()}.get()
 			);
 		</#list>
-		<#list buckets as item>
+		<#list types.fluids as item>
 			event.registerItem(
 				Capabilities.FluidHandler.ITEM,
 				(stack, context) -> new FluidBucketWrapper(stack),
