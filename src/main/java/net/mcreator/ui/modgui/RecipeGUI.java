@@ -165,7 +165,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
-		recipeShapeless.setOpaque(false);
 		recipeShapeless.addActionListener(_ -> craftingRecipeMaker.setShapeless(recipeShapeless.isSelected()));
 
 		recipesPanel.setOpaque(false);
