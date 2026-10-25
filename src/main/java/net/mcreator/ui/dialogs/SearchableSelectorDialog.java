@@ -89,6 +89,10 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		});
 	}
 
+	public void setInitialSelection(T toSelect) {
+		this.setInitialSelection(toSelect == null ? Collections.emptyList() : List.of(toSelect));
+	}
+
 	public void setInitialSelection(List<T> toSelect) {
 		this.initialSelection = toSelect == null ? Collections.emptyList() : toSelect;
 	}
@@ -171,6 +175,8 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 				list.setSelectedIndices(indicesToSelect.stream().mapToInt(i -> i).toArray());
 				list.ensureIndexIsVisible(indicesToSelect.getFirst());
 			}
+		} else {
+			list.setSelectedValue(null, true);
 		}
 	}
 }

@@ -138,10 +138,11 @@ public class MCItemHolder extends JButton implements IValidable {
 							&& e.getY() > getHeight() - 11) && !block.isEmpty()) {
 						setBlock(null);
 					} else {
-						// We reuse the same selector dialog, so we need to update the initial selection before opening it
-						if (!block.isEmpty()) {
-							selectorDialog.setInitialSelection(List.of(new MCItem(new DataListEntry.Dummy(block))));
-						}
+						// If custom element is removed while this holder is loaded, validReference might not be updated yet
+						var toSelect = (block.isEmpty() || block.startsWith("TAG:") || !getBlock().isValidReference()) ?
+								null :
+								new MCItem(new DataListEntry.Dummy(block));
+						selectorDialog.setInitialSelection(toSelect);
 						selectorDialog.setVisible(true); // show block selector
 					}
 					repaint();
