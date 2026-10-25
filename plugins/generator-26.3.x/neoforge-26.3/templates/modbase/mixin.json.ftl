@@ -3,7 +3,7 @@
   "package": "${package}.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-	<#list generator.getFragments("mixin") as mixin>"${mixin}"<#sep>,</#list>
+	<#list fragments.mixin as mixin>"${mixin}"<#sep>,</#list>
   ],
   "client": [
   ],

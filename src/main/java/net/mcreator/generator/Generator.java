@@ -361,6 +361,10 @@ public class Generator implements IGenerator, Closeable {
 			modElementTypeListMap.computeIfAbsent(generatableElement.getModElement().getType(), _ -> new ArrayList<>())
 					.add(generatableElement);
 		}
+
+		// Collect fragments, they are passed to all templates generated in this step
+		Map<String, List<String>> fragments = FragmentsUtils.collectFragments(this, modElementTypeListMap);
+
 		for (Map.Entry<ModElementType<?>, List<GeneratableElement>> entry : modElementTypeListMap.entrySet()) {
 			ModElementType<?> type = entry.getKey();
 			List<GeneratableElement> groupedElements = entry.getValue();
@@ -389,11 +393,24 @@ public class Generator implements IGenerator, Closeable {
 			typesReport.put("base:" + baseType.getPluralName(), groupedElements.size());
 		}
 
+		// Check fragment types with fragments and generate their templates
+		for (Map.Entry<String, Map<?, ?>> entry : generatorConfiguration.getDefinitionsProvider()
+				.getFragmentDefinitions().entrySet()) {
+			if (!fragments.get(entry.getKey()).isEmpty() && entry.getValue().get("templates") instanceof List<?> templates) {
+				List<GeneratorTemplate> fragmentTemplatesList = processTemplateDefinitionsToGeneratorTemplates(templates,
+						templateID);
+
+				fragmentTemplatesList.forEach(e -> e.addDataModelEntry("fragments", fragments));
+				files.addAll(fragmentTemplatesList);
+			}
+		}
+
 		// Finally, add global base templates at the end
 		List<GeneratorTemplate> globalBaseTemplates = processTemplateDefinitionsToGeneratorTemplates(
 				generatorConfiguration.getBaseTemplates(), templateID);
 		for (GeneratorTemplate globalBaseTemplate : globalBaseTemplates) {
 			globalBaseTemplate.addDataModelEntry("types", typesReport);
+			globalBaseTemplate.addDataModelEntry("fragments", fragments);
 		}
 		files.addAll(globalBaseTemplates);
 

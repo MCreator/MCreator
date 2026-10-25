@@ -79,20 +79,11 @@ base_templates:
   - template: elementinits/tabs.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
     condition: hasItemsInTabs()
-  - template: modbase/accesstransformer.cfg.ftl
-    usercodeComment: "#"
-    writer: file
-    name: "@RESROOT/META-INF/accesstransformer.cfg"
-    condition: "${generator.getFragments('accesstransformer')?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition_any:
       - hasJavaModels()
       - "${w.hasElementsOfType('specialentity')}"
-  - template: modbase/mixin.json.ftl
-    writer: json
-    condition: "${generator.getFragments('mixin')?size != 0}"
-    name: "@RESROOT/@modid.mixins.json"
 
 java_models:
   key: mojmap-26.1.x

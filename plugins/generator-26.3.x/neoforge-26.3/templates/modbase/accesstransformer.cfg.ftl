@@ -1,4 +1,4 @@
-<#list generator.getFragments("accesstransformer") as fragment>
+<#list fragments.accesstransformer as fragment>
 ${fragment}
 </#list>
 

@@ -25,80 +25,76 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
-import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public class FragmentsUtils {
 
+	private static final Logger LOG = LogManager.getLogger(FragmentsUtils.class);
+
 	/**
-	 * Collects and renders fragments of the given type. Fragments are defined in "fragments" lists of mod element
-	 * type definitions and generator configuration. Each fragment defines "type" and either "template" to render or
-	 * literal "content" (a string or a list of strings, each list entry is a separate fragment), and can optionally
-	 * define template condition and variables. Only fragments from
-	 * definitions of types present in the workspace are considered and these fragments get the list of elements of
-	 * their type in the data model, same as global templates do. Fragments that render to blank output are omitted.
+	 * Collects fragments defined in "fragments" lists of used mod element type definitions and generator configuration.
+	 * Each fragment defines "type" and either "template" to render or literal "content" (string or list of strings),
+	 * and can optionally define a condition. Fragments of mod element types get elements of their type in the data model.
 	 *
-	 * @param generator Generator to collect fragments for
-	 * @param type      Type of fragments to collect
-	 * @return Rendered fragments of the given type in deterministic order
+	 * @param generator             Generator to collect fragments for
+	 * @param modElementTypeListMap Generatable elements grouped by mod element type
+	 * @return Fragments grouped by fragment type, types with a fragment definition file are always present
 	 */
-	public static List<String> getFragments(Generator generator, String type) throws TemplateGeneratorException {
-		GeneratorConfiguration generatorConfiguration = generator.getGeneratorConfiguration();
-		DefinitionsProvider definitionsProvider = generatorConfiguration.getDefinitionsProvider();
-		Workspace workspace = generator.getWorkspace();
+	public static Map<String, List<String>> collectFragments(Generator generator,
+			Map<ModElementType<?>, List<GeneratableElement>> modElementTypeListMap) {
+		DefinitionsProvider definitionsProvider = generator.getGeneratorConfiguration().getDefinitionsProvider();
 
-		List<String> fragments = new ArrayList<>();
+		Map<String, List<String>> fragments = new HashMap<>();
+		definitionsProvider.getFragmentDefinitions().keySet().forEach(type -> fragments.put(type, new ArrayList<>()));
 
-		// Fragments from definitions of mod element types, elements are only loaded for types defining fragments
-		for (ModElementType<?> modElementType : ModElementTypeLoader.getAllModElementTypes()) {
-			Map<?, ?> definition = definitionsProvider.getModElementDefinition(modElementType);
-			List<Map<?, ?>> fragmentDefinitions = getFragmentDefinitionsOfType(
-					definition != null ? definition.get("fragments") : null, type);
-			if (fragmentDefinitions.isEmpty())
-				continue;
-
-			List<GeneratableElement> elements = workspace.getModElementsByType(modElementType).stream()
-					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
-			if (!elements.isEmpty())
-				collectFragments(generator, fragmentDefinitions, Map.of(modElementType.getPluralName(), elements),
+		// Fragments from definitions of used mod element types, in mod element type registry order
+		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
+			List<GeneratableElement> elements = modElementTypeListMap.get(type);
+			Map<?, ?> definition = definitionsProvider.getModElementDefinition(type);
+			if (elements != null && definition != null)
+				collectFragments(generator, definition.get("fragments"), Map.of(type.getPluralName(), elements),
 						fragments);
 		}
 
 		// Fragments from generator configuration
-		collectFragments(generator, getFragmentDefinitionsOfType(generatorConfiguration.getGlobalFragments(), type),
-				Map.of(), fragments);
+		collectFragments(generator, generator.getGeneratorConfiguration().getGlobalFragments(), Map.of(), fragments);
 
 		return fragments;
 	}
 
-	private static List<Map<?, ?>> getFragmentDefinitionsOfType(@Nullable Object fragmentDefinitions, String type) {
-		if (fragmentDefinitions instanceof List<?> fragmentDefinitionsList)
-			return fragmentDefinitionsList.stream()
-					.filter(e -> e instanceof Map<?, ?> fragment && type.equals(fragment.get("type")))
-					.<Map<?, ?>>map(e -> (Map<?, ?>) e).toList();
-		return List.of();
-	}
+	private static void collectFragments(Generator generator, @Nullable Object fragmentDefinitions,
+			Map<String, Object> dataModel, Map<String, List<String>> fragments) {
+		if (!(fragmentDefinitions instanceof List<?> fragmentDefinitionsList))
+			return;
 
-	private static void collectFragments(Generator generator, List<Map<?, ?>> fragmentDefinitions,
-			Map<String, Object> dataModel, List<String> fragments) throws TemplateGeneratorException {
 		TemplateGenerator templateGenerator = generator.getTemplateGeneratorFromName("templates");
-		for (Map<?, ?> fragment : fragmentDefinitions) {
+		for (Object fragmentDefinition : fragmentDefinitionsList) {
+			if (!(fragmentDefinition instanceof Map<?, ?> fragment) || fragment.get("type") == null)
+				continue;
+
 			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, fragment,
 					generator.getWorkspace().getWorkspaceInfo()))
 				continue;
 
+			List<String> typeFragments = fragments.computeIfAbsent(fragment.get("type").toString(),
+					_ -> new ArrayList<>());
 			if (fragment.get("template") != null) {
-				String code = templateGenerator.generateBaseFromTemplate((String) fragment.get("template"),
-						new HashMap<>(dataModel), (String) fragment.get("variables"));
-				if (!code.isBlank())
-					fragments.add(code);
+				try {
+					String code = templateGenerator.generateBaseFromTemplate((String) fragment.get("template"),
+							new HashMap<>(dataModel), (String) fragment.get("variables"));
+					if (!code.isBlank())
+						typeFragments.add(code);
+				} catch (TemplateGeneratorException e) {
+					LOG.error("Failed to generate fragment from template {}", fragment.get("template"), e);
+				}
 			} else if (fragment.get("content") instanceof List<?> content) {
-				content.forEach(e -> fragments.add(e.toString()));
+				content.forEach(e -> typeFragments.add(e.toString()));
 			} else if (fragment.get("content") != null) {
-				fragments.add(fragment.get("content").toString());
+				typeFragments.add(fragment.get("content").toString());
 			}
 		}
 	}
