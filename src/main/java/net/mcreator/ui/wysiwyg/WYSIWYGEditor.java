@@ -146,15 +146,13 @@ public class WYSIWYGEditor extends JPanel {
 		invOffY.setPreferredSize(new Dimension(60, 24));
 
 		renderBgLayer.setSelected(true);
-		renderBgLayer.setOpaque(false);
-		doesPauseGame.setOpaque(false);
 
 		invOffX.setEnabled(false);
 		invOffY.setEnabled(false);
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		list.addListSelectionListener(event -> {
+		list.addListSelectionListener(_ -> {
 			if (list.getSelectedValue() != null) {
 				editor.setSelectedComponent(list.getSelectedValue());
 				moveComponent.setEnabled(!list.getSelectedValue().locked);
@@ -285,8 +283,7 @@ public class WYSIWYGEditor extends JPanel {
 			}
 		}
 
-		snapOnGrid.setOpaque(false);
-		snapOnGrid.addActionListener(event -> {
+		snapOnGrid.addActionListener(_ -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
@@ -352,7 +349,7 @@ public class WYSIWYGEditor extends JPanel {
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
 		if (isNotOverlayType)
-			guiType.addActionListener(event -> {
+			guiType.addActionListener(_ -> {
 				invOffX.setEnabled(guiType.getSelectedIndex() == 1);
 				invOffY.setEnabled(guiType.getSelectedIndex() == 1);
 				if (guiType.getSelectedIndex() == 0 && !isOpening()) {
@@ -384,8 +381,8 @@ public class WYSIWYGEditor extends JPanel {
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
 
-		spa1.addChangeListener(event -> checkAndUpdateGUISize());
-		spa2.addChangeListener(event -> checkAndUpdateGUISize());
+		spa1.addChangeListener(_ -> checkAndUpdateGUISize());
+		spa2.addChangeListener(_ -> checkAndUpdateGUISize());
 		guiType.addActionListener(_ -> checkAndUpdateGUISize());
 		renderBgLayer.addActionListener(_ -> checkAndUpdateGUISize());
 
