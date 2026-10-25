@@ -44,10 +44,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * ModElementManager is not thread safe
@@ -215,9 +217,17 @@ import java.util.function.Consumer;
 	}
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
-		List<GeneratorTemplate> templates = new ArrayList<>(workspace.getGenerator()
-				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(),
-						new AtomicInteger()));
+		ModElementType<?> type = generatableElement.getModElement().getType();
+		return requiresElementGradleBuild(generatableElement,
+				() -> workspace.getModElementsByType(type).stream().map(ModElement::getGeneratableElement)
+						.filter(Objects::nonNull).toList());
+	}
+
+	public boolean requiresElementGradleBuild(GeneratableElement generatableElement,
+			Supplier<List<GeneratableElement>> elementsOfType) {
+		List<GeneratorTemplate> templates = new ArrayList<>(
+				workspace.getGenerator().getGlobalTemplatesListForModElementType(
+						generatableElement.getModElement().getType(), elementsOfType, new AtomicInteger()));
 
 		templates.addAll(workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement));
 

@@ -1089,14 +1089,21 @@ import java.util.regex.Pattern;
 		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
 				.getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
-				.getGlobalTemplatesListForModElementType(mu.getType(), new AtomicInteger());
+				.getGlobalTemplatesListForModElementType(mu.getType(),
+						() -> mcreator.getWorkspace().getModElementsByType(mu.getType()).stream()
+								.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList(),
+						new AtomicInteger());
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
 				.getModElementListTemplates(mu.getGeneratableElement());
 
 		for (BaseType baseType : mu.getBaseTypesProvided()) {
 			modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 					mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-							.getBaseTypeDefinition(baseType), new AtomicInteger()));
+							.getBaseTypeDefinition(baseType), baseType.getPluralName(),
+					() -> mcreator.getWorkspace().getModElements().stream()
+							.filter(e -> e.getBaseTypesProvided().contains(baseType))
+							.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList(),
+					new AtomicInteger()));
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
@@ -1127,6 +1134,8 @@ import java.util.regex.Pattern;
 				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
 						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
+					// elements of each type are listed once and shared by all build checks of that type
+					Map<ModElementType<?>, List<GeneratableElement>> elementsByType = new HashMap<>();
 					if (selectedElements.size() == 1 && selectedElements.getFirst() instanceof ModElement mu) {
 						mcreator.getWorkspace().getHistoryManager().importantCheckpoint("before_delete", mu.getName());
 					} else {
@@ -1137,7 +1146,11 @@ import java.util.regex.Pattern;
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
 								GeneratableElement ge = ((ModElement) re).getGeneratableElement();
-								if (ge != null && mcreator.getModElementManager().requiresElementGradleBuild(ge))
+								if (ge != null && mcreator.getModElementManager().requiresElementGradleBuild(ge,
+										() -> elementsByType.computeIfAbsent(ge.getModElement().getType(),
+												type -> mcreator.getWorkspace().getModElementsByType(type).stream()
+														.map(ModElement::getGeneratableElement)
+														.filter(Objects::nonNull).toList())))
 									buildNeeded.set(true);
 							}
 
