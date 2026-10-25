@@ -34,6 +34,7 @@ import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
@@ -48,6 +49,7 @@ import net.mcreator.util.GSONClone;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -282,6 +284,12 @@ public abstract class MCreator extends MCreatorFrame {
 		} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
 			RegenerateCodeAction.regenerateCode(this, true, true);
 		}
+
+		// regeneration is required when generator was switched while loading the workspace, in which case
+		// references to mod elements that no longer exist may break the code for the new generator, so we check for them
+		if (workspace.isRegenerateRequired())
+			SearchUsagesDialog.showBrokenReferencesDialog(this, ReferencesFinder.searchBrokenReferences(workspace),
+					false);
 
 		// it is not safe to do user operations on workspace while it is being preloaded, so we lock the UI
 		setGlassPane(getPreloaderPane());
