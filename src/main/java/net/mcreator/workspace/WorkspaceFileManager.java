@@ -219,7 +219,11 @@ public final class WorkspaceFileManager implements Closeable {
 	private record SaveTask(WorkspaceFileManager fileManager) implements Runnable {
 
 		@Override public void run() {
-			fileManager.saveWorkspaceIfChanged();
+			try {
+				fileManager.saveWorkspaceIfChanged();
+			} catch (Exception e) {
+				fileManager.LOG.error("Failed to save workspace", e);
+			}
 
 			if (!fileManager.dataSaveExecutor.isShutdown())
 				fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
