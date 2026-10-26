@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.io.GradleTrackingFileIO;
 import net.mcreator.generator.io.JSONWriter;
 import net.mcreator.generator.io.JSWriter;
@@ -54,6 +55,7 @@ import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -349,7 +351,8 @@ public class Generator implements IGenerator, Closeable {
 
 		List<GeneratorTemplate> files = new ArrayList<>();
 
-		Map<String, Integer> typesReport = new HashMap<>();
+		// Mod element types and base types mapped to their elements (empty list for types not used in the workspace)
+		Map<String, List<GeneratableElement>> types = emptyTypesMap(true);
 
 		// Pre-precess GEs
 		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
@@ -364,11 +367,8 @@ public class Generator implements IGenerator, Closeable {
 		for (Map.Entry<ModElementType<?>, List<GeneratableElement>> entry : modElementTypeListMap.entrySet()) {
 			ModElementType<?> type = entry.getKey();
 			List<GeneratableElement> groupedElements = entry.getValue();
-			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, templateID);
-
-			globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getPluralName(), groupedElements));
-			files.addAll(globalTemplatesList);
-			typesReport.put(type.getPluralName(), groupedElements.size());
+			files.addAll(getGlobalTemplatesListForModElementType(type, () -> groupedElements, templateID));
+			types.put(type.getPluralName(), groupedElements);
 		}
 
 		// Check used base types and generate their templates
@@ -381,45 +381,71 @@ public class Generator implements IGenerator, Closeable {
 		for (Map.Entry<BaseType, List<GeneratableElement>> entry : baseTypeListMap.entrySet()) {
 			BaseType baseType = entry.getKey();
 			List<GeneratableElement> groupedElements = entry.getValue();
-			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForDefinition(
-					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType), templateID);
-
-			globalTemplatesList.forEach(e -> e.addDataModelEntry(baseType.getPluralName(), groupedElements));
-			files.addAll(globalTemplatesList);
-			typesReport.put("base:" + baseType.getPluralName(), groupedElements.size());
+			files.addAll(getGlobalTemplatesListForDefinition(
+					generatorConfiguration.getDefinitionsProvider().getBaseTypeDefinition(baseType),
+					baseType.getPluralName(), () -> groupedElements, templateID));
+			types.put("base_" + baseType.getPluralName(), groupedElements);
 		}
 
 		// Finally, add global base templates at the end
-		List<GeneratorTemplate> globalBaseTemplates = processTemplateDefinitionsToGeneratorTemplates(
-				generatorConfiguration.getBaseTemplates(), templateID);
-		for (GeneratorTemplate globalBaseTemplate : globalBaseTemplates) {
-			globalBaseTemplate.addDataModelEntry("types", typesReport);
-		}
-		files.addAll(globalBaseTemplates);
+		files.addAll(processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(),
+				templateID, TemplateExpressionParser.CompoundConditionData.of(workspace.getWorkspaceInfo())
+						.with("types", types)));
 
 		return files;
 	}
 
 	public List<GeneratorTemplate> getGlobalTemplatesListForModElementType(ModElementType<?> type,
-			AtomicInteger templateID) {
+			Supplier<List<GeneratableElement>> elements, AtomicInteger templateID) {
 		return getGlobalTemplatesListForDefinition(
-				generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type), templateID);
+				generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type), type.getPluralName(),
+				elements, templateID);
 	}
 
-	public List<GeneratorTemplate> getGlobalTemplatesListForDefinition(@Nullable Map<?, ?> map,
-			AtomicInteger templateID) {
+	public List<GeneratorTemplate> getGlobalTemplatesListForDefinition(@Nullable Map<?, ?> map, String elementsKey,
+			Supplier<List<GeneratableElement>> elements, AtomicInteger templateID) {
 		if (map == null)
 			return new ArrayList<>();
 
 		List<?> templates = (List<?>) map.get("global_templates");
-		if (templates != null)
-			return processTemplateDefinitionsToGeneratorTemplates(templates, templateID);
+		if (templates != null && !templates.isEmpty()) {
+			List<GeneratableElement> elementsList = elements.get();
+
+			// Elements grouped by their mod element type (empty list for types without elements)
+			Map<String, List<GeneratableElement>> types = emptyTypesMap(false);
+			for (GeneratableElement element : elementsList) {
+				String key = element.getModElement().getType().getPluralName();
+				List<GeneratableElement> typeElements = types.get(key);
+				if (typeElements == null || typeElements.isEmpty())
+					types.put(key, typeElements = new ArrayList<>());
+				typeElements.add(element);
+			}
+
+			return processTemplateDefinitionsToGeneratorTemplates(templates, templateID,
+					TemplateExpressionParser.CompoundConditionData.of(workspace.getWorkspaceInfo())
+							.with(elementsKey, elementsList).with("types", types));
+		}
 
 		return new ArrayList<>();
 	}
 
+	/**
+	 * @param includeBaseTypes true to also include base types under base_ prefixed keys
+	 * @return All registered mod element types (and base types) mapped by their plural name to an empty list, so
+	 * templates and conditions can use types.&lt;pluralname&gt; for any type without checking for its presence
+	 */
+	private static Map<String, List<GeneratableElement>> emptyTypesMap(boolean includeBaseTypes) {
+		Map<String, List<GeneratableElement>> types = new LinkedHashMap<>();
+		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes())
+			types.put(type.getPluralName(), Collections.emptyList());
+		if (includeBaseTypes)
+			for (BaseType baseType : BaseType.values())
+				types.put("base_" + baseType.getPluralName(), Collections.emptyList());
+		return types;
+	}
+
 	private List<GeneratorTemplate> processTemplateDefinitionsToGeneratorTemplates(@Nonnull List<?> templates,
-			AtomicInteger templateID) {
+			AtomicInteger templateID, TemplateExpressionParser.CompoundConditionData conditionData) {
 		Set<GeneratorTemplate> files = new HashSet<>();
 		for (Object template : templates) {
 			File file = new File(GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name")));
@@ -431,10 +457,16 @@ public class Generator implements IGenerator, Closeable {
 					Integer.toString(templateID.getAndIncrement()) + ((Map<?, ?>) template).get("template"),
 					(Map<?, ?>) template);
 
-			if (generatorTemplate.shouldBeSkippedBasedOnCondition(this, workspace.getWorkspaceInfo())) {
+			if (generatorTemplate.shouldBeSkippedBasedOnCondition(this, conditionData)) {
 				// No need to delete elements here as previous stale files will be removed by used files metadata systems
 				continue;
 			}
+
+			// expose the same data the conditions had access to in the template data model
+			conditionData.forEach((key, value) -> {
+				if (!TemplateExpressionParser.CompoundConditionData.PRIMARY_KEY.equals(key))
+					generatorTemplate.addDataModelEntry(key, value);
+			});
 
 			// only keep the last template for given file
 			files.remove(generatorTemplate);

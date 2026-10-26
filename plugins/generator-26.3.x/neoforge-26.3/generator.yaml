@@ -84,18 +84,18 @@ base_templates:
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
-      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
-      - "${w.hasElementsOfType('armor')}"
-      - "${w.hasElementsOfType('fluid')}"
+      - "${types.biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether || e.hasVines() || e.hasFruits())?size != 0}"
+      - "${types.armors?has_content}"
+      - "${types.fluids?has_content}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition_any:
       - hasJavaModels()
-      - "${w.hasElementsOfType('specialentity')}"
+      - "${types.specialentities?has_content}"
   - template: modbase/mixin.json.ftl
     writer: json
     condition_any:
-      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+      - "${types.biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@RESROOT/@modid.mixins.json"
 
 java_models:
