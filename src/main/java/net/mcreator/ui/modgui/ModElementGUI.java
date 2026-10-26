@@ -583,8 +583,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					Objects.requireNonNullElse(targetFolder, modMaker.getWorkspacePanel().currentFolder));
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
-		// add it before generating so all references are loaded
-		if (!editingMode) {
+		// we check the list instead of editingMode so an element deleted while its editor was open is re-added
+		boolean newElement = !mcreator.getWorkspace().containsModElement(modElement.getName());
+		if (newElement) {
 			mcreator.getWorkspace().addModElement(modElement);
 		} else {
 			modElement.reloadElementIcon();
@@ -595,6 +596,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);
+
+		// store the workspace file right away so the mod element list on the FS is in sync with the definition file
+		if (newElement)
+			mcreator.getWorkspace().getFileManager().saveWorkspaceDirectlyAndWait();
 
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
