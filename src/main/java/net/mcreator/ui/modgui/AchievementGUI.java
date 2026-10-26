@@ -241,7 +241,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		triggerPage.add(advancementTrigger);
 
 		addPage(L10N.t("elementgui.common.page_properties"), mainPage).validate(page1group);
-		addPage(L10N.t("elementgui.advancement.page_trigger"), triggerPage).lazyValidate(
+		addPage(L10N.t("elementgui.advancement.page_criteria"), triggerPage).lazyValidate(
 				BlocklyAggregatedValidationResult.blocklyValidator(this,
 						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
