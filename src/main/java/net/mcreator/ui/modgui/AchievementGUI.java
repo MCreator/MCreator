@@ -115,6 +115,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
+		JPanel mainPage = new JPanel(new BorderLayout(10, 10));
+		JPanel triggerPage = new JPanel(new BorderLayout());
+
 		JPanel propertiesPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 
@@ -228,20 +231,19 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		JComponent advancementTrigger = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
-		advancementTrigger.setPreferredSize(new Dimension(0, 460));
+		advancementTrigger.setPreferredSize(new Dimension(0, 570));
 
-		JComponent wrap = PanelUtils.northAndCenterElement(
-				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
-		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+		mainPage.setOpaque(false);
+		mainPage.add(PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(propertiesPanel, logicPanel)));
 
-		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		page1.add("Center",
-				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger));
+		triggerPage.setOpaque(false);
+		triggerPage.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+		triggerPage.add(advancementTrigger);
 
-		page1.setOpaque(false);
-
-		addPage(page1).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
-				compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
+		addPage(L10N.t("elementgui.common.page_properties"), mainPage).validate(page1group);
+		addPage(L10N.t("elementgui.advancement.page_trigger"), triggerPage).lazyValidate(
+				BlocklyAggregatedValidationResult.blocklyValidator(this,
+						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
