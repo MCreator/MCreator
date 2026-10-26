@@ -20,6 +20,7 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
@@ -137,6 +138,11 @@ public class MCItemHolder extends JButton implements IValidable {
 							&& e.getY() > getHeight() - 11) && !block.isEmpty()) {
 						setBlock(null);
 					} else {
+						// If custom element is removed while this holder is loaded, validReference might not be updated yet
+						var toSelect = (block.isEmpty() || block.startsWith("TAG:") || !getBlock().isValidReference()) ?
+								null :
+								new MCItem(new DataListEntry.Dummy(block));
+						selectorDialog.setInitialSelection(toSelect);
 						selectorDialog.setVisible(true); // show block selector
 					}
 					repaint();

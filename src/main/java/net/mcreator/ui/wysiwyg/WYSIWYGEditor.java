@@ -51,6 +51,8 @@ import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -151,6 +153,20 @@ public class WYSIWYGEditor extends JPanel {
 		invOffY.setEnabled(false);
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		components.addListDataListener(new ListDataListener() {
+			@Override public void intervalAdded(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void intervalRemoved(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void contentsChanged(ListDataEvent e) {
+				editor.repaint();
+			}
+		});
 
 		list.addListSelectionListener(_ -> {
 			if (list.getSelectedValue() != null) {
@@ -383,6 +399,8 @@ public class WYSIWYGEditor extends JPanel {
 
 		spa1.addChangeListener(_ -> checkAndUpdateGUISize());
 		spa2.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffX.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffY.addChangeListener(_ -> checkAndUpdateGUISize());
 		guiType.addActionListener(_ -> checkAndUpdateGUISize());
 		renderBgLayer.addActionListener(_ -> checkAndUpdateGUISize());
 

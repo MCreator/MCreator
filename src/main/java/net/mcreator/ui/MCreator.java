@@ -22,6 +22,7 @@ import net.mcreator.Launcher;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.MCreatorClosedEvent;
 import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
@@ -47,7 +48,6 @@ import net.mcreator.util.GSONClone;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -292,7 +292,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 		// reinit (preload) MCItems (also loads GEs and performs conversions if needed)
 		new Thread(() -> {
-			workspace.getModElements().forEach(ModElement::getMCItems);
+			// Preload MCItems (also loads GEs and performs conversions if needed) and their icons for snappy UI when opened
+			workspace.getModElements().forEach(me -> me.getMCItems().forEach(MCItem::getIcon));
 
 			SwingUtilities.invokeLater(() -> {
 				getGlassPane().setVisible(false);
@@ -381,7 +382,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 			application.removeMCreator(this);
 
-			if (application.getOpenMCreatorsCount() == 0) { // no MCreator windows left, close the app, or return to project selector if selected
+			if (application.getOpenMCreatorsCount()
+					== 0) { // no MCreator windows left, close the app, or return to project selector if selected
 				if (returnToProjectSelector)
 					application.showWorkspaceSelector();
 				else

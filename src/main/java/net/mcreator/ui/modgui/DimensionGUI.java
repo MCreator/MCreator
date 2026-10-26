@@ -42,6 +42,7 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
@@ -87,7 +88,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner coordinateScale = ComponentFromAnnotation.spinner(Dimension.class, "coordinateScale");
-	private final VTextField infiniburnTag = new VTextField(24);
+	private final VComboBox<String> infiniburnTag = new VComboBox<>(
+			new String[] { "minecraft:infiniburn_overworld", "minecraft:infiniburn_nether", "minecraft:infiniburn_end" });
 	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fixedTimeValue = ComponentFromAnnotation.spinner(Dimension.class, "fixedTimeValue");
 	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");
@@ -242,6 +244,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.infiniburn_tag")));
 		dimensionTypeSettings.add(infiniburnTag);
 
+		infiniburnTag.setPreferredSize(new java.awt.Dimension(240, 36));
+
 		ComponentUtils.makeSection(dimensionTypeSettings, L10N.t("elementgui.dimension.dimension_type_settings"));
 
 		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 2));
@@ -310,7 +314,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			imitateOverworldBehaviour.setSelected(true);
 			hasSkyLight.setSelected(true);
 			hasRaids.setSelected(true);
-			infiniburnTag.setText("minecraft:infiniburn_overworld");
+			infiniburnTag.getEditor().setItem("minecraft:infiniburn_overworld");
 		}
 		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
 
@@ -580,6 +584,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.add(PanelUtils.totalCenterInPanel(events));
 		pane5.setOpaque(false);
 
+		infiniburnTag.setEditable(true);
 		infiniburnTag.setValidator(
 				new ResourceLocationValidator<>(L10N.t("elementgui.dimension.infiniburn_validator"), infiniburnTag,
 						true));
@@ -780,7 +785,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFixedTime.setSelected(dimension.hasFixedTime);
 		fixedTimeValue.setValue(dimension.fixedTimeValue);
 		coordinateScale.setValue(dimension.coordinateScale);
-		infiniburnTag.setText(dimension.infiniburnTag);
+		infiniburnTag.getEditor().setItem(dimension.infiniburnTag);
 		piglinSafe.setSelected(dimension.piglinSafe);
 		hasRaids.setSelected(dimension.hasRaids);
 		monsterSpawnLightLimit.setMinValue(dimension.minMonsterSpawnLightLimit);
@@ -835,7 +840,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.hasFixedTime = hasFixedTime.isSelected();
 		dimension.fixedTimeValue = (int) fixedTimeValue.getValue();
 		dimension.coordinateScale = (double) coordinateScale.getValue();
-		dimension.infiniburnTag = infiniburnTag.getText();
+		dimension.infiniburnTag = infiniburnTag.getEditor().getItem().toString();
 		dimension.piglinSafe = piglinSafe.isSelected();
 		dimension.hasRaids = hasRaids.isSelected();
 		dimension.minMonsterSpawnLightLimit = monsterSpawnLightLimit.getIntMinValue();
