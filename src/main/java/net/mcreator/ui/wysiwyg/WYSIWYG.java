@@ -70,6 +70,9 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	private final Image background = UIRES.get("guieditor").getImage();
 	private final Image inventorySlots = MinecraftImageGenerator.generateInventorySlots();
 
+	private BufferedImage guiBackground;
+	private int guiBackgroundWidth = -1, guiBackgroundHeight = -1;
+
 	private JZoomport owner;
 
 	int grid_x_spacing = 18;
@@ -90,6 +93,11 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	@Override public void setZoomPane(JZoomPane jZoomPane) {
 		this.owner = jZoomPane.getZoomport();
+	}
+
+	@Override public void repaint(long tm, int x, int y, int width, int height) {
+		if (owner != null)
+			owner.repaint();
 	}
 
 	@Override public Dimension getPreferredSize() {
@@ -141,12 +149,11 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		g.setColor(Theme.current().getInterfaceAccentColor());
 		g.drawRect(0, 0, getWidth(), getHeight());
 
-		// draw wysiwyg
-		BufferedImage bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D wg = bi.createGraphics();
+		// draw wysiwyg, clipped to the canvas bounds so components can not hang past the edge
+		Graphics2D wg = (Graphics2D) g.create();
+		wg.clipRect(0, 0, getWidth(), getHeight());
 		drawWYSIWYG(wg);
 		wg.dispose();
-		g.drawImage(bi, 0, 0, this);
 
 		// draw selection box
 		if (selected != null) {
@@ -216,9 +223,15 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 		if (showGrid)
 			drawGrid(g);
+	}
 
-		if (this.owner != null)
-			this.owner.repaint();
+	private BufferedImage getGUIBackground(int width, int height) {
+		if (guiBackground == null || guiBackgroundWidth != width || guiBackgroundHeight != height) {
+			guiBackground = MinecraftImageGenerator.generateBackground(width, height);
+			guiBackgroundWidth = width;
+			guiBackgroundHeight = height;
+		}
+		return guiBackground;
 	}
 
 	private void drawWYSIWYG(Graphics2D g) {
@@ -235,10 +248,10 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (isNotOverlayType) {
 			if (wysiwygEditor.renderBgLayer.isSelected()) {
 				if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 0) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
+					g.drawImage(getGUIBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
 							(int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh, this);
 				} else if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 1) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
+					g.drawImage(getGUIBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
 							(int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh, this);
 					g.drawImage(inventorySlots,
 							(int) Math.ceil(W / 2.0 - 176 / 2.0) + (int) wysiwygEditor.invOffX.getValue(),
