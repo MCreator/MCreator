@@ -65,11 +65,13 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#forceLoad()" tabindex="0">forceLoad()</a></li>
+<li><a href="#focusBlockly()" tabindex="0">focusBlockly()</a></li>
 <li><a href="#addTaskToRunAfterLoaded(java.lang.Runnable)" tabindex="0">addTaskToRunAfterLoaded(Runnable)</a></li>
 <li><a href="#addChangeListener(javax.swing.event.ChangeListener)" tabindex="0">addChangeListener(ChangeListener)</a></li>
 <li><a href="#getXML()" tabindex="0">getXML()</a></li>
 <li><a href="#setInitialXML(java.lang.String)" tabindex="0">setInitialXML(String)</a></li>
 <li><a href="#addBlocksFromXML(java.lang.String)" tabindex="0">addBlocksFromXML(String)</a></li>
+<li><a href="#addBlocksFromXML(java.lang.String,boolean)" tabindex="0">addBlocksFromXML(String, boolean)</a></li>
 <li><a href="#addGlobalVariable(java.lang.String,java.lang.String)" tabindex="0">addGlobalVariable(String, String)</a></li>
 <li><a href="#addLocalVariable(java.lang.String,java.lang.String)" tabindex="0">addLocalVariable(String, String)</a></li>
 <li><a href="#removeLocalVariable(java.lang.String)" tabindex="0">removeLocalVariable(String)</a></li>
@@ -183,27 +185,34 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBlocksFromXML(java.lang.String)" class="member-name-link">addBlocksFromXML</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;xml)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addChangeListener(javax.swing.event.ChangeListener)" class="member-name-link">addChangeListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/event/ChangeListener.html" title="class or interface in javax.swing.event" class="external-link">ChangeListener</a>&nbsp;listener)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addBlocksFromXML(java.lang.String,boolean)" class="member-name-link">addBlocksFromXML</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;xml,
+ boolean&nbsp;focusAddedBlocks)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addExternalTrigger(net.mcreator.blockly.data.ExternalTrigger)" class="member-name-link">addExternalTrigger</a><wbr>(<a href="../../blockly/data/ExternalTrigger.html" title="class in net.mcreator.blockly.data">ExternalTrigger</a>&nbsp;external_trigger)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addChangeListener(javax.swing.event.ChangeListener)" class="member-name-link">addChangeListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/event/ChangeListener.html" title="class or interface in javax.swing.event" class="external-link">ChangeListener</a>&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addGlobalVariable(java.lang.String,java.lang.String)" class="member-name-link">addGlobalVariable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addExternalTrigger(net.mcreator.blockly.data.ExternalTrigger)" class="member-name-link">addExternalTrigger</a><wbr>(<a href="../../blockly/data/ExternalTrigger.html" title="class in net.mcreator.blockly.data">ExternalTrigger</a>&nbsp;external_trigger)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addGlobalVariable(java.lang.String,java.lang.String)" class="member-name-link">addGlobalVariable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLocalVariable(java.lang.String,java.lang.String)" class="member-name-link">addLocalVariable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addLocalVariable(java.lang.String,java.lang.String)" class="member-name-link">addLocalVariable</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addTaskToRunAfterLoaded(java.lang.Runnable)" class="member-name-link">addTaskToRunAfterLoaded</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;runnable)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addTaskToRunAfterLoaded(java.lang.Runnable)" class="member-name-link">addTaskToRunAfterLoaded</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a>&nbsp;runnable)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#close()" class="member-name-link">close</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#close()" class="member-name-link">close</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#executeLocalScript(java.lang.String)" class="member-name-link">executeLocalScript</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;script)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#executeLocalScript(java.lang.String)" class="member-name-link">executeLocalScript</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;script)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#focusBlockly()" class="member-name-link">focusBlockly</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forceLoad()" class="member-name-link">forceLoad</a>()</code></div>
@@ -284,6 +293,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base
 </section>
 </li>
 <li>
+<section class="detail" id="focusBlockly()">
+<h3>focusBlockly</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">focusBlockly</span>()</div>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="addTaskToRunAfterLoaded(java.lang.Runnable)">
 <h3>addTaskToRunAfterLoaded</h3>
 <div class="horizontal-scroll">
@@ -328,6 +345,19 @@ immediately to the workspace.</div>
 <h3>addBlocksFromXML</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addBlocksFromXML</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;xml)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="addBlocksFromXML(java.lang.String,boolean)">
+<h3>addBlocksFromXML</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addBlocksFromXML</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;xml,
+ boolean&nbsp;focusAddedBlocks)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>focusAddedBlocks</code> - If true, the first added top block is focused for keyboard navigation. Only applies when a single chain of blocks is added.</dd>
+</dl>
 </div>
 </section>
 </li>

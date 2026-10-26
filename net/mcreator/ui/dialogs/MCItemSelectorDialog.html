@@ -61,13 +61,15 @@ loadScripts(document, 'script');</script>
 <ol class="toc-list">
 <li><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,boolean)" tabindex="0">MCItemSelectorDialog(MCreator, MCItem.ListProvider, boolean)</a></li>
 <li><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,boolean,boolean)" tabindex="0">MCItemSelectorDialog(MCreator, MCItem.ListProvider, boolean, boolean)</a></li>
+<li><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,net.mcreator.minecraft.MCItem,boolean,boolean)" tabindex="0">MCItemSelectorDialog(MCreator, MCItem.ListProvider, MCItem, boolean, boolean)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#setItemSelectedListener(java.awt.event.ActionListener)" tabindex="0">setItemSelectedListener(ActionListener)</a></li>
+<li><a href="#getFilter(java.lang.String)" tabindex="0">getFilter(String)</a></li>
 <li><a href="#getSelectedMCItem()" tabindex="0">getSelectedMCItem()</a></li>
-<li><a href="#openSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider)" tabindex="0">openSelectorDialog(MCreator, MCItem.ListProvider)</a></li>
+<li><a href="#openSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,net.mcreator.minecraft.MCItem)" tabindex="0">openSelectorDialog(MCreator, MCItem.ListProvider, MCItem)</a></li>
 <li><a href="#openMultiSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider)" tabindex="0">openMultiSelectorDialog(MCreator, MCItem.ListProvider)</a></li>
 <li><a href="#openMultiSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,boolean)" tabindex="0">openMultiSelectorDialog(MCreator, MCItem.ListProvider, boolean)</a></li>
 </ol>
@@ -122,6 +124,9 @@ loadScripts(document, 'script');</script>
 <section class="nested-class-summary" id="nested-class-summary">
 <h2>Nested Class Summary</h2>
 <div class="inherited-list">
+<h3 id="nested-classes-inherited-from-class-net.mcreator.ui.dialogs.SearchableSelectorDialog">Nested classes/interfaces inherited from class&nbsp;<a href="SearchableSelectorDialog.html#nested-class-summary" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a></h3>
+<code><a href="SearchableSelectorDialog.FilterModel.html" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog.FilterModel</a></code></div>
+<div class="inherited-list">
 <h3 id="nested-classes-inherited-from-class-javax.swing.JDialog">Nested classes/interfaces inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#nested-class-summary" title="class or interface in javax.swing" class="external-link">JDialog</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.AccessibleJDialog.html" title="class or interface in javax.swing" class="external-link">JDialog.AccessibleJDialog</a></code></div>
 <div class="inherited-list">
@@ -142,6 +147,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-net.mcreator.ui.dialogs.SearchableSelectorDialog">Fields inherited from class&nbsp;<a href="SearchableSelectorDialog.html#field-summary" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a></h3>
+<code><a href="SearchableSelectorDialog.html#filterField">filterField</a>, <a href="SearchableSelectorDialog.html#list">list</a>, <a href="SearchableSelectorDialog.html#mcreator">mcreator</a>, <a href="SearchableSelectorDialog.html#model">model</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JDialog">Fields inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#field-summary" title="class or interface in javax.swing" class="external-link">JDialog</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#accessibleContext" title="class or interface in javax.swing" class="external-link">accessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#rootPane" title="class or interface in javax.swing" class="external-link">rootPane</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#rootPaneCheckingEnabled" title="class or interface in javax.swing" class="external-link">rootPaneCheckingEnabled</a></code></div>
@@ -176,6 +184,12 @@ loadScripts(document, 'script');</script>
  boolean&nbsp;supportTags,
  boolean&nbsp;hasPotions)</code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,net.mcreator.minecraft.MCItem,boolean,boolean)" class="member-name-link">MCItemSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;supplier,
+ <a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&nbsp;initialSelection,
+ boolean&nbsp;supportTags,
+ boolean&nbsp;hasPotions)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -190,28 +204,37 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSelectedMCItem()" class="member-name-link">getSelectedMCItem</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#openMultiSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider)" class="member-name-link">openMultiSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;parent,
- <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;blocks)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFilter(java.lang.String)" class="member-name-link">getFilter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;term)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">The filter used by the search bar</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSelectedMCItem()" class="member-name-link">getSelectedMCItem</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#openMultiSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,boolean)" class="member-name-link">openMultiSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;parent,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#openMultiSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider)" class="member-name-link">openMultiSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;parent,
+ <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;blocks)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#openMultiSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,boolean)" class="member-name-link">openMultiSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;parent,
  <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;blocks,
  boolean&nbsp;supportTags)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#openSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider)" class="member-name-link">openSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;parent,
- <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;blocks)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setItemSelectedListener(java.awt.event.ActionListener)" class="member-name-link">setItemSelectedListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/event/ActionListener.html" title="class or interface in java.awt.event" class="external-link">ActionListener</a>&nbsp;itemSelectedListener)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#openSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,net.mcreator.minecraft.MCItem)" class="member-name-link">openSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;parent,
+ <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;blocks,
+ <a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&nbsp;initialSelection)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setItemSelectedListener(java.awt.event.ActionListener)" class="member-name-link">setItemSelectedListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/event/ActionListener.html" title="class or interface in java.awt.event" class="external-link">ActionListener</a>&nbsp;itemSelectedListener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.ui.dialogs.SearchableSelectorDialog">Methods inherited from class&nbsp;<a href="SearchableSelectorDialog.html#method-summary" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a></h3>
+<code><a href="SearchableSelectorDialog.html#setInitialSelection(java.util.List)" title="setInitialSelection(List)">setInitialSelection</a>, <a href="SearchableSelectorDialog.html#setInitialSelection(T)" title="setInitialSelection(MCItem)">setInitialSelection</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.dialogs.MCreatorDialog">Methods inherited from class&nbsp;<a href="MCreatorDialog.html#method-summary" title="class in net.mcreator.ui.dialogs">MCreatorDialog</a></h3>
 <code><a href="MCreatorDialog.html#setClosable(boolean)" title="setClosable(boolean)">setClosable</a>, <a href="MCreatorDialog.html#setSize(int,int)" title="setSize(int, int)">setSize</a></code></div>
@@ -265,6 +288,18 @@ loadScripts(document, 'script');</script>
 </div>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,net.mcreator.minecraft.MCItem,boolean,boolean)">
+<h3>MCItemSelectorDialog</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">MCItemSelectorDialog</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;supplier,
+ <a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&nbsp;initialSelection,
+ boolean&nbsp;supportTags,
+ boolean&nbsp;hasPotions)</span></div>
+</div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -282,6 +317,24 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getFilter(java.lang.String)">
+<h3>getFilter</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">getFilter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;term)</span></div>
+<div class="block"><span class="description-from-type-label">Description copied from class:&nbsp;<code><a href="SearchableSelectorDialog.html#getFilter(java.lang.String)">SearchableSelectorDialog</a></code></span></div>
+<div class="block">The filter used by the search bar</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="SearchableSelectorDialog.html#getFilter(java.lang.String)">getFilter</a></code>&nbsp;in class&nbsp;<code><a href="SearchableSelectorDialog.html" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>term</code> - The text contained in the search bar</dd>
+<dt>Returns:</dt>
+<dd>The predicate that will be used to filter the elements</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="getSelectedMCItem()">
 <h3>getSelectedMCItem</h3>
 <div class="horizontal-scroll">
@@ -290,11 +343,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="openSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider)">
+<section class="detail" id="openSelectorDialog(net.mcreator.ui.MCreator,net.mcreator.minecraft.MCItem.ListProvider,net.mcreator.minecraft.MCItem)">
 <h3>openSelectorDialog</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a></span>&nbsp;<span class="element-name">openSelectorDialog</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;parent,
- <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;blocks)</span></div>
+ <a href="../../minecraft/MCItem.ListProvider.html" title="interface in net.mcreator.minecraft">MCItem.ListProvider</a>&nbsp;blocks,
+ <a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&nbsp;initialSelection)</span></div>
 </div>
 </section>
 </li>

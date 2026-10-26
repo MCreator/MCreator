@@ -57,9 +57,26 @@ loadScripts(document, 'script');</script>
 <li><a href="#field-summary" tabindex="0">Field Summary</a></li>
 <li><a href="#constructor-summary" tabindex="0">Constructor Summary</a></li>
 <li><a href="#method-summary" tabindex="0">Method Summary</a></li>
+<li><a href="#field-detail" tabindex="0">Field Details</a>
+<ol class="toc-list">
+<li><a href="#mcreator" tabindex="0">mcreator</a></li>
+<li><a href="#model" tabindex="0">model</a></li>
+<li><a href="#filterField" tabindex="0">filterField</a></li>
+<li><a href="#list" tabindex="0">list</a></li>
+</ol>
+</li>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
 <li><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,java.util.function.Function)" tabindex="0">SearchableSelectorDialog(MCreator, Function)</a></li>
+<li><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,java.util.function.Function,T)" tabindex="0">SearchableSelectorDialog(MCreator, Function, T)</a></li>
+<li><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,java.util.function.Function,java.util.List)" tabindex="0">SearchableSelectorDialog(MCreator, Function, List)</a></li>
+</ol>
+</li>
+<li><a href="#method-detail" tabindex="0">Method Details</a>
+<ol class="toc-list">
+<li><a href="#setInitialSelection(T)" tabindex="0">setInitialSelection(T)</a></li>
+<li><a href="#setInitialSelection(java.util.List)" tabindex="0">setInitialSelection(List)</a></li>
+<li><a href="#getFilter(java.lang.String)" tabindex="0">getFilter(String)</a></li>
 </ol>
 </li>
 </ol>
@@ -118,6 +135,15 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="nested-class-summary" id="nested-class-summary">
 <h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="SearchableSelectorDialog.FilterModel.html" class="type-name-link" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog.FilterModel</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h3 id="nested-classes-inherited-from-class-javax.swing.JDialog">Nested classes/interfaces inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#nested-class-summary" title="class or interface in javax.swing" class="external-link">JDialog</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.AccessibleJDialog.html" title="class or interface in javax.swing" class="external-link">JDialog.AccessibleJDialog</a></code></div>
@@ -139,6 +165,24 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a></code></div>
+<div class="col-second even-row-color"><code><a href="#filterField" class="member-name-link">filterField</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a><wbr>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#list" class="member-name-link">list</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a></code></div>
+<div class="col-second even-row-color"><code><a href="#mcreator" class="member-name-link">mcreator</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected final <a href="SearchableSelectorDialog.html" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;.<a href="SearchableSelectorDialog.FilterModel.html" title="class in net.mcreator.ui.dialogs">FilterModel</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#model" class="member-name-link">model</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JDialog">Fields inherited from class&nbsp;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#field-summary" title="class or interface in javax.swing" class="external-link">JDialog</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#accessibleContext" title="class or interface in javax.swing" class="external-link">accessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#rootPane" title="class or interface in javax.swing" class="external-link">rootPane</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JDialog.html#rootPaneCheckingEnabled" title="class or interface in javax.swing" class="external-link">rootPaneCheckingEnabled</a></code></div>
@@ -167,6 +211,14 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,java.util.function.Function)" class="member-name-link">SearchableSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&gt;&nbsp;provider)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,java.util.function.Function,java.util.List)" class="member-name-link">SearchableSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&gt;&nbsp;provider,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&nbsp;initialSelection)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,java.util.function.Function,T)" class="member-name-link">SearchableSelectorDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&gt;&nbsp;provider,
+ <a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&nbsp;initialSelection)</code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -174,6 +226,27 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a><wbr>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getFilter(java.lang.String)" class="member-name-link">getFilter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;term)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">The filter used by the search bar</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInitialSelection(java.util.List)" class="member-name-link">setInitialSelection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&nbsp;toSelect)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInitialSelection(T)" class="member-name-link">setInitialSelection</a><wbr>(<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&nbsp;toSelect)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.dialogs.MCreatorDialog">Methods inherited from class&nbsp;<a href="MCreatorDialog.html#method-summary" title="class in net.mcreator.ui.dialogs">MCreatorDialog</a></h3>
 <code><a href="MCreatorDialog.html#setClosable(boolean)" title="setClosable(boolean)">setClosable</a>, <a href="MCreatorDialog.html#setSize(int,int)" title="setSize(int, int)">setSize</a></code></div>
@@ -201,6 +274,46 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="mcreator">
+<h3>mcreator</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a></span>&nbsp;<span class="element-name">mcreator</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="model">
+<h3>model</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="SearchableSelectorDialog.html" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;.<a href="SearchableSelectorDialog.FilterModel.html" title="class in net.mcreator.ui.dialogs">FilterModel</a></span>&nbsp;<span class="element-name">model</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="filterField">
+<h3>filterField</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a></span>&nbsp;<span class="element-name">filterField</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="list">
+<h3>list</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;</span>&nbsp;<span class="element-name">list</span></div>
+</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -212,6 +325,65 @@ loadScripts(document, 'script');</script>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SearchableSelectorDialog</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&gt;&nbsp;provider)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,java.util.function.Function,T)">
+<h3 id="&lt;init&gt;(net.mcreator.ui.MCreator,java.util.function.Function,java.lang.Object)">SearchableSelectorDialog</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SearchableSelectorDialog</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&gt;&nbsp;provider,
+ <a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&nbsp;initialSelection)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,java.util.function.Function,java.util.List)">
+<h3>SearchableSelectorDialog</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SearchableSelectorDialog</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&gt;&nbsp;provider,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&nbsp;initialSelection)</span></div>
+</div>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="setInitialSelection(T)">
+<h3 id="setInitialSelection(java.lang.Object)">setInitialSelection</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInitialSelection</span><wbr><span class="parameters">(<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&nbsp;toSelect)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setInitialSelection(java.util.List)">
+<h3>setInitialSelection</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setInitialSelection</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&nbsp;toSelect)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getFilter(java.lang.String)">
+<h3>getFilter</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;</span>&nbsp;<span class="element-name">getFilter</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;term)</span></div>
+<div class="block">The filter used by the search bar</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>term</code> - The text contained in the search bar</dd>
+<dt>Returns:</dt>
+<dd>The predicate that will be used to filter the elements</dd>
+</dl>
 </div>
 </section>
 </li>

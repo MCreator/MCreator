@@ -59,9 +59,9 @@ loadScripts(document, 'script');</script>
 <li><a href="#triggerEvent()" tabindex="0">triggerEvent()</a></li>
 <li><a href="#startBlockForEditor(java.lang.String)" tabindex="0">startBlockForEditor(String)</a></li>
 <li><a href="#openColorSelector(java.lang.String,java.util.function.Consumer)" tabindex="0">openColorSelector(String, Consumer)</a></li>
-<li><a href="#openMCItemSelector(java.lang.String,java.util.function.Consumer)" tabindex="0">openMCItemSelector(String, Consumer)</a></li>
+<li><a href="#openMCItemSelector(java.lang.String,java.lang.String,java.util.function.Consumer)" tabindex="0">openMCItemSelector(String, String, Consumer)</a></li>
 <li><a href="#openAIConditionEditor(java.lang.String,java.util.function.Consumer)" tabindex="0">openAIConditionEditor(String, Consumer)</a></li>
-<li><a href="#openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)" tabindex="0">openEntrySelector(String, String, String, Consumer)</a></li>
+<li><a href="#openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)" tabindex="0">openEntrySelector(String, String, String, String, Consumer)</a></li>
 <li><a href="#getDependencies(java.lang.String)" tabindex="0">getDependencies(String)</a></li>
 <li><a href="#getListOf(java.lang.String)" tabindex="0">getListOf(String)</a></li>
 <li><a href="#isPlayerVariable(java.lang.String)" tabindex="0">isPlayerVariable(String)</a></li>
@@ -126,15 +126,17 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;callback)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)" class="member-name-link">openEntrySelector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)" class="member-name-link">openEntrySelector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeFilter,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;customEntryProviders,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentValue,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&gt;&nbsp;callback)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Common method to open an entry selector of either data list entries or strings</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openMCItemSelector(java.lang.String,java.util.function.Consumer)" class="member-name-link">openMCItemSelector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openMCItemSelector(java.lang.String,java.lang.String,java.util.function.Consumer)" class="member-name-link">openMCItemSelector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentValue,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;callback)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
@@ -186,10 +188,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="openMCItemSelector(java.lang.String,java.util.function.Consumer)">
+<section class="detail" id="openMCItemSelector(java.lang.String,java.lang.String,java.util.function.Consumer)">
 <h3>openMCItemSelector</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">openMCItemSelector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentValue,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;callback)</span></div>
 </div>
 </section>
@@ -204,7 +207,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)">
+<section class="detail" id="openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)">
 <h3>openEntrySelector</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">openEntrySelector</span><wbr><span class="parameters">(@Nonnull
@@ -213,6 +216,8 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeFilter,
  @Nullable
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;customEntryProviders,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;currentValue,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&gt;&nbsp;callback)</span></div>
 <div class="block">Common method to open an entry selector of either data list entries or strings</div>
 <dl class="notes">
@@ -220,7 +225,8 @@ loadScripts(document, 'script');</script>
 <dd><code>type</code> - The type of selector to open</dd>
 <dd><code>typeFilter</code> - If present, only entries whose type matches this parameter are loaded</dd>
 <dd><code>customEntryProviders</code> - If present, the types of the mod elements that provide custom entries</dd>
-<dd><code>callback</code> - The Javascript object that passes the {"value", "readable name"} pair to the Blockly editor</dd>
+<dd><code>currentValue</code> - If present, the currently selected item in the entry selector</dd>
+<dd><code>callback</code> - The JavaScript object that passes the {"value", "readable name"} pair to the Blockly editor</dd>
 </dl>
 </div>
 </section>

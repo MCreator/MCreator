@@ -67,6 +67,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#addFileNodeToFilterTreeNode(net.mcreator.ui.component.tree.FilterTreeNode,net.mcreator.io.tree.FileNode)" tabindex="0">addFileNodeToFilterTreeNode(FilterTreeNode, FileNode)</a></li>
 <li><a href="#addFileNodeToRoot(net.mcreator.ui.component.tree.FilterTreeNode,net.mcreator.io.tree.FileNode)" tabindex="0">addFileNodeToRoot(FilterTreeNode, FileNode)</a></li>
 <li><a href="#addNodes(net.mcreator.ui.component.tree.FilterTreeNode,java.io.File,boolean)" tabindex="0">addNodes(FilterTreeNode, File, boolean)</a></li>
+<li><a href="#addNodes(net.mcreator.ui.component.tree.FilterTreeNode,java.io.File,boolean,java.util.function.Predicate)" tabindex="0">addNodes(FilterTreeNode, File, boolean, Predicate)</a></li>
 </ol>
 </li>
 </ol>
@@ -181,6 +182,12 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;dir,
  boolean&nbsp;first)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#addNodes(net.mcreator.ui.component.tree.FilterTreeNode,java.io.File,boolean,java.util.function.Predicate)" class="member-name-link">addNodes</a><wbr>(<a href="FilterTreeNode.html" title="class in net.mcreator.ui.component.tree">FilterTreeNode</a>&nbsp;curTop,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;dir,
+ boolean&nbsp;first,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&gt;&nbsp;fileFilter)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -251,6 +258,17 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addNodes</span><wbr><span class="parameters">(<a href="FilterTreeNode.html" title="class in net.mcreator.ui.component.tree">FilterTreeNode</a>&nbsp;curTop,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;dir,
  boolean&nbsp;first)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="addNodes(net.mcreator.ui.component.tree.FilterTreeNode,java.io.File,boolean,java.util.function.Predicate)">
+<h3>addNodes</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addNodes</span><wbr><span class="parameters">(<a href="FilterTreeNode.html" title="class in net.mcreator.ui.component.tree">FilterTreeNode</a>&nbsp;curTop,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;dir,
+ boolean&nbsp;first,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Predicate.html" title="class or interface in java.util.function" class="external-link">Predicate</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&gt;&nbsp;fileFilter)</span></div>
 </div>
 </section>
 </li>

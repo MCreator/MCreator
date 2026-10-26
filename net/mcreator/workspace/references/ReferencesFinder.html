@@ -63,13 +63,16 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#searchModElementUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement)" tabindex="0">searchModElementUsages(Workspace, ModElement)</a></li>
+<li><a href="#searchModElementUsages(net.mcreator.workspace.Workspace,java.util.Collection)" tabindex="0">searchModElementUsages(Workspace, Collection)</a></li>
 <li><a href="#searchTextureUsages(net.mcreator.workspace.Workspace,java.io.File,net.mcreator.ui.workspace.resources.TextureType)" tabindex="0">searchTextureUsages(Workspace, File, TextureType)</a></li>
+<li><a href="#searchTextureUsages(net.mcreator.workspace.Workspace,java.util.Collection,net.mcreator.ui.workspace.resources.TextureType)" tabindex="0">searchTextureUsages(Workspace, Collection, TextureType)</a></li>
 <li><a href="#searchModelUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.resources.Model)" tabindex="0">searchModelUsages(Workspace, Model)</a></li>
-<li><a href="#searchAnimationUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.resources.Animation)" tabindex="0">searchAnimationUsages(Workspace, Animation)</a></li>
-<li><a href="#searchSoundUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.SoundElement)" tabindex="0">searchSoundUsages(Workspace, SoundElement)</a></li>
-<li><a href="#searchStructureUsages(net.mcreator.workspace.Workspace,java.lang.String)" tabindex="0">searchStructureUsages(Workspace, String)</a></li>
-<li><a href="#searchGlobalVariableUsages(net.mcreator.workspace.Workspace,java.lang.String)" tabindex="0">searchGlobalVariableUsages(Workspace, String)</a></li>
-<li><a href="#searchLocalizationKeyUsages(net.mcreator.workspace.Workspace,java.lang.String)" tabindex="0">searchLocalizationKeyUsages(Workspace, String)</a></li>
+<li><a href="#searchModelUsages(net.mcreator.workspace.Workspace,java.util.Collection)" tabindex="0">searchModelUsages(Workspace, Collection)</a></li>
+<li><a href="#searchAnimationUsages(net.mcreator.workspace.Workspace,java.util.Collection)" tabindex="0">searchAnimationUsages(Workspace, Collection)</a></li>
+<li><a href="#searchSoundUsages(net.mcreator.workspace.Workspace,java.util.Collection)" tabindex="0">searchSoundUsages(Workspace, Collection)</a></li>
+<li><a href="#searchStructureUsages(net.mcreator.workspace.Workspace,java.util.Collection)" tabindex="0">searchStructureUsages(Workspace, Collection)</a></li>
+<li><a href="#searchGlobalVariableUsages(net.mcreator.workspace.Workspace,java.util.Collection)" tabindex="0">searchGlobalVariableUsages(Workspace, Collection)</a></li>
+<li><a href="#searchLocalizationKeyUsages(net.mcreator.workspace.Workspace,java.util.Collection)" tabindex="0">searchLocalizationKeyUsages(Workspace, Collection)</a></li>
 <li><a href="#anyValueMatches(java.lang.Object,java.lang.Class,java.util.function.Predicate,java.util.function.BiPredicate)" tabindex="0">anyValueMatches(Object, Class, Predicate, BiPredicate)</a></li>
 </ol>
 </li>
@@ -125,38 +128,53 @@ loadScripts(document, 'script');</script>
 <div class="block">Checks if values acquired from any valid fields or methods meet the specified condition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchAnimationUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.resources.Animation)" class="member-name-link">searchAnimationUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="../resources/Animation.html" title="class in net.mcreator.workspace.resources">Animation</a>&nbsp;animation)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchAnimationUsages(net.mcreator.workspace.Workspace,java.util.Collection)" class="member-name-link">searchAnimationUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../resources/Animation.html" title="class in net.mcreator.workspace.resources">Animation</a>&gt;&nbsp;animations)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchGlobalVariableUsages(net.mcreator.workspace.Workspace,java.lang.String)" class="member-name-link">searchGlobalVariableUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;variableName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchGlobalVariableUsages(net.mcreator.workspace.Workspace,java.util.Collection)" class="member-name-link">searchGlobalVariableUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;variableNames)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchLocalizationKeyUsages(net.mcreator.workspace.Workspace,java.lang.String)" class="member-name-link">searchLocalizationKeyUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localizationKey)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchLocalizationKeyUsages(net.mcreator.workspace.Workspace,java.util.Collection)" class="member-name-link">searchLocalizationKeyUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;localizationKeys)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchModElementUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement)" class="member-name-link">searchModElementUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchModElementUsages(net.mcreator.workspace.Workspace,java.util.Collection)" class="member-name-link">searchModElementUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;&nbsp;elements)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Searches for usages of the provided mod elements in the workspace.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchModElementUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.ModElement)" class="member-name-link">searchModElementUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;element)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchModelUsages(net.mcreator.workspace.Workspace,java.util.Collection)" class="member-name-link">searchModelUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt;&nbsp;models)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchModelUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.resources.Model)" class="member-name-link">searchModelUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="../resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&nbsp;model)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchSoundUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.SoundElement)" class="member-name-link">searchSoundUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="../elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&nbsp;sound)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchSoundUsages(net.mcreator.workspace.Workspace,java.util.Collection)" class="member-name-link">searchSoundUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&gt;&nbsp;sounds)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchStructureUsages(net.mcreator.workspace.Workspace,java.lang.String)" class="member-name-link">searchStructureUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;structure)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchStructureUsages(net.mcreator.workspace.Workspace,java.util.Collection)" class="member-name-link">searchStructureUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;structures)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchTextureUsages(net.mcreator.workspace.Workspace,java.io.File,net.mcreator.ui.workspace.resources.TextureType)" class="member-name-link">searchTextureUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;texture,
  <a href="../../ui/workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>&nbsp;type)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a><wbr>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#searchTextureUsages(net.mcreator.workspace.Workspace,java.util.Collection,net.mcreator.ui.workspace.resources.TextureType)" class="member-name-link">searchTextureUsages</a><wbr>(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&gt;&nbsp;textures,
+ <a href="../../ui/workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>&nbsp;type)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -200,11 +218,39 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="searchModElementUsages(net.mcreator.workspace.Workspace,java.util.Collection)">
+<h3>searchModElementUsages</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchModElementUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;&nbsp;elements)</span></div>
+<div class="block">Searches for usages of the provided mod elements in the workspace.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>workspace</code> - Workspace to look for usages in.</dd>
+<dd><code>elements</code> - Collection of mod elements to look for usages of.</dd>
+<dt>Returns:</dt>
+<dd>Set of mod elements that reference any of the provided mod elements in their generatable element.
+The set does not include the provided mod elements themselves.</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
 <section class="detail" id="searchTextureUsages(net.mcreator.workspace.Workspace,java.io.File,net.mcreator.ui.workspace.resources.TextureType)">
 <h3>searchTextureUsages</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchTextureUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;texture,
+ <a href="../../ui/workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>&nbsp;type)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="searchTextureUsages(net.mcreator.workspace.Workspace,java.util.Collection,net.mcreator.ui.workspace.resources.TextureType)">
+<h3>searchTextureUsages</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchTextureUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&gt;&nbsp;textures,
  <a href="../../ui/workspace/resources/TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>&nbsp;type)</span></div>
 </div>
 </section>
@@ -219,47 +265,56 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="searchAnimationUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.resources.Animation)">
+<section class="detail" id="searchModelUsages(net.mcreator.workspace.Workspace,java.util.Collection)">
+<h3>searchModelUsages</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchModelUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt;&nbsp;models)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="searchAnimationUsages(net.mcreator.workspace.Workspace,java.util.Collection)">
 <h3>searchAnimationUsages</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchAnimationUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="../resources/Animation.html" title="class in net.mcreator.workspace.resources">Animation</a>&nbsp;animation)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../resources/Animation.html" title="class in net.mcreator.workspace.resources">Animation</a>&gt;&nbsp;animations)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="searchSoundUsages(net.mcreator.workspace.Workspace,net.mcreator.workspace.elements.SoundElement)">
+<section class="detail" id="searchSoundUsages(net.mcreator.workspace.Workspace,java.util.Collection)">
 <h3>searchSoundUsages</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchSoundUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="../elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&nbsp;sound)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&gt;&nbsp;sounds)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="searchStructureUsages(net.mcreator.workspace.Workspace,java.lang.String)">
+<section class="detail" id="searchStructureUsages(net.mcreator.workspace.Workspace,java.util.Collection)">
 <h3>searchStructureUsages</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchStructureUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;structure)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;structures)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="searchGlobalVariableUsages(net.mcreator.workspace.Workspace,java.lang.String)">
+<section class="detail" id="searchGlobalVariableUsages(net.mcreator.workspace.Workspace,java.util.Collection)">
 <h3>searchGlobalVariableUsages</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchGlobalVariableUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;variableName)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;variableNames)</span></div>
 </div>
 </section>
 </li>
 <li>
-<section class="detail" id="searchLocalizationKeyUsages(net.mcreator.workspace.Workspace,java.lang.String)">
+<section class="detail" id="searchLocalizationKeyUsages(net.mcreator.workspace.Workspace,java.util.Collection)">
 <h3>searchLocalizationKeyUsages</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">searchLocalizationKeyUsages</span><wbr><span class="parameters">(<a href="../Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localizationKey)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;localizationKeys)</span></div>
 </div>
 </section>
 </li>

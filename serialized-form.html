@@ -1442,6 +1442,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/component/TechnicalButton.html" title="class in net.mcreator.ui.component">TechnicalButton</a> addtag</pre>
 </li>
 <li class="block-list">
+<h5>brokenReferences</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="net/mcreator/ui/component/JItemListField.html#type-param-T" title="type parameter in JItemListField">T</a>&gt; brokenReferences</pre>
+</li>
+<li class="block-list">
 <h5>buttons</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a> buttons</pre>
 </li>
@@ -2633,10 +2637,6 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>list</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="net/mcreator/ui/dialogs/ListSelectorDialog.html#type-param-T" title="type parameter in ListSelectorDialog">T</a>&gt; list</pre>
-</li>
-<li class="block-list">
 <h5>message</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> message</pre>
 </li>
@@ -2662,10 +2662,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>jtf</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a> jtf</pre>
-</li>
-<li class="block-list">
-<h5>list</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="net/mcreator/minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt; list</pre>
 </li>
 </ul>
 </section>
@@ -2800,16 +2796,47 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a> filterField</pre>
 </li>
 <li class="block-list">
+<h5>initialSelection</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt; initialSelection</pre>
+</li>
+<li class="block-list">
+<h5>list</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt; list</pre>
+</li>
+<li class="block-list">
 <h5>mcreator</h5>
 <pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
 </li>
 <li class="block-list">
 <h5>model</h5>
-<pre><a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;.net.mcreator.ui.dialogs.SearchableSelectorDialog.FilterModel model</pre>
+<pre><a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html" title="class in net.mcreator.ui.dialogs">SearchableSelectorDialog</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;.<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.FilterModel.html" title="class in net.mcreator.ui.dialogs">FilterModel</a> model</pre>
 </li>
 <li class="block-list">
 <h5>provider</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="net/mcreator/workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt;&gt; provider</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.dialogs.SearchableSelectorDialog.FilterModel">
+<h3>Class&nbsp;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.FilterModel.html" title="class in net.mcreator.ui.dialogs">net.mcreator.ui.dialogs.SearchableSelectorDialog.FilterModel</a></h3>
+<div class="type-signature">class FilterModel extends <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/DefaultListModel.html" title="class or interface in javax.swing" class="external-link">DefaultListModel</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>entries</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt; entries</pre>
+</li>
+<li class="block-list">
+<h5>filterEntries</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a>&lt;<a href="net/mcreator/ui/dialogs/SearchableSelectorDialog.html#type-param-T" title="type parameter in SearchableSelectorDialog">T</a>&gt; filterEntries</pre>
 </li>
 </ul>
 </section>
@@ -4272,6 +4299,23 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="net.mcreator.ui.minecraft.DataListComboBox">
 <h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.DataListComboBox</a></h3>
 <div class="type-signature">class DataListComboBox extends <a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;<a href="net/mcreator/minecraft/DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>brokenReference</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a> brokenReference</pre>
+</li>
+<li class="block-list">
+<h5>brokenReferenceFallback</h5>
+<pre><a href="net/mcreator/minecraft/DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a> brokenReferenceFallback</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
 </section>
 </li>
 <li>
@@ -4365,6 +4409,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>validator</h5>
 <pre><a href="net/mcreator/ui/validation/Validator.html" title="interface in net.mcreator.ui.validation">Validator</a> validator</pre>
+</li>
+<li class="block-list">
+<h5>validReference</h5>
+<pre>boolean validReference</pre>
 </li>
 </ul>
 </section>
@@ -4805,6 +4853,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>genFromModel</h5>
 <pre><a href="net/mcreator/ui/component/TechnicalButton.html" title="class in net.mcreator.ui.component">TechnicalButton</a> genFromModel</pre>
+</li>
+<li class="block-list">
+<h5>mcreator</h5>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
 </li>
 <li class="block-list">
 <h5>modelProvider</h5>
@@ -10928,6 +10980,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/minecraft/MCItemListField.html" title="class in net.mcreator.ui.minecraft">MCItemListField</a> blocksToReplace</pre>
 </li>
 <li class="block-list">
+<h5>boundingBoxList</h5>
+<pre><a href="net/mcreator/ui/minecraft/boundingboxes/JBoundingBoxList.html" title="class in net.mcreator.ui.minecraft.boundingboxes">JBoundingBoxList</a> boundingBoxList</pre>
+</li>
+<li class="block-list">
 <h5>colorOnMap</h5>
 <pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> colorOnMap</pre>
 </li>
@@ -10982,6 +11038,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>isHiddenInCommands</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> isHiddenInCommands</pre>
+</li>
+<li class="block-list">
+<h5>isNotColidable</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> isNotColidable</pre>
 </li>
 <li class="block-list">
 <h5>lightEmission</h5>
