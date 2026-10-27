@@ -99,10 +99,10 @@ public class WYSIWYGEditor extends JPanel {
 	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
-	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 
 	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
@@ -148,8 +148,6 @@ public class WYSIWYGEditor extends JPanel {
 		invOffY.setPreferredSize(new Dimension(60, 24));
 
 		renderBgLayer.setSelected(true);
-		renderBgLayer.setOpaque(false);
-		doesPauseGame.setOpaque(false);
 
 		invOffX.setEnabled(false);
 		invOffY.setEnabled(false);
@@ -301,8 +299,7 @@ public class WYSIWYGEditor extends JPanel {
 			}
 		}
 
-		snapOnGrid.setOpaque(false);
-		snapOnGrid.addActionListener(event -> {
+		snapOnGrid.addActionListener(_ -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
@@ -368,7 +365,7 @@ public class WYSIWYGEditor extends JPanel {
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
 		if (isNotOverlayType)
-			guiType.addActionListener(event -> {
+			guiType.addActionListener(_ -> {
 				invOffX.setEnabled(guiType.getSelectedIndex() == 1);
 				invOffY.setEnabled(guiType.getSelectedIndex() == 1);
 				if (guiType.getSelectedIndex() == 0 && !isOpening()) {

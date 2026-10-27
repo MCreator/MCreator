@@ -80,7 +80,6 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
 	@Override protected void initGUI() {
 		entityTexture.setAddPNGExtension(false);
-		itemTexture.setOpaque(false);
 
 		onTickUpdate = new ProcedureSelector(this.withEntry("entity/on_tick_update"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_tick_update"),

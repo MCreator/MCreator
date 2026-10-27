@@ -78,9 +78,6 @@ public class TabGUI extends ModElementGUI<Tab> {
 				L10N.label("elementgui.tab.hide_title")));
 		selp.add(hideTitle);
 
-		showSearch.setOpaque(false);
-		hideTitle.setOpaque(false);
-
 		selp.setOpaque(false);
 
 		JPanel slpa = new JPanel(new BorderLayout(25, 0));

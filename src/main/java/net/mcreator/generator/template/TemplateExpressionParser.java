@@ -130,6 +130,22 @@ public class TemplateExpressionParser {
 	private static final Map<ClassMemberKey, VarHandle> VAR_CACHE = new ConcurrentHashMap<>();
 
 	public static Object getValueFrom(String memberNameRaw, Object conditionDataProvider) throws Throwable {
+		if (conditionDataProvider instanceof CompoundConditionData compoundConditionData) {
+			int indexOf = memberNameRaw.indexOf('.');
+			if (indexOf >= 0) { // key.member - resolve member on the value stored under key
+				String key = memberNameRaw.substring(0, indexOf).trim();
+				Object value = compoundConditionData.get(key);
+				if (value == null)
+					throw new IllegalArgumentException("Compound condition data does not contain key: " + key);
+				return getValueFrom(memberNameRaw.substring(indexOf + 1), value);
+			} else { // bare member - resolve on the primary data object
+				Object primary = compoundConditionData.getPrimary();
+				if (primary == null)
+					throw new IllegalArgumentException("Compound condition data does not have primary data");
+				return getValueFrom(memberNameRaw, primary);
+			}
+		}
+
 		ClassMemberKey key = new ClassMemberKey(conditionDataProvider.getClass(), memberNameRaw.trim());
 
 		if (key.memberName().endsWith("()")) { // method
@@ -160,7 +176,11 @@ public class TemplateExpressionParser {
 		try {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			AtomicReference<?> retVal = new AtomicReference<>(null);
-			dataModel.put("data", dataHolder);
+			if (dataHolder instanceof CompoundConditionData compoundConditionData) {
+				dataModel.putAll(compoundConditionData); // primary data is exposed as "data", other entries by their key
+			} else {
+				dataModel.put("data", dataHolder);
+			}
 			dataModel.put("_", retVal);
 
 			Template t = InlineTemplatesHandler.getTemplate("${_.set(" + expression + ")}");
@@ -180,5 +200,26 @@ public class TemplateExpressionParser {
 	}
 
 	private record ClassMemberKey(Class<?> clazz, String memberName) {}
+
+	public static class CompoundConditionData extends HashMap<String, Object> {
+
+		public static final String PRIMARY_KEY = "data";
+
+		public static CompoundConditionData of(@Nonnull Object primary) {
+			CompoundConditionData data = new CompoundConditionData();
+			data.put(PRIMARY_KEY, primary);
+			return data;
+		}
+
+		public CompoundConditionData with(String key, Object value) {
+			put(key, value);
+			return this;
+		}
+
+		@Nullable public Object getPrimary() {
+			return get(PRIMARY_KEY);
+		}
+
+	}
 
 }

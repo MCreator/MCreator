@@ -308,14 +308,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComponentUtils.makeSection(mobSettings, L10N.t("elementgui.dimension.mob_settings"));
 
-		bedWorks.setOpaque(false);
-		hasSkyLight.setOpaque(false);
-		imitateOverworldBehaviour.setOpaque(false);
-		piglinSafe.setOpaque(false);
-		hasRaids.setOpaque(false);
-		canRespawnHere.setOpaque(false);
-		doesWaterVaporize.setOpaque(false);
-		hasFixedTime.setOpaque(false);
 		hasFixedTime.addActionListener(_ -> updateDimensionEffectSettings());
 		if (!isEditingMode()) {
 			bedWorks.setSelected(true);
@@ -326,15 +318,11 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		}
 		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
 
-		useCustomEffects.setOpaque(false);
 		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings());
 		defaultEffects.addActionListener(_ -> updateDimensionEffectSettings());
-		hasClouds.setOpaque(false);
 		hasClouds.addActionListener(_ -> updateDimensionEffectSettings());
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
-		sunHeightAffectsFog.setOpaque(false);
-		hasFog.setOpaque(false);
 
 		if (!isEditingMode()) {
 			// Currently only Java based mods support custom dimension effects
@@ -374,15 +362,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
 				"elementgui.dimension.error_moon_needs_texture");
 
-		skyboxTextureUp.setOpaque(false);
-		skyboxTextureDown.setOpaque(false);
-		skyboxTextureNorth.setOpaque(false);
-		skyboxTextureSouth.setOpaque(false);
-		skyboxTextureEast.setOpaque(false);
-		skyboxTextureWest.setOpaque(false);
-		sunTexture.setOpaque(false);
-		moonTexture.setOpaque(false);
-
 		// Skybox page options start here
 		JPanel skyboxGrid = new JPanel(new GridLayout(3, 4, 2, 2));
 		skyboxGrid.setOpaque(false);
@@ -404,7 +383,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		skyboxPanel.setOpaque(false);
 		skyboxPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_skybox"), enableCustomSkyboxTextures)));
-		enableCustomSkyboxTextures.setOpaque(false);
 		skyboxPanel.add("Center", skyboxGrid);
 
 		ComponentUtils.makeSection(skyboxPanel, L10N.t("elementgui.dimension.skybox_group"));
@@ -419,7 +397,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		sunMoonPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_sun_and_moon"),
 						enableCustomSunMoonTextures)));
-		enableCustomSunMoonTextures.setOpaque(false);
 		sunMoonPanel.add("Center", sunMoonGrid);
 
 		ComponentUtils.makeSection(sunMoonPanel, L10N.t("elementgui.dimension.sun_moon_group"));
@@ -485,9 +462,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldgenSettings.add(verticalNoiseSize);
 
 		insid.setOpaque(false);
-		generateOreVeins.setOpaque(false);
 		generateOreVeins.setSelected(true);
-		generateAquifers.setOpaque(false);
 		generateAquifers.setSelected(true);
 		if (!this.isEditingMode())
 			verticalNoiseSize.setValue(2);
@@ -502,11 +477,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				"elementgui.dimension.error_portal_needs_texture");
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.dimension.error_portal_igniter_needs_texture");
-
-		portalTexture.setOpaque(false);
-		texture.setOpaque(false);
-		enablePortal.setOpaque(false);
-		enableIgniter.setOpaque(false);
 
 		// Currently only Java based mods support dimension portals
 		enablePortal.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
