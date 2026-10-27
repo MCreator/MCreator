@@ -150,7 +150,10 @@ public final class WorkspaceFileManager implements Closeable {
 			// We do an "atomic" write to the FS
 			File outFile = workspaceFile;
 			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock");
-			FileIO.writeStringToFile(workspacestring, tmpFile);
+			if (!FileIO.writeStringToFile(workspacestring, tmpFile)) {
+				LOG.error("Failed to write workspace file to FS! Workspace is not saved!");
+				return;
+			}
 			try {
 				Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.ATOMIC_MOVE);
 			} catch (Exception e) {
@@ -158,9 +161,12 @@ public final class WorkspaceFileManager implements Closeable {
 				try {
 					Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				} catch (Exception e1) {
-					LOG.error("Falling back to normal write (non atomic, without move!)", e1);
-					FileIO.writeStringToFile(workspacestring, outFile);
 					tmpFile.delete(); // we delete the tmp file if it was not moved
+					LOG.warn("Falling back to normal write (non atomic, without move!)", e1);
+					if (!FileIO.writeStringToFile(workspacestring, outFile)) {
+						LOG.error("Failed to write workspace file directly to FS! Workspace is not saved!");
+						return;
+					}
 				}
 			}
 
@@ -219,7 +225,11 @@ public final class WorkspaceFileManager implements Closeable {
 	private record SaveTask(WorkspaceFileManager fileManager) implements Runnable {
 
 		@Override public void run() {
-			fileManager.saveWorkspaceIfChanged();
+			try {
+				fileManager.saveWorkspaceIfChanged();
+			} catch (Exception e) {
+				fileManager.LOG.error("Failed to save workspace", e);
+			}
 
 			if (!fileManager.dataSaveExecutor.isShutdown())
 				fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),

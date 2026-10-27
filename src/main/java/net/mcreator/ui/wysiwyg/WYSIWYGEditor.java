@@ -51,6 +51,8 @@ import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -154,7 +156,21 @@ public class WYSIWYGEditor extends JPanel {
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		list.addListSelectionListener(event -> {
+		components.addListDataListener(new ListDataListener() {
+			@Override public void intervalAdded(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void intervalRemoved(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void contentsChanged(ListDataEvent e) {
+				editor.repaint();
+			}
+		});
+
+		list.addListSelectionListener(_ -> {
 			if (list.getSelectedValue() != null) {
 				editor.setSelectedComponent(list.getSelectedValue());
 				moveComponent.setEnabled(!list.getSelectedValue().locked);
@@ -384,8 +400,10 @@ public class WYSIWYGEditor extends JPanel {
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
 
-		spa1.addChangeListener(event -> checkAndUpdateGUISize());
-		spa2.addChangeListener(event -> checkAndUpdateGUISize());
+		spa1.addChangeListener(_ -> checkAndUpdateGUISize());
+		spa2.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffX.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffY.addChangeListener(_ -> checkAndUpdateGUISize());
 		guiType.addActionListener(_ -> checkAndUpdateGUISize());
 		renderBgLayer.addActionListener(_ -> checkAndUpdateGUISize());
 

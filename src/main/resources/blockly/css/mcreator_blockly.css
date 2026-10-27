@@ -82,9 +82,22 @@ body {
 .blocklyToast {
     font-size: 13px;
     padding: 6px 10px;
-    gap: 8px;
     line-height: 1.3;
     border-width: 1px;
+}
+
+.blocklyToast .blocklyToastCloseButton {
+    padding: 0;
+    display: flex;
+}
+
+.blocklyToast .blocklyToastCloseButton svg {
+    width: 14px;
+    height: 14px;
+}
+
+.blocklyToast .blocklyToastCloseButton svg rect {
+    fill: currentColor;
 }
 
 .condition-label {

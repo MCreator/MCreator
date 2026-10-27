@@ -83,7 +83,7 @@ base_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition_any:
       - hasJavaModels()
-      - "${w.hasElementsOfType('specialentity')}"
+      - "${types.specialentities?has_content}"
 
 java_models:
   key: mojmap-26.1.x

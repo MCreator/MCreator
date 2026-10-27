@@ -36,9 +36,8 @@
 
 package ${package}.init;
 
-<#assign specialentities = w.getGElementsOfType("specialentity")>
 @EventBusSubscriber(Dist.CLIENT) public class ${JavaModName}Models {
-	<#list specialentities as entity>
+	<#list types.specialentities as entity>
 	public static final ModelLayerLocation ${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION =
 			new ModelLayerLocation(Identifier.parse("${modid}:<#if entity.isBoatChestVariant()>chest_</#if>boat/${entity.getModElement().getRegistryName()}"), "main");
 	</#list>
@@ -47,7 +46,7 @@ package ${package}.init;
 		<#list javamodels as model>
 		event.registerLayerDefinition(${model.getReadableName()}.LAYER_LOCATION, ${model.getReadableName()}::createBodyLayer);
 		</#list>
-		<#list specialentities as entity>
+		<#list types.specialentities as entity>
 		event.registerLayerDefinition(${entity.getModElement().getRegistryNameUpper()}_LAYER_LOCATION, <#if entity.isAnyRaft()>Raft<#else>Boat</#if>Model::create${entity.entityType}Model);
 		</#list>
 	}
