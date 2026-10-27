@@ -281,7 +281,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	private Point getGridOrigin() {
 		if (!isNotOverlayType)
-			return new Point(0, 0);
+			return GUIComponent.AnchorPoint.CENTER.getAnchorPoint(W, H);
 
 		if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 1) {
 			// 7 and 83 are the position of the first slot in MinecraftImageGenerator.generateInventorySlots
