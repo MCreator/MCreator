@@ -302,22 +302,22 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		int originX = origin.x + grid_x_offset;
 		int originY = origin.y + grid_y_offset;
 
-		// vertical lines, drawn on the canvas pixel just left of the GUI pixel components snap to
+		// vertical lines, drawn on the GUI pixel components snap to
 		for (int i = Math.floorMod(originX, grid_x_spacing); i < W; i = i + grid_x_spacing) {
 			if (Math.floorMod((i - originX) / grid_x_spacing, 2) == 0)
 				g.setColor(new Color(255, 255, 255, 80));
 			else
 				g.setColor(new Color(255, 255, 255, 30));
-			g.drawLine(i * 2 - 1, 0, i * 2 - 1, getHeight());
+			g.drawLine(i * 2, 0, i * 2, getHeight());
 		}
 
-		// horizontal lines, drawn on the canvas pixel just above the GUI pixel components snap to
+		// horizontal lines, drawn on the GUI pixel components snap to
 		for (int i = Math.floorMod(originY, grid_y_spacing); i < H; i = i + grid_y_spacing) {
 			if (Math.floorMod((i - originY) / grid_y_spacing, 2) == 0)
 				g.setColor(new Color(255, 255, 255, 80));
 			else
 				g.setColor(new Color(255, 255, 255, 30));
-			g.drawLine(0, i * 2 - 1, getWidth(), i * 2 - 1);
+			g.drawLine(0, i * 2, getWidth(), i * 2);
 		}
 	}
 
