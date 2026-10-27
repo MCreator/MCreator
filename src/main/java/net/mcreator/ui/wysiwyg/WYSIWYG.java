@@ -321,21 +321,24 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		}
 	}
 
-	private Point toGUIPosition(MouseEvent e, boolean snap) {
-		if (snap) {
-			Point origin = getGridOrigin();
-			return new Point(snapToGrid(e.getX() / 2.0, origin.x + grid_x_offset, grid_x_spacing),
-					snapToGrid(e.getY() / 2.0, origin.y + grid_y_offset, grid_y_spacing));
-		}
+	private Point toGUIPosition(MouseEvent e) {
 		return new Point((int) Math.round(e.getX() / 2.0), (int) Math.round(e.getY() / 2.0));
 	}
 
-	private static int snapToGrid(double value, int origin, int spacing) {
-		return origin + (int) Math.round((value - origin) / spacing) * spacing;
+	private Point snapToGrid(Point position) {
+		Point origin = getGridOrigin();
+		return new Point(snapToGrid(position.x, origin.x + grid_x_offset, grid_x_spacing),
+				snapToGrid(position.y, origin.y + grid_y_offset, grid_y_spacing));
+	}
+
+	private static int snapToGrid(int value, int origin, int spacing) {
+		return origin + (int) Math.round((value - origin) / (double) spacing) * spacing;
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
-		Point mouse = toGUIPosition(e, showGrid);
+		Point mouse = toGUIPosition(e);
+		if (showGrid)
+			mouse = snapToGrid(mouse);
 		int ex = mouse.x;
 		int ey = mouse.y;
 
@@ -352,7 +355,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	@Override public void mouseClicked(MouseEvent e) {
-		Point mouse = toGUIPosition(e, false);
+		Point mouse = toGUIPosition(e);
 		int ex = mouse.x;
 		int ey = mouse.y;
 
@@ -381,13 +384,12 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
-		Point mouse = toGUIPosition(e, showGrid && componentDragMode);
+		Point mouse = toGUIPosition(e);
 		int ex = mouse.x;
 		int ey = mouse.y;
 
 		if (componentDragMode) {
-			ox = ex + (showGrid ? 0 : dragOffsetX);
-			oy = ey + (showGrid ? 0 : dragOffsetY);
+			dragSelectedComponent(ex, ey);
 		} else if (componentMoveMode) {
 			if (selected instanceof SizedComponent component && !positioningModeSettingWidth) {
 				positioningModeSettingWidth = true;
@@ -403,17 +405,23 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				dragOffsetX = component.getX() - ex;
 				dragOffsetY = component.getY() - ey;
 
-				ox = ex + (showGrid ? 0 : dragOffsetX);
-				oy = ey + (showGrid ? 0 : dragOffsetY);
-
 				componentDragMode = true;
 				moveMode();
+				dragSelectedComponent(ex, ey);
 			} else {
 				wysiwygEditor.list.clearSelection();
 				this.selected = null;
 				repaint();
 			}
 		}
+	}
+
+	private void dragSelectedComponent(int ex, int ey) {
+		Point position = new Point(ex + dragOffsetX, ey + dragOffsetY);
+		if (showGrid)
+			position = snapToGrid(position);
+		ox = position.x;
+		oy = position.y;
 	}
 
 	@Override public void mouseEntered(MouseEvent e) {
