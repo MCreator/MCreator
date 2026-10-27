@@ -26,6 +26,7 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
@@ -38,9 +39,12 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.*;
+import java.util.HashSet;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -96,6 +100,52 @@ public class ReferencesFinder {
 				)
 			)
 			.map(GeneratableElement::getModElement).filter(me -> !elementNames.contains(me.getName())).collect(Collectors.toSet());
+	}
+
+	/**
+	 * Searches the workspace for mod elements that reference mod elements that no longer exist.
+	 *
+	 * @param workspace Workspace to search in.
+	 * @return Map of mod elements with broken references to the names of referenced mod elements that do not exist.
+	 */
+	public static Map<ModElement, Set<String>> searchBrokenReferences(Workspace workspace) {
+		// Matches field values with the CUSTOM: prefix and captures the value without the prefix, e.g. <field name="block">CUSTOM:Name.block</field>
+		// Sound fields are skipped as sounds are workspace resources that are referenced with the same prefix
+		final Pattern customXmlPattern = Pattern.compile(
+				"<field name=\"(?!sound\")[^\"]*\">" + NameMapper.MCREATOR_PREFIX + "([^<]+)</field>");
+		Map<ModElement, Set<String>> retval = new ConcurrentHashMap<>();
+		getGeneratableElements(workspace).parallelStream().forEach(ge -> {
+			Set<String> broken = new HashSet<>();
+			// conditions below always return false so the walk collects all broken references instead of stopping at the first one
+			anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
+				ModElementReference ref = a.getAnnotation(ModElementReference.class);
+				boolean mapKey = a instanceof Field f && Map.class.isAssignableFrom(f.getType()); // e.g. Item.customProperties
+				return !mapKey && !t.isEmpty() && !Set.of(ref.defaultValues()).contains(t) && collectIfBroken(workspace, t, broken);
+			});
+			anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class), (_, t) ->
+				!(t instanceof Sound) && !(t instanceof net.mcreator.element.parts.Animation) &&
+				t.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX) && collectIfBroken(workspace, t.getUnmappedValue(), broken)
+			);
+			anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class), (_, t) ->
+				t.getName() != null && !t.getName().isEmpty() && !"null".equals(t.getName()) && collectIfBroken(workspace, t.getName(), broken)
+			);
+			anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (_, t) -> {
+				Matcher matcher = customXmlPattern.matcher(t);
+				while (matcher.find())
+					collectIfBroken(workspace, matcher.group(1), broken);
+				return false;
+			});
+			if (!broken.isEmpty())
+				retval.put(ge.getModElement(), broken);
+		});
+		return retval;
+	}
+
+	private static boolean collectIfBroken(Workspace workspace, String reference, Set<String> broken) {
+		String name = GeneratorWrapper.getElementPlainName(reference);
+		if (!workspace.containsModElement(name))
+			broken.add(name);
+		return false;
 	}
 
 	public static Set<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
