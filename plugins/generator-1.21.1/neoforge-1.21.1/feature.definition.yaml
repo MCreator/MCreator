@@ -33,3 +33,9 @@ global_templates:
     condition: "${features?filter(e -> e.getModElement().getMetadata('has_nbt_structure')??)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/configurations/StructureFeatureConfiguration.java"
     hidden: true
+
+fragments:
+  - type: accesstransformer
+    content:
+      - public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V
+      - public-f net.minecraft.world.level.levelgen.feature.TreeFeature place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z

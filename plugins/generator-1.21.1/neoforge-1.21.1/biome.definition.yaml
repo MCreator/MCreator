@@ -34,6 +34,20 @@ global_templates:
     condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/BiomeSourcePresetMixin.java"
 
+fragments:
+  - type: accesstransformer
+    condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    content:
+      - public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
+      - public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource <init>(Ljava/util/List;)V
+      - public net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList$Preset$SourceProvider
+  - type: accesstransformer
+    condition: "${biomes?filter(e -> e.hasVines() || e.hasFruits())?size != 0}"
+    content: public net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType <init>(Lcom/mojang/serialization/MapCodec;)V
+  - type: mixin
+    condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    content: [ NoiseGeneratorSettingsMixin, BiomeSourcePresetMixin ]
+
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft
     condition: spawnMineshaft
