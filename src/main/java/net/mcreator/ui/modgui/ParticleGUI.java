@@ -99,14 +99,8 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		canCollide.setSelected(true);
 
-		fixedScale.setOpaque(false);
-		canCollide.setOpaque(false);
-		alwaysShow.setOpaque(false);
-		animate.setOpaque(false);
-
 		texture = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.PARTICLE)).requireValue();
-		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),

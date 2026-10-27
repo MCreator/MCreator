@@ -194,15 +194,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.item.error_item_needs_texture");
-		texture.setOpaque(false);
-
 		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		guiTexture.setOpaque(false);
 
-		immuneToFire.setOpaque(false);
-		stayInGridWhenCrafting.setOpaque(false);
 		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
-		damageOnCrafting.setOpaque(false);
 
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 		rent.setOpaque(false);

@@ -119,11 +119,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 		pane1.setOpaque(false);
 		effectsPage.setOpaque(false);
 
-		isCurse.setOpaque(false);
-		isTreasureEnchantment.setOpaque(false);
-		canGenerateInLootTables.setOpaque(false);
-		canVillagerTrade.setOpaque(false);
-
 		canGenerateInLootTables.setSelected(true);
 		canVillagerTrade.setSelected(true);
 

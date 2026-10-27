@@ -148,8 +148,6 @@ public class WYSIWYGEditor extends JPanel {
 		invOffY.setPreferredSize(new Dimension(60, 24));
 
 		renderBgLayer.setSelected(true);
-		renderBgLayer.setOpaque(false);
-		doesPauseGame.setOpaque(false);
 
 		invOffX.setEnabled(false);
 		invOffY.setEnabled(false);
@@ -301,8 +299,7 @@ public class WYSIWYGEditor extends JPanel {
 			}
 		}
 
-		snapOnGrid.setOpaque(false);
-		snapOnGrid.addActionListener(event -> {
+		snapOnGrid.addActionListener(_ -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
@@ -368,7 +365,7 @@ public class WYSIWYGEditor extends JPanel {
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
 		if (isNotOverlayType)
-			guiType.addActionListener(event -> {
+			guiType.addActionListener(_ -> {
 				invOffX.setEnabled(guiType.getSelectedIndex() == 1);
 				invOffY.setEnabled(guiType.getSelectedIndex() == 1);
 				if (guiType.getSelectedIndex() == 0 && !isOpening()) {
