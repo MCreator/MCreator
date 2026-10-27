@@ -2,6 +2,6 @@
 import "./${modid}_variables.js"
 </#if>
 
-<#list w.getElementsOfType("bescript") as script>
-import "./${script.getRegistryName()}.js"
+<#list types.bescripts as script>
+import "./${script.getModElement().getRegistryName()}.js"
 </#list>

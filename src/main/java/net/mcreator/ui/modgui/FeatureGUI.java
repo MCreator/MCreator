@@ -93,8 +93,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		skipPlacement.setOpaque(false);
-
 		if (!isEditingMode())
 			generationStep.setSelectedItem("SURFACE_STRUCTURES");
 

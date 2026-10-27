@@ -131,11 +131,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		parentAchievement.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXX"));
 
-		showPopup.setOpaque(false);
-		announceToChat.setOpaque(false);
-		hideIfNotCompleted.setOpaque(false);
-		disableDisplay.setOpaque(false);
-
 		showPopup.setSelected(true);
 		announceToChat.setSelected(true);
 
