@@ -99,10 +99,10 @@ public class WYSIWYGEditor extends JPanel {
 	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
-	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 
 	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 

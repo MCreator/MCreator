@@ -75,11 +75,11 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	private JZoomport owner;
 
-	int grid_x_spacing = 18;
-	int grid_y_spacing = 18;
+	int grid_x_spacing = 9;
+	int grid_y_spacing = 9;
 
-	int grid_x_offset = 11;
-	int grid_y_offset = 15;
+	int grid_x_offset = 0;
+	int grid_y_offset = 0;
 
 	WYSIWYG(WYSIWYGEditor wysiwygEditor) {
 		if (fontMC == null)
@@ -292,45 +292,68 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		});
 	}
 
+	private Point getGridOrigin() {
+		if (!isNotOverlayType)
+			return GUIComponent.AnchorPoint.CENTER.getAnchorPoint(W, H);
+
+		if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 1) {
+			// 7 and 83 are the position of the first slot in MinecraftImageGenerator.generateInventorySlots
+			return new Point((int) Math.ceil(W / 2.0 - 176 / 2.0) + (int) wysiwygEditor.invOffX.getValue() + 7,
+					(int) Math.ceil(H / 2.0 - 166 / 2.0) + (int) wysiwygEditor.invOffY.getValue() + 83);
+		}
+
+		int gw = (Integer) wysiwygEditor.spa1.getValue();
+		int gh = (Integer) wysiwygEditor.spa2.getValue();
+		return new Point((int) Math.ceil(W / 2.0 - gw / 2.0), (int) Math.ceil(H / 2.0 - gh / 2.0));
+	}
+
 	private void drawGrid(Graphics2D g) {
 		float[] dash = { 2.0f };
 		g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f));
 
-		// vertical lines
-		for (int i = 0; i < getWidth(); i = i + grid_x_spacing) {
-			if (i % (grid_x_spacing * 2) == 0)
+		Point origin = getGridOrigin();
+		int originX = origin.x + grid_x_offset;
+		int originY = origin.y + grid_y_offset;
+
+		// vertical lines, drawn on the GUI pixel components snap to
+		for (int i = Math.floorMod(originX, grid_x_spacing); i < W; i = i + grid_x_spacing) {
+			if (Math.floorMod((i - originX) / grid_x_spacing, 2) == 0)
 				g.setColor(new Color(255, 255, 255, 80));
 			else
 				g.setColor(new Color(255, 255, 255, 30));
-			g.drawLine(i + grid_x_offset, 0, i + grid_x_offset, getHeight());
+			g.drawLine(i * 2, 0, i * 2, getHeight());
 		}
 
-		// horizontal lines
-		for (int i = 0; i < getHeight(); i = i + grid_y_spacing) {
-			if (i % (grid_y_spacing * 2) == 0)
+		// horizontal lines, drawn on the GUI pixel components snap to
+		for (int i = Math.floorMod(originY, grid_y_spacing); i < H; i = i + grid_y_spacing) {
+			if (Math.floorMod((i - originY) / grid_y_spacing, 2) == 0)
 				g.setColor(new Color(255, 255, 255, 80));
 			else
 				g.setColor(new Color(255, 255, 255, 30));
-			g.drawLine(0, i + grid_y_offset, getWidth(), i + grid_y_offset);
+			g.drawLine(0, i * 2, getWidth(), i * 2);
 		}
 	}
 
+	private Point toGUIPosition(MouseEvent e) {
+		return new Point((int) Math.round(e.getX() / 2.0), (int) Math.round(e.getY() / 2.0));
+	}
+
+	private Point snapToGrid(Point position) {
+		Point origin = getGridOrigin();
+		return new Point(snapToGrid(position.x, origin.x + grid_x_offset, grid_x_spacing),
+				snapToGrid(position.y, origin.y + grid_y_offset, grid_y_spacing));
+	}
+
+	private static int snapToGrid(int value, int origin, int spacing) {
+		return origin + (int) Math.round((value - origin) / (double) spacing) * spacing;
+	}
+
 	@Override public void mouseMoved(MouseEvent e) {
-		int ex = e.getX();
-		int ey = e.getY();
-
-		if (showGrid) {
-			ex -= grid_x_offset;
-			ey -= grid_y_offset;
-			ex = Math.round(ex / (float) grid_x_spacing) * grid_x_spacing;
-			ey = Math.round(ey / (float) grid_y_spacing) * grid_y_spacing;
-			ex += grid_x_offset + 1;
-			ey += grid_y_offset + 1;
-		}
-
-		// scale to coordinate system of the Minecraft
-		ex = (int) Math.round(ex / 2.0);
-		ey = (int) Math.round(ey / 2.0);
+		Point mouse = toGUIPosition(e);
+		if (showGrid)
+			mouse = snapToGrid(mouse);
+		int ex = mouse.x;
+		int ey = mouse.y;
 
 		if (positioningModeSettingWidth) {
 			ow = Math.abs(ox - ex);
@@ -345,12 +368,9 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	@Override public void mouseClicked(MouseEvent e) {
-		int ex = e.getX();
-		int ey = e.getY();
-
-		// scale to coordinate system of the Minecraft
-		ex = (int) Math.round(ex / 2.0);
-		ey = (int) Math.round(ey / 2.0);
+		Point mouse = toGUIPosition(e);
+		int ex = mouse.x;
+		int ey = mouse.y;
 
 		if (componentMoveMode) {
 			if (e.getButton() == 1 || !(selected instanceof SizedComponent component) || positioningModeSettingWidth) {
@@ -377,25 +397,12 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
-		int ex = e.getX();
-		int ey = e.getY();
-
-		if (showGrid && componentDragMode) {
-			ex -= grid_x_offset;
-			ey -= grid_y_offset;
-			ex = Math.round(ex / (float) grid_x_spacing) * grid_x_spacing;
-			ey = Math.round(ey / (float) grid_y_spacing) * grid_y_spacing;
-			ex += grid_x_offset + 1;
-			ey += grid_y_offset + 1;
-		}
-
-		// scale to coordinate system of the Minecraft
-		ex = (int) Math.round(ex / 2.0);
-		ey = (int) Math.round(ey / 2.0);
+		Point mouse = toGUIPosition(e);
+		int ex = mouse.x;
+		int ey = mouse.y;
 
 		if (componentDragMode) {
-			ox = ex + (showGrid ? 0 : dragOffsetX);
-			oy = ey + (showGrid ? 0 : dragOffsetY);
+			dragSelectedComponent(ex, ey);
 		} else if (componentMoveMode) {
 			if (selected instanceof SizedComponent component && !positioningModeSettingWidth) {
 				positioningModeSettingWidth = true;
@@ -411,17 +418,23 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				dragOffsetX = component.getX() - ex;
 				dragOffsetY = component.getY() - ey;
 
-				ox = ex + (showGrid ? 0 : dragOffsetX);
-				oy = ey + (showGrid ? 0 : dragOffsetY);
-
 				componentDragMode = true;
 				moveMode();
+				dragSelectedComponent(ex, ey);
 			} else {
 				wysiwygEditor.list.clearSelection();
 				this.selected = null;
 				repaint();
 			}
 		}
+	}
+
+	private void dragSelectedComponent(int ex, int ey) {
+		Point position = new Point(ex + dragOffsetX, ey + dragOffsetY);
+		if (showGrid)
+			position = snapToGrid(position);
+		ox = position.x;
+		oy = position.y;
 	}
 
 	@Override public void mouseEntered(MouseEvent e) {
