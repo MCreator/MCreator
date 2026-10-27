@@ -48,6 +48,8 @@ import net.mcreator.util.GSONClone;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.WorkspaceUtils;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,7 +62,9 @@ import java.awt.event.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public abstract class MCreator extends MCreatorFrame {
 
@@ -265,6 +269,17 @@ public abstract class MCreator extends MCreatorFrame {
 			ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 					new File(workspace.getFolderManager().getWorkspaceCacheDir(),
 							"fullBackups/FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
+		}
+
+		// add back mod elements that have definitions in the workspace folder but are missing from the workspace file
+		List<ModElement> orphanedModElements = WorkspaceUtils.findOrphanedModElements(workspace);
+		if (!orphanedModElements.isEmpty()) {
+			LOG.warn("Recovering mod elements missing from the workspace file: {}", orphanedModElements);
+			orphanedModElements.forEach(workspace::addModElement);
+			workspace.requireRegenerate(); // so the recovered mod elements get converted and their code generated
+			JOptionPane.showMessageDialog(this, L10N.t("dialog.workspace.orphaned_mod_elements.message",
+							orphanedModElements.stream().map(ModElement::getName).collect(Collectors.joining(", "))),
+					L10N.t("dialog.workspace.orphaned_mod_elements.title"), JOptionPane.WARNING_MESSAGE);
 		}
 
 		// if we need to set up the workspace, we do so
