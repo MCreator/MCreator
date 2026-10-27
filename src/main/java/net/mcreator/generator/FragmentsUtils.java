@@ -38,7 +38,8 @@ public class FragmentsUtils {
 	/**
 	 * Collects fragments defined in "fragments" lists of used mod element type definitions and generator configuration.
 	 * Each fragment defines "type" and either "template" to render or literal "content" (string or list of strings),
-	 * and can optionally define a condition. Fragments of mod element types get elements of their type in the data model.
+	 * and can optionally define a condition. Fragments of mod element types get elements of their type in the data model
+	 * of both the template and the condition.
 	 *
 	 * @param generator             Generator to collect fragments for
 	 * @param modElementTypeListMap Generatable elements grouped by mod element type
@@ -71,13 +72,17 @@ public class FragmentsUtils {
 		if (!(fragmentDefinitions instanceof List<?> fragmentDefinitionsList))
 			return;
 
+		// conditions can access the same data as the fragment templates (e.g. elements of the mod element type)
+		TemplateExpressionParser.CompoundConditionData conditionData = TemplateExpressionParser.CompoundConditionData.of(
+				generator.getWorkspace().getWorkspaceInfo());
+		dataModel.forEach(conditionData::with);
+
 		TemplateGenerator templateGenerator = generator.getTemplateGeneratorFromName("templates");
 		for (Object fragmentDefinition : fragmentDefinitionsList) {
 			if (!(fragmentDefinition instanceof Map<?, ?> fragment) || fragment.get("type") == null)
 				continue;
 
-			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, fragment,
-					generator.getWorkspace().getWorkspaceInfo()))
+			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, fragment, conditionData))
 				continue;
 
 			List<String> typeFragments = fragments.computeIfAbsent(fragment.get("type").toString(),
