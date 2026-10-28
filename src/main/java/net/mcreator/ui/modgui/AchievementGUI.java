@@ -74,12 +74,13 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final DataListComboBox parentAchievement = new DataListComboBox(mcreator);
 
-	private MCItemHolder achievementIcon;
+	private final MCItemHolder achievementIcon = new MCItemHolder(mcreator,
+			ElementUtil::loadBlocksAndItems).requireValue("elementgui.advancement.error_advancement_needs_icon", true);
 
 	private final TranslatedComboBox achievementType = ComponentFromAnnotation.translatedOptions(Achievement.class,
 			"achievementType", "elementgui.advancement.achievement_type.");
 
-	private TextureComboBox background;
+	private final TextureComboBox background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
 	private final JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
@@ -88,9 +89,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private SingleModElementSelector rewardFunction;
-	private ModElementListField rewardLoot;
-	private ModElementListField rewardRecipes;
+	private final SingleModElementSelector rewardFunction = new SingleModElementSelector(mcreator,
+			ModElementType.FUNCTION);
+	private final ModElementListField rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
+	private final ModElementListField rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
 
 	private final JSpinner rewardXP = ComponentFromAnnotation.spinner(Achievement.class, "rewardXP");
 
@@ -110,22 +112,12 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	}
 
 	@Override protected void initGUI() {
-		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
-				"elementgui.advancement.error_advancement_needs_icon", true);
-
-		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
-
 		JPanel mainPage = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedPage = new JPanel(new BorderLayout(10, 10));
 
 		// Main settings page
 		JPanel propertiesPanel = new JPanel(new GridLayout(2, 4, 10, 2));
 		propertiesPanel.setOpaque(false);
-
-		rewardFunction = new SingleModElementSelector(mcreator, ModElementType.FUNCTION);
-		rewardFunction.setDefaultText(L10N.t("elementgui.advancement.no_reward_function"));
-		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
-		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
 
 		ComponentUtils.deriveFont(achievementName, 16);
 		ComponentUtils.deriveFont(achievementDescription, 16);
@@ -234,6 +226,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		rewardsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_recipes"),
 				L10N.label("elementgui.advancement.reward_recipes")));
 		rewardsPanel.add(rewardRecipes);
+
+		rewardFunction.setDefaultText(L10N.t("elementgui.advancement.no_reward_function"));
 
 		advancedPage.setOpaque(false);
 		advancedPage.add(PanelUtils.totalCenterInPanel(
