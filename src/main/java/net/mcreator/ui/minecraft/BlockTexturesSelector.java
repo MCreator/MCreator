@@ -23,7 +23,6 @@ import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.ValidationResult;
@@ -46,15 +45,13 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		super(new GridLayout(3, 4));
 		setOpaque(false);
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
-				true).requireValue();
-		textureTop = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).setFlipUV(
-				true);
+		texture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64).setFlipUV(true).requireValue();
+		textureTop = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64).setFlipUV(true);
 
-		textureLeft = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureFront = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureRight = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		textureBack = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		textureLeft = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		textureFront = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		textureRight = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		textureBack = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
 
 		add(new JEmptyBox());
 		add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.texture_place_top")));

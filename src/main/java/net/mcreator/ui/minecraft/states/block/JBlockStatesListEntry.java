@@ -29,7 +29,6 @@ import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -92,7 +91,7 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 
 		this.textures = new BlockTexturesSelector(mcreator);
 
-		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		particleTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 32);
 
 		ComponentUtils.deriveFont(renderType, 16);
 		renderType.setPreferredSize(new Dimension(350, 42));

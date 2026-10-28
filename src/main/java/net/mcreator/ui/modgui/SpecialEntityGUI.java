@@ -27,7 +27,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TabListField;
@@ -59,9 +58,8 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 
 	private final TextureComboBox entityTexture = new TextureComboBox(mcreator, TextureType.ENTITY).setAddPNGExtension(
 			false).requireValue("elementgui.living_entity.error_entity_model_needs_texture");
-	private final TextureSelectionButton itemTexture = new TextureSelectionButton(
-			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32).requireValue(
-			"elementgui.special_entity.error_entity_needs_item_texture");
+	private final TextureSelectionButton itemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM,
+			32).requireValue("elementgui.special_entity.error_entity_needs_item_texture");
 
 	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(SpecialEntity.class, "rarity",
 			"elementgui.common.rarity_");

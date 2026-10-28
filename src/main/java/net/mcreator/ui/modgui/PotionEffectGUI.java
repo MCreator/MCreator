@@ -26,7 +26,6 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.SingleParticleEntryField;
@@ -116,7 +115,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		isInstant.addActionListener(_ -> particle.setEnabled(!isInstant.isSelected()));
 
-		icon = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.EFFECT)).requireValue();
+		icon = new TextureSelectionButton(mcreator, TextureType.EFFECT, 64).requireValue();
 
 		particle = new SingleParticleEntryField(mcreator);
 		particle.setDefaultText(L10N.t("elementgui.potioneffect.particles.default"));

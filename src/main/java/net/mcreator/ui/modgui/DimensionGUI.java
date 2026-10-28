@@ -31,7 +31,6 @@ import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -337,29 +336,21 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 						PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(dimensionEffects, mobSettings)))));
 		propertiesPage.setOpaque(false);
 
-		skyboxTextureUp = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureUp = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_sky_up_needs_texture");
-		skyboxTextureDown = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureDown = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_sky_down_needs_texture");
-		skyboxTextureNorth = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureNorth = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_sky_north_needs_texture");
-		skyboxTextureSouth = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureSouth = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_sky_south_needs_texture");
-		skyboxTextureEast = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureEast = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_sky_east_needs_texture");
-		skyboxTextureWest = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureWest = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_sky_west_needs_texture");
-		sunTexture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		sunTexture = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_sun_needs_texture");
-		moonTexture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		moonTexture = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
 				"elementgui.dimension.error_moon_needs_texture");
 
 		// Skybox page options start here
@@ -472,10 +463,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		generationPage.setOpaque(false);
 
-		portalTexture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+		portalTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64).requireValue(
 				"elementgui.dimension.error_portal_needs_texture");
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
 				"elementgui.dimension.error_portal_igniter_needs_texture");
 
 		// Currently only Java based mods support dimension portals

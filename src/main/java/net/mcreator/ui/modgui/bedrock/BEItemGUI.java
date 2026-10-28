@@ -30,7 +30,6 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.*;
@@ -120,7 +119,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		JPanel scriptsPanel = new JPanel(new BorderLayout(10, 10));
 		scriptsPanel.setOpaque(false);
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
 				"elementgui.item.error_item_needs_texture");
 
 		JPanel basicProperties = new JPanel(new GridLayout(8, 2, 30, 2));

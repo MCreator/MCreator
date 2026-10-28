@@ -39,7 +39,6 @@ import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -613,8 +612,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane8.setOpaque(false);
 
-		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		itemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
+		particleTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 32);
 
 		blockBasePropertiesPanel.setOpaque(false);
 

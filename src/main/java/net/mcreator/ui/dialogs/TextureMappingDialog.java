@@ -181,8 +181,7 @@ public class TextureMappingDialog {
 		int idx = 0;
 		for (Map.Entry<String, TextureHolder> s : entries) {
 			panel.add(L10N.label("dialog.textures_mapping.model_texture_part", s.getKey()));
-			tx[idx] = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK))
-					.requireValue();
+			tx[idx] = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64).requireValue();
 			if (s.getValue() != null && !s.getValue().isEmpty())
 				tx[idx].setTexture(s.getValue());
 			validationGroup.addValidationElement(tx[idx]);
