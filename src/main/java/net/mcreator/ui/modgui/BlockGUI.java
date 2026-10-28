@@ -280,8 +280,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
 	private final JSpinner leavesParticleChance = ComponentFromAnnotation.spinner(Block.class, "leavesParticleChance");
-	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
-	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN);
+	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator,
+			TextureType.ENTITY).setAddPNGExtension(false);
+	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN).setAddPNGExtension(
+			false);
 	private JComponent signGUITexturePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
@@ -299,8 +301,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	@Override protected void initGUI() {
-		signEntityTexture.setAddPNGExtension(false);
-		signGUITexture.setAddPNGExtension(false);
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 

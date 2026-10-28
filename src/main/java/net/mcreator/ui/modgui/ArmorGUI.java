@@ -276,9 +276,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
-		armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).requireValue(
-				"elementgui.armor.armor_needs_texture");
-		armorTextureFile.setAddPNGExtension(false);
+		armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).setAddPNGExtension(false)
+				.requireValue("elementgui.armor.armor_needs_texture");
 
 		helmetModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true, "From armor");
 		bodyModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true, "From armor");
