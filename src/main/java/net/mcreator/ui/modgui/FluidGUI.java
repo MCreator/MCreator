@@ -325,9 +325,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		ComponentUtils.makeSection(destala, L10N.t("elementgui.fluid.fluid_properties"));
 
-		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp));
-		fluidBucketProperties.setOpaque(false);
-		pane3.add(PanelUtils.totalCenterInPanel(fluidBucketProperties));
+		pane3.add(PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp))));
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));

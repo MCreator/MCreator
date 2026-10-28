@@ -56,13 +56,6 @@ public class BlockTexturesSelector extends JPanel implements IValidable {
 		textureRight = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 		textureBack = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
 
-		texture.setOpaque(false);
-		textureTop.setOpaque(false);
-		textureLeft.setOpaque(false);
-		textureFront.setOpaque(false);
-		textureRight.setOpaque(false);
-		textureBack.setOpaque(false);
-
 		add(new JEmptyBox());
 		add(ComponentUtils.squareAndBorder(textureTop, L10N.t("elementgui.block.texture_place_top")));
 		add(new JEmptyBox());

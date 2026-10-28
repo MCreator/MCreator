@@ -658,7 +658,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		showBlockBaseCard("default");
 
-		blockBasePanel.setOpaque(false);
 		ComponentUtils.makeSection(blockBasePanel, L10N.t("elementgui.block.block_base_panel"));
 
 		textures = new BlockTexturesSelector(mcreator);

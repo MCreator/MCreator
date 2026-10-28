@@ -892,7 +892,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane7.add(PanelUtils.totalCenterInPanel(props));
 		pane7.setOpaque(false);
-		pane7.setOpaque(false);
 
 		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));
 		vibrationProps.setOpaque(false);

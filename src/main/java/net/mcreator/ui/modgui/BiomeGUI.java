@@ -180,7 +180,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		name.setOpaque(true);
 		airColor.setOpaque(false);
 		fogColor.setOpaque(false);
 		grassColor.setOpaque(false);

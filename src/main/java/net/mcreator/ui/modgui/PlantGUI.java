@@ -294,7 +294,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.texture_place_texture"));
 		textureBottomContainer = ComponentUtils.squareAndBorder(textureBottom,
 				L10N.t("elementgui.plant.texture_place_bottom"));
-		textureBottomContainer.setOpaque(false);
 
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);

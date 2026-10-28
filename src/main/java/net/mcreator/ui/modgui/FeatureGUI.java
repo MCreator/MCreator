@@ -123,8 +123,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
 
-		propertiesAndCondition.setOpaque(false);
-
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.FEATURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {

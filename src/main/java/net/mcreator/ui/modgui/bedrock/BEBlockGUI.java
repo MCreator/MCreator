@@ -192,12 +192,10 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
 		basicProperties.add(hardness);
-		hardness.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"),
 				L10N.label("elementgui.common.resistance")));
 		basicProperties.add(resistance);
-		resistance.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/luminance"),
 				L10N.label("elementgui.common.luminance")));
