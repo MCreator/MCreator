@@ -118,8 +118,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		JPanel mainPage = new JPanel(new BorderLayout(10, 10));
 		JPanel triggerPage = new JPanel(new BorderLayout());
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(7, 2, 10, 2));
-		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(2, 4, 10, 2));
+		JPanel logicPanel = new JPanel(new GridLayout(10, 2, 10, 2));
 
 		rewardFunction = new SingleModElementSelector(mcreator, ModElementType.FUNCTION);
 		rewardFunction.setDefaultText(L10N.t("elementgui.advancement.no_reward_function"));
@@ -138,29 +138,29 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				L10N.label("elementgui.advancement.name")));
 		propertiesPanel.add(achievementName);
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
-				L10N.label("elementgui.advancement.description")));
-		propertiesPanel.add(achievementDescription);
-
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/icon"),
 				L10N.label("elementgui.advancement.icon")));
 		propertiesPanel.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
-				L10N.label("elementgui.advancement.background")));
-		propertiesPanel.add(background);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"),
-				L10N.label("elementgui.advancement.type")));
-		propertiesPanel.add(achievementType);
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
+				L10N.label("elementgui.advancement.description")));
+		propertiesPanel.add(achievementDescription);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
 				L10N.label("elementgui.advancement.parent")));
 		propertiesPanel.add(parentAchievement);
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
+				L10N.label("elementgui.advancement.background")));
+		logicPanel.add(background);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"),
+				L10N.label("elementgui.advancement.type")));
+		logicPanel.add(achievementType);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
 				L10N.label("elementgui.advancement.show_toast")));
-		propertiesPanel.add(showPopup);
+		logicPanel.add(showPopup);
 
 		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
 				L10N.label("elementgui.advancement.reward_xp")));
@@ -191,8 +191,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		logicPanel.add(disableDisplay);
 
 		ComponentUtils.makeSection(logicPanel, L10N.t("elementgui.advancement.logic"));
-
-		ComponentUtils.makeSection(propertiesPanel, L10N.t("elementgui.advancement.display_paramters"));
 
 		propertiesPanel.setOpaque(false);
 		logicPanel.setOpaque(false);
@@ -229,16 +227,17 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		advancementTrigger.setPreferredSize(new Dimension(0, 570));
 
 		mainPage.setOpaque(false);
-		mainPage.add(PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(propertiesPanel, logicPanel)));
+
+		mainPage.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesPanel),
+				advancementTrigger));
 
 		triggerPage.setOpaque(false);
-		triggerPage.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-		triggerPage.add(advancementTrigger);
+		triggerPage.add(PanelUtils.totalCenterInPanel(logicPanel));
 
-		addPage(L10N.t("elementgui.common.page_properties"), mainPage).validate(page1group);
-		addPage(L10N.t("elementgui.advancement.page_criteria"), triggerPage).lazyValidate(
+		addPage(L10N.t("elementgui.common.page_properties"), mainPage).validate(page1group).lazyValidate(
 				BlocklyAggregatedValidationResult.blocklyValidator(this,
 						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), triggerPage);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
