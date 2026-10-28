@@ -1,7 +1,7 @@
 {
   "mutator": "fixed_placement_mutator",
   "inputsInline": false,
-  "previousStatement": null,
+  "previousStatement": "Placement",
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {

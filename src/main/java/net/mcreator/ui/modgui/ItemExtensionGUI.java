@@ -69,7 +69,6 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 
 	@Override protected void initGUI() {
 		//Fuel
-		enableFuel.setOpaque(false);
 		enableFuel.addActionListener(_ -> updateFuelElements());
 
 		fuelNumberProvider = new SingleNumberProviderEntryField(mcreator, "furnace_fuel_providers", null);
@@ -120,7 +119,6 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item_extension/has_dispense_behavior"),
 						L10N.label("elementgui.item_extension.has_dispense_behavior")), hasDispenseBehavior);
 
-		hasDispenseBehavior.setOpaque(false);
 		hasDispenseBehavior.setSelected(false);
 		hasDispenseBehavior.addActionListener(_ -> updateDispenseElements());
 

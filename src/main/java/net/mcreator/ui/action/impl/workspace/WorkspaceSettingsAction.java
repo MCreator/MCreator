@@ -32,6 +32,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
@@ -40,6 +41,7 @@ import net.mcreator.util.diff.DiffResult;
 import net.mcreator.util.diff.ListDiff;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
@@ -217,6 +219,10 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 					// we need to regenerate the whole code after new generator is selected, no need to reload gradle caches as runSetup already did this
 					RegenerateCodeAction.regenerateCode(mcreator, true, true);
+
+					// references to mod elements that no longer exist may break the code for the new generator, so we check for them
+					SearchUsagesDialog.showBrokenReferencesDialog(mcreator,
+							ReferencesFinder.searchBrokenReferences(mcreator.getWorkspace()), false);
 				}, "WorkspaceRefactor");
 				t.start();
 			} else { // in any other case, we need to regenerate the whole code

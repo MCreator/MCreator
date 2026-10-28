@@ -10,7 +10,7 @@
     "disable_repeated_count_on_every_layer"
   ],
   "inputsInline": true,
-  "previousStatement": null,
+  "previousStatement": "Placement",
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {
