@@ -86,6 +86,16 @@ body {
     color: var(--foregroundColor);
 }
 
+.blocklyToast {
+    background-color: var(--backgroundColor);
+    color: var(--foregroundColor);
+    border-color: var(--altBackgroundColor);
+}
+
+.blocklyToast .blocklyToastCloseButton {
+    color: var(--foregroundColor);
+}
+
 .blocklyWidgetDiv .blocklyMenu {
     background: var(--backgroundColor) !important;
     border-color: var(--altBackgroundColor) !important;
@@ -116,6 +126,18 @@ body {
 
 .blocklyHtmlTextAreaInput {
     background: var(--backgroundColor);
+    color: var(--foregroundColor);
+}
+
+.blocklyMultilineHint {
+    background-color: var(--backgroundColor);
+    color: var(--altForegroundColor);
+    border-top-color: var(--altBackgroundColor);
+}
+
+.blocklyMultilineHintKey {
+    background-color: var(--altBackgroundColor);
+    border-color: var(--secondAltBackgroundColor);
     color: var(--foregroundColor);
 }
 

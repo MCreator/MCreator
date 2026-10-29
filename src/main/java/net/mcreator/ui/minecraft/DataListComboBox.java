@@ -19,6 +19,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
@@ -26,13 +27,17 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.util.Collection;
+import java.util.Objects;
 
 public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
@@ -49,8 +54,17 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 		init(mcreator, false);
 	}
 
+	// Set when the entry to select was not found, so the fallback selection can be marked until a different entry is selected
+	@Nullable private String brokenReference = null;
+	@Nullable private DataListEntry brokenReferenceFallback = null;
+
 	private void init(MCreator mcreator, boolean rawNames) {
 		setRenderer(new CustomRenderer(mcreator, rawNames));
+		addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED && brokenReference != null && !Objects.equals(e.getItem(),
+					brokenReferenceFallback))
+				clearBrokenReference();
+		});
 	}
 
 	public void setSelectedItem(String string) {
@@ -66,6 +80,37 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
 	public void setSelectedItem(DataListEntry dataListEntry) {
 		super.setSelectedItem(dataListEntry);
+
+		DataListEntry selected = super.getSelectedItem();
+		if (dataListEntry != null && !dataListEntry.getName().isEmpty() && !dataListEntry.equals(selected)) {
+			brokenReference = dataListEntry.getName();
+			brokenReferenceFallback = selected;
+			setToolTipText(L10N.t("datalist_combobox.broken_reference",
+					brokenReference.replace(NameMapper.MCREATOR_PREFIX, ""),
+					selected != null ? selected.getReadableName() : ""));
+			repaint();
+		} else {
+			clearBrokenReference();
+		}
+	}
+
+	private void clearBrokenReference() {
+		if (brokenReference != null) {
+			brokenReference = null;
+			brokenReferenceFallback = null;
+			setToolTipText(null);
+			repaint();
+		}
+	}
+
+	@Override public void paint(Graphics g) {
+		super.paint(g);
+
+		if (brokenReference != null && Objects.equals(super.getSelectedItem(), brokenReferenceFallback)) {
+			g.setColor(ValidationResult.Type.ERROR.getColor());
+			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+			ValidationResult.Type.ERROR.icon(11).paintIcon(this, g, getWidth() - 11, getHeight() - 11);
+		}
 	}
 
 	@Override @Nonnull public DataListEntry getSelectedItem() {

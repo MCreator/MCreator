@@ -29,7 +29,7 @@ base_types:
 global_templates:
   - template: livingentity/monster_room_mobs.json.ftl
     writer: json
-    condition: "${w.getGElementsOfType('livingentity')?filter(e -> e.spawnInDungeons)?size != 0}"
+    condition: "${livingentities?filter(e -> e.spawnInDungeons)?size != 0}"
     name: "@RESROOT/data/neoforge/data_maps/entity_type/monster_room_mobs.json"
 
 unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]

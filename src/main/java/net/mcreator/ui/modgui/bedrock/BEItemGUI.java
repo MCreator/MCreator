@@ -139,12 +139,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/has_glint"),
 				L10N.label("elementgui.beitem.has_glint")));
-		hasGlint.setOpaque(false);
 		basicProperties.add(hasGlint);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/hand_equipped"),
 				L10N.label("elementgui.beitem.hand_equipped")));
-		handEquipped.setOpaque(false);
 		basicProperties.add(handEquipped);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
@@ -156,7 +154,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab, 5, 5));
 		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
-		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
@@ -166,7 +163,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				L10N.label("elementgui.item.damage_vs_entity")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableMeleeDamage, damageVsEntity, 5, 5));
 		enableMeleeDamage.addActionListener(_ -> updateMeleeDamage());
-		enableMeleeDamage.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.item.number_of_uses")));
@@ -194,7 +190,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 				movementModifier.setValue(0.35);
 			}
 		});
-		isFood.setOpaque(false);
 
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/nutritional_value"),
 				L10N.label("elementgui.item.nutritional_value")));
@@ -210,7 +205,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/always_edible"),
 				L10N.label("elementgui.item.is_edible")));
 		foodProperties.add(foodCanAlwaysEat);
-		foodCanAlwaysEat.setOpaque(false);
 
 		foodProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/result_item"),
 				L10N.label("elementgui.item.eating_result")));
@@ -235,12 +229,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
 				L10N.label("elementgui.beitem.is_hidden_commands")));
-		isHiddenInCommands.setOpaque(false);
 		advancedProperties.add(isHiddenInCommands);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/allow_off_hand"),
 				L10N.label("elementgui.beitem.allow_off_hand")));
-		allowOffHand.setOpaque(false);
 		advancedProperties.add(allowOffHand);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/fuel_duration"),
@@ -249,12 +241,10 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/should_despawn"),
 				L10N.label("elementgui.beitem.should_despawn")));
-		shouldDespawn.setOpaque(false);
 		advancedProperties.add(shouldDespawn);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/stacked_by_data"),
 				L10N.label("elementgui.beitem.stacked_by_data")));
-		stackedByData.setOpaque(false);
 		advancedProperties.add(stackedByData);
 
 		JPanel blockPlacerProps = new JPanel(new GridLayout(2, 2, 65, 2));
@@ -302,7 +292,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/enchantment_slot"),
 				L10N.label("elementgui.beitem.enchantment_slot")));
 		enchantmentSlot.setOpaque(false);
-		isEnchantable.addActionListener(e -> updateEnchantableParams());
+		isEnchantable.addActionListener(_ -> updateEnchantableParams());
 		toolProperties.add(PanelUtils.westAndCenterElement(isEnchantable, enchantmentSlot, 5, 5));
 
 		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enchantability"),
@@ -312,7 +302,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		toolProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/tool_use_efficiency"),
 				L10N.label("elementgui.beitem.tool_use_efficiency")));
-		diggerUseEfficiency.setOpaque(false);
 		toolProperties.add(diggerUseEfficiency);
 
 		JComponent diggerEntriesList = PanelUtils.northAndCenterElement(

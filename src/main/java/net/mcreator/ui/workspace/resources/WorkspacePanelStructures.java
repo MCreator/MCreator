@@ -30,7 +30,6 @@ import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,11 +50,8 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				Set<ModElement> refs = new HashSet<>();
-				for (String structure : elementList.getSelectedValuesList()) {
-					refs.addAll(ReferencesFinder.searchStructureUsages(workspacePanel.getMCreator().getWorkspace(),
-							structure));
-				}
+				Set<ModElement> refs = ReferencesFinder.searchStructureUsages(
+						workspacePanel.getMCreator().getWorkspace(), elementList.getSelectedValuesList());
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
@@ -70,11 +66,8 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = new HashSet<>();
-			for (String structure : elements) {
-				references.addAll(
-						ReferencesFinder.searchStructureUsages(workspacePanel.getMCreator().getWorkspace(), structure));
-			}
+			Set<ModElement> references = ReferencesFinder.searchStructureUsages(
+					workspacePanel.getMCreator().getWorkspace(), elements);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 

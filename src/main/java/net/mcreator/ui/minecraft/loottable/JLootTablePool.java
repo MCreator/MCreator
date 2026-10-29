@@ -66,7 +66,6 @@ public class JLootTablePool extends JEntriesList {
 		bonusrolls.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(Theme.current().getSecondAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
-		hasbonusrolls.setOpaque(false);
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
@@ -87,7 +86,7 @@ public class JLootTablePool extends JEntriesList {
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.loot_table.remove_pool"));
-		remove.addActionListener(e -> {
+		remove.addActionListener(_ -> {
 			pollList.remove(this);
 			parent.remove(container);
 			parent.revalidate();
@@ -103,7 +102,7 @@ public class JLootTablePool extends JEntriesList {
 
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> {
+		add.addActionListener(_ -> {
 			JLootTableEntry entry = new JLootTableEntry(mcreator, this, entries, entryList);
 			registerEntryUI(entry);
 		});

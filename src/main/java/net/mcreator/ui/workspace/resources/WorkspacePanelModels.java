@@ -93,9 +93,8 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				Set<ModElement> refs = new HashSet<>();
-				for (Model model : elementList.getSelectedValuesList())
-					refs.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), model));
+				Set<ModElement> refs = ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(),
+						elementList.getSelectedValuesList());
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
@@ -134,15 +133,17 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = new HashSet<>();
-			for (Model m : elementList.getSelectedValuesList())
-				references.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), m));
+			Set<ModElement> references = ReferencesFinder.searchModelUsages(
+					workspacePanel.getMCreator().getWorkspace(), elements);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
 			if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
 					L10N.t("dialog.search_usages.type.resource.model"), references)) {
-				elements.forEach(model -> Arrays.stream(model.getFiles()).forEach(File::delete));
+				elements.forEach(model -> {
+					Arrays.stream(model.getFiles()).forEach(File::delete);
+					workspacePanel.getMCreator().getWorkspace().getModelManager().invalidateCache(model.getFile());
+				});
 				reloadElements();
 			}
 		}
@@ -186,6 +187,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 					FileIO.writeStringToFile(data,
 							new File(workspacePanel.getMCreator().getFolderManager().getModelsDir(),
 									model.getFile().getName() + ".textures"));
+					workspacePanel.getMCreator().getWorkspace().getModelManager().invalidateCache(model.getFile());
 				}
 			} else {
 				JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
