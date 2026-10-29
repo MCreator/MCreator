@@ -133,8 +133,7 @@ public class QuickRecipesTool extends AbstractPackMakerTool {
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
-		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-				!= GeneratorStats.CoverageStatus.NONE;
+		return gc.getGeneratorStats().isModElementTypeCovered(ModElementType.RECIPE);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
