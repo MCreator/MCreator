@@ -119,7 +119,7 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 		JPanel scriptsPanel = new JPanel(new BorderLayout(10, 10));
 		scriptsPanel.setOpaque(false);
 
-		texture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.item.error_item_needs_texture");
 
 		JPanel basicProperties = new JPanel(new GridLayout(8, 2, 30, 2));

@@ -49,6 +49,10 @@ public class TextureSelectionButton extends VButton implements ITextureContainer
 
 	private final List<ActionListener> textureSelectedListeners = new ArrayList<>();
 
+	public TextureSelectionButton(MCreator mcreator, TextureType textureType) {
+		this(new TypedTextureSelectorDialog(mcreator, textureType), 64);
+	}
+
 	public TextureSelectionButton(MCreator mcreator, TextureType textureType, int size) {
 		this(new TypedTextureSelectorDialog(mcreator, textureType), size);
 	}

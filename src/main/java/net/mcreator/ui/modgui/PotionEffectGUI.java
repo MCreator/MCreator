@@ -115,7 +115,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		isInstant.addActionListener(_ -> particle.setEnabled(!isInstant.isSelected()));
 
-		icon = new TextureSelectionButton(mcreator, TextureType.EFFECT, 64).requireValue();
+		icon = new TextureSelectionButton(mcreator, TextureType.EFFECT).requireValue();
 
 		particle = new SingleParticleEntryField(mcreator);
 		particle.setDefaultText(L10N.t("elementgui.potioneffect.particles.default"));

@@ -71,10 +71,10 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		JPanel texturesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		texturesPanel.setOpaque(false);
 
-		texture = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.banner_pattern.error_pattern_needs_banner_texture");
 		texture.addTextureSelectedListener(_ -> updatePatternPreviews());
-		shieldTexture = new TextureSelectionButton(mcreator, TextureType.OTHER, 64).requireValue(
+		shieldTexture = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.banner_pattern.error_pattern_needs_shield_texture");
 		shieldTexture.addTextureSelectedListener(_ -> updatePatternPreviews());
 

@@ -179,9 +179,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel mainTextures = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		mainTextures.setOpaque(false);
 
-		textureStill = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64).requireValue(
+		textureStill = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue(
 				"elementgui.fluid.error_fluid_needs_still_texture");
-		textureFlowing = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64).requireValue(
+		textureFlowing = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue(
 				"elementgui.fluid.error_fluid_needs_flowing_texture");
 
 		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));

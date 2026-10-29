@@ -286,8 +286,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64).requireValue();
-		textureBottom = new TextureSelectionButton(mcreator, TextureType.BLOCK, 64);
+		texture = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue();
+		textureBottom = new TextureSelectionButton(mcreator, TextureType.BLOCK);
 		textureContainer = ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 				L10N.t("elementgui.plant.texture_place_texture"));
 		textureBottomContainer = ComponentUtils.squareAndBorder(textureBottom,

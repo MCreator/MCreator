@@ -346,13 +346,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
+		textureHelmet = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.helmet_needs_item_texture");
-		textureBody = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
+		textureBody = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.chestplate_needs_item_texture");
-		textureLeggings = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
+		textureLeggings = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.leggings_need_item_texture");
-		textureBoots = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
+		textureBoots = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.boots_need_item_texture");
 
 		enableHelmet.setSelected(true);

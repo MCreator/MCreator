@@ -191,7 +191,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel attributeModifiersPage = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.item.error_item_needs_texture");
 		guiTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
 

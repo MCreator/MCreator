@@ -265,7 +265,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
-		texture = new TextureSelectionButton(mcreator, TextureType.ITEM, 64).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.item.error_item_needs_texture");
 		guiTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
 
