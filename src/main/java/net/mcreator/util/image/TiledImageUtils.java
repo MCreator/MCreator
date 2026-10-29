@@ -38,7 +38,7 @@ public class TiledImageUtils {
 	}
 
 	public TiledImageUtils(BufferedImage buf, int width, int height) throws InvalidTileSizeException {
-		if (buf != null && (buf.getWidth() % width == 0 && buf.getHeight() % width == 0)) {
+		if (buf != null && (buf.getWidth() % width == 0 && buf.getHeight() % height == 0)) {
 
 			imageTiles = new ImageIcon[buf.getWidth() / width][buf.getHeight() / height];
 
