@@ -64,10 +64,16 @@ templates:
     name: "@MODASSETSROOT/items/@registryname.json"
     condition: hasIgniter()
 
+base_types:
+  - type: block
+    condition: enablePortal
+  - type: item
+    condition: hasIgniter()
+
 global_templates:
   - template: dimension/skybox.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/@JavaModNameSkyboxRenderer.java"
-    condition: "${w.getGElementsOfType('dimension')?filter(e -> e.enableCustomSkyboxTextures || e.enableCustomSunMoonTextures)?size != 0}"
+    condition: "${dimensions?filter(e -> e.enableCustomSkyboxTextures || e.enableCustomSunMoonTextures)?size != 0}"
 
 tags:
   - tag: BLOCKS:minecraft:overworld_carver_replaceables

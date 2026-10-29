@@ -51,6 +51,8 @@ import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -97,10 +99,10 @@ public class WYSIWYGEditor extends JPanel {
 	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
-	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 
 	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
@@ -146,15 +148,27 @@ public class WYSIWYGEditor extends JPanel {
 		invOffY.setPreferredSize(new Dimension(60, 24));
 
 		renderBgLayer.setSelected(true);
-		renderBgLayer.setOpaque(false);
-		doesPauseGame.setOpaque(false);
 
 		invOffX.setEnabled(false);
 		invOffY.setEnabled(false);
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		list.addListSelectionListener(event -> {
+		components.addListDataListener(new ListDataListener() {
+			@Override public void intervalAdded(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void intervalRemoved(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void contentsChanged(ListDataEvent e) {
+				editor.repaint();
+			}
+		});
+
+		list.addListSelectionListener(_ -> {
 			if (list.getSelectedValue() != null) {
 				editor.setSelectedComponent(list.getSelectedValue());
 				moveComponent.setEnabled(!list.getSelectedValue().locked);
@@ -285,8 +299,7 @@ public class WYSIWYGEditor extends JPanel {
 			}
 		}
 
-		snapOnGrid.setOpaque(false);
-		snapOnGrid.addActionListener(event -> {
+		snapOnGrid.addActionListener(_ -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
@@ -352,7 +365,7 @@ public class WYSIWYGEditor extends JPanel {
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
 		if (isNotOverlayType)
-			guiType.addActionListener(event -> {
+			guiType.addActionListener(_ -> {
 				invOffX.setEnabled(guiType.getSelectedIndex() == 1);
 				invOffY.setEnabled(guiType.getSelectedIndex() == 1);
 				if (guiType.getSelectedIndex() == 0 && !isOpening()) {
@@ -384,8 +397,10 @@ public class WYSIWYGEditor extends JPanel {
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
 
-		spa1.addChangeListener(event -> checkAndUpdateGUISize());
-		spa2.addChangeListener(event -> checkAndUpdateGUISize());
+		spa1.addChangeListener(_ -> checkAndUpdateGUISize());
+		spa2.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffX.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffY.addChangeListener(_ -> checkAndUpdateGUISize());
 		guiType.addActionListener(_ -> checkAndUpdateGUISize());
 		renderBgLayer.addActionListener(_ -> checkAndUpdateGUISize());
 

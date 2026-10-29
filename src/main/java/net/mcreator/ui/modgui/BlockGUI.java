@@ -196,7 +196,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
 
-	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptions(Block.class,
+	private final TranslatedComboBox reactionToPushing = ComponentFromAnnotation.translatedOptionsWithIcons(Block.class,
 			"reactionToPushing", "elementgui.block.reaction_to_push.");
 
 	private final JComboBox<String> offsetType = ComponentFromAnnotation.options(Block.class, "offsetType");
@@ -318,8 +318,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
 		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
-
-		generateFeature.setOpaque(false);
 
 		vibrationalEvents = new GameEventListField(mcreator, true);
 
@@ -618,14 +616,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
 		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 
-		itemTexture.setOpaque(false);
-		particleTexture.setOpaque(false);
-		signEntityTexture.setOpaque(false);
-		signGUITexture.setOpaque(false);
-
-		isReplaceable.setOpaque(false);
-		canProvidePower.setOpaque(false);
-
 		blockBasePropertiesPanel.setOpaque(false);
 
 		// Card for "default" block base
@@ -670,8 +660,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		blockBasePanel.setOpaque(false);
 		ComponentUtils.makeSection(blockBasePanel, L10N.t("elementgui.block.block_base_panel"));
-
-		plantsGrowOn.setOpaque(false);
 
 		textures = new BlockTexturesSelector(mcreator);
 
@@ -745,6 +733,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		visualRenderingSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
 				L10N.label("elementgui.common.offset_type")));
+		offsetType.setRenderer(new ItemTexturesComboBoxRenderer());
 		visualRenderingSettings.add(offsetType);
 
 		ComponentUtils.deriveFont(renderType, 16);
@@ -769,7 +758,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		rotationMode.setPreferredSize(new Dimension(320, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		enablePitch.setOpaque(false);
 		enablePitch.setEnabled(false);
 		rotationMode.addActionListener(_ -> {
 			enablePitch.setEnabled(rotationMode.getSelectedIndex() == 1 || rotationMode.getSelectedIndex() == 3);
@@ -777,8 +765,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				enablePitch.setSelected(false);
 			refreshBlockStatesList();
 		});
-
-		isItemTinted.setOpaque(false);
 
 		topnbot.add("South", blockBasePanel);
 
@@ -788,13 +774,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		render.add(rent);
 		render.add(visualRenderingSettings);
 		render.add(txblock3);
-
 		render.setOpaque(false);
-
-		hasTransparency.setOpaque(false);
-		connectedSides.setOpaque(false);
-		emissiveRendering.setOpaque(false);
-		displayFluidOverlay.setOpaque(false);
 
 		sbbp2.add("East", PanelUtils.pullElementUp(render));
 
@@ -807,7 +787,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/disable_offset"),
 				L10N.label("elementgui.common.disable_offset")));
 		northPanel.add(disableOffset);
-		disableOffset.setOpaque(false);
 
 		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_walk_through"),
 				L10N.label("elementgui.block.can_walk_through")));
@@ -831,28 +810,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 		JPanel advancedProperties = new JPanel(new GridLayout(12, 2, 0, 2));
 
-		hasGravity.setOpaque(false);
-		tickRandomly.setOpaque(false);
-		ignitedByLava.setOpaque(false);
-		unbreakable.setOpaque(false);
-		useLootTableForDrops.setOpaque(false);
-		requiresCorrectTool.setOpaque(false);
 		destroyTool.addActionListener(_ -> updateRequiresCorrectTool());
-		hasBlockItem.setOpaque(false);
 		hasBlockItem.setSelected(true);
 		hasBlockItem.addActionListener(_ -> updateBlockItemSettings());
-		immuneToFire.setOpaque(false);
 
 		selp3.setOpaque(false);
 		advancedProperties.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
-
-		hardness.setOpaque(false);
-		resistance.setOpaque(false);
-		hasCustomOpacity.setOpaque(false);
-		lightOpacity.setOpaque(false);
-		isNotColidable.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
@@ -952,8 +917,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bg.add(defaultSoundType);
 		bg.add(customSoundType);
 		defaultSoundType.setSelected(true);
-		defaultSoundType.setOpaque(false);
-		customSoundType.setOpaque(false);
 
 		defaultSoundType.addActionListener(_ -> updateSoundType());
 		customSoundType.addActionListener(_ -> updateSoundType());
@@ -1034,11 +997,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JComponent advancedWithCondition = PanelUtils.northAndCenterElement(advancedProperties, placingCondition, 5, 2);
 
-		isWaterloggable.setOpaque(false);
-		canRedstoneConnect.setOpaque(false);
-		isBonemealable.setOpaque(false);
-		isLadder.setOpaque(false);
-
 		useLootTableForDrops.addActionListener(_ -> {
 			customDrop.setEnabled(!useLootTableForDrops.isSelected());
 			dropAmount.setEnabled(!useLootTableForDrops.isSelected());
@@ -1116,13 +1074,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel invblock = new JPanel(new BorderLayout(10, 40));
 		invblock.setOpaque(false);
 
-		hasInventory.setOpaque(false);
-		openGUIOnRightClick.setOpaque(false);
-
-		inventorySize.setOpaque(false);
-		inventoryStackSize.setOpaque(false);
-		inventoryDropWhenDestroyed.setOpaque(false);
-		inventoryComparatorPower.setOpaque(false);
 		inventoryDropWhenDestroyed.setSelected(true);
 		inventoryComparatorPower.setSelected(true);
 
@@ -1208,9 +1159,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComponentUtils.makeSection(fluidTank, L10N.t("elementgui.block.fluid_tank"));
 
-		hasEnergyStorage.setOpaque(false);
-		isFluidTank.setOpaque(false);
-
 		energyStorage.add(HelpUtils.wrapWithHelpButton(this.withEntry("energy/enable_storage"),
 				L10N.label("elementgui.block.enable_storage_energy")));
 		energyStorage.add(hasEnergyStorage);
@@ -1258,8 +1206,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel vibrationPanel = new JPanel(new GridLayout(2, 2, 0, 2));
 		vibrationPanel.setOpaque(false);
-
-		sensitiveToVibration.setOpaque(false);
 
 		vibrationPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/sensitive_to_vibration"),
 				L10N.label("elementgui.block.sensitive_to_vibration")));

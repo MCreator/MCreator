@@ -10,7 +10,7 @@
     "count_placement_validator"
   ],
   "inputsInline": true,
-  "previousStatement": null,
+  "previousStatement": "Placement",
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {

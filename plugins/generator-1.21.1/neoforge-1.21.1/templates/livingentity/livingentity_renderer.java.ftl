@@ -115,7 +115,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			<@javacompress>
 			@Override public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light,
 						${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-				<#if hasProcedure(layer.condition)>
+				<#if layer.syncedDataCondition??>
+				if (entity.getEntityData().get(${name}Entity.DATA_${layer.syncedDataCondition})) {
+				<#elseif hasProcedure(layer.condition)>
 				Level world = entity.level();
 				double x = entity.getX();
 				double y = entity.getY();
@@ -135,7 +137,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>);
 				</#if>
 
-				<#if hasProcedure(layer.condition)>}</#if>
+				<#if layer.syncedDataCondition?? || hasProcedure(layer.condition)>}</#if>
 			}
 			</@javacompress>
 		});

@@ -19,12 +19,10 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.minecraft.MCItem;
@@ -36,11 +34,9 @@ import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
-import java.util.Collections;
 
 @SuppressWarnings("unused") public class Projectile extends GeneratableElement
-		implements IEntityWithModel, ICommonType {
+		implements IEntityWithModel {
 
 	public MItemBlock projectileItem;
 	public boolean showParticles;
@@ -84,10 +80,6 @@ import java.util.Collections;
 		return ImageUtils.toBufferedImage(
 				MCItem.getBlockIconBasedOnName(getModElement().getWorkspace(), projectileItem.getUnmappedValue())
 						.getImage());
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		return Collections.singletonList(BaseType.ENTITY);
 	}
 
 }

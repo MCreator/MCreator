@@ -1,4 +1,12 @@
 {
+  "args0": [
+    {
+      "type": "field_image",
+      "src": "./res/ench_component.png",
+      "width": 8,
+      "height": 36
+    }
+  ],
   "extensions": [
     "disable_repeated_enchantment_component"
   ],

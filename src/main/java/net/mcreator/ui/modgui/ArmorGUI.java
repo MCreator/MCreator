@@ -361,30 +361,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.armor.boots_need_item_texture");
 
-		textureHelmet.setOpaque(false);
-		textureBody.setOpaque(false);
-		textureLeggings.setOpaque(false);
-		textureBoots.setOpaque(false);
-
 		enableHelmet.setSelected(true);
 		enableBody.setSelected(true);
 		enableLeggings.setSelected(true);
 		enableBoots.setSelected(true);
-
-		enableHelmet.setOpaque(false);
-		enableBody.setOpaque(false);
-		enableLeggings.setOpaque(false);
-		enableBoots.setOpaque(false);
-
-		helmetTranslucency.setOpaque(false);
-		bodyTranslucency.setOpaque(false);
-		leggingsTranslucency.setOpaque(false);
-		bootsTranslucency.setOpaque(false);
-
-		helmetImmuneToFire.setOpaque(false);
-		bodyImmuneToFire.setOpaque(false);
-		leggingsImmuneToFire.setOpaque(false);
-		bootsImmuneToFire.setOpaque(false);
 
 		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);

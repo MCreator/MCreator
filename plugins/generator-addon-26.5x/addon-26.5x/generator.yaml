@@ -34,17 +34,11 @@ base_templates:
   - template: resourcepack/music_definitions.json.ftl
     writer: json
     name: "@RESROOT/sounds/music_definitions.json"
-  - template: resourcepack/blocks.json.ftl
-    writer: json
-    name: "@RESROOT/blocks.json"
-  - template: resourcepack/terrain_texture.json.ftl
-    writer: json
-    name: "@RESROOT/textures/terrain_texture.json"
   - template: scripts_base.js.ftl
     name: "@SRCROOT/scripts/@modid_scripts.js"
     writer: js
     condition_any:
-      - "${w.hasElementsOfType('bescript')}"
+      - "${types.bescripts?has_content}"
       - hasVariables()
   - template: variables.js.ftl
     name: "@SRCROOT/scripts/@modid_variables.js"

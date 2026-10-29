@@ -55,6 +55,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -258,7 +259,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				buttonGroup.add(page);
 
 				int finalIdx = idx;
-				page.addActionListener(_ -> split.setPage(finalIdx));
+				// ItemListener instead of ActionListener so programmatic selection (e.g. arrow key
+				// navigation between toggle buttons in a ButtonGroup) also switches the page
+				page.addItemListener(e -> {
+					if (e.getStateChange() == ItemEvent.SELECTED)
+						split.setPage(finalIdx);
+				});
 
 				pageEntry.setShowThisPageAction(page::doClick);
 
@@ -577,12 +583,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					Objects.requireNonNullElse(targetFolder, modMaker.getWorkspacePanel().currentFolder));
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
-		// add it before generating so all references are loaded
-		if (!editingMode) {
+		// we check the list instead of editingMode so an element deleted while its editor was open is re-added
+		boolean newElement = !mcreator.getWorkspace().containsModElement(modElement.getName());
+		if (newElement) {
 			mcreator.getWorkspace().addModElement(modElement);
 		} else {
 			modElement.reloadElementIcon();
-			modElement.getMCItems().forEach(mcItem -> mcItem.getIcon().getImage().flush()); // update MCItem icons
 		}
 
 		// make sure workspace will also be saved
@@ -590,6 +596,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);
+
+		// store the workspace file right away so the mod element list on the FS is in sync with the definition file
+		if (newElement)
+			mcreator.getWorkspace().getFileManager().saveWorkspaceDirectlyAndWait();
 
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
@@ -621,7 +631,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-				modElement.getType().getRegistryName());
+				modElement.getType().getRegistryName(), mcreator.getWorkspaceSettings().getCurrentGenerator());
 
 		// checkpoint after the element is stored and generated so all its files are part of the checkpoint
 		if (!editingMode) {

@@ -70,6 +70,8 @@ public class ReturnBlock implements IBlockGenerator {
 
 			String valuecode = BlocklyToCode.directProcessOutputBlock(master, value);
 
+			master.markBlockTerminating();
+
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("type", type);

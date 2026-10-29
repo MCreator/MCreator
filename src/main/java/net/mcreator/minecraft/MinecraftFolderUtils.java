@@ -84,4 +84,27 @@ public class MinecraftFolderUtils {
 		return null;
 	}
 
+	public static File getBedrockEditionLogsFolder() {
+		if (OS.getOS() != OS.WINDOWS)
+			return null;
+
+		// New launcher keeps logs next to the Users folder
+		String appData = System.getenv("APPDATA");
+		if (appData != null) {
+			File newLauncherLogsFolder = new File(appData, "Minecraft Bedrock/logs/");
+			if (newLauncherLogsFolder.isDirectory())
+				return newLauncherLogsFolder;
+		}
+
+		// Old launcher keeps logs in LocalState next to the games folder
+		File bedrockFolder = getBedrockEditionFolder();
+		if (bedrockFolder != null) {
+			File logsFolder = new File(bedrockFolder.getParentFile().getParentFile(), "logs");
+			if (logsFolder.isDirectory())
+				return logsFolder;
+		}
+
+		return null;
+	}
+
 }
