@@ -13,3 +13,5 @@ Vanilla armor uses the following factors:
 * Gold armor: 7
 * Diamond armor: 33
 * Netherite armor: 37
+
+Set this to 0 to make the armor unbreakable (no durability).

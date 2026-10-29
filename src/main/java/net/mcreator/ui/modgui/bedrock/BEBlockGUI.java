@@ -180,11 +180,9 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 				L10N.label("elementgui.beitem.creative_tab")));
 		basicProperties.add(PanelUtils.westAndCenterElement(enableCreativeTab, creativeTab));
 		enableCreativeTab.addActionListener(_ -> updateCreativeTab());
-		enableCreativeTab.setOpaque(false);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/is_hidden_commands"),
 				L10N.label("elementgui.beitem.is_hidden_commands")));
-		isHiddenInCommands.setOpaque(false);
 		basicProperties.add(isHiddenInCommands);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/rotation_mode"),
@@ -292,7 +290,6 @@ public class BEBlockGUI extends ModElementGUI<BEBlock> {
 		boundingBoxNorthPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/can_walk_through"),
 				L10N.label("elementgui.block.can_walk_through")));
 		boundingBoxNorthPanel.add(isNotColidable);
-		isNotColidable.setOpaque(false);
 
 		boundingBoxPanel.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, boundingBoxNorthPanel),
 				boundingBoxList));

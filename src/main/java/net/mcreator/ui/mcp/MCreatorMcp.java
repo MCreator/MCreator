@@ -72,6 +72,7 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 		server.registerTool(new CurrentTabTool(currentMCreator));
 		server.registerTool(new VariableTool(currentMCreator));
 		server.registerTool(new FindReferencesTool(currentMCreator));
+		server.registerTool(new FindBrokenReferencesTool(currentMCreator));
 		server.registerTool(new PackMakerTool(currentMCreator));
 	}
 
