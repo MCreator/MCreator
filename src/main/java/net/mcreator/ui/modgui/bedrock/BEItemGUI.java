@@ -147,7 +147,6 @@ public class BEItemGUI extends ModElementGUI<BEItem> {
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
-		isFireResistant.setOpaque(false);
 		basicProperties.add(isFireResistant);
 
 		basicProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("beitem/creative_tab"),
