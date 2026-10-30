@@ -72,7 +72,7 @@ import net.mcreator.element.converter.v2026_3.BEBlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2026_3.BedrockRecipeWildcardItemsFixer;
 import net.mcreator.element.converter.v2026_3.CoralFeaturesRemover;
 import net.mcreator.element.converter.v2026_3.GameRuleRegistryNameFixer;
-import net.mcreator.element.converter.v2026_3.PlayerConditionAdvancementConverter;
+import net.mcreator.element.converter.v2026_4.PlayerConditionAdvancementConverter;
 import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.*;
@@ -138,7 +138,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.GAMERULE, List.of(
 			new GameruleDisplayNameFixer(),
-			new BooleanGameRulesConverter()
+			new BooleanGameRulesConverter(),
+			new GameRuleRegistryNameFixer()
 		));
 		put(ModElementType.GUI, List.of(
 			new GUIBindingInverter(),
@@ -228,7 +229,8 @@ public class ConverterRegistry {
 			new HugeFungusFeatureConverter(),
 			new FeatureDimensionRestrictionConverter(),
 			new FeatureBlockstateSelectorConverter(),
-			new FeatureCarvingMaskRemover()
+			new FeatureCarvingMaskRemover(),
+			new CoralFeaturesRemover()
 		));
 		put(ModElementType.STRUCTURE, List.of(
 			new StructureToFeatureConverter(),

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2026_3;
+package net.mcreator.element.converter.v2026_4;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -149,6 +149,6 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 91;
+		return 93;
 	}
 }
