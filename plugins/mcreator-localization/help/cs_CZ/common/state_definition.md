@@ -1,0 +1,1 @@
+Specifikujte hodnoty, které budou přijmouty vlastnostmi vašeho elementu pro tento stav. Pokud odškrtnete box nalevo od vladtnosti, nebude to mít na tento stav žádný vliv.
