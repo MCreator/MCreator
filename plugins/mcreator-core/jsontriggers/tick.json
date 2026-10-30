@@ -17,9 +17,6 @@
     ],
     "inputs": [
       "player"
-    ],
-    "warnings": [
-      "utility_adv_trigger"
     ]
   }
 }
