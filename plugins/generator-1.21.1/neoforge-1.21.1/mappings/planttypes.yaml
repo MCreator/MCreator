@@ -6,12 +6,12 @@ Water: "return (state.is(Blocks.WATER) || state.getBlock() instanceof IceBlock) 
 Nether: "return state.getBlock() == Blocks.SOUL_SAND;"
 Crop: "return state.is(Blocks.FARMLAND);"
 Beach: |
-  boolean isBeach = state.is(BlockTags.DIRT) || state.is(BlockTags.SAND);
-  boolean hasWater = false;
-  for (Direction face : Direction.Plane.HORIZONTAL) {
-      BlockState adjacentBlockState = world.getBlockState(pos.relative(face));
-      var adjacentFluidState = world.getFluidState(pos.relative(face));
-      hasWater = hasWater || adjacentBlockState.is(Blocks.FROSTED_ICE) || adjacentFluidState.is(FluidTags.WATER);
-      if (hasWater) break;
+  if (state.is(BlockTags.DIRT) || state.is(BlockTags.SAND)) {
+      for (Direction face : Direction.Plane.HORIZONTAL) {
+          BlockState adjacentBlockState = world.getBlockState(pos.relative(face));
+          var adjacentFluidState = world.getFluidState(pos.relative(face));
+          if (adjacentBlockState.is(Blocks.FROSTED_ICE) || adjacentFluidState.is(FluidTags.WATER))
+              return true;
+      }
   }
-  return isBeach && hasWater;
+  return false;

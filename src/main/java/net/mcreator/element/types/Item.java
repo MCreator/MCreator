@@ -47,7 +47,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Item extends GeneratableElement
-		implements IItem, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
+		implements IMCItemProvider, IItemWithModel, ITabContainedElement, ISpecialInfoHolder, IItemWithTexture {
 
 	public int renderType;
 	@TextureReference(TextureType.ITEM) public TextureHolder texture;

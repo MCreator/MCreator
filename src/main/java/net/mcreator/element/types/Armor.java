@@ -44,7 +44,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
+@SuppressWarnings("unused") public class Armor extends GeneratableElement implements IMCItemProvider, ITabContainedElement {
 
 	public boolean enableHelmet;
 	@TextureReference(TextureType.ITEM) @NonNullIf("enableHelmet") public TextureHolder textureHelmet;

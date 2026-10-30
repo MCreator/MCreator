@@ -137,6 +137,10 @@ public class BlocklyPanel extends JPanel implements Closeable {
 		webView.forceLoad();
 	}
 
+	public void focusBlockly() {
+		webView.focusBrowser();
+	}
+
 	private boolean isTransparent() {
 		return mcreator.hasBackgroundImage() && CefUtils.useOSR()
 				&& PreferencesManager.PREFERENCES.blockly.translucentBackground.get();
@@ -219,12 +223,29 @@ public class BlocklyPanel extends JPanel implements Closeable {
 	}
 
 	public void addBlocksFromXML(String xml) {
+		addBlocksFromXML(xml, false);
+	}
+
+	/**
+	 * @param focusAddedBlocks If true, the first added top block is focused for keyboard navigation. Only applies when a single chain of blocks is added.
+	 */
+	public void addBlocksFromXML(String xml, boolean focusAddedBlocks) {
 		String cleanXML = escapeXML(cleanupXML(xml));
 		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks
 		if (index == -1) { // The separator wasn't found
-			webView.executeScript(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('" + cleanXML + "'), workspace)",
-					WebView.JSExecutionType.LOCAL_SAFE);
+			if (focusAddedBlocks) {
+				webView.executeScript("""
+						(function() {
+							const ids = Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('%s'), workspace);
+							const block = ids.length > 0 ? workspace.getBlockById(ids[0]) : null;
+							if (block)
+								Blockly.getFocusManager().focusNode(block);
+						})()""".formatted(cleanXML), WebView.JSExecutionType.LOCAL_SAFE);
+			} else {
+				webView.executeScript(
+						"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('" + cleanXML + "'), workspace)",
+						WebView.JSExecutionType.LOCAL_SAFE);
+			}
 		} else { // We add the blocks separately so that they don't overlap, currently used by feature editor where two chains of blocks are possible
 			index += 8; //We add the length of "</block>" to the index
 			webView.executeScript(

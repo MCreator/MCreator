@@ -26,7 +26,6 @@ import net.mcreator.element.types.ItemExtension;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.element.types.SpecialEntity;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.minecraft.TagType;
@@ -830,14 +829,9 @@ public class WoodPackMakerTool extends AbstractPackMakerTool {
 	}
 
 	public static boolean isSupported(GeneratorConfiguration gc) {
-		return gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.RECIPE)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.BLOCK)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.SPECIALENTITY)
-				!= GeneratorStats.CoverageStatus.NONE
-				&& gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.ITEMEXTENSION)
-				!= GeneratorStats.CoverageStatus.NONE;
+		return gc.getGeneratorStats()
+				.areModElementTypesCovered(ModElementType.RECIPE, ModElementType.BLOCK, ModElementType.SPECIALENTITY,
+						ModElementType.ITEMEXTENSION);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {

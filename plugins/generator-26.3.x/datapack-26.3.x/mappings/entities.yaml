@@ -1,0 +1,673 @@
+_default:
+  - Zombie
+  - EntityTypes.ZOMBIE
+  - zombie
+_mcreator_map_template:
+  - "@NAMEEntity"
+  - "@JavaModNameEntities.@REGISTRYNAME.get()"
+  - "@modid:@registryname"
+_bypass_prefix: "#"
+EntityAgeable: AgeableMob
+EntityAmbientCreature: AmbientCreature
+EntityAnimal: Animal
+EntityAvatar: Avatar
+EntityCreature: PathfinderMob
+EntityGolem: AbstractGolem
+EntityHanging: HangingEntity
+EntityLiving: LivingEntity
+EntityMinecartContainer: AbstractMinecartContainer
+EntityMob: Mob
+EntityMonster: Monster
+EntityShoulderRiding: ShoulderRidingEntity
+EntitySpellcasterIllager: SpellcasterIllager
+EntityTameable: TamableAnimal
+EntityThrowable: ThrowableProjectile
+EntityWaterMob: WaterAnimal
+EntityAcaciaBoat:
+  - Boat
+  - EntityTypes.ACACIA_BOAT
+  - acacia_boat
+EntityAcaciaChestBoat:
+  - ChestBoat
+  - EntityTypes.ACACIA_CHEST_BOAT
+  - acacia_chest_boat
+EntityAllay:
+  - Allay
+  - EntityTypes.ALLAY
+  - allay
+EntityAreaEffectCloud:
+  - AreaEffectCloud
+  - EntityTypes.AREA_EFFECT_CLOUD
+  - area_effect_cloud
+EntityArmadillo:
+  - Armadillo
+  - EntityTypes.ARMADILLO
+  - armadillo
+EntityArmorStand:
+  - ArmorStand
+  - EntityTypes.ARMOR_STAND
+  - armor_stand
+EntityArrow:
+  - Arrow
+  - EntityTypes.ARROW
+  - arrow
+EntityAxolotl:
+  - Axolotl
+  - EntityTypes.AXOLOTL
+  - axolotl
+EntityBambooChestRaft:
+  - ChestRaft
+  - EntityTypes.BAMBOO_CHEST_RAFT
+  - bamboo_chest_raft
+EntityBambooRaft:
+  - Raft
+  - EntityTypes.BAMBOO_RAFT
+  - bamboo_raft
+EntityBat:
+  - Bat
+  - EntityTypes.BAT
+  - bat
+EntityBee:
+  - Bee
+  - EntityTypes.BEE
+  - bee
+EntityBirchBoat:
+  - Boat
+  - EntityTypes.BIRCH_BOAT
+  - birch_boat
+EntityBirchChestBoat:
+  - ChestBoat
+  - EntityTypes.BIRCH_CHEST_BOAT
+  - birch_chest_boat
+EntityBlaze:
+  - Blaze
+  - EntityTypes.BLAZE
+  - blaze
+EntityBlockDisplay:
+  - Display.BlockDisplay
+  - EntityTypes.BLOCK_DISPLAY
+  - block_display
+EntityBogged:
+  - Bogged
+  - EntityTypes.BOGGED
+  - bogged
+EntityBreeze:
+  - Breeze
+  - EntityTypes.BREEZE
+  - breeze
+EntityBreezeWindCharge:
+  - BreezeWindCharge
+  - EntityTypes.BREEZE_WIND_CHARGE
+  - breeze_wind_charge
+EntityCamel:
+  - Camel
+  - EntityTypes.CAMEL
+  - camel
+EntityCamelHusk:
+  - CamelHusk
+  - EntityTypes.CAMEL_HUSK
+  - camel_husk
+EntityCat:
+  - Cat
+  - EntityTypes.CAT
+  - cat
+EntityCaveSpider:
+  - CaveSpider
+  - EntityTypes.CAVE_SPIDER
+  - cave_spider
+EntityCherryBoat:
+  - Boat
+  - EntityTypes.CHERRY_BOAT
+  - cherry_boat
+EntityCherryChestBoat:
+  - ChestBoat
+  - EntityTypes.CHERRY_CHEST_BOAT
+  - cherry_chest_boat
+EntityMinecartChest:
+  - MinecartChest
+  - EntityTypes.CHEST_MINECART
+  - chest_minecart
+EntityChicken:
+  - Chicken
+  - EntityTypes.CHICKEN
+  - chicken
+EntityCod:
+  - Cod
+  - EntityTypes.COD
+  - cod
+EntityCopperGolem:
+  - CopperGolem
+  - EntityTypes.COPPER_GOLEM
+  - copper_golem
+EntityMinecartCommandBlock:
+  - MinecartCommandBlock
+  - EntityTypes.COMMAND_BLOCK_MINECART
+  - command_block_minecart
+EntityCow:
+  - Cow
+  - EntityTypes.COW
+  - cow
+EntityCreaking:
+  - Creaking
+  - EntityTypes.CREAKING
+  - creaking
+EntityCreeper:
+  - Creeper
+  - EntityTypes.CREEPER
+  - creeper
+EntityCushion:
+  - Cushion
+  - EntityTypes.CUSHION
+  - cushion
+EntityDarkOakBoat:
+  - Boat
+  - EntityTypes.DARK_OAK_BOAT
+  - dark_oak_boat
+EntityDarkOakChestBoat:
+  - ChestBoat
+  - EntityTypes.DARK_OAK_CHEST_BOAT
+  - dark_oak_chest_boat
+EntityDolphin:
+  - Dolphin
+  - EntityTypes.DOLPHIN
+  - dolphin
+EntityDonkey:
+  - Donkey
+  - EntityTypes.DONKEY
+  - donkey
+EntityDragonFireball:
+  - DragonFireball
+  - EntityTypes.DRAGON_FIREBALL
+  - dragon_fireball
+EntityDrowned:
+  - Drowned
+  - EntityTypes.DROWNED
+  - drowned
+EntityEgg:
+  - ThrownEgg
+  - EntityTypes.EGG
+  - egg
+EntityElderGuardian:
+  - ElderGuardian
+  - EntityTypes.ELDER_GUARDIAN
+  - elder_guardian
+EntityEnderman:
+  - Enderman
+  - EntityTypes.ENDERMAN
+  - enderman
+EntityEndermite:
+  - Endermite
+  - EntityTypes.ENDERMITE
+  - endermite
+EntityDragon:
+  - EnderDragon
+  - EntityTypes.ENDER_DRAGON
+  - ender_dragon
+EntityEnderPearl:
+  - ThrownEnderpearl
+  - EntityTypes.ENDER_PEARL
+  - ender_pearl
+EntityEnderCrystal:
+  - EndCrystal
+  - EntityTypes.END_CRYSTAL
+  - end_crystal
+EntityEvoker:
+  - Evoker
+  - EntityTypes.EVOKER
+  - evoker
+EntityEvokerFangs:
+  - EvokerFangs
+  - EntityTypes.EVOKER_FANGS
+  - evoker_fangs
+EntityExpBottle:
+  - ThrownExperienceBottle
+  - EntityTypes.EXPERIENCE_BOTTLE
+  - experience_bottle
+EntityXPOrb:
+  - ExperienceOrb
+  - EntityTypes.EXPERIENCE_ORB
+  - experience_orb
+EntityEnderEye:
+  - EyeOfEnder
+  - EntityTypes.EYE_OF_ENDER
+  - eye_of_ender
+EntityFallingBlock:
+  - FallingBlockEntity
+  - EntityTypes.FALLING_BLOCK
+  - falling_block
+EntityFireball:
+  - LargeFireball
+  - EntityTypes.FIREBALL
+  - fireball
+EntityFireworkRocket:
+  - FireworkRocketEntity
+  - EntityTypes.FIREWORK_ROCKET
+  - firework_rocket
+EntityFox:
+  - Fox
+  - EntityTypes.FOX
+  - fox
+EntityFrog:
+  - Frog
+  - EntityTypes.FROG
+  - frog
+EntityMinecartFurnace:
+  - MinecartFurnace
+  - EntityTypes.FURNACE_MINECART
+  - furnace_minecart
+EntityGhast:
+  - Ghast
+  - EntityTypes.GHAST
+  - ghast
+EntityHappyGhast:
+  - HappyGhast
+  - EntityTypes.HAPPY_GHAST
+  - happy_ghast
+EntityGiantZombie:
+  - Giant
+  - EntityTypes.GIANT
+  - giant
+EntityGlowItemFrame:
+  - GlowItemFrame
+  - EntityTypes.GLOW_ITEM_FRAME
+  - glow_item_frame
+EntityGlowSquid:
+  - GlowSquid
+  - EntityTypes.GLOW_SQUID
+  - glow_squid
+EntityGoat:
+  - Goat
+  - EntityTypes.GOAT
+  - goat
+EntityGuardian:
+  - Guardian
+  - EntityTypes.GUARDIAN
+  - guardian
+EntityHoglin:
+  - Hoglin
+  - EntityTypes.HOGLIN
+  - hoglin
+EntityMinecartHopper:
+  - MinecartHopper
+  - EntityTypes.HOPPER_MINECART
+  - hopper_minecart
+EntityHorse:
+  - Horse
+  - EntityTypes.HORSE
+  - horse
+EntityHusk:
+  - Husk
+  - EntityTypes.HUSK
+  - husk
+EntityIllusionIllager:
+  - Illusioner
+  - EntityTypes.ILLUSIONER
+  - illusioner
+EntityInteraction:
+  - Interaction
+  - EntityTypes.INTERACTION
+  - interaction
+EntityIronGolem:
+  - IronGolem
+  - EntityTypes.IRON_GOLEM
+  - iron_golem
+EntityItem:
+  - ItemEntity
+  - EntityTypes.ITEM
+  - item
+EntityItemDisplay:
+  - Display.ItemDisplay
+  - EntityTypes.ITEM_DISPLAY
+  - item_display
+EntityItemFrame:
+  - ItemFrame
+  - EntityTypes.ITEM_FRAME
+  - item_frame
+EntityJungleBoat:
+  - Boat
+  - EntityTypes.JUNGLE_BOAT
+  - jungle_boat
+EntityJungleChestBoat:
+  - ChestBoat
+  - EntityTypes.JUNGLE_CHEST_BOAT
+  - jungle_chest_boat
+EntityLeashKnot:
+  - LeashFenceKnotEntity
+  - EntityTypes.LEASH_KNOT
+  - leash_knot
+EntityLightningBolt:
+  - LightningBolt
+  - EntityTypes.LIGHTNING_BOLT
+  - lightning_bolt
+EntityLlama:
+  - Llama
+  - EntityTypes.LLAMA
+  - llama
+EntityLlamaSpit:
+  - LlamaSpit
+  - EntityTypes.LLAMA_SPIT
+  - llama_spit
+EntityMagmaCube:
+  - MagmaCube
+  - EntityTypes.MAGMA_CUBE
+  - magma_cube
+EntityMangroveBoat:
+  - Boat
+  - EntityTypes.MANGROVE_BOAT
+  - mangrove_boat
+EntityMangroveChestBoat:
+  - ChestBoat
+  - EntityTypes.MANGROVE_CHEST_BOAT
+  - mangrove_chest_boat
+EntityMannequin:
+  - Mannequin
+  - EntityTypes.MANNEQUIN
+  - mannequin
+EntityMarker:
+  - Marker
+  - EntityTypes.MARKER
+  - marker
+EntityMinecart:
+  - Minecart
+  - EntityTypes.MINECART
+  - minecart
+EntityMooshroom:
+  - MushroomCow
+  - EntityTypes.MOOSHROOM
+  - mooshroom
+EntityMule:
+  - Mule
+  - EntityTypes.MULE
+  - mule
+EntityNautilus:
+  - Nautilus
+  - EntityTypes.NAUTILUS
+  - nautilus
+EntityBoat:
+  - Boat
+  - EntityTypes.OAK_BOAT
+  - oak_boat
+EntityChestBoat:
+  - ChestBoat
+  - EntityTypes.OAK_CHEST_BOAT
+  - oak_chest_boat
+EntityOcelot:
+  - Ocelot
+  - EntityTypes.OCELOT
+  - ocelot
+EntityOminousItemSpawner:
+  - OminousItemSpawner
+  - EntityTypes.OMINOUS_ITEM_SPAWNER
+  - ominous_item_spawner
+EntityPainting:
+  - Painting
+  - EntityTypes.PAINTING
+  - painting
+EntityPaleOakBoat:
+  - Boat
+  - EntityTypes.PALE_OAK_BOAT
+  - pale_oak_boat
+EntityPaleOakChestBoat:
+  - ChestBoat
+  - EntityTypes.PALE_OAK_CHEST_BOAT
+  - pale_oak_chest_boat
+EntityPanda:
+  - Panda
+  - EntityTypes.PANDA
+  - panda
+EntityParched:
+  - Parched
+  - EntityTypes.PARCHED
+  - parched
+EntityParrot:
+  - Parrot
+  - EntityTypes.PARROT
+  - parrot
+EntityPhantom:
+  - Phantom
+  - EntityTypes.PHANTOM
+  - phantom
+EntityPig:
+  - Pig
+  - EntityTypes.PIG
+  - pig
+EntityPiglin:
+  - Piglin
+  - EntityTypes.PIGLIN
+  - piglin
+EntityPiglinBrute:
+  - PiglinBrute
+  - EntityTypes.PIGLIN_BRUTE
+  - piglin_brute
+EntityPillager:
+  - Pillager
+  - EntityTypes.PILLAGER
+  - pillager
+EntityPolarBear:
+  - PolarBear
+  - EntityTypes.POLAR_BEAR
+  - polar_bear
+EntityPoplarBoat:
+  - Boat
+  - EntityTypes.POPLAR_BOAT
+  - poplar_boat
+EntityPoplarChestBoat:
+  - ChestBoat
+  - EntityTypes.POPLAR_CHEST_BOAT
+  - poplar_chest_boat
+EntityPotion:
+  - ThrownSplashPotion
+  - EntityTypes.SPLASH_POTION
+  - splash_potion
+EntityPotionLingering:
+  - ThrownLingeringPotion
+  - EntityTypes.LINGERING_POTION
+  - lingering_potion
+EntityPufferfish:
+  - Pufferfish
+  - EntityTypes.PUFFERFISH
+  - pufferfish
+EntityRabbit:
+  - Rabbit
+  - EntityTypes.RABBIT
+  - rabbit
+EntityRavager:
+  - Ravager
+  - EntityTypes.RAVAGER
+  - ravager
+EntitySalmon:
+  - Salmon
+  - EntityTypes.SALMON
+  - salmon
+EntitySheep:
+  - Sheep
+  - EntityTypes.SHEEP
+  - sheep
+EntityShulker:
+  - Shulker
+  - EntityTypes.SHULKER
+  - shulker
+EntityShulkerBullet:
+  - ShulkerBullet
+  - EntityTypes.SHULKER_BULLET
+  - shulker_bullet
+EntitySilverfish:
+  - Silverfish
+  - EntityTypes.SILVERFISH
+  - silverfish
+EntitySkeleton:
+  - Skeleton
+  - EntityTypes.SKELETON
+  - skeleton
+EntitySkeletonHorse:
+  - SkeletonHorse
+  - EntityTypes.SKELETON_HORSE
+  - skeleton_horse
+EntitySlime:
+  - Slime
+  - EntityTypes.SLIME
+  - slime
+EntitySmallFireball:
+  - SmallFireball
+  - EntityTypes.SMALL_FIREBALL
+  - small_fireball
+EntitySniffer:
+  - Sniffer
+  - EntityTypes.SNIFFER
+  - sniffer
+EntitySnowball:
+  - Snowball
+  - EntityTypes.SNOWBALL
+  - snowball
+EntitySnowman:
+  - SnowGolem
+  - EntityTypes.SNOW_GOLEM
+  - snow_golem
+EntityMinecartMobSpawner:
+  - MinecartSpawner
+  - EntityTypes.SPAWNER_MINECART
+  - spawner_minecart
+EntitySpectralArrow:
+  - SpectralArrow
+  - EntityTypes.SPECTRAL_ARROW
+  - spectral_arrow
+EntitySpider:
+  - Spider
+  - EntityTypes.SPIDER
+  - spider
+EntitySpruceBoat:
+  - Boat
+  - EntityTypes.SPRUCE_BOAT
+  - spruce_boat
+EntitySpruceChestBoat:
+  - ChestBoat
+  - EntityTypes.SPRUCE_CHEST_BOAT
+  - spruce_chest_boat
+EntitySquid:
+  - Squid
+  - EntityTypes.SQUID
+  - squid
+EntityStray:
+  - Stray
+  - EntityTypes.STRAY
+  - stray
+EntityStrider:
+  - Strider
+  - EntityTypes.STRIDER
+  - strider
+EntitySulfurCube:
+  - SulfurCube
+  - EntityTypes.SULFUR_CUBE
+  - sulfur_cube
+EntityTadpole:
+  - Tadpole
+  - EntityTypes.TADPOLE
+  - tadpole
+EntityTextDisplay:
+  - Display.TextDisplay
+  - EntityTypes.TEXT_DISPLAY
+  - text_display
+EntityTNTPrimed:
+  - PrimedTnt
+  - EntityTypes.TNT
+  - tnt
+EntityMinecartTNT:
+  - MinecartTNT
+  - EntityTypes.TNT_MINECART
+  - tnt_minecart
+EntityTraderLlama:
+  - TraderLlama
+  - EntityTypes.TRADER_LLAMA
+  - trader_llama
+EntityTrident:
+  - ThrownTrident
+  - EntityTypes.TRIDENT
+  - trident
+EntityTropicalFish:
+  - TropicalFish
+  - EntityTypes.TROPICAL_FISH
+  - tropical_fish
+EntityTurtle:
+  - Turtle
+  - EntityTypes.TURTLE
+  - turtle
+EntityVex:
+  - Vex
+  - EntityTypes.VEX
+  - vex
+EntityVillager:
+  - Villager
+  - EntityTypes.VILLAGER
+  - villager
+EntityVindicator:
+  - Vindicator
+  - EntityTypes.VINDICATOR
+  - vindicator
+EntityWanderingTrader:
+  - WanderingTrader
+  - EntityTypes.WANDERING_TRADER
+  - wandering_trader
+EntityWarden:
+  - Warden
+  - EntityTypes.WARDEN
+  - warden
+EntityWindCharge:
+  - WindCharge
+  - EntityTypes.WIND_CHARGE
+  - wind_charge
+EntityWitch:
+  - Witch
+  - EntityTypes.WITCH
+  - witch
+EntityWither:
+  - WitherBoss
+  - EntityTypes.WITHER
+  - wither
+EntityWitherSkeleton:
+  - WitherSkeleton
+  - EntityTypes.WITHER_SKELETON
+  - wither_skeleton
+EntityWitherSkull:
+  - WitherSkull
+  - EntityTypes.WITHER_SKULL
+  - wither_skull
+EntityWolf:
+  - Wolf
+  - EntityTypes.WOLF
+  - wolf
+EntityZoglin:
+  - Zoglin
+  - EntityTypes.ZOGLIN
+  - zoglin
+EntityZombie:
+  - Zombie
+  - EntityTypes.ZOMBIE
+  - zombie
+EntityZombieHorse:
+  - ZombieHorse
+  - EntityTypes.ZOMBIE_HORSE
+  - zombie_horse
+EntityZombieNautilus:
+  - ZombieNautilus
+  - EntityTypes.ZOMBIE_NAUTILUS
+  - zombie_nautilus
+EntityZombieVillager:
+  - ZombieVillager
+  - EntityTypes.ZOMBIE_VILLAGER
+  - zombie_villager
+EntityPigZombie:
+  - ZombifiedPiglin
+  - EntityTypes.ZOMBIFIED_PIGLIN
+  - zombified_piglin
+EntityPlayer:
+  - Player
+  - EntityTypes.PLAYER
+  - player
+EntityPlayerMP:
+  - ServerPlayer
+  - EntityTypes.PLAYER
+  - player
+EntityFishHook:
+  - FishingHook
+  - EntityTypes.FISHING_BOBBER
+  - fishing_bobber

@@ -72,9 +72,9 @@ public class ArmorImageMakerView extends ViewBase {
 		controls.add(L10N.label("dialog.armor_image_maker.saturation_lightness_lock"));
 		controls.add(type1);
 
-		col.addColorSelectedListener(event -> updateARM());
-		str.addActionListener(e -> updateARM());
-		type1.addActionListener(e -> updateARM());
+		col.addColorSelectedListener(_ -> updateARM());
+		str.addActionListener(_ -> updateARM());
+		type1.addActionListener(_ -> updateARM());
 
 		JPanel wrap = PanelUtils.centerInPanelPadding(controls, 10, 10);
 		ComponentUtils.makeSection(wrap, L10N.t("dialog.armor_image_maker.properties"));
@@ -107,7 +107,7 @@ public class ArmorImageMakerView extends ViewBase {
 		add("North", ComponentUtils.applyPadding(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
 				true, true, false, true));
-		save.addActionListener(event -> {
+		save.addActionListener(_ -> {
 			String namec = JOptionPane.showInputDialog(L10N.t("dialog.armor_image_maker.name"));
 			if (namec != null && !namec.isBlank()) {
 				namec = RegistryNameFixer.fix(namec);
@@ -138,8 +138,8 @@ public class ArmorImageMakerView extends ViewBase {
 		File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName(namec);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), armorPars[0]);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image2), armorPars[1]);
-		use(workspace, images[2], namec + "_head");
-		use(workspace, images[3], namec + "_body");
+		use(workspace, images[2], namec + "_helmet");
+		use(workspace, images[3], namec + "_chestplate");
 		use(workspace, images[4], namec + "_leggings");
 		use(workspace, images[5], namec + "_boots");
 	}

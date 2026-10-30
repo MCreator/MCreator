@@ -19,6 +19,7 @@
 
 package net.mcreator.element.types.interfaces;
 
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 
@@ -34,13 +35,9 @@ public interface ISpecialInfoHolder {
 	}
 
 	default boolean hasSpecialInformation(WorkspaceInfo w) {
-		return getSpecialInfoProcedure() != null && (
-				// hasProcedure logic
-				(getSpecialInfoProcedure().getName() != null && !"null".equals(getSpecialInfoProcedure().getName())
-						&& w.hasModElement(getSpecialInfoProcedure().getName()))
-						// or fixed value is not empty
-						|| (getSpecialInfoProcedure().getFixedValue() != null
-						&& !getSpecialInfoProcedure().getFixedValue().isEmpty()));
+		StringListProcedure procedure = getSpecialInfoProcedure();
+		return Procedure.hasProcedure(procedure, w.getWorkspace()) || (procedure != null
+				&& procedure.getFixedValue() != null && !procedure.getFixedValue().isEmpty());
 	}
 
 }

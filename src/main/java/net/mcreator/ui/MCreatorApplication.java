@@ -33,6 +33,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationClosedEvent;
+import net.mcreator.plugin.events.ApplicationFullyLoadedEvent;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.plugin.modapis.ModAPIManager;
@@ -253,6 +254,8 @@ public final class MCreatorApplication {
 				}
 			});
 
+			MCREvent.event(new ApplicationFullyLoadedEvent(this));
+
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
 	}
@@ -327,7 +330,8 @@ public final class MCreatorApplication {
 						mcreator.setVisible(true);
 						mcreator.requestFocusInWindow();
 						mcreator.toFront();
-						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
+						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN,
+								mcreator.getWorkspaceSettings().getCurrentGenerator());
 						openResult.set(mcreator);
 					} else { // already open, just focus it
 						LOG.info("Trying to open already open workspace, bringing it to the front.");

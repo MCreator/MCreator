@@ -35,6 +35,7 @@ import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.localhistory.HistoryManager;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
+import net.mcreator.workspace.resources.ModelManager;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettingsManager;
@@ -332,6 +333,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getModElementManager();
 	}
 
+	public ModelManager getModelManager() {
+		return fileManager.getModelManager();
+	}
+
 	private transient volatile boolean isClosing = false;
 
 	@Override public void close() {
@@ -426,6 +431,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		this.generator.close();
 		this.generator = new Generator(this); // reload generator
+
+		// mod element caches can depend on the generator, so we invalidate them
+		this.getModElements().forEach(ModElement::invalidateCache);
 	}
 
 	public void bindToNewWorkspaceFile(File newWorkspaceFile) {
@@ -649,6 +657,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// Reload structures and caches
 		this.getModElementManager().invalidateCache();
+		this.getModelManager().invalidateCache();
 		this.reloadModElements();
 		this.reloadFolderStructure();
 

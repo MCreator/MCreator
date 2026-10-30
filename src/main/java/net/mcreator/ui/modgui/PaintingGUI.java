@@ -61,7 +61,6 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	@Override protected void initGUI() {
 		texture = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue();
-		texture.setOpaque(false);
 
 		JComponent textureComponent = PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(
 				HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"), texture),

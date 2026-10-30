@@ -134,7 +134,7 @@ public class MCreatorTabs extends JTabbedPane {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier) || tab.identifier.toString().toLowerCase(Locale.ROOT)
 					.equals(identifier.toString().toLowerCase(Locale.ROOT))) {
-				if (tab.equals(this.current)) {
+				if (tab == this.current) {
 					return tab; // Tab is already shown, no need to do anything
 				}
 
@@ -185,7 +185,8 @@ public class MCreatorTabs extends JTabbedPane {
 				if (tabIndex >= 0)
 					removeTabAt(tabIndex);
 			});
-			this.tabs.remove(tab);
+			// identity check so a stale tab can not evict a live one
+			this.tabs.removeIf(t -> t == tab);
 
 			if (tab.tabClosedListener != null) {
 				tab.tabClosedListener.tabClosed(tab);

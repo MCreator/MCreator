@@ -111,7 +111,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	@Override protected void initGUI() {
 		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
-				"elementgui.advancement.error_advancement_needs_icon");
+				"elementgui.advancement.error_advancement_needs_icon", true);
 
 		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
@@ -127,11 +127,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		ComponentUtils.deriveFont(achievementDescription, 16);
 
 		parentAchievement.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXX"));
-
-		showPopup.setOpaque(false);
-		announceToChat.setOpaque(false);
-		hideIfNotCompleted.setOpaque(false);
-		disableDisplay.setOpaque(false);
 
 		showPopup.setSelected(true);
 		announceToChat.setSelected(true);

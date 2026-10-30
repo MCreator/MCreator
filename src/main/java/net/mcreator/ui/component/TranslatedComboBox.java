@@ -20,6 +20,7 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.validation.component.VComboBox;
 
 import javax.swing.*;
@@ -32,24 +33,33 @@ import java.util.Objects;
 public class TranslatedComboBox extends VComboBox<String> {
 
 	@SafeVarargs public TranslatedComboBox(Map.Entry<String, String>... entries) {
+		this(false, entries);
+	}
+
+	@SafeVarargs public TranslatedComboBox(boolean showIcons, Map.Entry<String, String>... entries) {
 		final LinkedHashMap<String, String> map = new LinkedHashMap<>();
 		for (Map.Entry<String, String> entry : entries) {
 			map.put(entry.getKey(), L10N.t(entry.getValue()));
 		}
-		this(map);
+		this(map, showIcons);
 	}
 
-	public TranslatedComboBox(LinkedHashMap<String, String> map) {
+	public TranslatedComboBox(LinkedHashMap<String, String> map, boolean showIcons) {
 		map.forEach((key, _) -> super.addItem(key));
-		setRenderer(new BasicComboBoxRenderer() {
-			@Override
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-					boolean cellHasFocus) {
-				String translatedEntryString = map.get(value.toString());
-				return super.getListCellRendererComponent(list,
-						Objects.requireNonNullElse(translatedEntryString, value), index, isSelected, cellHasFocus);
-			}
-		});
+
+		if (showIcons) {
+			setRenderer(new ItemTexturesComboBoxRenderer(value -> Objects.requireNonNullElse(map.get(value), value)));
+		} else {
+			setRenderer(new BasicComboBoxRenderer() {
+				@Override
+				public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+						boolean cellHasFocus) {
+					String translatedEntryString = map.get(value.toString());
+					return super.getListCellRendererComponent(list,
+							Objects.requireNonNullElse(translatedEntryString, value), index, isSelected, cellHasFocus);
+				}
+			});
+		}
 	}
 
 	@Override public void addItem(String item) {

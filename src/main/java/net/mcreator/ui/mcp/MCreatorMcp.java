@@ -22,6 +22,8 @@ package net.mcreator.ui.mcp;
 import net.mcreator.Launcher;
 import net.mcreator.io.mcp.McpServer;
 import net.mcreator.io.mcp.transport.McpTransport;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.MCreatorMcpLoadedEvent;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.mcp.tools.*;
 
@@ -33,8 +35,15 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 
 	public MCreatorMcp(McpTransport transport, Supplier<MCreator> currentMCreator) {
 		this(new McpServer("MCreator", Launcher.version.full, transport), currentMCreator);
+	}
+
+	public MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) {
+		this.server = server;
+		this.currentMCreator = currentMCreator;
 
 		registerTools();
+
+		MCREvent.event(new MCreatorMcpLoadedEvent(this));
 	}
 
 	public void start() throws IOException {
@@ -44,6 +53,7 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 	private void registerTools() {
 		server.registerTool(new QueryWorkspaceTool(currentMCreator));
 		server.registerTool(new BuildTool(currentMCreator));
+		server.registerTool(new RunClientTool(currentMCreator));
 		server.registerTool(new ReadConsoleTool(currentMCreator));
 		server.registerTool(new ModElementTool(currentMCreator));
 		server.registerTool(new HelpTipsTool(currentMCreator));
@@ -55,12 +65,14 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 		server.registerTool(new ReadClassSourceTool(currentMCreator));
 		server.registerTool(new ProjectFilesTool(currentMCreator));
 		server.registerTool(new ProjectFileEditTool(currentMCreator));
+		server.registerTool(new RunDirFilesTool(currentMCreator));
 		server.registerTool(new BlocklyBlocksTool(currentMCreator));
 		server.registerTool(new BlocklyTriggersTool(currentMCreator));
 		server.registerTool(new BlocklyTemplatesTool(currentMCreator));
 		server.registerTool(new CurrentTabTool(currentMCreator));
 		server.registerTool(new VariableTool(currentMCreator));
 		server.registerTool(new FindReferencesTool(currentMCreator));
+		server.registerTool(new FindBrokenReferencesTool(currentMCreator));
 		server.registerTool(new PackMakerTool(currentMCreator));
 	}
 

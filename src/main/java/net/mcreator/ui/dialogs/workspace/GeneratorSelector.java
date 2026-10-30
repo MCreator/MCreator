@@ -97,7 +97,8 @@ public class GeneratorSelector {
 			"aitasks",
 			"features",
 			"cmdargs",
-			"triggers"
+			"triggers",
+			"enchantmenteffects"
 		));
 		put(GeneratorFlavor.ADDON, List.of(
 			"be_biomes",
@@ -234,13 +235,13 @@ public class GeneratorSelector {
 
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 
-			stats.getGeneratorBlocklyBlocks().forEach((key, value) -> {
+			stats.getGeneratorBlocklyBlocks().forEach((key, _) -> {
 				String name = L10N.t(covpfx + key.registryName());
 				if (name != null)
 					addStatsBar(name, key.registryName(), supportedProcedures, stats);
 			});
 
-			stats.getGeneratorBlocklyTriggers().forEach((key, value) -> {
+			stats.getGeneratorBlocklyTriggers().forEach((key, _) -> {
 				ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
 
 				if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() != GeneratorFlavor.BaseLanguage.JAVA
@@ -267,14 +268,14 @@ public class GeneratorSelector {
 			mainPanel.add("Center", pane);
 		}
 
-		generator.addActionListener(e -> {
+		generator.addActionListener(_ -> {
 			if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration)
 				cardLayout.show(statsPan, generatorConfiguration.getGeneratorName());
 		});
 
 		generator.setSelectedItem(current);
 
-		mainPanel.addHierarchyListener(e -> {
+		mainPanel.addHierarchyListener(_ -> {
 			if (SwingUtilities.getWindowAncestor(mainPanel) instanceof Dialog dialog) {
 				if (dialog.getHeight() > dialog.getGraphicsConfiguration().getBounds().height - 32) {
 					dialog.setSize(dialog.getWidth(), dialog.getGraphicsConfiguration().getBounds().height - 32);
@@ -295,13 +296,10 @@ public class GeneratorSelector {
 	private static void addStatusLabel(String readableName, GeneratorStats.CoverageStatus supported,
 			JPanel baseCoverageInfo) {
 		JLabel label = new JLabel(readableName);
-		if (supported == GeneratorStats.CoverageStatus.FULL) {
-			label.setIcon(UIRES.get("18px.ok"));
-		} else if (supported == GeneratorStats.CoverageStatus.PARTIAL) {
-			label.setIcon(UIRES.get("18px.warning"));
-		}
-		if (supported == GeneratorStats.CoverageStatus.NONE) {
-			label.setIcon(UIRES.get("18px.remove"));
+		switch (supported) {
+		case FULL -> label.setIcon(UIRES.get("18px.ok"));
+		case PARTIAL -> label.setIcon(UIRES.get("18px.warning"));
+		case null, default -> label.setIcon(UIRES.get("18px.remove"));
 		}
 		baseCoverageInfo.add(label);
 	}
