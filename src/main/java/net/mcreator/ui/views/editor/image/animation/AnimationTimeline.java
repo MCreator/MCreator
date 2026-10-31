@@ -357,6 +357,9 @@ public class AnimationTimeline extends JPanel {
 		timelinevector.removeElement(canvas);
 		updateTimelineButtons();
 		imv.getVersionManager().addRevision(new FrameRemoval(canvas, canvas.getFirst(), timelinevector.size(), addEmptyFrame));
+
+		if (addEmptyFrame)
+			addFrameFromEmptyLayer();
 	}
 
 	public void removeFrameFromTimelineNR(Canvas canvas) {
