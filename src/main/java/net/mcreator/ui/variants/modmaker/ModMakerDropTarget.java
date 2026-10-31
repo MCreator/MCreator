@@ -34,6 +34,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 record ModMakerDropTarget(MCreator mcreator) implements DropTargetListener {
@@ -68,7 +69,17 @@ record ModMakerDropTarget(MCreator mcreator) implements DropTargetListener {
 					Object transfObj = transferData.getFirst();
 					if (transfObj instanceof File file) {
 						if (file.getName().endsWith(".ogg")) {
-							SoundElementDialog.importSound(mcreator, new File[] { file });
+							List<File> fileList = new ArrayList<>();
+							fileList.add(file);
+							for (int i = 0; i < transferData.size(); i++) {
+								if (i == 0)
+									continue;
+
+								if (transferData.get(i) instanceof File file2 && file2.getName().endsWith(".ogg"))
+									fileList.add(file2);
+							}
+
+							SoundElementDialog.importSound(mcreator, fileList.toArray(new File[0]));
 						} else if (file.getName().endsWith(".java")) {
 							ModelImportActions.importJavaModel(mcreator, mcreator.getWorkspace(),
 									FileIO.readFileToString(file));
