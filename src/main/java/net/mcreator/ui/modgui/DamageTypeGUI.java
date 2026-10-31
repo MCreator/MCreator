@@ -69,8 +69,6 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		ComponentUtils.makeSection(damageProperties, L10N.t("elementgui.damagetype.damage_properties"));
 		damageProperties.setOpaque(false);
 
-		exhaustion.setOpaque(false);
-
 		damageProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("damagetype/exhaustion"),
 				L10N.label("elementgui.damagetype.exhaustion")));
 		damageProperties.add(exhaustion);

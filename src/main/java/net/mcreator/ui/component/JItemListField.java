@@ -53,10 +53,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 
 public abstract class JItemListField<T> extends JPanel implements IValidable, IOptionalValueContainer {
 
@@ -73,6 +71,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable, IO
 	private ValidationResult currentValidationResult = null;
 
 	private final DefaultListModel<T> elementsListModel = new DefaultListModel<>();
+	private final Set<T> brokenReferences = new HashSet<>();
 
 	protected final JList<T> elementsList = new JList<>(elementsListModel);
 
@@ -302,6 +301,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable, IO
 					continue; // Managed elements are only delete if deleteManaged is true
 
 				elementsListModel.removeElement(element);
+				brokenReferences.remove(element);
 				anyRemoved = true;
 			}
 		}
@@ -378,9 +378,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable, IO
 		List<T> retval = new ArrayList<>();
 		for (int i = 0; i < elementsListModel.size(); i++) {
 			T element = elementsListModel.get(i);
-			if (element instanceof MappableElement mappableElement && !mappableElement.isValidReference())
-				continue;
-			retval.add(element);
+			if (!brokenReferences.contains(element))
+				retval.add(element);
 		}
 		return retval;
 	}
@@ -390,11 +389,17 @@ public abstract class JItemListField<T> extends JPanel implements IValidable, IO
 			return;
 
 		elementsListModel.removeAllElements();
+		brokenReferences.clear();
 		for (T element : elements) {
+			// Broken references are kept so they can be shown, but are skipped by getListElements
 			if (element instanceof MappableElement mappableElement && !mappableElement.isValidReference())
-				continue;
+				brokenReferences.add(element);
 			elementsListModel.addElement(element);
 		}
+	}
+
+	protected boolean isBrokenReference(T element) {
+		return brokenReferences.contains(element);
 	}
 
 	public void addListElement(T element) {
@@ -417,22 +422,12 @@ public abstract class JItemListField<T> extends JPanel implements IValidable, IO
 		include.setSelected(!isExcluded);
 	}
 
-	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
-	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
-	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
-
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
 			g.setColor(currentValidationResult.type().getColor());
-			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
-				WARNING_ICON.paintIcon(this, g, 0, 0);
-			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
-				ERROR_ICON.paintIcon(this, g, 0, 0);
-			} else if (currentValidationResult.type() == ValidationResult.Type.PASSED) {
-				OK_ICON.paintIcon(this, g, 0, 0);
-			}
+			currentValidationResult.type().icon(13).paintIcon(this, g, 0, 0);
 
 			if (currentValidationResult.type() != ValidationResult.Type.PASSED) {
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
@@ -483,10 +478,17 @@ public abstract class JItemListField<T> extends JPanel implements IValidable, IO
 			setVerticalAlignment(SwingConstants.CENTER);
 
 			setIcon(null);
+			setToolTipText(null);
 
 			if (value instanceof MappableElement mappableElement) {
 				if (!isSelected && mappableElement.isManaged()) {
 					setBackground(Theme.current().getAltBackgroundColor());
+				}
+
+				if (isBrokenReference(value)) {
+					setForeground(ValidationResult.Type.ERROR.getColor());
+					setToolTipText(L10N.t("itemlistfield.broken_reference",
+							mappableElement.getUnmappedValue().replace(NameMapper.MCREATOR_PREFIX, "")));
 				}
 
 				Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();

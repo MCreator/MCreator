@@ -624,11 +624,13 @@ base_types:
     condition: hasStrippingResult()
   - type: blockentity
     condition: hasInventory
+  - type: flammable
+    condition: isFlammable()
 
 global_templates:
   - template: elementinits/woodtypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameWoodTypes.java"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.isSign())?size != 0}"
+    condition: "${blocks?filter(e -> e.isSign())?size != 0}"
 
 block_base_properties:
   Stairs: [ facing, half, shape, waterlogged ]

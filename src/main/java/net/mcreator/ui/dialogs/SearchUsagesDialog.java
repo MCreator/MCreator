@@ -29,11 +29,16 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Opens a dialog that shows usages of the elements selected by the user before all across the current workspace.
@@ -72,6 +77,35 @@ public class SearchUsagesDialog {
 	}
 
 	/**
+	 * @param mcreator         Workspace window calling this method.
+	 * @param brokenReferences Map of mod elements with broken references to the names of missing mod elements.
+	 */
+	public static void showBrokenReferencesDialog(MCreator mcreator, Map<ModElement, Set<String>> brokenReferences) {
+		showBrokenReferencesDialog(mcreator, brokenReferences, true);
+	}
+
+	/**
+	 * @param mcreator         Workspace window calling this method.
+	 * @param brokenReferences Map of mod elements with broken references to the names of missing mod elements.
+	 * @param notifyIfEmpty    Whether to show a message if there are no broken references.
+	 */
+	public static void showBrokenReferencesDialog(MCreator mcreator, Map<ModElement, Set<String>> brokenReferences,
+			boolean notifyIfEmpty) {
+		if (brokenReferences.isEmpty()) {
+			if (notifyIfEmpty)
+				JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.search_usages.broken_references.empty"),
+						L10N.t("dialog.search_usages.title"), JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null, new Object[] { L10N.t("common.close") },
+						L10N.t("common.close"));
+		} else {
+			showListDialog(mcreator, L10N.t("dialog.search_usages.broken_references.list"), brokenReferences.keySet(),
+					false, me -> L10N.t("dialog.search_usages.broken_references.count", brokenReferences.get(me).size()),
+					me -> L10N.t("dialog.search_usages.broken_references.tooltip",
+							brokenReferences.get(me).stream().sorted().collect(Collectors.joining("<br>"))));
+		}
+	}
+
+	/**
 	 * @param mcreator          Workspace window calling this method.
 	 * @param queryType         Localized string representing type of elements used by mod elements in the given list.
 	 * @param references        List of referencing/dependent mod elements.
@@ -97,6 +131,29 @@ public class SearchUsagesDialog {
 			}
 		}
 
+		String message;
+		if (deletionRequested) {
+			message = L10N.t("dialog.search_usages.deletion.confirm_msg", queryType);
+			if (messageSuffix != null)
+				message += "<br><br><small>" + messageSuffix;
+		} else {
+			message = L10N.t("dialog.search_usages.list", queryType);
+		}
+		return showListDialog(mcreator, message, references, deletionRequested, null, null);
+	}
+
+	/**
+	 * @param mcreator            Workspace window calling this method.
+	 * @param message             Message to show above the list of mod elements.
+	 * @param references          List of referencing/dependent mod elements.
+	 * @param deletionRequested   Whether user wants to delete selected elements or just view their usages.
+	 * @param descriptionProvider Optional provider of descriptions shown below mod element names in the list.
+	 * @param tooltipProvider     Optional provider of tooltips for mod elements in the list.
+	 * @return Whether elements deletion was requested and the user confirmed deletion.
+	 */
+	private static boolean showListDialog(MCreator mcreator, String message, Collection<ModElement> references,
+			boolean deletionRequested, @Nullable Function<ModElement, String> descriptionProvider,
+			@Nullable Function<ModElement, String> tooltipProvider) {
 		AtomicBoolean retVal = new AtomicBoolean(false);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title"), true);
 
@@ -109,7 +166,16 @@ public class SearchUsagesDialog {
 		refList.setFixedCellWidth(200);
 		refList.setVisibleRowCount(-1);
 		refList.setBackground(Theme.current().getSecondAltBackgroundColor());
-		refList.setCellRenderer(new CompactModElementListCellRenderer());
+		refList.setCellRenderer(new CompactModElementListCellRenderer(descriptionProvider));
+		if (tooltipProvider != null) { // JList shows tooltips set on the renderer components
+			ListCellRenderer<? super ModElement> renderer = refList.getCellRenderer();
+			refList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+				Component component = renderer.getListCellRendererComponent(list, value, index, isSelected,
+						cellHasFocus);
+				((JComponent) component).setToolTipText(tooltipProvider.apply(value));
+				return component;
+			});
+		}
 		refList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
@@ -136,18 +202,13 @@ public class SearchUsagesDialog {
 			dialog.getRootPane().setDefaultButton(close);
 		}
 
-		JLabel msgLabel = new JLabel();
+		JLabel msgLabel = new JLabel(message);
 		msgLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		dialog.add("North", msgLabel);
 
 		dialog.add("Center", sp);
 
 		if (deletionRequested) {
-			String msg = L10N.t("dialog.search_usages.deletion.confirm_msg", queryType);
-			if (messageSuffix != null)
-				msg += "<br><br><small>" + messageSuffix;
-			msgLabel.setText(msg);
-
 			JButton delete = L10N.button("dialog.search_usages.deletion.confirm");
 			delete.addActionListener(e -> {
 				retVal.set(true);
@@ -155,8 +216,6 @@ public class SearchUsagesDialog {
 			});
 			dialog.add("South", PanelUtils.join(edit, delete, close));
 		} else {
-			msgLabel.setText(L10N.t("dialog.search_usages.list", queryType));
-
 			dialog.add("South", PanelUtils.join(edit, close));
 		}
 

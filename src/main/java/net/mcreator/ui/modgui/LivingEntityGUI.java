@@ -392,12 +392,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
-		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> animations.entityDataListChanged());
+		entityDataList.addPropertyChangeListener("entityDataEntryRemoved", _ -> {
+			animations.entityDataListChanged();
+			modelLayers.entityDataListChanged();
+		});
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
 		spawnEggTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		spawnEggTexture.setOpaque(false);
 
 		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.error_entity_model_needs_texture");
@@ -417,8 +419,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			}
 		});
 
-		spawnInDungeons.setOpaque(false);
-
 		mobDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		equipmentMainHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		equipmentHelmet = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -428,7 +428,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		equipmentOffHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		rangedAttackItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		modelLayers = new JModelLayerList(mcreator, this);
+		modelLayers = new JModelLayerList(mcreator, this, () -> entityDataList.getEntries());
 
 		animations = new JEntityAnimationList(mcreator, this, () -> entityDataList.getEntries());
 
@@ -444,21 +444,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel vibrationPane = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
-
-		immuneToFire.setOpaque(false);
-		immuneToArrows.setOpaque(false);
-		immuneToFallDamage.setOpaque(false);
-		immuneToCactus.setOpaque(false);
-		immuneToDrowning.setOpaque(false);
-		immuneToLightning.setOpaque(false);
-		immuneToPotions.setOpaque(false);
-		immuneToPlayer.setOpaque(false);
-		immuneToExplosion.setOpaque(false);
-		immuneToTrident.setOpaque(false);
-		immuneToAnvil.setOpaque(false);
-		immuneToDragonBreath.setOpaque(false);
-		immuneToWither.setOpaque(false);
-
 		subpane1.setOpaque(false);
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour"),
@@ -528,13 +513,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 2, PanelUtils.totalCenterInPanel(
 				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
 						equipmentBody, equipmentLeggings, equipmentBoots))));
-
-		hasAI.setOpaque(false);
-		isBoss.setOpaque(false);
-		waterMob.setOpaque(false);
-		flyingMob.setOpaque(false);
-		hasSpawnEgg.setOpaque(false);
-		disableCollisions.setOpaque(false);
 
 		livingSound.setSound("");
 		hurtSound.setSound("entity.generic.hurt");
@@ -778,10 +756,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		rangedItemType.addActionListener(_ -> enableOrDisableFields());
 
-		ridable.setOpaque(false);
-		canControlStrafe.setOpaque(false);
-		canControlForward.setOpaque(false);
-
 		ComponentUtils.makeSection(aitopoveral, L10N.t("elementgui.living_entity.ai_parameters"));
 
 		JPanel aipan = new JPanel(new BorderLayout(0, 2));
@@ -820,10 +794,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane3.add("Center", ComponentUtils.applyPadding(aipan, 10, true, true, true, true));
 
-		breedable.setOpaque(false);
-		tameable.setOpaque(false);
-		ranged.setOpaque(false);
-
 		hasAI.setSelected(true);
 
 		mobBehaviourType.addActionListener(_ -> enableOrDisableFields());
@@ -844,9 +814,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		events.add(onInitialSpawn);
 		events.setOpaque(false);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
-
-		isBoss.setOpaque(false);
-
 		pane4.setOpaque(false);
 
 		JPanel selp = new JPanel(new GridLayout(8, 2, 30, 2));
@@ -856,9 +823,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		spawnThisMob.setSelected(true);
 		doesDespawnWhenIdle.setSelected(true);
-
-		spawnThisMob.setOpaque(false);
-		doesDespawnWhenIdle.setOpaque(false);
 
 		hasSpawnEgg.setSelected(true);
 
@@ -933,7 +897,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));
 		vibrationProps.setOpaque(false);
 
-		sensitiveToVibration.setOpaque(false);
 		sensitiveToVibration.addActionListener(_ -> enableOrDisableFields());
 
 		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sensitive_to_vibration"),
@@ -964,9 +927,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane1.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2).validate(mobModelTexture).validate(mobName);
+		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false).lazyValidate(
 				modelLayers::getValidationResult);
-		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.living_entity.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
@@ -1213,10 +1176,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
-		modelLayers.setEntries(livingEntity.modelLayers);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
-		animations.setEntries(livingEntity.animations); // load after data entries, because animations can use data entries
+		animations.setEntries(
+				livingEntity.animations); // load after data entries, because animations can use data entries
+		modelLayers.setEntries(
+				livingEntity.modelLayers); // load after data entries, because layers can use data entries
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);
 		sensitiveToVibration.setSelected(livingEntity.sensitiveToVibration);

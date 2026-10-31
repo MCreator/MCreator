@@ -209,11 +209,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
 					workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-					Set<ModElement> references = new HashSet<>();
-					for (int i : elements.getSelectedRows()) {
-						references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
-								workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
-					}
+					Set<ModElement> references = ReferencesFinder.searchLocalizationKeyUsages(
+							workspacePanel.getMCreator().getWorkspace(), getSelectedKeys(elements));
 
 					workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 					SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
@@ -325,22 +322,22 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		if (elements.getValueAt(elements.getSelectedRow(), 0) != null) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = new HashSet<>();
-			for (int i : elements.getSelectedRows()) {
-				references.addAll(
-						ReferencesFinder.searchLocalizationKeyUsages(workspacePanel.getMCreator().getWorkspace(),
-								(String) elements.getValueAt(i, 0)));
-			}
+			List<String> selectedKeys = getSelectedKeys(elements);
+			Set<ModElement> references = ReferencesFinder.searchLocalizationKeyUsages(
+					workspacePanel.getMCreator().getWorkspace(), selectedKeys);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
 			if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
 					L10N.t("dialog.search_usages.type.localization_key"), references)) {
-				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-						.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
+				selectedKeys.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
 				reloadElements();
 			}
 		}
+	}
+
+	private static List<String> getSelectedKeys(JTable elements) {
+		return Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0)).toList();
 	}
 
 	private void newLocalizationDialog() {

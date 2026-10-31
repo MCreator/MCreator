@@ -48,6 +48,15 @@
         "west": <@material_face "west"/>
 		</#if>
       },
+      <#-- Boxes are emitted in the base orientation; minecraft:transformation permutations rotate them with the geometry -->
+      <#if data.isNotColidable>
+      "minecraft:collision_box": false,
+      <#elseif !data.isFullCube()>
+      "minecraft:collision_box": <@collisionBoxes data.positiveBoundingBoxes()/>,
+      </#if>
+      <#if !data.isFullCube()>
+      "minecraft:selection_box": <#if data.getSelectionBox()??><@boxEntry data.getSelectionBox()/><#else>false</#if>,
+      </#if>
       <#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
       "minecraft:map_color": "${data.colorOnMap}",
       </#if>
@@ -153,6 +162,37 @@
   <#elseif data.rotationMode == 3 || data.rotationMode == 4>
     <#return "q.block_state('minecraft:block_face')">
   </#if>
+</#function>
+
+<#-- Bedrock box origin is relative to the bottom center of the block and its X axis points west, while MCreator boxes
+     are relative to the bottom north-west corner with X pointing east, so X is mirrored and Z is only shifted -->
+<#macro bedrockBox minX minY minZ maxX maxY maxZ>
+{
+  "origin": [${8 - maxX}, ${minY}, ${minZ - 8}],
+  "size": [${maxX - minX}, ${maxY - minY}, ${maxZ - minZ}]
+}
+</#macro>
+
+<#macro collisionBoxes boxes>
+  <#if boxes?size == 0>
+    false
+  <#elseif boxes?size == 1>
+    <@boxEntry boxes[0]/>
+  <#else>
+    [<#list boxes as box><@boxEntry box/><#sep>,</#list>]
+  </#if>
+</#macro>
+
+<#macro boxEntry box>
+  <@bedrockBox min(box.mx, box.Mx) min(box.my, box.My) min(box.mz, box.Mz) max(box.mx, box.Mx) max(box.my, box.My) max(box.mz, box.Mz)/>
+</#macro>
+
+<#function min(a, b)>
+  <#return (a < b)?then(a, b)>
+</#function>
+
+<#function max(a, b)>
+  <#return (a > b)?then(a, b)>
 </#function>
 
 <#macro material_face suffix="" disableAmbientOcclusion=false disableFaceDimming=false>

@@ -163,21 +163,9 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 	}
 	</#if>
 
-	<#if data.flammability != 0>
-	@Override public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return ${data.flammability};
-	}
-	</#if>
-
 	<#if data.aiPathNodeType != "DEFAULT">
 	@Override public PathType getBlockPathType(BlockState state, BlockGetter world, BlockPos pos, Mob entity) {
 		return PathType.${data.aiPathNodeType};
-	}
-	</#if>
-
-	<#if data.fireSpreadSpeed != 0>
-	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return ${data.fireSpreadSpeed};
 	}
 	</#if>
 
@@ -254,7 +242,7 @@ public class ${name}Block extends ${getPlantClass(data.plantType)}Block <#if int
 					return this.mayPlaceOn(groundState, worldIn, blockpos)
 			</#if>;
 		}
-	<#elseif !(data.growapableSpawnType.getUnmappedValue() == "Plains" && (data.plantType == "normal" || data.plantType == "sapling"))><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
+	<#elseif (data.growapableSpawnType.getUnmappedValue() != "Plains") || (data.plantType == "growapable")><#-- If no placingCondition or canBePlacedOn block list is specified, we emulate plant type placement logic -->
 		private boolean canPlantTypeSurvive(BlockState state, LevelReader world, BlockPos pos) {
 			${data.growapableSpawnType}
 		}

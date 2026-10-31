@@ -31,10 +31,6 @@ import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -51,9 +47,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				Set<ModElement> refs = new HashSet<>();
-				for (SoundElement sound : elementList.getSelectedValuesList())
-					refs.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), sound));
+				Set<ModElement> refs = ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(),
+						elementList.getSelectedValuesList());
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
@@ -83,9 +78,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = new HashSet<>();
-			for (SoundElement s : elements)
-				references.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), s));
+			Set<ModElement> references = ReferencesFinder.searchSoundUsages(
+					workspacePanel.getMCreator().getWorkspace(), elements);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
