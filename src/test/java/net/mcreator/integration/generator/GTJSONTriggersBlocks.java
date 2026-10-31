@@ -83,6 +83,10 @@ public class GTJSONTriggersBlocks {
 					"<field name=\"enchantment\">" + TestWorkspaceDataProvider.getRandomItem(random, enchantments)
 							.getName() + "</field>");
 
+			testXML = testXML.replace("<field name=\"biome0\"></field>",
+					"<field name=\"biome0\">" + TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.loadAllBiomes(modElement.getWorkspace())).getName() + "</field>");
+
 			testXML = testXML.replace("<block type=\"" + triggerBlock.getMachineName() + "\">",
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
 
