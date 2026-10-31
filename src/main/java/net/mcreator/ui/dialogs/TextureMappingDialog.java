@@ -52,7 +52,14 @@ public class TextureMappingDialog {
 	private final Map<String, ValidationGroup> validationGroups = new HashMap<>();
 
 	public TextureMappingDialog(Map<String, TexturedModel.TextureMapping> currentState) {
-		this.currentState = currentState;
+		if (currentState != null) {
+			// the dialog edits the state in place, so work on a copy as the passed map may be shared (e.g. cached)
+			this.currentState = new HashMap<>();
+			currentState.forEach((name, mapping) -> this.currentState.put(name,
+					new TexturedModel.TextureMapping(mapping.name(), new HashMap<>(mapping.getTextureMap()))));
+		} else {
+			this.currentState = null;
+		}
 	}
 
 	public Map<String, TexturedModel.TextureMapping> openMappingDialog(MCreator mcreator, Set<String> texturesList,
@@ -174,8 +181,7 @@ public class TextureMappingDialog {
 		int idx = 0;
 		for (Map.Entry<String, TextureHolder> s : entries) {
 			panel.add(L10N.label("dialog.textures_mapping.model_texture_part", s.getKey()));
-			tx[idx] = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK))
-					.requireValue();
+			tx[idx] = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue();
 			if (s.getValue() != null && !s.getValue().isEmpty())
 				tx[idx].setTexture(s.getValue());
 			validationGroup.addValidationElement(tx[idx]);

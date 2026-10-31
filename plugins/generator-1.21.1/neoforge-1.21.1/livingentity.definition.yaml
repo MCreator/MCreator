@@ -16,10 +16,17 @@ templates:
     condition: spawnThisMob
     name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
 
+base_types:
+  - entity
+  - type: item
+    condition: hasSpawnEgg
+  - type: enumextension
+    condition: "mobBehaviourType %= Raider"
+
 global_templates:
   - template: json/monster_room_mobs.json.ftl
     writer: json
-    condition: "${w.getGElementsOfType('livingentity')?filter(e -> e.spawnInDungeons)?size != 0}"
+    condition: "${livingentities?filter(e -> e.spawnInDungeons)?size != 0}"
     name: "@RESROOT/data/neoforge/data_maps/entity_type/monster_room_mobs.json"
 
 unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]

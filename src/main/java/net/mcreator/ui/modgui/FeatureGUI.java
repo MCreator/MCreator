@@ -93,8 +93,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		skipPlacement.setOpaque(false);
-
 		if (!isEditingMode())
 			generationStep.setSelectedItem("SURFACE_STRUCTURES");
 
@@ -124,8 +122,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
-
-		propertiesAndCondition.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.FEATURE);

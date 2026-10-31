@@ -3,10 +3,14 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
+base_types:
+  - item
+  - enumextension
+  - dispensebehavior
+
 global_templates:
   - template: elementinits/boattypes.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBoatTypes.java"
-  # Dispense behaviors are controlled by generator.yaml
 
 tags:
   - tag: ITEMS:minecraft:boats

@@ -26,6 +26,7 @@ import javax.swing.*;
 import javax.swing.tree.TreeSelectionModel;
 import java.io.File;
 import java.util.Vector;
+import java.util.function.Predicate;
 
 public class JFileTree extends JTree {
 
@@ -55,6 +56,10 @@ public class JFileTree extends JTree {
 	}
 
 	public static void addNodes(FilterTreeNode curTop, File dir, boolean first) {
+		addNodes(curTop, dir, first, _ -> true);
+	}
+
+	public static void addNodes(FilterTreeNode curTop, File dir, boolean first, Predicate<File> fileFilter) {
 		if (dir == null)
 			return;
 
@@ -80,9 +85,9 @@ public class JFileTree extends JTree {
 			else
 				newPath = curPath + File.separator + thisObject;
 			if ((f = new File(newPath)).isDirectory())
-				addNodes(curDir, f, false);
-			else
-				files.addElement(new File(newPath));
+				addNodes(curDir, f, false, fileFilter);
+			else if (fileFilter.test(f))
+				files.addElement(f);
 		}
 		for (int fnum = 0; fnum < files.size(); fnum++)
 			if (curDir != null)

@@ -33,7 +33,6 @@ import net.mcreator.workspace.resources.Animation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -54,10 +53,8 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				Set<ModElement> refs = new HashSet<>();
-				for (Animation animation : elementList.getSelectedValuesList())
-					refs.addAll(ReferencesFinder.searchAnimationUsages(workspacePanel.getMCreator().getWorkspace(),
-							animation));
+				Set<ModElement> refs = ReferencesFinder.searchAnimationUsages(
+						workspacePanel.getMCreator().getWorkspace(), elementList.getSelectedValuesList());
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
@@ -75,10 +72,8 @@ public class WorkspacePanelAnimations extends AbstractResourcePanel<Animation> {
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = new HashSet<>();
-			for (Animation a : elementList.getSelectedValuesList())
-				references.addAll(
-						ReferencesFinder.searchAnimationUsages(workspacePanel.getMCreator().getWorkspace(), a));
+			Set<ModElement> references = ReferencesFinder.searchAnimationUsages(
+					workspacePanel.getMCreator().getWorkspace(), elements);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 

@@ -31,7 +31,6 @@ import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -42,6 +41,7 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.NonEmptyValidator;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
@@ -87,7 +87,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox hasSkyLight = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner coordinateScale = ComponentFromAnnotation.spinner(Dimension.class, "coordinateScale");
-	private final VTextField infiniburnTag = new VTextField(24);
+	private final VComboBox<String> infiniburnTag = new VComboBox<>(
+			new String[] { "minecraft:infiniburn_overworld", "minecraft:infiniburn_nether", "minecraft:infiniburn_end" });
 	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fixedTimeValue = ComponentFromAnnotation.spinner(Dimension.class, "fixedTimeValue");
 	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");
@@ -242,6 +243,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.infiniburn_tag")));
 		dimensionTypeSettings.add(infiniburnTag);
 
+		infiniburnTag.setPreferredSize(new java.awt.Dimension(240, 36));
+
 		ComponentUtils.makeSection(dimensionTypeSettings, L10N.t("elementgui.dimension.dimension_type_settings"));
 
 		JPanel dimensionEffects = new JPanel(new GridLayout(8, 2, 15, 2));
@@ -304,33 +307,21 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		ComponentUtils.makeSection(mobSettings, L10N.t("elementgui.dimension.mob_settings"));
 
-		bedWorks.setOpaque(false);
-		hasSkyLight.setOpaque(false);
-		imitateOverworldBehaviour.setOpaque(false);
-		piglinSafe.setOpaque(false);
-		hasRaids.setOpaque(false);
-		canRespawnHere.setOpaque(false);
-		doesWaterVaporize.setOpaque(false);
-		hasFixedTime.setOpaque(false);
 		hasFixedTime.addActionListener(_ -> updateDimensionEffectSettings());
 		if (!isEditingMode()) {
 			bedWorks.setSelected(true);
 			imitateOverworldBehaviour.setSelected(true);
 			hasSkyLight.setSelected(true);
 			hasRaids.setSelected(true);
-			infiniburnTag.setText("minecraft:infiniburn_overworld");
+			infiniburnTag.getEditor().setItem("minecraft:infiniburn_overworld");
 		}
 		ambientLight.setPreferredSize(new java.awt.Dimension(-1, 36));
 
-		useCustomEffects.setOpaque(false);
 		useCustomEffects.addActionListener(_ -> updateDimensionEffectSettings());
 		defaultEffects.addActionListener(_ -> updateDimensionEffectSettings());
-		hasClouds.setOpaque(false);
 		hasClouds.addActionListener(_ -> updateDimensionEffectSettings());
 		airColor.setOpaque(false);
 		airColor.setPreferredSize(new java.awt.Dimension(240, 36));
-		sunHeightAffectsFog.setOpaque(false);
-		hasFog.setOpaque(false);
 
 		if (!isEditingMode()) {
 			// Currently only Java based mods support custom dimension effects
@@ -345,39 +336,22 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 						PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(dimensionEffects, mobSettings)))));
 		propertiesPage.setOpaque(false);
 
-		skyboxTextureUp = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureUp = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_sky_up_needs_texture");
-		skyboxTextureDown = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureDown = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_sky_down_needs_texture");
-		skyboxTextureNorth = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureNorth = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_sky_north_needs_texture");
-		skyboxTextureSouth = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureSouth = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_sky_south_needs_texture");
-		skyboxTextureEast = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureEast = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_sky_east_needs_texture");
-		skyboxTextureWest = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		skyboxTextureWest = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_sky_west_needs_texture");
-		sunTexture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		sunTexture = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_sun_needs_texture");
-		moonTexture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		moonTexture = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.dimension.error_moon_needs_texture");
-
-		skyboxTextureUp.setOpaque(false);
-		skyboxTextureDown.setOpaque(false);
-		skyboxTextureNorth.setOpaque(false);
-		skyboxTextureSouth.setOpaque(false);
-		skyboxTextureEast.setOpaque(false);
-		skyboxTextureWest.setOpaque(false);
-		sunTexture.setOpaque(false);
-		moonTexture.setOpaque(false);
 
 		// Skybox page options start here
 		JPanel skyboxGrid = new JPanel(new GridLayout(3, 4, 2, 2));
@@ -400,7 +374,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		skyboxPanel.setOpaque(false);
 		skyboxPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_skybox"), enableCustomSkyboxTextures)));
-		enableCustomSkyboxTextures.setOpaque(false);
 		skyboxPanel.add("Center", skyboxGrid);
 
 		ComponentUtils.makeSection(skyboxPanel, L10N.t("elementgui.dimension.skybox_group"));
@@ -415,7 +388,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		sunMoonPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/custom_sun_and_moon"),
 						enableCustomSunMoonTextures)));
-		enableCustomSunMoonTextures.setOpaque(false);
 		sunMoonPanel.add("Center", sunMoonGrid);
 
 		ComponentUtils.makeSection(sunMoonPanel, L10N.t("elementgui.dimension.sun_moon_group"));
@@ -481,9 +453,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldgenSettings.add(verticalNoiseSize);
 
 		insid.setOpaque(false);
-		generateOreVeins.setOpaque(false);
 		generateOreVeins.setSelected(true);
-		generateAquifers.setOpaque(false);
 		generateAquifers.setSelected(true);
 		if (!this.isEditingMode())
 			verticalNoiseSize.setValue(2);
@@ -493,16 +463,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		generationPage.setOpaque(false);
 
-		portalTexture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+		portalTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue(
 				"elementgui.dimension.error_portal_needs_texture");
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.dimension.error_portal_igniter_needs_texture");
-
-		portalTexture.setOpaque(false);
-		texture.setOpaque(false);
-		enablePortal.setOpaque(false);
-		enableIgniter.setOpaque(false);
 
 		// Currently only Java based mods support dimension portals
 		enablePortal.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
@@ -610,6 +574,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.add(PanelUtils.totalCenterInPanel(events));
 		pane5.setOpaque(false);
 
+		infiniburnTag.setEditable(true);
 		infiniburnTag.setValidator(
 				new ResourceLocationValidator<>(L10N.t("elementgui.dimension.infiniburn_validator"), infiniburnTag,
 						true));
@@ -810,7 +775,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		hasFixedTime.setSelected(dimension.hasFixedTime);
 		fixedTimeValue.setValue(dimension.fixedTimeValue);
 		coordinateScale.setValue(dimension.coordinateScale);
-		infiniburnTag.setText(dimension.infiniburnTag);
+		infiniburnTag.getEditor().setItem(dimension.infiniburnTag);
 		piglinSafe.setSelected(dimension.piglinSafe);
 		hasRaids.setSelected(dimension.hasRaids);
 		monsterSpawnLightLimit.setMinValue(dimension.minMonsterSpawnLightLimit);
@@ -865,7 +830,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.hasFixedTime = hasFixedTime.isSelected();
 		dimension.fixedTimeValue = (int) fixedTimeValue.getValue();
 		dimension.coordinateScale = (double) coordinateScale.getValue();
-		dimension.infiniburnTag = infiniburnTag.getText();
+		dimension.infiniburnTag = infiniburnTag.getEditor().getItem().toString();
 		dimension.piglinSafe = piglinSafe.isSelected();
 		dimension.hasRaids = hasRaids.isSelected();
 		dimension.minMonsterSpawnLightLimit = monsterSpawnLightLimit.getIntMinValue();

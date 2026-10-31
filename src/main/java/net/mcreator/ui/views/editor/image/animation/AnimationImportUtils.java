@@ -56,7 +56,7 @@ import java.util.List;
 				ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
 
-		JPanel panel = new JPanel(new BorderLayout());
+		JPanel panel = new JPanel(new BorderLayout(0, 10));
 		JPanel centerPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 
 		JLabel preview = new JLabel();
@@ -76,7 +76,7 @@ import java.util.List;
 										width).getIcon(1, 1), colors.getColor(), !lockSaturation.isSelected()).getImage(),
 						128)));
 			} catch (InvalidTileSizeException | IOException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("An error occurred while processing the animation template", e);
 			}
 		};
 
@@ -86,7 +86,7 @@ import java.util.List;
 		lockSaturation.addActionListener(al);
 		colors.addColorSelectedListener(al);
 
-		panel.add("North", L10N.label("dialog.animation_maker.strip_color_choice"));
+		panel.add("North", L10N.label("dialog.animation_maker.template_color_choice"));
 		panel.add("Center", centerPanel);
 		panel.add("South", PanelUtils.centerInPanel(preview));
 
@@ -110,10 +110,16 @@ import java.util.List;
 				timeline.generateTimelineFromBufferedImage(finalImage,
 						FilenameUtilsPatched.removeExtension(rp.toString()));
 			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Impossible to generate the timeline from the selected animation template", e);
 			}
 		}
 	}
+
+	public static void importImagesAsFrames(AnimationTimeline timeline) {
+		File[] files = FileDialogs.getMultiOpenDialog(timeline.getMCreator(), new String[] { ".png", ".gif" });
+
+		if (files == null)
+			return;
 
 	public static void importImagesAsFrames(AnimationTimeline timeline) {
 		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(),
@@ -131,26 +137,35 @@ import java.util.List;
 									FilenameUtilsPatched.removeExtension(file.getName())));
 						} else { // This is a strip texture, so we offer the user to colorize the strip before importing it
 							int x = Math.min(image.getHeight(), image.getWidth());
-							colorizeFramesDialog(timeline, image, new TiledImageUtils(image, x, x).getIcon(1, 1),
-									file.getName());
+							colorizeFramesDialog(timeline, image,
+									new TiledImageUtils(image, x, x).getIcon(1, 1), file.getName());
 						}
-					} catch (InvalidTileSizeException | IOException e) {
-						LOG.error(e.getMessage(), e);
+					} catch (InvalidTileSizeException e) {
+						LOG.error("Images from file {} have an invalid tile size", file.getName(), e);
+						JOptionPane.showMessageDialog(timeline.getMCreator(),
+								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size", file.getName()),
+								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size.title"),
+								JOptionPane.ERROR_MESSAGE);
+					} catch (IOException | NullPointerException e) {
+						LOG.error("File {} could not be read as an image", file.getName(), e);
+						JOptionPane.showMessageDialog(timeline.getMCreator(),
+								L10N.t("dialog.animation_maker.import_frames.invalid_image", file.getName()),
+								L10N.t("dialog.animation_maker.import_frames.invalid_image.title"),
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
 		}
 	}
 
-	public static void colorizeFramesDialog(AnimationTimeline timeline, BufferedImage bufferedImage,
-			ImageIcon previewIcon, String name) throws IOException {
-		JPanel optionsPanel = new JPanel(new BorderLayout());
+	public static void colorizeImportedFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
+			ImageIcon previewIcon, String name) {
+		JPanel optionsPanel = new JPanel(new BorderLayout(0, 10));
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
-		preview.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1), "Preview", 0, 0,
-						timeline.getFont().deriveFont(12.0f), Color.gray));
+		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+				L10N.t("dialog.animation_maker.preview"), 0, 0, timeline.getFont().deriveFont(12.0f), Color.gray));
 
 		JCheckBox colorize = new JCheckBox();
 		JColor colors = new JColor(timeline.getImageMakerView().getMCreator(), false, true);
@@ -254,7 +269,7 @@ import java.util.List;
 					dial.hideDialog();
 				} catch (Exception e) {
 					dial.hideDialog();
-					LOG.error(e.getMessage(), e);
+					LOG.error("An error occurred while processing the GIF", e);
 				}
 
 			}, "GIFFramesLoader");

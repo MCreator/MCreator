@@ -180,7 +180,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		name.setOpaque(true);
 		airColor.setOpaque(false);
 		fogColor.setOpaque(false);
 		grassColor.setOpaque(false);
@@ -197,88 +196,71 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_strongholds"),
 				L10N.label("elementgui.biome.generate_strongholds")));
 		sbbp2.add(spawnStronghold);
-		spawnStronghold.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_mineshafts"),
 				L10N.label("elementgui.biome.generate_mineshafts")));
 		sbbp2.add(spawnMineshaft);
-		spawnMineshaft.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_mineshafts"),
 				L10N.label("elementgui.biome.generate_mineshafts_mesa")));
 		sbbp2.add(spawnMineshaftMesa);
-		spawnMineshaftMesa.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_pillager_outposts"),
 				L10N.label("elementgui.biome.generate_pillager_outposts")));
 		sbbp2.add(spawnPillagerOutpost);
-		spawnPillagerOutpost.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_woodland_mansions"),
 				L10N.label("elementgui.biome.generate_mansions")));
 		sbbp2.add(spawnWoodlandMansion);
-		spawnWoodlandMansion.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_jungle_temples"),
 				L10N.label("elementgui.biome.generate_jungle_temples")));
 		sbbp2.add(spawnJungleTemple);
-		spawnJungleTemple.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_desert_pyramids"),
 				L10N.label("elementgui.biome.generate_desert_pyramids")));
 		sbbp2.add(spawnDesertPyramid);
-		spawnDesertPyramid.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_swamp_huts"),
 				L10N.label("elementgui.biome.generate_swamp_huts")));
 		sbbp2.add(spawnSwampHut);
-		spawnSwampHut.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_igloo"),
 				L10N.label("elementgui.biome.generate_igloos")));
 		sbbp2.add(spawnIgloo);
 		spawnIgloo.setSelected(false);
-		spawnIgloo.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ocean_monuments"),
 				L10N.label("elementgui.biome.generate_monuments")));
 		sbbp2.add(spawnOceanMonument);
-		spawnOceanMonument.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_shipwrecks"),
 				L10N.label("elementgui.biome.generate_shipwrecks")));
 		sbbp2.add(spawnShipwreck);
-		spawnShipwreck.setOpaque(false);
 
 		sbbp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_shipwrecks_beached"),
 				L10N.label("elementgui.biome.generate_shipwrecks_beached")));
 		sbbp2.add(spawnShipwreckBeached);
-		spawnShipwreckBeached.setOpaque(false);
 
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_buried_treasures"),
 				L10N.label("elementgui.biome.generate_buried_treasures")));
 		sbbp2b.add(spawnBuriedTreasure);
-		spawnBuriedTreasure.setOpaque(false);
 
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_bridges"),
 				L10N.label("elementgui.biome.generate_nether_bridges")));
 		sbbp2b.add(spawnNetherBridge);
-		spawnNetherBridge.setOpaque(false);
 
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether_fossils"),
 				L10N.label("elementgui.biome.generate_nether_fossils")));
 		sbbp2b.add(spawnNetherFossil);
-		spawnNetherFossil.setOpaque(false);
 
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_bastion_remnants"),
 				L10N.label("elementgui.biome.generate_bastion_remnants")));
 		sbbp2b.add(spawnBastionRemnant);
-		spawnBastionRemnant.setOpaque(false);
 
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_end_cities"),
 				L10N.label("elementgui.biome.generate_end_cities")));
 		sbbp2b.add(spawnEndCity);
-		spawnEndCity.setOpaque(false);
 
 		sbbp2b.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_ruined_portals"),
 				L10N.label("elementgui.biome.generate_ruined_portals")));
@@ -303,10 +285,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		pane5.setOpaque(false);
 
 		spawnBiome.setSelected(true);
-		spawnBiome.setOpaque(false);
-		spawnInCaves.setOpaque(false);
-
-		spawnBiomeNether.setOpaque(false);
 
 		coverageEstimate.setFont(coverageEstimate.getFont().deriveFont(15.0f));
 
@@ -471,10 +449,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		customTrees.addActionListener(_ -> updateBiomeTreesForm());
 		vanillaTrees.addActionListener(_ -> updateBiomeTreesForm());
 
-		customTrees.setOpaque(false);
-		vanillaTrees.setOpaque(false);
-		minHeight.setOpaque(false);
-
 		sbbp4.setOpaque(false);
 		pane4.setOpaque(false);
 
@@ -537,7 +511,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		ComponentUtils.makeSection(particles, L10N.t("elementgui.biome.particles"));
 
-		spawnParticle.setOpaque(false);
 		spawnParticle.addActionListener(_ -> updateParticleParameters());
 
 		effectsPane.setOpaque(false);

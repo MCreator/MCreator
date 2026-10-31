@@ -16,7 +16,7 @@
         "uuid": "${w.getUUID("module_data")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]
       }
-      <#if types["bescripts"]??>,
+      <#if types.bescripts?has_content>,
       {
         "uuid": "${w.getUUID("scripts")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}],
@@ -31,10 +31,10 @@
         "uuid": "${w.getUUID("resourcepack")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]
       }
-      <#if types["bescripts"]??>,
+      <#if types.bescripts?has_content>,
       {
         "module_name": "@minecraft/server",
-        "version": "2.2.0"
+        "version": "2.3.0"
       }
       </#if>
     ],

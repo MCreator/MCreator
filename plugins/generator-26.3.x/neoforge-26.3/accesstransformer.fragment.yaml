@@ -1,0 +1,5 @@
+templates:
+  - template: modbase/accesstransformer.cfg.ftl
+    usercodeComment: "#"
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"

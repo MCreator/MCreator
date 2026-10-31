@@ -36,7 +36,6 @@ import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -266,12 +265,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.item.error_item_needs_texture");
-		texture.setOpaque(false);
-
-		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		guiTexture.setOpaque(false);
+		guiTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 5));
 		destal2.setOpaque(false);
@@ -360,14 +356,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.can_destroy_any_block")));
 		subpane2.add(destroyAnyBlock);
 
-		enchantability.setOpaque(false);
-		useDuration.setOpaque(false);
-		toolType.setOpaque(false);
-		damageCount.setOpaque(false);
 		damageCount.addChangeListener(_ -> updateDamageDependantSettings());
-		immuneToFire.setOpaque(false);
-		isPiglinCurrency.setOpaque(false);
-		destroyAnyBlock.setOpaque(false);
 
 		updateDamageDependantSettings();
 
@@ -391,12 +380,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel foodSubpane = new JPanel(new GridLayout(6, 2, 2, 2));
 		ComponentUtils.makeSection(foodSubpane, L10N.t("elementgui.item.food_properties"));
 		foodSubpane.setOpaque(false);
-
-		isFood.setOpaque(false);
-		isMeat.setOpaque(false);
-		isAlwaysEdible.setOpaque(false);
-		nutritionalValue.setOpaque(false);
-		saturation.setOpaque(false);
 
 		isFood.addActionListener(_ -> {
 			updateFoodPanel();
@@ -437,7 +420,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
 				L10N.label("elementgui.item.enable_ranged_item")));
-		enableRanged.setOpaque(false);
 		enableRanged.addActionListener(_ -> updateRangedPanel());
 		rangedProperties.add(enableRanged);
 
@@ -447,17 +429,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile_disable_ammo_check"),
 				L10N.label("elementgui.item.projectile_disable_ammo_check")));
-		projectileDisableAmmoCheck.setOpaque(false);
 		rangedProperties.add(projectileDisableAmmoCheck);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
 				L10N.label("elementgui.item.shoot_constantly")));
-		shootConstantly.setOpaque(false);
 		rangedProperties.add(shootConstantly);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
 				L10N.label("elementgui.item.charges_power")));
-		rangedItemChargesPower.setOpaque(false);
 		rangedProperties.add(rangedItemChargesPower);
 
 		updateRangedPanel();
@@ -579,7 +558,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		meleePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_melee_damage"),
 				L10N.label("elementgui.item.enable_melee_damage")));
-		enableMeleeDamage.setOpaque(false);
 		enableMeleeDamage.addActionListener(_ -> updateMeleePanel());
 		meleePanel.add(enableMeleeDamage);
 
@@ -611,9 +589,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.recipe_remainder")));
 		craftingPanel.add(PanelUtils.centerInPanel(recipeRemainder));
 
-		stayInGridWhenCrafting.setOpaque(false);
 		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
-		damageOnCrafting.setOpaque(false);
 
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(
 				PanelUtils.pullElementUp(

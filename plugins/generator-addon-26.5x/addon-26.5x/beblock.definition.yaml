@@ -15,6 +15,9 @@ templates:
     name: "@SRCROOT/feature_rules/@modid_@registryname_ore_feature_rule.json"
     condition: generateFeature
 
+base_types:
+  - block
+
 global_templates:
   - template: resourcepack/blocks.json.ftl
     writer: json

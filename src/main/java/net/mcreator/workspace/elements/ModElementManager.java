@@ -44,10 +44,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * ModElementManager is not thread safe
@@ -62,7 +64,9 @@ import java.util.function.Consumer;
 
 	@Nonnull private final Workspace workspace;
 
-	private final Stack<ModElement> modElementsInConversion = new Stack<>();
+	// Per-thread stack of mod elements being deserialized. It is used to pass the mod element to the GSON adapter
+	// and to detect circular references. It must be per-thread, otherwise concurrent loads would see each other's elements.
+	private final ThreadLocal<Stack<ModElement>> modElementsInConversion = ThreadLocal.withInitial(Stack::new);
 
 	public ModElementManager(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
@@ -76,7 +80,7 @@ import java.util.function.Consumer;
 	}
 
 	public ModElement getLastElementInConversion() {
-		return modElementsInConversion.peek();
+		return modElementsInConversion.get().peek();
 	}
 
 	/**
@@ -125,7 +129,7 @@ import java.util.function.Consumer;
 	@Nullable GeneratableElement loadGeneratableElement(ModElement element) {
 		// To prevent circular reference (and thus stack overflow), we return Unknown GE if we are loading the
 		// mod element that is being converted as otherwise this will try to start the conversion again
-		if (modElementsInConversion.contains(element))
+		if (modElementsInConversion.get().contains(element))
 			return new GeneratableElement.Unknown(element);
 
 		if (element.getType() == ModElementType.CODE) {
@@ -165,12 +169,15 @@ import java.util.function.Consumer;
 				return null;
 			}
 
+			// Add it to the cache. If another thread loaded this element in the meantime, use its instance instead
+			// so all callers share the same object and the element is not stored twice
+			GeneratableElement existingGeneratableElement = cache.putIfAbsent(element, generatableElement);
+			if (existingGeneratableElement != null)
+				return existingGeneratableElement;
+
 			// Store the mod element in case the conversion was applied
 			if (generatableElement.wasConversionApplied())
 				storeModElement(generatableElement);
-
-			// Add it to the cache
-			cache.put(element, generatableElement);
 		}
 
 		return generatableElement;
@@ -194,7 +201,7 @@ import java.util.function.Consumer;
 	@Nonnull
 	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement,
 			@Nullable Consumer<String> validationLog) throws IOException, GEValidator.ValidationException {
-		this.modElementsInConversion.push(modElement);
+		this.modElementsInConversion.get().push(modElement);
 
 		try {
 			GeneratableElement retval = gson.fromJson(json, GeneratableElement.class);
@@ -205,14 +212,22 @@ import java.util.function.Consumer;
 		} catch (Exception e) {
 			throw new IOException("Failed to parse and load JSON of:" + modElement.getName(), e);
 		} finally {
-			this.modElementsInConversion.pop();
+			this.modElementsInConversion.get().pop();
 		}
 	}
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
-		List<GeneratorTemplate> templates = new ArrayList<>(workspace.getGenerator()
-				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(),
-						new AtomicInteger()));
+		ModElementType<?> type = generatableElement.getModElement().getType();
+		return requiresElementGradleBuild(generatableElement,
+				() -> workspace.getModElementsByType(type).stream().map(ModElement::getGeneratableElement)
+						.filter(Objects::nonNull).toList());
+	}
+
+	public boolean requiresElementGradleBuild(GeneratableElement generatableElement,
+			Supplier<List<GeneratableElement>> elementsOfType) {
+		List<GeneratorTemplate> templates = new ArrayList<>(
+				workspace.getGenerator().getGlobalTemplatesListForModElementType(
+						generatableElement.getModElement().getType(), elementsOfType, new AtomicInteger()));
 
 		templates.addAll(workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement));
 

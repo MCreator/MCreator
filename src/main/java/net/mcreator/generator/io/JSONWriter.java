@@ -22,7 +22,8 @@ package net.mcreator.generator.io;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.Strictness;
+import net.mcreator.util.TestUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +35,9 @@ public class JSONWriter {
 
 	private static final Logger LOG = LogManager.getLogger("JSON Writer");
 
+	private static final Gson lenientParser = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
+	private static final Gson strictParser = new GsonBuilder().setStrictness(Strictness.STRICT).create();
+
 	public static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
 	public static void writeJSONToFile(@Nullable Workspace workspace, String srcjson, File file) {
@@ -43,9 +47,11 @@ public class JSONWriter {
 	public static String formatJSON(String srcjson) {
 		String jsonout;
 		try {
-			JsonElement json = JsonParser.parseString(srcjson);
+			JsonElement json = (TestUtil.isTestingEnvironment() ? strictParser : lenientParser).fromJson(srcjson,
+					JsonElement.class);
 			jsonout = gson.toJson(json);
 		} catch (Exception e) {
+			LOG.debug("JSON content: {}", srcjson);
 			LOG.error("JSON Prettify failed, error: {}", e.getMessage(), e);
 			jsonout = srcjson;
 		}
