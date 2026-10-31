@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.animation;
 
 import net.mcreator.ui.init.L10N;
 
+import net.mcreator.ui.component.util.ComponentUtils;
 import javax.swing.*;
 import java.awt.*;
 
