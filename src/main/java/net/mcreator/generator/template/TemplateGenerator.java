@@ -78,6 +78,13 @@ public class TemplateGenerator {
 		dataModel.put("registryname", element.getModElement().getRegistryName());
 		dataModel.put("REGISTRYNAME", element.getModElement().getRegistryNameUpper());
 		dataModel.put("name", element.getModElement().getName());
+		if (element.getModElement().getFolderPath() != null) {
+			dataModel.put("elementPackage", element.getModElement().getFolderPath()
+					.substring(0, element.getModElement().getFolderPath().lastIndexOf('/')).replace('/', '.'));
+			dataModel.put("elementName", element.getModElement().getFolderPath()
+					.substring(element.getModElement().getFolderPath().lastIndexOf('/'),
+							element.getModElement().getFolderPath().lastIndexOf('.')));
+		}
 
 		if (provider != null)
 			provider.provideAdditionalData(dataModel);
