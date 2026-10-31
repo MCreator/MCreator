@@ -59,7 +59,9 @@ public class JSoundList extends JSimpleEntriesList<JSoundListEntry, SoundElement
 				return false;
 		}
 
-		return entryList.stream().filter(e -> e.getSingleFileField().isEnabled()).collect(Collectors.groupingBy(s -> s, Collectors.counting())).values().stream().anyMatch(count -> count >= 2);
+		return entryList.stream().filter(e -> e.getSingleFileField().isEnabled())
+				.collect(Collectors.groupingBy(s -> s, Collectors.counting())).values().stream()
+				.anyMatch(count -> count >= 2);
 	}
 
 	public List<SingleFileField> getNewFiles() {

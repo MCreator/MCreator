@@ -41,7 +41,6 @@ import net.mcreator.element.types.interfaces.Numeric;
 import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.integration.generator.GTProcedureBlocks;

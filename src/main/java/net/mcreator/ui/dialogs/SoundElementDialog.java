@@ -42,7 +42,6 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -87,8 +86,7 @@ public class SoundElementDialog {
 		pane1.add(component, BorderLayout.CENTER);
 
 		if (element == null && files != null)
-			soundsEntries.addNewFiles(
-					Arrays.stream(files).filter(Objects::nonNull).toList());
+			soundsEntries.addNewFiles(Arrays.stream(files).filter(Objects::nonNull).toList());
 
 		ui.add(L10N.label("dialog.sounds.subtitle"));
 		ui.add(subtitle);
@@ -190,8 +188,7 @@ public class SoundElementDialog {
 		pane1.add(component, BorderLayout.CENTER);
 
 		if (element == null && files != null)
-			soundsEntries.addNewFiles(
-					Arrays.stream(files).filter(Objects::nonNull).toList());
+			soundsEntries.addNewFiles(Arrays.stream(files).filter(Objects::nonNull).toList());
 
 		JComboBox<String> soundCategory = new JComboBox<>(ElementUtil.getDataListAsStringArray("soundcategories"));
 		JMinMaxSpinner attenuationDistance = new JMinMaxSpinner(0, 0, 0, 64000.0, 1.0).allowEqualValues();
