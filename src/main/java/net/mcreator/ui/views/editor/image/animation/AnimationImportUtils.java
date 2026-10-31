@@ -116,7 +116,6 @@ import java.util.List;
 	}
 
 	public static void importImagesAsFrames(AnimationTimeline timeline) {
-		File[] files = FileDialogs.getMultiOpenDialog(timeline.getMCreator(), new String[] { ".png", ".gif" });
 		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(),
 				new String[] { ".png", ".gif" });
 
