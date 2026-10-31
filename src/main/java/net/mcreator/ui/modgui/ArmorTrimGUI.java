@@ -51,7 +51,7 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 	private final MCItemHolder item = new MCItemHolder(this.mcreator, ElementUtil::loadBlocksAndItems).requireValue(
 			"elementgui.armortrim.error_armor_trim_needs_item");
 	private final TextureComboBox armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR,
-			true).requireValue("elementgui.armortrim.error_armor_trim_needs_texture");
+			true).setAddPNGExtension(false).requireValue("elementgui.armortrim.error_armor_trim_needs_texture");
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
 
@@ -69,7 +69,6 @@ public class ArmorTrimGUI extends ModElementGUI<ArmorTrim> {
 		JPanel mainPanel = new JPanel(new GridLayout(3, 2, 0, 2));
 		mainPanel.setOpaque(false);
 
-		armorTextureFile.setAddPNGExtension(false);
 		armorTextureFile.getComboBox().addActionListener(_ -> updateArmorTexturePreview());
 
 		clo1.setPreferredSize(new Dimension(64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));

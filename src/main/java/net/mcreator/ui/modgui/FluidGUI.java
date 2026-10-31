@@ -34,7 +34,6 @@ import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
@@ -180,18 +179,15 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel mainTextures = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		mainTextures.setOpaque(false);
 
-		textureStill = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+		textureStill = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue(
 				"elementgui.fluid.error_fluid_needs_still_texture");
-		textureFlowing = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
+		textureFlowing = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue(
 				"elementgui.fluid.error_fluid_needs_flowing_texture");
 
 		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		mainTextures.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
-		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER),
-				32);
+		textureRenderOverlay = new TextureSelectionButton(mcreator, TextureType.OTHER, 32);
 
 		JPanel visualSettings = new JPanel(new GridLayout(3, 2, 5, 2));
 		visualSettings.setOpaque(false);
@@ -276,7 +272,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel bucketProperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
-		textureBucket = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		textureBucket = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/enable_bucket"),
 				L10N.label("elementgui.fluid.generate_bucket_label")));
@@ -325,9 +321,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		ComponentUtils.makeSection(destala, L10N.t("elementgui.fluid.fluid_properties"));
 
-		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp));
-		fluidBucketProperties.setOpaque(false);
-		pane3.add(PanelUtils.totalCenterInPanel(fluidBucketProperties));
+		pane3.add(PanelUtils.totalCenterInPanel(
+				PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp))));
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));

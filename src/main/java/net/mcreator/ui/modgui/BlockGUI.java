@@ -39,7 +39,6 @@ import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -280,8 +279,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final MCItemHolder pottedPlant = new MCItemHolder(mcreator, ElementUtil::loadBlocksWithItemForm);
 	private final SingleParticleEntryField leavesParticleType = new SingleParticleEntryField(mcreator);
 	private final JSpinner leavesParticleChance = ComponentFromAnnotation.spinner(Block.class, "leavesParticleChance");
-	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator, TextureType.ENTITY);
-	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN);
+	private final TextureComboBox signEntityTexture = new TextureComboBox(mcreator,
+			TextureType.ENTITY).setAddPNGExtension(false);
+	private final TextureComboBox signGUITexture = new TextureComboBox(mcreator, TextureType.SCREEN).setAddPNGExtension(
+			false);
 	private JComponent signGUITexturePanel;
 
 	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
@@ -299,8 +300,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	}
 
 	@Override protected void initGUI() {
-		signEntityTexture.setAddPNGExtension(false);
-		signGUITexture.setAddPNGExtension(false);
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 		blockBase.setRenderer(new ItemTexturesComboBoxRenderer());
 
@@ -613,8 +612,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane8.setOpaque(false);
 
-		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		itemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
+		particleTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 32);
 
 		blockBasePropertiesPanel.setOpaque(false);
 
@@ -658,7 +657,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		showBlockBaseCard("default");
 
-		blockBasePanel.setOpaque(false);
 		ComponentUtils.makeSection(blockBasePanel, L10N.t("elementgui.block.block_base_panel"));
 
 		textures = new BlockTexturesSelector(mcreator);

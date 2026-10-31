@@ -25,7 +25,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -72,11 +71,10 @@ public class BannerPatternGUI extends ModElementGUI<BannerPattern> {
 		JPanel texturesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		texturesPanel.setOpaque(false);
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		texture = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.banner_pattern.error_pattern_needs_banner_texture");
 		texture.addTextureSelectedListener(_ -> updatePatternPreviews());
-		shieldTexture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.OTHER)).requireValue(
+		shieldTexture = new TextureSelectionButton(mcreator, TextureType.OTHER).requireValue(
 				"elementgui.banner_pattern.error_pattern_needs_shield_texture");
 		shieldTexture.addTextureSelectedListener(_ -> updatePatternPreviews());
 

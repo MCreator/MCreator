@@ -25,7 +25,6 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureSelectionButton;
@@ -99,8 +98,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 		canCollide.setSelected(true);
 
-		texture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.PARTICLE)).requireValue();
+		texture = new TextureSelectionButton(mcreator, TextureType.PARTICLE).requireValue();
 
 		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
 				HelpUtils.wrapWithHelpButton(this.withEntry("particle/texture"), texture),

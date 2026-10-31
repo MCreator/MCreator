@@ -32,7 +32,6 @@ import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -287,17 +286,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel bbPane = new JPanel(new BorderLayout(10, 10));
 
-		texture = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue();
-		textureBottom = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
+		texture = new TextureSelectionButton(mcreator, TextureType.BLOCK).requireValue();
+		textureBottom = new TextureSelectionButton(mcreator, TextureType.BLOCK);
 		textureContainer = ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 				L10N.t("elementgui.plant.texture_place_texture"));
 		textureBottomContainer = ComponentUtils.squareAndBorder(textureBottom,
 				L10N.t("elementgui.plant.texture_place_bottom"));
-		textureBottomContainer.setOpaque(false);
 
-		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
+		itemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
+		particleTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 32);
 
 		JPanel rent = new JPanel(new GridLayout(6, 2, 2, 2));
 		rent.setOpaque(false);

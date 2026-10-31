@@ -44,7 +44,6 @@ public class JSlidingSpinner extends JPanel {
 		JSlider slider = new JSlider();
 
 		slider.setOpaque(false);
-		spinner.setOpaque(false);
 
 		slider.setMinimum(min);
 		slider.setMaximum(max);
@@ -52,7 +51,7 @@ public class JSlidingSpinner extends JPanel {
 
 		slider.setPreferredSize(new Dimension(0, 0));
 
-		spinner.addChangeListener(changeEvent -> {
+		spinner.addChangeListener(_ -> {
 			spinning = true;
 			if (!sliding) {
 				value = (Double) spinner.getValue();
@@ -62,7 +61,7 @@ public class JSlidingSpinner extends JPanel {
 			spinning = false;
 		});
 
-		slider.addChangeListener(changeEvent -> {
+		slider.addChangeListener(_ -> {
 			sliding = true;
 			if (!spinning) {
 				value = slider.getValue();

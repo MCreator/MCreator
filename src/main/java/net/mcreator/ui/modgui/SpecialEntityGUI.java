@@ -27,7 +27,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.TranslatedComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TabListField;
@@ -57,11 +56,10 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	private final VTextField name = new VTextField(28).requireValue("elementgui.common.error_entity_needs_name")
 			.enableRealtimeValidation();
 
-	private final TextureComboBox entityTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
-			"elementgui.living_entity.error_entity_model_needs_texture");
-	private final TextureSelectionButton itemTexture = new TextureSelectionButton(
-			new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32).requireValue(
-			"elementgui.special_entity.error_entity_needs_item_texture");
+	private final TextureComboBox entityTexture = new TextureComboBox(mcreator, TextureType.ENTITY).setAddPNGExtension(
+			false).requireValue("elementgui.living_entity.error_entity_model_needs_texture");
+	private final TextureSelectionButton itemTexture = new TextureSelectionButton(mcreator, TextureType.ITEM,
+			32).requireValue("elementgui.special_entity.error_entity_needs_item_texture");
 
 	private final TranslatedComboBox rarity = ComponentFromAnnotation.translatedOptions(SpecialEntity.class, "rarity",
 			"elementgui.common.rarity_");
@@ -79,8 +77,6 @@ public class SpecialEntityGUI extends ModElementGUI<SpecialEntity> {
 	}
 
 	@Override protected void initGUI() {
-		entityTexture.setAddPNGExtension(false);
-
 		onTickUpdate = new ProcedureSelector(this.withEntry("entity/on_tick_update"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_tick_update"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
