@@ -117,13 +117,12 @@ import java.util.List;
 
 	public static void importImagesAsFrames(AnimationTimeline timeline) {
 		File[] files = FileDialogs.getMultiOpenDialog(timeline.getMCreator(), new String[] { ".png", ".gif" });
+		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(),
+				new String[] { ".png", ".gif" });
 
 		if (files == null)
 			return;
 
-	public static void importImagesAsFrames(AnimationTimeline timeline) {
-		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(),
-				new String[] { ".png", ".gif" });
 		for (File file : files) {
 			if (file != null) {
 				if (file.getName().endsWith(".gif")) {
@@ -137,18 +136,18 @@ import java.util.List;
 									FilenameUtilsPatched.removeExtension(file.getName())));
 						} else { // This is a strip texture, so we offer the user to colorize the strip before importing it
 							int x = Math.min(image.getHeight(), image.getWidth());
-							colorizeFramesDialog(timeline, image,
+							colorizeImportedFramesDialog(timeline, image,
 									new TiledImageUtils(image, x, x).getIcon(1, 1), file.getName());
 						}
 					} catch (InvalidTileSizeException e) {
 						LOG.error("Images from file {} have an invalid tile size", file.getName(), e);
-						JOptionPane.showMessageDialog(timeline.getMCreator(),
+						JOptionPane.showMessageDialog(timeline.getImageMakerView().getMCreator(),
 								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size", file.getName()),
 								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size.title"),
 								JOptionPane.ERROR_MESSAGE);
 					} catch (IOException | NullPointerException e) {
 						LOG.error("File {} could not be read as an image", file.getName(), e);
-						JOptionPane.showMessageDialog(timeline.getMCreator(),
+						JOptionPane.showMessageDialog(timeline.getImageMakerView().getMCreator(),
 								L10N.t("dialog.animation_maker.import_frames.invalid_image", file.getName()),
 								L10N.t("dialog.animation_maker.import_frames.invalid_image.title"),
 								JOptionPane.ERROR_MESSAGE);
@@ -158,7 +157,7 @@ import java.util.List;
 		}
 	}
 
-	public static void colorizeImportedFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
+	public static void colorizeImportedFramesDialog(AnimationTimeline timeline, BufferedImage bufferedImage,
 			ImageIcon previewIcon, String name) {
 		JPanel optionsPanel = new JPanel(new BorderLayout(0, 10));
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
