@@ -65,7 +65,10 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	protected final BlocklyEditorType editorType;
 
-	protected String lastProceduralBlockType = null;
+	// Set by block generators after which the code can not continue (e.g. return), reset before each block
+	private boolean currentBlockTerminates = false;
+
+	protected boolean baseBlocksTerminate = false;
 
 	private final Stack<DependencyProviderInput> dependencyProviderInputStack = new Stack<>();
 
@@ -144,7 +147,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 				// find all blocks placed under start block
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
-				processBlockProcedure(base_blocks);
+				baseBlocksTerminate = processBlockProcedure(base_blocks);
 
 				// we execute extra actions needed after blocks are placed
 				postBlocksPlacement(doc, start_block, base_blocks);
@@ -257,8 +260,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		compileNotes.add(compileNote);
 
 		// Compile errors during tests indicate broken block definitions or test XML, so we fail the tests on them
-		if (TestUtil.isTestingEnvironment() && compileNote.type() == BlocklyCompileNote.Type.ERROR) {
-			LOG.info("Blockly compile error in {} ({}): {}", parent != null ? parent.getName() : "unknown element",
+		if (TestUtil.isTestingEnvironmentIgnoreIf("net.mcreator.integration.WorkspaceConvertersTest")
+				&& compileNote.type() == BlocklyCompileNote.Type.ERROR) {
+			LOG.warn("Blockly compile error in {} ({}): {}", parent != null ? parent.getName() : "unknown element",
 					editorType.registryName(), compileNote.message());
 		}
 	}
@@ -309,7 +313,16 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			usedTemplates.add(template);
 	}
 
-	public final void processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
+	public final void markBlockTerminating() {
+		currentBlockTerminates = true;
+	}
+
+	/**
+	 * @param blocks Blocks of one statement chain in execution order
+	 * @return true if the chain always terminates (e.g. returns), false if the code can continue after the last block
+	 */
+	public final boolean processBlockProcedure(List<Element> blocks) throws TemplateGeneratorException {
+		boolean chainTerminates = false;
 		for (Element block : blocks) {
 			blockCount++;
 
@@ -322,12 +335,19 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 			} else {
 				IBlockGenerator generator = typeToBlockGenerator.get(type);
 				if (generator != null && generator.getBlockType() == IBlockGenerator.BlockType.PROCEDURAL) {
+					if (chainTerminates) {
+						addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.unreachable_block", type)));
+						break;
+					}
+
 					try {
 						// if the current procedural block is not of type ProceduralBlockCodeGenerator, append tail,
 						// because the following block cannot be part of the current head/tail sections
 						if (!(generator instanceof IBlockGeneratorWithSections)) {
 							IBlockGeneratorWithSections.terminateSections(this);
 						}
+						currentBlockTerminates = false;
 						generator.generateBlock(this, block);
 					} catch (TemplateGeneratorException e) {
 						throw e;
@@ -342,7 +362,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 					usedBlocks.add(type);
 
-					lastProceduralBlockType = type; // update last block type generated
+					chainTerminates = currentBlockTerminates;
 				} else {
 					addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("blockly.warnings.unknown_block_type.skip", type)));
@@ -353,6 +373,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		// Append the last tail at the end of the processing, and clear sections data in case the method will be called again
 		append(getTailSection());
 		clearSections();
+
+		currentBlockTerminates = false; // nested chain must not mark the block containing it as terminating
+		return chainTerminates;
 	}
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {

@@ -18,7 +18,6 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -46,7 +45,7 @@ import java.util.*;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
+		implements ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
 		IMultipleNames {
 
 	private static final Logger LOG = LogManager.getLogger(Dimension.class);
@@ -54,7 +53,7 @@ import java.util.List;
 	@ModElementReference public List<BiomeEntry> biomesInDimension;
 	@ModElementReference public List<BiomeEntry> biomesInDimensionCaves;
 
-	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen" }) public String worldGenType;
+	@LimitedOptions({ "Normal world gen", "Nether like gen", "End like gen", "Void gen" }) public String worldGenType;
 
 	@NonNullMappable("Blocks.STONE#0") public MItemBlock mainFillerBlock;
 	@NonNullMappable("Blocks.WATER") public MItemBlock fluidBlock;
@@ -167,9 +166,7 @@ import java.util.List;
 	}
 
 	public boolean hasFixedTimeAndNeedsCustomTimeline() {
-		return hasFixedTime && (useCustomEffects ?
-				"NORMAL".equals(skyType) :
-				"overworld".equals(defaultEffects));
+		return hasFixedTime && (useCustomEffects ? "NORMAL".equals(skyType) : "overworld".equals(defaultEffects));
 	}
 
 	public boolean needsCustomEffectsTimeline() {
@@ -178,6 +175,9 @@ import java.util.List;
 
 	public Set<String> getWorldgenBlocks() {
 		Set<String> retval = new HashSet<>();
+		if ("Void gen".equals(this.worldGenType)) {
+			return retval;
+		}
 		retval.add(mainFillerBlock.getUnmappedValue());
 		for (BiomeEntry biomeEntry : getUsedBiomes()) {
 			if (biomeEntry.getUnmappedValue().startsWith(NameMapper.MCREATOR_PREFIX)) {
@@ -268,15 +268,6 @@ import java.util.List;
 
 	@Override public List<TabEntry> getCreativeTabs() {
 		return creativeTabs;
-	}
-
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>();
-		if (enablePortal)
-			baseTypes.add(BaseType.BLOCK);
-		if (this.hasIgniter())
-			baseTypes.add(BaseType.ITEM);
-		return baseTypes;
 	}
 
 	@Override public List<MCItem> providedMCItems() {

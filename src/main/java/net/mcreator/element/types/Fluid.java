@@ -18,7 +18,6 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
@@ -58,8 +57,8 @@ import java.util.List;
 	@NonNullIf("hasFog") public NumberProcedure fogStartDistance;
 	@NonNullIf("hasFog") public NumberProcedure fogEndDistance;
 
-	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-			"Sky", "Fog", "Water fog" }) public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Dry foliage", "Birch foliage", "Spruce foliage",
+			"Default foliage", "Water", "Sky", "Fog", "Water fog" }) public String tintType;
 
 	public boolean canMultiply;
 	@Numeric(init = 5, min = 1, max = 100000, step = 1) public int flowRate;
@@ -143,17 +142,12 @@ import java.util.List;
 		return isFluidTinted();
 	}
 
-	@Override public String getRenderType() {
-		return "translucent";
+	public boolean isFlammable() {
+		return (this.fireSpreadSpeed > 0) || (this.flammability > 0);
 	}
 
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
-
-		if (generateBucket)
-			baseTypes.add(BaseType.ITEM);
-
-		return baseTypes;
+	@Override public String getRenderType() {
+		return "translucent";
 	}
 
 	@Override public List<MCItem> providedMCItems() {

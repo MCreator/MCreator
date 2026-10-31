@@ -22,18 +22,17 @@ package net.mcreator.element.types.bedrock;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.MobSpawnType;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.element.util.AnnotationUtils;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.modgui.bedrock.BEEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -44,12 +43,10 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 
-public class BEEntity extends GeneratableElement implements IEntityWithModel, ICommonType, IMCItemProvider {
+public class BEEntity extends GeneratableElement implements IEntityWithModel, IMCItemProvider {
 
 	private static final String XML_BASE = """
 			<xml xmlns="https://developers.google.com/blockly/xml">
@@ -62,8 +59,8 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 			</block></next></block></next></block></next></block></next></block></xml>""";
 
 	public String entityName;
-	@LimitedOptions({ "Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
-			"Villager" }) public String modelName;
+	@LimitedOptions(value = { "Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
+			"Villager" }, allowCustom = true) public String modelName;
 	@TextureReference(value = TextureType.ENTITY) public String modelTexture;
 	@Numeric(init = 0.6, min = 0, max = 16, step = 0.1) public double collisionBoxWidth;
 	@Numeric(init = 1.9, min = 0, max = 16, step = 0.1) public double collisionBoxHeight;
@@ -79,7 +76,6 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 	@Numeric(init = 64, min = 0, max = 10000, step = 1) public int followRangeValue;
 	public boolean isImmuneToFire;
 	public boolean isPushable;
-	public boolean isPushableByPiston;
 
 	public boolean spawnNaturally;
 	@NonNullIf("spawnNaturally") public MobSpawnType populationControl;
@@ -113,16 +109,13 @@ public class BEEntity extends GeneratableElement implements IEntityWithModel, IC
 
 	@Override @Nullable public Model getEntityModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
-		if (AnnotationUtils.getLimitedOptionsList(BEEntity.class, "modelName").stream().noneMatch(modelName::equals))
+		if (hasCustomModel())
 			modelType = Model.Type.BEDROCK;
 		return Model.getModelByParams(getModElement().getWorkspace(), modelName, modelType);
 	}
 
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		if (hasSpawnEgg)
-			return List.of(BaseType.ITEM, BaseType.ENTITY);
-		else
-			return List.of(BaseType.ENTITY);
+	public boolean hasCustomModel() {
+		return Arrays.stream(BEEntityGUI.builtinmobmodels).map(Model::getReadableName).noneMatch(modelName::equals);
 	}
 
 	public boolean hasDrop() {

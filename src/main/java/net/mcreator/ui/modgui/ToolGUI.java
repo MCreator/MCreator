@@ -90,8 +90,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
-	private static final Model normal = new Model.BuiltInModel("Normal");
-	private static final Model normalBlocking = new Model.BuiltInModel("Normal blocking");
+	public static final Model normal = new Model.BuiltInModel("Normal");
+	public static final Model normalBlocking = new Model.BuiltInModel("Normal blocking");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
 	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { normalBlocking });
 
@@ -194,15 +194,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
 				"elementgui.item.error_item_needs_texture");
-		texture.setOpaque(false);
-
 		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		guiTexture.setOpaque(false);
 
-		immuneToFire.setOpaque(false);
-		stayInGridWhenCrafting.setOpaque(false);
 		stayInGridWhenCrafting.addActionListener(_ -> updateCraftingSettings());
-		damageOnCrafting.setOpaque(false);
 
 		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 		rent.setOpaque(false);

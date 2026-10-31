@@ -306,8 +306,8 @@ public class GEValidator {
 	}
 
 	private record CachedField(Field field, boolean notNullable, boolean nullable, @Nullable Numeric numeric,
-	                           @Nullable NonNullMappable nonNullMappable, @Nullable LimitedOptionsCache limitedOptions,
-	                           @Nullable NonNullIf nonNullIf) {
+							   @Nullable NonNullMappable nonNullMappable, @Nullable LimitedOptionsCache limitedOptions,
+							   @Nullable NonNullIf nonNullIf) {
 		private CachedField(Field field) {
 			LimitedOptions limitedOptions = field.getAnnotation(LimitedOptions.class);
 			this(field, field.isAnnotationPresent(Nonnull.class) || field.isAnnotationPresent(BlocklyXML.class),
@@ -318,7 +318,7 @@ public class GEValidator {
 		}
 	}
 
-	private static Object castNumber(Class<?> type, double value) {
+	public static Object castNumber(Class<?> type, double value) {
 		if (type == int.class || type == Integer.class)
 			return (int) value;
 		if (type == long.class || type == Long.class)

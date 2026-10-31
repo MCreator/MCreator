@@ -20,7 +20,9 @@ package net.mcreator.generator;
 
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nullable;
 import java.io.File;
+import java.nio.file.Path;
 
 public class GeneratorUtils {
 
@@ -34,6 +36,21 @@ public class GeneratorUtils {
 		return new File(
 				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
 						generatorConfiguration.getResourceRoot()));
+	}
+
+	/**
+	 * Returns the nearest directory that contains both the source root and the resource root of the workspace.
+	 * For generators that share a single root for both, this is that root itself.
+	 *
+	 * @return the common root of source and resource roots, or null if they do not share an ancestor
+	 */
+	@Nullable public static File getCommonRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
+		Path sourceRoot = getSourceRoot(workspace, generatorConfiguration).toPath().toAbsolutePath().normalize();
+		Path resourceRoot = getResourceRoot(workspace, generatorConfiguration).toPath().toAbsolutePath().normalize();
+		Path commonRoot = sourceRoot;
+		while (commonRoot != null && !resourceRoot.startsWith(commonRoot))
+			commonRoot = commonRoot.getParent();
+		return commonRoot != null ? commonRoot.toFile() : null;
 	}
 
 	public static File getModAssetsRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {

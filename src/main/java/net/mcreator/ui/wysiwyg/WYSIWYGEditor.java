@@ -51,8 +51,10 @@ import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -97,10 +99,10 @@ public class WYSIWYGEditor extends JPanel {
 	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
-	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(9, 1, 100, 1));
+	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
 
 	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
@@ -146,15 +148,27 @@ public class WYSIWYGEditor extends JPanel {
 		invOffY.setPreferredSize(new Dimension(60, 24));
 
 		renderBgLayer.setSelected(true);
-		renderBgLayer.setOpaque(false);
-		doesPauseGame.setOpaque(false);
 
 		invOffX.setEnabled(false);
 		invOffY.setEnabled(false);
 
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		list.addListSelectionListener(event -> {
+		components.addListDataListener(new ListDataListener() {
+			@Override public void intervalAdded(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void intervalRemoved(ListDataEvent e) {
+				editor.repaint();
+			}
+
+			@Override public void contentsChanged(ListDataEvent e) {
+				editor.repaint();
+			}
+		});
+
+		list.addListSelectionListener(_ -> {
 			if (list.getSelectedValue() != null) {
 				editor.setSelectedComponent(list.getSelectedValue());
 				moveComponent.setEnabled(!list.getSelectedValue().locked);
@@ -180,35 +194,37 @@ public class WYSIWYGEditor extends JPanel {
 				}
 			}
 		});
-		list.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE)
-					editor.removeMode();
+
+		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+				"removeComponent");
+		getActionMap().put("removeComponent", new AbstractAction() {
+			@Override public void actionPerformed(ActionEvent e) {
+				editor.removeMode();
 			}
 		});
 
-		moveComponent.addActionListener(event -> editor.moveMode());
-		removeComponent.addActionListener(e -> editor.removeMode());
+		moveComponent.addActionListener(_ -> editor.moveMode());
+		removeComponent.addActionListener(_ -> editor.removeMode());
 
-		moveComponentUp.addActionListener(e -> {
+		moveComponentUp.addActionListener(_ -> {
 			boolean mu = components.moveUp(list.getSelectedIndex());
 			if (mu)
 				list.setSelectedIndex(list.getSelectedIndex() - 1);
 		});
-		moveComponentDown.addActionListener(e -> {
+		moveComponentDown.addActionListener(_ -> {
 			boolean mu = components.moveDown(list.getSelectedIndex());
 			if (mu)
 				list.setSelectedIndex(list.getSelectedIndex() + 1);
 		});
 
-		lockComponent.addActionListener(e -> {
+		lockComponent.addActionListener(_ -> {
 			GUIComponent component = list.getSelectedValue();
 			component.locked = !component.locked;
 			moveComponent.setEnabled(!component.locked);
 			list.repaint();
 		});
 
-		editComponent.addActionListener(e -> editCurrentlySelectedComponent());
+		editComponent.addActionListener(_ -> editCurrentlySelectedComponent());
 
 		list.setOpaque(false);
 		list.setCellRenderer(new GUIComponentRenderer());
@@ -268,13 +284,13 @@ public class WYSIWYGEditor extends JPanel {
 				JButton componentButton = new JButton(UIRES.get("wysiwyg_editor." + componentRegistration.icon()));
 				componentButton.setToolTipText((L10N.t("elementgui.gui.add_" + componentRegistration.machineName())));
 				componentButton.setMargin(new Insets(0, 0, 0, 0));
-				componentButton.addActionListener(e -> {
+				componentButton.addActionListener(_ -> {
 					try {
 						componentRegistration.editor()
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, null);
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-					         InvocationTargetException ex) {
+							 InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 				});
@@ -283,28 +299,27 @@ public class WYSIWYGEditor extends JPanel {
 			}
 		}
 
-		snapOnGrid.setOpaque(false);
-		snapOnGrid.addActionListener(event -> {
+		snapOnGrid.addActionListener(_ -> {
 			editor.showGrid = snapOnGrid.isSelected();
 			editor.repaint();
 		});
 
-		sx.addChangeListener(e -> {
+		sx.addChangeListener(_ -> {
 			editor.grid_x_spacing = (int) sx.getValue();
 			editor.repaint();
 		});
 
-		sy.addChangeListener(e -> {
+		sy.addChangeListener(_ -> {
 			editor.grid_y_spacing = (int) sy.getValue();
 			editor.repaint();
 		});
 
-		ox.addChangeListener(e -> {
+		ox.addChangeListener(_ -> {
 			editor.grid_x_offset = (int) ox.getValue();
 			editor.repaint();
 		});
 
-		oy.addChangeListener(e -> {
+		oy.addChangeListener(_ -> {
 			editor.grid_y_offset = (int) oy.getValue();
 			editor.repaint();
 		});
@@ -350,7 +365,7 @@ public class WYSIWYGEditor extends JPanel {
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
 		if (isNotOverlayType)
-			guiType.addActionListener(event -> {
+			guiType.addActionListener(_ -> {
 				invOffX.setEnabled(guiType.getSelectedIndex() == 1);
 				invOffY.setEnabled(guiType.getSelectedIndex() == 1);
 				if (guiType.getSelectedIndex() == 0 && !isOpening()) {
@@ -382,10 +397,12 @@ public class WYSIWYGEditor extends JPanel {
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
 
-		spa1.addChangeListener(event -> checkAndUpdateGUISize());
-		spa2.addChangeListener(event -> checkAndUpdateGUISize());
-		guiType.addActionListener(e -> checkAndUpdateGUISize());
-		renderBgLayer.addActionListener(e -> checkAndUpdateGUISize());
+		spa1.addChangeListener(_ -> checkAndUpdateGUISize());
+		spa2.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffX.addChangeListener(_ -> checkAndUpdateGUISize());
+		invOffY.addChangeListener(_ -> checkAndUpdateGUISize());
+		guiType.addActionListener(_ -> checkAndUpdateGUISize());
+		renderBgLayer.addActionListener(_ -> checkAndUpdateGUISize());
 
 		if (isNotOverlayType) {
 			JScrollPane scrollPane = new JScrollPane(adds2);
@@ -405,7 +422,7 @@ public class WYSIWYGEditor extends JPanel {
 
 			ComponentUtils.makeSection(ovst, L10N.t("elementgui.gui.overlay_properties"));
 
-			overlayBaseTexture.getComboBox().addActionListener(e -> editor.repaint());
+			overlayBaseTexture.getComboBox().addActionListener(_ -> editor.repaint());
 
 			ovst2.add(HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("overlay/overlay_target"),
 					L10N.label("elementgui.gui.overlay_target")));
@@ -465,7 +482,7 @@ public class WYSIWYGEditor extends JPanel {
 								.getConstructor(WYSIWYGEditor.class, componentRegistration.component())
 								.newInstance(this, component).getEditingComponent();
 					} catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-					         InvocationTargetException ex) {
+							 InvocationTargetException ex) {
 						throw new RuntimeException(ex);
 					}
 					break;

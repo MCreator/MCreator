@@ -55,6 +55,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.awt.event.ItemEvent;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -258,7 +259,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				buttonGroup.add(page);
 
 				int finalIdx = idx;
-				page.addActionListener(_ -> split.setPage(finalIdx));
+				// ItemListener instead of ActionListener so programmatic selection (e.g. arrow key
+				// navigation between toggle buttons in a ButtonGroup) also switches the page
+				page.addItemListener(e -> {
+					if (e.getStateChange() == ItemEvent.SELECTED)
+						split.setPage(finalIdx);
+				});
 
 				pageEntry.setShowThisPageAction(page::doClick);
 
@@ -281,25 +287,27 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
-				List<ValidationGroup> errors = new ArrayList<>();
-				for (int i = 0; i < pages.size(); i++) {
-					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
-					if (!validationResult.validateIsErrorFree()) {
-						pagers.get(i).setIcon(UIRES.get("16px.clear"));
-						errors.add(validationResult);
-					} else {
-						pagers.get(i).setIcon(null);
+				try {
+					List<ValidationGroup> errors = new ArrayList<>();
+					for (int i = 0; i < pages.size(); i++) {
+						AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
+						if (!validationResult.validateIsErrorFree()) {
+							pagers.get(i).setIcon(UIRES.get("16px.clear"));
+							errors.add(validationResult);
+						} else {
+							pagers.get(i).setIcon(null);
+						}
 					}
+
+					AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
+					if (validationResult.validateIsErrorFree())
+						finishModCreation(true);
+					else
+						showErrorsMessage(validationResult);
+				} finally {
+					save.setEnabled(true);
+					saveOnly.setEnabled(true);
 				}
-
-				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
-				if (validationResult.validateIsErrorFree())
-					finishModCreation(true);
-				else
-					showErrorsMessage(validationResult);
-
-				save.setEnabled(true);
-				saveOnly.setEnabled(true);
 			});
 
 			saveOnly = L10N.button("elementgui.save_keep_open");
@@ -310,25 +318,27 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
-				List<ValidationGroup> errors = new ArrayList<>();
-				for (int i = 0; i < pages.size(); i++) {
-					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
-					if (!validationResult.validateIsErrorFree()) {
-						pagers.get(i).setIcon(UIRES.get("16px.clear"));
-						errors.add(validationResult);
-					} else {
-						pagers.get(i).setIcon(null);
+				try {
+					List<ValidationGroup> errors = new ArrayList<>();
+					for (int i = 0; i < pages.size(); i++) {
+						AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
+						if (!validationResult.validateIsErrorFree()) {
+							pagers.get(i).setIcon(UIRES.get("16px.clear"));
+							errors.add(validationResult);
+						} else {
+							pagers.get(i).setIcon(null);
+						}
 					}
+
+					AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
+					if (validationResult.validateIsErrorFree())
+						finishModCreation(false);
+					else
+						showErrorsMessage(validationResult);
+				} finally {
+					save.setEnabled(true);
+					saveOnly.setEnabled(true);
 				}
-
-				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
-				if (validationResult.validateIsErrorFree())
-					finishModCreation(false);
-				else
-					showErrorsMessage(validationResult);
-
-				save.setEnabled(true);
-				saveOnly.setEnabled(true);
 			});
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
@@ -367,14 +377,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
-				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
-				if (validationResult.validateIsErrorFree())
-					finishModCreation(false);
-				else
-					showErrorsMessage(validationResult);
-
-				save.setEnabled(true);
-				saveOnly.setEnabled(true);
+				try {
+					AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
+					if (validationResult.validateIsErrorFree())
+						finishModCreation(false);
+					else
+						showErrorsMessage(validationResult);
+				} finally {
+					save.setEnabled(true);
+					saveOnly.setEnabled(true);
+				}
 			});
 
 			save = L10N.button("elementgui.save_mod_element");
@@ -385,14 +397,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				save.setEnabled(false);
 				saveOnly.setEnabled(false);
 
-				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
-				if (validationResult.validateIsErrorFree())
-					finishModCreation(true);
-				else
-					showErrorsMessage(validationResult);
-
-				save.setEnabled(true);
-				saveOnly.setEnabled(true);
+				try {
+					AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
+					if (validationResult.validateIsErrorFree())
+						finishModCreation(true);
+					else
+						showErrorsMessage(validationResult);
+				} finally {
+					save.setEnabled(true);
+					saveOnly.setEnabled(true);
+				}
 			});
 
 			JPanel toolBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
@@ -569,12 +583,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					Objects.requireNonNullElse(targetFolder, modMaker.getWorkspacePanel().currentFolder));
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
-		// add it before generating so all references are loaded
-		if (!editingMode) {
+		// we check the list instead of editingMode so an element deleted while its editor was open is re-added
+		boolean newElement = !mcreator.getWorkspace().containsModElement(modElement.getName());
+		if (newElement) {
 			mcreator.getWorkspace().addModElement(modElement);
 		} else {
 			modElement.reloadElementIcon();
-			modElement.getMCItems().forEach(mcItem -> mcItem.getIcon().getImage().flush()); // update MCItem icons
 		}
 
 		// make sure workspace will also be saved
@@ -582,6 +596,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);
+
+		// store the workspace file right away so the mod element list on the FS is in sync with the definition file
+		if (newElement)
+			mcreator.getWorkspace().getFileManager().saveWorkspaceDirectlyAndWait();
 
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
@@ -600,7 +618,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// re-init mod element to pick up the new mod element picture and reload mcitems cache
 		modElement.reinit(mcreator.getWorkspace());
 
-		afterGeneratableElementGenerated();
+		afterGeneratableElementGenerated(false);
 
 		// build if selected and needed
 		if ((Launcher.version.isDevelopment() || PreferencesManager.PREFERENCES.gradle.buildOnSave.get())
@@ -613,9 +631,13 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		mcreator.getApplication().getAnalytics().trackEvent(
 				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-				modElement.getType().getRegistryName());
+				modElement.getType().getRegistryName(), mcreator.getWorkspaceSettings().getCurrentGenerator());
 
-		if (changed && editingMode) {
+		// checkpoint after the element is stored and generated so all its files are part of the checkpoint
+		if (!editingMode) {
+			mcreator.getWorkspace().getHistoryManager()
+					.checkpoint("mod_element_added", modElement.getType().getReadableName(), modElement.getName());
+		} else if (changed) {
 			mcreator.getWorkspace().getHistoryManager().checkpoint("mod_element_edited", modElement.getName());
 		}
 
@@ -645,7 +667,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	protected void afterGeneratableElementStored() {
 	}
 
-	protected void afterGeneratableElementGenerated() {
+	public void afterGeneratableElementGenerated(boolean forceActions) {
 	}
 
 	protected boolean allowCodePreview() {

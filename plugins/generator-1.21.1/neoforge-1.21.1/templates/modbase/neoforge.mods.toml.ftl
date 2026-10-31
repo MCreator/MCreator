@@ -27,14 +27,14 @@ description="${JavaConventions.escapeStringForJava(settings.getDescription())}"
 <#if settings.isServerSideOnly()>
 displayTest="IGNORE_SERVER_VERSION"
 </#if>
-<#if (w.hasElementsOfType('specialentity')) || (w.getGElementsOfType('livingentity')?filter(e -> e.mobBehaviourType == "Raider")?size != 0)>
+<#if types.base_enumextensions?has_content>
 enumExtensions="META-INF/enumextensions.json"
 </#if>
 
 # Start of user code block mod configuration
 # End of user code block mod configuration
 
-<#if w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
+<#if fragments.mixin?size != 0>
 [[mixins]]
     config = "${settings.getModID()}.mixins.json"
 </#if>

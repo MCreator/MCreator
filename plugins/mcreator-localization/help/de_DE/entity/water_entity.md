@@ -1,4 +1,4 @@
-Beim Überprüfen dieses Parameters wird die Entität zu einer Wassereinheit.
+Beim Überprüfen dieses Parameters wird die Entität zu einer Wasserentität.
 
 Wenn Sie diesen Parameter aktivieren, wird die Entität einen Navigator vom Wassertyp haben, einen Wasserbewegungsregler und erlaubt es der Welt-Spawner in Flüssigkeiten zu spawnen.
 

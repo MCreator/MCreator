@@ -36,6 +36,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
@@ -126,8 +127,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
 	private final JLabel plantTypeIndicator = new JLabel();
 
-	private static final Model cross = new Model.BuiltInModel("Cross model");
-	private static final Model crop = new Model.BuiltInModel("Crop model");
+	public static final Model cross = new Model.BuiltInModel("Cross model");
+	public static final Model crop = new Model.BuiltInModel("Crop model");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = ComponentFromAnnotation.spinner(Plant.class, "growapableMaxHeight");
 
@@ -212,8 +213,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 		renderType.addActionListener(_ -> boundingBoxList.modelChanged());
 
-		generateFeature.setOpaque(false);
-
 		suspiciousStewEffect.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
@@ -291,8 +290,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		texture = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue();
 		textureBottom = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK));
-		texture.setOpaque(false);
-		textureBottom.setOpaque(false);
 		textureContainer = ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 				L10N.t("elementgui.plant.texture_place_texture"));
 		textureBottomContainer = ComponentUtils.squareAndBorder(textureBottom,
@@ -300,11 +297,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		textureBottomContainer.setOpaque(false);
 
 		itemTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		itemTexture.setOpaque(false);
 		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
-		particleTexture.setOpaque(false);
-
-		isItemTinted.setOpaque(false);
 
 		JPanel rent = new JPanel(new GridLayout(6, 2, 2, 2));
 		rent.setOpaque(false);
@@ -330,6 +323,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/offset_type"),
 				L10N.label("elementgui.common.offset_type")));
+		offsetType.setRenderer(new ItemTexturesComboBoxRenderer());
 		rent.add(offsetType);
 
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
@@ -351,12 +345,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel sbbp2 = new JPanel(new BorderLayout(5, 5));
 
 		sbbp2.setOpaque(false);
-
-		emissiveRendering.setOpaque(false);
-		isWaterloggable.setOpaque(false);
-
-		isReplaceable.setOpaque(false);
-		isBonemealable.setOpaque(false);
 
 		plantTypesCardPanel.setOpaque(false);
 
@@ -471,10 +459,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.is_solid")));
 		northPanel.add(isSolid);
 
-		customBoundingBox.setOpaque(false);
-		disableOffset.setOpaque(false);
-		isSolid.setOpaque(false);
-
 		bbPane.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), boundingBoxList));
 		bbPane.setOpaque(false);
 
@@ -506,15 +490,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ComponentUtils.makeSection(soundProperties, L10N.t("elementgui.common.properties_sound"));
 		soundProperties.setOpaque(false);
 
-		useLootTableForDrops.setOpaque(false);
-		unbreakable.setOpaque(false);
-		hardness.setOpaque(false);
-		resistance.setOpaque(false);
-		dropAmount.setOpaque(false);
-		hasBlockItem.setOpaque(false);
 		hasBlockItem.setSelected(true);
 		hasBlockItem.addActionListener(_ -> updateBlockItemSettings());
-		immuneToFire.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -576,8 +553,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		bg2.add(defaultSoundType);
 		bg2.add(customSoundType);
 		defaultSoundType.setSelected(true);
-		defaultSoundType.setOpaque(false);
-		customSoundType.setOpaque(false);
 
 		defaultSoundType.addActionListener(_ -> updateSoundType());
 		customSoundType.addActionListener(_ -> updateSoundType());
@@ -645,10 +620,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel advancedProperties = new JPanel(new GridLayout(9, 2, 10, 2));
 		advancedProperties.setOpaque(false);
-
-		forceTicking.setOpaque(false);
-		hasTileEntity.setOpaque(false);
-		ignitedByLava.setOpaque(false);
 
 		advancedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/has_tile_entity"),
 				L10N.label("elementgui.plant.has_tile_entity")));
@@ -752,7 +723,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel spawning = new JPanel(new GridLayout(6, 2, 5, 2));
 		spawning.setOpaque(false);
-		generateAtAnyHeight.setOpaque(false);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
 				L10N.label("elementgui.plant.generate_feature")));

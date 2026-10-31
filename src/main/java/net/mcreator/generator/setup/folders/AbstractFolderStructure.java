@@ -59,10 +59,15 @@ public abstract class AbstractFolderStructure {
 
 		ModuleDescriptor.Version currentVersion = ModuleDescriptor.Version.parse(minecraftVersion);
 
-		if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.19.3")) < 0) {
-			return new Pre1193FolderStructure(flavor, workspace);
-		} else if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.21")) < 0) {
-			return new Pre1210FolderStructure(flavor, workspace);
+		if (flavor.getGamePlatform() == GeneratorFlavor.GamePlatform.BEDROCKEDITION) {
+			if (currentVersion.compareTo(ModuleDescriptor.Version.parse("26.5x")) < 0)
+				return new Pre265AddonFolderStructure(flavor, workspace);
+		} else { // Java Edition
+			if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.19.3")) < 0) {
+				return new Pre1193FolderStructure(flavor, workspace);
+			} else if (currentVersion.compareTo(ModuleDescriptor.Version.parse("1.21")) < 0) {
+				return new Pre1210FolderStructure(flavor, workspace);
+			}
 		}
 
 		// if we fail to detect suitable folder structure, we just use the current folder structure

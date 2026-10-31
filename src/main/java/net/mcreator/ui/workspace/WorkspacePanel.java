@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.google.common.base.Suppliers;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
@@ -81,6 +82,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -653,13 +655,40 @@ import java.util.regex.Pattern;
 		toolp.add("North", pne);
 
 		JPanel emptct = new JPanel();
-		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
+		emptct.setLayout(new BoxLayout(emptct, BoxLayout.PAGE_AXIS));
 		emptct.setOpaque(false);
 
-		String[] workspaceEmptyTip = L10N.t("workspace.elements.empty.tip").split("%1");
-		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[0]), 24));
-		emptct.add(new JLabel(IconUtils.resize(UIRES.get("wrk_add"), 32, 32)));
-		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[1]), 24));
+		// each line of the tip can reference its icon using %<line number> placeholder
+		String[] workspaceEmptyTips = L10N.t("workspace.elements.empty.tip").split("\n");
+		ImageIcon[] workspaceEmptyTipIcons = { IconUtils.resize(UIRES.get("wrk_add"), 32),
+				IconUtils.resize(UIRES.get("16px.runclient"), 20),
+				IconUtils.resize(UIRES.get("16px.exporttojar"), 20) };
+		for (int i = 0; i < workspaceEmptyTips.length; i++) {
+			JPanel tipLine = new JPanel();
+			tipLine.setLayout(new BoxLayout(tipLine, BoxLayout.LINE_AXIS));
+			tipLine.setOpaque(false);
+
+			String[] tipParts = workspaceEmptyTips[i].split("%" + (i + 1), 2);
+
+			JLabel tipPart1 = new JLabel(tipParts[0]);
+			tipPart1.setForeground(Theme.current().getAltForegroundColor().darker());
+			tipLine.add(ComponentUtils.deriveFont(tipPart1, 20));
+
+			if (tipParts.length > 1 && i < workspaceEmptyTipIcons.length) {
+				JLabel tipIcon = new JLabel(workspaceEmptyTipIcons[i]);
+				int extraPaddingLeftRight = (32 - workspaceEmptyTipIcons[i].getIconWidth()) / 2;
+				tipIcon.setBorder(BorderFactory.createEmptyBorder(0, extraPaddingLeftRight, 0, extraPaddingLeftRight));
+				tipLine.add(tipIcon);
+
+				JLabel tipPart2 = new JLabel(tipParts[1]);
+				tipPart2.setForeground(Theme.current().getAltForegroundColor().darker());
+				tipLine.add(ComponentUtils.deriveFont(tipPart2, 20));
+			}
+
+			if (i > 0)
+				emptct.add(new JEmptyBox(1, 4));
+			emptct.add(PanelUtils.join(FlowLayout.LEFT, tipLine));
+		}
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
@@ -952,16 +981,14 @@ import java.util.regex.Pattern;
 
 	private void searchModElementsUsages() {
 		List<IElement> selectedElements = list.getSelectedValuesList();
+		List<ModElement> selectedModElements = selectedElements.stream().filter(i -> i instanceof ModElement)
+				.map(i -> (ModElement) i).toList();
 
-		if (selectedElements.stream().anyMatch(i -> i instanceof ModElement)) {
+		if (!selectedModElements.isEmpty()) {
 			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = new HashSet<>();
-			for (IElement el : selectedElements) {
-				if (el instanceof ModElement mod) {
-					references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-				}
-			}
+			Set<ModElement> references = ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(),
+					selectedModElements);
 
 			mcreator.setCursor(Cursor.getDefaultCursor());
 			SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
@@ -1007,6 +1034,8 @@ import java.util.regex.Pattern;
 					mcreator.getGenerator().generateElement(generatableElementDuplicate);
 					mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
 					mcreator.getModElementManager().storeModElement(generatableElementDuplicate);
+					mcreator.getWorkspace().getHistoryManager()
+							.checkpoint("mod_element_added", mu.getType().getReadableName(), modName);
 
 					if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 						List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
@@ -1062,14 +1091,30 @@ import java.util.regex.Pattern;
 		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
 				.getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
-				.getGlobalTemplatesListForModElementType(mu.getType(), new AtomicInteger());
+				.getGlobalTemplatesListForModElementType(mu.getType(),
+						() -> mcreator.getWorkspace().getModElementsByType(mu.getType()).stream()
+								.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList(),
+						new AtomicInteger());
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
 				.getModElementListTemplates(mu.getGeneratableElement());
+
+		// elements are grouped by base type in one pass, and only if a base type definition asks for them
+		Supplier<Map<BaseType, List<GeneratableElement>>> elementsByBaseType = Suppliers.memoize(() -> {
+			Map<BaseType, List<GeneratableElement>> map = new HashMap<>();
+			for (ModElement element : mcreator.getWorkspace().getModElements()) {
+				GeneratableElement generatableElement = element.getGeneratableElement();
+				if (generatableElement != null)
+					for (BaseType baseType : element.getBaseTypesProvided(generatableElement))
+						map.computeIfAbsent(baseType, _ -> new ArrayList<>()).add(generatableElement);
+			}
+			return map;
+		});
 
 		for (BaseType baseType : mu.getBaseTypesProvided()) {
 			modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 					mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-							.getBaseTypeDefinition(baseType), new AtomicInteger()));
+							.getBaseTypeDefinition(baseType), baseType.getPluralName(),
+					() -> elementsByBaseType.get().getOrDefault(baseType, List.of()), new AtomicInteger()));
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
@@ -1085,24 +1130,23 @@ import java.util.regex.Pattern;
 
 	private void deleteCurrentlySelectedModElement() {
 		List<IElement> selectedElements = list.getSelectedValuesList();
+		List<ModElement> selectedModElements = selectedElements.stream().filter(i -> i instanceof ModElement)
+				.map(i -> (ModElement) i).toList();
 
 		if (but3.isEnabled()) {
 			if (!selectedElements.isEmpty()) {
 				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				Set<ModElement> references = new HashSet<>();
-				for (IElement el : selectedElements) {
-					if (el instanceof ModElement mod)
-						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-				}
-				selectedElements.stream() // exclude usages by other mod elements being removed
-						.filter(e -> e instanceof ModElement).map(e -> (ModElement) e).forEach(references::remove);
+				Set<ModElement> references = ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(),
+						selectedModElements);
 
 				mcreator.setCursor(Cursor.getDefaultCursor());
 
 				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
 						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
+					// elements of each type are listed once and shared by all build checks of that type
+					Map<ModElementType<?>, List<GeneratableElement>> elementsByType = new HashMap<>();
 					if (selectedElements.size() == 1 && selectedElements.getFirst() instanceof ModElement mu) {
 						mcreator.getWorkspace().getHistoryManager().importantCheckpoint("before_delete", mu.getName());
 					} else {
@@ -1113,7 +1157,11 @@ import java.util.regex.Pattern;
 						if (re instanceof ModElement) {
 							if (!buildNeeded.get()) {
 								GeneratableElement ge = ((ModElement) re).getGeneratableElement();
-								if (ge != null && mcreator.getModElementManager().requiresElementGradleBuild(ge))
+								if (ge != null && mcreator.getModElementManager().requiresElementGradleBuild(ge,
+										() -> elementsByType.computeIfAbsent(ge.getModElement().getType(),
+												type -> mcreator.getWorkspace().getModElementsByType(type).stream()
+														.map(ModElement::getGeneratableElement)
+														.filter(Objects::nonNull).toList())))
 									buildNeeded.set(true);
 							}
 
@@ -1461,7 +1509,10 @@ import java.util.regex.Pattern;
 				}
 
 				Texture icon = CustomTexture.fromName(mcreator.getWorkspace(), TextureType.OTHER,
-						mcreator.getWorkspaceSettings().getModPicture());
+						mcreator.getWorkspaceSettings().getModIcon());
+				if (icon == null) // fall back to the mod banner if no dedicated icon is set
+					icon = CustomTexture.fromName(mcreator.getWorkspace(), TextureType.OTHER,
+							mcreator.getWorkspaceSettings().getModPicture());
 
 				if (icon != null) {
 					ImageIcon imageIcon = icon.getTextureIcon(mcreator.getWorkspace());

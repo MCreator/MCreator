@@ -28,23 +28,32 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 public class DefinitionsProvider {
 
 	private static final Logger LOG = LogManager.getLogger("Definition Loader");
 
+	private final String generatorName;
+
 	private final Map<ModElementType<?>, Map<?, ?>> cache = new ConcurrentHashMap<>();
 
 	private final Map<BaseType, Map<?, ?>> global_cache = new ConcurrentHashMap<>();
 
-	public DefinitionsProvider(GeneratorConfiguration generatorConfiguration) {
-		final String generatorName = generatorConfiguration.getGeneratorName();
+	private final Map<String, Map<?, ?>> fragment_cache = new LinkedHashMap<>();
 
+	public DefinitionsProvider(GeneratorConfiguration generatorConfiguration) {
+		this.generatorName = generatorConfiguration.getGeneratorName();
+
+		// Load mod element type definitions
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
 			try {
 				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
@@ -59,31 +68,52 @@ public class DefinitionsProvider {
 			}
 		}
 
-		for (BaseType type : BaseType.values()) {
-			try {
-				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
-						generatorName + "/common." + type.getPluralName() + ".yaml",
-						new AdaptiveYamlMergePolicy("name"));
-				if (result.isEmpty()) // definition not specified
-					continue;
+		// Load fragment type definitions (<type>.fragment.yaml)
+		PluginLoader.INSTANCE.getResources(generatorName, Pattern.compile(".*\\.fragment\\.yaml")).stream().sorted()
+				.forEach(resource -> {
+					try {
+						Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, resource,
+								new AdaptiveYamlMergePolicy("name"));
+						if (!result.isEmpty())
+							fragment_cache.put(
+									resource.substring(resource.lastIndexOf('/') + 1).replace(".fragment.yaml", ""),
+									new ConcurrentHashMap<>(result));
+					} catch (YamlEngineException | IOException e) {
+						LOG.error("[{}] Error: {}", generatorName, e.getMessage(), e);
+					}
+				});
 
-				global_cache.put(type, new ConcurrentHashMap<>(result)); // add definition to the cache
-			} catch (YamlEngineException | IOException e) {
-				LOG.info("[{}] Error: {}", generatorName, e.getMessage());
-			}
+		// Preload global definitions for base types known at generator construction time
+		for (BaseType type : BaseType.values()) {
+			global_cache.put(type, getDefinitionFor(type));
 		}
 	}
 
-	public Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
+	/**
+	 * @return Fragment type definitions mapped by fragment type
+	 */
+	@Nonnull public Map<String, Map<?, ?>> getFragmentDefinitions() {
+		return Collections.unmodifiableMap(fragment_cache);
+	}
+
+	@Nullable public Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {
 		return cache.get(elementType);
 	}
 
-	public Map<?, ?> getBaseTypeDefinition(BaseType baseType) {
-		return global_cache.get(baseType);
+	@Nonnull public Map<?, ?> getBaseTypeDefinition(BaseType baseType) {
+		return global_cache.computeIfAbsent(baseType, this::getDefinitionFor);
 	}
 
-	public Map<ModElementType<?>, Map<?, ?>> getModElementDefinitions() {
-		return Collections.unmodifiableMap(cache);
+	@Nonnull private Map<?, ?> getDefinitionFor(BaseType baseType) {
+		try {
+			Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
+					generatorName + "/common." + baseType.getPluralName() + ".yaml",
+					new AdaptiveYamlMergePolicy("name"));
+			return result.isEmpty() ? Map.of() : new ConcurrentHashMap<>(result);
+		} catch (YamlEngineException | IOException e) {
+			LOG.info("[{}] Error: {}", generatorName, e.getMessage());
+			return Map.of();
+		}
 	}
 
 }

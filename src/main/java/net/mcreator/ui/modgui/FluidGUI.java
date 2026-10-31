@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MapColor;
 import net.mcreator.element.parts.ParticleEntry;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
@@ -58,6 +59,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Objects;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
@@ -181,23 +183,18 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		textureStill = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
 				"elementgui.fluid.error_fluid_needs_still_texture");
-		textureStill.setOpaque(false);
 		textureFlowing = new TextureSelectionButton(
 				new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK)).requireValue(
 				"elementgui.fluid.error_fluid_needs_flowing_texture");
-		textureFlowing.setOpaque(false);
 
 		mainTextures.add(ComponentUtils.squareAndBorder(textureStill, L10N.t("elementgui.fluid.texture_still")));
 		mainTextures.add(ComponentUtils.squareAndBorder(textureFlowing, L10N.t("elementgui.fluid.texture_flowing")));
 
 		textureRenderOverlay = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER),
 				32);
-		textureRenderOverlay.setOpaque(false);
 
 		JPanel visualSettings = new JPanel(new GridLayout(3, 2, 5, 2));
 		visualSettings.setOpaque(false);
-
-		hasFog.setOpaque(false);
 
 		visualSettings.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/render_overlay_texture"),
 				L10N.label("elementgui.fluid.texture_render_overlay")));
@@ -230,13 +227,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		JPanel destal = new JPanel(new GridLayout(10, 2, 5, 2));
 		destal.setOpaque(false);
-
-		canMultiply.setOpaque(false);
-		flowRate.setOpaque(false);
-		levelDecrease.setOpaque(false);
-		slopeFindDistance.setOpaque(false);
-		spawnParticles.setOpaque(false);
-		flowStrength.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
@@ -287,8 +277,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		bucketProperties.setOpaque(false);
 
 		textureBucket = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		generateBucket.setOpaque(false);
-		textureBucket.setOpaque(false);
 
 		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("fluid/enable_bucket"),
 				L10N.label("elementgui.fluid.generate_bucket_label")));
@@ -346,15 +334,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		JPanel blockProperties = new JPanel(new GridLayout(9, 2, 20, 2));
 		blockProperties.setOpaque(false);
-
-		resistance.setOpaque(false);
-		luminance.setOpaque(false);
-		lightOpacity.setOpaque(false);
-		emissiveRendering.setOpaque(false);
-		tickRate.setOpaque(false);
-		ignitedByLava.setOpaque(false);
-		flammability.setOpaque(false);
-		fireSpreadSpeed.setOpaque(false);
 
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/resistance"),
 				L10N.label("elementgui.common.resistance")));
@@ -451,6 +430,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 			bucketName.setText(readableNameFromModElement + " Bucket");
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
 		}
 	}
 

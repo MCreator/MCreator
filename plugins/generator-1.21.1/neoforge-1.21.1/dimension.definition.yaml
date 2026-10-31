@@ -30,6 +30,10 @@ templates:
     writer: json
     condition: "worldGenType %= End like gen"
     name: "@MODDATAROOT/dimension/@registryname.json"
+  - template: dimension/dimension_void.json.ftl # loaded from datapack generator
+    writer: json
+    condition: "worldGenType %= Void gen"
+    name: "@MODDATAROOT/dimension/@registryname.json"
 
   - template: json/dimension_portal.json.ftl
     writer: json
@@ -48,10 +52,16 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
     condition: hasIgniter()
 
+base_types:
+  - type: block
+    condition: enablePortal
+  - type: item
+    condition: hasIgniter()
+
 global_templates:
   - template: dimension/skybox.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/@JavaModNameSkyboxRenderer.java"
-    condition: "${w.getGElementsOfType('dimension')?filter(e -> e.enableCustomSkyboxTextures || e.enableCustomSunMoonTextures)?size != 0}"
+    condition: "${dimensions?filter(e -> e.enableCustomSkyboxTextures || e.enableCustomSunMoonTextures)?size != 0}"
 
 tags:
   - tag: BLOCKS:minecraft:overworld_carver_replaceables

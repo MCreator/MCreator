@@ -37,6 +37,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GeneratorStats {
 
@@ -107,8 +108,8 @@ public class GeneratorStats {
 		}
 
 		// load dummy values
-		BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, value) -> coverageInfo.put(name.registryName(), 0d));
-		BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders().forEach((key, value) -> {
+		BlocklyLoader.INSTANCE.getAllBlockLoaders().forEach((name, _) -> coverageInfo.put(name.registryName(), 0d));
+		BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders().forEach((key, _) -> {
 			ExternalTriggerLoader loader = BlocklyLoader.INSTANCE.getExternalTriggerLoader(key);
 			coverageInfo.put(loader.getResourceFolder(), 0d);
 		});
@@ -116,9 +117,9 @@ public class GeneratorStats {
 		// lazy load actual values
 		new Thread(() -> {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders()
-					.forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
+					.forEach((name, _) -> addBlocklyFolder(generatorConfiguration, name));
 			BlocklyLoader.INSTANCE.getAllExternalTriggerLoaders()
-					.forEach((key, value) -> addBlocklyTriggerFolder(generatorConfiguration, key));
+					.forEach((key, _) -> addBlocklyTriggerFolder(generatorConfiguration, key));
 		}, "GeneratorStats-Loader").start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
@@ -198,9 +199,9 @@ public class GeneratorStats {
 
 		Set<String> supportedBlocks = new HashSet<>();
 		for (String path : genConfig.getGeneratorPaths(type.registryName())) {
-			supportedBlocks.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet()));
+			supportedBlocks.addAll(listRootTemplates(path).map(FilenameUtilsPatched::getBaseName)
+					.map(FilenameUtilsPatched::getBaseName).filter(e -> !e.startsWith("_"))
+					.collect(Collectors.toSet()));
 		}
 
 		generatorBlocklyBlocks.put(type, supportedBlocks);
@@ -222,11 +223,10 @@ public class GeneratorStats {
 		if (definedTriggers.isEmpty())
 			return;
 
-		Set<String> supportedTriggers = generatorBlocklyTriggers.computeIfAbsent(type, k -> new HashSet<>());
+		Set<String> supportedTriggers = generatorBlocklyTriggers.computeIfAbsent(type, _ -> new HashSet<>());
 		for (String path : genConfig.getGeneratorPaths(loader.getResourceFolder())) {
-			supportedTriggers.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.collect(Collectors.toSet()));
+			supportedTriggers.addAll(listRootTemplates(path).map(FilenameUtilsPatched::getBaseName)
+					.map(FilenameUtilsPatched::getBaseName).collect(Collectors.toSet()));
 		}
 
 		// Determine which triggers from defined triggers we are missing
@@ -236,6 +236,19 @@ public class GeneratorStats {
 		double supportedPercent =
 				(definedTriggers.size() - missingTriggers.size()) / (double) definedTriggers.size() * 100;
 		coverageInfo.put(loader.getResourceFolder(), Math.min(supportedPercent, 100));
+	}
+
+	/**
+	 * Lists template files located directly in the given generator folder. Templates in subfolders are helper
+	 * templates included by other templates and do not represent blocks on their own, so they are skipped.
+	 *
+	 * @param path Generator folder path, e.g. "neoforge-26.3/procedures"
+	 * @return Stream of resource paths of templates found directly in the given folder
+	 */
+	private static Stream<String> listRootTemplates(String path) {
+		String prefix = path + "/";
+		return PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
+				.filter(e -> e.startsWith(prefix) && e.indexOf('/', prefix.length()) < 0);
 	}
 
 	public Map<BlocklyEditorType, Set<String>> getGeneratorBlocklyBlocks() {
@@ -256,6 +269,22 @@ public class GeneratorStats {
 
 	public Map<ModElementType<?>, CoverageStatus> getModElementTypeCoverageInfo() {
 		return modElementTypeCoverageInfo;
+	}
+
+	public boolean isModElementTypeCovered(ModElementType<?> type) {
+		return modElementTypeCoverageInfo.get(type) != CoverageStatus.NONE;
+	}
+
+	public boolean areModElementTypesCovered(ModElementType<?>... types) {
+		for (var type : types) {
+			if (!isModElementTypeCovered(type))
+				return false;
+		}
+		return true;
+	}
+
+	public boolean isModElementTypeFullyCovered(ModElementType<?> type) {
+		return modElementTypeCoverageInfo.get(type) == CoverageStatus.FULL;
 	}
 
 	public List<ModElementType<?>> getSupportedModElementTypes() {

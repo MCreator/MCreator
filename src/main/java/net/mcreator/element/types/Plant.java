@@ -19,13 +19,11 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -39,7 +37,6 @@ import net.mcreator.workspace.resources.TexturedModel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.lang.module.ModuleDescriptor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,8 +52,8 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.ITEM) @Nullable public TextureHolder itemTexture;
 	@TextureReference(TextureType.BLOCK) public TextureHolder particleTexture;
 
-	@LimitedOptions({ "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
-			"Sky", "Fog", "Water fog" }) public String tintType;
+	@LimitedOptions({ "No tint", "Grass", "Foliage", "Dry foliage", "Birch foliage", "Spruce foliage",
+			"Default foliage", "Water", "Sky", "Fog", "Water fog" }) public String tintType;
 	public boolean isItemTinted;
 
 	@LimitedOptions({ "normal", "double", "growapable", "sapling" }) public String plantType;
@@ -217,6 +214,10 @@ import java.util.stream.Collectors;
 		return isWaterloggable;
 	}
 
+	public boolean isFlammable() {
+		return (this.fireSpreadSpeed > 0) || (this.flammability > 0);
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
@@ -264,27 +265,8 @@ import java.util.stream.Collectors;
 		return maxStackSize != 64 || !rarity.equals("COMMON") || immuneToFire;
 	}
 
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK));
-
-		if (hasBlockItem) {
-			baseTypes.add(BaseType.ITEM);
-		}
-
-		if (generateFeature) {
-			baseTypes.add(BaseType.CONFIGUREDFEATURE);
-			if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
-					== GeneratorFlavor.FABRIC ||
-					ModuleDescriptor.Version.parse(getModElement().getGenerator().getGeneratorMinecraftVersion())
-							.compareTo(ModuleDescriptor.Version.parse("1.18.2")) <= 0)
-				baseTypes.add(
-						BaseType.FEATURE); // Fabric and old Forge versions needs Java code to register feature generation
-		}
-
-		if (hasTileEntity)
-			baseTypes.add(BaseType.BLOCKENTITY);
-
-		return baseTypes;
+	public boolean hasStrippingResult() {
+		return strippingResult != null && !strippingResult.isEmpty();
 	}
 
 	@Override public List<MCItem> providedMCItems() {

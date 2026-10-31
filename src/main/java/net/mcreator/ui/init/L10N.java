@@ -182,7 +182,8 @@ public class L10N {
 			return null;
 
 		if (resourceBundle.containsKey(key)) {
-			String value = hardenHTMLString(resourceBundle.getString(key), rb_en.containsKey(key) ? rb_en.getString(key) : null);
+			String value = hardenHTMLString(resourceBundle.getString(key),
+					rb_en.containsKey(key) ? rb_en.getString(key) : null);
 			return MessageFormat.format(value, parameters);
 		} else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
 				".description"))) {
@@ -226,7 +227,9 @@ public class L10N {
 	}
 
 	public static JCheckBox checkbox(String key, Object... parameter) {
-		return new JCheckBox(t(key, parameter));
+		JCheckBox checkbox = new JCheckBox(t(key, parameter));
+		checkbox.setOpaque(false);
+		return checkbox;
 	}
 
 	public static JButton button(String key, Object... parameter) {
@@ -238,7 +241,9 @@ public class L10N {
 	}
 
 	public static JRadioButton radiobutton(String key, Object... parameter) {
-		return new JRadioButton(t(key, parameter));
+		JRadioButton radioButton = new JRadioButton(t(key, parameter));
+		radioButton.setOpaque(false);
+		return radioButton;
 	}
 
 	public static JToggleButton togglebutton(String key, Object... parameter) {

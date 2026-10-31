@@ -20,7 +20,9 @@ package net.mcreator.generator.blockly;
 
 import net.mcreator.blockly.*;
 import net.mcreator.blockly.data.*;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
@@ -98,8 +100,10 @@ public class BlocklyBlockCodeGenerator {
 					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
 							&& !element.getTextContent().isEmpty()) {
 						String fieldValue = element.getTextContent();
-						if (fieldValue.startsWith("CUSTOM:")) {
-							String fieldType = toolboxBlock.getFieldType(fieldName);
+						String fieldType = toolboxBlock.getFieldType(fieldName);
+						if ("field_resourcelocation".equals(fieldType)) {
+							fieldValue = NameMapper.resolveModNamespace(fieldValue, master.getWorkspace());
+						} else if (fieldValue.startsWith("CUSTOM:")) {
 							if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
 									fieldType) || "field_mcitem_selector".equals(fieldType)) {
 								boolean shouldValidate = !("sound".equals(toolboxBlock.getFieldDataList(fieldName)));
@@ -108,6 +112,23 @@ public class BlocklyBlockCodeGenerator {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 											L10N.t("blockly.errors.invalid_reference", fieldName, type,
 													fieldValue.replaceFirst("CUSTOM:", ""))));
+								}
+							}
+						} else if ("procedure".equals(toolboxBlock.getFieldDataList(fieldName))) {
+							Procedure procedure = new Procedure(fieldValue);
+							List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
+							if (!procedure.exists) {
+								master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+										L10N.t("blockly.errors.invalid_reference", fieldName, type, fieldValue)));
+							} else if (toolboxBlock.getFieldDependencies(fieldName) != null) {
+								List<Dependency> provided = List.of(
+										Dependency.fromString(toolboxBlock.getFieldDependencies(fieldName)));
+								String missing = dependencies.stream().filter(d -> !provided.contains(d))
+										.map(Dependency::name).collect(Collectors.joining(", "));
+								if (!missing.isEmpty()) {
+									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+											L10N.t("blockly.errors.call_procedure_missing_deps", fieldValue,
+													missing)));
 								}
 							}
 						}
@@ -241,8 +262,10 @@ public class BlocklyBlockCodeGenerator {
 					if (matchingElements.containsKey(fieldName + i)) {
 						String fieldValue = matchingElements.remove(fieldName + i).getTextContent();
 						if (fieldValue != null && !fieldValue.isEmpty()) {
-							if (fieldValue.startsWith("CUSTOM:")) {
-								String fieldType = fieldEntry.getFieldType();
+							String fieldType = fieldEntry.getFieldType();
+							if ("field_resourcelocation".equals(fieldType)) {
+								fieldValue = NameMapper.resolveModNamespace(fieldValue, master.getWorkspace());
+							} else if (fieldValue.startsWith("CUSTOM:")) {
 								if ("field_data_list_selector".equals(fieldType) || "field_data_list_dropdown".equals(
 										fieldType) || "field_mcitem_selector".equals(fieldType)) {
 									boolean shouldValidate = !("sound".equals(fieldEntry.getDataList()));

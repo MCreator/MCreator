@@ -126,7 +126,7 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 	}
 
 	@JsonAdapter(TagElement.Entry.GSONAdapter.class) public record Entry(String name, boolean isManaged,
-	                                                                     @Nullable String owner) {
+																		 @Nullable String owner) {
 
 		public static Entry unmanaged(String name) {
 			return new Entry(name, false, null);

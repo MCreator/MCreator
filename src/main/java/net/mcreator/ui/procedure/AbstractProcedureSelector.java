@@ -25,7 +25,6 @@ import com.google.gson.Strictness;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
@@ -81,8 +80,8 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		procedures.setEnabled(enabled);
-		add.setEnabled(enabled && mcreator.getWorkspace().getGeneratorStats().getModElementTypeCoverageInfo()
-				.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE);
+		add.setEnabled(enabled && mcreator.getWorkspace().getGeneratorStats()
+				.isModElementTypeCovered(ModElementType.PROCEDURE));
 		edit.setEnabled(enabled && getSelectedProcedure() != null);
 	}
 
@@ -95,9 +94,9 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 		procedures.addItem(new ProcedureEntry(defaultName, null));
 
-		for (Map.Entry<ModElement, ReloadContext.ContexData> entry : context.data.entrySet()) {
+		for (Map.Entry<ModElement, ReloadContext.ContextData> entry : context.data.entrySet()) {
 			ModElement mod = entry.getKey();
-			ReloadContext.ContexData data = entry.getValue();
+			ReloadContext.ContextData data = entry.getValue();
 
 			boolean missing = data.dependencies().stream().anyMatch(d -> !providedDependencies.contains(d));
 
@@ -197,18 +196,11 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 
-		if (validator != null && currentValidationResult != null) {
-			if (currentValidationResult.type() == ValidationResult.Type.WARNING) {
-				g.setColor(currentValidationResult.type().getColor());
-				g.drawRect(0, 0, getWidth(), getHeight());
-
-				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 11, getHeight() - 11, 11, 11, null);
-			} else if (currentValidationResult.type() == ValidationResult.Type.ERROR) {
-				g.setColor(currentValidationResult.type().getColor());
-				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-
-				g.drawImage(UIRES.get("18px.remove").getImage(), 0, 0, 11, 11, null);
-			}
+		if (validator != null && currentValidationResult != null
+				&& currentValidationResult.type() != ValidationResult.Type.PASSED) {
+			g.setColor(currentValidationResult.type().getColor());
+			g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+			currentValidationResult.type().icon(11).paintIcon(this, g, getWidth() - 11, getHeight() - 11);
 		}
 	}
 
@@ -242,7 +234,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	public static class ReloadContext {
 
 		// LinkedHashMap to keep the order of ModElement.getComparator
-		private final Map<ModElement, ContexData> data = new LinkedHashMap<>();
+		private final Map<ModElement, ContextData> data = new LinkedHashMap<>();
 
 		public static ReloadContext create(Workspace workspace) {
 			ReloadContext context = new ReloadContext();
@@ -268,13 +260,13 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 							VariableTypeLoader.INSTANCE.fromName((String) mod.getMetadata("return_type")) :
 							null;
 
-					context.data.put(mod, new ContexData(realdepsList, returnTypeCurrent));
+					context.data.put(mod, new ContextData(realdepsList, returnTypeCurrent));
 				}
 			}
 			return context;
 		}
 
-		record ContexData(Set<Dependency> dependencies, @Nullable VariableType returnType) {}
+		record ContextData(Set<Dependency> dependencies, @Nullable VariableType returnType) {}
 
 	}
 

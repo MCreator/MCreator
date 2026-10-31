@@ -239,7 +239,9 @@ public class WorkspaceFileBrowser extends JPanel {
 
 		if (mcreator.getGeneratorStats().hasBaseCoverageAny("model_json", "model_java", "model_obj", "model_bedrock")) {
 			FilterTreeNode models = new FilterTreeNode(NODE_MODELS);
-			JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
+			// texture mapping files are internal and are edited through the models workspace tab
+			JFileTree.addNodes(models, mcreator.getFolderManager().getModelsDir(), true,
+					file -> !file.getName().endsWith(".textures"));
 			node.add(models);
 		}
 

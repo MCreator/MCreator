@@ -30,6 +30,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.elements.TagElement;
+import net.mcreator.workspace.resources.ModelManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,6 +70,7 @@ public final class WorkspaceFileManager implements Closeable {
 	private final Workspace workspace;
 	private final WorkspaceFolderManager folderManager;
 	private final ModElementManager modElementManager;
+	private final ModelManager modelManager;
 
 	WorkspaceFileManager(@Nonnull File workspaceFile, @Nonnull Workspace workspace) {
 		this.workspaceFile = workspaceFile;
@@ -78,10 +80,11 @@ public final class WorkspaceFileManager implements Closeable {
 
 		this.folderManager = new WorkspaceFolderManager(workspaceFile, workspace);
 		this.modElementManager = new ModElementManager(workspace);
+		this.modelManager = new ModelManager(workspace);
 
 		this.dataSaveExecutor = Executors.newScheduledThreadPool(1, runnable -> {
 			Thread thread = new Thread(runnable);
-			thread.setName("Workspace-File-Manager" );
+			thread.setName("Workspace-File-Manager");
 			thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
 			return thread;
 		});
@@ -103,14 +106,22 @@ public final class WorkspaceFileManager implements Closeable {
 		return modElementManager;
 	}
 
+	public ModelManager getModelManager() {
+		return modelManager;
+	}
+
 	@Override public void close() {
-		lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
-		dataSaveExecutor.shutdown(); // prevent new tasks from being scheduled
-		saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
+		try {
+			lastSchedule.cancel(true); // we stop autosaving for this workspace after it is done
+			dataSaveExecutor.shutdown(); // prevent new tasks from being scheduled
+			saveWorkspaceDirectlyAndWait(); // and then save workspace to FS
+		} catch (Exception e) {
+			LOG.error("Failed to save workspace on close", e);
+		}
 	}
 
 	public void saveWorkspaceDirectlyAndWait() {
-		LOG.info("Saving the workspace by direct request" );
+		LOG.info("Saving the workspace by direct request");
 
 		// set changed flag so the saving happens in all cases (this is a direct save request)
 		workspace.markDirty();
@@ -138,8 +149,11 @@ public final class WorkspaceFileManager implements Closeable {
 
 			// We do an "atomic" write to the FS
 			File outFile = workspaceFile;
-			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock" );
-			FileIO.writeStringToFile(workspacestring, tmpFile);
+			File tmpFile = new File(folderManager.getWorkspaceFolder(), workspaceFile.getName() + ".lock");
+			if (!FileIO.writeStringToFile(workspacestring, tmpFile)) {
+				LOG.error("Failed to write workspace file to FS! Workspace is not saved!");
+				return;
+			}
 			try {
 				Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.ATOMIC_MOVE);
 			} catch (Exception e) {
@@ -147,9 +161,12 @@ public final class WorkspaceFileManager implements Closeable {
 				try {
 					Files.move(tmpFile.toPath(), outFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 				} catch (Exception e1) {
-					LOG.error("Falling back to normal write (non atomic, without move!)", e1);
-					FileIO.writeStringToFile(workspacestring, outFile);
 					tmpFile.delete(); // we delete the tmp file if it was not moved
+					LOG.warn("Falling back to normal write (non atomic, without move!)", e1);
+					if (!FileIO.writeStringToFile(workspacestring, outFile)) {
+						LOG.error("Failed to write workspace file directly to FS! Workspace is not saved!");
+						return;
+					}
 				}
 			}
 
@@ -161,9 +178,9 @@ public final class WorkspaceFileManager implements Closeable {
 
 			MCREvent.event(new WorkspaceSavedEvent.AfterSaving(workspace));
 
-			LOG.debug("Workspace stored on the FS" );
+			LOG.debug("Workspace stored on the FS");
 		} else {
-			LOG.error("Skipping workspace save. Workspace is defined but we failed to serialize it!" );
+			LOG.error("Skipping workspace save. Workspace is defined but we failed to serialize it!");
 		}
 	}
 
@@ -192,7 +209,7 @@ public final class WorkspaceFileManager implements Closeable {
 		// if workspace file exists, so we can back it up, we back it up
 		if (workspaceFile.isFile()) {
 			File backupFile = new File(folderManager.getWorkspaceBackupsCacheDir(),
-					workspaceFile.getName() + "-backup_" + new SimpleDateFormat("yyyyMMdd_HHmmss" ).format(new Date()));
+					workspaceFile.getName() + "-backup_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
 			FileIO.copyFile(workspaceFile, backupFile);
 		}
 	}
@@ -208,7 +225,11 @@ public final class WorkspaceFileManager implements Closeable {
 	private record SaveTask(WorkspaceFileManager fileManager) implements Runnable {
 
 		@Override public void run() {
-			fileManager.saveWorkspaceIfChanged();
+			try {
+				fileManager.saveWorkspaceIfChanged();
+			} catch (Exception e) {
+				fileManager.LOG.error("Failed to save workspace", e);
+			}
 
 			if (!fileManager.dataSaveExecutor.isShutdown())
 				fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),

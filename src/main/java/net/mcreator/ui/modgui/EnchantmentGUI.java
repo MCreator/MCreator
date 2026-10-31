@@ -34,10 +34,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -73,7 +70,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 	private final JSpinner weight = ComponentFromAnnotation.spinner(Enchantment.class, "weight");
 	private final JSpinner anvilCost = ComponentFromAnnotation.spinner(Enchantment.class, "anvilCost");
 
-	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator, ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
+	private final DataListComboBox supportedSlots = new DataListComboBox(mcreator,
+			ElementUtil.loadAllEquipmentSlots(mcreator.getWorkspace()));
 
 	private final JSpinner maxLevel = ComponentFromAnnotation.spinner(Enchantment.class, "maxLevel");
 
@@ -120,11 +118,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 
 		pane1.setOpaque(false);
 		effectsPage.setOpaque(false);
-
-		isCurse.setOpaque(false);
-		isTreasureEnchantment.setOpaque(false);
-		canGenerateInLootTables.setOpaque(false);
-		canVillagerTrade.setOpaque(false);
 
 		canGenerateInLootTables.setSelected(true);
 		canVillagerTrade.setSelected(true);
@@ -202,14 +195,22 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> implements IBlock
 			DynamicBlockLoader.loadBlocksAndCategoriesInPanel(blocklyPanel);
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.ENCHANTMENT_EFFECTS)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.addChangeListener(_ -> new Thread(() -> regenerateBlockAssemblies(true),
-					"EnchantmentEffectsRegenerate").start());
+			blocklyPanel.addChangeListener(
+					_ -> new Thread(() -> regenerateBlockAssemblies(true), "EnchantmentEffectsRegenerate").start());
 		});
 		if (!isEditingMode()) {
 			blocklyPanel.setInitialXML(Enchantment.XML_BASE);
 		}
 
-		JPanel enchantmentEffects = PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		JPanel blocklyAndToolbarPanel = new JPanel(new GridLayout());
+		blocklyAndToolbarPanel.setOpaque(false);
+
+		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator,
+				BlocklyEditorType.ENCHANTMENT_EFFECTS, blocklyPanel);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
+		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
+
+		JPanel enchantmentEffects = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		ComponentUtils.makeSection(enchantmentEffects, L10N.t("elementgui.enchantment.effects_builder"));
 		enchantmentEffects.setPreferredSize(new Dimension(0, 570));
 

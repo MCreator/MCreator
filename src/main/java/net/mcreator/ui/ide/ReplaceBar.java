@@ -79,9 +79,9 @@ public class ReplaceBar extends JPanel {
 			}
 		});
 
-		cb2.addActionListener(e -> updateSearch());
-		cb3.addActionListener(e -> updateSearch());
-		cb4.addActionListener(e -> updateSearch());
+		cb2.addActionListener(_ -> updateSearch());
+		cb3.addActionListener(_ -> updateSearch());
+		cb4.addActionListener(_ -> updateSearch());
 
 		jtf2.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent keyEvent) {
@@ -94,7 +94,7 @@ public class ReplaceBar extends JPanel {
 		JButton replace = L10N.button("action.replace");
 		JButton replaceAll = L10N.button("action.replace_all");
 
-		replace.addActionListener(actionEvent -> {
+		replace.addActionListener(_ -> {
 			context.setSearchFor(jtf1.getText());
 			context.setReplaceWith(jtf2.getText());
 			context.setMatchCase(cb3.isSelected());
@@ -103,7 +103,7 @@ public class ReplaceBar extends JPanel {
 			SearchEngine.replace(ra, context);
 		});
 
-		replaceAll.addActionListener(actionEvent -> {
+		replaceAll.addActionListener(_ -> {
 			context.setSearchFor(jtf1.getText());
 			context.setReplaceWith(jtf2.getText());
 			context.setMatchCase(cb3.isSelected());
@@ -129,10 +129,6 @@ public class ReplaceBar extends JPanel {
 		top.add(matches);
 		top.add(Box.createHorizontalGlue());
 
-		cb3.setOpaque(false);
-		cb2.setOpaque(false);
-		cb4.setOpaque(false);
-
 		cb3.setForeground(new Color(0xE2E2E2));
 		cb2.setForeground(new Color(0xE2E2E2));
 		cb4.setForeground(new Color(0xE2E2E2));
@@ -144,7 +140,7 @@ public class ReplaceBar extends JPanel {
 		close.setContentAreaFilled(false);
 		close.setFocusPainted(false);
 		close.setMargin(new Insets(0, 0, 0, 0));
-		close.addActionListener(event -> setVisible(false));
+		close.addActionListener(_ -> setVisible(false));
 
 		top.add(close);
 

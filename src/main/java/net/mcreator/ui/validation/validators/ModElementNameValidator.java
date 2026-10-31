@@ -38,7 +38,7 @@ public class ModElementNameValidator extends UniqueNameValidator {
 	private ModElementNameValidator(@Nonnull Workspace workspace, VTextField textField, String name,
 			List<String> usedNames) {
 		super(name, () -> JavaConventions.convertToValidClassName(textField.getText()), usedNames::stream,
-				new JavaMemberNameValidator(textField, true));
+				new JavaMemberNameValidator(textField).firstLetterUppercase());
 		this.usedNames = usedNames;
 
 		setIsPresentOnList(false);

@@ -48,6 +48,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.module.ModuleDescriptor;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -164,7 +165,6 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
-		recipeShapeless.setOpaque(false);
 		recipeShapeless.addActionListener(_ -> craftingRecipeMaker.setShapeless(recipeShapeless.isSelected()));
 
 		recipesPanel.setOpaque(false);
@@ -332,10 +332,15 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			groupPanel.setVisible(isRecipeCrafting || isCookingRecipe);
 
 			if (!isEditingMode() && isCookingRecipe) {
-				if (recipeTypeValue.equals("Smelting")) {
-					cookingTime.setValue(200);
-				} else if (recipeTypeValue.equals("Campfire cooking")) {
+				if (recipeTypeValue.equals("Campfire cooking")) {
 					cookingTime.setValue(600);
+				}
+				// In 26.3 and above, blasting/smoking recipes should have the same cooking time as their normal counterpart
+				else if (recipeTypeValue.equals("Smelting") || ModuleDescriptor.Version.parse(
+						mcreator.getWorkspace().getGenerator().getGeneratorConfiguration()
+								.getGeneratorMinecraftVersion()).compareTo(ModuleDescriptor.Version.parse("26.3"))
+						>= 0) {
+					cookingTime.setValue(200);
 				} else {
 					cookingTime.setValue(100);
 				}

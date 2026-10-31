@@ -35,6 +35,7 @@ import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.localhistory.HistoryManager;
 import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
+import net.mcreator.workspace.resources.ModelManager;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettings;
 import net.mcreator.workspace.settings.user.WorkspaceUserSettingsManager;
@@ -215,8 +216,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
-
-			historyManager.checkpoint("mod_element_added", element.getType().getReadableName(), element.getName());
 			markDirty();
 		} else {
 			LOG.warn("Trying to add existing mod element: {} of type {}", element.getName(), element.getTypeString());
@@ -334,13 +333,27 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return fileManager.getModElementManager();
 	}
 
-	@Override public void close() {
-		LOG.info("Closing workspace");
+	public ModelManager getModelManager() {
+		return fileManager.getModelManager();
+	}
 
-		generator.close();
-		fileManager.close();
-		userSettingsManager.close();
-		historyManager.close();
+	private transient volatile boolean isClosing = false;
+
+	@Override public void close() {
+		if (!isClosing) {
+			isClosing = true;
+
+			LOG.info("Closing workspace");
+
+			generator.close();
+			fileManager.close();
+			userSettingsManager.close();
+			historyManager.close();
+		}
+	}
+
+	public boolean isClosing() {
+		return isClosing;
 	}
 
 	@Override public boolean equals(Object o) {
@@ -418,6 +431,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		this.generator.close();
 		this.generator = new Generator(this); // reload generator
+
+		// mod element caches can depend on the generator, so we invalidate them
+		this.getModElements().forEach(ModElement::invalidateCache);
 	}
 
 	public void bindToNewWorkspaceFile(File newWorkspaceFile) {
@@ -641,6 +657,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// Reload structures and caches
 		this.getModElementManager().invalidateCache();
+		this.getModelManager().invalidateCache();
 		this.reloadModElements();
 		this.reloadFolderStructure();
 
@@ -685,7 +702,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 						WorkspaceSettings.normalizeGeneratorName(generatorName.getAsString()));
 			}
 
-			Gson gson = generatorConfiguration == null ? GENERIC_GSON :
+			Gson gson = generatorConfiguration == null ?
+					GENERIC_GSON :
 					GSON_CACHE.computeIfAbsent(generatorConfiguration,
 							configuration -> WorkspaceFileManager.createGsonBuilder(configuration.getGeneratorFlavor())
 									.create());

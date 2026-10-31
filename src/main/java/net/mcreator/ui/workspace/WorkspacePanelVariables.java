@@ -51,6 +51,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.*;
+import java.util.List;
 
 class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
@@ -139,7 +140,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					name.enableRealtimeValidation();
 					UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 							name::getText, () -> TableUtil.getColumnContents(elements, 0).stream(),
-							new JavaMemberNameValidator(name, false));
+							new JavaMemberNameValidator(name));
 					name.setValidator(validator);
 					return new DefaultCellEditor(name) {
 						@Override public boolean stopCellEditing() {
@@ -210,8 +211,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 							return new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 									() -> ((VTextField) component).getText(),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
-									new JavaMemberNameValidator((VTextField) component, false)).setIsPresentOnList(
-									false);
+									new JavaMemberNameValidator((VTextField) component)).setIsPresentOnList(false);
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
 							workspacePanel.getMCreator().getGeneratorConfiguration()));
@@ -228,11 +228,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			if (elements.getSelectedRow() != -1) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				Set<ModElement> refs = new HashSet<>();
-				for (int i : elements.getSelectedRows()) {
-					refs.addAll(ReferencesFinder.searchGlobalVariableUsages(workspacePanel.getMCreator().getWorkspace(),
-							(String) elements.getValueAt(i, 0)));
-				}
+				Set<ModElement> refs = ReferencesFinder.searchGlobalVariableUsages(
+						workspacePanel.getMCreator().getWorkspace(), getSelectedVariableNames());
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
@@ -306,23 +303,24 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		Set<ModElement> references = new HashSet<>();
-		for (int i : elements.getSelectedRows()) {
-			references.addAll(ReferencesFinder.searchGlobalVariableUsages(workspacePanel.getMCreator().getWorkspace(),
-					(String) elements.getValueAt(i, 0)));
-		}
+		List<String> selectedVariableNames = getSelectedVariableNames();
+		Set<ModElement> references = ReferencesFinder.searchGlobalVariableUsages(
+				workspacePanel.getMCreator().getWorkspace(), selectedVariableNames);
 
 		workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
 		if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
 				L10N.t("dialog.search_usages.type.global_variable"), references)) {
-			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-					.forEach(el -> {
-						VariableElement element = new VariableElement(el);
-						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
-					});
+			selectedVariableNames.forEach(el -> {
+				VariableElement element = new VariableElement(el);
+				workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
+			});
 			reloadElements();
 		}
+	}
+
+	private List<String> getSelectedVariableNames() {
+		return Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0)).toList();
 	}
 
 	@Override public boolean isSupportedInWorkspace() {

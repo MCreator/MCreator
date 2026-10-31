@@ -330,8 +330,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	@Override protected void initGUI() {
-		skipDependencyNullCheck.setOpaque(false);
-
 		JPanel skipDependencyWrapper = new JPanel(new GridLayout(1, 2, 0, 2));
 		skipDependencyWrapper.setOpaque(false);
 		skipDependencyWrapper.add(HelpUtils.wrapWithHelpButton(this.withEntry("procedure/skip_dependency_null_check"),
@@ -429,7 +427,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
 						@Override public ValidationResult validate(JComponent component) {
-							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
+							Validator validator = new JavaMemberNameValidator(
+									(VTextField) component).noInitialUnderscore();
 							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
@@ -634,15 +633,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		}).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this));
 	}
 
-	@Override protected void afterGeneratableElementGenerated() {
-		super.afterGeneratableElementGenerated();
+	@Override public void afterGeneratableElementGenerated(boolean forceActions) {
+		super.afterGeneratableElementGenerated(forceActions);
 
 		// check if dependency list has changed
 		boolean dependenciesChanged = dependenciesBeforeEdit != null && !new HashSet<>(dependenciesBeforeEdit).equals(
 				new HashSet<>(dependenciesArrayList));
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && dependenciesChanged)
+		if (isEditingMode() && (dependenciesChanged || forceActions))
 			regenerateProcedureCallers(modElement, new Stack<>());
 
 		dependenciesBeforeEdit = dependenciesArrayList;
