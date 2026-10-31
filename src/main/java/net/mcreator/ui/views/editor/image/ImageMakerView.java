@@ -630,7 +630,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void changeSaveButtonsText(boolean isAnimation) {
 		if (isAnimation) {
-			save.setText(L10N.t("dialog.image_maker.save_animated_texture"));
+			save.setText(L10N.t("dialog.animation_maker.save_animated_texture"));
 			saveNew.setText(L10N.t("dialog.image_maker.save_animation_as_new"));
 		} else {
 			save.setText(L10N.t("dialog.image_maker.save"));
