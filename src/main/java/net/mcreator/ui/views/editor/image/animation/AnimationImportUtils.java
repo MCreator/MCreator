@@ -97,9 +97,8 @@ import java.util.List;
 		centerPanel.add(L10N.label("dialog.animation_maker.saturation_lightness_lock"));
 		centerPanel.add(lockSaturation);
 
-		if (JOptionPane.showOptionDialog(timeline.getImageMakerView(), panel,
-				L10N.t("dialog.animation_maker.add_frames_from_template"), JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null,
+		if (JOptionPane.showOptionDialog(timeline, panel, L10N.t("dialog.animation_maker.add_frames_from_template"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
 				new String[] { L10N.t("common.add"), UIManager.getString("OptionPane.cancelButtonText") },
 				L10N.t("common.add")) == 0) {
 			try {
@@ -116,8 +115,7 @@ import java.util.List;
 	}
 
 	public static void importImagesAsFrames(AnimationTimeline timeline) {
-		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(),
-				new String[] { ".png", ".gif" });
+		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(), new String[] { ".png", ".gif" });
 
 		if (files == null)
 			return;
@@ -247,9 +245,8 @@ import java.util.List;
 						p1.markStateError();
 						dial.hideDialog();
 
-						JOptionPane.showMessageDialog(timeline.getImageMakerView(),
-								L10N.t("dialog.animation_maker.gif_format_unsupported"), L10N.t("common.warning"),
-								JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(timeline.getImageMakerView(), L10N.t("dialog.animation_maker.gif_format_unsupported"),
+								L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
 
 						return;
 					}
