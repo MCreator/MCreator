@@ -3,7 +3,10 @@
   "conditions": {
     <#if input$player?has_content>
     "player": {
-      ${input$player}
+      "type": "minecraft:all_of",
+      "terms": [
+        ${input$player}
+      ]
     },
     </#if>
     "item": {

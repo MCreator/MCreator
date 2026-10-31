@@ -3,11 +3,9 @@
   <#if input$player?has_content>,
   "conditions": {
     "player": {
-      "type": "minecraft:any_of",
+      "type": "minecraft:all_of",
       "terms": [
-        {
-          ${input$player}
-        }
+        ${input$player}
       ]
     }
   }
