@@ -314,6 +314,15 @@ Blockly.Extensions.registerMutator('any_item_mutator', simpleRepeatingInputMixin
         }, false, ['item']),
     undefined, ['any_item_mutator_input']);
 
+// Mutator for "All of/Any of" predicates
+Blockly.Extensions.registerMutator('predicate_all_any_mutator', simpleRepeatingInputMixin(
+        'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('Predicate').setAlign(Blockly.inputs.Align.RIGHT)
+                .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['block_predicate_mutator_input']);
+
 Blockly.Extensions.registerMutator('item_predicate_mutator', simpleRepeatingInputMixin(
         'item_predicate_mutator_container', 'item_predicate_mutator_input', 'predicateComponent',
         function (thisBlock, inputName, index) {
