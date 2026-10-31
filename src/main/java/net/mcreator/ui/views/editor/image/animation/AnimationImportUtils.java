@@ -26,7 +26,7 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.views.AnimationMakerView;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -51,7 +51,7 @@ import java.util.List;
 
 	private static final Logger LOG = LogManager.getLogger("Animation Import Utils");
 
-	public static void addFramesFromTemplate(AnimationMakerView timeline) {
+	public static void addFramesFromTemplate(AnimationTimeline timeline) {
 		List<ResourcePointer> templatesSorted = new ArrayList<>(
 				ImageMakerTexturesCache.CACHE_ANIMATION.keySet().stream().toList());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
@@ -66,7 +66,7 @@ import java.util.List;
 		JComboBox<ResourcePointer> types = new JComboBox<>();
 		templatesSorted.forEach(types::addItem);
 
-		JColor colors = new JColor(timeline.getMCreator(), false, true);
+		JColor colors = new JColor(timeline.getImageMakerView().getMCreator(), false, true);
 		JCheckBox lockSaturation = new JCheckBox();
 		ActionListener al = _ -> {
 			try {
@@ -106,15 +106,16 @@ import java.util.List;
 				BufferedImage finalImage = ImageUtils.toBufferedImage(
 						ImageUtils.colorize(new ImageIcon(ImageIO.read(rp.getStream())), colors.getColor(),
 								!lockSaturation.isSelected()).getImage());
-				timeline.generateTimelineFromBufferedImage(finalImage);
+				timeline.generateTimelineFromBufferedImage(finalImage,
+						FilenameUtilsPatched.removeExtension(rp.toString()));
 			} catch (IOException e) {
 				LOG.error("Impossible to generate the timeline from the selected animation template", e);
 			}
 		}
 	}
 
-	public static void importImagesAsFrames(AnimationMakerView timeline) {
-		File[] files = FileDialogs.getMultiOpenDialog(timeline.getMCreator(), new String[] { ".png", ".gif" });
+	public static void importImagesAsFrames(AnimationTimeline timeline) {
+		File[] files = FileDialogs.getMultiOpenDialog(timeline.getImageMakerView().getMCreator(), new String[] { ".png", ".gif" });
 
 		if (files == null)
 			return;
@@ -128,7 +129,8 @@ import java.util.List;
 						BufferedImage image = TiledImageUtils.convert(ImageIO.read(file), BufferedImage.TYPE_INT_ARGB);
 						if (image.getHeight()
 								== image.getWidth()) { // This is a single/normal texture, so we can simply import it normally
-							timeline.addFrameToTimeline(new AnimationMakerView.AnimationFrame(image));
+							timeline.addFrameToTimeline(timeline.createCanvasFromBufferedImage(image,
+									FilenameUtilsPatched.removeExtension(file.getName())));
 						} else { // This is a strip texture, so we offer the user to colorize the strip before importing it
 							int x = Math.min(image.getHeight(), image.getWidth());
 							colorizeImportedFramesDialog(timeline, image,
@@ -136,13 +138,13 @@ import java.util.List;
 						}
 					} catch (InvalidTileSizeException e) {
 						LOG.error("Images from file {} have an invalid tile size", file.getName(), e);
-						JOptionPane.showMessageDialog(timeline.getMCreator(),
+						JOptionPane.showMessageDialog(timeline.getImageMakerView().getMCreator(),
 								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size", file.getName()),
 								L10N.t("dialog.animation_maker.import_frames.invalid_tile_size.title"),
 								JOptionPane.ERROR_MESSAGE);
 					} catch (IOException | NullPointerException e) {
 						LOG.error("File {} could not be read as an image", file.getName(), e);
-						JOptionPane.showMessageDialog(timeline.getMCreator(),
+						JOptionPane.showMessageDialog(timeline.getImageMakerView().getMCreator(),
 								L10N.t("dialog.animation_maker.import_frames.invalid_image", file.getName()),
 								L10N.t("dialog.animation_maker.import_frames.invalid_image.title"),
 								JOptionPane.ERROR_MESSAGE);
@@ -152,7 +154,7 @@ import java.util.List;
 		}
 	}
 
-	public static void colorizeImportedFramesDialog(AnimationMakerView timeline, BufferedImage bufferedImage,
+	public static void colorizeImportedFramesDialog(AnimationTimeline timeline, BufferedImage bufferedImage,
 			ImageIcon previewIcon, String name) {
 		JPanel optionsPanel = new JPanel(new BorderLayout(0, 10));
 		JPanel centerPanel = new JPanel(new GridLayout(4, 2, 4, 4));
@@ -160,11 +162,17 @@ import java.util.List;
 		JLabel preview = new JLabel(new ImageIcon(new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB)));
 		preview.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 				L10N.t("dialog.animation_maker.preview"), 0, 0, timeline.getFont().deriveFont(12.0f), Color.gray));
-		preview.setIcon(new ImageIcon(ImageUtils.resize(previewIcon.getImage(), 128)));
 
 		JCheckBox colorize = new JCheckBox();
-		JColor colors = new JColor(timeline.getMCreator(), false, true);
+		JColor colors = new JColor(timeline.getImageMakerView().getMCreator(), false, true);
 		JCheckBox lockSaturation = new JCheckBox();
+
+		if (colorize.isSelected())
+			preview.setIcon(new ImageIcon(ImageUtils.resize(
+					ImageUtils.colorize(previewIcon, colors.getColor(), !lockSaturation.isSelected()).getImage(),
+					128)));
+		else
+			preview.setIcon(new ImageIcon(ImageUtils.resize(previewIcon.getImage(), 128)));
 
 		ActionListener al = _ -> {
 			if (colorize.isSelected()) {
@@ -195,7 +203,7 @@ import java.util.List;
 		optionsPanel.add("Center", centerPanel);
 		optionsPanel.add("South", preview);
 
-		int answer = JOptionPane.showOptionDialog(timeline, optionsPanel,
+		int answer = JOptionPane.showOptionDialog(timeline.getImageMakerView(), optionsPanel,
 				L10N.t("dialog.animation_maker.add_frames_from_file"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.PLAIN_MESSAGE, null, new String[] { L10N.t("common.add"), L10N.t("common.cancel") },
 				L10N.t("common.add"));
@@ -207,7 +215,7 @@ import java.util.List;
 						ImageUtils.colorize(new ImageIcon(bufferedImage), colors.getColor(),
 								!lockSaturation.isSelected()).getImage());
 			}
-			timeline.generateTimelineFromBufferedImage(finalImage);
+			timeline.generateTimelineFromBufferedImage(finalImage, FilenameUtilsPatched.removeExtension(name));
 		}
 	}
 
@@ -221,9 +229,9 @@ import java.util.List;
 		}
 	}
 
-	public static void gifToFrames(AnimationMakerView timeline, File file) {
+	public static void gifToFrames(AnimationTimeline timeline, File file) {
 		if (file != null) {
-			ProgressDialog dial = new ProgressDialog(timeline.getMCreator(),
+			ProgressDialog dial = new ProgressDialog(timeline.getImageMakerView().getMCreator(),
 					L10N.t("dialog.animation_maker.gif_importing"));
 			Thread t = new Thread(() -> {
 				try {
@@ -237,7 +245,7 @@ import java.util.List;
 						p1.markStateError();
 						dial.hideDialog();
 
-						JOptionPane.showMessageDialog(timeline, L10N.t("dialog.animation_maker.gif_format_unsupported"),
+						JOptionPane.showMessageDialog(timeline.getImageMakerView(), L10N.t("dialog.animation_maker.gif_format_unsupported"),
 								L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
 
 						return;
@@ -248,7 +256,8 @@ import java.util.List;
 					for (int i = 0; i < frames.length; i++) {
 						int finalI = i;
 						SwingUtilities.invokeLater(() -> timeline.addFrameToTimeline(
-								new AnimationMakerView.AnimationFrame(ImageUtils.toBufferedImage(frames[finalI]))));
+								timeline.createCanvasFromBufferedImage(ImageUtils.toBufferedImage(frames[finalI]),
+										FilenameUtilsPatched.removeExtension(file.getName()) + finalI)));
 						p2.setPercent((int) (i / (float) frames.length * 100));
 					}
 					p2.markStateOk();
