@@ -208,7 +208,7 @@ public class AnimationTimeline extends JPanel {
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
 
-		JButton importButton = new JButton(L10N.t("dialog.animation_maker.import_frames"), UIRES.get("16px.import"));
+		JButton importButton = new JButton(L10N.t("dialog.animation_maker.import_frames"), UIRES.get("18px.import"));
 		importButton.addActionListener(_ -> AnimationImportUtils.importImagesAsFrames(this));
 		timelinebar.add(importButton);
 
