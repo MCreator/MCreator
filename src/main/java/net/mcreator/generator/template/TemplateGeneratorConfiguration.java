@@ -18,7 +18,6 @@
 
 package net.mcreator.generator.template;
 
-import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -39,12 +38,14 @@ public class TemplateGeneratorConfiguration {
 
 		// Load templates from the generator subfolder
 		for (String path : generatorConfiguration.getGeneratorPaths(generatorSubfolder)) {
-			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
+			templateLoaderList.add(
+					new ModifiedClassTemplateLoader(PluginLoader.INSTANCE, "/" + path, generatorConfiguration));
 		}
 
 		// Load templates from the utils subfolder
 		for (String path : generatorConfiguration.getGeneratorPaths("utils")) {
-			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
+			templateLoaderList.add(
+					new ModifiedClassTemplateLoader(PluginLoader.INSTANCE, "/" + path, generatorConfiguration));
 		}
 
 		configuration.setTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0])));
