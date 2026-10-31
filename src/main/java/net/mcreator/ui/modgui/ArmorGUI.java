@@ -39,7 +39,6 @@ import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -276,9 +275,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
-		armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).requireValue(
-				"elementgui.armor.armor_needs_texture");
-		armorTextureFile.setAddPNGExtension(false);
+		armorTextureFile = new TextureComboBox(mcreator, TextureType.ARMOR, true).setAddPNGExtension(false)
+				.requireValue("elementgui.armor.armor_needs_texture");
 
 		helmetModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true, "From armor");
 		bodyModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY, true, "From armor");
@@ -348,17 +346,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		destal.setLayout(new BoxLayout(destal, BoxLayout.Y_AXIS));
 		destal.setOpaque(false);
 
-		textureHelmet = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		textureHelmet = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.helmet_needs_item_texture");
-		textureBody = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		textureBody = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.chestplate_needs_item_texture");
-		textureLeggings = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		textureLeggings = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.leggings_need_item_texture");
-		textureBoots = new TextureSelectionButton(
-				new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+		textureBoots = new TextureSelectionButton(mcreator, TextureType.ITEM).requireValue(
 				"elementgui.armor.boots_need_item_texture");
 
 		enableHelmet.setSelected(true);

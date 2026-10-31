@@ -44,7 +44,6 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -399,7 +398,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
-		spawnEggTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		spawnEggTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
 
 		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.error_entity_model_needs_texture");
@@ -891,7 +890,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		props.add(inventoryStackSize);
 
 		pane7.add(PanelUtils.totalCenterInPanel(props));
-		pane7.setOpaque(false);
 		pane7.setOpaque(false);
 
 		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));

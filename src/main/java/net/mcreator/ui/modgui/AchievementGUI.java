@@ -74,12 +74,13 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final DataListComboBox parentAchievement = new DataListComboBox(mcreator);
 
-	private MCItemHolder achievementIcon;
+	private final MCItemHolder achievementIcon = new MCItemHolder(mcreator,
+			ElementUtil::loadBlocksAndItems).requireValue("elementgui.advancement.error_advancement_needs_icon", true);
 
 	private final TranslatedComboBox achievementType = ComponentFromAnnotation.translatedOptions(Achievement.class,
 			"achievementType", "elementgui.advancement.achievement_type.");
 
-	private TextureComboBox background;
+	private final TextureComboBox background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
 
 	private final JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
@@ -88,9 +89,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private SingleModElementSelector rewardFunction;
-	private ModElementListField rewardLoot;
-	private ModElementListField rewardRecipes;
+	private final SingleModElementSelector rewardFunction = new SingleModElementSelector(mcreator,
+			ModElementType.FUNCTION);
+	private final ModElementListField rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
+	private final ModElementListField rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
 
 	private final JSpinner rewardXP = ComponentFromAnnotation.spinner(Achievement.class, "rewardXP");
 
@@ -110,89 +112,33 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	}
 
 	@Override protected void initGUI() {
-		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
-				"elementgui.advancement.error_advancement_needs_icon", true);
+		JPanel mainPage = new JPanel(new BorderLayout(10, 10));
+		JPanel advancedPage = new JPanel(new BorderLayout(10, 10));
 
-		background = new TextureComboBox(mcreator, TextureType.SCREEN, true, "Default");
-
-		JPanel propertiesPanel = new JPanel(new GridLayout(7, 2, 10, 2));
-		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
-
-		rewardFunction = new SingleModElementSelector(mcreator, ModElementType.FUNCTION);
-		rewardFunction.setDefaultText(L10N.t("elementgui.advancement.no_reward_function"));
-		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
-		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
+		// Main settings page
+		JPanel propertiesPanel = new JPanel(new GridLayout(2, 4, 10, 2));
+		propertiesPanel.setOpaque(false);
 
 		ComponentUtils.deriveFont(achievementName, 16);
 		ComponentUtils.deriveFont(achievementDescription, 16);
 
 		parentAchievement.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXX"));
 
-		showPopup.setSelected(true);
-		announceToChat.setSelected(true);
-
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/name"),
 				L10N.label("elementgui.advancement.name")));
 		propertiesPanel.add(achievementName);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
-				L10N.label("elementgui.advancement.description")));
-		propertiesPanel.add(achievementDescription);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/icon"),
 				L10N.label("elementgui.advancement.icon")));
 		propertiesPanel.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
-				L10N.label("elementgui.advancement.background")));
-		propertiesPanel.add(background);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"),
-				L10N.label("elementgui.advancement.type")));
-		propertiesPanel.add(achievementType);
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
+				L10N.label("elementgui.advancement.description")));
+		propertiesPanel.add(achievementDescription);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
 				L10N.label("elementgui.advancement.parent")));
 		propertiesPanel.add(parentAchievement);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
-				L10N.label("elementgui.advancement.show_toast")));
-		propertiesPanel.add(showPopup);
-
-		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
-				L10N.label("elementgui.advancement.reward_xp")));
-		logicPanel.add(rewardXP);
-
-		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_function"),
-				L10N.label("elementgui.advancement.reward_functions")));
-		logicPanel.add(rewardFunction);
-
-		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_loot_tables"),
-				L10N.label("elementgui.advancement.reward_loot_tables")));
-		logicPanel.add(rewardLoot);
-
-		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_recipes"),
-				L10N.label("elementgui.advancement.reward_recipes")));
-		logicPanel.add(rewardRecipes);
-
-		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
-				L10N.label("elementgui.advancement.announce_to_chat")));
-		logicPanel.add(announceToChat);
-
-		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
-				L10N.label("elementgui.advancement.hide_if_not_completed")));
-		logicPanel.add(hideIfNotCompleted);
-
-		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
-				L10N.label("elementgui.advancement.hide_display")));
-		logicPanel.add(disableDisplay);
-
-		ComponentUtils.makeSection(logicPanel, L10N.t("elementgui.advancement.logic"));
-
-		ComponentUtils.makeSection(propertiesPanel, L10N.t("elementgui.advancement.display_paramters"));
-
-		propertiesPanel.setOpaque(false);
-		logicPanel.setOpaque(false);
 
 		page1group.addValidationElement(achievementIcon);
 		page1group.addValidationElement(achievementName);
@@ -223,20 +169,74 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		JComponent advancementTrigger = PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
 		ComponentUtils.makeSection(advancementTrigger, L10N.t("elementgui.advancement.trigger_builder"));
-		advancementTrigger.setPreferredSize(new Dimension(0, 460));
+		advancementTrigger.setPreferredSize(new Dimension(0, 570));
 
-		JComponent wrap = PanelUtils.northAndCenterElement(
-				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
-		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+		mainPage.setOpaque(false);
+		mainPage.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesPanel),
+				advancementTrigger));
 
-		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		page1.add("Center",
-				PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, wrap), advancementTrigger));
+		// Advanced settings page
+		JPanel logicPanel = new JPanel(new GridLayout(6, 2, 10, 2));
+		ComponentUtils.makeSection(logicPanel, L10N.t("elementgui.advancement.logic"));
+		logicPanel.setOpaque(false);
 
-		page1.setOpaque(false);
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
+				L10N.label("elementgui.advancement.background")));
+		logicPanel.add(background);
 
-		addPage(page1).validate(page1group).lazyValidate(BlocklyAggregatedValidationResult.blocklyValidator(this,
-				compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"),
+				L10N.label("elementgui.advancement.type")));
+		logicPanel.add(achievementType);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
+				L10N.label("elementgui.advancement.show_toast")));
+		logicPanel.add(showPopup);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
+				L10N.label("elementgui.advancement.announce_to_chat")));
+		logicPanel.add(announceToChat);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
+				L10N.label("elementgui.advancement.hide_if_not_completed")));
+		logicPanel.add(hideIfNotCompleted);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
+				L10N.label("elementgui.advancement.hide_display")));
+		logicPanel.add(disableDisplay);
+
+		showPopup.setSelected(true);
+		announceToChat.setSelected(true);
+
+		JPanel rewardsPanel = new JPanel(new GridLayout(4, 2, 10, 2));
+		ComponentUtils.makeSection(rewardsPanel, L10N.t("elementgui.advancement.rewards"));
+		rewardsPanel.setOpaque(false);
+
+		rewardsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
+				L10N.label("elementgui.advancement.reward_xp")));
+		rewardsPanel.add(rewardXP);
+
+		rewardsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_function"),
+				L10N.label("elementgui.advancement.reward_functions")));
+		rewardsPanel.add(rewardFunction);
+
+		rewardsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_loot_tables"),
+				L10N.label("elementgui.advancement.reward_loot_tables")));
+		rewardsPanel.add(rewardLoot);
+
+		rewardsPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_recipes"),
+				L10N.label("elementgui.advancement.reward_recipes")));
+		rewardsPanel.add(rewardRecipes);
+
+		rewardFunction.setDefaultText(L10N.t("elementgui.advancement.no_reward_function"));
+
+		advancedPage.setOpaque(false);
+		advancedPage.add(PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndEastElement(logicPanel, PanelUtils.pullElementUp(rewardsPanel))));
+
+		addPage(L10N.t("elementgui.common.page_properties"), mainPage).validate(page1group).lazyValidate(
+				BlocklyAggregatedValidationResult.blocklyValidator(this,
+						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
+		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedPage);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());

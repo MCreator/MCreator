@@ -170,8 +170,9 @@ public class TextureComboBox extends JPanel implements IValidable, ITextureConta
 		return comboBox;
 	}
 
-	public void setAddPNGExtension(boolean addPNGExtension) {
+	public TextureComboBox setAddPNGExtension(boolean addPNGExtension) {
 		this.addPNGExtension = addPNGExtension;
+		return this;
 	}
 
 	private class Renderer extends JLabel implements ListCellRenderer<Texture> {
