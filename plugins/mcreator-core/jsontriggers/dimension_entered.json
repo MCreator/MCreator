@@ -5,6 +5,11 @@
       "name": "dimension",
       "datalist": "dimensions",
       "customEntryProviders": "dimension"
+    },
+    {
+      "type": "input_value",
+      "name": "player",
+      "check": "PlayerCondition"
     }
   ],
   "inputsInline": true,
@@ -13,8 +18,14 @@
   "colour": 35,
   "mcreator": {
     "toolbox_id": "world",
+    "toolbox_init": [
+      "<value name=\"player\"><block type=\"player_condition_predicate\"><mutation inputs=\"0\"></mutation></block></value>"
+    ],
     "fields": [
       "dimension"
+    ],
+    "inputs": [
+      "player"
     ]
   }
 }

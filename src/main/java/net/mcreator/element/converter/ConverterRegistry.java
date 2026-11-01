@@ -72,6 +72,7 @@ import net.mcreator.element.converter.v2026_3.BEBlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2026_3.BedrockRecipeWildcardItemsFixer;
 import net.mcreator.element.converter.v2026_3.CoralFeaturesRemover;
 import net.mcreator.element.converter.v2026_3.GameRuleRegistryNameFixer;
+import net.mcreator.element.converter.v2026_4.PlayerConditionAdvancementConverter;
 import net.mcreator.generator.GeneratorFlavor;
 
 import java.util.*;
@@ -85,7 +86,8 @@ public class ConverterRegistry {
 			new AdvancementTextureConverter(),
 			new AdvancementTriggerInverter(),
 			new AdvancementFunctionConverter(),
-			new ItemPredicateAdvancementConverter()
+			new ItemPredicateAdvancementConverter(),
+			new PlayerConditionAdvancementConverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
