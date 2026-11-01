@@ -934,6 +934,13 @@ public class MinecraftCommandsTokenMaker extends AbstractJFlexTokenMaker {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override public String getBracketPairs() {
+		return "{}[]()";
+	}
+
+	/**
 	 * Returns the first token in the linked list of tokens generated
 	 * from <code>text</code>.  This method must be implemented by
 	 * subclasses so they can correctly implement syntax highlighting.
