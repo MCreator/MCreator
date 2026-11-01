@@ -35,8 +35,8 @@ public class TabListField extends JItemListField<TabEntry> {
 	}
 
 	@Override protected List<TabEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllTabs,
-						L10N.t("dialog.list_field.tab_title"), L10N.t("dialog.list_field.tab_message")).stream()
+		return new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllTabs,
+				L10N.t("dialog.list_field.tab_title"), L10N.t("dialog.list_field.tab_message")).openMulti().stream()
 				.map(e -> new TabEntry(mcreator.getWorkspace(), e)).toList();
 	}
 }

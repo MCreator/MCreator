@@ -33,9 +33,8 @@ public class SingleParticleEntryField extends JSingleEntrySelector<ParticleEntry
 	}
 
 	@Override protected ParticleEntry openEntrySelector() {
-		var entry = DataListSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadAllParticles,
-				this.getEntry() == null ? null : this.getEntry().getUnmappedValue(),
-				L10N.t("dialog.selector.title"), L10N.t("dialog.selector.particles.message"));
+		var entry = new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllParticles,
+				L10N.t("dialog.selector.particles.message")).initialSelection(this.getEntry()).open();
 		return entry == null ? null : new ParticleEntry(mcreator.getWorkspace(), entry);
 	}
 }

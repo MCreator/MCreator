@@ -34,8 +34,8 @@ public class FluidListField extends JItemListField<FluidEntry> {
 	}
 
 	@Override protected List<FluidEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllFluids,
-						L10N.t("dialog.list_field.fluid_title"), L10N.t("dialog.list_field.fluid_message")).stream()
+		return new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllFluids,
+				L10N.t("dialog.list_field.fluid_title"), L10N.t("dialog.list_field.fluid_message")).openMulti().stream()
 				.map(e -> new FluidEntry(mcreator.getWorkspace(), e)).toList();
 	}
 }
