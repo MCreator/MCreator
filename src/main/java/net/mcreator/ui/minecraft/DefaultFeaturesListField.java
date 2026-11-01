@@ -33,9 +33,8 @@ public class DefaultFeaturesListField extends JItemListField<String> {
 	}
 
 	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
-				_ -> ElementUtil.getDataListAsStringArray("defaultfeatures"),
+		return new StringSelectorDialog.Builder(mcreator, _ -> ElementUtil.getDataListAsStringArray("defaultfeatures"),
 				L10N.t("dialog.list_field.biome_default_feature_title"),
-				L10N.t("dialog.list_field.biome_default_feature_message"));
+				L10N.t("dialog.list_field.biome_default_feature_message")).openMulti();
 	}
 }
