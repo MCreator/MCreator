@@ -338,6 +338,16 @@ public class TestWorkspaceDataProvider {
 				throw new RuntimeException(e);
 			}
 		}
+
+		if (workspace.getGeneratorStats().hasBaseCoverage("model_bedrock")) {
+			try {
+				FileIO.writeStringToFile(
+						IOUtils.resourceToString("/entitymodel-bedrock.geo.json", StandardCharsets.UTF_8),
+						new File(workspace.getFolderManager().getModelsDir(), "custom_bedrock_model.geo.json"));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	public static void fillWorkspaceWithSampleTags(Workspace workspace) {
@@ -679,6 +689,7 @@ public class TestWorkspaceDataProvider {
 			tab.name = modElement.getName();
 			tab.icon = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName());
 			tab.showSearch = _true;
+			tab.hideTitle = _true;
 			return tab;
 		} else if (ModElementType.OVERLAY.equals(modElement.getType())) {
 			Overlay overlay = new Overlay(modElement);
@@ -1065,7 +1076,7 @@ public class TestWorkspaceDataProvider {
 			armor.rarity = getRandomString(random, AnnotationUtils.getLimitedOptionsList(Armor.class, "rarity"));
 			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armor_texture";
-			armor.maxDamage = getRandomInt(random, Armor.class, "maxDamage");
+			armor.maxDamage = _true ? getRandomInt(random, Armor.class, "maxDamage") : 0;
 			armor.damageValueHelmet = getRandomInt(random, Armor.class, "damageValueHelmet");
 			armor.damageValueBody = getRandomInt(random, Armor.class, "damageValueBody");
 			armor.damageValueLeggings = getRandomInt(random, Armor.class, "damageValueLeggings");
@@ -1850,6 +1861,21 @@ public class TestWorkspaceDataProvider {
 			beblock.lightEmission = getRandomInt(random, BEBlock.class, "lightEmission");
 			beblock.colorOnMap = new MapColor(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors")));
+			beblock.isNotColidable = _true;
+			beblock.boundingBoxes = new ArrayList<>();
+			if (!emptyLists) {
+				int boxes = random.nextInt(4) + 1;
+				for (int i = 0; i < boxes; i++) {
+					IBlockWithBoundingBox.BoxEntry box = new IBlockWithBoundingBox.BoxEntry();
+					box.mx = new double[] { 0, 5 + i, 1.2, 7.1 }[valueIndex];
+					box.my = new double[] { 0, 2, 3.6, 12.2 }[valueIndex];
+					box.mz = new double[] { 0, 3.1, 0, 2.2 }[valueIndex];
+					box.Mx = new double[] { 16, 15.2, 4, 7.1 + i }[valueIndex];
+					box.My = new double[] { 16, 12.2, 16, 13 }[valueIndex];
+					box.Mz = new double[] { 16, 12, 2.4, 1.2 }[valueIndex];
+					beblock.boundingBoxes.add(box);
+				}
+			}
 			beblock.generateFeature = _true;
 			beblock.generationShape = getRandomString(random,
 					AnnotationUtils.getLimitedOptionsList(BEBlock.class, "generationShape"));
@@ -1927,9 +1953,11 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.BEENTITY.equals(modElement.getType())) {
 			BEEntity beentity = new BEEntity(modElement);
 			beentity.entityName = modElement.getName();
-			beentity.modelName = getRandomString(random,
-					List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime", "Spider",
-							"Villager"));
+			beentity.modelName = emptyLists ?
+					"custom_bedrock_model" :
+					getRandomString(random,
+							List.of("Biped", "Chicken", "Cow", "Creeper", "Ghast", "Pig", "Silverfish", "Slime",
+									"Spider", "Villager"));
 			beentity.modelTexture = "entity_texture_1.png";
 			beentity.collisionBoxHeight = getRandomDouble(random, BEEntity.class, "collisionBoxHeight");
 			beentity.collisionBoxWidth = getRandomDouble(random, BEEntity.class, "collisionBoxWidth");
@@ -2138,6 +2166,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
+			modelLayer.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());
@@ -2146,6 +2175,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
+			modelLayer.syncedDataCondition = random.nextBoolean() ? null : "Logic";
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.setWorkspace(modElement.getWorkspace());

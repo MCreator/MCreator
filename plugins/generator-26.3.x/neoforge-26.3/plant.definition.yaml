@@ -98,6 +98,8 @@ base_types:
     condition: hasStrippingResult()
   - type: blockentity
     condition: hasTileEntity
+  - type: flammable
+    condition: isFlammable()
 
 localizationkeys:
   - key: item.@modid.@registryname

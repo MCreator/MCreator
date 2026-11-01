@@ -11,18 +11,22 @@ templates:
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_helmet"
+    condition: enableHelmet
     name: "@MODASSETSROOT/items/@registryname_helmet.json"
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_chestplate"
+    condition: enableBody
     name: "@MODASSETSROOT/items/@registryname_chestplate.json"
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_leggings"
+    condition: enableLeggings
     name: "@MODASSETSROOT/items/@registryname_leggings.json"
   - template: json/model_item.json.ftl
     writer: json
     variables: "suffix=_boots"
+    condition: enableBoots
     name: "@MODASSETSROOT/items/@registryname_boots.json"
 
 # Helmet item model
@@ -147,6 +151,14 @@ templates:
 
 base_types:
   - item
+
+fragments:
+  - type: accesstransformer
+    content:
+      - public-f net.minecraft.client.model.Model renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V
+      - public net.minecraft.client.renderer.feature.FeatureRenderDispatcher featureRenderers
+      - public net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer currentGroup
+      - public net.minecraft.client.renderer.feature.RenderTypeFeatureRenderer getVertexBuilder(Lnet/minecraft/client/renderer/rendertype/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;
 
 tags:
   - tag: ITEMS:minecraft:head_armor

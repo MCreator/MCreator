@@ -25,7 +25,6 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -67,8 +66,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM),
-				42).requireValue("elementgui.item.error_item_state_needs_texture");
+		texture = new TextureSelectionButton(mcreator, TextureType.ITEM, 42).requireValue(
+				"elementgui.item.error_item_state_needs_texture");
 
 		ComponentUtils.deriveFont(model, 16);
 		model.setPreferredSize(new Dimension(350, 42));

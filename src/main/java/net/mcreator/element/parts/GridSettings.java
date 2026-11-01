@@ -21,9 +21,10 @@ package net.mcreator.element.parts;
 
 public class GridSettings {
 
-	public int sx = 18;
-	public int sy = 18;
-	public int ox = 11;
-	public int oy = 15;
+	// Values are in GUI pixels and offsets are relative to the grid origin
+	public int spacingX = 9;
+	public int spacingY = 9;
+	public int offsetX = 0;
+	public int offsetY = 0;
 	public boolean snapOnGrid;
 }
