@@ -41,6 +41,11 @@ import java.io.StringWriter;
 import java.util.List;
 
 public class PlayerConditionAdvancementConverter implements IConverter {
+
+	private static final List<String> SUPPORTED_TRIGGERS = List.of("block_placed", "dimension_entered", "dimension_left",
+			"entity_hurt_player", "item_consumed", "item_damaged", "item_enchanted", "item_in_inventory",
+			"item_with_duration_used", "player_effect_changed", "recipe_crafted", "recipe_unlocked", "tick");
+
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput)
 			throws Exception {
@@ -61,10 +66,8 @@ public class PlayerConditionAdvancementConverter implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			List<String> supportedBlocks = List.of("block_placed", "dimension_entered", "dimension_left",
-					"entity_hurt_player", "item_consumed", "item_damaged", "item_enchanted", "item_in_inventory",
-					"item_with_duration_used", "player_effect_changed", "recipe_crafted", "recipe_unlocked", "tick");
-			if (supportedBlocks.contains(type)) {
+
+			if (SUPPORTED_TRIGGERS.contains(type)) {
 				Element value = doc.createElement("value");
 				value.setAttribute("name", "player");
 				Element playerCondition = doc.createElement("block");
