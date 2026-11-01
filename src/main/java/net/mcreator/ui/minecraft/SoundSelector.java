@@ -56,8 +56,8 @@ public class SoundSelector extends JPanel {
 		this.mcreator = frame;
 
 		editButton.addActionListener(_ -> {
-			DataListEntry entry = DataListSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadAllSounds,
-					L10N.t("dialog.selector.sound.title"), L10N.t("dialog.selector.sound.message"));
+			DataListEntry entry = new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllSounds,
+					L10N.t("dialog.selector.sound.title"), L10N.t("dialog.selector.sound.message")).open();
 			if (entry != null)
 				setSound(entry.getName());
 		});

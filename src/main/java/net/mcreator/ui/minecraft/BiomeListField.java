@@ -46,8 +46,9 @@ public class BiomeListField extends JItemListField<BiomeEntry> {
 	}
 
 	@Override protected List<BiomeEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllBiomes,
-						L10N.t("dialog.list_field.biome_list_title"), L10N.t("dialog.list_field.biome_list_message")).stream()
+		return new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllBiomes,
+				L10N.t("dialog.list_field.biome_list_title"),
+				L10N.t("dialog.list_field.biome_list_message")).openMulti().stream()
 				.map(e -> new BiomeEntry(mcreator.getWorkspace(), e)).toList();
 	}
 

@@ -39,9 +39,9 @@ public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllSpawnableEntities,
-						L10N.t("dialog.list_field.entity_title"), L10N.t("dialog.list_field.entity_message")).stream()
-				.map(e -> new EntityEntry(mcreator.getWorkspace(), e)).toList();
+		return new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllSpawnableEntities,
+				L10N.t("dialog.list_field.entity_title"), L10N.t("dialog.list_field.entity_message")).openMulti()
+				.stream().map(e -> new EntityEntry(mcreator.getWorkspace(), e)).toList();
 	}
 
 	@Override protected List<EntityEntry> getTagsToAdd() {
