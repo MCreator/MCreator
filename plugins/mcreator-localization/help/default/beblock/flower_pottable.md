@@ -1,0 +1,1 @@
+When selected, the block will be placeable inside a flower pot.
