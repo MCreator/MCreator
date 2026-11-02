@@ -58,6 +58,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#constructor-detail" tabindex="0">Constructor Details</a>
 <ol class="toc-list">
 <li><a href="#%3Cinit%3E()" tabindex="0">CompactModElementListCellRenderer()</a></li>
+<li><a href="#%3Cinit%3E(java.util.function.Function)" tabindex="0">CompactModElementListCellRenderer(Function)</a></li>
 </ol>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
@@ -99,6 +100,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desk
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">CompactModElementListCellRenderer</a>()</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.util.function.Function)" class="member-name-link">CompactModElementListCellRenderer</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../../../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;descriptionProvider)</code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -142,6 +145,19 @@ implements <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desk
 <h3>CompactModElementListCellRenderer</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">CompactModElementListCellRenderer</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.util.function.Function)">
+<h3>CompactModElementListCellRenderer</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">CompactModElementListCellRenderer</span><wbr><span class="parameters">(@Nullable
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Function.html" title="class or interface in java.util.function" class="external-link">Function</a>&lt;<a href="../../../../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;descriptionProvider)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>descriptionProvider</code> - Optional provider of the text shown below the mod element name, defaults to its type.</dd>
+</dl>
 </div>
 </section>
 </li>

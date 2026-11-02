@@ -65,6 +65,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
 <li><a href="#use()" tabindex="0">use()</a></li>
+<li><a href="#addFrameToTimeline(net.mcreator.ui.views.AnimationMakerView.AnimationFrame)" tabindex="0">addFrameToTimeline(AnimationMakerView.AnimationFrame)</a></li>
+<li><a href="#generateTimelineFromBufferedImage(java.awt.image.BufferedImage)" tabindex="0">generateTimelineFromBufferedImage(BufferedImage)</a></li>
 <li><a href="#showView()" tabindex="0">showView()</a></li>
 <li><a href="#getViewName()" tabindex="0">getViewName()</a></li>
 </ol>
@@ -179,6 +181,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addFrameToTimeline(net.mcreator.ui.views.AnimationMakerView.AnimationFrame)" class="member-name-link">addFrameToTimeline</a><wbr>(<a href="AnimationMakerView.AnimationFrame.html" title="class in net.mcreator.ui.views">AnimationMakerView.AnimationFrame</a>&nbsp;frame)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#generateTimelineFromBufferedImage(java.awt.image.BufferedImage)" class="member-name-link">generateTimelineFromBufferedImage</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a>&nbsp;bufferedImage)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">This method takes a <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link"><code>BufferedImage</code></a> that contains multiple frames (a tiled image) and divide each image into their own frame.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewName()" class="member-name-link">getViewName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -241,6 +251,28 @@ loadScripts(document, 'script');</script>
 <h3>use</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">use</span>()</div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="addFrameToTimeline(net.mcreator.ui.views.AnimationMakerView.AnimationFrame)">
+<h3>addFrameToTimeline</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addFrameToTimeline</span><wbr><span class="parameters">(<a href="AnimationMakerView.AnimationFrame.html" title="class in net.mcreator.ui.views">AnimationMakerView.AnimationFrame</a>&nbsp;frame)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="generateTimelineFromBufferedImage(java.awt.image.BufferedImage)">
+<h3>generateTimelineFromBufferedImage</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">generateTimelineFromBufferedImage</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a>&nbsp;bufferedImage)</span></div>
+<div class="block"><p>This method takes a <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link"><code>BufferedImage</code></a> that contains multiple frames (a tiled image) and divide each image into their own frame.
+Then, each individual frame is added to the timeline.</p></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>bufferedImage</code> - The tiled <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link"><code>BufferedImage</code></a> containing all frames</dd>
+</dl>
 </div>
 </section>
 </li>

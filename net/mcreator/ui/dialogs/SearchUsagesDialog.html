@@ -65,6 +65,8 @@ loadScripts(document, 'script');</script>
 <li><a href="#showUsagesDialog(net.mcreator.ui.MCreator,java.lang.String,java.util.Collection)" tabindex="0">showUsagesDialog(MCreator, String, Collection)</a></li>
 <li><a href="#showDeleteDialog(net.mcreator.ui.MCreator,java.lang.String,java.util.Collection)" tabindex="0">showDeleteDialog(MCreator, String, Collection)</a></li>
 <li><a href="#showDeleteDialog(net.mcreator.ui.MCreator,java.lang.String,java.util.Collection,java.lang.String)" tabindex="0">showDeleteDialog(MCreator, String, Collection, String)</a></li>
+<li><a href="#showBrokenReferencesDialog(net.mcreator.ui.MCreator,java.util.Map)" tabindex="0">showBrokenReferencesDialog(MCreator, Map)</a></li>
+<li><a href="#showBrokenReferencesDialog(net.mcreator.ui.MCreator,java.util.Map,boolean)" tabindex="0">showBrokenReferencesDialog(MCreator, Map, boolean)</a></li>
 <li><a href="#showDialog(net.mcreator.ui.MCreator,java.lang.String,java.util.Collection,boolean,java.lang.String)" tabindex="0">showDialog(MCreator, String, Collection, boolean, String)</a></li>
 </ol>
 </li>
@@ -112,6 +114,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#showBrokenReferencesDialog(net.mcreator.ui.MCreator,java.util.Map)" class="member-name-link">showBrokenReferencesDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;brokenReferences)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#showBrokenReferencesDialog(net.mcreator.ui.MCreator,java.util.Map,boolean)" class="member-name-link">showBrokenReferencesDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;brokenReferences,
+ boolean&nbsp;notifyIfEmpty)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#showDeleteDialog(net.mcreator.ui.MCreator,java.lang.String,java.util.Collection)" class="member-name-link">showDeleteDialog</a><wbr>(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;queryType,
@@ -219,6 +230,36 @@ loadScripts(document, 'script');</script>
 <dd><code>messageSuffix</code> - Additional information to be displayed by deletion dialog.</dd>
 <dt>Returns:</dt>
 <dd>Whether the user confirmed deletion of selected elements.</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="showBrokenReferencesDialog(net.mcreator.ui.MCreator,java.util.Map)">
+<h3>showBrokenReferencesDialog</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">showBrokenReferencesDialog</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;brokenReferences)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mcreator</code> - Workspace window calling this method.</dd>
+<dd><code>brokenReferences</code> - Map of mod elements with broken references to the names of missing mod elements.</dd>
+</dl>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="showBrokenReferencesDialog(net.mcreator.ui.MCreator,java.util.Map,boolean)">
+<h3>showBrokenReferencesDialog</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">showBrokenReferencesDialog</span><wbr><span class="parameters">(<a href="../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;brokenReferences,
+ boolean&nbsp;notifyIfEmpty)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mcreator</code> - Workspace window calling this method.</dd>
+<dd><code>brokenReferences</code> - Map of mod elements with broken references to the names of missing mod elements.</dd>
+<dd><code>notifyIfEmpty</code> - Whether to show a message if there are no broken references.</dd>
 </dl>
 </div>
 </section>

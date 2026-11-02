@@ -69,6 +69,7 @@ loadScripts(document, 'script');</script>
 <li><a href="#fromJSONtoGeneratableElementOrNull(java.lang.String,net.mcreator.workspace.elements.ModElement)" tabindex="0">fromJSONtoGeneratableElementOrNull(String, ModElement)</a></li>
 <li><a href="#fromJSONtoGeneratableElement(java.lang.String,net.mcreator.workspace.elements.ModElement,java.util.function.Consumer)" tabindex="0">fromJSONtoGeneratableElement(String, ModElement, Consumer)</a></li>
 <li><a href="#requiresElementGradleBuild(net.mcreator.element.GeneratableElement)" tabindex="0">requiresElementGradleBuild(GeneratableElement)</a></li>
+<li><a href="#requiresElementGradleBuild(net.mcreator.element.GeneratableElement,java.util.function.Supplier)" tabindex="0">requiresElementGradleBuild(GeneratableElement, Supplier)</a></li>
 <li><a href="#storeModElementPicture(net.mcreator.element.GeneratableElement)" tabindex="0">storeModElementPicture(GeneratableElement)</a></li>
 <li><a href="#getModElementIcon(net.mcreator.workspace.elements.ModElement)" tabindex="0">getModElementIcon(ModElement)</a></li>
 <li><a href="#invalidateCache()" tabindex="0">invalidateCache()</a></li>
@@ -148,14 +149,18 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#requiresElementGradleBuild(net.mcreator.element.GeneratableElement)" class="member-name-link">requiresElementGradleBuild</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#storeModElement(net.mcreator.element.GeneratableElement)" class="member-name-link">storeModElement</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#requiresElementGradleBuild(net.mcreator.element.GeneratableElement,java.util.function.Supplier)" class="member-name-link">requiresElementGradleBuild</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;elementsOfType)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#storeModElement(net.mcreator.element.GeneratableElement)" class="member-name-link">storeModElement</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Also stores to cache.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#storeModElementPicture(net.mcreator.element.GeneratableElement)" class="member-name-link">storeModElementPicture</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#storeModElementPicture(net.mcreator.element.GeneratableElement)" class="member-name-link">storeModElementPicture</a><wbr>(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;element)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method should be called after the mod element is generated by Generator
 So potential metadata fields of ModElement are properly loaded.</div>
 </div>
@@ -264,6 +269,15 @@ So potential metadata fields of ModElement are properly loaded.</div>
 <h3>requiresElementGradleBuild</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">requiresElementGradleBuild</span><wbr><span class="parameters">(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement)</span></div>
+</div>
+</section>
+</li>
+<li>
+<section class="detail" id="requiresElementGradleBuild(net.mcreator.element.GeneratableElement,java.util.function.Supplier)">
+<h3>requiresElementGradleBuild</h3>
+<div class="horizontal-scroll">
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">requiresElementGradleBuild</span><wbr><span class="parameters">(<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&nbsp;generatableElement,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;elementsOfType)</span></div>
 </div>
 </section>
 </li>
