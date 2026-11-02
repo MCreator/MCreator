@@ -131,8 +131,8 @@ public final class BlocklyJavascriptBridge {
 	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String selectedEntry,
 			String type) {
 		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-		String selected = new StringSelectorDialog.Builder(mcreator, entryProvider, selectedEntry,
-				L10N.t("dialog.selector." + type + ".message")).open();
+		String selected = new StringSelectorDialog.Builder(mcreator, entryProvider,
+				L10N.t("dialog.selector." + type + ".message")).initialSelection(selectedEntry).open();
 		if (selected != null) {
 			retval[0] = selected;
 			retval[1] = selected;
