@@ -19,7 +19,6 @@
 package net.mcreator.ui.modgui;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.util.SystemInfo;
 import net.mcreator.element.ModElementType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -36,11 +35,6 @@ public class ModTypeDropdown extends JPopupMenu {
 	public ModTypeDropdown(MCreator mcreator) {
 		setBorder(BorderFactory.createEmptyBorder());
 		putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
-
-		// On KDE Wayland, heavyweight tooltip windows of menu items get stacked below the heavyweight popup window
-		// FlatLaf uses on Linux for drop shadows, so we disable the shadow to make this popup lightweight
-		if (SystemInfo.isLinux && SystemInfo.isKDE && "wayland".equals(System.getenv("XDG_SESSION_TYPE")))
-			putClientProperty(FlatClientProperties.POPUP_DROP_SHADOW_PAINTED, false);
 
 		List<ModElementType<?>> types = mcreator.getGeneratorStats().getSupportedModElementTypes();
 
