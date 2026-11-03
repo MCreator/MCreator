@@ -123,6 +123,9 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 				blockData.put("blocklyBlockJSONDefinition", block.getBlocklyJSON());
 				blockData.put("blockExampleXML", block.getToolboxTestXML());
 				blockData.put("blockType", block.getType());
+				if (CUSTOM_CODE_BLOCKS.contains(blockRegistryName)) {
+					blockData.put("warning", CUSTOM_CODE_WARNING);
+				}
 				yield CompletableFuture.completedFuture(ToolResult.object(blockData));
 			}
 		};
@@ -178,6 +181,12 @@ public class BlocklyBlocksTool extends MCreatorMcpTool<BlocklyBlocksTool.Args> {
 		}
 		return null;
 	}
+
+	private static final Set<String> CUSTOM_CODE_BLOCKS = Set.of("java_code", "java_code_get");
+
+	private static final String CUSTOM_CODE_WARNING = """
+			Last resort for a short expression or statement no other block provides. Never put classes, event handlers, \
+			registrations, or whole features into it; build those from mod elements and Blockly blocks instead.""";
 
 	/**
 	 * Standard Blockly blocks registered in {@link InternalBlocksLoader} without MCreator JSON definitions.
