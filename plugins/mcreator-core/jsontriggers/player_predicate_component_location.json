@@ -1,0 +1,20 @@
+{
+  "mutator": "location_component_mutator",
+  "inputsInline": false,
+  "output": "PlayerPredicateComponent",
+  "colour": 215,
+  "extensions": [
+    "disable_duplicate_input_type"
+  ],
+  "mcreator": {
+    "group": "location",
+    "toolbox_id": "playerconditions",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"locationComponent0\"><block type=\"location_component_predicate_biomes\"><mutation inputs=\"1\"></mutation><field name=\"biome0\"></field></block></value>"
+    ],
+    "repeating_inputs": [
+      "locationComponent"
+    ]
+  }
+}

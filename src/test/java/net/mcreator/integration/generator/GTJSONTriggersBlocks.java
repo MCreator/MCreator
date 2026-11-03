@@ -83,6 +83,10 @@ public class GTJSONTriggersBlocks {
 					"<field name=\"enchantment\">" + TestWorkspaceDataProvider.getRandomItem(random, enchantments)
 							.getName() + "</field>");
 
+			testXML = testXML.replace("<field name=\"biome0\"></field>",
+					"<field name=\"biome0\">" + TestWorkspaceDataProvider.getRandomItem(random,
+							ElementUtil.loadAllBiomes(modElement.getWorkspace())).getName() + "</field>");
+
 			testXML = testXML.replace("<block type=\"" + triggerBlock.getMachineName() + "\">",
 					"<block type=\"" + triggerBlock.getMachineName() + "\">" + additionalXML);
 
@@ -102,6 +106,7 @@ public class GTJSONTriggersBlocks {
 						<block type="player_effect_changed">
 							<mutation inputs="1"></mutation>
 							<value name="effect0">%s</value>
+							<value name="player"><block type="player_condition_predicate"><mutation inputs="0"></mutation></block></value>
 						</block></next></block></xml>
 						""".formatted(testXML);
 				// Enchantment entries are tested using item enchanted procedure block
@@ -115,6 +120,7 @@ public class GTJSONTriggersBlocks {
 							<value name="min"><block type="math_number"><field name="NUM">1</field></block></value>
 							<value name="max"><block type="math_number"><field name="NUM">5</field></block></value>
 							<value name="enchantment0">%s</value>
+							<value name="player"><block type="player_condition_predicate"><mutation inputs="0"></mutation></block></value>
 						</block></next></block></xml>
 						""".formatted(testXML);
 				case "MCItem", "ItemPredicate" -> advancement.triggerxml = """
@@ -122,6 +128,7 @@ public class GTJSONTriggersBlocks {
 						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
 						<block type="item_consumed">
 							<value name="item">%s</value>
+							<value name="player"><block type="player_condition_predicate"><mutation inputs="0"></mutation></block></value>
 						</block></next></block></xml>
 						""".formatted(testXML);
 				case "DataComponentPredicate" -> advancement.triggerxml = """
@@ -134,7 +141,37 @@ public class GTJSONTriggersBlocks {
 									<field name="min">1</field><field name="max">64</field>
 									<value name="item"><block type="mcitem_all"><field name="value">Items.APPLE</field></block></value>
 									<value name="predicateComponent0">%s</value>
-						</block></value></block></next></block></xml>
+								</block>
+							</value>
+						<value name="player"><block type="player_condition_predicate"><mutation inputs="0"></mutation></block></value>
+						</block></next></block></xml>
+						""".formatted(testXML);
+				case "PlayerCondition" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="second">
+							<value name="player">%s</value>
+						</block></next></block></xml>
+						""".formatted(testXML);
+				case "PlayerPredicateComponent" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="second">
+							<value name="player"><block type="player_condition_predicate">
+							<mutation inputs="1"></mutation>
+							<value name="predicateComponent0">%s</value>
+							</block></value>"
+						</block></next></block></xml>
+						""".formatted(testXML);
+				case "LocationParameter" -> advancement.triggerxml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="advancement_trigger" deletable="false" x="40" y="80"><next>
+						<block type="second">
+							<value name="player"><block type="player_condition_predicate">
+							<mutation inputs="1"></mutation>
+							<value name="predicateComponent0"><block type="player_predicate_component_location"><mutation inputs="1"></mutation><value name="locationComponent0">%s</value></block></value>
+							</block></value>"
+						</block></next></block></xml>
 						""".formatted(testXML);
 				default -> {
 					LOG.warn("[{}] Skipping JSON trigger block of unrecognized type: {}", generatorName,

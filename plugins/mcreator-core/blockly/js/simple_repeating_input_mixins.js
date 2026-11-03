@@ -3,8 +3,11 @@
 // The empty message is localized as "blockly.block.block_type.empty"
 // The input provider is a function that accepts the block being mutated, the input name and the input index
 // If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
+// The empty message/empty input can be avoided by setting addEmptyInputIfEmpty to false
+// If updateTitleIfEmpty is set, the block's title label switches to the empty message when there are no inputs
 function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
-                                   fieldNames = [], disableIfEmpty) {
+                                   fieldNames = [], disableIfEmpty, addEmptyInputIfEmpty = true,
+                                   updateTitleIfEmpty = false) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
         mutationToDom: function () {
@@ -109,7 +112,16 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 
         // Add/remove inputs from this block
         updateShape_: function () {
-            this.handleEmptyInput_(disableIfEmpty);
+            if (updateTitleIfEmpty) {
+                Blockly.Events.disable();
+                try {
+                    this.inputList[0].fieldRow[0].setValue(
+                        translate('blockly.block.' + this.type + (this.inputCount_ ? '' : '.empty')));
+                } finally {
+                    Blockly.Events.enable();
+                }
+            }
+            this.handleEmptyInput_(disableIfEmpty, addEmptyInputIfEmpty);
             // Add proper inputs
             for (let i = 0; i < this.inputCount_; i++) {
                 if (!this.getInput(inputName + i))
@@ -122,8 +134,8 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         },
 
         // Handle the dummy "empty" input or warning for when there are no proper inputs
-        handleEmptyInput_: function (disableIfEmpty) {
-            if (disableIfEmpty === undefined) {
+        handleEmptyInput_: function (disableIfEmpty, addEmptyInputIfEmpty) {
+            if (disableIfEmpty === undefined && addEmptyInputIfEmpty) {
                 if (this.inputCount_ && this.getInput('EMPTY')) {
                     this.removeInput('EMPTY');
                 } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
@@ -321,6 +333,31 @@ Blockly.Extensions.registerMutator('item_predicate_mutator', simpleRepeatingInpu
                 .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['item_predicate_mutator_input']);
+
+Blockly.Extensions.registerMutator('player_predicate_mutator', simpleRepeatingInputMixin(
+        'player_predicate_mutator_container', 'player_predicate_mutator_input', 'predicateComponent',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('PlayerPredicateComponent').setAlign(Blockly.inputs.Align.RIGHT)
+                .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
+        }, true, [], undefined, false, true),
+    undefined, ['player_predicate_mutator_input']);
+
+Blockly.Extensions.registerMutator('location_component_mutator', simpleRepeatingInputMixin(
+        'location_component_mutator_container', 'location_component_mutator_input', 'locationComponent',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('LocationParameter').setAlign(Blockly.inputs.Align.RIGHT)
+                .appendField(translate('blockly.block.' + thisBlock.type + '.input'));
+        }),
+    undefined, ['location_component_mutator_input']);
+
+Blockly.Extensions.registerMutator('biome_location_component_mutator', simpleRepeatingInputMixin(
+        'biome_location_component_mutator_container', 'biome_location_component_mutator_input', 'biome',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.inputs.Align.RIGHT)
+                .appendField(translate('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new FieldDataListSelector('biomes'), 'biome' + index);
+        }, false, ['biome']),
+    undefined, ['biome_location_component_mutator_input']);
 
 // Mutator for lookup level-based value
 Blockly.Extensions.registerMutator('level_based_value_lookup_mutator', simpleRepeatingInputMixin(

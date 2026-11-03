@@ -6,4 +6,7 @@
         <block type="mcitem_all"/>
         <custom-components/>
     </category>
+    <category name="${t:blockly.category.playerconditions}" colour="175">
+        <custom-playerconditions/>
+    </category>
 </xml>
