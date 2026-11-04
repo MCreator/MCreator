@@ -365,9 +365,6 @@ public class Generator implements IGenerator, Closeable {
 					.add(generatableElement);
 		}
 
-		// Collect fragments, they are passed to all templates generated in this step
-		Map<String, List<String>> fragments = FragmentsUtils.collectFragments(this, modElementTypeListMap);
-
 		for (Map.Entry<ModElementType<?>, List<GeneratableElement>> entry : modElementTypeListMap.entrySet()) {
 			ModElementType<?> type = entry.getKey();
 			List<GeneratableElement> groupedElements = entry.getValue();
@@ -390,6 +387,10 @@ public class Generator implements IGenerator, Closeable {
 					baseType.getPluralName(), () -> groupedElements, templateID));
 			types.put("base_" + baseType.getPluralName(), groupedElements);
 		}
+
+		// Collect fragments, they are passed to all templates generated below
+		Map<String, List<String>> fragments = FragmentsUtils.collectFragments(this, modElementTypeListMap,
+				baseTypeListMap);
 
 		// Check fragment types with fragments and generate their templates
 		for (Map.Entry<String, Map<?, ?>> entry : generatorConfiguration.getDefinitionsProvider()
