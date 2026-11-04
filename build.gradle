@@ -126,7 +126,7 @@ dependencies {
     implementation "org.jboss.forge.roaster:roaster-jdt:2.31.1.Final"
     implementation "org.snakeyaml:snakeyaml-engine:3.2"
     implementation "org.reflections:reflections:0.10.2"
-    implementation "com.google.guava:guava:33.7.2-jre"
+    implementation "com.google.guava:guava:33.8.0-jre"
     implementation "de.javagl:obj:0.4.0"
     implementation "com.univocity:univocity-parsers:2.9.1"
     implementation "org.slf4j:slf4j-nop:2.0.20"
@@ -149,14 +149,15 @@ dependencies {
     implementation 'com.github.victools:jsonschema-generator:5.0.0'
 
     implementation "com.github.weisj:jsvg:2.2.0"
-    implementation "com.formdev:flatlaf:3.7.2:no-natives"
-    implementation("com.formdev:flatlaf-extras:3.7.2") {
+    implementation platform("com.formdev:flatlaf-bom:3.7.2")
+    implementation "com.formdev:flatlaf::no-natives"
+    implementation("com.formdev:flatlaf-extras") {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    win64 "com.formdev:flatlaf:3.7.2:windows-x86_64@dll"
-    macX64 "com.formdev:flatlaf:3.7.2:macos-x86_64@dylib"
-    macAarch64 "com.formdev:flatlaf:3.7.2:macos-arm64@dylib"
-    linux64 "com.formdev:flatlaf:3.7.2:linux-x86_64@so"
+    win64 "com.formdev:flatlaf::windows-x86_64@dll"
+    macX64 "com.formdev:flatlaf::macos-x86_64@dylib"
+    macAarch64 "com.formdev:flatlaf::macos-arm64@dylib"
+    linux64 "com.formdev:flatlaf::linux-x86_64@so"
 
     // test dependencies
     testImplementation platform("org.junit:junit-bom:6.1.3")
