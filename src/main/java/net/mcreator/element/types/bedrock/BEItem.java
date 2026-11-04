@@ -48,6 +48,7 @@ public class BEItem extends GeneratableElement implements IMCItemProvider, IItem
 	@LimitedOptions({ "common", "uncommon", "rare", "epic" }) public String rarity;
 	public boolean enableCreativeTab;
 	@NonNullMappable("MATERIALS") public TabEntry creativeTab;
+	public boolean isFireResistant;
 	public boolean isHiddenInCommands;
 	@Numeric(init = 0, min = 0, max = 1, step = 0.05) public double movementModifier;
 	public boolean allowOffHand;
