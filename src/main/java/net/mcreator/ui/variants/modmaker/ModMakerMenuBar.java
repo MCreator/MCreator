@@ -37,6 +37,7 @@ class ModMakerMenuBar extends MainMenuBar {
 		JMenu workspace = L10N.menu("menubar.workspace");
 		workspace.setMnemonic('S');
 		workspace.add(mcreator.getActionRegistry().setCreativeTabItemOrder);
+		workspace.add(mcreator.getActionRegistry().findBrokenReferences);
 		workspace.addSeparator();
 		workspace.add(mcreator.getActionRegistry().openWorkspaceFolder);
 		workspace.addSeparator();

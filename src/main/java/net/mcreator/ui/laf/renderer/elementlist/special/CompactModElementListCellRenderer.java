@@ -26,16 +26,33 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Function;
 
 public class CompactModElementListCellRenderer implements ListCellRenderer<ModElement> {
+
+	private final Function<ModElement, String> descriptionProvider;
+
+	public CompactModElementListCellRenderer() {
+		this(null);
+	}
+
+	/**
+	 * @param descriptionProvider Optional provider of the text shown below the mod element name, defaults to its type.
+	 */
+	public CompactModElementListCellRenderer(@Nullable Function<ModElement, String> descriptionProvider) {
+		this.descriptionProvider = descriptionProvider != null ?
+				descriptionProvider :
+				me -> L10N.t("workspace.elements.list.special.item.type", me.getType().getReadableName());
+	}
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends ModElement> list, ModElement value, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		JLabel label = L10N.label("workspace.elements.list.special.item",
-				StringUtils.abbreviateString(value.getName(), 20), value.getType().getReadableName());
+				StringUtils.abbreviateString(value.getName(), 20), descriptionProvider.apply(value));
 		label.setOpaque(true);
 		label.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementManager.getModElementIcon(value).getImage(), 32)));
 		label.setIconTextGap(10);

@@ -111,7 +111,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testMCItemSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> MCItemSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadBlocksAndItems));
+				() -> MCItemSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadBlocksAndItems, null));
 	}
 
 	@Test public void testElementOrderEditor() throws Throwable {

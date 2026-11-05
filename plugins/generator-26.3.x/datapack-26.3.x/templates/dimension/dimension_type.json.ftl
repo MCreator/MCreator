@@ -77,15 +77,23 @@
   "coordinate_scale": ${data.coordinateScale},
   "ambient_light": ${data.ambientLight},
   "infiniburn": "#${w.resolveModNamespace(data.infiniburnTag)}",
+  <#-- Custom timelines are listed together with minecraft:villager_schedule, which vanilla includes in
+       all dimensions via #minecraft:universal, so villagers keep their work/meet/rest schedule -->
   <#if data.hasFixedTimeAndNeedsCustomTimeline()>
     "has_fixed_time": true,
-    "timelines": "${modid}:${registryname}_fixed",
+    "timelines": [
+      "minecraft:villager_schedule",
+      "${modid}:${registryname}_fixed"
+    ],
     "default_clock": "minecraft:overworld",
   <#elseif data.needsCustomEffectsTimeline()>
-    "timelines": "${modid}:${registryname}_effects",
+    "timelines": [
+      "minecraft:villager_schedule",
+      "${modid}:${registryname}_effects"
+    ],
     "default_clock": "minecraft:overworld",
   <#elseif data.useCustomEffects>
-    <#-- no timelines or clock if useCustomEffects is used with NONE or END sky type -->
+    "timelines": "#minecraft:universal",
   <#elseif data.defaultEffects == "the_end">
     "has_fixed_time": true,
     "timelines": "#minecraft:in_end",

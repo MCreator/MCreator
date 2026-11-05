@@ -93,7 +93,7 @@ public final class FileIO {
 		}
 	}
 
-	public static void writeStringToFile(String c, File f) {
+	public static boolean writeStringToFile(String c, File f) {
 		File parentDir = f.getAbsoluteFile().getParentFile();
 		if (parentDir != null && !parentDir.isDirectory())
 			parentDir.mkdirs();
@@ -101,8 +101,10 @@ public final class FileIO {
 		try (BufferedWriter out = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8))) {
 			out.write(c);
+			return true;
 		} catch (Exception e) {
 			LOG.error("Error writing {}", e.getMessage(), e);
+			return false;
 		}
 	}
 

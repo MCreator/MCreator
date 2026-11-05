@@ -44,7 +44,6 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
@@ -399,8 +398,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo = new SingleModElementSelector(mcreator, ModElementType.GUI);
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
-		spawnEggTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
-		spawnEggTexture.setOpaque(false);
+		spawnEggTexture = new TextureSelectionButton(mcreator, TextureType.ITEM, 32);
 
 		mobModelTexture = new TextureComboBox(mcreator, TextureType.ENTITY).requireValue(
 				"elementgui.living_entity.error_entity_model_needs_texture");
@@ -419,8 +417,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				}
 			}
 		});
-
-		spawnInDungeons.setOpaque(false);
 
 		mobDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		equipmentMainHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -447,21 +443,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel vibrationPane = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
-
-		immuneToFire.setOpaque(false);
-		immuneToArrows.setOpaque(false);
-		immuneToFallDamage.setOpaque(false);
-		immuneToCactus.setOpaque(false);
-		immuneToDrowning.setOpaque(false);
-		immuneToLightning.setOpaque(false);
-		immuneToPotions.setOpaque(false);
-		immuneToPlayer.setOpaque(false);
-		immuneToExplosion.setOpaque(false);
-		immuneToTrident.setOpaque(false);
-		immuneToAnvil.setOpaque(false);
-		immuneToDragonBreath.setOpaque(false);
-		immuneToWither.setOpaque(false);
-
 		subpane1.setOpaque(false);
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour"),
@@ -531,13 +512,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 2, PanelUtils.totalCenterInPanel(
 				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
 						equipmentBody, equipmentLeggings, equipmentBoots))));
-
-		hasAI.setOpaque(false);
-		isBoss.setOpaque(false);
-		waterMob.setOpaque(false);
-		flyingMob.setOpaque(false);
-		hasSpawnEgg.setOpaque(false);
-		disableCollisions.setOpaque(false);
 
 		livingSound.setSound("");
 		hurtSound.setSound("entity.generic.hurt");
@@ -781,10 +755,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		rangedItemType.addActionListener(_ -> enableOrDisableFields());
 
-		ridable.setOpaque(false);
-		canControlStrafe.setOpaque(false);
-		canControlForward.setOpaque(false);
-
 		ComponentUtils.makeSection(aitopoveral, L10N.t("elementgui.living_entity.ai_parameters"));
 
 		JPanel aipan = new JPanel(new BorderLayout(0, 2));
@@ -823,10 +793,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane3.add("Center", ComponentUtils.applyPadding(aipan, 10, true, true, true, true));
 
-		breedable.setOpaque(false);
-		tameable.setOpaque(false);
-		ranged.setOpaque(false);
-
 		hasAI.setSelected(true);
 
 		mobBehaviourType.addActionListener(_ -> enableOrDisableFields());
@@ -847,9 +813,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		events.add(onInitialSpawn);
 		events.setOpaque(false);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
-
-		isBoss.setOpaque(false);
-
 		pane4.setOpaque(false);
 
 		JPanel selp = new JPanel(new GridLayout(8, 2, 30, 2));
@@ -859,9 +822,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		spawnThisMob.setSelected(true);
 		doesDespawnWhenIdle.setSelected(true);
-
-		spawnThisMob.setOpaque(false);
-		doesDespawnWhenIdle.setOpaque(false);
 
 		hasSpawnEgg.setSelected(true);
 
@@ -931,12 +891,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane7.add(PanelUtils.totalCenterInPanel(props));
 		pane7.setOpaque(false);
-		pane7.setOpaque(false);
 
 		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));
 		vibrationProps.setOpaque(false);
 
-		sensitiveToVibration.setOpaque(false);
 		sensitiveToVibration.addActionListener(_ -> enableOrDisableFields());
 
 		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sensitive_to_vibration"),

@@ -37,16 +37,27 @@ templates:
 global_templates:
   - template: elementinits/biomes.java.ftl
     writer: java
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
   - template: biome/mixin_noisegeneratorsettings.java.ftl
     writer: java
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/NoiseGeneratorSettingsMixin.java"
   - template: biome/mixin_biomesourcepreset.java.ftl
     writer: java
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/mixin/BiomeSourcePresetMixin.java"
+
+fragments:
+  - type: accesstransformer
+    condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    content: public net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList$Preset$SourceProvider
+  - type: accesstransformer
+    condition: "${biomes?filter(e -> e.hasVines() || e.hasFruits())?size != 0}"
+    content: public net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType <init>(Lcom/mojang/serialization/MapCodec;)V
+  - type: mixin
+    condition: "${biomes?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+    content: [ NoiseGeneratorSettingsMixin, BiomeSourcePresetMixin ]
 
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft

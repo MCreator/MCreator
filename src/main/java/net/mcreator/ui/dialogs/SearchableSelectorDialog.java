@@ -22,13 +22,15 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -39,16 +41,29 @@ import java.util.function.Predicate;
  * @param <T> The type of the elements in this selector dialog
  */
 public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
-	final MCreator mcreator;
-	final Function<Workspace, List<T>> provider;
+	protected final MCreator mcreator;
+	private final Function<Workspace, List<T>> provider;
+	private @Nonnull List<T> initialSelection;
 
-	final FilterModel model = new FilterModel();
-	final JTextField filterField = new JTextField(14);
+	protected final FilterModel model = new FilterModel();
+	protected final JTextField filterField = new JTextField(14);
+
+	protected final JList<T> list = new JList<>(model);
 
 	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider) {
+		this(mcreator, provider, Collections.emptyList());
+	}
+
+	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider, T initialSelection) {
+		this(mcreator, provider, initialSelection == null ? null : List.of(initialSelection));
+	}
+
+	public SearchableSelectorDialog(MCreator mcreator, Function<Workspace, List<T>> provider,
+			List<T> initialSelection) {
 		super(mcreator);
 		this.mcreator = mcreator;
 		this.provider = provider;
+		this.initialSelection = initialSelection == null ? Collections.emptyList() : initialSelection;
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 
@@ -66,19 +81,27 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 			}
 		});
 
-		addWindowListener(new WindowAdapter() {
-			@Override public void windowActivated(WindowEvent e) {
-				super.windowActivated(e);
+		addComponentListener(new ComponentAdapter() {
+			@Override public void componentShown(ComponentEvent e) {
+				super.componentShown(e);
 				reloadElements();
 			}
 		});
 	}
 
-	class FilterModel extends DefaultListModel<T> {
+	public void setInitialSelection(T toSelect) {
+		this.setInitialSelection(toSelect == null ? Collections.emptyList() : List.of(toSelect));
+	}
+
+	public void setInitialSelection(List<T> toSelect) {
+		this.initialSelection = toSelect == null ? Collections.emptyList() : toSelect;
+	}
+
+	protected class FilterModel extends DefaultListModel<T> {
 		final ArrayList<T> entries;
 		final ArrayList<T> filterEntries;
 
-		FilterModel() {
+		protected FilterModel() {
 			super();
 			entries = new ArrayList<>();
 			filterEntries = new ArrayList<>();
@@ -133,10 +156,28 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	 * @param term The text contained in the search bar
 	 * @return The predicate that will be used to filter the elements
 	 */
-	abstract Predicate<T> getFilter(String term);
+	protected abstract Predicate<T> getFilter(String term);
 
-	void reloadElements() {
+	private void reloadElements() {
 		model.removeAllElements();
 		model.addAll(provider.apply(this.mcreator.getWorkspace()));
+		selectEntries();
+	}
+
+	private void selectEntries() {
+		list.clearSelection();
+		if (!initialSelection.isEmpty()) {
+			List<Integer> indicesToSelect = new ArrayList<>();
+			for (int i = 0; i < list.getModel().getSize(); i++) {
+				if (initialSelection.contains(list.getModel().getElementAt(i)))
+					indicesToSelect.add(i);
+			}
+			if (!indicesToSelect.isEmpty()) {
+				list.setSelectedIndices(indicesToSelect.stream().mapToInt(i -> i).toArray());
+				list.ensureIndexIsVisible(indicesToSelect.getFirst());
+			}
+		}
+		if (list.isSelectionEmpty())
+			list.ensureIndexIsVisible(0); // nothing to show, scroll back to the top
 	}
 }

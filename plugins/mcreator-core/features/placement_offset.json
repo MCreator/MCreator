@@ -15,7 +15,7 @@
     "offset_placement_validator"
   ],
   "inputsInline": false,
-  "previousStatement": null,
+  "previousStatement": "Placement",
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {

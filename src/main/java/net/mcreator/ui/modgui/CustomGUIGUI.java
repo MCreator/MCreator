@@ -104,10 +104,10 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		editor.getGUITypeSelector().setSelectedIndex(gui.type);
 		editor.setSlotComponentsEnabled(editor.getGUITypeSelector().getSelectedIndex() == 1);
 
-		editor.sx.setValue(gui.gridSettings.sx);
-		editor.sy.setValue(gui.gridSettings.sy);
-		editor.ox.setValue(gui.gridSettings.ox);
-		editor.oy.setValue(gui.gridSettings.oy);
+		editor.sx.setValue(gui.gridSettings.spacingX);
+		editor.sy.setValue(gui.gridSettings.spacingY);
+		editor.ox.setValue(gui.gridSettings.offsetX);
+		editor.oy.setValue(gui.gridSettings.offsetY);
 		editor.snapOnGrid.setSelected(gui.gridSettings.snapOnGrid);
 		if (gui.gridSettings.snapOnGrid) {
 			editor.editor.showGrid = true;
@@ -131,10 +131,10 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		gui.onTick = onTick.getSelectedProcedure();
 		gui.onClosed = onClosed.getSelectedProcedure();
 
-		gui.gridSettings.sx = (int) editor.sx.getValue();
-		gui.gridSettings.sy = (int) editor.sy.getValue();
-		gui.gridSettings.ox = (int) editor.ox.getValue();
-		gui.gridSettings.oy = (int) editor.oy.getValue();
+		gui.gridSettings.spacingX = (int) editor.sx.getValue();
+		gui.gridSettings.spacingY = (int) editor.sy.getValue();
+		gui.gridSettings.offsetX = (int) editor.ox.getValue();
+		gui.gridSettings.offsetY = (int) editor.oy.getValue();
 		gui.gridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return gui;
 	}

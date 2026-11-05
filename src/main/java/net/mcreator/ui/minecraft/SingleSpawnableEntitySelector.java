@@ -34,6 +34,7 @@ public class SingleSpawnableEntitySelector extends JSingleEntrySelector<EntityEn
 
 	@Override protected EntityEntry openEntrySelector() {
 		var entry = DataListSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadAllSpawnableEntities,
+				this.getEntry() == null ? null : this.getEntry().getUnmappedValue(),
 				L10N.t("dialog.selector.title"), L10N.t("dialog.selector.entity.message"));
 		return entry == null ? null : new EntityEntry(mcreator.getWorkspace(), entry);
 	}

@@ -377,7 +377,9 @@ public class ModelImportActions {
 			FileIO.writeStringToFile(data,
 					new File(mcreator.getFolderManager().getModelsDir(), modelNameBase + ".textures"));
 			// copy the actual model
-			FileIO.copyFile(modelFile, new File(mcreator.getFolderManager().getModelsDir(), modelNameBase));
+			File modelDestination = new File(mcreator.getFolderManager().getModelsDir(), modelNameBase);
+			FileIO.copyFile(modelFile, modelDestination);
+			mcreator.getWorkspace().getModelManager().invalidateCache(modelDestination);
 		}
 	}
 

@@ -52,6 +52,19 @@ public class JBCefOsrComponent extends JPanel {
 
 		addInputMethodListener(myInputMethodAdapter);
 
+		// Keep browser focus state in sync with the Swing focus, the same way JCEF's CefBrowserOsr does
+		addFocusListener(new FocusAdapter() {
+			@Override public void focusGained(FocusEvent e) {
+				if (myBrowser != null)
+					myBrowser.setFocus(true);
+			}
+
+			@Override public void focusLost(FocusEvent e) {
+				if (myBrowser != null)
+					myBrowser.setFocus(false);
+			}
+		});
+
 		// This delay is a workaround for JBR-7335.
 		// After the device configuration is changed, the browser reacts to it whether it receives a notification from the client or not.
 		// An additional notification during this time can break the internal state of the browser, which leads to the picture freeze.

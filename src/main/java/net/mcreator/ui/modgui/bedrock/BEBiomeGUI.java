@@ -237,7 +237,6 @@ public class BEBiomeGUI extends ModElementGUI<BEBiome> {
 
 		ComponentUtils.makeSection(particles, L10N.t("elementgui.biome.particles"));
 
-		spawnParticles.setOpaque(false);
 		spawnParticles.addActionListener(_ -> updateParticleParameters());
 
 		updateParticleParameters();

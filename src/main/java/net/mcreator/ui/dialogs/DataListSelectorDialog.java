@@ -35,20 +35,35 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
-	public DataListSelectorDialog(MCreator mcreator, Function<Workspace, Collection<DataListEntry>> entryProvider) {
+	public DataListSelectorDialog(MCreator mcreator, Function<Workspace, Collection<DataListEntry>> entryProvider,
+			List<DataListEntry> initialSelection) {
 		super(mcreator,
 				workspace -> entryProvider.apply(workspace).stream().filter(e -> e.isSupportedInWorkspace(workspace))
-						.toList());
+						.toList(), initialSelection);
 		list.setCellRenderer(new DataListCellRenderer());
 	}
 
-	@Override Predicate<DataListEntry> getFilter(String term) {
+	@Override protected Predicate<DataListEntry> getFilter(String term) {
 		return e -> e.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
 	public static DataListEntry openSelectorDialog(MCreator mcreator,
 			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
-		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
+		return openSelectorDialog(mcreator, entryProvider, (DataListEntry) null, title, message);
+	}
+
+	public static DataListEntry openSelectorDialog(MCreator mcreator,
+			Function<Workspace, Collection<DataListEntry>> entryProvider, String initialSelection, String title,
+			String message) {
+		return openSelectorDialog(mcreator, entryProvider,
+				initialSelection == null ? null : new DataListEntry.Dummy(initialSelection), title, message);
+	}
+
+	public static DataListEntry openSelectorDialog(MCreator mcreator,
+			Function<Workspace, Collection<DataListEntry>> entryProvider, DataListEntry initialSelection,
+			String title, String message) {
+		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider,
+				initialSelection == null ? null : List.of(initialSelection));
 		dataListSelector.setMessage(message);
 		dataListSelector.setTitle(title);
 		dataListSelector.setVisible(true);
@@ -57,7 +72,13 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 
 	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
 			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
-		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider);
+		return openMultiSelectorDialog(mcreator, entryProvider, null, title, message);
+	}
+
+	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
+			Function<Workspace, Collection<DataListEntry>> entryProvider, List<DataListEntry> initialSelection,
+			String title, String message) {
+		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider, initialSelection);
 		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		dataListSelector.setTitle(title);

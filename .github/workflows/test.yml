@@ -32,13 +32,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
-      - name: Cache MCreator Gradle Packages
-        uses: actions/cache@v5
+      - name: Restore MCreator Gradle Packages
+        id: mcreator-gradle-cache
+        uses: actions/cache/restore@v5
         with:
           path: |
             ~/.mcreator/gradle/caches/
             ~/.mcreator/gradle/wrapper/
-          key: ${{ runner.os }}-mcreator-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-mcreator-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties', 'plugins/*/*/generator.yaml') }}
           restore-keys: |
             ${{ runner.os }}-mcreator-gradle-
       - name: Build and Test Using Gradle
@@ -58,3 +59,11 @@ jobs:
           rm -fr ~/.mcreator/gradle/caches/*/plugin-resolution/
           rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/providedDummy.jar
           rm -f  ~/.mcreator/gradle/caches/minecraft/deobfedDeps/compileDummy.jar
+      - name: Save MCreator Gradle Packages
+        if: github.event_name == 'push' && steps.mcreator-gradle-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            ~/.mcreator/gradle/caches/
+            ~/.mcreator/gradle/wrapper/
+          key: ${{ steps.mcreator-gradle-cache.outputs.cache-primary-key }}

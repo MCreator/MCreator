@@ -57,7 +57,7 @@
 }
 </#if>
 
-<#macro statesOpen>${multipart?then("'multipart': [", "'variants': {")}</#macro>
+<#macro statesOpen>${multipart?then('"multipart": [', '"variants": {')}</#macro>
 <#macro statesClose>${multipart?then("]", "}")}</#macro>
 
 <#macro variant conditionExtra="" additionalData="">

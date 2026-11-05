@@ -107,9 +107,6 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 		topLine.add(L10N.label("elementgui.living_entity.layer_texture"));
 		topLine.add(texture);
 
-		disableHurtOverlay.setOpaque(false);
-		glow.setOpaque(false);
-
 		topLine.add(
 				HelpUtils.wrapWithHelpButton(gui.withEntry("entity/model_layer_hurt_animation"), disableHurtOverlay));
 		topLine.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/glow_texture"), glow));

@@ -166,6 +166,9 @@ public class ShareableZIPManager {
 				if (excludeRunDir)
 					excludes.addAll(Set.of("run/", "runs/"));
 
+				// make sure the workspace file on the FS is in sync with the mod element files before zipping
+				mcreator.getWorkspace().getFileManager().saveWorkspaceDirectlyAndWait();
+
 				ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(),
 						excludes.toArray(new String[0]));
 

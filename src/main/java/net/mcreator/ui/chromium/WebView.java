@@ -362,6 +362,11 @@ public class WebView extends JPanel implements Closeable {
 		this.browser.createImmediately(); // needed so tests that don't render also work
 	}
 
+	public void focusBrowser() {
+		browser.setFocus(true);
+		cefComponent.requestFocusInWindow();
+	}
+
 	@Override public void removeNotify() {
 		if (OS.isWindows()) {
 			if (browser.getUIComponent().hasFocus()) {

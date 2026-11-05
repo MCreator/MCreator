@@ -93,12 +93,9 @@ public class JLootTableEntry extends JPanel {
 		line1.add(L10N.label("elementgui.loot_table.silk_touch_mode"));
 		line1.add(silkTouchMode);
 
-		affectedByFortune.setOpaque(false);
-		explosionDecay.setOpaque(false);
-
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("simple_list_entry.remove"));
-		remove.addActionListener(e -> {
+		remove.addActionListener(_ -> {
 			entryList.remove(this);
 			parent.remove(container);
 			parent.revalidate();

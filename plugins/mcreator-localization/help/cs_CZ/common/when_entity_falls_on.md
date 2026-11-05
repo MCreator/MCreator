@@ -1,0 +1,1 @@
+Spustí proceduru _pouze_ v případě, že entita spadne na blok z libovolné výšky.

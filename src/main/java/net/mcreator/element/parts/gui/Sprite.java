@@ -24,7 +24,6 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.references.TextureReference;
 
@@ -79,7 +78,8 @@ public class Sprite extends GUIComponent {
 			r = new Rectangle(0, 0, width, height);
 		}
 
-		g.drawImage(ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), r), cx, cy, width, height, wysiwygEditor);
+		g.drawImage(actualImage, cx, cy, cx + width, cy + height, r.x, r.y, r.x + r.width, r.y + r.height,
+				wysiwygEditor);
 	}
 
 	@SuppressWarnings("unused") public int getTextureWidth(Workspace workspace) {

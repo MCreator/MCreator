@@ -137,7 +137,7 @@ public class LocalHistoryPanel extends JPanel {
 		topBar.setFloatable(false);
 
 		revertCheckpoint = L10N.button("dock.local_history.revert");
-		revertCheckpoint.setIcon(UIRES.get("16px.rwd"));
+		revertCheckpoint.setIcon(UIRES.get("16px.revert"));
 		revertCheckpoint.addActionListener(_ -> revertToSelectedCheckpoint());
 
 		mcreator.getGradleConsole().addGradleStateListener(new GradleStateListener() {

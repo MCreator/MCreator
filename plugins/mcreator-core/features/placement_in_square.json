@@ -3,7 +3,7 @@
     "disable_repeated_random_xz"
   ],
   "inputsInline": true,
-  "previousStatement": null,
+  "previousStatement": "Placement",
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {

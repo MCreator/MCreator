@@ -29,7 +29,6 @@ import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -92,8 +91,7 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 
 		this.textures = new BlockTexturesSelector(mcreator);
 
-		particleTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
-		particleTexture.setOpaque(false);
+		particleTexture = new TextureSelectionButton(mcreator, TextureType.BLOCK, 32);
 
 		ComponentUtils.deriveFont(renderType, 16);
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -118,7 +116,7 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 				L10N.label("elementgui.block.state_bounding_box_enable")));
 		regularParamsGrid.add(hasCustomBoundingBox);
 
-		hasCustomBoundingBox.addActionListener(e -> boundingBoxList.setEnabled(hasCustomBoundingBox.isSelected()));
+		hasCustomBoundingBox.addActionListener(_ -> boundingBoxList.setEnabled(hasCustomBoundingBox.isSelected()));
 		boundingBoxList.setEnabled(false);
 
 		JPanel parameters = new JPanel(new BorderLayout(10, 10));
@@ -130,7 +128,7 @@ public class JBlockStatesListEntry extends JSimpleListEntry<Block.StateEntry> im
 		collapse.toggleVisibility(userAction || PreferencesManager.PREFERENCES.ui.expandSectionsByDefault.get());
 		line.add("Center", collapse);
 
-		renderType.addActionListener(e -> {
+		renderType.addActionListener(_ -> {
 			if (normal.equals(renderType.getSelectedItem())) {
 				textures.setTextureFormat(BlockTexturesSelector.TextureFormat.ALL);
 			} else {

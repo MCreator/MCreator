@@ -9,7 +9,7 @@
       "source_entity": {
         "minecraft:entity_type": "${generator.map(field$sourceentity, "entities", 2)}"
       },
-      "blocked": ${field$blocked}
+      "blocked": ${field$blocked?lower_case}
     }
   }
 },

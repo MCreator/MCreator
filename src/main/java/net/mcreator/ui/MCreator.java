@@ -22,6 +22,7 @@ import net.mcreator.Launcher;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.MCreatorClosedEvent;
 import net.mcreator.plugin.events.workspace.MCreatorLoadedEvent;
@@ -33,6 +34,7 @@ import net.mcreator.ui.component.CollapsibleDockPanel;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
@@ -47,6 +49,8 @@ import net.mcreator.util.GSONClone;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.references.ReferencesFinder;
+import net.mcreator.workspace.WorkspaceUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -60,7 +64,9 @@ import java.awt.event.*;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public abstract class MCreator extends MCreatorFrame {
 
@@ -267,6 +273,17 @@ public abstract class MCreator extends MCreatorFrame {
 							"fullBackups/FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
 		}
 
+		// add back mod elements that have definitions in the workspace folder but are missing from the workspace file
+		List<ModElement> orphanedModElements = WorkspaceUtils.findOrphanedModElements(workspace);
+		if (!orphanedModElements.isEmpty()) {
+			LOG.warn("Recovering mod elements missing from the workspace file: {}", orphanedModElements);
+			orphanedModElements.forEach(workspace::addModElement);
+			workspace.requireRegenerate(); // so the recovered mod elements get converted and their code generated
+			JOptionPane.showMessageDialog(this, L10N.t("dialog.workspace.orphaned_mod_elements.message",
+							orphanedModElements.stream().map(ModElement::getName).collect(Collectors.joining(", "))),
+					L10N.t("dialog.workspace.orphaned_mod_elements.title"), JOptionPane.WARNING_MESSAGE);
+		}
+
 		// if we need to set up the workspace, we do so
 		if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 			WorkspaceGeneratorSetupDialog.runSetup(this,
@@ -283,6 +300,12 @@ public abstract class MCreator extends MCreatorFrame {
 			RegenerateCodeAction.regenerateCode(this, true, true);
 		}
 
+		// regeneration is required when generator was switched while loading the workspace, in which case
+		// references to mod elements that no longer exist may break the code for the new generator, so we check for them
+		if (workspace.isRegenerateRequired())
+			SearchUsagesDialog.showBrokenReferencesDialog(this, ReferencesFinder.searchBrokenReferences(workspace),
+					false);
+
 		// it is not safe to do user operations on workspace while it is being preloaded, so we lock the UI
 		setGlassPane(getPreloaderPane());
 		getGlassPane().setVisible(true);
@@ -292,7 +315,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 		// reinit (preload) MCItems (also loads GEs and performs conversions if needed)
 		new Thread(() -> {
-			workspace.getModElements().forEach(ModElement::getMCItems);
+			// Preload MCItems (also loads GEs and performs conversions if needed) and their icons for snappy UI when opened
+			workspace.getModElements().forEach(me -> me.getMCItems().forEach(MCItem::getIcon));
 
 			SwingUtilities.invokeLater(() -> {
 				getGlassPane().setVisible(false);
@@ -381,7 +405,8 @@ public abstract class MCreator extends MCreatorFrame {
 
 			application.removeMCreator(this);
 
-			if (application.getOpenMCreatorsCount() == 0) { // no MCreator windows left, close the app, or return to project selector if selected
+			if (application.getOpenMCreatorsCount()
+					== 0) { // no MCreator windows left, close the app, or return to project selector if selected
 				if (returnToProjectSelector)
 					application.showWorkspaceSelector();
 				else

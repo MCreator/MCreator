@@ -43,7 +43,7 @@ public record BlocklyEditorType(String registryName, String extension, String st
 	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", "atpl",
 			"advancement_trigger");
 	public static final BlocklyEditorType SCRIPT = new BlocklyEditorType("scripts", "stpl", "script_trigger");
-	public static final BlocklyEditorType ENCHANTMENT_EFFECTS = new BlocklyEditorType("enchantmenteffects", null,
+	public static final BlocklyEditorType ENCHANTMENT_EFFECTS = new BlocklyEditorType("enchantmenteffects", "etpl",
 			"enchantment_effects_start");
 
 	public BlocklyEditorType {

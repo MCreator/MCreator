@@ -34,6 +34,8 @@ public class IfBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		List<Element> elements = XMLUtil.getDirectChildren(block);
 		boolean hasMainIf = false;
+		boolean hasElse = false;
+		boolean allBranchesTerminate = true;
 		for (Element element : elements) {
 			if (element.getNodeName().equals("statement")) {
 				String ifname = element.getAttribute("name");
@@ -63,10 +65,11 @@ public class IfBlock implements IBlockGenerator {
 					master.append(") ");
 				} else if (ifname.equals("ELSE")) {
 					master.append("else");
+					hasElse = true;
 				}
 				master.append("{");
 				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
-				master.processBlockProcedure(base_blocks);
+				allBranchesTerminate &= master.processBlockProcedure(base_blocks);
 				master.append("}");
 			}
 		}
@@ -75,6 +78,10 @@ public class IfBlock implements IBlockGenerator {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.if_no_main_body")));
 		}
+
+		// if-else where every branch terminates can not complete normally, if without else can
+		if (hasElse && allBranchesTerminate)
+			master.markBlockTerminating();
 	}
 
 	@Override public String[] getSupportedBlocks() {

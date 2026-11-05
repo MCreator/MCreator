@@ -51,9 +51,6 @@ public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry>
 
 		this.workspace = mcreator.getWorkspace();
 
-		ambient.setOpaque(false);
-		showParticles.setOpaque(false);
-
 		line.add(L10N.label("elementgui.potion.effect"));
 		line.add(effect);
 
@@ -62,7 +59,7 @@ public class JPotionListEntry extends JSimpleListEntry<Potion.CustomEffectEntry>
 		line.add(duration);
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/infinite"), infinite));
-		infinite.addActionListener(e -> duration.setEnabled(!infinite.isSelected()));
+		infinite.addActionListener(_ -> duration.setEnabled(!infinite.isSelected()));
 
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("potion/amplifier"),
 				L10N.label("elementgui.potion.amplifier")));

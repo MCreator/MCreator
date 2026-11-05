@@ -36,8 +36,8 @@
 
 package ${package}.init;
 
-<#assign hasLivingEntities = w.hasElementsOfType("livingentity")>
-<#assign entitiesWithInventory = w.getGElementsOfType("livingentity")?filter(e -> e.guiBoundTo?has_content)>
+<#assign hasLivingEntities = types.livingentities?has_content>
+<#assign entitiesWithInventory = types.livingentities?filter(e -> e.guiBoundTo?has_content)>
 
 <#if hasLivingEntities || entitiesWithInventory?size != 0>
 @EventBusSubscriber

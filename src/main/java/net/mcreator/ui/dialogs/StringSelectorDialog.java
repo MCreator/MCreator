@@ -33,18 +33,25 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class StringSelectorDialog extends ListSelectorDialog<String> {
-	public StringSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider) {
-		super(mcreator, entryProvider.andThen(Arrays::asList));
+	public StringSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+			List<String> initialSelection) {
+		super(mcreator, entryProvider.andThen(Arrays::asList), initialSelection);
 		list.setCellRenderer(new StringListCellRenderer());
 	}
 
-	@Override Predicate<String> getFilter(String term) {
+	@Override protected Predicate<String> getFilter(String term) {
 		return s -> s.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
 	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
 			String title, String message) {
-		var stringSelector = new StringSelectorDialog(mcreator, entryProvider);
+		return openSelectorDialog(mcreator, entryProvider, null, title, message);
+	}
+
+	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+			String initialSelection, String title, String message) {
+		var stringSelector = new StringSelectorDialog(mcreator, entryProvider,
+				initialSelection == null ? null : List.of(initialSelection));
 		stringSelector.setMessage(message);
 		stringSelector.setTitle(title);
 		stringSelector.setVisible(true);
@@ -53,7 +60,12 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 
 	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
 			String title, String message) {
-		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider);
+		return openMultiSelectorDialog(mcreator, entryProvider, null, title, message);
+	}
+
+	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+			List<String> initialSelection, String title, String message) {
+		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider, initialSelection);
 		dataListSelector.setMessage(message);
 		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		dataListSelector.setTitle(title);

@@ -110,15 +110,6 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		actionSound.setSound("entity.arrow.shoot");
 
-		power.setOpaque(false);
-		igniteFire.setOpaque(false);
-		knockback.setOpaque(false);
-		damage.setOpaque(false);
-		projectileItem.setOpaque(false);
-		showParticles.setOpaque(false);
-		disableGravity.setOpaque(false);
-		disableDiscarding.setOpaque(false);
-
 		JPanel propertiesPanel = new JPanel(new GridLayout(12, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
 

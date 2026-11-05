@@ -31,9 +31,12 @@ import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 public class DefinitionsProvider {
 
@@ -45,9 +48,12 @@ public class DefinitionsProvider {
 
 	private final Map<BaseType, Map<?, ?>> global_cache = new ConcurrentHashMap<>();
 
+	private final Map<String, Map<?, ?>> fragment_cache = new LinkedHashMap<>();
+
 	public DefinitionsProvider(GeneratorConfiguration generatorConfiguration) {
 		this.generatorName = generatorConfiguration.getGeneratorName();
 
+		// Load mod element type definitions
 		for (ModElementType<?> type : ModElementTypeLoader.getAllModElementTypes()) {
 			try {
 				Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE,
@@ -62,10 +68,32 @@ public class DefinitionsProvider {
 			}
 		}
 
+		// Load fragment type definitions (<type>.fragment.yaml)
+		PluginLoader.INSTANCE.getResources(generatorName, Pattern.compile(".*\\.fragment\\.yaml")).stream().sorted()
+				.forEach(resource -> {
+					try {
+						Map<?, ?> result = YamlMerge.multiLoadYAML(PluginLoader.INSTANCE, resource,
+								new AdaptiveYamlMergePolicy("name"));
+						if (!result.isEmpty())
+							fragment_cache.put(
+									resource.substring(resource.lastIndexOf('/') + 1).replace(".fragment.yaml", ""),
+									new ConcurrentHashMap<>(result));
+					} catch (YamlEngineException | IOException e) {
+						LOG.error("[{}] Error: {}", generatorName, e.getMessage(), e);
+					}
+				});
+
 		// Preload global definitions for base types known at generator construction time
 		for (BaseType type : BaseType.values()) {
 			global_cache.put(type, getDefinitionFor(type));
 		}
+	}
+
+	/**
+	 * @return Fragment type definitions mapped by fragment type
+	 */
+	@Nonnull public Map<String, Map<?, ?>> getFragmentDefinitions() {
+		return Collections.unmodifiableMap(fragment_cache);
 	}
 
 	@Nullable public Map<?, ?> getModElementDefinition(ModElementType<?> elementType) {

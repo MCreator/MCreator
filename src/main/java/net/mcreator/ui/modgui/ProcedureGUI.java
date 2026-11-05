@@ -330,8 +330,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	@Override protected void initGUI() {
-		skipDependencyNullCheck.setOpaque(false);
-
 		JPanel skipDependencyWrapper = new JPanel(new GridLayout(1, 2, 0, 2));
 		skipDependencyWrapper.setOpaque(false);
 		skipDependencyWrapper.add(HelpUtils.wrapWithHelpButton(this.withEntry("procedure/skip_dependency_null_check"),

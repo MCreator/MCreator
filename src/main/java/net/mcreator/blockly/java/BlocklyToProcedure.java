@@ -22,7 +22,6 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyVariables;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.java.blocks.ReturnBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -32,7 +31,6 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
-import org.apache.commons.lang3.ArrayUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -74,11 +72,9 @@ public class BlocklyToProcedure extends BlocklyToJava {
 	}
 
 	@Override protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
-		if (getReturnType() != null) {
-			if (!ArrayUtils.contains(new ReturnBlock().getSupportedBlocks(), lastProceduralBlockType)) {
-				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.invalid_return_block")));
-			}
+		if (getReturnType() != null && !baseBlocksTerminate) {
+			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("blockly.errors.missing_return_block")));
 		}
 	}
 

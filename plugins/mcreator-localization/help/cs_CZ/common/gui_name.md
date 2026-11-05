@@ -1,0 +1,1 @@
+Jméno ve hře je název elementu, který se bude ukazovat v menu, popiskách a dalších místech, kde je možné ukazovat zobrazované jméno.

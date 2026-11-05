@@ -13,3 +13,5 @@ L'armure vanilla utilise les facteurs suivants:
 * Armure d'or: 7
 * Armure de diamant: 33
 * Armure de netherite: 37
+
+Réglez cette valeur à 0 pour rendre l'armure incassable (pas de durabilité).

@@ -1,0 +1,1 @@
+Pokud je tento parametr zapnut, element bude generovat funkci generace světa ve světě.

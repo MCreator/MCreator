@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "item",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "damagesource",
+      "check": "DamageSource"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "group": "damage",
+    "toolbox_id": "itemdata",
+    "toolbox_init": [
+      "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>",
+      "<value name=\"damagesource\"><block type=\"damagesource_from_type\"><field name=\"damagetype\">GENERIC</field></block></value>"
+    ],
+    "inputs": [
+      "item",
+      "damagesource"
+    ]
+  }
+}

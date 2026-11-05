@@ -33,8 +33,26 @@ import java.util.function.Supplier;
 
 public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) implements Closeable {
 
+	public static final String INSTRUCTIONS = """
+			MCreator MCP server. Tools operate on the workspace currently selected for MCP in MCreator.
+			Mods are built from mod elements (blocks, items, entities, procedures, ...). Add or edit them with \
+			mod_element_definition and always fetch get_mod_element_schema for the element type first, the JSON \
+			definition must match the schema. Use query_workspace and datalist_entries as the only source of \
+			valid mod element, texture, variable, and registry names, never guess them. Create missing textures with \
+			create_texture or create_armor_texture before referencing them.
+			Logic belongs in procedure mod elements built from Blockly blocks. Use blockly_triggers, blockly_blocks, \
+			and blockly_templates to discover triggers, blocks, and example assemblies, and compose the procedure from \
+			blocks. Custom code snippet blocks (java_code, java_code_get) are only for a short expression or statement \
+			no block provides. Never put classes, event handlers, registrations, renderers, or whole features into \
+			them; split the work into separate mod elements and procedures instead. If raw Java is truly unavoidable, \
+			lock the code of a single mod element with LOCK_CODE and edit its files with project_file_edit. Never edit \
+			generated files of unlocked mod elements, the generator overwrites them.
+			Use help_tips to understand what a parameter does. After changes, run build, use read_console on failure, \
+			and fix the cause before continuing. Use run_dir_files to read logs and crash reports. \
+			Mod element names are CamelCase and must be unique.""";
+
 	public MCreatorMcp(McpTransport transport, Supplier<MCreator> currentMCreator) {
-		this(new McpServer("MCreator", Launcher.version.full, transport), currentMCreator);
+		this(new McpServer("MCreator", Launcher.version.full, transport, INSTRUCTIONS), currentMCreator);
 	}
 
 	public MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) {
@@ -72,6 +90,7 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 		server.registerTool(new CurrentTabTool(currentMCreator));
 		server.registerTool(new VariableTool(currentMCreator));
 		server.registerTool(new FindReferencesTool(currentMCreator));
+		server.registerTool(new FindBrokenReferencesTool(currentMCreator));
 		server.registerTool(new PackMakerTool(currentMCreator));
 	}
 

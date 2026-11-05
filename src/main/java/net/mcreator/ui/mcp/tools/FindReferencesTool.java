@@ -59,7 +59,7 @@ public class FindReferencesTool extends MCreatorMcpTool<FindReferencesTool.Args>
 	@Override public String getDescription() {
 		return """
 				Returns mod element names that reference a mod element or texture.\
-				Name should be exact and is case sentivie. For textures, also provide textureType.""";
+				Name should be exact and is case sensitive. For textures, also provide textureType.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {

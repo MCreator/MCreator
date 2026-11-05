@@ -197,6 +197,10 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
+	public List<?> getGlobalFragments() {
+		return (generatorConfig.get("fragments") != null) ? (List<?>) generatorConfig.get("fragments") : new ArrayList<>();
+	}
+
 	public Collection<String> getGeneratorPaths(String subpath) {
 		List<String> paths = new ArrayList<>();
 		// load generator first as the current generator has the highest priority

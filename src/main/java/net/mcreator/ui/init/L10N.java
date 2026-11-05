@@ -227,7 +227,9 @@ public class L10N {
 	}
 
 	public static JCheckBox checkbox(String key, Object... parameter) {
-		return new JCheckBox(t(key, parameter));
+		JCheckBox checkbox = new JCheckBox(t(key, parameter));
+		checkbox.setOpaque(false);
+		return checkbox;
 	}
 
 	public static JButton button(String key, Object... parameter) {
@@ -239,7 +241,9 @@ public class L10N {
 	}
 
 	public static JRadioButton radiobutton(String key, Object... parameter) {
-		return new JRadioButton(t(key, parameter));
+		JRadioButton radioButton = new JRadioButton(t(key, parameter));
+		radioButton.setOpaque(false);
+		return radioButton;
 	}
 
 	public static JToggleButton togglebutton(String key, Object... parameter) {

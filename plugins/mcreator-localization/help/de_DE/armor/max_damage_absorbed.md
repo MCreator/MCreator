@@ -13,3 +13,5 @@ Vanilla Rüstung verwendet folgende Faktoren:
 * Goldrüstung: 7
 * Diamantrüstung: 33
 * Netheriterüstung: 37
+
+Setze dies auf 0, um die Rüstung unzerbrechlich zu machen (keine Haltbarkeit).

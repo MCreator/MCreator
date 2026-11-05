@@ -19,11 +19,13 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.TextureHolder;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VButton;
 import net.mcreator.ui.validation.validators.NonEmptyValidator;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.resources.CustomTexture;
@@ -46,6 +48,14 @@ public class TextureSelectionButton extends VButton implements ITextureContainer
 	private boolean uvFlip;
 
 	private final List<ActionListener> textureSelectedListeners = new ArrayList<>();
+
+	public TextureSelectionButton(MCreator mcreator, TextureType textureType) {
+		this(new TypedTextureSelectorDialog(mcreator, textureType), 64);
+	}
+
+	public TextureSelectionButton(MCreator mcreator, TextureType textureType, int size) {
+		this(new TypedTextureSelectorDialog(mcreator, textureType), size);
+	}
 
 	public TextureSelectionButton(TypedTextureSelectorDialog selectorDialog) {
 		this(selectorDialog, 64);

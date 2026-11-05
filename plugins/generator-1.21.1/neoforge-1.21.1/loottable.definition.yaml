@@ -11,4 +11,4 @@ global_templates:
   - template: loottable/global_loot_modifiers.json.ftl
     writer: json
     name: "@RESROOT/data/neoforge/loot_modifiers/global_loot_modifiers.json"
-    condition: "${w.getGElementsOfType('loottable')?filter(e -> e.hasLootModifier())?size != 0}"
+    condition: "${loottables?filter(e -> e.hasLootModifier())?size != 0}"

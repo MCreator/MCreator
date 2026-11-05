@@ -102,6 +102,16 @@ public class JScrollablePopupMenu extends JPopupMenu {
 		}
 	}
 
+	@Override public void removeAll() {
+		// can't remove the scrollbar
+		for (int i = getComponentCount() - 1; i >= 0; i--) {
+			if (!(getComponent(i) instanceof JScrollBar))
+				super.remove(i);
+		}
+
+		getScrollBar().setVisible(false);
+	}
+
 	@Override public void show(Component invoker, int x, int y) {
 		JScrollBar scrollBar = getScrollBar();
 		if (scrollBar.isVisible()) {
@@ -135,6 +145,8 @@ public class JScrollablePopupMenu extends JPopupMenu {
 			int height = heightMargin + extent;
 
 			setPopupSize(new Dimension(width, height));
+		} else {
+			setPreferredSize(null); // undo size pinned by setPopupSize if scroll bar was visible before
 		}
 
 		super.show(invoker, x, y);
