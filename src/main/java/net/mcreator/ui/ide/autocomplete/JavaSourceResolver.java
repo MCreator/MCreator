@@ -90,9 +90,6 @@ public class JavaSourceResolver {
 
 	public String getPackageName(@Nullable String fqdn, @Nullable String code) {
 		try {
-			String srcCode = code != null ? code : loadSourceCodeForFQDN(fqdn);
-			if (srcCode != null)
-				return Objects.toString(Roaster.parse(srcCode).getPackage(), "");
 			ProjectJarManager jarManager = workspace != null ? workspace.getGenerator().getProjectJarManager() : null;
 			ClassFile cf = jarManager != null && fqdn != null ? JavaMemberResolver.getClassFile(jarManager, fqdn) : null;
 			if (cf != null) {
@@ -101,6 +98,9 @@ public class JavaSourceResolver {
 				int packageEnd = qualifiedName.length() - cf.getClassName(false).length() - 1;
 				return qualifiedName.substring(0, Math.max(0, packageEnd));
 			}
+			String srcCode = code != null ? code : loadSourceCodeForFQDN(fqdn);
+			if (srcCode != null)
+				return Objects.toString(Roaster.parse(srcCode).getPackage(), "");
 		} catch (Throwable e) {
 			LOG.debug("Failed to resolve package for {}", fqdn, e);
 		}
