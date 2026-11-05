@@ -572,8 +572,8 @@ public class JavaTypeResolver {
 				if (currentFQDN == null) {
 					CompletionItem memberItem = getMember(currentClassFQDN, realBase, currentClassFQDN, code);
 					if (memberItem != null && (!isCursorStatic || memberItem.isStatic())) {
-						typeName = memberItem.detail();
-						currentGenericArgs = parseGenericArgs(typeName);
+						currentFQDN = currentClassFQDN;
+						chain.addFirst("this");
 					} else if (!realBase.isEmpty() && Character.isUpperCase(realBase.charAt(0))) {
 						typeName = realBase;
 						isStaticContext = true;
