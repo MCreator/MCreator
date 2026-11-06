@@ -1,0 +1,1 @@
+Název, který se zobrazuje v tvořivém menu.

@@ -1,1 +1,1 @@
-Název pokroku. Jestli nemá rodiče (kořenový pokrok), tak to bude název kategorie.
+Název pokroku. Jestli nemá rodiče (kořenový pokrok), pak bude název kategorie.

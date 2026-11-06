@@ -1,0 +1,1 @@
+Tohle je textura vaší entity. Ujistěte se, že je textura kompatibilní s modelem entity.

@@ -1,1 +1,1 @@
-Zde zadáte informace o tom, jak splnit úkol.
+Zde zadáte informace o tom, jak splnit pokrok.
