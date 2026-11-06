@@ -381,6 +381,11 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				attackDamagePanel.setVisible(false);
 				attackSpeedPanel.setVisible(false);
 			}
+			case "Mace" -> {
+				dropTierPanel.setVisible(false);
+				additionalDropCondition.setVisible(false);
+				efficiencyPanel.setVisible(false);
+			}
 			case "Shears" -> {
 				dropTierPanel.setVisible(false);
 				additionalDropCondition.setVisible(false);

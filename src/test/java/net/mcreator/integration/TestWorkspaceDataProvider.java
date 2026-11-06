@@ -141,6 +141,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "13"), "Shield", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "14"), "Mace", random, true, false));
 		} else if (type == ModElementType.BLOCK) {
 			generatableElements.add(getBlockExample(me(workspace, type, "1"), random, true, true, 0, null));
 			generatableElements.add(getBlockExample(me(workspace, type, "2"), random, true, false, 1, null));
