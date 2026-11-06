@@ -80,8 +80,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 	private ExtendedSlider ${component.getName()};
 	</#list>
 
-	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
-		super(container, inventory, text);
+	public ${name}Screen(${name}Menu container, Inventory inventory, Component title) {
+		super(container, inventory, title);
 		this.world = container.world;
 		this.x = container.x;
 		this.y = container.y;
