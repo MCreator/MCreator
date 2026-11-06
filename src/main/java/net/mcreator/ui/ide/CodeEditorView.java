@@ -55,6 +55,7 @@ import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.tree.JavaOutlineTree;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
+import org.fife.ui.autocomplete.DescWindowVisibility;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
 import org.fife.ui.rtextarea.RTextScrollPane;
@@ -350,7 +351,9 @@ public class CodeEditorView extends ViewBase implements ISearchable {
 			jls.setAutoCompleteEnabled(PreferencesManager.PREFERENCES.ide.autocomplete.get());
 			jls.setAutoActivationEnabled(!PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Manual"));
 			jls.setParameterAssistanceEnabled(true);
-			jls.setShowDescWindow(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get());
+			jls.setDescWindowVisibility(PreferencesManager.PREFERENCES.ide.autocompleteDocWindow.get() ?
+					DescWindowVisibility.ALWAYS :
+					DescWindowVisibility.NEVER);
 
 			try {
 				Field field = jls.getClass().getDeclaredField("jarManager");
