@@ -37,15 +37,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -225,9 +220,9 @@ import java.util.function.Supplier;
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement,
 			Supplier<List<GeneratableElement>> elementsOfType) {
-		List<GeneratorTemplate> templates = new ArrayList<>(
-				workspace.getGenerator().getGlobalTemplatesListForModElementType(
-						generatableElement.getModElement().getType(), elementsOfType, new AtomicInteger()));
+		List<GeneratorTemplate> templates = new ArrayList<>(workspace.getGenerator()
+				.getGlobalTemplatesListForModElementType(generatableElement.getModElement().getType(), elementsOfType,
+						new AtomicInteger()));
 
 		templates.addAll(workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement));
 

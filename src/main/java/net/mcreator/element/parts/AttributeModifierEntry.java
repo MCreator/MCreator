@@ -20,7 +20,6 @@
 package net.mcreator.element.parts;
 
 import net.mcreator.element.types.interfaces.LimitedOptions;
-
 import net.mcreator.element.types.interfaces.Numeric;
 
 public class AttributeModifierEntry {

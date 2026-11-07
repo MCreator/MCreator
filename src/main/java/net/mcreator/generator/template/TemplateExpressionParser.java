@@ -177,7 +177,8 @@ public class TemplateExpressionParser {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			AtomicReference<?> retVal = new AtomicReference<>(null);
 			if (dataHolder instanceof CompoundConditionData compoundConditionData) {
-				dataModel.putAll(compoundConditionData); // primary data is exposed as "data", other entries by their key
+				dataModel.putAll(
+						compoundConditionData); // primary data is exposed as "data", other entries by their key
 			} else {
 				dataModel.put("data", dataHolder);
 			}

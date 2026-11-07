@@ -114,8 +114,8 @@ public class WorkspaceUtils {
 		List<ModElement> retval = new ArrayList<>();
 		for (File definitionFile : Stream.ofNullable(workspace.getFolderManager().getModElementsDir().listFiles())
 				.flatMap(Arrays::stream).filter(file -> file.getName().endsWith(".mod.json")).toList()) {
-			String name = definitionFile.getName().substring(0,
-					definitionFile.getName().length() - ".mod.json".length());
+			String name = definitionFile.getName()
+					.substring(0, definitionFile.getName().length() - ".mod.json".length());
 			if (workspace.containsModElement(name))
 				continue;
 

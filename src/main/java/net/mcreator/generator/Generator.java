@@ -395,7 +395,8 @@ public class Generator implements IGenerator, Closeable {
 		// Check fragment types with fragments and generate their templates
 		for (Map.Entry<String, Map<?, ?>> entry : generatorConfiguration.getDefinitionsProvider()
 				.getFragmentDefinitions().entrySet()) {
-			if (!fragments.get(entry.getKey()).isEmpty() && entry.getValue().get("templates") instanceof List<?> templates) {
+			if (!fragments.get(entry.getKey()).isEmpty() && entry.getValue()
+					.get("templates") instanceof List<?> templates) {
 				files.addAll(processTemplateDefinitionsToGeneratorTemplates(templates, templateID,
 						TemplateExpressionParser.CompoundConditionData.of(workspace.getWorkspaceInfo())
 								.with("types", types).with("fragments", fragments)));
@@ -403,9 +404,10 @@ public class Generator implements IGenerator, Closeable {
 		}
 
 		// Finally, add global base templates at the end
-		files.addAll(processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(),
-				templateID, TemplateExpressionParser.CompoundConditionData.of(workspace.getWorkspaceInfo())
-						.with("types", types).with("fragments", fragments)));
+		files.addAll(
+				processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(), templateID,
+						TemplateExpressionParser.CompoundConditionData.of(workspace.getWorkspaceInfo())
+								.with("types", types).with("fragments", fragments)));
 
 		return files;
 	}

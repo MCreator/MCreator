@@ -181,7 +181,8 @@ public class McpServer {
 			} catch (Exception e) {
 				LOG.error("Unexpected error handling message", e);
 				JsonRpcResponse errorResponse = new JsonRpcResponse(null,
-						new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INTERNAL_ERROR, "Internal error"));
+						new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INTERNAL_ERROR,
+								"Internal error"));
 				responseFuture.complete(gson.toJson(errorResponse));
 			}
 		});
@@ -209,7 +210,8 @@ public class McpServer {
 	private CompletableFuture<McpSchema.CallToolResponse> handleCallTool(JsonElement params) {
 		McpSchema.CallToolRequest req = gson.fromJson(params, McpSchema.CallToolRequest.class);
 		if (req == null || req.name() == null) {
-			throw new JsonRpcException(JsonRpcResponse.JsonRpcError.INVALID_PARAMS, "Invalid params: missing tool name");
+			throw new JsonRpcException(JsonRpcResponse.JsonRpcError.INVALID_PARAMS,
+					"Invalid params: missing tool name");
 		}
 		IMcpTool tool = tools.get(req.name());
 		if (tool == null) {

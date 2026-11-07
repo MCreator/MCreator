@@ -45,8 +45,8 @@ import static org.junit.jupiter.api.Assertions.*;
 				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 		assertNotNull(generatorConfiguration);
 
-		try (Workspace workspace = TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration,
-				true, false, null)) {
+		try (Workspace workspace = TestWorkspaceDataProvider.createTestWorkspace(tempDir, generatorConfiguration, true,
+				false, null)) {
 			List<GeneratableElement> blocks = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					ModElementType.BLOCK, false, new Random(0));
 

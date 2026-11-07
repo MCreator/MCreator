@@ -40,8 +40,7 @@ public class RunClientTool extends MCreatorMcpTool<RunClientTool.Args> {
 		@SchemaDescription("""
 				START: generate base code and launch the Minecraft client (runs until the client is closed or stopped).\
 				IS_RUNNING: check whether the client or any other Gradle task is currently running.\
-				STOP: stop the running client or any other running Gradle task.""")
-		public Action actionType;
+				STOP: stop the running client or any other running Gradle task.""") public Action actionType;
 
 		public enum Action {
 			START, IS_RUNNING, STOP

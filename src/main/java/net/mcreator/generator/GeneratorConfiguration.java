@@ -198,7 +198,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	public List<?> getGlobalFragments() {
-		return (generatorConfig.get("fragments") != null) ? (List<?>) generatorConfig.get("fragments") : new ArrayList<>();
+		return (generatorConfig.get("fragments") != null) ?
+				(List<?>) generatorConfig.get("fragments") :
+				new ArrayList<>();
 	}
 
 	public Collection<String> getGeneratorPaths(String subpath) {

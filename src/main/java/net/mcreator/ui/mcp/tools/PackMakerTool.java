@@ -33,12 +33,8 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
@@ -191,14 +187,18 @@ public class PackMakerTool extends MCreatorMcpTool<PackMakerTool.Args> {
 			ThreadUtil.runOnSwingThreadAndWait(() -> created.set(switch (input.packType) {
 				case MATERIAL -> MaterialPackMakerTool.addMaterialPackToWorkspace(packElements, mcreator,
 						mcreator.getWorkspace(), name, materialType, color, powerFactor);
-				case ORE -> OrePackMakerTool.addOrePackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
-						name, materialType, color, powerFactor);
-				case TOOL -> ToolPackMakerTool.addToolPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
-						name, baseItem, color, powerFactor);
-				case ARMOR -> ArmorPackMakerTool.addArmorPackToWorkspace(packElements, mcreator,
-						mcreator.getWorkspace(), name, baseItem, color, powerFactor);
-				case WOOD -> WoodPackMakerTool.addWoodPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
-						name, color, barkColor, powerFactor);
+				case ORE ->
+						OrePackMakerTool.addOrePackToWorkspace(packElements, mcreator, mcreator.getWorkspace(), name,
+								materialType, color, powerFactor);
+				case TOOL ->
+						ToolPackMakerTool.addToolPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(), name,
+								baseItem, color, powerFactor);
+				case ARMOR ->
+						ArmorPackMakerTool.addArmorPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(),
+								name, baseItem, color, powerFactor);
+				case WOOD ->
+						WoodPackMakerTool.addWoodPackToWorkspace(packElements, mcreator, mcreator.getWorkspace(), name,
+								color, barkColor, powerFactor);
 			}));
 
 			if (!created.get()) {

@@ -59,8 +59,7 @@ public class FindBrokenReferencesTool extends MCreatorMcpTool<Void> {
 				.sorted(Comparator.comparing(entry -> entry.getKey().getName()))
 				.map(entry -> Map.of("modElement", entry.getKey().getName(), "type",
 						entry.getKey().getType().getRegistryName(), "brokenReferences",
-						entry.getValue().stream().sorted().toList()))
-				.toList();
+						entry.getValue().stream().sorted().toList())).toList();
 		return completed(ToolResult.collection(result));
 	}
 

@@ -133,8 +133,8 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = ReferencesFinder.searchModelUsages(
-					workspacePanel.getMCreator().getWorkspace(), elements);
+			Set<ModElement> references = ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(),
+					elements);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 

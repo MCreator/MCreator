@@ -84,7 +84,8 @@ public final class BlocklyJavascriptBridge {
 		});
 	}
 
-	@SuppressWarnings("unused") public void openMCItemSelector(String type, String currentValue, Consumer<String> callback) {
+	@SuppressWarnings("unused")
+	public void openMCItemSelector(String type, String currentValue, Consumer<String> callback) {
 		SwingUtilities.invokeLater(() -> {
 			MCItem selected = MCItemSelectorDialog.openSelectorDialog(mcreator,
 					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems,
@@ -182,8 +183,8 @@ public final class BlocklyJavascriptBridge {
 			} else if (type.startsWith("procedure_retval_")) {
 				var variableType = VariableTypeLoader.INSTANCE.fromName(
 						Strings.CS.removeStart(type, "procedure_retval_"));
-				retval = openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType),
-						currentValue, "procedure");
+				retval = openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType), currentValue,
+						"procedure");
 			} else {
 				String[] arrayList = BlocklyElementUtil.getStringArrayForEntrySelector(mcreator.getWorkspace(), type,
 						customEntryProviders);

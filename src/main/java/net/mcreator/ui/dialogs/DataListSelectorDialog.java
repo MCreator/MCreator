@@ -60,8 +60,8 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 	}
 
 	public static DataListEntry openSelectorDialog(MCreator mcreator,
-			Function<Workspace, Collection<DataListEntry>> entryProvider, DataListEntry initialSelection,
-			String title, String message) {
+			Function<Workspace, Collection<DataListEntry>> entryProvider, DataListEntry initialSelection, String title,
+			String message) {
 		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider,
 				initialSelection == null ? null : List.of(initialSelection));
 		dataListSelector.setMessage(message);

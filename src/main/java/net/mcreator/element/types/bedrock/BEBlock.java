@@ -139,8 +139,7 @@ public class BEBlock extends GeneratableElement implements IBlock, IBlockWithBou
 		selectionBox.my = boxes.stream().mapToDouble(box -> Math.min(box.my, box.My)).min().orElseThrow();
 		selectionBox.mz = boxes.stream().mapToDouble(box -> Math.min(box.mz, box.Mz)).min().orElseThrow();
 		selectionBox.Mx = boxes.stream().mapToDouble(box -> Math.max(box.mx, box.Mx)).max().orElseThrow();
-		selectionBox.My = Math.min(boxes.stream().mapToDouble(box -> Math.max(box.my, box.My)).max().orElseThrow(),
-				16);
+		selectionBox.My = Math.min(boxes.stream().mapToDouble(box -> Math.max(box.my, box.My)).max().orElseThrow(), 16);
 		selectionBox.Mz = boxes.stream().mapToDouble(box -> Math.max(box.mz, box.Mz)).max().orElseThrow();
 		return selectionBox;
 	}

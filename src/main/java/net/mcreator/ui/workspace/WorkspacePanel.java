@@ -1160,8 +1160,8 @@ import java.util.regex.Pattern;
 								if (ge != null && mcreator.getModElementManager().requiresElementGradleBuild(ge,
 										() -> elementsByType.computeIfAbsent(ge.getModElement().getType(),
 												type -> mcreator.getWorkspace().getModElementsByType(type).stream()
-														.map(ModElement::getGeneratableElement)
-														.filter(Objects::nonNull).toList())))
+														.map(ModElement::getGeneratableElement).filter(Objects::nonNull)
+														.toList())))
 									buildNeeded.set(true);
 							}
 

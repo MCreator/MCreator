@@ -28,7 +28,7 @@ public class McpSchema {
 	public record Implementation(String name, String version) {}
 
 	public record InitializeResponse(String protocolVersion, ServerCapabilities capabilities, Implementation serverInfo,
-	                                 String instructions) {
+									 String instructions) {
 		public InitializeResponse(String protocolVersion, ServerCapabilities capabilities, Implementation serverInfo) {
 			this(protocolVersion, capabilities, serverInfo, null);
 		}
@@ -45,7 +45,7 @@ public class McpSchema {
 	public record ToolAnnotations(Double priorityHint, Boolean readOnlyHint, Boolean destructiveHint) {}
 
 	public record Tool(String name, String description, Object inputSchema, ToolAnnotations annotations,
-	                   Object outputSchema) {
+					   Object outputSchema) {
 		public Tool(String name, String description, Object inputSchema, ToolAnnotations annotations) {
 			this(name, description, inputSchema, annotations, null);
 		}
