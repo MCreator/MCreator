@@ -150,6 +150,7 @@ public class ModelImportActions {
 		}
 
 		JavaClassSource classJavaSource;
+		String className;
 
 		try {
 			if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel")) {
@@ -159,20 +160,8 @@ public class ModelImportActions {
 			classJavaSource = (JavaClassSource) Roaster.parse(origCode);
 			classJavaSource.toString();
 
-			String className = origCode.split("(?= class\\s+" + classJavaSource.getName() + ")")[1].replaceAll(
-					"class\\s+", "").split("( extends )|(<\\w+? extends)")[0].trim();
-
-			if (!JavaConventions.isValidJavaIdentifier(className)) {
-				if (mcreator == null)
-					throw new RuntimeException("Invalid model class name: " + className);
-				else
-					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.message",
-									className),
-							L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.title"),
-							JOptionPane.ERROR_MESSAGE);
-				return null;
-			}
+			className = origCode.split("(?= class\\s+" + classJavaSource.getName() + ")")[1].replaceAll("class\\s+",
+					"").split("( extends )|(<\\w+? extends)")[0].trim();
 		} catch (Exception err) {
 			LOG.error("Failed to load Java model", err);
 			if (mcreator == null)
@@ -181,6 +170,17 @@ public class ModelImportActions {
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.message"),
 						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.title"),
+						JOptionPane.ERROR_MESSAGE);
+			return null;
+		}
+
+		if (!JavaConventions.isValidJavaIdentifier(className)) {
+			if (mcreator == null)
+				throw new RuntimeException("Invalid model class name: " + className);
+			else
+				JOptionPane.showMessageDialog(mcreator,
+						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.message", className),
+						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.title"),
 						JOptionPane.ERROR_MESSAGE);
 			return null;
 		}
@@ -302,10 +302,8 @@ public class ModelImportActions {
 	public static void importBedrockModel(MCreator mcreator, File file) {
 		String identifier;
 		try {
-			JsonObject obj = new Gson().fromJson(FileIO.readFileToString(file), JsonObject.class);
-			identifier = obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description")
-					.getAsJsonObject().get("identifier").getAsString();
-		} catch (JsonParseException | NullPointerException e) {
+			identifier = getBedrockModelIdentifier(FileIO.readFileToString(file));
+		} catch (JsonParseException | NullPointerException | IllegalStateException e) {
 			LOG.error("Bedrock model {} identifier could not be parsed", file.getName(), e);
 
 			JOptionPane.showMessageDialog(mcreator,
@@ -320,6 +318,29 @@ public class ModelImportActions {
 		mcreator.reloadWorkspaceTabContents();
 		if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
 			((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
+	}
+
+	public static String importBedrockModel(Workspace workspace, String json) {
+		String identifier;
+		try {
+			identifier = getBedrockModelIdentifier(json);
+		} catch (JsonParseException | NullPointerException | IllegalStateException e) {
+			throw new RuntimeException("Bedrock model identifier could not be parsed: " + e.getMessage());
+		}
+
+		String modelName = identifier.replace("geometry.", "");
+		File modelFile = new File(workspace.getFolderManager().getModelsDir(), modelName + ".geo.json");
+		if (modelFile.exists())
+			throw new RuntimeException("Model " + modelName + " already exists");
+
+		FileIO.writeStringToFile(json, modelFile);
+		return modelName;
+	}
+
+	private static String getBedrockModelIdentifier(String json) {
+		JsonObject obj = new Gson().fromJson(json, JsonObject.class);
+		return obj.get("minecraft:geometry").getAsJsonArray().get(0).getAsJsonObject().get("description")
+				.getAsJsonObject().get("identifier").getAsString();
 	}
 
 	public static class OBJ extends BasicAction {

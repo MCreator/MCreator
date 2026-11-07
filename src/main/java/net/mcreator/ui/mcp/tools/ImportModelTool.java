@@ -26,11 +26,13 @@ import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.action.impl.workspace.resources.AnimationImportActions;
 import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.mcp.MCreatorMcpTool;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.workspace.resources.Animation;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
@@ -47,15 +49,15 @@ public class ImportModelTool extends MCreatorMcpTool<ImportModelTool.Args> {
 
 	public static class Args {
 		public Type type;
-		@SchemaDescription("Model source: Java model (e.g from Blockbench) class source code for JAVA, Minecraft JSON model for JSON")
+		@SchemaDescription("Model source: Java class source code (e.g. from Blockbench) for JAVA and JAVA_ANIMATION, Minecraft JSON model for JSON, Bedrock geometry JSON for BEDROCK")
 		public String code;
-		@SchemaDescription("Model name for JSON, ignored for JAVA where the class name is used") @Nullable
-		public String name;
+		@SchemaDescription("Model name for JSON, ignored for other types where the class name or geometry identifier is used")
+		@Nullable public String name;
 		@SchemaDescription("For JSON, maps each texture key referenced in the model as \"#key\" (without #) to an existing block texture name")
 		@Nullable public Map<String, String> textures;
 
 		public enum Type {
-			JAVA, JSON
+			JAVA, JAVA_ANIMATION, JSON, BEDROCK
 		}
 	}
 
@@ -69,12 +71,14 @@ public class ImportModelTool extends MCreatorMcpTool<ImportModelTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Imports a custom model into the workspace models and returns the model name to use as customModelName \
-				or mobModelName of mod elements supporting this model type (see get_mod_element_schema).\
-				JAVA imports an entity model from its Java source code in the Java model format supported by the \
-				current generator. The class name is prefixed with Model if it does not start with it already.\
-				JSON imports a Minecraft JSON block or item model with name and textures mapping every texture \
-				reference in the model to an existing block texture.""";
+				Imports a custom model or model animation into the workspace and returns the name to reference it with \
+				in mod elements supporting this model type (see get_mod_element_schema).\
+				JAVA imports an entity model from Java source code in the Java model format of the current generator, \
+				the class name is prefixed with Model if missing.\
+				JAVA_ANIMATION imports Java model animation definitions, subanimations are referenced as <name>.<subanimation>.\
+				JSON imports a Minecraft JSON block or item model, requires name and textures mapping every texture \
+				reference in the model to an existing block texture.\
+				BEDROCK imports a Bedrock geometry model named after its geometry identifier.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
@@ -89,12 +93,16 @@ public class ImportModelTool extends MCreatorMcpTool<ImportModelTool.Args> {
 			return completedError("code must be provided");
 		}
 
-		String modelName;
+		Map<String, Object> response = new HashMap<>();
 		try {
-			modelName = switch (input.type) {
+			String name = switch (input.type) {
 				case JAVA -> importJavaModel(mcreator, input.code);
+				case JAVA_ANIMATION -> importJavaModelAnimation(mcreator, input.code, response);
 				case JSON -> importJSONModel(mcreator, input);
+				case BEDROCK -> importBedrockModel(mcreator, input.code);
 			};
+			response.put("success", true);
+			response.put("name", name);
 		} catch (IllegalArgumentException e) {
 			return completedError(e.getMessage());
 		}
@@ -105,9 +113,6 @@ public class ImportModelTool extends MCreatorMcpTool<ImportModelTool.Args> {
 				modElementGUI.reloadDataLists();
 		});
 
-		Map<String, Object> response = new HashMap<>();
-		response.put("success", true);
-		response.put("name", modelName);
 		return completedObject(response);
 	}
 
@@ -126,6 +131,30 @@ public class ImportModelTool extends MCreatorMcpTool<ImportModelTool.Args> {
 			throw new IllegalArgumentException("Failed to import model");
 		}
 		return modelName;
+	}
+
+	private static String importJavaModelAnimation(MCreator mcreator, String code, Map<String, Object> response) {
+		if (!mcreator.getGeneratorStats().hasBaseCoverage("model_animations_java")) {
+			throw new IllegalArgumentException("Java model animations are not supported by the current generator");
+		}
+
+		String animationName;
+		try {
+			animationName = AnimationImportActions.importJavaModelAnimation(null, mcreator.getWorkspace(), code);
+		} catch (RuntimeException e) {
+			throw new IllegalArgumentException("Failed to import animation: " + e.getMessage());
+		}
+		if (animationName == null) {
+			throw new IllegalArgumentException("Failed to import animation");
+		}
+
+		for (Animation animation : Animation.getAnimations(mcreator.getWorkspace())) {
+			if (animation.getName().equals(animationName)) {
+				response.put("subanimations", animation.getSubanimations());
+				break;
+			}
+		}
+		return animationName;
 	}
 
 	private static String importJSONModel(MCreator mcreator, Args input) {
@@ -170,6 +199,18 @@ public class ImportModelTool extends MCreatorMcpTool<ImportModelTool.Args> {
 				Map.of("default", new TexturedModel.TextureMapping("default", textureMap)));
 
 		return modelName + ":default";
+	}
+
+	private static String importBedrockModel(MCreator mcreator, String code) {
+		if (!mcreator.getGeneratorStats().hasBaseCoverage("model_bedrock")) {
+			throw new IllegalArgumentException("Bedrock models are not supported by the current generator");
+		}
+
+		try {
+			return ModelImportActions.importBedrockModel(mcreator.getWorkspace(), code);
+		} catch (RuntimeException e) {
+			throw new IllegalArgumentException("Failed to import model: " + e.getMessage());
+		}
 	}
 
 }

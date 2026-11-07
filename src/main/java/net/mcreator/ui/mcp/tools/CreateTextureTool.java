@@ -51,7 +51,7 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 		@Nullable public String name;
 		@Nullable public String type;
 		@SchemaDescription("Image maker template layers for CREATE") @Nullable public List<Layer> layers;
-		@SchemaDescription("Base64 encoded PNG image for IMPORT") @Nullable public String data;
+		@SchemaDescription("Base64 encoded PNG image for IMPORT (only for small PNGs)") @Nullable public String data;
 
 		public enum Action {
 			CREATE, IMPORT, LIST_TEMPLATES
