@@ -253,6 +253,10 @@ import java.util.stream.Collectors;
 		return "double".equals(plantType);
 	}
 
+	public boolean blocksMotion() {
+		return isSolid && (!customBoundingBox || !isBoundingBoxEmpty());
+	}
+
 	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}

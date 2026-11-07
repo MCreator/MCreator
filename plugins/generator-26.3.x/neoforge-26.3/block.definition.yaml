@@ -755,6 +755,9 @@ tags:
   - tag: BLOCKS:minecraft:climbable
     condition: isLadder
     entryprovider: getProvidedBlocks()
+  - tag: BLOCKS:minecraft:blocks_motion
+    condition: blocksMotion()
+    entryprovider: getProvidedBlocks()
 
   - tag: GAME_EVENTS:minecraft:@registryname_can_listen
     condition:
