@@ -21,6 +21,7 @@ package net.mcreator.ui.mcp.tools;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.io.ResourcePointer;
+import net.mcreator.io.mcp.protocol.SchemaDescription;
 import net.mcreator.io.mcp.tool.ToolResult;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -35,6 +36,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -48,10 +50,11 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 		public Action actionType;
 		@Nullable public String name;
 		@Nullable public String type;
-		@Nullable public List<Layer> layers;
+		@SchemaDescription("Image maker template layers for CREATE") @Nullable public List<Layer> layers;
+		@SchemaDescription("Base64 encoded PNG image for IMPORT") @Nullable public String data;
 
 		public enum Action {
-			CREATE, LIST_TEMPLATES
+			CREATE, IMPORT, LIST_TEMPLATES
 		}
 	}
 
@@ -72,8 +75,10 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 
 	@Override public String getDescription() {
 		return """
-				Creates a workspace texture by compositing image maker template layers, or lists available template names.\
-				Use actionType CREATE with name, type (block/item/entity/effect/particle/screen/other), and at least one layer.""";
+				Creates a workspace texture by compositing image maker template layers (CREATE), imports a texture from \
+				base64 encoded PNG data (IMPORT), or lists available template names (LIST_TEMPLATES). \
+				CREATE and IMPORT require name and type (block/item/entity/effect/particle/screen/other). \
+				CREATE needs at least one layer, IMPORT needs data.""";
 	}
 
 	@Override protected Boolean getReadOnlyHint() {
@@ -87,7 +92,14 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 
 		return switch (input.actionType) {
 			case LIST_TEMPLATES -> CompletableFuture.completedFuture(listTemplates());
-			case CREATE -> CompletableFuture.completedFuture(createTexture(mcreator, input));
+			case CREATE -> CompletableFuture.completedFuture(exportTexture(mcreator, input, () -> {
+				if (input.layers == null || input.layers.isEmpty()) {
+					throw new IllegalArgumentException("At least one layer must be provided");
+				}
+				return composeLayers(input.layers);
+			}));
+			case IMPORT -> CompletableFuture.completedFuture(
+					exportTexture(mcreator, input, () -> decodeImage(input.data)));
 		};
 	}
 
@@ -103,12 +115,9 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 		return ToolResult.collection(templates);
 	}
 
-	private static ToolResult createTexture(MCreator mcreator, Args input) {
+	private static ToolResult exportTexture(MCreator mcreator, Args input, ImageSource imageSource) {
 		if (input.name == null || input.name.isBlank()) {
 			return ToolResult.error("Texture name must be provided");
-		}
-		if (input.layers == null || input.layers.isEmpty()) {
-			return ToolResult.error("At least one layer must be provided");
 		}
 
 		TextureType textureType = parseTextureType(input.type);
@@ -132,7 +141,7 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 		}
 
 		try {
-			BufferedImage image = composeLayers(input.layers);
+			BufferedImage image = imageSource.get();
 			FileIO.writeImageToPNGFile(image, exportFile);
 			new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
 			ThreadUtil.runOnSwingThreadAndWait(mcreator::reloadWorkspaceTabContents);
@@ -146,6 +155,27 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 		} catch (Exception e) {
 			return ToolResult.error("Failed to create texture: " + e.getMessage(), e);
 		}
+	}
+
+	private static BufferedImage decodeImage(@Nullable String data) throws IOException {
+		if (data == null || data.isBlank()) {
+			throw new IllegalArgumentException("Base64 PNG data must be provided");
+		}
+		String base64 = data.trim();
+		if (base64.startsWith("data:")) { // strip data URL prefix if present
+			base64 = base64.substring(base64.indexOf(',') + 1);
+		}
+		byte[] bytes;
+		try {
+			bytes = Base64.getMimeDecoder().decode(base64);
+		} catch (IllegalArgumentException e) {
+			throw new IllegalArgumentException("Data is not valid base64");
+		}
+		BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+		if (image == null) {
+			throw new IllegalArgumentException("Data is not a valid PNG image");
+		}
+		return image;
 	}
 
 	private static BufferedImage composeLayers(List<Layer> layers) throws IOException {
@@ -188,6 +218,10 @@ public class CreateTextureTool extends MCreatorMcpTool<CreateTextureTool.Args> {
 			}
 		}
 		return null;
+	}
+
+	@FunctionalInterface private interface ImageSource {
+		BufferedImage get() throws IOException;
 	}
 
 	@Nullable private static TextureType parseTextureType(String type) {

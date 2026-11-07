@@ -99,7 +99,11 @@ public class ModelImportActions {
 		}
 	}
 
-	public static void importJavaModel(@Nullable MCreator mcreator, Workspace workspace, String origCode) {
+	/**
+	 * @return name of the imported model or null if the import was not performed
+	 */
+	@Nullable public static String importJavaModel(@Nullable MCreator mcreator, Workspace workspace,
+			String origCode) {
 		if (workspace.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
 			origCode = origCode.replace("public class", "public static class")
 					.replace("RendererModel ", "ModelRenderer ").replace("RendererModel(", "ModelRenderer(")
@@ -123,25 +127,26 @@ public class ModelImportActions {
 
 		if (!compatibleModel) {
 			if (mcreator == null)
-				throw new RuntimeException("Incompatible model");
+				throw new RuntimeException("Incompatible model, supported Java model formats: "
+						+ workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys());
 			else
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.message"),
 						L10N.t("dialog.workspace.resources.import_java_model.incompatible_model.title"),
 						JOptionPane.ERROR_MESSAGE);
-			return;
+			return null;
 		}
 
 		if (origCode.contains("software.bernie.geckolib.animation.model.AnimatedEntityModel")
 				&& !workspace.getWorkspaceSettings().getMCreatorDependencies().contains("geckolib")) {
 			if (mcreator == null)
-				throw new RuntimeException("Geckolib model");
+				throw new RuntimeException("Geckolib model requires geckolib workspace dependency");
 			else
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.message"),
 						L10N.t("dialog.workspace.resources.import_java_model.geckolib_needed.title"),
 						JOptionPane.ERROR_MESSAGE);
-			return;
+			return null;
 		}
 
 		JavaClassSource classJavaSource;
@@ -158,22 +163,26 @@ public class ModelImportActions {
 					"class\\s+", "").split("( extends )|(<\\w+? extends)")[0].trim();
 
 			if (!JavaConventions.isValidJavaIdentifier(className)) {
-				JOptionPane.showMessageDialog(null,
-						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.message", className),
-						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.title"),
-						JOptionPane.ERROR_MESSAGE);
-				return;
+				if (mcreator == null)
+					throw new RuntimeException("Invalid model class name: " + className);
+				else
+					JOptionPane.showMessageDialog(mcreator,
+							L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.message",
+									className),
+							L10N.t("dialog.workspace.resources.import_java_model.invalid_model_name.title"),
+							JOptionPane.ERROR_MESSAGE);
+				return null;
 			}
 		} catch (Exception err) {
 			LOG.error("Failed to load Java model", err);
 			if (mcreator == null)
-				throw new RuntimeException("Failed to load model");
+				throw new RuntimeException("Failed to parse model code: " + err.getMessage());
 			else
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.message"),
 						L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.title"),
 						JOptionPane.ERROR_MESSAGE);
-			return;
+			return null;
 		}
 
 		List<Import> imports = classJavaSource.getImports();
@@ -195,14 +204,14 @@ public class ModelImportActions {
 
 		if (new File(workspace.getFolderManager().getModelsDir(), classJavaSource.getName() + ".java").exists()) {
 			if (mcreator == null)
-				throw new RuntimeException("Model already exists");
+				throw new RuntimeException("Model " + classJavaSource.getName() + " already exists");
 			else
 				JOptionPane.showMessageDialog(mcreator,
 						L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.message",
 								classJavaSource.getName()),
 						L10N.t("dialog.workspace.resources.import_java_model.model_already_exists.title"),
 						JOptionPane.WARNING_MESSAGE);
-			return;
+			return null;
 		}
 
 		if (workspace.getGeneratorConfiguration().getJavaModelsKey().equals("legacy")) {
@@ -220,6 +229,8 @@ public class ModelImportActions {
 			if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
 				((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 		}
+
+		return classJavaSource.getName();
 	}
 
 	public static class JSON extends BasicAction {
@@ -253,6 +264,15 @@ public class ModelImportActions {
 			if (mcreator.getTabs().getCurrentTab().getContent() instanceof ModElementGUI)
 				((ModElementGUI<?>) mcreator.getTabs().getCurrentTab().getContent()).reloadDataLists();
 		}
+	}
+
+	public static void importJSONModel(Workspace workspace, String modelName, String json,
+			Map<String, TexturedModel.TextureMapping> textureMappings) {
+		File modelFile = new File(workspace.getFolderManager().getModelsDir(), modelName + ".json");
+		FileIO.writeStringToFile(TexturedModel.getJSONForTextureMapping(textureMappings),
+				new File(modelFile.getAbsolutePath() + ".textures"));
+		FileIO.writeStringToFile(json, modelFile);
+		workspace.getModelManager().invalidateCache(modelFile);
 	}
 
 	public static class BEDROCK extends BasicAction {

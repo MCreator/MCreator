@@ -78,6 +78,7 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 		server.registerTool(new ModElementSchemaTool(currentMCreator));
 		server.registerTool(new CreateTextureTool(currentMCreator));
 		server.registerTool(new CreateArmorTextureTool(currentMCreator));
+		server.registerTool(new ImportModelTool(currentMCreator));
 		server.registerTool(new DataListTool(currentMCreator));
 		server.registerTool(new TagTool(currentMCreator));
 		server.registerTool(new ReadClassSourceTool(currentMCreator));
@@ -88,6 +89,7 @@ public record MCreatorMcp(McpServer server, Supplier<MCreator> currentMCreator) 
 		server.registerTool(new BlocklyTriggersTool(currentMCreator));
 		server.registerTool(new BlocklyTemplatesTool(currentMCreator));
 		server.registerTool(new CurrentTabTool(currentMCreator));
+		server.registerTool(new OpenTabTool(currentMCreator));
 		server.registerTool(new VariableTool(currentMCreator));
 		server.registerTool(new FindReferencesTool(currentMCreator));
 		server.registerTool(new FindBrokenReferencesTool(currentMCreator));
