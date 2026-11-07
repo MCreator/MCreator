@@ -40,9 +40,10 @@ public class StructureListField extends JItemListField<StructureEntry> {
 	}
 
 	@Override protected List<StructureEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllStructures,
-						L10N.t("dialog.list_field.structure_list_title"), L10N.t("dialog.list_field.structure_list_message"))
-				.stream().map(e -> new StructureEntry(mcreator.getWorkspace(), e)).toList();
+		return new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllStructures,
+				L10N.t("dialog.list_field.structure_list_title"),
+				L10N.t("dialog.list_field.structure_list_message")).openMulti().stream()
+				.map(e -> new StructureEntry(mcreator.getWorkspace(), e)).toList();
 	}
 
 	@Override protected List<StructureEntry> getTagsToAdd() {

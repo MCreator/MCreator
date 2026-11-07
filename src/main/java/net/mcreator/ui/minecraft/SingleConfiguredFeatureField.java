@@ -33,10 +33,8 @@ public class SingleConfiguredFeatureField extends JSingleEntrySelector<Configure
 	}
 
 	@Override protected ConfiguredFeatureEntry openEntrySelector() {
-		var entry = DataListSelectorDialog.openSelectorDialog(mcreator, ElementUtil::loadAllConfiguredFeatures,
-				this.getEntry() == null ? null : this.getEntry().getUnmappedValue(),
-				L10N.t("dialog.list_field.configured_feature_title"),
-				L10N.t("dialog.list_field.configured_feature_message"));
+		var entry = new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllConfiguredFeatures,
+				L10N.t("dialog.selector.configured_features.message")).initialSelection(this.getEntry()).open();
 		return entry == null ? null : new ConfiguredFeatureEntry(mcreator.getWorkspace(), entry);
 	}
 }

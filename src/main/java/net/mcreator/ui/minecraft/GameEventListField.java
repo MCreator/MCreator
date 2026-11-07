@@ -46,9 +46,10 @@ public class GameEventListField extends JItemListField<GameEventEntry> {
 	}
 
 	@Override protected List<GameEventEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, _ -> DataListLoader.loadDataList("gameevents"),
-						L10N.t("dialog.list_field.game_event_list_title"), L10N.t("dialog.list_field.game_event_list_message"))
-				.stream().map(e -> new GameEventEntry(mcreator.getWorkspace(), e)).toList();
+		return new DataListSelectorDialog.Builder(mcreator, _ -> DataListLoader.loadDataList("gameevents"),
+				L10N.t("dialog.list_field.game_event_list_title"),
+				L10N.t("dialog.list_field.game_event_list_message")).openMulti().stream()
+				.map(e -> new GameEventEntry(mcreator.getWorkspace(), e)).toList();
 	}
 
 	@Override protected List<GameEventEntry> getTagsToAdd() {

@@ -43,9 +43,9 @@ public class BEBiomeListField extends JItemListField<BEBiomeEntry> {
 	}
 
 	@Override protected List<BEBiomeEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, _ -> DataListLoader.loadDataList("be_biomes"),
-						L10N.t("dialog.list_field.biome_list_title"), L10N.t("dialog.list_field.biome_list_message")).stream()
-				.map(e -> new BEBiomeEntry(mcreator.getWorkspace(), e)).toList();
+		return new DataListSelectorDialog.Builder(mcreator, _ -> DataListLoader.loadDataList("be_biomes"),
+				L10N.t("dialog.list_field.biome_list_title"), L10N.t("dialog.list_field.biome_list_message"))
+				.openMulti().stream().map(e -> new BEBiomeEntry(mcreator.getWorkspace(), e)).toList();
 	}
 
 	@Nullable @Override protected BEBiomeEntry fromExternalToElement(String external) {

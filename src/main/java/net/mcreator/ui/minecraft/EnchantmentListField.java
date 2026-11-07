@@ -45,8 +45,9 @@ public class EnchantmentListField extends JItemListField<EnchantmentEntry> {
 	}
 
 	@Override protected List<EnchantmentEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllEnchantments,
-						L10N.t("dialog.list_field.enchantment_title"), L10N.t("dialog.list_field.enchantment_message")).stream()
+		return new DataListSelectorDialog.Builder(mcreator, ElementUtil::loadAllEnchantments,
+				L10N.t("dialog.list_field.enchantment_title"),
+				L10N.t("dialog.list_field.enchantment_message")).openMulti().stream()
 				.map(e -> new EnchantmentEntry(mcreator.getWorkspace(), e)).toList();
 	}
 

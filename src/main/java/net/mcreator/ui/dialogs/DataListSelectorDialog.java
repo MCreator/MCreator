@@ -19,10 +19,12 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.BlockItemIcons;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
@@ -47,43 +49,62 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		return e -> e.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
-	public static DataListEntry openSelectorDialog(MCreator mcreator,
-			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
-		return openSelectorDialog(mcreator, entryProvider, (DataListEntry) null, title, message);
-	}
+	public static class Builder {
+		private final MCreator mcreator;
+		private final Function<Workspace, Collection<DataListEntry>> entryProvider;
+		private final String message;
+		private final String title;
 
-	public static DataListEntry openSelectorDialog(MCreator mcreator,
-			Function<Workspace, Collection<DataListEntry>> entryProvider, String initialSelection, String title,
-			String message) {
-		return openSelectorDialog(mcreator, entryProvider,
-				initialSelection == null ? null : new DataListEntry.Dummy(initialSelection), title, message);
-	}
+		private List<DataListEntry> initialSelection = null;
 
-	public static DataListEntry openSelectorDialog(MCreator mcreator,
-			Function<Workspace, Collection<DataListEntry>> entryProvider, DataListEntry initialSelection,
-			String title, String message) {
-		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider,
-				initialSelection == null ? null : List.of(initialSelection));
-		dataListSelector.setMessage(message);
-		dataListSelector.setTitle(title);
-		dataListSelector.setVisible(true);
-		return dataListSelector.list.getSelectedValue();
-	}
+		public Builder(MCreator mcreator, Function<Workspace, Collection<DataListEntry>> entryProvider,
+				String message) {
+			this(mcreator, entryProvider, L10N.t("dialog.selector.title"), message);
+		}
 
-	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
-			Function<Workspace, Collection<DataListEntry>> entryProvider, String title, String message) {
-		return openMultiSelectorDialog(mcreator, entryProvider, null, title, message);
-	}
+		public Builder(MCreator mcreator, Function<Workspace, Collection<DataListEntry>> entryProvider,
+				String title, String message) {
+			this.mcreator = mcreator;
+			this.entryProvider = entryProvider;
+			this.title = title;
+			this.message = message;
+		}
 
-	public static List<DataListEntry> openMultiSelectorDialog(MCreator mcreator,
-			Function<Workspace, Collection<DataListEntry>> entryProvider, List<DataListEntry> initialSelection,
-			String title, String message) {
-		var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider, initialSelection);
-		dataListSelector.setMessage(message);
-		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		dataListSelector.setTitle(title);
-		dataListSelector.setVisible(true);
-		return dataListSelector.list.getSelectedValuesList();
+		public Builder initialSelection(MappableElement entry) {
+			return this.initialSelection(entry == null ? null : entry.getUnmappedValue());
+		}
+
+		public Builder initialSelection(String entry) {
+			return this.initialSelection(entry == null ? null : new DataListEntry.Dummy(entry));
+		}
+
+		public Builder initialSelection(DataListEntry entry) {
+			return this.initialSelection(entry == null ? null : List.of(entry));
+		}
+
+		public Builder initialSelection(List<DataListEntry> initialSelection) {
+			this.initialSelection = initialSelection;
+			return this;
+		}
+
+		public DataListEntry open() {
+			var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider, initialSelection);
+			dataListSelector.setTitle(title);
+			dataListSelector.setMessage(message);
+			dataListSelector.setVisible(true);
+
+			return dataListSelector.list.getSelectedValue();
+		}
+
+		public List<DataListEntry> openMulti() {
+			var dataListSelector = new DataListSelectorDialog(mcreator, entryProvider, initialSelection);
+			dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			dataListSelector.setTitle(title);
+			dataListSelector.setMessage(message);
+			dataListSelector.setVisible(true);
+
+			return dataListSelector.list.getSelectedValuesList();
+		}
 	}
 
 	private static class DataListCellRenderer extends DefaultListCellRenderer {

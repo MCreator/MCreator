@@ -49,11 +49,12 @@ public class ModElementListField extends JItemListField<NonMappableElement> {
 	}
 
 	@Override protected List<NonMappableElement> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
-						w -> w.getModElementsByType(type).stream().filter(additionalFilter).map(ModElement::getName)
-								.toArray(String[]::new), L10N.t("dialog.list_field.mod_element_title"),
-						L10N.t("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)))
-				.stream().map(NonMappableElement::new).toList();
+		return new StringSelectorDialog.Builder(mcreator,
+				w -> w.getModElementsByType(type).stream().filter(additionalFilter).map(ModElement::getName)
+						.toArray(String[]::new), L10N.t("dialog.list_field.mod_element_title"),
+				L10N.t("dialog.list_field.mod_element_message",
+						type.getReadableName().toLowerCase(Locale.ENGLISH))).openMulti().stream()
+				.map(NonMappableElement::new).toList();
 	}
 
 }

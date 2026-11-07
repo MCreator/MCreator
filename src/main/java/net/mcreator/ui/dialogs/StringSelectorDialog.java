@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs;
 
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
@@ -43,34 +44,55 @@ public class StringSelectorDialog extends ListSelectorDialog<String> {
 		return s -> s.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH));
 	}
 
-	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
-			String title, String message) {
-		return openSelectorDialog(mcreator, entryProvider, null, title, message);
-	}
+	public static class Builder {
+		private final MCreator mcreator;
+		private final Function<Workspace, String[]> entryProvider;
+		private final String message;
+		private final String title;
 
-	public static String openSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
-			String initialSelection, String title, String message) {
-		var stringSelector = new StringSelectorDialog(mcreator, entryProvider,
-				initialSelection == null ? null : List.of(initialSelection));
-		stringSelector.setMessage(message);
-		stringSelector.setTitle(title);
-		stringSelector.setVisible(true);
-		return stringSelector.list.getSelectedValue();
-	}
+		private List<String> initialSelection = null;
 
-	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
-			String title, String message) {
-		return openMultiSelectorDialog(mcreator, entryProvider, null, title, message);
-	}
+		public Builder(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+				String message) {
+			this(mcreator, entryProvider, L10N.t("dialog.selector.title"), message);
+		}
 
-	public static List<String> openMultiSelectorDialog(MCreator mcreator, Function<Workspace, String[]> entryProvider,
-			List<String> initialSelection, String title, String message) {
-		var dataListSelector = new StringSelectorDialog(mcreator, entryProvider, initialSelection);
-		dataListSelector.setMessage(message);
-		dataListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		dataListSelector.setTitle(title);
-		dataListSelector.setVisible(true);
-		return dataListSelector.list.getSelectedValuesList();
+		public Builder(MCreator mcreator, Function<Workspace, String[]> entryProvider,
+				String title, String message) {
+			this.mcreator = mcreator;
+			this.entryProvider = entryProvider;
+			this.title = title;
+			this.message = message;
+		}
+
+		public Builder initialSelection(String entry) {
+			return this.initialSelection(entry == null ? null : List.of(entry));
+		}
+
+		public Builder initialSelection(List<String> initialSelection) {
+			this.initialSelection = initialSelection;
+			return this;
+		}
+
+		public String open() {
+			var stringListSelector = new StringSelectorDialog(mcreator, entryProvider, initialSelection);
+			stringListSelector.setTitle(title);
+			stringListSelector.setMessage(message);
+			stringListSelector.setVisible(true);
+
+			return stringListSelector.list.getSelectedValue();
+		}
+
+		public List<String> openMulti() {
+			var stringListSelector = new StringSelectorDialog(mcreator, entryProvider, initialSelection);
+			stringListSelector.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			stringListSelector.setTitle(title);
+			stringListSelector.setMessage(message);
+			stringListSelector.setVisible(true);
+
+			return stringListSelector.list.getSelectedValuesList();
+		}
+
 	}
 
 	private class StringListCellRenderer extends DefaultListCellRenderer {

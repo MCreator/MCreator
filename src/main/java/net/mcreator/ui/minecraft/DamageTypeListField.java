@@ -40,10 +40,9 @@ public class DamageTypeListField extends JItemListField<DamageTypeEntry> {
 	}
 
 	@Override protected List<DamageTypeEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator,
-						w -> ElementUtil.getAllEntriesFor(w, "damagesources"),
-						L10N.t("dialog.list_field.damage_type_list_title"),
-						L10N.t("dialog.list_field.damage_type_list_message")).stream()
+		return new DataListSelectorDialog.Builder(mcreator, w -> ElementUtil.getAllEntriesFor(w, "damagesources"),
+				L10N.t("dialog.list_field.damage_type_list_title"),
+				L10N.t("dialog.list_field.damage_type_list_message")).openMulti().stream()
 				.map(e -> new DamageTypeEntry(mcreator.getWorkspace(), e)).toList();
 	}
 

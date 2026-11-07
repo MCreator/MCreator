@@ -133,11 +133,11 @@ public class AddBlockPropertyDialog {
 
 	public static PropertyDataWithValue<?> showImportDialog(MCreator mcreator, List<PropertyData<?>> currentEntries,
 			Supplier<Collection<String>> nonUserProvidedProperties) {
-		DataListEntry property = DataListSelectorDialog.openSelectorDialog(mcreator,
+		DataListEntry property = new DataListSelectorDialog.Builder(mcreator,
 				_ -> DataListLoader.loadDataList("blockstateproperties").stream()
 						.filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).toList(),
 				L10N.t("elementgui.block.custom_properties.add_existing"),
-				L10N.t("elementgui.block.custom_properties.add_existing.message"));
+				L10N.t("elementgui.block.custom_properties.add_existing.message")).open();
 		if (property == null || !(property.getOther() instanceof Map<?, ?> other) || other.get("registry_name") == null)
 			return null;
 
