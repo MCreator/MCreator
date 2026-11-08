@@ -143,9 +143,9 @@ dependencies {
     implementation 'io.beautifier:js-beautify:1.15.4.1'
     implementation 'io.github.furrrlo:unique4j:2.1.0'
     implementation 'io.github.furrrlo:unique4j-unix-socket-channel:2.1.0'
-    implementation 'org.eclipse.jgit:org.eclipse.jgit:7.8.0.202609011348-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:7.8.1.202611041320-r'
     implementation "net.java.dev.jna:jna:5.19.1" // needed by discord-rpc.jar
-    implementation 'tools.jackson.core:jackson-core:3.2.4'
+    implementation 'tools.jackson.core:jackson-core:3.3.0'
     implementation 'com.github.victools:jsonschema-generator:5.0.0'
 
     implementation "com.github.weisj:jsvg:2.2.0"
