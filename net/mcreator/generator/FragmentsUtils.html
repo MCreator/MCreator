@@ -62,7 +62,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li><a href="#method-detail" tabindex="0">Method Details</a>
 <ol class="toc-list">
-<li><a href="#collectFragments(net.mcreator.generator.Generator,java.util.Map)" tabindex="0">collectFragments(Generator, Map)</a></li>
+<li><a href="#collectFragments(net.mcreator.generator.Generator,java.util.Map,java.util.Map)" tabindex="0">collectFragments(Generator, Map, Map)</a></li>
 </ol>
 </li>
 </ol>
@@ -109,10 +109,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#collectFragments(net.mcreator.generator.Generator,java.util.Map)" class="member-name-link">collectFragments</a><wbr>(<a href="Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;modElementTypeListMap)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#collectFragments(net.mcreator.generator.Generator,java.util.Map,java.util.Map)" class="member-name-link">collectFragments</a><wbr>(<a href="Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;modElementTypeListMap,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../element/BaseType.html" title="class in net.mcreator.element">BaseType</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;baseTypeListMap)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Collects fragments defined in "fragments" lists of used mod element type definitions and generator configuration.</div>
+<div class="block">Collects fragments defined in "fragments" lists of used mod element type definitions, used base type definitions
+and generator configuration.</div>
 </div>
 </div>
 </div>
@@ -148,19 +150,21 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="collectFragments(net.mcreator.generator.Generator,java.util.Map)">
+<section class="detail" id="collectFragments(net.mcreator.generator.Generator,java.util.Map,java.util.Map)">
 <h3>collectFragments</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;</span>&nbsp;<span class="element-name">collectFragments</span><wbr><span class="parameters">(<a href="Generator.html" title="class in net.mcreator.generator">Generator</a>&nbsp;generator,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;modElementTypeListMap)</span></div>
-<div class="block">Collects fragments defined in "fragments" lists of used mod element type definitions and generator configuration.
-Each fragment defines "type" and either "template" to render or literal "content" (string or list of strings),
-and can optionally define a condition. Fragments of mod element types get elements of their type in the data model
-of both the template and the condition.</div>
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../element/ModElementType.html" title="class in net.mcreator.element">ModElementType</a>&lt;?&gt;, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;modElementTypeListMap,
+ <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="../element/BaseType.html" title="class in net.mcreator.element">BaseType</a>, <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>&gt;&gt;&nbsp;baseTypeListMap)</span></div>
+<div class="block">Collects fragments defined in "fragments" lists of used mod element type definitions, used base type definitions
+and generator configuration. Each fragment defines "type" and either "template" to render or literal "content"
+(string or list of strings), and can optionally define a condition. Fragments of mod element types and base types
+get elements of their type in the data model of both the template and the condition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>generator</code> - Generator to collect fragments for</dd>
 <dd><code>modElementTypeListMap</code> - Generatable elements grouped by mod element type</dd>
+<dd><code>baseTypeListMap</code> - Generatable elements grouped by base type they provide</dd>
 <dt>Returns:</dt>
 <dd>Fragments grouped by fragment type, types with a fragment definition file are always present</dd>
 </dl>
