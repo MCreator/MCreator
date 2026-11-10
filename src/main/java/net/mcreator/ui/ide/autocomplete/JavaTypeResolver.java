@@ -304,6 +304,13 @@ public class JavaTypeResolver {
 			Map<String, List<String>> tree = workspace.getGenerator().getGradleCache().getImportTree();
 			List<String> fqdns = tree.get(typeName);
 			if (fqdns != null && !fqdns.isEmpty()) {
+				String javaLangFQDN = "java.lang." + typeName;
+				if (fqdns.contains(javaLangFQDN))
+					return javaLangFQDN;
+				String priorityFQDN = workspace.getGeneratorConfiguration().getImportFormatterPriorityImports()
+						.get("." + typeName);
+				if (priorityFQDN != null && fqdns.contains(priorityFQDN))
+					return priorityFQDN;
 				return fqdns.getFirst();
 			}
 		}
