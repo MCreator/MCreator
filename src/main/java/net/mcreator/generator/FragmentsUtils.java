@@ -79,7 +79,7 @@ public class FragmentsUtils {
 		collectFragments(generator, generator.getGeneratorConfiguration().getGlobalFragments(), Map.of(), fragments);
 
 		// Filter out duplicate entries
-        fragments.replaceAll((_, list) -> list.stream().distinct().toList());
+		fragments.replaceAll((_, list) -> list.stream().distinct().toList());
 
 		return fragments;
 	}
