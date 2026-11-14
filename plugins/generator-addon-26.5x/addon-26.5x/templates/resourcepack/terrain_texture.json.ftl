@@ -15,7 +15,14 @@
   	"${modid}_${registryname}_north": { "textures": [ "textures/blocks/${block.textureBack()}" ] },
   	"${modid}_${registryname}_west": { "textures": [ "textures/blocks/${block.textureLeft()}" ] },
   	"${modid}_${registryname}_east": { "textures": [ "textures/blocks/${block.textureRight()}" ] }
-  	</#if><#sep>,
-  	</#list>
+  	</#if>
+  	<#if block.flowerPottable && (block.hasPottedVisuals())>,
+    "${modid}_${registryname}_potted": { "textures": [ "textures/blocks/${block.pottedTexture()}" ] }
+    </#if>
+    <#if block.hasParticleTexture()>,
+    "${modid}_${registryname}_destruction_particles": { "textures": [ "textures/blocks/${block.destructionParticleCount}" ] }
+    </#if>
+    <#sep>,
+    </#list>
   }
 }

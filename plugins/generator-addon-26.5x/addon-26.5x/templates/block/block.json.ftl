@@ -1,7 +1,7 @@
 <#-- @formatter:off -->
 <#assign localScripts = data.localScripts?map(s -> generator.getResourceLocationForModElement(s))>
 {
-  "format_version": "1.21.40",
+  "format_version": "1.21.120",
   "minecraft:block": {
     "description": {
       "identifier": "${modid}:${registryname}",
@@ -28,26 +28,8 @@
       </#if>
     },
     "components": {
-      "minecraft:geometry":
-        <#if data.hasCustomModel()>
-          "geometry.${data.getModel().getReadableName()}"
-        <#elseif data.renderType() == 11>
-          "minecraft:geometry.cross"
-        <#else>
-          "minecraft:geometry.full_block"
-        </#if>,
-      "minecraft:material_instances": {
-        <#if data.hasOneTexture()>
-		"*": <@material_face "" data.renderType() == 11 data.renderType() == 11/>
-		<#else>
-        "up": <@material_face "up"/>,
-        "down": <@material_face "down"/>,
-        "north": <@material_face "north"/>,
-        "south": <@material_face "south"/>,
-        "east": <@material_face "east"/>,
-        "west": <@material_face "west"/>
-		</#if>
-      },
+      "minecraft:geometry": <@regular_model/>,
+      <@material_instances/>,
       <#-- Boxes are emitted in the base orientation; minecraft:transformation permutations rotate them with the geometry -->
       <#if data.isNotColidable>
       "minecraft:collision_box": false,
@@ -56,6 +38,38 @@
       </#if>
       <#if !data.isFullCube()>
       "minecraft:selection_box": <#if data.getSelectionBox()??><@boxEntry data.getSelectionBox()/><#else>false</#if>,
+      </#if>
+      <#if data.hasParticleTexture()>
+      "minecraft:destruction_particles": {
+        "texture": "${modid}_${registryname}_destruction_particles"
+        <#if data.destructionParticleTintMethod != "(none)">,
+        "tint_method": "${data.destructionParticleTintMethod}"
+        </#if>
+        <#if data.particleCount != 100>,
+        "particle_count": ${data.particleCount}
+        </#if>
+      },
+      </#if>
+      <#if data.flowerPottable>
+      "minecraft:flower_pottable": {},
+       <#if data.hasPottedVisuals()>
+		  "minecraft:embedded_visual": {
+		    "geometry":
+		      <#if data.hasCustomPottedModel()>
+		      "geometry.${data.getPottedModel().getReadableName()}",
+		      <@material_instances true/>
+		      <#elseif data.pottedRenderType() == 11>
+		      "minecraft:geometry.cross",
+		      <@material_instances true/>
+		      <#elseif data.pottedRenderType() == 12>
+		      "minecraft:geometry.full_block",
+		      <@material_instances true/>
+		      <#else>
+		      <@regular_model/>,
+		      <@material_instances data.hasCustomModel()/>
+		      </#if>
+	      },
+       </#if>
       </#if>
       <#if (data.colorOnMap!"DEFAULT") != "DEFAULT">
       "minecraft:map_color": "${data.colorOnMap}",
@@ -194,6 +208,33 @@
 <#function max(a, b)>
   <#return (a > b)?then(a, b)>
 </#function>
+
+<#macro regular_model>
+  <#if data.hasCustomModel()>
+  "geometry.${data.getModel().getReadableName()}"
+  <#elseif data.renderType() == 11>
+  "minecraft:geometry.cross"
+  <#else>
+  "minecraft:geometry.full_block"
+  </#if>
+</#macro>
+
+<#macro material_instances isPotted=false>
+"minecraft:material_instancess": {
+	<#if data.hasOneTexture()>
+	"*": <@material_face "", data.renderType() == 11, data.renderType() == 11/>
+	<#elseif isPotted>
+	"*": <@material_face "potted", data.pottedRenderType() == 11, data.pottedRenderType() == 11/>
+	<#else>
+	"up": <@material_face "up"/>,
+	"down": <@material_face "down"/>,
+	"north": <@material_face "north"/>,
+	"south": <@material_face "south"/>,
+	"east": <@material_face "east"/>,
+	"west": <@material_face "west"/>
+	</#if>
+}
+</#macro>
 
 <#macro material_face suffix="" disableAmbientOcclusion=false disableFaceDimming=false>
 {
