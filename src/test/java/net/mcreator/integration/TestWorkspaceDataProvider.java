@@ -2880,7 +2880,7 @@ public class TestWorkspaceDataProvider {
 		return list.get(randomIndex);
 	}
 
-	private static List<MCItem> filterAir(List<MCItem> source) {
+	public static List<MCItem> filterAir(List<MCItem> source) {
 		return source.stream()
 				.filter(e -> !(e.getName().equals("Blocks.AIR") || e.getName().equals("Blocks.VOID_AIR") || e.getName()
 						.equals("Blocks.CAVE_AIR"))).toList();
