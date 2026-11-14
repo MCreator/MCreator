@@ -1,0 +1,53 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "raining",
+      "options": [
+        [
+          "unspecified",
+          "unspecified"
+        ],
+        [
+          "true",
+          "true"
+        ],
+        [
+          "false",
+          "false"
+        ]
+      ]
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "thundering",
+      "options": [
+        [
+          "unspecified",
+          "unspecified"
+        ],
+        [
+          "true",
+          "true"
+        ],
+        [
+          "false",
+          "false"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": false,
+  "output": "Predicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "predicates",
+    "fields": [
+      "raining",
+      "thundering"
+    ]
+  }
+}
