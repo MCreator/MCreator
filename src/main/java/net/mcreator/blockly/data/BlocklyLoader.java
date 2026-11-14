@@ -61,6 +61,7 @@ public class BlocklyLoader {
 		add("blockpredicates");
 		add("blocks");
 		add("components");
+		add("playerconditions");
 	}};
 
 	private final Map<BlocklyEditorType, ExternalBlockLoader> blockLoaders = new HashMap<>();
