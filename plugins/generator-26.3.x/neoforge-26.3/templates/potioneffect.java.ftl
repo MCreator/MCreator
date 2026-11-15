@@ -155,11 +155,15 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantaneous</#if>Mob
 
 	<#if data.isCuredbyHoney>
 	@SubscribeEvent public static void modifyItemComponents(ModifyDefaultComponentsEvent event) {
-		Consumable original = Consumables.HONEY_BOTTLE;
-		List<ConsumeEffect> onConsumeEffects = new ArrayList<>(original.onConsumeEffects());
-		onConsumeEffects.add(new RemoveStatusEffectsConsumeEffect(${JavaModName}MobEffects.${REGISTRYNAME}));
-		Consumable replacementConsumable = new Consumable(original.consumeSeconds(), original.animation(), original.sound(), original.hasConsumeParticles(), onConsumeEffects);
-		event.modify(Items.HONEY_BOTTLE, (builder, _, _) -> builder.set(DataComponents.CONSUMABLE, replacementConsumable));
+		event.modify(Items.HONEY_BOTTLE, (builder, _, _) -> {
+			<#-- extend the current consumable, so multiple effects (and other mods) don't overwrite each other -->
+			Consumable original = builder.get(DataComponents.CONSUMABLE);
+			if (original != null) {
+				List<ConsumeEffect> onConsumeEffects = new ArrayList<>(original.onConsumeEffects());
+				onConsumeEffects.add(new RemoveStatusEffectsConsumeEffect(${JavaModName}MobEffects.${REGISTRYNAME}));
+				builder.set(DataComponents.CONSUMABLE, new Consumable(original.consumeSeconds(), original.animation(), original.sound(), original.hasConsumeParticles(), onConsumeEffects));
+			}
+		});
 	}
 	</#if>
 
