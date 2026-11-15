@@ -93,7 +93,7 @@ package ${package}.client.renderer.item;
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 
-		renderState.ageInTicks = (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
+		renderState.ageInTicks = mc.level == null ? 0 : (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 
 		submitNodeCollector.submitModel(this.model, renderState, poseStack, texture, lightCoords, overlayCoords, outlineColor);
 
@@ -152,6 +152,7 @@ package ${package}.client.renderer.item;
 
 	private void updateRenderState(ItemStack itemstack) {
 		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null) return;
 		int tickCount = (int) (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime));
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
