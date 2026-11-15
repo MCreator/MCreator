@@ -81,7 +81,7 @@ public class ${name}Item extends Item {
 						Consumables.defaultFood().animation(${data.animation})
 						</#if>
 						<#if data.useDuration != 32>
-						.consumeSeconds(${[data.useDuration, 0]?max / 20}F)
+						.consumeSeconds(${data.useDuration / 20}F)
 						</#if>
 						.build()
 					<#elseif data.animation.getUnmappedValue() == "drink">,
