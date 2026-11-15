@@ -1,1 +1,2 @@
-(${input$itemstack}.maxAmount)
+<#include "mcitems.ftl">
+(${mappedMCItemToItemStackCode(input$itemstack)}.maxAmount)

@@ -4,12 +4,12 @@ world.afterEvents.blockExplode.subscribe((event) => {
     <#list localvariables as var><@var.getType().getScopeDefinition(generator.getWorkspace(), "LOCAL")['init']?interpret/></#list>
 
     <@optionalDependencies dependencies, {
-        "block": "event.block.permutation",
+        "block": "event.explodedBlockPermutation",
         "dimension": "event.dimension",
         "x": "event.block.location.x",
         "y": "event.block.location.y",
         "z": "event.block.location.z",
-        "entity": "event.entity"
+        "entity": "event.source"
     }/>
 	${scriptcode}
 });

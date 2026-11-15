@@ -7,7 +7,7 @@ world.afterEvents.entityHurt.subscribe((event) => {
         "damagesource": "event.damageSource",
         "damage": "event.damage",
         "entity": "event.hurtEntity",
-        "sourceentity": "event.damagesource.damagingEntity",
+        "sourceentity": "event.damageSource.damagingEntity",
         "dimension": "event.hurtEntity.dimension",
         "x": "event.hurtEntity.location.x",
         "y": "event.hurtEntity.location.y",
