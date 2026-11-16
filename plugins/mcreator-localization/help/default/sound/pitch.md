@@ -1,0 +1,1 @@
+This parameter defines how high or low the sound should be played.
