@@ -1,0 +1,22 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "player",
+      "check": "PlayerCondition"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 150,
+  "mcreator": {
+    "toolbox_id": "utility",
+    "toolbox_init": [
+      "<value name=\"player\"><block type=\"player_condition_predicate\"><mutation inputs=\"1\"></mutation><value name=\"predicateComponent0\"><block type=\"player_predicate_component_location\"><mutation inputs=\"1\"></mutation><value name=\"locationComponent0\"><block type=\"location_component_predicate_biomes\"><mutation inputs=\"1\"></mutation><field name=\"biome0\"></field></block></value></block></value></block></value>"
+    ],
+    "inputs": [
+      "player"
+    ]
+  }
+}
