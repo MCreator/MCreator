@@ -1,1 +1,1 @@
-Specifikujte hodnoty, které budou přijmouty vlastnostmi vašeho elementu pro tento stav. Pokud odškrtnete box nalevo od vladtnosti, nebude to mít na tento stav žádný vliv.
+Specifikujte hodnoty, které budou přijmuty vlastnostmi vašeho elementu pro tento stav. Pokud odškrtnete box nalevo od vlastnosti, nebude to mít na tento stav žádný vliv.

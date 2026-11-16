@@ -135,8 +135,10 @@ public abstract class MappableElement implements IWorkspaceDependent {
 						TraceUtil.tryToFindMCreatorInvoker(), value);
 			}
 			return retval;
+		} else if (value.startsWith("POTION:")) { // Special case for potion MCItems
+			return validateReference(value.substring(7), workspace, "potions");
 		} else if (mappingSource != null && !value.startsWith(NameMapper.EXTERNAL_PREFIX) && !value.startsWith("#")
-				&& !value.startsWith("TAG:") && !value.startsWith("POTION:") && !TestUtil.isTestingEnvironment()) {
+				&& !value.startsWith("TAG:") && !TestUtil.isTestingEnvironment()) {
 			Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mappingSource);
 			if (dataListEntryMap != null) {
 				if (!dataListEntryMap.containsKey(value)) {

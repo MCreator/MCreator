@@ -208,7 +208,8 @@ public class WindowsDefenderUtil {
 	}
 
 	private static String quote(String value) {
-		return "'" + value.replace("'", "''") + "'";
+		// PowerShell also treats typographic single quotes as string delimiters, so they need to be doubled too
+		return "'" + value.replaceAll("['\\u2018\\u2019\\u201A\\u201B]", "$0$0") + "'";
 	}
 
 }

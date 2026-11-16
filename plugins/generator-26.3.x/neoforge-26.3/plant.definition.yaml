@@ -110,5 +110,7 @@ localizationkeys:
 tags:
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable
+  - tag: BLOCKS:minecraft:blocks_motion
+    condition: blocksMotion()
   - tag: BLOCKS:minecraft:saplings
     condition: "plantType %= sapling"

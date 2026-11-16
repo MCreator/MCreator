@@ -99,7 +99,8 @@ public class SearchUsagesDialog {
 						L10N.t("common.close"));
 		} else {
 			showListDialog(mcreator, L10N.t("dialog.search_usages.broken_references.list"), brokenReferences.keySet(),
-					false, me -> L10N.t("dialog.search_usages.broken_references.count", brokenReferences.get(me).size()),
+					false,
+					me -> L10N.t("dialog.search_usages.broken_references.count", brokenReferences.get(me).size()),
 					me -> L10N.t("dialog.search_usages.broken_references.tooltip",
 							brokenReferences.get(me).stream().sorted().collect(Collectors.joining("<br>"))));
 		}

@@ -98,15 +98,14 @@ public abstract class AbstractPackMakerTool extends MCreatorDialog {
 			workspace.getModElementManager().storeModElementPicture(generatableElement);
 			workspace.getWorkspace().addModElement(generatableElement.getModElement());
 			if (generationQueue != null) {
-				generationQueue.add(
-						generatableElement); // caller will generate queued elements after base regeneration
+				generationQueue.add(generatableElement); // caller will generate queued elements after base regeneration
 			} else {
 				workspace.getGenerator().generateElement(generatableElement);
 			}
 			workspace.getModElementManager().storeModElement(generatableElement);
-			workspace.getHistoryManager().checkpoint("mod_element_added",
-					generatableElement.getModElement().getType().getReadableName(),
-					generatableElement.getModElement().getName());
+			workspace.getHistoryManager()
+					.checkpoint("mod_element_added", generatableElement.getModElement().getType().getReadableName(),
+							generatableElement.getModElement().getName());
 		}
 	}
 

@@ -36,8 +36,15 @@ public class MItemBlock extends MappableElement {
 
 	public boolean isAir() {
 		String unmappedValue = getUnmappedValue();
-		return unmappedValue.equals("Blocks.AIR") || unmappedValue.equals("Blocks.VOID_AIR") || unmappedValue.equals(
-				"Blocks.CAVE_AIR");
+		if (unmappedValue.equals("Blocks.AIR") || unmappedValue.equals("Blocks.VOID_AIR") || unmappedValue.equals(
+				"Blocks.CAVE_AIR"))
+			return true;
+
+		return getMappedValue().equals("Blocks.AIR");
+	}
+
+	public boolean isTag() {
+		return getUnmappedValue().startsWith("TAG:") || getMappedValue(1).startsWith("#");
 	}
 
 }

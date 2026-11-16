@@ -44,6 +44,7 @@ public class McpServer {
 
 	private final String name;
 	private final String version;
+	@Nullable private final String instructions;
 	private final McpTransport transport;
 	private final Gson gson = new GsonBuilder().create();
 	private final JsonSchemaGenerator schemaGenerator = new JsonSchemaGenerator();
@@ -54,9 +55,14 @@ public class McpServer {
 	private final List<ToolCallListener> toolCallListeners = new CopyOnWriteArrayList<>();
 
 	public McpServer(String name, String version, McpTransport transport) {
+		this(name, version, transport, null);
+	}
+
+	public McpServer(String name, String version, McpTransport transport, @Nullable String instructions) {
 		this.name = name;
 		this.version = version;
 		this.transport = transport;
+		this.instructions = instructions;
 	}
 
 	public void start() throws IOException {
@@ -175,7 +181,8 @@ public class McpServer {
 			} catch (Exception e) {
 				LOG.error("Unexpected error handling message", e);
 				JsonRpcResponse errorResponse = new JsonRpcResponse(null,
-						new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INTERNAL_ERROR, "Internal error"));
+						new JsonRpcResponse.JsonRpcError(JsonRpcResponse.JsonRpcError.INTERNAL_ERROR,
+								"Internal error"));
 				responseFuture.complete(gson.toJson(errorResponse));
 			}
 		});
@@ -185,7 +192,8 @@ public class McpServer {
 	private McpSchema.InitializeResponse handleInitialize() {
 		McpSchema.ServerCapabilities caps = new McpSchema.ServerCapabilities(Map.of(),
 				new McpSchema.ResourceCapability(false, false));
-		return new McpSchema.InitializeResponse("2025-11-25", caps, new McpSchema.Implementation(name, version));
+		return new McpSchema.InitializeResponse("2025-11-25", caps, new McpSchema.Implementation(name, version),
+				instructions);
 	}
 
 	private McpSchema.ToolListResponse handleListTools() {
@@ -202,7 +210,8 @@ public class McpServer {
 	private CompletableFuture<McpSchema.CallToolResponse> handleCallTool(JsonElement params) {
 		McpSchema.CallToolRequest req = gson.fromJson(params, McpSchema.CallToolRequest.class);
 		if (req == null || req.name() == null) {
-			throw new JsonRpcException(JsonRpcResponse.JsonRpcError.INVALID_PARAMS, "Invalid params: missing tool name");
+			throw new JsonRpcException(JsonRpcResponse.JsonRpcError.INVALID_PARAMS,
+					"Invalid params: missing tool name");
 		}
 		IMcpTool tool = tools.get(req.name());
 		if (tool == null) {

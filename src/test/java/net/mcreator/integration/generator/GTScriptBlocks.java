@@ -95,16 +95,16 @@ public class GTScriptBlocks {
 
 			// set MCItem blocks to some value
 			testXML = testXML.replace("<block type=\"mcitem_all\"><field name=\"value\"></field></block>",
-							"<block type=\"mcitem_all\"><field name=\"value\">"
-									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocksAndItems).getName()
-									+ "</field></block>")
+							"<block type=\"mcitem_all\"><field name=\"value\">" + TestWorkspaceDataProvider.getRandomMCItem(
+									random, blocksAndItems).getName() + "</field></block>")
 					.replace("<shadow type=\"mcitem_all\"><field name=\"value\"></field></shadow>",
 							"<shadow type=\"mcitem_all\"><field name=\"value\">"
 									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocksAndItems).getName()
 									+ "</field></shadow>")
 					.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 							"<block type=\"mcitem_allblocks\"><field name=\"value\">"
-									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName() + "</field></block>")
+									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName()
+									+ "</field></block>")
 					.replace("<shadow type=\"mcitem_allblocks\"><field name=\"value\"></field></shadow>",
 							"<shadow type=\"mcitem_allblocks\"><field name=\"value\">"
 									+ TestWorkspaceDataProvider.getRandomMCItem(random, blocks).getName()

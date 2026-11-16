@@ -88,7 +88,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private final JCheckBox imitateOverworldBehaviour = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner coordinateScale = ComponentFromAnnotation.spinner(Dimension.class, "coordinateScale");
 	private final VComboBox<String> infiniburnTag = new VComboBox<>(
-			new String[] { "minecraft:infiniburn_overworld", "minecraft:infiniburn_nether", "minecraft:infiniburn_end" });
+			new String[] { "minecraft:infiniburn_overworld", "minecraft:infiniburn_nether",
+					"minecraft:infiniburn_end" });
 	private final JCheckBox hasFixedTime = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner fixedTimeValue = ComponentFromAnnotation.spinner(Dimension.class, "fixedTimeValue");
 	private final JCheckBox piglinSafe = L10N.checkbox("elementgui.common.enable");

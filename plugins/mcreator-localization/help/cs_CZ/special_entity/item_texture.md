@@ -1,0 +1,1 @@
+Tento parametr upravuje texturu vaší entity.

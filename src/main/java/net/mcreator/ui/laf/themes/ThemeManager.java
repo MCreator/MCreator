@@ -22,6 +22,7 @@ package net.mcreator.ui.laf.themes;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 import com.formdev.flatlaf.util.HiDPIUtils;
+import com.formdev.flatlaf.util.SystemInfo;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
@@ -66,6 +67,13 @@ public class ThemeManager {
 
 			Map<String, String> flatLafDefaults = new HashMap<>();
 			theme.applyFlatLafOverrides(flatLafDefaults);
+
+			// On KDE Wayland, heavyweight tooltip windows of popup contents get stacked below the heavyweight popup
+			// window FlatLaf uses on Linux for drop shadows, so we disable the shadow to make popups lightweight
+			// See #6773 for more details
+			if (SystemInfo.isLinux && SystemInfo.isKDE && "wayland".equals(System.getenv("XDG_SESSION_TYPE")))
+				flatLafDefaults.put("Popup.dropShadowPainted", "false");
+
 			FlatLaf.setGlobalExtraDefaults(flatLafDefaults);
 
 			// Make sure UI works on Windows High-DPI

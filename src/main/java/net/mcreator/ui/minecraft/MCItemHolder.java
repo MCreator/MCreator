@@ -219,8 +219,11 @@ public class MCItemHolder extends JButton implements IValidable {
 		boolean hasValidationMessage =
 				currentValidationResult != null && currentValidationResult.type() != ValidationResult.Type.PASSED;
 		if (!validReference) {
-			this.setToolTipText(L10N.t("mcitemholder.broken_reference", block.replace(NameMapper.MCREATOR_PREFIX, ""))
-					+ (hasValidationMessage ? "\n" + currentValidationResult.message() : ""));
+			this.setToolTipText(
+					L10N.t("mcitemholder.broken_reference", block.replace(NameMapper.MCREATOR_PREFIX, "")) + (
+							hasValidationMessage ?
+									"\n" + currentValidationResult.message() :
+									""));
 		} else if (!block.isEmpty()) {
 			this.setToolTipText(getBlock().getMappedValue() + (hasValidationMessage ?
 					"\n" + currentValidationResult.message() :

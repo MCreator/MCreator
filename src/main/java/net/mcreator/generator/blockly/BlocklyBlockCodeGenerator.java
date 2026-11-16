@@ -127,8 +127,7 @@ public class BlocklyBlockCodeGenerator {
 										.map(Dependency::name).collect(Collectors.joining(", "));
 								if (!missing.isEmpty()) {
 									master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-											L10N.t("blockly.errors.call_procedure_missing_deps", fieldValue,
-													missing)));
+											L10N.t("blockly.errors.call_procedure_missing_deps", fieldValue, missing)));
 								}
 							}
 						}

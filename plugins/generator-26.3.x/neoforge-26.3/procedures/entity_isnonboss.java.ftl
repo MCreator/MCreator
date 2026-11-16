@@ -1,1 +1,1 @@
-(${input$entity}.canTeleport(${input$entity}.level(), ${input$entity}.level()))
+(${input$entity}.canUsePortal(true))

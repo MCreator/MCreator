@@ -1,0 +1,1 @@
+Tento parametr ovládá základní chování a model vaší entity.

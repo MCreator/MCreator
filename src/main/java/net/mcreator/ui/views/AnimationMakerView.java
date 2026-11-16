@@ -29,8 +29,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.views.editor.image.animation.AnimationSettings;
 import net.mcreator.ui.views.editor.image.animation.AnimationImportUtils;
+import net.mcreator.ui.views.editor.image.animation.AnimationSettings;
 import net.mcreator.ui.views.editor.image.animation.TimelineRenderer;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
@@ -121,7 +121,8 @@ public class AnimationMakerView extends ViewBase {
 		JPanel borderedAnimationSettings = PanelUtils.centerInPanel(animationSettings);
 		ComponentUtils.makeSection(borderedAnimationSettings, L10N.t("dialog.animation_maker.settings"));
 
-		editor.add("Center", PanelUtils.centerAndEastElement(preview2, PanelUtils.pullElementUp(borderedAnimationSettings)));
+		editor.add("Center",
+				PanelUtils.centerAndEastElement(preview2, PanelUtils.pullElementUp(borderedAnimationSettings)));
 
 		animator = new Thread(() -> {
 			active = true;

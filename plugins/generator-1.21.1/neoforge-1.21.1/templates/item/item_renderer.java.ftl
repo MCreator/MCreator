@@ -90,12 +90,13 @@ package ${package}.client.renderer.item;
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		VertexConsumer vertexConsumer = ItemRenderer.getFoilBufferDirect(bufferSource, model.renderType(texture), false, itemstack.hasFoil());
+		float ageInTicks = mc.level == null ? 0 : ((mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getTimer().getGameTimeDeltaPartialTick(false));
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		if (model instanceof AnimatedModel animatedModel)
-			animatedModel.setupItemStackAnim(itemstack, (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getTimer().getGameTimeDeltaPartialTick(false));
+			animatedModel.setupItemStackAnim(itemstack, ageInTicks);
 		else
 		</#if>
-		model.setupAnim(null, 0, 0, (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getTimer().getGameTimeDeltaPartialTick(false), 0, 0);
+		model.setupAnim(null, 0, 0, ageInTicks, 0, 0);
 		model.renderToBuffer(poseStack, vertexConsumer, packedLight, packedOverlay);
 		poseStack.popPose();
 	}
@@ -117,6 +118,7 @@ package ${package}.client.renderer.item;
 
 	private void updateRenderState(ItemStack itemstack) {
 		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null) return;
 		int tickCount = (int) (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime));
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>

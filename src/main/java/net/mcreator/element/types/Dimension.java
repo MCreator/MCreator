@@ -45,8 +45,7 @@ import java.util.*;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider,
-		IMultipleNames {
+		implements ITabContainedElement, ISpecialInfoHolder, IMCItemProvider, IPOIProvider, IMultipleNames {
 
 	private static final Logger LOG = LogManager.getLogger(Dimension.class);
 

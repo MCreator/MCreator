@@ -30,7 +30,7 @@ import net.mcreator.element.parts.MItemBlock;
 	MItemBlock getDefaultDrop();
 
 	default boolean hasDefaultDrop() {
-		return !getDefaultDrop().isAir() && !getDefaultDrop().isEmpty();
+		return !getDefaultDrop().isAir() && !getDefaultDrop().isEmpty() && !getDefaultDrop().isTag();
 	}
 
 	default boolean hasDefaultDropPool() {

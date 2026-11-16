@@ -71,8 +71,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 		if (!elements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			Set<ModElement> references = ReferencesFinder.searchSoundUsages(
-					workspacePanel.getMCreator().getWorkspace(), elements);
+			Set<ModElement> references = ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(),
+					elements);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 

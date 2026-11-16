@@ -72,34 +72,28 @@ package ${package}.client.renderer.item;
 	private final Identifier texture;
 	private final ItemDisplayContext displayContext;
 
-	private final LivingEntityRenderState renderState;
 	private static final Map<Level, Long> start = new WeakHashMap<>();
 
 	private ${name}ItemRenderer(EntityModel<LivingEntityRenderState> model, Identifier texture, ItemDisplayContext displayContext) {
 		this.model = model;
 		this.texture = texture;
 		this.displayContext = displayContext;
-		this.renderState = new LivingEntityRenderState();
 	}
 
 	@Override public void submit(ItemStack itemstack, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords, int overlayCoords, boolean glint, int outlineColor) {
 		Minecraft mc = Minecraft.getInstance();
 
+		CustomRenderState renderState = new CustomRenderState();
 		<#if data.hasCustomJAVAModel() && data.animations?has_content>
 		updateRenderState(itemstack);
+		renderState.animationStates = getAnimationState(itemstack);
 		</#if>
 
 		poseStack.pushPose();
 		poseStack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
 		poseStack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 
-		renderState.ageInTicks = (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
-		<#if data.hasCustomJAVAModel() && data.animations?has_content>
-		if (model instanceof AnimatedModel animatedModel)
-			animatedModel.setupItemStackAnim(this, itemstack, renderState);
-		else
-		</#if>
-		model.setupAnim(renderState);
+		renderState.ageInTicks = mc.level == null ? 0 : (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime)) + mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
 
 		submitNodeCollector.submitModel(this.model, renderState, poseStack, texture, lightCoords, overlayCoords, outlineColor);
 
@@ -143,6 +137,12 @@ package ${package}.client.renderer.item;
 
 	}
 
+	public static class CustomRenderState extends LivingEntityRenderState {
+		<#if data.hasCustomJAVAModel() && data.animations?has_content>
+		protected Map<Integer, AnimationState> animationStates;
+		</#if>
+	}
+
 	<#if data.hasCustomJAVAModel() && data.animations?has_content>
 	private final Map<ItemStack, Map<Integer, AnimationState>> CACHE = new WeakHashMap<>();
 
@@ -152,6 +152,7 @@ package ${package}.client.renderer.item;
 
 	private void updateRenderState(ItemStack itemstack) {
 		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null) return;
 		int tickCount = (int) (mc.level.getGameTime() - start.computeIfAbsent(mc.level, Level::getGameTime));
 		<#list data.animations as animation>
 			<#if hasProcedure(animation.condition)>
@@ -192,10 +193,13 @@ package ${package}.client.renderer.item;
 			}
 		}
 
-		public void setupItemStackAnim(${name}ItemRenderer renderer, ItemStack itemstack, LivingEntityRenderState state) {
+		<#-- Animations must be applied here and not at submit time, as the model is shared between
+			 all item stacks of this type and the actual rendering happens later -->
+		@Override public void setupAnim(LivingEntityRenderState state) {
+			Map<Integer, AnimationState> animationStates = ((CustomRenderState) state).animationStates;
 			this.root().getAllParts().forEach(ModelPart::resetPose);
 			<#list data.animations as animation>
-			this.keyframeAnimation${animation?index}.apply(renderer.getAnimationState(itemstack).get(${animation?index}), state.ageInTicks, ${animation.speed}f);
+			this.keyframeAnimation${animation?index}.apply(animationStates.get(${animation?index}), state.ageInTicks, ${animation.speed}f);
 			</#list>
 			super.setupAnim(state);
 		}

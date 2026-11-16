@@ -29,6 +29,11 @@
       "can_sleep": "never",
       "destroy_on_use": true
     },
+    "minecraft:gameplay/straw_bed_rule": {
+      "can_set_spawn": "never",
+      "can_sleep": "never",
+      "destroy_on_use": true
+    },
     </#if>
     <#if data.hasClouds>
     "minecraft:visual/cloud_height": ${[[(((data.cloudHeight + 8) / 16)?floor * 16), 2031]?min, -2032]?max},

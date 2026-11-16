@@ -34,7 +34,7 @@
       <#if types.bescripts?has_content>,
       {
         "module_name": "@minecraft/server",
-        "version": "2.3.0"
+        "version": "2.6.0"
       }
       </#if>
     ],

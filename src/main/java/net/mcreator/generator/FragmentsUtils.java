@@ -19,6 +19,7 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
@@ -29,24 +30,29 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FragmentsUtils {
 
 	private static final Logger LOG = LogManager.getLogger(FragmentsUtils.class);
 
 	/**
-	 * Collects fragments defined in "fragments" lists of used mod element type definitions and generator configuration.
-	 * Each fragment defines "type" and either "template" to render or literal "content" (string or list of strings),
-	 * and can optionally define a condition. Fragments of mod element types get elements of their type in the data model
-	 * of both the template and the condition.
+	 * Collects fragments defined in "fragments" lists of used mod element type definitions, used base type definitions
+	 * and generator configuration. Each fragment defines "type" and either "template" to render or literal "content"
+	 * (string or list of strings), and can optionally define a condition. Fragments of mod element types and base types
+	 * get elements of their type in the data model of both the template and the condition.
 	 *
 	 * @param generator             Generator to collect fragments for
 	 * @param modElementTypeListMap Generatable elements grouped by mod element type
+	 * @param baseTypeListMap       Generatable elements grouped by base type they provide
 	 * @return Fragments grouped by fragment type, types with a fragment definition file are always present
 	 */
 	public static Map<String, List<String>> collectFragments(Generator generator,
-			Map<ModElementType<?>, List<GeneratableElement>> modElementTypeListMap) {
+			Map<ModElementType<?>, List<GeneratableElement>> modElementTypeListMap,
+			Map<BaseType, List<GeneratableElement>> baseTypeListMap) {
 		DefinitionsProvider definitionsProvider = generator.getGeneratorConfiguration().getDefinitionsProvider();
 
 		Map<String, List<String>> fragments = new HashMap<>();
@@ -61,8 +67,19 @@ public class FragmentsUtils {
 						fragments);
 		}
 
+		// Fragments from definitions of used base types, in base type registry order
+		for (BaseType baseType : BaseType.values()) {
+			List<GeneratableElement> elements = baseTypeListMap.get(baseType);
+			if (elements != null)
+				collectFragments(generator, definitionsProvider.getBaseTypeDefinition(baseType).get("fragments"),
+						Map.of(baseType.getPluralName(), elements), fragments);
+		}
+
 		// Fragments from generator configuration
 		collectFragments(generator, generator.getGeneratorConfiguration().getGlobalFragments(), Map.of(), fragments);
+
+		// Filter out duplicate entries
+		fragments.replaceAll((_, list) -> list.stream().distinct().toList());
 
 		return fragments;
 	}

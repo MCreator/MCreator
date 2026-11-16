@@ -422,6 +422,14 @@ import java.util.stream.Collectors;
 		return IBlockWithBoundingBox.super.isFullCube();
 	}
 
+	public boolean blocksMotion() {
+		if (blockBase != null && !blockBase.isEmpty())
+			return !"EndRod".equals(blockBase) && !"Button".equals(blockBase) && !"FlowerPot".equals(blockBase)
+					&& !"Sign".equals(blockBase);
+
+		return !isNotColidable && !isBoundingBoxEmpty();
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)

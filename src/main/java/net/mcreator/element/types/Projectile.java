@@ -35,8 +35,7 @@ import net.mcreator.workspace.resources.Model;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings("unused") public class Projectile extends GeneratableElement
-		implements IEntityWithModel {
+@SuppressWarnings("unused") public class Projectile extends GeneratableElement implements IEntityWithModel {
 
 	public MItemBlock projectileItem;
 	public boolean showParticles;
