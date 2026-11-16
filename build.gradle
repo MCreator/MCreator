@@ -135,9 +135,12 @@ dependencies {
     implementation "com.atlassian.commonmark:commonmark:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-autolink:0.17.0"
     implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:0.17.0"
-    implementation "com.fifesoft:rsyntaxtextarea:3.6.3" // can't update to 4.x.x until languagesupport is updated to support it
-    implementation "com.fifesoft:autocomplete:3.3.3" // can't update to 4.x.x until languagesupport is updated to support it
-    implementation("com.fifesoft:languagesupport:3.4.1") {
+    // rsyntaxtextarea 4.0.1 has two regressions fixed only in unreleased 4.0.2:
+    // - caret blink timer starts on every text area at construction, caret visible on unfocused editors - https://github.com/bobbylight/RSyntaxTextArea/issues/727 and /issues/729
+    // - BadLocationException stack traces from LineNumberList when setText shrinks the document - https://github.com/bobbylight/RSyntaxTextArea/issues/738
+    implementation "com.fifesoft:rsyntaxtextarea:4.0.1"
+    implementation "com.fifesoft:autocomplete:4.0.0"
+    implementation("com.fifesoft:languagesupport:4.0.0") {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino-all'
     }
     implementation 'io.beautifier:js-beautify:1.15.4.1'
