@@ -234,17 +234,18 @@ void makeDMG(File directory, File outputDMGFile, String volumeName) {
         }
     } else {
         def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
-        ant.exec(executable: mkisofs_binary, failonerror: true) {
-            arg(value: '-r')
-            arg(value: '-D')
-            arg(value: '-o')
-            arg(value: outputDMGFile)
-            arg(value: '-mac-name')
-            arg(value: '-V')
-            arg(value: volumeName)
-            arg(value: '-apple')
-            arg(value: '-v')
-            arg(value: directory)
+        execCtx.execOps.exec {
+            commandLine mkisofs_binary,
+                    '-r',
+                    '-D',
+                    '-o',
+                    outputDMGFile,
+                    '-mac-name',
+                    '-V',
+                    volumeName,
+                    '-apple',
+                    '-v',
+                    directory
         }
     }
 }
