@@ -132,7 +132,7 @@ package ${package}.client.fluid;
 					<#if hasProcedure(data.fogEndDistance)>
 					(float) <@procedureOBJToNumberCode data.fogEndDistance/>
 					<#elseif data.fogEndDistance.getFixedValue() gt 16>
-					Math.min(${data.fogEndDistance.getFixedValue()}f, renderDistance)
+					Math.min(${data.fogEndDistance.getFixedValue()}f, renderDistance * 16) <#-- renderDistance is in chunks -->
 					<#else>
 					${data.fogEndDistance.getFixedValue()}f
 					</#if>;
