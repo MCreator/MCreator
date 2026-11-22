@@ -89,6 +89,8 @@ public class ${name}Particle extends SingleQuadParticle {
 
 		<#if data.animate>
 		this.setSpriteFromAge(spriteSet);
+		<#else>
+		this.setSprite(spriteSet.get(this.random));
 		</#if>
 	}
 
