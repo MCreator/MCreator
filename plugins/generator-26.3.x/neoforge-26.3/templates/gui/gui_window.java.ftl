@@ -159,12 +159,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> implemen
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
 			if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
+				int halfWidth = Math.min(this.width, 2000) / 2;
+				int halfHeight = Math.min(this.height, 2000) / 2;
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
 				InventoryScreen.renderEntityInInventoryFollowsAngle(guiGraphics,
-					this.leftPos + ${x + (10 - 1000)}, this.topPos + ${y + (20 - 1000)},
-					this.leftPos + ${x + (10 + 1000)}, this.topPos + ${y + (20 + 1000)},
+					this.leftPos + ${x + 10} - halfWidth, this.topPos + ${y + 20} - halfHeight,
+					this.leftPos + ${x + 10} + halfWidth, this.topPos + ${y + 20} + halfHeight,
 					${component.scale}, -livingEntity.getBbHeight() / (2.0f * livingEntity.getScale()),
 					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 10} - mouseX) / 40.0)</#if>,
 					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>, livingEntity

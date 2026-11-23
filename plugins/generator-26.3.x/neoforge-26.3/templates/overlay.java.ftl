@@ -110,12 +110,16 @@ package ${package}.client.screens;
 
 			<#list data.getComponentsOfType("EntityModel") as component>
 				if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
+					<#assign position><@calculatePosition component=component x_offset=10 y_offset=20/></#assign>
+					<#assign posX = position?keep_before(",")?trim>
+					<#assign posY = position?keep_after(",")?trim>
+					int halfWidth = Math.min(w, 2000) / 2;
+					int halfHeight = Math.min(h, 2000) / 2;
 					<#if hasProcedure(component.displayCondition)>
 						if (<@procedureOBJToConditionCode component.displayCondition/>)
 					</#if>
 					InventoryScreen.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(),
-						<@calculatePosition component=component x_offset=(10 - 1000) y_offset=(20 - 1000)/>,
-						<@calculatePosition component=component x_offset=(10 + 1000) y_offset=(20 + 1000)/>,
+						${posX} - halfWidth, ${posY} - halfHeight, ${posX} + halfWidth, ${posY} + halfHeight,
 						${component.scale}, -livingEntity.getBbHeight() / (2.0f * livingEntity.getScale()),
 						${component.rotationX / 20.0}f, 0, livingEntity);
 				}
