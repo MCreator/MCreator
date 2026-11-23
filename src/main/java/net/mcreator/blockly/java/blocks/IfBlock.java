@@ -27,61 +27,69 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import java.util.List;
-
 public class IfBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		List<Element> elements = XMLUtil.getDirectChildren(block);
-		boolean hasMainIf = false;
-		boolean hasElse = false;
+		// number of branches is determined from the inputs that are present
+		int elseIfCount = 0;
+		for (Element input : XMLUtil.getDirectChildren(block)) {
+			String name = input.getAttribute("name");
+			if (name.startsWith("IF") || name.startsWith("DO"))
+				elseIfCount = Math.max(elseIfCount, Integer.parseInt(name.substring(2)));
+		}
 		boolean allBranchesTerminate = true;
-		for (Element element : elements) {
-			if (element.getNodeName().equals("statement")) {
-				String ifname = element.getAttribute("name");
-				if (ifname.startsWith("DO")) {
-					int ifindex = Integer.parseInt(ifname.replace("DO", ""));
-					if (ifindex == 0) { // first if statement
-						master.append("if (");
-						hasMainIf = true;
-					} else {
-						master.append("else if (");
-					}
-					// find the corresponding condition for this statement
-					Element condition = null;
-					List<Element> conditions = XMLUtil.getChildrenWithName(block, "value");
-					for (Element cond_candidate : conditions) {
-						if (cond_candidate.getAttribute("name").equals("IF" + ifindex)) {
-							condition = cond_candidate;
-						}
-					}
-					if (condition != null) {
-						master.processOutputBlockWithoutParentheses(condition);
-					} else {
-						master.append("true");
-						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-								L10N.t("blockly.warnings.if_no_condition")));
-					}
-					master.append(") ");
-				} else if (ifname.equals("ELSE")) {
-					master.append("else");
-					hasElse = true;
-				}
-				master.append("{");
-				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithBlock(element);
-				allBranchesTerminate &= master.processBlockProcedure(base_blocks);
-				master.append("}");
+		// if block without any body generates no code
+		boolean hasBody = !XMLUtil.getChildrenWithName(block, "statement").isEmpty();
+		// branches with empty body are generated too, so the branches after them stay valid
+		for (int ifindex = 0; hasBody && ifindex <= elseIfCount; ifindex++) {
+			Element condition = getInput(block, "value", "IF" + ifindex);
+			Element body = getInput(block, "statement", "DO" + ifindex);
+			if (ifindex > 0 && condition == null && body == null)
+				continue; // else if without condition and body is skipped
+
+			master.append(ifindex == 0 ? "if (" : "else if (");
+			if (condition != null) {
+				master.processOutputBlockWithoutParentheses(condition);
+			} else {
+				master.append("true");
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.if_no_condition")));
 			}
+			master.append(") ");
+			allBranchesTerminate &= processBranch(master, body);
 		}
 
-		if (!hasMainIf) {
+		Element elseBranch = getInput(block, "statement", "ELSE");
+		if (elseBranch != null) {
+			master.append("else");
+			allBranchesTerminate &= processBranch(master, elseBranch);
+		}
+
+		if (getInput(block, "statement", "DO0") == null) {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.if_no_main_body")));
 		}
 
 		// if-else where every branch terminates can not complete normally, if without else can
-		if (hasElse && allBranchesTerminate)
+		if (elseBranch != null && allBranchesTerminate)
 			master.markBlockTerminating();
+	}
+
+	private static Element getInput(Element block, String type, String name) {
+		for (Element input : XMLUtil.getChildrenWithName(block, type)) {
+			if (input.getAttribute("name").equals(name))
+				return input;
+		}
+		return null;
+	}
+
+	private static boolean processBranch(BlocklyToCode master, Element branch) throws TemplateGeneratorException {
+		boolean terminates = false;
+		master.append("{");
+		if (branch != null)
+			terminates = master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(branch));
+		master.append("}");
+		return terminates;
 	}
 
 	@Override public String[] getSupportedBlocks() {
