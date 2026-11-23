@@ -110,6 +110,9 @@ package ${package}.client.renderer.item;
 
 	@Override public void getExtents(Consumer<Vector3fc> output) {
 		PoseStack posestack = new PoseStack();
+		<#-- needs to match the transformations applied in submit -->
+		posestack.translate(0.5, isInventory(displayContext) ? 1.5 : 2, 0.5);
+		posestack.scale(1, -1, displayContext == ItemDisplayContext.GUI ? -1 : 1);
 		this.model.root().getExtentsForGui(posestack, output);
 	}
 
