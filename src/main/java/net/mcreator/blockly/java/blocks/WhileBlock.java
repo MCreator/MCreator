@@ -27,6 +27,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class WhileBlock implements IBlockGenerator {
 
@@ -40,10 +41,31 @@ public class WhileBlock implements IBlockGenerator {
 			master.append(") {");
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
 			master.append("}");
+
+			// while (true) without break can not complete normally, so the code after it is not reachable
+			if (isLiteralTrue(value) && !containsFlowControlBlock(statement))
+				master.markBlockTerminating();
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.empty_while")));
 		}
+	}
+
+	private static boolean isLiteralTrue(Element value) {
+		Element condition = XMLUtil.getFirstChildrenWithName(value, "block");
+		if (condition == null || !"logic_boolean".equals(condition.getAttribute("type")))
+			return false;
+		Element field = XMLUtil.getFirstChildrenWithName(condition, "field");
+		return field != null && "TRUE".equals(field.getTextContent());
+	}
+
+	private static boolean containsFlowControlBlock(Element statement) {
+		NodeList blocks = statement.getElementsByTagName("block");
+		for (int i = 0; i < blocks.getLength(); i++) {
+			if ("controls_flow_statements".equals(((Element) blocks.item(i)).getAttribute("type")))
+				return true;
+		}
+		return false;
 	}
 
 	@Override public String[] getSupportedBlocks() {
