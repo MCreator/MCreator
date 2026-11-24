@@ -111,6 +111,14 @@ public class CraftingRecipeMaker extends AbstractRecipeMaker {
 		return false;
 	}
 
+	public boolean hasAirInputItems() {
+		for (int i = 0; i < 9; i++) {
+			if (recipeSlots[i].containsAir())
+				return true;
+		}
+		return false;
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		for (int i = 0; i < 9; i++) {

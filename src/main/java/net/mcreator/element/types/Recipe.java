@@ -187,6 +187,39 @@ import java.util.*;
 		return keys;
 	}
 
+	/**
+	 * @return true if all the items the recipe uses are defined, are not air, and still exist
+	 */
+	public boolean isValidRecipe() {
+		return switch (recipeType) {
+			case "Crafting" -> {
+				// slots can be empty, but at least one ingredient is needed
+				List<MItemBlock> ingredients = Arrays.stream(recipeSlots).filter(slot -> !slot.isEmpty()).toList();
+				yield isValidItem(recipeReturnStack) && !ingredients.isEmpty() && ingredients.stream()
+						.allMatch(Recipe::isValidItem);
+			}
+			case "Smelting" -> isValidItem(smeltingInputStack) && isValidItem(smeltingReturnStack);
+			case "Blasting" -> isValidItem(blastingInputStack) && isValidItem(blastingReturnStack);
+			case "Smoking" -> isValidItem(smokingInputStack) && isValidItem(smokingReturnStack);
+			case "Stone cutting" -> isValidItem(stoneCuttingInputStack) && isValidItem(stoneCuttingReturnStack);
+			case "Campfire cooking" ->
+					isValidItem(campfireCookingInputStack) && isValidItem(campfireCookingReturnStack);
+			// template is optional for smithing recipes
+			case "Smithing" -> isValidItem(smithingInputStack) && isValidItem(smithingInputAdditionStack)
+					&& isValidItem(smithingReturnStack) && (smithingInputTemplateStack == null
+					|| smithingInputTemplateStack.isEmpty() || isValidItem(smithingInputTemplateStack));
+			case "Brewing" -> isValidItem(brewingInputStack) && isValidItem(brewingIngredientStack) && isValidItem(
+					brewingReturnStack);
+			default -> false;
+		};
+	}
+
+	private static boolean isValidItem(MItemBlock item) {
+		if (item == null || !item.isValidReference())
+			return false;
+		return item.getUnmappedValue().startsWith("POTION:") || !item.isAir();
+	}
+
 	public boolean hasAdvancement() {
 		return !unlockingItems.isEmpty() && !"Brewing".equals(recipeType);
 	}

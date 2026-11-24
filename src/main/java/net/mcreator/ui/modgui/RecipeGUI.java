@@ -265,6 +265,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 				} else if (!craftingRecipeMaker.hasInputItems()) {
 					return new AggregatedValidationResult.FAIL(
 							L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
+				} else if (craftingRecipeMaker.hasAirInputItems()) {
+					return new AggregatedValidationResult.FAIL(
+							L10N.t("elementgui.recipe.error_crafting_air_ingredient"));
 				}
 			} else if ("Smelting".equals(recipeType.getSelectedItem())) {
 				if (!smeltingRecipeMaker.cb1.containsItem() || !smeltingRecipeMaker.cb2.containsItem()) {
@@ -294,8 +297,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			} else if ("Smithing".equals(recipeType.getSelectedItem())) {
 				if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
 						|| !smithingRecipeMaker.cb3.containsItem() ||
-						// We request smithing recipe to have template for new recipes
-						(!isEditingMode() && !smithingRecipeMaker.cb4.containsItem())) {
+						// template is optional for smithing recipes
+						smithingRecipeMaker.cb4.containsAir()) {
 					return new AggregatedValidationResult.FAIL(
 							L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 				}

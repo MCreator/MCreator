@@ -122,6 +122,10 @@ public class MCItemHolder extends JButton implements IValidable {
 		return validReference && !block.isEmpty();
 	}
 
+	public boolean containsAir() {
+		return containsItemOrAir() && !containsItem();
+	}
+
 	private void initGUI() {
 		setMargin(new Insets(0, 0, 0, 0));
 		setIcon(new EmptyIcon(25, 25));
