@@ -16,8 +16,8 @@
             ${mappedMCItemToItemObjectJSON(data.achievementIcon, "id")}
           },
           <#if generator.getGeneratorFlavor() == "DATAPACK">
-          "title": "${data.achievementName}",
-          "description": "${data.achievementDescription}",
+          "title": "${data.achievementName?json_string}",
+          "description": "${data.achievementDescription?json_string}",
           <#else>
           "title": {
             "translate": "advancements.${registryname}.title"
