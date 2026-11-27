@@ -3,7 +3,7 @@
 {
     "format_version": 2,
     "header": {
-      "description": "${JavaConventions.escapeStringForJava(settings.getDescription())!""}",
+      "description": "${StringUtils.escapeStringWithNewlines(settings.getDescription())!""}",
       "name": "${settings.getModName()}",
       "uuid": "${w.getUUID("resourcepack")}",
       "version": [${v[0]}, ${v[1]}, ${v[2]}],
@@ -11,7 +11,7 @@
     },
     "modules": [
       {
-        "description": "${JavaConventions.escapeStringForJava(settings.getDescription())!""}",
+        "description": "${StringUtils.escapeStringWithNewlines(settings.getDescription())!""}",
         "type": "resources",
         "uuid": "${w.getUUID("module_resources")}",
         "version": [${v[0]}, ${v[1]}, ${v[2]}]

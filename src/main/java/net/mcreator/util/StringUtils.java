@@ -18,6 +18,7 @@
 
 package net.mcreator.util;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nonnull;
@@ -84,6 +85,16 @@ public class StringUtils {
 	public static String machineToReadableName(@Nonnull String input) {
 		String merged = String.join(" ", namePartsSplitter.split(input));
 		return WordUtils.capitalize(org.apache.commons.lang3.StringUtils.normalizeSpace(merged));
+	}
+
+	/**
+	 * Escapes the string for use in quoted TOML or JSON values, keeping \n typed by the user as a newline escape.
+	 */
+	public static String escapeStringWithNewlines(String source) {
+		if (source == null)
+			return null;
+
+		return StringEscapeUtils.escapeJava(source).replace("\\\\n", "\\n");
 	}
 
 	public static int countRegexMatches(String where, String regex) {

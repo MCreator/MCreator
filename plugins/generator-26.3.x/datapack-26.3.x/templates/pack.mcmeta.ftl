@@ -2,6 +2,6 @@
     "pack": {
         "min_format": 121.0, <#-- https://minecraft.wiki/w/Pack_format -->
         "max_format": 121.0,
-        "description": "${JavaConventions.escapeStringForJava(settings.getDescription())!""}"
+        "description": "${StringUtils.escapeStringWithNewlines(settings.getDescription())!""}"
     }
 }

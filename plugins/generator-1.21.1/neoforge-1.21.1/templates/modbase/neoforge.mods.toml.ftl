@@ -16,13 +16,13 @@ displayURL="${JavaConventions.escapeStringForJava(settings.getWebsiteURL())}"
 logoFile="logo.png"
 </#if>
 <#if settings.getCredits()?has_content>
-credits="${JavaConventions.escapeStringForJava(settings.getCredits())}"
+credits="${StringUtils.escapeStringWithNewlines(settings.getCredits())}"
 </#if>
 <#if settings.getAuthor()?has_content>
 authors="${JavaConventions.escapeStringForJava(settings.getAuthor())}"
 </#if>
 <#if settings.getDescription()?has_content>
-description="${JavaConventions.escapeStringForJava(settings.getDescription())}"
+description="${StringUtils.escapeStringWithNewlines(settings.getDescription())}"
 </#if>
 <#if settings.isServerSideOnly()>
 displayTest="IGNORE_SERVER_VERSION"
